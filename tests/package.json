@@ -4,7 +4,7 @@
   "description": "UI Integration tests for the Kyma ",
   "main": "index.js",
   "scripts": {
-    "test": "jest -i",
+    "test": "jest -i --detectOpenHandles",
     "test:watch": "jest --watch"
   },
   "author": "",
@@ -17,8 +17,7 @@
     "jest": "^23.1.0",
     "promise-retry": "^1.1.1",
     "puppeteer": "~1.6.0",
-    "request": "^2.85.0",
-    "requestretry": "^1.13.0"
+    "request": "^2.85.0"
   },
   "jest": {
     "testRegex": "/tests/(console-basic-test|catalog-ui-test).jsx?$"

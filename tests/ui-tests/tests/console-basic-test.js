@@ -1,19 +1,15 @@
 import config from '../config';
 import kymaConsole from '../commands/console';
-import { create } from 'domain';
 import logOnEvents from '../utils/logging';
 import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 
 const context = require('../utils/testContext');
 let page, browser;
-let dexReady = false;
 const consoleUrl = `https://console.${config.domain}/`;
 let token = '';
 
 describe('Console basic tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
-    if (dexReady) {
       browser = await context.getBrowser();
       page = await browser.newPage();
       let width = config.viewportWidth;
@@ -25,9 +21,6 @@ describe('Console basic tests', () => {
       await waitForNavigationAndContext(page);
       console.log(`document ready!`);
       logOnEvents(page, t => (token = t));
-    } else {
-      fail('Test environment wasnt ready');
-    }
   });
 
   afterAll(async () => {
@@ -36,17 +29,12 @@ describe('Console basic tests', () => {
   });
 
   test('Login', async () => {
-    //the code looks strange.. but it uneasy to stop test execution as a result of a check in  'beforeAll'
-    // https://github.com/facebook/jest/issues/2713
-    if (dexReady) {
       await kymaConsole.login(page, config);
       const title = await page.title();
       expect(title).toBe('Kyma');
-    }
   });
 
   test('Check if envs exist', async () => {
-    if (dexReady) {
       const dropdownButton = '.tn-dropdown__control';
       const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
       await page.reload({ waitUntil: 'networkidle0' });
@@ -56,11 +44,9 @@ describe('Console basic tests', () => {
       await page.click(dropdownButton);
       console.log('Check if envs exist', environments);
       expect(environments.length).toBeGreaterThan(1);
-    }
   });
 
   test('Create env', async () => {
-    if (dexReady) {
       const dropdownButton = '.tn-dropdown__control';
       const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
       const createEnvBtn = '.open-create-env-modal';
@@ -89,11 +75,9 @@ describe('Console basic tests', () => {
       const environments = await kymaConsole.getEnvironments(page);
       await page.click(dropdownButton);
       expect(environments).toContain(config.testEnv);
-    }
   });
 
   test('Delete env', async () => {
-    if (dexReady) {
       //checking list of environments before delete
       const dropdownButton = '.tn-dropdown__control';
       const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
@@ -119,6 +103,5 @@ describe('Console basic tests', () => {
       console.log('Delete env - envs after deletion', environments);
       //assert
       expect(environments).not.toContain(config.testEnv);
-    }
   });
 });
