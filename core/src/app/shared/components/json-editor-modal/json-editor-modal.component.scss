@@ -1,4 +1,24 @@
+$modal-header-hight : 52px; //20px height + 2*16px padding
+$modal-footer-height: 72px; //40px height + 2*16px padding
+
 .json-editor {
-  height: 400px;
   display: inline;
+}
+
+.tn-modal {
+  height: 80vh;
+  margin: 10vh auto;
+  min-height: 400px;
+}
+
+.tn-modal__content {
+  height: 100%;
+}
+
+.tn-modal__body {
+  height: calc(100% - #{$modal-header-hight} - #{$modal-footer-height});
+}
+
+.tn-form__group {
+  height: 100%;
 }
