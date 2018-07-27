@@ -1,0 +1,10 @@
+<div class="sf-list" [hidden]="loading || errorMessage || !data || data.length === 0">
+  <ng-template #header></ng-template>
+  <ng-template class="container" #entries></ng-template>
+  <ng-template #footer></ng-template>
+</div>
+<p *ngIf="loading">Loading ...</p>
+<p *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
+  <ng-content select="[empty-list-placeholder]"></ng-content>
+</p>
+<p *ngIf="!loading && errorMessage" style="color:red">{{errorMessage}}</p>

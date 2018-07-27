@@ -1,0 +1,30 @@
+<div class="sf-toolbar">
+  <div class="sf-toolbar__header" *ngIf="!showEmptyPage">{{title}}</div>
+  <div class="sf-toolbar__right">
+  <div class="sf-toolbar__item" [hidden]="!loaded">
+      <y-list-search [filterState]="filterState" [hidden]="showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+      <y-list-filter [filterState]="filterState" [hidden]="showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+    </div>
+  </div>
+</div>
+
+<y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+
+<y-plain-table
+  [source]="data"
+  [headerRenderer]="headerRenderer"
+  [entryRenderer]="entryRenderer"
+  [entryEventHandler]="entryEventHandler"
+  [footerRenderer]="footerRenderer">
+  <div empty-list-placeholder *ngIf="showEmptyPage" class="sf-section__empty-teaser">
+    <h1>{{title}}</h1>
+    <p>{{emptyListText}}</p>
+    <button class="tn-button tn-button--small tn-button--text" (click)="createNewElement()">+ {{createNewElementText}}</button>
+  </div>
+</y-plain-table>
+
+<y-list-paging
+  [pagingState]="pagingState"
+  (onPageChanged)="onPageChanged($event)">
+</y-list-paging>
+

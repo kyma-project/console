@@ -1,0 +1,14 @@
+<ng-container *ngIf="hasSearch()" >
+  <div (clickOutside)="closeIfEmpty()" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+    <button class="tn-button tn-button--small tn-button--text"
+            [hidden]="searching"
+            (click)="openSearch($event)"
+    >
+      Search
+    </button>
+    <div class="search" [hidden]="!searching">
+      <input #searchInput type="text" value="" class="search__input" placeholder="What are you looking for?">
+      <div class="search-circle search-circle__close tn-icon tn-icon--close" (click)="closeSearch($event)"></div>
+    </div>
+  </div>
+</ng-container>

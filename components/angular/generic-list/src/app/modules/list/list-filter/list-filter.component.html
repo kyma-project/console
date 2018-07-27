@@ -1,0 +1,16 @@
+<div class="tn-dropdown" (clickOutside)="autoCloseDropdown()" clickOutsideEvents="click,mousedown">
+    <button class="tn-button tn-button--small tn-button--text"
+            [ngClass]="{'tn-button--disabled': !hasFacets()}"
+            (click)="toggleDropdown($event)"
+            [attr.aria-expanded]="ariaExpanded">
+      Filter
+      <div class="filters" *ngIf="filterState.facets && 0 < filterState.facets.length && hasFacets()">{{filterState.facets.length}}</div>
+    </button>
+    <ul class="tn-dropdown__menu tn-contextual-menu actions-menu text-left"
+        [ngClass]="{'actions-menu--disabled': !hasFacets()}"
+        [attr.aria-hidden]="ariaHidden">
+      <li class="tn-dropdown__item" *ngFor="let facet of filterState.availableFacets">
+        <input type="checkbox" (click)="toggleFacet(facet.label, $event)" [checked]="facetSelected(facet.label)" id="{{facet.label}}">{{facet.label}} ({{facet.count}})
+      </li>
+    </ul>
+</div>
