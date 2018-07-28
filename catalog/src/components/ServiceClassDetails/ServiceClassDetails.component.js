@@ -67,6 +67,7 @@ class ServiceClassDetails extends React.Component {
                     serviceClass.serviceClass.creationTimestamp
                   }
                   documentationUrl={serviceClass.serviceClass.documentationUrl}
+                  imageUrl={serviceClass.serviceClass.imageUrl}
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>

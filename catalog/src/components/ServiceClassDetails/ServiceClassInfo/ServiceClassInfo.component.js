@@ -10,6 +10,7 @@ import {
   ServiceTitle,
   ServiceProvider,
   DocsLink,
+  Image,
 } from './styled';
 
 const ServiceClassInfo = ({
@@ -17,12 +18,13 @@ const ServiceClassInfo = ({
   providerDisplayName,
   creationTimestamp,
   documentationUrl,
+  imageUrl,
 }) => {
   return (
     <div>
       <ServiceClassInfoContentWrapper>
-        <ImagePlaceholder>
-          <Icon icon={'\ue113'} />
+        <ImagePlaceholder imageUrl={imageUrl}>
+          {imageUrl ? <Image src={imageUrl} /> : <Icon icon={'\ue113'} />}
         </ImagePlaceholder>
         <div>
           <ServiceTitle data-e2e-id="service-title">
@@ -60,6 +62,7 @@ ServiceClassInfo.propTypes = {
   providerDisplayName: PropTypes.string.isRequired,
   creationTimestamp: PropTypes.number,
   documentationUrl: PropTypes.string,
+  imageUrl: PropTypes.string,
 };
 
 export default ServiceClassInfo;

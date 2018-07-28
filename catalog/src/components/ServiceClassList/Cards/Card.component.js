@@ -9,12 +9,13 @@ import {
   CardTop,
   CardHeader,
   CardThumbnail,
+  CardImage,
   CardTitle,
   CardCompany,
   CardDescription,
 } from './styled';
 
-const Card = ({ title, company, description, onClick }) => {
+const Card = ({ title, company, description, imageUrl, onClick }) => {
   const itemId = title
     ? title
         .split(' ')
@@ -26,8 +27,8 @@ const Card = ({ title, company, description, onClick }) => {
     <CardWrapper data-e2e-id="card">
       <CardContent onClick={onClick} data-e2e-id={`go-to-details-${itemId}`}>
         <CardTop>
-          <CardThumbnail>
-            <Icon icon={'\ue113'} />
+          <CardThumbnail imageUrl={imageUrl}>
+            {imageUrl ? <CardImage src={imageUrl} /> : <Icon icon={'\ue113'} />}
           </CardThumbnail>
 
           <CardHeader>
@@ -47,6 +48,7 @@ Card.propTypes = {
   company: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  imageUrl: PropTypes.string,
 };
 
 export default Card;
