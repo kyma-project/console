@@ -10,8 +10,6 @@ import {
 import { authConfig } from './auth.config';
 import { LoginService } from './login.service';
 
-import { Observable } from 'rxjs/Observable';
-
 @Component({
   template: ''
 })
