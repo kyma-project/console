@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from '../app.config';
-import { JsonEditorComponent } from '../shared/components/json-editor-modal/json-editor/json-editor.component';
 
 @Injectable()
 export class LoginService {
