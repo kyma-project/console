@@ -28,8 +28,6 @@ import { ExposeApiComponent } from '../content/environments/operation/services/s
 import { ExternalViewComponent } from '../extensibility/external-view/external-view.component';
 
 import { LambdasComponent } from '../content/environments/development/lambdas/lambdas.component';
-import { IngressDetailsComponent } from '../content/environments/operation/ingresses/ingress-details/ingress-details.component';
-import { IngressesComponent } from '../content/environments/operation/ingresses/ingresses.component';
 import { PermissionsComponent } from '../shared/components/permissions/permissions.component';
 import { RoleDetailsComponent } from '../shared/components/permissions/role-details/role-details.component';
 import { InstancesContainerComponent } from '../content/environments/instances-container/instances-container.component';
@@ -90,8 +88,6 @@ const appRoutes: Routes = [
           { path: 'apis/create', component: ExposeApiComponent },
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
-          { path: 'ingresses', component: IngressesComponent },
-          { path: 'ingresses/:name', component: IngressDetailsComponent },
           { path: 'extensions/:id', component: ExternalViewComponent },
           { path: 'resources', component: ResourcesComponent },
           {

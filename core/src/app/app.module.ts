@@ -45,10 +45,6 @@ import { EnvironmentDetailsComponent } from './content/environments/environment-
 import { DeploymentEntryRendererComponent } from './content/environments/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/environments/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
 import { DeploymentsComponent } from './content/environments/operation/deployments/deployments.component';
-import { IngressDetailsComponent } from './content/environments/operation/ingresses/ingress-details/ingress-details.component';
-import { IngressesEntryRendererComponent } from './content/environments/operation/ingresses/ingresses-entry-renderer/ingresses-entry-renderer.component';
-import { IngressesHeaderRendererComponent } from './content/environments/operation/ingresses/ingresses-header-renderer/ingresses-header-renderer.component';
-import { IngressesComponent } from './content/environments/operation/ingresses/ingresses.component';
 import { PodsEntryRendererComponent } from './content/environments/operation/pods/pods-entry-renderer/pods-entry-renderer.component';
 import { PodsHeaderRendererComponent } from './content/environments/operation/pods/pods-header-renderer/pods-header-renderer.component';
 import { PodsComponent } from './content/environments/operation/pods/pods.component';
@@ -169,11 +165,7 @@ import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard
     ExternalAppComponent,
     CustomExternalAppComponent,
     LambdasComponent,
-    IngressesComponent,
-    IngressesHeaderRendererComponent,
-    IngressesEntryRendererComponent,
     ServiceDetailsComponent,
-    IngressDetailsComponent,
     UploaderComponent,
     ResourceUploaderModalComponent,
     ResourceUploaderComponent,
@@ -258,8 +250,6 @@ import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard
     ServicesEntryRendererComponent,
     RemoteEnvironmentsHeaderRendererComponent,
     RemoteEnvironmentsEntryRendererComponent,
-    IngressesHeaderRendererComponent,
-    IngressesEntryRendererComponent,
     ApiDefinitionEntryRendererComponent,
     ApiDefinitionHeaderRendererComponent,
     FilteredApisEntryRendererComponent,
