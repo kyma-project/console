@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from '../app.config';
+import { JsonEditorComponent } from '../shared/components/json-editor-modal/json-editor/json-editor.component';
 
 @Injectable()
 export class LoginService {
@@ -33,12 +34,6 @@ export class LoginService {
     });
   }
 
-  private logoutInternal() {
-    this.oauthService.logOut();
-    this.loggedIn.next(false);
-    this.router.navigateByUrl('/logout');
-  }
-
   public logout() {
     if (AppConfig.idpLogoutUrl) {
       const logoutFrame = document.createElement('iframe');
@@ -58,5 +53,11 @@ export class LoginService {
     } else {
       this.logoutInternal();
     }
+  }
+
+  private logoutInternal() {
+    this.oauthService.logOut();
+    this.loggedIn.next(false);
+    this.router.navigateByUrl('/logout');
   }
 }
