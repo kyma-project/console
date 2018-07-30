@@ -1,4 +1,6 @@
 # Console
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fkyma-project%2Fconsole.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fkyma-project%2Fconsole?ref=badge_shield)
+
 
 ## Overview
 
@@ -30,3 +32,7 @@ To clear dependencies and remove symlinks, run this command:
 ```
 npm run clean
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fkyma-project%2Fconsole.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fkyma-project%2Fconsole?ref=badge_large)
