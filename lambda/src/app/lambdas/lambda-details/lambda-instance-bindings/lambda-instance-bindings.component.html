@@ -13,7 +13,7 @@
     <div class="col-8">Environment Variable Name</div>
     <div class="col-1"></div>
   </div>
-  <div class="row sf-list__body" *ngFor="let instanceBinding of instanceBindingInfoList; let i = index">
+  <div class="row sf-list__body" *ngFor="let instanceBinding of instanceBindingInfoList; let i = index; last as isLast">
     <div class="col-3">
       {{ instanceBinding.instanceName }}
     </div>
@@ -26,6 +26,9 @@
     </div>
     <div class="col-1">
       <button class="tn-icon tn-icon--delete tn-button tn-button--small tn-button--icon tn-button--text" (click)="remove(i)"></button>
+    </div>
+    <div class="col-12" *ngIf="!isLast">
+      <hr>
     </div>
   </div>
 </div>
