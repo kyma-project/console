@@ -24,7 +24,7 @@
     "yamljs": "^0.3.0"
   },
   "scripts": {
-    "prepare": "curl --insecure -o ./src/commons/manifest.yaml https://github.com/raw/kyma-project/kyma/master/docs/manifest.yaml",
+    "prepare": "curl --insecure -o ./src/commons/manifest.yaml https://raw.githubusercontent.com/kyma-project/kyma/master/docs/manifest.yaml",
     "start": "PORT=8002 react-app-rewired start",
     "build": "REACT_APP_ENV=production react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
