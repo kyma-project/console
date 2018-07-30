@@ -1,27 +1,40 @@
-<div class="event-trigger-chooser">
-  <input type="search" class="triggers-dropdown__search" [(ngModel)]="eventSearchQuery"  [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null" (ngModelChange)="filterEvents(eventSearchQuery)"
-    placeholder="Search">
+<ng-template [ngIf]="isActive">
+  <div class="sf-modal sf-modal--max modalposition" [ngClass]="{'is-active': isActive===true}">
+    <div class="tn-modal add-event-modal" role="document">
+      <div class="tn-modal__content">
+        <div class="tn-modal__header">
+          <h4 class="tn-modal__title">{{ title }}</h4>
+          <input type="search" class="triggers-dropdown__search" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
+            placeholder="Search">
 
-  <div class="sf-list">
-    <div>
-      <div class="row sf-list__head">
-        <div class="col-2">Event</div>
-        <div class="col-1">Version</div>
-        <div class="col-2">Environment</div>
-        <div class="description col-7">Description</div>
-      </div>
-    </div>
-  </div>
-  <div class="sf-list trigger-entry-list">
-    <div *ngFor="let event of filteredTriggers">
-      <div class="row sf-list__body">
-        <div class="data data--name-event col-2 checkbox">
-          <input type="checkbox" (change)="toggleEventSelection(event, $event)" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null" [checked]="isEventSelected(event)">{{ event.eventType }}
+          <div class="sf-list">
+            <div>
+              <div class="row sf-list__head">
+                <div class="col-2">Event</div>
+                <div class="col-1">Version</div>
+                <div class="col-2">Environment</div>
+                <div class="description col-7">Description</div>
+              </div>
+            </div>
+          </div>
+          <div class="sf-list trigger-entry-list">
+            <div *ngFor="let event of filteredTriggers">
+              <div class="row sf-list__body">
+                <div class="data data--name-event col-2 checkbox">
+                  <input type="checkbox" (change)="toggleEventSelection(event, $event)">{{ event.eventType }}
+                </div>
+                <div class="data col-1">{{ event.version }}</div>
+                <div class="data col-2">{{ event.source.type }}</div>
+                <div class="data data--description col-7">{{ event.description }}</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="data col-1">{{ event.version }}</div>
-        <div class="data col-2">{{ event.source.type }}</div>
-        <div class="data data--description col-7">{{ event.description }}</div>
+        <footer class="tn-modal__footer-items">
+          <button class="tn-modal__button-primary sf-button--primary tn-button--small" (click)="addEvents()" [disabled]="!enableAdd">Add</button>
+          <button class="tn-modal__button-secondary tn-button--small " type="button" (click)=closeEventTriggerChooserModal()>Cancel</button>
+        </footer>
       </div>
     </div>
   </div>
-</div>
+</ng-template>

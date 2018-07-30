@@ -35,7 +35,6 @@ $hover: #008ac6;
   &.sf-toolbar--box {
     display: grid;
   }
-
   .sf-toolbar__item {
     padding: 0;
     height: 40px;
@@ -338,7 +337,6 @@ $hover: #008ac6;
     top: 30%;
     left: -10px;
   }
-
   .tn-form__label {
     margin: 0;
     line-height: 1;
@@ -441,7 +439,6 @@ $hover: #008ac6;
   display: inline-flex;
   padding-top: 2px;
   align-self: flex-end;
-
   >.tn-badge-trigger>.trigger-menu {
     top: 23px;
     font-weight: normal;
@@ -478,17 +475,17 @@ a.disabled {
 }
 
 .trigger-entry-list::-webkit-scrollbar {
-  width:8px;
+  width: 8px;
 }
 
 .trigger-entry-list::-webkit-scrollbar-thumb {
-  -webkit-border-radius:5px;
-  border-radius:5px;
-  background:rgba(0,0,0,0.2);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .trigger-entry-list:hover::-webkit-scrollbar-thumb {
-  -webkit-border-radius:5px;
-  border-radius:5px;
-  background:rgba(0,0,0,0.5);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.5);
 }
