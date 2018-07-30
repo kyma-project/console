@@ -68,10 +68,6 @@ export const navModel = {
           {
             name: 'Secrets',
             link: 'secrets'
-          },
-          {
-            name: 'Ingresses',
-            link: 'ingresses'
           }
         ]
       }

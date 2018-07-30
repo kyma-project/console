@@ -69,15 +69,7 @@ export class ResourceUploadService implements OnDestroy {
   }
 
   private getResourceUrl(fileContent) {
-    let resource;
-
-    switch (fileContent.kind) {
-      case 'Ingress':
-        resource = 'ingresses';
-        break;
-      default:
-        resource = fileContent.kind.toLowerCase() + 's';
-    }
+    const resource = fileContent.kind.toLowerCase() + 's';
 
     switch (fileContent.apiVersion) {
       case 'v1':

@@ -16,6 +16,7 @@
 .project
 .classpath
 .c9/
+.angulardoc.json
 *.launch
 .settings/
 *.sublime-workspace
@@ -37,5 +38,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-.angulardoc.json
 pkup.sh
