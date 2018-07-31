@@ -18,8 +18,7 @@ import * as _ from 'lodash';
 })
 export class IdpPresetsComponent extends GenericTableComponent {
   public title = 'IDP Presets';
-  public emptyListText =
-    'It looks like you don’t have any IDP presets in your namespace yet.';
+  public emptyListText = 'It looks like you don’t have any IDP presets yet.';
   public createNewElementText = 'Add IDP Preset';
   public resourceKind = 'IDPPreset';
   public hideFilter = true;
