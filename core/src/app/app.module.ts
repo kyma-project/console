@@ -116,6 +116,7 @@ import { LimitRangesComponent } from './content/environments/configuration/resou
 import { LimitRangeEntryRendererComponent } from './content/environments/configuration/resources/limit-ranges/limit-range-entry-renderer/limit-range-entry-renderer.component';
 import { LimitRangeHeaderRendererComponent } from './content/environments/configuration/resources/limit-ranges/limit-range-header-renderer/limit-range-header-renderer.component';
 import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
+import { LoginErrorComponent } from './content/login-error/login-error.component';
 
 @NgModule({
   declarations: [
@@ -200,7 +201,8 @@ import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard
     ResourceQuotaHeaderRendererComponent,
     LimitRangesComponent,
     LimitRangeEntryRendererComponent,
-    LimitRangeHeaderRendererComponent
+    LimitRangeHeaderRendererComponent,
+    LoginErrorComponent
   ],
   imports: [
     BrowserModule,

@@ -33,12 +33,6 @@ export class LoginService {
     });
   }
 
-  private logoutInternal() {
-    this.oauthService.logOut();
-    this.loggedIn.next(false);
-    this.router.navigateByUrl('/logout');
-  }
-
   public logout() {
     if (AppConfig.idpLogoutUrl) {
       const logoutFrame = document.createElement('iframe');
@@ -58,5 +52,11 @@ export class LoginService {
     } else {
       this.logoutInternal();
     }
+  }
+
+  private logoutInternal() {
+    this.oauthService.logOut();
+    this.loggedIn.next(false);
+    this.router.navigateByUrl('/logout');
   }
 }

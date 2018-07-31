@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+import {
+  OAuthService,
+  JwksValidationHandler,
+  OAuthErrorEvent
+} from 'angular-oauth2-oidc';
 
 import { authConfig } from './auth.config';
 import { LoginService } from './login.service';
@@ -19,6 +23,14 @@ export class LoginComponent {
   }
 
   private configureAuthService() {
+    const oauthEvents = this.oauthService.events.subscribe(event => {
+      if (event instanceof OAuthErrorEvent) {
+        sessionStorage.setItem('loginError', JSON.stringify(event));
+        oauthEvents.unsubscribe();
+        this.router.navigate(['/loginError']);
+      }
+    });
+
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocument().then(() => {
