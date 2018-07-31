@@ -8,7 +8,8 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
   selector: 'app-pods-entry-renderer',
   templateUrl: './pods-entry-renderer.component.html'
 })
-export class PodsEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class PodsEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
@@ -71,14 +72,7 @@ export class PodsEntryRendererComponent extends AbstractKubernetesEntryRendererC
   }
 
   getStatus(entry) {
-    const statuses = this.getStatusesList(entry);
-    let status = 'Running';
-    for (let i = statuses.length - 1; i >= 0; i--) {
-      if (statuses[i] !== 'Running') {
-        status = statuses[i];
-      }
-    }
-    return status;
+    return entry.podStatus.status;
   }
 
   isPending(entry) {

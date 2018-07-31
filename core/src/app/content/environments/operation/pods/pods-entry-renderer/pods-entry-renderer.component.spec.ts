@@ -11,31 +11,29 @@ describe('PodsEntryRendererComponent', () => {
   let fixture: ComponentFixture<PodsEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [AppModule],
-        providers: [
-          [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
-          [
-            {
-              provide: 'entry',
-              useValue: {
-                objectMeta: {
-                  name: 'name'
-                },
-                podStatus: {
-                  status: 'Running'
-                }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [AppModule],
+      providers: [
+        [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
+        [
+          {
+            provide: 'entry',
+            useValue: {
+              objectMeta: {
+                name: 'name'
+              },
+              podStatus: {
+                status: 'Running'
               }
             }
-          ],
-          [{ provide: 'entryEventHandler', useValue: {} }],
-          ComponentCommunicationService
-        ]
-      }).compileComponents();
-    })
-  );
+          }
+        ],
+        [{ provide: 'entryEventHandler', useValue: {} }],
+        ComponentCommunicationService
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PodsEntryRendererComponent);
@@ -46,6 +44,13 @@ describe('PodsEntryRendererComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display pod status', () => {
+    const podStatus = {
+      status: 'whatever'
+    };
+    expect(component.getStatus({ podStatus })).toEqual('whatever');
   });
 
   it("should disable the pod if 'disable' event with rigth data has been sent", async () => {
