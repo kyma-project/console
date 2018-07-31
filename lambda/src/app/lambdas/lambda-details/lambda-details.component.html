@@ -3,7 +3,7 @@
   <div class="sf-toolbar__right">
     <div class="sf-toolbar__item">
       <button class="tn-button tn-button--small tn-button--text cancel" (click)="cancel()">Cancel</button>
-      <button class="tn-button tn-button--small sf-button--primary" (click)="deployLambda()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">{{ mode == 'create'?'Create':'Save' }}</button>
+      <button class="tn-button tn-button--small sf-button--primary" (click)="deployLambda()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid || !isLambdaFormValid">{{ mode == 'create'?'Create':'Save' }}</button>
     </div>
   </div>
 </div>
