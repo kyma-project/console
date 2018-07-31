@@ -12,10 +12,10 @@ let token = '';
 
 describe('Console basic tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
+    browser = await context.getBrowser();
+    page = await browser.newPage();
+    dexReady = await context.isDexReady(page);
     if (dexReady) {
-      browser = await context.getBrowser();
-      page = await browser.newPage();
       let width = config.viewportWidth;
       let height = config.viewportHeight;
       await page.setViewport({ width, height });
