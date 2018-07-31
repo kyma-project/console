@@ -23,9 +23,10 @@ export class LoginComponent {
   }
 
   private configureAuthService() {
-    this.oauthService.events.subscribe(event => {
+    const oauthEvents = this.oauthService.events.subscribe(event => {
       if (event instanceof OAuthErrorEvent) {
         sessionStorage.setItem('loginError', JSON.stringify(event));
+        oauthEvents.unsubscribe();
         this.router.navigate(['/loginError']);
       }
     });
