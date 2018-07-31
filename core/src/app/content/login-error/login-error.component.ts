@@ -18,7 +18,6 @@ export class LoginErrorComponent implements OnInit {
       this.errorMsg = parsedError.type;
 
       if (
-        window.location.protocol === 'http:' &&
         parsedError.type === 'discovery_document_load_error' &&
         parsedError.reason.status === 0
       ) {
