@@ -1,21 +1,16 @@
 import config from '../config';
 import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
-import { create } from 'domain';
 import logOnEvents from '../utils/logging';
 import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 const context = require('../utils/testContext');
 
 let browser, page;
-let dexReady = false;
 const consoleUrl = `https://console.${config.domain}/`;
 let token = '';
 
 describe('Lambda UI tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
-
-    if (dexReady) {
       browser = await context.getBrowser();
       page = await browser.newPage();
       let width = config.viewportWidth;
@@ -24,9 +19,6 @@ describe('Lambda UI tests', () => {
       await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
       await waitForNavigationAndContext(page);
       logOnEvents(page, t => (token = t));
-    } else {
-      fail('Test env is not ready yet');
-    }
   });
 
   afterAll(async () => {
@@ -35,15 +27,12 @@ describe('Lambda UI tests', () => {
   });
 
   test('Login to console', async () => {
-    if (dexReady) {
       await kymaConsole.login(page, config);
       const sftitle = await page.title();
       expect(sftitle).toBe('Kyma');
-    }
   });
 
   test('Create Lambda Function', async () => {
-    if (dexReady) {
       const contentHeader = '.sf-toolbar__header';
 
       // given (go to Lambdas view)
@@ -95,12 +84,9 @@ describe('Lambda UI tests', () => {
       const expectedNumberOfLambdas = expectedLambdas.length;
 
       expect(expectedNumberOfLambdas).toBe(previousNumberOfLambdas + 1);
-    }
   });
 
   test('Delete Lambda Function', async () => {
-    if (dexReady) {
-      // given
       const frame = await kymaConsole.getFrame(page);
       const dropdownButton = '.tn-button.tn-button--icon.tn-button--text';
       await frame.click(dropdownButton);
@@ -127,6 +113,5 @@ describe('Lambda UI tests', () => {
       const expectedNumberOfLambdas = expectedLambdas.length;
 
       expect(expectedNumberOfLambdas).toBe(0);
-    }
   });
 });
