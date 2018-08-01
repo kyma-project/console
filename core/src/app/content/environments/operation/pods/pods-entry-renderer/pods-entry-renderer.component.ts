@@ -44,7 +44,7 @@ export class PodsEntryRendererComponent
 
   getStatusesList(entry) {
     const containerStatuses = [];
-    if (entry.podStatus && entry.podStatus.containerStatuses) {
+    if (entry.podStatus && entry.podStatus.containerStates) {
       entry.podStatus.containerStates.forEach(status => {
         for (const key in status) {
           if (status[key].reason) {
@@ -72,7 +72,14 @@ export class PodsEntryRendererComponent
   }
 
   getStatus(entry) {
-    return entry.podStatus.status;
+    const statuses = this.getStatusesList(entry);
+    let status = 'Running';
+    for (let i = statuses.length - 1; i >= 0; i--) {
+      if (statuses[i] !== 'Running') {
+        status = statuses[i];
+      }
+    }
+    return status;
   }
 
   isPending(entry) {

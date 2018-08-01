@@ -47,10 +47,60 @@ describe('PodsEntryRendererComponent', () => {
   });
 
   it('should display pod status', () => {
-    const podStatus = {
-      status: 'whatever'
+    const waitingStatus = {
+      status: 'Overall Status',
+      containerStates: [
+        {
+          waiting: {
+            reason: 'Some reason'
+          }
+        }
+      ]
     };
-    expect(component.getStatus({ podStatus })).toEqual('whatever');
+    expect(component.getStatus({ podStatus: waitingStatus })).toEqual(
+      'Waiting: Some reason'
+    );
+    const signalStatus = {
+      status: 'Overall Status',
+      containerStates: [
+        {
+          stopped: {
+            signal: 'Some signal'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: signalStatus })).toEqual(
+      'Stopped (Signal: Some signal)'
+    );
+
+    const exitCodeStatus = {
+      status: 'Overall Status',
+      containerStates: [
+        {
+          foo: {
+            exitCode: 'Some exitCode'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: exitCodeStatus })).toEqual(
+      'Foo (Exit code: Some exitCode)'
+    );
+
+    const otherCodeStatus = {
+      status: 'Overall Status',
+      containerStates: [
+        {
+          other: {
+            foo: 'bar'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: otherCodeStatus })).toEqual(
+      'Other'
+    );
   });
 
   it("should disable the pod if 'disable' event with rigth data has been sent", async () => {
