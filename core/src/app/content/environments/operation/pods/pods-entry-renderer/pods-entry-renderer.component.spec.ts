@@ -81,6 +81,11 @@ describe('PodsEntryRendererComponent', () => {
           foo: {
             exitCode: 'Some exitCode'
           }
+        },
+        {
+          bar: {
+            exitCode: 'Sample code'
+          }
         }
       ]
     };

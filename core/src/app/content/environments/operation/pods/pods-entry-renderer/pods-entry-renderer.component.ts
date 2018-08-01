@@ -73,9 +73,9 @@ export class PodsEntryRendererComponent
 
   getStatus(entry) {
     const statuses = this.getStatusesList(entry);
-    for (let i = statuses.length - 1; i >= 0; i--) {
-      if (statuses[i] !== 'Running') {
-        return statuses[i];
+    for (status of statuses) {
+      if (status !== 'Running') {
+        return status;
       }
     }
     return entry.podStatus.podPhase;
