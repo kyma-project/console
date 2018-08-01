@@ -22,7 +22,7 @@ const context = (function() {
       } catch (err) {
         console.error(
           `Error while testing dex availibility for the ${currentTry} time`,
-          error
+          err
         );
         if (currentTry <= maxTries) {
           setTimeout(() => {
