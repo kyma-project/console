@@ -1,7 +1,7 @@
 <div class="sf-panel__head">
   <div class="sf-panel__headline-wrap">
     <h2> Service Instance Bindings </h2>
-    <button class="tn-button tn-button--small tn-button--text" (click)="showBindingCreatorModal()">
+    <button class="tn-button tn-button--small tn-button--text" (click)="showBindingCreatorModal()" [disabled]="!lambdaName || isLambdaNameInvalid">
       + Add Service Instance Binding
     </button>
   </div>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="col-1">
-      <button class="tn-icon tn-icon--delete tn-button tn-button--small tn-button--icon tn-button--text" (click)="remove(i)"></button>
+      <button class="tn-icon tn-icon--delete tn-button tn-button--small tn-button--icon tn-button--text" (click)="remove(i)" [disabled]="!lambdaName || isLambdaNameInvalid"></button>
     </div>
     <div class="col-12" *ngIf="!isLast">
       <hr>

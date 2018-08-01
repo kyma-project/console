@@ -1,6 +1,4 @@
-import {
-  Component, Input, OnInit, OnChanges
-} from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { EventTrigger } from '../../../shared/datamodel/event-trigger';
 import * as _ from 'lodash';
 
@@ -11,24 +9,29 @@ import * as _ from 'lodash';
 })
 export class EventTriggerChooserComponent implements OnInit, OnChanges {
   @Input() availableTriggers: EventTrigger[];
+  @Input() lambdaName: string;
+  @Input() isLambdaNameInvalid: boolean;
   @Input() selectedTriggers: EventTrigger[];
 
   public eventSearchQuery = '';
   public filteredTriggers: EventTrigger[] = [];
 
-  constructor() { }
+  constructor() {}
 
-  public ngOnChanges() {
-  }
+  public ngOnChanges() {}
 
   public ngOnInit() {
-    this.filteredTriggers = [... this.availableTriggers];
+    this.filteredTriggers = [...this.availableTriggers];
   }
 
   filterEvents(search) {
     this.filteredTriggers = _.filter(this.availableTriggers, event => {
-      return (event.eventType && _.includes(event.eventType.toUpperCase(), search.toUpperCase()))
-        || (event.description && _.includes(event.description.toUpperCase(), search.toUpperCase()));
+      return (
+        (event.eventType &&
+          _.includes(event.eventType.toUpperCase(), search.toUpperCase())) ||
+        (event.description &&
+          _.includes(event.description.toUpperCase(), search.toUpperCase()))
+      );
     });
   }
 
@@ -47,11 +50,13 @@ export class EventTriggerChooserComponent implements OnInit, OnChanges {
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {
-    if (sourceET.eventType === destET.eventType &&
+    if (
+      sourceET.eventType === destET.eventType &&
       sourceET.version === destET.version &&
       sourceET.source.environment === destET.source.environment &&
       sourceET.source.namespace === destET.source.namespace &&
-      sourceET.source.type === destET.source.type) {
+      sourceET.source.type === destET.source.type
+    ) {
       return true;
     } else {
       return false;
@@ -60,7 +65,7 @@ export class EventTriggerChooserComponent implements OnInit, OnChanges {
 
   isEventSelected(sourceET: EventTrigger): boolean {
     let isSelected = false;
-    this.selectedTriggers.forEach((event) => {
+    this.selectedTriggers.forEach(event => {
       if (this.areEventTriggersEqual(event, sourceET)) {
         isSelected = true;
         return;

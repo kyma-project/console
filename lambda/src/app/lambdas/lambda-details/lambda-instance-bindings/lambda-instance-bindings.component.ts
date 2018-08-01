@@ -33,6 +33,7 @@ export class LambdaInstanceBindingsComponent {
   @ViewChild('bindingCreatorModal')
   bindingCreatorModal: LambdaInstanceBindingCreatorComponent;
   @Input() lambdaName: string;
+  @Input() isLambdaNameInvalid: boolean;
   @Output()
   bindingStateEmitter = new EventEmitter<Map<string, InstanceBindingState>>();
 

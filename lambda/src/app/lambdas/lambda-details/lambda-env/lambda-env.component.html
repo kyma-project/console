@@ -7,7 +7,7 @@
 <div class="sf-list">
     <div class="row sf-list__head align-items-center">
         <div class="col-4">
-            <input [(ngModel)]="envVar.name" class="tn-form__control" type="text" id="input-1" (keyup)="validatesEnvVariableName()" placeholder="VARIABLE_NAME">
+            <input [(ngModel)]="envVar.name" class="tn-form__control" type="text" id="input-1" (keyup)="validatesEnvVariableName()" placeholder="VARIABLE_NAME" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
             <div *ngIf="isEnvVariableNameInvalid">
                 <p class="alert">Invalid variable name: must consist of alphanumeric characters or '_' and no spaces (e.g. 'VARIABLE_NAME')</p>
             </div>
@@ -17,10 +17,10 @@
         </div>
         <div class="col-1 lambda-align-center">→</div>
         <div class="col-5">
-            <input [(ngModel)]="envVar.value" class="tn-form__control" type="text" id="input-2" placeholder="Value" (keyup.enter)="addVariable()">
+            <input [(ngModel)]="envVar.value" class="tn-form__control" type="text" id="input-2" placeholder="Value" (keyup.enter)="addVariable()" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
         </div>
         <div class="col-2 lambda-align-right">
-            <button class="tn-button tn-button--small tn-button--text" (click)="addVariable()" [disabled]="disableAddVar">
+            <button class="tn-button tn-button--small tn-button--text" (click)="addVariable()" [disabled]="disableAddVar || !lambdaName || isLambdaNameInvalid">
                 + Add Variable
             </button>
         </div>

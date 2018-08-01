@@ -3,7 +3,7 @@
   <div class="sf-toolbar__right">
     <div class="sf-toolbar__item">
       <button class="tn-button tn-button--small tn-button--text cancel" (click)="cancel()">Cancel</button>
-      <button class="tn-button tn-button--small sf-button--primary" (click)="deployLambda()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">{{ mode == 'create'?'Create':'Save' }}</button>
+      <button class="tn-button tn-button--small sf-button--primary" (click)="deployLambda()" [disabled]="!lambda.metadata.name || !isLambdaFormValid">{{ mode == 'create'?'Create':'Save' }}</button>
     </div>
   </div>
 </div>
@@ -39,7 +39,7 @@
                 {{ label }}
                 <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
               </span>
-              <input #labelsInput *ngIf="3 > labels.length" type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()"
+              <input #labelsInput *ngIf="3 > labels.length" type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null"
                 (blur)="addLabel()">
             </div>
             <div *ngIf="wrongLabel" class="alert alert-danger">
@@ -64,14 +64,15 @@
 
 
               <div [ngClass]="selectedTriggers.length > 0 ? 'lambda-editor-header-list' : 'lambda-editor-header-list-first-elem'">
-                <button class="tn-button tn-button--small tn-button--text" (click)="toggleTriggerTypeDropdown($event)" dropdown="triggerType">Select Function Trigger</button>
+                <button class="tn-button tn-button--small tn-button--text" (click)="toggleTriggerTypeDropdown($event)" dropdown="triggerType" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">Select Function Trigger</button>
                 <div (mouseleave)="closeTriggerTypeDropDown()">
                   <div class="tn-dropdown__menu trigger-menu" [attr.aria-hidden]="!toggleTriggerType">
                     <ul class="tn-dropdown__menu trigger-menu">
 
                       <!-- Note: This will be needed when we enable events trigger -->
-                      <li (click)="showEventTrigger()">
-                        <a class="tn-dropdown__item">Event Trigger</a>
+                      <li>
+                        <a [class.disabled]="lambda.metadata.name.length <=0 || isFunctionNameInvalid" (click)="showEventTrigger()"
+                           class="tn-dropdown__item">Event Trigger</a>
                       </li>
 
                       <li>
@@ -86,7 +87,7 @@
                     <div class="trigger-body">
                       <label class="fd-form__label" for="Yj07w605">
                         <span class="fd-toggle fd-toggle--small fd-form__control">
-                          <input type="checkbox" id="Yj07w605" [(ngModel)]="isHTTPTriggerAuthenticated" checked>
+                          <input type="checkbox" id="Yj07w605" [(ngModel)]="isHTTPTriggerAuthenticated"  [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null" checked>
                           <span class="fd-toggle__switch" role="presentation"></span>
                         </span>
                         Enable Authentication
@@ -96,7 +97,7 @@
                       <button class="tn-button tn-button--small tn-button--small-secondary tn-button--text" (click)=hideHTTPTriggerMenu()>
                         Cancel
                       </button>
-                      <button class="tn-button tn-button--small tn-button--text" (click)=addHTTPTrigger()>
+                      <button class="tn-button tn-button--small tn-button--text" [disabled]="!lambda.metadata.name || isFunctionNameInvalid" (click)=addHTTPTrigger()>
                         Add
                       </button>
                     </div>
@@ -138,7 +139,7 @@
                 <div class="triggers-dropdown__close" (click)="toggleDropdown($event)">
                   <div class="icon tn-icon tn-icon--remove" dropdown="trigger" (click)="hideEventDropdown()"></div>
                 </div>
-                <app-event-trigger-chooser [availableTriggers]="availableEventTriggers" [selectedTriggers]="selectedTriggers"></app-event-trigger-chooser>
+                <app-event-trigger-chooser [availableTriggers]="availableEventTriggers" [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid" [selectedTriggers]="selectedTriggers"></app-event-trigger-chooser>
               </div>
             </div>
 
@@ -146,7 +147,7 @@
               <div class="tn-form__group sf-dropdown__lambda-type">
                 <label class="tn-form__label">Type: </label>
                 <div class="tn-dropdown" (mouseleave)="closeTypeDropDown()">
-                  <button class="tn-dropdown__control" aria-controls="nNJnB279" aria-expanded="false" aria-haspopup="true" (click)="toggleTypeDropDown()">
+                  <button class="tn-dropdown__control" aria-controls="nNJnB279" aria-expanded="false" aria-haspopup="true" (click)="toggleTypeDropDown()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid" >
                     {{ kind }}
                   </button>
                   <div class="tn-dropdown__menu text-left" [attr.aria-hidden]="typeDropdownHidden">
@@ -170,7 +171,7 @@
   <div class="tn-form__group ace-editor">
     <div class="tn-form__item">
       <div class="sf-toolbar">
-        <button *ngIf="(hasDependencies | async) === false" class="tn-button tn-button--small tn-button--stroked" (click)="addDependencies()">
+        <button *ngIf="(hasDependencies | async) === false" class="tn-button tn-button--small tn-button--stroked" (click)="addDependencies()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">
           + Add Dependencies
         </button>
         <div class="sf-toolbar__item" *ngIf="(hasDependencies | async)">
@@ -197,11 +198,11 @@
 </section>
 
 <section class="sf-panel" *ngIf="loaded | async">
-  <app-lambda-instance-bindings [lambdaName]="lambda.metadata.name" (bindingStateEmitter)="handleBindingStateEmitter($event)"></app-lambda-instance-bindings>
+  <app-lambda-instance-bindings [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid" (bindingStateEmitter)="handleBindingStateEmitter($event)"></app-lambda-instance-bindings>
 </section>
 
 <section class="sf-panel" *ngIf="loaded | async">
-  <app-lambda-env-table [envs]="lambda.spec.deployment.spec.template.spec.containers[0].env" (envEmitter)="handleEnvEmitter($event)"></app-lambda-env-table>
+  <app-lambda-env-table [envs]="lambda.spec.deployment.spec.template.spec.containers[0].env" [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid" (envEmitter)="handleEnvEmitter($event)"></app-lambda-env-table>
 
 </section>
 <app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>

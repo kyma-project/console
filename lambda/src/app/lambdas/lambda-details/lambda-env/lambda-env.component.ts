@@ -1,17 +1,25 @@
 import {
-  Component, Input, ReflectiveInjector, Type, ViewChild, ViewContainerRef, Output, EventEmitter
+  Component,
+  Input,
+  ReflectiveInjector,
+  Type,
+  ViewChild,
+  ViewContainerRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { IEnvVar } from '../../../shared/datamodel/k8s/container';
 
-
 @Component({
   selector: 'app-lambda-env-table',
   templateUrl: './lambda-env.component.html',
-  styleUrls: ['../lambda-details.component.scss']
+  styleUrls: ['../lambda-details.component.scss'],
 })
 export class LambdaEnvComponent {
   @Input() envs: IEnvVar[];
+  @Input() lambdaName: string;
+  @Input() isLambdaNameInvalid: boolean;
   @Output() envEmitter = new EventEmitter<IEnvVar[]>();
   isEnvVariableNameInvalid = false;
   isEnvVariableDuplicate = false;
@@ -19,7 +27,7 @@ export class LambdaEnvComponent {
   editVar: number;
   envVar: IEnvVar = {
     name: '',
-    value: ''
+    value: '',
   };
 
   addVariable(): void {
@@ -36,18 +44,18 @@ export class LambdaEnvComponent {
     this.disableAddVar = true;
     this.envVar = {
       name: '',
-      value: ''
+      value: '',
     };
   }
 
   /** validatesEnvVariableName checks whether a environment variable name is valid */
   validatesEnvVariableName(): void {
-    const regex = /[a-zA-Z0-9\-_]*/;
+    const regex = /^[a-z][a-zA-Z0-9_]*/;
     const found = this.envVar.name.match(regex);
     if (this.envs === undefined) {
       this.envs = [];
     }
-    const duplicate = this.envs.find((env) => {
+    const duplicate = this.envs.find(env => {
       return env.name === this.envVar.name;
     });
 

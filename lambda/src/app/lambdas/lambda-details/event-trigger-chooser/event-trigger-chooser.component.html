@@ -1,5 +1,5 @@
 <div class="event-trigger-chooser">
-  <input type="search" class="triggers-dropdown__search" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
+  <input type="search" class="triggers-dropdown__search" [(ngModel)]="eventSearchQuery"  [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null" (ngModelChange)="filterEvents(eventSearchQuery)"
     placeholder="Search">
 
   <div class="sf-list">
@@ -16,7 +16,7 @@
     <div *ngFor="let event of filteredTriggers">
       <div class="row sf-list__body">
         <div class="data data--name-event col-2 checkbox">
-          <input type="checkbox" (change)="toggleEventSelection(event, $event)" [checked]="isEventSelected(event)">{{ event.eventType }}
+          <input type="checkbox" (change)="toggleEventSelection(event, $event)" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null" [checked]="isEventSelected(event)">{{ event.eventType }}
         </div>
         <div class="data col-1">{{ event.version }}</div>
         <div class="data col-2">{{ event.source.type }}</div>

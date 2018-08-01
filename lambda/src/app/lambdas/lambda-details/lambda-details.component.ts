@@ -86,6 +86,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   toggleTriggerType = false;
   typeDropdownHidden = true;
   toggleHTTPTriggerMenu = false;
+  isLambdaFormValid = true;
   showHTTPURL: HTTPEndpoint = null;
   httpURL = '';
   labels = [];
@@ -180,6 +181,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
             this.lambda = this.lambdaDetailsService.initializeLambda();
             this.lambda.spec.function = this.code;
             this.loaded = Observable.of(true);
+            if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
+              this.editor.setReadOnly(true);
+            }
           }
 
           this.eventActivationsService
@@ -812,8 +816,13 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.labels.push(this.newLabel);
       this.newLabel = '';
       this.wrongLabel = false;
-    } else {
+      this.isLambdaFormValid = true;
+    } else if (this.newLabel) {
       this.wrongLabel = this.newLabel;
+      this.isLambdaFormValid = false;
+    } else if (!this.newLabel) {
+      this.wrongLabel = false;
+      this.isLambdaFormValid = true;
     }
   }
 
@@ -848,6 +857,15 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.lambda.metadata.name === ''
         ? false
         : true;
+    if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
+      this.editor.setReadOnly(true);
+      this.dependencyEditor.setReadOnly(true);
+      this.isLambdaFormValid = false;
+    } else {
+      this.editor.setReadOnly(false);
+      this.dependencyEditor.setReadOnly(false);
+      this.isLambdaFormValid = true;
+    }
   }
 
   onMouseOver(trigger: ITrigger): void {
