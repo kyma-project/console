@@ -73,13 +73,12 @@ export class PodsEntryRendererComponent
 
   getStatus(entry) {
     const statuses = this.getStatusesList(entry);
-    let status = 'Running';
     for (let i = statuses.length - 1; i >= 0; i--) {
       if (statuses[i] !== 'Running') {
-        status = statuses[i];
+        return statuses[i];
       }
     }
-    return status;
+    return entry.podStatus.podPhase;
   }
 
   isPending(entry) {

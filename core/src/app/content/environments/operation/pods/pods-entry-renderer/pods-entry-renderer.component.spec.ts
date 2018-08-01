@@ -48,7 +48,7 @@ describe('PodsEntryRendererComponent', () => {
 
   it('should display pod status', () => {
     const waitingStatus = {
-      status: 'Overall Status',
+      podPhase: 'Doing something..',
       containerStates: [
         {
           waiting: {
@@ -61,7 +61,7 @@ describe('PodsEntryRendererComponent', () => {
       'Waiting: Some reason'
     );
     const signalStatus = {
-      status: 'Overall Status',
+      podPhase: 'Doing something..',
       containerStates: [
         {
           stopped: {
@@ -75,7 +75,7 @@ describe('PodsEntryRendererComponent', () => {
     );
 
     const exitCodeStatus = {
-      status: 'Overall Status',
+      podPhase: 'Doing something..',
       containerStates: [
         {
           foo: {
@@ -89,7 +89,7 @@ describe('PodsEntryRendererComponent', () => {
     );
 
     const otherCodeStatus = {
-      status: 'Overall Status',
+      podPhase: 'Doing something..',
       containerStates: [
         {
           other: {
@@ -100,6 +100,12 @@ describe('PodsEntryRendererComponent', () => {
     };
     expect(component.getStatus({ podStatus: otherCodeStatus })).toEqual(
       'Other'
+    );
+    const noContainerStatesStatus = {
+      podPhase: 'Doing something..'
+    };
+    expect(component.getStatus({ podStatus: noContainerStatesStatus })).toEqual(
+      'Doing something..'
     );
   });
 
