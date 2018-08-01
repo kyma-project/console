@@ -1,7 +1,14 @@
 import React from 'react';
 import HeaderBinding from './BindingHeader.component';
 import styled from 'styled-components';
-import { Header, Separator, Spinner, Toolbar, Icon, ThemeWrapper } from '@kyma-project/react-components';
+import {
+  Header,
+  Separator,
+  Spinner,
+  Toolbar,
+  Icon,
+  ThemeWrapper,
+} from '@kyma-project/react-components';
 import Grid from 'styled-components-grid';
 import { EntriesWrapper, EmptyList } from '../shared/component-styles';
 import { statusColor } from '../shared/utils-functions';
@@ -204,8 +211,6 @@ class ServiceInstanceDetails extends React.Component {
       deleteBinding,
       deleteBindingUsage,
       deleteServiceInstance,
-      functions = {},
-      deployments = {},
       createBinding,
       createBindingUsage,
     } = this.props;
@@ -235,7 +240,6 @@ class ServiceInstanceDetails extends React.Component {
       );
     }
 
-
     if (!serviceInstance.loading && !serviceInstance.serviceInstance) {
       return <EmptyList>Service Instance doesn't exist</EmptyList>;
     }
@@ -253,8 +257,6 @@ class ServiceInstanceDetails extends React.Component {
     };
 
     const data = {
-      functions: !functions.loading && functions.functions,
-      deployments: !deployments.loading && deployments.deployments,
       serviceInstance: instance,
     };
 
@@ -276,7 +278,7 @@ class ServiceInstanceDetails extends React.Component {
             modalOpeningComponent="Delete"
             handleConfirmation={handleDelete}
             warning
-            entryName='details'
+            entryName="details"
           />
         </Toolbar>
         <Error error={serviceInstance.error} />
@@ -295,7 +297,7 @@ class ServiceInstanceDetails extends React.Component {
                         <Element>Service Class</Element>
                       </Grid.Unit>
                       <Grid.Unit size={0.8}>
-                        <Element data-e2e-id='instance-service-class'>
+                        <Element data-e2e-id="instance-service-class">
                           {getResourceDisplayName(instance.serviceClass)}
                         </Element>
                       </Grid.Unit>
@@ -303,7 +305,7 @@ class ServiceInstanceDetails extends React.Component {
                         <Element>Plan</Element>
                       </Grid.Unit>
                       <Grid.Unit size={0.8}>
-                        <Element data-e2e-id='instance-service-plan'>
+                        <Element data-e2e-id="instance-service-plan">
                           {getResourceDisplayName(instance.servicePlan)}
                         </Element>
                       </Grid.Unit>
@@ -329,8 +331,12 @@ class ServiceInstanceDetails extends React.Component {
                   </ContentHeader>
                   <Separator />
                   <ContentDescription>
-                    <Element data-e2e-id='instance-status-type'>{status.type}</Element>
-                    <Element data-e2e-id='instance-status-message'>{status.message}</Element>
+                    <Element data-e2e-id="instance-status-type">
+                      {status.type}
+                    </Element>
+                    <Element data-e2e-id="instance-status-message">
+                      {status.message}
+                    </Element>
                   </ContentDescription>
                 </StretchedContentWrapper>
               </CenterSideWrapper>
