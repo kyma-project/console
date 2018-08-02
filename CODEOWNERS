@@ -1,5 +1,5 @@
 # Default owners of the repository
-* @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @gchbg
+* @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella
 
 /catalog/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
 /instances/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
@@ -8,7 +8,7 @@
 /components/react/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
 /core/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
 /tests/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
-/lambda/ @rakesh-garimella @joek @sayanh @venturasr @gchbg
+/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @dpolitesap
