@@ -11,31 +11,29 @@ describe('PodsEntryRendererComponent', () => {
   let fixture: ComponentFixture<PodsEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [AppModule],
-        providers: [
-          [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
-          [
-            {
-              provide: 'entry',
-              useValue: {
-                objectMeta: {
-                  name: 'name'
-                },
-                podStatus: {
-                  status: 'Running'
-                }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [AppModule],
+      providers: [
+        [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
+        [
+          {
+            provide: 'entry',
+            useValue: {
+              objectMeta: {
+                name: 'name'
+              },
+              podStatus: {
+                status: 'Running'
               }
             }
-          ],
-          [{ provide: 'entryEventHandler', useValue: {} }],
-          ComponentCommunicationService
-        ]
-      }).compileComponents();
-    })
-  );
+          }
+        ],
+        [{ provide: 'entryEventHandler', useValue: {} }],
+        ComponentCommunicationService
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PodsEntryRendererComponent);
@@ -46,6 +44,74 @@ describe('PodsEntryRendererComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display pod status', () => {
+    const waitingStatus = {
+      podPhase: 'Doing something..',
+      containerStates: [
+        {
+          waiting: {
+            reason: 'Some reason'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: waitingStatus })).toEqual(
+      'Waiting: Some reason'
+    );
+    const signalStatus = {
+      podPhase: 'Doing something..',
+      containerStates: [
+        {
+          stopped: {
+            signal: 'Some signal'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: signalStatus })).toEqual(
+      'Stopped (Signal: Some signal)'
+    );
+
+    const exitCodeStatus = {
+      podPhase: 'Doing something..',
+      containerStates: [
+        {
+          foo: {
+            exitCode: 'Some exitCode'
+          }
+        },
+        {
+          bar: {
+            exitCode: 'Sample code'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: exitCodeStatus })).toEqual(
+      'Foo (Exit code: Some exitCode)'
+    );
+
+    const otherCodeStatus = {
+      podPhase: 'Doing something..',
+      containerStates: [
+        {
+          other: {
+            foo: 'bar'
+          }
+        }
+      ]
+    };
+    expect(component.getStatus({ podStatus: otherCodeStatus })).toEqual(
+      'Other'
+    );
+    const noContainerStatesStatus = {
+      podPhase: 'Doing something..'
+    };
+    expect(component.getStatus({ podStatus: noContainerStatesStatus })).toEqual(
+      'Doing something..'
+    );
   });
 
   it("should disable the pod if 'disable' event with rigth data has been sent", async () => {
