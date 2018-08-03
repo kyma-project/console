@@ -45,6 +45,7 @@ import * as luigiClient from '@kyma-project/luigi-client';
 
 import { Service } from '../../shared/datamodel/k8s/api-service';
 import { timeout } from 'rxjs/operators';
+import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 @Component({
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
@@ -55,7 +56,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
   selectedTriggers: ITrigger[] = [];
   availableEventTriggers: EventTrigger[] = [];
   existingEventTriggers: EventTrigger[] = [];
-  eventTriggerChooserShown = false;
 
   environment: string;
   token: string;
@@ -71,6 +71,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   ];
   theme: string;
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
+  @ViewChild('eventTriggerChooserModal') eventTriggerChooserModal: EventTriggerChooserComponent;
 
   code = `module.exports = { main: function (event, context) {
 
@@ -155,7 +156,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
                 err => {
                   // Can be a valid 404 error when api is not found of a function
                 },
-              );
+            );
             this.subscriptionsService
               .getSubscriptions(this.environment, this.token, {
                 labelSelector: `Function=${lambdaName}`,
@@ -275,7 +276,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
               err => {
                 this.error = err.message;
               },
-            );
+          );
         } else {
           // manage service bindings only
           this.manageServiceBindings();
@@ -409,7 +410,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
                   bsu.metadata.name,
                   this.environment,
                   this.token,
-                )
+              )
                 .catch(err => {
                   return Observable.of(err);
                 }),
@@ -492,12 +493,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
           const sub = this.subscriptionsService.initializeSubscription();
           sub.metadata.name = `lambda-${this.lambda.metadata.name}-${
             trigger.eventType
-          }-${trigger.version}`.toLowerCase();
+            }-${trigger.version}`.toLowerCase();
           sub.metadata.namespace = this.environment;
           sub.metadata.labels['Function'] = this.lambda.metadata.name;
           sub.spec.endpoint = `http://${this.lambda.metadata.name}.${
             this.environment
-          }:8080/`;
+            }:8080/`;
           sub.spec['event_type'] = trigger.eventType;
           sub.spec['event_type_version'] = trigger.version;
           sub.spec.source = {
@@ -519,10 +520,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
         .deleteSubscription(
           `lambda-${this.lambda.metadata.name}-${et.eventType}-${
             et.version
-          }`.toLowerCase(),
+            }`.toLowerCase(),
           this.environment,
           this.token,
-        )
+      )
         .catch(err => {
           return Observable.of(err);
         });
@@ -660,7 +661,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         .getEditor()
         .setValue(
           '/*' + snippet + '\n*/\n' + this.editor.getEditor().getValue(),
-        );
+      );
       this.editor.getEditor().selection.clearSelection();
     }
   }
@@ -676,6 +677,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   closeTriggerTypeDropDown() {
     return (this.toggleTriggerType = false);
   }
+
   ngAfterViewInit() {
     const editorOptions = {
       enableBasicAutocompletion: true,
@@ -701,15 +703,15 @@ export class LambdaDetailsComponent implements AfterViewInit {
           this.dependency = lambda.spec.deps;
           this.hasDependencies = Observable.of(
             this.dependency != null &&
-              this.dependency !== undefined &&
-              this.dependency !== '',
+            this.dependency !== undefined &&
+            this.dependency !== '',
           );
           this.loaded = Observable.of(true);
         },
         err => {
           this.navigateToList();
         },
-      );
+    );
   }
 
   getLabels(lambda): string[] {
@@ -749,7 +751,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         err => {
           this.error = err.message;
         },
-      );
+    );
   }
 
   toggleDropdown(event) {
@@ -761,7 +763,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   toggleTriggerTypeDropdown(event) {
     this.hideHTTPTriggerMenu();
-    this.hideEventDropdown();
     const dropdown = event.target.attributes['dropdown'].value;
     if ('triggerType' === dropdown) {
       return (this.toggleTriggerType = !this.toggleTriggerType);
@@ -782,15 +783,15 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const src: Source = {
       type: 'endpoint',
     };
-    const eventTrigger: HTTPEndpoint = {
+    const httpTrigger: HTTPEndpoint = {
       eventType: 'http',
       source: src,
     };
-    this.selectedTriggers.push(eventTrigger);
+    this.selectedTriggers.push(httpTrigger);
     this.isHTTPTriggerAdded = true;
     this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
       AppConfig.domain
-    }`.toLowerCase();
+      }`.toLowerCase();
   }
 
   unselectEvent(event: ITrigger) {
@@ -854,7 +855,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const found = this.lambda.metadata.name.match(regex);
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
-      this.lambda.metadata.name === ''
+        this.lambda.metadata.name === ''
         ? false
         : true;
     if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
@@ -915,7 +916,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
               this.lambda.metadata.name,
               this.environment,
               this.token,
-            )
+          )
             .subscribe(
               () => {
                 // Deleting function which as part of create-flow as creation of api fails
@@ -923,7 +924,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
               errCreate => {
                 this.error = errCreate.message;
               },
-            );
+          );
         }
       },
     );
@@ -966,11 +967,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   showEventTrigger(): void {
     this.closeTriggerTypeDropDown();
-    this.eventTriggerChooserShown = true;
-  }
-
-  hideEventDropdown(): void {
-    this.eventTriggerChooserShown = false;
+    this.eventTriggerChooserModal.show([...this.availableEventTriggers], [...this.selectedTriggers]);
   }
 
   getHTTPEndPointFromApi(api: Api): HTTPEndpoint {
@@ -996,5 +993,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   handleEnvEmitter($event): void {
     this.lambda.spec.deployment.spec.template.spec.containers[0].env = $event;
+  }
+
+  handleEventEmitter($event): void {
+    this.selectedTriggers = $event;
   }
 }
