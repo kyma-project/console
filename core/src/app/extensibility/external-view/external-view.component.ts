@@ -72,6 +72,13 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     const element = document.getElementById(
       'externalViewFrame'
     ) as HTMLIFrameElement;
+
+    if (
+      !this.extensionsService.isUsingSecureProtocol(this.externalViewLocation)
+    ) {
+      return;
+    }
+
     element.src = this.externalViewLocation;
     if (this.externalViewLocation) {
       const sessionId = this.extAppViewRegistryService.registerView(

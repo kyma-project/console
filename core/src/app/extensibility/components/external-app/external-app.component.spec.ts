@@ -5,6 +5,7 @@ import { CurrentEnvironmentService } from '../../../content/environments/service
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ExtAppViewRegistryService } from '../../services/ext-app-view-registry.service';
 import { Observable } from 'rxjs/Observable';
+import { ExtensionsService } from '../../services/extensions.service';
 
 const CurrentEnvironmentServiceStub = {
   getCurrentEnvironmentId() {
@@ -27,28 +28,39 @@ const ExtAppViewRegistryServiceStub = {
   }
 };
 
+const ExtensionsServiceStub = {
+  getExtensions() {
+    return Observable.of([]);
+  },
+  isUsingSecureProtocol() {
+    return true;
+  }
+};
+
 describe('ExternalAppComponent', () => {
   let component: ExternalAppComponent;
   let fixture: ComponentFixture<ExternalAppComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [ExternalAppComponent],
-        providers: [
-          {
-            provide: CurrentEnvironmentService,
-            useValue: CurrentEnvironmentServiceStub
-          },
-          { provide: OAuthService, useValue: OAuthServiceStub },
-          {
-            provide: ExtAppViewRegistryService,
-            useValue: ExtAppViewRegistryServiceStub
-          }
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ExternalAppComponent],
+      providers: [
+        {
+          provide: CurrentEnvironmentService,
+          useValue: CurrentEnvironmentServiceStub
+        },
+        { provide: OAuthService, useValue: OAuthServiceStub },
+        {
+          provide: ExtAppViewRegistryService,
+          useValue: ExtAppViewRegistryServiceStub
+        },
+        {
+          provide: ExtensionsService,
+          useValue: ExtensionsServiceStub
+        }
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ExternalAppComponent);

@@ -22,4 +22,14 @@ export class ExtensionsService {
       });
     });
   }
+
+  isUsingSecureProtocol(url: string) {
+    if (!url.startsWith('https')) {
+      console.error(
+        `${url} is not using secure protocol. External views have to be served over HTTPS.`
+      );
+      return false;
+    }
+    return true;
+  }
 }

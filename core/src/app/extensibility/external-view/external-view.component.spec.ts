@@ -105,22 +105,30 @@ describe('ExternalViewComponent', () => {
     params: Observable.of({ id: 'testId' })
   };
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, RouterModule],
-        declarations: [ExternalViewComponent],
-        providers: [
-          ExtensionsService,
-          CurrentEnvironmentService,
-          ExtAppViewRegistryService,
-          { provide: ActivatedRoute, useValue: ActivatedRouteMock },
-          { provide: Router, useValue: new RouterMock() },
-          { provide: OAuthService, useValue: new OAuthMock() }
-        ]
-      }).compileComponents();
-    })
-  );
+  const ExtensionsServiceStub = {
+    getExtensions() {
+      return Observable.of([]);
+    },
+    isUsingSecureProtocol() {
+      return true;
+    }
+  };
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterModule],
+      declarations: [ExternalViewComponent],
+      providers: [
+        ExtensionsService,
+        CurrentEnvironmentService,
+        ExtAppViewRegistryService,
+        { provide: ActivatedRoute, useValue: ActivatedRouteMock },
+        { provide: Router, useValue: new RouterMock() },
+        { provide: OAuthService, useValue: new OAuthMock() },
+        { provide: ExtensionsService, useValue: ExtensionsServiceStub }
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ExternalViewComponent);
