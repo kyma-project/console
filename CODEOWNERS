@@ -1,17 +1,17 @@
 # Default owners of the repository
-* @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella
+* @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella
 
-/catalog/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
-/instances/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
-/content/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
+/catalog/ @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu
+/instances/ @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu
+/content/ @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu
 /components/angular/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
-/components/react/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
+/components/react/ @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu
 /core/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
-/tests/ @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
+/tests/ @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
 /lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @dpolitesap
 
 # Owners of governance file
-governance.Jenkinsfile @suleymanakbas91 @clebs @a-thaler @lilitgh @akucharska @michal-hudy @pkosiec @mjasinski5 @derberg @magicmatatjahu
+governance.Jenkinsfile @suleymanakbas91 @clebs @a-thaler @lilitgh @akucharska @michal-hudy @pkosiec @mjasinski5 @magicmatatjahu
