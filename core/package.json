@@ -7,9 +7,7 @@
     "start": "ng serve --disable-host-check --host console-dev.kyma.local",
     "build": "ng build --prod",
     "test": "ng test",
-    "lint": "ng lint",
-    "change-version": "./scripts/change-version.sh",
-    "tag-version": "./scripts/tag-version.sh"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +20,7 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "@kyma-project/y-generic-list": "^0.4.10",
     "@types/async": "^2.0.45",
     "angular-oauth2-oidc": "^3.1",
     "angular-sortablejs": "^2.1.0",
@@ -32,13 +31,11 @@
     "lodash": "^4.17.4",
     "ng-click-outside": "^3.2.0",
     "ngx-clipboard": "^10.0.0",
-    "node-jq": "^1.2.1",
     "rxjs": "^5.5.2",
     "sortablejs": "^1.7.0",
     "time-ago-pipe": "^1.2.1",
     "tippy.js": "^2.4.1",
     "webpack": "^3.8.1",
-    "@kyma-project/y-generic-list": "^0.4.10",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
