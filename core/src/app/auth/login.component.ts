@@ -41,7 +41,7 @@ export class LoginComponent {
       .catch(err => {
         const error =
           err === 'issuer must use Https. Also check property requireHttps.'
-            ? "Auth issuer doesn' use TLS"
+            ? "Auth issuer doesn't use TLS"
             : err;
         sessionStorage.setItem('loginError', error);
         this.router.navigate(['/loginError']);
