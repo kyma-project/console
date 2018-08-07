@@ -2,7 +2,7 @@ import config from '../config';
 import serviceClassConfig from '../utils/serviceClassConfig';
 import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
-import { create } from 'domain';
+import common from '../commands/common';
 import logOnEvents from '../utils/logging';
 import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 
@@ -15,21 +15,10 @@ let token = '';
 describe('Catalog basic tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
-    try {
-      browser = await context.getBrowser();
-      page = await browser.newPage();
-      const width = config.viewportWidth;
-      const height = config.viewportHeight;
-      await page.setViewport({ width, height });
-      await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
-      await waitForNavigationAndContext(page);
-      logOnEvents(page, t => (token = t));
-    } catch (err) {
-      fail(err);
-    }
+    const data = await common.beforeAll(dexReady);
+    browser = data.browser;
+    page = data.page;
+    logOnEvents(page, t => (token = t));
   });
 
   afterAll(async () => {
@@ -39,19 +28,14 @@ describe('Catalog basic tests', () => {
 
   test('Login', async () => {
     //the code looks strange.. but it uneasy to stop test execution as a result of a check in  'beforeAll'
-    // https://github.com/facebook/jest/issues/2713
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
-    await kymaConsole.login(page, config);
-    const title = await page.title();
-    expect(title).toBe('Kyma');
+    // https://github.com/facebook/jest/
+
+    await common.testLogin(dexReady, page);
   });
 
   test('Create catalogTestEnv env', async () => {
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
+    common.validateDex(dexReady);
+
     // Hardcodes for specific page
     const catalogLinkText = 'Catalog';
 
@@ -88,9 +72,8 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check service list', async () => {
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
+    common.validateDex(dexReady);
+
     // Hardcodes for specific service class
     const exampleServiceClassName = serviceClassConfig.exampleServiceClassName;
 
@@ -128,9 +111,8 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check details', async () => {
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
+    common.validateDex(dexReady);
+
     // Hardcodes for specific service class
     const exampleServiceClassButton =
       serviceClassConfig.exampleServiceClassButton;
@@ -157,9 +139,8 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check provisioning', async () => {
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
+    common.validateDex(dexReady);
+
     // Hardcodes for specific service class / page
     const catalogUrl = `${consoleUrl}/home/environments/catalogtestenvironment/service-catalog`;
     const instanceTitle = serviceClassConfig.instanceTitle;
@@ -187,9 +168,8 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check instances list', async () => {
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
+    common.validateDex(dexReady);
+
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
     const instancesLinkText = 'Instances';
@@ -235,9 +215,8 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check details', async () => {
-    if (!dexReady) {
-      return fail('Test environment wasnt ready');
-    }
+    common.validateDex(dexReady);
+
     // Hardcodes for specific service class
     const exampleInstanceLink = catalog.prepareSelector(
       `instance-name-${serviceClassConfig.instanceTitle}`
