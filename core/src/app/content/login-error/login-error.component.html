@@ -4,7 +4,7 @@
       <div class="login-error-message col-sm-12">
         <h3>There was an error while logging in:</h3>
         <p>{{ errorMsg }}</p>
-        <p *ngIf="possiblyMissingCert">(This might be caused by a missing TLS certificate. Visit our <a href="https://github.com/kyma-project/console/tree/master/core#import-the-tls-cerificate">GitHub page</a> to get more information.)</p>
+        <p *ngIf="possiblyMissingCert">(This might be caused by a missing TLS certificate.)</p>
         <button class="sf-button--primary tn-button tn-button--small" [routerLink]="['']">Re-Login</button>
       </div>
     </div>
