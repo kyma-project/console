@@ -30,7 +30,7 @@ describe('Catalog basic tests', () => {
 
   afterAll(async () => {
     await kymaConsole.clearData(token, config.catalogTestEnv);
-    browser.close();
+    await browser.close();
   });
 
   test('Login', async () => {
