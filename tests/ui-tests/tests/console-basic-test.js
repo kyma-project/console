@@ -32,7 +32,7 @@ describe('Console basic tests', () => {
 
   afterAll(async () => {
     await kymaConsole.clearData(token, config.testEnv);
-    browser.close();
+    await browser.close();
   });
 
   test('Login', async () => {
