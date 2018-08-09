@@ -31,7 +31,6 @@ describe('Console basic tests', () => {
   });
 
   afterAll(async () => {
-    page.waitFor(500);
     await kymaConsole.clearData(token, config.testEnv);
     await browser.close();
   });
