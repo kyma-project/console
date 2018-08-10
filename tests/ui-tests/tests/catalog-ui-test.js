@@ -14,12 +14,12 @@ let token = '';
 
 describe('Catalog basic tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
+    browser = await context.getBrowser();
+    page = await browser.newPage();
+    dexReady = await context.isDexReady(page);
     if (!dexReady) {
       return fail('Test environment wasnt ready');
     }
-    browser = await context.getBrowser();
-    page = await browser.newPage();
     const width = config.viewportWidth;
     const height = config.viewportHeight;
     await page.setViewport({ width, height });

@@ -1,6 +1,5 @@
 import puppeteer from 'puppeteer';
 import config from '../config';
-import testIfWebResourceAvailable from '../utils/testIfWebResourceAvailable';
 const context = (function() {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
   jasmine.stopSpecOnExpectationFailure = true;
@@ -9,21 +8,29 @@ const context = (function() {
     console.log('unhandledRejection', error.message);
   });
 
+  const maxTries = 5;
+  let currentTry = 0;
+
   return {
-    isDexReady: async function() {
-      const url = `https://dex.${
-        config.domain
-      }/.well-known/openid-configuration`;
+    isDexReady: async page => {
+      currentTry++;
       try {
-        let isReady = await testIfWebResourceAvailable(url);
-        if (!isReady) {
-          console.error(`Test failed! ${url} not ready yet`);
-          process.exitCode = 1;
+        const url = `https://dex.${
+          config.domain
+        }/.well-known/openid-configuration`;
+        return await page.goto(url, { waitUntil: 'networkidle0' });
+      } catch (err) {
+        console.error(
+          `Error while testing dex availibility for the ${currentTry} time`,
+          err
+        );
+        if (currentTry <= maxTries) {
+          setTimeout(() => {
+            return this.isDexReady(page);
+          }, 5000);
+        } else {
+          return false;
         }
-        return isReady;
-      } catch (error) {
-        console.error(`Test failed!`, error);
-        process.exitCode = 1;
       }
     },
     getBrowser: () => {
