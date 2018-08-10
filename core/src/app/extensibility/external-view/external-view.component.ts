@@ -5,6 +5,9 @@ import { CurrentEnvironmentService } from '../../content/environments/services/c
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs/Subscription';
+import { AppConfig } from '../../app.config';
+
+const contextVarPrefix = 'context.';
 
 @Component({
   selector: 'app-external-view',
@@ -68,6 +71,27 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  replaceVars(viewUrl, params, prefix) {
+    let processedUrl = viewUrl;
+    if (params) {
+      Object.entries(params).forEach(entry => {
+        processedUrl = processedUrl.replace(
+          '{' + prefix + entry[0] + '}',
+          encodeURIComponent(entry[1])
+        );
+      });
+    }
+    processedUrl = processedUrl.replace(
+      new RegExp('\\{' + this.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
+      ''
+    );
+    return processedUrl;
+  }
+
   renderExternalView() {
     const element = document.getElementById(
       'externalViewFrame'
@@ -79,12 +103,36 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    element.src = this.externalViewLocation;
-    if (this.externalViewLocation) {
+    const context = {
+      currentEnvironmentId: this.currentEnvironmentId,
+      idToken: this.oauthService.getIdToken()
+    };
+
+    // TODO REMOVE!!!
+    let viewUrl = this.externalViewLocation.replace('https:', 'http:');
+    //
+
+    viewUrl = this.replaceVars(viewUrl, context, contextVarPrefix);
+    element.src = viewUrl;
+    if (viewUrl) {
       const sessionId = this.extAppViewRegistryService.registerView(
         element.contentWindow
       );
-      element.onload = () => {
+
+      /* LATER
+      element.contentWindow.postMessage(
+        {
+          msg: 'luigi.navigate',
+          viewUrl,
+          context: JSON.stringify({...context}),
+          nodeParams: JSON.stringify({}),
+          internal: JSON.stringify({})
+        },
+        '*'
+      );
+      */
+
+      /* OLD element.onload = () => {
         const transferObject = {
           currentEnvironmentId: this.currentEnvironmentId,
           idToken: this.oauthService.getIdToken(),
@@ -95,6 +143,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
         };
         element.contentWindow.postMessage(['init', transferObject], '*');
       };
+      */
     } else {
       this.extAppViewRegistryService.deregisterView(element.contentWindow);
     }
