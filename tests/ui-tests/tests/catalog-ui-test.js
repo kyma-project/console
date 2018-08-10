@@ -18,14 +18,18 @@ describe('Catalog basic tests', () => {
     if (!dexReady) {
       return fail('Test environment wasnt ready');
     }
-    browser = await context.getBrowser();
-    page = await browser.newPage();
-    const width = config.viewportWidth;
-    const height = config.viewportHeight;
-    await page.setViewport({ width, height });
-    await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
-    logOnEvents(page, t => (token = t));
+    try {
+      browser = await context.getBrowser();
+      page = await browser.newPage();
+      const width = config.viewportWidth;
+      const height = config.viewportHeight;
+      await page.setViewport({ width, height });
+      await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
+      await waitForNavigationAndContext(page);
+      logOnEvents(page, t => (token = t));
+    } catch (err) {
+      fail(err);
+    }
   });
 
   afterAll(async () => {

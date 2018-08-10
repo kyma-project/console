@@ -26,10 +26,11 @@ module.exports = (page, maxTimeout = 120000) =>
           });
         }, iv);
       } catch (err) {
+        console.log(err);
         if (
-          err.message.indexOf(
-            'Cannot find context with specified id undefined'
-          ) !== -1
+          err.message.includes(
+            'Execution context was destroyed, most likely because of a navigation'
+          )
         ) {
           retry();
         } else {
