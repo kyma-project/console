@@ -14,17 +14,21 @@ describe('Console basic tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
     if (dexReady) {
-      browser = await context.getBrowser();
-      page = await browser.newPage();
-      let width = config.viewportWidth;
-      let height = config.viewportHeight;
-      await page.setViewport({ width, height });
-      console.log(`Starting navigation to ${consoleUrl}`);
-      await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
-      console.log(`Navigation to ${consoleUrl} finished!`);
-      await waitForNavigationAndContext(page);
-      console.log(`document ready!`);
-      logOnEvents(page, t => (token = t));
+      try {
+        browser = await context.getBrowser();
+        page = await browser.newPage();
+        let width = config.viewportWidth;
+        let height = config.viewportHeight;
+        await page.setViewport({ width, height });
+        console.log(`Starting navigation to ${consoleUrl}`);
+        await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
+        console.log(`Navigation to ${consoleUrl} finished!`);
+        await waitForNavigationAndContext(page);
+        console.log(`document ready!`);
+        logOnEvents(page, t => (token = t));
+      } catch (err) {
+        fail(err);
+      }
     } else {
       fail('Test environment wasnt ready');
     }
