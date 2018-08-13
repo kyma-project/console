@@ -1,13 +1,9 @@
-import { graphql, compose } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
+import { SERVICE_INSTANCE_QUERY } from './queries';
 import {
-  SERVICE_INSTANCE_QUERY,
-  DEPLOYMENTS_WITHOUT_FUNCTIONS_QUERY,
-  FUNCTIONS_QUERY,
-} from './queries';
-import {
-  BINDING_USAGE_CREATE_MUTATION,
   BINDING_CREATE_MUTATION,
   BINDING_DELETE_MUTATION,
+  BINDING_USAGE_CREATE_MUTATION,
   BINDING_USAGE_DELETE_MUTATION,
 } from './mutations';
 import { SERVICE_INSTANCES_DELETE_MUTATION } from '../ServiceInstances/mutations';
@@ -81,27 +77,5 @@ export default compose(
           },
         }),
     }),
-  }),
-  graphql(DEPLOYMENTS_WITHOUT_FUNCTIONS_QUERY, {
-    name: 'deployments',
-    options: props => {
-      return {
-        fetchPolicy: 'cache-and-network',
-        variables: {
-          environment: builder.getCurrentEnvironmentId(),
-        },
-      };
-    },
-  }),
-  graphql(FUNCTIONS_QUERY, {
-    name: 'functions',
-    options: props => {
-      return {
-        fetchPolicy: 'cache-and-network',
-        variables: {
-          environment: builder.getCurrentEnvironmentId(),
-        },
-      };
-    },
   }),
 )(ServiceInstanceDetails);

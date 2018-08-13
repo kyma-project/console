@@ -53,19 +53,3 @@ export const SERVICE_INSTANCE_QUERY = gql`
     }
   }
 `;
-
-export const FUNCTIONS_QUERY = gql`
-  query Functions($environment: String!) {
-    functions(environment: $environment) {
-      name
-    }
-  }
-`;
-
-export const DEPLOYMENTS_WITHOUT_FUNCTIONS_QUERY = gql`
-  query Deployments($environment: String!) {
-    deployments(environment: $environment, excludeFunctions: true) {
-      name
-    }
-  }
-`;
