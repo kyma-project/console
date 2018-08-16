@@ -120,7 +120,7 @@ class Modal extends Component {
     } catch (e) {
       console.log(e);
     }
-}
+  }
 
   handleStep(text) {
     if ('previous' === text) {
@@ -140,7 +140,7 @@ class Modal extends Component {
           : this.state.selectedExistingBinding,
       },
       usedBy: {
-        kind: this.state.selectedKind.split(' ')[0].toUpperCase(),
+        kind: this.state.selectedKind.split(' ')[0],
         name: this.state.selectedResource,
       },
     };
