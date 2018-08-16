@@ -97,7 +97,12 @@ function SecondarySubLink(props) {
     props.setActiveNav(clickedItem);
   };
   return (
-    <Items secondary marginTop show={activeNav.id === rootId}>
+    <Items
+      secondary
+      marginTop
+      show={activeNav.id === rootId}
+      data-e2e-id={`navigation-items-${type}-${rootId}`}
+    >
       {items.map((item, index) => {
         const topicType = item.topicType.replace(/ /g, '-').toLowerCase();
         return (
@@ -131,6 +136,9 @@ function SecondarySubLink(props) {
                           }}
                           active={isActive}
                           activeArrow={isActiveNavArrow}
+                          data-e2e-id={`navigation-arrow-${type}-${rootId}-${
+                            element.anchor
+                          }`}
                         />
                       )}
                       <Link
@@ -143,6 +151,9 @@ function SecondarySubLink(props) {
                             hash: hash,
                           });
                         }}
+                        data-e2e-id={`navigation-link-${type}-${rootId}-${
+                          element.anchor
+                        }`}
                       >
                         {element.name}
                       </Link>
@@ -181,7 +192,12 @@ function TertiarySubLink(props) {
     activeNav.hash &&
     activeNav.hash.indexOf(parentId) !== -1;
   return (
-    <Items secondary marginTop show={isActiveNav}>
+    <Items
+      secondary
+      marginTop
+      show={isActiveNav}
+      data-e2e-id={`navigation-items-${type}-${rootId}-${parentId}`}
+    >
       {items &&
         items.titles &&
         items.titles.map(element => {
@@ -203,6 +219,9 @@ function TertiarySubLink(props) {
                       hash: `${parentId}-${element.anchor}`,
                     });
                   }}
+                  data-e2e-id={`navigation-link-${type}-${rootId}-${
+                    element.anchor
+                  }`}
                 >
                   {element.name}
                 </Link>
@@ -223,7 +242,7 @@ function NavigationList(props) {
   };
   return (
     <div>
-      <NavigationContainer>
+      <NavigationContainer data-e2e-id="navigation-root">
         <Items showAll>
           <Item key={props.items.root.id}>
             <LinkWrapper>
@@ -241,6 +260,7 @@ function NavigationList(props) {
                     !props.active.hash &&
                     props.active.id === props.items.root.id
                   }
+                  data-e2e-id={`navigation-arrow-root-${props.items.root.id}`}
                 />
               )}
               <Link
@@ -254,6 +274,7 @@ function NavigationList(props) {
                     hash: '',
                   });
                 }}
+                data-e2e-id={`navigation-link-root-${props.items.root.id}`}
               >
                 {props.items.root.displayName}
               </Link>
@@ -277,7 +298,7 @@ function NavigationList(props) {
         </Items>
       </NavigationContainer>
       <Separator />
-      <NavigationContainer>
+      <NavigationContainer data-e2e-id="navigation-components">
         <NavigationHeader>Components</NavigationHeader>
         <Items showAll>
           {props.items.components.map(item => {
@@ -302,6 +323,7 @@ function NavigationList(props) {
                         active={
                           !props.active.hash && props.active.id === item.id
                         }
+                        data-e2e-id={`navigation-arrow-components-${item.id}`}
                       />
                     )}
                   <Link
@@ -313,6 +335,7 @@ function NavigationList(props) {
                         hash: '',
                       })
                     }
+                    data-e2e-id={`navigation-link-components-${item.id}`}
                   >
                     {item.displayName}
                   </Link>
