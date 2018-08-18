@@ -22,6 +22,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
   private currentEnvironmentService: CurrentEnvironmentService;
   private currentEnvironmentSubscription: Subscription;
   private currentEnvironmentId: string;
+  private confirmationCheckTimeout: number = null;
 
   constructor(
     private router: Router,
@@ -92,6 +93,34 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     return processedUrl;
   }
 
+  getUrlWithoutHash(url) {
+    if (!url) {
+      return false;
+    }
+    const urlWithoutHash = url.split('#')[0];
+
+    // We assume that any URL not starting with
+    // http is on the current page's domain
+    if (!urlWithoutHash.startsWith('http')) {
+      return (
+        window.location.origin +
+        (urlWithoutHash.startsWith('/') ? '' : '/') +
+        urlWithoutHash
+      );
+    }
+
+    return urlWithoutHash;
+  }
+
+  isNotSameDomain(viewUrl, iframe) {
+    if (iframe) {
+      const previousUrl = this.getUrlWithoutHash(iframe.src);
+      const nextUrl = this.getUrlWithoutHash(viewUrl);
+      return previousUrl !== nextUrl;
+    }
+    return true;
+  }
+
   renderExternalView() {
     const element = document.getElementById(
       'externalViewFrame'
@@ -103,53 +132,79 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.confirmationCheckTimeout !== null) {
+      window.clearTimeout(this.confirmationCheckTimeout);
+      this.confirmationCheckTimeout = null;
+    }
+
     const context = {
       currentEnvironmentId: this.currentEnvironmentId,
       idToken: this.oauthService.getIdToken()
     };
 
-    // TODO REMOVE!!!
-    let viewUrl = this.externalViewLocation.replace('https:', 'http:');
-    //
+    const viewUrl = this.replaceVars(
+      this.externalViewLocation,
+      context,
+      contextVarPrefix
+    );
 
-    viewUrl = this.replaceVars(viewUrl, context, contextVarPrefix);
-    element.src = viewUrl;
     if (viewUrl) {
-      const sessionId = this.extAppViewRegistryService.registerView(
-        element.contentWindow
-      );
+      if (this.isNotSameDomain(viewUrl, element)) {
+        element.src = viewUrl;
+        const sessionId = this.extAppViewRegistryService.registerView(
+          element.contentWindow
+        );
+      } else {
+        this.extAppViewRegistryService.resetNavigationConfirmation(
+          element.contentWindow
+        );
 
-      /* LATER
-      element.contentWindow.postMessage(
-        {
-          msg: 'luigi.navigate',
-          viewUrl,
-          context: JSON.stringify({...context}),
-          nodeParams: JSON.stringify({}),
-          internal: JSON.stringify({})
-        },
-        '*'
-      );
-      */
+        element.contentWindow.postMessage(
+          {
+            msg: 'luigi.navigate',
+            viewUrl,
+            context: JSON.stringify({
+              ...context,
+              parentNavigationContexts: ['environment']
+            }),
+            nodeParams: JSON.stringify({}),
+            internal: JSON.stringify({})
+          },
+          '*'
+        );
 
-      /* OLD element.onload = () => {
-        const transferObject = {
-          currentEnvironmentId: this.currentEnvironmentId,
-          idToken: this.oauthService.getIdToken(),
-          sessionId,
-          linkManagerData: {
-            basePath: '/home/environments/'
+        /**
+         * check if luigi responded
+         * if not, callback again to replace the iframe
+         */
+        this.confirmationCheckTimeout = window.setTimeout(() => {
+          if (
+            this.extAppViewRegistryService.isNavigationConfirmed(
+              element.contentWindow
+            )
+          ) {
+            this.extAppViewRegistryService.resetNavigationConfirmation(
+              element.contentWindow
+            );
+          } else {
+            element.src = undefined;
+            console.info(
+              'navigate: luigi-client did not respond, using fallback by replacing iframe'
+            );
+            this.renderExternalView();
           }
-        };
-        element.contentWindow.postMessage(['init', transferObject], '*');
-      };
-      */
+        }, 2000);
+      }
     } else {
       this.extAppViewRegistryService.deregisterView(element.contentWindow);
     }
   }
 
   ngOnDestroy() {
+    if (this.confirmationCheckTimeout !== null) {
+      window.clearTimeout(this.confirmationCheckTimeout);
+      this.confirmationCheckTimeout = null;
+    }
     const element = document.getElementById(
       'externalViewFrame'
     ) as HTMLIFrameElement;

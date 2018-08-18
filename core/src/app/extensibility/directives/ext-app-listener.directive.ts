@@ -35,8 +35,8 @@ export class ExtAppListenerDirective {
         data = event.data;
         if (data && data.msg.indexOf('luigi.') === 0) {
           this.processLuigiMessage(data, event.source);
-        }
-        if (
+        } else if (
+          // support for legacy integration of lambdas, service catalog and instances views
           this.extAppViewRegistryService.isRegisteredSession(
             event.source,
             data.sessionId
@@ -149,11 +149,16 @@ export class ExtAppListenerDirective {
       this.sendContextToClient(source, context);
     }
 
+    if ('luigi.navigate.ok' === data.msg) {
+      this.extAppViewRegistryService.confirmNavigation(source);
+    }
+
     if ('luigi.navigation.open' === data.msg) {
       this.handleNavigation(data);
     }
   }
 
+  // support for legacy integration of lambdas, service catalog and instances views
   processNavigationMessage(data) {
     const sanitizeLinkManagerLink = link => {
       return link.replace(/[^-A-Za-z0-9 &+@/%=~_|!:,.;\(\)]/g, '');

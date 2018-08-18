@@ -57,14 +57,20 @@ export class NavigationComponent implements OnInit {
 
   changeRoute(link: string) {
     const r = this.route;
-    this.router
-      .navigate(['yVirtual'], {
-        relativeTo: r,
-        skipLocationChange: true
-      })
-      .then(() => {
-        this.router.navigate([link], { relativeTo: r });
-      });
+    const urlTree = this.router.createUrlTree([link], { relativeTo: r });
+    if (this.router.isActive(urlTree, true)) {
+      // do refresh
+      this.router
+        .navigate(['yVirtual'], {
+          relativeTo: r,
+          skipLocationChange: true
+        })
+        .then(() => {
+          this.router.navigateByUrl(urlTree);
+        });
+    } else {
+      this.router.navigateByUrl(urlTree);
+    }
   }
 
   ngOnInit() {
