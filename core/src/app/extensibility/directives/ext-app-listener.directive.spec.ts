@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 
 import { ExtAppListenerDirective } from './ext-app-listener.directive';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
+import { ReplaySubject } from '../../../../node_modules/rxjs/ReplaySubject';
 
 describe('ExtAppListenerDirective', () => {
   let extAppListenerDirective: ExtAppListenerDirective;
@@ -19,11 +22,33 @@ describe('ExtAppListenerDirective', () => {
     }
   };
 
+  const OAuthServiceMock = {
+    getIdToken: () => {
+      return 'token';
+    },
+    initImplicitFlow: () => {
+      return;
+    }
+  };
+
+  const CurrentEnvironmentServiceMock = {
+    getCurrentEnvironmentId(): ReplaySubject<string> {
+      const currentEnvId = new ReplaySubject<string>(1);
+      currentEnvId.next('tetsEnv');
+      return currentEnvId;
+    }
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ExtAppListenerDirective,
         ExtAppViewRegistryService,
+        {
+          provide: CurrentEnvironmentService,
+          useValue: CurrentEnvironmentServiceMock
+        },
+        { provide: OAuthService, useValue: OAuthServiceMock },
         { provide: Router, useValue: routerMock }
       ]
     });

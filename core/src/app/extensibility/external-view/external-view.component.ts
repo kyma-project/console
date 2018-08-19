@@ -187,7 +187,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
               element.contentWindow
             );
           } else {
-            element.src = undefined;
+            element.src = '';
             console.info(
               'navigate: luigi-client did not respond, using fallback by replacing iframe'
             );
@@ -196,6 +196,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
         }, 2000);
       }
     } else {
+      element.src = '';
       this.extAppViewRegistryService.deregisterView(element.contentWindow);
     }
   }
