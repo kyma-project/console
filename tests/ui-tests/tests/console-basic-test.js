@@ -8,7 +8,7 @@ let page, browser;
 let dexReady = false;
 let token = '';
 
-describe('Console basic tests', () => {
+xdescribe('Console basic tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
     const data = await common.beforeAll(dexReady);
