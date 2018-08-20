@@ -8,11 +8,11 @@ import {
   HeaderColumnsName,
 } from '../shared/component-styles';
 import { Tooltip } from '@kyma-project/react-components';
-import InstancesModal from '../Modal/InstancesModal';
+import InstanceModalContainer from '../Modal/InstancesModal.container';
 
 class BindingHeader extends React.Component {
   state = {
-    open: false
+    open: false,
   };
 
   openModal = () => {
@@ -21,29 +21,25 @@ class BindingHeader extends React.Component {
 
   closeModal = () => {
     this.setState({ open: false });
-  }
-  
+  };
+
   handleSuccess = () => {
     setTimeout(() => {
       if (typeof this.props.refetch === 'function') {
         this.props.refetch();
       }
     }, 500);
-  }
+  };
 
   createBindingButton = () => {
-    return (
-      this.props.data.serviceInstance.status.type === "RUNNING"
-      ? <HeaderButton onClick={this.openModal}>
-          + Create Binding
-        </HeaderButton>
-      : <Tooltip content="Instance must be in a Running state" minWidth="130px"> 
-          <HeaderButton disabled={true}>
-            + Create Binding
-          </HeaderButton>
-        </Tooltip>
-    )
-  }
+    return this.props.data.serviceInstance.status.type === 'RUNNING' ? (
+      <HeaderButton onClick={this.openModal}>+ Create Binding</HeaderButton>
+    ) : (
+      <Tooltip content="Instance must be in a Running state" minWidth="130px">
+        <HeaderButton disabled={true}>+ Create Binding</HeaderButton>
+      </Tooltip>
+    );
+  };
 
   render() {
     return (
@@ -72,7 +68,7 @@ class BindingHeader extends React.Component {
             </Grid.Unit>
           </Grid>
         </HeaderColumnsWrapper>
-        <InstancesModal
+        <InstanceModalContainer
           open={this.state.open}
           data={this.props.data}
           createBindingUsage={this.props.createBindingUsage}

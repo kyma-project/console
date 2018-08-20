@@ -21,7 +21,7 @@
     "requestretry": "^1.13.0"
   },
   "jest": {
-    "testRegex": "/tests/(console-basic-test|catalog-ui-test).jsx?$"
+    "testRegex": "/tests/(console-basic-test|catalog-ui-test|docs-ui-test).jsx?$"
   },
   "prettier": {
     "singleQuote": true

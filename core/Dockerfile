@@ -7,8 +7,13 @@ COPY ./nginx/conf.d /etc/nginx/conf.d/
 COPY ./nginx/nginx.conf /etc/nginx/
 COPY ./nginx/mime.types /etc/nginx/
 
+RUN touch /var/run/nginx.pid && \
+  chown -R nginx:nginx /var/run/nginx.pid && \
+  chown -R nginx:nginx /var/cache/nginx
+
 ### Expose ports ###
-EXPOSE 80
+EXPOSE 8080
+USER nginx
 
 LABEL source git@github.com:kyma-project/console.git
 

@@ -5,7 +5,7 @@
 */
 
 const promiseRetry = require('promise-retry');
-const timeout = 1000;
+const timeout = 2000;
 const iv = 100;
 
 module.exports = (page, maxTimeout = 120000) =>

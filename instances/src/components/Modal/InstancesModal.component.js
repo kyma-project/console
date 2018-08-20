@@ -42,8 +42,6 @@ const CUSTOM_MODAL_STYLES_2 = {
   },
 };
 
-const KINDS = ['Deployment Binding', 'Function Binding'];
-
 class Modal extends Component {
   constructor(props) {
     super(props);
@@ -54,9 +52,11 @@ class Modal extends Component {
       nameServiceBinding: '',
       nameServiceBindingUsage: '',
       selectedKind: '',
-      selectedDeployment: '',
+      selectedResource: '',
+      usageKindResources: [],
       checkbox: false,
     };
+    this.handleUsageKindChange = this.handleUsageKindChange.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleStep = this.handleStep.bind(this);
@@ -72,7 +72,7 @@ class Modal extends Component {
         nameServiceBindingUsage:
           this.props.data.serviceInstance.name + '-binding-usage',
         selectedKind: '',
-        selectedDeployment: '',
+        selectedResource: '',
         checkbox:
           this.props.data.serviceInstance.serviceBindings &&
           this.props.data.serviceInstance.serviceBindings.length
@@ -101,11 +101,25 @@ class Modal extends Component {
   }
 
   handleChange(event) {
-    if ('selectedKind' === event.target.name) {
-      this.setState({ selectedDeployment: '' });
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  async handleUsageKindChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+      usageKindResources: [],
+      selectedResource: '',
+    });
+    if (event.target.value === '') {
+      return;
     }
 
-    this.setState({ [event.target.name]: event.target.value });
+    try {
+      const resp = await this.props.fetchUsageKindResources(event.target.value);
+      this.prepareDataForUsageKindResourceCheckbox(resp.data);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   handleStep(text) {
@@ -126,8 +140,8 @@ class Modal extends Component {
           : this.state.selectedExistingBinding,
       },
       usedBy: {
-        kind: this.state.selectedKind.split(' ')[0].toUpperCase(),
-        name: this.state.selectedDeployment,
+        kind: this.state.selectedKind.split(' ')[0],
+        name: this.state.selectedResource,
       },
     };
   }
@@ -179,40 +193,15 @@ class Modal extends Component {
     );
   }
 
-  displayModalContentSecondStep(deployments, functions) {
-    if ('Function Binding' === this.state.selectedKind) {
-      const mappedFunctions = functions.map((func, index) => (
-        <option key={index} value={func.name}>
-          {func.name}
-        </option>
-      ));
-      return (
-        <SelectComponent
-          labelName={'Function'}
-          handleChange={this.handleChange}
-          name={'selectedDeployment'}
-          current={this.state.selectedDeployment}
-          mappedItems={mappedFunctions}
-        />
-      );
-    }
-
-    if ('Deployment Binding' === this.state.selectedKind) {
-      const mappedDeployments = deployments.map((deployment, index) => (
-        <option key={index} value={deployment.name}>
-          {deployment.name}
-        </option>
-      ));
-      return (
-        <SelectComponent
-          labelName={'Deployment'}
-          handleChange={this.handleChange}
-          name={'selectedDeployment'}
-          current={this.state.selectedDeployment}
-          mappedItems={mappedDeployments}
-        />
-      );
-    }
+  prepareDataForUsageKindResourceCheckbox(resources) {
+    const mappedResources = resources.usageKindResources.map(obj => (
+      <option key={obj.name} value={obj.name}>
+        {obj.name}
+      </option>
+    ));
+    this.setState({
+      usageKindResources: mappedResources,
+    });
   }
 
   render() {
@@ -221,15 +210,17 @@ class Modal extends Component {
     }
 
     const data = this.props.data || {};
-    const { serviceInstance, deployments, functions } = data;
+    const { serviceInstance } = data;
+    const { usageKinds } = this.props;
 
-    if (!data || !serviceInstance || !deployments || !functions) {
+    if (!data || !serviceInstance || !usageKinds) {
       return null;
     }
     const existingServiceBindings = serviceInstance.serviceBindings;
-    const mappedKinds = KINDS.map((kind, index) => (
-      <option key={index} value={kind}>
-        {kind}
+
+    const mappedUsageKinds = usageKinds.usageKinds.map(obj => (
+      <option key={obj.name} value={obj.name}>
+        {obj.displayName}
       </option>
     ));
 
@@ -239,7 +230,7 @@ class Modal extends Component {
       selectedExistingBinding,
       nameServiceBindingUsage,
       selectedKind,
-      selectedDeployment,
+      selectedResource,
     } = this.state;
     const nextBtnEnabled =
       (checkbox && nameServiceBinding !== '') ||
@@ -248,7 +239,7 @@ class Modal extends Component {
     const createBtnEnabled =
       nameServiceBindingUsage !== '' &&
       selectedKind !== '' &&
-      selectedDeployment !== '';
+      selectedResource !== '';
 
     return (
       <div>
@@ -306,13 +297,21 @@ class Modal extends Component {
               name={'nameServiceBindingUsage'}
             />
             <SelectComponent
-              labelName={'Kind'}
-              handleChange={this.handleChange}
+              labelName={'Usage Kind'}
+              handleChange={this.handleUsageKindChange}
               name={'selectedKind'}
               current={this.state.selectedKind}
-              mappedItems={mappedKinds}
+              mappedItems={mappedUsageKinds}
             />
-            {this.displayModalContentSecondStep(deployments, functions)}
+            {this.state.selectedKind === '' ? null : (
+              <SelectComponent
+                labelName={'Resources'}
+                handleChange={this.handleChange}
+                name={'selectedResource'}
+                current={this.state.selectedResource}
+                mappedItems={this.state.usageKindResources}
+              />
+            )}
           </ModalContent>
           <ModalFooterSecond
             handleModal={this.handleModal}
