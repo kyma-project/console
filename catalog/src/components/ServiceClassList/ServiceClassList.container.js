@@ -1,12 +1,14 @@
 import { compose, graphql } from 'react-apollo';
-import ServiceClassList from './ServiceClassList.component';
+
 import {
   FILTERED_CLASSES_QUERY,
   CLASS_ACTIVE_FILTERS_QUERY,
   CLASS_FILTERS_QUERY,
 } from './queries';
 
-const ServiceClassListContainer = compose(
+import ServiceClassList from './ServiceClassList.component';
+
+export default compose(
   graphql(FILTERED_CLASSES_QUERY, {
     name: 'classList',
     options: {
@@ -26,5 +28,3 @@ const ServiceClassListContainer = compose(
     },
   }),
 )(ServiceClassList);
-
-export default ServiceClassListContainer;

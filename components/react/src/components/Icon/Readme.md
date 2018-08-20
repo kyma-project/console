@@ -1,8 +1,13 @@
 ```jsx
 <div>
-  <h5>Card Icon</h5>
-  <Icon>{'\ue113'}</Icon>
-  <h5>Search Icon</h5>
-  <Icon>{'\ue00d'}</Icon>
+  <Header>
+    <H4>Card Icon</H4>
+  </Header>
+  <Icon icon="\ue113"></Icon>
+
+  <Header>
+    <H4>Search Icon</H4>
+  </Header>
+  <Icon icon ="\ue00d"></Icon>
 </div>
 ```

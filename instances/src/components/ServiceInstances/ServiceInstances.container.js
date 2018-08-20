@@ -1,18 +1,21 @@
 import React from 'react';
 import { graphql, compose } from 'react-apollo';
+
 import {
   SERVICE_INSTANCES_QUERY,
   ACTIVE_FILTERS_QUERY,
   ALL_FILTERS_QUERY,
   FILTERED_ITEMS_QUERY,
 } from './queries';
-import ServiceInstances from './ServiceInstances.component';
-import builder from '../../commons/builder';
 import {
   FILTER_INSTANCES_MUTATION,
   SET_ACTIVE_FILTERS_MUTATION,
   SERVICE_INSTANCES_DELETE_MUTATION,
 } from './mutations';
+
+import ServiceInstances from './ServiceInstances.component';
+
+import builder from '../../commons/builder';
 
 export default compose(
   graphql(SERVICE_INSTANCES_QUERY, {

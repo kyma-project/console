@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/react-components",
-  "version": "0.0.12",
+  "version": "0.0.17",
   "main": "lib/index.js",
   "private": false,
   "license": "Apache-2.0",
@@ -47,10 +47,13 @@
     "raf": "^3.4.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-jsonschema-form": "^1.0.4",
+    "react-modal": "^3.5.1",
     "react-styleguidist": "^6.2.0",
     "react-test-renderer": "^16.0.0",
     "style-loader": "^0.20.2",
     "styled-components": "^3.2.3",
+    "styled-components-grid": "^2.2.0",
     "webpack": "^3.10.0"
   },
   "peerDependencies": {

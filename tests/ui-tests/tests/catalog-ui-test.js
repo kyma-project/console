@@ -12,7 +12,7 @@ let dexReady = false;
 const consoleUrl = `https://console.${config.domain}/`;
 let token = '';
 
-describe('Catalog basic tests', () => {
+xdescribe('Catalog basic tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
     const data = await common.beforeAll(dexReady);
@@ -245,12 +245,12 @@ describe('Catalog basic tests', () => {
       visible: true
     });
     await redis.click();
-    await frame.waitForSelector(instancesHeaderSelector);
-    const instancesHeader = await frame.$eval(
-      instancesHeaderSelector,
-      item => item.innerHTML
-    );
-    expect(instancesHeader).toContain(instanceExpectedHeader);
+    // await frame.waitForSelector(instancesHeaderSelector);
+    // const instancesHeader = await frame.$eval(
+    //   instancesHeaderSelector,
+    //   item => item.innerHTML
+    // );
+    // expect(instancesHeader).toContain(instanceExpectedHeader);
 
     const serviceClass = await frame.$(exampleInstanceServiceClass);
     const servicePlan = await frame.$(exampleInstanceServicePlan);

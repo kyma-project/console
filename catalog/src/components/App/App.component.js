@@ -1,18 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
-import MainPage from '../MainPage/MainPage.container';
-import Details from '../ServiceClassDetails/ServiceClassDetails.container';
-import Notification from '../Notification/Notification.component';
+import { Modal, Notification } from '@kyma-project/react-components';
 
+import MainPage from '../Main/Main.container';
+import InstanceDetails from '../ServiceClassDetails/ServiceClassDetails.container';
+
+Modal.MODAL_APP_REF = '#root';
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
-class App extends Component {
+class App extends React.Component {
+  static propTypes = {
+    notification: PropTypes.object.isRequired,
+    clearNotification: PropTypes.func.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.timeout = null;
+  }
+
   scheduleClearNotification() {
-    const props = this.props;
+    const { clearNotification } = this.props;
+
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      if (props && props.clearNotification) {
-        props.clearNotification();
+      if (typeof clearNotification === 'function') {
+        clearNotification();
       }
     }, NOTIFICATION_VISIBILITY_TIME);
   }
@@ -35,7 +49,7 @@ class App extends Component {
         <div className="ph3 pv1 background-gray">
           <Switch>
             <Route exact path="/" component={MainPage} />
-            <Route exact path="/details/:name" component={Details} />
+            <Route exact path="/details/:name" component={InstanceDetails} />
           </Switch>
         </div>
       </div>

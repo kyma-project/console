@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const Spinner = styled.div`
   position: relative;
-  height: ${props => (props.size ? props.size : '20px')};
-  width: ${props => (props.size ? props.size : '20px')};
+  height: ${props => (props.size ? props.size : '1em')};
+  width: ${props => (props.size ? props.size : '1em')};
   overflow: show;
   margin: auto;
   padding: ${props => (props.padding ? props.padding : '0')};
@@ -11,7 +11,7 @@ const Spinner = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  font-size: ${props => (props.size ? props.size : '20px')};
+  font-size: ${props => (props.size ? props.size : '1em')};
 
   &:after {
     content: '\uE00A';

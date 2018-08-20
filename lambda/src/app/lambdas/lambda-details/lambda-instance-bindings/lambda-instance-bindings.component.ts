@@ -67,7 +67,7 @@ export class LambdaInstanceBindingsComponent {
             sbuList => {
               sbuList.items = sbuList.items.filter(item => {
                 return (
-                  item.spec.usedBy.kind === 'Function' &&
+                  item.spec.usedBy.kind === 'function' &&
                   item.spec.usedBy.name === this.lambdaName
                 );
               });
