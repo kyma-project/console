@@ -1,24 +1,28 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Paragraph } from '@kyma-project/react-components';
+import PropTypes from 'prop-types';
 
-import FilterList from '../Filter/FilterList.component';
-import Card from '../Card/Card.component';
-import ColumnsWrapper from '../ColumnsWrapper/ColumnsWrapper.component';
-import { getResourceDisplayName } from '../../commons/helpers';
-const CardsWrapper = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-flow: row wrap;
-  width: 100%;
-  padding: 0 20px;
-`;
+import { Paragraph, Spinner } from '@kyma-project/react-components';
 
-const Message = styled.div`
-  padding: 20px 0;
-`;
+import FilterList from './FilterList/FilterList.component';
+import Cards from './Cards/Cards.component';
+
+import {
+  ServiceClassListWrapper,
+  CardsWrapper,
+  EmptyServiceListMessageWrapper,
+} from './styled';
 
 class ServiceClassList extends React.Component {
+  static propTypes = {
+    activeClassFilters: PropTypes.object.isRequired,
+    classList: PropTypes.object.isRequired,
+    classFilters: PropTypes.object.isRequired,
+    serviceClasses: PropTypes.array.isRequired,
+    history: PropTypes.object.isRequired,
+    filterServiceClasses: PropTypes.func.isRequired,
+    setServiceClassesFilter: PropTypes.func.isRequired,
+  };
+
   componentWillReceiveProps(newProps) {
     if (
       newProps.serviceClasses &&
@@ -37,13 +41,34 @@ class ServiceClassList extends React.Component {
       setServiceClassesFilter,
       history,
     } = this.props;
+
     const activeFilters = activeClassFilters.activeServiceClassFilters || {};
     let items = classList.filteredServiceClasses || [];
 
     //its used for filtering class which does not have any name in it (either externalName, displayName or name).
     items = items.filter(e => e.displayName || e.externalName || e.name);
+
+    const renderCards = () => {
+      if (items) {
+        return items.length === 0 ? (
+          <EmptyServiceListMessageWrapper>
+            <Paragraph>No Service Classes found.</Paragraph>
+          </EmptyServiceListMessageWrapper>
+        ) : (
+          <Cards data-e2e-id="cards" items={items} history={history} />
+        );
+      }
+      return (
+        <Spinner
+          padding="75px 0 50px 0"
+          size="50px"
+          color="rgba(50,54,58,0.6)"
+        />
+      );
+    };
+
     return (
-      <ColumnsWrapper>
+      <ServiceClassListWrapper>
         {!classFilters.loading && (
           <FilterList
             filters={classFilters.serviceClassFilters}
@@ -52,29 +77,10 @@ class ServiceClassList extends React.Component {
           />
         )}
 
-        {items && (
-          <CardsWrapper data-e2e-id="cards">
-            {items.length === 0 ? (
-              <Message>
-                <Paragraph>No ServiceClasses found.</Paragraph>
-              </Message>
-            ) : (
-              items.map(item => (
-                <Card
-                  key={item.name}
-                  onClick={() => history.push(`/details/${item.name}`)}
-                  item={{
-                    title: getResourceDisplayName(item),
-                    company: item.providerDisplayName,
-                    description: item.description,
-                  }}
-                />
-              ))
-            )}
-          </CardsWrapper>
-        )}
-      </ColumnsWrapper>
+        <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+      </ServiceClassListWrapper>
     );
   }
 }
+
 export default ServiceClassList;

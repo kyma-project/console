@@ -1,10 +1,12 @@
 ```jsx
-<div>
-  <h5>Separator</h5>
+<Header>
+  <H4>Separator</H4>
   <Separator></Separator>
 
-  <h5>Separator with margin</h5>
+  <H4>Separator with margin</H4>
   <Separator margin="10px 20px"></Separator>
-  
-</div>
+
+  <H4>Separator with 3px height</H4>
+  <Separator height="3px"></Separator>
+</Header>
 ```

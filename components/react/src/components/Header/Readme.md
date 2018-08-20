@@ -1,8 +1,8 @@
 ```jsx
-<div>
-  <h5>Header</h5>
   <Header>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu lorem eget erat feugiat sagittis eu at lorem. Fusce et arcu imperdiet dolor interdum lacinia. Mauris eu dictum erat, a convallis ex. Nulla sit amet quam quis nibh facilisis fermentum non vel neque. Vestibulum placerat libero at eros porta scelerisque.
+    <H1>Header h1</H1>
+    <H2>Header h2</H2>
+    <H3>Header h3</H3>
+    <H4>Header h4</H4>
   </Header>
-</div>
 ```

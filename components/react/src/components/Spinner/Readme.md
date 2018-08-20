@@ -5,7 +5,7 @@
 ```jsx
 <div>
     <Button primary>
-        <Spinner size="15px" color="#fff" />
+        <Spinner color="#fff" />
     </Button>
 
     <Button secondary>

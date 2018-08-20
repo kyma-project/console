@@ -1,5 +1,8 @@
 import { graphql, compose } from 'react-apollo';
-import { GET_SERVICE_CLASS, CREATE_SERVICE_INSTANCE } from './queries';
+
+import { GET_SERVICE_CLASS } from './queries';
+import { CREATE_SERVICE_INSTANCE } from './mutations';
+
 import ServiceClassDetails from './ServiceClassDetails.component';
 
 export default compose(
