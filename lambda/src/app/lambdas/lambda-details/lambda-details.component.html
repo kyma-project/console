@@ -40,7 +40,7 @@
                 <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
               </span>
               <input #labelsInput *ngIf="3 > labels.length" type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()"
-                [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null" (blur)="addLabel()">
+                [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null">
             </div>
             <div *ngIf="wrongLabel" class="alert alert-danger">
               Invalid label "{{ wrongLabel }}"! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters,
