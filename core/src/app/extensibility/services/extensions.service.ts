@@ -23,8 +23,17 @@ export class ExtensionsService {
     });
   }
 
+  getClusterExtensions(): Observable<any> {
+    const resourceUrl = `${AppConfig.k8sApiServerUrl_ui}clustermicrofrontends`;
+    return this.http.get<List<IMicroFrontend>>(resourceUrl).map(res => {
+      return res.items.map(item => {
+        return new MicroFrontend(item);
+      });
+    });
+  }
+
   isUsingSecureProtocol(url: string) {
-    if (!url.startsWith('https')) {
+    if (!url || !url.startsWith('https')) {
       console.error(
         `${url} is not using secure protocol. External views have to be served over HTTPS.`
       );

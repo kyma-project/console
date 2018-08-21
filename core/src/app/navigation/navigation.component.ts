@@ -30,6 +30,7 @@ export class NavigationComponent implements OnInit {
   isActive: boolean;
   environmentName;
   filteredEnvironments = [];
+  externalViewsGroups = [];
 
   constructor(
     @Inject(EnvironmentsService) environmentsService: EnvironmentsService,
@@ -57,7 +58,9 @@ export class NavigationComponent implements OnInit {
 
   changeRoute(link: string) {
     const r = this.route;
-    const urlTree = this.router.createUrlTree([link], { relativeTo: r });
+    const urlTree = this.currentEnvironmentId
+      ? this.router.createUrlTree([link], { relativeTo: r })
+      : this.router.createUrlTree([`home/${link}`]);
     if (this.router.isActive(urlTree, true)) {
       // do refresh
       this.router
@@ -76,35 +79,12 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
     this.currentNavModel = navModel[this.navCtx];
     this.route.params.subscribe(params => {
+      this.currentNavModel = _.cloneDeep(navModel[this.navCtx]);
       this.currentEnvironmentId = params['environmentId'];
-      this.extensionsService
-        .getExtensions(this.currentEnvironmentId)
-        .subscribe(exts => {
-          this.currentNavModel = _.cloneDeep(navModel[this.navCtx]);
-
-          const extViews = new Map();
-          exts.forEach(ext => {
-            let category = 'External Views';
-            if (ext.spec.navigation && ext.spec.navigation.category) {
-              category = ext.spec.navigation.category;
-            }
-            let catExts = extViews.get(category);
-            if (!catExts) {
-              catExts = [];
-              extViews.set(category, catExts);
-            }
-            catExts.push(ext);
-          });
-
-          extViews.forEach((views, category) => {
-            views.forEach(view => {
-              this.addEntryToNavigationGroup(category, {
-                name: view.getLabel(),
-                link: 'extensions/' + view.getId()
-              });
-            });
-          });
-        });
+      this.getExtensions();
+      if (this.currentNavModel.showEnvChooser) {
+        this.getClusterExtensions();
+      }
     });
 
     this.environmentsService.getEnvironments().subscribe(
@@ -114,6 +94,47 @@ export class NavigationComponent implements OnInit {
       },
       err => console.log(err)
     );
+  }
+
+  manageExternalViews(extensions) {
+    const extViews = new Map();
+    extensions.forEach(extension => {
+      let category = 'External Views';
+      if (extension.spec.navigation && extension.spec.navigation.category) {
+        category = extension.spec.navigation.category;
+      }
+      let extensionsCategories = extViews.get(category);
+      if (!extensionsCategories) {
+        extensionsCategories = [];
+        extViews.set(category, extensionsCategories);
+      }
+      extensionsCategories.push(extension);
+    });
+
+    extViews.forEach((views, category) => {
+      views.forEach(view => {
+        this.addEntryToNavigationGroup(category, {
+          name: view.getLabel(),
+          link: 'extensions/' + view.getId()
+        });
+      });
+    });
+  }
+
+  getExtensions() {
+    this.extensionsService
+      .getExtensions(this.currentEnvironmentId)
+      .subscribe(extensions => {
+        this.manageExternalViews(extensions);
+      });
+  }
+
+  getClusterExtensions() {
+    this.extensionsService
+      .getClusterExtensions()
+      .subscribe(clusterExtensions => {
+        this.manageExternalViews(clusterExtensions);
+      });
   }
 
   getNavigationGroup(groupName) {
@@ -153,6 +174,7 @@ export class NavigationComponent implements OnInit {
         entries: []
       };
       this.currentNavModel.groups.push(group);
+      this.externalViewsGroups.push(group);
     }
     let entries = group.entries;
     if (!entries) {
