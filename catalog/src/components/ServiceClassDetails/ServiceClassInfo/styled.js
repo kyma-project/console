@@ -12,6 +12,7 @@ export const ServiceClassInfoContentWrapper = styled.div`
 `;
 
 export const ImagePlaceholder = styled.div`
+  position: relative;
   width: 90px;
   height: 90px;
   min-width: 90px;
@@ -20,9 +21,21 @@ export const ImagePlaceholder = styled.div`
   line-height: 90px;
   text-align: center;
   border-radius: 4px;
-  background-color: #00b6ff;
-  color: #ffffff;
+  background-color: #fff;
+  border: solid 1px rgba(63, 80, 96, 0.15);
+  color: #32363a;
   font-size: 32px;
+`;
+
+export const Image = styled.img`
+  max-width: 40px;
+  max-height: 40px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 export const ServiceTitle = styled.h3`

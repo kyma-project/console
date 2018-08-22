@@ -13,6 +13,7 @@ const Cards = ({ items, history }) => {
       title={getResourceDisplayName(item)}
       company={item.providerDisplayName}
       description={item.description}
+      imageUrl={item.imageUrl}
     />
   ));
 };

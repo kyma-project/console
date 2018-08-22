@@ -9,11 +9,12 @@ export const GET_SERVICE_CLASS = gql`
       creationTimestamp
       description
       documentationUrl
+      imageUrl
       providerDisplayName
       tags
       content
-      apiSpec
       asyncApiSpec
+      apiSpec
       plans {
         name
         instanceCreateParameterSchema

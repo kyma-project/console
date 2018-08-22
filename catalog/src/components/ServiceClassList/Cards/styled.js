@@ -40,6 +40,7 @@ export const CardTop = styled.div`
 `;
 
 export const CardThumbnail = styled.div`
+  position: relative;
   width: 45px;
   height: 45px;
   min-width: 45px;
@@ -48,9 +49,21 @@ export const CardThumbnail = styled.div`
   line-height: 45px;
   text-align: center;
   border-radius: 4px;
-  background-color: #00b6ff;
-  color: #ffffff;
-  font-size: 19px;
+  background-color: #f3f4f5;
+  border: solid 1px rgba(63, 80, 96, 0.15);
+  color: #32363a;
+  font-size: 20px;
+`;
+
+export const CardImage = styled.img`
+  max-width: 26px;
+  max-height: 26px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 export const CardHeader = styled.div``;
