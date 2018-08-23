@@ -45,7 +45,9 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element data-e2e-id="instance-service-class">
-                    {getResourceDisplayName(serviceInstance.serviceClass)}
+                    {serviceInstance.serviceClass
+                      ? getResourceDisplayName(serviceInstance.serviceClass)
+                      : '-'}
                   </Element>
                 </Grid.Unit>
                 <Grid.Unit size={0.2}>
