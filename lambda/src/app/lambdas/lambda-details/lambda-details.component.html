@@ -35,7 +35,7 @@
           <div class="tn-form__item">
             <label class="tn-form__label" for="input-2">Labels</label>
             <div class="labels-input" id="input-2">
-              <span class="tn-badge tn-badge--pill labels" *ngFor="let label of labels" (click)="updateLabel(label)">
+              <span class="tn-badge-labels tn-badge tn-badge--pill labels" *ngFor="let label of labels" (click)="updateLabel(label)">
                 {{ label }}
                 <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
               </span>
@@ -43,7 +43,8 @@
                 [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null" (blur)="addLabel()">
             </div>
             <div *ngIf="wrongLabel" class="alert alert-danger">
-              Label "{{ wrongLabel }}" has wrong format! ( key: value )
+              Invalid label "{{ wrongLabel }}"! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters,
+              '-', '_' or '.', and must start and end with an alphanumeric character and a key cannot be reused.
             </div>
           </div>
         </div>
