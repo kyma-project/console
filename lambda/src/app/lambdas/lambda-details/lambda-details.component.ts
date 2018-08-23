@@ -406,17 +406,19 @@ export class LambdaDetailsComponent implements AfterViewInit {
         })
         .subscribe(bsuList => {
           bsuList.items.forEach(bsu => {
-            deleteRequests.push(
-              this.serviceBindingUsagesService
-                .deleteServiceBindingUsage(
-                  bsu.metadata.name,
-                  this.environment,
-                  this.token,
-                )
-                .catch(err => {
-                  return Observable.of(err);
-                }),
-            );
+            if (bs.previousState.serviceBinding === bsu.metadata.name) {
+              deleteRequests.push(
+                this.serviceBindingUsagesService
+                  .deleteServiceBindingUsage(
+                    bsu.metadata.name,
+                    this.environment,
+                    this.token,
+                  )
+                  .catch(err => {
+                    return Observable.of(err);
+                  }),
+              );
+            }
           });
           forkJoin(deleteRequests).subscribe(responses => {
             responses.forEach(resp => {
