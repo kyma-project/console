@@ -14,7 +14,10 @@ import { IEnvVar } from '../../../shared/datamodel/k8s/container';
 @Component({
   selector: 'app-lambda-env-table',
   templateUrl: './lambda-env.component.html',
-  styleUrls: ['../lambda-details.component.scss'],
+  styleUrls: [
+    '../lambda-details.component.scss',
+    './lambda-env.component.scss',
+  ],
 })
 export class LambdaEnvComponent {
   @Input() envs: IEnvVar[];
