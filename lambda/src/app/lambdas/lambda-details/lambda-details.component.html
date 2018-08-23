@@ -39,12 +39,11 @@
                 {{ label }}
                 <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
               </span>
-              <input #labelsInput *ngIf="3 > labels.length" type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()"
-                [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null">
+              <input #labelsInput type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null"
+                (blur)="addLabel()">
             </div>
             <div *ngIf="wrongLabel" class="alert alert-danger">
-              Invalid label "{{ wrongLabel }}"! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters,
-              '-', '_' or '.', and must start and end with an alphanumeric character and a key cannot be reused.
+              {{ wrongLabelMessage }}
             </div>
           </div>
         </div>

@@ -101,6 +101,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   loaded: Observable<boolean> = Observable.of(false);
   newLabel;
   wrongLabel = false;
+  wrongLabelMessage = '';
   error: string = null;
   hasDependencies: Observable<boolean> = Observable.of(false);
   envVarKey = '';
@@ -816,6 +817,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const key = label.split(':')[0].trim();
     const value = label.split(':')[1].trim();
     if (this.duplicateKeyExists(key)) {
+      this.wrongLabelMessage = `Invalid label ${key}:${value}! Keys cannot be reused!`;
       return false;
     }
     const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
@@ -825,6 +827,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const foundVal = value.match(regex);
     const isValueValid =
       (foundVal && foundVal[0] === value) || value === '' ? true : false;
+    if (!isKeyValid || !isValueValid) {
+      this.wrongLabelMessage = `Invalid label ${key}:${value}! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+    }
     return isKeyValid && isValueValid ? true : false;
   }
 
@@ -853,7 +858,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.isLambdaFormValid = true;
     } else {
       this.isLambdaFormValid = this.newLabel ? false : true;
-      this.wrongLabel = this.newLabel ? this.newLabel : false;
+      this.wrongLabel = this.newLabel ? true : false;
     }
   }
 
