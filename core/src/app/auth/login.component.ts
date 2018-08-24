@@ -43,7 +43,7 @@ export class LoginComponent {
           err === 'issuer must use Https. Also check property requireHttps.'
             ? "Auth issuer doesn't use TLS"
             : err;
-        sessionStorage.setItem('loginError', error);
+        sessionStorage.setItem('loginError', JSON.stringify(error));
         this.router.navigate(['/loginError']);
       });
   }

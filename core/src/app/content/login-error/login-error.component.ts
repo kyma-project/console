@@ -16,11 +16,12 @@ export class LoginErrorComponent implements OnInit {
     if (loginError) {
       try {
         const parsedError = JSON.parse(loginError);
-        this.errorMsg = parsedError.type;
+        this.errorMsg = parsedError.type || parsedError.statusText;
 
         if (
-          parsedError.type === 'discovery_document_load_error' &&
-          parsedError.reason.status === 0
+          (parsedError.type === 'discovery_document_load_error' &&
+            parsedError.reason.status === 0) ||
+          (parsedError.url === null && parsedError.status === 0)
         ) {
           this.possiblyMissingCert = true;
         }
