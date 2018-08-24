@@ -101,6 +101,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   loaded: Observable<boolean> = Observable.of(false);
   newLabel;
   wrongLabel = false;
+  wrongLabelMessage = '';
   error: string = null;
   hasDependencies: Observable<boolean> = Observable.of(false);
   envVarKey = '';
@@ -634,7 +635,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
       function: this.lambda.metadata.name,
     };
     this.lambda.metadata.labels = this.changeLabels();
-    this.lambda.metadata.labels['created-by'] = 'kubeless';
 
     this.lambdaDetailsService.createLambda(this.lambda, this.token).subscribe(
       lambda => {
@@ -813,18 +813,59 @@ export class LambdaDetailsComponent implements AfterViewInit {
     return newLabels;
   }
 
+  isNewLabelValid(label) {
+    const key = label.split(':')[0].trim();
+    const value = label.split(':')[1].trim();
+    if (this.duplicateKeyExists(key)) {
+      this.wrongLabelMessage = `Invalid label ${key}:${value}! Keys cannot be reused!`;
+      return false;
+    }
+    const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
+    const foundKey = key.match(regex);
+    const isKeyValid =
+      foundKey && foundKey[0] === key && key !== '' ? true : false;
+    const foundVal = value.match(regex);
+    const isValueValid =
+      (foundVal && foundVal[0] === value) || value === '' ? true : false;
+    if (!isKeyValid || !isValueValid) {
+      this.wrongLabelMessage = `Invalid label ${key}:${value}! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+    }
+    return isKeyValid && isValueValid ? true : false;
+  }
+
+  duplicateKeyExists(key) {
+    let hasDuplicate = false;
+    this.labels.forEach(l => {
+      if (l.split(':')[0] === key) {
+        hasDuplicate = true;
+        return;
+      }
+    });
+    return hasDuplicate;
+  }
+
   addLabel() {
-    if (this.newLabel && this.newLabel.split(':').length - 1 === 1) {
+    this.wrongLabelMessage = '';
+    if (
+      this.newLabel &&
+      this.newLabel.split(':').length === 2 &&
+      this.isNewLabelValid(this.newLabel)
+    ) {
+      const newLabelArr = this.newLabel.split(':');
+      this.newLabel = `${newLabelArr[0].trim()}:${newLabelArr[1].trim()}`;
       this.labels.push(this.newLabel);
       this.newLabel = '';
       this.wrongLabel = false;
       this.isLambdaFormValid = true;
-    } else if (this.newLabel) {
-      this.wrongLabel = this.newLabel;
-      this.isLambdaFormValid = false;
-    } else if (!this.newLabel) {
-      this.wrongLabel = false;
-      this.isLambdaFormValid = true;
+    } else {
+      this.isLambdaFormValid = this.newLabel ? false : true;
+      this.wrongLabel = this.newLabel ? true : false;
+      this.wrongLabelMessage =
+        this.wrongLabel && this.wrongLabelMessage
+          ? this.wrongLabelMessage
+          : `Invalid label ${
+              this.newLabel
+            }! A key and value should be separated by a ":"`;
     }
   }
 
