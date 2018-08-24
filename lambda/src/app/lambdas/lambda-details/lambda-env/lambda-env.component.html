@@ -9,10 +9,10 @@
         <div class="col-4">
             <input [(ngModel)]="envVar.name" class="tn-form__control" type="text" id="input-1" (keyup)="validatesEnvVariableName()" placeholder="VARIABLE_NAME" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
             <div *ngIf="isEnvVariableNameInvalid">
-                <p class="alert">Invalid variable name: must consist of alphanumeric characters or '_' and no spaces (e.g. 'VARIABLE_NAME')</p>
+                <p class="alert alert-danger error-msg">Invalid variable name: must consist of alphanumeric characters or '_' and no spaces (e.g. 'VARIABLE_NAME')</p>
             </div>
             <div *ngIf="isEnvVariableDuplicate">
-                <p class="alert">Duplicate entry.</p>
+                <p class="alert  error-msg">Duplicate entry.</p>
             </div>
         </div>
         <div class="col-1 lambda-align-center">→</div>
