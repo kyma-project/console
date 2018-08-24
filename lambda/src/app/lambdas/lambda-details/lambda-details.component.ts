@@ -46,6 +46,7 @@ import * as luigiClient from '@kyma-project/luigi-client';
 import { Service } from '../../shared/datamodel/k8s/api-service';
 import { timeout } from 'rxjs/operators';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
+import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 @Component({
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
@@ -73,6 +74,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('eventTriggerChooserModal')
   eventTriggerChooserModal: EventTriggerChooserComponent;
+  @ViewChild('httpTriggerModal') httpTriggerModal: HttpTriggerComponent;
 
   code = `module.exports = { main: function (event, context) {
 
@@ -87,7 +89,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
   toggleTrigger = false;
   toggleTriggerType = false;
   typeDropdownHidden = true;
-  toggleHTTPTriggerMenu = false;
   isLambdaFormValid = true;
   showHTTPURL: HTTPEndpoint = null;
   httpURL = '';
@@ -109,7 +110,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isEnvVariableNameInvalid = false;
   isFunctionNameInvalid = false;
   isHTTPTriggerAdded = false;
-  isHTTPTriggerAuthenticated = true;
+  isHTTPTriggerAuthenticated = false;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
 
@@ -763,40 +764,28 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   toggleTriggerTypeDropdown(event) {
-    this.hideHTTPTriggerMenu();
     const dropdown = event.target.attributes['dropdown'].value;
     if ('triggerType' === dropdown) {
       return (this.toggleTriggerType = !this.toggleTriggerType);
     }
   }
 
-  showHTTPTriggerMenu() {
+  showHTTPTrigger(): void {
     this.toggleTriggerType = false;
-    this.toggleHTTPTriggerMenu = true;
-  }
-
-  hideHTTPTriggerMenu() {
-    this.toggleHTTPTriggerMenu = false;
-  }
-
-  addHTTPTrigger() {
-    this.hideHTTPTriggerMenu();
-    const src: Source = {
-      type: 'endpoint',
-    };
-    const httpTrigger: HTTPEndpoint = {
-      eventType: 'http',
-      source: src,
-    };
-    this.selectedTriggers.push(httpTrigger);
-    this.isHTTPTriggerAdded = true;
-    this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
-      AppConfig.domain
-    }`.toLowerCase();
+    this.httpTriggerModal.show(
+      this.lambda,
+      this.environment,
+      this.isHTTPTriggerAuthenticated,
+      [...this.selectedTriggers],
+    );
   }
 
   unselectEvent(event: ITrigger) {
-    this.selectedTriggers.splice(this.selectedTriggers.indexOf(event), 1);
+    const index = this.selectedTriggers.indexOf(event);
+    if (index > -1) {
+      this.selectedTriggers.splice(index, 1);
+    }
+
     if (event.eventType === 'http') {
       this.isHTTPTriggerAdded = false;
     }
@@ -1027,8 +1016,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
     };
     httpEndPoint.url = `https://${api.spec.hostname}`;
 
-    httpEndPoint.isAuthEnabled =
-      api.spec.authentication.length !== 0 ? true : false;
+    if (api.spec.authentication !== undefined) {
+      httpEndPoint.isAuthEnabled =
+        api.spec.authentication.length !== 0 ? true : false;
+    }
+
     return httpEndPoint;
   }
 
@@ -1042,5 +1034,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   handleEventEmitter($event): void {
     this.selectedTriggers = $event;
+  }
+
+  handleHttpEmitter($event): void {
+    this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
+      AppConfig.domain
+    }`.toLowerCase();
+    this.selectedTriggers = $event;
+    this.isHTTPTriggerAdded = true;
+    this.isHTTPTriggerAuthenticated = $event[0].isAuthEnabled;
   }
 }

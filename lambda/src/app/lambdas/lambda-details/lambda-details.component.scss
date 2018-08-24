@@ -415,6 +415,16 @@ $hover: #008ac6;
   }
 }
 
+.trigger-footer-left {
+  overflow: auto;
+  border-top: 1px solid #ccdaeb;
+  padding: 15px;
+  text-align: left;
+  .tn-button {
+    padding-left: 15px;
+  }
+}
+
 .trigger-body {
   display: block;
   overflow: auto;

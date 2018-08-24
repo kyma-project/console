@@ -72,32 +72,10 @@
                       </li>
 
                       <li>
-                        <a [class.disabled]="lambda.metadata.name.length <= 0 || isFunctionNameInvalid || isHTTPTriggerAdded" (click)="showHTTPTriggerMenu()"
-                          class="tn-dropdown__item">HTTP Trigger</a>
+                        <a [class.disabled]="lambda.metadata.name.length <= 0 || isFunctionNameInvalid || isHTTPTriggerAdded" (click)="showHTTPTrigger()"
+                          class="tn-dropdown__item">Expose via HTTPS</a>
                       </li>
                     </ul>
-                  </div>
-                </div>
-                <div class="tn-dropdown__menu trigger-menu trigger-popup" *ngIf="toggleHTTPTriggerMenu">
-                  <div class="fd-form__item fd-form__item--check">
-                    <div class="trigger-body">
-                      <label class="fd-form__label" for="Yj07w605">
-                        <span class="fd-toggle fd-toggle--small fd-form__control">
-                          <input type="checkbox" id="Yj07w605" [(ngModel)]="isHTTPTriggerAuthenticated" [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null"
-                            checked>
-                          <span class="fd-toggle__switch" role="presentation"></span>
-                        </span>
-                        Enable Authentication
-                      </label>
-                    </div>
-                    <div class="trigger-footer">
-                      <button class="tn-button tn-button--small tn-button--small-secondary tn-button--text" (click)=hideHTTPTriggerMenu()>
-                        Cancel
-                      </button>
-                      <button class="tn-button tn-button--small tn-button--text" [disabled]="!lambda.metadata.name || isFunctionNameInvalid" (click)=addHTTPTrigger()>
-                        Add
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -198,3 +176,5 @@
 </section>
 <app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>
 <app-event-trigger-chooser #eventTriggerChooserModal (eventEmitter)="handleEventEmitter($event)"></app-event-trigger-chooser>
+<app-http-trigger #httpTriggerModal (httpEmitter)="handleHttpEmitter($event)"></app-http-trigger>
+
