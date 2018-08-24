@@ -35,7 +35,7 @@
           <div class="tn-form__item">
             <label class="tn-form__label" for="input-2">Labels</label>
             <div class="labels-input" id="input-2">
-              <span class="tn-badge-labels tn-badge tn-badge--pill labels" *ngFor="let label of labels" (click)="updateLabel(label)">
+              <span title="Edit label" class="tn-badge-labels tn-badge tn-badge--pill labels" *ngFor="let label of labels" (click)="updateLabel(label)">
                 {{ label }}
                 <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
               </span>
