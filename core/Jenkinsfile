@@ -49,10 +49,6 @@ podTemplate(label: label) {
                             // }
                         }
 
-                        stage("cleanup") {
-                            execute("make unlock")
-                        }
-
                         stage("resolve dependencies $application") {
                             withCredentials([usernamePassword(credentialsId: 'npm-r', passwordVariable: 'pwd', usernameVariable: 'uname')]) {
                                 execute("make resolve", ["USERNAME=$uname", "PASSWORD=$pwd"])
