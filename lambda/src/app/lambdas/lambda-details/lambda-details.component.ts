@@ -845,6 +845,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   addLabel() {
+    this.wrongLabelMessage = '';
     if (
       this.newLabel &&
       this.newLabel.split(':').length === 2 &&
@@ -859,6 +860,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
     } else {
       this.isLambdaFormValid = this.newLabel ? false : true;
       this.wrongLabel = this.newLabel ? true : false;
+      this.wrongLabelMessage =
+        this.wrongLabel && this.wrongLabelMessage
+          ? this.wrongLabelMessage
+          : `Invalid label ${
+              this.newLabel
+            }! A key and value should be separated by a ":"`;
     }
   }
 
