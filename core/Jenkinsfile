@@ -50,7 +50,7 @@ podTemplate(label: label) {
                         }
 
                         stage("cleanup") {
-                            execute("make unlock")
+                            execute("rm -rf ./node_modules")
                         }
 
                         stage("resolve dependencies $application") {
