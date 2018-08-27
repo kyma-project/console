@@ -5,7 +5,6 @@ import { CurrentEnvironmentService } from '../../content/environments/services/c
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs/Subscription';
-import { AppConfig } from '../../app.config';
 
 const contextVarPrefix = 'context.';
 
@@ -48,8 +47,8 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       this.extensionsService
         .getExtensions(this.currentEnvironmentId)
         .map(res =>
-          res.filter(ext => {
-            return ext.getId() === this.externalViewId;
+          res.filter(extension => {
+            return extension.getId() === this.externalViewId;
           })
         )
         .first()
@@ -58,12 +57,43 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
           throw error;
         })
         .subscribe(
-          ext => {
-            this.externalViewLocation = ext[0] ? ext[0].getLocation() : '';
-            if (this.externalViewLocation === 'minio') {
-              this.externalViewLocation = '';
+          extensions => {
+            if (extensions.length > 0) {
+              this.externalViewLocation = extensions[0]
+                ? extensions[0].getLocation()
+                : '';
+              if (this.externalViewLocation === 'minio') {
+                this.externalViewLocation = '';
+              }
+              this.renderExternalView();
+            } else {
+              this.extensionsService
+                .getClusterExtensions()
+                .map(res =>
+                  res.filter(clusterExtension => {
+                    return clusterExtension.getId() === this.externalViewId;
+                  })
+                )
+                .first()
+                .catch(error => {
+                  this.externalViewLocation = '';
+                  throw error;
+                })
+                .subscribe(
+                  clusterExtensions => {
+                    this.externalViewLocation = clusterExtensions[0]
+                      ? clusterExtensions[0].getLocation()
+                      : '';
+                    if (this.externalViewLocation === 'minio') {
+                      this.externalViewLocation = '';
+                    }
+                    this.renderExternalView();
+                  },
+                  error => {
+                    this.renderExternalView();
+                  }
+                );
             }
-            this.renderExternalView();
           },
           error => {
             this.renderExternalView();
