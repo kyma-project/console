@@ -14,19 +14,14 @@ export class LoginErrorComponent implements OnInit {
   ngOnInit() {
     const loginError = sessionStorage.getItem('loginError');
     if (loginError) {
-      try {
-        const parsedError = JSON.parse(loginError);
-        this.errorMsg = parsedError.type || parsedError.statusText;
+      const parsedError = JSON.parse(loginError);
+      this.errorMsg = parsedError.type;
 
-        if (
-          (parsedError.type === 'discovery_document_load_error' &&
-            parsedError.reason.status === 0) ||
-          (parsedError.url === null && parsedError.status === 0)
-        ) {
-          this.possiblyMissingCert = true;
-        }
-      } catch (err) {
-        this.errorMsg = loginError;
+      if (
+        parsedError.type === 'discovery_document_load_error' &&
+        parsedError.reason.status === 0
+      ) {
+        this.possiblyMissingCert = true;
       }
       sessionStorage.removeItem('loginError');
     } else {
