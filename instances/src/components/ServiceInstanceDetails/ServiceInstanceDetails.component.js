@@ -52,10 +52,12 @@ class ServiceInstanceDetails extends React.Component {
             serviceInstance={instance}
             serviceInstanceRefetch={serviceInstance.refetch}
           />
-          {serviceClass.content ||
-          serviceClass.apiSpec ||
-          serviceClass.asyncApiSpec ? (
-            <ServiceInstanceTabs serviceClass={serviceClass} />
+          {serviceClass ? (
+            serviceClass.content ||
+            serviceClass.apiSpec ||
+            serviceClass.asyncApiSpec ? (
+              <ServiceInstanceTabs serviceClass={serviceClass} />
+            ) : null
           ) : null}
         </ServiceInstanceWrapper>
       </ThemeWrapper>
