@@ -1,0 +1,54 @@
+<ng-template [ngIf]="isActive">
+  <div class="sf-modal sf-modal--max modalposition" [ngClass]="{'is-active': isActive===true}" role="dialog">
+    <div class="tn-modal add-event-modal" role="document">
+      <div class="tn-modal__content">
+        <div class="tn-modal__header">
+          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="closeHttpTriggerModal()">
+            <span class="tn-icon tn-icon--close" role="presentation"></span>
+          </button>
+          <h4 class="tn-modal__title">{{ title }}</h4>
+        </div>
+        <div class="tn-modal__header">
+          <div class="sf-list trigger-entry-list">
+            <div>
+              <div class="row sf-modal__text sf-list__head">
+                <div class="separation col-2">HTTPS-endpoint</div>
+                <div class="separation col-8">
+                  <a href="{{ httpURL }}" target="_blank">{{ httpURL }}</a>
+
+                </div>
+                <div class="col-2">
+                  <button class="tn-button tn-button--small tn-button--text" (click)=copyHTTPUrlEndpoint()>
+                    Copy to clipboard
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tn-modal__body">
+          <div style="font-weight: bold; padding-top: 15px; padding-bottom: 5px">
+            Security
+          </div>
+          <div>
+            HTTPS endpoint will be exposed securly over the internet
+          </div>
+          <div class="trigger-footer-left" style="padding-top: 15px; padding-bottom: 5px">
+            <label class="fd-form__label" for="Yj07w605">
+              <span class="fd-toggle fd-toggle--small fd-form__control">
+                <input type="checkbox" id="Yj07w605" [(ngModel)]="isHTTPTriggerAuthenticated" checked>
+                <span class="fd-toggle__switch" role="presentation"></span>
+              </span>
+              Enable Authentication
+            </label>
+          </div>
+        </div>
+        <footer class="tn-modal__footer-items">
+          <button class="tn-button tn-button--small tn-button--text cancel" (click)="closeHttpTriggerModal()">Cancel</button>
+          <button class="tn-button tn-button--small sf-button--primary" (click)=addTrigger()>Add</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
