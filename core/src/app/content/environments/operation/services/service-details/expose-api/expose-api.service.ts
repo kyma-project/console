@@ -59,6 +59,9 @@ export class ExposeApiService {
   }
 
   prepareApiDefinitionToCreate(data) {
+    const labelFunction = {
+      function: data.function
+    };
     const result = {
       kind: 'Api',
       metadata: {
@@ -75,6 +78,9 @@ export class ExposeApiService {
     };
     if (data.authentication) {
       result.spec['authentication'] = data.authentication;
+    }
+    if (data.function != '') {
+      result.metadata['labels'] = labelFunction;
     }
     return result;
   }

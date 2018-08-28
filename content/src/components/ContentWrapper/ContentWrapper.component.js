@@ -87,7 +87,6 @@ function ContentWrapper(props) {
                   {isFirtsOfType && <Anchor id={currentTypeHash} />}
                   <ContentHeader id={hash}>{item.title}</ContentHeader>
                   <ContentDescription>
-                    <Text bold>{props.description}</Text>
                     <Text>
                       <Highlight innerHTML={true}>{item.source}</Highlight>
                     </Text>

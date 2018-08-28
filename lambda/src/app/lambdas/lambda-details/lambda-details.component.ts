@@ -113,6 +113,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isHTTPTriggerAuthenticated = false;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
+  httpEndpointToDelete: HTTPEndpoint = null;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -144,17 +145,24 @@ export class LambdaDetailsComponent implements AfterViewInit {
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
-              .getApi(lambdaName, this.environment, this.token)
+              .getApis(lambdaName, this.environment, this.token)
               .subscribe(
-                api => {
-                  this.existingHTTPEndpoint = api;
-                  this.httpURL = `${api.spec.hostname}`;
-                  const httpEndPoint: HTTPEndpoint = this.getHTTPEndPointFromApi(
-                    api,
-                  );
-                  this.selectedTriggers.push(httpEndPoint);
-                  this.isHTTPTriggerAdded = true;
-                  this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
+                apis => {
+                  if (apis['items'].length > 0) {
+                    apis['items'].forEach(api => {});
+
+                    const api = apis['items'][0];
+
+                    this.existingHTTPEndpoint = api;
+                    this.httpURL = `${api.spec.hostname}`;
+                    const httpEndPoint: HTTPEndpoint = this.getHTTPEndPointFromApi(
+                      api,
+                    );
+                    this.selectedTriggers.push(httpEndPoint);
+                    this.isHTTPTriggerAdded = true;
+                    this.isHTTPTriggerAuthenticated =
+                      httpEndPoint.isAuthEnabled;
+                  }
                 },
                 err => {
                   // Can be a valid 404 error when api is not found of a function
@@ -269,8 +277,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
           }
         } else if (!this.isHTTPTriggerAdded && this.existingHTTPEndpoint) {
           // delete API and manage service bindings
+          const apiName = this.httpEndpointToDelete.apiName;
           this.apisService
-            .deleteApi(this.lambda.metadata.name, this.environment, this.token)
+            .deleteApi(
+              this.lambda.metadata.name,
+              this.environment,
+              this.token,
+              apiName,
+            )
             .subscribe(
               () => {
                 this.manageServiceBindings();
@@ -407,17 +421,19 @@ export class LambdaDetailsComponent implements AfterViewInit {
         })
         .subscribe(bsuList => {
           bsuList.items.forEach(bsu => {
-            deleteRequests.push(
-              this.serviceBindingUsagesService
-                .deleteServiceBindingUsage(
-                  bsu.metadata.name,
-                  this.environment,
-                  this.token,
-                )
-                .catch(err => {
-                  return Observable.of(err);
-                }),
-            );
+            if (bs.previousState.serviceBinding === bsu.metadata.name) {
+              deleteRequests.push(
+                this.serviceBindingUsagesService
+                  .deleteServiceBindingUsage(
+                    bsu.metadata.name,
+                    this.environment,
+                    this.token,
+                  )
+                  .catch(err => {
+                    return Observable.of(err);
+                  }),
+              );
+            }
           });
           forkJoin(deleteRequests).subscribe(responses => {
             responses.forEach(resp => {
@@ -783,6 +799,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
   unselectEvent(event: ITrigger) {
     const index = this.selectedTriggers.indexOf(event);
     if (index > -1) {
+      const httpEndpoint = <HTTPEndpoint>this.selectedTriggers[0];
+      this.httpEndpointToDelete = httpEndpoint;
       this.selectedTriggers.splice(index, 1);
     }
 
@@ -1008,14 +1026,15 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const src: Source = {
       type: 'endpoint',
     };
+
     const httpEndPoint: HTTPEndpoint = {
       isAuthEnabled: false,
       eventType: 'http',
       url: '',
       source: src,
+      apiName: `${api.metadata.name}`,
     };
     httpEndPoint.url = `https://${api.spec.hostname}`;
-
     if (api.spec.authentication !== undefined) {
       httpEndPoint.isAuthEnabled =
         api.spec.authentication.length !== 0 ? true : false;

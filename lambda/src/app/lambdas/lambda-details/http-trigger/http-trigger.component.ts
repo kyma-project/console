@@ -63,6 +63,7 @@ export class HttpTriggerComponent {
       source: src,
       url: this.httpURL,
       isAuthEnabled: this.isHTTPTriggerAuthenticated,
+      apiName: '',
     };
 
     this.selectedHTTPTriggers.push(httpTrigger);

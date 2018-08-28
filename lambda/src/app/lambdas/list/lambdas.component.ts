@@ -97,6 +97,7 @@ export class LambdasComponent extends GenericTableComponent {
                               entry.metadata.name,
                               this.environment,
                               this.token,
+                              entry.metadata.name,
                             )
                             .subscribe(
                               () => {},
