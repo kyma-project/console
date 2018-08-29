@@ -50,9 +50,7 @@ podTemplate(label: label) {
                         }
 
                         stage("resolve dependencies $application") {
-                            withCredentials([usernamePassword(credentialsId: 'npm-r', passwordVariable: 'pwd', usernameVariable: 'uname')]) {
-                                execute("make resolve", ["USERNAME=$uname", "PASSWORD=$pwd"])
-                            }
+                            execute("npm install -f")
                         }
 
                         stage("code quality $application") {
