@@ -1,8 +1,8 @@
-export function getApiURL(endpoint) {
+export function getURL(endpoint) {
   let config = {
-    graphqlApiUrl: "http://localhost:3000/graphql"
+    graphqlApiUrl: 'http://localhost:3000/graphql',
   };
-  const clusterConfig = window["clusterConfig"];
+  const clusterConfig = window['clusterConfig'];
   config = { ...config, ...clusterConfig };
   return config[endpoint];
 }

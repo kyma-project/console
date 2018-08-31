@@ -1,3 +1,5 @@
+import { environment } from '../environments/environment';
+
 let domain = 'kyma.local';
 let gateway_kyma_cx_api_version = 'v1alpha2';
 let idpLogoutUrl = null;
@@ -54,6 +56,12 @@ if (clusterConfig) {
       config[propertyName] = clusterConfig[propertyName];
     }
   }
+}
+
+if (clusterConfig) {
+  config.graphqlApiUrl = environment.localApi
+    ? clusterConfig['graphqlApiUrlLocal']
+    : clusterConfig['graphqlApiUrl'];
 }
 
 // TEMPORARY ;) WORKAROUND, TO BE DELETED ONCE THE GRAPHQL FACADE IS IN PLACE
