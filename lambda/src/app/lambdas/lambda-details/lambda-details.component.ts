@@ -113,6 +113,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isHTTPTriggerAuthenticated = false;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
+  httpEndpointToDelete: HTTPEndpoint = null;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -144,17 +145,24 @@ export class LambdaDetailsComponent implements AfterViewInit {
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
-              .getApi(lambdaName, this.environment, this.token)
+              .getApis(lambdaName, this.environment, this.token)
               .subscribe(
-                api => {
-                  this.existingHTTPEndpoint = api;
-                  this.httpURL = `${api.spec.hostname}`;
-                  const httpEndPoint: HTTPEndpoint = this.getHTTPEndPointFromApi(
-                    api,
-                  );
-                  this.selectedTriggers.push(httpEndPoint);
-                  this.isHTTPTriggerAdded = true;
-                  this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
+                apis => {
+                  if (apis['items'].length > 0) {
+                    apis['items'].forEach(api => {});
+
+                    const api = apis['items'][0];
+
+                    this.existingHTTPEndpoint = api;
+                    this.httpURL = `${api.spec.hostname}`;
+                    const httpEndPoint: HTTPEndpoint = this.getHTTPEndPointFromApi(
+                      api,
+                    );
+                    this.selectedTriggers.push(httpEndPoint);
+                    this.isHTTPTriggerAdded = true;
+                    this.isHTTPTriggerAuthenticated =
+                      httpEndPoint.isAuthEnabled;
+                  }
                 },
                 err => {
                   // Can be a valid 404 error when api is not found of a function
@@ -269,8 +277,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
           }
         } else if (!this.isHTTPTriggerAdded && this.existingHTTPEndpoint) {
           // delete API and manage service bindings
+          const apiName = this.httpEndpointToDelete.apiName;
           this.apisService
-            .deleteApi(this.lambda.metadata.name, this.environment, this.token)
+            .deleteApi(
+              this.lambda.metadata.name,
+              this.environment,
+              this.token,
+              apiName,
+            )
             .subscribe(
               () => {
                 this.manageServiceBindings();
@@ -783,11 +797,17 @@ export class LambdaDetailsComponent implements AfterViewInit {
   unselectEvent(event: ITrigger) {
     const index = this.selectedTriggers.indexOf(event);
     if (index > -1) {
+      console.log(index);
+      console.log('index');
+      const httpEndpoint = <HTTPEndpoint>this.selectedTriggers[0];
+      this.httpEndpointToDelete = httpEndpoint;
       this.selectedTriggers.splice(index, 1);
     }
 
     if (event.eventType === 'http') {
       this.isHTTPTriggerAdded = false;
+      console.log(this.isHTTPTriggerAdded);
+      console.log('this.isHTTPTriggerAdded');
     }
   }
 
@@ -962,6 +982,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   updateApi(): void {
+    console.log('updateApi()---');
+    console.log(this.existingHTTPEndpoint.metadata.name);
     const api: Api = this.apisService.initializeApi(
       this.lambda,
       this.environment,
@@ -977,6 +999,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         this.error = err.message;
       },
     );
+    console.log('---updateApi()');
   }
 
   isEventTriggerSelected(
@@ -1008,14 +1031,15 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const src: Source = {
       type: 'endpoint',
     };
+
     const httpEndPoint: HTTPEndpoint = {
       isAuthEnabled: false,
       eventType: 'http',
       url: '',
       source: src,
+      apiName: `${api.metadata.name}`,
     };
     httpEndPoint.url = `https://${api.spec.hostname}`;
-
     if (api.spec.authentication !== undefined) {
       httpEndPoint.isAuthEnabled =
         api.spec.authentication.length !== 0 ? true : false;

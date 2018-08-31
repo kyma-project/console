@@ -45,6 +45,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public filteredServices;
   public listOfDeployments;
   public routedFromServiceDetails = true;
+  public isLambda = false;
 
   public ariaExpanded = false;
   public ariaHidden = true;
@@ -141,7 +142,6 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
           }
         );
     }
-
     return this.validateDetails();
   }
 
@@ -418,6 +418,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.service = service;
     this.serviceName = service.metadata.name;
     this.servicePort = service.spec.ports[0].port;
+    this.fecthLambdaServices(this.currentEnvironmentId, this.serviceName);
   }
 
   private fetchDeployment(selector: any) {
@@ -472,6 +473,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
       serviceName: this.serviceName,
       servicePort: _.parseInt(this.servicePort),
       hostname: this.hostname + this.domain,
+      function: this.isLambda == true ? this.serviceName : '',
       authentication
     };
   }
@@ -592,5 +594,30 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
           ? `${this.serviceName}-${this.hostname}`
           : `${this.serviceName}${this.hostname}`;
     }
+  }
+
+  public fecthLambdaServices(environment: string, serviceName: string) {
+    const label = `function=${serviceName}`;
+    const url = `${
+      AppConfig.k8sApiServerUrl
+    }namespaces/${environment}/services?labelSelector=${label}`;
+    this.http
+      .get<any>(url, {})
+      .map(services => {
+        if (services && services.items && services.items.length > 0) {
+          return services.items[0];
+        }
+        return null;
+      })
+      .subscribe(
+        service => {
+          if (service != null) {
+            this.isLambda = true;
+          } else {
+            this.isLambda = false;
+          }
+        },
+        err => console.log(err)
+      );
   }
 }

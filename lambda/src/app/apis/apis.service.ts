@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AppConfig } from '../app.config';
 import { Api, IApiSpec } from '../shared/datamodel/k8s/api';
 import { Observable } from 'rxjs/Observable';
@@ -8,10 +12,29 @@ import { Service } from '../shared/datamodel/k8s/api-service';
 import { AuthenticationRule } from '../shared/datamodel/k8s/api-authentication-rule';
 import { JwtAuthentication } from '../shared/datamodel/k8s/api-jwt-authentication';
 import { Lambda } from '../shared/datamodel/k8s/function';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { HTTPEndpoint } from '../shared/datamodel/http-endpoint';
 
 @Injectable()
 export class ApisService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private subscriptionsService: SubscriptionsService,
+  ) {}
+
+  public getApis(
+    name: string,
+    namespace: string,
+    token: string,
+  ): Observable<Api[]> {
+    const httpOptions = this.getHTTPOptions(token);
+    const label = `function=${name}`;
+    const url = `${
+      AppConfig.apisApiUrl
+    }/namespaces/${namespace}/apis?labelSelector=${label}`;
+    return this.http.get<Api[]>(url, httpOptions);
+  }
 
   public getApi(
     name: string,
@@ -40,10 +63,14 @@ export class ApisService {
     namespace: string,
     token: string,
   ): Observable<Api> {
+    console.log('start updateApi');
+    console.log(api.metadata.name);
+    console.log('api.metadata.name');
     const httpOptions = this.getHTTPOptions(token);
     const url = `${AppConfig.apisApiUrl}/namespaces/${namespace}/apis/${
       api.metadata.name
     }`;
+    console.log('end updateApi');
     return this.http.put<Api>(url, api, httpOptions);
   }
 
@@ -51,9 +78,12 @@ export class ApisService {
     name: string,
     namespace: string,
     token: string,
+    apiName: string,
   ): Observable<Api> {
     const httpOptions = this.getHTTPOptions(token);
-    const url = `${AppConfig.apisApiUrl}/namespaces/${namespace}/apis/${name}`;
+    const url = `${
+      AppConfig.apisApiUrl
+    }/namespaces/${namespace}/apis/${apiName}`;
     return this.http.delete<Api>(url, httpOptions);
   }
 
@@ -76,7 +106,8 @@ export class ApisService {
     url: string,
   ): Api {
     const md: IMetaData = {
-      name: lambda.metadata.name,
+      //name: lambda.metadata.name,
+      name: existingApi.metadata.name,
       namespace: name,
       resourceVersion:
         existingApi !== undefined && existingApi != null
