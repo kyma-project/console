@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { EnvironmentInfo } from '../content/environments/environment-info';
 import { EnvironmentsService } from '../content/environments/services/environments.service';
 import { Router, ActivatedRoute } from '@angular/router';

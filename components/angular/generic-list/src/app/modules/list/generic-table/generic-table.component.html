@@ -1,9 +1,9 @@
 <div class="sf-toolbar">
   <div class="sf-toolbar__header" *ngIf="!showEmptyPage">{{title}}</div>
   <div class="sf-toolbar__right">
-  <div class="sf-toolbar__item" [hidden]="!loaded">
-      <y-list-search [filterState]="filterState" [hidden]="showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-      <y-list-filter [filterState]="filterState" [hidden]="showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+  <div class="sf-toolbar__item" [hidden]="!initialized">
+      <y-list-search [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+      <y-list-filter [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
     </div>
   </div>
 </div>

@@ -3,24 +3,20 @@ import {
   OnChanges,
   OnDestroy,
   SimpleChange,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 import { ListFilterComponent } from '../list-filter/list-filter.component';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'y-list-search',
   templateUrl: './list-search.component.html',
-  styleUrls: ['./list-search.component.scss']
+  styleUrls: ['./list-search.component.scss'],
 })
-export class ListSearchComponent extends ListFilterComponent implements OnChanges, OnDestroy {
+export class ListSearchComponent extends ListFilterComponent
+  implements OnChanges, OnDestroy {
   searching = false;
   searchText: string;
   keyUpSubs: Subscription;
@@ -56,12 +52,14 @@ export class ListSearchComponent extends ListFilterComponent implements OnChange
     if (!this.searchInputElement || this.keyUpSubs) {
       return;
     }
-    this.keyUpSubs = Observable.fromEvent(this.searchInputElement.nativeElement, 'keyup')
-      .map(function(e: any) {
-        return e.target.value;
-      })
-      .debounceTime(200) // Only run after specified ms without input
-      .distinctUntilChanged() // Only if the value has changed
+    this.keyUpSubs = fromEvent(this.searchInputElement.nativeElement, 'keyup')
+      .pipe(
+        map(function(e: any) {
+          return e.target.value;
+        }),
+        debounceTime(150), // Only run after specified ms without input
+        distinctUntilChanged(), // Only if the value has changed
+      )
       .subscribe((value: string) => {
         this.searchText = value;
         this.searchTextChange();
@@ -100,7 +98,7 @@ export class ListSearchComponent extends ListFilterComponent implements OnChange
 
   closeIfEmpty() {
     if (!this.searchText) {
-        this.searching = false;
+      this.searching = false;
     }
   }
 }

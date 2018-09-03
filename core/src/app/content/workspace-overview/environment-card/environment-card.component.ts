@@ -1,7 +1,7 @@
 import { Component, Input, Injector, OnInit, OnDestroy } from '@angular/core';
 import { Environment } from '../../../shared/datamodel/k8s/environment';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'environment-card',

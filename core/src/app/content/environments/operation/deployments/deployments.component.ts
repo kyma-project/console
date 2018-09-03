@@ -1,12 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Filter } from '@kyma-project/y-generic-list';
 import { AppConfig } from '../../../../app.config';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';

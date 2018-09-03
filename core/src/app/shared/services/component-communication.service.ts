@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class ComponentCommunicationService {
   private subject = new Subject();
   observable$ = this.subject.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   sendEvent(event: any) {
     this.subject.next(event);

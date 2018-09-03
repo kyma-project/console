@@ -1,9 +1,6 @@
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { List } from '../../../shared/datamodel/k8s/generic/list';
 import { Environment } from '../../../shared/datamodel/k8s/environment';
-import 'rxjs/add/operator/publishReplay';
-import 'rxjs/add/operator/catch';
 import {
   DataProvider,
   SimpleFilterMatcher,
@@ -13,6 +10,8 @@ import {
   Facet,
   DataProviderResult
 } from '@kyma-project/y-generic-list';
+import { Observable } from 'rxjs';
+import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
 
 export class KubernetesDataProvider<S extends any, T extends any>
   implements DataProvider {
@@ -38,23 +37,25 @@ export class KubernetesDataProvider<S extends any, T extends any>
       if (noCache || this.observableDataSource === undefined) {
         this.observableDataSource = this.http
           .get<List<S>>(this.resourceUrl)
-          .map(res => {
-            const resourcesList = this.extractResourcesList(res);
+          .pipe(
+            map(res => {
+              const resourcesList = this.extractResourcesList(res);
 
-            return resourcesList
-              .map(item => {
-                return this.dataConverter
-                  ? this.dataConverter.convert(item)
-                  : item;
-              })
-              .filter(item => this.selectActiveEnvironments(item));
-          })
-          .catch(error => {
-            observer.error(error);
-            throw error;
-          })
-          .publishReplay(1)
-          .refCount();
+              return resourcesList
+                .map(item => {
+                  return this.dataConverter
+                    ? this.dataConverter.convert(item)
+                    : item;
+                })
+                .filter(item => this.selectActiveEnvironments(item));
+            }),
+            catchError(error => {
+              observer.error(error);
+              throw error;
+            }),
+            publishReplay(1),
+            refCount()
+          );
       }
 
       this.observableDataSource.subscribe(res => {

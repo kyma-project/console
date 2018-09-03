@@ -1,15 +1,15 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import * as _ from 'lodash';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-deployment-entry-renderer',
   templateUrl: './deployment-entry-renderer.component.html',
   styleUrls: ['./deployment-entry-renderer.component.scss']
 })
-export class DeploymentEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class DeploymentEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,

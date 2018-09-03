@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditBindingsModalComponent } from './edit-binding-modal.component';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of, throwError } from 'rxjs';
 import { RemoteEnvironmentsService } from './../../services/remote-environments.service';
 import { EnvironmentsService } from '../../../../environments/services/environments.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
@@ -9,24 +9,24 @@ import { RemoteEnvironmentBindingService } from './../remote-environment-binding
 import { FormsModule } from '@angular/forms';
 
 const ActivatedRouteMock = {
-  params: Observable.of({ id: 'id' })
+  params: of({ id: 'id' })
 };
 
 const RemoteEnvironmentsServiceMock = {
   getRemoteEnvironment() {
-    return Observable.of({});
+    return of({});
   }
 };
 
 const EnvironmentsServiceMock = {
   getEnvironments() {
-    return Observable.of({});
+    return of({});
   }
 };
 
 const RemoteEnvironmentBindingServiceMock = {
   bind() {
-    return Observable.of({});
+    return of({});
   }
 };
 
@@ -81,12 +81,12 @@ describe('EditBindingsModalComponent', () => {
 
   it('should show and set envs and remoteevns', () => {
     // given
-    const remoteEnvs = Observable.of({
+    const remoteEnvs = of({
       remoteEnvironment: {
         enabledInEnvironments: ['env1', 'env2']
       }
     });
-    const envs = Observable.of([
+    const envs = of([
       {
         label: 'env3'
       },
@@ -141,12 +141,12 @@ describe('EditBindingsModalComponent', () => {
 
   it("should not fail if couldn't get envs", () => {
     // given
-    const remoteEnvs = Observable.of({
+    const remoteEnvs = of({
       remoteEnvironment: {
         enabledInEnvironments: ['env1', 'env2']
       }
     });
-    const envs = Observable.throw('error');
+    const envs = throwError('error');
     component.checkIfEnvironmentExists();
 
     const spyGetRemoteEnvironment = spyOn(
@@ -188,13 +188,13 @@ describe('EditBindingsModalComponent', () => {
     component.remoteEnv = {
       name: 'test'
     };
-    const remoteEnvs = Observable.of({
+    const remoteEnvs = of({
       remoteEnvironment: {
         name: 'test',
         enabledInEnvironments: ['env1', 'env2']
       }
     });
-    const envs = Observable.of([
+    const envs = of([
       {
         label: 'env3'
       },
@@ -216,7 +216,7 @@ describe('EditBindingsModalComponent', () => {
     const spyBind = spyOn(
       RemoteEnvironmentBindingServiceMockStub,
       'bind'
-    ).and.returnValue(Observable.of({ data: 'created' }));
+    ).and.returnValue(of({ data: 'created' }));
 
     // when
     component.selectedEnv({ label: 'env3' });

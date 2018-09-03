@@ -11,10 +11,10 @@ import {
   IDashboardPods,
   DashboardPods
 } from '../../../../shared/datamodel/k8s/dashboard-pods';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html',

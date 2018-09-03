@@ -4,13 +4,7 @@ import {
   IApiDefinition,
   ApiDefinition
 } from './../../../../shared/datamodel/k8s/kyma-api/api-definition';
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ChangeDetectorRef,
-  OnDestroy
-} from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from '../../operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
 import { CurrentEnvironmentService } from '../../services/current-environment.service';
@@ -18,7 +12,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
 import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider';
 import { DataConverter, Filter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-apis',

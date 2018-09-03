@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ExtAppViewRegistryService } from '../../services/ext-app-view-registry.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ExtensionsService } from '../../services/extensions.service';
 
 const ELEMENT_ID = 'frame';

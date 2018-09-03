@@ -2,7 +2,7 @@ import { Directive } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Directive({

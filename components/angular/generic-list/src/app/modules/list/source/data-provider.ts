@@ -1,6 +1,6 @@
 import { Filter } from '../filter/Filter';
 import { DataProviderResult } from './data-provider-result';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export interface DataProvider {
   getData(
@@ -8,6 +8,6 @@ export interface DataProvider {
     pageSize: number,
     filters: Filter[],
     facets: string[],
-    noCache?: boolean
+    noCache?: boolean,
   ): Observable<DataProviderResult>;
 }

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RoleBindingModalComponent } from './role-binding-modal.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, throwError } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { RbacService } from '../../services/rbac.service';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
@@ -8,22 +8,22 @@ import { FormsModule } from '@angular/forms';
 
 const RbacServiceMock = {
   getClusterRoles() {
-    return Observable.of({});
+    return of({});
   },
   getRoles() {
-    return Observable.of({});
+    return of({});
   },
   createClusterRoleBinding() {
-    return Observable.of({});
+    return of({});
   },
   createRoleBinding() {
-    return Observable.of({});
+    return of({});
   }
 };
 
 const CurrentEnvironmentServiceMock = {
   getCurrentEnvironmentId() {
-    return Observable.of('currentId');
+    return of('currentId');
   }
 };
 
@@ -71,7 +71,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should get the list of cluster roles', async () => {
     // given
-    const clusterRoles = Observable.of({
+    const clusterRoles = of({
       items: [
         {
           metadata: {
@@ -111,7 +111,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should not fail if gets wrong data', async () => {
     // given
-    const clusterRoles = Observable.of({
+    const clusterRoles = of({
       items: ''
     });
     component.isReadyToCreate();
@@ -140,7 +140,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should catch an error', async () => {
     // given
-    const clusterRoles = Observable.throw('Error');
+    const clusterRoles = throwError('Error');
     component.isReadyToCreate();
 
     const spyClusterRoles = spyOn(
@@ -167,7 +167,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should get the list of roles', async () => {
     // given
-    const roles = Observable.of({
+    const roles = of({
       items: [
         {
           metadata: {
@@ -206,7 +206,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should not fail if gets wrong data', async () => {
     // given
-    const roles = Observable.of({
+    const roles = of({
       items: ''
     });
     component.isReadyToCreate();
@@ -234,7 +234,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should catch an error', async () => {
     // given
-    const roles = Observable.throw('Error');
+    const roles = throwError('Error');
     component.isReadyToCreate();
 
     const spyGetRoles = spyOn(RbacServiceMockStub, 'getRoles').and.returnValue(
@@ -260,7 +260,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should react on Save event with Role, on Permissions view', async () => {
     // given
-    const roles = Observable.of({
+    const roles = of({
       items: [
         {
           metadata: {
@@ -285,7 +285,7 @@ describe('RoleBindingModalComponent', () => {
     const spyCreateRoleBinding = spyOn(
       RbacServiceMockStub,
       'createRoleBinding'
-    ).and.returnValue(Observable.of({ data: 'created' }));
+    ).and.returnValue(of({ data: 'created' }));
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
@@ -310,7 +310,7 @@ describe('RoleBindingModalComponent', () => {
 
   it('should react on Save event with ClusterRole, on GlobalPermissions view', async () => {
     // given
-    const clusterRoles = Observable.of({
+    const clusterRoles = of({
       items: [
         {
           metadata: {
@@ -336,7 +336,7 @@ describe('RoleBindingModalComponent', () => {
     const spyCreateClusterRoleBinding = spyOn(
       RbacServiceMockStub,
       'createClusterRoleBinding'
-    ).and.returnValue(Observable.of({ data: 'created' }));
+    ).and.returnValue(of({ data: 'created' }));
     const spyConsoleLog = spyOn(console, 'log');
 
     // when

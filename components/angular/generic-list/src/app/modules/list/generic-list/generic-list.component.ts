@@ -9,8 +9,8 @@ import {
   ViewRef,
 } from '@angular/core';
 import { DataProvider } from '../source/data-provider';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, of, Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'y-generic-list',
@@ -31,6 +31,7 @@ export class GenericListComponent implements OnChanges, OnInit {
   showEmptyPage: Boolean = false;
   loaded = false;
   loading = false;
+  initialized = false;
   searchSubscription: Subscription;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
@@ -49,6 +50,9 @@ export class GenericListComponent implements OnChanges, OnInit {
 
   setLoaded(status: boolean): void {
     this.loaded = status;
+    if (status) {
+      this.initialized = true;
+    }
   }
 
   onPageChanged(pagingState) {
@@ -60,8 +64,8 @@ export class GenericListComponent implements OnChanges, OnInit {
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();
     }
-    this.searchSubscription = Observable.of(0)
-      .delay(250)
+    this.searchSubscription = of(0)
+      .pipe(delay(150))
       .subscribe(() => {
         this.filterState = filterState;
         this.pagingState.pageNumber = 1;
@@ -74,8 +78,8 @@ export class GenericListComponent implements OnChanges, OnInit {
   }
 
   applyState(noCache?: boolean) {
-    Observable.of(0)
-      .delay(333)
+    of(0)
+      .pipe(delay(350))
       .subscribe(() => {
         if (!this.loaded) {
           this.setLoading(true);

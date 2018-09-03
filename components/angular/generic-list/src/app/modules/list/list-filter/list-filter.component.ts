@@ -5,16 +5,15 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChange
+  SimpleChange,
 } from '@angular/core';
-import {isArray, isNullOrUndefined} from 'util';
-import {isArrayLike} from 'rxjs/util/isArrayLike';
-import {Facet} from '../filter/Facet';
+import { isArray, isNullOrUndefined } from 'util';
+import { Facet } from '../filter/Facet';
 
 @Component({
   selector: 'y-list-filter',
   templateUrl: './list-filter.component.html',
-  styleUrls: ['./list-filter.component.scss']
+  styleUrls: ['./list-filter.component.scss'],
 })
 export class ListFilterComponent implements OnInit, OnChanges {
   @Input() filterState;
@@ -46,7 +45,7 @@ export class ListFilterComponent implements OnInit, OnChanges {
     return {
       filters: [],
       facets: [],
-      availableFacets: []
+      availableFacets: [],
     };
   }
 
@@ -57,7 +56,10 @@ export class ListFilterComponent implements OnInit, OnChanges {
     if (!this.filterState.facets || !isArray(this.filterState.facets)) {
       this.filterState.facets = [];
     }
-    if (!this.filterState.availableFacets || !isArray(this.filterState.availableFacets)) {
+    if (
+      !this.filterState.availableFacets ||
+      !isArray(this.filterState.availableFacets)
+    ) {
       this.filterState.availableFacets = [];
     }
     this.filterState.facets.forEach(facet => {

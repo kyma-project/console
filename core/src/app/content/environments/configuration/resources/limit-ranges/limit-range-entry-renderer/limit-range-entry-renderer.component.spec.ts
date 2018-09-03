@@ -2,49 +2,46 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subject, of } from 'rxjs';
 
 describe('LimitRangeEntryRendererComponent', () => {
   let component: LimitRangeEntryRendererComponent;
   let fixture: ComponentFixture<LimitRangeEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [LimitRangeEntryRendererComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: [
-          ComponentCommunicationService,
-          {
-            provide: 'entry',
-            useValue: {
-              name: 'name',
-              limits: [
-                {
-                  limitType: 'Container',
-                  default: {
-                    memory: '1',
-                    cpu: '1'
-                  },
-                  max: {
-                    memory: '1',
-                    cpu: '1'
-                  },
-                  defaultRequest: {
-                    memory: '1',
-                    cpu: '1'
-                  }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [LimitRangeEntryRendererComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        ComponentCommunicationService,
+        {
+          provide: 'entry',
+          useValue: {
+            name: 'name',
+            limits: [
+              {
+                limitType: 'Container',
+                default: {
+                  memory: '1',
+                  cpu: '1'
+                },
+                max: {
+                  memory: '1',
+                  cpu: '1'
+                },
+                defaultRequest: {
+                  memory: '1',
+                  cpu: '1'
                 }
-              ]
-            }
-          },
-          { provide: 'entryEventHandler', useValue: {} }
-        ]
-      }).compileComponents();
-    })
-  );
+              }
+            ]
+          }
+        },
+        { provide: 'entryEventHandler', useValue: {} }
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LimitRangeEntryRendererComponent);
@@ -65,7 +62,7 @@ describe('LimitRangeEntryRendererComponent', () => {
         disabled: true
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -84,7 +81,7 @@ describe('LimitRangeEntryRendererComponent', () => {
         disabled: false
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -103,7 +100,7 @@ describe('LimitRangeEntryRendererComponent', () => {
         disabled: true
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -122,7 +119,7 @@ describe('LimitRangeEntryRendererComponent', () => {
         disabled: true
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();

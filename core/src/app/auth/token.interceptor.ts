@@ -7,9 +7,8 @@ import {
 } from '@angular/common/http';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from './../app.config';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/operator/do';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -27,13 +26,15 @@ export class TokenInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(request).do(
-      (event: HttpEvent<any>) => {},
-      (err: any) => {
-        if (err.status === 401) {
-          this.oAuthService.initImplicitFlow();
+    return next.handle(request).pipe(
+      tap(
+        (event: HttpEvent<any>) => {},
+        (err: any) => {
+          if (err.status === 401) {
+            this.oAuthService.initImplicitFlow();
+          }
         }
-      }
+      )
     );
   }
 }

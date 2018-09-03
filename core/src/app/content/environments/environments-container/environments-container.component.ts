@@ -17,7 +17,7 @@ import { NavVisibilityService } from '../../../navigation/services/nav-visibilit
 import { CurrentEnvironmentService } from '../services/current-environment.service';
 import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import NavigationUtils from '../../../navigation/services/navigation-utils';
 
 const fadeInAnimation = trigger('fadeInAnimation', [

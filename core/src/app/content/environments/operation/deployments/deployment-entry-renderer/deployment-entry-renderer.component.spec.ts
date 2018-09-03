@@ -3,38 +3,35 @@ import { AppModule } from './../../../../../app.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DeploymentEntryRendererComponent } from './deployment-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { of, Subject } from 'rxjs';
 
 describe('DeploymentEntryRendererComponent', () => {
   let component: DeploymentEntryRendererComponent;
   let fixture: ComponentFixture<DeploymentEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [AppModule],
-        providers: [
-          [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
-          [
-            {
-              provide: 'entry',
-              useValue: {
-                name: 'entryName',
-                status: {
-                  readyReplicas: 0
-                },
-                boundServiceInstanceNames: []
-              }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [AppModule],
+      providers: [
+        [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
+        [
+          {
+            provide: 'entry',
+            useValue: {
+              name: 'entryName',
+              status: {
+                readyReplicas: 0
+              },
+              boundServiceInstanceNames: []
             }
-          ],
-          [{ provide: 'entryEventHandler', useValue: {} }],
-          ComponentCommunicationService
-        ]
-      }).compileComponents();
-    })
-  );
+          }
+        ],
+        [{ provide: 'entryEventHandler', useValue: {} }],
+        ComponentCommunicationService
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DeploymentEntryRendererComponent);
@@ -55,7 +52,7 @@ describe('DeploymentEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -76,7 +73,7 @@ describe('DeploymentEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -97,7 +94,7 @@ describe('DeploymentEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {

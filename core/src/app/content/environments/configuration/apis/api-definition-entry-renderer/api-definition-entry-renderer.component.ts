@@ -1,21 +1,16 @@
-import {
-  Component,
-  Injector,
-  OnInit,
-  ViewEncapsulation,
-  OnDestroy
-} from '@angular/core';
+import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../../environments/services/current-environment.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abstract-kubernetes-entry-renderer.component';
-import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
   templateUrl: './api-definition-entry-renderer.component.html'
 })
-export class ApiDefinitionEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class ApiDefinitionEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;

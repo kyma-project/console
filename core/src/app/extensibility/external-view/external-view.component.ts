@@ -4,7 +4,8 @@ import { ExtensionsService } from '../services/extensions.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { catchError, first, map } from 'rxjs/operators';
 
 const contextVarPrefix = 'context.';
 
@@ -46,16 +47,18 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       this.externalViewId = params['id'];
       this.extensionsService
         .getExtensions(this.currentEnvironmentId)
-        .map(res =>
-          res.filter(extension => {
-            return extension.getId() === this.externalViewId;
+        .pipe(
+          map(res =>
+            res.filter(extension => {
+              return extension.getId() === this.externalViewId;
+            })
+          ),
+          first(),
+          catchError(error => {
+            this.externalViewLocation = '';
+            throw error;
           })
         )
-        .first()
-        .catch(error => {
-          this.externalViewLocation = '';
-          throw error;
-        })
         .subscribe(
           extensions => {
             if (extensions.length > 0) {
@@ -69,16 +72,18 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
             } else {
               this.extensionsService
                 .getClusterExtensions()
-                .map(res =>
-                  res.filter(clusterExtension => {
-                    return clusterExtension.getId() === this.externalViewId;
+                .pipe(
+                  map(res =>
+                    res.filter(clusterExtension => {
+                      return clusterExtension.getId() === this.externalViewId;
+                    })
+                  ),
+                  first(),
+                  catchError(error => {
+                    this.externalViewLocation = '';
+                    throw error;
                   })
                 )
-                .first()
-                .catch(error => {
-                  this.externalViewLocation = '';
-                  throw error;
-                })
                 .subscribe(
                   clusterExtensions => {
                     this.externalViewLocation = clusterExtensions[0]
@@ -112,7 +117,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       Object.entries(params).forEach(entry => {
         processedUrl = processedUrl.replace(
           '{' + prefix + entry[0] + '}',
-          encodeURIComponent(entry[1])
+          encodeURIComponent('' + entry[1])
         );
       });
     }
