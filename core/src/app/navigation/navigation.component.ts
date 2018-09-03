@@ -60,7 +60,7 @@ export class NavigationComponent implements OnInit {
     const r = this.route;
     const urlTree = this.currentEnvironmentId
       ? this.router.createUrlTree([link], { relativeTo: r })
-      : this.router.createUrlTree([`home/${link}`]);
+      : this.router.createUrlTree([`home/settings/${link}`]);
     if (this.router.isActive(urlTree, true)) {
       // do refresh
       this.router
