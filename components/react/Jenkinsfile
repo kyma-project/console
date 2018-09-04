@@ -20,7 +20,7 @@ podTemplate(label: label) {
     node(label) {
         try {
             timestamps {
-                timeout(time:60, unit:"MINUTES") {
+                timeout(time:200, unit:"MINUTES") {
                     ansiColor('xterm') {
                         stage("setup") {
                             checkout scm
@@ -38,7 +38,7 @@ podTemplate(label: label) {
                         }
 
                         stage("resolve dependencies $application") {
-                            execute("npm install --no-optional")
+                            execute("npm install -f")
                         }
 
                         stage("code quality $application") {
