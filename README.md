@@ -43,6 +43,7 @@ The `Core` and other UIs run at the following addresses:
 - `Instances` - [http://console-dev.kyma.local:8001](http://console-dev.kyma.local:8001)
 - `Lambda` - [http://console-dev.kyma.local:4201](http://console-dev.kyma.local:4201)
 - `Content` - [http://console-dev.kyma.local:8002](http://console-dev.kyma.local:8002)
+
 If you want to run only a specific UI, follow the instructions in the appropriate folder.
 
 > **NOTE:** To clear dependencies and remove symlinks, run this command:
