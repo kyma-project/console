@@ -15,7 +15,7 @@ import {
   CenterSideWrapper,
 } from './styled';
 
-import { getResourceDisplayName } from '../../commons/helpers';
+import { getResourceDisplayName, getDescription } from '../../commons/helpers';
 
 class ServiceClassDetails extends React.Component {
   static propTypes = {
@@ -30,6 +30,8 @@ class ServiceClassDetails extends React.Component {
     const serviceClassDisplayName = getResourceDisplayName(
       serviceClass.serviceClass,
     );
+
+    const serviceClassDescription = getDescription(serviceClass.serviceClass);
 
     const modalOpeningComponent = (
       <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
@@ -68,12 +70,13 @@ class ServiceClassDetails extends React.Component {
                   }
                   documentationUrl={serviceClass.serviceClass.documentationUrl}
                   imageUrl={serviceClass.serviceClass.imageUrl}
+                  tags={serviceClass.serviceClass.tags}
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
-                {serviceClass.serviceClass.description && (
+                {serviceClassDescription && (
                   <ServiceClassDescription
-                    description={serviceClass.serviceClass.description}
+                    description={serviceClassDescription}
                   />
                 )}
                 {serviceClass.serviceClass.content ||

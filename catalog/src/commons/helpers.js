@@ -39,6 +39,14 @@ export const getResourceDisplayName = resource => {
   return resource.displayName || resource.externalName || resource.name;
 };
 
+export const getDescription = resource => {
+  if (!resource) {
+    return null;
+  }
+
+  return resource.longDescription || resource.description;
+};
+
 export function clearEmptyPropertiesInObject(object) {
   for (const key in object) {
     if (typeof object[key] === 'undefined' || object[key] === '') {
