@@ -195,7 +195,7 @@ describe('CreatePresetModalComponent', () => {
     expect(component.error).toBe('');
   });
 
-  it('should react on Cancel event', () => {
+  it('should react on Cancel event', done => {
     // given
     component.isActive = true;
     component.presetName = 'preset-name';
@@ -221,10 +221,12 @@ describe('CreatePresetModalComponent', () => {
       expect(component.wrongJwks).toBeFalsy();
       expect(component.wrongPresetName).toBeFalsy();
       expect(component.error).toBe('');
+
+      done();
     });
   });
 
-  it('should react on Create event', () => {
+  it('should react on Create event', done => {
     // given
     component.isActive = true;
     component.presetName = 'preset-name';
@@ -259,6 +261,8 @@ describe('CreatePresetModalComponent', () => {
       expect(IdpPresetsServiceMockStub.createIdpPreset).toHaveBeenCalledTimes(
         1
       );
+
+      done();
     });
   });
 });

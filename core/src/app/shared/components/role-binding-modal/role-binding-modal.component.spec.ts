@@ -69,7 +69,7 @@ describe('RoleBindingModalComponent', () => {
     expect(component.filteredRoles).toEqual([]);
   });
 
-  it('should get the list of cluster roles', async () => {
+  it('should get the list of cluster roles', async done => {
     // given
     const clusterRoles = of({
       items: [
@@ -106,10 +106,12 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual(['user1', 'user2']);
       expect(component.filteredRoles).toEqual(['user1', 'user2']);
+
+      done();
     });
   });
 
-  it('should not fail if gets wrong data', async () => {
+  it('should not fail if gets wrong data', async done => {
     // given
     const clusterRoles = of({
       items: ''
@@ -135,10 +137,12 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should catch an error', async () => {
+  it('should catch an error', async done => {
     // given
     const clusterRoles = throwError('Error');
     component.isReadyToCreate();
@@ -162,10 +166,12 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should get the list of roles', async () => {
+  it('should get the list of roles', async done => {
     // given
     const roles = of({
       items: [
@@ -201,10 +207,12 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual(['user1', 'user2']);
       expect(component.filteredRoles).toEqual(['user1', 'user2']);
+
+      done();
     });
   });
 
-  it('should not fail if gets wrong data', async () => {
+  it('should not fail if gets wrong data', async done => {
     // given
     const roles = of({
       items: ''
@@ -229,10 +237,12 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should catch an error', async () => {
+  it('should catch an error', async done => {
     // given
     const roles = throwError('Error');
     component.isReadyToCreate();
@@ -255,10 +265,12 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should react on Save event with Role, on Permissions view', async () => {
+  it('should react on Save event with Role, on Permissions view', async done => {
     // given
     const roles = of({
       items: [
@@ -305,10 +317,12 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
       expect(RbacServiceMockStub.createRoleBinding).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
+
+      done();
     });
   });
 
-  it('should react on Save event with ClusterRole, on GlobalPermissions view', async () => {
+  it('should react on Save event with ClusterRole, on GlobalPermissions view', async done => {
     // given
     const clusterRoles = of({
       items: [
@@ -358,6 +372,8 @@ describe('RoleBindingModalComponent', () => {
         RbacServiceMockStub.createClusterRoleBinding
       ).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
+
+      done();
     });
   });
 });

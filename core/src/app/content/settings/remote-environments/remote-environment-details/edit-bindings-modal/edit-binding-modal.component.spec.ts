@@ -79,7 +79,7 @@ describe('EditBindingsModalComponent', () => {
     expect(component.environments).toEqual([]);
   });
 
-  it('should show and set envs and remoteevns', () => {
+  it('should show and set envs and remoteevns', done => {
     // given
     const remoteEnvs = of({
       remoteEnvironment: {
@@ -136,10 +136,12 @@ describe('EditBindingsModalComponent', () => {
       ]);
       expect(component.isActive).toBeTruthy();
       expect(component.checkIfEnvironmentExists()).toBeFalsy();
+
+      done();
     });
   });
 
-  it("should not fail if couldn't get envs", () => {
+  it("should not fail if couldn't get envs", done => {
     // given
     const remoteEnvs = of({
       remoteEnvironment: {
@@ -179,10 +181,12 @@ describe('EditBindingsModalComponent', () => {
       expect(component.environments).toEqual([]);
       expect(component.isActive).toBeTruthy();
       expect(component.checkIfEnvironmentExists()).toBeFalsy();
+
+      done();
     });
   });
 
-  it('should react on Save event', async () => {
+  it('should react on Save event', async done => {
     // given
     component.isActive = true;
     component.remoteEnv = {
@@ -231,6 +235,8 @@ describe('EditBindingsModalComponent', () => {
       expect(
         RemoteEnvironmentBindingServiceMockStub.bind
       ).toHaveBeenCalledTimes(1);
+
+      done();
     });
   });
 });

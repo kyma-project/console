@@ -47,7 +47,7 @@ describe('ResourceQuotasEntryRendererComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set disabled to true if disable event has been sent', async () => {
+    it('should set disabled to true if disable event has been sent', async done => {
       const subject = new Subject();
       const entry = {
         name: 'name',
@@ -63,10 +63,12 @@ describe('ResourceQuotasEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(true);
+
+        done();
       });
     });
 
-    it('should set disabled to false if disable event with disable property set to false, has been sent', async () => {
+    it('should set disabled to false if disable event with disable property set to false, has been sent', async done => {
       const subject = new Subject();
       const entry = {
         name: 'name',
@@ -82,10 +84,12 @@ describe('ResourceQuotasEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(false);
+
+        done();
       });
     });
 
-    it("shouldn't do anything if event sent has diffetent type than disable", async () => {
+    it("shouldn't do anything if event sent has diffetent type than disable", async done => {
       const subject = new Subject();
       const entry = {
         name: 'name',
@@ -101,10 +105,12 @@ describe('ResourceQuotasEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(false);
+
+        done();
       });
     });
 
-    it("shouldn't do anything if event sent corresponds to different entry", async () => {
+    it("shouldn't do anything if event sent corresponds to different entry", async done => {
       const subject = new Subject();
       const entry = {
         name: 'differentName',
@@ -120,6 +126,8 @@ describe('ResourceQuotasEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(false);
+
+        done();
       });
     });
   });

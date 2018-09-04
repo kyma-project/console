@@ -113,7 +113,7 @@ describe('PodsEntryRendererComponent', () => {
     );
   });
 
-  it("should disable the pod if 'disable' event with rigth data has been sent", async () => {
+  it("should disable the pod if 'disable' event with rigth data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -133,10 +133,12 @@ describe('PodsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(true);
+
+      done();
     });
   });
 
-  it("should not disable the pod if 'disable' event with different data has been sent", async () => {
+  it("should not disable the pod if 'disable' event with different data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -156,10 +158,12 @@ describe('PodsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(false);
+
+      done();
     });
   });
 
-  it("should not disable the pod if event type is no 'disable'", async () => {
+  it("should not disable the pod if event type is no 'disable'", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -179,6 +183,8 @@ describe('PodsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(false);
+
+      done();
     });
   });
 });
