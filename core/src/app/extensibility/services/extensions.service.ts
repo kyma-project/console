@@ -38,12 +38,22 @@ export class ExtensionsService {
   }
 
   isUsingSecureProtocol(url: string) {
-    if (!url || !url.startsWith('https')) {
+    if (!url || (!url.startsWith('https') && !this.isLocalDevelopment(url))) {
       console.error(
         `${url} is not using secure protocol. External views have to be served over HTTPS.`
       );
       return false;
     }
     return true;
+  }
+
+  private isLocalDevelopment(url: string) {
+    if (
+      url.startsWith('http://console-dev.kyma.local') ||
+      url.startsWith('http://localhost')
+    ) {
+      return true;
+    }
+    return false;
   }
 }

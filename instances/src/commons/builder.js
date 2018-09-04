@@ -7,17 +7,19 @@ class Builder {
 
   init() {
     return new Promise((resolve, reject) => {
-      if (process.env.REACT_APP_ENV !== 'production') {
-        console.log("Instances UI", "Development mode")
+      if (!process.env.REACT_APP_ENV === 'production') {
+        console.log('Instances UI', 'Development mode');
         resolve();
         return;
       }
+      const timeout = setTimeout(resolve, 1000);
       window.addEventListener('message', e => {
         if (!e.data || e.data[0] !== 'init') return;
         const data = e.data[1];
         this.currentEnvironmentId = data.currentEnvironmentId;
         this.token = data.idToken;
         this.sessionId = data.sessionId;
+        clearTimeout(timeout);
         resolve();
       });
     });

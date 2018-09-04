@@ -3,10 +3,10 @@ const DEFAULT_ENVIRONMENT_ID = 'production';
 class Builder {
   currentEnvironmentId = DEFAULT_ENVIRONMENT_ID;
   token = null;
+  sessionId = null;
 
   init() {
     return new Promise((resolve, reject) => {
-      console.log('env', process.env.REACT_APP_ENV);
       if (!process.env.REACT_APP_ENV === 'production') {
         resolve();
         return;
@@ -17,6 +17,7 @@ class Builder {
         const data = e.data[1];
         this.currentEnvironmentId = data.currentEnvironmentId;
         this.token = data.idToken;
+        this.sessionId = data.sessionId;
         clearTimeout(timeout);
         resolve();
       });
@@ -32,6 +33,10 @@ class Builder {
 
   getCurrentEnvironmentId() {
     return this.currentEnvironmentId;
+  }
+
+  getSessionId() {
+    return this.sessionId;
   }
 }
 
