@@ -23,13 +23,32 @@ export class ExtensionsService {
     });
   }
 
+  getClusterExtensions(): Observable<any> {
+    const resourceUrl = `${AppConfig.k8sApiServerUrl_ui}clustermicrofrontends`;
+    return this.http.get<List<IMicroFrontend>>(resourceUrl).map(res => {
+      return res.items.map(item => {
+        return new MicroFrontend(item);
+      });
+    });
+  }
+
   isUsingSecureProtocol(url: string) {
-    if (!url.startsWith('https')) {
+    if (!url || (!url.startsWith('https') && !this.isLocalDevelopment(url))) {
       console.error(
         `${url} is not using secure protocol. External views have to be served over HTTPS.`
       );
       return false;
     }
     return true;
+  }
+
+  private isLocalDevelopment(url: string) {
+    if (
+      url.startsWith('http://console-dev.kyma.local') ||
+      url.startsWith('http://localhost')
+    ) {
+      return true;
+    }
+    return false;
   }
 }

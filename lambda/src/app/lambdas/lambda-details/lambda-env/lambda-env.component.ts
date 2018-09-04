@@ -14,7 +14,10 @@ import { IEnvVar } from '../../../shared/datamodel/k8s/container';
 @Component({
   selector: 'app-lambda-env-table',
   templateUrl: './lambda-env.component.html',
-  styleUrls: ['../lambda-details.component.scss'],
+  styleUrls: [
+    '../lambda-details.component.scss',
+    './lambda-env.component.scss',
+  ],
 })
 export class LambdaEnvComponent {
   @Input() envs: IEnvVar[];
@@ -50,7 +53,7 @@ export class LambdaEnvComponent {
 
   /** validatesEnvVariableName checks whether a environment variable name is valid */
   validatesEnvVariableName(): void {
-    const regex = /^[a-z][a-zA-Z0-9_]*/;
+    const regex = /^[a-zA-Z][a-zA-Z0-9_]*/;
     const found = this.envVar.name.match(regex);
     if (this.envs === undefined) {
       this.envs = [];

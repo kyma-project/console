@@ -10,7 +10,7 @@ let page, browser;
 let dexReady = false;
 const consoleUrl = `https://console.${config.domain}/`;
 
-xdescribe('Docs basic tests', () => {
+describe('Docs basic tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
     const data = await common.beforeAll(dexReady);

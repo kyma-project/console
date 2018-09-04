@@ -169,6 +169,7 @@ const appRoutes: Routes = [
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
         ]
       },
+      { path: 'extensions/:id', component: ExternalViewComponent },
       { path: '', pathMatch: 'full', redirectTo: 'environments/workspace' },
       { path: '**', pathMatch: 'full', redirectTo: 'environments/workspace' }
     ]

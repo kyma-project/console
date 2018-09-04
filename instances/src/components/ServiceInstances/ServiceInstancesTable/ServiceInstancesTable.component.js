@@ -70,7 +70,7 @@ function ServiceInstancesTable({
         size: 0.2,
         accesor: el => (
           <ServiceClassButton>
-            {getResourceDisplayName(el.serviceClass)}
+            {el.serviceClass ? getResourceDisplayName(el.serviceClass) : '-'}
           </ServiceClassButton>
         ),
       },

@@ -35,15 +35,15 @@
           <div class="tn-form__item">
             <label class="tn-form__label" for="input-2">Labels</label>
             <div class="labels-input" id="input-2">
-              <span class="tn-badge tn-badge--pill labels" *ngFor="let label of labels" (click)="updateLabel(label)">
+              <span title="Edit label" class="tn-badge-labels tn-badge tn-badge--pill labels" *ngFor="let label of labels" (click)="updateLabel(label)">
                 {{ label }}
                 <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
               </span>
-              <input #labelsInput *ngIf="3 > labels.length" type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()"
-                [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null" (blur)="addLabel()">
+              <input #labelsInput type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null"
+                (blur)="addLabel()">
             </div>
             <div *ngIf="wrongLabel" class="alert alert-danger">
-              Label "{{ wrongLabel }}" has wrong format! ( key: value )
+              {{ wrongLabelMessage }}
             </div>
           </div>
         </div>
@@ -72,32 +72,10 @@
                       </li>
 
                       <li>
-                        <a [class.disabled]="lambda.metadata.name.length <= 0 || isFunctionNameInvalid || isHTTPTriggerAdded" (click)="showHTTPTriggerMenu()"
-                          class="tn-dropdown__item">HTTP Trigger</a>
+                        <a [class.disabled]="lambda.metadata.name.length <= 0 || isFunctionNameInvalid || isHTTPTriggerAdded" (click)="showHTTPTrigger()"
+                          class="tn-dropdown__item">Expose via HTTPS</a>
                       </li>
                     </ul>
-                  </div>
-                </div>
-                <div class="tn-dropdown__menu trigger-menu trigger-popup" *ngIf="toggleHTTPTriggerMenu">
-                  <div class="fd-form__item fd-form__item--check">
-                    <div class="trigger-body">
-                      <label class="fd-form__label" for="Yj07w605">
-                        <span class="fd-toggle fd-toggle--small fd-form__control">
-                          <input type="checkbox" id="Yj07w605" [(ngModel)]="isHTTPTriggerAuthenticated" [attr.disabled]="!lambda.metadata.name || isFunctionNameInvalid ? '':null"
-                            checked>
-                          <span class="fd-toggle__switch" role="presentation"></span>
-                        </span>
-                        Enable Authentication
-                      </label>
-                    </div>
-                    <div class="trigger-footer">
-                      <button class="tn-button tn-button--small tn-button--small-secondary tn-button--text" (click)=hideHTTPTriggerMenu()>
-                        Cancel
-                      </button>
-                      <button class="tn-button tn-button--small tn-button--text" [disabled]="!lambda.metadata.name || isFunctionNameInvalid" (click)=addHTTPTrigger()>
-                        Add
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -198,3 +176,5 @@
 </section>
 <app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>
 <app-event-trigger-chooser #eventTriggerChooserModal (eventEmitter)="handleEventEmitter($event)"></app-event-trigger-chooser>
+<app-http-trigger #httpTriggerModal (httpEmitter)="handleHttpEmitter($event)"></app-http-trigger>
+

@@ -22,7 +22,7 @@ export class FetchTokenModalComponent {
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
       sessionId = eventData.sessionId;
-      this.token = eventData.idToken;
+      this.token = `Bearer ${eventData.idToken}`;
     });
   }
 

@@ -54,6 +54,29 @@
       </ng-container>
     </ng-container>
   </div>
+  <div *ngIf="!currentEnvironmentId && currentNavModel.showEnvChooser">
+    <ng-container *ngFor="let group of externalViewsGroups">
+      <ng-container *ngIf="group.link">
+        <div class="sf-toolbar__group">
+          <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{ group.name }}</a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!group.link">
+        <div class="sf-toolbar__item">
+          <div class="sf-toolbar__header">{{ group.name }}</div>
+          <div class="sf-toolbar__group">
+            <ng-container *ngFor="let entry of group.entries">
+              <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
+                style="cursor: pointer">{{ entry.name }}</a>
+              <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
+                <img src="assets/external.svg" />
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
   <div class="sf-toolbar__footer">
     <span class="sf-toolbar__item sf-toolbar__item--seperator"></span>
     <a *ngIf='currentNavModel.showEnvChooser' class="sf-toolbar__item" routerLink="/home/settings" routerLinkActive="is-active">

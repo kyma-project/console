@@ -25,9 +25,12 @@
   },
   "scripts": {
     "prepare": "curl --insecure -o ./src/commons/manifest.yaml https://raw.githubusercontent.com/kyma-project/kyma/master/docs/manifest.yaml",
-    "start": "PORT=8002 react-app-rewired start",
+    "start": "echo `` > public/config/config.js && PORT=8002 react-app-rewired start",
+    "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=8002 react-app-rewired start",
+    "start:kyma:api": "npm run copy-config && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8002 react-app-rewired start",
     "build": "REACT_APP_ENV=production react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "copy-config": "cp ../config.js public/config/config.js"
   }
 }
