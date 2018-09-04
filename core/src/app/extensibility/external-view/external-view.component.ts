@@ -117,7 +117,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       Object.entries(params).forEach(entry => {
         processedUrl = processedUrl.replace(
           '{' + prefix + entry[0] + '}',
-          encodeURIComponent('' + entry[1])
+          encodeURIComponent(entry[1] ? entry[1].toString() : '')
         );
       });
     }

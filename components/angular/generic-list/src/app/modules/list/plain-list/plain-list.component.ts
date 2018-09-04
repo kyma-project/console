@@ -68,8 +68,8 @@ export class PlainListComponent implements OnChanges {
 
   setLoaded(status: boolean): void {
     this.loaded = status;
-    if (status) {
-      this.initialized = true;
+    if (!this.initialized && status) {
+      this.initialized = status;
     }
   }
 
