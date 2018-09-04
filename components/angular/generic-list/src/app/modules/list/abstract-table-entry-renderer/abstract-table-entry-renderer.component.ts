@@ -1,15 +1,14 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, Input, Injector } from '@angular/core';
 
 @Component({
-  template: ''
+  template: '',
 })
 export class AbstractTableEntryRendererComponent {
-
   @Input() entry: any;
   @Input() entryEventHandler: any;
   protected action: Array<any> = [];
   constructor(protected injector: Injector) {
-    this.entry = this.injector.get('entry');
-    this.entryEventHandler = this.injector.get('entryEventHandler');
+    this.entry = this.injector.get<any>('entry' as any);
+    this.entryEventHandler = this.injector.get<any>('entryEventHandler' as any);
   }
 }

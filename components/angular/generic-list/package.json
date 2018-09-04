@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/y-generic-list",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
@@ -23,7 +23,6 @@
     "@angular/platform-browser-dynamic": "^6.1.4",
     "rxjs": "^6.3.1",
     "core-js": "^2.5.7",
-    "npm-audit": "0.0.3",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

@@ -17,6 +17,7 @@ import { Facet } from '../filter/Facet';
 })
 export class ListFilterComponent implements OnInit, OnChanges {
   @Input() filterState;
+  // tslint:disable-next-line:no-output-on-prefix
   @Output() onFilterChanged = new EventEmitter();
 
   ariaExpanded = false;

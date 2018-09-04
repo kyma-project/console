@@ -87,11 +87,11 @@
   "defaultProject": "generic-list-library",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
+      "prefix": "y",
       "styleext": "css"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": "y"
     }
   }
 }

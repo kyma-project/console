@@ -2,21 +2,19 @@ import { AbstractTableEntryRendererComponent } from './../modules/list/list.modu
 import { Component, OnInit, Input, Injector } from '@angular/core';
 
 @Component({
-  selector: 'app-dummy-element-renderer',
+  selector: 'y-dummy-element-renderer',
   templateUrl: './dummy-element-renderer.component.html',
-  styleUrls : ['./dummy-element-renderer.component.scss']
+  styleUrls: ['./dummy-element-renderer.component.scss'],
 })
 export class DummyElementRendererComponent extends AbstractTableEntryRendererComponent {
-
-   actions = [
+  actions = [
     {
       function: 'doABC',
-      name: 'ABC'
+      name: 'ABC',
     },
     {
       function: 'doXYZ',
-      name: 'XYZ'
-    }
+      name: 'XYZ',
+    },
   ];
-
 }

@@ -27,6 +27,7 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
   private currentEnvironmentId: string;
   private activeTab: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('mode') private mode: string;
 
   constructor(

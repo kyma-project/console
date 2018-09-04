@@ -27,8 +27,8 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
     protected injector: Injector,
     private componentCommunicationService: ComponentCommunicationService
   ) {
-    this.entry = this.injector.get('entry');
-    this.entryEventHandler = this.injector.get('entryEventHandler');
+    this.entry = this.injector.get<any>('entry' as any);
+    this.entryEventHandler = this.injector.get<any>('entryEventHandler' as any);
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;

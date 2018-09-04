@@ -4,9 +4,8 @@ import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
   selector: '[stringReplace]'
 })
 export class ReplaceDirective implements AfterViewInit {
-
-  @Input('stringReplace')
-  stringReplace: string;
+  // tslint:disable-next-line:no-input-rename
+  @Input('stringReplace') stringReplace: string;
 
   constructor(private el: ElementRef) {}
 
