@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceQuotaEntryRendererComponent } from './resource-quota-entry-renderer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 describe('ResourceQuotasEntryRendererComponent', () => {
   let component: ResourceQuotaEntryRendererComponent;
@@ -10,7 +10,7 @@ describe('ResourceQuotasEntryRendererComponent', () => {
   let componentCommunicationService: ComponentCommunicationService;
 
   class MockComponentCommunicationService {
-    public observable$: Observable<{}>;
+    public observable$: Observable<{}> = of({});
   }
 
   beforeEach(async(() => {
@@ -49,7 +49,6 @@ describe('ResourceQuotasEntryRendererComponent', () => {
   });
 
   it('should create', () => {
-    componentCommunicationService.observable$ = of([]);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
