@@ -28,7 +28,7 @@ podTemplate(label: label) {
     node(label) {
         try {
             timestamps {
-                timeout(time:120, unit:"MINUTES") {
+                timeout(time:400, unit:"MINUTES") {
                     ansiColor('xterm') {
                         stage("setup") {
                             checkout scm
@@ -41,17 +41,17 @@ podTemplate(label: label) {
                                 sh "docker login -u $uname -p '$pwd' $env.DOCKER_REGISTRY"
                             }
 
-                            if (isMaster) {
-                                ws() {
-                                    scriptUrl = "$env.CHECKMARX_LIBRARY"
-                                    scan = loadModule url: scriptUrl, name: 'scan', branch: 'kyma'
-                                }
-                            }
+                            // if (isMaster) {
+                            //     ws() {
+                            //         scriptUrl = "$env.CHECKMARX_LIBRARY"
+                            //         scan = loadModule url: scriptUrl, name: 'scan', branch: 'kyma'
+                            //     }
+                            // }
                         }
 
 
                         stage("resolve dependencies $application") {
-                            execute("npm install --no-optional")
+                            execute("npm install -f")
                         }
 
                         stage("code quality $application") {
@@ -62,13 +62,13 @@ podTemplate(label: label) {
                             execute("make test", ["CI=true"])
                         }
 
-                        // if (isMaster) {
-                        //     stage("IP scan $application (WhiteSource)") {
-                        //         withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                        //             execute("make scan", ["API_KEY=$apikey"])
-                        //         }
-                        //     }
-                        // }
+                        if (isMaster) {
+                            stage("IP scan $application (WhiteSource)") {
+                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
+                                    execute("make scan", ["API_KEY=$apikey"])
+                                }
+                            }
+                        }
 
                         // if (isMaster) {
                         //     stage("security scan $application (Checkmarx)"){

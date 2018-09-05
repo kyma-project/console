@@ -17,11 +17,14 @@
     "react-scripts": "1.1.4",
     "react-scrollable-anchor": "^0.6.1",
     "styled-components": "^3.2.3",
-    "whitesource": "^18.5.2",
-    "@kyma-project/react-components": "^0.0.12",
+    "@kyma-project/react-components": "^0.0.17",
     "react-app-rewired": "^1.5.2",
     "yaml-loader": "^0.5.0",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "mkdirp": "^0.5.1",
+    "safe-buffer": "5.1.2"
   },
   "scripts": {
     "prepare": "curl --insecure -o ./src/commons/manifest.yaml https://raw.githubusercontent.com/kyma-project/kyma/master/docs/manifest.yaml",

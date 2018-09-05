@@ -28,6 +28,10 @@
     "styled-components-grid": "^2.1.0",
     "swagger-ui-dist": "^3.17.3"
   },
+  "devDependencies": {
+    "mkdirp": "^0.5.1",
+    "safe-buffer": "5.1.2"
+  },
   "scripts": {
     "start": "echo `` > public/config/config.js && PORT=8000 react-app-rewired start",
     "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=8000 react-app-rewired start",
