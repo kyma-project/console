@@ -9,8 +9,8 @@
           <h4 class="tn-modal__title">{{ title }}</h4>
         </div>
         <div class="input-group tn-modal__body">
-          <p class="info" *ngIf="message">{{message}}</p>
-          <textarea readonly type="text" class="form-control copy-text" ngClass="{{message ? 'copy-text--border' : ''}}" value={{content}} placeholder="content will be copied after clicking the copy button" rows="10" cols="50"></textarea>
+          <p class="info" *ngIf="message">{{ message }}</p>
+          <textarea readonly type="text" class="form-control copy-text" ngClass="{{ message ? 'copy-text--border' : '' }}" value={{ content }} placeholder="content will be copied after clicking the copy button" rows="10" cols="50"></textarea>
         </div>
         <footer class="tn-modal__footer-items">
           <button class="tn-modal__button-primary sf-button--primary tn-button--small" (click)="cancel($event)">OK</button>

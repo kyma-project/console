@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../operation/abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-resource-quota-entry-renderer',
   templateUrl: './resource-quota-entry-renderer.component.html'
 })
-export class ResourceQuotaEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class ResourceQuotaEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,

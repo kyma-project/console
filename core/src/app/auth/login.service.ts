@@ -1,9 +1,8 @@
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from '../app.config';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable()
 export class LoginService {

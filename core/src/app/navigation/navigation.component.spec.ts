@@ -3,7 +3,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { NavigationComponent } from './navigation.component';
 import { AppModule } from '../app.module';
 import { ExtensionsService } from '../extensibility/services/extensions.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -11,10 +11,10 @@ describe('NavigationComponent', () => {
 
   const ExtensionsServiceStub = {
     getExtensions() {
-      return Observable.of([]);
+      return of([]);
     },
     getClusterExtensions() {
-      return Observable.of([]);
+      return of([]);
     }
   };
 

@@ -12,7 +12,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Filter, GenericTableComponent } from '@kyma-project/y-generic-list';
 import { ImplicitReceiver } from '@angular/compiler';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 export class AbstractKubernetesElementListComponent

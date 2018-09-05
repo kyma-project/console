@@ -1,6 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../../content/environments/operation/abstract-kubernetes-entry-renderer.component';
 import { ActivatedRoute, Params } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './roles-entry-renderer.component.html'
@@ -18,7 +19,7 @@ export class RolesEntryRendererComponent extends AbstractKubernetesEntryRenderer
   constructor(protected injector: Injector, private route: ActivatedRoute) {
     super(injector);
     this.route.queryParamMap
-      .map((params: Params) => params.params)
+      .pipe(map((params: Params) => params.params))
       .subscribe(paramsMap => {
         this.activeTab = paramsMap.tab;
       });

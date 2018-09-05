@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs/Observable';
 import { DataProvider } from './data-provider';
 import { DataProviderResult } from './data-provider-result';
 import { Filter } from '../filter/Filter';
 import { SimpleFilterMatcher } from '../filter/simple-filter-matcher';
+import { Observable } from 'rxjs';
 
 export class ArrayDataProvider implements DataProvider {
   data: any[];
@@ -16,7 +16,7 @@ export class ArrayDataProvider implements DataProvider {
   getData(
     pageNumber: number,
     pageSize: number,
-    filters: Filter[]
+    filters: Filter[],
   ): Observable<DataProviderResult> {
     const filteredData = this.matcher.filter(this.data, filters);
     const index = pageSize * (pageNumber - 1);

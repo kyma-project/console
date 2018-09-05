@@ -1,13 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
 import { AppConfig } from '../../../../app.config';
 
 import * as _ from 'lodash';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { Subscription } from 'rxjs/Subscription';
 import * as YAML from 'js-yaml';
 
 @Injectable()

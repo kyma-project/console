@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Filter } from '@kyma-project/y-generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { AbstractKubernetesElementListComponent } from '../../../operation/abstract-kubernetes-element-list.component';

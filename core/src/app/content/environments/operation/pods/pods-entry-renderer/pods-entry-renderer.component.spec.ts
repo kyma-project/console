@@ -3,8 +3,7 @@ import { AppModule } from './../../../../../app.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PodsEntryRendererComponent } from './pods-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { of, Subject } from 'rxjs';
 
 describe('PodsEntryRendererComponent', () => {
   let component: PodsEntryRendererComponent;
@@ -114,7 +113,7 @@ describe('PodsEntryRendererComponent', () => {
     );
   });
 
-  it("should disable the pod if 'disable' event with rigth data has been sent", async () => {
+  it("should disable the pod if 'disable' event with rigth data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -124,7 +123,7 @@ describe('PodsEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -134,10 +133,12 @@ describe('PodsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(true);
+
+      done();
     });
   });
 
-  it("should not disable the pod if 'disable' event with different data has been sent", async () => {
+  it("should not disable the pod if 'disable' event with different data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -147,7 +148,7 @@ describe('PodsEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -157,10 +158,12 @@ describe('PodsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(false);
+
+      done();
     });
   });
 
-  it("should not disable the pod if event type is no 'disable'", async () => {
+  it("should not disable the pod if event type is no 'disable'", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -170,7 +173,7 @@ describe('PodsEntryRendererComponent', () => {
       disabled: false
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -180,6 +183,8 @@ describe('PodsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(false);
+
+      done();
     });
   });
 });

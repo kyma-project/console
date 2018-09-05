@@ -13,7 +13,7 @@ import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-render
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-replica-sets',

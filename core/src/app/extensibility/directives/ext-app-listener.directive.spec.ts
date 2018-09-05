@@ -5,7 +5,7 @@ import { ExtAppListenerDirective } from './ext-app-listener.directive';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
-import { ReplaySubject } from '../../../../node_modules/rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 
 describe('ExtAppListenerDirective', () => {
   let extAppListenerDirective: ExtAppListenerDirective;

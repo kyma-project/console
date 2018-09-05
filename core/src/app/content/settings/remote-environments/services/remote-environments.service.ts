@@ -5,7 +5,7 @@ import {
 import { List } from '../../../../shared/datamodel/k8s/generic/list';
 import { AppConfig } from '../../../../app.config';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
 

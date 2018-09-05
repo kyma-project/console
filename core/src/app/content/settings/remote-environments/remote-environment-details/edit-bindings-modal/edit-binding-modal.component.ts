@@ -6,8 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RemoteEnvironmentsService } from './../../services/remote-environments.service';
 
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-edit-bindings-modal',
@@ -44,7 +43,7 @@ export class EditBindingsModalComponent {
         this.environmentsService.getEnvironments() as any
       ];
 
-      Observable.forkJoin(observables).subscribe(
+      forkJoin(observables).subscribe(
         data => {
           const response: any = data;
 

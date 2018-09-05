@@ -1,31 +1,40 @@
 import {
-  Component, Input, ReflectiveInjector, Type, ViewChild, ViewContainerRef
+  Component,
+  Input,
+  Type,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
-import {PlainListComponent} from '../plain-list/plain-list.component';
-import {Observable} from 'rxjs/Observable';
+import { PlainListComponent } from '../plain-list/plain-list.component';
+import { Observable } from 'rxjs';
+import { Injector } from '@angular/core';
 
 @Component({
   selector: 'y-plain-table',
   templateUrl: './plain-table.component.html',
-  styleUrls: ['./plain-table.component.scss']
+  styleUrls: ['./plain-table.component.scss'],
 })
 export class PlainTableComponent extends PlainListComponent {
-
   @Input() headerRenderer: Type<any>;
   @Input() footerRenderer: Type<any>;
   @Input() entryTagName = 'div';
 
-  @ViewChild('header', { read: ViewContainerRef }) headerViewContainer: ViewContainerRef;
-  @ViewChild('footer', { read: ViewContainerRef }) footerViewContainer: ViewContainerRef;
+  @ViewChild('header', { read: ViewContainerRef })
+  headerViewContainer: ViewContainerRef;
+  @ViewChild('footer', { read: ViewContainerRef })
+  footerViewContainer: ViewContainerRef;
 
   render(source: Observable<any[]>) {
-
     super.render(source);
 
     if (this.headerRenderer) {
-      const resolvedInputs = ReflectiveInjector.resolve([]);
-      const injector = ReflectiveInjector.fromResolvedProviders(resolvedInputs, this.headerViewContainer.parentInjector);
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.headerRenderer);
+      const injector = Injector.create({
+        providers: [],
+        parent: this.headerViewContainer.parentInjector,
+      });
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+        this.headerRenderer,
+      );
       const hostTag = document.createElement('div');
       // sf-list__head class not properly applied on dynamically injected element
       hostTag.setAttribute('style', 'text-align:left');
@@ -35,9 +44,13 @@ export class PlainTableComponent extends PlainListComponent {
     }
 
     if (this.footerRenderer) {
-      const resolvedInputs = ReflectiveInjector.resolve([]);
-      const injector = ReflectiveInjector.fromResolvedProviders(resolvedInputs, this.footerViewContainer.parentInjector);
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.footerRenderer);
+      const injector = Injector.create({
+        providers: [],
+        parent: this.footerViewContainer.parentInjector,
+      });
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+        this.footerRenderer,
+      );
       const hostTag = document.createElement('div');
       hostTag.setAttribute('class', 'sf-list__foot');
       const component = componentFactory.create(injector, [], hostTag);

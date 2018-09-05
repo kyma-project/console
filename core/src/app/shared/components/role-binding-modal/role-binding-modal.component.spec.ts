@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RoleBindingModalComponent } from './role-binding-modal.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, throwError } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { RbacService } from '../../services/rbac.service';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
@@ -8,22 +8,22 @@ import { FormsModule } from '@angular/forms';
 
 const RbacServiceMock = {
   getClusterRoles() {
-    return Observable.of({});
+    return of({});
   },
   getRoles() {
-    return Observable.of({});
+    return of({});
   },
   createClusterRoleBinding() {
-    return Observable.of({});
+    return of({});
   },
   createRoleBinding() {
-    return Observable.of({});
+    return of({});
   }
 };
 
 const CurrentEnvironmentServiceMock = {
   getCurrentEnvironmentId() {
-    return Observable.of('currentId');
+    return of('currentId');
   }
 };
 
@@ -69,9 +69,9 @@ describe('RoleBindingModalComponent', () => {
     expect(component.filteredRoles).toEqual([]);
   });
 
-  it('should get the list of cluster roles', async () => {
+  it('should get the list of cluster roles', async done => {
     // given
-    const clusterRoles = Observable.of({
+    const clusterRoles = of({
       items: [
         {
           metadata: {
@@ -106,12 +106,14 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual(['user1', 'user2']);
       expect(component.filteredRoles).toEqual(['user1', 'user2']);
+
+      done();
     });
   });
 
-  it('should not fail if gets wrong data', async () => {
+  it('should not fail if gets wrong data', async done => {
     // given
-    const clusterRoles = Observable.of({
+    const clusterRoles = of({
       items: ''
     });
     component.isReadyToCreate();
@@ -135,12 +137,14 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should catch an error', async () => {
+  it('should catch an error', async done => {
     // given
-    const clusterRoles = Observable.throw('Error');
+    const clusterRoles = throwError('Error');
     component.isReadyToCreate();
 
     const spyClusterRoles = spyOn(
@@ -162,12 +166,14 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should get the list of roles', async () => {
+  it('should get the list of roles', async done => {
     // given
-    const roles = Observable.of({
+    const roles = of({
       items: [
         {
           metadata: {
@@ -201,12 +207,14 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual(['user1', 'user2']);
       expect(component.filteredRoles).toEqual(['user1', 'user2']);
+
+      done();
     });
   });
 
-  it('should not fail if gets wrong data', async () => {
+  it('should not fail if gets wrong data', async done => {
     // given
-    const roles = Observable.of({
+    const roles = of({
       items: ''
     });
     component.isReadyToCreate();
@@ -229,12 +237,14 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should catch an error', async () => {
+  it('should catch an error', async done => {
     // given
-    const roles = Observable.throw('Error');
+    const roles = throwError('Error');
     component.isReadyToCreate();
 
     const spyGetRoles = spyOn(RbacServiceMockStub, 'getRoles').and.returnValue(
@@ -255,12 +265,14 @@ describe('RoleBindingModalComponent', () => {
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.roles).toEqual([]);
       expect(component.filteredRoles).toEqual([]);
+
+      done();
     });
   });
 
-  it('should react on Save event with Role, on Permissions view', async () => {
+  it('should react on Save event with Role, on Permissions view', async done => {
     // given
-    const roles = Observable.of({
+    const roles = of({
       items: [
         {
           metadata: {
@@ -285,7 +297,7 @@ describe('RoleBindingModalComponent', () => {
     const spyCreateRoleBinding = spyOn(
       RbacServiceMockStub,
       'createRoleBinding'
-    ).and.returnValue(Observable.of({ data: 'created' }));
+    ).and.returnValue(of({ data: 'created' }));
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
@@ -305,12 +317,14 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
       expect(RbacServiceMockStub.createRoleBinding).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
+
+      done();
     });
   });
 
-  it('should react on Save event with ClusterRole, on GlobalPermissions view', async () => {
+  it('should react on Save event with ClusterRole, on GlobalPermissions view', async done => {
     // given
-    const clusterRoles = Observable.of({
+    const clusterRoles = of({
       items: [
         {
           metadata: {
@@ -336,7 +350,7 @@ describe('RoleBindingModalComponent', () => {
     const spyCreateClusterRoleBinding = spyOn(
       RbacServiceMockStub,
       'createClusterRoleBinding'
-    ).and.returnValue(Observable.of({ data: 'created' }));
+    ).and.returnValue(of({ data: 'created' }));
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
@@ -358,6 +372,8 @@ describe('RoleBindingModalComponent', () => {
         RbacServiceMockStub.createClusterRoleBinding
       ).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
+
+      done();
     });
   });
 });

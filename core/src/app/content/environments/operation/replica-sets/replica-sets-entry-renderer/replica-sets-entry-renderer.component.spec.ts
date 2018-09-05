@@ -3,40 +3,37 @@ import { AppModule } from './../../../../../app.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subject, of } from 'rxjs';
 
 describe('ReplicaSetsEntryRendererComponent', () => {
   let component: ReplicaSetsEntryRendererComponent;
   let fixture: ComponentFixture<ReplicaSetsEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [AppModule],
-        providers: [
-          [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
-          [
-            {
-              provide: 'entry',
-              useValue: {
-                objectMeta: {
-                  name: 'name'
-                },
-                pods: {
-                  warnings: [],
-                  pending: []
-                }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [AppModule],
+      providers: [
+        [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
+        [
+          {
+            provide: 'entry',
+            useValue: {
+              objectMeta: {
+                name: 'name'
+              },
+              pods: {
+                warnings: [],
+                pending: []
               }
             }
-          ],
-          [{ provide: 'entryEventHandler', useValue: {} }],
-          ComponentCommunicationService
-        ]
-      }).compileComponents();
-    })
-  );
+          }
+        ],
+        [{ provide: 'entryEventHandler', useValue: {} }],
+        ComponentCommunicationService
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReplicaSetsEntryRendererComponent);
@@ -49,7 +46,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should disable the replica set if 'disable' event with rigth data has been sent", async () => {
+  it("should disable the replica set if 'disable' event with rigth data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -59,7 +56,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -69,10 +66,12 @@ describe('ReplicaSetsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(true);
+
+      done();
     });
   });
 
-  it("should not disable the replica set if 'disable' event with different data has been sent", async () => {
+  it("should not disable the replica set if 'disable' event with different data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -82,7 +81,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -92,10 +91,12 @@ describe('ReplicaSetsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(false);
+
+      done();
     });
   });
 
-  it("should not disable the replica set if event type is no 'disable'", async () => {
+  it("should not disable the replica set if event type is no 'disable'", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
@@ -105,7 +106,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
       disabled: false
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
-      Observable.of(subject.next(entry))
+      of(subject.next(entry))
     );
     expect(component.disabled).toEqual(false);
     fixture.whenStable().then(async () => {
@@ -115,6 +116,8 @@ describe('ReplicaSetsEntryRendererComponent', () => {
         entry
       });
       expect(component.disabled).toEqual(false);
+
+      done();
     });
   });
 });
