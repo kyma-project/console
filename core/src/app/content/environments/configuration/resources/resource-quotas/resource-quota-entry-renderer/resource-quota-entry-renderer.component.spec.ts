@@ -49,6 +49,7 @@ describe('ResourceQuotasEntryRendererComponent', () => {
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
