@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 
 import { JsonSchemaForm } from '@kyma-project/react-components';
 
-import { NoFormText } from './styled';
-
-class SecondStep extends React.Component {
+class SchemaData extends React.Component {
   static propTypes = {
     callback: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
@@ -39,19 +37,6 @@ class SecondStep extends React.Component {
     } = this.props;
     const { instanceCreateParameters } = this.state;
 
-    if (
-      !instanceCreateParameterSchema ||
-      (instanceCreateParameterSchema &&
-        !instanceCreateParameterSchema.properties)
-    ) {
-      return (
-        <NoFormText>
-          No further configuration for selected Service Plan is needed. You can
-          submit the form and create the service instance.
-        </NoFormText>
-      );
-    }
-
     return (
       <JsonSchemaForm
         schema={instanceCreateParameterSchema}
@@ -66,4 +51,4 @@ class SecondStep extends React.Component {
   }
 }
 
-export default SecondStep;
+export default SchemaData;

@@ -76,6 +76,7 @@ Example:
 ```
 
 Form:
+
 ![alt text](./assets/screen-schema-form.png 'SchemaForm')
 
 Best practices for designing schema object:

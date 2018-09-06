@@ -7,7 +7,7 @@ class InformationModal extends React.Component {
   static propTypes = {
     title: PropTypes.any.isRequired,
     content: PropTypes.any.isRequired,
-    footer: PropTypes.any.isRequired,
+    footer: PropTypes.any,
     modalOpeningComponent: PropTypes.any,
     width: PropTypes.string,
   };
