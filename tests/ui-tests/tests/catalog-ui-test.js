@@ -153,10 +153,13 @@ describe('Catalog basic tests', () => {
     const frame = await kymaConsole.getFrame(page);
     const redis = await frame.$(exampleServiceClassButton);
     await redis.click();
-    await frame.waitForSelector(exampleServiceClassTitle);
-    const title = await frame.$(exampleServiceClassTitle);
-    const provider = await frame.$(exampleServiceClassProvider);
-    const description = await frame.$(exampleServiceClassDescription);
+    await waitForNavigationAndContext(page);
+
+    const frame2 = await kymaConsole.getFrame(page);
+    await frame2.waitForSelector(exampleServiceClassTitle);
+    const title = await frame2.$(exampleServiceClassTitle);
+    const provider = await frame2.$(exampleServiceClassProvider);
+    const description = await frame2.$(exampleServiceClassDescription);
     expect(title.toString()).not.toBeNull();
     expect(provider.toString()).not.toBeNull();
     expect(description.toString()).not.toBeNull();
@@ -186,7 +189,9 @@ describe('Catalog basic tests', () => {
     const redis = await frame.$(exampleServiceClassButton);
     await redis.click();
     await waitForNavigationAndContext(page);
-    await frame.waitForSelector(addToEnvButton, { visible: true });
+
+    const frame2 = await kymaConsole.getFrame(page);
+    await frame2.waitForSelector(addToEnvButton, { visible: true });
 
     await catalog.createInstance(page, instanceTitle2, instanceLabel2);
   });
@@ -257,6 +262,12 @@ describe('Catalog basic tests', () => {
     const exampleInstanceServicePlan = catalog.prepareSelector(
       'instance-service-plan'
     );
+    const exampleInstanceServiceDocumentationLink = catalog.prepareSelector(
+      'instance-service-documentation-link'
+    );
+    const exampleInstanceServiceSupportLink = catalog.prepareSelector(
+      'instance-service-support-link'
+    );
     const exampleInstanceStatusType = catalog.prepareSelector(
       'instance-status-type'
     );
@@ -269,18 +280,21 @@ describe('Catalog basic tests', () => {
       visible: true
     });
     await redis.click();
-    // await frame.waitForSelector(instancesHeaderSelector);
-    // const instancesHeader = await frame.$eval(
-    //   instancesHeaderSelector,
-    //   item => item.innerHTML
-    // );
-    // expect(instancesHeader).toContain(instanceExpectedHeader);
+    await waitForNavigationAndContext(page);
 
-    const serviceClass = await frame.$(exampleInstanceServiceClass);
-    const servicePlan = await frame.$(exampleInstanceServicePlan);
-    const statusType = await frame.$(exampleInstanceStatusType);
+    await kymaConsole.getFrame(page);
+    const frame2 = await kymaConsole.getFrame(page);
+    const serviceClass = await frame2.$(exampleInstanceServiceClass);
+    const servicePlan = await frame2.$(exampleInstanceServicePlan);
+    const documentationLink = await frame2.$(
+      exampleInstanceServiceDocumentationLink
+    );
+    const supportLink = await frame2.$(exampleInstanceServiceSupportLink);
+    const statusType = await frame2.$(exampleInstanceStatusType);
     expect(serviceClass.toString()).not.toBeNull();
     expect(servicePlan.toString()).not.toBeNull();
+    expect(documentationLink.toString()).not.toBeNull();
+    expect(supportLink.toString()).not.toBeNull();
     expect(statusType.toString()).not.toBeNull();
   });
 });

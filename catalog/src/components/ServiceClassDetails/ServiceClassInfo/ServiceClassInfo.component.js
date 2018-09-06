@@ -9,7 +9,7 @@ import {
   ImagePlaceholder,
   ServiceTitle,
   ServiceProvider,
-  DocsLink,
+  ExternalLink,
   Image,
   TagsWrapper,
   Tag,
@@ -20,6 +20,7 @@ const ServiceClassInfo = ({
   providerDisplayName,
   creationTimestamp,
   documentationUrl,
+  supportUrl,
   imageUrl,
   tags,
 }) => {
@@ -54,9 +55,17 @@ const ServiceClassInfo = ({
         {documentationUrl && (
           <Text fontSize="14px">
             Documentation:{' '}
-            <DocsLink href={documentationUrl} target="_blank">
+            <ExternalLink href={documentationUrl} target="_blank">
               Link
-            </DocsLink>
+            </ExternalLink>
+          </Text>
+        )}
+        {supportUrl && (
+          <Text fontSize="14px">
+            Support:{' '}
+            <ExternalLink href={supportUrl} target="_blank">
+              Link
+            </ExternalLink>
           </Text>
         )}
         {tags &&
