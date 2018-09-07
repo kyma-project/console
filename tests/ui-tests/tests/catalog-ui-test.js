@@ -9,7 +9,7 @@ import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 const context = require('../utils/testContext');
 let page, browser;
 let dexReady = false;
-const consoleUrl = `https://console.${config.domain}/`;
+const consoleUrl = config.localdev ? config.devConsoleUrl : config.consoleUrl;
 let token = '';
 
 describe('Catalog basic tests', () => {

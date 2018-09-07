@@ -7,7 +7,9 @@ module.exports = {
   validateDex,
   beforeAll: async function(dexReady) {
     validateDex(dexReady);
-    const consoleUrl = `https://console.${config.domain}/`;
+    const consoleUrl = config.localdev
+      ? config.devConsoleUrl
+      : config.consoleUrl;
     let browser = await context.getBrowser();
     let page = await browser.newPage();
     const width = config.viewportWidth;
