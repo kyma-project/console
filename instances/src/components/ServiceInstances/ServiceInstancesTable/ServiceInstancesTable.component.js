@@ -112,7 +112,7 @@ function ServiceInstancesTable({
               </ServicePlanButton>
             }
             content={
-              <JSONCode>{JSON.stringify({ X: 5, Y: '20' }, null, 2)}</JSONCode>
+              <JSONCode>{JSON.stringify(el.servicePlanSpec, null, 2)}</JSONCode>
             }
             footer={<footer />}
           />
