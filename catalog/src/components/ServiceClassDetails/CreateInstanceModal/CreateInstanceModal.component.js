@@ -120,6 +120,7 @@ class CreateInstanceModal extends React.Component {
     let instanceCreateParameters;
     if (params.formData) {
       instanceCreateParameters = dcopy(params.formData);
+      instanceCreateParameters.redisPassword = generatePassword();
       clearEmptyPropertiesInObject(instanceCreateParameters);
     } else {
       instanceCreateParameters = {};
@@ -289,3 +290,13 @@ class CreateInstanceModal extends React.Component {
 }
 
 export default CreateInstanceModal;
+
+function generatePassword() {
+  var length = 10,
+    charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+    retVal = '';
+  for (var i = 0, n = charset.length; i < length; ++i) {
+    retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+}
