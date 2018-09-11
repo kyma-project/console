@@ -42,9 +42,12 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public isActive: boolean;
   private navSub: Subscription;
   private routerSub: Subscription;
+  private envSub: Subscription;
   public fadeIn = '1';
   public leftNavCollapsed = false;
   public previousUrl = '';
+  public previousEnv = '';
+  public resourceExceeded = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
 
@@ -69,6 +72,20 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       if (val instanceof NavigationEnd) {
         if (this.isSignificantUrlChange(val.url, this.previousUrl)) {
           this.toggleFade();
+
+          this.envSub = this.currentEnvironmentService
+            .getCurrentEnvironmentId()
+            .subscribe(env => {
+              if (env !== this.previousEnv) {
+                this.previousEnv = env;
+                this.environmentsService
+                  .getResourceQueryStatus(env)
+                  .subscribe(res => {
+                    this.resourceExceeded = res.resourceQuotasStatus.exceeded;
+                  });
+              }
+              this.envSub.unsubscribe();
+            });
         }
         this.previousUrl = val.url;
       }
@@ -126,5 +143,9 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       }
     }
     return true;
+  }
+
+  private hideError() {
+    this.resourceExceeded = false;
   }
 }
