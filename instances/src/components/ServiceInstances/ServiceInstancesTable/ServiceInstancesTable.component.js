@@ -6,6 +6,8 @@ import {
   Icon,
   ConfirmationModal,
   Table,
+  Tooltip,
+  InformationModal,
 } from '@kyma-project/react-components';
 
 import {
@@ -13,6 +15,8 @@ import {
   Link,
   ServiceClassButton,
   AddServiceRedirectButton,
+  ServicePlanButton,
+  JSONCode,
 } from './styled';
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
@@ -99,10 +103,23 @@ function ServiceInstancesTable({
       {
         name: 'Plan',
         size: 0.2,
-        accesor: el => getResourceDisplayName(el.servicePlan),
+        accesor: el => (
+          <InformationModal
+            title="Instances Parameters"
+            modalOpeningComponent={
+              <ServicePlanButton>
+                {getResourceDisplayName(el.servicePlan)}
+              </ServicePlanButton>
+            }
+            content={
+              <JSONCode>{JSON.stringify({ X: 5, Y: '20' }, null, 2)}</JSONCode>
+            }
+            footer={<footer />}
+          />
+        ),
       },
       {
-        name: 'Bindings',
+        name: 'Bound Applications',
         size: 0.2,
         accesor: el => displayBindingsUsages(el.serviceBindingUsages),
       },
@@ -110,31 +127,28 @@ function ServiceInstancesTable({
         name: 'Status',
         size: 0.1,
         accesor: el => {
-          // let type = '';
-          // switch (el.status.type) {
-          //   case 'RUNNING':
-          //     type = 'success';
-          //     break;
-          //   case 'FAILED':
-          //     type = 'error';
-          //     break;
-          //   default:
-          //     type = 'warning';
-          // }
+          let type = '';
+
+          console.log(el.status.type);
+          switch (el.status.type) {
+            case 'RUNNING':
+              type = 'success';
+              break;
+            case 'FAILED':
+              type = 'error';
+              break;
+            default:
+              type = 'warning';
+          }
           return (
-            <span style={{ color: statusColor(el.status.type) }}>
-              {el.status.type}
-            </span>
+            <Tooltip type={type} content={el.status.message} minWidth="250px">
+              <span
+                style={{ color: statusColor(el.status.type), cursor: 'help' }}
+              >
+                {el.status.type}
+              </span>
+            </Tooltip>
           );
-          // return (
-          //   <Tooltip type={type} content={el.status.message} minWidth="250px">
-          //     <span
-          //       style={{ color: statusColor(el.status.type), cursor: 'help' }}
-          //     >
-          //       {el.status.type}
-          //     </span>
-          //   </Tooltip>
-          // );
         },
       },
       {
