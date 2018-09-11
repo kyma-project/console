@@ -19,6 +19,7 @@ import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { Subscription } from 'rxjs';
 import NavigationUtils from '../../../navigation/services/navigation-utils';
+import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 
 const fadeInAnimation = trigger('fadeInAnimation', [
   state('1', style({ opacity: 1 })),
@@ -43,6 +44,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   private navSub: Subscription;
   private routerSub: Subscription;
   private envSub: Subscription;
+  public communicationServiceSubscription: Subscription;
   public fadeIn = '1';
   public leftNavCollapsed = false;
   public previousUrl = '';
@@ -56,7 +58,8 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     route: ActivatedRoute,
     @Inject(NavVisibilityService) navVisibilityService: NavVisibilityService,
     private environmentsService: EnvironmentsService,
-    private currentEnvironmentService: CurrentEnvironmentService
+    private currentEnvironmentService: CurrentEnvironmentService,
+    private componentCommunicationService: ComponentCommunicationService
   ) {
     this.router = router;
     this.route = route;
@@ -72,19 +75,22 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       if (val instanceof NavigationEnd) {
         if (this.isSignificantUrlChange(val.url, this.previousUrl)) {
           this.toggleFade();
-
           this.envSub = this.currentEnvironmentService
             .getCurrentEnvironmentId()
             .subscribe(env => {
-              if (env !== this.previousEnv) {
+              if (env !== this.previousEnv && val.url.includes(env)) {
                 this.previousEnv = env;
                 this.environmentsService
                   .getResourceQueryStatus(env)
                   .subscribe(res => {
                     this.resourceExceeded = res.resourceQuotasStatus.exceeded;
                   });
+                if (this.envSub) {
+                  this.envSub.unsubscribe();
+                }
+              } else if (!val.url.includes(env)) {
+                this.resourceExceeded = false;
               }
-              this.envSub.unsubscribe();
             });
         }
         this.previousUrl = val.url;
@@ -96,6 +102,14 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
+      e => {
+        const event: any = e;
+        if ('resourceExceeded' === event.type) {
+          this.resourceExceeded = true;
+        }
+      }
+    );
     this.route.params.subscribe(params => {
       const envId = params['environmentId'];
       if (envId) {
