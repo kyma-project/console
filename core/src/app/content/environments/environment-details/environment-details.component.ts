@@ -1,17 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { EnvironmentInfo } from '../../environments/environment-info';
 import { RemoteEnvironmentsService } from '../../settings/remote-environments/services/remote-environments.service';
-import { Observable } from 'rxjs/Observable';
 import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
 import { EnvironmentsService } from '../../environments/services/environments.service';
-import 'rxjs/add/operator/catch';
 import { AppConfig } from '../../../app.config';
 import { ResourceUploaderModalComponent } from '../../../shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 import { EnvironmentCreateComponent } from '../environment-create/environment-create.component';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, of, Subscription } from 'rxjs';
 import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
 
 @Component({
@@ -26,7 +24,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('createmodal') private createmodal: EnvironmentCreateComponent;
   private orgName = AppConfig.orgName;
   public environment: EnvironmentInfo = new EnvironmentInfo('', '');
-  private boundRemoteEnvironmentsCount: Observable<number> = Observable.of(0);
+  private boundRemoteEnvironmentsCount: Observable<number> = of(0);
   private remoteEnvironments: any;
   private services: any;
   public errorMessage: string;
@@ -83,7 +81,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
     this.remoteEnvBindingService.getBoundRemoteEnvironments(id).subscribe(
       res => {
         this.remoteEnvironments = res['remoteEnvironments'];
-        this.boundRemoteEnvironmentsCount = Observable.of(
+        this.boundRemoteEnvironmentsCount = of(
           this.remoteEnvironments ? this.remoteEnvironments.length : 0
         );
       },

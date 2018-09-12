@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../operation/abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-limit-range-entry-renderer',
   templateUrl: './limit-range-entry-renderer.component.html'
 })
-export class LimitRangeEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class LimitRangeEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
@@ -44,6 +45,8 @@ export class LimitRangeEntryRendererComponent extends AbstractKubernetesEntryRen
   }
 
   listMaxMemoryLimits() {
-    return this.entry.limits.map(limit => `${limit.max.memory} (${limit.limitType})`).join(', ');
+    return this.entry.limits
+      .map(limit => `${limit.max.memory} (${limit.limitType})`)
+      .join(', ');
   }
 }

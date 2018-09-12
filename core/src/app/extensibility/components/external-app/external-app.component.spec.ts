@@ -4,12 +4,12 @@ import { ExternalAppComponent } from './external-app.component';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ExtAppViewRegistryService } from '../../services/ext-app-view-registry.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { ExtensionsService } from '../../services/extensions.service';
 
 const CurrentEnvironmentServiceStub = {
   getCurrentEnvironmentId() {
-    return Observable.of('envId');
+    return of('envId');
   }
 };
 
@@ -30,7 +30,7 @@ const ExtAppViewRegistryServiceStub = {
 
 const ExtensionsServiceStub = {
   getExtensions() {
-    return Observable.of([]);
+    return of([]);
   },
   isUsingSecureProtocol() {
     return true;

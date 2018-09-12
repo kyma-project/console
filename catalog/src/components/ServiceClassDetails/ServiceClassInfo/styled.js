@@ -59,3 +59,32 @@ export const DocsLink = styled.a`
   font-size: 14px;
   font-weight: normal;
 `;
+
+export const TagsWrapper = styled.div`
+  margin-top: 32px;
+  width: 100%;
+  height: auto;
+`;
+
+export const Tag = styled.span`
+  max-width: 220px;
+  display: inline-block;
+  mix-blend-mode: multiply;
+  border-radius: 4px;
+  background-color: #e2eaf2;
+  font-size: 12px;
+  font-family: 72;
+  font-weight: 300;
+  text-transform: uppercase;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #73787d;
+  padding: 6px 10px;
+  margin: 0 10px 10px 0;
+`;

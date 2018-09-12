@@ -7,12 +7,11 @@ import { By } from '@angular/platform-browser';
 import { CreatePresetModalComponent } from './create-preset-modal.component';
 import { IdpPresetsService } from '../idp-presets.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
 
 class IdpPresetsServiceMock {
   public createIdpPreset(data) {
-    return Observable.of({});
+    return of({});
   }
 }
 
@@ -23,19 +22,17 @@ describe('CreatePresetModalComponent', () => {
   let header: DebugElement;
   let buttonSaveClasses: any;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule],
-        providers: [
-          { provide: APP_BASE_HREF, useValue: '/my/app' },
-          { provide: IdpPresetsService, useClass: IdpPresetsServiceMock },
-          ComponentCommunicationService
-        ],
-        declarations: [CreatePresetModalComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule],
+      providers: [
+        { provide: APP_BASE_HREF, useValue: '/my/app' },
+        { provide: IdpPresetsService, useClass: IdpPresetsServiceMock },
+        ComponentCommunicationService
+      ],
+      declarations: [CreatePresetModalComponent]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreatePresetModalComponent);
@@ -198,7 +195,7 @@ describe('CreatePresetModalComponent', () => {
     expect(component.error).toBe('');
   });
 
-  it('should react on Cancel event', () => {
+  it('should react on Cancel event', done => {
     // given
     component.isActive = true;
     component.presetName = 'preset-name';
@@ -224,10 +221,12 @@ describe('CreatePresetModalComponent', () => {
       expect(component.wrongJwks).toBeFalsy();
       expect(component.wrongPresetName).toBeFalsy();
       expect(component.error).toBe('');
+
+      done();
     });
   });
 
-  it('should react on Create event', () => {
+  it('should react on Create event', done => {
     // given
     component.isActive = true;
     component.presetName = 'preset-name';
@@ -240,7 +239,7 @@ describe('CreatePresetModalComponent', () => {
     const spyCreate = spyOn(
       IdpPresetsServiceMockStub,
       'createIdpPreset'
-    ).and.returnValue(Observable.of({}));
+    ).and.returnValue(of({}));
 
     // when
     fixture.detectChanges();
@@ -262,6 +261,8 @@ describe('CreatePresetModalComponent', () => {
       expect(IdpPresetsServiceMockStub.createIdpPreset).toHaveBeenCalledTimes(
         1
       );
+
+      done();
     });
   });
 });

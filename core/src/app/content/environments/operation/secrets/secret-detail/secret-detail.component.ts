@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { InformationModalComponent } from '../../../../../shared/components/information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-secret-detail',

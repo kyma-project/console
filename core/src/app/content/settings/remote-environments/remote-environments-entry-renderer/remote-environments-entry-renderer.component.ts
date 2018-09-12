@@ -4,14 +4,15 @@ import * as tippy from 'tippy.js';
 import { AbstractKubernetesEntryRendererComponent } from '../../../environments/operation/abstract-kubernetes-entry-renderer.component';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pods-entry-renderer',
   styleUrls: ['./remote-environments-entry-renderer.component.scss'],
   templateUrl: './remote-environments-entry-renderer.component.html'
 })
-export class RemoteEnvironmentsEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class RemoteEnvironmentsEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,

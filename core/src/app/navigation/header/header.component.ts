@@ -13,7 +13,7 @@ import { NavVisibilityService } from '../services/nav-visibility.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { LoginService } from '../../auth/login.service';
 import { AppConfig } from '../../app.config';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import NavigationUtils from '../services/navigation-utils';
 
 @Component({

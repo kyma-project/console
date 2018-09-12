@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentEnvironmentService } from '../../../../services/current-environment.service';
 import { ExposeApiService } from './expose-api.service';
 import { AppConfig } from '../../../../../../app.config';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import 'rxjs/add/operator/finally';
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../../../shared/components/information-modal/information-modal.component';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Copy2ClipboardModalComponent } from '../../../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
+import { finalize, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-expose-api',
@@ -247,19 +247,21 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
       let issuer = config.issuer;
       this.idpPresetsService
         .getIDPPresets()
-        .finally(() => {
-          if (!this.apiDefinition || !this.jwksUri) {
-            this.jwksUri = jwksUri;
-            this.issuer = issuer;
-          }
-          if (!hasDex) {
-            this.availablePresets.push({
-              label: 'Dex',
-              jwksUri: config.jwks_uri,
-              issuer: config.issuer
-            });
-          }
-        })
+        .pipe(
+          finalize(() => {
+            if (!this.apiDefinition || !this.jwksUri) {
+              this.jwksUri = jwksUri;
+              this.issuer = issuer;
+            }
+            if (!hasDex) {
+              this.availablePresets.push({
+                label: 'Dex',
+                jwksUri: config.jwks_uri,
+                issuer: config.issuer
+              });
+            }
+          })
+        )
         .subscribe(
           data => {
             if (data.IDPPresets) {
@@ -325,12 +327,18 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public fetchListOfDeployments() {
     this.exposeApiService
       .getListOfDeplotments(this.currentEnvironmentId)
-      .map(deployments => {
-        if (deployments && deployments.items && deployments.items.length > 0) {
-          return deployments.items;
-        }
-        return null;
-      })
+      .pipe(
+        map(deployments => {
+          if (
+            deployments &&
+            deployments.items &&
+            deployments.items.length > 0
+          ) {
+            return deployments.items;
+          }
+          return null;
+        })
+      )
       .subscribe(
         deployments => {
           this.listOfDeployments = deployments;
@@ -428,12 +436,18 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     }/deployments?labelSelector=${selectorKey}=${selectorValue}`;
     this.http
       .get<any>(url, {})
-      .map(deployments => {
-        if (deployments && deployments.items && deployments.items.length > 0) {
-          return deployments.items[0];
-        }
-        return null;
-      })
+      .pipe(
+        map(deployments => {
+          if (
+            deployments &&
+            deployments.items &&
+            deployments.items.length > 0
+          ) {
+            return deployments.items[0];
+          }
+          return null;
+        })
+      )
       .subscribe(
         deployment => {
           this.deployment = deployment;

@@ -4,7 +4,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { AppConfig } from '../../../../app.config';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { RemoteEnvironment } from './../../../../shared/datamodel/k8s/kyma-api/remote-environment';
 
 import { RemoteEnvironmentsService } from './remote-environments.service';
@@ -28,9 +28,9 @@ const graphlQLClientServiceMock = {
   request: (url = '', query, variables) => {
     switch (variables.name) {
       case 'some-name':
-        return Observable.of(environmentFromGraphQL);
+        return of(environmentFromGraphQL);
       default:
-        return Observable.of(null);
+        return of(null);
     }
   }
 };

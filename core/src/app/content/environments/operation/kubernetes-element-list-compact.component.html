@@ -2,13 +2,13 @@
   <div class="sf-panel__head">
     <div class="sf-toolbar">
         <div class="sf-toolbar__header">{{ title }}</div>
-        <div class="sf-toolbar__right" [hidden]="!loaded">
+        <div class="sf-toolbar__right" [hidden]="!initialized">
             <div class="sf-toolbar__item">
-              <y-list-search [hidden]="!loaded || showEmptyPage"
+              <y-list-search [hidden]="!initialized || showEmptyPage"
                 [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
               </y-list-search>
-              <y-list-filter [hidden]="!loaded || showEmptyPage"
+              <y-list-filter [hidden]="!initialized || showEmptyPage"
                 [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
               </y-list-filter>

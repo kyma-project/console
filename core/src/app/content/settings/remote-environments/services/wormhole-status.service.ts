@@ -1,12 +1,12 @@
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable()
 export class WormholeStatusService {
-
-  constructor() { }
+  constructor() {}
 
   getConnectionLatency(name: string): Observable<number> {
-    return Observable.of(Math.floor(Math.random() * 101) + 100).delay(300);
+    return of(Math.floor(Math.random() * 101) + 100).pipe(delay(300));
   }
 }

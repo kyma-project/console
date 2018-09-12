@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '../../../../../app.config';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { CurrentEnvironmentService } from '../../../../environments/services/current-environment.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-service-details',

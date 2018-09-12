@@ -1,7 +1,7 @@
 import { Component, Input, Injector, OnInit, OnDestroy } from '@angular/core';
 import { Environment } from '../../../shared/datamodel/k8s/environment';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'environment-card',
@@ -27,8 +27,8 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
     protected injector: Injector,
     private componentCommunicationService: ComponentCommunicationService
   ) {
-    this.entry = this.injector.get('entry');
-    this.entryEventHandler = this.injector.get('entryEventHandler');
+    this.entry = this.injector.get<any>('entry' as any);
+    this.entryEventHandler = this.injector.get<any>('entryEventHandler' as any);
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;

@@ -2,10 +2,10 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/finally';
+import { Subscription } from 'rxjs';
 import { AppConfig } from '../../../../app.config';
 import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   templateUrl: './role-details.component.html'
@@ -72,9 +72,11 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
   private fetchDetails(url) {
     this.http
       .get(url)
-      .finally(() => {
-        this.loading = false;
-      })
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
       .subscribe(
         data => {
           this.roleDetails = data;

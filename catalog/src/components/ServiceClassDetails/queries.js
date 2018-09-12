@@ -8,6 +8,7 @@ export const GET_SERVICE_CLASS = gql`
       displayName
       creationTimestamp
       description
+      longDescription
       documentationUrl
       imageUrl
       providerDisplayName

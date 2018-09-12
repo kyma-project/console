@@ -3,8 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 
 import { ExternalViewComponent } from './external-view.component';
 import { ExtensionsService } from '../services/extensions.service';
@@ -98,15 +97,15 @@ describe('ExternalViewComponent', () => {
   };
 
   const ActivatedRouteMock = {
-    params: Observable.of({ id: 'testId' })
+    params: of({ id: 'testId' })
   };
 
   const ExtensionsServiceStub = {
     getExtensions() {
-      return Observable.of([]);
+      return of([]);
     },
     getClusterExtensions() {
-      return Observable.of([]);
+      return of([]);
     },
     isUsingSecureProtocol() {
       return true;
@@ -140,11 +139,9 @@ describe('ExternalViewComponent', () => {
 
   it('should create', () => {
     spyOn(extensionsService, 'getExtensions').and.returnValue(
-      Observable.of([new MicroFrontend(frontend)])
+      of([new MicroFrontend(frontend)])
     );
-    spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-      Observable.of([])
-    );
+    spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
 
     fixture.detectChanges();
     expect(component).toBeTruthy();
@@ -155,11 +152,9 @@ describe('ExternalViewComponent', () => {
   describe('ngOnInit', () => {
     it('should set the iFrame src attribute to an url if there is an extension', () => {
       spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([new MicroFrontend(frontend)])
+        of([new MicroFrontend(frontend)])
       );
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
 
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
@@ -169,11 +164,9 @@ describe('ExternalViewComponent', () => {
     });
 
     it('should set the iFrame src attribute to an url if there is a cluster extension', () => {
-      spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getExtensions').and.returnValue(of([]));
       spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([new MicroFrontend(frontend)])
+        of([new MicroFrontend(frontend)])
       );
 
       fixture.detectChanges();
@@ -185,11 +178,9 @@ describe('ExternalViewComponent', () => {
 
     it('should set the iFrame src attribute to an empty string if location is minio', () => {
       spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([new MicroFrontend(frontendMinio)])
+        of([new MicroFrontend(frontendMinio)])
       );
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
 
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
@@ -199,12 +190,8 @@ describe('ExternalViewComponent', () => {
     });
 
     it('should set the iFrame src to an empty string if there are no extensions', () => {
-      spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([])
-      );
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getExtensions').and.returnValue(of([]));
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
 
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
@@ -215,11 +202,9 @@ describe('ExternalViewComponent', () => {
 
     it('should handle an error and set the iFrame src attribute to an empty string', () => {
       spyOn(extensionsService, 'getExtensions').and.callFake(() => {
-        return Observable.throw('error');
+        return throwError('error');
       });
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
 
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
@@ -232,11 +217,9 @@ describe('ExternalViewComponent', () => {
   describe('renderExternalView', () => {
     it('should register external view and send a message', () => {
       spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([new MicroFrontend(frontend)])
+        of([new MicroFrontend(frontend)])
       );
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
       spyOn(extAppViewRegistryService, 'registerView').and.returnValue(
         '10-10-10'
       );
@@ -249,12 +232,8 @@ describe('ExternalViewComponent', () => {
     });
 
     it('should deregister external view', () => {
-      spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([])
-      );
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getExtensions').and.returnValue(of([]));
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
       spyOn(extAppViewRegistryService, 'deregisterView');
 
       fixture.detectChanges();
@@ -267,11 +246,9 @@ describe('ExternalViewComponent', () => {
   describe('ngOnDestroy', () => {
     it('should deregister external view', () => {
       spyOn(extensionsService, 'getExtensions').and.returnValue(
-        Observable.of([new MicroFrontend(frontend)])
+        of([new MicroFrontend(frontend)])
       );
-      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(
-        Observable.of([])
-      );
+      spyOn(extensionsService, 'getClusterExtensions').and.returnValue(of([]));
       spyOn(extAppViewRegistryService, 'deregisterView');
 
       fixture.detectChanges();

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { RbacService } from '../../services/rbac.service';
 import * as _ from 'lodash';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 
 @Component({

@@ -4,11 +4,11 @@
         <div class="sf-toolbar__header">{{ title }}</div>
         <div class="sf-toolbar__right">
             <div class="sf-toolbar__item">
-              <y-list-search [hidden]="!loaded || showEmptyPage"
+              <y-list-search [hidden]="!initialized || showEmptyPage"
                 [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
               </y-list-search>
-              <!--<y-list-filter [hidden]="showEmptyPage"
+              <!--<y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter"
                 [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
               </y-list-filter>-->

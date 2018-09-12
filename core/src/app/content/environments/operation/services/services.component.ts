@@ -13,7 +13,7 @@ import { ServicesHeaderRendererComponent } from './services-header-renderer/serv
 import { ServicesEntryRendererComponent } from './services-entry-renderer/services-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-services',

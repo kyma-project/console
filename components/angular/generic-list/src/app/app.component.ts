@@ -6,9 +6,9 @@ import { Filter } from './modules/list/filter/Filter';
 import { DummyHeaderRendererComponent } from './dummy-header-renderer/dummy-header-renderer.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'y-app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   filterState = { filters: [new Filter('name', '', false)] };
@@ -19,12 +19,12 @@ export class AppComponent {
   createNewElementText = 'createNewElementText';
 
   dummyDataProvider = new ArrayDataProvider([
-    {id: '1', name: 'one'},
-    {id: '2', name: 'two'},
-    {id: '3', name: 'threeee'},
-    {id: '4', name: 'four'},
-    {id: '5', name: 'five'},
-    {id: '6', name: 'six'}
+    { id: '1', name: 'one' },
+    { id: '2', name: 'two' },
+    { id: '3', name: 'threeee' },
+    { id: '4', name: 'four' },
+    { id: '5', name: 'five' },
+    { id: '6', name: 'six' },
   ]);
 
   dummyDataRenderer = DummyElementRendererComponent;
@@ -32,10 +32,10 @@ export class AppComponent {
   dummyDataListRenderer = DummyElementListRendererComponent;
   dummyEventHandler = {
     doABC: (entry: any) => {
-      alert('doing ABC for entry ' + entry.name );
+      alert('doing ABC for entry ' + entry.name);
     },
     doXYZ: (entry: any) => {
-      alert('doing XYZ for entry ' + entry.name );
-    }
+      alert('doing XYZ for entry ' + entry.name);
+    },
   };
 }

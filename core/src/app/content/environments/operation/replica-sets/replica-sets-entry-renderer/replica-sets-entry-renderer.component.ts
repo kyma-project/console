@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 
 @Component({
@@ -8,7 +8,8 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
   templateUrl: './replica-sets-entry-renderer.component.html',
   styleUrls: ['./replica-sets-entry-renderer.component.scss']
 })
-export class ReplicaSetsEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class ReplicaSetsEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,

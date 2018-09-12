@@ -31,7 +31,7 @@ npm run bootstrap
 ```
 npm run start
 ```
-5. To access the local instance of the Console at [http://console-dev.kyma.local:4200](http://console-dev.kyma.local:4200), use credentials from [this](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-gs-local-installation.md#access-the-kyma-console) document.
+5. To access the local instance of the Console at http://console-dev.kyma.local:4200, use credentials from [this](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-gs-local-installation.md#access-the-kyma-console) document.
 
 ## Development
 
@@ -60,10 +60,7 @@ npm run start:api
 
 ### Run tests
 
-To run all acceptance tests, execute the following command:
-```
-npm run test
-```
+For the information on how to run tests and configure them, go to the [`tests`](tests) directory.
 
 ## Troubleshooting
 

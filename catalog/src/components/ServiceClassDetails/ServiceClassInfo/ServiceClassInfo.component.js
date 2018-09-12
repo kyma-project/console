@@ -11,6 +11,8 @@ import {
   ServiceProvider,
   DocsLink,
   Image,
+  TagsWrapper,
+  Tag,
 } from './styled';
 
 const ServiceClassInfo = ({
@@ -19,7 +21,12 @@ const ServiceClassInfo = ({
   creationTimestamp,
   documentationUrl,
   imageUrl,
+  tags,
 }) => {
+  function sortTags(tag1, tag2) {
+    return tag1.length > 8 && tag2.length < 15;
+  }
+
   return (
     <div>
       <ServiceClassInfoContentWrapper>
@@ -52,6 +59,12 @@ const ServiceClassInfo = ({
             </DocsLink>
           </Text>
         )}
+        {tags &&
+          tags.length > 0 && (
+            <TagsWrapper>
+              {[...tags].sort(sortTags).map(tag => <Tag key={tag}>{tag}</Tag>)}
+            </TagsWrapper>
+          )}
       </div>
     </div>
   );
@@ -63,6 +76,7 @@ ServiceClassInfo.propTypes = {
   creationTimestamp: PropTypes.number,
   documentationUrl: PropTypes.string,
   imageUrl: PropTypes.string,
+  tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default ServiceClassInfo;

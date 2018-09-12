@@ -16,9 +16,9 @@ export abstract class AbstractKubernetesEntryRendererComponent {
     }
   ];
 
-  constructor(protected injector: Injector) {
-    this.entry = this.injector.get('entry');
-    this.entryEventHandler = this.injector.get('entryEventHandler');
+  protected constructor(protected injector: Injector) {
+    this.entry = this.injector.get<any>('entry' as any);
+    this.entryEventHandler = this.injector.get<any>('entryEventHandler' as any);
   }
 
   getLabels(labels) {

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../../../environments/services/current-environment.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../operation/abstract-kubernetes-entry-renderer.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../../app.config';
@@ -16,7 +16,8 @@ import { AppConfig } from '../../../../../../app.config';
   selector: 'app-filtered-apis-entry-renderer',
   templateUrl: './filtered-apis-entry-renderer.component.html'
 })
-export class FilteredApisEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class FilteredApisEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;

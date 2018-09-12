@@ -15,12 +15,10 @@ import {
   Filter,
   GenericListComponent
 } from '@kyma-project/y-generic-list';
-import { Observable } from 'rxjs/Observable';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { Router } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
-import 'rxjs/add/observable/fromPromise';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 
 @Component({

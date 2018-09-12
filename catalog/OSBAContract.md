@@ -18,14 +18,14 @@ Catalog-ui directly uses the [ui-api-layer](https://github.com/kyma-project/kyma
 
 ## Catalog Details page
 
-| Number | OSBA field                   | Fallbacks  | Description                                                       |
-| ------ | ---------------------------- | ---------- | ----------------------------------------------------------------- |
-| (1)    | description\*                | -          | If not provided, the `General Information` panel does not appear. |
-| (2)    | not related to OSBA          | -          | -                                                                 |
-| (3)    | metadata.documentationUrl    | -          | If not provided, the link with documentation does not appear.     |
-| (4)    | metadata.displayName         | name*, id* | -                                                                 |
-| (5)    | metadata.providerDisplayName | -          | If not provided, UI displays without this information.            |
-| (6)    | not related to OSBA          | -          | -                                                                 |
+| Number | OSBA field                   | Fallbacks      | Description                                                       |
+| ------ | ---------------------------- | -------------- | ----------------------------------------------------------------- |
+| (1)    | metadata.longDescription     | description\*  | If not provided, the `General Information` panel does not appear. |
+| (2)    | not related to OSBA          | -              | -                                                                 |
+| (3)    | metadata.documentationUrl    | -              | If not provided, the link with documentation does not appear.     |
+| (4)    | metadata.displayName         | name*, id*     | -                                                                 |
+| (5)    | metadata.providerDisplayName | -              | If not provided, UI displays without this information.            |
+| (6)    | not related to OSBA          | -              | -                                                                 |
 
 \*Fields with an asterisk are required OSBA attributes.
 

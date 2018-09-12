@@ -7,7 +7,7 @@ import { CurrentEnvironmentService } from '../../../services/current-environment
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../app.config';
 import { Filter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { ActivatedRoute } from '@angular/router';

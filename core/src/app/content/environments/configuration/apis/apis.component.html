@@ -6,11 +6,11 @@
                     routerLink="/home/environments/{{currentEnvironmentId}}/apis/create">
                 + Create API
             </button>
-            <y-list-search [hidden]="!loaded || showEmptyPage"
+            <y-list-search [hidden]="!initialized || showEmptyPage"
                 [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
             </y-list-search>
-            <y-list-filter [hidden]="!loaded || loading || showEmptyPage || hideFilter"
+            <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter"
                 [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
             </y-list-filter>

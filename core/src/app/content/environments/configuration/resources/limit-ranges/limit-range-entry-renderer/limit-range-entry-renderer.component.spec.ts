@@ -2,49 +2,46 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subject, of } from 'rxjs';
 
 describe('LimitRangeEntryRendererComponent', () => {
   let component: LimitRangeEntryRendererComponent;
   let fixture: ComponentFixture<LimitRangeEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [LimitRangeEntryRendererComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: [
-          ComponentCommunicationService,
-          {
-            provide: 'entry',
-            useValue: {
-              name: 'name',
-              limits: [
-                {
-                  limitType: 'Container',
-                  default: {
-                    memory: '1',
-                    cpu: '1'
-                  },
-                  max: {
-                    memory: '1',
-                    cpu: '1'
-                  },
-                  defaultRequest: {
-                    memory: '1',
-                    cpu: '1'
-                  }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [LimitRangeEntryRendererComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        ComponentCommunicationService,
+        {
+          provide: 'entry',
+          useValue: {
+            name: 'name',
+            limits: [
+              {
+                limitType: 'Container',
+                default: {
+                  memory: '1',
+                  cpu: '1'
+                },
+                max: {
+                  memory: '1',
+                  cpu: '1'
+                },
+                defaultRequest: {
+                  memory: '1',
+                  cpu: '1'
                 }
-              ]
-            }
-          },
-          { provide: 'entryEventHandler', useValue: {} }
-        ]
-      }).compileComponents();
-    })
-  );
+              }
+            ]
+          }
+        },
+        { provide: 'entryEventHandler', useValue: {} }
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LimitRangeEntryRendererComponent);
@@ -58,14 +55,14 @@ describe('LimitRangeEntryRendererComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set disabled to true if disable event has been sent', async () => {
+    it('should set disabled to true if disable event has been sent', async done => {
       const subject = new Subject();
       const entry = {
         name: 'name',
         disabled: true
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -74,17 +71,19 @@ describe('LimitRangeEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(true);
+
+        done();
       });
     });
 
-    it('should set disabled to false if disable event with disable property set to false, has been sent', async () => {
+    it('should set disabled to false if disable event with disable property set to false, has been sent', async done => {
       const subject = new Subject();
       const entry = {
         name: 'name',
         disabled: false
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -93,17 +92,19 @@ describe('LimitRangeEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(false);
+
+        done();
       });
     });
 
-    it("shouldn't do anything if event sent has diffetent type than disable", async () => {
+    it("shouldn't do anything if event sent has diffetent type than disable", async done => {
       const subject = new Subject();
       const entry = {
         name: 'name',
         disabled: true
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -112,17 +113,19 @@ describe('LimitRangeEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(false);
+
+        done();
       });
     });
 
-    it("shouldn't do anything if event sent corresponds to different entry", async () => {
+    it("shouldn't do anything if event sent corresponds to different entry", async done => {
       const subject = new Subject();
       const entry = {
         name: 'differentName',
         disabled: true
       };
       spyOn(componentCommunicationService, 'observable$').and.returnValue(
-        Observable.of(subject.next(entry))
+        of(subject.next(entry))
       );
       fixture.whenStable().then(async () => {
         fixture.detectChanges();
@@ -131,6 +134,8 @@ describe('LimitRangeEntryRendererComponent', () => {
           entry
         });
         expect(component.disabled).toEqual(false);
+
+        done();
       });
     });
   });
