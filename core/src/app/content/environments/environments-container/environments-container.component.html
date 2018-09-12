@@ -1,11 +1,14 @@
 <app-navigation [ngClass]="{'is-active': isActive === true, 'left-nav-collapsed': leftNavCollapsed === true}" [navCtx]="navCtx"></app-navigation>
 <div [@fadeInAnimation]="fadeIn" class="main-container" [ngClass]="{'left-nav-collapsed': leftNavCollapsed === true}">
-  <div class="alert resource-alert" [hidden]="!resourceExceeded" role="alert">
-      Error! Resource Quota limit exceeded!
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideError()">
-          <span aria-hidden="true">×</span>
-      </button>
-  </div>
-  <router-outlet></router-outlet>
+    <div class="alert resource-alert" [hidden]="!(resourceExceededGlobal && !overview)" role="alert">
+        Error! Resource Quota limit exceeded!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideError()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="alert resource-alert" [hidden]="!(resourceExceededOverview && overview)" role="alert">
+        Error! Resource Quota limit exceeded!
+    </div>
+    <router-outlet></router-outlet>
 </div>
 <app-information-modal #infoModal></app-information-modal>

@@ -49,7 +49,9 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public leftNavCollapsed = false;
   public previousUrl = '';
   public previousEnv = '';
-  public resourceExceeded = false;
+  public resourceExceededGlobal = false;
+  public overview = false;
+  public resourceExceededOverview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
 
@@ -78,18 +80,24 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
           this.envSub = this.currentEnvironmentService
             .getCurrentEnvironmentId()
             .subscribe(env => {
-              if (env !== this.previousEnv && val.url.includes(env)) {
-                this.previousEnv = env;
-                this.environmentsService
-                  .getResourceQueryStatus(env)
-                  .subscribe(res => {
-                    this.resourceExceeded = res.resourceQuotasStatus.exceeded;
-                  });
-                if (this.envSub) {
-                  this.envSub.unsubscribe();
+              if (val.url.includes(env)) {
+                if (env !== this.previousEnv) {
+                  this.previousEnv = env;
+                  this.environmentsService
+                    .getResourceQueryStatus(env)
+                    .subscribe(res => {
+                      this.resourceExceededGlobal =
+                        res.resourceQuotasStatus.exceeded;
+                      this.resourceExceededOverview =
+                        res.resourceQuotasStatus.exceeded;
+                    });
+                  if (this.envSub) {
+                    this.envSub.unsubscribe();
+                  }
                 }
-              } else if (!val.url.includes(env)) {
-                this.resourceExceeded = false;
+                this.overview = val.url.includes(`${env}/details`)
+                  ? true
+                  : false;
               }
             });
         }
@@ -105,8 +113,8 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
-        if ('resourceExceeded' === event.type) {
-          this.resourceExceeded = true;
+        if ('resourceExceededGlobal' === event.type) {
+          this.resourceExceededGlobal = true;
         }
       }
     );
@@ -160,6 +168,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   private hideError() {
-    this.resourceExceeded = false;
+    this.resourceExceededGlobal = false;
   }
 }

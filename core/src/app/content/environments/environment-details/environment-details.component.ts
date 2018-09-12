@@ -68,16 +68,6 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
             console.log(`error loading environment ${envId}`, err);
           }
         );
-
-        this.environmentsService
-          .getResourceQueryStatus(envId)
-          .subscribe(res => {
-            if (res.resourceQuotasStatus.exceeded) {
-              this.communicationService.sendEvent({
-                type: 'resourceExceeded'
-              });
-            }
-          });
       });
   }
 
