@@ -7,9 +7,10 @@ import { Input, Select } from '@kyma-project/react-components';
 import {
   getResourceDisplayName,
   compareTwoObjects,
+  randomNameGenerator,
 } from '../../../commons/helpers';
 
-class FirstStep extends React.Component {
+class BasicData extends React.Component {
   static INSTANCE_NAME_MAX_LENGTH = 63;
 
   static propTypes = {
@@ -41,7 +42,7 @@ class FirstStep extends React.Component {
 
     const defaultInstanceName = `${
       serviceClass.serviceClass.externalName
-    }-instance`;
+    }-${randomNameGenerator()}`;
 
     this.setState({
       formData: {
@@ -155,11 +156,14 @@ class FirstStep extends React.Component {
   };
 
   validateInstanceName = name => {
-    const format = /^(([a-z0-9]|[a-z0-9][a-z0-9-]*[a-z0-9]))*([a-z0-9]|[a-z0-9][a-z0-9-]*[a-z0-9])$/.test(
-      name,
-    );
+    const format =
+      /^[a-z0-9-]+$/.test(name) &&
+      /[a-z0-9]/.test(name[0]) &&
+      /[a-z0-9]/.test(name[name.length - 1]);
+
     const checkLength =
-      name.length > FirstStep.INSTANCE_NAME_MAX_LENGTH || !name.length;
+      name.length > BasicData.INSTANCE_NAME_MAX_LENGTH || !name.length;
+
     return !format || checkLength;
   };
 
@@ -243,4 +247,4 @@ class FirstStep extends React.Component {
   }
 }
 
-export default FirstStep;
+export default BasicData;

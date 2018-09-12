@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
+import ScrollArea from 'react-scrollbar';
 
 import Button from '../Button';
 import Separator from '../Separator';
@@ -8,6 +9,7 @@ import Icon from '../Icon';
 
 import {
   ModalWrapper,
+  ModalOpeningComponent,
   ModalHeader,
   ModalAdditionalContent,
   ModalContent,
@@ -41,6 +43,8 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       showModal: false,
+      heightContent: 0,
+      heightAdditionalContent: 0,
     };
     ReactModal.setAppElement(
       this.props.modalAppRef ? this.props.modalAppRef : Modal.MODAL_APP_REF,
@@ -65,6 +69,14 @@ class Modal extends React.Component {
     this.setState({ showModal: false });
   };
 
+  onScrollContent = value => {
+    this.setState({ heightContent: value.realHeight });
+  };
+
+  onScrollAdditionalContent = value => {
+    this.setState({ heightAdditionalContent: value.realHeight });
+  };
+
   render() {
     const {
       title,
@@ -76,12 +88,12 @@ class Modal extends React.Component {
       modalOpeningComponent,
       width,
     } = this.props;
-    const { showModal } = this.state;
+    const { showModal, heightContent, heightAdditionalContent } = this.state;
 
     const reactModalCustomModalStyles = {
       content: {
         width: width ? width : '681px',
-        maxHeight: '80vh',
+        maxHeight: '85vh',
         margin: 'auto',
         borderRadius: '4px',
         backgroundColor: '#ffffff',
@@ -98,6 +110,12 @@ class Modal extends React.Component {
       },
     };
 
+    const scrollbarStyles = {
+      borderRadius: '4px',
+      width: '7px',
+      backgroundColor: '#000',
+    };
+
     if (warning) {
       reactModalCustomModalStyles.content.borderLeft = '6px solid #ee0000';
     } else {
@@ -106,13 +124,15 @@ class Modal extends React.Component {
 
     return (
       <ModalWrapper align="left">
-        <div onClick={this.handleOpenModal}>{modalOpeningComponent}</div>
+        <ModalOpeningComponent onClick={this.handleOpenModal}>
+          {modalOpeningComponent}
+        </ModalOpeningComponent>
         {showModal ? (
           <ReactModal
             isOpen={showModal}
             onRequestClose={this.handleCloseModal}
-            style={reactModalCustomModalStyles}
             shouldCloseOnOverlayClick={false}
+            style={reactModalCustomModalStyles}
           >
             <ModalHeader>
               {title}
@@ -121,11 +141,29 @@ class Modal extends React.Component {
               </ModalCloseButton>
             </ModalHeader>
             {additionalContent && (
-              <ModalAdditionalContent>
-                {additionalContent}
-              </ModalAdditionalContent>
+              <ScrollArea
+                onScroll={this.onScrollAdditionalContent}
+                verticalScrollbarStyle={scrollbarStyles}
+                style={{
+                  height: heightAdditionalContent
+                    ? heightAdditionalContent
+                    : 'auto',
+                }}
+              >
+                <ModalAdditionalContent>
+                  {additionalContent}
+                </ModalAdditionalContent>
+              </ScrollArea>
             )}
-            <ModalContent>{content}</ModalContent>
+            <ScrollArea
+              onScroll={this.onScrollContent}
+              verticalScrollbarStyle={scrollbarStyles}
+              style={{
+                height: heightContent ? heightContent : 'auto',
+              }}
+            >
+              <ModalContent>{content}</ModalContent>
+            </ScrollArea>
             {footer && (
               <ModalFooter borderFooter={borderFooter}>{footer}</ModalFooter>
             )}

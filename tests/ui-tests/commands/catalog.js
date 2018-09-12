@@ -9,7 +9,6 @@ module.exports = {
       const modal = '.ReactModal__Content--after-open';
       const nameServiceInstancesInput = `[name="nameServiceInstances"]`;
       const labels = `[name="nameServiceBindingUsage"]`;
-      const modalNext = `[${config.catalogTestingAtribute}="modal-next"]`;
       const modalCreate = `[${config.catalogTestingAtribute}="modal-create"]`;
 
       const frame = await kymaConsole.getFrame(page);
@@ -28,8 +27,6 @@ module.exports = {
       await classLabel.click({ clickCount: 3 });
       await classLabel.type(instanceLabel);
 
-      const goNext = await frame.waitForSelector(modalNext);
-      await goNext.click();
       const create = await frame.waitForSelector(modalCreate);
       await create.click();
     } catch (e) {

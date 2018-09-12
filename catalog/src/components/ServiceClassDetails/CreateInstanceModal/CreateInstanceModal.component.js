@@ -2,15 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dcopy from 'deep-copy';
 
-import { StepsModal } from '@kyma-project/react-components';
+import { ConfirmationModal, Separator } from '@kyma-project/react-components';
 
-import FirstStep from './FirstStep.component';
-import SecondStep from './SecondStep.component';
+import BasicData from './BasicData.component';
+import SchemaData from './SchemaData.component';
 
 import { Bold } from './styled';
 
 import builder from '../../../commons/builder';
-import { clearEmptyPropertiesInObject } from '../../../commons/helpers';
+import {
+  clearEmptyPropertiesInObject,
+  randomNameGenerator,
+} from '../../../commons/helpers';
 
 class CreateInstanceModal extends React.Component {
   static propTypes = {
@@ -50,13 +53,19 @@ class CreateInstanceModal extends React.Component {
 
     if (!serviceClass.serviceClass) return;
 
-    const defaultInstanceName = `${
-      serviceClass.serviceClass.externalName
-    }-instance`;
+    let defaultInstanceName = '';
 
-    const { data, error } = await this.refetchInstanceExists(
-      defaultInstanceName,
-    );
+    while (true) {
+      defaultInstanceName = `${
+        serviceClass.serviceClass.externalName
+      }-${randomNameGenerator()}`;
+
+      const { data, error } = await this.refetchInstanceExists(
+        defaultInstanceName,
+      );
+
+      if (!error && !data.serviceInstance) break;
+    }
 
     this.setState({
       formData: {
@@ -68,8 +77,6 @@ class CreateInstanceModal extends React.Component {
           serviceClass.serviceClass.plans[0].name,
       },
       firstStepFilled: true,
-      instanceWithNameAlreadyExists:
-        !error && data.serviceInstance && data.serviceInstance.name,
     });
   }
 
@@ -186,12 +193,11 @@ class CreateInstanceModal extends React.Component {
     }
 
     this.setState({
-      creatingInstance: false,
+      creatingInstance: true,
     });
     if (success) {
       this.clearState();
       this.child.child.setState({ showModal: false });
-      this.child.clearState();
     }
   };
 
@@ -223,8 +229,7 @@ class CreateInstanceModal extends React.Component {
     const instanceCreateParameterSchema =
       (schema && schema.instanceCreateParameterSchema) || null;
 
-    const contentTexts = ['Base information', 'Configuration'];
-    const disabledNext = !firstStepFilled;
+    const disabled = !firstStepFilled;
 
     const firstStepData = {
       formData: formData,
@@ -235,35 +240,45 @@ class CreateInstanceModal extends React.Component {
       instanceCreateParameters: instanceCreateParameters,
     };
 
-    const steps = [
-      <FirstStep
-        data={firstStepData}
-        serviceClassExternalName={externalName}
-        serviceClassPlans={plans}
-        refetchInstanceExists={this.refetchInstanceExists}
-        formData={formData}
-        serviceClass={serviceClass}
-        callback={this.callback}
-      />,
-      <SecondStep
-        data={SecondStepData}
-        instanceCreateParameterSchema={instanceCreateParameterSchema}
-        onSubmitSchemaForm={this.onSubmitSchemaForm}
-        callback={this.callback}
-      >
-        {/* Styled components don't work here */}
-        <button
-          className="hidden"
-          type="submit"
-          ref={submitBtn => (this.submitBtn = submitBtn)}
-        >
-          Submit
-        </button>
-      </SecondStep>,
-    ];
+    const content = (
+      <div>
+        <BasicData
+          data={firstStepData}
+          serviceClassExternalName={externalName}
+          serviceClassPlans={plans}
+          refetchInstanceExists={this.refetchInstanceExists}
+          formData={formData}
+          serviceClass={serviceClass}
+          callback={this.callback}
+        />
+
+        {!instanceCreateParameterSchema ||
+        (instanceCreateParameterSchema &&
+          !instanceCreateParameterSchema.properties) ? null : (
+          <div>
+            <Separator margin="16px -16px" />
+            <SchemaData
+              data={SecondStepData}
+              instanceCreateParameterSchema={instanceCreateParameterSchema}
+              onSubmitSchemaForm={this.onSubmitSchemaForm}
+              callback={this.callback}
+            >
+              {/* Styled components don't work here */}
+              <button
+                className="hidden"
+                type="submit"
+                ref={submitBtn => (this.submitBtn = submitBtn)}
+              >
+                Submit
+              </button>
+            </SchemaData>
+          </div>
+        )}
+      </div>
+    );
 
     return (
-      <StepsModal
+      <ConfirmationModal
         ref={modal => {
           this.child = modal;
         }}
@@ -274,15 +289,16 @@ class CreateInstanceModal extends React.Component {
             <Bold>{environment}</Bold>
           </p>
         }
-        contentTexts={contentTexts}
-        confirmText="Create Instance"
-        content={steps}
-        handleConfirmation={this.handleConfirmation}
         modalOpeningComponent={modalOpeningComponent}
-        disabledNext={disabledNext}
+        content={content}
+        confirmText="Create Instance"
+        cancelText="Cancel"
         tooltipData={tooltipData}
-        waiting={creatingInstance}
+        disabled={disabled}
+        handleConfirmation={this.handleConfirmation}
         handleClose={this.clearState}
+        borderFooter={true}
+        waiting={creatingInstance}
       />
     );
   }

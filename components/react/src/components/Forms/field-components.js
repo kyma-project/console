@@ -40,7 +40,7 @@ export const FieldIcon = styled.span`
 export const FieldMessage = styled.p`
   font-family: '72';
   font-size: 12px;
-  min-height: 24px;
+  height: auto;
   font-weight: normal;
   margin: 8px 0 0 0;
   display: block;
