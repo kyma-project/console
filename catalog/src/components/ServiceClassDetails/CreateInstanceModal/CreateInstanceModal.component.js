@@ -177,6 +177,7 @@ class CreateInstanceModal extends React.Component {
             title: `Instance "${variables.name}" created successfully`,
             color: '#359c46',
             icon: '\uE05B',
+            instanceName: variables.name,
           },
         });
       }
