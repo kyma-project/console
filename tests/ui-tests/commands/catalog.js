@@ -34,11 +34,10 @@ module.exports = {
       throw e;
     }
   },
-  feelInInput: async (frame, searchByText) => {
+  feelInInput: async (frame, searchByText, searchId) => {
     try {
-      const searchSelector = `[${config.catalogTestingAtribute}="search"]`;
+      const searchSelector = `[${config.catalogTestingAtribute}=${searchId}]`;
       const searchInput = await frame.$(searchSelector);
-
       await searchInput.focus();
       await searchInput.click({ clickCount: 3 });
       await searchInput.type(searchByText);
@@ -47,37 +46,29 @@ module.exports = {
       throw e;
     }
   },
-  getInstances: async page => {
-    try {
-      return await page.evaluate(config => {
-        const instanceArraySelector = `[${
-          config.catalogTestingAtribute
-        }="instance-name"]`;
-        const instances = Array.from(
-          document.querySelectorAll(instanceArraySelector)
-        );
-        return instances.map(instance => instance.textContent);
-      }, config);
-    } catch (e) {
-      console.log(document.documentElement.innerHTML);
-      throw e;
-    }
-  },
-  getServices: async page => {
-    try {
-      return await page.evaluate(config => {
-        const serviceArraySelector = `[${
-          config.catalogTestingAtribute
-        }="card-title"]`;
-        const services = Array.from(
-          document.querySelectorAll(serviceArraySelector)
-        );
-        return services.map(service => service.textContent);
-      }, config);
-    } catch (e) {
-      console.log(document.documentElement.innerHTML);
-      throw e;
-    }
-  },
+  getInstances: async page => await getElements(page, 'instance-name'),
+  getServices: async page => await getElements(page, 'card-title'),
+  getFilters: async page => await getElements(page, 'filter-item'),
   prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`
 };
+
+async function getElements(page, e2eIdName) {
+  try {
+    return await page.evaluate(
+      (config, e2eIdName) => {
+        const elementArraySelector = `[${
+          config.catalogTestingAtribute
+        }=${e2eIdName}]`;
+        const elements = Array.from(
+          document.querySelectorAll(elementArraySelector)
+        );
+        return elements.map(item => item.textContent);
+      },
+      config,
+      e2eIdName
+    );
+  } catch (e) {
+    console.log(document.documentElement.innerHTML);
+    throw e;
+  }
+}

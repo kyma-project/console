@@ -10,7 +10,7 @@ Catalog-ui directly uses the [ui-api-layer](https://github.com/kyma-project/kyma
 | (2)    | metadata.providerDisplayName | -          | If not provided, UI displays without this information.                                                                     |
 | (3)    | description\*                | -          | If not provided, UI displays without this information.                                                                     |
 | (4)    | metadata.providerDisplayName | -          | If not provided, filtering by Provider is not possible.                                                                    |
-| (5)    | tags                         | -          | If not provided, filtering by Category is not possible.                                                                    |
+| (5)    | tags                         | -          | If not provided, filtering by Tag is not possible.                                                                    |
 
 \*Fields with an asterisk are required OSBA attributes.
 

@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { media } from '@kyma-project/react-components';
 
+export const SearchWrapper = styled.div`
+  max-width: 390px;
+  flex: 1 0 auto;
+`;
+
 export const ServiceClassListWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
@@ -21,4 +26,5 @@ export const CardsWrapper = styled.div`
 
 export const EmptyServiceListMessageWrapper = styled.div`
   padding: 20px 0;
+  margin: 0 auto;
 `;

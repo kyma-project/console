@@ -108,13 +108,12 @@ const appRoutes: Routes = [
           },
           {
             path: 'service-catalog',
-            component: CatalogContainerComponent,
-            data: { leftNavCollapsed: true }
+            component: CatalogContainerComponent
           },
           {
             path: 'service-catalog/details/:name',
             component: CatalogContainerComponent,
-            data: { path: '/details/:name', leftNavCollapsed: true }
+            data: { path: '/details/:name' }
           },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }

@@ -98,16 +98,40 @@ describe('Catalog basic tests', () => {
 
     const searchInput = await frame.$(searchSelector);
 
-    await catalog.feelInInput(frame, exampleServiceClassName);
+    await catalog.feelInInput(frame, exampleServiceClassName, 'search');
     const searchedServices = await catalog.getServices(frame);
     expect(searchedServices).toContain(exampleServiceClassName);
 
-    await catalog.feelInInput(frame, searchBySth);
+    await catalog.feelInInput(frame, searchBySth, 'search');
     const newSearchedServices = await catalog.getServices(frame);
     expect(newSearchedServices).not.toContain(exampleServiceClassName);
 
     await searchInput.click({ clickCount: 3 });
     await searchInput.press('Backspace');
+  });
+
+  test('Check filters', async () => {
+    // consts
+    const filterDropdownButton = catalog.prepareSelector('toggle-filter');
+    const filterWrapper = catalog.prepareSelector('wrapper-filter');
+    const searchBySth = 'lololo';
+    const searchByDatabase = 'database';
+    const searchID = 'search-filter';
+    const searchSelector = catalog.prepareSelector(searchID);
+
+    const frame = await kymaConsole.getFrame(page);
+    await frame.click(filterDropdownButton);
+
+    await frame.waitFor(filterWrapper);
+    const searchInput = await frame.$(searchSelector);
+
+    await catalog.feelInInput(frame, searchByDatabase, searchID);
+    const searchedFilters = await catalog.getFilters(frame);
+    expect(searchedFilters).toContain(searchByDatabase);
+
+    await catalog.feelInInput(frame, searchBySth, searchID);
+    const searchedFiltersNew = await catalog.getFilters(frame);
+    expect(searchedFiltersNew).not.toContain(searchBySth);
   });
 
   test('Check details', async () => {
@@ -202,11 +226,11 @@ describe('Catalog basic tests', () => {
     await toggleSearch.click();
     const searchInput = await frame.$(searchSelector);
 
-    await catalog.feelInInput(frame, exampleInstanceName);
+    await catalog.feelInInput(frame, exampleInstanceName, 'search');
     const searchedInstances = await catalog.getInstances(frame);
     expect(searchedInstances).toContain(exampleInstanceName);
 
-    await catalog.feelInInput(frame, searchBySth);
+    await catalog.feelInInput(frame, searchBySth, 'search');
     const newSearchedInstances = await catalog.getInstances(frame);
     expect(newSearchedInstances).not.toContain(exampleInstanceName);
 
