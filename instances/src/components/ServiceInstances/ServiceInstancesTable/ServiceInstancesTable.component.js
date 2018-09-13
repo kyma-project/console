@@ -1,15 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   Button,
   Icon,
   ConfirmationModal,
   Table,
-  // Tooltip,
 } from '@kyma-project/react-components';
 
-import { LinkButton, ServiceClassButton } from './styled';
+import {
+  LinkButton,
+  Link,
+  ServiceClassButton,
+  AddServiceRedirectButton,
+} from './styled';
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
 
@@ -40,12 +44,30 @@ function ServiceInstancesTable({
     }
   };
 
+  const goToServiceCatalog = () => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate('service-catalog');
+  };
+
+  const goToServiceInstanceDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`instances/details/${name}`);
+  };
+
   const deleteButton = (
     <div style={{ textAlign: 'right' }}>
       <Button padding={'0'} marginTop={'0'} marginBottom={'0'}>
         <Icon icon={'\uE03D'} />
       </Button>
     </div>
+  );
+
+  const addServiceRedirectButton = (
+    <AddServiceRedirectButton onClick={goToServiceCatalog}>
+      + Add Service
+    </AddServiceRedirectButton>
   );
 
   const table = {
@@ -57,7 +79,7 @@ function ServiceInstancesTable({
         accesor: el => (
           <LinkButton data-e2e-id="instance-name">
             <Link
-              to={`/details/${el.name}`}
+              onClick={() => goToServiceInstanceDetails(el.name)}
               data-e2e-id={`instance-name-${el.name}`}
             >
               {el.name}
@@ -138,6 +160,7 @@ function ServiceInstancesTable({
   return (
     <Table
       title={table.title}
+      addHeaderContent={addServiceRedirectButton}
       columns={table.columns}
       data={table.data}
       loading={loading}

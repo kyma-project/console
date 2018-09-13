@@ -116,6 +116,10 @@ class CreateBindingModal extends React.Component {
     this.create();
   };
 
+  handleOpen = () => {
+    this.props.usageKinds.refetch();
+  };
+
   render() {
     const {
       checkbox,
@@ -170,7 +174,9 @@ class CreateBindingModal extends React.Component {
     ];
 
     const createBindingButton = (
-      <CreateBindingButton>+ Create Binding</CreateBindingButton>
+      <CreateBindingButton onClick={this.handleOpen}>
+        + Create Binding
+      </CreateBindingButton>
     );
 
     return serviceInstance.status.type === 'RUNNING' ? (

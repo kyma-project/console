@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../../Button';
+import Tooltip from '../../Tooltip';
+import Spinner from '../../Spinner';
 import Modal from '../index';
 
 class ConfirmationModal extends React.Component {
@@ -12,9 +14,13 @@ class ConfirmationModal extends React.Component {
     cancelText: PropTypes.string,
     handleConfirmation: PropTypes.func.isRequired,
     modalOpeningComponent: PropTypes.any,
+    tooltipData: PropTypes.object,
     warning: PropTypes.bool,
+    waiting: PropTypes.bool,
     disabled: PropTypes.bool,
     width: PropTypes.string,
+    borderFooter: PropTypes.bool,
+    handleClose: PropTypes.any,
   };
 
   static defaultProps = {
@@ -30,8 +36,10 @@ class ConfirmationModal extends React.Component {
 
   handleConfirmation = () => {
     try {
-      this.props.handleConfirmation();
-      this.child.handleCloseModal();
+      const prevent = this.props.handleConfirmation();
+      if (prevent) {
+        this.child.handleCloseModal();
+      }
     } catch (err) {
       console.log(err);
       this.child.handleCloseModal();
@@ -45,10 +53,40 @@ class ConfirmationModal extends React.Component {
       confirmText,
       cancelText,
       modalOpeningComponent,
+      tooltipData,
       warning,
+      waiting,
       disabled,
       width,
+      borderFooter,
+      handleClose,
     } = this.props;
+
+    const confirmMessage = waiting ? (
+      <div style={{ width: '97px', height: '16px' }}>
+        <Spinner color="#fff" padding="0 16px" size="14px" />
+      </div>
+    ) : (
+      confirmText
+    );
+
+    const confirmButton = (
+      <Button
+        normal
+        marginTop="0"
+        marginBottom="0"
+        last
+        primary={!warning}
+        secondary={warning}
+        remove={warning}
+        onClick={this.handleConfirmation}
+        disabled={disabled}
+        style={{ position: 'relative', top: waiting ? '3px' : '0' }}
+        data-e2e-id={'modal-create'}
+      >
+        {confirmMessage}
+      </Button>
+    );
 
     const footer = (
       <footer>
@@ -62,20 +100,16 @@ class ConfirmationModal extends React.Component {
         >
           {cancelText}
         </Button>
-        <Button
-          normal
-          marginTop="0"
-          marginBottom="0"
-          last
-          primary={!warning}
-          secondary={warning}
-          remove={warning}
-          onClick={this.handleConfirmation}
-          disabled={disabled}
-          data-e2e-id={`instance-cancel-${this.props.entryName}`}
-        >
-          {confirmText}
-        </Button>
+        {tooltipData ? (
+          <Tooltip
+            {...tooltipData}
+            minWidth={tooltipData.minWidth ? tooltipData.minWidth : '191px'}
+          >
+            {confirmButton}
+          </Tooltip>
+        ) : (
+          confirmButton
+        )}
       </footer>
     );
 
@@ -90,6 +124,8 @@ class ConfirmationModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         warning={warning}
         width={width}
+        borderFooter={borderFooter}
+        handleClose={handleClose}
       />
     );
   }

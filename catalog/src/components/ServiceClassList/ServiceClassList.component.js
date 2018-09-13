@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Paragraph, Spinner } from '@kyma-project/react-components';
+import {
+  Paragraph,
+  Search,
+  Spinner,
+  Toolbar,
+} from '@kyma-project/react-components';
+
+import { SearchWrapper } from './styled';
 
 import FilterList from './FilterList/FilterList.component';
 import Cards from './Cards/Cards.component';
@@ -37,12 +44,26 @@ class ServiceClassList extends React.Component {
     const {
       classList,
       activeClassFilters,
+      activeTagsFilters,
       classFilters,
       setServiceClassesFilter,
       history,
+      searchFn,
+      filterTagsAndSetActiveFilters,
     } = this.props;
 
+    const filterFn = e =>
+      filterTagsAndSetActiveFilters('search', e.target.value);
+
+    const seeMoreFn = (key, value) => {
+      filterTagsAndSetActiveFilters(key, value);
+      filterTagsAndSetActiveFilters('offset', 0);
+    };
+
     const activeFilters = activeClassFilters.activeServiceClassFilters || {};
+    const activeCategoriesFilters = activeTagsFilters.activeTagsFilters || {};
+    const activeFiltersCount =
+      activeFilters.provider.length + activeFilters.tag.length;
     let items = classList.filteredServiceClasses || [];
 
     //its used for filtering class which does not have any name in it (either externalName, displayName or name).
@@ -68,17 +89,36 @@ class ServiceClassList extends React.Component {
     };
 
     return (
-      <ServiceClassListWrapper>
-        {!classFilters.loading && (
-          <FilterList
-            filters={classFilters.serviceClassFilters}
-            active={activeFilters}
-            onChange={(key, value) => setServiceClassesFilter(key, value)}
-          />
-        )}
+      <div>
+        <Toolbar
+          headline="Service Catalog"
+          description="Enrich your experience with additional services"
+        >
+          <SearchWrapper>
+            <Search
+              noIcon
+              darkBorder
+              placeholder="Search"
+              onChange={searchFn}
+            />
+          </SearchWrapper>
+          {!classFilters.loading && (
+            <FilterList
+              filters={classFilters.serviceClassFilters}
+              active={activeFilters}
+              activeFiltersCount={activeFiltersCount}
+              activeTagsFilters={activeCategoriesFilters}
+              onChange={(key, value) => setServiceClassesFilter(key, value)}
+              onSearch={filterFn}
+              onSeeMore={seeMoreFn}
+            />
+          )}
+        </Toolbar>
 
-        <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
-      </ServiceClassListWrapper>
+        <ServiceClassListWrapper>
+          <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+        </ServiceClassListWrapper>
+      </div>
     );
   }
 }
