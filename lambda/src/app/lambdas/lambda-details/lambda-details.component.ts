@@ -261,6 +261,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.setChecksum();
     this.lambdaDetailsService.updateLambda(this.lambda, this.token).subscribe(
       lambda => {
+        this.lambdaDetailsService
+          .getResourceQueryStatus(this.environment, this.token)
+          .subscribe(res => {
+            window.parent.postMessage(res.data, '*');
+          });
         if (this.isHTTPTriggerAdded) {
           if (this.existingHTTPEndpoint) {
             this.updateApi();
@@ -641,6 +646,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
     this.lambdaDetailsService.createLambda(this.lambda, this.token).subscribe(
       lambda => {
+        this.lambdaDetailsService
+          .getResourceQueryStatus(this.environment, this.token)
+          .subscribe(res => {
+            window.parent.postMessage(res.data, '*');
+          });
         if (this.isHTTPTriggerAdded) {
           this.createApi();
         } else {
