@@ -50,7 +50,7 @@ export class TokenInterceptor implements HttpInterceptor {
               sessionStorage.setItem(
                 'requestError',
                 JSON.stringify({
-                  sourceUrl: window.location.pathname,
+                  sourcePath: window.location.pathname,
                   data: err
                 })
               );

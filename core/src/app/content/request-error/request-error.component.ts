@@ -7,7 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./request-error.component.scss']
 })
 export class RequestErrorComponent implements OnInit {
-  public sourceUrl: string;
+  public sourcePath: string;
   public data: HttpErrorResponse;
 
   constructor(private router: Router) {}
@@ -16,7 +16,7 @@ export class RequestErrorComponent implements OnInit {
     const requestError = sessionStorage.getItem('requestError');
     if (requestError) {
       const re = JSON.parse(requestError);
-      this.sourceUrl = re.sourceUrl;
+      this.sourcePath = re.sourcePath;
       this.data = re.data;
       sessionStorage.removeItem('requestError');
     } else {
@@ -25,6 +25,7 @@ export class RequestErrorComponent implements OnInit {
   }
 
   goTo(path?: string) {
+    console.log('goTo()', path);
     this.router.navigateByUrl(path || '/');
   }
 }
