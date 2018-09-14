@@ -114,6 +114,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
 
+  public issuer: string;
+  public jwksUri: string;
+  public authType: string;
+
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
   @ViewChild('labelsInput') labelsInput;
@@ -157,6 +161,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
                   this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
                 },
                 err => {
+                  console.log(
+                    'Can be a valid 404 error when api is not found of a function',
+                  );
                   // Can be a valid 404 error when api is not found of a function
                 },
               );
@@ -936,6 +943,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.existingHTTPEndpoint,
       this.isHTTPTriggerAuthenticated,
       this.httpURL,
+      this.authType,
+      this.jwksUri,
+      this.issuer,
     );
     this.apisService.createApi(api, this.environment, this.token).subscribe(
       () => {
@@ -970,6 +980,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.existingHTTPEndpoint,
       this.isHTTPTriggerAuthenticated,
       this.httpURL,
+      this.authType,
+      this.jwksUri,
+      this.issuer,
     );
     this.apisService.updateApi(api, this.environment, this.token).subscribe(
       () => {
@@ -1039,11 +1052,23 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   handleHttpEmitter($event): void {
-    this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
-      AppConfig.domain
-    }`.toLowerCase();
     this.selectedTriggers = $event;
-    this.isHTTPTriggerAdded = true;
-    this.isHTTPTriggerAuthenticated = $event[0].isAuthEnabled;
+
+    this.selectedTriggers.forEach(trigger => {
+      if (trigger.eventType == 'http') {
+        this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
+          AppConfig.domain
+        }`.toLowerCase();
+
+        this.isHTTPTriggerAdded = true;
+
+        if ((trigger as HTTPEndpoint).isAuthEnabled) {
+          this.authType = (trigger as HTTPEndpoint).authentication.type;
+          this.jwksUri = (trigger as HTTPEndpoint).authentication.jwt.jwksUri;
+          this.issuer = (trigger as HTTPEndpoint).authentication.jwt.issuer;
+          this.isHTTPTriggerAuthenticated = (trigger as HTTPEndpoint).isAuthEnabled;
+        }
+      }
+    });
   }
 }

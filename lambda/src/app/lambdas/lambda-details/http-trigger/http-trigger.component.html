@@ -2,18 +2,18 @@
   <div class="sf-modal sf-modal--max modalposition" [ngClass]="{'is-active': isActive===true}" role="dialog">
     <div class="tn-modal add-event-modal" role="document">
       <div class="tn-modal__content">
-        <div class="tn-modal__header">
+        <div class="tn-modal__header" style="padding-bottom: 5px; padding-top: 5px;">
           <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="closeHttpTriggerModal()">
             <span class="tn-icon tn-icon--close" role="presentation"></span>
           </button>
-          <h4 class="tn-modal__title">{{ title }}</h4>
+          <h4 class="tn-modal__title">{{ title }} hahaha</h4>
         </div>
-        <div class="tn-modal__header">
+        <div class="tn-modal__header" style="padding-bottom: 5px; padding-top: 5px;">
           <div class="sf-list trigger-entry-list">
             <div>
               <div class="row sf-modal__text sf-list__head">
-                <div class="separation col-2">HTTPS-endpoint</div>
-                <div class="separation col-8">
+                <div class="separation col-3">HTTPS-endpoint</div>
+                <div class="separation col-7">
                   <a href="{{ httpURL }}" target="_blank">{{ httpURL }}</a>
 
                 </div>
@@ -26,29 +26,74 @@
             </div>
           </div>
         </div>
-        <div class="tn-modal__body">
-          <div style="font-weight: bold; padding-top: 15px; padding-bottom: 5px">
+        <div class="tn-modal__header" style="padding-bottom: 15px; padding-top: 10px;">
+          <div style="font-weight: bold; padding-top: 1px; padding-bottom: 5px">
             Security
           </div>
           <div>
             HTTPS endpoint will be exposed securly over the internet
           </div>
-          <div class="trigger-footer-left" style="padding-top: 15px; padding-bottom: 5px">
-            <label class="fd-form__label" for="Yj07w605">
-              <span class="fd-toggle fd-toggle--small fd-form__control">
-                <input type="checkbox" id="Yj07w605" [(ngModel)]="isHTTPTriggerAuthenticated" checked>
-                <span class="fd-toggle__switch" role="presentation"></span>
-              </span>
-              Enable Authentication
-            </label>
+          <div style="font-weight: bold; padding-top: 15px;">
+            <input type="checkbox" (change)="toggleSecure()" [checked]="secure" id="secure" [(ngModel)]="isHTTPTriggerAuthenticated" checked> <label for="secure">Enable Authentication</label>
           </div>
         </div>
-        <footer class="tn-modal__footer-items">
+        <div class="tn-modal__body" style="padding-bottom: 1px; padding-top: 1px;">
+          <div class="trigger-footer-left" style="padding-top: 5px; padding-bottom: 5px">
+            <section class="sf-section" style="padding-top: 5px; padding-bottom: 5px">
+              <div *ngIf="secure" class="expose-section">
+                <div class="row">
+                  <div class="col-sm-12 input-group">
+                    <div class="sf-toolbar">
+                      <div class="sf-toolbar__header">Identity Provider</div>
+                      <div class="sf-toolbar__right">
+                        <div *ngIf="secure" class="tn-dropdown" (clickOutside)="autoCloseDropdown()" clickOutsideEvents="click,mousedown">
+                          <button class="tn-button tn-button--small tn-button--link" (click)="loadPreset()">Load Preset</button>
+                          <ul class="tn-dropdown__menu tn-contextual-menu actions-menu text-left" [attr.aria-hidden]="ariaHidden">
+                            <li class="tn-dropdown__item" *ngFor="let preset of availablePresets">
+                              <div (click)="selectPreset(preset)" id="{{preset.label}}">{{ preset.label }}</div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 input-group">
+                    <label class="tn-form__label required" for="input-4">Issuer</label>
+                    <input type="text" id="input-4" [(ngModel)]="issuer" (ngModelChange)="validateDetails()" (blur)="validateDetails()">
+                    <div *ngIf="errorIssuer" class="alert alert-danger">{{ errorIssuer }}</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 input-group">
+                    <label class="tn-form__label required" for="input-5">JWKS URI</label>
+                    <input type="text" id="input-5" [(ngModel)]="jwksUri" (ngModelChange)="validateDetails()" (blur)="validateDetails()">
+                    <div *ngIf="errorJWKSUri" class="alert alert-danger">{{ errorJWKSUri }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 input-group" style="margin-bottom: 1px;">
+                  <div class="sf-toolbar">
+                    <div class="sf-toolbar__left">
+                      <div *ngIf="secure && isDefaultProvider()" class="sf-toolbar__item" style="padding-left: 0px;">
+                        <button class="tn-button tn-button--small tn-button--link" (click)="fetchToken()" style="padding-left: 0px;">Fetch token</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <footer class="tn-modal__footer-items" style="padding: 10px;">
           <button class="tn-button tn-button--small tn-button--text cancel" (click)="closeHttpTriggerModal()">Cancel</button>
-          <button class="tn-button tn-button--small sf-button--primary" (click)=addTrigger()>Add</button>
+          <button class="tn-button tn-button--small sf-button--primary" ngClass="{{isHTTPTriggerAuthenticated && !isAbleToMakeRequest() ? '' : 'disabled'}}" [disabled]="isHTTPTriggerAuthenticated && !isAbleToMakeRequest()" (click)=addTrigger()>Add</button>
         </footer>
       </div>
     </div>
   </div>
+  <app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>
 </ng-template>
 
