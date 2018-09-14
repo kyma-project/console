@@ -33,3 +33,29 @@ export const AddServiceRedirectButton = styled.button`
   text-decoration: none;
   cursor: pointer;
 `;
+
+export const ServicePlanButton = styled.button`
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  margin-right: 0;
+  color: #0a6ed1;
+  opacity: 1;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+export const JSONCode = styled.code`
+  width: 100%;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+`;

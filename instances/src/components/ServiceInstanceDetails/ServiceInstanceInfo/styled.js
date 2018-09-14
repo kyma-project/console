@@ -56,7 +56,7 @@ export const ContentDescription = styled.div`
 `;
 
 export const Element = styled.div`
-  padding: 0 0 16px 0;
+  margin: ${props => (props.margin ? props.margin : '16px 0 0 0')};
 `;
 
 export const InfoIcon = styled.div`
@@ -71,4 +71,55 @@ export const InfoIcon = styled.div`
   letter-spacing: normal;
   float: right;
   color: ${props => props.color};
+`;
+
+export const PlanModalButton = styled.button`
+  font-family: '72';
+  font-size: 14px;
+  font-weight: normal;
+  display: inline-block;
+  font-weight: 300;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: #0b74de;
+  cursor: pointer;
+`;
+
+export const Label = styled.span`
+  width: auto;
+  display: inline-block;
+  mix-blend-mode: multiply;
+  border-radius: 4px;
+  background-color: #eef5fc;
+  font-size: 12px;
+  font-family: 72;
+  font-weight: 300;
+  text-transform: uppercase;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #64696d;
+  padding: 5px 8px;
+  margin: 10px 10px 0 0;
+`;
+
+export const ExternalLink = styled.a`
+  font-family: '72';
+  font-size: 14px;
+  color: #0b74de;
+  font-weight: 300;
+`;
+
+export const JSONCode = styled.code`
+  width: 100%;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 `;

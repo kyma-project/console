@@ -5,6 +5,7 @@ export const SERVICE_INSTANCES_QUERY = gql`
     serviceInstances(environment: $environment) {
       name
       labels
+      servicePlanSpec
       status {
         type
         message

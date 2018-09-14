@@ -54,7 +54,7 @@ export const ServiceProvider = styled.p`
   margin: 5px 0;
 `;
 
-export const DocsLink = styled.a`
+export const ExternalLink = styled.a`
   font-family: '72';
   font-size: 14px;
   font-weight: normal;

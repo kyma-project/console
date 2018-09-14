@@ -10,6 +10,7 @@ export const GET_SERVICE_CLASS = gql`
       description
       longDescription
       documentationUrl
+      supportUrl
       imageUrl
       providerDisplayName
       tags
