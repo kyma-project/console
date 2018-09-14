@@ -103,20 +103,26 @@ function ServiceInstancesTable({
       {
         name: 'Plan',
         size: 0.2,
-        accesor: el => (
-          <InformationModal
-            title="Instances Parameters"
-            modalOpeningComponent={
-              <ServicePlanButton>
-                {getResourceDisplayName(el.servicePlan)}
-              </ServicePlanButton>
-            }
-            content={
-              <JSONCode>{JSON.stringify(el.servicePlanSpec, null, 2)}</JSONCode>
-            }
-            footer={<footer />}
-          />
-        ),
+        accesor: el => {
+          if (Object.keys(el.servicePlanSpec).length === 0) {
+            return getResourceDisplayName(el.servicePlan);
+          }
+          return (
+            <InformationModal
+              title="Instances Parameters"
+              modalOpeningComponent={
+                <ServicePlanButton>
+                  {getResourceDisplayName(el.servicePlan)}
+                </ServicePlanButton>
+              }
+              content={
+                <JSONCode>
+                  {JSON.stringify(el.servicePlanSpec, null, 2)}
+                </JSONCode>
+              }
+            />
+          );
+        },
       },
       {
         name: 'Bound Applications',
@@ -129,7 +135,6 @@ function ServiceInstancesTable({
         accesor: el => {
           let type = '';
 
-          console.log(el.status.type);
           switch (el.status.type) {
             case 'RUNNING':
               type = 'success';

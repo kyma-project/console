@@ -38,14 +38,18 @@ export default {
       const activeFilters = getActiveFilters(cache);
       const newActive = { ...activeFilters };
 
-      if (args.key === "labels") {
+      if (args.key === 'labels') {
         const previousLabels = activeFilters.labels;
-        const labelAlreadyInActiveFilter = previousLabels.some(label => label === args.value)
+        const labelAlreadyInActiveFilter = previousLabels.some(
+          label => label === args.value,
+        );
 
         if (labelAlreadyInActiveFilter) {
-          newActive.labels = newActive.labels.filter(label => label !== args.value)
+          newActive.labels = newActive.labels.filter(
+            label => label !== args.value,
+          );
         } else {
-          const labels = [...newActive.labels]
+          const labels = [...newActive.labels];
           labels.push(args.value);
           newActive.labels = labels;
         }
@@ -67,11 +71,22 @@ export default {
       const items = cache.readQuery({
         query: SERVICE_INSTANCES_QUERY,
         variables: {
-            environment: builder.getCurrentEnvironmentId(),
-        }
+          environment: builder.getCurrentEnvironmentId(),
+        },
       }).serviceInstances;
-      const filteredItems = filterItems(items, activeFilters, cache);
+      let filteredItems = filterItems(items, activeFilters, cache);
       const allFilters = populateFilters(items, filteredItems);
+
+      // workaround for caching servicePlanSpec
+      filteredItems = filteredItems.map(item => {
+        return {
+          ...item,
+          servicePlanSpec: {
+            ...item.servicePlanSpec,
+            __typename: 'JSON',
+          },
+        };
+      });
 
       cache.writeData({
         data: {
@@ -145,13 +160,11 @@ const filterItems = (items, activeFilters, cache) => {
     let labelsMatch = true;
 
     if (activeFilters.labels && activeFilters.labels.length > 0) {
-
       activeFilters.labels.forEach(label => {
         if (!item.labels.includes(label)) {
           labelsMatch = false;
         }
-      })
-      
+      });
     }
 
     if (
@@ -160,8 +173,7 @@ const filterItems = (items, activeFilters, cache) => {
     ) {
       const searchValue = activeFilters.search.toLowerCase();
       const name = item.name.toLowerCase();
-      searchMatch =
-        name.indexOf(searchValue) !== -1
+      searchMatch = name.indexOf(searchValue) !== -1;
     }
 
     return labelsMatch && searchMatch;
