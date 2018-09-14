@@ -6,6 +6,8 @@ export const SERVICE_INSTANCE_QUERY = gql`
       name
       environment
       servicePlanName
+      servicePlanSpec
+      labels
       status {
         type
         message
@@ -15,6 +17,8 @@ export const SERVICE_INSTANCE_QUERY = gql`
         displayName
         externalName
         description
+        documentationUrl
+        supportUrl
         content
         asyncApiSpec
         apiSpec
@@ -24,6 +28,8 @@ export const SERVICE_INSTANCE_QUERY = gql`
         displayName
         externalName
         relatedServiceClassName
+        description
+        instanceCreateParameterSchema
       }
       serviceBindings {
         name

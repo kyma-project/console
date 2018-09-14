@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import { Toolbar } from '@kyma-project/react-components';
 
@@ -10,15 +11,19 @@ const ServiceClassToolbar = ({
   serviceClassDisplayName,
   children,
 }) => {
+  const goToServiceInstanceList = () => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`service-catalog`);
+  };
+
   return (
     <div>
       <div> {arrayOfJsx} </div>
       {renObjData}
 
       <Toolbar
-        back={() => {
-          history.goBack();
-        }}
+        back={goToServiceInstanceList}
         headline={serviceClassDisplayName}
         addSeparator
       >
