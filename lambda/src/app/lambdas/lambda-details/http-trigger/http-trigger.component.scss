@@ -1,19 +1,18 @@
 .sf-modal[_ngcontent-c7] {
   .tn-modal[_ngcontent-c7] {
     width: 50%;
-    margin-top: 20%;
+    margin-top: 15%;
   }
 }
-
 
 .sf-modal__text {
     font-size: 1rem;
     text-transform: none;
     text-align: left;
     background: #FFFFFF;
-    color: #000000;
     border-bottom: none;
     padding: 1px 0;
+    color: #21262c;
 }
 
 .separation {
@@ -21,3 +20,116 @@
     padding-left: 1px;
     padding-top: 10px;
 }
+
+.sf-toolbar__header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    padding: 0.8em 2em 0.8em 2em;
+    color: #21262c;
+}
+
+.sf-toolbar__right {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: auto !important;
+    font-size: 1rem;
+    color: #21262c;
+    padding: 0.8em 2em 0.8em 2em;
+}
+
+.input-group {
+  padding: 0;
+  margin-bottom: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  label.required::after {
+    content: ' *';
+  }
+}
+
+.tn-button {
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  &:disabled:hover {
+    color: #7f90a4;
+    background: #f9fbfc;
+  }
+}
+
+.tn-dropdown__menu {
+  overflow: auto;
+  max-height: 300px;
+}
+
+.left {
+  padding: 0.8em 2em 0.8em 0;
+}
+
+.security-section {
+  left: 14px;
+  top: 28px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+$light-red: rgba(255, 0, 0, 0.1);
+.sf-list__body--primary {
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  font-size: 18px;
+}
+
+.alert {
+  padding: 5px 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: $light-red;
+  color: red;
+  text-align: center;
+  word-break: break-all;
+}
+
+
+.lambda-editor-header-list-first-elem {
+  float: left;
+  display: inline-table;
+  min-height: 26px;
+}
+
+.lambda-editor-header {
+  padding-top: 10px;
+}
+
+.tn-dropdown__menu, .tn-dropdown__options {
+    border: solid 1px #ccdaeb;
+    background: #fff;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 2;
+    -webkit-transform: translateY(-1px);
+    transform: translateY(-1px);
+    -webkit-box-shadow: 0 0 4px 1px rgba(138,143,161,.2);
+    box-shadow: 0 0 4px 1px rgba(138,143,161,.2);
+}
+
+.idp-presets-dropdown {
+  top:26px;
+}
+
+.tn-contextual-menu {
+    min-width: 120px;
+    left: 15px;
+}
+
