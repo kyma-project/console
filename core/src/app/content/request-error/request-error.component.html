@@ -1,0 +1,12 @@
+<div class="sf-panel">
+  <div class="sf-panel__content">
+    <div class="row">
+      <div class="login-error-message col-sm-12">
+        <h3>There was an error while requesting a resource:</h3>
+        <p><strong>{{ data?.error }}</strong></p>
+        <p>{{ data?.message }}</p>
+        <button class="sf-button--primary tn-button tn-button--small" (click)="goTo(sourceUrl)">Try again</button>
+      </div>
+    </div>
+  </div>
+</div>
