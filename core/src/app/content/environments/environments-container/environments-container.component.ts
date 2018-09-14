@@ -77,29 +77,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       if (val instanceof NavigationEnd) {
         if (this.isSignificantUrlChange(val.url, this.previousUrl)) {
           this.toggleFade();
-          this.envSub = this.currentEnvironmentService
-            .getCurrentEnvironmentId()
-            .subscribe(env => {
-              if (val.url.includes(env)) {
-                if (env !== this.previousEnv) {
-                  this.previousEnv = env;
-                  this.environmentsService
-                    .getResourceQueryStatus(env)
-                    .subscribe(res => {
-                      this.resourceExceededGlobal =
-                        res.resourceQuotasStatus.exceeded;
-                      this.resourceExceededOverview =
-                        res.resourceQuotasStatus.exceeded;
-                    });
-                  if (this.envSub) {
-                    this.envSub.unsubscribe();
-                  }
-                }
-                this.overview = val.url.includes(`${env}/details`)
-                  ? true
-                  : false;
-              }
-            });
+          this.checkIfResourceLimitExceeded(val.url);
         }
         this.previousUrl = val.url;
       }
@@ -166,5 +144,39 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
 
   private hideError() {
     this.resourceExceededGlobal = false;
+  }
+
+  private checkIfResourceLimitExceeded(url) {
+    this.envSub = this.currentEnvironmentService
+      .getCurrentEnvironmentId()
+      .subscribe(env => {
+        if (url.includes(env)) {
+          if (env !== this.previousEnv) {
+            this.previousEnv = env;
+            this.environmentsService.getResourceQueryStatus(env).subscribe(
+              res => {
+                this.resourceExceededGlobal = res.resourceQuotasStatus.exceeded;
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          } else if (url.includes(`${env}/details`)) {
+            this.environmentsService.getResourceQueryStatus(env).subscribe(
+              res => {
+                this.resourceExceededOverview =
+                  res.resourceQuotasStatus.exceeded;
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          }
+          this.overview = url.includes(`${env}/details`);
+          if (this.envSub) {
+            this.envSub.unsubscribe();
+          }
+        }
+      });
   }
 }
