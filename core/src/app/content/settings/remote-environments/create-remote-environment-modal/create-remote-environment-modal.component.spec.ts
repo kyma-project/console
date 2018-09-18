@@ -2,14 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal.component';
 
-fdescribe('CreateRemoteEnvironmentModalComponent', () => {
+describe('CreateRemoteEnvironmentModalComponent', () => {
   let component: CreateRemoteEnvironmentModalComponent;
   let fixture: ComponentFixture<CreateRemoteEnvironmentModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateRemoteEnvironmentModalComponent]
-    }).compileComponents();
+    })
+      .overrideTemplate(CreateRemoteEnvironmentModalComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {
