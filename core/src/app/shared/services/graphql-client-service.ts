@@ -7,7 +7,7 @@ export class GraphQLClientService {
   constructor(private http: HttpClient) {}
 
   request(url, query, variables) {
-    return this.http.post<any[]>(url, { query, variables }).pipe(
+    return this.http.post(url, { query, variables }).pipe(
       map(res => {
         const response: any = res;
 
