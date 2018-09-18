@@ -76,7 +76,7 @@ podTemplate(label: label) {
                         // }
 
                         stage("build  $application") {
-                            execute('ng build')
+                            execute('make build')
                         }
 
                         stage("build image $application") {
