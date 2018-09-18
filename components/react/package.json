@@ -22,6 +22,8 @@
   "dependencies": {
     "file-loader": "^1.1.11",
     "polished": "^1.8.1",
+    "preact": "^8.3.1",
+    "preact-compat": "^3.18.4",
     "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"
   },

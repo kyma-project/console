@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Text, Toolbar } from '@kyma-project/react-components';
 import { sortByOrder, filterWithoutInternal } from '../../commons/helpers';
-import Highlight from 'react-highlight';
+import Highlight from 'react-highlight/lib/optimized.js';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -88,7 +88,12 @@ function ContentWrapper(props) {
                   <ContentHeader id={hash}>{item.title}</ContentHeader>
                   <ContentDescription>
                     <Text>
-                      <Highlight innerHTML={true}>{item.source}</Highlight>
+                      <Highlight
+                        languages={['javascript', 'yaml']}
+                        innerHTML={true}
+                      >
+                        {item.source}
+                      </Highlight>
                     </Text>
                   </ContentDescription>
                 </Wrapper>
