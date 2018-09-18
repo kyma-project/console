@@ -43,7 +43,7 @@ const ServiceClassTabs = ({ serviceClass }) => {
     const validatDocumentsByType = type => {
       let numberOfSources = 0;
       for (let item = 0; item < type.length; item++) {
-        if (!!type[item].source || !!type[item].Source) numberOfSources++;
+        if (type[item].source || type[item].Source) numberOfSources++;
       }
       return numberOfSources > 0;
     };
@@ -73,15 +73,14 @@ const ServiceClassTabs = ({ serviceClass }) => {
                 ) : null,
             )}
 
-          {apiSpec &&
-            Object.keys(apiSpec).length && (
-              <Tab title={'Console'}>
-                <ApiReference
-                  url="http://petstore.swagger.io/v1/swagger.json"
-                  schema={apiSpec}
-                />
-              </Tab>
-            )}
+          {apiSpec && Object.keys(apiSpec).length ? (
+            <Tab title={'Console'}>
+              <ApiReference
+                url="http://petstore.swagger.io/v1/swagger.json"
+                schema={apiSpec}
+              />
+            </Tab>
+          ) : null}
 
           {asyncApiSpec &&
           Object.keys(asyncApiSpec).length &&

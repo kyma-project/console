@@ -18,19 +18,19 @@ const checkingPattern = names => {
 };
 
 describe('correctly adjectives', () => {
-  it('should returns true if the all adjectives have a correctly pattern', () => {
+  it('should return true if the all adjectives have a correctly pattern', () => {
     expect(checkingPattern(adjectives)).toEqual(true);
   });
 });
 
 describe('correctly nouns', () => {
-  it('should returns true if the all nouns have a correctly pattern', () => {
+  it('should return true if the all nouns have a correctly pattern', () => {
     expect(checkingPattern(nouns)).toEqual(true);
   });
 });
 
 describe('correctly random name', () => {
-  it('should returns true if the random name has a correctly pattern', () => {
+  it('should return true if the random name has a correctly pattern', () => {
     const randomName = randomNameGenerator();
     const result =
       randomName.split('-').length === 2 && checkingFormat(randomName);
@@ -40,7 +40,7 @@ describe('correctly random name', () => {
 });
 
 describe('validate asyncApiSpec', () => {
-  it('should returns true, because formatting of asyncApiSpec object is correct', () => {
+  it('should return true, because formatting of asyncApiSpec object is correct', () => {
     const asyncApiSpec = {
       info: {
         title: 'exampleInfo',
@@ -60,7 +60,7 @@ describe('validate asyncApiSpec', () => {
     expect(result).toEqual(true);
   });
 
-  it('should returns false, because topics field is undefined', () => {
+  it('should return false, because topics field is undefined', () => {
     const asyncApiSpec = {
       info: {
         title: 'exampleInfo',
@@ -72,7 +72,7 @@ describe('validate asyncApiSpec', () => {
     expect(result).toEqual(false);
   });
 
-  it('should returns false, because info field is undefined', () => {
+  it('should return false, because info field is undefined', () => {
     const asyncApiSpec = {
       topics: {
         exampleTopic1: {
@@ -88,26 +88,7 @@ describe('validate asyncApiSpec', () => {
     expect(result).toEqual(false);
   });
 
-  it('should returns false, because title field in info object is undefined', () => {
-    const asyncApiSpec = {
-      info: {
-        version: 'exampleVersion',
-      },
-      topics: {
-        exampleTopic1: {
-          subscribe: {},
-        },
-        exampleTopic2: {
-          subscribe: {},
-        },
-      },
-    };
-    const result = validateAsyncApiSpec(asyncApiSpec);
-
-    expect(result).toEqual(false);
-  });
-
-  it('should returns false, because version field in info object is undefined', () => {
+  it('should return false, because title field in info object is undefined', () => {
     const asyncApiSpec = {
       info: {
         version: 'exampleVersion',
@@ -126,7 +107,26 @@ describe('validate asyncApiSpec', () => {
     expect(result).toEqual(false);
   });
 
-  it('should returns false, because topics object does not have at least one topic field', () => {
+  it('should return false, because version field in info object is undefined', () => {
+    const asyncApiSpec = {
+      info: {
+        version: 'exampleVersion',
+      },
+      topics: {
+        exampleTopic1: {
+          subscribe: {},
+        },
+        exampleTopic2: {
+          subscribe: {},
+        },
+      },
+    };
+    const result = validateAsyncApiSpec(asyncApiSpec);
+
+    expect(result).toEqual(false);
+  });
+
+  it('should return false, because topics object does not have at least one topic field', () => {
     const asyncApiSpec = {
       info: {
         title: 'exampleInfo',
@@ -139,7 +139,7 @@ describe('validate asyncApiSpec', () => {
     expect(result).toEqual(false);
   });
 
-  it('should returns false, because one of the topics object does not have subscribe field', () => {
+  it('should return false, because one of the topics object does not have subscribe field', () => {
     const asyncApiSpec = {
       info: {
         title: 'exampleInfo',
