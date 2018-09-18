@@ -138,7 +138,8 @@ class BasicData extends React.Component {
     const { data, error } = await this.props.refetchInstanceExists(name);
 
     this.setState({
-      instanceWithNameAlreadyExists: !error && data.serviceInstance !== null,
+      instanceWithNameAlreadyExists:
+        !error && data && data.serviceInstance !== null,
     });
   };
 

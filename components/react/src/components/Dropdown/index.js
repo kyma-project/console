@@ -12,6 +12,10 @@ class Dropdown extends React.Component {
     enabled: PropTypes.bool,
     firstButton: PropTypes.bool,
     lastButton: PropTypes.bool,
+    marginTop: PropTypes.string,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    arrowTop: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -38,9 +42,18 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const { enabled, name, children, firstButton, lastButton } = this.props;
+    const {
+      enabled,
+      name,
+      children,
+      firstButton,
+      lastButton,
+      marginTop,
+      primary,
+      secondary,
+      arrowTop,
+    } = this.props;
     const { visible } = this.state;
-
     const itemId = name
       ? name
           .split(' ')
@@ -52,16 +65,23 @@ class Dropdown extends React.Component {
       <RelativeWrapper onMouseLeave={this.collapse}>
         <Button
           normal
-          padding={'8px 0 8px 16px'}
+          padding={!primary && !secondary ? '8px 0 8px 16px' : '8px 16px'}
           first={firstButton}
           last={lastButton}
+          marginTop={marginTop}
+          primary={primary}
+          secondary={secondary}
           onClick={this.toggleDropdown}
           disabled={!enabled}
           data-e2e-id={`toggle-${itemId}`}
         >
           {name}
         </Button>
-        <DropdownWrapper visible={visible} data-e2e-id={`wrapper-${itemId}`}>
+        <DropdownWrapper
+          visible={visible}
+          arrowTop={arrowTop}
+          data-e2e-id={`wrapper-${itemId}`}
+        >
           {children}
         </DropdownWrapper>
       </RelativeWrapper>
