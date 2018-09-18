@@ -60,8 +60,7 @@ if (clusterConfig) {
 
 if (
   clusterConfig &&
-  clusterConfig['graphqlApiUrlLocal'] &&
-  clusterConfig['graphqlApiUrl']
+  (clusterConfig['graphqlApiUrlLocal'] || clusterConfig['graphqlApiUrl'])
 ) {
   config.graphqlApiUrl = environment.localApi
     ? clusterConfig['graphqlApiUrlLocal']
