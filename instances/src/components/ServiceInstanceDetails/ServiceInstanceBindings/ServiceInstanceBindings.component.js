@@ -60,7 +60,7 @@ class ServiceInstanceBindings extends React.Component {
           size: 0.2,
           accesor: el => {
             const secret = el.serviceBinding && el.serviceBinding.secret;
-            return (
+            return secret ? (
               <SecretDataModal
                 title={`Secret "${secret.name}"`}
                 data={secret.data}
@@ -68,6 +68,8 @@ class ServiceInstanceBindings extends React.Component {
                   <SecretModalButton>{secret.name}</SecretModalButton>
                 }
               />
+            ) : (
+              '-'
             );
           },
         },
