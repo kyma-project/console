@@ -10,6 +10,8 @@ export const sortDocumentsByType = documents => {
       const key = document.type ? 'type' : 'Type';
       const val = document[key];
 
+      if (!val) return {};
+
       if (!object[val]) {
         object[val] = [];
       }
@@ -47,6 +49,47 @@ export const getDescription = resource => {
   }
 
   return resource.longDescription || resource.description;
+};
+
+export const validateContent = content => {
+  if (!content) return false;
+
+  let documentsByType = [],
+    documentsTypes = [];
+
+  if (content && Object.keys(content).length) {
+    documentsByType = sortDocumentsByType(content);
+    if (!documentsByType) return false;
+    documentsTypes = Object.keys(documentsByType);
+    if (!documentsTypes) return false;
+  }
+
+  let numberOfSources = 0;
+  documentsTypes.forEach(type => {
+    const docsType = documentsByType[type];
+    for (let item = 0; item < docsType.length; item++) {
+      if (docsType[item].source || docsType[item].Source) numberOfSources++;
+    }
+  });
+  return numberOfSources > 0;
+};
+
+export const validateAsyncApiSpec = asyncApiSpec => {
+  if (
+    !asyncApiSpec ||
+    !asyncApiSpec.topics ||
+    !Object.keys(asyncApiSpec.topics).length ||
+    !asyncApiSpec.info ||
+    !asyncApiSpec.info.title ||
+    !asyncApiSpec.info.version
+  )
+    return false;
+
+  for (const topic in asyncApiSpec.topics) {
+    if (!topic || !asyncApiSpec.topics[topic].subscribe) return false;
+  }
+
+  return true;
 };
 
 export function clearEmptyPropertiesInObject(object) {
