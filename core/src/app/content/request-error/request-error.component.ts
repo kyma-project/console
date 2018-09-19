@@ -25,7 +25,6 @@ export class RequestErrorComponent implements OnInit {
   }
 
   goTo(path?: string) {
-    console.log('goTo()', path);
     this.router.navigateByUrl(path || '/');
   }
 }
