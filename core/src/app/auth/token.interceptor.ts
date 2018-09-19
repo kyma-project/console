@@ -11,11 +11,6 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-interface ITokens {
-  id_token_stored_at?: string;
-  id_token_expired_at?: string;
-}
-
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public oAuthService: OAuthService, private router: Router) {}
