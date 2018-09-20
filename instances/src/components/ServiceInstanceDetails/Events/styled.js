@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Bold = styled.strong`
+  font-weight: bold;
+`;
+
 export const NameSpan = styled.span`
   color: #0b74de;
   font-weight: bold;

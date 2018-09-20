@@ -8,70 +8,93 @@ import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 
 import { ServiceClassTabsContentWrapper } from './styled';
 
-import { sortDocumentsByType } from '../../../commons/helpers';
+import {
+  sortDocumentsByType,
+  validateContent,
+  validateAsyncApiSpec,
+} from '../../../commons/helpers';
 
 const ServiceClassTabs = ({ serviceClass }) => {
+  const content =
+    serviceClass.serviceClass.content && serviceClass.serviceClass.content;
   const apiSpec =
     serviceClass.serviceClass.apiSpec && serviceClass.serviceClass.apiSpec;
   const asyncApiSpec =
     serviceClass.serviceClass.asyncApiSpec &&
     serviceClass.serviceClass.asyncApiSpec;
 
-  let documentsByType = [],
-    documentsTypes = [],
-    eventsTopics = [];
+  if (
+    (content && Object.keys(content).length && validateContent(content)) ||
+    (apiSpec && Object.keys(apiSpec).length) ||
+    (asyncApiSpec &&
+      Object.keys(asyncApiSpec).length &&
+      validateAsyncApiSpec(asyncApiSpec))
+  ) {
+    let documentsByType = [],
+      documentsTypes = [];
 
-  if (!serviceClass.loading) {
-    if (serviceClass.serviceClass.content) {
-      documentsByType = sortDocumentsByType(serviceClass.serviceClass.content);
-      documentsTypes = Object.keys(documentsByType);
+    if (!serviceClass.loading) {
+      if (content && Object.keys(content).length) {
+        documentsByType = sortDocumentsByType(content);
+        documentsTypes = Object.keys(documentsByType);
+      }
     }
-    if (asyncApiSpec && asyncApiSpec.topics) {
-      eventsTopics = Object.keys(asyncApiSpec.topics);
-    }
+
+    const validatDocumentsByType = type => {
+      let numberOfSources = 0;
+      for (let item = 0; item < type.length; item++) {
+        if (type[item].source || type[item].Source) numberOfSources++;
+      }
+      return numberOfSources > 0;
+    };
+
+    return (
+      <ServiceClassTabsContentWrapper>
+        <Tabs>
+          {documentsTypes &&
+            documentsTypes.map(
+              type =>
+                documentsByType &&
+                documentsByType[type] &&
+                validatDocumentsByType(documentsByType[type]) ? (
+                  <Tab key={type} title={type}>
+                    {documentsByType[type].map(
+                      (item, i) =>
+                        item.source || item.Source ? (
+                          <div
+                            key={i}
+                            dangerouslySetInnerHTML={{
+                              __html: item.source || item.Source,
+                            }}
+                          />
+                        ) : null,
+                    )}
+                  </Tab>
+                ) : null,
+            )}
+
+          {apiSpec && Object.keys(apiSpec).length ? (
+            <Tab title={'Console'}>
+              <ApiReference
+                url="http://petstore.swagger.io/v1/swagger.json"
+                schema={apiSpec}
+              />
+            </Tab>
+          ) : null}
+
+          {asyncApiSpec &&
+          Object.keys(asyncApiSpec).length &&
+          validateAsyncApiSpec(asyncApiSpec) ? (
+            <Tab title={'Events'}>
+              <Events asyncApiSpec={asyncApiSpec} />
+            </Tab>
+          ) : null}
+        </Tabs>
+      </ServiceClassTabsContentWrapper>
+    );
   }
 
-  return (
-    <ServiceClassTabsContentWrapper>
-      <Tabs>
-        {documentsTypes &&
-          documentsTypes.map(type => (
-            <Tab key={type} title={type}>
-              {documentsByType &&
-                documentsByType[type] &&
-                documentsByType[type].map((item, i) => (
-                  <div
-                    key={i}
-                    dangerouslySetInnerHTML={{
-                      __html: item.source || item.Source,
-                    }}
-                  />
-                ))}
-            </Tab>
-          ))}
-
-        {apiSpec && (
-          <Tab title={'Console'}>
-            <ApiReference
-              url="http://petstore.swagger.io/v1/swagger.json"
-              schema={apiSpec}
-            />
-          </Tab>
-        )}
-
-        {asyncApiSpec && (
-          <Tab title={'Events'}>
-            <Events
-              data={asyncApiSpec.topics}
-              topics={eventsTopics}
-              title={asyncApiSpec.info.title}
-              description={asyncApiSpec.info.description}
-            />
-          </Tab>
-        )}
-      </Tabs>
-    </ServiceClassTabsContentWrapper>
-  );
+  return null;
 };
 
 ServiceClassTabs.propTypes = {

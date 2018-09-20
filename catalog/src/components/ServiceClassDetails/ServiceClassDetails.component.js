@@ -80,11 +80,7 @@ class ServiceClassDetails extends React.Component {
                     description={serviceClassDescription}
                   />
                 )}
-                {serviceClass.serviceClass.content ||
-                serviceClass.serviceClass.apiSpec ||
-                serviceClass.serviceClass.asyncApiSpec ? (
-                  <ServiceClassTabs serviceClass={serviceClass} />
-                ) : null}
+                <ServiceClassTabs serviceClass={serviceClass} />
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>
