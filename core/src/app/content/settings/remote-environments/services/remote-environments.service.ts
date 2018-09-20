@@ -16,6 +16,7 @@ export class RemoteEnvironmentsService {
   constructor(private graphQLClientService: GraphQLClientService) {}
 
   getRemoteEnvironment(name: string): Observable<any> {
+    // ToDo: add labels
     const query = `query RemoteEnvironment($name: String!) {
         remoteEnvironment(name: $name){
           description
@@ -27,11 +28,6 @@ export class RemoteEnvironmentsService {
             entries {
               type
             }
-          }
-          source {
-            environment
-            namespace
-            type
           }
         }
       }`;
