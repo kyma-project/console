@@ -60,7 +60,7 @@ class ServiceInstanceBindings extends React.Component {
           size: 0.2,
           accesor: el => {
             const secret = el.serviceBinding && el.serviceBinding.secret;
-            return secret ? (
+            return secret && Object.keys(secret).length ? (
               <SecretDataModal
                 title={`Secret "${secret.name}"`}
                 data={secret.data}
