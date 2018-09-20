@@ -4,12 +4,12 @@
   </div>
   <div class="col-3 sf-list__body--primary remoteenv-name" (click)="openRemoteEnvDetails()">{{ entry.name }}</div>
   <div class="col-3 sf-list__label-column">
-    <div *ngIf='getLabels(entry.labels)'>
-      <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry)">
+    <div *ngIf='getLabels(entry.labels).length'>
+      <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">
         {{ label }}
       </span>
     </div>
-    <div *ngIf='getLabels(entry.labels)' class="no-content">
+    <div *ngIf='!getLabels(entry.labels).length' class="no-content">
       <span>none</span>
     </div>
   </div>

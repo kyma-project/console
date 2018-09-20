@@ -38,12 +38,12 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
-    // ToDo: add labels
     const query = `query {
       remoteEnvironments{
         name
         status
-        enabledInEnvironments
+        enabledInEnvironments,
+        labels
       }
     }`;
 

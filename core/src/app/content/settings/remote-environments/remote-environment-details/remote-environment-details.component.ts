@@ -151,7 +151,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     return this.remoteEnvironmentsService.determineClass(entry);
   }
 
-  public getLabels({ labels = {} }) {
+  public getLabels(labels = {}): string[] {
     return Object.entries(labels).map(([key, value]) => key + ':' + value);
   }
 }
