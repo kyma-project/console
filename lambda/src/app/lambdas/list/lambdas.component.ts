@@ -1,5 +1,6 @@
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
+import { of as observableOf, Observable, forkJoin } from 'rxjs';
+
+import { map, catchError } from 'rxjs/operators';
 
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IFunction, Lambda } from './../../shared/datamodel/k8s/function';
@@ -22,12 +23,12 @@ import { DeploymentDetailsService } from './deployment-details.service';
 
 import { AppConfig } from '../../app.config';
 import { ApisService } from '../../apis/apis.service';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 
 import * as luigiClient from '@kyma-project/luigi-client';
+import 'rxjs/add/operator/publishReplay';
 
 @Component({
   selector: 'app-lambdas',
@@ -138,9 +139,11 @@ export class LambdasComponent extends GenericTableComponent {
                 this.environment,
                 this.token,
               )
-              .catch(err => {
-                return Observable.of(err);
-              }),
+              .pipe(
+                catchError(err => {
+                  return observableOf(err);
+                }),
+              ),
           );
         });
 
@@ -171,9 +174,11 @@ export class LambdasComponent extends GenericTableComponent {
                 this.environment,
                 this.token,
               )
-              .catch(err => {
-                return Observable.of(err);
-              }),
+              .pipe(
+                catchError(err => {
+                  return observableOf(err);
+                }),
+              ),
           );
         });
         forkJoin(deleteRequests).subscribe(responses => {
@@ -194,12 +199,14 @@ export class LambdasComponent extends GenericTableComponent {
         const func = new Lambda(entry);
         func.functionStatus = that.deploymentDetailsService
           .getDeployments(func.getName(), that.environment, that.token)
-          .map(deploymentList => {
-            return deploymentList.items[0].status;
-          })
-          .catch(() => {
-            return Observable.of(0);
-          })
+          .pipe(
+            map(deploymentList => {
+              return deploymentList.items[0].status;
+            }),
+            catchError(() => {
+              return observableOf(0);
+            }),
+          )
           .publishReplay(1)
           .refCount();
         return func;

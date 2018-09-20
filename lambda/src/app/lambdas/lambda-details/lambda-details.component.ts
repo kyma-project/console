@@ -1,6 +1,6 @@
 /* tslint:disable:no-submodule-imports */
 
-import { Observable } from 'rxjs/Observable';
+import { of as observableOf, Observable, forkJoin } from 'rxjs';
 import {
   Component,
   ViewChild,
@@ -31,7 +31,6 @@ import { FetchTokenModalComponent } from '../../fetch-token-modal/fetch-token-mo
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
 import { InstanceBindingState } from '../../shared/datamodel/instance-binding-state';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventTrigger } from '../../shared/datamodel/event-trigger';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
@@ -46,6 +45,10 @@ import { Service } from '../../shared/datamodel/k8s/api-service';
 import { timeout } from 'rxjs/operators';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/catch';
+
 @Component({
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
@@ -98,12 +101,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
   lambda = new Lambda({
     metadata: this.md,
   });
-  loaded: Observable<boolean> = Observable.of(false);
+  loaded: Observable<boolean> = observableOf(false);
   newLabel;
   wrongLabel = false;
   wrongLabelMessage = '';
   error: string = null;
-  hasDependencies: Observable<boolean> = Observable.of(false);
+  hasDependencies: Observable<boolean> = observableOf(false);
   envVarKey = '';
   envVarValue = '';
   isEnvVariableNameInvalid = false;
@@ -184,7 +187,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
             this.title = 'Create Lambda Function';
             this.lambda = this.lambdaDetailsService.initializeLambda();
             this.lambda.spec.function = this.code;
-            this.loaded = Observable.of(true);
+            this.loaded = observableOf(true);
             if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
               this.editor.setReadOnly(true);
             }
@@ -381,7 +384,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           this.serviceBindingsService
             .createServiceBinding(serviceBinding, this.token)
             .catch(err => {
-              return Observable.of(err);
+              return observableOf(err);
             }),
         );
       } else {
@@ -398,7 +401,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         this.serviceBindingUsagesService
           .createServiceBindingUsage(serviceBindingUsage, this.token)
           .catch(err => {
-            return Observable.of(err);
+            return observableOf(err);
           }),
       );
     });
@@ -421,7 +424,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
                     this.token,
                   )
                   .catch(err => {
-                    return Observable.of(err);
+                    return observableOf(err);
                   }),
               );
             }
@@ -513,7 +516,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
             .catch(err => {
-              return Observable.of(err);
+              return observableOf(err);
             });
           createSubscriptionRequests.push(req);
         }
@@ -529,7 +532,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           this.token,
         )
         .catch(err => {
-          return Observable.of(err);
+          return observableOf(err);
         });
       deleteSubscriptionRequests.push(req);
     });
@@ -704,12 +707,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
           this.code = lambda.spec.function;
           this.kind = lambda.spec.runtime;
           this.dependency = lambda.spec.deps;
-          this.hasDependencies = Observable.of(
+          this.hasDependencies = observableOf(
             this.dependency != null &&
               this.dependency !== undefined &&
               this.dependency !== '',
           );
-          this.loaded = Observable.of(true);
+          this.loaded = observableOf(true);
         },
         err => {
           this.navigateToList();
@@ -748,7 +751,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
       .getEventActivations(this.environment, this.token)
       .subscribe(
         events => {
-          this.loaded = Observable.of(true);
+          this.loaded = observableOf(true);
         },
         err => {
           this.error = err.message;
@@ -870,12 +873,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   addDependencies() {
-    this.hasDependencies = Observable.of(true);
+    this.hasDependencies = observableOf(true);
   }
   removeDependencies() {
     this.dependency = '';
     this.lambda.spec.deps = null;
-    this.hasDependencies = Observable.of(false);
+    this.hasDependencies = observableOf(false);
   }
 
   /** validatesName checks whether a function name is abiding by RFC 1123 or not */
