@@ -1,30 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subscription, ISubscriptionList, ISubscription, ISubscriptionSpec } from '../shared/datamodel/k8s/subscription';
+import {
+  Subscription,
+  ISubscriptionList,
+  ISubscription,
+  ISubscriptionSpec,
+} from '../shared/datamodel/k8s/subscription';
 import { Observable } from 'rxjs/Observable';
 import { AppConfig } from '../app.config';
 import { IMetaData } from '../shared/datamodel/k8s/generic/meta-data';
 
 @Injectable()
 export class SubscriptionsService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  public createSubscription(subscription: Subscription, token: string): Observable<Subscription> {
+  public createSubscription(
+    subscription: Subscription,
+    token: string,
+  ): Observable<Subscription> {
     const httpOptions = this.getHTTPOptions(token);
-    const url = `${AppConfig.subscriptionApiUrl}/namespaces/${subscription.metadata.namespace}/subscriptions`;
+    const url = `${AppConfig.subscriptionApiUrl}/namespaces/${
+      subscription.metadata.namespace
+    }/subscriptions`;
     return this.http.post<Subscription>(url, subscription, httpOptions);
   }
 
-  public deleteSubscription(name: string, namespace: string, token: string): Observable<Subscription> {
+  public deleteSubscription(
+    name: string,
+    namespace: string,
+    token: string,
+  ): Observable<Subscription> {
     const httpOptions = this.getHTTPOptions(token);
-    const url = `${AppConfig.subscriptionApiUrl}/namespaces/${namespace}/subscriptions/${name}`;
+    const url = `${
+      AppConfig.subscriptionApiUrl
+    }/namespaces/${namespace}/subscriptions/${name}`;
     return this.http.delete<Subscription>(url, httpOptions);
   }
 
-  public getSubscriptions(namespace: string, token: string, params: object): Observable<ISubscriptionList> {
+  public getSubscriptions(
+    namespace: string,
+    token: string,
+    params: object,
+  ): Observable<ISubscriptionList> {
     const httpOptions = this.getHTTPOptions(token, params);
-    const url = `${AppConfig.subscriptionApiUrl}/namespaces/${namespace}/subscriptions`;
+    const url = `${
+      AppConfig.subscriptionApiUrl
+    }/namespaces/${namespace}/subscriptions`;
     return this.http.get<ISubscriptionList>(url, httpOptions);
   }
 
@@ -33,9 +54,9 @@ export class SubscriptionsService {
     httpHeaders = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       }),
-      params
+      params,
     };
     return httpHeaders;
   }
@@ -44,20 +65,20 @@ export class SubscriptionsService {
     const md: IMetaData = {
       name: '',
       namespace: '',
-      labels: {}
+      labels: {},
     };
     const sp: ISubscriptionSpec = {
       endpoint: '',
-      source: {}
-    }
+      source_id: '',
+    };
 
     const subscription = new Subscription({
       kind: 'Subscription',
       apiVersion: 'eventing.kyma.cx/v1alpha1',
       metadata: md,
-      spec: sp
+      spec: sp,
     });
-    
+
     subscription.spec['push_request_timeout_ms'] = 2000;
     subscription.spec['max_inflight'] = 400;
     subscription.spec['include_subscription_name_header'] = true;
