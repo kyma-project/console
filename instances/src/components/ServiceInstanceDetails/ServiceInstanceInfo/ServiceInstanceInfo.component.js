@@ -38,6 +38,17 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     }
   };
 
+  if (!serviceInstance) {
+    return null;
+  }
+
+  const instanceClass = serviceInstance.clusterServiceClass
+    ? serviceInstance.clusterServiceClass
+    : serviceInstance.serviceClass;
+  const instancePlan = serviceInstance.clusterServicePlan
+    ? serviceInstance.clusterServicePlan
+    : serviceInstance.servicePlan;
+
   return (
     <ServiceInstanceInfoWrapper>
       <Grid.Unit size={0.7}>
@@ -54,8 +65,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element margin="0" data-e2e-id="instance-service-class">
-                    {serviceInstance.serviceClass
-                      ? getResourceDisplayName(serviceInstance.serviceClass)
+                    {instanceClass
+                      ? getResourceDisplayName(instanceClass)
                       : '-'}
                   </Element>
                 </Grid.Unit>
@@ -64,21 +75,19 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element>
-                    {serviceInstance.servicePlanSpec &&
-                    Object.keys(serviceInstance.servicePlanSpec).length ? (
+                    {serviceInstance.planSpec &&
+                    Object.keys(serviceInstance.planSpec).length ? (
                       <InformationModal
                         modalOpeningComponent={
                           <PlanModalButton data-e2e-id="instance-service-plan">
-                            {`${getResourceDisplayName(
-                              serviceInstance.servicePlan,
-                            )} plan`}
+                            {`${getResourceDisplayName(instancePlan)} plan`}
                           </PlanModalButton>
                         }
                         title="Instance Parameters"
                         content={
                           <JSONCode>
                             {JSON.stringify(
-                              serviceInstance.servicePlanSpec,
+                              serviceInstance.planSpec,
                               undefined,
                               2,
                             )}
@@ -86,9 +95,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                         }
                       />
                     ) : (
-                      `${getResourceDisplayName(
-                        serviceInstance.servicePlan,
-                      )} plan`
+                      `${getResourceDisplayName(instancePlan)} plan`
                     )}
                   </Element>
                 </Grid.Unit>
@@ -108,28 +115,28 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     </Grid.Unit>
                   </Grid>
                 )}
-              {serviceInstance.serviceClass &&
-                (serviceInstance.serviceClass.documentationUrl ||
-                  serviceInstance.serviceClass.supportUrl) && (
+              {instanceClass &&
+                (instanceClass.documentationUrl ||
+                  instanceClass.supportUrl) && (
                   <Grid>
                     <Grid.Unit size={0.2}>
                       <Element margin="11px 0 0 0">Documentations</Element>
                     </Grid.Unit>
                     <Grid.Unit size={0.8}>
                       <Element margin="11px 0 0 0">
-                        {serviceInstance.serviceClass.documentationUrl && (
+                        {instanceClass.documentationUrl && (
                           <ExternalLink
-                            href={serviceInstance.serviceClass.documentationUrl}
+                            href={instanceClass.documentationUrl}
                             target="_blank"
                             data-e2e-id="instance-service-documentation-link"
                           >
                             Documentation
                           </ExternalLink>
                         )}
-                        {serviceInstance.serviceClass.supportUrl ? ', ' : ''}
-                        {serviceInstance.serviceClass.supportUrl && (
+                        {instanceClass.supportUrl ? ', ' : ''}
+                        {instanceClass.supportUrl && (
                           <ExternalLink
-                            href={serviceInstance.serviceClass.supportUrl}
+                            href={instanceClass.supportUrl}
                             target="_blank"
                             data-e2e-id="instance-service-support-link"
                           >
