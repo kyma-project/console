@@ -89,146 +89,97 @@ const Link = styled.a`
 `;
 
 function SecondarySubLink(props) {
-  const { rootId, type, items, active, activeNav } = props;
+  const { rootId, parentId, type, items, active, activeNav } = props;
   let onClick = clickedItem => {
     props.callbackParent(clickedItem);
   };
   let setActiveNav = clickedItem => {
     props.setActiveNav(clickedItem);
   };
-  return (
-    <Items
-      secondary
-      marginTop
-      show={activeNav.id === rootId}
-      data-e2e-id={`navigation-items-${type}-${rootId}`}
-    >
-      {items.map((item, index) => {
-        const topicType = item.topicType.replace(/ /g, '-').toLowerCase();
-        return (
-          <Item key={`${rootId}-${index}`}>
-            {item &&
-              item.titles &&
-              item.titles.map(element => {
-                const hash = `${topicType}-${element.anchor}`;
-                const isActive =
-                  active.hash && active.id === rootId && active.hash === hash;
-                const hasSubElements =
-                  element && element.titles && element.titles.length > 0;
-
-                const isActiveNavArrow =
-                  hasSubElements &&
-                  activeNav.id === rootId &&
-                  activeNav.hash &&
-                  activeNav.hash.indexOf(element.anchor) !== -1;
-
-                return (
-                  <div key={`${rootId}-${element.anchor}`}>
-                    <LinkWrapper>
-                      {hasSubElements && (
-                        <Arrow
-                          onClick={() => {
-                            setActiveNav({
-                              id: rootId,
-                              type: type,
-                              hash: hash,
-                            });
-                          }}
-                          active={isActive}
-                          activeArrow={isActiveNavArrow}
-                          data-e2e-id={`navigation-arrow-${type}-${rootId}-${
-                            element.anchor
-                          }`}
-                        />
-                      )}
-                      <Link
-                        active={isActive}
-                        noArrow={!hasSubElements}
-                        onClick={() => {
-                          onClick({
-                            id: rootId,
-                            type: type,
-                            hash: hash,
-                          });
-                        }}
-                        data-e2e-id={`navigation-link-${type}-${rootId}-${
-                          element.anchor
-                        }`}
-                      >
-                        {element.name}
-                      </Link>
-                    </LinkWrapper>
-                    {hasSubElements && (
-                      <TertiarySubLink
-                        items={element}
-                        type={type}
-                        rootId={rootId}
-                        parentId={element.anchor}
-                        history={props.history}
-                        active={active}
-                        activeNav={activeNav}
-                        callbackParent={props.callbackParent}
-                        topicType={topicType}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-          </Item>
-        );
-      })}
-    </Items>
-  );
-}
-
-function TertiarySubLink(props) {
-  const { rootId, parentId, type, items, active, activeNav } = props;
-  let onClick = clickedItem => {
-    props.callbackParent(clickedItem);
-  };
-
-  const isActiveNav =
-    activeNav.id === rootId &&
-    activeNav.hash &&
-    activeNav.hash.indexOf(parentId) !== -1;
+  const isActiveNav = parentId
+    ? activeNav.id === rootId &&
+      activeNav.hash &&
+      activeNav.hash.indexOf(parentId) !== -1
+    : activeNav.id === rootId;
   return (
     <Items
       secondary
       marginTop
       show={isActiveNav}
-      data-e2e-id={`navigation-items-${type}-${rootId}-${parentId}`}
+      data-e2e-id={`navigation-items-${type}-${rootId}`}
     >
-      {items &&
-        items.titles &&
-        items.titles.map(element => {
-          const isActive =
+      {items.map((item, index) => {
+        let hash, isActive, topicType;
+        if (parentId) {
+          hash = `${parentId}-${item.anchor}`;
+          isActive =
             active.hash &&
             active.id === rootId &&
-            active.hash === `${parentId}-${element.anchor}`;
+            active.hash === `${parentId}-${item.anchor}`;
+        } else {
+          topicType = item.topicType
+            ? item.topicType.replace(/ /g, '-').toLowerCase()
+            : item.anchor;
+          hash = `${topicType}-${item.anchor}`;
+          isActive =
+            active.hash && active.id === rootId && active.hash === hash;
+        }
 
-          return (
-            <Item key={`${rootId}-${parentId}-${element.anchor}`}>
-              <LinkWrapper>
-                <Link
-                  active={isActive}
-                  noArrow
+        const hasSubElements = item && item.titles && item.titles.length > 0;
+        const isActiveNavArrow =
+          hasSubElements &&
+          activeNav.id === rootId &&
+          activeNav.hash &&
+          activeNav.hash.indexOf(item.anchor) !== -1;
+        return (
+          <Item key={`${rootId}-${index}`}>
+            <LinkWrapper>
+              {hasSubElements && (
+                <Arrow
                   onClick={() => {
-                    onClick({
+                    setActiveNav({
                       id: rootId,
                       type: type,
-                      hash: `${parentId}-${element.anchor}`,
+                      hash: hash,
                     });
                   }}
-                  data-e2e-id={`navigation-link-${type}-${rootId}-${
-                    element.anchor
+                  active={isActive}
+                  activeArrow={isActiveNavArrow}
+                  data-e2e-id={`navigation-arrow-${type}-${rootId}-${
+                    item.anchor
                   }`}
-                >
-                  {element.name}
-                </Link>
-              </LinkWrapper>
-            </Item>
-          );
-        })}
+                />
+              )}
+              <Link
+                active={isActive}
+                noArrow={!hasSubElements}
+                onClick={() => {
+                  onClick({
+                    id: rootId,
+                    type: type,
+                    hash: hash,
+                  });
+                }}
+                data-e2e-id={`navigation-link-${type}-${rootId}-${item.anchor}`}
+              >
+                {item.name}
+              </Link>
+            </LinkWrapper>
+            {hasSubElements && (
+              <SecondarySubLink
+                items={item.titles}
+                type={type}
+                rootId={rootId}
+                parentId={item.anchor}
+                history={props.history}
+                active={active}
+                activeNav={activeNav}
+                callbackParent={props.callbackParent}
+              />
+            )}
+          </Item>
+        );
+      })}
     </Items>
   );
 }
