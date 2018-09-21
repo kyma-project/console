@@ -69,11 +69,11 @@ podTemplate(label: label) {
                             }
                         }
 
-                        // if (isMaster) {
-                        //     stage("security scan $application (Checkmarx)"){
-                        //         scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
-                        //     }
-                        // }
+                        if (isMaster) {
+                            stage("security scan $application (Checkmarx)"){
+                                scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
+                            }
+                        }
 
                         stage("build  $application") {
                             execute('make build')
