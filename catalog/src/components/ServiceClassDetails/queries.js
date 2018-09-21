@@ -21,7 +21,7 @@ export const GET_SERVICE_CLASS = gql`
         name
         instanceCreateParameterSchema
         displayName
-        relatedServiceClassName
+        relatedClusterServiceClassName
         externalName
       }
     }

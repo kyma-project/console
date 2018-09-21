@@ -99,7 +99,7 @@ function ServiceInstancesTable({
 
           return (
             <ServiceClassButton>
-              {el.serviceClass ? getResourceDisplayName(elClass) : '-'}
+              {elClass ? getResourceDisplayName(elClass) : '-'}
             </ServiceClassButton>
           );
         },
