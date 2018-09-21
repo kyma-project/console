@@ -3,15 +3,18 @@
 </button>
 <div class="sf-header__item">
 	<a routerLink="/home/environments/workspace">
-		<img src="assets/logo.svg"/>
+		<img [src]="appLogoUrl" />
 	</a>
+	<div class="fd-global-nav__product-name">
+		{{ appTitle }}
+	</div>
 </div>
 <div class="sf-header__right">
-	<div class="tn-dropdown sf-header__dropdown" (clickOutside)="closeUserDropdown()" clickOutsideEvents="click,mousedown" excludeBeforeClick="true" *ngIf="loggedIn">
+	<div class="tn-dropdown sf-header__dropdown" (clickOutside)="closeUserDropdown()" clickOutsideEvents="click,mousedown" excludeBeforeClick="true"
+	 *ngIf="loggedIn">
 		<button class="sf-header__item" aria-controls="header-user-settings" [attr.aria-expanded]="isExpanded" aria-haspopup="true"
-			aria-label="More" (click)="toogleUserDropdown();">
-			<svg class="sf-icon sf-icon--user" aria-labelledby="icon-title-user"
-				viewbox="0 0 16 16" width="16" height="16">
+		 aria-label="More" (click)="toogleUserDropdown();">
+			<svg class="sf-icon sf-icon--user" aria-labelledby="icon-title-user" viewbox="0 0 16 16" width="16" height="16">
 				<use xlink:href="assets/sprite.svg#user"></use>
 			</svg>
 		</button>
