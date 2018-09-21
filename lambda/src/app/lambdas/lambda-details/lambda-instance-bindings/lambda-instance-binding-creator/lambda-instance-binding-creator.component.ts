@@ -55,6 +55,9 @@ export class LambdaInstanceBindingCreatorComponent {
         .subscribe(
           instances => {
             instances.items = instances.items.filter(i => {
+              if (i.status.provisionStatus !== 'Provisioned') {
+                return;
+              }
               let isAdded = false;
               this.alreadyAddedInstances.forEach(alreadyAddedInst => {
                 if (i.metadata.name === alreadyAddedInst.instanceName) {
