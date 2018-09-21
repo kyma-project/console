@@ -19,6 +19,7 @@ export class RemoteEnvironmentsService {
     const query = `query RemoteEnvironment($name: String!) {
         remoteEnvironment(name: $name){
           description
+          labels
           name
           enabledInEnvironments
           status
@@ -27,11 +28,6 @@ export class RemoteEnvironmentsService {
             entries {
               type
             }
-          }
-          source {
-            environment
-            namespace
-            type
           }
         }
       }`;

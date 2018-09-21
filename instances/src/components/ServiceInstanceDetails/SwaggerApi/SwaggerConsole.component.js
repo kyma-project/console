@@ -1,13 +1,12 @@
 import React from 'react';
-import { SwaggerUIBundle } from 'swagger-ui-dist';
 
 class SwaggerConsole extends React.Component {
-  componentDidMount() {
-    this.createSwagger(this.prepareDataForCreate());
+  async componentDidMount() {
+    await this.createSwagger(this.prepareDataForCreate());
   }
 
-  componentWillReceiveProps(newProps) {
-    this.createSwagger(this.prepareDataForCreate());
+  async componentWillReceiveProps(newProps) {
+    await this.createSwagger(this.prepareDataForCreate());
   }
 
   prepareDataForCreate = () => {
@@ -17,23 +16,28 @@ class SwaggerConsole extends React.Component {
   };
 
   createSwagger = schema => {
-    const presets = [SwaggerUIBundle.presets.apis, this.props.plugins];
+    return import('swagger-ui-dist').then(swagger => {
+      const presets = [
+        swagger.SwaggerUIBundle.presets.apis,
+        this.props.plugins,
+      ];
 
-    const ui = SwaggerUIBundle({
-      dom_id: '#swagger',
-      spec: schema,
-      presets,
-      requestInterceptor: req => {
-        const bearer = localStorage.getItem('bearer');
-        req.headers = {
-          ...req.headers,
-          Authorization: bearer,
-        };
-        return req;
-      },
+      const ui = swagger.SwaggerUIBundle({
+        dom_id: '#swagger',
+        spec: schema,
+        presets,
+        requestInterceptor: req => {
+          const bearer = localStorage.getItem('bearer');
+          req.headers = {
+            ...req.headers,
+            Authorization: bearer,
+          };
+          return req;
+        },
+      });
+
+      return ui;
     });
-
-    return ui;
   };
 
   render() {
