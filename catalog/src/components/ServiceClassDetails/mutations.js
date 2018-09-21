@@ -8,13 +8,21 @@ export const CREATE_SERVICE_INSTANCE = gql`
     $externalPlanName: String!
     $labels: [String!]!
     $parameterSchema: JSON
+    $classClusterWide: Boolean!
+    $planClusterWide: Boolean!
   ) {
     createServiceInstance(
       params: {
         name: $name
         environment: $environment
-        externalServiceClassName: $externalServiceClassName
-        externalPlanName: $externalPlanName
+        classRef: {
+          externalName: $externalServiceClassName
+          clusterWide: $classClusterWide
+        }
+        planRef: {
+          externalName: $externalPlanName
+          clusterWide: $planClusterWide
+        }
         labels: $labels
         parameterSchema: $parameterSchema
       }

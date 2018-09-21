@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const GET_SERVICE_CLASS = gql`
   query GetServiceClass($name: String!) {
-    serviceClass(name: $name) {
+    clusterServiceClass(name: $name) {
       name
       externalName
       displayName

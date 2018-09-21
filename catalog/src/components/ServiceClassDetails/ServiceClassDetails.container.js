@@ -18,7 +18,7 @@ export default compose(
         },
       };
     },
-    name: 'serviceClass',
+    name: 'clusterServiceClass',
   }),
   graphql(CREATE_SERVICE_INSTANCE, {
     name: 'createServiceInstance',

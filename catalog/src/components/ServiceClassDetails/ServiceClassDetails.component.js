@@ -19,19 +19,21 @@ import { getResourceDisplayName, getDescription } from '../../commons/helpers';
 
 class ServiceClassDetails extends React.Component {
   static propTypes = {
-    serviceClass: PropTypes.object.isRequired,
+    clusterServiceClass: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     createServiceInstance: PropTypes.func.isRequired,
   };
 
   render() {
-    const { serviceClass, history, createServiceInstance } = this.props;
+    const { clusterServiceClass, history, createServiceInstance } = this.props;
 
-    const serviceClassDisplayName = getResourceDisplayName(
-      serviceClass.serviceClass,
+    const clusterServiceClassDisplayName = getResourceDisplayName(
+      clusterServiceClass.clusterServiceClass,
     );
 
-    const serviceClassDescription = getDescription(serviceClass.serviceClass);
+    const clusterServiceClassDescription = getDescription(
+      clusterServiceClass.clusterServiceClass,
+    );
 
     const modalOpeningComponent = (
       <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
@@ -41,7 +43,7 @@ class ServiceClassDetails extends React.Component {
 
     return (
       <div>
-        {serviceClass.serviceClass && (
+        {clusterServiceClass.clusterServiceClass && (
           <div>
             <div> {this.arrayOfJsx} </div>
             {this.renObjData}
@@ -49,10 +51,10 @@ class ServiceClassDetails extends React.Component {
               arrayOfJsx={this.arrayOfJsx}
               renObjData={this.renObjData}
               history={history}
-              serviceClassDisplayName={serviceClassDisplayName}
+              clusterServiceClassDisplayName={clusterServiceClassDisplayName}
             >
               <CreateInstanceModal
-                serviceClass={serviceClass}
+                clusterServiceClass={clusterServiceClass}
                 modalOpeningComponent={modalOpeningComponent}
                 createServiceInstance={createServiceInstance}
               />
@@ -61,26 +63,32 @@ class ServiceClassDetails extends React.Component {
             <ServiceClassDetailsWrapper phoneRows>
               <LeftSideWrapper>
                 <ServiceClassInfo
-                  serviceClassDisplayName={serviceClassDisplayName}
+                  clusterServiceClassDisplayName={
+                    clusterServiceClassDisplayName
+                  }
                   providerDisplayName={
-                    serviceClass.serviceClass.providerDisplayName
+                    clusterServiceClass.clusterServiceClass.providerDisplayName
                   }
                   creationTimestamp={
-                    serviceClass.serviceClass.creationTimestamp
+                    clusterServiceClass.clusterServiceClass.creationTimestamp
                   }
-                  documentationUrl={serviceClass.serviceClass.documentationUrl}
-                  supportUrl={serviceClass.serviceClass.supportUrl}
-                  imageUrl={serviceClass.serviceClass.imageUrl}
-                  tags={serviceClass.serviceClass.tags}
+                  documentationUrl={
+                    clusterServiceClass.clusterServiceClass.documentationUrl
+                  }
+                  supportUrl={
+                    clusterServiceClass.clusterServiceClass.supportUrl
+                  }
+                  imageUrl={clusterServiceClass.clusterServiceClass.imageUrl}
+                  tags={clusterServiceClass.clusterServiceClass.tags}
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
-                {serviceClassDescription && (
+                {clusterServiceClassDescription && (
                   <ServiceClassDescription
-                    description={serviceClassDescription}
+                    description={clusterServiceClassDescription}
                   />
                 )}
-                <ServiceClassTabs serviceClass={serviceClass} />
+                <ServiceClassTabs clusterServiceClass={clusterServiceClass} />
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>
