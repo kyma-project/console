@@ -1,5 +1,6 @@
 .ReactModal__Overlay {
   background-color: rgba(74, 80, 92, 0.3) !important;
+  z-index: 200;
 }
 
 @font-face {

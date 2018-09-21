@@ -21,7 +21,7 @@ export const InputField = styled.input`
     font-size: 14px;
     border-radius: 4px;
     background-color: #ffffff;
-    padding: 0 0 0 10px;
+    padding: ${props => (props.isError && '0 30px 0 10px') || '0 10px'};
     border: solid
       ${props =>
         (props.isError && '2px #ee0000') ||

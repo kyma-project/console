@@ -1,15 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   Button,
   Icon,
   ConfirmationModal,
   Table,
-  // Tooltip,
+  Tooltip,
+  InformationModal,
 } from '@kyma-project/react-components';
 
-import { LinkButton, ServiceClassButton } from './styled';
+import {
+  LinkButton,
+  Link,
+  ServiceClassButton,
+  AddServiceRedirectButton,
+  ServicePlanButton,
+  JSONCode,
+} from './styled';
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
 
@@ -40,12 +48,30 @@ function ServiceInstancesTable({
     }
   };
 
+  const goToServiceCatalog = () => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate('service-catalog');
+  };
+
+  const goToServiceInstanceDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`instances/details/${name}`);
+  };
+
   const deleteButton = (
     <div style={{ textAlign: 'right' }}>
       <Button padding={'0'} marginTop={'0'} marginBottom={'0'}>
         <Icon icon={'\uE03D'} />
       </Button>
     </div>
+  );
+
+  const addServiceRedirectButton = (
+    <AddServiceRedirectButton onClick={goToServiceCatalog}>
+      + Add Service
+    </AddServiceRedirectButton>
   );
 
   const table = {
@@ -57,7 +83,7 @@ function ServiceInstancesTable({
         accesor: el => (
           <LinkButton data-e2e-id="instance-name">
             <Link
-              to={`/details/${el.name}`}
+              onClick={() => goToServiceInstanceDetails(el.name)}
               data-e2e-id={`instance-name-${el.name}`}
             >
               {el.name}
@@ -77,10 +103,29 @@ function ServiceInstancesTable({
       {
         name: 'Plan',
         size: 0.2,
-        accesor: el => getResourceDisplayName(el.servicePlan),
+        accesor: el => {
+          if (Object.keys(el.servicePlanSpec).length === 0) {
+            return getResourceDisplayName(el.servicePlan);
+          }
+          return (
+            <InformationModal
+              title="Instances Parameters"
+              modalOpeningComponent={
+                <ServicePlanButton>
+                  {getResourceDisplayName(el.servicePlan)}
+                </ServicePlanButton>
+              }
+              content={
+                <JSONCode>
+                  {JSON.stringify(el.servicePlanSpec, null, 2)}
+                </JSONCode>
+              }
+            />
+          );
+        },
       },
       {
-        name: 'Bindings',
+        name: 'Bound Applications',
         size: 0.2,
         accesor: el => displayBindingsUsages(el.serviceBindingUsages),
       },
@@ -88,31 +133,27 @@ function ServiceInstancesTable({
         name: 'Status',
         size: 0.1,
         accesor: el => {
-          // let type = '';
-          // switch (el.status.type) {
-          //   case 'RUNNING':
-          //     type = 'success';
-          //     break;
-          //   case 'FAILED':
-          //     type = 'error';
-          //     break;
-          //   default:
-          //     type = 'warning';
-          // }
+          let type = '';
+
+          switch (el.status.type) {
+            case 'RUNNING':
+              type = 'success';
+              break;
+            case 'FAILED':
+              type = 'error';
+              break;
+            default:
+              type = 'warning';
+          }
           return (
-            <span style={{ color: statusColor(el.status.type) }}>
-              {el.status.type}
-            </span>
+            <Tooltip type={type} content={el.status.message} minWidth="250px">
+              <span
+                style={{ color: statusColor(el.status.type), cursor: 'help' }}
+              >
+                {el.status.type}
+              </span>
+            </Tooltip>
           );
-          // return (
-          //   <Tooltip type={type} content={el.status.message} minWidth="250px">
-          //     <span
-          //       style={{ color: statusColor(el.status.type), cursor: 'help' }}
-          //     >
-          //       {el.status.type}
-          //     </span>
-          //   </Tooltip>
-          // );
         },
       },
       {
@@ -138,6 +179,7 @@ function ServiceInstancesTable({
   return (
     <Table
       title={table.title}
+      addHeaderContent={addServiceRedirectButton}
       columns={table.columns}
       data={table.data}
       loading={loading}

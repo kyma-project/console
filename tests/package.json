@@ -4,8 +4,10 @@
   "description": "UI Integration tests for the Kyma ",
   "main": "index.js",
   "scripts": {
-    "test": "jest -i",
-    "test:watch": "jest --watch"
+    "test": "LOCAL_DEV=true jest -i",
+    "test:cluster": "jest -i",
+    "test:watch": "LOCAL_DEV=true jest --watch",
+    "test:watch:cluster": "jest --watch"
   },
   "author": "",
   "license": "ISC",

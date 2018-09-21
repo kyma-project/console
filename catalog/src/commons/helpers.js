@@ -1,3 +1,5 @@
+import { adjectives, nouns } from './random-names-data';
+
 export const sortDocumentsByType = documents => {
   if (!documents) return null;
 
@@ -7,6 +9,8 @@ export const sortDocumentsByType = documents => {
     return docs.reduce((object, document) => {
       const key = document.type ? 'type' : 'Type';
       const val = document[key];
+
+      if (!val) return {};
 
       if (!object[val]) {
         object[val] = [];
@@ -45,6 +49,47 @@ export const getDescription = resource => {
   }
 
   return resource.longDescription || resource.description;
+};
+
+export const validateContent = content => {
+  if (!content) return false;
+
+  let documentsByType = [],
+    documentsTypes = [];
+
+  if (content && Object.keys(content).length) {
+    documentsByType = sortDocumentsByType(content);
+    if (!documentsByType) return false;
+    documentsTypes = Object.keys(documentsByType);
+    if (!documentsTypes) return false;
+  }
+
+  let numberOfSources = 0;
+  documentsTypes.forEach(type => {
+    const docsType = documentsByType[type];
+    for (let item = 0; item < docsType.length; item++) {
+      if (docsType[item].source || docsType[item].Source) numberOfSources++;
+    }
+  });
+  return numberOfSources > 0;
+};
+
+export const validateAsyncApiSpec = asyncApiSpec => {
+  if (
+    !asyncApiSpec ||
+    !asyncApiSpec.topics ||
+    !Object.keys(asyncApiSpec.topics).length ||
+    !asyncApiSpec.info ||
+    !asyncApiSpec.info.title ||
+    !asyncApiSpec.info.version
+  )
+    return false;
+
+  for (const topic in asyncApiSpec.topics) {
+    if (!topic || !asyncApiSpec.topics[topic].subscribe) return false;
+  }
+
+  return true;
 };
 
 export function clearEmptyPropertiesInObject(object) {
@@ -94,4 +139,16 @@ export function compareTwoObjects(obj1, obj2) {
     if (typeof obj1[p] === 'undefined') return false;
   }
   return true;
+}
+
+export function randomNameGenerator() {
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  return (
+    adjectives[getRandomInt(0, adjectives.length + 1)] +
+    '-' +
+    nouns[getRandomInt(0, nouns.length + 1)]
+  ).toLowerCase();
 }

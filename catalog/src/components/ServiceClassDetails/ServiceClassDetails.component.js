@@ -69,6 +69,7 @@ class ServiceClassDetails extends React.Component {
                     serviceClass.serviceClass.creationTimestamp
                   }
                   documentationUrl={serviceClass.serviceClass.documentationUrl}
+                  supportUrl={serviceClass.serviceClass.supportUrl}
                   imageUrl={serviceClass.serviceClass.imageUrl}
                   tags={serviceClass.serviceClass.tags}
                 />
@@ -79,11 +80,7 @@ class ServiceClassDetails extends React.Component {
                     description={serviceClassDescription}
                   />
                 )}
-                {serviceClass.serviceClass.content ||
-                serviceClass.serviceClass.apiSpec ||
-                serviceClass.serviceClass.asyncApiSpec ? (
-                  <ServiceClassTabs serviceClass={serviceClass} />
-                ) : null}
+                <ServiceClassTabs serviceClass={serviceClass} />
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>

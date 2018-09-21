@@ -4,6 +4,10 @@ export const ModalWrapper = styled.div`
   text-align: ${props => props.align};
 `;
 
+export const ModalOpeningComponent = styled.div`
+  display: inline-block;
+`;
+
 export const ModalHeader = styled.header`
   font-family: '72';
   font-size: 16px;
@@ -35,7 +39,7 @@ export const ModalContent = styled.div`
   padding: 16px 16px;
   height: auto;
   min-height: 120xp;
-  max-height: 360px;
+  max-height: 100%;
   overflow: auto;
   flex-grow: 1;
 `;

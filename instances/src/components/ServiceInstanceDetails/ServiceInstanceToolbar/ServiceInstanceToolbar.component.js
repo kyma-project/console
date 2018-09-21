@@ -1,4 +1,5 @@
 import React from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   Button,
@@ -8,7 +9,7 @@ import {
 
 import {
   ServiceInstanceToolbarHeadline,
-  ServiceInstanceToolbarHeadlineBlue,
+  ServiceInstanceToolbarHeadlineLink,
 } from './styled';
 
 const ServiceInstanceToolbar = ({
@@ -23,13 +24,19 @@ const ServiceInstanceToolbar = ({
     }, 300);
   };
 
+  const goToServiceInstances = () => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate('instances');
+  };
+
   return (
     <Toolbar
       headline={
         <ServiceInstanceToolbarHeadline>
-          <ServiceInstanceToolbarHeadlineBlue style={{ color: '#0b74de' }}>
+          <ServiceInstanceToolbarHeadlineLink onClick={goToServiceInstances}>
             Service Instances
-          </ServiceInstanceToolbarHeadlineBlue>{' '}
+          </ServiceInstanceToolbarHeadlineLink>{' '}
           / {serviceInstance.name}
         </ServiceInstanceToolbarHeadline>
       }

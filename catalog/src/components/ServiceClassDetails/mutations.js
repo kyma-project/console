@@ -6,7 +6,7 @@ export const CREATE_SERVICE_INSTANCE = gql`
     $environment: String!
     $externalServiceClassName: String!
     $externalPlanName: String!
-    $labels: [String]!
+    $labels: [String!]!
     $parameterSchema: JSON
   ) {
     createServiceInstance(

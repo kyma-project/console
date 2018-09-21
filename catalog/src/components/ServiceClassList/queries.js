@@ -19,6 +19,7 @@ export const CLASS_FILTERS_QUERY = gql`
   query serviceClassFilters {
     serviceClassFilters @client {
       name
+      isMore
       values @client {
         name
         value
@@ -32,7 +33,25 @@ export const CLASS_ACTIVE_FILTERS_QUERY = gql`
   query activeServiceClassFilters {
     activeServiceClassFilters @client {
       provider
-      category
+      tag
+    }
+  }
+`;
+
+export const CLASS_ACTIVE_TAGS_FILTERS_QUERY = gql`
+  query activeTagsFilters {
+    activeTagsFilters @client {
+      provider {
+        first
+        isMore
+        offset
+      }
+      tag {
+        first
+        isMore
+        offset
+      }
+      search
     }
   }
 `;
