@@ -12,12 +12,13 @@ import {
   transition,
   style
 } from '@angular/animations';
+import { Subscription } from 'rxjs';
+import { filter, tap, take, map, concatMap } from 'rxjs/operators';
 
 import { NavVisibilityService } from '../../../navigation/services/nav-visibility.service';
 import { CurrentEnvironmentService } from '../services/current-environment.service';
 import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
-import { Subscription } from 'rxjs';
 import NavigationUtils from '../../../navigation/services/navigation-utils';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 
@@ -43,15 +44,14 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public isActive: boolean;
   private navSub: Subscription;
   private routerSub: Subscription;
-  private envSub: Subscription;
   public communicationServiceSubscription: Subscription;
   public fadeIn = '1';
   public leftNavCollapsed = false;
   public previousUrl = '';
   public previousEnv = '';
-  public resourceExceededGlobal = false;
+  public displayErrorGlobal = false;
+  public resourceExceeded = true;
   public overview = false;
-  public resourceExceededOverview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
 
@@ -90,7 +90,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     window.addEventListener('message', e => {
       if (e.data && e.data.resourceQuotasStatus) {
-        this.resourceExceededGlobal = e.data.resourceQuotasStatus.exceeded;
+        this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
       }
     });
     this.route.params.subscribe(params => {
@@ -143,40 +143,39 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   private hideError() {
-    this.resourceExceededGlobal = false;
+    this.displayErrorGlobal = false;
   }
 
   private checkIfResourceLimitExceeded(url) {
-    this.envSub = this.currentEnvironmentService
+    this.currentEnvironmentService
       .getCurrentEnvironmentId()
-      .subscribe(env => {
-        if (url.includes(env)) {
+      .pipe(
+        tap(env => (this.overview = url.includes(`${env}/details`))),
+        filter(env => url.includes('environments/' + env)),
+        filter(env => env !== this.previousEnv || this.overview),
+        take(1),
+        concatMap(env =>
+          this.environmentsService
+            .getResourceQueryStatus(env)
+            .pipe(
+              map(res => ({
+                env,
+                quotaExceeded: res.resourceQuotasStatus.exceeded
+              }))
+            )
+        )
+      )
+      .subscribe(
+        ({ env, quotaExceeded }) => {
+          this.resourceExceeded = quotaExceeded;
           if (env !== this.previousEnv) {
             this.previousEnv = env;
-            this.environmentsService.getResourceQueryStatus(env).subscribe(
-              res => {
-                this.resourceExceededGlobal = res.resourceQuotasStatus.exceeded;
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          } else if (url.includes(`${env}/details`)) {
-            this.environmentsService.getResourceQueryStatus(env).subscribe(
-              res => {
-                this.resourceExceededOverview =
-                  res.resourceQuotasStatus.exceeded;
-              },
-              err => {
-                console.log(err);
-              }
-            );
+            this.displayErrorGlobal = quotaExceeded;
           }
-          this.overview = url.includes(`${env}/details`);
-          if (this.envSub) {
-            this.envSub.unsubscribe();
-          }
+        },
+        err => {
+          console.log(err);
         }
-      });
+      );
   }
 }
