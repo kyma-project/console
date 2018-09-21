@@ -42,10 +42,10 @@ podTemplate(label: label) {
                             }
 
                             // if (isMaster) {
-                            //     ws() {
-                            //         scriptUrl = "$env.CHECKMARX_LIBRARY"
-                            //         scan = loadModule url: scriptUrl, name: 'scan', branch: 'kyma'
-                            //     }
+                                ws() {
+                                    scriptUrl = "$env.CHECKMARX_LIBRARY"
+                                    scan = loadModule url: scriptUrl, name: 'scan', branch: 'kyma'
+                                }
                             // }
                         }
 
