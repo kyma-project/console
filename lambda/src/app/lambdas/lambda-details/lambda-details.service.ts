@@ -151,7 +151,7 @@ export class LambdaDetailsService {
     return lambda;
   }
 
-  public getResourceQueryStatus(environment: string, token: string) {
+  public getResourceQuotaStatus(environment: string, token: string) {
     const query = ` query ResourceQuotasStatus($environment: String!) {
       resourceQuotasStatus(environment: $environment){
         exceeded

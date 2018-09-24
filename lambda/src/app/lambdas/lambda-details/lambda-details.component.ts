@@ -262,7 +262,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.lambdaDetailsService.updateLambda(this.lambda, this.token).subscribe(
       lambda => {
         this.lambdaDetailsService
-          .getResourceQueryStatus(this.environment, this.token)
+          .getResourceQuotaStatus(this.environment, this.token)
           .subscribe(res => {
             window.parent.postMessage(res.data, '*');
           });
@@ -647,7 +647,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.lambdaDetailsService.createLambda(this.lambda, this.token).subscribe(
       lambda => {
         this.lambdaDetailsService
-          .getResourceQueryStatus(this.environment, this.token)
+          .getResourceQuotaStatus(this.environment, this.token)
           .subscribe(res => {
             window.parent.postMessage(res.data, '*');
           });
