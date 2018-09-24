@@ -4,7 +4,6 @@ import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.ser
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { Subscription } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { ComponentCommunicationService } from '../../shared/services/component-communication.service';
 
 @Directive({
   selector: '[extAppListener]'
@@ -18,8 +17,7 @@ export class ExtAppListenerDirective {
     private router: Router,
     private extAppViewRegistryService: ExtAppViewRegistryService,
     private oauthService: OAuthService,
-    currentEnvironmentService: CurrentEnvironmentService,
-    private componentCommunicationService: ComponentCommunicationService
+    currentEnvironmentService: CurrentEnvironmentService
   ) {
     window.addEventListener('message', this.processMessage.bind(this), false);
     this.currentEnvironmentService = currentEnvironmentService;
@@ -35,7 +33,7 @@ export class ExtAppListenerDirective {
       let data;
       try {
         data = event.data;
-        if (data && data.msg && data.msg.indexOf('luigi.') === 0) {
+        if (data && data.msg.indexOf('luigi.') === 0) {
           this.processLuigiMessage(data, event.source);
         } else if (
           // support for legacy integration of lambdas, service catalog and instances views
@@ -44,10 +42,8 @@ export class ExtAppListenerDirective {
             data.sessionId
           )
         ) {
-          if (data && data.msg && data.msg.indexOf('navigation.') === 0) {
+          if (data && data.msg.indexOf('navigation.') === 0) {
             this.processNavigationMessage(data);
-          } else if (data && data.msg && data.msg.indexOf('error.') === 0) {
-            this.processErrorMessage(data);
           }
         } else {
           console.log(
@@ -180,19 +176,6 @@ export class ExtAppListenerDirective {
       }
     } else {
       console.log('unknown or missing message type in the incoming message');
-    }
-  }
-
-  processErrorMessage(message) {
-    if (
-      message.data &&
-      message.data.resourceQuotasStatus &&
-      message.data.resourceQuotasStatus.exceeded
-    ) {
-      this.componentCommunicationService.sendEvent({
-        type: 'resourceExceeded',
-        data: message.data
-      });
     }
   }
 }
