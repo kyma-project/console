@@ -88,11 +88,15 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    window.addEventListener('message', e => {
-      if (e.data && e.data.resourceQuotasStatus) {
-        this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
+    this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
+      e => {
+        const event: any = e;
+        if (event.type === 'resourceExceeded') {
+          this.resourceExceeded = event.data.resourceQuotasStatus.exceeded;
+          this.displayErrorGlobal = true;
+        }
       }
-    });
+    );
     this.route.params.subscribe(params => {
       const envId = params['environmentId'];
       if (envId) {

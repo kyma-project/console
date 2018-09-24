@@ -113,6 +113,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isHTTPTriggerAuthenticated = false;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
+  sessionId: string;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -137,6 +138,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
           this.environment = eventData.currentEnvironmentId;
+          this.sessionId = eventData.sessionId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';
@@ -260,11 +262,16 @@ export class LambdaDetailsComponent implements AfterViewInit {
         : 'undefined';
     this.setChecksum();
     this.lambdaDetailsService.updateLambda(this.lambda, this.token).subscribe(
-      lambda => {
-        this.lambdaDetailsService
+      async lambda => {
+        await this.lambdaDetailsService
           .getResourceQuotaStatus(this.environment, this.token)
           .subscribe(res => {
-            window.parent.postMessage(res.data, '*');
+            const x = {
+              msg: 'error.resourceQuota',
+              data: res.data,
+              sessionId: this.sessionId,
+            };
+            window.parent.postMessage(x, '*');
           });
         if (this.isHTTPTriggerAdded) {
           if (this.existingHTTPEndpoint) {
@@ -645,11 +652,16 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.lambda.metadata.labels = this.changeLabels();
 
     this.lambdaDetailsService.createLambda(this.lambda, this.token).subscribe(
-      lambda => {
-        this.lambdaDetailsService
+      async lambda => {
+        await this.lambdaDetailsService
           .getResourceQuotaStatus(this.environment, this.token)
           .subscribe(res => {
-            window.parent.postMessage(res.data, '*');
+            const x = {
+              msg: 'error.resourceQuota',
+              data: res.data,
+              sessionId: this.sessionId,
+            };
+            window.parent.postMessage(x, '*');
           });
         if (this.isHTTPTriggerAdded) {
           this.createApi();
@@ -747,12 +759,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   navigateToList() {
-    let sessionId;
-    luigiClient.addInitListener(() => {
-      const eventData = luigiClient.getEventData();
-      sessionId = eventData.sessionId;
-    });
-    luigiClient.linkManager().openInCurrentEnvironment(`lambdas`, sessionId);
+    luigiClient
+      .linkManager()
+      .openInCurrentEnvironment(`lambdas`, this.sessionId);
   }
 
   getEventActivations(): void {
