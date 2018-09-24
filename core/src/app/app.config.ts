@@ -40,6 +40,8 @@ const config = {
   lambdasModuleUrl: `https://lambdas-ui.${domain}`,
   orgId: 'my-org-123',
   orgName: 'My Organization',
+  headerTitle: '',
+  headerLogoUrl: '',
   scope:
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
   serviceCatalogModuleUrl: `https://catalog.${domain}`,

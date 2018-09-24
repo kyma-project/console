@@ -26,4 +26,4 @@ LABEL source git@github.com:kyma-project/console.git
 
 COPY /ui-tests /app/src
 
-CMD npm test
+CMD npm test:cluster
