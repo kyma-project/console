@@ -5,7 +5,6 @@ import { AppConfig } from '../app.config';
 import { EventActivation } from '../shared/datamodel/k8s/event-activation';
 import { Observable } from 'rxjs/Observable';
 import { Event } from '../shared/datamodel/event';
-import { Source } from '../shared/datamodel/source';
 import { EventActivationResponse } from '../shared/datamodel/k8s/event-activation-response';
 
 @Injectable()

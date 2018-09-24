@@ -1,9 +1,7 @@
-import { Source } from './source';
-
 export interface ITrigger {
   eventType: string;
   description?: string;
-  source: Source;
+  sourceId: string;
   selected?: boolean;
   version?: string;
 }

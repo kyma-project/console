@@ -94,7 +94,7 @@ export class EventTriggerChooserComponent {
     if (
       sourceET.eventType === destET.eventType &&
       sourceET.version === destET.version &&
-      sourceET.source.sourceId === destET.source.sourceId
+      sourceET.sourceId === destET.sourceId
     ) {
       return true;
     } else {

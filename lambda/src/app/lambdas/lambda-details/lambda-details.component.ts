@@ -35,7 +35,6 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventTrigger } from '../../shared/datamodel/event-trigger';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
-import { Source } from '../../shared/datamodel/source';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
@@ -166,14 +165,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
               })
               .subscribe(resp => {
                 resp.items.forEach(sub => {
-                  const src: Source = {
-                    type: '',
-                    sourceId: sub.spec.source_id,
-                  };
                   const evTrigger: EventTrigger = {
                     eventType: sub.spec['event_type'],
                     version: sub.spec['event_type_version'],
-                    source: src,
+                    sourceId: sub.spec.source_id,
                   };
                   this.selectedTriggers.push(evTrigger);
                   this.existingEventTriggers.push(evTrigger);
@@ -196,7 +191,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
                 ea.events.forEach(ev => {
                   const eventTrigger: EventTrigger = {
                     eventType: ev.eventType,
-                    source: ea.source,
+                    sourceId: ea.sourceId,
                     description: ev.description,
                     version: ev.version,
                   };
@@ -446,7 +441,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     if (
       sourceET.eventType === destET.eventType &&
       sourceET.version === destET.version &&
-      sourceET.source.sourceId === destET.source.sourceId
+      sourceET.sourceId === destET.sourceId
     ) {
       return true;
     } else {
@@ -502,7 +497,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           }:8080/`;
           sub.spec['event_type'] = trigger.eventType;
           sub.spec['event_type_version'] = trigger.version;
-          sub.spec.source_id = trigger.source.sourceId;
+          sub.spec.source_id = trigger.sourceId;
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
             .catch(err => {
@@ -980,7 +975,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   ): boolean {
     if (
       eventTrigger.eventType === event.eventType &&
-      eventTrigger.source.sourceId === eventActivation.source.sourceId
+      eventTrigger.sourceId === eventActivation.sourceId
     ) {
       return true;
     } else {
@@ -997,14 +992,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   getHTTPEndPointFromApi(api: Api): HTTPEndpoint {
-    const src: Source = {
-      type: 'endpoint',
-    };
     const httpEndPoint: HTTPEndpoint = {
       isAuthEnabled: false,
       eventType: 'http',
       url: '',
-      source: src,
+      sourceId: '',
     };
     httpEndPoint.url = `https://${api.spec.hostname}`;
 
