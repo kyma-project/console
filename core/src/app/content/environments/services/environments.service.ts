@@ -97,7 +97,7 @@ export class EnvironmentsService {
   }
 
   public getResourceQueryStatus(environment: string) {
-    const query = ` query ResourceQuotasStatus($environment: String!) {
+    const query = `query ResourceQuotasStatus($environment: String!) {
       resourceQuotasStatus(environment: $environment){
         exceeded
         exceededQuotas{

@@ -142,7 +142,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  private hideError() {
+  public hideError() {
     this.displayErrorGlobal = false;
   }
 
@@ -155,14 +155,12 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
         filter(env => env !== this.previousEnv || this.overview),
         take(1),
         concatMap(env =>
-          this.environmentsService
-            .getResourceQueryStatus(env)
-            .pipe(
-              map(res => ({
-                env,
-                quotaExceeded: res.resourceQuotasStatus.exceeded
-              }))
-            )
+          this.environmentsService.getResourceQueryStatus(env).pipe(
+            map(res => ({
+              env,
+              quotaExceeded: res.resourceQuotasStatus.exceeded
+            }))
+          )
         )
       )
       .subscribe(
