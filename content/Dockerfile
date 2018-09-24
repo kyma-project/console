@@ -1,7 +1,8 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
 # If you want to build image without local changes of react components, delete 20 line of code.
 
-FROM node:9.11.2-alpine as ui-generator
+FROM node:10.11.0-alpine as ui-generator
+
 WORKDIR /app
 
 # Install global dependencies
@@ -30,7 +31,7 @@ ENV CI true
 RUN npm test
 RUN npm run build
 
-FROM nginx:1.13.12-alpine
+FROM nginx:1.14.0-alpine
 LABEL source git@github.com:kyma-project/console.git
 
 COPY nginx.conf /etc/nginx/nginx.conf
