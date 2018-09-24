@@ -17,7 +17,7 @@ import {
 
 class CreateInstanceModal extends React.Component {
   static propTypes = {
-    serviceClass: PropTypes.object.isRequired,
+    clusterServiceClass: PropTypes.object.isRequired,
     createServiceInstance: PropTypes.func.isRequired,
     instanceExists: PropTypes.object.isRequired,
     sendNotification: PropTypes.func.isRequired,
@@ -49,15 +49,15 @@ class CreateInstanceModal extends React.Component {
   };
 
   async componentDidMount() {
-    const { serviceClass } = this.props;
+    const { clusterServiceClass } = this.props;
 
-    if (!serviceClass.serviceClass) return;
+    if (!clusterServiceClass.clusterServiceClass) return;
 
     let defaultInstanceName = '';
 
     while (true) {
       defaultInstanceName = `${
-        serviceClass.serviceClass.externalName
+        clusterServiceClass.clusterServiceClass.externalName
       }-${randomNameGenerator()}`;
 
       const { data, error } = await this.refetchInstanceExists(
@@ -72,9 +72,9 @@ class CreateInstanceModal extends React.Component {
         ...this.state.formData,
         name: defaultInstanceName,
         plan:
-          serviceClass &&
-          serviceClass.serviceClass &&
-          serviceClass.serviceClass.plans[0].name,
+          clusterServiceClass &&
+          clusterServiceClass.clusterServiceClass &&
+          clusterServiceClass.clusterServiceClass.plans[0].name,
       },
       firstStepFilled: true,
     });
@@ -108,14 +108,16 @@ class CreateInstanceModal extends React.Component {
   };
 
   prepareDataToCreateServiceInstance = params => {
-    const { serviceClass } = this.props;
+    const { clusterServiceClass } = this.props;
     const { formData } = this.state;
 
     const instanceName = formData.name;
     const currentPlan =
-      serviceClass.serviceClass.plans.find(e => e.name === formData.plan) ||
-      (serviceClass.serviceClass.plans.length &&
-        serviceClass.serviceClass.plans[0]);
+      clusterServiceClass.clusterServiceClass.plans.find(
+        e => e.name === formData.plan,
+      ) ||
+      (clusterServiceClass.clusterServiceClass.plans.length &&
+        clusterServiceClass.clusterServiceClass.plans[0]);
     const labels =
       formData.label === ''
         ? []
@@ -135,8 +137,11 @@ class CreateInstanceModal extends React.Component {
     return {
       name: instanceName,
       environment: builder.getCurrentEnvironmentId(),
-      externalServiceClassName: serviceClass.serviceClass.externalName,
+      externalServiceClassName:
+        clusterServiceClass.clusterServiceClass.externalName,
       externalPlanName: currentPlan && currentPlan.externalName,
+      classClusterWide: true, //TODO: Make ability to provision local service classes
+      planClusterWide: true, //TODO: Make ability to provision local service classes
       labels,
       parameterSchema: instanceCreateParameters,
     };
@@ -203,7 +208,7 @@ class CreateInstanceModal extends React.Component {
   };
 
   render() {
-    const { serviceClass, modalOpeningComponent } = this.props;
+    const { clusterServiceClass, modalOpeningComponent } = this.props;
     const {
       formData,
       firstStepFilled,
@@ -213,16 +218,16 @@ class CreateInstanceModal extends React.Component {
     } = this.state;
 
     const externalName =
-      (serviceClass &&
-        serviceClass.serviceClass &&
-        serviceClass.serviceClass.externalName) ||
+      (clusterServiceClass &&
+        clusterServiceClass.clusterServiceClass &&
+        clusterServiceClass.clusterServiceClass.externalName) ||
       '';
     const environment = builder.getCurrentEnvironmentId();
 
     const plans =
-      (serviceClass &&
-        serviceClass.serviceClass &&
-        serviceClass.serviceClass.plans) ||
+      (clusterServiceClass &&
+        clusterServiceClass.clusterServiceClass &&
+        clusterServiceClass.clusterServiceClass.plans) ||
       [];
 
     const schema = plans.find(e => e.name === formData.plan) || plans[0];
@@ -245,11 +250,11 @@ class CreateInstanceModal extends React.Component {
       <div>
         <BasicData
           data={firstStepData}
-          serviceClassExternalName={externalName}
-          serviceClassPlans={plans}
+          clusterServiceClassExternalName={externalName}
+          clusterServiceClassPlans={plans}
           refetchInstanceExists={this.refetchInstanceExists}
           formData={formData}
-          serviceClass={serviceClass}
+          clusterServiceClass={clusterServiceClass}
           callback={this.callback}
         />
 
@@ -286,8 +291,8 @@ class CreateInstanceModal extends React.Component {
         title={
           <p style={{ marginRight: '25px' }}>
             Provision Service Class{' '}
-            <Bold>{serviceClass.serviceClass.displayName}</Bold> in environment{' '}
-            <Bold>{environment}</Bold>
+            <Bold>{clusterServiceClass.clusterServiceClass.displayName}</Bold>{' '}
+            in environment <Bold>{environment}</Bold>
           </p>
         }
         modalOpeningComponent={modalOpeningComponent}

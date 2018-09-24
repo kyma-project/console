@@ -18,9 +18,9 @@ class BasicData extends React.Component {
     data: PropTypes.object.isRequired,
     formData: PropTypes.object.isRequired,
     refetchInstanceExists: PropTypes.func.isRequired,
-    serviceClass: PropTypes.object.isRequired,
-    serviceClassExternalName: PropTypes.string.isRequired,
-    serviceClassPlans: PropTypes.array,
+    clusterServiceClass: PropTypes.object.isRequired,
+    clusterServiceClassExternalName: PropTypes.string.isRequired,
+    clusterServiceClassPlans: PropTypes.array,
   };
 
   constructor(props) {
@@ -35,20 +35,20 @@ class BasicData extends React.Component {
   }
 
   componentWillMount() {
-    const { serviceClass } = this.props;
+    const { clusterServiceClass } = this.props;
     const { formData } = this.state;
 
-    if (!serviceClass.serviceClass) return;
+    if (!clusterServiceClass.clusterServiceClass) return;
 
     const defaultInstanceName = `${
-      serviceClass.serviceClass.externalName
+      clusterServiceClass.clusterServiceClass.externalName
     }-${randomNameGenerator()}`;
 
     this.setState({
       formData: {
         ...this.state.formData,
         name: formData.name ? formData.name : defaultInstanceName,
-        plan: serviceClass.serviceClass.plans[0].name,
+        plan: clusterServiceClass.clusterServiceClass.plans[0].name,
       },
     });
   }
@@ -187,14 +187,14 @@ class BasicData extends React.Component {
   };
 
   render() {
-    const { serviceClassPlans } = this.props;
+    const { clusterServiceClassPlans } = this.props;
     const {
       formData,
       invalidInstanceName,
       instanceWithNameAlreadyExists,
     } = this.state;
 
-    const mappedPlans = serviceClassPlans.map((p, i) => (
+    const mappedPlans = clusterServiceClassPlans.map((p, i) => (
       <option key={['plan', i].join('_')} value={p.name}>
         {getResourceDisplayName(p)}
       </option>
