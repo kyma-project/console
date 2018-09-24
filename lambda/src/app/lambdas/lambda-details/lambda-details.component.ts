@@ -167,9 +167,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
               .subscribe(resp => {
                 resp.items.forEach(sub => {
                   const src: Source = {
-                    environment: sub.spec.source['source_environment'],
-                    type: sub.spec.source['source_type'],
-                    namespace: sub.spec.source['source_namespace'],
+                    type: '',
+                    sourceId: sub.spec.source_id,
                   };
                   const evTrigger: EventTrigger = {
                     eventType: sub.spec['event_type'],
@@ -308,7 +307,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
           v.hasChanged &&
           (v.currentState !== undefined || v.previousState !== undefined)
         ) {
-          // const serviceBindingUsageName = `lambda-${this.lambda.metadata.name}-${v.previousState.instanceName}`;
           if (
             v.currentState === undefined &&
             v.previousState !== undefined &&
@@ -448,9 +446,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     if (
       sourceET.eventType === destET.eventType &&
       sourceET.version === destET.version &&
-      sourceET.source.environment === destET.source.environment &&
-      sourceET.source.namespace === destET.source.namespace &&
-      sourceET.source.type === destET.source.type
+      sourceET.source.sourceId === destET.source.sourceId
     ) {
       return true;
     } else {
@@ -506,11 +502,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           }:8080/`;
           sub.spec['event_type'] = trigger.eventType;
           sub.spec['event_type_version'] = trigger.version;
-          sub.spec.source = {
-            source_namespace: trigger.source.namespace,
-            source_type: trigger.source.type,
-            source_environment: trigger.source.environment,
-          };
+          sub.spec.source_id = trigger.source.sourceId;
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
             .catch(err => {
@@ -988,9 +980,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   ): boolean {
     if (
       eventTrigger.eventType === event.eventType &&
-      eventTrigger.source.environment === eventActivation.source.environment &&
-      eventTrigger.source.namespace === eventActivation.source.namespace &&
-      eventTrigger.source.type === eventActivation.source.type
+      eventTrigger.source.sourceId === eventActivation.source.sourceId
     ) {
       return true;
     } else {

@@ -1,5 +1,4 @@
 export class Source {
-    environment?: string;
-    type: string;
-    namespace?: string;
+  sourceId?: string;
+  type: string;
 }

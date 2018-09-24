@@ -10,32 +10,33 @@ import { EventActivationResponse } from '../shared/datamodel/k8s/event-activatio
 
 @Injectable()
 export class EventActivationsService {
+  constructor(
+    private http: HttpClient,
+    private graphQLClientService: GraphqlClientService,
+  ) {}
 
-  constructor(private http: HttpClient,
-    private graphQLClientService: GraphqlClientService) {
-  }
-
-  getEventActivations(environment: string, token: string): Observable<EventActivationResponse> {
+  getEventActivations(
+    environment: string,
+    token: string,
+  ): Observable<EventActivationResponse> {
     const query = `query EventActivations($environment: String!) {
       eventActivations(environment: $environment) {
         name
         displayName
-        source {
-            environment
-            type
-            namespace
-          }
-          events {
-            eventType
-            version
-            description
-          }
+        sourceId
+        events {
+          eventType
+          version
+          description
         }
-}`;
+      }
+    }`;
     const variables = { environment };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
       query,
-      variables, token);
+      variables,
+      token,
+    );
   }
 }
