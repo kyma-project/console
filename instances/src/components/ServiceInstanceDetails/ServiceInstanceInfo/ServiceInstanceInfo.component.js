@@ -1,5 +1,6 @@
 import React from 'react';
 import Grid from 'styled-components-grid';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   Icon,
@@ -17,6 +18,7 @@ import {
   Element,
   InfoIcon,
   PlanModalButton,
+  ServiceClassButton,
   Label,
   ExternalLink,
   JSONCode,
@@ -36,6 +38,12 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
       default:
         return '\uE1C4';
     }
+  };
+
+  const goToServiceClassDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`service-catalog/details/${name}`);
   };
 
   if (!serviceInstance) {
@@ -65,9 +73,17 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element margin="0" data-e2e-id="instance-service-class">
-                    {instanceClass
-                      ? getResourceDisplayName(instanceClass)
-                      : '-'}
+                    {instanceClass.name ? (
+                      <ServiceClassButton
+                        onClick={() =>
+                          goToServiceClassDetails(instanceClass.name)
+                        }
+                      >
+                        {getResourceDisplayName(instanceClass)}
+                      </ServiceClassButton>
+                    ) : (
+                      '-'
+                    )}
                   </Element>
                 </Grid.Unit>
                 <Grid.Unit size={0.2}>
@@ -80,7 +96,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                       <InformationModal
                         modalOpeningComponent={
                           <PlanModalButton data-e2e-id="instance-service-plan">
-                            {`${getResourceDisplayName(instancePlan)} plan`}
+                            {getResourceDisplayName(instancePlan)}
                           </PlanModalButton>
                         }
                         title="Instance Parameters"
@@ -115,38 +131,58 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     </Grid.Unit>
                   </Grid>
                 )}
-              {instanceClass &&
-                (instanceClass.documentationUrl ||
-                  instanceClass.supportUrl) && (
-                  <Grid>
-                    <Grid.Unit size={0.2}>
-                      <Element margin="11px 0 0 0">Documentations</Element>
-                    </Grid.Unit>
-                    <Grid.Unit size={0.8}>
-                      <Element margin="11px 0 0 0">
-                        {instanceClass.documentationUrl && (
-                          <ExternalLink
-                            href={instanceClass.documentationUrl}
-                            target="_blank"
-                            data-e2e-id="instance-service-documentation-link"
-                          >
-                            Documentation
-                          </ExternalLink>
-                        )}
-                        {instanceClass.supportUrl ? ', ' : ''}
-                        {instanceClass.supportUrl && (
-                          <ExternalLink
-                            href={instanceClass.supportUrl}
-                            target="_blank"
-                            data-e2e-id="instance-service-support-link"
-                          >
-                            Support
-                          </ExternalLink>
-                        )}
-                      </Element>
-                    </Grid.Unit>
-                  </Grid>
-                )}
+              {instanceClass && instanceClass.documentationUrl ? (
+                <Grid>
+                  <Grid.Unit size={0.2}>
+                    <Element
+                      margin={
+                        serviceInstance.labels &&
+                        serviceInstance.labels.length > 0
+                          ? '11px 0 0 0'
+                          : '16px 0 0 0'
+                      }
+                    >
+                      Documentation
+                    </Element>
+                  </Grid.Unit>
+                  <Grid.Unit size={0.8}>
+                    <Element
+                      margin={
+                        serviceInstance.labels &&
+                        serviceInstance.labels.length > 0
+                          ? '11px 0 0 0'
+                          : '16px 0 0 0'
+                      }
+                    >
+                      <ExternalLink
+                        href={instanceClass.documentationUrl}
+                        target="_blank"
+                        data-e2e-id="instance-service-documentation-link"
+                      >
+                        Link
+                      </ExternalLink>
+                    </Element>
+                  </Grid.Unit>
+                </Grid>
+              ) : null}
+              {instanceClass && instanceClass.supportUrl ? (
+                <Grid>
+                  <Grid.Unit size={0.2}>
+                    <Element>Support</Element>
+                  </Grid.Unit>
+                  <Grid.Unit size={0.8}>
+                    <Element>
+                      <ExternalLink
+                        href={instanceClass.supportUrl}
+                        target="_blank"
+                        data-e2e-id="instance-service-support-link"
+                      >
+                        Link
+                      </ExternalLink>
+                    </Element>
+                  </Grid.Unit>
+                </Grid>
+              ) : null}
             </ContentDescription>
           </StretchedContentWrapper>
         </CenterSideWrapper>
