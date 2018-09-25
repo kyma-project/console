@@ -234,15 +234,15 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   deployLambda() {
-    if (this.mode === 'create') {
-      this.createFunction();
-    } else {
-      this.updateFunction();
-    }
     this.lambdaDetailsService
       .getResourceQuotaStatus(this.environment, this.token)
       .subscribe(res => {
         window.parent.postMessage(res.data, '*');
+        if (this.mode === 'create') {
+          this.createFunction();
+        } else {
+          this.updateFunction();
+        }
       });
   }
 
@@ -744,9 +744,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   navigateToList() {
-    luigiClient
-      .linkManager()
-      .openInCurrentEnvironment(`lambdas`, this.sessionId);
+    setTimeout(() => {
+      luigiClient
+        .linkManager()
+        .openInCurrentEnvironment(`lambdas`, this.sessionId);
+    }, 100);
   }
 
   getEventActivations(): void {
