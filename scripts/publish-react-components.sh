@@ -55,7 +55,7 @@ if [ ${npmVersionResult} != 0 ]; then
 else echo -e "${GREEN}√ npm version${NC}\n"
 fi
 
- publish new version of package
+# publish new version of package
 npm publish
 npmPublishResult=$?
 

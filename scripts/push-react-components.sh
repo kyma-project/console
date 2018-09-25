@@ -39,7 +39,11 @@ fi
 # push to remote
 echo "Push new version of react-components..."
 
-git add .
+git add ./catalog/package.json
+git add ./instances/package.json
+git add ./content/package.json
+git add ./components/react/package.json
+git add ./components/react/package-lock.json
 
 git commit -m "Bump version of @kyma-project/react-components"
 git push origin HEAD:master
