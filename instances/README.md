@@ -30,7 +30,7 @@ The build is minified and the filenames include hashes.
 Run the following command to build and run the Docker image:
 
 ```
-docker build -t instances-ui .
+sh ../scripts/build-docker-image.sh instances-ui 
 docker run --rm -p 3000:80 instances-ui
 open http://localhost:3000 or http://localhost:3000/status in a browser
 ```

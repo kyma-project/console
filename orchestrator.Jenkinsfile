@@ -27,7 +27,7 @@ projects = [
     "tests",
     "lambda",
     "governance"
-    ]
+]
 
 /* 
     project jobs to run are stored here to be sent into the parallel block outside the node executor.
@@ -38,6 +38,11 @@ properties([
     buildDiscarder(logRotator(numToKeepStr: '30')),
 ])
 
+/*
+    if email of commiter will be "kyma.bot@sap.com", then build will aborted
+*/
+def autoCancelled = false
+
 podTemplate(label: label) {
     node(label) {
         try {
@@ -47,7 +52,20 @@ podTemplate(label: label) {
                         stage("setup") {
                             checkout scm
                             // use HEAD of branch as revision, Jenkins does a merge to master commit before starting this script, which will not be available on the jobs triggered below
-                            commitID = sh (script: "git rev-parse origin/${env.BRANCH_NAME}", returnStdout: true).trim()
+                            commitID = sh (
+                                script: "git rev-parse origin/${env.BRANCH_NAME}",
+                                returnStdout: true
+                            ).trim()
+                            committerEmail = sh (
+                                script: 'git --no-pager show -s --format=\'%ae\'',
+                                returnStdout: true
+                            ).trim()
+
+                            if(committerEmail == "kyma.bot@sap.com") {
+                                autoCancelled = true
+                                error("Aborting the build to prevent a loop")
+                            }
+
                             changes = changedProjects()
                         }
 
@@ -72,9 +90,14 @@ podTemplate(label: label) {
             }
         } catch (ex) {
             echo "Got exception: ${ex}"
-            currentBuild.result = "FAILURE"
-            def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
-            emailext body: body, recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+
+            if(autoCancelled) {
+                currentBuild.result = 'ABORTED'
+            } else {
+                currentBuild.result = "FAILURE"
+                def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
+                emailext body: body, recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+            }
         }
     }
 }
