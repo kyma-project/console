@@ -91,6 +91,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     window.addEventListener('message', e => {
       if (e.data && e.data.resourceQuotasStatus) {
         this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
+        this.displayErrorGlobal = true;
       }
     });
     this.route.params.subscribe(params => {
