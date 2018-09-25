@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 
 @Component({
   selector: 'app-create-remote-environment-modal',
@@ -12,6 +14,12 @@ export class CreateRemoteEnvironmentModalComponent {
   public labels: string[];
   public newLabel: string;
   public wrongLabelMessage: string;
+  public error: string;
+
+  public constructor(
+    private remoteEnvironmentsService: RemoteEnvironmentsService,
+    private communicationService: ComponentCommunicationService
+  ) {}
 
   public show() {
     this.resetForm();
@@ -31,7 +39,32 @@ export class CreateRemoteEnvironmentModalComponent {
   }
 
   public isReadyToCreate() {
-    return this.name && this.description;
+    return this.name;
+  }
+
+  save() {
+    const data = {
+      name: this.name,
+      description: this.description,
+      labels: this.labels
+    };
+
+    return this.remoteEnvironmentsService
+      .createRemoteEnvironment(data)
+      .subscribe(
+        res => {
+          const response: any = res;
+
+          this.close();
+          this.communicationService.sendEvent({
+            type: 'createResource',
+            data: response.createRemoteEnvironment
+          });
+        },
+        err => {
+          this.error = `Error: ${err.message}`;
+        }
+      );
   }
 
   public addLabel() {

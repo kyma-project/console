@@ -15,6 +15,24 @@ export class RemoteEnvironmentsService {
 
   constructor(private graphQLClientService: GraphQLClientService) {}
 
+  public createRemoteEnvironment(data: {
+    name: string;
+    description: string;
+    labels: string[];
+  }) {
+    const mutation = `mutation createRemoteEnvironment($name: String!, $description: String!, $labels: [String!]!) {
+      RemoteEnvironment(name: $name, description: $description, labels: $labels){
+        name
+      }
+    }`;
+
+    return this.graphQLClientService.request(
+      AppConfig.graphqlApiUrl,
+      mutation,
+      data
+    );
+  }
+
   getRemoteEnvironment(name: string): Observable<any> {
     const query = `query RemoteEnvironment($name: String!) {
         remoteEnvironment(name: $name){
