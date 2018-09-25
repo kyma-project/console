@@ -92,7 +92,7 @@ podTemplate(label: label) {
             echo "Got exception: ${ex}"
 
             if(autoCancelled) {
-                currentBuild.result = 'ABORTED'
+                currentBuild.result = "SUCCESS"
             } else {
                 currentBuild.result = "FAILURE"
                 def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
