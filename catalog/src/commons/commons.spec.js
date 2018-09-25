@@ -32,8 +32,7 @@ describe('correctly nouns', () => {
 describe('correctly random name', () => {
   it('should return true if the random name has a correctly pattern', () => {
     const randomName = randomNameGenerator();
-    const result =
-      randomName.split('-').length === 2 && checkingFormat(randomName);
+    const result = checkingFormat(randomName.toLowerCase());
 
     expect(result).toEqual(true);
   });

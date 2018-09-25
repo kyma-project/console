@@ -4,6 +4,8 @@
 
 This application is a ReactJS component library for the Kyma, based on the [component-library-starter](https://github.com/alanbsmith/component-library-starter).
 
+You can see the components and their properties on the [Console](https://kyma-project.github.io/console) page.
+
 ## Usage
 
 To import the library into an application, run the following command:
@@ -29,16 +31,6 @@ Then run the `watch` script:
 ```
 npm run build:watch
 ```
-
-### Generate GitHub Pages
-
-To generate a new version of the Github Pages, run the following command:
-
-```
-npm run styleguide:build
-```
-
-Next, commit the changes on the `master` branch. See the results on the [Console](https://kyma-project.github.io/console) page.
 
 ### Live preview
 

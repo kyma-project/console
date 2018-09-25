@@ -1,3 +1,6 @@
+# This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
+# If you want to build image without local changes of react components, delete 20 line of code.
+
 FROM node:9.11.2-alpine as ui-generator
 WORKDIR /app
 
@@ -12,6 +15,9 @@ RUN npm install --no-optional
 # Copy sources
 COPY src /app/src
 COPY public /app/public
+
+# Copy local changes from react-components package
+COPY react-components/index.js /app/node_modules/@kyma-project/react-components/lib/index.js
 
 # Download manifest
 RUN npm run prepare
