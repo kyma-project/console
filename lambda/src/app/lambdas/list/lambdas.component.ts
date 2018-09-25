@@ -160,7 +160,7 @@ export class LambdasComponent extends GenericTableComponent {
     const deleteRequests = [];
     this.serviceBindingUsagesService
       .getServiceBindingUsages(this.environment, this.token, {
-        Function: lambdaName,
+        labelSelector: `Function=${lambdaName}`,
       })
       .subscribe(sbuList => {
         sbuList.items.forEach(sbu => {
