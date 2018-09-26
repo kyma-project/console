@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-remote-environment-modal',
@@ -19,51 +20,47 @@ export class CreateRemoteEnvironmentModalComponent {
     private communicationService: ComponentCommunicationService
   ) {}
 
-  public show() {
-    this.resetForm();
-    this.isActive = true;
-  }
-
-  private resetForm() {
+  private resetForm(): void {
     this.name = '';
     this.description = '';
     this.labels = [];
   }
 
-  public close() {
+  public show(): void {
+    this.resetForm();
+    this.isActive = true;
+  }
+
+  public close(): void {
     this.isActive = false;
   }
 
-  public isReadyToCreate() {
-    return this.name;
+  public isReadyToCreate(): boolean {
+    return Boolean(this.name);
   }
 
-  save() {
+  public updateLabelsData(labels: string[]): void {
+    this.labels = labels;
+  }
+
+  public save(): void {
     const data = {
       name: this.name,
       description: this.description,
       labels: this.labels
     };
 
-    return this.remoteEnvironmentsService
-      .createRemoteEnvironment(data)
-      .subscribe(
-        res => {
-          const response: any = res;
-
-          this.close();
-          this.communicationService.sendEvent({
-            type: 'createResource',
-            data: response.createRemoteEnvironment
-          });
-        },
-        err => {
-          this.error = `Error: ${err.message}`;
-        }
-      );
-  }
-
-  public updateLabelsData(labels) {
-    this.labels = labels;
+    this.remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(
+      response => {
+        this.close();
+        this.communicationService.sendEvent({
+          type: 'createResource',
+          data: response.createRemoteEnvironment
+        });
+      },
+      err => {
+        this.error = `Error: ${err.message}`;
+      }
+    );
   }
 }
