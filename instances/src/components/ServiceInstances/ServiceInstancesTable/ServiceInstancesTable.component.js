@@ -54,6 +54,12 @@ function ServiceInstancesTable({
       .navigate('service-catalog');
   };
 
+  const goToServiceClassDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`service-catalog/details/${name}`);
+  };
+
   const goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
       .fromContext('environment')
@@ -96,11 +102,14 @@ function ServiceInstancesTable({
         size: 0.2,
         accesor: el => {
           const elClass = el.clusterServiceClass || el.serviceClass;
-
-          return (
-            <ServiceClassButton>
-              {elClass ? getResourceDisplayName(elClass) : '-'}
+          return elClass.name ? (
+            <ServiceClassButton
+              onClick={() => goToServiceClassDetails(elClass.name)}
+            >
+              {getResourceDisplayName(elClass)}
             </ServiceClassButton>
+          ) : (
+            '-'
           );
         },
       },

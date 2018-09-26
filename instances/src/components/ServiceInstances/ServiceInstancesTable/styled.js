@@ -14,6 +14,7 @@ export const Link = styled.a`
 
 export const ServiceClassButton = styled.span`
   color: #0a6ed1;
+  cursor: pointer;
 `;
 
 export const AddServiceRedirectButton = styled.button`
