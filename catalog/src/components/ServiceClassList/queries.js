@@ -16,8 +16,8 @@ export const FILTERED_CLASSES_QUERY = gql`
 `;
 
 export const CLASS_FILTERS_QUERY = gql`
-  query serviceClassFilters {
-    serviceClassFilters @client {
+  query clusterServiceClassFilters {
+    clusterServiceClassFilters @client {
       name
       isMore
       values @client {

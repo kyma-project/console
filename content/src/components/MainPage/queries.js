@@ -1,8 +1,8 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const TOPICS_QUERY = gql`
-  query Topics($input: [InputTopic]!) {
-    topics(input: $input){
+  query Topics($input: [InputTopic!]!) {
+    topics(input: $input) {
       id
       contentType
       sections {

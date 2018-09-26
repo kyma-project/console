@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 import { Clipboard } from 'ts-clipboard';
 import { AppConfig } from '../../../app.config';
-import { Source } from '../../../shared/datamodel/source';
 import { HTTPEndpoint } from '../../../shared/datamodel/http-endpoint';
 
 import { Lambda, IFunctionSpec } from '../../../shared/datamodel/k8s/function';
@@ -31,6 +30,7 @@ export class HttpTriggerComponent {
     isHTTPTriggerAuthenticated,
     selectedHTTPTriggers,
   ) {
+    this.selectedHTTPTriggers = selectedHTTPTriggers;
     this.lambda = lambda;
     this.environment = environment;
     this.isHTTPTriggerAuthenticated = isHTTPTriggerAuthenticated;
@@ -54,17 +54,12 @@ export class HttpTriggerComponent {
   }
 
   addHTTPTrigger() {
-    const src: Source = {
-      type: 'endpoint',
-    };
-
     const httpTrigger: HTTPEndpoint = {
       eventType: 'http',
-      source: src,
+      sourceId: '',
       url: this.httpURL,
       isAuthEnabled: this.isHTTPTriggerAuthenticated,
     };
-
     this.selectedHTTPTriggers.push(httpTrigger);
   }
 

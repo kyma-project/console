@@ -66,7 +66,7 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
       if (functionStatus.readyReplicas !== undefined) {
         return `${functionStatus.readyReplicas}/${functionStatus.replicas}`;
       }
-      return `0/${functionStatus.replicas}`;
+      return `0/${functionStatus.replicas ? functionStatus.replicas : 0}`;
     }
     return;
   }

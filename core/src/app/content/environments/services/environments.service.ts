@@ -6,12 +6,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 
 @Injectable()
 export class EnvironmentsService {
   public envChangeStateEmitter$: EventEmitter<boolean>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private graphQLClientService: GraphQLClientService
+  ) {
     this.envChangeStateEmitter$ = new EventEmitter();
   }
 
@@ -90,5 +94,28 @@ export class EnvironmentsService {
           })
         );
     }
+  }
+
+  public getResourceQueryStatus(environment: string) {
+    const query = `query ResourceQuotasStatus($environment: String!) {
+      resourceQuotasStatus(environment: $environment){
+        exceeded
+        exceededQuotas{
+          quotaName
+          resourceName
+          affectedResources
+        }
+      } 
+    }`;
+
+    const variables = {
+      environment
+    };
+
+    return this.graphQLClientService.request(
+      AppConfig.graphqlApiUrl,
+      query,
+      variables
+    );
   }
 }

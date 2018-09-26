@@ -30,6 +30,12 @@ const ServiceInstanceToolbar = ({
       .navigate('instances');
   };
 
+  const instanceClass =
+    serviceInstance &&
+    (serviceInstance.clusterServiceClass
+      ? serviceInstance.clusterServiceClass
+      : serviceInstance.serviceClass);
+
   return (
     <Toolbar
       headline={
@@ -40,11 +46,7 @@ const ServiceInstanceToolbar = ({
           / {serviceInstance.name}
         </ServiceInstanceToolbarHeadline>
       }
-      description={
-        serviceInstance &&
-        serviceInstance.serviceClass &&
-        serviceInstance.serviceClass.description
-      }
+      description={instanceClass && instanceClass.description}
     >
       <ConfirmationModal
         title="Delete"

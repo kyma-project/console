@@ -46,10 +46,12 @@ $sf-header-item-color-active: $sf-base-color-blue;
       text-transform: none;
       color: $sf-base-color-black;
       transition: background 0.1s ease, box-shadow 0.1s ease, color 0.1s ease;
+      max-height: 52px;
 
       &:hover {
         background: lighten($sf-header-background-color, 20%);
       }
+
       &:focus {
         background: lighten($sf-header-background-color, 15%);
       }
@@ -68,7 +70,18 @@ $sf-header-item-color-active: $sf-base-color-blue;
           display: none;
         }
       }
+
+      img {
+        min-width: 60px;
+      }
+
+      .fd-global-nav__product-name {
+        color: #515559;
+        font-weight: 600;
+        padding-left: 10px;
+      }
     }
+
     // Special Aligment for tn-dropdowns to avoid alignment issues
     &__dropdown {
       cursor: pointer;

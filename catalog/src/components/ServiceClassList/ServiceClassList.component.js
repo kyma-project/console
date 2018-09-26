@@ -24,7 +24,7 @@ class ServiceClassList extends React.Component {
     activeClassFilters: PropTypes.object.isRequired,
     classList: PropTypes.object.isRequired,
     classFilters: PropTypes.object.isRequired,
-    serviceClasses: PropTypes.array.isRequired,
+    clusterServiceClasses: PropTypes.array.isRequired,
     history: PropTypes.object.isRequired,
     filterServiceClasses: PropTypes.func.isRequired,
     setServiceClassesFilter: PropTypes.func.isRequired,
@@ -32,8 +32,8 @@ class ServiceClassList extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (
-      newProps.serviceClasses &&
-      newProps.serviceClasses.length > 0 &&
+      newProps.clusterServiceClasses &&
+      newProps.clusterServiceClasses.length > 0 &&
       typeof newProps.filterServiceClasses === 'function'
     ) {
       newProps.filterServiceClasses();
@@ -104,7 +104,7 @@ class ServiceClassList extends React.Component {
           </SearchWrapper>
           {!classFilters.loading && (
             <FilterList
-              filters={classFilters.serviceClassFilters}
+              filters={classFilters.clusterServiceClassFilters}
               active={activeFilters}
               activeFiltersCount={activeFiltersCount}
               activeTagsFilters={activeCategoriesFilters}

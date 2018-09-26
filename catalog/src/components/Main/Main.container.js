@@ -11,7 +11,7 @@ import MainPage from './Main.component';
 
 export default compose(
   graphql(SERVICE_CLASSES_QUERY, {
-    name: 'serviceClasses',
+    name: 'clusterServiceClasses',
     options: {
       fetchPolicy: 'cache-and-network',
       errorPolicy: 'all',
