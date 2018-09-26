@@ -3,8 +3,17 @@
     <span class="sf-indicator" [ngClass]="determineClass(entry)" title="{{prettyPrintStatus(entry.status)}}"></span>
   </div>
   <div class="col-3 sf-list__body--primary remoteenv-name" (click)="openRemoteEnvDetails()">{{ entry.name }}</div>
-  <div class="col-3">{{ entry.source.type }}</div>
-  <div class="col-3 col-lg-4" [ngClass]="{'noEnvBound': !listConnectedEnvs(entry)}">{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : 'none' }}</div>
+  <div class="col-3 sf-list__label-column">
+    <div *ngIf='getLabels(entry.labels).length'>
+      <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">
+        {{ label }}
+      </span>
+    </div>
+    <div *ngIf='!getLabels(entry.labels).length' class="no-content">
+      <span>none</span>
+    </div>
+  </div>
+  <div class="col-3 col-lg-4" [ngClass]="{'no-content': !listConnectedEnvs(entry)}">{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : 'none' }}</div>
   <div class="col-1 actions-icon">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </div>

@@ -54,6 +54,12 @@ function ServiceInstancesTable({
       .navigate('service-catalog');
   };
 
+  const goToServiceClassDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`service-catalog/details/${name}`);
+  };
+
   const goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
       .fromContext('environment')
@@ -94,31 +100,37 @@ function ServiceInstancesTable({
       {
         name: 'Service Class',
         size: 0.2,
-        accesor: el => (
-          <ServiceClassButton>
-            {el.serviceClass ? getResourceDisplayName(el.serviceClass) : '-'}
-          </ServiceClassButton>
-        ),
+        accesor: el => {
+          const elClass = el.clusterServiceClass || el.serviceClass;
+          return elClass.name ? (
+            <ServiceClassButton
+              onClick={() => goToServiceClassDetails(elClass.name)}
+            >
+              {getResourceDisplayName(elClass)}
+            </ServiceClassButton>
+          ) : (
+            '-'
+          );
+        },
       },
       {
         name: 'Plan',
         size: 0.2,
         accesor: el => {
-          if (Object.keys(el.servicePlanSpec).length === 0) {
-            return getResourceDisplayName(el.servicePlan);
+          const plan = el.clusterServicePlan || el.servicePlan;
+          if (Object.keys(el.planSpec).length === 0) {
+            return getResourceDisplayName(plan);
           }
           return (
             <InformationModal
               title="Instances Parameters"
               modalOpeningComponent={
                 <ServicePlanButton>
-                  {getResourceDisplayName(el.servicePlan)}
+                  {getResourceDisplayName(plan)}
                 </ServicePlanButton>
               }
               content={
-                <JSONCode>
-                  {JSON.stringify(el.servicePlanSpec, null, 2)}
-                </JSONCode>
+                <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
               }
             />
           );

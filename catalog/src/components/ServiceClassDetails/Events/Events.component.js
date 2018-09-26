@@ -5,14 +5,22 @@ import { Table } from '@kyma-project/react-components';
 
 import { NameSpan, VersionSpan, Code } from './styled';
 
-function Events({ title, description, topics, data }) {
+function Events({ asyncApiSpec }) {
+  const title = asyncApiSpec.info.title,
+    description = asyncApiSpec.info.description,
+    topics = Object.keys(asyncApiSpec.topics),
+    data = asyncApiSpec.topics;
+
   let processedData = [];
   if (topics && topics.length && data) {
     processedData = topics.map(topic => {
       const lastDotIndex = topic.lastIndexOf('.');
       return {
-        name: topic.substring(0, lastDotIndex),
-        version: topic.substring(lastDotIndex + 1, topic.length),
+        name: lastDotIndex !== -1 ? topic.substring(0, lastDotIndex) : topic,
+        version:
+          lastDotIndex !== -1
+            ? topic.substring(lastDotIndex + 1, topic.length)
+            : '-',
         description: data[topic].subscribe.summary,
         payload: data[topic].subscribe.payload,
       };
@@ -35,12 +43,17 @@ function Events({ title, description, topics, data }) {
       {
         name: 'Description',
         size: 0.3,
-        accesor: el => el.description,
+        accesor: el => (el.description ? el.description : '-'),
       },
       {
         name: 'Payload',
         size: 0.45,
-        accesor: el => <Code>{JSON.stringify(el.payload, undefined, 2)}</Code>,
+        accesor: el =>
+          el.payload && Object.keys(el.payload).length ? (
+            <Code>{JSON.stringify(el.payload, undefined, 2)}</Code>
+          ) : (
+            '-'
+          ),
       },
     ],
     data: processedData,
@@ -49,7 +62,7 @@ function Events({ title, description, topics, data }) {
   return (
     <div>
       <h1>{title}</h1>
-      <p>{description}</p>
+      {description ? <p>{description}</p> : null}
 
       <Table
         title={table.title}
@@ -62,10 +75,7 @@ function Events({ title, description, topics, data }) {
 }
 
 Events.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  topics: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
+  asyncApiSpec: PropTypes.object.isRequired,
 };
 
 export default Events;

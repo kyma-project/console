@@ -42,10 +42,8 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
       remoteEnvironments{
         name
         status
-        enabledInEnvironments
-        source {
-          type
-        }
+        enabledInEnvironments,
+        labels
       }
     }`;
 

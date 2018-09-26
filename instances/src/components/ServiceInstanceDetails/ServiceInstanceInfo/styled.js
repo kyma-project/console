@@ -73,6 +73,11 @@ export const InfoIcon = styled.div`
   color: ${props => props.color};
 `;
 
+export const ServiceClassButton = styled.span`
+  color: #0a6ed1;
+  cursor: pointer;
+`;
+
 export const PlanModalButton = styled.button`
   font-family: '72';
   font-size: 14px;

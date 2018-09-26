@@ -5,14 +5,25 @@ export const SERVICE_INSTANCE_QUERY = gql`
     serviceInstance(environment: $environment, name: $name) {
       name
       environment
-      servicePlanName
-      servicePlanSpec
+      planSpec
       labels
       status {
         type
         message
       }
       serviceClass {
+        name
+        environment
+        displayName
+        externalName
+        description
+        documentationUrl
+        supportUrl
+        content
+        asyncApiSpec
+        apiSpec
+      }
+      clusterServiceClass {
         name
         displayName
         externalName
@@ -25,9 +36,18 @@ export const SERVICE_INSTANCE_QUERY = gql`
       }
       servicePlan {
         name
+        environment
         displayName
         externalName
         relatedServiceClassName
+        description
+        instanceCreateParameterSchema
+      }
+      clusterServicePlan {
+        name
+        displayName
+        externalName
+        relatedClusterServiceClassName
         description
         instanceCreateParameterSchema
       }
