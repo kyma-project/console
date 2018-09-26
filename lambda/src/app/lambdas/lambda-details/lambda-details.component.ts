@@ -112,6 +112,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isHTTPTriggerAuthenticated = false;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
+  sessionId: string;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -136,6 +137,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
           this.environment = eventData.currentEnvironmentId;
+          this.sessionId = eventData.sessionId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';
@@ -226,11 +228,16 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   deployLambda() {
-    if (this.mode === 'create') {
-      this.createFunction();
-    } else {
-      this.updateFunction();
-    }
+    this.lambdaDetailsService
+      .getResourceQuotaStatus(this.environment, this.token)
+      .subscribe(res => {
+        window.parent.postMessage(res.data, '*');
+        if (this.mode === 'create') {
+          this.createFunction();
+        } else {
+          this.updateFunction();
+        }
+      });
   }
 
   isEventTriggerPresent(): boolean {
@@ -725,12 +732,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   navigateToList() {
-    let sessionId;
-    luigiClient.addInitListener(() => {
-      const eventData = luigiClient.getEventData();
-      sessionId = eventData.sessionId;
-    });
-    luigiClient.linkManager().openInCurrentEnvironment(`lambdas`, sessionId);
+    setTimeout(() => {
+      luigiClient
+        .linkManager()
+        .openInCurrentEnvironment(`lambdas`, this.sessionId);
+    }, 100);
   }
 
   getEventActivations(): void {
