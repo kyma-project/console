@@ -19,7 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const now = Date.now();
     const maximumAgeInSeconds = 10;
     return (
-      parseInt(sessionStorage.getItem('id_token_stored_at')) >
+      parseInt(sessionStorage.getItem('id_token_stored_at'), 10) >
       now - 1000 * maximumAgeInSeconds
     );
   }
