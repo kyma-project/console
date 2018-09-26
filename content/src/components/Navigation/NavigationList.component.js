@@ -101,13 +101,10 @@ function SecondarySubLink(props) {
       activeNav.hash &&
       activeNav.hash.indexOf(parentId) !== -1
     : activeNav.id === rootId;
+  const e2eId =
+    `navigation-items-${type}-${rootId}` + (parentId ? `-${parentId}` : ``);
   return (
-    <Items
-      secondary
-      marginTop
-      show={isActiveNav}
-      data-e2e-id={`navigation-items-${type}-${rootId}`}
-    >
+    <Items secondary marginTop show={isActiveNav} data-e2e-id={e2eId}>
       {items.map((item, index) => {
         let hash, isActive, topicType;
         if (parentId) {
