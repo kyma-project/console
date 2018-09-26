@@ -57,16 +57,6 @@ export class LabelsInputComponent {
     const key: string = label.split(':')[0].trim();
     const value: string = label.split(':')[1].trim();
 
-    const duplicateKeyExists: boolean = Boolean(
-      this.labels
-        .map(l => l.split(':')[0])
-        .find((keyFromList: string) => keyFromList === key)
-    );
-    if (duplicateKeyExists) {
-      this.wrongLabelMessage = `Invalid label ${key}:${value}! Keys cannot be reused!`;
-      return true;
-    }
-
     const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
     const foundKey = key.match(regex);
     const isKeyValid = Boolean(foundKey && foundKey[0] === key && key !== '');
@@ -76,6 +66,16 @@ export class LabelsInputComponent {
     );
     if (!isKeyValid || !isValueValid) {
       this.wrongLabelMessage = `Invalid label ${key}:${value}! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+      return true;
+    }
+
+    const duplicateKeyExists: boolean = Boolean(
+      this.labels
+        .map(l => l.split(':')[0])
+        .find((keyFromList: string) => keyFromList === key)
+    );
+    if (duplicateKeyExists) {
+      this.wrongLabelMessage = `Invalid label ${key}:${value}! Keys cannot be reused!`;
       return true;
     }
 
