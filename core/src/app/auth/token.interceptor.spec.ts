@@ -103,7 +103,7 @@ describe('TokenInterceptor', () => {
     const olderToken = 1538040400000 - 50000;
 
     it('fresh token sets requestError and navigates to /requestError', () => {
-      spyOn(Date, 'now').and.callFake(function() {
+      spyOn(Date, 'now').and.callFake(() => {
         return currDate;
       });
       sessionStorage.setItem('id_token_stored_at', newToken.toString());
@@ -140,7 +140,7 @@ describe('TokenInterceptor', () => {
     });
 
     it('old token clears sessionStorage, triggers implicit flow and navigates to /', () => {
-      spyOn(Date, 'now').and.callFake(function() {
+      spyOn(Date, 'now').and.callFake(() => {
         return currDate;
       });
       sessionStorage.setItem('id_token_stored_at', olderToken.toString());
