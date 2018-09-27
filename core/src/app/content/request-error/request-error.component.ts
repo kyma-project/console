@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   templateUrl: './request-error.component.html',
   styleUrls: ['./request-error.component.scss']
 })
 export class RequestErrorComponent implements OnInit {
-  public sourcePath: string;
   public data: HttpErrorResponse;
 
   constructor(private router: Router) {}
@@ -16,15 +16,15 @@ export class RequestErrorComponent implements OnInit {
     const requestError = sessionStorage.getItem('requestError');
     if (requestError) {
       const re = JSON.parse(requestError);
-      this.sourcePath = re.sourcePath;
       this.data = re.data;
       sessionStorage.removeItem('requestError');
     } else {
-      this.goTo();
+      this.goToHome();
     }
   }
 
-  goTo(path?: string) {
-    this.router.navigateByUrl(path || '/');
+  goToHome() {
+    sessionStorage.clear();
+    this.router.navigateByUrl('/');
   }
 }

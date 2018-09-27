@@ -45,14 +45,12 @@ export class TokenInterceptor implements HttpInterceptor {
               sessionStorage.setItem(
                 'requestError',
                 JSON.stringify({
-                  sourcePath: window.location.pathname,
                   data: err
                 })
               );
               this.router.navigateByUrl('/requestError');
             } else {
               sessionStorage.clear();
-              this.oAuthService.initImplicitFlow();
               this.router.navigateByUrl('/');
             }
           }

@@ -118,7 +118,6 @@ describe('TokenInterceptor', () => {
           expect(sessionStorage.setItem).toHaveBeenCalledWith(
             'requestError',
             JSON.stringify({
-              sourcePath: window.location.pathname,
               data: error
             })
           );
@@ -154,7 +153,6 @@ describe('TokenInterceptor', () => {
           expect(error.status).toEqual(401);
           expect(sessionStorage.clear).toHaveBeenCalled();
           expect(RouterMock.navigateByUrl).toHaveBeenCalledWith('/');
-          expect(OAuthServiceMock.initImplicitFlow).toHaveBeenCalled();
         }
       );
       const request = httpClientMock.expectOne('/api');
