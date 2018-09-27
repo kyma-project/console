@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { media } from '../../commons/style-utils';
 
 const Button = styled.button`
+  width: ${props => (props.width ? props.width : 'auto')};
   background-color: ${props =>
     (props.primary && '#0b74de') ||
     (props.secondary && '#fff') ||

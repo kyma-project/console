@@ -16,6 +16,7 @@ const Filter = ({
   const onFilterClick = value => {
     return onChange(name, value);
   };
+
   const onSeeMoreClick = value => {
     let more = { ...activeTagsFilters[name] };
     more.isMore = false;
