@@ -2,12 +2,12 @@ import gql from 'graphql-tag';
 
 export default {
   Query: {
-    serviceClassFilters: (_, args, { cache }) => {
+    clusterServiceClassFilters: (_, args, { cache }) => {
       const result =
         cache.readQuery({
           query: gql`
             query ServiceClassesFilterData {
-              serviceClasses {
+              clusterServiceClasses {
                 name
                 providerDisplayName
                 tags
@@ -16,7 +16,7 @@ export default {
           `,
         }) || [];
 
-      return populateServiceClassFilters(result.serviceClasses);
+      return populateServiceClassFilters(result.clusterServiceClasses);
     },
   },
   Mutation: {
@@ -121,8 +121,8 @@ export default {
 
       let classes = cache.readQuery({
         query: gql`
-          query ServiceClasses {
-            serviceClasses {
+          query ClusterServiceClasses {
+            clusterServiceClasses {
               name
               description
               displayName
@@ -134,7 +134,7 @@ export default {
             }
           }
         `,
-      }).serviceClasses;
+      }).clusterServiceClasses;
 
       const filteredClasses = filterServiceClasses(
         classes,
@@ -149,7 +149,7 @@ export default {
 
       cache.writeData({
         data: {
-          serviceClassFilters: classFilters,
+          clusterServiceClassFilters: classFilters,
           filteredServiceClasses: filteredClasses,
         },
       });

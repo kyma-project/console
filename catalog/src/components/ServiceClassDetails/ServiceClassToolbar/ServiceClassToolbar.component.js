@@ -8,7 +8,7 @@ const ServiceClassToolbar = ({
   arrayOfJsx,
   renObjData,
   history,
-  serviceClassDisplayName,
+  clusterServiceClassDisplayName,
   children,
 }) => {
   const goToServiceInstanceList = () => {
@@ -24,7 +24,7 @@ const ServiceClassToolbar = ({
 
       <Toolbar
         back={goToServiceInstanceList}
-        headline={serviceClassDisplayName}
+        headline={clusterServiceClassDisplayName}
         addSeparator
       >
         {children}
@@ -36,7 +36,7 @@ const ServiceClassToolbar = ({
 ServiceClassToolbar.propTypes = {
   arrayOfJsx: PropTypes.any,
   renObjData: PropTypes.any,
-  serviceClassDisplayName: PropTypes.string.isRequired,
+  clusterServiceClassDisplayName: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
   history: PropTypes.object.isRequired,
 };

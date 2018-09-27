@@ -1,5 +1,5 @@
 ### Main image ###
-FROM nginx:stable-alpine
+FROM nginx:1.14.0-alpine
 
 ### Copy the dist and nginx config into nginx ###
 COPY ./dist /usr/share/nginx/html/

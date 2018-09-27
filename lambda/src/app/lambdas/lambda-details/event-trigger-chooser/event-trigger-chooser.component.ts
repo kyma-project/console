@@ -22,7 +22,7 @@ export class EventTriggerChooserComponent {
   private eventsSelected = 0;
   public enableAdd = false;
 
-  constructor() { }
+  constructor() {}
 
   initializeView() {
     this.eventSearchQuery = '';
@@ -94,9 +94,7 @@ export class EventTriggerChooserComponent {
     if (
       sourceET.eventType === destET.eventType &&
       sourceET.version === destET.version &&
-      sourceET.source.environment === destET.source.environment &&
-      sourceET.source.namespace === destET.source.namespace &&
-      sourceET.source.type === destET.source.type
+      sourceET.sourceId === destET.sourceId
     ) {
       return true;
     } else {

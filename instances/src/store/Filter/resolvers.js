@@ -77,12 +77,12 @@ export default {
       let filteredItems = filterItems(items, activeFilters, cache);
       const allFilters = populateFilters(items, filteredItems);
 
-      // workaround for caching servicePlanSpec
+      // workaround for caching planSpec
       filteredItems = filteredItems.map(item => {
         return {
           ...item,
-          servicePlanSpec: {
-            ...item.servicePlanSpec,
+          planSpec: {
+            ...item.planSpec,
             __typename: 'JSON',
           },
         };

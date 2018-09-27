@@ -5,7 +5,7 @@ export const SERVICE_INSTANCES_QUERY = gql`
     serviceInstances(environment: $environment) {
       name
       labels
-      servicePlanSpec
+      planSpec
       status {
         type
         message
@@ -15,7 +15,17 @@ export const SERVICE_INSTANCES_QUERY = gql`
         externalName
         name
       }
+      clusterServiceClass {
+        displayName
+        externalName
+        name
+      }
       servicePlan {
+        displayName
+        externalName
+        name
+      }
+      clusterServicePlan {
         displayName
         externalName
         name
@@ -63,7 +73,17 @@ export const FILTERED_ITEMS_QUERY = gql`
         externalName
         name
       }
+      clusterServiceClass {
+        displayName
+        externalName
+        name
+      }
       servicePlan {
+        displayName
+        externalName
+        name
+      }
+      clusterServicePlan {
         displayName
         externalName
         name

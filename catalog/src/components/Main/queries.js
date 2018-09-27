@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const SERVICE_CLASSES_QUERY = gql`
-  query serviceClasses {
-    serviceClasses {
+  query clusterServiceClasses {
+    clusterServiceClasses {
       name
       description
       displayName

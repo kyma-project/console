@@ -119,6 +119,7 @@ import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard
 import { LoginErrorComponent } from './content/login-error/login-error.component';
 import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote-environments/create-remote-environment-modal/create-remote-environment-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
+import { RequestErrorComponent } from './content/request-error/request-error.component';
 
 @NgModule({
   declarations: [
@@ -206,7 +207,8 @@ import { LabelsInputComponent } from './shared/components/labels-input/labels-in
     LimitRangeHeaderRendererComponent,
     LoginErrorComponent,
     CreateRemoteEnvironmentModalComponent,
-    LabelsInputComponent
+    LabelsInputComponent,
+    RequestErrorComponent
   ],
   imports: [
     BrowserModule,
