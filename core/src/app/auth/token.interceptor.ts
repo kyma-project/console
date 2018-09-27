@@ -51,13 +51,12 @@ export class TokenInterceptor implements HttpInterceptor {
               );
               this.router.navigateByUrl('/requestError');
             } else {
-              Object.keys(sessionStorage).forEach(k =>
-                sessionStorage.removeItem(k)
-              );
+              sessionStorage.clear();
               this.oAuthService.initImplicitFlow();
               this.router.navigateByUrl('/');
             }
           }
+          return err;
         }
       )
     );
