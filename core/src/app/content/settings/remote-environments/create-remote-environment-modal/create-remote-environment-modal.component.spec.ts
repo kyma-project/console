@@ -110,12 +110,28 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
 
   describe('updateLabelsData', () => {
     it('updates labels with input value', () => {
-      component.labels = [];
-      component.wrongLabels = false;
+      component.labels = ['key1:val1'];
       const newLabels = ['key1:val1', 'key2:val:2'];
-      component.updateLabelsData({ labels: newLabels, wrongLabels: true });
+      component.updateLabelsData({ labels: newLabels });
       expect(component.labels).toBe(newLabels);
+    });
+
+    it('does not update labels if no input value', () => {
+      component.labels = ['key1:val1'];
+      component.updateLabelsData({});
+      expect(component.labels).toBe(['key1:val1']);
+    });
+
+    it('updates labels validation field with input value', () => {
+      component.wrongLabels = false;
+      component.updateLabelsData({ wrongLabels: true });
       expect(component.wrongLabels).toBe(true);
+    });
+
+    it('does not update labels validation field if no input value', () => {
+      component.wrongLabels = false;
+      component.updateLabelsData({});
+      expect(component.wrongLabels).toBe(false);
     });
   });
 

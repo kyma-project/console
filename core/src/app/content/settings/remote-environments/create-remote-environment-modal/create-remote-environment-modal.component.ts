@@ -53,8 +53,8 @@ export class CreateRemoteEnvironmentModalComponent {
     labels,
     wrongLabels
   }: {
-    labels: string[];
-    wrongLabels: boolean;
+    labels?: string[];
+    wrongLabels?: boolean;
   }): void {
     this.labels = labels !== undefined ? labels : this.labels;
     this.wrongLabels =
