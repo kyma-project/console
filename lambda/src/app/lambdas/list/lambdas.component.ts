@@ -1,6 +1,5 @@
+import { refCount, publishReplay, map, catchError } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
-
-import { map, catchError } from 'rxjs/operators';
 
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { IFunction, Lambda } from './../../shared/datamodel/k8s/function';
@@ -28,7 +27,6 @@ import { SubscriptionsService } from '../../subscriptions/subscriptions.service'
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 
 import * as luigiClient from '@kyma-project/luigi-client';
-import 'rxjs/add/operator/publishReplay';
 
 @Component({
   selector: 'app-lambdas',
@@ -207,8 +205,10 @@ export class LambdasComponent extends GenericTableComponent {
               return observableOf(0);
             }),
           )
-          .publishReplay(1)
-          .refCount();
+          .pipe(
+            publishReplay(1),
+            refCount(),
+          );
         return func;
       },
     };

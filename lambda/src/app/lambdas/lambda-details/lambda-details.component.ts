@@ -1,5 +1,6 @@
 /* tslint:disable:no-submodule-imports */
 
+import { catchError, timeout } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
 import {
   Component,
@@ -42,12 +43,8 @@ import * as randomatic from 'randomatic';
 import * as luigiClient from '@kyma-project/luigi-client';
 
 import { Service } from '../../shared/datamodel/k8s/api-service';
-import { timeout } from 'rxjs/operators';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
 
 @Component({
   selector: 'app-lambda-details',
@@ -383,9 +380,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
         createRequests.push(
           this.serviceBindingsService
             .createServiceBinding(serviceBinding, this.token)
-            .catch(err => {
-              return observableOf(err);
-            }),
+            .pipe(
+              catchError(err => {
+                return observableOf(err);
+              }),
+            ),
         );
       } else {
         serviceBindingUsage.spec.serviceBindingRef.name =
@@ -400,9 +399,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
       createRequests.push(
         this.serviceBindingUsagesService
           .createServiceBindingUsage(serviceBindingUsage, this.token)
-          .catch(err => {
-            return observableOf(err);
-          }),
+          .pipe(
+            catchError(err => {
+              return observableOf(err);
+            }),
+          ),
       );
     });
 
@@ -423,9 +424,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
                     this.environment,
                     this.token,
                   )
-                  .catch(err => {
-                    return observableOf(err);
-                  }),
+                  .pipe(
+                    catchError(err => {
+                      return observableOf(err);
+                    }),
+                  ),
               );
             }
           });
@@ -515,9 +518,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
           sub.spec.source_id = trigger.sourceId;
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
-            .catch(err => {
-              return observableOf(err);
-            });
+            .pipe(
+              catchError(err => {
+                return observableOf(err);
+              }),
+            );
           createSubscriptionRequests.push(req);
         }
       }
@@ -531,9 +536,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
           this.environment,
           this.token,
         )
-        .catch(err => {
-          return observableOf(err);
-        });
+        .pipe(
+          catchError(err => {
+            return observableOf(err);
+          }),
+        );
       deleteSubscriptionRequests.push(req);
     });
     this.executeCreateAndDeleteSubscriptionRequests(
