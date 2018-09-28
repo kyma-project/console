@@ -115,7 +115,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       const expectedData = {
         name: 're-name',
         description: 're-desc',
-        labels: ['key1:val1']
+        labels: { key1: 'val1' }
       };
       component.save();
       expect(
@@ -127,11 +127,11 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       spyOn(
         mockRemoteEnvironmentsService,
         'createRemoteEnvironment'
-      ).and.returnValue(of({ createRemoteEnvironment: 're-created' }));
+      ).and.returnValue(of('create-success-response'));
       spyOn(mockComponentCommunicationService, 'sendEvent');
       const expectedEventData = {
         type: 'createResource',
-        data: 're-created'
+        data: 'create-success-response'
       };
       spyOn(component, 'close');
 

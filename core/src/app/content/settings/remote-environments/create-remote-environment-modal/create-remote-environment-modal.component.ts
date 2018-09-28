@@ -47,7 +47,9 @@ export class CreateRemoteEnvironmentModalComponent {
     const data = {
       name: this.name,
       description: this.description,
-      labels: this.labels
+      labels: (this.labels || []).reduce((acc, label) => {
+        return { ...acc, [label.split(':')[0]]: label.split(':')[1] };
+      }, {})
     };
 
     this.remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(
@@ -55,7 +57,7 @@ export class CreateRemoteEnvironmentModalComponent {
         this.close();
         this.communicationService.sendEvent({
           type: 'createResource',
-          data: response.createRemoteEnvironment
+          data: response
         });
       },
       err => {
