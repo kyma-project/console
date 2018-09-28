@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-remote-environment-modal',
@@ -11,6 +10,8 @@ import { Observable } from 'rxjs';
 export class CreateRemoteEnvironmentModalComponent {
   public isActive = false;
   public name: string;
+  public wrongRemoteEnvName = false;
+  public wrongLabels = false;
   public description: string;
   public labels: string[];
   public error: string;
@@ -22,8 +23,11 @@ export class CreateRemoteEnvironmentModalComponent {
 
   private resetForm(): void {
     this.name = '';
+    this.wrongRemoteEnvName = false;
+    this.wrongLabels = false;
     this.description = '';
     this.labels = [];
+    this.error = '';
   }
 
   public show(): void {
@@ -35,12 +39,26 @@ export class CreateRemoteEnvironmentModalComponent {
     this.isActive = false;
   }
 
-  public isReadyToCreate(): boolean {
-    return Boolean(this.name);
+  public validateRemoteEnvNameRegex() {
+    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
+    this.wrongRemoteEnvName =
+      this.name && !Boolean(regex.test(this.name || ''));
   }
 
-  public updateLabelsData(labels: string[]): void {
-    this.labels = labels;
+  public isReadyToCreate(): boolean {
+    return Boolean(this.name && !this.wrongRemoteEnvName && !this.wrongLabels);
+  }
+
+  public updateLabelsData({
+    labels,
+    wrongLabels
+  }: {
+    labels: string[];
+    wrongLabels: boolean;
+  }): void {
+    this.labels = labels !== undefined ? labels : this.labels;
+    this.wrongLabels =
+      wrongLabels !== undefined ? wrongLabels : this.wrongLabels;
   }
 
   public save(): void {

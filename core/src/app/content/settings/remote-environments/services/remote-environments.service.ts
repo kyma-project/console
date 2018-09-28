@@ -19,7 +19,15 @@ export class RemoteEnvironmentsService {
     private httpClient: HttpClient
   ) {}
 
-  public createRemoteEnvironment({ name, labels, description }) {
+  public createRemoteEnvironment({
+    name,
+    labels,
+    description
+  }: {
+    name: string;
+    description: string;
+    labels: {};
+  }): Observable<any> {
     const data = {
       metadata: { name },
       spec: { labels, description },

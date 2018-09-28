@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 
 @Component({
   selector: 'app-labels-input',
@@ -6,7 +12,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./labels-input.component.scss']
 })
 export class LabelsInputComponent {
-  @Output() public labelsChangeEmitter$: EventEmitter<string[]>;
+  @ViewChild('labelsInput') labelsInput: ElementRef;
+  @Output()
+  public labelsChangeEmitter$: EventEmitter<{
+    labels?: string[];
+    wrongLabels?: boolean;
+  }>;
   public newLabel: string;
   public labels: string[];
   public wrongLabelMessage: string;
@@ -16,38 +27,51 @@ export class LabelsInputComponent {
     this.labels = [];
   }
 
-  public addLabel() {
-    if (!this.newLabel) {
-      return;
-    }
+  public validateNewLabel() {
+    this.setWrongLabelMessage(this.newLabel);
+    this.labelsChangeEmitter$.emit({
+      wrongLabels: Boolean(this.wrongLabelMessage)
+    });
+  }
 
-    if (!this.setWrongLabelMessage(this.newLabel)) {
+  public addLabel() {
+    if (this.newLabel && !this.wrongLabelMessage) {
       this.labels.push(
         this.newLabel
           .split(':')
           .map(s => s.trim())
           .join(':')
       );
-      // Avoid sharing of same array copy among parent and child component
-      this.labelsChangeEmitter$.emit([...this.labels]);
       this.newLabel = '';
+      // Avoid sharing of same array copy among parent and child component
+      this.labelsChangeEmitter$.emit({ labels: [...this.labels] });
+      setTimeout(() => {
+        this.labelsInput.nativeElement.focus();
+      }, 0);
     }
   }
 
   public updateLabel(label: string) {
     this.removeLabel(label);
     this.newLabel = label;
+    setTimeout(() => {
+      this.labelsInput.nativeElement.focus();
+    }, 0);
   }
 
   public removeLabel(label: string) {
     const index = this.labels.indexOf(label);
     this.labels.splice(index, 1);
     // Avoid sharing of same array copy among parent and child component
-    this.labelsChangeEmitter$.emit([...this.labels]);
+    this.labelsChangeEmitter$.emit({ labels: [...this.labels] });
   }
 
   private setWrongLabelMessage(label: string) {
     this.wrongLabelMessage = '';
+
+    if (!label) {
+      return false;
+    }
 
     if (!(label.split(':').length === 2)) {
       this.wrongLabelMessage = `Invalid label ${label}! A key and value should be separated by a ':'`;

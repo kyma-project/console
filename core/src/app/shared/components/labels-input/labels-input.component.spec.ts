@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LabelsInputComponent } from './labels-input.component';
+import { ElementRef } from '@angular/core';
 
 describe('LabelsInputComponent', () => {
   let component: LabelsInputComponent;
@@ -17,6 +18,7 @@ describe('LabelsInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LabelsInputComponent);
     component = fixture.componentInstance;
+    component.labelsInput = new ElementRef({});
     fixture.detectChanges();
   });
 
@@ -26,29 +28,26 @@ describe('LabelsInputComponent', () => {
 
   describe('addLabel()', () => {
     beforeEach(() => {
-      component['setWrongLabelMessage'] = jasmine.createSpy();
+      component.wrongLabelMessage = '';
+      component.newLabel = 'any:label';
     });
 
-    it('returns if no label input content', () => {
+    it('does not update labels if no label input content', () => {
       component.labels = [];
       component.newLabel = '';
       component.addLabel();
       expect(component.labels).toEqual([]);
     });
 
-    it('sets wrong label message', () => {
-      component.newLabel = 'new-label';
+    it('does not update labels if wrong labels', () => {
+      component.wrongLabelMessage = 'error-info';
       component.addLabel();
-      expect(component['setWrongLabelMessage']).toHaveBeenCalledWith(
-        'new-label'
-      );
+      expect(component.labels).toEqual([]);
     });
 
     describe('valid label', () => {
       beforeEach(() => {
-        component['setWrongLabelMessage'] = jasmine
-          .createSpy()
-          .and.returnValue(false);
+        spyOn(component.labelsChangeEmitter$, 'emit');
       });
 
       it('updates labels', () => {
@@ -67,11 +66,10 @@ describe('LabelsInputComponent', () => {
       it('emits updated labels', () => {
         component.labels = [];
         component.newLabel = 'any:label';
-        spyOn(component.labelsChangeEmitter$, 'emit');
         component.addLabel();
-        expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith([
-          'any:label'
-        ]);
+        expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
+          labels: ['any:label']
+        });
       });
     });
   });
@@ -101,10 +99,9 @@ describe('LabelsInputComponent', () => {
       spyOn(component.labelsChangeEmitter$, 'emit');
       component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
       component.removeLabel('k2:v2');
-      expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith([
-        'k1:v1',
-        'k3:v3'
-      ]);
+      expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
+        labels: ['k1:v1', 'k3:v3']
+      });
     });
   });
 

@@ -23,7 +23,6 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
           provide: ComponentCommunicationService,
           useValue: { sendEvent: () => {} }
         }
-        // ComponentCommunicationService
       ]
     })
       .overrideTemplate(CreateRemoteEnvironmentModalComponent, '')
@@ -79,14 +78,31 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   });
 
   describe('isReadyToCreate()', () => {
-    it('returns true if name is truthy', () => {
-      component.name = 're-name';
+    beforeEach(() => {
+      component.wrongLabels = false;
+      component.wrongRemoteEnvName = false;
+      component.name = 'a-valid-name';
+    });
+
+    it('returns true if fields are valid', () => {
       const actual: boolean = component.isReadyToCreate();
       expect(actual).toBe(true);
     });
 
-    it('returns false if name is truthy', () => {
+    it('returns false if name input is empty', () => {
       component.name = '';
+      const actual: boolean = component.isReadyToCreate();
+      expect(actual).toBe(false);
+    });
+
+    it('returns false if name is not valid', () => {
+      component.wrongRemoteEnvName = true;
+      const actual: boolean = component.isReadyToCreate();
+      expect(actual).toBe(false);
+    });
+
+    it('returns false if labels are not valid', () => {
+      component.wrongLabels = true;
       const actual: boolean = component.isReadyToCreate();
       expect(actual).toBe(false);
     });
@@ -95,9 +111,11 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   describe('updateLabelsData', () => {
     it('updates labels with input value', () => {
       component.labels = [];
+      component.wrongLabels = false;
       const newLabels = ['key1:val1', 'key2:val:2'];
-      component.updateLabelsData(newLabels);
+      component.updateLabelsData({ labels: newLabels, wrongLabels: true });
       expect(component.labels).toBe(newLabels);
+      expect(component.wrongLabels).toBe(true);
     });
   });
 
