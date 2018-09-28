@@ -74,6 +74,9 @@ export class ApisService {
     existingApi: Api,
     isAuthenticated: boolean,
     url: string,
+    authType: string,
+    jwksUri: string,
+    issuer: string,
   ): Api {
     const md: IMetaData = {
       name: lambda.metadata.name,
@@ -92,16 +95,23 @@ export class ApisService {
       port: 8080,
     };
 
+    // api-controller cannot resolve kyma.local in local installation
+    const localDomainJwksUri =
+      AppConfig.domain === 'kyma.local'
+        ? 'http://dex-service.kyma-system.svc.cluster.local:5556/keys'
+        : `https://dex.${AppConfig.domain}/keys`;
+
     const jwtAuthentication: JwtAuthentication = {
-      issuer: `https://dex.${AppConfig.domain}`,
-      // api-controller cannot resolve kyma.local in local installation
+      issuer:
+        issuer !== undefined && issuer !== ''
+          ? issuer
+          : `https://dex.${AppConfig.domain}`,
       jwksUri:
-        AppConfig.domain === 'kyma.local'
-          ? 'http://dex-service.kyma-system.svc.cluster.local:5556/keys'
-          : `https://dex.${AppConfig.domain}/keys`,
+        jwksUri !== undefined && jwksUri !== '' ? jwksUri : localDomainJwksUri,
     };
+
     const authRule: AuthenticationRule = {
-      type: 'JWT',
+      type: authType !== undefined && authType !== '' ? authType : 'JWT',
       jwt: jwtAuthentication,
     };
 
