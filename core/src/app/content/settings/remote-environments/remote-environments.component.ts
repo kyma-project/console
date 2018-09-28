@@ -1,5 +1,5 @@
 import { RemoteEnvironment } from '../../../shared/datamodel/k8s/kyma-api/remote-environment';
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
 import { RemoteEnvironmentsEntryRendererComponent } from './remote-environments-entry-renderer/remote-environments-entry-renderer.component';
@@ -10,11 +10,11 @@ import { ComponentCommunicationService } from '../../../shared/services/componen
 import { Filter } from '@kyma-project/y-generic-list';
 import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
+import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal/create-remote-environment-modal.component';
 
 @Component({
   selector: 'app-remote-environments',
-  templateUrl:
-    '../../environments/operation/kubernetes-element-list.component.html',
+  templateUrl: './remote-environments.component.html',
   styleUrls: ['./remote-environments.component.scss'],
   host: { class: 'sf-content' }
 })
@@ -28,6 +28,8 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
   ariaExpanded = false;
   ariaHidden = true;
   public hideFilter = true;
+
+  @ViewChild('createModal') createModal: CreateRemoteEnvironmentModalComponent;
 
   constructor(
     private http: HttpClient,
@@ -66,5 +68,9 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
   toggleDropDown() {
     this.ariaExpanded = !this.ariaExpanded;
     this.ariaHidden = !this.ariaHidden;
+  }
+
+  public openModal() {
+    this.createModal.show();
   }
 }

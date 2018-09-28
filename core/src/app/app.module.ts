@@ -117,6 +117,8 @@ import { LimitRangeEntryRendererComponent } from './content/environments/configu
 import { LimitRangeHeaderRendererComponent } from './content/environments/configuration/resources/limit-ranges/limit-range-header-renderer/limit-range-header-renderer.component';
 import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { LoginErrorComponent } from './content/login-error/login-error.component';
+import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote-environments/create-remote-environment-modal/create-remote-environment-modal.component';
+import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
 
 @NgModule({
@@ -204,6 +206,8 @@ import { RequestErrorComponent } from './content/request-error/request-error.com
     LimitRangeEntryRendererComponent,
     LimitRangeHeaderRendererComponent,
     LoginErrorComponent,
+    CreateRemoteEnvironmentModalComponent,
+    LabelsInputComponent,
     RequestErrorComponent
   ],
   imports: [

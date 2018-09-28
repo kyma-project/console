@@ -36,21 +36,26 @@
         <div class="col-sm-2">
           <label class="tn-form__label">Description</label>
         </div>
-        <div class="col-sm-10" *ngIf="remoteEnvironment.description">
-          {{ remoteEnvironment.description }}
+        <div class="col-sm-10">
+          <ng-container *ngIf="remoteEnvironment.description">
+            {{ remoteEnvironment.description }}
+          </ng-container>
+          <ng-container *ngIf="!remoteEnvironment.description">
+            <span class="no-content">none</span>
+          </ng-container>
         </div>
         <div class="col-sm-2">
           <label class="tn-form__label">Labels</label>
         </div>
         <div class="col-sm-10 sf-list__label-column">
-          <div *ngIf='getLabels(remoteEnvironment.labels).length'>
+          <ng-container *ngIf='getLabels(remoteEnvironment.labels).length'>
             <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(remoteEnvironment.labels)">
               {{ label }}
             </span>
-          </div>
-          <div *ngIf='!getLabels(remoteEnvironment.labels).length' class="no-content">
-            <span>none</span>
-          </div>
+          </ng-container>
+          <ng-container *ngIf='!getLabels(remoteEnvironment.labels).length'>
+            <span class="no-content">none</span>
+          </ng-container>
         </div>
       </div>
       </div>
