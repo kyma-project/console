@@ -18,7 +18,8 @@ class CreateBindingModal extends React.Component {
 
   getInitialState = () => {
     return {
-      checkbox: this.props.serviceInstance.serviceBindings.length === 0,
+      checkbox:
+        this.props.serviceInstance.serviceBindings.serviceBindings.length === 0,
       nameServiceBinding: this.props.serviceInstance.name + '-binding',
       selectedExistingBinding: '',
 
@@ -162,7 +163,9 @@ class CreateBindingModal extends React.Component {
     const steps = [
       <FirstStep
         data={firstStepData}
-        existingServiceBindings={serviceInstance.serviceBindings}
+        existingServiceBindings={
+          serviceInstance.serviceBindings.serviceBindings
+        }
         callback={this.callback}
       />,
       <SecondStep
