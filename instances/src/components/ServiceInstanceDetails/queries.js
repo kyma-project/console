@@ -52,14 +52,21 @@ export const SERVICE_INSTANCE_QUERY = gql`
         instanceCreateParameterSchema
       }
       serviceBindings {
-        name
-        environment
-        secret {
+        serviceBindings {
           name
-          data
           environment
+          secret {
+            name
+            data
+            environment
+          }
+          serviceInstanceName
         }
-        serviceInstanceName
+        stats {
+          ready
+          failed
+          pending
+        }
       }
       serviceBindingUsages {
         name

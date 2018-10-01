@@ -19,9 +19,9 @@ export const DropdownWrapper = styled.div`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 2px 14px 0 rgba(0, 0, 0, 0.1);
 
   &:before {
-    ${props => (props.arrowTop ? 'content: "";' : '')};
+    ${props => (props.arrowTop ? 'content: ""' : '')};
     position: absolute;
-    right: 20px;
+    right: ${props => (props.arrowTopRight ? props.arrowTopRight : '10px')};
     top: -6px;
     display: inline-block;
     background: transparent;

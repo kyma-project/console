@@ -5,7 +5,8 @@ export const SearchBox = styled.div`
   box-sizing: border-box;
   height: 36px;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: ${props =>
+    props.backgroundColor ? props.backgroundColor : 'rgba(255, 255, 255, 0.4)'};
   border: ${props =>
     props.darkBorder
       ? 'solid 1px rgba(50, 54, 58, 0.55)'
@@ -20,9 +21,9 @@ export const SearchInput = styled.input`
   width: 100%;
   box-sizing: border-box;
   font-size: 14px;
+  border-radius: 4px;
   border: none;
-  padding: 10px;
-  background-color: transparent;
+  padding: 9px;
   font-family: '72';
   font-size: 14px;
   font-weight: normal;

@@ -1,4 +1,5 @@
 import { ITrigger } from './trigger';
+import { Authentication } from './authentication';
 
 export class HTTPEndpoint implements ITrigger {
   eventType: string;
@@ -6,4 +7,5 @@ export class HTTPEndpoint implements ITrigger {
   selected?: boolean;
   url?: string;
   isAuthEnabled?: boolean;
+  authentication?: Authentication;
 }

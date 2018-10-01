@@ -10,6 +10,7 @@ if (clusterConfig && clusterConfig['domain']) {
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
+  authIssuer: `https://dex.${domain}`,
   k8sServerUrl,
   kubelessApiUrl: `${k8sServerUrl}/apis/kubeless.io/v1beta1`,
   k8sApiUrl: `${k8sServerUrl}/apis/apps/v1`,
