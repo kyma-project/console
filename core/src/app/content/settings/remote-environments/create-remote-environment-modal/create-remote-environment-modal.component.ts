@@ -46,7 +46,12 @@ export class CreateRemoteEnvironmentModalComponent {
   }
 
   public isReadyToCreate(): boolean {
-    return Boolean(this.name && !this.wrongRemoteEnvName && !this.wrongLabels);
+    return Boolean(
+      this.name &&
+        this.description &&
+        !this.wrongRemoteEnvName &&
+        !this.wrongLabels
+    );
   }
 
   public updateLabelsData({
