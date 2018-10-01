@@ -12,10 +12,12 @@ class Dropdown extends React.Component {
     enabled: PropTypes.bool,
     firstButton: PropTypes.bool,
     lastButton: PropTypes.bool,
+    buttonWidth: PropTypes.string,
     marginTop: PropTypes.string,
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     arrowTop: PropTypes.bool,
+    arrowTopRight: PropTypes.string,
   };
 
   static defaultProps = {
@@ -24,9 +26,18 @@ class Dropdown extends React.Component {
 
   constructor(props) {
     super(props);
+    this.node = React.createRef();
     this.state = {
       visible: false,
     };
+  }
+
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClickOutside, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside, false);
   }
 
   toggleDropdown = () => {
@@ -41,6 +52,13 @@ class Dropdown extends React.Component {
     });
   };
 
+  handleClickOutside = e => {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.collapse();
+  };
+
   render() {
     const {
       enabled,
@@ -48,10 +66,12 @@ class Dropdown extends React.Component {
       children,
       firstButton,
       lastButton,
+      buttonWidth,
       marginTop,
       primary,
       secondary,
       arrowTop,
+      arrowTopRight,
     } = this.props;
     const { visible } = this.state;
     const itemId = name
@@ -62,10 +82,17 @@ class Dropdown extends React.Component {
       : '';
 
     return (
-      <RelativeWrapper onMouseLeave={this.collapse}>
+      <RelativeWrapper innerRef={node => (this.node = node)}>
         <Button
           normal
-          padding={!primary && !secondary ? '8px 0 8px 16px' : '8px 16px'}
+          width={buttonWidth}
+          padding={
+            buttonWidth
+              ? '9px 0'
+              : !primary && !secondary
+                ? '9px 0 9px 16px'
+                : '9px 16px'
+          }
           first={firstButton}
           last={lastButton}
           marginTop={marginTop}
@@ -80,6 +107,7 @@ class Dropdown extends React.Component {
         <DropdownWrapper
           visible={visible}
           arrowTop={arrowTop}
+          arrowTopRight={arrowTopRight}
           data-e2e-id={`wrapper-${itemId}`}
         >
           {children}

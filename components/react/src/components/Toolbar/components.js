@@ -71,7 +71,7 @@ export const ToolbarBackButton = styled.button`
 export const ToolbarHeadline = styled.h2`
   font-size: ${props => (props.smallText ? '18px' : '23px')};
   padding: 4px 0;
-  margin: 0;
+  margin: 0 6px 0 0;
   color: #32363a;
   font-weight: normal;
 `;

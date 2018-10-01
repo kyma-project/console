@@ -19,13 +19,20 @@ const FilterList = ({
   <Dropdown
     name={activeFiltersCount ? `Filter (${activeFiltersCount})` : 'Filter'}
     enabled={filters && filters.length > 0}
+    buttonWidth="97px"
     marginTop="0"
     lastButton
     primary
     arrowTop
+    arrowTopRight="41px"
   >
     <SearchWrapper>
-      <Search placeholder="Search" onChange={onSearch} id="search-filter" />
+      <Search
+        backgroundColor="#fff"
+        placeholder="Search"
+        onChange={onSearch}
+        id="search-filter"
+      />
     </SearchWrapper>
     <FilterContainer data-e2e-id="filter">
       {filters &&
