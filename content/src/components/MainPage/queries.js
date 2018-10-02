@@ -6,6 +6,8 @@ export const TOPICS_QUERY = gql`
       id
       contentType
       sections {
+        name
+        anchor
         topicType
         titles {
           name
