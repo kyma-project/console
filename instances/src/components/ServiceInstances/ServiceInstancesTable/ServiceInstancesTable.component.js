@@ -118,22 +118,27 @@ function ServiceInstancesTable({
         size: 0.2,
         accesor: el => {
           const plan = el.clusterServicePlan || el.servicePlan;
-          if (Object.keys(el.planSpec).length === 0) {
-            return getResourceDisplayName(plan);
+          if (
+            el.planSpec &&
+            el.planSpec !== null &&
+            typeof el.planSpec === 'object' &&
+            Object.keys(el.planSpec).length
+          ) {
+            return (
+              <InformationModal
+                title="Instances Parameters"
+                modalOpeningComponent={
+                  <ServicePlanButton>
+                    {getResourceDisplayName(plan)}
+                  </ServicePlanButton>
+                }
+                content={
+                  <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
+                }
+              />
+            );
           }
-          return (
-            <InformationModal
-              title="Instances Parameters"
-              modalOpeningComponent={
-                <ServicePlanButton>
-                  {getResourceDisplayName(plan)}
-                </ServicePlanButton>
-              }
-              content={
-                <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
-              }
-            />
-          );
+          return getResourceDisplayName(plan);
         },
       },
       {

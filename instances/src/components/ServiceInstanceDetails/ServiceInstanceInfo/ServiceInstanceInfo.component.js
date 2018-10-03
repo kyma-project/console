@@ -92,6 +92,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 <Grid.Unit size={0.8}>
                   <Element>
                     {serviceInstance.planSpec &&
+                    serviceInstance.planSpec !== null &&
+                    typeof serviceInstance.planSpec === 'object' &&
                     Object.keys(serviceInstance.planSpec).length ? (
                       <InformationModal
                         modalOpeningComponent={
@@ -111,7 +113,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                         }
                       />
                     ) : (
-                      `${getResourceDisplayName(instancePlan)} plan`
+                      `${getResourceDisplayName(instancePlan)}`
                     )}
                   </Element>
                 </Grid.Unit>
