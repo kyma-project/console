@@ -14,16 +14,10 @@ import {
   validateAsyncApiSpec,
 } from '../../../commons/helpers';
 
-const ServiceClassTabs = ({ clusterServiceClass }) => {
-  const content =
-    clusterServiceClass.clusterServiceClass.content &&
-    clusterServiceClass.clusterServiceClass.content;
-  const apiSpec =
-    clusterServiceClass.clusterServiceClass.apiSpec &&
-    clusterServiceClass.clusterServiceClass.apiSpec;
-  const asyncApiSpec =
-    clusterServiceClass.clusterServiceClass.asyncApiSpec &&
-    clusterServiceClass.clusterServiceClass.asyncApiSpec;
+const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
+  const content = serviceClass.content && serviceClass.content;
+  const apiSpec = serviceClass.apiSpec && serviceClass.apiSpec;
+  const asyncApiSpec = serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
 
   if (
     (content && Object.keys(content).length && validateContent(content)) ||
@@ -35,7 +29,7 @@ const ServiceClassTabs = ({ clusterServiceClass }) => {
     let documentsByType = [],
       documentsTypes = [];
 
-    if (!clusterServiceClass.loading) {
+    if (!serviceClassLoading) {
       if (content && Object.keys(content).length) {
         documentsByType = sortDocumentsByType(content);
         documentsTypes = Object.keys(documentsByType);
@@ -100,7 +94,8 @@ const ServiceClassTabs = ({ clusterServiceClass }) => {
 };
 
 ServiceClassTabs.propTypes = {
-  clusterServiceClass: PropTypes.object.isRequired,
+  serviceClass: PropTypes.object.isRequired,
+  serviceClassLoading: PropTypes.bool.isRequired,
 };
 
 export default ServiceClassTabs;

@@ -1,28 +1,45 @@
 import gql from 'graphql-tag';
 
+const serviceClassQGL = `
+  name
+  externalName
+  displayName
+  creationTimestamp
+  description
+  longDescription
+  documentationUrl
+  supportUrl
+  imageUrl
+  providerDisplayName
+  tags
+  content
+  asyncApiSpec
+  apiSpec
+`;
+
+const plansQGL = `
+  name
+  instanceCreateParameterSchema
+  displayName
+  externalName
+`;
+
 export const GET_SERVICE_CLASS = gql`
-  query GetServiceClass($name: String!) {
+  query getServiceClass($name: String!, $environment: String!) {
     clusterServiceClass(name: $name) {
-      name
-      externalName
-      displayName
-      creationTimestamp
-      description
-      longDescription
-      documentationUrl
-      supportUrl
-      imageUrl
-      providerDisplayName
-      tags
-      content
-      asyncApiSpec
-      apiSpec
+      ${serviceClassQGL}
       plans {
-        name
-        instanceCreateParameterSchema
-        displayName
+        ${plansQGL}
         relatedClusterServiceClassName
-        externalName
+      }
+    }
+    serviceClass(name: $name, environment: $environment) {
+      ${serviceClassQGL}
+      environment
+      plans {
+        ${plansQGL}
+        environment
+        relatedServiceClassName
       }
     }
   }

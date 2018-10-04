@@ -12,7 +12,6 @@ export function createApolloClient() {
   );
 
   const client = new ApolloClient({
-    connectToDevTools: true,
     uri: graphqlApiUrl,
     request: async operation => {
       operation.setContext(({ headers = {} }) => ({

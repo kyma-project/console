@@ -1,4 +1,5 @@
 const defaults = {
+  serviceClasses: [],
   clusterServiceClasses: [],
 };
 

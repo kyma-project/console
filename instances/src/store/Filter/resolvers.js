@@ -68,25 +68,44 @@ export default {
     filterItems: (_, args, { cache }) => {
       const activeFilters = getActiveFilters(cache);
 
-      const items = cache.readQuery({
+      let items = cache.readQuery({
         query: SERVICE_INSTANCES_QUERY,
         variables: {
           environment: builder.getCurrentEnvironmentId(),
         },
       }).serviceInstances;
+
+      // workaround for caching planSpec and cluster-namespaced classes and plans
+      items = items.map(item => {
+        let newItem = {};
+        if (item.clusterServiceClass && item.clusterServicePlan) {
+          newItem = {
+            serviceClass: {
+              ...item.clusterServiceClass,
+              __typename: 'ServiceClass',
+            },
+            servicePlan: {
+              ...item.clusterServicePlan,
+              __typename: 'ServicePlan',
+            },
+          };
+        }
+
+        newItem = {
+          ...item,
+          ...newItem,
+        };
+
+        delete newItem.planSpec;
+        delete newItem.serviceBindingUsages;
+        delete newItem.clusterServiceClass;
+        delete newItem.clusterServicePlan;
+
+        return newItem;
+      });
+
       let filteredItems = filterItems(items, activeFilters, cache);
       const allFilters = populateFilters(items, filteredItems);
-
-      // workaround for caching planSpec
-      filteredItems = filteredItems.map(item => {
-        return {
-          ...item,
-          planSpec: {
-            ...item.planSpec,
-            __typename: 'JSON',
-          },
-        };
-      });
 
       cache.writeData({
         data: {
@@ -173,7 +192,14 @@ const filterItems = (items, activeFilters, cache) => {
     ) {
       const searchValue = activeFilters.search.toLowerCase();
       const name = item.name.toLowerCase();
-      searchMatch = name.indexOf(searchValue) !== -1;
+      const serviceClass = item.serviceClass.displayName.toLowerCase();
+      const plan = item.servicePlan.displayName.toLowerCase();
+      const statusType = item.status.type.toLowerCase();
+      searchMatch =
+        name.indexOf(searchValue) !== -1 ||
+        serviceClass.indexOf(searchValue) !== -1 ||
+        plan.indexOf(searchValue) !== -1 ||
+        statusType.indexOf(searchValue) !== -1;
     }
 
     return labelsMatch && searchMatch;

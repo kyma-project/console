@@ -16,7 +16,7 @@ import {
 } from './styled';
 
 const ServiceClassInfo = ({
-  clusterServiceClassDisplayName,
+  serviceClassDisplayName,
   providerDisplayName,
   creationTimestamp,
   documentationUrl,
@@ -36,7 +36,7 @@ const ServiceClassInfo = ({
         </ImagePlaceholder>
         <div>
           <ServiceTitle data-e2e-id="service-title">
-            {clusterServiceClassDisplayName}
+            {serviceClassDisplayName}
           </ServiceTitle>
           <ServiceProvider data-e2e-id="service-provider">
             {providerDisplayName || ''}
@@ -80,7 +80,7 @@ const ServiceClassInfo = ({
 };
 
 ServiceClassInfo.propTypes = {
-  clusterServiceClassDisplayName: PropTypes.string.isRequired,
+  serviceClassDisplayName: PropTypes.string.isRequired,
   providerDisplayName: PropTypes.string.isRequired,
   creationTimestamp: PropTypes.number,
   documentationUrl: PropTypes.string,

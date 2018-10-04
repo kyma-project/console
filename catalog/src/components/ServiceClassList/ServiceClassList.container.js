@@ -12,11 +12,20 @@ import { SET_ACTIVE_TAGS_FILTERS_MUTATION } from './mutations';
 
 import ServiceClassList from './ServiceClassList.component';
 
+import builder from '../../commons/builder';
+
 export default compose(
   graphql(FILTERED_CLASSES_QUERY, {
     name: 'classList',
-    options: {
-      fetchPolicy: 'cache-and-network',
+    options: () => {
+      return {
+        variables: {
+          environment: builder.getCurrentEnvironmentId(),
+        },
+        options: {
+          fetchPolicy: 'cache-and-network',
+        },
+      };
     },
   }),
   graphql(CLASS_ACTIVE_FILTERS_QUERY, {
@@ -27,8 +36,15 @@ export default compose(
   }),
   graphql(CLASS_FILTERS_QUERY, {
     name: 'classFilters',
-    options: {
-      fetchPolicy: 'cache-and-network',
+    options: () => {
+      return {
+        variables: {
+          environment: builder.getCurrentEnvironmentId(),
+        },
+        options: {
+          fetchPolicy: 'cache-and-network',
+        },
+      };
     },
   }),
 

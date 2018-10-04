@@ -21,7 +21,7 @@ const defaults = {
     search: '',
     __typename: 'ActiveTagsFilters',
   },
-  clusterServiceClassFilters: [],
+  serviceClassFilters: [],
   filteredServiceClasses: [],
 };
 
