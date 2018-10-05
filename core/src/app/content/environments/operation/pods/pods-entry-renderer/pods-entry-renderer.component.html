@@ -2,7 +2,8 @@
   <div class="col-2 col-lg-3">
     <div class="row">
       <div class="col-1 sf-list__indicator">
-        <span class="sf-indicator" [ngClass]="getClass(entry)" title="{{entry.podStatus.podPhase}}"></span>
+        <!-- <span class="sf-indicator" [ngClass]="getClass(entry)" title="{{entry.podStatus.podPhase}}"></span> -->
+        <app-status-label/>
       </div>
       <div class="sf-list__body--primary col-11">{{ entry.objectMeta.name }}</div>
     </div>
