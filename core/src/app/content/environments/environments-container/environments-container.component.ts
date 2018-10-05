@@ -159,7 +159,10 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
           this.environmentsService.getResourceQueryStatus(env).pipe(
             map(res => ({
               env,
-              quotaExceeded: res.resourceQuotasStatus.exceeded
+              quotaExceeded:
+                res && res.resourceQuotasStatus
+                  ? res.resourceQuotasStatus.exceeded
+                  : false
             }))
           )
         )
