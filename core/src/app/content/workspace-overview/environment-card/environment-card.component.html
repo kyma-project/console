@@ -13,13 +13,13 @@
       <div class="col">
         <div class="sf-sku">
           <span class="sf-sku__value">{{ entry.services && (entry.services | async) !== null ? (entry.services | async) : 0 }}</span>
-          <span class="sf-sku__label">Services</span>
+          <span class="sf-sku__label">{{ (entry.services && (entry.services | async) === 1) ? "Service" : "Services" }}</span>
         </div>
       </div>
       <div class="col">
         <div class="sf-sku">
           <span class="sf-sku__value">{{ entry.remoteEnvs && (entry.remoteEnvs | async) !== null ? (entry.remoteEnvs | async) : 0 }}</span>
-          <span class="sf-sku__label">Bound Remote Environments</span>
+          <span class="sf-sku__label">{{ entry.remoteEnvs && (entry.remoteEnvs | async) === 1 ? "Bound Remote Environment" : "Bound Remote Environments" }}</span>
         </div>
       </div>
     </div>

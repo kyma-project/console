@@ -42,13 +42,13 @@
                         <div class="col">
                             <div class="sf-sku sf-sku--center">
                                 <span class="sf-sku__value">{{ services ? services.length : 0 }}</span>
-                                <a class="sf-sku__label" routerLink="../services">Services</a>
+                                <a class="sf-sku__label" routerLink="../services">{{ (services && services.length === 1) ? "Service" : "Services" }}</a>
                             </div>
                         </div>
                         <div class="col">
                             <div class="sf-sku sf-sku--center">
                                 <span class="sf-sku__value">{{ boundRemoteEnvironmentsCount | async }}</span>
-                                <span>Bound Remote Environments</span>
+                                <span>{{ (boundRemoteEnvironmentsCount | async) ===1 ? "Bound Remote Environment" : "Bound Remote Environments" }}</span>
                                 <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Remote Environments</a>
                             </div>
                         </div>
