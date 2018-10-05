@@ -1,32 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 
 @Component({
-  selector: 'app-create-remote-environment-modal',
-  templateUrl: './create-remote-environment-modal.component.html',
-  styleUrls: ['./create-remote-environment-modal.component.scss']
+  selector: 'app-edit-remote-environment-modal',
+  templateUrl: './edit-remote-environment-modal.component.html',
+  styleUrls: ['./edit-remote-environment-modal.component.scss']
 })
-export class CreateRemoteEnvironmentModalComponent {
+export class EditRemoteEnvironmentModalComponent {
+  @Input() public description: string;
+  @Input() public labels: string[];
+  @Input() public name: string;
+
   public isActive = false;
-  public name: string;
-  public wrongRemoteEnvName: boolean;
   public wrongLabels: boolean;
-  public description: string;
-  public labels: string[];
   public error: string;
 
   public constructor(
     private remoteEnvironmentsService: RemoteEnvironmentsService,
     private communicationService: ComponentCommunicationService
-  ) {}
+  ) {
+    this.labels = this.labels || [];
+  }
 
   private resetForm(): void {
-    this.name = '';
-    this.wrongRemoteEnvName = false;
     this.wrongLabels = false;
-    this.description = '';
-    this.labels = [];
     this.error = '';
   }
 
@@ -39,19 +38,8 @@ export class CreateRemoteEnvironmentModalComponent {
     this.isActive = false;
   }
 
-  public validateRemoteEnvNameRegex() {
-    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
-    this.wrongRemoteEnvName =
-      this.name && !Boolean(regex.test(this.name || ''));
-  }
-
-  public isReadyToCreate(): boolean {
-    return Boolean(
-      this.name &&
-        this.description &&
-        !this.wrongRemoteEnvName &&
-        !this.wrongLabels
-    );
+  public isReadyToSave(): boolean {
+    return Boolean(this.description && !this.wrongLabels);
   }
 
   public updateLabelsData({
@@ -75,11 +63,11 @@ export class CreateRemoteEnvironmentModalComponent {
       }, {})
     };
 
-    this.remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(
+    this.remoteEnvironmentsService.updateRemoteEnvironment(data).subscribe(
       response => {
         this.close();
         this.communicationService.sendEvent({
-          type: 'createResource',
+          type: 'updateResource',
           data: response
         });
       },

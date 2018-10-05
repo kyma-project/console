@@ -39,6 +39,27 @@ export class RemoteEnvironmentsService {
     });
   }
 
+  public updateRemoteEnvironment({
+    name,
+    labels,
+    description
+  }: {
+    name: string;
+    description: string;
+    labels: {};
+  }): Observable<any> {
+    const data = {
+      metadata: { name },
+      spec: { labels, description },
+      kind: 'RemoteEnvironment',
+      apiVersion: 'applicationconnector.kyma-project.io/v1alpha1'
+    };
+    console.log('data: ', data);
+    return this.httpClient.put(this.url + '/' + name, data, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
+
   getRemoteEnvironment(name: string): Observable<any> {
     const query = `query RemoteEnvironment($name: String!) {
         remoteEnvironment(name: $name){

@@ -3,7 +3,8 @@ import {
   EventEmitter,
   Output,
   ViewChild,
-  ElementRef
+  ElementRef,
+  Input
 } from '@angular/core';
 
 @Component({
@@ -13,18 +14,18 @@ import {
 })
 export class LabelsInputComponent {
   @ViewChild('labelsInput') labelsInput: ElementRef;
+  @Input() labels?: string[];
   @Output()
   public labelsChangeEmitter$: EventEmitter<{
     labels?: string[];
     wrongLabels?: boolean;
   }>;
   public newLabel: string;
-  public labels: string[];
   public wrongLabelMessage: string;
 
   constructor() {
     this.labelsChangeEmitter$ = new EventEmitter();
-    this.labels = [];
+    this.labels = this.labels || [];
   }
 
   public validateNewLabel() {
