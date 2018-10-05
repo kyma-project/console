@@ -6,7 +6,7 @@
   <input #labelsInput type="text" class="tn-form__control" name="labelsInput"
       [(ngModel)]="newLabel" (ngModelChange)=validateNewLabel()
       (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" (blur)="addLabel()" [ngClass]="{'has-labels': labels.length > 0}"
-    placeholder="{{labels.length === 0 ? 'Specify one or more labels for your new Remote Environment' : ''}}">
+    placeholder="{{labels.length === 0 ? 'Specify one or more labels for your Remote Environment' : ''}}">
 </div>
 <div *ngIf="wrongLabelMessage" class="alert alert-danger">
   {{ wrongLabelMessage }}

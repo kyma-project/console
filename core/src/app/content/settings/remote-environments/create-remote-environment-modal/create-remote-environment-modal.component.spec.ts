@@ -66,7 +66,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   });
 
   describe('resetForm()', () => {
-    it('resets form values', () => {
+    it('resets form data values', () => {
       component.name = 'any-name';
       component.description = 'any-description';
       component.labels = ['any-labels'];
@@ -74,6 +74,16 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       expect(component.name).toBe('');
       expect(component.description).toBe('');
       expect(component.labels).toEqual([]);
+    });
+
+    it('resets form validation values', () => {
+      component.error = 'any-error';
+      component.wrongRemoteEnvName = true;
+      component.wrongLabels = true;
+      component['resetForm']();
+      expect(component.error).toBe('');
+      expect(component.wrongRemoteEnvName).toBe(false);
+      expect(component.wrongLabels).toBe(false);
     });
   });
 
@@ -142,8 +152,6 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   });
 
   describe('save()', () => {
-    beforeEach(() => {});
-
     it('creates new remote env', () => {
       spyOn(
         mockRemoteEnvironmentsService,

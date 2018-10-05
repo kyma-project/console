@@ -21,15 +21,6 @@ export class CreateRemoteEnvironmentModalComponent {
     private communicationService: ComponentCommunicationService
   ) {}
 
-  private resetForm(): void {
-    this.name = '';
-    this.wrongRemoteEnvName = false;
-    this.wrongLabels = false;
-    this.description = '';
-    this.labels = [];
-    this.error = '';
-  }
-
   public show(): void {
     this.resetForm();
     this.isActive = true;
@@ -37,6 +28,15 @@ export class CreateRemoteEnvironmentModalComponent {
 
   public close(): void {
     this.isActive = false;
+  }
+
+  private resetForm(): void {
+    this.name = '';
+    this.description = '';
+    this.labels = [];
+    this.error = '';
+    this.wrongRemoteEnvName = false;
+    this.wrongLabels = false;
   }
 
   public validateRemoteEnvNameRegex() {

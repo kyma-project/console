@@ -4,7 +4,8 @@ import {
   Output,
   ViewChild,
   ElementRef,
-  Input
+  Input,
+  OnInit
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
@@ -14,7 +15,7 @@ import { ControlContainer, NgForm } from '@angular/forms';
   styleUrls: ['./labels-input.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }]
 })
-export class LabelsInputComponent {
+export class LabelsInputComponent implements OnInit {
   @ViewChild('labelsInput') labelsInput: ElementRef;
   @Input() labels?: string[];
   @Output()
@@ -25,7 +26,7 @@ export class LabelsInputComponent {
   public newLabel: string;
   public wrongLabelMessage: string;
 
-  constructor() {
+  public ngOnInit() {
     this.labelsChangeEmitter$ = new EventEmitter();
     this.labels = this.labels || [];
   }

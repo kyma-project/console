@@ -27,11 +27,6 @@ export class EditRemoteEnvironmentModalComponent {
     this.labels = this.labels || [];
   }
 
-  private resetForm(): void {
-    this.wrongLabels = false;
-    this.error = '';
-  }
-
   public show(): void {
     this.resetForm();
     this.isActive = true;
@@ -39,6 +34,11 @@ export class EditRemoteEnvironmentModalComponent {
 
   public close(): void {
     this.isActive = false;
+  }
+
+  private resetForm(): void {
+    this.wrongLabels = false;
+    this.error = '';
   }
 
   public isReadyToSave(): boolean {

@@ -17,7 +17,7 @@
                 <label class="tn-form__label">Description *</label>
                 <input autofocus class="tn-form__control" type="text" name="remoteEnvDescription"
                     [(ngModel)]="description"
-                    placeholder="Specify a description for your new Remote Environment"
+                    placeholder="Specify a description for your Remote Environment"
                 >
               </div>
               <div class="tn-form__item">
@@ -26,14 +26,14 @@
                 ></app-labels-input>
               </div>
             </div>
-            <footer class="tn-modal__footer-items">
-              <button class="tn-modal__button-primary sf-button--primary tn-button--small" ngClass="{{isReadyToSave() ? '' : 'disabled'}}"
-                [disabled]="!isReadyToSave()" (click)="save()">
-                Save
-              </button>
-              <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
-            </footer>
           </div>
+          <footer class="tn-modal__footer-items">
+            <button class="tn-modal__button-primary sf-button--primary tn-button--small" ngClass="{{isReadyToSave() ? '' : 'disabled'}}"
+              [disabled]="!isReadyToSave()" (click)="save()">
+              Save
+            </button>
+            <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
+          </footer>
         </form>
       </div>
     </div>

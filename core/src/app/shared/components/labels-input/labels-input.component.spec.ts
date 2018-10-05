@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import { ElementRef, EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LabelsInputComponent } from './labels-input.component';
@@ -24,6 +24,26 @@ describe('LabelsInputComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('NgOnInit', () => {
+    it('initializes labels change emitter', () => {
+      component.labelsChangeEmitter$ = undefined;
+      component.ngOnInit();
+      expect(component.labelsChangeEmitter$).toEqual(new EventEmitter());
+    });
+
+    it('initializes labels to empty array if labels has falsy value', () => {
+      component.labels = null;
+      component.ngOnInit();
+      expect(component.labels).toEqual([]);
+    });
+
+    it('does not change labels value if it is truthy', () => {
+      component.labels = ['k1:v1'];
+      component.ngOnInit();
+      expect(component.labels).toEqual(['k1:v1']);
+    });
   });
 
   describe('validateNewLabel()', () => {
