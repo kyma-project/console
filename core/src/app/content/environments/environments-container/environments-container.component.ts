@@ -50,7 +50,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public previousUrl = '';
   public previousEnv = '';
   public displayErrorGlobal = false;
-  public resourceExceeded = true;
+  public resourceExceeded = false;
   public overview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
