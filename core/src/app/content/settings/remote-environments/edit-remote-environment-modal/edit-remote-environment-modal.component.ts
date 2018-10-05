@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-remote-environment-modal',
@@ -12,6 +13,8 @@ export class EditRemoteEnvironmentModalComponent {
   @Input() public description: string;
   @Input() public labels: string[];
   @Input() public name: string;
+
+  @ViewChild('editRemoteEnvsForm') editRemoteEnvsForm: NgForm;
 
   public isActive = false;
   public wrongLabels: boolean;
@@ -39,7 +42,12 @@ export class EditRemoteEnvironmentModalComponent {
   }
 
   public isReadyToSave(): boolean {
-    return Boolean(this.description && !this.wrongLabels);
+    return Boolean(
+      this.editRemoteEnvsForm &&
+        this.editRemoteEnvsForm.dirty &&
+        this.description &&
+        !this.wrongLabels
+    );
   }
 
   public updateLabelsData({
