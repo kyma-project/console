@@ -1,4 +1,5 @@
 <div *ngIf="currentNavModel" class="sf-toolbar sf-toolbar--vertical sf-toolbar--mainnavigation">
+  <div class="sf-toolbar__content">
   <a *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item" routerLink="/home/environments" (click)="goToEnvironments()"
     routerLinkActive="is-active">
     ← Back to Environment
@@ -9,13 +10,13 @@
   <span *ngIf='currentNavModel.topEntry' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
   <div class="sf-toolbar__item" *ngIf='currentNavModel.showEnvChooser'>
     <div class="tn-dropdown sf-dropdown" (clickOutside)="closeDropDown()"  clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-      <button class="tn-dropdown__control" 
-        aria-controls="nNJnB279" 
-        [attr.aria-expanded]="ariaExpanded" 
+      <button class="tn-dropdown__control"
+        aria-controls="nNJnB279"
+        [attr.aria-expanded]="ariaExpanded"
         aria-haspopup="true"
         (click)="toggleDropDown()">
         <input class="filter-input"
-          type="text" 
+          type="text"
           name="environmentName"
           placeholder="Choose environment"
           [(ngModel)]="environmentName"
@@ -43,11 +44,11 @@
           <div class="sf-toolbar__header">{{ group.name }}</div>
           <div class="sf-toolbar__group">
             <ng-container *ngFor="let entry of group.entries">
-              <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
-                style="cursor: pointer">{{ entry.name }}</a>
-              <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
+              <span *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
+                style="cursor: pointer">{{ entry.name }}</span>
+              <span *ngIf="entry.external" class="sf-toolbar__item" target="_blank">{{ entry.name }}
                 <img src="assets/external.svg" />
-              </a>
+              </span>
             </ng-container>
           </div>
         </div>
@@ -89,5 +90,5 @@
     <a routerLink="/home/docs" routerLinkActive="is-active" class="sf-toolbar__item">Docs</a>
   </div>
 </div>
-
+</div>
 <app-environment-create #createmodal></app-environment-create>
