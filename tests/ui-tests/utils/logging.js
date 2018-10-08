@@ -1,4 +1,5 @@
 import util from 'util';
+import config from '../config';
 
 let counter = 0;
 
@@ -13,16 +14,18 @@ module.exports = function(page, callback) {
     console.log(util.inspect(msg, { depth: 3 }));
   });
 
-  //reacts when JavaScript within the page calls one of console API methods, e.g. console.log or console.dir. Also emitted if the page throws an error or a warning.
-  page.on('console', msg => {
-    console.log(util.inspect(msg, { depth: 3 }));
+  page.on('request', request => {
+    if (request._headers && request._headers.authorization && 0 === counter) {
+      counter = counter + 1;
+      if (config.verbose) {
+        console.log(request._headers.authorization);
+      }
+      callback(request._headers.authorization);
+    }
   });
 
   //reacts on failed requests, like time outs
   page.on('requestfailed', request => {
-    console.log(
-      '####################\nREQUEST FAILURE MESSAGE\n####################'
-    );
     console.log(
       `Request ${request._method} ${request._url} failed with message : ${
         request._failureText
@@ -30,11 +33,10 @@ module.exports = function(page, callback) {
     );
   });
 
-  page.on('request', request => {
-    if (request._headers && request._headers.authorization && 0 === counter) {
-      counter = counter + 1;
-      console.log(request._headers.authorization);
-      callback(request._headers.authorization);
-    }
-  });
+  if (config.verbose) {
+    //reacts when JavaScript within the page calls one of console API methods, e.g. console.log or console.dir. Also emitted if the page throws an error or a warning.
+    page.on('console', msg => {
+      console.log(util.inspect(msg, { depth: 3 }));
+    });
+  }
 };
