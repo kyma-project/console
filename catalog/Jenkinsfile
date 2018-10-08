@@ -61,13 +61,13 @@ podTemplate(label: label) {
                             execute("make test", ["CI=true"])
                         }
 
-                        if (isMaster) {
-                            stage("IP scan $application (WhiteSource)") {
-                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                                    execute("make scan", ["API_KEY=$apikey"])
-                                }
-                            }
-                        }
+                        // if (isMaster) {
+                        //     stage("IP scan $application (WhiteSource)") {
+                        //         withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
+                        //             execute("make scan", ["API_KEY=$apikey"])
+                        //         }
+                        //     }
+                        // }
 
                         // if (isMaster) {
                             // stage("security scan $application (Checkmarx)"){
@@ -75,12 +75,16 @@ podTemplate(label: label) {
                             // }
                         // }
 
+                        stage("prepare react-components") {
+                            execute("../scripts/prepare-react-components.sh -d react-components")
+                        }
+
                         stage("build $application") {
                             execute('make build')
                         }
 
                         stage("build image $application") {
-                            dir(env.APP_FOLDER){
+                            dir(env.APP_FOLDER) {
                                 sh "docker build . -t $application:latest"
                             }
                         }
@@ -103,7 +107,7 @@ podTemplate(label: label) {
 
 def execute(command, envs = []) {
     def repositoryName = 'console'
-    def buildpack = 'node-buildpack:0.0.8'
+    def buildpack = 'node-buildpack:0.0.9'
     def envText = ''
     for (it in envs) {
         envText = "$envText --env $it"

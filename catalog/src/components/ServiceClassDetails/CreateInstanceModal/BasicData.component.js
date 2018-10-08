@@ -31,30 +31,39 @@ class BasicData extends React.Component {
       invalidInstanceName: false,
       instanceWithNameAlreadyExists: false,
       stepFilled: props.data.stepFilled,
+      enableCheckNameExists: false,
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     const { serviceClass } = this.props;
     const { formData } = this.state;
 
-    if (!serviceClass.serviceClass) return;
+    if (!serviceClass) return;
 
-    const defaultInstanceName = `${
-      serviceClass.serviceClass.externalName
-    }-${randomNameGenerator()}`;
+    let defaultInstanceName = '';
+    while (true) {
+      defaultInstanceName = `${
+        serviceClass.externalName
+      }-${randomNameGenerator()}`;
 
-    this.setState({
-      formData: {
-        ...this.state.formData,
-        name: formData.name ? formData.name : defaultInstanceName,
-        plan: serviceClass.serviceClass.plans[0].name,
-      },
-    });
+      this.setState({
+        formData: {
+          ...formData,
+          name: defaultInstanceName,
+          plan: serviceClass.plans[0].name,
+        },
+      });
+
+      const { data, error } = await this.props.refetchInstanceExists(
+        defaultInstanceName,
+      );
+
+      if (!error && !data.serviceInstance) break;
+    }
   }
 
   componentDidMount() {
-    this.checkNameExists(this.state.formData.name);
     clearTimeout(this.timer);
   }
 
@@ -63,6 +72,7 @@ class BasicData extends React.Component {
       formData,
       invalidInstanceName,
       instanceWithNameAlreadyExists,
+      enableCheckNameExists,
     } = this.state;
 
     if (compareTwoObjects(this.state, nextState)) return;
@@ -89,6 +99,7 @@ class BasicData extends React.Component {
 
     clearTimeout(this.timer);
     if (
+      enableCheckNameExists &&
       !invalidInstanceName &&
       formData &&
       formData.name &&
@@ -106,6 +117,7 @@ class BasicData extends React.Component {
 
   onChangeName = value => {
     this.setState({
+      enableCheckNameExists: true,
       firstStepFilled: Boolean(value),
       instanceWithNameAlreadyExists: false,
       invalidInstanceName: this.validateInstanceName(value),

@@ -36,26 +36,26 @@
         <div class="col-sm-2">
           <label class="tn-form__label">Description</label>
         </div>
-        <div class="col-sm-10" *ngIf="remoteEnvironment.description">
-          {{ remoteEnvironment.description }}
+        <div class="col-sm-10">
+          <ng-container *ngIf="remoteEnvironment.description">
+            {{ remoteEnvironment.description }}
+          </ng-container>
+          <ng-container *ngIf="!remoteEnvironment.description">
+            <span class="no-content">none</span>
+          </ng-container>
         </div>
         <div class="col-sm-2">
-          <label class="tn-form__label">Source Type</label>
+          <label class="tn-form__label">Labels</label>
         </div>
-        <div class="col-sm-10">
-          {{ remoteEnvironment.source.type }}
-        </div>
-        <div class="col-sm-2">
-          <label class="tn-form__label">Source Namespace</label>
-        </div>
-        <div class="col-sm-10">
-          {{ remoteEnvironment.source.namespace }}
-        </div>
-        <div class="col-sm-2">
-          <label class="tn-form__label">Source Environment</label>
-        </div>
-        <div class="col-sm-10">
-          {{ remoteEnvironment.source.environment }}
+        <div class="col-sm-10 sf-list__label-column">
+          <ng-container *ngIf='getLabels(remoteEnvironment.labels).length'>
+            <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(remoteEnvironment.labels)">
+              {{ label }}
+            </span>
+          </ng-container>
+          <ng-container *ngIf='!getLabels(remoteEnvironment.labels).length'>
+            <span class="no-content">none</span>
+          </ng-container>
         </div>
       </div>
       </div>

@@ -35,7 +35,6 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EventTrigger } from '../../shared/datamodel/event-trigger';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
-import { Source } from '../../shared/datamodel/source';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
@@ -110,9 +109,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isEnvVariableNameInvalid = false;
   isFunctionNameInvalid = false;
   isHTTPTriggerAdded = false;
-  isHTTPTriggerAuthenticated = false;
+  isHTTPTriggerAuthenticated = true;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
+  sessionId: string;
+
+  public issuer: string;
+  public jwksUri: string;
+  public authType: string;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -137,6 +141,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
           this.environment = eventData.currentEnvironmentId;
+          this.sessionId = eventData.sessionId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';
@@ -166,15 +171,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
               })
               .subscribe(resp => {
                 resp.items.forEach(sub => {
-                  const src: Source = {
-                    environment: sub.spec.source['source_environment'],
-                    type: sub.spec.source['source_type'],
-                    namespace: sub.spec.source['source_namespace'],
-                  };
                   const evTrigger: EventTrigger = {
                     eventType: sub.spec['event_type'],
                     version: sub.spec['event_type_version'],
-                    source: src,
+                    sourceId: sub.spec.source_id,
                   };
                   this.selectedTriggers.push(evTrigger);
                   this.existingEventTriggers.push(evTrigger);
@@ -197,7 +197,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
                 ea.events.forEach(ev => {
                   const eventTrigger: EventTrigger = {
                     eventType: ev.eventType,
-                    source: ea.source,
+                    sourceId: ea.sourceId,
                     description: ev.description,
                     version: ev.version,
                   };
@@ -232,11 +232,16 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   deployLambda() {
-    if (this.mode === 'create') {
-      this.createFunction();
-    } else {
-      this.updateFunction();
-    }
+    this.lambdaDetailsService
+      .getResourceQuotaStatus(this.environment, this.token)
+      .subscribe(res => {
+        window.parent.postMessage(res.data, '*');
+        if (this.mode === 'create') {
+          this.createFunction();
+        } else {
+          this.updateFunction();
+        }
+      });
   }
 
   isEventTriggerPresent(): boolean {
@@ -308,7 +313,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
           v.hasChanged &&
           (v.currentState !== undefined || v.previousState !== undefined)
         ) {
-          // const serviceBindingUsageName = `lambda-${this.lambda.metadata.name}-${v.previousState.instanceName}`;
           if (
             v.currentState === undefined &&
             v.previousState !== undefined &&
@@ -402,8 +406,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
     deleteBindingStates.forEach(bs => {
       this.serviceBindingUsagesService
         .getServiceBindingUsages(this.environment, this.token, {
-          Function: this.lambda.metadata.name,
-          ServiceBinding: bs.previousState.serviceBinding,
+          labelSelector: `Function=${
+            this.lambda.metadata.name
+          }, ServiceBinding=${bs.previousState.serviceBinding}`,
         })
         .subscribe(bsuList => {
           bsuList.items.forEach(bsu => {
@@ -448,9 +453,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     if (
       sourceET.eventType === destET.eventType &&
       sourceET.version === destET.version &&
-      sourceET.source.environment === destET.source.environment &&
-      sourceET.source.namespace === destET.source.namespace &&
-      sourceET.source.type === destET.source.type
+      sourceET.sourceId === destET.sourceId
     ) {
       return true;
     } else {
@@ -506,11 +509,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           }:8080/`;
           sub.spec['event_type'] = trigger.eventType;
           sub.spec['event_type_version'] = trigger.version;
-          sub.spec.source = {
-            source_namespace: trigger.source.namespace,
-            source_type: trigger.source.type,
-            source_environment: trigger.source.environment,
-          };
+          sub.spec.source_id = trigger.sourceId;
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
             .catch(err => {
@@ -737,12 +736,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   navigateToList() {
-    let sessionId;
-    luigiClient.addInitListener(() => {
-      const eventData = luigiClient.getEventData();
-      sessionId = eventData.sessionId;
-    });
-    luigiClient.linkManager().openInCurrentEnvironment(`lambdas`, sessionId);
+    setTimeout(() => {
+      luigiClient
+        .linkManager()
+        .openInCurrentEnvironment(`lambdas`, this.sessionId);
+    }, 100);
   }
 
   getEventActivations(): void {
@@ -773,13 +771,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   showHTTPTrigger(): void {
+    this.isHTTPTriggerAuthenticated = true;
     this.toggleTriggerType = false;
-    this.httpTriggerModal.show(
-      this.lambda,
-      this.environment,
-      this.isHTTPTriggerAuthenticated,
-      [...this.selectedTriggers],
-    );
+    this.httpTriggerModal.show(this.lambda, this.environment, [
+      ...this.selectedTriggers,
+    ]);
   }
 
   unselectEvent(event: ITrigger) {
@@ -936,6 +932,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.existingHTTPEndpoint,
       this.isHTTPTriggerAuthenticated,
       this.httpURL,
+      this.authType,
+      this.jwksUri,
+      this.issuer,
     );
     this.apisService.createApi(api, this.environment, this.token).subscribe(
       () => {
@@ -970,6 +969,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.existingHTTPEndpoint,
       this.isHTTPTriggerAuthenticated,
       this.httpURL,
+      this.authType,
+      this.jwksUri,
+      this.issuer,
     );
     this.apisService.updateApi(api, this.environment, this.token).subscribe(
       () => {
@@ -988,9 +990,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   ): boolean {
     if (
       eventTrigger.eventType === event.eventType &&
-      eventTrigger.source.environment === eventActivation.source.environment &&
-      eventTrigger.source.namespace === eventActivation.source.namespace &&
-      eventTrigger.source.type === eventActivation.source.type
+      eventTrigger.sourceId === eventActivation.sourceId
     ) {
       return true;
     } else {
@@ -1007,14 +1007,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   getHTTPEndPointFromApi(api: Api): HTTPEndpoint {
-    const src: Source = {
-      type: 'endpoint',
-    };
     const httpEndPoint: HTTPEndpoint = {
       isAuthEnabled: false,
       eventType: 'http',
       url: '',
-      source: src,
+      sourceId: '',
     };
     httpEndPoint.url = `https://${api.spec.hostname}`;
 
@@ -1039,11 +1036,23 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   handleHttpEmitter($event): void {
-    this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
-      AppConfig.domain
-    }`.toLowerCase();
     this.selectedTriggers = $event;
-    this.isHTTPTriggerAdded = true;
-    this.isHTTPTriggerAuthenticated = $event[0].isAuthEnabled;
+
+    this.selectedTriggers.forEach(trigger => {
+      if (trigger.eventType === 'http') {
+        this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
+          AppConfig.domain
+        }`.toLowerCase();
+
+        this.isHTTPTriggerAdded = true;
+        this.isHTTPTriggerAuthenticated = (trigger as HTTPEndpoint).isAuthEnabled;
+
+        if ((trigger as HTTPEndpoint).isAuthEnabled) {
+          this.authType = (trigger as HTTPEndpoint).authentication.type;
+          this.jwksUri = (trigger as HTTPEndpoint).authentication.jwt.jwksUri;
+          this.issuer = (trigger as HTTPEndpoint).authentication.jwt.issuer;
+        }
+      }
+    });
   }
 }

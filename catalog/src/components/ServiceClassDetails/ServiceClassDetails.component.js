@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@kyma-project/react-components';
+import { Button, Spinner } from '@kyma-project/react-components';
 
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from './ServiceClassInfo/ServiceClassInfo.component';
@@ -13,6 +13,7 @@ import {
   ServiceClassDetailsWrapper,
   LeftSideWrapper,
   CenterSideWrapper,
+  EmptyList,
 } from './styled';
 
 import { getResourceDisplayName, getDescription } from '../../commons/helpers';
@@ -25,13 +26,14 @@ class ServiceClassDetails extends React.Component {
   };
 
   render() {
-    const { serviceClass, history, createServiceInstance } = this.props;
+    const { history, createServiceInstance } = this.props;
+    const serviceClass =
+      this.props.serviceClass.clusterServiceClass ||
+      this.props.serviceClass.serviceClass;
 
-    const serviceClassDisplayName = getResourceDisplayName(
-      serviceClass.serviceClass,
-    );
+    const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
-    const serviceClassDescription = getDescription(serviceClass.serviceClass);
+    const serviceClassDescription = getDescription(serviceClass);
 
     const modalOpeningComponent = (
       <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
@@ -39,9 +41,22 @@ class ServiceClassDetails extends React.Component {
       </Button>
     );
 
+    if (this.props.serviceClass.loading) {
+      return (
+        <EmptyList>
+          <Spinner size="40px" color="#32363a" />
+        </EmptyList>
+      );
+    }
+    if (!this.props.serviceClass.loading && !serviceClass) {
+      return (
+        <EmptyList>Service Class doesn't exist in this environment</EmptyList>
+      );
+    }
+
     return (
       <div>
-        {serviceClass.serviceClass && (
+        {serviceClass && (
           <div>
             <div> {this.arrayOfJsx} </div>
             {this.renObjData}
@@ -62,16 +77,12 @@ class ServiceClassDetails extends React.Component {
               <LeftSideWrapper>
                 <ServiceClassInfo
                   serviceClassDisplayName={serviceClassDisplayName}
-                  providerDisplayName={
-                    serviceClass.serviceClass.providerDisplayName
-                  }
-                  creationTimestamp={
-                    serviceClass.serviceClass.creationTimestamp
-                  }
-                  documentationUrl={serviceClass.serviceClass.documentationUrl}
-                  supportUrl={serviceClass.serviceClass.supportUrl}
-                  imageUrl={serviceClass.serviceClass.imageUrl}
-                  tags={serviceClass.serviceClass.tags}
+                  providerDisplayName={serviceClass.providerDisplayName}
+                  creationTimestamp={serviceClass.creationTimestamp}
+                  documentationUrl={serviceClass.documentationUrl}
+                  supportUrl={serviceClass.supportUrl}
+                  imageUrl={serviceClass.imageUrl}
+                  tags={serviceClass.tags}
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
@@ -80,11 +91,10 @@ class ServiceClassDetails extends React.Component {
                     description={serviceClassDescription}
                   />
                 )}
-                {serviceClass.serviceClass.content ||
-                serviceClass.serviceClass.apiSpec ||
-                serviceClass.serviceClass.asyncApiSpec ? (
-                  <ServiceClassTabs serviceClass={serviceClass} />
-                ) : null}
+                <ServiceClassTabs
+                  serviceClass={serviceClass}
+                  serviceClassLoading={this.props.serviceClass.loading}
+                />
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>

@@ -10,16 +10,13 @@ import SchemaData from './SchemaData.component';
 import { Bold } from './styled';
 
 import builder from '../../../commons/builder';
-import {
-  clearEmptyPropertiesInObject,
-  randomNameGenerator,
-} from '../../../commons/helpers';
+import { clearEmptyPropertiesInObject } from '../../../commons/helpers';
 
 class CreateInstanceModal extends React.Component {
   static propTypes = {
     serviceClass: PropTypes.object.isRequired,
     createServiceInstance: PropTypes.func.isRequired,
-    instanceExists: PropTypes.object.isRequired,
+    instanceExists: PropTypes.func.isRequired,
     sendNotification: PropTypes.func.isRequired,
     modalOpeningComponent: PropTypes.element.isRequired,
   };
@@ -48,35 +45,17 @@ class CreateInstanceModal extends React.Component {
     this.setState(this.getInitialState());
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const { serviceClass } = this.props;
 
-    if (!serviceClass.serviceClass) return;
-
-    let defaultInstanceName = '';
-
-    while (true) {
-      defaultInstanceName = `${
-        serviceClass.serviceClass.externalName
-      }-${randomNameGenerator()}`;
-
-      const { data, error } = await this.refetchInstanceExists(
-        defaultInstanceName,
-      );
-
-      if (!error && !data.serviceInstance) break;
-    }
+    if (!serviceClass) return;
 
     this.setState({
       formData: {
         ...this.state.formData,
-        name: defaultInstanceName,
-        plan:
-          serviceClass &&
-          serviceClass.serviceClass &&
-          serviceClass.serviceClass.plans[0].name,
+        name: '',
+        plan: serviceClass && serviceClass.plans[0].name,
       },
-      firstStepFilled: true,
     });
   }
 
@@ -89,10 +68,7 @@ class CreateInstanceModal extends React.Component {
   }
 
   refetchInstanceExists = async name => {
-    return await this.props.instanceExists.refetch({
-      name,
-      environment: builder.getCurrentEnvironmentId(),
-    });
+    return await this.props.instanceExists(name);
   };
 
   callback = data => {
@@ -113,9 +89,8 @@ class CreateInstanceModal extends React.Component {
 
     const instanceName = formData.name;
     const currentPlan =
-      serviceClass.serviceClass.plans.find(e => e.name === formData.plan) ||
-      (serviceClass.serviceClass.plans.length &&
-        serviceClass.serviceClass.plans[0]);
+      serviceClass.plans.find(e => e.name === formData.plan) ||
+      (serviceClass.plans.length && serviceClass.plans[0]);
     const labels =
       formData.label === ''
         ? []
@@ -132,11 +107,16 @@ class CreateInstanceModal extends React.Component {
       instanceCreateParameters = {};
     }
 
+    const isClusterServiceClass =
+      serviceClass.__typename === 'ClusterServiceClass';
+
     return {
       name: instanceName,
       environment: builder.getCurrentEnvironmentId(),
-      externalServiceClassName: serviceClass.serviceClass.externalName,
+      externalServiceClassName: serviceClass.externalName,
       externalPlanName: currentPlan && currentPlan.externalName,
+      classClusterWide: isClusterServiceClass,
+      planClusterWide: isClusterServiceClass,
       labels,
       parameterSchema: instanceCreateParameters,
     };
@@ -212,18 +192,10 @@ class CreateInstanceModal extends React.Component {
       instanceCreateParameters,
     } = this.state;
 
-    const externalName =
-      (serviceClass &&
-        serviceClass.serviceClass &&
-        serviceClass.serviceClass.externalName) ||
-      '';
+    const externalName = (serviceClass && serviceClass.externalName) || '';
     const environment = builder.getCurrentEnvironmentId();
 
-    const plans =
-      (serviceClass &&
-        serviceClass.serviceClass &&
-        serviceClass.serviceClass.plans) ||
-      [];
+    const plans = (serviceClass && serviceClass.plans) || [];
 
     const schema = plans.find(e => e.name === formData.plan) || plans[0];
 
@@ -285,8 +257,11 @@ class CreateInstanceModal extends React.Component {
         }}
         title={
           <p style={{ marginRight: '25px' }}>
-            Provision Service Class{' '}
-            <Bold>{serviceClass.serviceClass.displayName}</Bold> in environment{' '}
+            Provision{' '}
+            {serviceClass.__typename === 'ClusterServiceClass'
+              ? 'Cluster Service Class'
+              : 'Service Class'}{' '}
+            <Bold>{serviceClass.displayName}</Bold> in environment{' '}
             <Bold>{environment}</Bold>
           </p>
         }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Grid from 'styled-components-grid';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   Icon,
@@ -17,6 +18,7 @@ import {
   Element,
   InfoIcon,
   PlanModalButton,
+  ServiceClassButton,
   Label,
   ExternalLink,
   JSONCode,
@@ -38,6 +40,23 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     }
   };
 
+  const goToServiceClassDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`service-catalog/details/${name}`);
+  };
+
+  if (!serviceInstance) {
+    return null;
+  }
+
+  const instanceClass = serviceInstance.clusterServiceClass
+    ? serviceInstance.clusterServiceClass
+    : serviceInstance.serviceClass;
+  const instancePlan = serviceInstance.clusterServicePlan
+    ? serviceInstance.clusterServicePlan
+    : serviceInstance.servicePlan;
+
   return (
     <ServiceInstanceInfoWrapper>
       <Grid.Unit size={0.7}>
@@ -54,9 +73,17 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element margin="0" data-e2e-id="instance-service-class">
-                    {serviceInstance.serviceClass
-                      ? getResourceDisplayName(serviceInstance.serviceClass)
-                      : '-'}
+                    {instanceClass.name ? (
+                      <ServiceClassButton
+                        onClick={() =>
+                          goToServiceClassDetails(instanceClass.name)
+                        }
+                      >
+                        {getResourceDisplayName(instanceClass)}
+                      </ServiceClassButton>
+                    ) : (
+                      '-'
+                    )}
                   </Element>
                 </Grid.Unit>
                 <Grid.Unit size={0.2}>
@@ -64,21 +91,21 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element>
-                    {serviceInstance.servicePlanSpec &&
-                    Object.keys(serviceInstance.servicePlanSpec).length ? (
+                    {serviceInstance.planSpec &&
+                    serviceInstance.planSpec !== null &&
+                    typeof serviceInstance.planSpec === 'object' &&
+                    Object.keys(serviceInstance.planSpec).length ? (
                       <InformationModal
                         modalOpeningComponent={
                           <PlanModalButton data-e2e-id="instance-service-plan">
-                            {`${getResourceDisplayName(
-                              serviceInstance.servicePlan,
-                            )} plan`}
+                            {getResourceDisplayName(instancePlan)}
                           </PlanModalButton>
                         }
                         title="Instance Parameters"
                         content={
                           <JSONCode>
                             {JSON.stringify(
-                              serviceInstance.servicePlanSpec,
+                              serviceInstance.planSpec,
                               undefined,
                               2,
                             )}
@@ -86,9 +113,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                         }
                       />
                     ) : (
-                      `${getResourceDisplayName(
-                        serviceInstance.servicePlan,
-                      )} plan`
+                      `${getResourceDisplayName(instancePlan)}`
                     )}
                   </Element>
                 </Grid.Unit>
@@ -108,38 +133,58 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     </Grid.Unit>
                   </Grid>
                 )}
-              {serviceInstance.serviceClass &&
-                (serviceInstance.serviceClass.documentationUrl ||
-                  serviceInstance.serviceClass.supportUrl) && (
-                  <Grid>
-                    <Grid.Unit size={0.2}>
-                      <Element margin="11px 0 0 0">Documentations</Element>
-                    </Grid.Unit>
-                    <Grid.Unit size={0.8}>
-                      <Element margin="11px 0 0 0">
-                        {serviceInstance.serviceClass.documentationUrl && (
-                          <ExternalLink
-                            href={serviceInstance.serviceClass.documentationUrl}
-                            target="_blank"
-                            data-e2e-id="instance-service-documentation-link"
-                          >
-                            Documentation
-                          </ExternalLink>
-                        )}
-                        {serviceInstance.serviceClass.supportUrl ? ', ' : ''}
-                        {serviceInstance.serviceClass.supportUrl && (
-                          <ExternalLink
-                            href={serviceInstance.serviceClass.supportUrl}
-                            target="_blank"
-                            data-e2e-id="instance-service-support-link"
-                          >
-                            Support
-                          </ExternalLink>
-                        )}
-                      </Element>
-                    </Grid.Unit>
-                  </Grid>
-                )}
+              {instanceClass && instanceClass.documentationUrl ? (
+                <Grid>
+                  <Grid.Unit size={0.2}>
+                    <Element
+                      margin={
+                        serviceInstance.labels &&
+                        serviceInstance.labels.length > 0
+                          ? '11px 0 0 0'
+                          : '16px 0 0 0'
+                      }
+                    >
+                      Documentation
+                    </Element>
+                  </Grid.Unit>
+                  <Grid.Unit size={0.8}>
+                    <Element
+                      margin={
+                        serviceInstance.labels &&
+                        serviceInstance.labels.length > 0
+                          ? '11px 0 0 0'
+                          : '16px 0 0 0'
+                      }
+                    >
+                      <ExternalLink
+                        href={instanceClass.documentationUrl}
+                        target="_blank"
+                        data-e2e-id="instance-service-documentation-link"
+                      >
+                        Link
+                      </ExternalLink>
+                    </Element>
+                  </Grid.Unit>
+                </Grid>
+              ) : null}
+              {instanceClass && instanceClass.supportUrl ? (
+                <Grid>
+                  <Grid.Unit size={0.2}>
+                    <Element>Support</Element>
+                  </Grid.Unit>
+                  <Grid.Unit size={0.8}>
+                    <Element>
+                      <ExternalLink
+                        href={instanceClass.supportUrl}
+                        target="_blank"
+                        data-e2e-id="instance-service-support-link"
+                      >
+                        Link
+                      </ExternalLink>
+                    </Element>
+                  </Grid.Unit>
+                </Grid>
+              ) : null}
             </ContentDescription>
           </StretchedContentWrapper>
         </CenterSideWrapper>

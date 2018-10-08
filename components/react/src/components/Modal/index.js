@@ -135,7 +135,7 @@ class Modal extends React.Component {
             style={reactModalCustomModalStyles}
           >
             <ModalHeader>
-              {title}
+              <div>{title}</div>
               <ModalCloseButton onClick={this.handleCloseModal}>
                 <Icon icon={'\ue03e'} />
               </ModalCloseButton>

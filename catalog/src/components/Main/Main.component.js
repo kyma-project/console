@@ -22,11 +22,19 @@ const MainPage = ({
       <MainWrapper>
         {!serviceClasses.loading && (
           <ServiceClassList
-            serviceClasses={serviceClasses.serviceClasses}
+            serviceClasses={
+              !serviceClasses.error
+                ? [
+                    ...serviceClasses.clusterServiceClasses,
+                    ...serviceClasses.serviceClasses,
+                  ]
+                : []
+            }
             filterServiceClasses={filterClasses}
             setServiceClassesFilter={filterClassesAndSetActiveFilters}
             history={history}
             searchFn={searchFn}
+            errorMessage={serviceClasses.error && serviceClasses.error.message}
           />
         )}
       </MainWrapper>

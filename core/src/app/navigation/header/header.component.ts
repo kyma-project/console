@@ -15,6 +15,10 @@ import { LoginService } from '../../auth/login.service';
 import { AppConfig } from '../../app.config';
 import { Subscription } from 'rxjs';
 import NavigationUtils from '../services/navigation-utils';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
+
+const FALLBACK_LOGO_URL = 'assets/logo.svg';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +36,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private routerSub: Subscription;
   public leftNavCollapsed = false;
   public loggedIn = false;
+  public appLogoUrl: SafeResourceUrl;
+  public appTitle = AppConfig.headerTitle;
 
   constructor(
     @Inject(NavVisibilityService) navVisibilityService: NavVisibilityService,
@@ -39,8 +45,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private currentEnvironmentService: CurrentEnvironmentService,
     private oauthService: OAuthService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) private document: any
   ) {
+    this.appLogoUrl = AppConfig.headerLogoUrl && AppConfig.headerLogoUrl.length > 0 ?
+      (AppConfig.headerLogoUrl.startsWith('data:') ?
+        sanitizer.bypassSecurityTrustResourceUrl(AppConfig.headerLogoUrl)
+        : AppConfig.headerLogoUrl)
+      : FALLBACK_LOGO_URL;
+
+    document.title = AppConfig.headerTitle || 'Kyma';
+
+    if(AppConfig.faviconUrl) {
+      const faviconEl = document.querySelector('head [rel=icon]');
+      document.head.removeChild(faviconEl);
+      faviconEl.setAttribute('href', encodeURIComponent(AppConfig.faviconUrl));
+      document.head.appendChild(faviconEl);
+    }
+
     this.navVisibilityService = navVisibilityService;
 
     this.currentEnvironmentSubscription = this.currentEnvironmentService

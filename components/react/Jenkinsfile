@@ -13,6 +13,7 @@ GIT_REVISION=${params.GIT_REVISION}
 GIT_BRANCH=${params.GIT_BRANCH}
 APP_VERSION=${params.APP_VERSION}
 APP_FOLDER=${env.APP_FOLDER}
+REACT_COMPONENTS_VERSION=${params.REACT_COMPONENTS_VERSION}
 ********************************
 """
 
@@ -49,13 +50,13 @@ podTemplate(label: label) {
                             execute("make test")
                         }
 
-                        if (isMaster) {
-                            stage("IP scan $application (WhiteSource)") {
-                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                                    execute("make scan", ["API_KEY=$apikey"])
-                                }
-                            }
-                        }
+                        // if (isMaster) {
+                        //     stage("IP scan $application (WhiteSource)") {
+                        //         withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
+                        //             execute("make scan", ["API_KEY=$apikey"])
+                        //         }
+                        //     }
+                        // }
 
                         // if (isMaster) {
                         //     stage("security scan $application (Checkmarx)"){
@@ -67,6 +68,29 @@ podTemplate(label: label) {
                             execute('make build')
                         }
 
+                        if (isMaster || params.REACT_COMPONENTS_VERSION) {
+                            stage("publish new version of $application") {
+                                withCredentials([string(credentialsId: 'npmrc-kyma-bot', variable: 'npmrctoken')]) {
+                                    execute("../../scripts/publish-react-components.sh -t $npmrctoken -v ${params.REACT_COMPONENTS_VERSION}")
+                                }
+                            }
+
+                            stage("push updated packages to master") {
+                                withCredentials([sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')]) {
+                                    sh "./scripts/push-react-components.sh -s $sshfile --overwrite-git-config"
+                                }
+                            }
+
+                            stage("prepare gh-page of $application") {
+                                execute('npm run styleguide:build')
+                            }
+
+                            stage("publish gh-page of $application") {
+                                withCredentials([sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')]) {
+                                    sh "./scripts/publish-gh-page.sh -s $sshfile --overwrite-git-config"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -81,7 +105,7 @@ podTemplate(label: label) {
 
 def execute(command, envs = []) {
     def repositoryName = 'console'
-    def buildpack = 'node-buildpack:0.0.8'
+    def buildpack = 'node-buildpack:0.0.9'
     def envText = ''
     for (it in envs) {
         envText = "$envText --env $it"

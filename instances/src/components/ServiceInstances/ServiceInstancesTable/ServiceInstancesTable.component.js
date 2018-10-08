@@ -14,7 +14,7 @@ import {
   LinkButton,
   Link,
   ServiceClassButton,
-  AddServiceRedirectButton,
+  AddServiceInstanceRedirectButton,
   ServicePlanButton,
   JSONCode,
 } from './styled';
@@ -54,6 +54,12 @@ function ServiceInstancesTable({
       .navigate('service-catalog');
   };
 
+  const goToServiceClassDetails = name => {
+    LuigiClient.linkManager()
+      .fromContext('environment')
+      .navigate(`service-catalog/details/${name}`);
+  };
+
   const goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
       .fromContext('environment')
@@ -68,10 +74,10 @@ function ServiceInstancesTable({
     </div>
   );
 
-  const addServiceRedirectButton = (
-    <AddServiceRedirectButton onClick={goToServiceCatalog}>
-      + Add Service
-    </AddServiceRedirectButton>
+  const addServiceInstanceRedirectButton = (
+    <AddServiceInstanceRedirectButton onClick={goToServiceCatalog}>
+      + Add Instance
+    </AddServiceInstanceRedirectButton>
   );
 
   const table = {
@@ -94,34 +100,45 @@ function ServiceInstancesTable({
       {
         name: 'Service Class',
         size: 0.2,
-        accesor: el => (
-          <ServiceClassButton>
-            {el.serviceClass ? getResourceDisplayName(el.serviceClass) : '-'}
-          </ServiceClassButton>
-        ),
+        accesor: el => {
+          const elClass = el.clusterServiceClass || el.serviceClass;
+          return elClass.name ? (
+            <ServiceClassButton
+              onClick={() => goToServiceClassDetails(elClass.name)}
+            >
+              {getResourceDisplayName(elClass)}
+            </ServiceClassButton>
+          ) : (
+            '-'
+          );
+        },
       },
       {
         name: 'Plan',
         size: 0.2,
         accesor: el => {
-          if (Object.keys(el.servicePlanSpec).length === 0) {
-            return getResourceDisplayName(el.servicePlan);
+          const plan = el.clusterServicePlan || el.servicePlan;
+          if (
+            el.planSpec &&
+            el.planSpec !== null &&
+            typeof el.planSpec === 'object' &&
+            Object.keys(el.planSpec).length
+          ) {
+            return (
+              <InformationModal
+                title="Instances Parameters"
+                modalOpeningComponent={
+                  <ServicePlanButton>
+                    {getResourceDisplayName(plan)}
+                  </ServicePlanButton>
+                }
+                content={
+                  <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
+                }
+              />
+            );
           }
-          return (
-            <InformationModal
-              title="Instances Parameters"
-              modalOpeningComponent={
-                <ServicePlanButton>
-                  {getResourceDisplayName(el.servicePlan)}
-                </ServicePlanButton>
-              }
-              content={
-                <JSONCode>
-                  {JSON.stringify(el.servicePlanSpec, null, 2)}
-                </JSONCode>
-              }
-            />
-          );
+          return getResourceDisplayName(plan);
         },
       },
       {
@@ -179,7 +196,7 @@ function ServiceInstancesTable({
   return (
     <Table
       title={table.title}
-      addHeaderContent={addServiceRedirectButton}
+      addHeaderContent={addServiceInstanceRedirectButton}
       columns={table.columns}
       data={table.data}
       loading={loading}

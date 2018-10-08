@@ -58,16 +58,16 @@ podTemplate(label: label) {
                         }
 
                         stage("test $application") {
-                            execute("make test")
+                            execute("npm run test:single")
                         }
 
-                        if (isMaster) {
-                            stage("IP scan $application (WhiteSource)") {
-                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                                    execute("make scan", ["API_KEY=$apikey"])
-                                }
-                            }
-                        }
+                        // if (isMaster) {
+                        //     stage("IP scan $application (WhiteSource)") {
+                        //         withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
+                        //             execute("make scan", ["API_KEY=$apikey"])
+                        //         }
+                        //     }
+                        // }
 
                         // if (isMaster) {
                         //     stage("security scan $application (Checkmarx)"){

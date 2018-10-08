@@ -18,6 +18,8 @@ class ServiceInstances extends React.Component {
       newProps.serviceInstances.serviceInstances.length > 0 &&
       typeof newProps.filterItems === 'function' &&
       !newProps.serviceInstances.serviceInstances.error &&
+      newProps.filteredItems &&
+      newProps.filteredItems.filteredItems &&
       !newProps.filteredItems.filteredItems.error
     ) {
       newProps.filterItems();

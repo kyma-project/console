@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Text, Toolbar } from '@kyma-project/react-components';
+import { Toolbar } from '@kyma-project/react-components';
 import { sortByOrder, filterWithoutInternal } from '../../commons/helpers';
-import Highlight from 'react-highlight';
+import Highlight from 'react-highlight/lib/optimized.js';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -42,6 +42,14 @@ const Anchor = styled.a`
   visibility: hidden;
 `;
 
+const TextWrapper = styled.div`
+  font-size: 16px;
+  font-weight: normal;
+  color: #515559;
+  line-height: 1.57;
+  margin: 0;
+`;
+
 function ContentWrapper(props) {
   let content = null,
     docs = null;
@@ -71,25 +79,30 @@ function ContentWrapper(props) {
 
           {docs &&
             docs.map((item, i) => {
-              const hash = `${removeSpaces(item.type)}-${removeSpaces(
-                item.title,
-              )}`;
+              const type = item.type ? item.type : item.title;
+              const hash = `${removeSpaces(type)}-${removeSpaces(item.title)}`;
               let isFirtsOfType = false;
-              const currentTypeHash = `${removeSpaces(
-                item.type,
-              )}-${removeSpaces(item.type)}`;
+              const currentTypeHash = `${removeSpaces(type)}-${removeSpaces(
+                type,
+              )}`;
 
               isFirtsOfType = lastTypeHash !== currentTypeHash;
               lastTypeHash = currentTypeHash;
 
               return (
                 <Wrapper key={i}>
-                  {isFirtsOfType && <Anchor id={currentTypeHash} />}
+                  {isFirtsOfType &&
+                    currentTypeHash !== hash && <Anchor id={currentTypeHash} />}
                   <ContentHeader id={hash}>{item.title}</ContentHeader>
                   <ContentDescription>
-                    <Text>
-                      <Highlight innerHTML={true}>{item.source}</Highlight>
-                    </Text>
+                    <TextWrapper>
+                      <Highlight
+                        languages={['javascript', 'go']}
+                        innerHTML={true}
+                      >
+                        {item.source}
+                      </Highlight>
+                    </TextWrapper>
                   </ContentDescription>
                 </Wrapper>
               );

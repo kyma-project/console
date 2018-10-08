@@ -2,13 +2,15 @@ import config from '../config';
 import kymaConsole from '../commands/console';
 import common from '../commands/common';
 import logOnEvents from '../utils/logging';
+import { describeIf } from '../utils/skip';
+import dex from '../utils/dex';
 
 const context = require('../utils/testContext');
 let page, browser;
 let dexReady = false;
 let token = '';
 
-describe('Console basic tests', () => {
+describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
     const data = await common.beforeAll(dexReady);
@@ -30,7 +32,7 @@ describe('Console basic tests', () => {
   });
 
   test('Check if envs exist', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(dexReady);
     const dropdownButton = '.tn-dropdown__control';
     const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
     await page.reload({ waitUntil: 'networkidle0' });
@@ -43,7 +45,7 @@ describe('Console basic tests', () => {
   });
 
   test('Create env', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(dexReady);
     const dropdownButton = '.tn-dropdown__control';
     const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
     const createEnvBtn = '.open-create-env-modal';
@@ -75,7 +77,7 @@ describe('Console basic tests', () => {
   });
 
   test('Delete env', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(dexReady);
     //checking list of environments before delete
     const dropdownButton = '.tn-dropdown__control';
     const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';

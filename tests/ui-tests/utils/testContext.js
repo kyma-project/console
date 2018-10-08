@@ -1,6 +1,8 @@
 import puppeteer from 'puppeteer';
 import config from '../config';
 import testIfWebResourceAvailable from '../utils/testIfWebResourceAvailable';
+import address from './address';
+
 const context = (function() {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
   jasmine.stopSpecOnExpectationFailure = true;
@@ -11,9 +13,7 @@ const context = (function() {
 
   return {
     isDexReady: async function() {
-      const url = `https://dex.${
-        config.domain
-      }/.well-known/openid-configuration`;
+      const url = address.dex.getOpenID();
       try {
         let isReady = await testIfWebResourceAvailable(url);
         if (!isReady) {

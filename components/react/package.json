@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/react-components",
-  "version": "0.0.21",
+  "version": "0.0.28",
   "main": "lib/index.js",
   "private": false,
   "license": "Apache-2.0",
@@ -9,8 +9,8 @@
   },
   "scripts": {
     "start": "npm run styleguide",
-    "build": "webpack",
-    "build:watch": "webpack -w",
+    "build": "webpack --config webpack.config.prod.js",
+    "build:watch": "webpack -w --config webpack.config.prod.js",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "test": "jest src/**; exit 0",

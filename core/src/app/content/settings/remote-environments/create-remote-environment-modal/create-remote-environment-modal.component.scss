@@ -1,0 +1,11 @@
+.tn-form__item:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.tn-form__item:last-child {
+  margin-right: 20px;
+}
+
+.tn-form__control::placeholder {
+  font-style: italic;
+}

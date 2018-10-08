@@ -20,7 +20,7 @@ class ServiceInstanceDetails extends React.Component {
     const instance =
       serviceInstance.serviceInstance && serviceInstance.serviceInstance;
     const serviceClass =
-      instance && instance.serviceClass && instance.serviceClass;
+      instance && (instance.serviceClass || instance.clusterServiceClass);
 
     if (serviceInstance.loading) {
       return (
@@ -52,13 +52,7 @@ class ServiceInstanceDetails extends React.Component {
             serviceInstance={instance}
             serviceInstanceRefetch={serviceInstance.refetch}
           />
-          {serviceClass ? (
-            serviceClass.content ||
-            serviceClass.apiSpec ||
-            serviceClass.asyncApiSpec ? (
-              <ServiceInstanceTabs serviceClass={serviceClass} />
-            ) : null
-          ) : null}
+          {serviceClass && <ServiceInstanceTabs serviceClass={serviceClass} />}
         </ServiceInstanceWrapper>
       </ThemeWrapper>
     );
