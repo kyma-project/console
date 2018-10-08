@@ -42,6 +42,7 @@ const config = {
   orgName: 'My Organization',
   headerTitle: '',
   headerLogoUrl: '',
+  faviconUrl: 'favicon.ico',
   scope:
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
   serviceCatalogModuleUrl: `https://catalog.${domain}`,

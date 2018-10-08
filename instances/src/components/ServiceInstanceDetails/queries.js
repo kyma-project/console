@@ -1,5 +1,25 @@
 import gql from 'graphql-tag';
 
+const serviceClassQGL = `
+  name
+  displayName
+  externalName
+  description
+  documentationUrl
+  supportUrl
+  content
+  asyncApiSpec
+  apiSpec
+`;
+
+const servicePlanQGL = `
+  name
+  displayName
+  externalName
+  description
+  instanceCreateParameterSchema
+`;
+
 export const SERVICE_INSTANCE_QUERY = gql`
   query ServiceInstance($environment: String!, $name: String!) {
     serviceInstance(environment: $environment, name: $name) {
@@ -12,44 +32,20 @@ export const SERVICE_INSTANCE_QUERY = gql`
         message
       }
       serviceClass {
-        name
+        ${serviceClassQGL}
         environment
-        displayName
-        externalName
-        description
-        documentationUrl
-        supportUrl
-        content
-        asyncApiSpec
-        apiSpec
       }
       clusterServiceClass {
-        name
-        displayName
-        externalName
-        description
-        documentationUrl
-        supportUrl
-        content
-        asyncApiSpec
-        apiSpec
+        ${serviceClassQGL}
       }
       servicePlan {
-        name
+        ${servicePlanQGL}
         environment
-        displayName
-        externalName
         relatedServiceClassName
-        description
-        instanceCreateParameterSchema
       }
       clusterServicePlan {
-        name
-        displayName
-        externalName
+        ${servicePlanQGL}
         relatedClusterServiceClassName
-        description
-        instanceCreateParameterSchema
       }
       serviceBindings {
         serviceBindings {

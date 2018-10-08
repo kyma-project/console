@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@kyma-project/react-components';
+import { Button, Spinner } from '@kyma-project/react-components';
 
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from './ServiceClassInfo/ServiceClassInfo.component';
@@ -13,27 +13,27 @@ import {
   ServiceClassDetailsWrapper,
   LeftSideWrapper,
   CenterSideWrapper,
+  EmptyList,
 } from './styled';
 
 import { getResourceDisplayName, getDescription } from '../../commons/helpers';
 
 class ServiceClassDetails extends React.Component {
   static propTypes = {
-    clusterServiceClass: PropTypes.object.isRequired,
+    serviceClass: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     createServiceInstance: PropTypes.func.isRequired,
   };
 
   render() {
-    const { clusterServiceClass, history, createServiceInstance } = this.props;
+    const { history, createServiceInstance } = this.props;
+    const serviceClass =
+      this.props.serviceClass.clusterServiceClass ||
+      this.props.serviceClass.serviceClass;
 
-    const clusterServiceClassDisplayName = getResourceDisplayName(
-      clusterServiceClass.clusterServiceClass,
-    );
+    const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
-    const clusterServiceClassDescription = getDescription(
-      clusterServiceClass.clusterServiceClass,
-    );
+    const serviceClassDescription = getDescription(serviceClass);
 
     const modalOpeningComponent = (
       <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
@@ -41,9 +41,22 @@ class ServiceClassDetails extends React.Component {
       </Button>
     );
 
+    if (this.props.serviceClass.loading) {
+      return (
+        <EmptyList>
+          <Spinner size="40px" color="#32363a" />
+        </EmptyList>
+      );
+    }
+    if (!this.props.serviceClass.loading && !serviceClass) {
+      return (
+        <EmptyList>Service Class doesn't exist in this environment</EmptyList>
+      );
+    }
+
     return (
       <div>
-        {clusterServiceClass.clusterServiceClass && (
+        {serviceClass && (
           <div>
             <div> {this.arrayOfJsx} </div>
             {this.renObjData}
@@ -51,10 +64,10 @@ class ServiceClassDetails extends React.Component {
               arrayOfJsx={this.arrayOfJsx}
               renObjData={this.renObjData}
               history={history}
-              clusterServiceClassDisplayName={clusterServiceClassDisplayName}
+              serviceClassDisplayName={serviceClassDisplayName}
             >
               <CreateInstanceModal
-                clusterServiceClass={clusterServiceClass}
+                serviceClass={serviceClass}
                 modalOpeningComponent={modalOpeningComponent}
                 createServiceInstance={createServiceInstance}
               />
@@ -63,32 +76,25 @@ class ServiceClassDetails extends React.Component {
             <ServiceClassDetailsWrapper phoneRows>
               <LeftSideWrapper>
                 <ServiceClassInfo
-                  clusterServiceClassDisplayName={
-                    clusterServiceClassDisplayName
-                  }
-                  providerDisplayName={
-                    clusterServiceClass.clusterServiceClass.providerDisplayName
-                  }
-                  creationTimestamp={
-                    clusterServiceClass.clusterServiceClass.creationTimestamp
-                  }
-                  documentationUrl={
-                    clusterServiceClass.clusterServiceClass.documentationUrl
-                  }
-                  supportUrl={
-                    clusterServiceClass.clusterServiceClass.supportUrl
-                  }
-                  imageUrl={clusterServiceClass.clusterServiceClass.imageUrl}
-                  tags={clusterServiceClass.clusterServiceClass.tags}
+                  serviceClassDisplayName={serviceClassDisplayName}
+                  providerDisplayName={serviceClass.providerDisplayName}
+                  creationTimestamp={serviceClass.creationTimestamp}
+                  documentationUrl={serviceClass.documentationUrl}
+                  supportUrl={serviceClass.supportUrl}
+                  imageUrl={serviceClass.imageUrl}
+                  tags={serviceClass.tags}
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
-                {clusterServiceClassDescription && (
+                {serviceClassDescription && (
                   <ServiceClassDescription
-                    description={clusterServiceClassDescription}
+                    description={serviceClassDescription}
                   />
                 )}
-                <ServiceClassTabs clusterServiceClass={clusterServiceClass} />
+                <ServiceClassTabs
+                  serviceClass={serviceClass}
+                  serviceClassLoading={this.props.serviceClass.loading}
+                />
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>

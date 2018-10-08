@@ -14,7 +14,7 @@ import {
   LinkButton,
   Link,
   ServiceClassButton,
-  AddServiceRedirectButton,
+  AddServiceInstanceRedirectButton,
   ServicePlanButton,
   JSONCode,
 } from './styled';
@@ -74,10 +74,10 @@ function ServiceInstancesTable({
     </div>
   );
 
-  const addServiceRedirectButton = (
-    <AddServiceRedirectButton onClick={goToServiceCatalog}>
-      + Add Service
-    </AddServiceRedirectButton>
+  const addServiceInstanceRedirectButton = (
+    <AddServiceInstanceRedirectButton onClick={goToServiceCatalog}>
+      + Add Instance
+    </AddServiceInstanceRedirectButton>
   );
 
   const table = {
@@ -196,7 +196,7 @@ function ServiceInstancesTable({
   return (
     <Table
       title={table.title}
-      addHeaderContent={addServiceRedirectButton}
+      addHeaderContent={addServiceInstanceRedirectButton}
       columns={table.columns}
       data={table.data}
       loading={loading}

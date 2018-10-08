@@ -1,5 +1,5 @@
 const defaults = {
-  clusterServiceClass: {
+  serviceClass: {
     __typename: 'ServiceClass',
   },
 };

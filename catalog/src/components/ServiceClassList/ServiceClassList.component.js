@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  NotificationMessage,
   Paragraph,
   Search,
   Spinner,
@@ -24,16 +25,17 @@ class ServiceClassList extends React.Component {
     activeClassFilters: PropTypes.object.isRequired,
     classList: PropTypes.object.isRequired,
     classFilters: PropTypes.object.isRequired,
-    clusterServiceClasses: PropTypes.array.isRequired,
+    serviceClasses: PropTypes.array.isRequired,
     history: PropTypes.object.isRequired,
     filterServiceClasses: PropTypes.func.isRequired,
     setServiceClassesFilter: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string,
   };
 
   componentWillReceiveProps(newProps) {
     if (
-      newProps.clusterServiceClasses &&
-      newProps.clusterServiceClasses.length > 0 &&
+      newProps.serviceClasses &&
+      newProps.serviceClasses.length > 0 &&
       typeof newProps.filterServiceClasses === 'function'
     ) {
       newProps.filterServiceClasses();
@@ -50,6 +52,7 @@ class ServiceClassList extends React.Component {
       history,
       searchFn,
       filterTagsAndSetActiveFilters,
+      errorMessage,
     } = this.props;
 
     const filterFn = e =>
@@ -70,6 +73,18 @@ class ServiceClassList extends React.Component {
     items = items.filter(e => e.displayName || e.externalName || e.name);
 
     const renderCards = () => {
+      if (errorMessage) {
+        return (
+          <EmptyServiceListMessageWrapper>
+            <NotificationMessage
+              type="error"
+              title="Error"
+              message={errorMessage}
+            />
+          </EmptyServiceListMessageWrapper>
+        );
+      }
+
       if (items) {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
@@ -102,9 +117,10 @@ class ServiceClassList extends React.Component {
               onChange={searchFn}
             />
           </SearchWrapper>
+
           {!classFilters.loading && (
             <FilterList
-              filters={classFilters.clusterServiceClassFilters}
+              filters={classFilters.serviceClassFilters}
               active={activeFilters}
               activeFiltersCount={activeFiltersCount}
               activeTagsFilters={activeCategoriesFilters}

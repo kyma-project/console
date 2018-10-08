@@ -9,7 +9,7 @@ import { MainWrapper } from './styled';
 
 const MainPage = ({
   history,
-  clusterServiceClasses,
+  serviceClasses,
   filterClasses,
   filterClassesAndSetActiveFilters,
   filterFilters,
@@ -20,13 +20,21 @@ const MainPage = ({
   return (
     <ThemeWrapper>
       <MainWrapper>
-        {!clusterServiceClasses.loading && (
+        {!serviceClasses.loading && (
           <ServiceClassList
-            clusterServiceClasses={clusterServiceClasses.clusterServiceClasses}
+            serviceClasses={
+              !serviceClasses.error
+                ? [
+                    ...serviceClasses.clusterServiceClasses,
+                    ...serviceClasses.serviceClasses,
+                  ]
+                : []
+            }
             filterServiceClasses={filterClasses}
             setServiceClassesFilter={filterClassesAndSetActiveFilters}
             history={history}
             searchFn={searchFn}
+            errorMessage={serviceClasses.error && serviceClasses.error.message}
           />
         )}
       </MainWrapper>
@@ -36,7 +44,7 @@ const MainPage = ({
 
 MainPage.propTypes = {
   history: PropTypes.object.isRequired,
-  clusterServiceClasses: PropTypes.object.isRequired,
+  serviceClasses: PropTypes.object.isRequired,
   filterClasses: PropTypes.func.isRequired,
   filterClassesAndSetActiveFilters: PropTypes.func.isRequired,
 };

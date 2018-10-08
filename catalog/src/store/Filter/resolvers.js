@@ -2,21 +2,38 @@ import gql from 'graphql-tag';
 
 export default {
   Query: {
-    clusterServiceClassFilters: (_, args, { cache }) => {
-      const result =
-        cache.readQuery({
-          query: gql`
-            query ServiceClassesFilterData {
-              clusterServiceClasses {
-                name
-                providerDisplayName
-                tags
-              }
-            }
-          `,
-        }) || [];
+    serviceClassFilters: (_, args, { cache }) => {
+      const serviceClassesFilterDataQGL = `
+        name
+        providerDisplayName
+        tags
+      `;
 
-      return populateServiceClassFilters(result.clusterServiceClasses);
+      try {
+        let result = cache.readQuery({
+          query: gql`
+              query serviceClassesFilterData($environment: String!) {
+                clusterServiceClasses {
+                  ${serviceClassesFilterDataQGL}
+                }
+                serviceClasses(environment: $environment) {
+                  ${serviceClassesFilterDataQGL}
+                }
+              }
+            `,
+          variables: {
+            environment: args.environment,
+          },
+        });
+        result =
+          result && Object.keys(result).length
+            ? [...result.clusterServiceClasses, ...result.serviceClasses]
+            : [];
+
+        return populateServiceClassFilters(result);
+      } catch (error) {
+        return;
+      }
     },
   },
   Mutation: {
@@ -119,22 +136,35 @@ export default {
         `,
       }).activeTagsFilters;
 
+      const serviceClassesQGL = `
+        name
+        description
+        displayName
+        externalName
+        imageUrl
+        activated
+        providerDisplayName
+        tags
+      `;
       let classes = cache.readQuery({
         query: gql`
-          query ClusterServiceClasses {
+          query serviceClasses($environment: String!) {
             clusterServiceClasses {
-              name
-              description
-              displayName
-              externalName
-              imageUrl
-              activated
-              providerDisplayName
-              tags
+              ${serviceClassesQGL}
+            }
+            serviceClasses(environment: $environment) {
+              ${serviceClassesQGL}
             }
           }
         `,
-      }).clusterServiceClasses;
+        variables: {
+          environment: args.environment,
+        },
+      });
+      classes =
+        classes && Object.keys(classes).length
+          ? [...classes.clusterServiceClasses, ...classes.serviceClasses]
+          : [];
 
       const filteredClasses = filterServiceClasses(
         classes,
@@ -149,7 +179,7 @@ export default {
 
       cache.writeData({
         data: {
-          clusterServiceClassFilters: classFilters,
+          serviceClassFilters: classFilters,
           filteredServiceClasses: filteredClasses,
         },
       });

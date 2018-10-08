@@ -1,16 +1,23 @@
 import gql from 'graphql-tag';
 
+const serviceClassesQGL = `
+  name
+  description
+  displayName
+  externalName
+  imageUrl
+  activated
+  providerDisplayName
+  tags
+`;
+
 export const SERVICE_CLASSES_QUERY = gql`
-  query clusterServiceClasses {
+  query serviceClasses($environment: String!) {
     clusterServiceClasses {
-      name
-      description
-      displayName
-      externalName
-      imageUrl
-      activated
-      providerDisplayName
-      tags
+      ${serviceClassesQGL}
+    }
+    serviceClasses(environment: $environment) {
+      ${serviceClassesQGL}
     }
   }
 `;

@@ -17,7 +17,7 @@ export const ServiceClassButton = styled.span`
   cursor: pointer;
 `;
 
-export const AddServiceRedirectButton = styled.button`
+export const AddServiceInstanceRedirectButton = styled.button`
   padding: 0;
   background: none;
   border: 0;
