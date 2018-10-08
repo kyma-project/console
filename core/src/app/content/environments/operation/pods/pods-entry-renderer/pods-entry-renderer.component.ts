@@ -3,7 +3,7 @@ import { Pod } from '../../../../../shared/datamodel/k8s/pods';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { StatusLabelComponent } from '../../../../../shared/components/status-label';
+import { StatusLabelComponent } from '../../../../shared/components/status-label.component';
 
 @Component({
   selector: 'app-pods-entry-renderer',

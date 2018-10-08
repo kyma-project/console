@@ -120,6 +120,7 @@ import { LoginErrorComponent } from './content/login-error/login-error.component
 import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote-environments/create-remote-environment-modal/create-remote-environment-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
+import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
 
 @NgModule({
   declarations: [
@@ -208,7 +209,8 @@ import { RequestErrorComponent } from './content/request-error/request-error.com
     LoginErrorComponent,
     CreateRemoteEnvironmentModalComponent,
     LabelsInputComponent,
-    RequestErrorComponent
+    RequestErrorComponent,
+    StatusLabelComponent
   ],
   imports: [
     BrowserModule,
