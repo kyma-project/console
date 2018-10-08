@@ -1,81 +1,83 @@
 <div *ngIf="currentNavModel" class="sf-toolbar sf-toolbar--vertical sf-toolbar--mainnavigation">
-  <a *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item" routerLink="/home/environments" (click)="goToEnvironments()"
-    routerLinkActive="is-active">
-    ← Back to Environment
-  </a>
-  <span *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
-  <a *ngIf='currentNavModel.topEntry' (click)="changeRoute(currentNavModel.topEntry.link)" routerLink="{{currentNavModel.topEntry.link}}"
-    routerLinkActive="is-active" class="sf-toolbar__item">{{ currentNavModel.topEntry.name }}</a>
-  <span *ngIf='currentNavModel.topEntry' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
-  <div class="sf-toolbar__item" *ngIf='currentNavModel.showEnvChooser'>
-    <div class="tn-dropdown sf-dropdown" (clickOutside)="closeDropDown()"  clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-      <button class="tn-dropdown__control" 
-        aria-controls="nNJnB279" 
-        [attr.aria-expanded]="ariaExpanded" 
-        aria-haspopup="true"
-        (click)="toggleDropDown()">
-        <input class="filter-input"
-          type="text" 
-          name="environmentName"
-          placeholder="Choose environment"
-          [(ngModel)]="environmentName"
-          (ngModelChange)="filterEnvs()"
-          (keydown)="openDropDown($event)"
-          (click)="openDropDown($event)">
-      </button>
-      <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaHidden" id="nNJnB279">
-        <li class="tn-dropdown__item" (click)="toggleDropDown(); createmodal.show();">
-          <button _ngcontent-c4="" class="tn-button tn-button--small tn-button--text">+ Create Environment</button>
-        </li>
-        <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">{{ env.label }}</li>
-      </ul>
+  <div class="sf-toolbar__content">
+    <a *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item" routerLink="/home/environments" (click)="goToEnvironments()"
+      routerLinkActive="is-active">
+      ← Back to Environment
+    </a>
+    <span *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
+    <a *ngIf='currentNavModel.topEntry' (click)="changeRoute(currentNavModel.topEntry.link)" routerLink="{{currentNavModel.topEntry.link}}"
+      routerLinkActive="is-active" class="sf-toolbar__item">{{ currentNavModel.topEntry.name }}</a>
+    <span *ngIf='currentNavModel.topEntry' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
+    <div class="sf-toolbar__item" *ngIf='currentNavModel.showEnvChooser'>
+      <div class="tn-dropdown sf-dropdown" (clickOutside)="closeDropDown()"  clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+        <button class="tn-dropdown__control"
+          aria-controls="nNJnB279"
+          [attr.aria-expanded]="ariaExpanded"
+          aria-haspopup="true"
+          (click)="toggleDropDown()">
+          <input class="filter-input"
+            type="text"
+            name="environmentName"
+            placeholder="Choose environment"
+            [(ngModel)]="environmentName"
+            (ngModelChange)="filterEnvs()"
+            (keydown)="openDropDown($event)"
+            (click)="openDropDown($event)">
+        </button>
+        <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaHidden" id="nNJnB279">
+          <li class="tn-dropdown__item" (click)="toggleDropDown(); createmodal.show();">
+            <button _ngcontent-c4="" class="tn-button tn-button--small tn-button--text">+ Create Environment</button>
+          </li>
+          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">{{ env.label }}</li>
+        </ul>
+      </div>
     </div>
-  </div>
-  <div *ngIf="currentEnvironmentId || !currentNavModel.showEnvChooser">
-    <ng-container *ngFor="let group of currentNavModel.groups">
-      <ng-container *ngIf="group.link">
-        <div class="sf-toolbar__group">
-          <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{ group.name }}</a>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="!group.link">
-        <div class="sf-toolbar__item">
-          <div class="sf-toolbar__header">{{ group.name }}</div>
+    <div *ngIf="currentEnvironmentId || !currentNavModel.showEnvChooser">
+      <ng-container *ngFor="let group of currentNavModel.groups">
+        <ng-container *ngIf="group.link">
           <div class="sf-toolbar__group">
-            <ng-container *ngFor="let entry of group.entries">
-              <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
-                style="cursor: pointer">{{ entry.name }}</a>
-              <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
-                <img src="assets/external.svg" />
-              </a>
-            </ng-container>
+            <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{ group.name }}</a>
           </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="!group.link">
+          <div class="sf-toolbar__item">
+            <div class="sf-toolbar__header">{{ group.name }}</div>
+            <div class="sf-toolbar__group">
+              <ng-container *ngFor="let entry of group.entries">
+                <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
+                  style="cursor: pointer">{{ entry.name }}</a>
+                <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
+                  <img src="assets/external.svg" />
+                </a>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
-  </div>
-  <div *ngIf="!currentEnvironmentId && currentNavModel.showEnvChooser">
-    <ng-container *ngFor="let group of externalViewsGroups">
-      <ng-container *ngIf="group.link">
-        <div class="sf-toolbar__group">
-          <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{ group.name }}</a>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="!group.link">
-        <div class="sf-toolbar__item">
-          <div class="sf-toolbar__header">{{ group.name }}</div>
+    </div>
+    <div *ngIf="!currentEnvironmentId && currentNavModel.showEnvChooser">
+      <ng-container *ngFor="let group of externalViewsGroups">
+        <ng-container *ngIf="group.link">
           <div class="sf-toolbar__group">
-            <ng-container *ngFor="let entry of group.entries">
-              <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
-                style="cursor: pointer">{{ entry.name }}</a>
-              <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
-                <img src="assets/external.svg" />
-              </a>
-            </ng-container>
+            <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{ group.name }}</a>
           </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="!group.link">
+          <div class="sf-toolbar__item">
+            <div class="sf-toolbar__header">{{ group.name }}</div>
+            <div class="sf-toolbar__group">
+              <ng-container *ngFor="let entry of group.entries">
+                <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
+                  style="cursor: pointer">{{ entry.name }}</a>
+                <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
+                  <img src="assets/external.svg" />
+                </a>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
+    </div>
   </div>
   <div class="sf-toolbar__footer">
     <span class="sf-toolbar__item sf-toolbar__item--seperator"></span>
