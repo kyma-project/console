@@ -20,8 +20,9 @@
           <li class="tn-dropdown__item" (click)="toggleDropDown(); createmodal.show();">
             <button _ngcontent-c4="" class="tn-button tn-button--small tn-button--text">+ Create Environment</button>
           </li>
-          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">{{
-            env.label }}</li>
+          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">
+            {{ env.label }}
+          </li>
         </ul>
       </div>
     </div>
@@ -29,8 +30,9 @@
       <ng-container *ngFor="let group of currentNavModel.groups">
         <ng-container *ngIf="group.link">
           <div class="sf-toolbar__group">
-            <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{
-              group.name }}</a>
+            <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">
+              {{ group.name }}
+            </a>
           </div>
         </ng-container>
         <ng-container *ngIf="!group.link">
@@ -53,8 +55,9 @@
       <ng-container *ngFor="let group of externalViewsGroups">
         <ng-container *ngIf="group.link">
           <div class="sf-toolbar__group">
-            <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">{{
-              group.name }}</a>
+            <a routerLink="{{group.link}}" (click)="changeRoute(group.link)" routerLinkActive="is-active" class="sf-toolbar__item">
+              {{ group.name }}
+            </a>
           </div>
         </ng-container>
         <ng-container *ngIf="!group.link">
