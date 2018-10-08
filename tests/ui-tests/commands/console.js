@@ -24,7 +24,7 @@ async function getFrame(page) {
 
 function clearData(token, env) {
   const req = {
-    url: address.getNamespaceAPI(env),
+    url: address.api.getNamespace(env),
     method: 'DELETE',
     headers: { Authorization: token },
     // TODO: Analyze problem with UNABLE_TO_VERIFY_LEAF_SIGNATURE

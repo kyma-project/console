@@ -13,7 +13,7 @@ const context = (function() {
 
   return {
     isDexReady: async function() {
-      const url = address.getOpenID();
+      const url = address.dex.getOpenID();
       try {
         let isReady = await testIfWebResourceAvailable(url);
         if (!isReady) {

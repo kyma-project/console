@@ -1,59 +1,55 @@
 import config from '../config';
 
-// Console
+class Console {
+  getConsole() {
+    return config.localdev
+      ? config.devConsoleUrl
+      : 'https://console.' + config.domain;
+  }
 
-function getConsole() {
-  return config.localdev
-    ? config.devConsoleUrl
-    : 'https://console.' + config.domain;
+  getEnvironment(environment) {
+    return this.getConsole() + '/home/environments/' + environment;
+  }
+
+  getCatalog(environment) {
+    return this.getEnvironment(environment) + '/service-catalog';
+  }
+
+  getInstancesList(environment) {
+    return this.getEnvironment(environment) + '/instances';
+  }
+
+  getInstance(environment, instanceName) {
+    return this.getInstancesList(environment) + '/details/' + instanceName;
+  }
+
+  getDocs() {
+    return this.getConsole() + '/home/docs';
+  }
 }
 
-function getEnvironment(environment) {
-  return getConsole() + '/home/environments/' + environment;
+class API {
+  getAPI() {
+    return 'https://apiserver.' + config.domain;
+  }
+
+  getNamespace(environment) {
+    return this.getAPI() + '/api/v1/namespaces/' + environment;
+  }
 }
 
-function getCatalog(environment) {
-  return getEnvironment(environment) + '/service-catalog';
-}
+class Dex {
+  getDex() {
+    return 'https://dex.' + config.domain;
+  }
 
-function getInstancesList(environment) {
-  return getEnvironment(environment) + '/instances';
-}
-
-function getInstance(environment, instanceName) {
-  return getInstancesList(environment) + '/details/' + instanceName;
-}
-
-function getDocs() {
-  return getConsole() + '/home/docs';
-}
-
-// API
-
-function getAPI() {
-  return 'https://apiserver.' + config.domain;
-}
-
-function getNamespaceAPI(environment) {
-  return getAPI() + '/api/v1/namespaces/' + environment;
-}
-
-// Dex
-
-function getDex() {
-  return 'https://dex.' + config.domain;
-}
-
-function getOpenID() {
-  return getDex() + '/.well-known/openid-configuration';
+  getOpenID() {
+    return this.getDex() + '/.well-known/openid-configuration';
+  }
 }
 
 module.exports = {
-  getConsole,
-  getCatalog,
-  getInstancesList,
-  getInstance,
-  getDocs,
-  getNamespaceAPI,
-  getOpenID
+  console: new Console(),
+  api: new API(),
+  dex: new Dex()
 };

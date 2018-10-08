@@ -133,7 +133,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific service class / page
-    const catalogUrl = address.getCatalog(config.catalogTestEnv);
+    const catalogUrl = address.console.getCatalog(config.catalogTestEnv);
     const instanceTitle = serviceClassConfig.instanceTitle;
     const instanceTitle2 = serviceClassConfig.instanceTitle2;
     const instanceLabel = serviceClassConfig.instanceLabel;
@@ -165,14 +165,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
-    const instancesLinkText = 'Instances';
-    const instancesUrl = address.getInstancesList(config.catalogTestEnv);
+    const instancesUrl = address.console.getInstancesList(
+      config.catalogTestEnv
+    );
     // consts
-    const navItem = 'a.sf-toolbar__item';
     const instancesHeaderSelector = catalog.prepareSelector('toolbar-headline');
     const instancesExpectedHeader = 'Service Instances';
-    const serviceButtonSelector = catalog.prepareSelector('card-button');
-
     const searchSelector = catalog.prepareSelector('search');
     const toggleSearchSelector = catalog.prepareSelector('toggle-search');
     const searchBySth = 'lololo';

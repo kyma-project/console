@@ -33,7 +33,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific page
-    const docsUrl = address.getDocs();
+    const docsUrl = address.console.getDocs();
 
     // consts
     const docsHeaderSelector = catalog.prepareSelector('toolbar-headline');

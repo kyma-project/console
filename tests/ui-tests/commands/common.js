@@ -12,7 +12,7 @@ function validateTestEnvironment(isTestEnvironmentReady) {
 
 async function beforeAll(isTestEnvironmentReady) {
   validateTestEnvironment(isTestEnvironmentReady);
-  const consoleUrl = address.getConsole();
+  const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
   let page = await browser.newPage();
   const width = config.viewportWidth;
