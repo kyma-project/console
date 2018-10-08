@@ -1,15 +1,9 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="col-2 col-lg-3">
-    <div class="row">
-      <div class="col-1 sf-list__indicator">
-        <!-- <span class="sf-indicator" [ngClass]="getClass(entry)" title="{{entry.podStatus.podPhase}}"></span> -->
-        <app-status-label></app-status-label>
-      </div>
-      <div class="sf-list__body--primary col-11">{{ entry.objectMeta.name }}</div>
-    </div>
+  <div class="col-1 col-lg-3">
+       <div class="sf-list__body--primary">{{ entry.objectMeta.name }}</div>
   </div>
   <div class="col-1">{{ entry.nodeName }}</div>
-  <div class="col-2">{{ getStatus(entry) }}</div>
+
   <div class="col-1">{{ entry.restartCount }}</div>
   <div class="col-2">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
   <div class="col-2 sf-list__label-column">
@@ -17,6 +11,11 @@
       {{ label }}
     </span>
   </div>
+  <div class="col-2">
+        <app-status-label description="You may put some description here" [statusType]="getStatusType(entry)">
+          {{getStatus(entry)}}
+        </app-status-label>
+      </div>
   <div class="col-1 actions-icon">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </div>

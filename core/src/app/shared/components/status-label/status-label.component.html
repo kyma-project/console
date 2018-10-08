@@ -1,1 +1,4 @@
-<span class="status-label">xddd</span>
+<span class="status-label {{statusClass}}" [ngClass]="{'status-label__with-description': description}">
+    <ng-content ></ng-content>
+    <span *ngIf="description" class='tooltip'>{{description}}</span>
+</span>

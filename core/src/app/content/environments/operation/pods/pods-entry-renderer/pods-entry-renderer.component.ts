@@ -92,13 +92,13 @@ export class PodsEntryRendererComponent
     );
   }
 
-  getClass(entry) {
+  getStatusType(entry) {
     if (this.isPending(entry)) {
-      return '';
+      return 'warning';
     } else if (this.isSucceeded(entry)) {
-      return 'sf-indicator--success';
+      return 'ok';
     } else {
-      return 'sf-indicator--warning';
+      return 'error';
     }
   }
 }
