@@ -44,11 +44,11 @@
             <div class="sf-toolbar__header">{{ group.name }}</div>
             <div class="sf-toolbar__group">
               <ng-container *ngFor="let entry of group.entries">
-                <span *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
-                  style="cursor: pointer">{{ entry.name }}</span>
-                <span *ngIf="entry.external" class="sf-toolbar__item" target="_blank">{{ entry.name }}
+                <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}" routerLinkActive="is-active" class="sf-toolbar__item"
+                  style="cursor: pointer">{{ entry.name }}</a>
+                <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
                   <img src="assets/external.svg" />
-                </span>
+                </a>
               </ng-container>
             </div>
           </div>
