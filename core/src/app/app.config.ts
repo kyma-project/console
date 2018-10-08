@@ -72,8 +72,8 @@ if (
 
 // TEMPORARY ;) WORKAROUND, TO BE DELETED ONCE THE GRAPHQL FACADE IS IN PLACE
 // YSF-1330
-//if (clusterConfig && window.location.hostname !== 'console.kyma.local') {
-//  config.k8sDashboardApiUrl = `${k8sServerUrl}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/api/v1/`;
-//}
+if (clusterConfig && window.location.hostname !== 'console.kyma.local') {
+  config.k8sDashboardApiUrl = `${k8sServerUrl}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/api/v1/`;
+}
 
 export const AppConfig = { ...config };

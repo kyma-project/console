@@ -26,5 +26,3 @@ spec:
       id: api-gateway
     - displayName: Authorization and Authentication
       id: authorization-and-authentication
-    - displayName: Logging
-      id: logging
