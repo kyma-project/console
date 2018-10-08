@@ -1,3 +1,8 @@
+.ReactModal__Overlay {
+  background-color: rgba(74, 80, 92, 0.3) !important;
+  z-index: 200;
+}
+
 @font-face {
   font-family: 'SAP-icons';
   src: url('/fonts/SAP-icons.woff2') format('woff2'),
@@ -6,6 +11,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: '72';
   font-style: normal;
@@ -52,7 +58,8 @@ h2 {
 
 a {
   text-decoration: none;
-  font-family: ‘72’;
+  font-family: '72';
+  font-style: normal;
   color: #167ee6;
 }
 

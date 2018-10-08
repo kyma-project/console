@@ -1,5 +1,5 @@
 import { IMetaDataOwner, MetaDataOwner } from './generic/meta-data-owner';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export interface IEnvironment extends IMetaDataOwner {
   disabled?: boolean;

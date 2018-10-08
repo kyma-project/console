@@ -6,7 +6,7 @@ import { CurrentEnvironmentService } from '../../../../services/current-environm
 import { ExposeApiService } from './expose-api.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { IdpPresetsService } from '../../../../../settings/idp-presets/idp-presets.service';
 import { AppConfig } from '../../../../../../app.config';
 import { OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
@@ -19,24 +19,24 @@ describe('ExposeApiComponent', () => {
   let fetchListOfServicesSpy;
 
   const ActivatedRouteMock = {
-    params: Observable.of({ apiName: 'name' })
+    params: of({ apiName: 'name' })
   };
 
   const IdpPresetsMockService = {
     getDefaultIdpPreset: () => {
-      return Observable.of({
+      return of({
         issuer: 'https://someauthissuerurl',
         jwks_uri: 'https://someauthissuerurl/keys'
       });
     },
     getIDPPresets: () => {
-      return Observable.of([]);
+      return of([]);
     }
   };
 
   const ExposeApiServiceMock = {
     getApiDefinition: () => {
-      return Observable.of({
+      return of({
         spec: {
           hostname: 'bla',
           service: {
@@ -105,7 +105,7 @@ describe('ExposeApiComponent', () => {
       fetchApiDefinitionSpy.calls.reset();
       fetchListOfServicesSpy.calls.reset();
       const route = TestBed.get(ActivatedRoute);
-      route.params = Observable.of({
+      route.params = of({
         apiName: 'name',
         name: 'serviceName'
       });
@@ -122,7 +122,7 @@ describe('ExposeApiComponent', () => {
       fetchApiDefinitionSpy.calls.reset();
       fetchListOfServicesSpy.calls.reset();
       const route = TestBed.get(ActivatedRoute);
-      route.params = Observable.of({ name: 'name' });
+      route.params = of({ name: 'name' });
       component.ngOnInit();
       expect(component.serviceName).toEqual('name');
       expect(component.fetchService).toHaveBeenCalledTimes(1);
@@ -136,7 +136,7 @@ describe('ExposeApiComponent', () => {
       fetchApiDefinitionSpy.calls.reset();
       fetchListOfServicesSpy.calls.reset();
       const route = TestBed.get(ActivatedRoute);
-      route.params = Observable.of({ randomParam: '' });
+      route.params = of({ randomParam: '' });
       component.ngOnInit();
       expect(component.fetchListOfServices).toHaveBeenCalledTimes(1);
       expect(component.fetchApiDefinition).not.toHaveBeenCalled();

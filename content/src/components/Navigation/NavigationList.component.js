@@ -89,127 +89,97 @@ const Link = styled.a`
 `;
 
 function SecondarySubLink(props) {
-  const { rootId, type, items, active, activeNav } = props;
+  const { rootId, parentId, type, items, active, activeNav } = props;
   let onClick = clickedItem => {
     props.callbackParent(clickedItem);
   };
   let setActiveNav = clickedItem => {
     props.setActiveNav(clickedItem);
   };
+  const isActiveNav = parentId
+    ? activeNav.id === rootId &&
+      activeNav.hash &&
+      activeNav.hash.indexOf(parentId) !== -1
+    : activeNav.id === rootId;
   return (
-    <Items secondary marginTop show={activeNav.id === rootId}>
+    <Items
+      secondary
+      marginTop
+      show={isActiveNav}
+      data-e2e-id={`navigation-items-${type}-${rootId}`}
+    >
       {items.map((item, index) => {
-        const topicType = item.topicType.replace(/ /g, '-').toLowerCase();
+        let hash, isActive, topicType;
+        if (parentId) {
+          hash = `${parentId}-${item.anchor}`;
+          isActive =
+            active.hash &&
+            active.id === rootId &&
+            active.hash === `${parentId}-${item.anchor}`;
+        } else {
+          topicType = item.topicType
+            ? item.topicType.replace(/ /g, '-').toLowerCase()
+            : item.anchor;
+          hash = `${topicType}-${item.anchor}`;
+          isActive =
+            active.hash && active.id === rootId && active.hash === hash;
+        }
+
+        const hasSubElements = item && item.titles && item.titles.length > 0;
+        const isActiveNavArrow =
+          hasSubElements &&
+          activeNav.id === rootId &&
+          activeNav.hash &&
+          activeNav.hash.indexOf(item.anchor) !== -1;
         return (
           <Item key={`${rootId}-${index}`}>
-            {item &&
-              item.titles &&
-              item.titles.map(element => {
-                const hash = `${topicType}-${element.anchor}`;
-                const isActive =
-                  active.hash && active.id === rootId && active.hash === hash;
-                const hasSubElements =
-                  element && element.titles && element.titles.length > 0;
-
-                const isActiveNavArrow =
-                  hasSubElements &&
-                  activeNav.id === rootId &&
-                  activeNav.hash &&
-                  activeNav.hash.indexOf(element.anchor) !== -1;
-
-                return (
-                  <div key={`${rootId}-${element.anchor}`}>
-                    <LinkWrapper>
-                      {hasSubElements && (
-                        <Arrow
-                          onClick={() => {
-                            setActiveNav({
-                              id: rootId,
-                              type: type,
-                              hash: hash,
-                            });
-                          }}
-                          active={isActive}
-                          activeArrow={isActiveNavArrow}
-                        />
-                      )}
-                      <Link
-                        active={isActive}
-                        noArrow={!hasSubElements}
-                        onClick={() => {
-                          onClick({
-                            id: rootId,
-                            type: type,
-                            hash: hash,
-                          });
-                        }}
-                      >
-                        {element.name}
-                      </Link>
-                    </LinkWrapper>
-                    {hasSubElements && (
-                      <TertiarySubLink
-                        items={element}
-                        type={type}
-                        rootId={rootId}
-                        parentId={element.anchor}
-                        history={props.history}
-                        active={active}
-                        activeNav={activeNav}
-                        callbackParent={props.callbackParent}
-                        topicType={topicType}
-                      />
-                    )}
-                  </div>
-                );
-              })}
+            <LinkWrapper>
+              {hasSubElements && (
+                <Arrow
+                  onClick={() => {
+                    setActiveNav({
+                      id: rootId,
+                      type: type,
+                      hash: hash,
+                    });
+                  }}
+                  active={isActive}
+                  activeArrow={isActiveNavArrow}
+                  data-e2e-id={`navigation-arrow-${type}-${rootId}-${
+                    item.anchor
+                  }`}
+                />
+              )}
+              <Link
+                active={isActive}
+                noArrow={!hasSubElements}
+                onClick={() => {
+                  onClick({
+                    id: rootId,
+                    type: type,
+                    hash: hash,
+                  });
+                }}
+                data-e2e-id={`navigation-link-${type}-${rootId}-${item.anchor}`}
+              >
+                {item.name}
+              </Link>
+            </LinkWrapper>
+            {hasSubElements && (
+              <SecondarySubLink
+                items={item.titles}
+                type={type}
+                rootId={rootId}
+                parentId={item.anchor}
+                history={props.history}
+                active={active}
+                activeNav={activeNav}
+                callbackParent={props.callbackParent}
+              />
+            )}
           </Item>
         );
       })}
-    </Items>
-  );
-}
-
-function TertiarySubLink(props) {
-  const { rootId, parentId, type, items, active, activeNav } = props;
-  let onClick = clickedItem => {
-    props.callbackParent(clickedItem);
-  };
-
-  const isActiveNav =
-    activeNav.id === rootId &&
-    activeNav.hash &&
-    activeNav.hash.indexOf(parentId) !== -1;
-  return (
-    <Items secondary marginTop show={isActiveNav}>
-      {items &&
-        items.titles &&
-        items.titles.map(element => {
-          const isActive =
-            active.hash &&
-            active.id === rootId &&
-            active.hash === `${parentId}-${element.anchor}`;
-
-          return (
-            <Item key={`${rootId}-${parentId}-${element.anchor}`}>
-              <LinkWrapper>
-                <Link
-                  active={isActive}
-                  noArrow
-                  onClick={() => {
-                    onClick({
-                      id: rootId,
-                      type: type,
-                      hash: `${parentId}-${element.anchor}`,
-                    });
-                  }}
-                >
-                  {element.name}
-                </Link>
-              </LinkWrapper>
-            </Item>
-          );
-        })}
     </Items>
   );
 }
@@ -223,7 +193,7 @@ function NavigationList(props) {
   };
   return (
     <div>
-      <NavigationContainer>
+      <NavigationContainer data-e2e-id="navigation-root">
         <Items showAll>
           <Item key={props.items.root.id}>
             <LinkWrapper>
@@ -241,6 +211,7 @@ function NavigationList(props) {
                     !props.active.hash &&
                     props.active.id === props.items.root.id
                   }
+                  data-e2e-id={`navigation-arrow-root-${props.items.root.id}`}
                 />
               )}
               <Link
@@ -254,6 +225,7 @@ function NavigationList(props) {
                     hash: '',
                   });
                 }}
+                data-e2e-id={`navigation-link-root-${props.items.root.id}`}
               >
                 {props.items.root.displayName}
               </Link>
@@ -277,7 +249,7 @@ function NavigationList(props) {
         </Items>
       </NavigationContainer>
       <Separator />
-      <NavigationContainer>
+      <NavigationContainer data-e2e-id="navigation-components">
         <NavigationHeader>Components</NavigationHeader>
         <Items showAll>
           {props.items.components.map(item => {
@@ -302,6 +274,7 @@ function NavigationList(props) {
                         active={
                           !props.active.hash && props.active.id === item.id
                         }
+                        data-e2e-id={`navigation-arrow-components-${item.id}`}
                       />
                     )}
                   <Link
@@ -313,6 +286,7 @@ function NavigationList(props) {
                         hash: '',
                       })
                     }
+                    data-e2e-id={`navigation-link-components-${item.id}`}
                   >
                     {item.displayName}
                   </Link>

@@ -1,24 +1,49 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import * as _ from 'lodash';
+
 import {
   IRemoteEnvironment,
   RemoteEnvironment
 } from '../../../../shared/datamodel/k8s/kyma-api/remote-environment';
-import { List } from '../../../../shared/datamodel/k8s/generic/list';
 import { AppConfig } from '../../../../app.config';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
-import * as _ from 'lodash';
 
 @Injectable()
 export class RemoteEnvironmentsService {
   private url = AppConfig.k8sApiServerUrl_remoteenvs;
 
-  constructor(private graphQLClientService: GraphQLClientService) {}
+  constructor(
+    private graphQLClientService: GraphQLClientService,
+    private httpClient: HttpClient
+  ) {}
+
+  public createRemoteEnvironment({
+    name,
+    labels,
+    description
+  }: {
+    name: string;
+    description: string;
+    labels: {};
+  }): Observable<any> {
+    const data = {
+      metadata: { name },
+      spec: { labels, description },
+      kind: 'RemoteEnvironment',
+      apiVersion: 'applicationconnector.kyma-project.io/v1alpha1'
+    };
+    return this.httpClient.post(this.url, data, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
 
   getRemoteEnvironment(name: string): Observable<any> {
     const query = `query RemoteEnvironment($name: String!) {
         remoteEnvironment(name: $name){
           description
+          labels
           name
           enabledInEnvironments
           status
@@ -27,11 +52,6 @@ export class RemoteEnvironmentsService {
             entries {
               type
             }
-          }
-          source {
-            environment
-            namespace
-            type
           }
         }
       }`;

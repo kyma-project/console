@@ -5,25 +5,22 @@ import { IMetaDataOwner, MetaDataOwner } from './generic/meta-data-owner';
 import { IPodTemplate } from './pod-template';
 
 export interface ISubscription extends IMetaDataOwner {
-    spec: ISubscriptionSpec;
+  spec: ISubscriptionSpec;
 }
 
 export interface ISubscriptionSpec {
-    endpoint: string;
-    source: object;
+  endpoint: string;
+  source_id: string;
 }
 
 export class Subscription extends MetaDataOwner implements ISubscription {
-    spec: ISubscriptionSpec;
-    constructor(input?: ISubscription) {
-        super(input.metadata, undefined, input.kind, input.apiVersion);
-        this.spec = input.spec;
-    }
+  spec: ISubscriptionSpec;
+  constructor(input?: ISubscription) {
+    super(input.metadata, undefined, input.kind, input.apiVersion);
+    this.spec = input.spec;
+  }
 }
 
 export interface ISubscriptionList extends IMetaDataOwner {
-    items: ISubscription[];
+  items: ISubscription[];
 }
-
-
-

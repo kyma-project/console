@@ -35,12 +35,21 @@ import { LogoutComponent } from '../content/logout/logout.component';
 import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets.component';
 import { ResourcesComponent } from '../content/environments/configuration/resources/resources.component';
 import { LoginErrorComponent } from '../content/login-error/login-error.component';
+import { RequestErrorComponent } from '../content/request-error/request-error.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   {
     path: 'logout',
     component: LogoutComponent
+  },
+  {
+    path: 'loginError',
+    component: LoginErrorComponent
+  },
+  {
+    path: 'requestError',
+    component: RequestErrorComponent
   },
   {
     path: 'home',
@@ -108,13 +117,12 @@ const appRoutes: Routes = [
           },
           {
             path: 'service-catalog',
-            component: CatalogContainerComponent,
-            data: { leftNavCollapsed: true }
+            component: CatalogContainerComponent
           },
           {
             path: 'service-catalog/details/:name',
             component: CatalogContainerComponent,
-            data: { path: '/details/:name', leftNavCollapsed: true }
+            data: { path: '/details/:name' }
           },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }
@@ -169,14 +177,10 @@ const appRoutes: Routes = [
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
         ]
       },
+      { path: 'extensions/:id', component: ExternalViewComponent },
       { path: '', pathMatch: 'full', redirectTo: 'environments/workspace' },
       { path: '**', pathMatch: 'full', redirectTo: 'environments/workspace' }
     ]
-  },
-  {
-    path: 'loginError',
-    component: LoginErrorComponent,
-    pathMatch: 'full'
   }
 ];
 

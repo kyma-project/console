@@ -2,7 +2,8 @@ import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ExtAppViewRegistryService } from '../../services/ext-app-view-registry.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { ExtensionsService } from '../../services/extensions.service';
 
 const ELEMENT_ID = 'frame';
 
@@ -19,7 +20,8 @@ export class ExternalAppComponent implements OnChanges, OnDestroy {
   constructor(
     private currentEnvironmentService: CurrentEnvironmentService,
     private oauthService: OAuthService,
-    private extAppViewRegistryService: ExtAppViewRegistryService
+    private extAppViewRegistryService: ExtAppViewRegistryService,
+    private extensionsService: ExtensionsService
   ) {}
 
   @Input() url: string;
@@ -38,6 +40,9 @@ export class ExternalAppComponent implements OnChanges, OnDestroy {
 
     const objectToTransfer = this.getMessage(element, this.basePath, this.data);
 
+    if (this.url && !this.extensionsService.isUsingSecureProtocol(this.url)) {
+      return;
+    }
     element.src = this.url;
 
     if (false === this.executionAsync) {

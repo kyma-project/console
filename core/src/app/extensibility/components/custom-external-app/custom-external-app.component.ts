@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ExtensionsService } from '../../services/extensions.service';
 
 @Component({
   selector: 'app-custom-external-app',
@@ -12,11 +13,19 @@ export class CustomExternalAppComponent {
   public relativePath = '';
   public executionAsync: boolean;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private extensionsService: ExtensionsService
+  ) {
     this.route = route;
     this.route.data.subscribe(data => {
       this.mountingPath = data.mountingPath;
+
+      if (!this.extensionsService.isUsingSecureProtocol(data.externalUrl)) {
+        return;
+      }
       this.externalUrl = data.externalUrl;
+
       this.executionAsync = data.executionAsync;
       this.route.params.subscribe(params => {
         if (data.path) {

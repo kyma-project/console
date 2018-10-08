@@ -28,7 +28,7 @@ podTemplate(label: label) {
     node(label) {
         try {
             timestamps {
-                timeout(time:120, unit:"MINUTES") {
+                timeout(time:200, unit:"MINUTES") {
                     ansiColor('xterm') {
                         stage("setup") {
                             checkout scm
@@ -50,7 +50,7 @@ podTemplate(label: label) {
                         }
 
                         stage("resolve dependencies $application") {
-                            execute("npm install --no-optional")
+                            execute("npm install -f")
                         }
 
                         stage("code quality $application") {
@@ -70,17 +70,21 @@ podTemplate(label: label) {
                         // }
 
                         // if (isMaster) {
-                        //     stage("security scan $application (Checkmarx)"){
-                        //         scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
-                        //     }
+                            // stage("security scan $application (Checkmarx)"){
+                            //     scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
+                            // }
                         // }
+
+                        stage("prepare react-components") {
+                            execute("../scripts/prepare-react-components.sh -d react-components")
+                        }
 
                         stage("build $application") {
                             execute('make build')
                         }
 
                         stage("build image $application") {
-                            dir(env.APP_FOLDER){
+                            dir(env.APP_FOLDER) {
                                 sh "docker build . -t $application:latest"
                             }
                         }
@@ -103,7 +107,7 @@ podTemplate(label: label) {
 
 def execute(command, envs = []) {
     def repositoryName = 'console'
-    def buildpack = 'node-buildpack:0.0.8'
+    def buildpack = 'node-buildpack:0.0.9'
     def envText = ''
     for (it in envs) {
         envText = "$envText --env $it"

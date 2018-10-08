@@ -4,32 +4,31 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', '@angular/cli'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
       require('karma-phantomjs-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     reporters: ['progress', 'kjhtml'],
     coverageIstanbulReporter: {
+      dir: require('path').join(__dirname, 'coverage'),
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true,
       dir: 'coverage/'
     },
-    angularCli: {
-      environment: 'dev'
-    },
+
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: false,
+    autoWatch: true,
     browsers: ['PhantomJS'],
-    singleRun: true,
+    singleRun: false,
     browserNoActivityTimeout: 20000
   });
 };

@@ -13,5 +13,6 @@
       "zone.js": "zone.js",
       "ng-click-outside": "ng-click-outside"
     }
-  }
+  },
+  "whitelistedNonPeerDependencies": ["."]
 }

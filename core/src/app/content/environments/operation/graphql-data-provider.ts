@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import {
   DataProvider,
   DataProviderResult,
@@ -8,6 +7,8 @@ import {
   Filter
 } from '@kyma-project/y-generic-list';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
+import { Observable } from 'rxjs';
+import { delay, publishReplay, refCount } from 'rxjs/operators';
 
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
@@ -30,11 +31,12 @@ export class GraphQLDataProvider implements DataProvider {
   ): Observable<DataProviderResult> {
     return Observable.create(observer => {
       if (noCache || !this.queryCache) {
-        this.queryCache = this.graphQLClientService.request(
-          this.url,
-          this.query,
-          this.variables
-        );
+        this.queryCache = this.graphQLClientService
+          .request(this.url, this.query, this.variables)
+          .pipe(
+            publishReplay(1),
+            refCount()
+          );
       }
 
       this.queryCache.subscribe(

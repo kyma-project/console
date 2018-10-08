@@ -1,10 +1,11 @@
 import { ITrigger } from './trigger';
-import { Source } from './source';
+import { Authentication } from './authentication';
 
 export class HTTPEndpoint implements ITrigger {
-    eventType: string;
-    source: Source;
-    selected?: boolean;
-    url?: string;
-    isAuthEnabled?: boolean;
+  eventType: string;
+  sourceId: '';
+  selected?: boolean;
+  url?: string;
+  isAuthEnabled?: boolean;
+  authentication?: Authentication;
 }

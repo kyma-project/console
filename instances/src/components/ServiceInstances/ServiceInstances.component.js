@@ -1,19 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
-import HeaderServiceInstances from './InstanceHeader.component';
-import EntryServiceInstances from './InstanceEntry.component';
-import SearchDropdown from '../Filter/SearchDropdown.component';
-import FilterDropdown from '../Filter/FilterDropdown.component';
-import { Spinner, Toolbar, ThemeWrapper } from '@kyma-project/react-components';
-import { EntriesWrapper } from '../shared/component-styles';
-import Error from '../Error/Error';
 
-const ServiceInstancesWrapper = styled.div`
-  border-radius: 4px;
-  margin: 34px;
-  background-color: #ffffff;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
-`;
+import {
+  NotificationMessage,
+  ThemeWrapper,
+} from '@kyma-project/react-components';
+
+import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
+import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
+
+import { ServiceInstancesWrapper } from './styled';
 
 class ServiceInstances extends React.Component {
   componentWillReceiveProps(newProps) {
@@ -23,6 +18,8 @@ class ServiceInstances extends React.Component {
       newProps.serviceInstances.serviceInstances.length > 0 &&
       typeof newProps.filterItems === 'function' &&
       !newProps.serviceInstances.serviceInstances.error &&
+      newProps.filteredItems &&
+      newProps.filteredItems.filteredItems &&
       !newProps.filteredItems.filteredItems.error
     ) {
       newProps.filterItems();
@@ -60,48 +57,33 @@ class ServiceInstances extends React.Component {
       };
     });
 
-    const getEntriesServiceInstances = () => {
-      if(serviceInstances.loading) {
-        return <Spinner padding="20px" size="30px" color="rgba(50,54,58,0.6)" />
-      }
-      else if(entries.length > 0) {
-        return entries.map((entry, index) => (
-          <EntryServiceInstances
-            key={index}
-            entry={entry}
-            refetch={serviceInstances.refetch}
-            deleteInstance={deleteServiceInstance}
-          />
-        ))
-      } else {
-        return 'No Service Instances found'
-      }
-    }
-
     return (
       <ThemeWrapper>
-        <Toolbar
-          headline="Service Instances"
-          description="You can configure the instances and manage bindings of each of your instantiated services here"
-        >
-          <SearchDropdown
-            onChange={e =>
-              filterClassesAndSetActiveFilters('search', e.target.value)
-            }
+        <ServiceInstancesToolbar
+          filterClassesAndSetActiveFilters={filterClassesAndSetActiveFilters}
+          labelFilter={labelFilter}
+          allActiveFilters={allActiveFilters}
+          serviceInstancesExists={allItems.length > 0}
+        />
+
+        <NotificationMessage
+          type="error"
+          title="Error"
+          message={serviceInstances.error && serviceInstances.error.message}
+        />
+        <NotificationMessage
+          type="error"
+          title="Error"
+          message={filteredItems.error && filteredItems.error.message}
+        />
+
+        <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
+          <ServiceInstancesTable
+            data={entries}
+            deleteServiceInstance={deleteServiceInstance}
+            refetch={serviceInstances.refetch}
+            loading={serviceInstances.loading}
           />
-          <FilterDropdown
-            onChange={filterClassesAndSetActiveFilters}
-            filter={labelFilter}
-            activeValues={allActiveFilters.labels}
-          />
-        </Toolbar>
-        <Error error={serviceInstances.error} />
-        <Error error={filteredItems.error} />
-        <ServiceInstancesWrapper data-e2e-id='instances-wrapper'>
-          <HeaderServiceInstances />
-          <EntriesWrapper data-e2e-id='instances-items'>
-            {getEntriesServiceInstances()}
-          </EntriesWrapper>
         </ServiceInstancesWrapper>
       </ThemeWrapper>
     );

@@ -3,20 +3,37 @@ import gql from 'graphql-tag';
 export default {
   Query: {
     serviceClassFilters: (_, args, { cache }) => {
-      const result =
-        cache.readQuery({
-          query: gql`
-            query ServiceClassesFilterData {
-              serviceClasses {
-                name
-                providerDisplayName
-                tags
-              }
-            }
-          `,
-        }) || [];
+      const serviceClassesFilterDataQGL = `
+        name
+        providerDisplayName
+        tags
+      `;
 
-      return populateServiceClassFilters(result.serviceClasses);
+      try {
+        let result = cache.readQuery({
+          query: gql`
+              query serviceClassesFilterData($environment: String!) {
+                clusterServiceClasses {
+                  ${serviceClassesFilterDataQGL}
+                }
+                serviceClasses(environment: $environment) {
+                  ${serviceClassesFilterDataQGL}
+                }
+              }
+            `,
+          variables: {
+            environment: args.environment,
+          },
+        });
+        result =
+          result && Object.keys(result).length
+            ? [...result.clusterServiceClasses, ...result.serviceClasses]
+            : [];
+
+        return populateServiceClassFilters(result);
+      } catch (error) {
+        return;
+      }
     },
   },
   Mutation: {
@@ -26,18 +43,61 @@ export default {
           query activeServiceClassFilters {
             activeServiceClassFilters @client {
               provider
-              category
+              tag
             }
           }
         `,
       }).activeServiceClassFilters;
+      let newActive = filters;
+      if (Array.isArray(newActive[args.key])) {
+        let newArray = newActive[args.key];
+        if (args.value === null) {
+          newArray = [];
+        } else if (newArray.includes(args.value)) {
+          newArray = newActive[args.key].filter(e => e !== args.value);
+        } else {
+          newArray = newArray.concat(args.value);
+        }
+        newActive[args.key] = newArray;
+      } else {
+        newActive[args.key] = args.value;
+      }
+
+      cache.writeData({
+        data: {
+          activeServiceClassFilters: newActive,
+        },
+      });
+
+      return newActive;
+    },
+    setActiveTagsFilters: (_, args, { cache }) => {
+      const filters = cache.readQuery({
+        query: gql`
+          query activeTagsFilters {
+            activeTagsFilters @client {
+              provider {
+                first
+                isMore
+                offset
+              }
+              tag {
+                first
+                isMore
+                offset
+              }
+              search
+            }
+          }
+        `,
+      }).activeTagsFilters;
 
       const newActive = { ...filters };
       newActive[args.key] = args.value;
 
       cache.writeData({
         data: {
-          activeServiceClassFilters: newActive,
+          activeTagsFilters: newActive,
         },
       });
 
@@ -49,29 +109,63 @@ export default {
           query activeServiceClassFilters {
             activeServiceClassFilters @client {
               provider
-              category
+              tag
               search
             }
           }
         `,
       }).activeServiceClassFilters;
 
-      const classes = cache.readQuery({
+      const activeTagsFilters = cache.readQuery({
         query: gql`
-          query ServiceClasses {
-            serviceClasses {
-              name
-              description
-              displayName
-              externalName
-              imageUrl
-              activated
-              providerDisplayName
-              tags
+          query activeTagsFilters {
+            activeTagsFilters @client {
+              provider {
+                first
+                isMore
+                offset
+              }
+              tag {
+                first
+                isMore
+                offset
+              }
+              search
             }
           }
         `,
-      }).serviceClasses;
+      }).activeTagsFilters;
+
+      const serviceClassesQGL = `
+        name
+        description
+        displayName
+        externalName
+        imageUrl
+        activated
+        providerDisplayName
+        tags
+      `;
+      let classes = cache.readQuery({
+        query: gql`
+          query serviceClasses($environment: String!) {
+            clusterServiceClasses {
+              ${serviceClassesQGL}
+            }
+            serviceClasses(environment: $environment) {
+              ${serviceClassesQGL}
+            }
+          }
+        `,
+        variables: {
+          environment: args.environment,
+        },
+      });
+      classes =
+        classes && Object.keys(classes).length
+          ? [...classes.clusterServiceClasses, ...classes.serviceClasses]
+          : [];
+
       const filteredClasses = filterServiceClasses(
         classes,
         activeFilters,
@@ -80,6 +174,7 @@ export default {
       const classFilters = populateServiceClassFilters(
         classes,
         filteredClasses,
+        activeTagsFilters,
       );
 
       cache.writeData({
@@ -94,48 +189,72 @@ export default {
   },
 };
 
-const populateServiceClassFilters = (allItems, filteredItems = []) => {
+const populateServiceClassFilters = (
+  allItems,
+  filteredItems = [],
+  activeTagsFilters,
+) => {
   if (allItems.length === 0) {
     return [];
   }
 
   const providers = [];
-  const categories = [];
+  const tags = [];
   allItems.forEach(item => {
     if (item) {
       if (item.providerDisplayName) {
         providers.push(item.providerDisplayName);
       }
-      categories.push(...item.tags);
+      tags.push(...item.tags);
     }
   });
 
   const filteredProviders = [];
-  const filteredCategories = [];
+  const filteredTags = [];
   filteredItems.forEach(item => {
     if (item) {
       if (item.providerDisplayName) {
         filteredProviders.push(item.providerDisplayName);
       }
-      filteredCategories.push(...item.tags);
+      filteredTags.push(...item.tags);
     }
   });
 
+  const tagsValues = getFilterValues(
+    tags,
+    filteredTags,
+    activeTagsFilters,
+    'tag',
+  );
+  const providersValues = getFilterValues(
+    providers,
+    filteredProviders,
+    activeTagsFilters,
+    'provider',
+  );
+
   return [
     {
-      name: 'category',
-      values: getFilterValues(categories, filteredCategories),
+      name: 'tag',
+      values: tagsValues.values,
+      isMore: tagsValues.isMore,
       __typename: 'Filter',
     },
     {
       name: 'provider',
-      values: getFilterValues(providers, filteredProviders),
+      values: providersValues.values,
+      isMore: providersValues.isMore,
       __typename: 'Filter',
     },
   ];
 };
 
-const getFilterValues = (values, filteredValues = []) => {
+const getFilterValues = (
+  values,
+  filteredValues = [],
+  additionalFilters,
+  type,
+) => {
   const uniqueValues = new Set(values);
   const valuesCount = filteredValues.reduce((filteredValues, item) => {
     const prevCount = filteredValues[item];
@@ -154,28 +273,70 @@ const getFilterValues = (values, filteredValues = []) => {
     return values;
   }, {});
 
-  const valuesArray = Object.values(valuesMap);
+  let valuesArray = Object.values(valuesMap);
+  let valuesLength = valuesArray.length + 1;
+  if (additionalFilters) {
+    const filterFiltersResult = filterFilters(
+      valuesArray,
+      additionalFilters,
+      type,
+    );
+    valuesArray = filterFiltersResult.values;
+    valuesLength = filterFiltersResult.length + 1;
+  }
   valuesArray.unshift({
     name: 'All',
     value: null,
     count: null,
     __typename: 'FilterItem',
   });
-  return valuesArray;
+  const isMore = valuesLength > valuesArray.length;
+
+  return { values: valuesArray, isMore };
 };
 
-const filterServiceClasses = (classes, activeFilters, cache) => {
+const filterFilters = (filters, activeFilters, type) => {
+  let filteredFilters = filters;
+  const first = activeFilters[type].first;
+  const offset = activeFilters[type].offset;
+
+  if (typeof activeFilters.search === 'string' && activeFilters.search !== '') {
+    filteredFilters = searchInFilters(filters, activeFilters.search);
+  }
+
+  const filteredFiltersLength = filteredFilters.length;
+  if (filteredFilters.length > offset && first >= 0 && offset > 0) {
+    filteredFilters = filteredFilters.slice(first, first + offset);
+  }
+  return { values: filteredFilters, length: filteredFiltersLength };
+};
+
+const searchInFilters = (filters, search) => {
+  let filteredFilters = [];
+  const searchValue = search.toLowerCase();
+
+  filteredFilters = filters.filter(item => {
+    let searchMatch = true;
+    searchMatch = item.name.toLowerCase().indexOf(searchValue) !== -1;
+    return searchMatch;
+  });
+  return filteredFilters;
+};
+
+const filterServiceClasses = (classes, activeFilters) => {
   const filteredClasses = classes.filter(item => {
     let providerMatch = true;
-    let categoryMatch = true;
+    let tagMatch = true;
     let searchMatch = true;
 
-    if (activeFilters.provider) {
-      providerMatch = item.providerDisplayName === activeFilters.provider;
+    if (activeFilters.provider && activeFilters.provider.length > 0) {
+      providerMatch = activeFilters.provider.some(provider =>
+        item.providerDisplayName.includes(provider),
+      );
     }
 
-    if (activeFilters.category) {
-      categoryMatch = item.tags.includes(activeFilters.category);
+    if (activeFilters.tag && activeFilters.tag.length > 0) {
+      tagMatch = activeFilters.tag.some(tag => item.tags.includes(tag));
     }
 
     if (
@@ -185,12 +346,13 @@ const filterServiceClasses = (classes, activeFilters, cache) => {
       const searchValue = activeFilters.search.toLowerCase();
       const name = item.displayName.toLowerCase();
       const description = item.description.toLowerCase();
+      const provider = item.providerDisplayName.toLowerCase();
       searchMatch =
         name.indexOf(searchValue) !== -1 ||
-        description.indexOf(searchValue) !== -1;
+        description.indexOf(searchValue) !== -1 ||
+        provider.indexOf(searchValue) !== -1;
     }
-
-    return providerMatch && categoryMatch && searchMatch;
+    return providerMatch && tagMatch && searchMatch;
   });
 
   return filteredClasses;

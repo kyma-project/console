@@ -1,23 +1,38 @@
 import gql from 'graphql-tag';
 
+const serviceClassQGL = `
+  displayName
+  externalName
+  name
+`;
+
+const servicePlanQGL = `
+  displayName
+  externalName
+  name
+`;
+
 export const SERVICE_INSTANCES_QUERY = gql`
   query ServiceInstances($environment: String!) {
     serviceInstances(environment: $environment) {
       name
       labels
+      planSpec
       status {
         type
         message
       }
       serviceClass {
-        displayName
-        externalName
-        name
+        ${serviceClassQGL}
+      }
+      clusterServiceClass {
+        ${serviceClassQGL}
       }
       servicePlan {
-        displayName
-        externalName
-        name
+        ${servicePlanQGL}
+      }
+      clusterServicePlan {
+        ${servicePlanQGL}
       }
       serviceBindingUsages {
         name
@@ -58,14 +73,10 @@ export const FILTERED_ITEMS_QUERY = gql`
         message
       }
       serviceClass {
-        displayName
-        externalName
-        name
+        ${serviceClassQGL}
       }
       servicePlan {
-        displayName
-        externalName
-        name
+        ${servicePlanQGL}
       }
     }
   }

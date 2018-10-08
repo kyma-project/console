@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ExtAppViewRegistryService {
-
   private registry = [];
   private sessions = {};
+  private navigationConfirmations = [];
 
   /**
    * Registers given view as a known external app view and generates a session ID for it.
@@ -67,11 +67,37 @@ export class ExtAppViewRegistryService {
     return this.isRegistered(view) && view === this.sessions[sessionId];
   }
 
+  confirmNavigation(view: any) {
+    if (!this.isNavigationConfirmed(view)) {
+      this.navigationConfirmations.push(view);
+    }
+  }
+
+  resetNavigationConfirmation(view: any) {
+    const n = [];
+    this.navigationConfirmations.forEach(v => {
+      if (view !== v) {
+        n.push(v);
+      }
+    });
+    this.navigationConfirmations = n;
+  }
+
+  isNavigationConfirmed(view: any) {
+    let confirmed = null;
+    this.registry.forEach(v => {
+      if (view === v) {
+        confirmed = view;
+      }
+    });
+
+    return !!confirmed;
+  }
+
   private generateSessionId() {
     const generatePart = () => {
-      return '' + Math.floor((Math.random() * 1000000));
+      return '' + Math.floor(Math.random() * 1000000);
     };
     return generatePart() + '-' + generatePart() + '-' + generatePart();
   }
 }
-

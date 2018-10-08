@@ -7,7 +7,7 @@
     <span class="sf-indicator" [ngClass]="status ? 'sf-indicator--success' : ''"></span>{{ statusText }}</div>
   <div class="col-6 sf-list__label-column">
     <div *ngIf='entry.getLabels()'>
-      <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of entry.getLabels()">{{ label }}</span>
+      <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of entry.getLabels()">{{ label }}</span>
     </div>
     <div *ngIf='!entry.getLabels()'>
       <span>None</span>

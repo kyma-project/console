@@ -6,6 +6,38 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { AppConfig } from '../../../app.config';
+import { of } from 'rxjs';
+
+const resourceQuotaLimitOK = {
+  resourceQuotaStatus: {
+    exceeded: false,
+    resources: []
+  }
+};
+
+const resourceQuotaLimitExceeded = {
+  resourceQuotaStatus: {
+    exceeded: false,
+    resources: [
+      {
+        quotaName: 'quota-name',
+        resourceName: 'resource-name',
+        affectedResources: ['affected-resource-1', 'affected-resource-2']
+      }
+    ]
+  }
+};
+
+const graphlQLClientServiceMock = {
+  request: (url = '', query, variables) => {
+    switch (variables.environment) {
+      case 'environment':
+        return of(resourceQuotaLimitOK);
+      default:
+        return of(resourceQuotaLimitExceeded);
+    }
+  }
+};
 
 describe('EnvironmentsService', () => {
   let environmentsService: EnvironmentsService;
@@ -14,7 +46,10 @@ describe('EnvironmentsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EnvironmentsService, GraphQLClientService]
+      providers: [
+        EnvironmentsService,
+        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock }
+      ]
     });
 
     environmentsService = TestBed.get(EnvironmentsService);
@@ -208,6 +243,40 @@ describe('EnvironmentsService', () => {
         status: 500,
         statusText: 'Internal Server Error'
       }
+    );
+  });
+
+  it('should return the status of resource quota with an empty list if everything is ok', done => {
+    // given
+    const environment = 'environment';
+
+    // when
+    const result = environmentsService.getResourceQueryStatus(environment);
+
+    // then
+    result.subscribe(
+      res => {
+        expect(res).toEqual(resourceQuotaLimitOK);
+        done();
+      },
+      err => {}
+    );
+  });
+
+  it('should return the status of resource quota with a list of resources that caused that the limit has been exceeded', done => {
+    // given
+    const environment = 'environmentWithResourceLimitExceeded';
+
+    // when
+    const result = environmentsService.getResourceQueryStatus(environment);
+
+    // then
+    result.subscribe(
+      res => {
+        expect(res).toEqual(resourceQuotaLimitExceeded);
+        done();
+      },
+      err => {}
     );
   });
 });

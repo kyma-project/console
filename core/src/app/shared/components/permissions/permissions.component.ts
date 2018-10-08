@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-permissions',
@@ -35,7 +36,7 @@ export class PermissionsComponent implements OnInit {
         : 'Role Bindings';
 
       this.route.queryParamMap
-        .map((params: Params) => params.params)
+        .pipe(map((params: Params) => params.params))
         .subscribe(paramsMap => {
           const activeTab = paramsMap.tab;
 

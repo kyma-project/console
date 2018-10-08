@@ -32,6 +32,7 @@ import { EventActivationsService } from './event-activations/event-activations.s
 import { GraphqlClientService } from './graphql-client/graphql-client.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './lambdas/lambda-details/event-trigger-chooser/event-trigger-chooser.component';
+import { HttpTriggerComponent } from './lambdas/lambda-details/http-trigger/http-trigger.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/lambdas', pathMatch: 'full' },
@@ -54,6 +55,7 @@ const routes: Routes = [
     LambdaInstanceBindingsComponent,
     LambdaInstanceBindingCreatorComponent,
     EventTriggerChooserComponent,
+    HttpTriggerComponent,
   ],
 
   imports: [

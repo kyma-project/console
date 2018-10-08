@@ -32,6 +32,7 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
   public resourceKind = 'RoleBinding';
   private currentEnvironmentId: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('mode') private mode: string;
   public isGlobalMode: boolean;
 

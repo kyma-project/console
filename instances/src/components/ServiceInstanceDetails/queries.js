@@ -1,39 +1,68 @@
 import gql from 'graphql-tag';
 
+const serviceClassQGL = `
+  name
+  displayName
+  externalName
+  description
+  documentationUrl
+  supportUrl
+  content
+  asyncApiSpec
+  apiSpec
+`;
+
+const servicePlanQGL = `
+  name
+  displayName
+  externalName
+  description
+  instanceCreateParameterSchema
+`;
+
 export const SERVICE_INSTANCE_QUERY = gql`
   query ServiceInstance($environment: String!, $name: String!) {
     serviceInstance(environment: $environment, name: $name) {
       name
       environment
-      servicePlanName
+      planSpec
+      labels
       status {
         type
         message
       }
       serviceClass {
-        name
-        displayName
-        externalName
-        description
-        content
-        asyncApiSpec
-        apiSpec
+        ${serviceClassQGL}
+        environment
+      }
+      clusterServiceClass {
+        ${serviceClassQGL}
       }
       servicePlan {
-        name
-        displayName
-        externalName
+        ${servicePlanQGL}
+        environment
         relatedServiceClassName
       }
+      clusterServicePlan {
+        ${servicePlanQGL}
+        relatedClusterServiceClassName
+      }
       serviceBindings {
-        name
-        environment
-        secret {
+        serviceBindings {
           name
-          data
           environment
+          secret {
+            name
+            data
+            environment
+          }
+          serviceInstanceName
         }
-        serviceInstanceName
+        stats {
+          ready
+          failed
+          pending
+        }
       }
       serviceBindingUsages {
         name
@@ -50,22 +79,6 @@ export const SERVICE_INSTANCE_QUERY = gql`
           kind
         }
       }
-    }
-  }
-`;
-
-export const FUNCTIONS_QUERY = gql`
-  query Functions($environment: String!) {
-    functions(environment: $environment) {
-      name
-    }
-  }
-`;
-
-export const DEPLOYMENTS_WITHOUT_FUNCTIONS_QUERY = gql`
-  query Deployments($environment: String!) {
-    deployments(environment: $environment, excludeFunctions: true) {
-      name
     }
   }
 `;

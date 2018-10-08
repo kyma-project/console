@@ -24,5 +24,4 @@ const Paragraph = styled.p`
 
 Paragraph.modifiers = modifierConfig;
 
-/** @component */
 export default Paragraph;

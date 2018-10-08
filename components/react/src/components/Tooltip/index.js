@@ -2,69 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const TooltipContainer = styled.div`
-  position: absolute;
-  box-sizing: border-box;
-  z-index: 199;
-  min-width: ${props => (props.minWidth ? props.minWidth : '150px')};
-  max-width: ${props => (props.maxWidth ? props.maxWidth : '420px')};
-  background: #fff;
-  filter: drop-shadow(rgba(0, 0, 0, 0.12) 0 0px 2px);
-  border-radius: 4px;
-  bottom: 100%;
-  left: 50%;
-  padding: 7px;
-  margin-bottom: 10px;
-  transform: translateX(-50%);
-  transition: all 0.3s;
-  opacity: 0;
+import Icon from '../Icon';
 
-  &:after {
-    border: 10px solid;
-    border-color: white transparent transparent;
-    content: '';
-    left: 50%;
-    margin-left: -10px;
-    position: absolute;
-    top: 100%;
-  }
-`;
-
-const TooltipWrapper = styled.div`
-  position: relative;
-  display: inline-block;
-  z-index: 198;
-
-  &:hover ${TooltipContainer} {
-    margin-bottom: 15px;
-    opacity: 1;
-  }
-`;
-
-const TooltipContent = styled.div`
-  font-family: '72';
-  display: block;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: center;
-  color: #32363b;
-  font-size: 12px;
-  padding: 2px 6px;
-`;
+import {
+  TooltipWrapper,
+  TooltipContainer,
+  TooltipContent,
+  TooltipHeader,
+  TooltipFooter,
+} from './components';
 
 class Tooltip extends React.Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    content: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.array,
+      PropTypes.element,
+    ]),
+    show: PropTypes.bool,
+    title: PropTypes.string,
+    type: PropTypes.string,
+    minWidth: PropTypes.string,
+    maxWidth: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      visibleTooltip: false,
+      visibleTooltip: this.props.show === undefined ? false : this.props.show,
+      showTooltip: this.props.show === undefined ? false : this.props.show,
     };
   }
 
@@ -73,20 +40,28 @@ class Tooltip extends React.Component {
   };
 
   handleShowTooltip = () => {
-    if (typeof this.setVisibility === 'function') {
-      setTimeout(() => this.setVisibility(true), 250);
+    if (typeof this.setVisibility === 'function' && !this.state.showTooltip) {
+      setTimeout(() => this.setVisibility(true), 100);
     }
   };
 
   handleHideTooltip = () => {
-    if (typeof this.setVisibility === 'function') {
-      setTimeout(() => this.setVisibility(false), 250);
+    if (typeof this.setVisibility === 'function' && !this.state.showTooltip) {
+      setTimeout(() => this.setVisibility(false), 100);
     }
   };
 
   render() {
-    const { visibleTooltip } = this.state;
-    const { children, content } = this.props;
+    const { visibleTooltip, showTooltip } = this.state;
+    const {
+      children,
+      title,
+      content,
+      minWidth,
+      maxWidth,
+      icon,
+      type,
+    } = this.props;
 
     return (
       <TooltipWrapper
@@ -96,9 +71,16 @@ class Tooltip extends React.Component {
         {children}
         {visibleTooltip && (
           <TooltipContainer
-            minWidth={this.props.minWidth}
-            maxWidth={this.props.maxWidth}
+            minWidth={minWidth}
+            maxWidth={maxWidth}
+            type={type === undefined ? 'default' : type}
+            show={showTooltip}
           >
+            {title && (
+              <TooltipHeader type={type === undefined ? 'default' : type}>
+                {title}
+              </TooltipHeader>
+            )}
             <TooltipContent>{content}</TooltipContent>
           </TooltipContainer>
         )}

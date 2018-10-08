@@ -4,11 +4,12 @@ import { ExternalAppComponent } from './external-app.component';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ExtAppViewRegistryService } from '../../services/ext-app-view-registry.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
+import { ExtensionsService } from '../../services/extensions.service';
 
 const CurrentEnvironmentServiceStub = {
   getCurrentEnvironmentId() {
-    return Observable.of('envId');
+    return of('envId');
   }
 };
 
@@ -27,28 +28,39 @@ const ExtAppViewRegistryServiceStub = {
   }
 };
 
+const ExtensionsServiceStub = {
+  getExtensions() {
+    return of([]);
+  },
+  isUsingSecureProtocol() {
+    return true;
+  }
+};
+
 describe('ExternalAppComponent', () => {
   let component: ExternalAppComponent;
   let fixture: ComponentFixture<ExternalAppComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [ExternalAppComponent],
-        providers: [
-          {
-            provide: CurrentEnvironmentService,
-            useValue: CurrentEnvironmentServiceStub
-          },
-          { provide: OAuthService, useValue: OAuthServiceStub },
-          {
-            provide: ExtAppViewRegistryService,
-            useValue: ExtAppViewRegistryServiceStub
-          }
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ExternalAppComponent],
+      providers: [
+        {
+          provide: CurrentEnvironmentService,
+          useValue: CurrentEnvironmentServiceStub
+        },
+        { provide: OAuthService, useValue: OAuthServiceStub },
+        {
+          provide: ExtAppViewRegistryService,
+          useValue: ExtAppViewRegistryServiceStub
+        },
+        {
+          provide: ExtensionsService,
+          useValue: ExtensionsServiceStub
+        }
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ExternalAppComponent);

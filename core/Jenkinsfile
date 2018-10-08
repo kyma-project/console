@@ -49,14 +49,8 @@ podTemplate(label: label) {
                             // }
                         }
 
-                        stage("cleanup") {
-                            execute("make unlock")
-                        }
-
                         stage("resolve dependencies $application") {
-                            withCredentials([usernamePassword(credentialsId: 'npm-r', passwordVariable: 'pwd', usernameVariable: 'uname')]) {
-                                execute("make resolve", ["USERNAME=$uname", "PASSWORD=$pwd"])
-                            }
+                            execute("npm install -f")
                         }
 
                         stage("code quality $application") {
@@ -64,16 +58,16 @@ podTemplate(label: label) {
                         }
 
                         stage("test $application") {
-                            execute("make test")
+                            execute("npm run test:single")
                         }
 
-                        if (isMaster) {
-                            stage("IP scan $application (WhiteSource)") {
-                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                                    execute("make scan", ["API_KEY=$apikey"])
-                                }
-                            }
-                        }
+                        // if (isMaster) {
+                        //     stage("IP scan $application (WhiteSource)") {
+                        //         withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
+                        //             execute("make scan", ["API_KEY=$apikey"])
+                        //         }
+                        //     }
+                        // }
 
                         // if (isMaster) {
                         //     stage("security scan $application (Checkmarx)"){

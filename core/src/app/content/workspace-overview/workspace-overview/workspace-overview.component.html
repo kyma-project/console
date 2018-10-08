@@ -2,8 +2,8 @@
   <div class="sf-toolbar__header">Environments</div>
   <div class="sf-toolbar__right">
     <div class="sf-toolbar__item">
-      <y-list-search [hidden]="!loaded || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-      <y-list-filter [hidden]="!loaded || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+      <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
       <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="createmodal.show()">+ Create Environment</button>
     </div>
   </div>

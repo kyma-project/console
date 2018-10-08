@@ -1,13 +1,14 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../../content/environments/operation/abstract-kubernetes-entry-renderer.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../services/component-communication.service';
 
 @Component({
   templateUrl: './binding-entry-renderer.component.html',
   styleUrls: ['./binding-entry-renderer.component.scss']
 })
-export class BindingEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class BindingEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   public actions = [
     {

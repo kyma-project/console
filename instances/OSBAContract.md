@@ -23,8 +23,11 @@ Instances-ui directly uses the [ui-api-layer](https://github.com/kyma-project/ky
 | ------ | ------------------------- | -------------------- | ----------------------------------------------------- |
 | (1)    | metadata.displayName      | name*, id*           | -                                                     |
 | (2)    | plan.metadata.displayName | plan.name*, plan.id* | -                                                     |
-| (3)    | not related to OSBA       | -                    | -                                                     | - |
-| (4)    | description\*             | -                    | if not provided, UI displays without this information |
+| (3)    | not related to OSBA       | -                    | If not provided, UI displays without this information |
+| (4)    | metadata.documentationUrl | -                    | If not provided, UI displays without this information |
+| (5)    | metadata.supportUrl       | -                    | If not provided, UI displays without this information |
+| (6)    | description\*             | -                    | If not provided, UI displays without this information |
+| (7)    | not related to OSBA       | -                    | -                                                     |
 
 \*Fields with an asterisk are required OSBA attributes.
 

@@ -8,6 +8,8 @@ export const sortDocumentsByType = documents => {
       const key = document.type ? 'type' : 'Type';
       const val = document[key];
 
+      if (!val) return {};
+
       if (!obj[val]) {
         obj[val] = [];
       }
@@ -34,4 +36,91 @@ export const getResourceDisplayName = resource => {
   }
 
   return resource.displayName || resource.externalName || resource.name;
+};
+
+export function compareTwoObjects(obj1, obj2) {
+  for (const p in obj1) {
+    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+
+    if (obj1[p] === null && obj2[p] !== null) return false;
+    if (obj2[p] === null && obj1[p] !== null) return false;
+
+    switch (typeof obj1[p]) {
+      case 'object':
+        if (!compareTwoObjects(obj1[p], obj2[p])) return false;
+        break;
+      case 'function':
+        if (
+          typeof obj2[p] === 'undefined' ||
+          (p !== 'compare' && obj1[p].toString() !== obj2[p].toString())
+        )
+          return false;
+        break;
+      default:
+        if (obj1[p] === '' && obj2[p] !== '') return false;
+        if (obj2[p] === '' && obj1[p] !== '') return false;
+        if (obj1[p] !== obj2[p]) return false;
+    }
+  }
+
+  for (const p in obj2) {
+    if (typeof obj1[p] === 'undefined') return false;
+  }
+  return true;
+}
+
+export const statusColor = statusType => {
+  switch (statusType) {
+    case 'PROVISIONING':
+    case 'DEPROVISIONING':
+    case 'PENDING':
+      return '#ffb600';
+    case 'FAILED':
+      return '#ee0000';
+    case 'RUNNING':
+      return '#3db350';
+    default:
+      return '#ffb600';
+  }
+};
+
+export const validateContent = content => {
+  if (!content) return false;
+
+  let documentsByType = [],
+    documentsTypes = [];
+
+  if (content && Object.keys(content).length) {
+    documentsByType = sortDocumentsByType(content);
+    if (!documentsByType) return false;
+    documentsTypes = Object.keys(documentsByType);
+    if (!documentsTypes) return false;
+  }
+
+  let numberOfSources = 0;
+  documentsTypes.forEach(type => {
+    const docsType = documentsByType[type];
+    for (let item = 0; item < docsType.length; item++) {
+      if (docsType[item].source || docsType[item].Source) numberOfSources++;
+    }
+  });
+  return numberOfSources > 0;
+};
+
+export const validateAsyncApiSpec = asyncApiSpec => {
+  if (
+    !asyncApiSpec ||
+    !asyncApiSpec.topics ||
+    !Object.keys(asyncApiSpec.topics).length ||
+    !asyncApiSpec.info ||
+    !asyncApiSpec.info.title ||
+    !asyncApiSpec.info.version
+  )
+    return false;
+
+  for (const topic in asyncApiSpec.topics) {
+    if (!topic || !asyncApiSpec.topics[topic].subscribe) return false;
+  }
+
+  return true;
 };

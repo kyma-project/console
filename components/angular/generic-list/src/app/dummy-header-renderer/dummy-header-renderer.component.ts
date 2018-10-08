@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dummy-header-renderer',
+  selector: 'y-dummy-header-renderer',
   templateUrl: './dummy-header-renderer.component.html',
-  styleUrls: ['./dummy-header-renderer.component.scss']
+  styleUrls: ['./dummy-header-renderer.component.scss'],
 })
 export class DummyHeaderRendererComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

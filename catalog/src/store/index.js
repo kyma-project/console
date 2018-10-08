@@ -3,14 +3,15 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import builder from './../commons/builder';
 import resolvers from './resolvers';
 import defaults from './defaults';
-import { getApiURL } from './../commons/api-url';
+import { getURL } from './../commons/api-url';
 
 export function createApolloClient() {
   const cache = new InMemoryCache();
-  const graphqlApiUrl = getApiURL();
+  const graphqlApiUrl = getURL(
+    process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
+  );
 
   const client = new ApolloClient({
-    connectToDevTools: true,
     uri: graphqlApiUrl,
     request: async operation => {
       operation.setContext(({ headers = {} }) => ({

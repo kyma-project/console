@@ -1,14 +1,15 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { Pod } from '../../../../../shared/datamodel/k8s/pods';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 
 @Component({
   selector: 'app-pods-entry-renderer',
   templateUrl: './pods-entry-renderer.component.html'
 })
-export class PodsEntryRendererComponent extends AbstractKubernetesEntryRendererComponent
+export class PodsEntryRendererComponent
+  extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
@@ -43,7 +44,7 @@ export class PodsEntryRendererComponent extends AbstractKubernetesEntryRendererC
 
   getStatusesList(entry) {
     const containerStatuses = [];
-    if (entry.podStatus && entry.podStatus.containerStatuses) {
+    if (entry.podStatus && entry.podStatus.containerStates) {
       entry.podStatus.containerStates.forEach(status => {
         for (const key in status) {
           if (status[key].reason) {
@@ -72,13 +73,12 @@ export class PodsEntryRendererComponent extends AbstractKubernetesEntryRendererC
 
   getStatus(entry) {
     const statuses = this.getStatusesList(entry);
-    let status = 'Running';
-    for (let i = statuses.length - 1; i >= 0; i--) {
-      if (statuses[i] !== 'Running') {
-        status = statuses[i];
+    for (status of statuses) {
+      if (status !== 'Running') {
+        return status;
       }
     }
-    return status;
+    return entry.podStatus.podPhase;
   }
 
   isPending(entry) {

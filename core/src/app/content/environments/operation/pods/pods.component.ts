@@ -3,7 +3,7 @@ import { CurrentEnvironmentService } from '../../../environments/services/curren
 import { AppConfig } from '../../../../app.config';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-renderer.component';
@@ -11,10 +11,9 @@ import {
   IDashboardPods,
   DashboardPods
 } from '../../../../shared/datamodel/k8s/dashboard-pods';
-import { Observable } from 'rxjs/Observable';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html',

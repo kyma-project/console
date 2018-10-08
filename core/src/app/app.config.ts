@@ -1,3 +1,5 @@
+import { environment } from '../environments/environment';
+
 let domain = 'kyma.local';
 let gateway_kyma_cx_api_version = 'v1alpha2';
 let idpLogoutUrl = null;
@@ -28,7 +30,7 @@ const config = {
   k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma.cx/${gateway_kyma_cx_api_version}/`,
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1beta1/`,
   k8sApiServerUrl_extensions: `${k8sServerUrl}/apis/extensions/v1beta1/`,
-  k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/remoteenvironment.kyma.cx/v1alpha1/remoteenvironments/`,
+  k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/remoteenvironments/`,
   k8sDashboardApiUrl: `${k8sServerUrl}/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/api/v1/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_ui: `${k8sServerUrl}/apis/ui.kyma.cx/v1alpha1/`,
@@ -38,6 +40,9 @@ const config = {
   lambdasModuleUrl: `https://lambdas-ui.${domain}`,
   orgId: 'my-org-123',
   orgName: 'My Organization',
+  headerTitle: '',
+  headerLogoUrl: '',
+  faviconUrl: 'favicon.ico',
   scope:
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
   serviceCatalogModuleUrl: `https://catalog.${domain}`,
@@ -54,6 +59,15 @@ if (clusterConfig) {
       config[propertyName] = clusterConfig[propertyName];
     }
   }
+}
+
+if (
+  clusterConfig &&
+  (clusterConfig['graphqlApiUrlLocal'] || clusterConfig['graphqlApiUrl'])
+) {
+  config.graphqlApiUrl = environment.localApi
+    ? clusterConfig['graphqlApiUrlLocal']
+    : clusterConfig['graphqlApiUrl'];
 }
 
 // TEMPORARY ;) WORKAROUND, TO BE DELETED ONCE THE GRAPHQL FACADE IS IN PLACE

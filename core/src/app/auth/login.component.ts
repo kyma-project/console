@@ -33,8 +33,21 @@ export class LoginComponent {
 
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocument().then(() => {
-      this.loginService.login();
-    });
+    this.oauthService
+      .loadDiscoveryDocument()
+      .then(() => {
+        this.loginService.login();
+      })
+      .catch(err => {
+        if (
+          err === 'issuer must use Https. Also check property requireHttps.'
+        ) {
+          sessionStorage.setItem(
+            'loginError',
+            JSON.stringify({ type: "Auth issuer doesn't use TLS" })
+          );
+          this.router.navigate(['/loginError']);
+        }
+      });
   }
 }

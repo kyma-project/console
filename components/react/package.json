@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/react-components",
-  "version": "0.0.12",
+  "version": "0.0.28",
   "main": "lib/index.js",
   "private": false,
   "license": "Apache-2.0",
@@ -9,8 +9,8 @@
   },
   "scripts": {
     "start": "npm run styleguide",
-    "build": "webpack",
-    "build:watch": "webpack -w",
+    "build": "webpack --config webpack.config.prod.js",
+    "build:watch": "webpack -w --config webpack.config.prod.js",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "test": "jest src/**; exit 0",
@@ -22,6 +22,7 @@
   "dependencies": {
     "file-loader": "^1.1.11",
     "polished": "^1.8.1",
+    "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"
   },
   "devDependencies": {
@@ -47,10 +48,13 @@
     "raf": "^3.4.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-jsonschema-form": "^1.0.4",
+    "react-modal": "^3.5.1",
     "react-styleguidist": "^6.2.0",
     "react-test-renderer": "^16.0.0",
     "style-loader": "^0.20.2",
     "styled-components": "^3.2.3",
+    "styled-components-grid": "^2.2.0",
     "webpack": "^3.10.0"
   },
   "peerDependencies": {

@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { IdpPresetsService } from './idp-presets.service';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
-import { Observable } from 'rxjs/Observable';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
 const idpPresetCreationSuccess = {
   createIDPPreset: {
@@ -58,15 +58,15 @@ const graphlQLClientServiceMock = {
   request: (url = '', query, variables) => {
     switch (variables.name) {
       case 'test':
-        return Observable.of(idpPresetCreationSuccess);
+        return of(idpPresetCreationSuccess);
       case 'exists':
-        return Observable.of(idpPresetCreationFailure);
+        return of(idpPresetCreationFailure);
       case 'delete':
-        return Observable.of(idpPresetDeletionSuccess);
+        return of(idpPresetDeletionSuccess);
       case 'doesntExist':
-        return Observable.of(idpPresetDeletionFailure);
+        return of(idpPresetDeletionFailure);
       default:
-        return Observable.of(idpPresetsQuery);
+        return of(idpPresetsQuery);
     }
   }
 };
