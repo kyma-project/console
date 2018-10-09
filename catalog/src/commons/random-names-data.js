@@ -2223,7 +2223,6 @@ export const nouns = [
   'pleasure',
   'score',
   'screw',
-  'sex',
   'shop',
   'shower',
   'suit',
