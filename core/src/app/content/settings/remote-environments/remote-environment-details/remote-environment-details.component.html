@@ -10,11 +10,6 @@
           (click)="fetchUrl()">
             Connect Remote Environment
         </button>
-        <button
-          class="tn-button tn-button--small tn-button--text"
-          (click)="openEditRemoteEnvModal()">
-            Edit
-        </button>
       </div>
     </div>
   </div>
@@ -22,7 +17,14 @@
     <section class="sf-section">
       <div class="sf-panel">
         <div class="sf-panel__head">
-          <h2>General Information</h2>
+          <div class="sf-toolbar">
+            <h2>General Information</h2>
+            <div class="sf-toolbar__right">
+              <button class="tn-button tn-button--small tn-button--text sf-toolbar__item" (click)="openEditRemoteEnvModal()">
+                Edit
+              </button>
+            </div>
+          </div>
         </div>
         <div class="sf-panel__content">
       <div class="row">
