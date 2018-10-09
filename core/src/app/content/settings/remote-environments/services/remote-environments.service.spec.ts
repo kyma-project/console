@@ -70,10 +70,10 @@ describe('RemoteEnvironmentsService', () => {
   describe('updateRemoteEnvironment()', () => {
     it('calls request method with params', () => {
       const mutation = `mutation updateRemoteEnvironment($name: String!, $description: String, $labels: Labels) {
-        updateRemoteEnvironment(name: $name, description: $description, labels: $labels) {
-          name
-        }
-      }`;
+      updateRemoteEnvironment(name: $name, description: $description, labels: $labels) {
+        name
+      }
+    }`;
       const dataInput: IRemoteEnvQueryData = getRemoteEnvQueryData();
       const dataForRequest: IRemoteEnvQueryData = getRemoteEnvQueryData();
       remoteEnvironmentsService.updateRemoteEnvironment(dataInput);
