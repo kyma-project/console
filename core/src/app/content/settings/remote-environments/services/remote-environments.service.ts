@@ -2,17 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
-import {
-  IRemoteEnvironment,
-  RemoteEnvironment
-} from '../../../../shared/datamodel/k8s/kyma-api/remote-environment';
 import { AppConfig } from '../../../../app.config';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 
 @Injectable()
 export class RemoteEnvironmentsService {
-  private url = AppConfig.k8sApiServerUrl_remoteenvs;
-
   constructor(private graphQLClientService: GraphQLClientService) {}
 
   public createRemoteEnvironment({
