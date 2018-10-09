@@ -24,15 +24,10 @@ describe('LabelsInputComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.labelsChangeEmitter$).toEqual(new EventEmitter());
   });
 
   describe('NgOnInit', () => {
-    it('initializes labels change emitter', () => {
-      component.labelsChangeEmitter$ = undefined;
-      component.ngOnInit();
-      expect(component.labelsChangeEmitter$).toEqual(new EventEmitter());
-    });
-
     it('initializes labels to empty array if labels has falsy value', () => {
       component.labels = null;
       component.ngOnInit();

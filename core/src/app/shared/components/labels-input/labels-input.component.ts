@@ -26,8 +26,11 @@ export class LabelsInputComponent implements OnInit {
   public newLabel: string;
   public wrongLabelMessage: string;
 
-  public ngOnInit() {
+  public constructor() {
     this.labelsChangeEmitter$ = new EventEmitter();
+  }
+
+  public ngOnInit() {
     this.labels = this.labels || [];
   }
 
