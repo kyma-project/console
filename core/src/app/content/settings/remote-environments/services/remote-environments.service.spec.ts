@@ -4,10 +4,22 @@ import { of } from 'rxjs';
 import { AppConfig } from '../../../../app.config';
 import { RemoteEnvironmentsService } from './remote-environments.service';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
+declare interface IRemoteEnvQueryData {
+  name: string;
+  description: string;
+  labels: {};
+}
 
 describe('RemoteEnvironmentsService', () => {
   let remoteEnvironmentsService: RemoteEnvironmentsService;
   let graphQLClientService: GraphQLClientService;
+  const getRemoteEnvQueryData = (): IRemoteEnvQueryData => {
+    return {
+      name: 'a-name',
+      description: 'a-description',
+      labels: { key1: 'value1' }
+    };
+  };
 
   beforeEach(() => {
     const mockGraphQLClientService = {
@@ -31,44 +43,24 @@ describe('RemoteEnvironmentsService', () => {
   });
 
   describe('createRemoteEnvironment()', () => {
-    it('should call request method with params', () => {
+    it('calls request method with params', () => {
       const mutation = `mutation createRemoteEnvironment($name: String!, $description: String!, $labels: Labels) {
       createRemoteEnvironment(name: $name, description: $description, labels: $labels) {
         name
       }
     }`;
-      const data: {
-        name: string;
-        description: string;
-        labels: {};
-      } = {
-        name: 'a-name',
-        description: 'a-description',
-        labels: { key1: 'value1' }
-      };
-      const dataDeepCopy: {
-        name: string;
-        description: string;
-        labels: {};
-      } = JSON.parse(JSON.stringify(data));
-      remoteEnvironmentsService.createRemoteEnvironment(data);
+      const dataInput: IRemoteEnvQueryData = getRemoteEnvQueryData();
+      const dataForRequest: IRemoteEnvQueryData = getRemoteEnvQueryData();
+      remoteEnvironmentsService.createRemoteEnvironment(dataInput);
       expect(graphQLClientService.request).toHaveBeenCalledWith(
         AppConfig.graphqlApiUrl,
         mutation,
-        data
+        dataForRequest
       );
     });
 
-    it('should return the call to request method', () => {
-      const data: {
-        name: string;
-        description: string;
-        labels: {};
-      } = {
-        name: 'a-name',
-        description: 'a-description',
-        labels: { key1: 'value1' }
-      };
+    it('returns the call to request method', () => {
+      const data: IRemoteEnvQueryData = getRemoteEnvQueryData();
       remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(res => {
         expect(res).toBe('request-response');
       });
@@ -76,44 +68,24 @@ describe('RemoteEnvironmentsService', () => {
   });
 
   describe('updateRemoteEnvironment()', () => {
-    it('should call request method with params', () => {
+    it('calls request method with params', () => {
       const mutation = `mutation updateRemoteEnvironment($name: String!, $description: String, $labels: Labels) {
-      updateRemoteEnvironment(name: $name, description: $description, labels: $labels) {
-        name
-      }
-    }`;
-      const data: {
-        name: string;
-        description: string;
-        labels: {};
-      } = {
-        name: 'a-name',
-        description: 'a-description',
-        labels: { key1: 'value1' }
-      };
-      const dataDeepCopy: {
-        name: string;
-        description: string;
-        labels: {};
-      } = JSON.parse(JSON.stringify(data));
-      remoteEnvironmentsService.updateRemoteEnvironment(data);
+        updateRemoteEnvironment(name: $name, description: $description, labels: $labels) {
+          name
+        }
+      }`;
+      const dataInput: IRemoteEnvQueryData = getRemoteEnvQueryData();
+      const dataForRequest: IRemoteEnvQueryData = getRemoteEnvQueryData();
+      remoteEnvironmentsService.updateRemoteEnvironment(dataInput);
       expect(graphQLClientService.request).toHaveBeenCalledWith(
         AppConfig.graphqlApiUrl,
         mutation,
-        data
+        dataForRequest
       );
     });
 
-    it('should return the call to request method', () => {
-      const data: {
-        name: string;
-        description: string;
-        labels: {};
-      } = {
-        name: 'a-name',
-        description: 'a-description',
-        labels: { key1: 'value1' }
-      };
+    it('returns the call to request method', () => {
+      const data: IRemoteEnvQueryData = getRemoteEnvQueryData();
       remoteEnvironmentsService.updateRemoteEnvironment(data).subscribe(res => {
         expect(res).toBe('request-response');
       });
@@ -121,7 +93,7 @@ describe('RemoteEnvironmentsService', () => {
   });
 
   describe('getRemoteEnvironment()', () => {
-    it('should call request method with params', () => {
+    it('calls request method with params', () => {
       const name = 'some-name';
       const query = `query RemoteEnvironment($name: String!) {
         remoteEnvironment(name: $name){
@@ -146,7 +118,7 @@ describe('RemoteEnvironmentsService', () => {
       );
     });
 
-    it('should return the call to request method', () => {
+    it('returns the call to request method', () => {
       const name = 'some-name';
       remoteEnvironmentsService.getRemoteEnvironment(name).subscribe(res => {
         expect(res).toBe('request-response');
