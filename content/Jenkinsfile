@@ -49,7 +49,6 @@ podTemplate(label: label) {
                             // }
                         }
 
-
                         stage("resolve dependencies $application") {
                             execute("npm install -f")
                         }
@@ -62,19 +61,17 @@ podTemplate(label: label) {
                             execute("make test", ["CI=true"])
                         }
 
-                        // if (isMaster) {
-                        //     stage("IP scan $application (WhiteSource)") {
-                        //         withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                        //             execute("make scan", ["API_KEY=$apikey"])
-                        //         }
-                        //     }
-                        // }
+                        if (isMaster) {
+                            stage("IP scan $application (WhiteSource)") {
+                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
+                                    execute("make scan", ["API_KEY=$apikey"])
+                                }
+                            }
 
-                        // if (isMaster) {
-                        //     stage("security scan $application (Checkmarx)"){
-                        //         scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
-                        //     }
-                        // }
+                            // stage("security scan $application (Checkmarx)"){
+                            //     scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
+                            // }
+                        }
 
                         stage("prepare react-components") {
                             execute("../scripts/prepare-react-components.sh -d react-components")
