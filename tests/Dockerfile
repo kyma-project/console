@@ -12,7 +12,7 @@ ENV NODE_PATH="/usr/local/share/.config/yarn/global/node_modules:${NODE_PATH}"
 
 ENV PATH="/tools:${PATH}"
 
-ENV HEADLESS=false
+ENV HEADLESS=true
 ENV CI=true
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
@@ -26,4 +26,4 @@ LABEL source git@github.com:kyma-project/console.git
 
 COPY /ui-tests /app/src
 
-CMD npm test:cluster
+CMD npm run test:cluster

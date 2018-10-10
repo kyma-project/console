@@ -1,6 +1,5 @@
 import config from '../config';
 import kymaConsole from '../commands/console';
-import request from 'request';
 
 module.exports = {
   createInstance: async (page, instanceTitle, instanceLabel) => {

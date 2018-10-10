@@ -48,7 +48,7 @@ export const SERVICE_INSTANCE_QUERY = gql`
         relatedClusterServiceClassName
       }
       serviceBindings {
-        serviceBindings {
+        items {
           name
           environment
           secret {
@@ -62,6 +62,7 @@ export const SERVICE_INSTANCE_QUERY = gql`
           ready
           failed
           pending
+          unknown
         }
       }
       serviceBindingUsages {

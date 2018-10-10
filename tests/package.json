@@ -12,15 +12,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-jest": "^21.2.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
     "faker": "^4.1.0",
-    "jest": "^23.1.0",
+    "jest": "^23.6.0",
     "promise-retry": "^1.1.1",
-    "puppeteer": "~1.6.0",
-    "request": "^2.85.0",
-    "requestretry": "^1.13.0"
+    "puppeteer": "~1.8.0",
+    "request": "^2.88.0",
+    "requestretry": "^3.0.1"
   },
   "jest": {
     "testRegex": "/tests/(console-basic-test|catalog-ui-test|docs-ui-test).jsx?$"
