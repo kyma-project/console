@@ -20,7 +20,10 @@ describe('RemoteEnvironmentDetailsComponent', () => {
         [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
         {
           provide: RemoteEnvironmentsService,
-          useValue: { getConnectorServiceUrl: () => empty() }
+          useValue: {
+            getConnectorServiceUrl: () => empty(),
+            getRemoteEnvironment: () => empty()
+          }
         },
         {
           provide: ComponentCommunicationService,
@@ -42,7 +45,7 @@ describe('RemoteEnvironmentDetailsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });
