@@ -20,9 +20,7 @@
           <li class="tn-dropdown__item" (click)="toggleDropDown(); createmodal.show();">
             <button _ngcontent-c4="" class="tn-button tn-button--small tn-button--text">+ Create Environment</button>
           </li>
-          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">
-            {{ env.label }}
-          </li>
+          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">{{ env.label }}</li>
         </ul>
       </div>
     </div>
