@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Router, ActivatedRoute, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { cloneDeep } from 'lodash';
+
 import { EnvironmentInfo } from '../content/environments/environment-info';
 import { EnvironmentsService } from '../content/environments/services/environments.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { ExtensionsService } from '../extensibility/services/extensions.service';
-import { navModel } from './app.navigation.data';
+import { navModel, INavTypes } from './app.navigation.data';
 import { CurrentEnvironmentService } from '../content/environments/services/current-environment.service';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-navigation',
@@ -16,7 +16,7 @@ import * as _ from 'lodash';
   host: { class: 'sf-navigation' }
 })
 export class NavigationComponent implements OnInit {
-  @Input() navCtx: string;
+  @Input() navCtx: INavTypes;
   environment: EnvironmentInfo;
   environmentsService: EnvironmentsService;
   extensionsService: ExtensionsService;
@@ -24,7 +24,7 @@ export class NavigationComponent implements OnInit {
   ariaExpanded = false;
   ariaHidden = true;
   currentEnvironmentId = null;
-  currentNavModel = navModel.env;
+  currentNavModel: any;
   private currentEnvironmentSubscription: Subscription;
   private lastEnvironmentId: string;
   isActive: boolean;
@@ -56,11 +56,20 @@ export class NavigationComponent implements OnInit {
       });
   }
 
+  private getUrlTree(link: string): UrlTree {
+    if (link.startsWith('/')) {
+      return this.router.createUrlTree([link]);
+    } else {
+      const r = this.route;
+      return this.currentEnvironmentId
+        ? this.router.createUrlTree([link], { relativeTo: r })
+        : this.router.createUrlTree([`home/settings/${link}`]);
+    }
+  }
+
   changeRoute(link: string) {
     const r = this.route;
-    const urlTree = this.currentEnvironmentId
-      ? this.router.createUrlTree([link], { relativeTo: r })
-      : this.router.createUrlTree([`home/settings/${link}`]);
+    const urlTree = this.getUrlTree(link);
     if (this.router.isActive(urlTree, true)) {
       // do refresh
       this.router
@@ -79,11 +88,14 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
     this.currentNavModel = navModel[this.navCtx];
     this.route.params.subscribe(params => {
-      this.currentNavModel = _.cloneDeep(navModel[this.navCtx]);
+      this.currentNavModel = cloneDeep(navModel[this.navCtx]);
       this.currentEnvironmentId = params['environmentId'];
       this.getExtensions();
-      if (this.currentNavModel.showEnvChooser) {
-        this.getClusterExtensions();
+      if (
+        this.currentNavModel &&
+        (this.currentNavModel.showEnvChooser || this.navCtx === 'cluster')
+      ) {
+        this.getExternalExtensions();
       }
     });
 
@@ -96,27 +108,44 @@ export class NavigationComponent implements OnInit {
     );
   }
 
-  manageExternalViews(extensions) {
+  manageExternalViews(extensions, basePath, navigationContext) {
     const extViews = new Map();
     extensions.forEach(extension => {
       let category = 'External Views';
-      if (extension.spec.navigation && extension.spec.navigation.category) {
-        category = extension.spec.navigation.category;
+      if (
+        !navigationContext ||
+        (extension.spec.placement &&
+          extension.spec.placement.split(',').includes(navigationContext))
+      ) {
+        if (extension.spec.navigationNodes) {
+          extension.spec.navigationNodes.forEach(node => {
+            const path = node.navigationPath.split('/');
+            if (path.length === 1) {
+              if (extension.spec.category) {
+                category = extension.spec.category;
+              }
+              let extensionsCategories = extViews.get(category);
+              if (!extensionsCategories) {
+                extensionsCategories = [];
+                extViews.set(category, extensionsCategories);
+              }
+              extensionsCategories.push(node);
+            }
+          });
+        }
       }
-      let extensionsCategories = extViews.get(category);
-      if (!extensionsCategories) {
-        extensionsCategories = [];
-        extViews.set(category, extensionsCategories);
-      }
-      extensionsCategories.push(extension);
     });
 
-    extViews.forEach((views, category) => {
-      views.forEach(view => {
-        this.addEntryToNavigationGroup(category, {
-          name: view.getLabel(),
-          link: 'extensions/' + view.getId()
-        });
+    extViews.forEach((nodes, category) => {
+      nodes.forEach(node => {
+        this.addEntryToNavigationGroup(
+          category,
+          {
+            name: node.label,
+            link: basePath + node.navigationPath.split('/')[0]
+          },
+          navigationContext
+        );
       });
     });
   }
@@ -125,19 +154,30 @@ export class NavigationComponent implements OnInit {
     this.extensionsService
       .getExtensions(this.currentEnvironmentId)
       .subscribe(extensions => {
-        this.manageExternalViews(extensions);
+        this.manageExternalViews(extensions, 'extensions/', null);
       });
   }
 
-  getClusterExtensions() {
+  getExternalExtensions() {
     this.extensionsService
-      .getClusterExtensions()
+      .getExternalExtensions()
       .subscribe(clusterExtensions => {
-        this.manageExternalViews(clusterExtensions);
+        this.manageExternalViews(
+          clusterExtensions,
+          '/home/extensions/',
+          'cluster'
+        );
+        if (this.currentEnvironmentId) {
+          this.manageExternalViews(
+            clusterExtensions,
+            'extensions/',
+            'environment'
+          );
+        }
       });
   }
 
-  getNavigationGroup(groupName) {
+  getNavigationGroup(groupName, navType: INavTypes) {
     let result = null;
     if (this.currentNavModel.groups) {
       this.currentNavModel.groups.forEach(group => {
@@ -163,11 +203,15 @@ export class NavigationComponent implements OnInit {
   }
 
   hasNavigationGroup(groupName) {
-    return this.getNavigationGroup(groupName) !== null;
+    return this.getNavigationGroup(groupName, this.navCtx) !== null;
   }
 
-  addEntryToNavigationGroup(groupName, entry) {
-    let group = this.getNavigationGroup(groupName);
+  addEntryToNavigationGroup(
+    groupName,
+    entry,
+    navType: INavTypes = 'environment'
+  ) {
+    let group = this.getNavigationGroup(groupName, navType);
     if (!group) {
       group = {
         name: groupName,
