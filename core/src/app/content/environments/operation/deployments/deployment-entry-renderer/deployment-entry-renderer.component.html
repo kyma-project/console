@@ -8,7 +8,7 @@
   <div class="col-1" *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
     <span *ngFor="let instance of entry.boundServiceInstanceNames">{{ instance }}</span>
   </div>
-  <div class="col-2" *ngIf="!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0">
+  <div class="col-1" *ngIf="!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0">
     <span></span>
   </div>
   <div class="col-2 sf-list__label-column">
