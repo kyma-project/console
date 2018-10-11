@@ -6,8 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./status-label.component.scss']
 })
 export class StatusLabelComponent {
-  @Input() statusType: string = 'ok';
+  @Input() statusType: string;
   @Input() description: string = null;
+  private statusClass: string;
   private getStatusClass = (type: string) => {
     switch (type) {
       case 'warning':
@@ -18,5 +19,8 @@ export class StatusLabelComponent {
         return 'tn-label--success';
     }
   };
-  private statusClass: string = this.getStatusClass(this.statusType);
+
+  ngOnInit() {
+    this.statusClass = this.getStatusClass(this.statusType);
+  }
 }

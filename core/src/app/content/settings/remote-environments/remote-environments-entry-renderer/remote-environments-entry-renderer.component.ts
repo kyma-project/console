@@ -5,6 +5,7 @@ import { AbstractKubernetesEntryRendererComponent } from '../../../environments/
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
+import { StatusLabelComponent } from '../../../../shared/components/status-label/status-label.component';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -70,5 +71,16 @@ export class RemoteEnvironmentsEntryRendererComponent
 
   public openRemoteEnvDetails() {
     this.router.navigate(['home/settings/remoteEnvs/' + this.entry.name]);
+  }
+
+  getStatus(entry) {
+    return entry.status;
+  }
+
+  getStatusType(entry) {
+    if (this.getStatus(entry) === 'SERVING') {
+      return 'ok';
+    }
+    return 'warning';
   }
 }

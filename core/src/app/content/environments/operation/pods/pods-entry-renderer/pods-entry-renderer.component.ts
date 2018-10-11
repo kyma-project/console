@@ -72,16 +72,6 @@ export class PodsEntryRendererComponent
     return containerStatuses;
   }
 
-  getStatus(entry) {
-    const statuses = this.getStatusesList(entry);
-    for (status of statuses) {
-      if (status !== 'Running') {
-        return status;
-      }
-    }
-    return entry.podStatus.podPhase;
-  }
-
   isPending(entry) {
     return entry.podStatus.status === 'Pending';
   }
@@ -90,6 +80,16 @@ export class PodsEntryRendererComponent
       entry.podStatus.status === 'Succeeded' ||
       entry.podStatus.status === 'Running'
     );
+  }
+
+  getStatus(entry) {
+    const statuses = this.getStatusesList(entry);
+    for (status of statuses) {
+      if (status !== 'Running') {
+        return status;
+      }
+    }
+    return entry.podStatus.podPhase;
   }
 
   getStatusType(entry) {
