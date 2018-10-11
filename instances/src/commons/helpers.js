@@ -78,6 +78,7 @@ export const statusColor = statusType => {
     case 'FAILED':
       return '#ee0000';
     case 'RUNNING':
+    case 'READY':
       return '#3db350';
     default:
       return '#ffb600';

@@ -102,7 +102,7 @@ function ServiceInstancesTable({
         size: 0.2,
         accesor: el => {
           const elClass = el.clusterServiceClass || el.serviceClass;
-          return elClass.name ? (
+          return elClass && elClass.name ? (
             <ServiceClassButton
               onClick={() => goToServiceClassDetails(elClass.name)}
             >

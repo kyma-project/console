@@ -18,8 +18,11 @@ class DeleteBindingModal extends React.Component {
     super(props);
     this.child = React.createRef();
     this.state = {
-      bindingUsageChecked: true,
-      bindingChecked: props.bindingExists && props.bindingUsageCount === 1,
+      bindingUsageChecked: props.deleteBindingUsage ? true : false,
+      bindingChecked:
+        props.deleteBinding &&
+        props.bindingExists &&
+        props.bindingUsageCount === 1,
     };
   }
 
@@ -49,7 +52,6 @@ class DeleteBindingModal extends React.Component {
 
   handleConfirmation = () => {
     const { bindingUsageChecked, bindingChecked } = this.state;
-
     this.handleDeletion(bindingUsageChecked, bindingChecked);
     this.child.child.handleCloseModal();
   };
@@ -72,6 +74,7 @@ class DeleteBindingModal extends React.Component {
       bindingExists,
       bindingUsageName,
       bindingUsageCount,
+      id,
     } = this.props;
     const { bindingChecked, bindingUsageChecked } = this.state;
 
@@ -80,22 +83,24 @@ class DeleteBindingModal extends React.Component {
     const modalContent = (
       <Fragment>
         <div>
-          <CheckboxWrapper>
-            <CheckboxInput
-              type="checkbox"
-              onChange={this.toggleBindingUsage}
-              checked={bindingUsageChecked}
-            />
-            {`Service Binding Usage "${bindingUsageName}"`}
-            <WarningText checked={bindingUsageChecked}>
-              <IconWrapper>
-                <Icon icon={'\uE0B1'} />
-              </IconWrapper>&nbsp;
-              <strong>Warning:</strong>
-              &nbsp;Removing Service Binding Usage will prevent your application
-              from accessing the instance after its restart.
-            </WarningText>
-          </CheckboxWrapper>
+          {bindingUsageName && (
+            <CheckboxWrapper>
+              <CheckboxInput
+                type="checkbox"
+                onChange={this.toggleBindingUsage}
+                checked={bindingUsageChecked}
+              />
+              {`Service Binding Usage "${bindingUsageName}"`}
+              <WarningText checked={bindingUsageChecked}>
+                <IconWrapper>
+                  <Icon icon={'\uE0B1'} />
+                </IconWrapper>&nbsp;
+                <strong>Warning:</strong>
+                &nbsp;Removing Service Binding Usage will prevent your
+                application from accessing the instance after its restart.
+              </WarningText>
+            </CheckboxWrapper>
+          )}
 
           {bindingExists && (
             <CheckboxWrapper>
@@ -131,7 +136,7 @@ class DeleteBindingModal extends React.Component {
         handleConfirmation={this.handleConfirmation}
         modalOpeningComponent={
           <div style={{ textAlign: 'right' }}>
-            <Button padding={'0'} marginTop={'0'} marginBottom={'0'}>
+            <Button padding={'0'} marginTop={'0'} marginBottom={'0'} id={id}>
               <Icon icon={'\uE03D'} />
             </Button>
           </div>
