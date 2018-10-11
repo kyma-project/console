@@ -20,6 +20,13 @@ export class ServicesEntryRendererComponent
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
+    this.actions = [
+      {
+        function: 'details',
+        name: 'Details'
+      },
+      ...this.actions
+    ];
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;

@@ -13,6 +13,7 @@ import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider';
 import { DataConverter, Filter } from '@kyma-project/y-generic-list';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-apis',
@@ -35,7 +36,9 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
     private http: HttpClient,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
     const converter: DataConverter<IApiDefinition, ApiDefinition> = {
@@ -65,6 +68,12 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
           filters: [new Filter('metadata.name', '', false)]
         };
       });
+  }
+
+  navigateToDetails(entry: any) {
+    this.router.navigate(['details/' + entry.metadata.name], {
+      relativeTo: this.activatedRoute
+    });
   }
 
   public getResourceUrl(kind: string, entry: any): string {
