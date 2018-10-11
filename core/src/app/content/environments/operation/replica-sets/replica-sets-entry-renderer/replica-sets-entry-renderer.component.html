@@ -1,14 +1,9 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="col-2 col-lg-3">
-    <div class="row">
-      <div class="col-1 sf-list__indicator">
-        <span class="sf-indicator" [ngClass]="getClass(entry)"></span>
-      </div>
-      <div class="sf-list__body--primary col-11">{{ entry.objectMeta.name }}</div>
-    </div>
+  <div class="col-2 col-lg-2 sf-list__body--primary">
+  {{ entry.objectMeta.name }}  
   </div>
   <div class="col-1">{{ entry.pods.running }}/{{ entry.pods.desired }}</div>
-  <div class="col-2">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
+  <div class="col-1">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
   <div class="col-3">
     <span *ngFor="let image of entry.containerImages">
       {{ image }}
@@ -18,6 +13,12 @@
     <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.objectMeta.labels)">
       {{ label }}
     </span>
+  </div>
+  <div class="col-2">
+      <app-status-label 
+            [statusType]="getStatusType(entry)">
+        {{getStatus(entry)}}
+      </app-status-label>
   </div>
   <div class="col-1 actions-icon">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
