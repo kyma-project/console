@@ -50,7 +50,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public previousUrl = '';
   public previousEnv = '';
   public displayErrorGlobal = false;
-  public resourceExceeded = true;
+  public resourceExceeded = false;
   public overview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
@@ -159,7 +159,10 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
           this.environmentsService.getResourceQueryStatus(env).pipe(
             map(res => ({
               env,
-              quotaExceeded: res.resourceQuotasStatus.exceeded
+              quotaExceeded:
+                res && res.resourceQuotasStatus
+                  ? res.resourceQuotasStatus.exceeded
+                  : false
             }))
           )
         )

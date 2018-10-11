@@ -49,15 +49,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     @Inject(DOCUMENT) private document: any
   ) {
-    this.appLogoUrl = AppConfig.headerLogoUrl && AppConfig.headerLogoUrl.length > 0 ?
-      (AppConfig.headerLogoUrl.startsWith('data:') ?
-        sanitizer.bypassSecurityTrustResourceUrl(AppConfig.headerLogoUrl)
-        : AppConfig.headerLogoUrl)
-      : FALLBACK_LOGO_URL;
+    this.appLogoUrl =
+      AppConfig.headerLogoUrl && AppConfig.headerLogoUrl.length > 0
+        ? AppConfig.headerLogoUrl.startsWith('data:')
+          ? sanitizer.bypassSecurityTrustResourceUrl(AppConfig.headerLogoUrl)
+          : AppConfig.headerLogoUrl
+        : FALLBACK_LOGO_URL;
 
     document.title = AppConfig.headerTitle || 'Kyma';
 
-    if(AppConfig.faviconUrl) {
+    if (AppConfig.faviconUrl) {
       const faviconEl = document.querySelector('head [rel=icon]');
       document.head.removeChild(faviconEl);
       faviconEl.setAttribute('href', encodeURIComponent(AppConfig.faviconUrl));

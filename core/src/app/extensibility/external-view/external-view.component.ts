@@ -4,8 +4,9 @@ import { ExtensionsService } from '../services/extensions.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
+import { MicroFrontend } from '../../shared/datamodel/k8s/microfrontend';
 
 const contextVarPrefix = 'context.';
 
@@ -16,7 +17,6 @@ const contextVarPrefix = 'context.';
   host: { class: 'sf-main sf-content-external' }
 })
 export class ExternalViewComponent implements OnInit, OnDestroy {
-  private externalViewId: string;
   public externalViewLocation: string;
   private extensionsService: ExtensionsService;
   private currentEnvironmentService: CurrentEnvironmentService;
@@ -42,69 +42,96 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.externalViewId = params['id'];
-      this.extensionsService
-        .getExtensions(this.currentEnvironmentId)
-        .pipe(
-          map(res =>
-            res.filter(extension => {
-              return extension.getId() === this.externalViewId;
-            })
-          ),
-          first(),
-          catchError(error => {
-            this.externalViewLocation = '';
-            throw error;
-          })
-        )
-        .subscribe(
-          extensions => {
-            if (extensions.length > 0) {
-              this.externalViewLocation = extensions[0]
-                ? extensions[0].getLocation()
-                : '';
-              if (this.externalViewLocation === 'minio') {
-                this.externalViewLocation = '';
-              }
-              this.renderExternalView();
-            } else {
-              this.extensionsService
-                .getClusterExtensions()
-                .pipe(
-                  map(res =>
-                    res.filter(clusterExtension => {
-                      return clusterExtension.getId() === this.externalViewId;
-                    })
-                  ),
-                  first(),
-                  catchError(error => {
-                    this.externalViewLocation = '';
-                    throw error;
-                  })
-                )
-                .subscribe(
-                  clusterExtensions => {
-                    this.externalViewLocation = clusterExtensions[0]
-                      ? clusterExtensions[0].getLocation()
-                      : '';
-                    if (this.externalViewLocation === 'minio') {
-                      this.externalViewLocation = '';
-                    }
-                    this.renderExternalView();
-                  },
-                  error => {
-                    this.renderExternalView();
-                  }
-                );
-            }
-          },
-          error => {
-            this.renderExternalView();
+  private getMatchingViewsForPathAndContext(
+    microfrontends: MicroFrontend[],
+    path: string,
+    navigationContext: string
+  ) {
+    const result = [];
+    microfrontends.forEach(mf => {
+      const navigationNode = mf.getNavigationNodeForPath(path);
+      if (navigationNode) {
+        if (navigationContext) {
+          if (
+            mf.spec.placement &&
+            mf.spec.placement.split(',').includes(navigationContext)
+          ) {
+            result.push({ mf, navigationNode });
           }
-        );
+        } else {
+          result.push({ mf, navigationNode });
+        }
+      }
     });
+    return result;
+  }
+
+  ngOnInit() {
+    combineLatest(this.route.params, this.route.data).subscribe(
+      paramsAndData => {
+        const params = paramsAndData[0];
+        const data = paramsAndData[1];
+        let path = params['pathSegment1'];
+        if (params['pathSegment2']) {
+          path += '/' + params['pathSegment2'];
+        }
+        if (params['pathSegment3']) {
+          path += '/' + params['pathSegment3'];
+        }
+
+        this.extensionsService
+          .getExtensions(this.currentEnvironmentId)
+          .pipe(
+            map(res => this.getMatchingViewsForPathAndContext(res, path, null)),
+            first(),
+            catchError(error => {
+              this.externalViewLocation = '';
+              throw error;
+            })
+          )
+          .subscribe(
+            extensions => {
+              if (extensions.length > 0) {
+                this.externalViewLocation =
+                  extensions[0].navigationNode.computedViewUrl;
+                this.renderExternalView();
+              } else {
+                this.extensionsService
+                  .getExternalExtensions()
+                  .pipe(
+                    map(res =>
+                      this.getMatchingViewsForPathAndContext(
+                        res,
+                        path,
+                        data.navigationContext
+                      )
+                    ),
+                    first(),
+                    catchError(error => {
+                      this.externalViewLocation = '';
+                      throw error;
+                    })
+                  )
+                  .subscribe(
+                    clusterExtensions => {
+                      this.externalViewLocation =
+                        clusterExtensions.length > 0
+                          ? clusterExtensions[0].navigationNode.computedViewUrl
+                          : '';
+                      this.renderExternalView();
+                    },
+                    error => {
+                      this.renderExternalView();
+                    }
+                  );
+              }
+            },
+            error => {
+              this.renderExternalView();
+            }
+          );
+      }
+    );
   }
 
   escapeRegExp(string) {
