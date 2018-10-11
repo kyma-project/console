@@ -1,8 +1,13 @@
 <div class="row sf-list__body">
-  <div class="col-1">
-    <span class="sf-indicator" [ngClass]="entry.isStatusOk() ? 'sf-indicator--success' : ''"></span>
-  </div>
-  <div class="col-4 sf-list__body--primary">{{ entry.getName() }}</div>
+  
+  <div class="col-3 sf-list__body--primary">{{ entry.getName() }}</div>
   <div class="col-2">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
+  
   <div class="col-5">{{ entry.spec.url }}</div>
+   <div class="col-2">
+      <app-status-label 
+        [statusType]="getStatusType(entry)">
+        {{getStatus(entry)}}
+      </app-status-label>
+  </div>
 </div>
