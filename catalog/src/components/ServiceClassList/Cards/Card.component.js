@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon } from '@kyma-project/react-components';
+import { Icon, Tooltip } from '@kyma-project/react-components';
 
 import {
   CardWrapper,
@@ -13,15 +13,27 @@ import {
   CardTitle,
   CardCompany,
   CardDescription,
+  CardFooter,
+  CardLabelWrapper,
+  CardLabelWithTooltip,
 } from './styled';
 
-const Card = ({ title, company, description, imageUrl, onClick }) => {
+const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
   const itemId = title
     ? title
         .split(' ')
         .join('-')
         .toLowerCase()
     : '';
+
+  const labelsDescription = {
+    'connected-app':
+      'This Service Class is connected to a given application by Application Connector.',
+    local:
+      'This Service Class provisions physical resources inside the cluster.',
+    showcase:
+      'This Service Class demonstrate a specific functionality. Do not use it on the production.',
+  };
 
   return (
     <CardWrapper data-e2e-id="card">
@@ -38,6 +50,25 @@ const Card = ({ title, company, description, imageUrl, onClick }) => {
         </CardTop>
 
         <CardDescription>{description}</CardDescription>
+
+        <CardFooter>
+          {labels &&
+            Object.keys(labels).length &&
+            Object.keys(labels).map(
+              label =>
+                labels[label] ? (
+                  <CardLabelWrapper key={label}>
+                    <Tooltip content={labelsDescription[label]}>
+                      <CardLabelWithTooltip>
+                        {label === 'connected-app'
+                          ? labels['connected-app']
+                          : label}
+                      </CardLabelWithTooltip>
+                    </Tooltip>
+                  </CardLabelWrapper>
+                ) : null,
+            )}
+        </CardFooter>
       </CardContent>
     </CardWrapper>
   );
@@ -49,6 +80,7 @@ Card.propTypes = {
   description: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   imageUrl: PropTypes.string,
+  labels: PropTypes.object,
 };
 
 export default Card;

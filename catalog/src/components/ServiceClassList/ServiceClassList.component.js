@@ -33,15 +33,56 @@ class ServiceClassList extends React.Component {
     errorMessage: PropTypes.string,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      classFiltersLoaded: false,
+      filtersExists: {
+        basic: false,
+        tag: false,
+        provider: false,
+        connectedApplication: false,
+      },
+    };
+  }
+
   componentWillReceiveProps(newProps) {
+    const { classFiltersLoaded } = this.state;
+
     if (
       newProps.serviceClasses &&
-      newProps.serviceClasses.length > 0 &&
+      newProps.serviceClasses.length &&
       typeof newProps.filterServiceClasses === 'function'
     ) {
       newProps.filterServiceClasses();
     }
+    if (
+      !classFiltersLoaded &&
+      newProps.classFilters &&
+      newProps.classFilters.serviceClassFilters &&
+      newProps.classFilters.serviceClassFilters.length
+    ) {
+      this.checkExistsOfFilters(newProps.classFilters.serviceClassFilters);
+    }
   }
+
+  checkExistsOfFilters = filters => {
+    let filtersExists = {
+      basic: false,
+      tag: false,
+      provider: false,
+      connectedApplication: false,
+    };
+
+    filters.forEach(element => {
+      if (element.values.length > 1) filtersExists[element.name] = true;
+    });
+
+    this.setState({
+      classFiltersLoaded: true,
+      filtersExists: filtersExists,
+    });
+  };
 
   render() {
     const {
@@ -50,12 +91,14 @@ class ServiceClassList extends React.Component {
       activeTagsFilters,
       classFilters,
       clearAllActiveFilters,
+      serviceClasses,
       setServiceClassesFilter,
       history,
       searchFn,
       filterTagsAndSetActiveFilters,
       errorMessage,
     } = this.props;
+    const { filtersExists } = this.state;
 
     const filterFn = e => {
       filterTagsAndSetActiveFilters('search', e.target.value);
@@ -69,8 +112,28 @@ class ServiceClassList extends React.Component {
     const activeFilters = activeClassFilters.activeServiceClassFilters || {};
     const activeCategoriesFilters = activeTagsFilters.activeTagsFilters || {};
     const activeFiltersCount =
-      activeFilters.provider.length + activeFilters.tag.length;
+      activeFilters.basic.length +
+      activeFilters.provider.length +
+      activeFilters.tag.length +
+      activeFilters.connectedApplication.length;
     let items = classList.filteredServiceClasses || [];
+
+    // TODO: Remove this nasty workaround for apparent bug
+    // https://github.com/apollographql/apollo-client/issues/2920
+    // Possible solution: do resolver logic on component side
+    items = items.map(entry => {
+      const remoteEntry = serviceClasses.find(
+        remoteEntry =>
+          remoteEntry.displayName === entry.displayName ||
+          remoteEntry.externalName === entry.externalName ||
+          remoteEntry.name === entry.name,
+      );
+
+      return {
+        ...entry,
+        ...remoteEntry,
+      };
+    });
 
     //its used for filtering class which does not have any name in it (either externalName, displayName or name).
     items = items.filter(e => e.displayName || e.externalName || e.name);
@@ -136,6 +199,7 @@ class ServiceClassList extends React.Component {
           {!classFilters.loading && (
             <FilterList
               filters={classFilters.serviceClassFilters}
+              filtersExists={filtersExists}
               active={activeFilters}
               activeFiltersCount={activeFiltersCount}
               activeTagsFilters={activeCategoriesFilters}

@@ -14,7 +14,7 @@ export const DropdownWrapper = styled.div`
   background: #fff;
   border-radius: 4px;
   color: #32363a;
-  z-index: 10;
+  z-index: 200;
   display: ${props => (props.visible ? 'block' : 'none')};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 2px 14px 0 rgba(0, 0, 0, 0.1);
 

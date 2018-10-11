@@ -15,7 +15,7 @@ const ActiveFiltersList = ({
   clearAllActiveFilters,
   onCancel,
 }) => {
-  const filterCategories = ['tag', 'provider'];
+  const filterCategories = ['basic', 'tag', 'provider', 'connectedApplication'];
 
   return (
     <ActiveFiltersListWrapper data-e2e-id="active-filters-wrapper">
