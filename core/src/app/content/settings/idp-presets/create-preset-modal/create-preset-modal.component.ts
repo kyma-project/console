@@ -76,7 +76,6 @@ export class CreatePresetModalComponent {
       },
       err => {
         this.error = `Error: ${err.message}`;
-        console.log(err);
       }
     );
   }
