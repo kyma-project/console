@@ -41,11 +41,16 @@ const Filter = ({
           return (
             <Item
               key={item.name}
-              data-e2e-id="filter-item"
+              data-e2e-id={`filter-item-${name}-${item.name}`}
               onClick={() => onFilterClick(item.value)}
             >
               <Checkmark checked={active} />
-              <Text color="#32363b" fontSize="14px" lineHeight="1.29">
+              <Text
+                color="#32363b"
+                fontSize="14px"
+                lineHeight="1.29"
+                data-e2e-id="filter-item"
+              >
                 {item.name}
               </Text>
             </Item>

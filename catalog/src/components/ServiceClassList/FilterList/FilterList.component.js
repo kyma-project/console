@@ -5,7 +5,11 @@ import { Dropdown, Search, Separator } from '@kyma-project/react-components';
 
 import Filter from './Filter.component';
 
-import { FilterContainer, SearchWrapper } from './styled';
+import {
+  FilterContainer,
+  SearchWrapper,
+  ClearAllActiveFiltersButton,
+} from './styled';
 
 const FilterList = ({
   filters,
@@ -15,6 +19,7 @@ const FilterList = ({
   onSeeMore,
   activeTagsFilters,
   activeFiltersCount,
+  clearAllActiveFilters,
 }) => (
   <Dropdown
     name={activeFiltersCount ? `Filter (${activeFiltersCount})` : 'Filter'}
@@ -33,6 +38,13 @@ const FilterList = ({
         onChange={onSearch}
         id="search-filter"
       />
+      <ClearAllActiveFiltersButton
+        onClick={clearAllActiveFilters}
+        data-e2e-id="clear-all-filters"
+      >
+        Clear all filters
+      </ClearAllActiveFiltersButton>
+      <Separator margin="15px -16px 15px" />
     </SearchWrapper>
     <FilterContainer data-e2e-id="filter">
       {filters &&
@@ -65,6 +77,7 @@ FilterList.propTypes = {
   filters: PropTypes.array,
   active: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  clearAllActiveFilters: PropTypes.func.isRequired,
 };
 
 export default FilterList;

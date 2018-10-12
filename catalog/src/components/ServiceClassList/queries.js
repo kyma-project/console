@@ -16,8 +16,8 @@ export const FILTERED_CLASSES_QUERY = gql`
 `;
 
 export const CLASS_FILTERS_QUERY = gql`
-  query serviceClassFilters($environment: String!) {
-    serviceClassFilters(environment: $environment) @client {
+  query serviceClassFilters {
+    serviceClassFilters @client {
       name
       isMore
       values @client {

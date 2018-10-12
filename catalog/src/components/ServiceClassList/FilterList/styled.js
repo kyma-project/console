@@ -88,3 +88,21 @@ export const SearchWrapper = styled.div`
   padding: 10px;
   padding-bottom: 0;
 `;
+
+export const ClearAllActiveFiltersButton = styled.button`
+  color: #0a6ed1;
+  padding: 0;
+  margin: 16px 0 0 0;
+  font-family: '72';
+  font-size: 14px;
+  font-weight: normal;
+  font-weight: normal;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    color: #0a6ed1;
+  }
+`;
