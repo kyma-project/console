@@ -3,30 +3,6 @@
   text-transform: uppercase;
   position: relative;
   cursor: default;
-  .tooltip {
-    position: absolute;
-    background: #21262c;
-    padding: 4px 8px;
-    border-radius: 2px;
-    color: white;
-    top: 150%;
-    left: 0;
-    text-transform: none;
-    font-size: 0.9rem;
-    display: none;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: -0.45rem;
-      left: 39%;
-      width: 0;
-      height: 0;
-      border-left: 0.45rem solid transparent;
-      border-right: 0.45rem solid transparent;
-      border-bottom: 0.45rem solid #21262c;
-    }
-  }
 }
 
 .status-label__with-description {

@@ -121,6 +121,7 @@ import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
+import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -210,7 +211,8 @@ import { StatusLabelComponent } from './shared/components/status-label/status-la
     CreateRemoteEnvironmentModalComponent,
     LabelsInputComponent,
     RequestErrorComponent,
-    StatusLabelComponent
+    StatusLabelComponent,
+    TooltipComponent
   ],
   imports: [
     BrowserModule,

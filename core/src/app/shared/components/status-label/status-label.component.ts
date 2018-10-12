@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { TooltipComponent } from '../tooltip/tooltip.component';
 
 @Component({
   selector: 'app-status-label',
@@ -9,7 +10,8 @@ export class StatusLabelComponent {
   @Input() statusType: string;
   @Input() description: string = null;
   private statusClass: string;
-  private getStatusClass = (type: string) => {
+
+  public getStatusClass = (type: string) => {
     switch (type) {
       case 'warning':
         return 'tn-label--warning';
