@@ -36,6 +36,7 @@ import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets
 import { ResourcesComponent } from '../content/environments/configuration/resources/resources.component';
 import { LoginErrorComponent } from '../content/login-error/login-error.component';
 import { RequestErrorComponent } from '../content/request-error/request-error.component';
+import { UnsavedChanges } from './unsaved-changes';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
@@ -81,8 +82,16 @@ const appRoutes: Routes = [
             data: { path: '/details/:name' }
           },
           { path: 'lambdas', component: LambdasComponent },
-          { path: 'lambdas/create', component: LambdasComponent },
-          { path: 'lambdas/details/:name', component: LambdasComponent },
+          {
+            path: 'lambdas/create',
+            component: LambdasComponent,
+            canDeactivate: [UnsavedChanges]
+          },
+          {
+            path: 'lambdas/details/:name',
+            component: LambdasComponent,
+            canDeactivate: [UnsavedChanges]
+          },
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },

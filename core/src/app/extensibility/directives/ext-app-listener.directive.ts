@@ -156,6 +156,10 @@ export class ExtAppListenerDirective {
     if ('luigi.navigation.open' === data.msg) {
       this.handleNavigation(data);
     }
+
+    if ('luigi.unsaved-changes' === data.msg) {
+      sessionStorage.setItem('unsavedChanges', data.unsavedChanges);
+    }
   }
 
   // support for legacy integration of lambdas, service catalog and instances views

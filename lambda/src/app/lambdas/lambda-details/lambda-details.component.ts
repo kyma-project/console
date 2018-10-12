@@ -7,7 +7,13 @@ import {
   AfterViewInit,
   HostListener,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  CanDeactivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
 import 'brace';
 import 'brace/ext/language_tools';
 import 'brace/snippets/javascript';
@@ -221,10 +227,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   onCodeChange(event) {
     this.lambda.spec.function = event;
+    this.warnUnsavedChanges(true);
   }
 
   onDependencyChange(event) {
     this.lambda.spec.deps = event;
+    this.warnUnsavedChanges(true);
   }
 
   selectedServiceInstance($event): object {
@@ -257,6 +265,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   updateFunction(): void {
+    this.warnUnsavedChanges(false);
     this.lambda.metadata.labels = this.changeLabels();
     this.lambda.spec.runtime = this.kind;
     this.lambda.spec.topic =
@@ -627,6 +636,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   createFunction(): void {
+    this.warnUnsavedChanges(false);
     this.lambda.metadata.namespace = this.environment;
     this.lambda.spec.runtime = this.kind;
     if (this.selectedTriggers.length > 0) {
@@ -844,6 +854,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.newLabel = '';
       this.wrongLabel = false;
       this.isLambdaFormValid = true;
+      this.warnUnsavedChanges(true);
     } else {
       this.isLambdaFormValid = this.newLabel ? false : true;
       this.wrongLabel = this.newLabel ? true : false;
@@ -857,6 +868,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   updateLabel(label) {
+    this.warnUnsavedChanges(true);
     this.removeLabel(label);
     this.newLabel = label;
     setTimeout(() => {
@@ -1025,14 +1037,17 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   handleBindingStateEmitter($event): void {
     this.bindingState = $event;
+    this.warnUnsavedChanges(true);
   }
 
   handleEnvEmitter($event): void {
     this.lambda.spec.deployment.spec.template.spec.containers[0].env = $event;
+    this.warnUnsavedChanges(true);
   }
 
   handleEventEmitter($event): void {
     this.selectedTriggers = $event;
+    this.warnUnsavedChanges(true);
   }
 
   handleHttpEmitter($event): void {
@@ -1046,6 +1061,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
         this.isHTTPTriggerAdded = true;
         this.isHTTPTriggerAuthenticated = (trigger as HTTPEndpoint).isAuthEnabled;
+        this.warnUnsavedChanges(true);
 
         if ((trigger as HTTPEndpoint).isAuthEnabled) {
           this.authType = (trigger as HTTPEndpoint).authentication.type;
@@ -1054,5 +1070,17 @@ export class LambdaDetailsComponent implements AfterViewInit {
         }
       }
     });
+  }
+
+  warnUnsavedChanges(hasChanges: boolean): void {
+    let message = 'Discard changes for Lambda?';
+    if (!hasChanges) {
+      message = '';
+    }
+
+    window.parent.postMessage(
+      { msg: 'luigi.unsaved-changes', unsavedChanges: message },
+      '*',
+    );
   }
 }
