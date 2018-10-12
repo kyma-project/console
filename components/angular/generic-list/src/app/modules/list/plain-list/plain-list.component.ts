@@ -112,8 +112,10 @@ export class PlainListComponent implements OnChanges {
         this.errorMessage = error.error
           ? error.error.message
             ? error.error.message
-            : error.error.errors[0].message
-          : error.message;
+            : error.error.errors
+              ? error.error.errors[0].message
+              : error.message
+          : error.message || error;
         this.data = [];
         if (!(this.changeDetector as ViewRef).destroyed) {
           this.changeDetector.detectChanges();
