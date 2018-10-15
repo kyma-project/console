@@ -16,13 +16,13 @@
               <div class="tn-form__item">
                 <label class="tn-form__label">Description *</label>
                 <input autofocus class="tn-form__control" type="text" name="remoteEnvDescription"
-                    [(ngModel)]="description"
+                    [(ngModel)]="updatedDescription"
                     placeholder="Specify a description for your Remote Environment"
                 >
               </div>
               <div class="tn-form__item">
                 <label class="tn-form__label">Labels</label>
-                <app-labels-input [labels]="labels" (labelsChangeEmitter$)="updateLabelsData($event)"
+                <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)"
                 ></app-labels-input>
               </div>
             </div>

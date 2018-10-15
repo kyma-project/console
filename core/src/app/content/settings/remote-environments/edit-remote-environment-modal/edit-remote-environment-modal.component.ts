@@ -10,22 +10,22 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./edit-remote-environment-modal.component.scss']
 })
 export class EditRemoteEnvironmentModalComponent {
-  @Input() public description: string;
-  @Input() public labels: string[];
+  @Input() public initialDescription: string;
+  @Input() public initialLabels: string[];
   @Input() public name: string;
 
   @ViewChild('editRemoteEnvsForm') editRemoteEnvsForm: NgForm;
 
   public isActive = false;
   public wrongLabels: boolean;
+  public updatedLabels: string[];
+  public updatedDescription: string;
   public error: string;
 
   public constructor(
     private remoteEnvironmentsService: RemoteEnvironmentsService,
     private communicationService: ComponentCommunicationService
-  ) {
-    this.labels = this.labels || [];
-  }
+  ) {}
 
   public show(): void {
     this.resetForm();
@@ -37,6 +37,8 @@ export class EditRemoteEnvironmentModalComponent {
   }
 
   private resetForm(): void {
+    this.updatedDescription = this.initialDescription;
+    this.updatedLabels = this.initialLabels ? [...this.initialLabels] : [];
     this.wrongLabels = false;
     this.error = '';
   }
@@ -45,7 +47,7 @@ export class EditRemoteEnvironmentModalComponent {
     return Boolean(
       this.editRemoteEnvsForm &&
         this.editRemoteEnvsForm.dirty &&
-        this.description &&
+        this.updatedDescription &&
         !this.wrongLabels
     );
   }
@@ -57,16 +59,18 @@ export class EditRemoteEnvironmentModalComponent {
     labels?: string[];
     wrongLabels?: boolean;
   }): void {
-    this.labels = labels !== undefined ? labels : this.labels;
+    this.updatedLabels = labels !== undefined ? labels : this.updatedLabels;
     this.wrongLabels =
       wrongLabels !== undefined ? wrongLabels : this.wrongLabels;
+    // mark form as dirty when deleting an existing label
+    this.editRemoteEnvsForm.form.markAsDirty();
   }
 
   public save(): void {
     const data = {
       name: this.name,
-      description: this.description,
-      labels: (this.labels || []).reduce((acc, label) => {
+      description: this.updatedDescription,
+      labels: (this.updatedLabels || []).reduce((acc, label) => {
         return { ...acc, [label.split(':')[0]]: label.split(':')[1] };
       }, {})
     };

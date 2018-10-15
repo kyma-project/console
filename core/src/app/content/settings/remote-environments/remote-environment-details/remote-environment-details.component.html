@@ -129,6 +129,6 @@
 <app-information-modal #infoModal></app-information-modal>
 <app-edit-remote-environment-modal #editRemoteEnvModal *ngIf="remoteEnvironment"
     [name]="remoteEnvironment.name"
-    [description]="remoteEnvironment.description"
-    [labels]="transformedLabels">
+    [initialDescription]="remoteEnvironment.description"
+    [initialLabels]="transformedLabels">
   </app-edit-remote-environment-modal>
