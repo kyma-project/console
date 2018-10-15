@@ -68,6 +68,7 @@ describe('LabelsInputComponent', () => {
     beforeEach(() => {
       component.wrongLabelMessage = '';
       component.newLabel = 'any:label';
+      spyOn(component, 'validateNewLabel');
     });
 
     it('does not update labels if no label input content', () => {
@@ -81,6 +82,11 @@ describe('LabelsInputComponent', () => {
       component.wrongLabelMessage = 'error-info';
       component.addLabel();
       expect(component.labels).toEqual([]);
+    });
+
+    it('validates label', () => {
+      component.addLabel();
+      expect(component.validateNewLabel).toHaveBeenCalled();
     });
 
     describe('valid label', () => {

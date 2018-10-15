@@ -4,7 +4,7 @@
     <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
   </span>
   <input #labelsInput type="text" class="tn-form__control" name="labelsInput"
-      [(ngModel)]="newLabel" (ngModelChange)=validateNewLabel()
+      [(ngModel)]="newLabel"
       (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" (blur)="addLabel()" [ngClass]="{'has-labels': labels.length > 0}"
     placeholder="{{labels.length === 0 ? 'Specify one or more labels for your Remote Environment' : ''}}">
 </div>

@@ -42,6 +42,7 @@ export class LabelsInputComponent implements OnInit {
   }
 
   public addLabel() {
+    this.validateNewLabel();
     if (this.newLabel && !this.wrongLabelMessage) {
       this.labels.push(
         this.newLabel

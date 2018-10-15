@@ -84,7 +84,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
     beforeEach(() => {
       component.editRemoteEnvsForm.control.markAsDirty();
       component.wrongLabels = false;
-      component.description = 'a-valid-desc';
+      component.updatedDescription = 'a-valid-desc';
     });
 
     it('returns true if fields are valid', () => {
@@ -99,7 +99,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
     });
 
     it('returns false if description input is empty', () => {
-      component.description = '';
+      component.updatedDescription = '';
       const actual: boolean = component.isReadyToSave();
       expect(actual).toBe(false);
     });
@@ -113,15 +113,15 @@ describe('EditRemoteEnvironmentModalComponent', () => {
 
   describe('updateLabelsData', () => {
     it('updates labels with input value', () => {
-      component.labels = ['key1:val1'];
+      component.initialLabels = ['key1:val1'];
       component.updateLabelsData({ labels: ['key1:val1', 'key2:val:2'] });
-      expect(component.labels).toEqual(['key1:val1', 'key2:val:2']);
+      expect(component.updatedLabels).toEqual(['key1:val1', 'key2:val:2']);
     });
 
     it('does not update labels if no input value', () => {
-      component.labels = ['key1:val1'];
+      component.updatedLabels = ['key1:val1'];
       component.updateLabelsData({});
-      expect(component.labels).toEqual(['key1:val1']);
+      expect(component.updatedLabels).toEqual(['key1:val1']);
     });
 
     it('updates labels validation field with input value', () => {
@@ -144,8 +144,8 @@ describe('EditRemoteEnvironmentModalComponent', () => {
         'updateRemoteEnvironment'
       ).and.returnValue(empty());
       component.name = 're-name';
-      component.description = 're-desc';
-      component.labels = ['key1:val1'];
+      component.updatedDescription = 're-desc';
+      component.updatedLabels = ['key1:val1'];
       const expectedData = {
         name: 're-name',
         description: 're-desc',
