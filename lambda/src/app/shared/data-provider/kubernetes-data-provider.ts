@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+import { refCount, publishReplay, catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   DataConverter,
@@ -11,8 +12,6 @@ import {
 } from '@kyma-project/y-generic-list';
 import { List } from '../datamodel/list';
 import { IMetaDataOwner } from '../datamodel/k8s/generic/meta-data-owner';
-import 'rxjs/add/operator/publishReplay';
-import 'rxjs/add/operator/map';
 
 export class KubernetesDataProvider<
   S extends IMetaDataOwner,
@@ -45,19 +44,21 @@ export class KubernetesDataProvider<
               `Bearer ${this.token}`,
             ),
           })
-          .map(res => {
-            return res.items.map(item => {
-              return this.dataConverter
-                ? this.dataConverter.convert(item)
-                : item;
-            });
-          })
-          .catch(error => {
-            observer.error(error);
-            throw error;
-          })
-          .publishReplay(1)
-          .refCount();
+          .pipe(
+            map(res => {
+              return res.items.map(item => {
+                return this.dataConverter
+                  ? this.dataConverter.convert(item)
+                  : item;
+              });
+            }),
+            catchError(error => {
+              observer.error(error);
+              throw error;
+            }),
+            publishReplay(1),
+            refCount(),
+          );
       }
 
       this.observableDataSource.subscribe(res => {

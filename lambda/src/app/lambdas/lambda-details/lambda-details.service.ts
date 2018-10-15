@@ -13,9 +13,8 @@ import {
   IFunctionSpec,
 } from './../../shared/datamodel/k8s/function';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { of } from 'rxjs/observable/of';
 import { Lambda } from '../../shared/datamodel/k8s/function';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AppConfig } from '../../app.config';
