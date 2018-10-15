@@ -8,81 +8,86 @@
             <span>{{ environment.getLabel() }}</span>
         </h1>
         <div class="sf-toolbar__right">
-                    <button class="tn-button tn-button--text tn-button--small sf-toolbar__item" (click)="openUploadResourceModal()" *ngIf="!showSelectFileButton">
-            + Deploy new resource to the environment
-        </button>
+            <button class="tn-button tn-button--text tn-button--small sf-toolbar__item" (click)="openUploadResourceModal()"
+                *ngIf="!showSelectFileButton">
+                + Deploy new resource to the environment
+            </button>
         </div>
     </div>
-      <div class="sf-section">
-    <div class="row">
-        <div class="col">
-            <div class="sf-panel">
-                <div class="sf-panel__content">
-                    <div class="tn-form__group">
+    <div class="sf-section">
+        <div class="row">
+            <div class="col">
+                <div class="sf-panel">
+                    <div class="sf-panel__content">
+                        <div class="tn-form__group">
+                            <div class="tn-form__group">
+                                <div class="tn-form__item">
+                                    <label class="tn-form__label">Name</label>
+                                    <input class="tn-form__control" type="text" value="{{environment.getLabel()}}"
+                                        readonly>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tn-form__group">
                             <div class="tn-form__item">
-                                <label class="tn-form__label">Name</label>
-                                <input class="tn-form__control" type="text" value="{{environment.getLabel()}}" readonly>
+                                <label class="tn-form__label">Environment-ID</label>
+                                <input class="tn-form__control" type="text" value="{{environment.getUid()}}" readonly>
                             </div>
                         </div>
                     </div>
-                    <div class="tn-form__group">
-                        <div class="tn-form__item">
-                            <label class="tn-form__label">Environment-ID</label>
-                            <input class="tn-form__control" type="text" value="{{environment.getUid()}}" readonly>
-                        </div>
                 </div>
+            </div>
+            <div class="col">
+                <div class="sf-panel sf-panel-counters">
+                    <div class="sf-panel__content">
+                        <div class="row">
+                            <div class="col">
+                                <div class="sf-sku sf-sku--center">
+                                    <span class="sf-sku__value">{{ services ? services.length : 0 }}</span>
+                                    <a class="sf-sku__label" routerLink="../services">{{ services &&
+                                        (services.length===1)
+                                        ? "Service" : "Services" }}</a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="sf-sku sf-sku--center">
+                                    <span class="sf-sku__value">{{ boundRemoteEnvironmentsCount | async }}</span>
+                                    <span>{{ (boundRemoteEnvironmentsCount | async) ===1 ? "Bound Remote Environment" :
+                                        "Bound Remote Environments"}}</span>
+                                    <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Remote
+                                        Environments</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="sf-panel sf-panel-counters">
-                <div class="sf-panel__content">
-                    <div class="row">
-                        <div class="col">
-                            <div class="sf-sku sf-sku--center">
-                                <span class="sf-sku__value">{{ services ? services.length : 0 }}</span>
-                                <a class="sf-sku__label" routerLink="../services">Services</a>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="sf-sku sf-sku--center">
-                                <span class="sf-sku__value">{{ boundRemoteEnvironmentsCount | async }}</span>
-                                <span>Bound Remote Environments</span>
-                                <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Remote Environments</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
     </div>
-    </div>
-</div>
 
     <div class="sf-section" *ngIf="remoteEnvironments && remoteEnvironments.length > 0">
         <div class="sf-panel">
             <div class="sf-panel__head">
                 <h2 class="sf-section__headline">Connected Remote Environments</h2>
             </div>
-        <table class="sf-table">
-            <thead class="sf-table__head">
-                <th class="sf-table__th">Name</th>
-                <th class="sf-table__th">Actions</th>
-            </thead>
-            <tbody class="sf-table__body">
-                <tr *ngFor="let env of remoteEnvironments">
-                    <td class="sf-table__td sf-table__td--primary">
-                        <a routerLink="/home/settings/remoteEnvs/{{env.name}}">{{ env.name }}</a>
-                    </td>
-                    <td class="sf-table__td sf-table__td--min sf-table__td--text-right">
-                      <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler"
-                                      [actions]="actions"></y-list-actions>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="sf-table">
+                <thead class="sf-table__head">
+                    <th class="sf-table__th">Name</th>
+                    <th class="sf-table__th">Actions</th>
+                </thead>
+                <tbody class="sf-table__body">
+                    <tr *ngFor="let env of remoteEnvironments">
+                        <td class="sf-table__td sf-table__td--primary">
+                            <a routerLink="/home/settings/remoteEnvs/{{env.name}}">{{ env.name }}</a>
+                        </td>
+                        <td class="sf-table__td sf-table__td--min sf-table__td--text-right">
+                            <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 
 <app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>
