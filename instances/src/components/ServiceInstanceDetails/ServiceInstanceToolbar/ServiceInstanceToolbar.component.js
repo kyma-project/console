@@ -21,7 +21,7 @@ const ServiceInstanceToolbar = ({
     await deleteServiceInstance(serviceInstance.name);
     setTimeout(() => {
       history.goBack();
-    }, 300);
+    }, 100);
   };
 
   const goToServiceInstances = () => {

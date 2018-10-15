@@ -1,11 +1,10 @@
 const defaults = {
-    activeFilters: {
-      labels: [],
-      search: '',
-      __typename: 'ActiveServiceClassFilters',
-    },
-    allFilters: [],
-    filteredItems: [],
-  };
+  activeFilters: {
+    labels: [],
+    search: '',
+    __typename: 'ActiveServiceClassFilters',
+  },
+  allFilters: [],
+};
 
-  module.exports = defaults;
+module.exports = defaults;

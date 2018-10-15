@@ -12,6 +12,7 @@ import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBi
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
+import { transformDataScalarStringsToObjects } from '../../store/transformers';
 
 class ServiceInstanceDetails extends React.Component {
   state = { defaultActiveTabIndex: 0 };
@@ -22,22 +23,24 @@ class ServiceInstanceDetails extends React.Component {
   render() {
     const { serviceInstance = {}, deleteServiceInstance, history } = this.props;
 
-    let instance =
-      serviceInstance.serviceInstance && serviceInstance.serviceInstance;
-
-    const serviceClass =
-      instance && (instance.serviceClass || instance.clusterServiceClass);
-
-    if (serviceInstance.loading) {
+    if (serviceInstance && serviceInstance.loading) {
       return (
         <EmptyList>
           <Spinner size="40px" color="#32363a" />
         </EmptyList>
       );
     }
+
+    const instance =
+      serviceInstance &&
+      transformDataScalarStringsToObjects(serviceInstance.serviceInstance);
+    const serviceClass =
+      instance && (instance.serviceClass || instance.clusterServiceClass);
+
     if (!serviceInstance.loading && !instance) {
       return <EmptyList>Service Instance doesn't exist</EmptyList>;
     }
+
     return (
       <ThemeWrapper>
         <ServiceInstanceToolbar
@@ -58,7 +61,6 @@ class ServiceInstanceDetails extends React.Component {
             defaultActiveTabIndex={this.state.defaultActiveTabIndex}
             callback={this.callback}
             serviceInstance={instance}
-            serviceInstanceRefetch={serviceInstance.refetch}
           />
           {serviceClass && <ServiceInstanceTabs serviceClass={serviceClass} />}
         </ServiceInstanceWrapper>

@@ -9,20 +9,26 @@ import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
 
 import { ServiceInstancesWrapper } from './styled';
+import { transformDataScalarStringsToObjects } from '../../store/transformers';
 
 class ServiceInstances extends React.Component {
+  componentDidMount() {
+    if (typeof this.props.filterItems === 'function') {
+      this.props.filterItems();
+    }
+  }
+
   componentWillReceiveProps(newProps) {
+    const { allItems } = newProps;
+    const oldAllInstances =
+      (this.props.allItems && this.props.allItems.serviceInstances) || {};
     if (
-      newProps.serviceInstances &&
-      newProps.serviceInstances.serviceInstances &&
-      newProps.serviceInstances.serviceInstances.length > 0 &&
-      typeof newProps.filterItems === 'function' &&
-      !newProps.serviceInstances.serviceInstances.error &&
-      newProps.filteredItems &&
-      newProps.filteredItems.filteredItems &&
-      !newProps.filteredItems.filteredItems.error
+      typeof this.props.filterItems === 'function' &&
+      allItems &&
+      allItems.serviceInstances &&
+      allItems.serviceInstances.length !== oldAllInstances.length
     ) {
-      newProps.filterItems();
+      this.props.filterItems();
     }
   }
 
@@ -33,29 +39,32 @@ class ServiceInstances extends React.Component {
       filteredItems = {},
       allFilters = {},
       activeFilters = {},
-      serviceInstances = {},
+      allItems = {},
     } = this.props;
 
-    const allItems = serviceInstances.serviceInstances || [];
-    const items = filteredItems.filteredItems || [];
+    if (allItems.loading || filteredItems.loading) {
+      return null;
+    }
+
+    const allInstances = transformDataScalarStringsToObjects(
+      allItems.serviceInstances,
+    );
 
     const filters = allFilters.allFilters || [];
     const allActiveFilters = activeFilters.activeFilters || {};
     const labelFilter = filters.find(val => val.name === 'labels');
 
-    // TODO: Remove this nasty workaround for apparent bug
-    // https://github.com/apollographql/apollo-client/issues/2920
-    // Possible solution: do resolver logic on component side
-    const entries = items.map(entry => {
-      const remoteEntry = allItems.find(
-        remoteEntry => remoteEntry.name === entry.name,
+    let items;
+    if (!allActiveFilters.search && allActiveFilters.labels.length === 0) {
+      items = allInstances;
+    } else {
+      const filteredInstances = filteredItems.filteredItems || [];
+      items = allInstances.filter(
+        instance =>
+          filteredInstances.findIndex(item => item.name === instance.name) !==
+          -1,
       );
-
-      return {
-        ...entry,
-        ...remoteEntry,
-      };
-    });
+    }
 
     return (
       <ThemeWrapper>
@@ -63,14 +72,9 @@ class ServiceInstances extends React.Component {
           filterClassesAndSetActiveFilters={filterClassesAndSetActiveFilters}
           labelFilter={labelFilter}
           allActiveFilters={allActiveFilters}
-          serviceInstancesExists={allItems.length > 0}
+          serviceInstancesExists={allInstances.length > 0}
         />
 
-        <NotificationMessage
-          type="error"
-          title="Error"
-          message={serviceInstances.error && serviceInstances.error.message}
-        />
         <NotificationMessage
           type="error"
           title="Error"
@@ -79,10 +83,8 @@ class ServiceInstances extends React.Component {
 
         <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
           <ServiceInstancesTable
-            data={entries}
+            data={items}
             deleteServiceInstance={deleteServiceInstance}
-            refetch={serviceInstances.refetch}
-            loading={serviceInstances.loading}
           />
         </ServiceInstancesWrapper>
       </ThemeWrapper>

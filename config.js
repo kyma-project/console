@@ -5,8 +5,8 @@ window.clusterConfig = {
   graphqlApiUrl: 'https://ui-api.' + domain + '/graphql',
   graphqlApiUrlLocal: 'http://' + localDomain + ':3000/graphql',
 
-  subscriptionsApiUrl: 'ws://ui-api.' + domain + '/subscriptions',
-  subscriptionsApiUrlLocal: 'ws://' + localDomain + ':3000/subscriptions',
+  subscriptionsApiUrl: 'wss://ui-api.' + domain + '/graphql',
+  subscriptionsApiUrlLocal: 'ws://' + localDomain + ':3000/graphql',
 
   authRedirectUri: 'http://' + localDomain + ':4200',
   domain: domain,

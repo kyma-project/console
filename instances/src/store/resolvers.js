@@ -6,6 +6,7 @@ import Notification from './Notification/resolvers';
 export default {
   Query: {
     ...Filter.Query,
+    ...ServiceInstanceDetails.Query,
   },
   Mutation: {
     ...ServiceInstances.Mutation,

@@ -1,18 +1,21 @@
 import gql from 'graphql-tag';
-import { SERVICE_INSTANCES_QUERY } from '../../components/ServiceInstances/queries';
+import { SERVICE_INSTANCES_QUERY } from '../../components/DataProvider/queries';
 import builder from '../../commons/builder';
+import { transformDataScalarObjectsToStrings } from '../transformers';
 
 const getActiveFilters = cache => {
-  return cache.readQuery({
-    query: gql`
-      query activeFilters {
-        activeFilters @client {
-          search
-          labels
+  return (
+    cache.readQuery({
+      query: gql`
+        query activeFilters {
+          activeFilters @client {
+            search
+            labels
+          }
         }
-      }
-    `,
-  }).activeFilters;
+      `,
+    }).activeFilters || null
+  );
 };
 
 export default {
@@ -65,7 +68,7 @@ export default {
 
       return newActive;
     },
-    filterItems: (_, args, { cache }) => {
+    filterItems: (_, _args, { cache }) => {
       const activeFilters = getActiveFilters(cache);
 
       let items = cache.readQuery({
@@ -74,43 +77,15 @@ export default {
           environment: builder.getCurrentEnvironmentId(),
         },
       }).serviceInstances;
+      items = transformDataScalarObjectsToStrings(items);
 
-      // workaround for caching planSpec and cluster-namespaced classes and plans
-      items = items.map(item => {
-        let newItem = {};
-        if (item.clusterServiceClass && item.clusterServicePlan) {
-          newItem = {
-            serviceClass: {
-              ...item.clusterServiceClass,
-              __typename: 'ServiceClass',
-            },
-            servicePlan: {
-              ...item.clusterServicePlan,
-              __typename: 'ServicePlan',
-            },
-          };
-        }
-
-        newItem = {
-          ...item,
-          ...newItem,
-        };
-
-        delete newItem.planSpec;
-        delete newItem.serviceBindingUsages;
-        delete newItem.clusterServiceClass;
-        delete newItem.clusterServicePlan;
-
-        return newItem;
-      });
-
-      let filteredItems = filterItems(items, activeFilters, cache);
+      const filteredItems = filterItems(items, activeFilters, cache);
       const allFilters = populateFilters(items, filteredItems);
 
       cache.writeData({
         data: {
-          allFilters: allFilters,
-          filteredItems: filteredItems,
+          allFilters,
+          filteredItems,
         },
       });
 
@@ -173,8 +148,8 @@ const getFilterValues = (values, filteredValues = []) => {
   return Object.values(valuesMap);
 };
 
-const filterItems = (items, activeFilters, cache) => {
-  const filteredItems = items.filter(item => {
+const filterItems = (items = [], activeFilters, cache) => {
+  return items.filter(item => {
     let searchMatch = true;
     let labelsMatch = true;
 
@@ -192,22 +167,22 @@ const filterItems = (items, activeFilters, cache) => {
     ) {
       const searchValue = activeFilters.search.toLowerCase();
       const name = item.name.toLowerCase();
-      const serviceClass = item.serviceClass
-        ? item.serviceClass.displayName.toLowerCase()
+
+      const serviceClass = item.serviceClass || item.clusterServiceClass;
+      const servicePlan = item.servicePlan || item.clusterServicePlan;
+      const serviceClassName = serviceClass
+        ? serviceClass.displayName.toLowerCase()
         : '';
-      const plan = item.servicePlan
-        ? item.servicePlan.displayName.toLowerCase()
-        : '';
+      const planName = servicePlan ? servicePlan.displayName.toLowerCase() : '';
+
       const statusType = item.status.type.toLowerCase();
       searchMatch =
         name.indexOf(searchValue) !== -1 ||
-        (item.serviceClass && serviceClass.indexOf(searchValue) !== -1) ||
-        (item.servicePlan && plan.indexOf(searchValue) !== -1) ||
+        (serviceClass && serviceClassName.indexOf(searchValue) !== -1) ||
+        (servicePlan && planName.indexOf(searchValue) !== -1) ||
         statusType.indexOf(searchValue) !== -1;
     }
 
     return labelsMatch && searchMatch;
   });
-
-  return filteredItems;
 };
