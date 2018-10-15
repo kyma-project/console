@@ -9,12 +9,12 @@ import {
   Toolbar,
 } from '@kyma-project/react-components';
 
-import { SearchWrapper } from './styled';
-
 import FilterList from './FilterList/FilterList.component';
+import ActiveFiltersList from './ActiveFiltersList/ActiveFiltersList.component';
 import Cards from './Cards/Cards.component';
 
 import {
+  SearchWrapper,
   ServiceClassListWrapper,
   CardsWrapper,
   EmptyServiceListMessageWrapper,
@@ -28,6 +28,7 @@ class ServiceClassList extends React.Component {
     serviceClasses: PropTypes.array.isRequired,
     history: PropTypes.object.isRequired,
     filterServiceClasses: PropTypes.func.isRequired,
+    clearAllActiveFilters: PropTypes.func.isRequired,
     setServiceClassesFilter: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
   };
@@ -48,6 +49,7 @@ class ServiceClassList extends React.Component {
       activeClassFilters,
       activeTagsFilters,
       classFilters,
+      clearAllActiveFilters,
       setServiceClassesFilter,
       history,
       searchFn,
@@ -55,8 +57,9 @@ class ServiceClassList extends React.Component {
       errorMessage,
     } = this.props;
 
-    const filterFn = e =>
+    const filterFn = e => {
       filterTagsAndSetActiveFilters('search', e.target.value);
+    };
 
     const seeMoreFn = (key, value) => {
       filterTagsAndSetActiveFilters(key, value);
@@ -71,6 +74,18 @@ class ServiceClassList extends React.Component {
 
     //its used for filtering class which does not have any name in it (either externalName, displayName or name).
     items = items.filter(e => e.displayName || e.externalName || e.name);
+
+    const renderFilters = () => {
+      if (!activeFiltersCount) return null;
+
+      return (
+        <ActiveFiltersList
+          activeFilters={activeFilters}
+          clearAllActiveFilters={clearAllActiveFilters}
+          onCancel={(key, value) => setServiceClassesFilter(key, value)}
+        />
+      );
+    };
 
     const renderCards = () => {
       if (errorMessage) {
@@ -124,12 +139,15 @@ class ServiceClassList extends React.Component {
               active={activeFilters}
               activeFiltersCount={activeFiltersCount}
               activeTagsFilters={activeCategoriesFilters}
+              clearAllActiveFilters={clearAllActiveFilters}
               onChange={(key, value) => setServiceClassesFilter(key, value)}
               onSearch={filterFn}
               onSeeMore={seeMoreFn}
             />
           )}
         </Toolbar>
+
+        {renderFilters()}
 
         <ServiceClassListWrapper>
           <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>

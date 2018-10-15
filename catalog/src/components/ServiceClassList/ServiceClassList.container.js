@@ -8,7 +8,10 @@ import {
   CLASS_FILTERS_QUERY,
 } from './queries';
 
-import { SET_ACTIVE_TAGS_FILTERS_MUTATION } from './mutations';
+import {
+  CLEAR_ACTIVE_FILTERS_MUTATION,
+  SET_ACTIVE_TAGS_FILTERS_MUTATION,
+} from './mutations';
 
 import ServiceClassList from './ServiceClassList.component';
 
@@ -36,15 +39,8 @@ export default compose(
   }),
   graphql(CLASS_FILTERS_QUERY, {
     name: 'classFilters',
-    options: () => {
-      return {
-        variables: {
-          environment: builder.getCurrentEnvironmentId(),
-        },
-        options: {
-          fetchPolicy: 'cache-and-network',
-        },
-      };
+    options: {
+      fetchPolicy: 'cache-and-network',
     },
   }),
 
@@ -53,6 +49,9 @@ export default compose(
     options: {
       fetchPolicy: 'cache-and-network',
     },
+  }),
+  graphql(CLEAR_ACTIVE_FILTERS_MUTATION, {
+    name: 'clearAllActiveFilters',
   }),
   graphql(SET_ACTIVE_TAGS_FILTERS_MUTATION, {
     name: 'setActiveTagsFilters',

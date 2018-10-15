@@ -13,7 +13,7 @@ describe('NavigationComponent', () => {
     getExtensions() {
       return of([]);
     },
-    getClusterExtensions() {
+    getExternalExtensions() {
       return of([]);
     }
   };
@@ -33,7 +33,7 @@ describe('NavigationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NavigationComponent);
     component = fixture.componentInstance;
-    component.navCtx = 'env';
+    component.navCtx = 'environment';
     fixture.detectChanges();
   });
 

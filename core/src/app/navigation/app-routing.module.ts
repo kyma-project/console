@@ -58,7 +58,7 @@ const appRoutes: Routes = [
       {
         path: 'environments',
         component: EnvironmentsContainerComponent,
-        data: { navCtx: 'env' },
+        data: { navCtx: 'environment' },
         children: [
           { path: 'yVirtual', component: WorkspaceOverviewComponent },
           { path: 'workspace', component: WorkspaceOverviewComponent },
@@ -69,7 +69,7 @@ const appRoutes: Routes = [
       {
         path: 'environments/:environmentId',
         component: EnvironmentsContainerComponent,
-        data: { navCtx: 'env' },
+        data: { navCtx: 'environment' },
         children: [
           { path: 'yVirtual', component: EnvironmentDetailsComponent },
           { path: 'details', component: EnvironmentDetailsComponent },
@@ -98,7 +98,21 @@ const appRoutes: Routes = [
           { path: 'apis/create', component: ExposeApiComponent },
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
-          { path: 'extensions/:id', component: ExternalViewComponent },
+          {
+            path: 'extensions/:pathSegment1',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'environment' }
+          },
+          {
+            path: 'extensions/:pathSegment1/:pathSegment2',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'environment' }
+          },
+          {
+            path: 'extensions/:pathSegment1/:pathSegment2/:pathSegment3',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'environment' }
+          },
           { path: 'resources', component: ResourcesComponent },
           {
             path: 'permissions',
@@ -177,7 +191,29 @@ const appRoutes: Routes = [
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
         ]
       },
-      { path: 'extensions/:id', component: ExternalViewComponent },
+      {
+        path: 'extensions',
+        canActivateChild: [AuthGuard],
+        component: EnvironmentsContainerComponent,
+        data: { navCtx: 'cluster' },
+        children: [
+          {
+            path: ':pathSegment1',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'cluster' }
+          },
+          {
+            path: ':pathSegment1/:pathSegment2',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'cluster' }
+          },
+          {
+            path: ':pathSegment1/:pathSegment2/:pathSegment3',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'cluster' }
+          }
+        ]
+      },
       { path: '', pathMatch: 'full', redirectTo: 'environments/workspace' },
       { path: '**', pathMatch: 'full', redirectTo: 'environments/workspace' }
     ]

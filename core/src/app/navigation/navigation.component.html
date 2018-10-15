@@ -1,14 +1,14 @@
 <div *ngIf="currentNavModel" class="sf-toolbar sf-toolbar--vertical sf-toolbar--mainnavigation">
   <div class="sf-toolbar__content">
-    <a *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item" routerLink="/home/environments" (click)="goToEnvironments()"
+    <a *ngIf='!currentNavModel?.showEnvChooser' class="sf-toolbar__item" routerLink="/home/environments" (click)="goToEnvironments()"
       routerLinkActive="is-active">
-      ← Back to Environment
+      ← Back to {{ (navCtx === 'cluster') ? 'Workspace' : 'Environment' }}
     </a>
-    <span *ngIf='!currentNavModel.showEnvChooser' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
+    <span *ngIf='!currentNavModel?.showEnvChooser' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
     <a *ngIf='currentNavModel.topEntry' (click)="changeRoute(currentNavModel.topEntry.link)" routerLink="{{currentNavModel.topEntry.link}}"
       routerLinkActive="is-active" class="sf-toolbar__item">{{ currentNavModel.topEntry.name }}</a>
     <span *ngIf='currentNavModel.topEntry' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
-    <div class="sf-toolbar__item" *ngIf='currentNavModel.showEnvChooser'>
+    <div class="sf-toolbar__item" *ngIf='currentNavModel?.showEnvChooser'>
       <div class="tn-dropdown sf-dropdown" (clickOutside)="closeDropDown()" clickOutsideEvents="click,mousedown"
         excludeBeforeClick="true">
         <button class="tn-dropdown__control" aria-controls="nNJnB279" [attr.aria-expanded]="ariaExpanded" aria-haspopup="true"
@@ -20,13 +20,11 @@
           <li class="tn-dropdown__item" (click)="toggleDropDown(); createmodal.show();">
             <button _ngcontent-c4="" class="tn-button tn-button--small tn-button--text">+ Create Environment</button>
           </li>
-          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">
-            {{ env.label }}
-          </li>
+          <li class="tn-dropdown__item" *ngFor="let env of filteredEnvironments" (click)="toggleDropDown(); selectEnv(env);">{{ env.label }}</li>
         </ul>
       </div>
     </div>
-    <div *ngIf="currentEnvironmentId || !currentNavModel.showEnvChooser">
+    <div *ngIf="currentEnvironmentId || !currentNavModel?.showEnvChooser">
       <ng-container *ngFor="let group of currentNavModel.groups">
         <ng-container *ngIf="group.link">
           <div class="sf-toolbar__group">
@@ -35,7 +33,7 @@
             </a>
           </div>
         </ng-container>
-        <ng-container *ngIf="!group.link">
+        <ng-container *ngIf="!group.link && group.entries">
           <div class="sf-toolbar__item">
             <div class="sf-toolbar__header">{{ group.name }}</div>
             <div class="sf-toolbar__group">
@@ -79,7 +77,7 @@
   </div>
   <div class="sf-toolbar__footer">
     <span class="sf-toolbar__item sf-toolbar__item--seperator"></span>
-    <a *ngIf='currentNavModel.showEnvChooser' class="sf-toolbar__item" routerLink="/home/settings" routerLinkActive="is-active">
+    <a *ngIf="currentNavModel?.showEnvChooser || navCtx === 'cluster'" class="sf-toolbar__item" routerLink="/home/settings" routerLinkActive="is-active">
       <!--  <svg class="sf-icon sf-icon--settings" aria-labelledby="icon-title-settings"
          viewbox="0 0 16 16" width="16" height="16">
       <use xlink:href="assets/sprite.svg#settings"></use>

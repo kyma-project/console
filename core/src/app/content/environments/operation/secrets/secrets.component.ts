@@ -14,6 +14,7 @@ import { SecretsHeaderRendererComponent } from './secrets-header-renderer/secret
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-secrets',
@@ -36,7 +37,9 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
     private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
     const converter: DataConverter<IDashboardSecret, DashboardSecret> = {
@@ -61,6 +64,12 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
         this.entryRenderer = SecretsEntryRendererComponent;
         this.headerRenderer = SecretsHeaderRendererComponent;
       });
+  }
+
+  navigateToDetails(entry: any) {
+    this.router.navigate([entry.objectMeta.name], {
+      relativeTo: this.activatedRoute
+    });
   }
 
   createNewElement() {

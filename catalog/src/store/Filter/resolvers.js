@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import builder from '../../commons/builder';
+
 export default {
   Query: {
     serviceClassFilters: (_, args, { cache }) => {
@@ -22,7 +24,7 @@ export default {
               }
             `,
           variables: {
-            environment: args.environment,
+            environment: builder.getCurrentEnvironmentId(),
           },
         });
         result =
@@ -37,6 +39,21 @@ export default {
     },
   },
   Mutation: {
+    clearAllActiveFilters: (_, args, { cache }) => {
+      const newActive = {
+        provider: [],
+        tag: [],
+        __typename: 'ActiveServiceClassFilters',
+      };
+
+      cache.writeData({
+        data: {
+          activeServiceClassFilters: newActive,
+        },
+      });
+
+      return newActive;
+    },
     setActiveFilters: (_, args, { cache }) => {
       const filters = cache.readQuery({
         query: gql`
@@ -48,6 +65,7 @@ export default {
           }
         `,
       }).activeServiceClassFilters;
+
       let newActive = filters;
       if (Array.isArray(newActive[args.key])) {
         let newArray = newActive[args.key];
@@ -347,10 +365,12 @@ const filterServiceClasses = (classes, activeFilters) => {
       const name = item.displayName.toLowerCase();
       const description = item.description.toLowerCase();
       const provider = item.providerDisplayName.toLowerCase();
+      const tags = item.tags.map(tag => tag.toLowerCase());
       searchMatch =
         name.indexOf(searchValue) !== -1 ||
         description.indexOf(searchValue) !== -1 ||
-        provider.indexOf(searchValue) !== -1;
+        provider.indexOf(searchValue) !== -1 ||
+        tags.filter(tag => tag.indexOf(searchValue) !== -1).length;
     }
     return providerMatch && tagMatch && searchMatch;
   });
