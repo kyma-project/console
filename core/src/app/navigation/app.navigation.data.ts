@@ -24,6 +24,10 @@ export const navModel = {
           {
             name: 'Instances',
             link: 'instances'
+          },
+          {
+            name: 'Brokers',
+            link: 'brokers'
           }
         ]
       },
