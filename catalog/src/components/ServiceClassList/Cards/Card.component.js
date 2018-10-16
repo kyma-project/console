@@ -18,6 +18,8 @@ import {
   CardLabelWithTooltip,
 } from './styled';
 
+import { isStringValueEqualToTrue } from '../../../commons/helpers';
+
 const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
   const itemId = title
     ? title
@@ -56,7 +58,11 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
             Object.keys(labels).length &&
             Object.keys(labels).map(
               label =>
-                labels[label] ? (
+                (label === 'local' || label === 'showcase' ? (
+                  isStringValueEqualToTrue(labels[label])
+                ) : (
+                  labels[label]
+                )) ? (
                   <CardLabelWrapper key={label}>
                     <Tooltip content={labelsDescription[label]}>
                       <CardLabelWithTooltip>

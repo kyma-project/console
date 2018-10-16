@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+import { isStringValueEqualToTrue } from '../../commons/helpers';
 import builder from '../../commons/builder';
 
 export default {
@@ -251,10 +252,10 @@ const populateServiceClassFilters = (
       if (labels['connected-app']) {
         connectedApplications.push(labels['connected-app']);
       }
-      if (labels.local) {
+      if (isStringValueEqualToTrue(labels.local)) {
         basic.push('local');
       }
-      if (labels.showcase) {
+      if (isStringValueEqualToTrue(labels.showcase)) {
         basic.push('showcase');
       }
 
@@ -276,10 +277,10 @@ const populateServiceClassFilters = (
       if (labels['connected-app']) {
         filteredConnectedApplications.push(labels['connected-app']);
       }
-      if (labels.local) {
+      if (isStringValueEqualToTrue(labels.local)) {
         filteredBasic.push('local');
       }
-      if (labels.showcase) {
+      if (isStringValueEqualToTrue(labels.showcase)) {
         filteredBasic.push('showcase');
       }
 
@@ -464,8 +465,9 @@ const filterServiceClasses = (classes, activeFilters) => {
           labels.push('connectedapp');
           labels.push(item.labels['connected-app']);
         }
-        if (item.labels.local) labels.push('local');
-        if (item.labels.showcase) labels.push('showcase');
+        if (isStringValueEqualToTrue(item.labels.local)) labels.push('local');
+        if (isStringValueEqualToTrue(item.labels.showcase))
+          labels.push('showcase');
       }
 
       searchMatch =

@@ -152,3 +152,7 @@ export function randomNameGenerator() {
     nouns[getRandomInt(0, nouns.length + 1)]
   ).toLowerCase();
 }
+
+export function isStringValueEqualToTrue(value) {
+  return value ? 'true' === value.toLowerCase() : false;
+}

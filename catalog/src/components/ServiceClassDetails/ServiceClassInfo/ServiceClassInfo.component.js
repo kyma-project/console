@@ -15,6 +15,8 @@ import {
   Tag,
 } from './styled';
 
+import { isStringValueEqualToTrue } from '../../../commons/helpers';
+
 const ServiceClassInfo = ({
   serviceClassDisplayName,
   providerDisplayName,
@@ -23,10 +25,24 @@ const ServiceClassInfo = ({
   supportUrl,
   imageUrl,
   tags,
+  labels,
 }) => {
   function sortTags(tag1, tag2) {
     return tag1.length > 8 && tag2.length < 15;
   }
+
+  const extractLabels = () => {
+    const extractedLabels = [];
+
+    if (labels['connected-app']) extractedLabels.push(labels['connected-app']);
+    if (isStringValueEqualToTrue(labels.local)) extractedLabels.push('local');
+    if (isStringValueEqualToTrue(labels.showcase))
+      extractedLabels.push('showcase');
+
+    return extractedLabels;
+  };
+
+  const tagsAndLabels = [...tags, ...extractLabels()];
 
   return (
     <div>
@@ -68,10 +84,12 @@ const ServiceClassInfo = ({
             </ExternalLink>
           </Text>
         )}
-        {tags &&
-          tags.length > 0 && (
+        {tagsAndLabels &&
+          tagsAndLabels.length > 0 && (
             <TagsWrapper>
-              {[...tags].sort(sortTags).map(tag => <Tag key={tag}>{tag}</Tag>)}
+              {tagsAndLabels
+                .sort(sortTags)
+                .map(tag => <Tag key={tag}>{tag}</Tag>)}
             </TagsWrapper>
           )}
       </div>
@@ -86,6 +104,7 @@ ServiceClassInfo.propTypes = {
   documentationUrl: PropTypes.string,
   imageUrl: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
+  labels: PropTypes.object,
 };
 
 export default ServiceClassInfo;
