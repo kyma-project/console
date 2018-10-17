@@ -1,4 +1,4 @@
-<span class="status-label {{statusClass}}" [ngClass]="{'status-label__with-description': description}" (mouseenter)="showTooltip=true" (mouseleave)="showTooltip=false">
+<span class="status-label {{ statusClass }}" [ngClass]="{'status-label__with-description': description}" (mouseenter)="showTooltip=true" (mouseleave)="showTooltip=false">
     <ng-content ></ng-content>
-    <app-tooltip *ngIf="description && showTooltip" >{{description}}</app-tooltip>
+    <app-tooltip *ngIf="description && showTooltip" >{{ description }}</app-tooltip>
 </span>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 
 @Component({
@@ -6,7 +6,7 @@ import { TooltipComponent } from '../tooltip/tooltip.component';
   templateUrl: './status-label.component.html',
   styleUrls: ['./status-label.component.scss']
 })
-export class StatusLabelComponent {
+export class StatusLabelComponent implements OnInit {
   @Input() statusType: string;
   @Input() description: string = null;
   private statusClass: string;
