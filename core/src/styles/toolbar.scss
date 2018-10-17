@@ -24,7 +24,7 @@ $item-padding: $item-padding-top $item-padding-left $item-padding-bottom
     display: flex;
     margin-left: auto !important;
 
-    > *:last-child {
+    > .sf-toolbar__item:last-child {
       padding-right: 0;
     }
   }

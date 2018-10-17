@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-create-remote-environment-modal',
-  templateUrl: './create-remote-environment-modal.component.html',
-  styleUrls: ['./create-remote-environment-modal.component.scss']
+  selector: 'app-edit-remote-environment-modal',
+  templateUrl: './edit-remote-environment-modal.component.html',
+  styleUrls: ['./edit-remote-environment-modal.component.scss']
 })
-export class CreateRemoteEnvironmentModalComponent {
+export class EditRemoteEnvironmentModalComponent {
+  @Input() public initialDescription: string;
+  @Input() public initialLabels: string[];
+  @Input() public name: string;
+
+  @ViewChild('editRemoteEnvsForm') editRemoteEnvsForm: NgForm;
+
   public isActive = false;
-  public name: string;
-  public wrongRemoteEnvName: boolean;
   public wrongLabels: boolean;
-  public description: string;
-  public labels: string[];
+  public updatedLabels: string[];
+  public updatedDescription: string;
   public error: string;
 
   public constructor(
@@ -31,25 +37,17 @@ export class CreateRemoteEnvironmentModalComponent {
   }
 
   private resetForm(): void {
-    this.name = '';
-    this.description = '';
-    this.labels = [];
-    this.error = '';
-    this.wrongRemoteEnvName = false;
+    this.updatedDescription = this.initialDescription;
+    this.updatedLabels = this.initialLabels ? [...this.initialLabels] : [];
     this.wrongLabels = false;
+    this.error = '';
   }
 
-  public validateRemoteEnvNameRegex() {
-    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
-    this.wrongRemoteEnvName =
-      this.name && !Boolean(regex.test(this.name || ''));
-  }
-
-  public isReadyToCreate(): boolean {
+  public isReadyToSave(): boolean {
     return Boolean(
-      this.name &&
-        this.description &&
-        !this.wrongRemoteEnvName &&
+      this.editRemoteEnvsForm &&
+        this.editRemoteEnvsForm.dirty &&
+        this.updatedDescription &&
         !this.wrongLabels
     );
   }
@@ -61,25 +59,27 @@ export class CreateRemoteEnvironmentModalComponent {
     labels?: string[];
     wrongLabels?: boolean;
   }): void {
-    this.labels = labels !== undefined ? labels : this.labels;
+    this.updatedLabels = labels !== undefined ? labels : this.updatedLabels;
     this.wrongLabels =
       wrongLabels !== undefined ? wrongLabels : this.wrongLabels;
+    // mark form as dirty when deleting an existing label
+    this.editRemoteEnvsForm.form.markAsDirty();
   }
 
   public save(): void {
     const data = {
       name: this.name,
-      description: this.description,
-      labels: (this.labels || []).reduce((acc, label) => {
+      description: this.updatedDescription,
+      labels: (this.updatedLabels || []).reduce((acc, label) => {
         return { ...acc, [label.split(':')[0]]: label.split(':')[1] };
       }, {})
     };
 
-    this.remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(
+    this.remoteEnvironmentsService.updateRemoteEnvironment(data).subscribe(
       response => {
         this.close();
         this.communicationService.sendEvent({
-          type: 'createResource',
+          type: 'updateResource',
           data: response
         });
       },
