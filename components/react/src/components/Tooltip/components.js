@@ -4,7 +4,7 @@ export const TooltipContainer = styled.div`
   position: absolute;
   box-sizing: border-box;
   z-index: 99;
-  min-width: ${props => (props.minWidth ? props.minWidth : '130px')};
+  min-width: ${props => (props.minWidth ? props.minWidth : '120px')};
   max-width: ${props => (props.maxWidth ? props.maxWidth : '420px')};
   background: ${props => (props.type === 'default' ? '#32363a' : '#fff')};
   font-size: ${props => (props.type === 'default' ? '11px' : '12px')};

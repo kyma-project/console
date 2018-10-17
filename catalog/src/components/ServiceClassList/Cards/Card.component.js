@@ -61,7 +61,7 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
                 (label === 'local' || label === 'showcase' ? (
                   isStringValueEqualToTrue(labels[label])
                 ) : (
-                  labels[label]
+                  label === 'connected-app' && labels[label]
                 )) ? (
                   <CardLabelWrapper key={label}>
                     <Tooltip content={labelsDescription[label]}>

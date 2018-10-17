@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
-import { Icon, Header, Separator, Text } from '@kyma-project/react-components';
+import {
+  Icon,
+  Header,
+  Separator,
+  Text,
+  Tooltip,
+} from '@kyma-project/react-components';
 
 import {
   ServiceClassInfoContentWrapper,
@@ -12,6 +18,7 @@ import {
   ExternalLink,
   Image,
   TagsWrapper,
+  TagWrapper,
   Tag,
 } from './styled';
 
@@ -34,15 +41,37 @@ const ServiceClassInfo = ({
   const extractLabels = () => {
     const extractedLabels = [];
 
-    if (labels['connected-app']) extractedLabels.push(labels['connected-app']);
-    if (isStringValueEqualToTrue(labels.local)) extractedLabels.push('local');
-    if (isStringValueEqualToTrue(labels.showcase))
-      extractedLabels.push('showcase');
+    if (labels) {
+      if (labels['connected-app'])
+        extractedLabels.push({
+          name: labels['connected-app'],
+          type: 'connected-app',
+        });
+      if (isStringValueEqualToTrue(labels.local))
+        extractedLabels.push({ name: 'local', type: 'basic' });
+      if (isStringValueEqualToTrue(labels.showcase))
+        extractedLabels.push({ name: 'showcase', type: 'basic' });
+    }
 
     return extractedLabels;
   };
 
-  const tagsAndLabels = [...tags, ...extractLabels()];
+  const modifiedTags = [
+    ...tags.map(tag => ({ name: tag, type: 'tag' })),
+    ...extractLabels(),
+  ];
+
+  const tagsDescription = {
+    basic: 'Basic filter',
+    'connected-app': 'Connected application',
+    tag: 'Tag',
+  };
+
+  const tooltipWidth = {
+    basic: '80px',
+    'connected-app': '140px',
+    tag: '50px',
+  };
 
   return (
     <div>
@@ -84,12 +113,19 @@ const ServiceClassInfo = ({
             </ExternalLink>
           </Text>
         )}
-        {tagsAndLabels &&
-          tagsAndLabels.length > 0 && (
+        {modifiedTags &&
+          modifiedTags.length > 0 && (
             <TagsWrapper>
-              {tagsAndLabels
-                .sort(sortTags)
-                .map(tag => <Tag key={tag}>{tag}</Tag>)}
+              {modifiedTags.sort(sortTags).map(tag => (
+                <TagWrapper key={`${tag.type}-${tag.name}`}>
+                  <Tooltip
+                    content={tagsDescription[tag.type]}
+                    minWidth={tooltipWidth[tag.type]}
+                  >
+                    <Tag>{tag.name}</Tag>
+                  </Tooltip>
+                </TagWrapper>
+              ))}
             </TagsWrapper>
           )}
       </div>
