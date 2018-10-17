@@ -55,7 +55,7 @@ podTemplate(label: label) {
                             execute("make test")
                         }
 
-                        //if (isMaster) {
+                        if (isMaster) {
                             stage("IP scan $application (WhiteSource)") {
                                 withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]) {
                                     execute("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
@@ -65,7 +65,7 @@ podTemplate(label: label) {
                             // stage("security scan $application (Checkmarx)"){
                             //     scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
                             // }
-                        //}
+                        }
 
                         stage("build $application") {
                             execute('make build')
