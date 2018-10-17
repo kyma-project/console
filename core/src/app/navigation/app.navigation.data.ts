@@ -1,12 +1,8 @@
 import { AppConfig } from '../app.config';
 
-export type INavTypes = 'environment' | 'cluster' | 'settings';
+export type INavTypes = 'environment' | 'settings';
 
 export const navModel = {
-  cluster: {
-    showEnvChooser: false,
-    groups: []
-  },
   environment: {
     topEntry: {
       name: 'Workspace',

@@ -187,31 +187,23 @@ const appRoutes: Routes = [
             component: RoleDetailsComponent,
             data: { global: true }
           },
+          {
+            path: 'extensions/:pathSegment1',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'cluster' }
+          },
+          {
+            path: 'extensions/:pathSegment1/:pathSegment2',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'cluster' }
+          },
+          {
+            path: 'extensions/:pathSegment1/:pathSegment2/:pathSegment3',
+            component: ExternalViewComponent,
+            data: { navigationContext: 'cluster' }
+          },
           { path: '', redirectTo: 'organisation', pathMatch: 'full' },
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
-        ]
-      },
-      {
-        path: 'extensions',
-        canActivateChild: [AuthGuard],
-        component: EnvironmentsContainerComponent,
-        data: { navCtx: 'cluster' },
-        children: [
-          {
-            path: ':pathSegment1',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          },
-          {
-            path: ':pathSegment1/:pathSegment2',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          },
-          {
-            path: ':pathSegment1/:pathSegment2/:pathSegment3',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          }
         ]
       },
       { path: '', pathMatch: 'full', redirectTo: 'environments/workspace' },
