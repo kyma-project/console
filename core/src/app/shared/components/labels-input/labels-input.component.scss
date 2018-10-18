@@ -6,7 +6,8 @@
   padding: 6px 0;
   overflow-x: hidden;
   overflow-y: hidden; // white-space: nowrap;
-  &:hover {
+  &:hover,
+  &:focus-within {
     border: 1px solid #0a6ed1;
   }
 

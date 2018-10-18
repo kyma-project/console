@@ -1,23 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError, empty } from 'rxjs';
 
-import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal.component';
+import { EditRemoteEnvironmentModalComponent } from './edit-remote-environment-modal.component';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { FormsModule } from '@angular/forms';
 
-describe('CreateRemoteEnvironmentModalComponent', () => {
-  let component: CreateRemoteEnvironmentModalComponent;
-  let fixture: ComponentFixture<CreateRemoteEnvironmentModalComponent>;
+describe('EditRemoteEnvironmentModalComponent', () => {
+  let component: EditRemoteEnvironmentModalComponent;
+  let fixture: ComponentFixture<EditRemoteEnvironmentModalComponent>;
   let mockRemoteEnvironmentsService: RemoteEnvironmentsService;
   let mockComponentCommunicationService: ComponentCommunicationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateRemoteEnvironmentModalComponent],
+      imports: [FormsModule],
+      declarations: [EditRemoteEnvironmentModalComponent],
       providers: [
         {
           provide: RemoteEnvironmentsService,
-          useValue: { createRemoteEnvironment: () => {} }
+          useValue: { updateRemoteEnvironment: () => {} }
         },
         {
           provide: ComponentCommunicationService,
@@ -25,12 +27,15 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
         }
       ]
     })
-      .overrideTemplate(CreateRemoteEnvironmentModalComponent, '')
+      .overrideTemplate(
+        EditRemoteEnvironmentModalComponent,
+        '<form #editRemoteEnvsForm="ngForm"></form>'
+      )
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateRemoteEnvironmentModalComponent);
+    fixture = TestBed.createComponent(EditRemoteEnvironmentModalComponent);
     component = fixture.componentInstance;
     mockRemoteEnvironmentsService = TestBed.get(RemoteEnvironmentsService);
     mockComponentCommunicationService = TestBed.get(
@@ -66,76 +71,57 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   });
 
   describe('resetForm()', () => {
-    it('resets form data values', () => {
-      component.name = 'any-name';
-      component.description = 'any-description';
-      component.labels = ['any-labels'];
-      component['resetForm']();
-      expect(component.name).toBe('');
-      expect(component.description).toBe('');
-      expect(component.labels).toEqual([]);
-    });
-
-    it('resets form validation values', () => {
+    it('resets form values', () => {
       component.error = 'any-error';
-      component.wrongRemoteEnvName = true;
       component.wrongLabels = true;
       component['resetForm']();
       expect(component.error).toBe('');
-      expect(component.wrongRemoteEnvName).toBe(false);
       expect(component.wrongLabels).toBe(false);
     });
   });
 
-  describe('isReadyToCreate()', () => {
+  describe('isReadyToSave()', () => {
     beforeEach(() => {
+      component.editRemoteEnvsForm.control.markAsDirty();
       component.wrongLabels = false;
-      component.wrongRemoteEnvName = false;
-      component.name = 'a-valid-name';
-      component.description = 'a-valid-desc';
+      component.updatedDescription = 'a-valid-desc';
     });
 
     it('returns true if fields are valid', () => {
-      const actual: boolean = component.isReadyToCreate();
+      const actual: boolean = component.isReadyToSave();
       expect(actual).toBe(true);
     });
 
-    it('returns false if name input is empty', () => {
-      component.name = '';
-      const actual: boolean = component.isReadyToCreate();
+    it('returns false if form is not dirty', () => {
+      component.editRemoteEnvsForm.control.markAsPristine();
+      const actual: boolean = component.isReadyToSave();
       expect(actual).toBe(false);
     });
 
     it('returns false if description input is empty', () => {
-      component.description = '';
-      const actual: boolean = component.isReadyToCreate();
-      expect(actual).toBe(false);
-    });
-
-    it('returns false if name is not valid', () => {
-      component.wrongRemoteEnvName = true;
-      const actual: boolean = component.isReadyToCreate();
+      component.updatedDescription = '';
+      const actual: boolean = component.isReadyToSave();
       expect(actual).toBe(false);
     });
 
     it('returns false if labels are not valid', () => {
       component.wrongLabels = true;
-      const actual: boolean = component.isReadyToCreate();
+      const actual: boolean = component.isReadyToSave();
       expect(actual).toBe(false);
     });
   });
 
   describe('updateLabelsData', () => {
     it('updates labels with input value', () => {
-      component.labels = ['key1:val1'];
+      component.initialLabels = ['key1:val1'];
       component.updateLabelsData({ labels: ['key1:val1', 'key2:val:2'] });
-      expect(component.labels).toEqual(['key1:val1', 'key2:val:2']);
+      expect(component.updatedLabels).toEqual(['key1:val1', 'key2:val:2']);
     });
 
     it('does not update labels if no input value', () => {
-      component.labels = ['key1:val1'];
+      component.updatedLabels = ['key1:val1'];
       component.updateLabelsData({});
-      expect(component.labels).toEqual(['key1:val1']);
+      expect(component.updatedLabels).toEqual(['key1:val1']);
     });
 
     it('updates labels validation field with input value', () => {
@@ -152,14 +138,14 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   });
 
   describe('save()', () => {
-    it('creates new remote env', () => {
+    it('updates new remote env', () => {
       spyOn(
         mockRemoteEnvironmentsService,
-        'createRemoteEnvironment'
+        'updateRemoteEnvironment'
       ).and.returnValue(empty());
       component.name = 're-name';
-      component.description = 're-desc';
-      component.labels = ['key1:val1'];
+      component.updatedDescription = 're-desc';
+      component.updatedLabels = ['key1:val1'];
       const expectedData = {
         name: 're-name',
         description: 're-desc',
@@ -167,19 +153,19 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       };
       component.save();
       expect(
-        mockRemoteEnvironmentsService.createRemoteEnvironment
+        mockRemoteEnvironmentsService.updateRemoteEnvironment
       ).toHaveBeenCalledWith(expectedData);
     });
 
     it('handles success on creating remote env', () => {
       spyOn(
         mockRemoteEnvironmentsService,
-        'createRemoteEnvironment'
-      ).and.returnValue(of('create-success-response'));
+        'updateRemoteEnvironment'
+      ).and.returnValue(of('update-success-response'));
       spyOn(mockComponentCommunicationService, 'sendEvent');
       const expectedEventData = {
-        type: 'createResource',
-        data: 'create-success-response'
+        type: 'updateResource',
+        data: 'update-success-response'
       };
       spyOn(component, 'close');
 
@@ -193,11 +179,11 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
     it('handles error when creating remote env', () => {
       spyOn(
         mockRemoteEnvironmentsService,
-        'createRemoteEnvironment'
-      ).and.returnValue(throwError({ message: 're-not-created' }));
+        'updateRemoteEnvironment'
+      ).and.returnValue(throwError({ message: 're-not-updated' }));
       component.error = null;
       component.save();
-      expect(component.error).toBe('Error: re-not-created');
+      expect(component.error).toBe('Error: re-not-updated');
     });
   });
 });

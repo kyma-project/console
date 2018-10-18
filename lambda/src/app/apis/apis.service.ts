@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfig } from '../app.config';
 import { Api, IApiSpec } from '../shared/datamodel/k8s/api';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IMetaData } from '../shared/datamodel/k8s/generic/meta-data';
 import { Service } from '../shared/datamodel/k8s/api-service';
 import { AuthenticationRule } from '../shared/datamodel/k8s/api-authentication-rule';

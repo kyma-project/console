@@ -8,7 +8,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IEnvVar } from '../../../shared/datamodel/k8s/container';
 import { LambdaInstanceBindingCreatorComponent } from './lambda-instance-binding-creator/lambda-instance-binding-creator.component';
 import { InstanceBindingInfo } from '../../../shared/datamodel/instance-binding-info';

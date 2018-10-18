@@ -3,28 +3,35 @@ import {
   EventEmitter,
   Output,
   ViewChild,
-  ElementRef
+  ElementRef,
+  Input,
+  OnInit
 } from '@angular/core';
+import { ControlContainer, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-labels-input',
   templateUrl: './labels-input.component.html',
-  styleUrls: ['./labels-input.component.scss']
+  styleUrls: ['./labels-input.component.scss'],
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }]
 })
-export class LabelsInputComponent {
+export class LabelsInputComponent implements OnInit {
   @ViewChild('labelsInput') labelsInput: ElementRef;
+  @Input() labels?: string[];
   @Output()
   public labelsChangeEmitter$: EventEmitter<{
     labels?: string[];
     wrongLabels?: boolean;
   }>;
   public newLabel: string;
-  public labels: string[];
   public wrongLabelMessage: string;
 
-  constructor() {
+  public constructor() {
     this.labelsChangeEmitter$ = new EventEmitter();
-    this.labels = [];
+  }
+
+  public ngOnInit() {
+    this.labels = this.labels || [];
   }
 
   public validateNewLabel() {
@@ -35,6 +42,7 @@ export class LabelsInputComponent {
   }
 
   public addLabel() {
+    this.validateNewLabel();
     if (this.newLabel && !this.wrongLabelMessage) {
       this.labels.push(
         this.newLabel
