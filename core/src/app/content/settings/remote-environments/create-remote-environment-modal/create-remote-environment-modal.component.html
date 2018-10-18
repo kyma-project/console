@@ -15,7 +15,7 @@
               <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
               <div class="tn-form__item">
                 <label class="tn-form__label">Name *</label>
-                <input #nameInput autofocus class="tn-form__control" type="text" name="remoteEnvName"
+                <input #nameInput autofocus maxlength="253" class="tn-form__control" type="text" name="remoteEnvName"
                     [(ngModel)]="name" (ngModelChange)=validateRemoteEnvNameRegex()
                     placeholder="Specify a name for your Remote Environment"
                   >
