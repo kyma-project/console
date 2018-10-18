@@ -13,6 +13,7 @@ import {
 
 const FilterList = ({
   filters,
+  filtersExists,
   active,
   onChange,
   onSearch,
@@ -51,7 +52,8 @@ const FilterList = ({
         filters.map((filter, idx) => (
           <Fragment key={filter.name}>
             {filter.values &&
-              filter.values.length > 0 && (
+              filter.values.length > 0 &&
+              filtersExists[filter.name] && (
                 <Fragment>
                   <Filter
                     name={filter.name}
@@ -75,6 +77,7 @@ const FilterList = ({
 
 FilterList.propTypes = {
   filters: PropTypes.array,
+  filtersExists: PropTypes.object,
   active: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   clearAllActiveFilters: PropTypes.func.isRequired,

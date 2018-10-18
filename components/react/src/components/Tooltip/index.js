@@ -25,6 +25,11 @@ class Tooltip extends React.Component {
     type: PropTypes.string,
     minWidth: PropTypes.string,
     maxWidth: PropTypes.string,
+    orientation: PropTypes.string,
+  };
+
+  static defaultProps = {
+    orientation: 'top',
   };
 
   constructor(props) {
@@ -61,29 +66,35 @@ class Tooltip extends React.Component {
       maxWidth,
       icon,
       type,
+      orientation,
     } = this.props;
 
     return (
       <TooltipWrapper
         onMouseEnter={this.handleShowTooltip}
         onMouseLeave={this.handleHideTooltip}
+        type={type === undefined ? 'default' : type}
       >
         {children}
-        {visibleTooltip && (
-          <TooltipContainer
-            minWidth={minWidth}
-            maxWidth={maxWidth}
-            type={type === undefined ? 'default' : type}
-            show={showTooltip}
-          >
-            {title && (
-              <TooltipHeader type={type === undefined ? 'default' : type}>
-                {title}
-              </TooltipHeader>
-            )}
-            <TooltipContent>{content}</TooltipContent>
-          </TooltipContainer>
-        )}
+        {visibleTooltip &&
+          content && (
+            <TooltipContainer
+              minWidth={minWidth}
+              maxWidth={maxWidth}
+              type={type === undefined ? 'default' : type}
+              show={showTooltip}
+              orientation={orientation}
+            >
+              {title && (
+                <TooltipHeader type={type === undefined ? 'default' : type}>
+                  {title}
+                </TooltipHeader>
+              )}
+              <TooltipContent type={type === undefined ? 'default' : type}>
+                {content}
+              </TooltipContent>
+            </TooltipContainer>
+          )}
       </TooltipWrapper>
     );
   }

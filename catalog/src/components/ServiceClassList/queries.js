@@ -1,16 +1,17 @@
 import gql from 'graphql-tag';
 
+const activeTagsFiltersQGL = `
+  first
+  isMore
+  offset
+`;
+
 export const FILTERED_CLASSES_QUERY = gql`
   query filteredServiceClasses {
     filteredServiceClasses @client {
       name
-      description
       displayName
       externalName
-      imageUrl
-      activated
-      providerDisplayName
-      tags
     }
   }
 `;
@@ -32,8 +33,10 @@ export const CLASS_FILTERS_QUERY = gql`
 export const CLASS_ACTIVE_FILTERS_QUERY = gql`
   query activeServiceClassFilters {
     activeServiceClassFilters @client {
+      basic
       provider
       tag
+      connectedApplication
     }
   }
 `;
@@ -41,15 +44,17 @@ export const CLASS_ACTIVE_FILTERS_QUERY = gql`
 export const CLASS_ACTIVE_TAGS_FILTERS_QUERY = gql`
   query activeTagsFilters {
     activeTagsFilters @client {
+      basic {
+        ${activeTagsFiltersQGL}
+      }
       provider {
-        first
-        isMore
-        offset
+        ${activeTagsFiltersQGL}
       }
       tag {
-        first
-        isMore
-        offset
+        ${activeTagsFiltersQGL}
+      }
+      connectedApplication {
+        ${activeTagsFiltersQGL}
       }
       search
     }
