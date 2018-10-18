@@ -52,7 +52,7 @@ podTemplate(label: label) {
 
                         if (isMaster) {
                             stage("IP scan $application (WhiteSource)") {
-                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]]) {
+                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]) {
                                     execute("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
                                 }
                             }
