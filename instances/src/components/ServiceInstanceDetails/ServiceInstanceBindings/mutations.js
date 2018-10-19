@@ -5,11 +5,13 @@ export const BINDING_CREATE_MUTATION = gql`
     $serviceBindingName: String!
     $serviceInstanceName: String!
     $environment: String!
+    $parameters: JSON
   ) {
     createServiceBinding(
       serviceBindingName: $serviceBindingName
       serviceInstanceName: $serviceInstanceName
       environment: $environment
+      parameters: $parameters
     ) {
       name
     }

@@ -6,10 +6,12 @@ export const TooltipContainer = styled.div`
   z-index: 99;
   min-width: ${props => (props.minWidth ? props.minWidth : '120px')};
   max-width: ${props => (props.maxWidth ? props.maxWidth : '420px')};
-  background: ${props => (props.type === 'default' ? '#32363a' : '#fff')};
+  background: ${props =>
+    props.type === 'default' && !props.light ? '#32363a' : '#fff'};
   font-size: ${props => (props.type === 'default' ? '11px' : '12px')};
   line-height: ${props => (props.type === 'default' ? '11px' : '12px')};
-  color: ${props => (props.type === 'default' ? '#fff' : '#32363b')};
+  color: ${props =>
+    props.type === 'default' && !props.light ? '#fff' : '#32363b'};
   filter: drop-shadow(rgba(0, 0, 0, 0.12) 0 0px 2px);
   box-shadow: 0 0 4px 0 #00000026, 0 12px 20px 0 #00000019;
   border-radius: 3px;
@@ -35,8 +37,13 @@ export const TooltipContainer = styled.div`
   }};
   ${props => (props.orientation === 'top' ? 'bottom: 100%;' : 'top: 100%')};
   right: 50%;
+
+  ${props => (props.type === 'light' && 'left: 0;') || 'right: 50%'};
   transform: translateX(
-    ${props => (props.type === 'default' ? '50%' : '40px')}
+    ${props =>
+      (props.type === 'default' && '50%') ||
+      (props.type === 'light' && '-40px') ||
+      '40px'}
   );
   visibility: ${props => (props.show ? 'visibility' : 'hidden')};
   opacity: ${props => (props.show ? '1' : '0')};
@@ -64,7 +71,10 @@ export const TooltipContainer = styled.div`
       }
     }};
     content: '';
-    right: ${props => (props.type === 'default' ? '50%' : '25px')};
+    ${props =>
+      (props.type === 'default' && 'right: 50%;') ||
+      (props.type === 'light' && 'left: 48px;') ||
+      'right: 25px'};
     ${props => (props.type === 'default' ? 'transform: translateX(6px)' : '')};
     margin-left: -10px;
     position: absolute;

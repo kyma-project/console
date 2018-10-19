@@ -42,10 +42,12 @@ export const SERVICE_INSTANCE_QUERY = gql`
         ${servicePlanQGL}
         environment
         relatedServiceClassName
+        bindingCreateParameterSchema
       }
       clusterServicePlan {
         ${servicePlanQGL}
         relatedClusterServiceClassName
+        bindingCreateParameterSchema
       }
       serviceBindings {
         items {

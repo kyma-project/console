@@ -2,12 +2,13 @@ import React from 'react';
 import { graphql, withApollo, compose } from 'react-apollo';
 
 import { USAGE_KIND_RESOURCES_QUERY, USAGE_KINDS_QUERY } from './queries';
+import { SEND_NOTIFICATION } from './mutations';
 
-import CreateBindingModal from './CreateBindingModal.component';
+import BindApplicationModal from './BindApplicationModal.component';
 
 import builder from '../../../../commons/builder';
 
-const CreateBindingContainer = ({ client, ...props }) => {
+const BindApplicationContainer = ({ client, ...props }) => {
   const fetchUsageKindResources = usageKind => {
     return client.query({
       query: USAGE_KIND_RESOURCES_QUERY,
@@ -19,14 +20,14 @@ const CreateBindingContainer = ({ client, ...props }) => {
     });
   };
   return (
-    <CreateBindingModal
+    <BindApplicationModal
       fetchUsageKindResources={fetchUsageKindResources}
       {...props}
     />
   );
 };
 
-const CreateBindingContainerWithCompose = compose(
+const BindApplicationContainerWithCompose = compose(
   graphql(USAGE_KINDS_QUERY, {
     name: 'usageKinds',
     options: () => {
@@ -35,6 +36,9 @@ const CreateBindingContainerWithCompose = compose(
       };
     },
   }),
-)(CreateBindingContainer);
+  graphql(SEND_NOTIFICATION, {
+    name: 'sendNotification',
+  }),
+)(BindApplicationContainer);
 
-export default withApollo(CreateBindingContainerWithCompose);
+export default withApollo(BindApplicationContainerWithCompose);

@@ -1,6 +1,7 @@
 import ServiceInstances from './ServiceInstances/resolvers';
-import ServiceInstanceDetails from './ServiceInstancDetails/resolvers';
+import ServiceInstanceDetails from './ServiceInstanceDetails/resolvers';
 import Filter from './Filter/resolvers';
+import Notification from './Notification/resolvers';
 
 export default {
   Query: {
@@ -10,5 +11,6 @@ export default {
     ...ServiceInstances.Mutation,
     ...ServiceInstanceDetails.Mutation,
     ...Filter.Mutation,
+    ...Notification.Mutation,
   },
 };

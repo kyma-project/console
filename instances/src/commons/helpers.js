@@ -1,3 +1,5 @@
+import { adjectives, nouns } from './random-names-data';
+
 export const sortDocumentsByType = documents => {
   if (!documents) return null;
 
@@ -37,6 +39,24 @@ export const getResourceDisplayName = resource => {
 
   return resource.displayName || resource.externalName || resource.name;
 };
+
+export function clearEmptyPropertiesInObject(object) {
+  for (const key in object) {
+    if (typeof object[key] === 'undefined' || object[key] === '') {
+      delete object[key];
+      continue;
+    }
+
+    if (!object[key] || typeof object[key] !== 'object') {
+      continue;
+    }
+
+    clearEmptyPropertiesInObject(object[key]);
+    if (Object.keys(object[key]).length === 0) {
+      delete object[key];
+    }
+  }
+}
 
 export function compareTwoObjects(obj1, obj2) {
   for (const p in obj1) {
@@ -125,3 +145,15 @@ export const validateAsyncApiSpec = asyncApiSpec => {
 
   return true;
 };
+
+export function randomNameGenerator() {
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  return (
+    adjectives[getRandomInt(0, adjectives.length + 1)] +
+    '-' +
+    nouns[getRandomInt(0, nouns.length + 1)]
+  ).toLowerCase();
+}

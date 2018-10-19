@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const CreateBindingButton = styled.button`
+export const BindApplicationButton = styled.button`
   padding: 0;
   background: none;
   border: 0;
@@ -33,4 +33,23 @@ export const IconWrapper = styled.span`
   display: inline-block;
   position: relative;
   top: 1px;
+`;
+
+export const Link = styled.a`
+  cursor: pointer;
+  text-decoration: none !important;
+  margin: 10px 0 0;
+`;
+
+export const SubSectionTitle = styled.p`
+  margin: ${props => props.margin || '10px 0'};
+  font-weight: ${props => (props.bold ? 'bold' : ' ')};
+  line-height: 1.14;
+  color: #32363b;
+`;
+
+export const SubSectionDescription = styled.p`
+  margin: ${props => props.margin || '0 0 20px'};
+  line-height: 1.57;
+  color: #515559;
 `;

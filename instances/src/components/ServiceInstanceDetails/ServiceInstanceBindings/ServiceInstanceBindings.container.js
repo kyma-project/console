@@ -14,12 +14,13 @@ import builder from '../../../commons/builder';
 export default compose(
   graphql(BINDING_CREATE_MUTATION, {
     props: ({ mutate }) => ({
-      createBinding: (serviceBindingName, serviceInstanceName) =>
+      createBinding: (serviceBindingName, serviceInstanceName, parameters) =>
         mutate({
           variables: {
             serviceBindingName,
             serviceInstanceName,
             environment: builder.getCurrentEnvironmentId(),
+            parameters,
           },
         }),
     }),

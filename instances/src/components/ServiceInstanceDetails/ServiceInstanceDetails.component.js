@@ -17,8 +17,9 @@ class ServiceInstanceDetails extends React.Component {
   render() {
     const { serviceInstance = {}, deleteServiceInstance, history } = this.props;
 
-    const instance =
+    let instance =
       serviceInstance.serviceInstance && serviceInstance.serviceInstance;
+
     const serviceClass =
       instance && (instance.serviceClass || instance.clusterServiceClass);
 
