@@ -4,21 +4,31 @@ import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
 import common from '../commands/common';
 import logOnEvents from '../utils/logging';
+import address from '../utils/address';
 import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
+import { describeIf } from '../utils/skip';
+import dex from '../utils/dex';
 
 const context = require('../utils/testContext');
 let page, browser;
-let dexReady = false;
-const consoleUrl = config.localdev ? config.devConsoleUrl : config.consoleUrl;
 let token = '';
+let isEnvironmentReady = false;
 
-describe('Catalog basic tests', () => {
+describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
-    const data = await common.beforeAll(dexReady);
-    browser = data.browser;
-    page = data.page;
-    logOnEvents(page, t => (token = t));
+    try {
+      isEnvironmentReady = await context.isDexReady();
+      const data = await common.beforeAll(isEnvironmentReady);
+      browser = data.browser;
+      page = data.page;
+      logOnEvents(page, t => (token = t));
+
+      await common.testLogin(isEnvironmentReady, page);
+      await kymaConsole.createEnvironment(page, config.catalogTestEnv);
+    } catch (e) {
+      isEnvironmentReady = false;
+      throw e;
+    }
   });
 
   afterAll(async () => {
@@ -26,64 +36,18 @@ describe('Catalog basic tests', () => {
     await browser.close();
   });
 
-  test('Login', async () => {
-    //the code looks strange.. but it uneasy to stop test execution as a result of a check in  'beforeAll'
-    // https://github.com/facebook/jest/
-
-    await common.testLogin(dexReady, page);
-  });
-
-  test('Create catalogTestEnv env', async () => {
-    common.validateDex(dexReady);
-
-    // Hardcodes for specific page
-    const catalogLinkText = 'Catalog';
-
-    // consts
-    const dropdownButton = '.tn-dropdown__control';
-    const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
-    const createEnvBtn = '.open-create-env-modal';
-    const createEnvModal = '.sf-modal.sf-modal--min';
-    const createBtn = '.env-create-btn';
-    const envNameInput = 'input[name=environmentName].tn-form__control';
-    const navItem = 'a.sf-toolbar__item';
-
-    await page.click(dropdownButton);
-    await page.waitForSelector(dropdownMenu, { visible: true });
-    const existingEnvironments = await kymaConsole.getEnvironments(page);
-    await page.click(dropdownButton);
-    await page.click(createEnvBtn);
-    await page.waitFor(createEnvModal);
-    await page.focus(envNameInput);
-    await page.type(envNameInput, config.catalogTestEnv);
-    await page.click(createBtn);
-    await page.waitForSelector(createEnvModal, { hidden: true });
-    await page.reload({ waitUntil: 'networkidle0' });
-    await page.$$eval(
-      navItem,
-      (item, catalogLinkText) => {
-        item.find(text => text.innerText.includes(catalogLinkText)).click();
-      },
-      catalogLinkText
-    );
-
-    await page.reload({ waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
-  });
-
-  test('Check service list', async () => {
-    common.validateDex(dexReady);
-
+  test('Check service class list', async () => {
+    common.validateTestEnvironment(isEnvironmentReady);
     // Hardcodes for specific service class
     const exampleServiceClassName = serviceClassConfig.exampleServiceClassName;
 
     // consts
     const catalogHeaderSelector = catalog.prepareSelector('toolbar-headline');
     const catalogExpectedHeader = 'Service Catalog';
-    const serviceButtonSelector = catalog.prepareSelector('card-button');
-
     const searchSelector = catalog.prepareSelector('search');
     const searchBySth = 'lololo';
+
+    await kymaConsole.openLink(page, 'Catalog');
 
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(catalogHeaderSelector);
@@ -111,9 +75,18 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check filters', async () => {
+    common.validateTestEnvironment(isEnvironmentReady);
+
     // consts
     const filterDropdownButton = catalog.prepareSelector('toggle-filter');
     const filterWrapper = catalog.prepareSelector('wrapper-filter');
+    const activeFiltersWrapper = catalog.prepareSelector(
+      'active-filters-wrapper'
+    );
+    const clearAllFiltersButton = catalog.prepareSelector('clear-all-filters');
+    const providerBitnami = catalog.prepareSelector(
+      'filter-item-provider-bitnami'
+    );
     const searchBySth = 'lololo';
     const searchByDatabase = 'database';
     const searchID = 'search-filter';
@@ -123,19 +96,33 @@ describe('Catalog basic tests', () => {
     await frame.click(filterDropdownButton);
 
     await frame.waitFor(filterWrapper);
-    const searchInput = await frame.$(searchSelector);
-
     await catalog.feelInInput(frame, searchByDatabase, searchID);
     const searchedFilters = await catalog.getFilters(frame);
     expect(searchedFilters).toContain(searchByDatabase);
+    expect(searchedFilters.length).toBeGreaterThan(2);
 
     await catalog.feelInInput(frame, searchBySth, searchID);
     const searchedFiltersNew = await catalog.getFilters(frame);
     expect(searchedFiltersNew).not.toContain(searchBySth);
+
+    await catalog.feelInInput(frame, '', searchID);
+    const searchedFiltersAfterClearSearch = await catalog.getFilters(frame);
+    expect(searchedFiltersAfterClearSearch.length).toBeGreaterThan(2);
+
+    await frame.click(providerBitnami);
+    await frame.waitFor(activeFiltersWrapper);
+    const currectActiveFilters = await catalog.getActiveFilters(frame);
+    expect(currectActiveFilters.length).toEqual(1);
+
+    await frame.click(clearAllFiltersButton);
+    const currectActiveFiltersAfterClear = await catalog.getActiveFilters(
+      frame
+    );
+    expect(currectActiveFiltersAfterClear.length).toEqual(0);
   });
 
   test('Check details', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific service class
     const exampleServiceClassButton =
@@ -166,10 +153,10 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check provisioning', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific service class / page
-    const catalogUrl = `${consoleUrl}/home/environments/catalogtestenvironment/service-catalog`;
+    const catalogUrl = address.console.getCatalog(config.catalogTestEnv);
     const instanceTitle = serviceClassConfig.instanceTitle;
     const instanceTitle2 = serviceClassConfig.instanceTitle2;
     const instanceLabel = serviceClassConfig.instanceLabel;
@@ -197,18 +184,16 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check instances list', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
-    const instancesLinkText = 'Instances';
-    const instancesUrl = `${consoleUrl}/home/environments/catalogtestenvironment/instances`;
+    const instancesUrl = address.console.getInstancesList(
+      config.catalogTestEnv
+    );
     // consts
-    const navItem = 'a.sf-toolbar__item';
     const instancesHeaderSelector = catalog.prepareSelector('toolbar-headline');
     const instancesExpectedHeader = 'Service Instances';
-    const serviceButtonSelector = catalog.prepareSelector('card-button');
-
     const searchSelector = catalog.prepareSelector('search');
     const toggleSearchSelector = catalog.prepareSelector('toggle-search');
     const searchBySth = 'lololo';
@@ -244,18 +229,14 @@ describe('Catalog basic tests', () => {
   });
 
   test('Check details', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific service class
     const exampleInstanceLink = catalog.prepareSelector(
       `instance-name-${serviceClassConfig.instanceTitle}`
     );
-    const instanceExpectedHeader = `Service Instances / ${
-      serviceClassConfig.instanceTitle
-    }`;
 
     // consts
-    const instancesHeaderSelector = catalog.prepareSelector('toolbar-headline');
     const exampleInstanceServiceClass = catalog.prepareSelector(
       'instance-service-class'
     );
@@ -271,9 +252,6 @@ describe('Catalog basic tests', () => {
     const exampleInstanceStatusType = catalog.prepareSelector(
       'instance-status-type'
     );
-    const exampleInstanceStatusMessage = catalog.prepareSelector(
-      'instance-status-message'
-    );
 
     const frame = await kymaConsole.getFrame(page);
     const redis = await frame.waitForSelector(exampleInstanceLink, {
@@ -284,6 +262,8 @@ describe('Catalog basic tests', () => {
 
     await kymaConsole.getFrame(page);
     const frame2 = await kymaConsole.getFrame(page);
+
+    await frame2.waitForSelector(exampleInstanceServiceClass);
     const serviceClass = await frame2.$(exampleInstanceServiceClass);
     const servicePlan = await frame2.$(exampleInstanceServicePlan);
     const documentationLink = await frame2.$(
@@ -291,6 +271,7 @@ describe('Catalog basic tests', () => {
     );
     const supportLink = await frame2.$(exampleInstanceServiceSupportLink);
     const statusType = await frame2.$(exampleInstanceStatusType);
+
     expect(serviceClass.toString()).not.toBeNull();
     expect(servicePlan.toString()).not.toBeNull();
     expect(documentationLink.toString()).not.toBeNull();

@@ -6,7 +6,7 @@ import {
   ISubscription,
   ISubscriptionSpec,
 } from '../shared/datamodel/k8s/subscription';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AppConfig } from '../app.config';
 import { IMetaData } from '../shared/datamodel/k8s/generic/meta-data';
 

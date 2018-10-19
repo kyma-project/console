@@ -1,15 +1,26 @@
 import React from 'react';
 
-import { Table } from '@kyma-project/react-components';
+import {
+  Icon,
+  Table,
+  Tabs,
+  Tab,
+  Tooltip,
+} from '@kyma-project/react-components';
 
 import CreateBindingModal from './CreateBindingModal/CreateBindingModal.container';
 import SecretDataModal from './SecretDataModal/SecretDataModal.component';
+import ParametersDataModal from './ParametersDataModal/ParametersDataModal.component';
 import DeleteBindingModal from './DeleteBindingModal/DeleteBindingModal.component';
+import StatusIndicator from './StatusIndicator/StatusIndicator.component';
+
+import { statusColor } from '../../../commons/helpers';
 
 import {
   ServiceInstanceBindingsWrapper,
-  LinkButton,
   SecretModalButton,
+  ParametersModalButton,
+  ActionsWrapper,
 } from './styled';
 
 class ServiceInstanceBindings extends React.Component {
@@ -26,6 +37,25 @@ class ServiceInstanceBindings extends React.Component {
     }).length;
   };
 
+  getStatusType = statusType => {
+    let type;
+    switch (statusType) {
+      case 'READY':
+        type = 'success';
+        break;
+      case 'FAILED':
+        type = 'error';
+        break;
+      default:
+        type = 'warning';
+    }
+    return type;
+  };
+
+  status = (data, id) => {
+    return <StatusIndicator data={data} key={id} />;
+  };
+
   render() {
     const {
       createBinding,
@@ -36,22 +66,22 @@ class ServiceInstanceBindings extends React.Component {
       serviceInstanceRefetch,
     } = this.props;
 
-    const table = {
+    const serviceBindingsUsageTable = {
       title: 'Bindings',
       columns: [
         {
-          name: 'Binding Usage',
-          size: 0.25,
-          accesor: el => <LinkButton>{el.name}</LinkButton>,
+          name: 'Service Binding Usage',
+          size: 0.2,
+          accesor: el => el.name,
         },
         {
-          name: 'Bound Resource',
-          size: 0.25,
+          name: 'Bound Applications',
+          size: 0.2,
           accesor: el =>
             `${el.usedBy.name} (${this.capitalize(el.usedBy.kind)})`,
         },
         {
-          name: 'Binding',
+          name: 'Service Binding',
           size: 0.2,
           accesor: el => el.serviceBinding && el.serviceBinding.name,
         },
@@ -74,6 +104,26 @@ class ServiceInstanceBindings extends React.Component {
           },
         },
         {
+          name: 'Status',
+          size: 0.1,
+          accesor: el => (
+            <Tooltip
+              type={this.getStatusType(el.status.type)}
+              content={el.status.message}
+              minWidth="250px"
+            >
+              <span
+                style={{
+                  color: statusColor(el.status.type),
+                  cursor: `${el.status.message ? 'help' : 'default'}`,
+                }}
+              >
+                {el.status.type}
+              </span>
+            </Tooltip>
+          ),
+        },
+        {
           name: '',
           size: 0.1,
           accesor: el => (
@@ -87,11 +137,98 @@ class ServiceInstanceBindings extends React.Component {
               bindingUsageName={el.name}
               bindingUsageCount={this.countBindingUsage(el)}
               serviceInstanceRefetch={serviceInstanceRefetch}
+              id={`service-binding-delete-${el.name}`}
             />
           ),
         },
       ],
       data: serviceInstance.serviceBindingUsages,
+    };
+
+    const serviceBindingsTable = {
+      title: 'Bindings',
+      columns: [
+        {
+          name: 'Service Binding',
+          size: 0.2,
+          accesor: el => el.name,
+        },
+        {
+          name: 'Secret',
+          size: 0.45,
+          accesor: el => {
+            const secret = el && el.secret;
+            return secret && Object.keys(secret).length ? (
+              <SecretDataModal
+                title={`Secret "${secret.name}"`}
+                data={secret.data}
+                modalOpeningComponent={
+                  <SecretModalButton>{secret.name}</SecretModalButton>
+                }
+              />
+            ) : (
+              '-'
+            );
+          },
+        },
+        {
+          name: 'Status',
+          size: 0.2,
+          accesor: el => (
+            <Tooltip
+              type={this.getStatusType(el.status.type)}
+              content={el.status.message}
+              minWidth="250px"
+            >
+              <span
+                style={{
+                  color: statusColor(el.status.type),
+                  cursor: `${el.status.message ? 'help' : 'default'}`,
+                }}
+              >
+                {el.status.type}
+              </span>
+            </Tooltip>
+          ),
+        },
+        {
+          name: '',
+          size: 0.15,
+          accesor: el => {
+            const parameters = el && el.parameters;
+            return (
+              <ActionsWrapper>
+                {parameters &&
+                  Object.keys(parameters).length && (
+                    <ParametersDataModal
+                      title={`Parameters "${parameters.name}"`}
+                      data={parameters.data}
+                      modalOpeningComponent={
+                        <ParametersModalButton
+                          id={`service-binding-parameters-${el.name}`}
+                          margin={'0 8px'}
+                        >
+                          <Icon icon={'\uE139'} />
+                        </ParametersModalButton>
+                      }
+                    />
+                  )}
+                <DeleteBindingModal
+                  deleteBinding={deleteBinding}
+                  bindingName={el.name || null}
+                  bindingExists={Boolean(el)}
+                  bindingUsageCount={this.countBindingUsage({
+                    serviceBinding: el,
+                  })}
+                  serviceInstanceRefetch={serviceInstanceRefetch}
+                  id={`service-binding-delete-${el.name}`}
+                />
+              </ActionsWrapper>
+            );
+          },
+        },
+      ],
+      data: serviceInstance.serviceBindings.items,
     };
 
     const createBindingContent = (
@@ -100,18 +237,53 @@ class ServiceInstanceBindings extends React.Component {
         createBindingUsage={createBindingUsage}
         serviceInstance={serviceInstance}
         serviceInstanceRefetch={serviceInstanceRefetch}
+        id={`create-service-binding`}
       />
     );
 
     return (
       <ServiceInstanceBindingsWrapper>
-        <Table
-          title={table.title}
-          addHeaderContent={createBindingContent}
-          columns={table.columns}
-          data={table.data}
-          notFoundMessage="No Bindings found"
-        />
+        <Tabs>
+          <Tab
+            title={'Bound Applications'}
+            id={'service-binding-usage-tab'}
+            addHeaderContent={createBindingContent}
+            additionalTitle={
+              'ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application.'
+            }
+            tooltipMinWidth={'230px'}
+            aditionalStatus={this.status(
+              serviceBindingsUsageTable.data,
+              'service-binding-usage-tab',
+            )}
+          >
+            <Table
+              columns={serviceBindingsUsageTable.columns}
+              data={serviceBindingsUsageTable.data}
+              notFoundMessage="No applications found"
+              margin="-21px -20px -20px"
+            />
+          </Tab>
+          <Tab
+            title={'Credentials'}
+            id={'service-binding-tab'}
+            additionalTitle={
+              'ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications.'
+            }
+            tooltipMinWidth={'230px'}
+            aditionalStatus={this.status(
+              serviceBindingsTable.data,
+              'service-binding-tab',
+            )}
+          >
+            <Table
+              columns={serviceBindingsTable.columns}
+              data={serviceBindingsTable.data}
+              notFoundMessage="No credentials found"
+              margin="-21px -20px -20px"
+            />
+          </Tab>
+        </Tabs>
       </ServiceInstanceBindingsWrapper>
     );
   }

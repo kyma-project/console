@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 export class RolesEntryRendererComponent extends AbstractKubernetesEntryRendererComponent {
   public actions = [
     {
-      function: 'delete',
-      name: 'Delete'
+      function: 'details',
+      name: 'Details'
     }
   ];
 

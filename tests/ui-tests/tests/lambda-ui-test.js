@@ -4,13 +4,15 @@ import lambdas from '../commands/lambdas';
 import common from '../commands/common';
 import logOnEvents from '../utils/logging';
 import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
+import { describeIf } from '../utils/skip';
+import dex from '../utils/dex';
 const context = require('../utils/testContext');
 
 let browser, page;
 let dexReady = false;
 let token = '';
 
-describe('Lambda UI tests', () => {
+describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   beforeAll(async () => {
     dexReady = await context.isDexReady();
     const data = await common.beforeAll(dexReady);
@@ -29,7 +31,7 @@ describe('Lambda UI tests', () => {
   });
 
   test('Create Lambda Function', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(dexReady);
     const contentHeader = '.sf-toolbar__header';
 
     // given (go to Lambdas view)
@@ -83,7 +85,7 @@ describe('Lambda UI tests', () => {
   });
 
   test('Delete Lambda Function', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(dexReady);
     // given
     const frame = await kymaConsole.getFrame(page);
     const dropdownButton = '.tn-button.tn-button--icon.tn-button--text';

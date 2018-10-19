@@ -23,6 +23,10 @@ export class ApiDefinitionEntryRendererComponent
     super(injector);
     this.actions = [
       {
+        function: 'details',
+        name: 'Details'
+      },
+      {
         function: 'delete',
         name: 'Delete'
       }

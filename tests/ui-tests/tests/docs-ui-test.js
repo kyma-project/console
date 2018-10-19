@@ -1,38 +1,39 @@
-import config from '../config';
 import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
 import common from '../commands/common';
 import docs from '../commands/docs';
+import address from '../utils/address';
 import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
+import { describeIf } from '../utils/skip';
+import dex from '../utils/dex';
 
 const context = require('../utils/testContext');
 let page, browser;
-let dexReady = false;
-const consoleUrl = config.localdev ? config.devConsoleUrl : config.consoleUrl;
+let isEnvironmentReady = false;
 
-describe('Docs basic tests', () => {
+describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
-    const data = await common.beforeAll(dexReady);
-    browser = data.browser;
-    page = data.page;
+    try {
+      isEnvironmentReady = await context.isDexReady();
+      const data = await common.beforeAll(isEnvironmentReady);
+      browser = data.browser;
+      page = data.page;
+      await common.testLogin(isEnvironmentReady, page);
+    } catch (e) {
+      isEnvironmentReady = false;
+      throw e;
+    }
   });
 
   afterAll(async () => {
     await browser.close();
   });
 
-  test('Login', async () => {
-    //the code looks strange.. but it uneasy to stop test execution as a result of a check in  'beforeAll'
-    // https://github.com/facebook/jest/issues/2713
-    await common.testLogin(dexReady, page);
-  });
-
   test('Go to docs', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(isEnvironmentReady);
 
     // Hardcodes for specific page
-    const docsUrl = `${consoleUrl}/home/docs`;
+    const docsUrl = address.console.getDocs();
 
     // consts
     const docsHeaderSelector = catalog.prepareSelector('toolbar-headline');
@@ -51,7 +52,7 @@ describe('Docs basic tests', () => {
   });
 
   test('Check if documentation is shown', async () => {
-    common.validateDex(dexReady);
+    common.validateTestEnvironment(isEnvironmentReady);
     // Hardcodes for specific page
     const articleExpectedHeader = 'Kyma';
     const articleExpectedServiceCatalogHeader = 'Service Catalog';
@@ -65,6 +66,7 @@ describe('Docs basic tests', () => {
     const kymaDetailsItems = catalog.prepareSelector(
       `${navItems}-${kymaID}-${kymaChildID}`
     );
+
     const kymaDetailsArrow = catalog.prepareSelector(
       `${navArrow}-${kymaID}-${kymaChildID}`
     );

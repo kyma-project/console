@@ -1,6 +1,6 @@
 import { List } from '../../shared/datamodel/k8s/generic/list';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../../app.config';
 import {
@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
 export class ExtensionsService {
   constructor(private http: HttpClient) {}
 
-  getExtensions(namespaceId: string): Observable<any> {
+  getExtensions(namespaceId: string): Observable<MicroFrontend[]> {
     const resourceUrl = `${
       AppConfig.k8sApiServerUrl_ui
     }namespaces/${namespaceId}/microfrontends`;
@@ -26,7 +26,7 @@ export class ExtensionsService {
     );
   }
 
-  getClusterExtensions(): Observable<any> {
+  getExternalExtensions(): Observable<MicroFrontend[]> {
     const resourceUrl = `${AppConfig.k8sApiServerUrl_ui}clustermicrofrontends`;
     return this.http.get<List<IMicroFrontend>>(resourceUrl).pipe(
       map(res => {

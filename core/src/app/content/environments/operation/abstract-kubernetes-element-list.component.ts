@@ -53,6 +53,10 @@ export class AbstractKubernetesElementListComponent
     return null;
   }
 
+  navigateToDetails(entry: any) {
+    // to be implemented by sub-class
+  }
+
   getCurrentEnvironmentId() {
     return this.currentEnvSrv.getCurrentEnvironmentId();
   }
@@ -122,6 +126,9 @@ export class AbstractKubernetesElementListComponent
               );
             }
           );
+      },
+      details: (entry: any) => {
+        this.navigateToDetails(entry);
       }
     };
   }

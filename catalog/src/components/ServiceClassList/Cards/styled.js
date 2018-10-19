@@ -8,6 +8,9 @@ export const CardWrapper = styled.div`
 `;
 
 export const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-sizing: border-box;
   border-radius: 3px;
   background-color: #ffffff;
@@ -66,7 +69,7 @@ export const CardImage = styled.img`
   bottom: 0;
 `;
 
-export const CardHeader = styled.div``;
+export const CardHeader = styled.header``;
 
 export const CardTitle = styled.h3`
   font-size: 16px;
@@ -76,4 +79,37 @@ export const CardCompany = styled.h4`
   color: #b2b9bf;
 `;
 
-export const CardDescription = styled.p``;
+export const CardDescription = styled.p`
+  flex-grow: 1;
+`;
+
+export const CardFooter = styled.footer``;
+
+export const CardLabelWrapper = styled.div`
+  display: inline-block;
+  margin: 8px 8px 0 0;
+`;
+
+export const CardLabel = styled.div`
+  display: inline-block;
+  color: #515559;
+  font-size: 12px;
+  padding: 5px 8px;
+  background-color: #eef5fc;
+  border-radius: 4px;
+  max-width: 75px;
+  overflow-x: hidden
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    width: auto;
+    max-width: 300px;
+  }
+`;
+
+export const CardLabelWithTooltip = styled(CardLabel)`
+  &:hover {
+    background-color: #e2effd;
+  }
+`;

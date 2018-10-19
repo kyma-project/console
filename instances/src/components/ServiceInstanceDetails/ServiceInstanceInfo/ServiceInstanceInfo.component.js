@@ -73,7 +73,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Grid.Unit>
                 <Grid.Unit size={0.8}>
                   <Element margin="0" data-e2e-id="instance-service-class">
-                    {instanceClass.name ? (
+                    {instanceClass && instanceClass.name ? (
                       <ServiceClassButton
                         onClick={() =>
                           goToServiceClassDetails(instanceClass.name)

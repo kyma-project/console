@@ -4,7 +4,7 @@ import { ServiceInstance } from '../../../../shared/datamodel/k8s/service-instan
 import { ServiceInstancesService } from '../../../../service-instances/service-instances.service';
 import { ServiceBindingsService } from '../../../../service-bindings/service-bindings.service';
 import { ServiceBinding } from '../../../../shared/datamodel/k8s/service-binding';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-binding-info';
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
@@ -55,6 +55,9 @@ export class LambdaInstanceBindingCreatorComponent {
         .subscribe(
           instances => {
             instances.items = instances.items.filter(i => {
+              if (i.status.provisionStatus !== 'Provisioned') {
+                return;
+              }
               let isAdded = false;
               this.alreadyAddedInstances.forEach(alreadyAddedInst => {
                 if (i.metadata.name === alreadyAddedInst.instanceName) {

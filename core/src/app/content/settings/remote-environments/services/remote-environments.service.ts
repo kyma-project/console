@@ -1,23 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
-import {
-  IRemoteEnvironment,
-  RemoteEnvironment
-} from '../../../../shared/datamodel/k8s/kyma-api/remote-environment';
 import { AppConfig } from '../../../../app.config';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 
 @Injectable()
 export class RemoteEnvironmentsService {
-  private url = AppConfig.k8sApiServerUrl_remoteenvs;
-
-  constructor(
-    private graphQLClientService: GraphQLClientService,
-    private httpClient: HttpClient
-  ) {}
+  constructor(private graphQLClientService: GraphQLClientService) {}
 
   public createRemoteEnvironment({
     name,
@@ -28,15 +18,41 @@ export class RemoteEnvironmentsService {
     description: string;
     labels: {};
   }): Observable<any> {
-    const data = {
-      metadata: { name },
-      spec: { labels, description },
-      kind: 'RemoteEnvironment',
-      apiVersion: 'applicationconnector.kyma-project.io/v1alpha1'
-    };
-    return this.httpClient.post(this.url, data, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
+    const data = { name, description, labels };
+    const mutation = `mutation createRemoteEnvironment($name: String!, $description: String!, $labels: Labels) {
+      createRemoteEnvironment(name: $name, description: $description, labels: $labels) {
+        name
+      }
+    }`;
+
+    return this.graphQLClientService.request(
+      AppConfig.graphqlApiUrl,
+      mutation,
+      data
+    );
+  }
+
+  public updateRemoteEnvironment({
+    name,
+    labels,
+    description
+  }: {
+    name: string;
+    description: string;
+    labels: {};
+  }): Observable<any> {
+    const data = { name, description, labels };
+    const mutation = `mutation updateRemoteEnvironment($name: String!, $description: String, $labels: Labels) {
+      updateRemoteEnvironment(name: $name, description: $description, labels: $labels) {
+        name
+      }
+    }`;
+
+    return this.graphQLClientService.request(
+      AppConfig.graphqlApiUrl,
+      mutation,
+      data
+    );
   }
 
   getRemoteEnvironment(name: string): Observable<any> {
@@ -56,9 +72,7 @@ export class RemoteEnvironmentsService {
         }
       }`;
 
-    const variables = {
-      name
-    };
+    const variables = { name };
 
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,

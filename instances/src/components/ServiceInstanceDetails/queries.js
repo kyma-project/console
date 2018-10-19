@@ -48,20 +48,27 @@ export const SERVICE_INSTANCE_QUERY = gql`
         relatedClusterServiceClassName
       }
       serviceBindings {
-        serviceBindings {
+        items {
           name
           environment
+          parameters
           secret {
             name
             data
             environment
           }
           serviceInstanceName
+          status {
+            type
+            reason
+            message
+          }
         }
         stats {
           ready
           failed
           pending
+          unknown
         }
       }
       serviceBindingUsages {
@@ -73,6 +80,11 @@ export const SERVICE_INSTANCE_QUERY = gql`
             name
             data
           }
+        }
+        status {
+          type
+          reason
+          message
         }
         usedBy {
           name

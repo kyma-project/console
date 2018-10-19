@@ -8,7 +8,7 @@ import TableFooter from './TableFooter';
 
 class Table extends React.Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     addHeaderContent: PropTypes.any,
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     data: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -17,7 +17,6 @@ class Table extends React.Component {
   };
 
   static defaultProps = {
-    title: 'Example Table',
     loading: false,
     notFoundMessage: 'Not found resources',
   };
@@ -43,10 +42,11 @@ class Table extends React.Component {
       data,
       loading,
       notFoundMessage,
+      margin,
     } = this.props;
 
     return (
-      <TableWrapper>
+      <TableWrapper margin={margin}>
         <TableHeader
           title={title}
           addContent={addHeaderContent}

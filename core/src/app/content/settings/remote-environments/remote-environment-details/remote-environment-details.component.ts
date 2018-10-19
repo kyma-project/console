@@ -8,6 +8,7 @@ import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-m
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../shared/components/information-modal/information-modal.component';
 import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
+import { EditRemoteEnvironmentModalComponent } from '../edit-remote-environment-modal/edit-remote-environment-modal.component';
 
 @Component({
   selector: 'app-remote-environment-details',
@@ -16,6 +17,7 @@ import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy
 })
 export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   public currentREnvId = '';
+  public transformedLabels: string[];
   private sub: any;
   private prettyStatus = '';
   remoteEnvironment: any;
@@ -34,6 +36,8 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
+  @ViewChild('editRemoteEnvModal')
+  editRemoteEnvModal: EditRemoteEnvironmentModalComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,26 +52,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.currentREnvId = params['id'];
-
-      this.remoteEnvironmentsService
-        .getRemoteEnvironment(this.currentREnvId)
-        .subscribe(
-          data => {
-            if (data && data.remoteEnvironment) {
-              this.remoteEnvironment = data.remoteEnvironment;
-              this.boundEnvironments =
-                data.remoteEnvironment.enabledInEnvironments;
-              this.prettyStatus = this.remoteEnvironmentsService.printPrettyConnectionStatus(
-                data.remoteEnvironment.status
-              );
-            } else {
-              this.goBack();
-            }
-          },
-          err => {
-            this.infoModal.show('Error', err);
-          }
-        );
+      this.getRemoteEnv();
     });
 
     this.communication.observable$.subscribe(data => {
@@ -82,6 +67,10 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
         this.boundEnvironments.push(
           response.data.enableRemoteEnvironment.environment
         );
+      }
+
+      if (response.type === 'updateResource') {
+        this.getRemoteEnv();
       }
     });
 
@@ -100,11 +89,36 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
       );
   }
 
+  public getRemoteEnv() {
+    this.remoteEnvironmentsService
+      .getRemoteEnvironment(this.currentREnvId)
+      .subscribe(
+        data => {
+          if (data && data.remoteEnvironment) {
+            this.remoteEnvironment = data.remoteEnvironment;
+            this.transformedLabels = this.getTransformedLabels(
+              this.remoteEnvironment.labels
+            );
+            this.boundEnvironments =
+              data.remoteEnvironment.enabledInEnvironments;
+            this.prettyStatus = this.remoteEnvironmentsService.printPrettyConnectionStatus(
+              data.remoteEnvironment.status
+            );
+          } else {
+            this.goBack();
+          }
+        },
+        err => {
+          this.infoModal.show('Error', err);
+        }
+      );
+  }
+
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  openModal() {
+  openEditBindingsModal() {
     this.editbindingsmodal.show();
   }
 
@@ -151,10 +165,14 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     return this.remoteEnvironmentsService.determineClass(entry);
   }
 
-  public getLabels(labels): string[] {
+  public getTransformedLabels(labels): string[] {
     if (!labels) {
       return [];
     }
     return Object.entries(labels).map(([key, value]) => key + ':' + value);
+  }
+
+  public openEditRemoteEnvModal() {
+    this.editRemoteEnvModal.show();
   }
 }
