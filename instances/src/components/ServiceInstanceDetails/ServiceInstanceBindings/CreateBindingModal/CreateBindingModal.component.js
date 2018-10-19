@@ -135,7 +135,12 @@ class CreateBindingModal extends React.Component {
       possibilityToCreate,
       tooltipData,
     } = this.state;
-    const { serviceInstance, usageKinds, fetchUsageKindResources } = this.props;
+    const {
+      serviceInstance,
+      usageKinds,
+      fetchUsageKindResources,
+      id,
+    } = this.props;
 
     const contentTexts = ['Service Binding', 'Service Binding Usage'];
     const currentStage =
@@ -174,7 +179,7 @@ class CreateBindingModal extends React.Component {
     ];
 
     const createBindingButton = (
-      <CreateBindingButton onClick={this.handleOpen}>
+      <CreateBindingButton data-e2e-id={id} onClick={this.handleOpen}>
         + Create Binding
       </CreateBindingButton>
     );

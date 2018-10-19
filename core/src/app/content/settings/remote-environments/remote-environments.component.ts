@@ -11,6 +11,7 @@ import { Filter } from '@kyma-project/y-generic-list';
 import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal/create-remote-environment-modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-remote-environments',
@@ -36,7 +37,9 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
@@ -63,6 +66,10 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
 
   getResourceUrl(kind: string, entry: any): string {
     return `${this.baseUrl}${entry.name}`;
+  }
+
+  navigateToDetails(entry: any) {
+    this.router.navigate([entry.name], { relativeTo: this.activatedRoute });
   }
 
   toggleDropDown() {

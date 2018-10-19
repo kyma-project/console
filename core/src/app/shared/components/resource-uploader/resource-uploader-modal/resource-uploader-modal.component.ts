@@ -38,7 +38,7 @@ export class ResourceUploaderModalComponent {
         event.stopPropagation();
         this.infoModal.show(
           'Created',
-          'New element has been created succesfully'
+          'New element has been created successfully'
         );
         setTimeout(() => {
           this.infoModal.hide();

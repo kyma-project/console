@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Deployment, IDeployment, IDeploymentStatus } from './deployment';
 import { Service, IServiceSpec } from './service';
 import { IMetaDataOwner, MetaDataOwner } from './generic/meta-data-owner';

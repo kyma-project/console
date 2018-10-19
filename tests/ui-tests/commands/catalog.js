@@ -39,6 +39,7 @@ module.exports = {
       const searchInput = await frame.$(searchSelector);
       await searchInput.focus();
       await searchInput.click({ clickCount: 3 });
+      await searchInput.press('Backspace');
       await searchInput.type(searchByText);
     } catch (e) {
       console.log(document.documentElement.innerHTML);
@@ -48,6 +49,7 @@ module.exports = {
   getInstances: async page => await getElements(page, 'instance-name'),
   getServices: async page => await getElements(page, 'card-title'),
   getFilters: async page => await getElements(page, 'filter-item'),
+  getActiveFilters: async page => await getElements(page, 'active-filter'),
   prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`
 };
 

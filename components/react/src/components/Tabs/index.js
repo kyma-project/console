@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TabsWrapper, TabsHeader, TabsContent } from './components';
+import {
+  TabsWrapper,
+  TabsHeader,
+  TabsHeaderAdditionalContent,
+  TabsContent,
+} from './components';
 
 import Separator from '../Separator';
+import Tab from './Tab';
 
 class Tabs extends React.Component {
   static propTypes = {
@@ -42,6 +48,16 @@ class Tabs extends React.Component {
     });
   };
 
+  renderAdditionalHeaderContent = () => {
+    if (
+      this.state.children[this.state.activeTabIndex] &&
+      this.state.children[this.state.activeTabIndex].props.addHeaderContent
+    ) {
+      return this.state.children[this.state.activeTabIndex].props
+        .addHeaderContent;
+    }
+  };
+
   renderActiveTab = () => {
     if (this.state.children[this.state.activeTabIndex]) {
       return this.state.children[this.state.activeTabIndex].props.children;
@@ -51,7 +67,12 @@ class Tabs extends React.Component {
   render() {
     return (
       <TabsWrapper>
-        <TabsHeader>{this.renderHeader()}</TabsHeader>
+        <TabsHeader>
+          {this.renderHeader()}
+          <TabsHeaderAdditionalContent>
+            {this.renderAdditionalHeaderContent()}
+          </TabsHeaderAdditionalContent>
+        </TabsHeader>
         <Separator />
         <TabsContent>{this.renderActiveTab()}</TabsContent>
       </TabsWrapper>

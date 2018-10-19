@@ -4,15 +4,20 @@ Catalog-ui directly uses the [ui-api-layer](https://github.com/kyma-project/kyma
 
 ## Catalog page
 
-| Number | OSBA field                   | Fallbacks  | Description                                                                                                                |
-| ------ | ---------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
-| (1)    | metadata.displayName         | name*, id* | If **metadata.displayName, name, id** fields are not present, the given Service Class does not appear on the landing page. |
-| (2)    | metadata.providerDisplayName | -          | If not provided, UI displays without this information.                                                                     |
-| (3)    | description\*                | -          | If not provided, UI displays without this information.                                                                     |
-| (4)    | metadata.providerDisplayName | -          | If not provided, filtering by Provider is not possible.                                                                    |
-| (5)    | tags                         | -          | If not provided, filtering by Tag is not possible.                                                                    |
+| Number | OSBA field                        | Fallbacks  | Description                                                                                                                |
+| ------ | --------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| (1)    | metadata.displayName              | name*, id* | If **metadata.displayName, name, id** fields are not present, the given Service Class does not appear on the landing page. |
+| (2)    | metadata.providerDisplayName      | -          | If not provided, UI displays without this information.                                                                     |
+| (3)    | description\*                     | -          | If not provided, UI displays without this information.                                                                     |
+| (4)    | metadata.labels\*\*               | -          | If not provided, UI does not display any labels.                                                                           |
+| (5)    | metadata.labels.local\*\* and/or metadata.labels.showcase\*\* | - | If not provided, choosing Basic Filter is not possible.                                                 |
+| (6)    | tags                              | -          | If not provided, filtering by Tag is not possible.                                                                         |
+| (7)    | metadata.labels.connected-app\*\* | -          | If not provided, choosing Connected Applications is not possible.                                                          |
+| (8)    | metadata.providerDisplayName      | -          | If not provided, filtering by Provider is not possible.                                                                    |
 
 \*Fields with an asterisk are required OSBA attributes.
+
+\*\*`metadata.labels` is the custom object that is not defined in the [OSBA metadata convention](https://github.com/openservicebrokerapi/servicebroker/blob/master/profile.md#service-metadata)
 
 ![alt text](./assets/screen-catalog-page.png 'Catalog')
 

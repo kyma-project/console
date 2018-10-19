@@ -1,3 +1,6 @@
 <div class="row sf-list__body">
-  <div class="col-12"><a [routerLink]="getRoute(entry)">{{ entry.metadata.name }}</a></div>
+  <div class="col-11"><a [routerLink]="getRoute(entry)">{{ entry.metadata.name }}</a></div>
+  <div class="col-1 actions-icon">
+      <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    </div>
 </div>

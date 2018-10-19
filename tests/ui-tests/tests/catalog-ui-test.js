@@ -80,6 +80,13 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     // consts
     const filterDropdownButton = catalog.prepareSelector('toggle-filter');
     const filterWrapper = catalog.prepareSelector('wrapper-filter');
+    const activeFiltersWrapper = catalog.prepareSelector(
+      'active-filters-wrapper'
+    );
+    const clearAllFiltersButton = catalog.prepareSelector('clear-all-filters');
+    const providerBitnami = catalog.prepareSelector(
+      'filter-item-provider-bitnami'
+    );
     const searchBySth = 'lololo';
     const searchByDatabase = 'database';
     const searchID = 'search-filter';
@@ -92,10 +99,26 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await catalog.feelInInput(frame, searchByDatabase, searchID);
     const searchedFilters = await catalog.getFilters(frame);
     expect(searchedFilters).toContain(searchByDatabase);
+    expect(searchedFilters.length).toBeGreaterThan(2);
 
     await catalog.feelInInput(frame, searchBySth, searchID);
     const searchedFiltersNew = await catalog.getFilters(frame);
     expect(searchedFiltersNew).not.toContain(searchBySth);
+
+    await catalog.feelInInput(frame, '', searchID);
+    const searchedFiltersAfterClearSearch = await catalog.getFilters(frame);
+    expect(searchedFiltersAfterClearSearch.length).toBeGreaterThan(2);
+
+    await frame.click(providerBitnami);
+    await frame.waitFor(activeFiltersWrapper);
+    const currectActiveFilters = await catalog.getActiveFilters(frame);
+    expect(currectActiveFilters.length).toEqual(1);
+
+    await frame.click(clearAllFiltersButton);
+    const currectActiveFiltersAfterClear = await catalog.getActiveFilters(
+      frame
+    );
+    expect(currectActiveFiltersAfterClear.length).toEqual(0);
   });
 
   test('Check details', async () => {

@@ -10,10 +10,10 @@
       </span>
     </div>
     <div *ngIf='!getLabels(entry.labels).length' class="no-content">
-      <span>none</span>
+      <span></span>
     </div>
   </div>
-  <div class="col-3 col-lg-4" [ngClass]="{'no-content': !listConnectedEnvs(entry)}">{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : 'none' }}</div>
+  <div class="col-3 col-lg-4" [ngClass]="{'no-content': !listConnectedEnvs(entry)}">{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : '' }}</div>
   <div class="col-1 actions-icon">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </div>

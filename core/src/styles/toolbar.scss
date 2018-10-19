@@ -24,7 +24,7 @@ $item-padding: $item-padding-top $item-padding-left $item-padding-bottom
     display: flex;
     margin-left: auto !important;
 
-    > *:last-child {
+    > .sf-toolbar__item:last-child {
       padding-right: 0;
     }
   }
@@ -117,11 +117,15 @@ $item-padding: $item-padding-top $item-padding-left $item-padding-bottom
     display: flex;
   }
 
+  &__content {
+    flex: 1 1 auto;
+    overflow: auto;
+    padding-top: 24px;
+  }
+
   &__footer {
-    display: flex;
-    margin-top: auto;
-    flex-direction: column;
-    padding-bottom: $item-padding-bottom;
+    flex: 0 0 auto;
+    padding-bottom: 24px;
   }
 
   &--vertical {
@@ -140,8 +144,12 @@ $item-padding: $item-padding-top $item-padding-left $item-padding-bottom
         border-bottom: 1px solid #d7d7d7;
         padding: 0;
         margin: 0;
-        margin-top: 12px;
+
         margin-bottom: 12px;
+
+        &:not(:first-child){
+          margin-top: 12px;
+        }
 
         &:after {
           // Hide Pseudo Element from horizontal alignment

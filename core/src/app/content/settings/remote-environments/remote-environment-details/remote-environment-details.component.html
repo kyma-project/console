@@ -17,7 +17,14 @@
     <section class="sf-section">
       <div class="sf-panel">
         <div class="sf-panel__head">
-          <h2>General Information</h2>
+          <div class="sf-toolbar">
+            <h2>General Information</h2>
+            <div class="sf-toolbar__right">
+              <button class="tn-button tn-button--small tn-button--text sf-toolbar__item" (click)="openEditRemoteEnvModal()">
+                Edit
+              </button>
+            </div>
+          </div>
         </div>
         <div class="sf-panel__content">
       <div class="row">
@@ -48,12 +55,12 @@
           <label class="tn-form__label">Labels</label>
         </div>
         <div class="col-sm-10 sf-list__label-column">
-          <ng-container *ngIf='getLabels(remoteEnvironment.labels).length'>
-            <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(remoteEnvironment.labels)">
+          <ng-container *ngIf='transformedLabels.length'>
+            <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of transformedLabels">
               {{ label }}
             </span>
           </ng-container>
-          <ng-container *ngIf='!getLabels(remoteEnvironment.labels).length'>
+          <ng-container *ngIf='!transformedLabels.length'>
             <span class="no-content">none</span>
           </ng-container>
         </div>
@@ -67,7 +74,7 @@
           <div class="sf-toolbar">
               <h2>Environment Bindings</h2>
             <div class="sf-toolbar__right">
-              <button class="tn-button tn-button--small tn-button--text sf-toolbar__item" (click)="openModal()">
+              <button class="tn-button tn-button--small tn-button--text sf-toolbar__item" (click)="openEditBindingsModal()">
                 + Create Binding
               </button>
             </div>
@@ -120,3 +127,8 @@
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-edit-bindings-modal #editbindingsmodal></app-edit-bindings-modal>
 <app-information-modal #infoModal></app-information-modal>
+<app-edit-remote-environment-modal #editRemoteEnvModal *ngIf="remoteEnvironment"
+    [name]="remoteEnvironment.name"
+    [initialDescription]="remoteEnvironment.description"
+    [initialLabels]="transformedLabels">
+  </app-edit-remote-environment-modal>

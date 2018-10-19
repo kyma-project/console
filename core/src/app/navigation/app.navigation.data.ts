@@ -1,7 +1,9 @@
 import { AppConfig } from '../app.config';
 
+export type INavTypes = 'environment' | 'settings';
+
 export const navModel = {
-  env: {
+  environment: {
     topEntry: {
       name: 'Workspace',
       link: 'workspace'

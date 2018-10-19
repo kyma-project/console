@@ -14,6 +14,7 @@ import { ServicesEntryRendererComponent } from './services-entry-renderer/servic
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-services',
@@ -36,7 +37,9 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
     private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
     const converter: DataConverter<IDashboardServices, DashboardServices> = {
@@ -62,6 +65,12 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
         this.entryRenderer = ServicesEntryRendererComponent;
         this.headerRenderer = ServicesHeaderRendererComponent;
       });
+  }
+
+  navigateToDetails(entry: any) {
+    this.router.navigate([entry.objectMeta.name], {
+      relativeTo: this.activatedRoute
+    });
   }
 
   public createNewElement() {

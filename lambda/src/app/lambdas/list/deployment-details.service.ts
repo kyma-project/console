@@ -1,24 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AppConfig } from '../../app.config';
-import { IDeployment, IDeploymentSpec, Deployment } from '../../shared/datamodel/k8s/deployment';
+import {
+  IDeployment,
+  IDeploymentSpec,
+  Deployment,
+} from '../../shared/datamodel/k8s/deployment';
 import { DeploymentList } from '../../shared/datamodel/k8s/deployment-list';
-
 
 @Injectable()
 export class DeploymentDetailsService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   /** GET deployment by function name and namespace. Will 404 if deployment not found */
-  getDeployments(name: string, namespace: string, token: string): Observable<DeploymentList> {
+  getDeployments(
+    name: string,
+    namespace: string,
+    token: string,
+  ): Observable<DeploymentList> {
     const httpOptions = {
       headers: this.getHTTPOptions(token),
-      params:  new HttpParams().set('labelSelector', `function=${name}`)
+      params: new HttpParams().set('labelSelector', `function=${name}`),
     };
     const url = `${AppConfig.k8sApiUrl}/namespaces/${namespace}/deployments`;
     return this.http.get<DeploymentList>(url, httpOptions);
@@ -27,10 +31,9 @@ export class DeploymentDetailsService {
   getHTTPOptions(token: string): HttpHeaders {
     let httpHeaders: any;
     httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      });
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
     return httpHeaders;
   }
-
 }
