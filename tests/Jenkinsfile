@@ -57,17 +57,17 @@ podTemplate(label: label) {
                             execute("make validate")
                         }
 
-                        if (isMaster) {
+                        // if (isMaster) {
                             stage("IP scan $application (WhiteSource)") {
-                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey')]) {
-                                    execute("make scan", ["API_KEY=$apikey"])
+                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]) {
+                                    execute("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
                                 }
                             }
 
                             // stage("security scan $application (Checkmarx)"){
                             //     scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
                             // }
-                        }
+                        // }
 
                         stage("build image $application") {
                             dir(env.APP_FOLDER){
@@ -93,7 +93,7 @@ podTemplate(label: label) {
 
 def execute(command, envs = []) {
     def repositoryName = 'console'
-    def buildpack = 'node-buildpack:0.0.8'
+    def buildpack = 'node-buildpack:0.0.10'
     def envText = ''
     for (it in envs) {
         envText = "$envText --env $it"
