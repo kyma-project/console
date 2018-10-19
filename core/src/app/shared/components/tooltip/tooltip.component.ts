@@ -9,7 +9,7 @@ export class TooltipComponent {
   @Input() position: string;
   @Input() width: string;
 
-  private getPositionClass = (position: string) => {
+  getPositionClass = (position: string) => {
     switch (position) {
       case 'left':
         return 'tooltip__content--left';

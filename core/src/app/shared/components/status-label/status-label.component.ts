@@ -9,7 +9,8 @@ import { TooltipComponent } from '../tooltip/tooltip.component';
 export class StatusLabelComponent implements OnInit {
   @Input() statusType: string;
   @Input() description: string = null;
-  private statusClass: string;
+  statusClass: string;
+  showTooltip: boolean;
 
   public getStatusClass = (type: string) => {
     switch (type) {
