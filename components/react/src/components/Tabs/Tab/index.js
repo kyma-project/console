@@ -1,20 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TabLink } from './components';
+import { TabLink, TabTooltip, TabWrapper } from './components';
 
-const Tab = ({ title, onClick, tabIndex, isActive }) => {
+const Tab = ({
+  additionalTitle,
+  aditionalStatus,
+  title,
+  onClick,
+  tabIndex,
+  id,
+  isActive,
+  tooltipMinWidth,
+  tooltipMaxWidth,
+}) => {
   return (
-    <TabLink
-      key={tabIndex}
-      onClick={event => {
-        event.preventDefault();
-        onClick(tabIndex);
-      }}
-      active={isActive}
-    >
-      {title}
-    </TabLink>
+    <TabWrapper key={tabIndex}>
+      <TabLink
+        onClick={event => {
+          event.preventDefault();
+          onClick(tabIndex);
+        }}
+        active={isActive}
+        data-e2e-id={id}
+      >
+        {title}
+        {!isActive && aditionalStatus}
+        <TabTooltip minWidth={tooltipMinWidth} maxWidth={tooltipMaxWidth}>
+          {additionalTitle}
+        </TabTooltip>
+      </TabLink>
+    </TabWrapper>
   );
 };
 
