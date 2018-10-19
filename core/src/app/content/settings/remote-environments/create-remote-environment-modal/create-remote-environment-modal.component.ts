@@ -42,7 +42,8 @@ export class CreateRemoteEnvironmentModalComponent {
   public validateRemoteEnvNameRegex() {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
     this.wrongRemoteEnvName =
-      this.name && !Boolean(regex.test(this.name || ''));
+      this.name &&
+      (!Boolean(regex.test(this.name || '')) || this.name.length > 253);
   }
 
   public isReadyToCreate(): boolean {
