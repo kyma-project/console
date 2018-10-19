@@ -52,6 +52,11 @@ import { Service } from '../../shared/datamodel/k8s/api-service';
 import { timeout } from 'rxjs/operators';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
+
+const DEFAULT_CODE = `module.exports = { main: function (event, context) {
+
+} }`;
+
 @Component({
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
@@ -81,9 +86,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   eventTriggerChooserModal: EventTriggerChooserComponent;
   @ViewChild('httpTriggerModal') httpTriggerModal: HttpTriggerComponent;
 
-  code = `module.exports = { main: function (event, context) {
-
-} }`;
+  code: string;
   dependency: string;
   aceMode: string;
   aceDependencyMode: string;
@@ -189,7 +192,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           } else {
             this.title = 'Create Lambda Function';
             this.lambda = this.lambdaDetailsService.initializeLambda();
-            this.lambda.spec.function = this.code;
+            this.lambda.spec.function = this.code = DEFAULT_CODE;
             this.loaded = Observable.of(true);
             if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
               this.editor.setReadOnly(true);
@@ -226,8 +229,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   onCodeChange(event) {
+    const isChange = (this.lambda.spec.function !== event);
     this.lambda.spec.function = event;
-    this.warnUnsavedChanges(true);
+    if (isChange) {
+      this.warnUnsavedChanges(true);
+    }
   }
 
   onDependencyChange(event) {
@@ -1073,13 +1079,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   warnUnsavedChanges(hasChanges: boolean): void {
-    let message = 'Discard changes for Lambda?';
-    if (!hasChanges) {
-      message = '';
-    }
-
     window.parent.postMessage(
-      { msg: 'luigi.unsaved-changes', unsavedChanges: message },
+      { msg: 'luigi.set-page-dirty', dirty: hasChanges },
       '*',
     );
   }
