@@ -93,7 +93,7 @@ export class NavigationComponent implements OnInit {
       this.getExtensions();
       if (
         this.currentNavModel &&
-        (this.currentNavModel.showEnvChooser || this.navCtx === 'cluster')
+        (this.currentNavModel.showEnvChooser || this.navCtx === 'settings')
       ) {
         this.getExternalExtensions();
       }
@@ -138,14 +138,10 @@ export class NavigationComponent implements OnInit {
 
     extViews.forEach((nodes, category) => {
       nodes.forEach(node => {
-        this.addEntryToNavigationGroup(
-          category,
-          {
-            name: node.label,
-            link: basePath + node.navigationPath.split('/')[0]
-          },
-          navigationContext
-        );
+        this.addEntryToNavigationGroup(category, {
+          name: node.label,
+          link: basePath + node.navigationPath.split('/')[0]
+        });
       });
     });
   }
@@ -162,11 +158,13 @@ export class NavigationComponent implements OnInit {
     this.extensionsService
       .getExternalExtensions()
       .subscribe(clusterExtensions => {
-        this.manageExternalViews(
-          clusterExtensions,
-          '/home/extensions/',
-          'cluster'
-        );
+        if (this.navCtx === 'settings') {
+          this.manageExternalViews(
+            clusterExtensions,
+            '/home/settings/extensions/',
+            'cluster'
+          );
+        }
         if (this.currentEnvironmentId) {
           this.manageExternalViews(
             clusterExtensions,
@@ -177,7 +175,7 @@ export class NavigationComponent implements OnInit {
       });
   }
 
-  getNavigationGroup(groupName, navType: INavTypes) {
+  getNavigationGroup(groupName) {
     let result = null;
     if (this.currentNavModel.groups) {
       this.currentNavModel.groups.forEach(group => {
@@ -203,15 +201,11 @@ export class NavigationComponent implements OnInit {
   }
 
   hasNavigationGroup(groupName) {
-    return this.getNavigationGroup(groupName, this.navCtx) !== null;
+    return this.getNavigationGroup(groupName) !== null;
   }
 
-  addEntryToNavigationGroup(
-    groupName,
-    entry,
-    navType: INavTypes = 'environment'
-  ) {
-    let group = this.getNavigationGroup(groupName, navType);
+  addEntryToNavigationGroup(groupName, entry) {
+    let group = this.getNavigationGroup(groupName);
     if (!group) {
       group = {
         name: groupName,

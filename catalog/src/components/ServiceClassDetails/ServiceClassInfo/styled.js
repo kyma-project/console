@@ -66,9 +66,14 @@ export const TagsWrapper = styled.div`
   height: auto;
 `;
 
-export const Tag = styled.span`
-  max-width: 220px;
+export const TagWrapper = styled.div`
   display: inline-block;
+  margin: 0 10px 10px 0;
+`;
+
+export const Tag = styled.span`
+  display: inline-block;
+  max-width: 220px;
   mix-blend-mode: multiply;
   border-radius: 4px;
   background-color: #e2eaf2;
@@ -86,5 +91,5 @@ export const Tag = styled.span`
   text-overflow: ellipsis;
   color: #73787d;
   padding: 6px 10px;
-  margin: 0 10px 10px 0;
+  cursor: pointer;
 `;

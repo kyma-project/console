@@ -9,6 +9,7 @@ const serviceClassesQGL = `
   activated
   providerDisplayName
   tags
+  labels
 `;
 
 export const SERVICE_CLASSES_QUERY = gql`

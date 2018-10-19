@@ -7,41 +7,30 @@
           <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
             <span class="tn-icon tn-icon--close" role="presentation"></span>
           </button>
-          <h4 class="tn-modal__title">Create Remote Environment</h4>
+          <h4 class="tn-modal__title">Edit Remote Environment</h4>
         </div>
-        <form>
+        <form #editRemoteEnvsForm="ngForm">
           <div class="tn-modal__body">
             <div class="tn-form__group">
               <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
               <div class="tn-form__item">
-                <label class="tn-form__label">Name *</label>
-                <input #nameInput autofocus class="tn-form__control" type="text" name="remoteEnvName"
-                    [(ngModel)]="name" (ngModelChange)=validateRemoteEnvNameRegex()
-                    placeholder="Specify a name for your Remote Environment"
-                  >
-                <div *ngIf="wrongRemoteEnvName" class="alert">
-                  The Remote Environment name has the wrong format. The name must consist
-                  of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric
-                  character (e.g. 'my-name1.com').
-                </div>
-              </div>
-              <div class="tn-form__item">
                 <label class="tn-form__label">Description *</label>
-                <input class="tn-form__control" type="text" name="remoteEnvDescription"
-                    [(ngModel)]="description"
+                <input autofocus class="tn-form__control" type="text" name="remoteEnvDescription"
+                    [(ngModel)]="updatedDescription"
                     placeholder="Specify a description for your Remote Environment"
                 >
               </div>
               <div class="tn-form__item">
                 <label class="tn-form__label">Labels</label>
-                <app-labels-input (labelsChangeEmitter$)="updateLabelsData($event)"></app-labels-input>
+                <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)"
+                ></app-labels-input>
               </div>
             </div>
           </div>
           <footer class="tn-modal__footer-items">
-            <button class="tn-modal__button-primary sf-button--primary tn-button--small" ngClass="{{isReadyToCreate() ? '' : 'disabled'}}"
-              [disabled]="!isReadyToCreate()" (click)="save()">
-              Create
+            <button class="tn-modal__button-primary sf-button--primary tn-button--small" ngClass="{{isReadyToSave() ? '' : 'disabled'}}"
+              [disabled]="!isReadyToSave()" (click)="save()">
+              Save
             </button>
             <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
           </footer>

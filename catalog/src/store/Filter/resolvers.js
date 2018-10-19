@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+import { isStringValueEqualToTrue } from '../../commons/helpers';
 import builder from '../../commons/builder';
 
 export default {
@@ -9,8 +10,8 @@ export default {
         name
         providerDisplayName
         tags
+        labels
       `;
-
       try {
         let result = cache.readQuery({
           query: gql`
@@ -41,8 +42,10 @@ export default {
   Mutation: {
     clearAllActiveFilters: (_, args, { cache }) => {
       const newActive = {
+        basic: [],
         provider: [],
         tag: [],
+        connectedApplication: [],
         __typename: 'ActiveServiceClassFilters',
       };
 
@@ -59,8 +62,10 @@ export default {
         query: gql`
           query activeServiceClassFilters {
             activeServiceClassFilters @client {
+              basic
               provider
               tag
+              connectedApplication
             }
           }
         `,
@@ -90,19 +95,26 @@ export default {
       return newActive;
     },
     setActiveTagsFilters: (_, args, { cache }) => {
+      const activeTagsFiltersQGL = `
+        first
+        isMore
+        offset
+      `;
       const filters = cache.readQuery({
         query: gql`
           query activeTagsFilters {
             activeTagsFilters @client {
+              basic {
+                ${activeTagsFiltersQGL}
+              }
               provider {
-                first
-                isMore
-                offset
+                ${activeTagsFiltersQGL}
               }
               tag {
-                first
-                isMore
-                offset
+                ${activeTagsFiltersQGL}
+              }
+              connectedApplication {
+                ${activeTagsFiltersQGL}
               }
               search
             }
@@ -126,27 +138,36 @@ export default {
         query: gql`
           query activeServiceClassFilters {
             activeServiceClassFilters @client {
+              basic
               provider
               tag
+              connectedApplication
               search
             }
           }
         `,
       }).activeServiceClassFilters;
 
+      const activeTagsFiltersQGL = `
+        first
+        isMore
+        offset
+      `;
       const activeTagsFilters = cache.readQuery({
         query: gql`
           query activeTagsFilters {
             activeTagsFilters @client {
+              basic {
+                ${activeTagsFiltersQGL}
+              }
               provider {
-                first
-                isMore
-                offset
+                ${activeTagsFiltersQGL}
               }
               tag {
-                first
-                isMore
-                offset
+                ${activeTagsFiltersQGL}
+              }
+              connectedApplication {
+                ${activeTagsFiltersQGL}
               }
               search
             }
@@ -163,6 +184,7 @@ export default {
         activated
         providerDisplayName
         tags
+        labels
       `;
       let classes = cache.readQuery({
         query: gql`
@@ -184,25 +206,25 @@ export default {
           ? [...classes.clusterServiceClasses, ...classes.serviceClasses]
           : [];
 
-      const filteredClasses = filterServiceClasses(
-        classes,
-        activeFilters,
-        cache,
-      );
-      const classFilters = populateServiceClassFilters(
+      let filteredClasses = filterServiceClasses(classes, activeFilters, cache);
+      const filteredFilters = populateServiceClassFilters(
         classes,
         filteredClasses,
         activeTagsFilters,
       );
+      filteredClasses = filteredClasses.map(filteredClass => {
+        delete filteredClass.labels;
+        return filteredClass;
+      });
 
       cache.writeData({
         data: {
-          serviceClassFilters: classFilters,
+          serviceClassFilters: filteredFilters,
           filteredServiceClasses: filteredClasses,
         },
       });
 
-      return classes;
+      return filteredClasses;
     },
   },
 };
@@ -216,28 +238,62 @@ const populateServiceClassFilters = (
     return [];
   }
 
+  const basic = [];
   const providers = [];
   const tags = [];
+  const connectedApplications = [];
   allItems.forEach(item => {
     if (item) {
       if (item.providerDisplayName) {
         providers.push(item.providerDisplayName);
       }
+
+      const labels = item.labels || {};
+      if (labels['connected-app']) {
+        connectedApplications.push(labels['connected-app']);
+      }
+      if (isStringValueEqualToTrue(labels.local)) {
+        basic.push('local');
+      }
+      if (isStringValueEqualToTrue(labels.showcase)) {
+        basic.push('showcase');
+      }
+
       tags.push(...item.tags);
     }
   });
 
+  const filteredBasic = [];
   const filteredProviders = [];
   const filteredTags = [];
+  const filteredConnectedApplications = [];
   filteredItems.forEach(item => {
     if (item) {
       if (item.providerDisplayName) {
         filteredProviders.push(item.providerDisplayName);
       }
+
+      const labels = item.labels || {};
+      if (labels['connected-app']) {
+        filteredConnectedApplications.push(labels['connected-app']);
+      }
+      if (isStringValueEqualToTrue(labels.local)) {
+        filteredBasic.push('local');
+      }
+      if (isStringValueEqualToTrue(labels.showcase)) {
+        filteredBasic.push('showcase');
+      }
+
       filteredTags.push(...item.tags);
     }
   });
 
+  const basicValues = getFilterValues(
+    basic,
+    filteredBasic,
+    activeTagsFilters,
+    'basic',
+  );
   const tagsValues = getFilterValues(
     tags,
     filteredTags,
@@ -250,12 +306,30 @@ const populateServiceClassFilters = (
     activeTagsFilters,
     'provider',
   );
+  const connectedApplicationsValues = getFilterValues(
+    connectedApplications,
+    filteredConnectedApplications,
+    activeTagsFilters,
+    'connectedApplication',
+  );
 
   return [
+    {
+      name: 'basic',
+      values: basicValues.values,
+      isMore: basicValues.isMore,
+      __typename: 'Filter',
+    },
     {
       name: 'tag',
       values: tagsValues.values,
       isMore: tagsValues.isMore,
+      __typename: 'Filter',
+    },
+    {
+      name: 'connectedApplication',
+      values: connectedApplicationsValues.values,
+      isMore: connectedApplicationsValues.isMore,
       __typename: 'Filter',
     },
     {
@@ -343,9 +417,17 @@ const searchInFilters = (filters, search) => {
 
 const filterServiceClasses = (classes, activeFilters) => {
   const filteredClasses = classes.filter(item => {
+    let basicMatch = true;
     let providerMatch = true;
     let tagMatch = true;
+    let connectedApplicationMatch = true;
     let searchMatch = true;
+
+    if (activeFilters.basic && activeFilters.basic.length > 0) {
+      basicMatch = activeFilters.basic.some(
+        basicFilter => item.labels && item.labels[basicFilter],
+      );
+    }
 
     if (activeFilters.provider && activeFilters.provider.length > 0) {
       providerMatch = activeFilters.provider.some(provider =>
@@ -358,6 +440,15 @@ const filterServiceClasses = (classes, activeFilters) => {
     }
 
     if (
+      activeFilters.connectedApplication &&
+      activeFilters.connectedApplication.length > 0
+    ) {
+      connectedApplicationMatch = activeFilters.connectedApplication.some(
+        app => item.labels && item.labels['connected-app'] === app,
+      );
+    }
+
+    if (
       typeof activeFilters.search === 'string' &&
       activeFilters.search !== ''
     ) {
@@ -366,13 +457,33 @@ const filterServiceClasses = (classes, activeFilters) => {
       const description = item.description.toLowerCase();
       const provider = item.providerDisplayName.toLowerCase();
       const tags = item.tags.map(tag => tag.toLowerCase());
+      let labels = [];
+
+      if (item.labels) {
+        if (item.labels['connected-app']) {
+          labels.push('connected-app');
+          labels.push('connectedapp');
+          labels.push(item.labels['connected-app']);
+        }
+        if (isStringValueEqualToTrue(item.labels.local)) labels.push('local');
+        if (isStringValueEqualToTrue(item.labels.showcase))
+          labels.push('showcase');
+      }
+
       searchMatch =
         name.indexOf(searchValue) !== -1 ||
         description.indexOf(searchValue) !== -1 ||
         provider.indexOf(searchValue) !== -1 ||
-        tags.filter(tag => tag.indexOf(searchValue) !== -1).length;
+        tags.filter(tag => tag.indexOf(searchValue) !== -1).length ||
+        labels.filter(label => label.indexOf(searchValue) !== -1).length;
     }
-    return providerMatch && tagMatch && searchMatch;
+    return (
+      basicMatch &&
+      providerMatch &&
+      tagMatch &&
+      connectedApplicationMatch &&
+      searchMatch
+    );
   });
 
   return filteredClasses;

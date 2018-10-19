@@ -118,6 +118,7 @@ import { LimitRangeHeaderRendererComponent } from './content/environments/config
 import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { LoginErrorComponent } from './content/login-error/login-error.component';
 import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote-environments/create-remote-environment-modal/create-remote-environment-modal.component';
+import { EditRemoteEnvironmentModalComponent } from './content/settings/remote-environments/edit-remote-environment-modal/edit-remote-environment-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
@@ -209,6 +210,7 @@ import { TooltipComponent } from './shared/components/tooltip/tooltip.component'
     LimitRangeHeaderRendererComponent,
     LoginErrorComponent,
     CreateRemoteEnvironmentModalComponent,
+    EditRemoteEnvironmentModalComponent,
     LabelsInputComponent,
     RequestErrorComponent,
     StatusLabelComponent,
