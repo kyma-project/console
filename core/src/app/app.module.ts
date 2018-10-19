@@ -122,6 +122,7 @@ import { EditRemoteEnvironmentModalComponent } from './content/settings/remote-e
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
 import { UnsavedChanges } from './navigation/unsaved-changes';
+import { PageDirtyStateService } from './shared/services/page-dirty-state.service';
 
 @NgModule({
   declarations: [
@@ -246,7 +247,8 @@ import { UnsavedChanges } from './navigation/unsaved-changes';
     RbacService,
     GraphQLClientService,
     IdpPresetsService,
-    UnsavedChanges
+    UnsavedChanges,
+    PageDirtyStateService
   ],
   entryComponents: [
     EnvironmentCardComponent,
