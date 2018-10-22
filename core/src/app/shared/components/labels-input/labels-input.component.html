@@ -5,7 +5,7 @@
   </span>
   <input #labelsInput type="text" class="tn-form__control" name="labelsInput"
       [(ngModel)]="newLabel" [ngClass]="{'has-labels': labels.length > 0}"
-      (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" (keydown.space)="addLabel()" (blur)="addLabel()"
+      (keydown.enter)="addLabel()" (keydown.tab)="addLabel()" (keydown.space)="addLabel()" (keyup)="removeWhitespaces()" (blur)="addLabel()"
     placeholder="{{labels.length === 0 ? 'Specify one or more labels for your Remote Environment' : ''}}"
     autocomplete="off">
 </div>
