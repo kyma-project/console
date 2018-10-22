@@ -1,3 +1,10 @@
+@import 'mixins';
+@import '~fundamental-ui/scss/components/spinner';
+
+.fd-spinner {
+  @include fadeInWithDelay();
+}
+
 $prefix: 'sf-toolbar';
 $prefix-section: 'sf-section';
 

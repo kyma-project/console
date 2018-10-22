@@ -12,6 +12,7 @@
   },
   "private": false,
   "dependencies": {
+    "fundamental-ui": "^1.2.2",
     "ng-click-outside": "^4.0.0"
   },
   "peerDependencies": {
