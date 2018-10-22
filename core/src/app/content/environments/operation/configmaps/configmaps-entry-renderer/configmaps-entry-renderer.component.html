@@ -1,0 +1,12 @@
+<div class="row sf-list__body">
+  <div class="col-4 sf-list__body--primary">{{ entry.objectMeta.name }}</div>
+  <div class="col-3">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
+  <div class="col-4 sf-list__label-column">
+    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.objectMeta.labels)">
+      {{ label }}
+    </span>
+  </div>
+  <div class="col-1 actions-icon">
+    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+  </div>
+</div>
