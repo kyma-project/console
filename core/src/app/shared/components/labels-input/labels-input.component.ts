@@ -43,7 +43,7 @@ export class LabelsInputComponent implements OnInit {
 
   public addLabel() {
     this.validateNewLabel();
-    if (this.newLabel && !this.wrongLabelMessage) {
+    if (this.newLabel && this.newLabel.trim() && !this.wrongLabelMessage) {
       this.labels.push(
         this.newLabel
           .split(':')
@@ -77,7 +77,7 @@ export class LabelsInputComponent implements OnInit {
   private setWrongLabelMessage(label: string) {
     this.wrongLabelMessage = '';
 
-    if (!label) {
+    if (!(label && label.trim())) {
       return false;
     }
 
