@@ -85,7 +85,7 @@ export class CreateRemoteEnvironmentModalComponent {
         });
       },
       err => {
-        this.error = `Error: ${err.error ? err.error.message : err.message}`;
+        this.error = `Error: ${err}`;
       }
     );
   }

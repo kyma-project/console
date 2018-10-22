@@ -75,7 +75,7 @@ export class CreatePresetModalComponent {
         });
       },
       err => {
-        this.error = `Error: ${err.message}`;
+        this.error = `Error: ${err}`;
       }
     );
   }
