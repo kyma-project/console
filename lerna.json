@@ -1,10 +1,10 @@
 {
   "lerna": "2.11.0",
   "packages": [
-    "brokers",
     "core",
     "catalog",
     "instances",
+    "brokers",
     "content",
     "components/react",
     "lambda",

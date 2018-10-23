@@ -1,14 +1,38 @@
-import React, { Component } from 'react';
-import { ThemeWrapper, Toolbar } from '@kyma-project/react-components';
-import { parseYaml } from '../../commons/yaml.js';
-import { goToAnchor, goToTop } from 'react-scrollable-anchor';
+import React from 'react';
 
-class ServiceBrokers extends Component {
-  constructor(props) {
-    super(props);
-  }
+import {
+  NotificationMessage,
+  ThemeWrapper,
+} from '@kyma-project/react-components';
+
+import ServiceBrokersTable from './ServiceBrokersTable/ServiceBrokersTable.component';
+import ServiceBrokersToolbar from './ServiceBrokersToolbar/ServiceBrokersToolbar.component';
+
+import { ServiceBrokersWrapper } from './styled';
+
+class ServiceBrokers extends React.Component {
   render() {
-    return <div>test</div>;
+    const { serviceBrokers = {} } = this.props;
+
+    const brokers = serviceBrokers.serviceBrokers || [];
+
+    return (
+      <ThemeWrapper>
+        <ServiceBrokersToolbar serviceBrokersExists={brokers.length > 0} />
+        <NotificationMessage
+          type="error"
+          title="Error"
+          message={serviceBrokers.error && serviceBrokers.error.message}
+        />
+        <ServiceBrokersWrapper data-e2e-id="brokers-wrapper">
+          <ServiceBrokersTable
+            data={brokers}
+            refetch={serviceBrokers.refetch}
+            loading={serviceBrokers.loading}
+          />
+        </ServiceBrokersWrapper>
+      </ThemeWrapper>
+    );
   }
 }
 

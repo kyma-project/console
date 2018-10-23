@@ -20,8 +20,9 @@ appVersion = "0.1." + env.BUILD_NUMBER
 */
 projects = [
     "core",
-    "instances",
     "catalog",
+    "instances",
+    "brokers",
     "content",
     "components/react",
     "tests",

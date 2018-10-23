@@ -1,12 +1,12 @@
 import { compose, graphql } from 'react-apollo';
 import { BROKERS_QUERY } from './queries';
-import { prepareTopicsList } from '../../commons/yaml.js';
-import builder from '../../../../instances/src/commons/builder';
 import ServiceBrokers from './ServiceBrokers.component';
+
+import builder from '../../commons/builder';
 
 export default compose(
   graphql(BROKERS_QUERY, {
-    name: 'serviceInstances',
+    name: 'serviceBrokers',
     options: () => ({
       fetchPolicy: 'network-only',
       variables: {

@@ -70,4 +70,4 @@ prefix="v"
 VERSION=${VERSION/#$prefix}
 
 # mac must have a prefix "" for -i flag, but linux doesn't...
-sed -i "s/\"\@kyma-project\/react-components\":.*/\"\@kyma-project\/react-components\": \"$VERSION\",/" ../../catalog/package.json ../../instances/package.json  ../../content/package.json
+sed -i "s/\"\@kyma-project\/react-components\":.*/\"\@kyma-project\/react-components\": \"$VERSION\",/" ../../catalog/package.json ../../instances/package.json ../../brokers/package.json  ../../content/package.json

@@ -125,6 +125,7 @@ import { UnsavedChanges } from './navigation/unsaved-changes';
 import { PageDirtyStateService } from './shared/services/page-dirty-state.service';
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
 import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
+import { BrokersContainerComponent } from './content/environments/brokers-container/brokers-container.component';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { TooltipComponent } from './shared/components/tooltip/tooltip.component'
     HeaderComponent,
     NavigationComponent,
     CatalogContainerComponent,
+    BrokersContainerComponent,
     InstancesContainerComponent,
     EnvironmentsContainerComponent,
     WorkspaceOverviewComponent,

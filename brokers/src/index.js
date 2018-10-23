@@ -6,11 +6,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 
-import App from './components/App/App.container';
-
 import builder from './commons/builder';
 
 import { createApolloClient } from './store';
+import App from './components/App/App.component';
+
 const client = createApolloClient();
 
 (async () => {
