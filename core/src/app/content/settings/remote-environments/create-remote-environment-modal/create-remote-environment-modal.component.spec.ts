@@ -194,7 +194,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       spyOn(
         mockRemoteEnvironmentsService,
         'createRemoteEnvironment'
-      ).and.returnValue(throwError({ message: 're-not-created' }));
+      ).and.returnValue(throwError('re-not-created'));
       component.error = null;
       component.save();
       expect(component.error).toBe('Error: re-not-created');

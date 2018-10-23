@@ -180,7 +180,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
       spyOn(
         mockRemoteEnvironmentsService,
         'updateRemoteEnvironment'
-      ).and.returnValue(throwError({ message: 're-not-updated' }));
+      ).and.returnValue(throwError('re-not-updated'));
       component.error = null;
       component.save();
       expect(component.error).toBe('Error: re-not-updated');
