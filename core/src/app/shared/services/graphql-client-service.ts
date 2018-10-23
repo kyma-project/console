@@ -21,17 +21,19 @@ export class GraphQLClientService {
         },
         err => {
           let error;
-          switch (err) {
-            case err.error && err.error.errors:
+
+          if (err.error) {
+            if (err.error.errors) {
               error = err.error.errors[0].message;
-              break;
-            case err.error && err.error.message:
+            } else if (err.error.message) {
               error = err.error.message;
-              break;
-            default:
-              error = err.message;
-              break;
+            } else {
+              error = err.message || err;
+            }
+          } else {
+            error = err.message || err;
           }
+
           observer.error(error);
         }
       );
