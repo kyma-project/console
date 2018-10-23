@@ -123,7 +123,7 @@ String[] changedProjects() {
     allChanges = changeset().split("\n")
 
         // if no changes build all projects
-        if (allChanges.size() == 0) {
+    if (allChanges.size() == 0) {
         echo "No changes found or could not be fetched, triggering all projects."
         return allProjects
     }
@@ -135,8 +135,8 @@ String[] changedProjects() {
                 res.add(allProjects[i])
                 break // already found a change in the current project, no need to continue iterating the changeset
             }
-            if (projects[i] == "governance" && allChanges[j].endsWith(".md") && !res.contains(projects[i])) {
-                res.add(projects[i])
+            if (env.BRANCH_NAME != 'master' && allProjects[i] == "governance" && allChanges[j].endsWith(".md") && !res.contains(allProjects[i])) {
+                res.add(allProjects[i])
                 break // already found a change in one of the .md files, no need to continue iterating the changeset
             }
         }
@@ -155,7 +155,7 @@ boolean changeIsValidFileType(String change, String project){
 @NonCPS
 String changeset() {
     // on branch get changeset comparing with master
-    if (env.BRANCH_NAME != "master") {
+    if (env.BRANCH_NAME != 'master') {
         echo "Fetching changes between origin/${env.BRANCH_NAME} and origin/master."
         return sh (script: "git --no-pager diff --name-only origin/master...origin/${env.BRANCH_NAME} | grep -v 'vendor\\|node_modules' || echo ''", returnStdout: true)
     }
