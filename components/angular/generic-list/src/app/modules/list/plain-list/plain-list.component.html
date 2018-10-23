@@ -1,7 +1,7 @@
 <div [hidden]="loading || errorMessage || !data || data.length === 0" class="row">
   <ng-template #entries></ng-template>
 </div>
-<div *ngIf="loading" aria-hidden="false" aria-label="Loading">
+<div *ngIf="loading" aria-hidden="false" aria-label="Loading" class="loading-container">
   <div class="fd-spinner"><div></div></div>
 </div>
 <p *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
