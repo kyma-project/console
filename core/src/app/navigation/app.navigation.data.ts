@@ -120,6 +120,11 @@ export const navModel = {
             name: 'Stats & Metrics',
             link: `https://grafana.${AppConfig.domain}/`,
             external: true
+          },
+          {
+            name: 'Tracing',
+            link: `https://jaeger.${AppConfig.domain}/`,
+            external: true
           }
         ]
       }
