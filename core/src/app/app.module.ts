@@ -121,6 +121,8 @@ import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote
 import { EditRemoteEnvironmentModalComponent } from './content/settings/remote-environments/edit-remote-environment-modal/edit-remote-environment-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
+import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
+import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -210,7 +212,9 @@ import { RequestErrorComponent } from './content/request-error/request-error.com
     CreateRemoteEnvironmentModalComponent,
     EditRemoteEnvironmentModalComponent,
     LabelsInputComponent,
-    RequestErrorComponent
+    RequestErrorComponent,
+    StatusLabelComponent,
+    TooltipComponent
   ],
   imports: [
     BrowserModule,

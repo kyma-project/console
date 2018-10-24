@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (AppConfig.faviconUrl) {
       const faviconEl = document.querySelector('head [rel=icon]');
       document.head.removeChild(faviconEl);
-      faviconEl.setAttribute('href', encodeURIComponent(AppConfig.faviconUrl));
+      faviconEl.setAttribute('href', encodeURI(AppConfig.faviconUrl));
       document.head.appendChild(faviconEl);
     }
 

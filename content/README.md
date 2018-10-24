@@ -51,4 +51,4 @@ If lint errors appear, the console displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode.
 
-See the **Running Tests** section in the Create React App [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests) document for more information.
+See the **Running Tests** section in this [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) file for more information.
