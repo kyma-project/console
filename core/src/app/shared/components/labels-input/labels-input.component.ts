@@ -35,13 +35,11 @@ export class LabelsInputComponent implements OnInit {
   }
 
   public validateNewLabel() {
-    if (this.newLabel) {
-      this.removeWhitespaces();
-      this.setWrongLabelMessage(this.newLabel);
-      this.labelsChangeEmitter$.emit({
-        wrongLabels: Boolean(this.wrongLabelMessage)
-      });
-    }
+    this.removeWhitespaces();
+    this.setWrongLabelMessage(this.newLabel);
+    this.labelsChangeEmitter$.emit({
+      wrongLabels: Boolean(this.wrongLabelMessage)
+    });
   }
 
   public removeWhitespaces() {
@@ -53,7 +51,7 @@ export class LabelsInputComponent implements OnInit {
   public addLabel() {
     this.validateNewLabel();
     if (this.newLabel && !this.wrongLabelMessage) {
-      this.labels.push(this.newLabel.split(':').join(':'));
+      this.labels.push(this.newLabel);
       this.newLabel = '';
       // Avoid sharing of same array copy among parent and child component
       this.labelsChangeEmitter$.emit({ labels: [...this.labels] });
