@@ -102,6 +102,29 @@ async function createRemoteEnvironment(page, name) {
   await page.waitForSelector(createEnvModal, { hidden: true });
 }
 
+async function deleteRemoteEnvironment(page, name) {
+  const remoteEnvironmentsSelector = '.row.sf-list__body';
+  const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
+  const modalSelector = '.sf-modal';
+  await page.$$eval(
+    remoteEnvironmentsSelector,
+    (item, name) => {
+      const testRemoteEnvironment = item.find(row =>
+        row.textContent.includes(name)
+      );
+      const actionsSelector = '.tn-icon';
+      testRemoteEnvironment.querySelector(actionsSelector).click();
+    },
+    name
+  );
+  await page.waitForSelector(deleteActionSelector);
+  await page.evaluate(() => {
+    const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
+    document.querySelector(deleteActionSelector).click();
+  });
+  await page.waitForSelector(modalSelector);
+}
+
 async function openLink(page, name) {
   const navItem = 'a.sf-toolbar__item';
 
@@ -145,6 +168,7 @@ module.exports = {
   clearData,
   createEnvironment,
   createRemoteEnvironment,
+  deleteRemoteEnvironment,
   openLink,
   goTo
 };

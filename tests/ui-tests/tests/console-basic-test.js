@@ -135,4 +135,9 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await kymaConsole.goTo(page, 'div', config.testEnv);
     await kymaConsole.goTo(page, 'a', 'Remote Environments');
   });
+
+  test('Delete remote environment', async () => {
+    common.validateTestEnvironment(dexReady);
+    await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
+  });
 });
