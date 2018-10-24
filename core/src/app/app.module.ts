@@ -123,6 +123,8 @@ import { LabelsInputComponent } from './shared/components/labels-input/labels-in
 import { RequestErrorComponent } from './content/request-error/request-error.component';
 import { UnsavedChanges } from './navigation/unsaved-changes';
 import { PageDirtyStateService } from './shared/services/page-dirty-state.service';
+import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
+import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -212,7 +214,9 @@ import { PageDirtyStateService } from './shared/services/page-dirty-state.servic
     CreateRemoteEnvironmentModalComponent,
     EditRemoteEnvironmentModalComponent,
     LabelsInputComponent,
-    RequestErrorComponent
+    RequestErrorComponent,
+    StatusLabelComponent,
+    TooltipComponent
   ],
   imports: [
     BrowserModule,

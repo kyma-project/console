@@ -1,0 +1,58 @@
+$triangle_size: 0.45rem;
+
+.tooltip__content {
+  position: absolute;
+  background: #21262c;
+  padding: 4px 8px;
+  border-radius: 2px;
+  color: white;
+  top: calc(100% + 2 * #{$triangle_size});
+  left: 0;
+  text-transform: none;
+  font-size: 0.9rem;
+  display: block;
+  z-index: 1000;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -$triangle_size;
+    left: calc(25% - #{$triangle_size});
+    width: 0;
+    height: 0;
+    border-left: $triangle_size solid transparent;
+    border-right: $triangle_size solid transparent;
+    border-bottom: $triangle_size solid #21262c;
+  }
+}
+
+.tooltip__content--left {
+  left: unset;
+  right: calc(100% - 2 * #{$triangle_size});
+  &::after {
+    left: unset;
+    right: $triangle_size;
+  }
+}
+
+.tooltip__content--right {
+  right: unset;
+  left: calc(100% - 2 * #{$triangle_size});
+  &::after {
+    right: unset;
+    left: $triangle_size;
+  }
+}
+
+.tooltip__content--center {
+  right: unset;
+  left: -50%;
+  &::after {
+    right: unset;
+    left: calc(50% - #{$triangle_size});
+  }
+}
+
+.tooltip__anchor {
+  position: relative;
+}

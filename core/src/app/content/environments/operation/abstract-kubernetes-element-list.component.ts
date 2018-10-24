@@ -65,7 +65,7 @@ export class AbstractKubernetesElementListComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  getEntryEventHandler() {
+  getEntryEventHandler(): any {
     return {
       delete: (entry: any) => {
         this.confirmationModal
