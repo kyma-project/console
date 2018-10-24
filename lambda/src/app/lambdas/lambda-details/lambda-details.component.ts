@@ -1,6 +1,6 @@
 /* tslint:disable:no-submodule-imports */
 
-import { catchError, timeout } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
 import {
   Component,
@@ -8,13 +8,7 @@ import {
   AfterViewInit,
   HostListener,
 } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  CanDeactivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'brace';
 import 'brace/ext/language_tools';
 import 'brace/snippets/javascript';
@@ -23,7 +17,7 @@ import 'brace/snippets/text';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
 import 'brace/theme/eclipse';
-import { Lambda, IFunctionSpec } from '../../shared/datamodel/k8s/function';
+import { Lambda } from '../../shared/datamodel/k8s/function';
 import { LambdaDetailsService } from './lambda-details.service';
 import { IMetaData } from '../../shared/datamodel/k8s/generic/meta-data';
 import { sha256 } from 'js-sha256';
@@ -33,7 +27,7 @@ import { Clipboard } from 'ts-clipboard';
 import { HTTPEndpoint } from '../../shared/datamodel/http-endpoint';
 import { Event } from '../../shared/datamodel/event';
 import { ApisService } from '../../apis/apis.service';
-import { Api, IApi, IApiSpec } from '../../shared/datamodel/k8s/api';
+import { Api } from '../../shared/datamodel/k8s/api';
 import { FetchTokenModalComponent } from '../../fetch-token-modal/fetch-token-modal.component';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
@@ -48,7 +42,6 @@ import * as randomatic from 'randomatic';
 
 import * as luigiClient from '@kyma-project/luigi-client';
 
-import { Service } from '../../shared/datamodel/k8s/api-service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 
@@ -229,7 +222,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   onCodeChange(event) {
-    const isChange = (this.lambda.spec.function !== event);
+    const isChange = this.lambda.spec.function !== event;
     this.lambda.spec.function = event;
     if (isChange) {
       this.warnUnsavedChanges(true);

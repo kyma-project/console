@@ -10,6 +10,7 @@ export class ConfirmationModalComponent implements OnInit {
   @Input() title: string;
   isActive = false;
   private okPromise: any;
+  private cancelPromise: any;
   constructor() {}
 
   ngOnInit() {}
@@ -24,10 +25,12 @@ export class ConfirmationModalComponent implements OnInit {
     this.isActive = true;
     return new Promise((resolve, reject) => {
       this.okPromise = resolve;
+      this.cancelPromise = reject;
     });
   }
 
   cancel(event: Event) {
+    this.cancelPromise(false);
     this.isActive = false;
     event.stopPropagation();
   }
