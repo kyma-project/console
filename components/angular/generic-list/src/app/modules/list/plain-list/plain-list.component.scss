@@ -1,8 +1,11 @@
 @import 'mixins';
 @import '~fundamental-ui/scss/components/spinner';
 
-.fd-spinner {
-  @include fadeInWithDelay();
+.loading-container {
+  padding: 30px 0;
+  .fd-spinner {
+    @include fadeInWithDelay();
+  }
 }
 
 p {
