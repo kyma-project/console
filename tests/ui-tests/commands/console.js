@@ -18,6 +18,16 @@ async function getEnvironments(page) {
   });
 }
 
+async function getRemoteEnvironments(page) {
+  return await page.evaluate(() => {
+    const remoteEnvironmentsSelector = '.remoteenv-name';
+    const envs = Array.from(
+      document.querySelectorAll(remoteEnvironmentsSelector)
+    );
+    return envs.map(env => env.textContent);
+  });
+}
+
 async function getFrame(page) {
   return await page.frames().find(f => f.name() === 'frame');
 }
@@ -71,6 +81,27 @@ async function createEnvironment(page, name) {
   expect(environments).toContain(name);
 }
 
+async function createRemoteEnvironment(page, name) {
+  // consts
+  const createEnvBtn = '.open-create-env-modal';
+  const createEnvModal = '.sf-modal.sf-modal--min';
+  const nameInput = 'input[name=remoteEnvName]';
+  const descriptionInput = 'input[name=remoteEnvDescription]';
+  const labelsInput = 'input[name=labelsInput]';
+  const createButton = '.tn-modal__button-primary';
+
+  await page.click(createEnvBtn);
+  await page.waitFor(createEnvModal);
+  await page.focus(nameInput);
+  await page.type(nameInput, name);
+  await page.focus(descriptionInput);
+  await page.type(descriptionInput, name);
+  await page.focus(labelsInput);
+  await page.type(labelsInput, '1:1');
+  await page.click(createButton);
+  await page.waitForSelector(createEnvModal, { hidden: true });
+}
+
 async function openLink(page, name) {
   const navItem = 'a.sf-toolbar__item';
 
@@ -86,6 +117,17 @@ async function openLink(page, name) {
   await waitForNavigationAndContext(page);
 }
 
+async function goTo(page, element, link) {
+  const linkHandlers = await page.$x(
+    `//${element}[contains(text(), '${link}')]`
+  );
+  if (linkHandlers.length > 0) {
+    await linkHandlers[0].click();
+  } else {
+    throw new Error(`Link not found`);
+  }
+}
+
 async function loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
@@ -98,8 +140,11 @@ async function loginViaDex(page, config) {
 module.exports = {
   login,
   getEnvironments,
+  getRemoteEnvironments,
   getFrame,
   clearData,
   createEnvironment,
-  openLink
+  createRemoteEnvironment,
+  openLink,
+  goTo
 };

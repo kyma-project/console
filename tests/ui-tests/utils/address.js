@@ -11,6 +11,10 @@ class Console {
     return this.getConsole() + '/home/environments/' + environment;
   }
 
+  getRemoteEnvironments() {
+    return this.getConsole() + '/home/settings/remoteEnvs';
+  }
+
   getCatalog(environment) {
     return this.getEnvironment(environment) + '/service-catalog';
   }
