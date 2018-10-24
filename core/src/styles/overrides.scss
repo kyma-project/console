@@ -162,20 +162,7 @@ input[type='checkbox'] {
 .actions-icon {
   padding: 0;
   text-align: center;
-  >y-list-actions>div>button {
-    padding-left: 3px;
-    padding-right: 3px;
-    height: 24px;
-    >span {
-      margin-top: 0px;
-    }
-  }
 }
-
-y-list-paging>div>button:disabled {
-  color: darkgrey;
-}
-
 
 // THIS IS A OVERWITE FOR THE Y-GENERIC LIST - WHICH SHOULD BE MOVED AFTER BETA!
 // -----------------------------------------------------------------------------

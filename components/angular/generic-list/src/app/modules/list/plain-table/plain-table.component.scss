@@ -1,5 +1,5 @@
+@import 'mixins';
 @import '~fundamental-ui/scss/components/spinner';
-@import 'src/styles/mixins';
 
 .fd-spinner {
   @include fadeInWithDelay();
