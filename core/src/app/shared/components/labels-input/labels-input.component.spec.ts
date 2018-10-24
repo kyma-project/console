@@ -58,7 +58,9 @@ describe('LabelsInputComponent', () => {
     it('emits input validation info', () => {
       component.wrongLabelMessage = 'wrong-labels-info';
       component.validateNewLabel();
-      expect(component.labelsChangeEmitter$.emit).not.toHaveBeenCalled();
+      expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
+        wrongLabels: true
+      });
     });
   });
 
