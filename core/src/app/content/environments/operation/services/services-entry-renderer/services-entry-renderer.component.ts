@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
@@ -22,6 +22,10 @@ export class ServicesEntryRendererComponent
 
   ngOnInit() {
     this.actions = [
+      {
+        function: 'exposeApi',
+        name: 'Expose API'
+      },
       {
         function: 'details',
         name: 'Details'

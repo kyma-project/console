@@ -67,6 +67,16 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
       });
   }
 
+  getEntryEventHandler() {
+    const handler = super.getEntryEventHandler();
+    handler.exposeApi = (entry: any) => {
+      this.router.navigate([entry.objectMeta.name + '/apis/create'], {
+        relativeTo: this.activatedRoute
+      });
+    };
+    return handler;
+  }
+
   navigateToDetails(entry: any) {
     this.router.navigate([entry.objectMeta.name], {
       relativeTo: this.activatedRoute
