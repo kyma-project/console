@@ -9,4 +9,15 @@ export class ServiceBrokerEntryRendererComponent extends AbstractKubernetesEntry
   constructor(protected injector: Injector) {
     super(injector);
   }
+
+  getStatus(entry) {
+    return entry.isStatusOk() ? 'Running' : 'Error';
+  }
+
+  getStatusType(entry) {
+    if (this.getStatus(entry) === 'Running') {
+      return 'ok';
+    }
+    return 'error';
+  }
 }
