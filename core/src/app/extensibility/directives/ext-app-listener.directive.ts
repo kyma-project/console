@@ -4,6 +4,7 @@ import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.ser
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { Subscription } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { PageDirtyStateService } from '../../shared/services/page-dirty-state.service';
 
 @Directive({
   selector: '[extAppListener]'
@@ -17,6 +18,7 @@ export class ExtAppListenerDirective {
     private router: Router,
     private extAppViewRegistryService: ExtAppViewRegistryService,
     private oauthService: OAuthService,
+    private pageDirtyService: PageDirtyStateService,
     currentEnvironmentService: CurrentEnvironmentService
   ) {
     window.addEventListener('message', this.processMessage.bind(this), false);
@@ -155,6 +157,10 @@ export class ExtAppListenerDirective {
 
     if ('luigi.navigation.open' === data.msg) {
       this.handleNavigation(data);
+    }
+
+    if ('luigi.set-page-dirty' === data.msg) {
+      this.pageDirtyService.setPageDirty(data.dirty);
     }
   }
 
