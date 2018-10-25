@@ -95,60 +95,49 @@ async function createRemoteEnvironment(page, name) {
   await page.focus(nameInput);
   await page.type(nameInput, name);
   await page.focus(descriptionInput);
-  await page.type(descriptionInput, name);
+  await page.type(
+    descriptionInput,
+    'This is the Remote Environment for testing'
+  );
   await page.focus(labelsInput);
-  await page.type(labelsInput, '1:1');
+  await page.type(labelsInput, 'testKey:testValue');
   await page.click(createButton);
   await page.waitForSelector(createEnvModal, { hidden: true });
 }
 
 async function deleteRemoteEnvironment(page, name) {
   const remoteEnvironmentsSelector = '.row.sf-list__body';
-  const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
   const modalSelector = '.sf-modal';
   await page.$$eval(
     remoteEnvironmentsSelector,
     (item, name) => {
+      const actionsSelector = '.tn-icon';
+      const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
       const testRemoteEnvironment = item.find(row =>
         row.textContent.includes(name)
       );
-      const actionsSelector = '.tn-icon';
       testRemoteEnvironment.querySelector(actionsSelector).click();
+      testRemoteEnvironment.querySelector(deleteActionSelector).click();
     },
     name
   );
-  await page.waitForSelector(deleteActionSelector);
-  await page.evaluate(() => {
-    const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
-    document.querySelector(deleteActionSelector).click();
-  });
   await page.waitForSelector(modalSelector);
+  await page.evaluate(() => {
+    const deleteButton = `.tn-modal__button-primary.sf-button--primary.tn-button--small`;
+    document.querySelector(deleteButton).click();
+  });
 }
 
-async function openLink(page, name) {
-  const navItem = 'a.sf-toolbar__item';
-
+async function openLink(page, element, name) {
   await page.$$eval(
-    navItem,
+    element,
     (item, name) => {
       item.find(text => text.innerText.includes(name)).click();
     },
     name
   );
-
   await page.reload({ waitUntil: 'networkidle0' });
   await waitForNavigationAndContext(page);
-}
-
-async function goTo(page, element, link) {
-  const linkHandlers = await page.$x(
-    `//${element}[contains(text(), '${link}')]`
-  );
-  if (linkHandlers.length > 0) {
-    await linkHandlers[0].click();
-  } else {
-    throw new Error(`Link not found`);
-  }
 }
 
 async function loginViaDex(page, config) {
@@ -169,6 +158,5 @@ module.exports = {
   createEnvironment,
   createRemoteEnvironment,
   deleteRemoteEnvironment,
-  openLink,
-  goTo
+  openLink
 };
