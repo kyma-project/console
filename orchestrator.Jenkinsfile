@@ -38,11 +38,6 @@ properties([
     buildDiscarder(logRotator(numToKeepStr: '30')),
 ])
 
-/*
-    if email of commiter will be "kyma.bot@sap.com", then build will aborted
-*/
-def autoCancelled = false
-
 podTemplate(label: label) {
     node(label) {
         try {
@@ -61,12 +56,7 @@ podTemplate(label: label) {
                                 returnStdout: true
                             ).trim()
 
-                            if(committerEmail == "kyma.bot@sap.com") {
-                                autoCancelled = true
-                                error("Aborting the build to prevent a loop")
-                            }
-
-                            changes = changedProjects()
+                            changes = changedProjects(committerEmail)
                         }
 
                         stage('collect projects') {
@@ -90,14 +80,9 @@ podTemplate(label: label) {
             }
         } catch (ex) {
             echo "Got exception: ${ex}"
-
-            if(autoCancelled) {
-                currentBuild.result = "SUCCESS"
-            } else {
-                currentBuild.result = "FAILURE"
-                def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
-                emailext body: body, recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-            }
+            currentBuild.result = "FAILURE"
+            def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
+            emailext body: body, recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
         }
     }
 }
@@ -107,14 +92,13 @@ stage('build projects') {
     parallel jobs
 }
 
-
 /* -------- Helper Functions -------- */
 
 /**
  * Provides a list with the projects that have changes within the given projects list.
  * If no changes found, all projects will be returned.
  */
-String[] changedProjects() {
+String[] changedProjects(String committerEmail) {
     res = []
     def allProjects = projects
     echo "Looking for changes in the following projects: $allProjects."
@@ -130,6 +114,9 @@ String[] changedProjects() {
 
     // parse changeset and keep only relevant folders -> match with projects defined
     for (int i=0; i < allProjects.size(); i++) {
+        if (env.BRANCH_NAME == 'master' && committerEmail == "kyma.bot@sap.com" && allProjects[i] == "components/react") {
+            continue
+        } 
         for (int j=0; j < allChanges.size(); j++) {
             if (allChanges[j].startsWith(allProjects[i]) && changeIsValidFileType(allChanges[j],allProjects[i]) && !res.contains(allProjects[i])) {
                 res.add(allProjects[i])
