@@ -14,11 +14,16 @@ export const ServiceInstanceBindingsWrapper = styled.div`
 `;
 
 export const LinkButton = styled.span`
-  color: #0b74de;
   font-weight: bold;
 `;
 
 export const SecretModalButton = styled.span`
   cursor: pointer;
   color: #0a6ed1;
+  margin: ${props => props.margin};
+`;
+export const ParametersModalButton = SecretModalButton;
+
+export const ActionsWrapper = styled.div`
+  display: flex;
 `;

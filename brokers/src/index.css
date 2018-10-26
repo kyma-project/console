@@ -1,0 +1,128 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #f3f4f5;
+}
+
+.ReactModal__Overlay {
+  background-color: rgba(74, 80, 92, 0.3) !important;
+  z-index: 200;
+}
+
+@font-face {
+  font-family: 'SAP-icons';
+  src: local('SAP-icons'), url('/fonts/SAP-icons.woff2') format('woff2'),
+    url('/fonts/SAP-icons.woff') format('woff'),
+    url('/fonts/SAP-icons.ttf') format('truetype'), local('SAP-icons');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: '72';
+  font-style: normal;
+  font-weight: 400;
+  src: local('72'), url('/fonts/72-Regular.woff2') format('woff2'),
+    url('/fonts/72-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: '72';
+  font-style: normal;
+  font-weight: 700;
+  src: local('72-Bold'), url('/fonts/72-Bold.woff2') format('woff2'),
+    url('/fonts/72-Bold.woff') format('woff');
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: '72';
+  color: #32363a;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 23px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+  font-family: '72';
+  color: #167ee6;
+}
+
+a:hover {
+  color: #167ee6;
+  text-decoration: underline;
+}
+
+code {
+  width: 100%;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.internal {
+  display: none !important;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 30px 0;
+}
+
+thead {
+  background-color: rgba(243, 244, 245, 0.45);
+}
+
+th,
+td {
+  padding: 13px;
+  font-weight: normal;
+  text-align: left;
+  color: #32363a;
+  border: none;
+  outline: none;
+}
+
+th {
+  font-size: 11px;
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(243, 244, 245, 0.45);
+}
+
+td {
+  font-size: 14px;
+  line-height: 1.29;
+  text-align: left;
+  padding: 15px 13px;
+  color: #32363a;
+  font-weight: normal;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+img {
+  max-width: 100%;
+}

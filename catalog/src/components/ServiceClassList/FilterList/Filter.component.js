@@ -24,12 +24,19 @@ const Filter = ({
     return onSeeMore(name, more);
   };
 
+  const filterCategoryHeader = {
+    basic: 'Basic filter',
+    tag: 'Filter by tag',
+    provider: 'Filter by provider',
+    connectedApplication: 'Connected applications',
+  };
+
   return (
     <div>
       {items &&
         items.length > 0 && (
           <FilterHeader data-e2e-id={`filter-header-${name}`}>
-            Filter by {name}
+            {filterCategoryHeader[name]}
           </FilterHeader>
         )}
       <Items data-e2e-id={`filter-items-by-${name}`}>

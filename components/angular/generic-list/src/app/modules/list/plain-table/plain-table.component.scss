@@ -1,3 +1,6 @@
+@import 'mixins';
+@import '~fundamental-ui/scss/components/spinner';
+
 $prefix: 'sf-list';
 
 .#{$prefix}{
@@ -62,5 +65,12 @@ $prefix: 'sf-list';
 
   &__label-column {
     word-break: break-all;
+  }
+}
+
+.loading-container {
+  padding: 30px 0;
+  .fd-spinner {
+    @include fadeInWithDelay();
   }
 }

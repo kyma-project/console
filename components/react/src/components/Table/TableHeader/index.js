@@ -12,7 +12,7 @@ import {
 
 class TableHeader extends React.Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     addContent: PropTypes.any,
     columns: PropTypes.arrayOf(PropTypes.object),
   };
@@ -26,16 +26,18 @@ class TableHeader extends React.Component {
 
     return (
       <TableHeaderWrapper>
-        <Grid>
-          <Grid.Unit size={0.4}>
-            <TableHeaderTitle>{title}</TableHeaderTitle>
-          </Grid.Unit>
-          <Grid.Unit size={0.6}>
-            <TableHeaderAdditionalContent>
-              {addContent}
-            </TableHeaderAdditionalContent>
-          </Grid.Unit>
-        </Grid>
+        {title && (
+          <Grid>
+            <Grid.Unit size={0.4}>
+              <TableHeaderTitle>{title}</TableHeaderTitle>
+            </Grid.Unit>
+            <Grid.Unit size={0.6}>
+              <TableHeaderAdditionalContent>
+                {addContent}
+              </TableHeaderAdditionalContent>
+            </Grid.Unit>
+          </Grid>
+        )}
         <TableHeaderColumnsWrapper data-e2e-id={'instances-header'}>
           <Grid>
             {columns &&

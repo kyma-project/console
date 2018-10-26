@@ -1,0 +1,15 @@
+.status-label {
+  text-align: left;
+  text-transform: uppercase;
+  position: relative;
+  cursor: default;
+}
+
+.status-label__with-description {
+  cursor: pointer;
+  &:hover {
+    .tooltip {
+      display: block;
+    }
+  }
+}

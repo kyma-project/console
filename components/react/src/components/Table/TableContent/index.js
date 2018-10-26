@@ -37,7 +37,7 @@ class TableContent extends React.Component {
 
     return (
       <TableContentWrapper>
-        {elements.length > 0 ? (
+        {elements && elements.length > 0 ? (
           elements.map((element, index) => (
             <TableRow key={index} columnsData={columnsData} element={element} />
           ))

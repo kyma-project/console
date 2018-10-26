@@ -19,6 +19,7 @@ window.clusterConfig = {
 
   serviceCatalogModuleUrl: 'http://' + localDomain + ':8000',
   serviceInstancesModuleUrl: 'http://' + localDomain + ':8001',
-  docsModuleUrl: 'http://' + localDomain + ':8002',
+  serviceBrokersModuleUrl: 'http://' + localDomain + ':8002',
+  docsModuleUrl: 'http://' + localDomain + ':8003',
   lambdasModuleUrl: 'http://' + localDomain + ':4201',
 };

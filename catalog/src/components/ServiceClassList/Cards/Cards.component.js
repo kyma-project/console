@@ -21,6 +21,7 @@ const Cards = ({ items, history }) => {
       company={item.providerDisplayName}
       description={item.description}
       imageUrl={item.imageUrl}
+      labels={item.labels}
     />
   ));
 };

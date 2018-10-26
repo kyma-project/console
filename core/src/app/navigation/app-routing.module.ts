@@ -36,6 +36,8 @@ import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets
 import { ResourcesComponent } from '../content/environments/configuration/resources/resources.component';
 import { LoginErrorComponent } from '../content/login-error/login-error.component';
 import { RequestErrorComponent } from '../content/request-error/request-error.component';
+import { UnsavedChanges } from './unsaved-changes';
+import { BrokersContainerComponent } from '../content/environments/brokers-container/brokers-container.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
@@ -81,8 +83,16 @@ const appRoutes: Routes = [
             data: { path: '/details/:name' }
           },
           { path: 'lambdas', component: LambdasComponent },
-          { path: 'lambdas/create', component: LambdasComponent },
-          { path: 'lambdas/details/:name', component: LambdasComponent },
+          {
+            path: 'lambdas/create',
+            component: LambdasComponent,
+            canDeactivate: [UnsavedChanges]
+          },
+          {
+            path: 'lambdas/details/:name',
+            component: LambdasComponent,
+            canDeactivate: [UnsavedChanges]
+          },
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
@@ -137,6 +147,10 @@ const appRoutes: Routes = [
             path: 'service-catalog/details/:name',
             component: CatalogContainerComponent,
             data: { path: '/details/:name' }
+          },
+          {
+            path: 'brokers',
+            component: BrokersContainerComponent
           },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }

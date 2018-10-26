@@ -1,0 +1,8 @@
+/coverage
+/build
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+/react-components/index.js

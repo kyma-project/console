@@ -1,7 +1,8 @@
-import { Component, Injector, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
 
 @Component({
   selector: 'app-services-entry-renderer',
@@ -21,6 +22,10 @@ export class ServicesEntryRendererComponent
 
   ngOnInit() {
     this.actions = [
+      {
+        function: 'exposeApi',
+        name: 'Expose API'
+      },
       {
         function: 'details',
         name: 'Details'
@@ -52,5 +57,21 @@ export class ServicesEntryRendererComponent
       return false;
     }
     return true;
+  }
+
+  getStatus(entry) {
+    if (this.isStatusOk(entry)) {
+      return 'running';
+    } else {
+      return 'error';
+    }
+  }
+
+  getStatusType(entry) {
+    if (this.isStatusOk(entry)) {
+      return 'ok';
+    } else {
+      return 'error';
+    }
   }
 }

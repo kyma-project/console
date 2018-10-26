@@ -12,6 +12,7 @@ const serviceClassQGL = `
   imageUrl
   providerDisplayName
   tags
+  labels
   content
   asyncApiSpec
   apiSpec

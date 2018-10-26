@@ -3,7 +3,9 @@
   <ng-template class="container" #entries></ng-template>
   <ng-template #footer></ng-template>
 </div>
-<p *ngIf="loading">Loading ...</p>
+<div *ngIf="loading" aria-hidden="false" aria-label="Loading" class="loading-container">
+  <div class="fd-spinner"><div></div></div>
+</div>
 <p *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
   <ng-content select="[empty-list-placeholder]"></ng-content>
 </p>

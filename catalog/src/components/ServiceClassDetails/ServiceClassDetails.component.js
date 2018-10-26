@@ -83,6 +83,7 @@ class ServiceClassDetails extends React.Component {
                   supportUrl={serviceClass.supportUrl}
                   imageUrl={serviceClass.imageUrl}
                   tags={serviceClass.tags}
+                  labels={serviceClass.labels}
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>

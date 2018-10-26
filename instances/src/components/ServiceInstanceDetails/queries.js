@@ -51,12 +51,18 @@ export const SERVICE_INSTANCE_QUERY = gql`
         items {
           name
           environment
+          parameters
           secret {
             name
             data
             environment
           }
           serviceInstanceName
+          status {
+            type
+            reason
+            message
+          }
         }
         stats {
           ready
@@ -74,6 +80,11 @@ export const SERVICE_INSTANCE_QUERY = gql`
             name
             data
           }
+        }
+        status {
+          type
+          reason
+          message
         }
         usedBy {
           name
