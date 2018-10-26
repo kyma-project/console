@@ -36,6 +36,8 @@ import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets
 import { ResourcesComponent } from '../content/environments/configuration/resources/resources.component';
 import { LoginErrorComponent } from '../content/login-error/login-error.component';
 import { RequestErrorComponent } from '../content/request-error/request-error.component';
+
+import { ConfigMapsComponent } from '../content/environments/operation/configmaps/configmaps.component';
 import { UnsavedChanges } from './unsaved-changes';
 import { BrokersContainerComponent } from '../content/environments/brokers-container/brokers-container.component';
 
@@ -108,6 +110,7 @@ const appRoutes: Routes = [
           { path: 'apis/create', component: ExposeApiComponent },
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
+          { path: 'configmaps', component: ConfigMapsComponent },
           {
             path: 'extensions/:pathSegment1',
             component: ExternalViewComponent,

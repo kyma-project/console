@@ -95,7 +95,6 @@ import { RoleDetailsComponent } from './shared/components/permissions/role-detai
 import { RolesEntryRendererComponent } from './shared/components/permissions/roles/roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './shared/components/permissions/roles/roles-header-renderer/roles-header-renderer.component';
 import { BindingsComponent } from './shared/components/permissions/bindings/bindings.component';
-import { RoleBinding } from './shared/datamodel/k8s/role-binding';
 import { BindingEntryRendererComponent } from './shared/components/permissions/bindings/binding-entry-renderer/binding-entry-renderer.component';
 import { BindingHeaderRendererComponent } from './shared/components/permissions/bindings/binding-header-renderer/binding-header-renderer.component';
 import { InstancesContainerComponent } from './content/environments/instances-container/instances-container.component';
@@ -121,6 +120,9 @@ import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote
 import { EditRemoteEnvironmentModalComponent } from './content/settings/remote-environments/edit-remote-environment-modal/edit-remote-environment-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { RequestErrorComponent } from './content/request-error/request-error.component';
+import { ConfigMapsComponent } from './content/environments/operation/configmaps/configmaps.component';
+import { ConfigMapsEntryRendererComponent } from './content/environments/operation/configmaps/configmaps-entry-renderer/configmaps-entry-renderer.component';
+import { ConfigMapsHeaderRendererComponent } from './content/environments/operation/configmaps/configmaps-header-renderer/configmaps-header-renderer.component';
 import { UnsavedChanges } from './navigation/unsaved-changes';
 import { PageDirtyStateService } from './shared/services/page-dirty-state.service';
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
@@ -153,6 +155,7 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     ServicesComponent,
     SecretsComponent,
     SecretDetailComponent,
+    ConfigMapsComponent,
     InformationModalComponent,
     ConfirmationModalComponent,
     ReplicaSetsEntryRendererComponent,
@@ -163,6 +166,8 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     PodsEntryRendererComponent,
     SecretsEntryRendererComponent,
     SecretsHeaderRendererComponent,
+    ConfigMapsEntryRendererComponent,
+    ConfigMapsHeaderRendererComponent,
     ServicesHeaderRendererComponent,
     ServicesEntryRendererComponent,
     EditBindingsModalComponent,
@@ -266,6 +271,8 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     PodsEntryRendererComponent,
     SecretsHeaderRendererComponent,
     SecretsEntryRendererComponent,
+    ConfigMapsEntryRendererComponent,
+    ConfigMapsHeaderRendererComponent,
     ServicesHeaderRendererComponent,
     ServicesEntryRendererComponent,
     RemoteEnvironmentsHeaderRendererComponent,

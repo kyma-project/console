@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PodsComponent } from './pods.component';
+import { ConfigMapsComponent } from './configmaps.component';
 import { AppModule } from '../../../../app.module';
 import { ListModule } from '@kyma-project/y-generic-list';
 import { APP_BASE_HREF } from '@angular/common';
 
-describe('ConfigmapsComponent', () => {
-  let component: PodsComponent;
-  let fixture: ComponentFixture<PodsComponent>;
+describe('ConfigMapsComponent', () => {
+  let component: ConfigMapsComponent;
+  let fixture: ComponentFixture<ConfigMapsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,7 +17,7 @@ describe('ConfigmapsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PodsComponent);
+    fixture = TestBed.createComponent(ConfigMapsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

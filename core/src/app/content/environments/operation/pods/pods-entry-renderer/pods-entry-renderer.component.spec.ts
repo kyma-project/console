@@ -5,7 +5,7 @@ import { PodsEntryRendererComponent } from './pods-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { of, Subject } from 'rxjs';
 
-describe('PodsEntryRendererComponent', () => {
+describe('ConfigmapsEntryRendererComponent', () => {
   let component: PodsEntryRendererComponent;
   let fixture: ComponentFixture<PodsEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;

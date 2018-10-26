@@ -7,7 +7,7 @@ export class PageDirtyStateService {
   constructor() {}
 
   setPageDirty(dirty: boolean) {
-    this.pageDirty = dirty
+    this.pageDirty = dirty;
   }
 
   isPageDirty(): boolean {

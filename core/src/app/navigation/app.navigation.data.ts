@@ -45,6 +45,10 @@ export const navModel = {
           {
             name: 'Resources',
             link: 'resources'
+          },
+          {
+            name: 'Config Maps',
+            link: 'configmaps'
           }
         ]
       },
