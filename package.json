@@ -8,7 +8,7 @@
     "build:components": "npm run build:components:react",
     "build:components:react": "cd components/react && npm run build",
     "build:components:angular": "lerna run packagr",
-    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js content/public/config/config.js"
+    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js brokers/public/config/config.js content/public/config/config.js"
   },
   "devDependencies": {
     "husky": "^0.14.0",

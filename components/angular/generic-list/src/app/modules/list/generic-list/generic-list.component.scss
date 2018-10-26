@@ -1,3 +1,6 @@
+@import 'mixins';
+@import '~fundamental-ui/scss/components/spinner';
+
 $prefix: 'sf-toolbar';
 $prefix-section: 'sf-section';
 
@@ -13,6 +16,9 @@ $item-padding: $item-padding-top $item-padding-left $item-padding-bottom $item-p
 	width: 100%;
 	min-height: 52px;
 
+	.fd-spinner {
+		@include fadeInWithDelay();
+	}
 
 	// Remove padding of header in horizontal layout
 	&:not(.#{$prefix}--vertical){
@@ -187,8 +193,11 @@ $item-padding: $item-padding-top $item-padding-left $item-padding-bottom $item-p
 		font-size: 16px;
 		font-weight: bold;
 	}
-
-	&__empty-teaser{
+	&__empty-spinner {
+		max-width: 600px;
+		margin: 32px auto;
+	}
+	&__empty-teaser {
 		font-size: 120%;
 		text-align: center;
 		max-width: 600px;

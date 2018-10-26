@@ -2,6 +2,7 @@ import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
+import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
 
 @Component({
   selector: 'app-deployment-entry-renderer',
@@ -37,5 +38,13 @@ export class DeploymentEntryRendererComponent
 
   isStatusOk(entry): boolean {
     return entry.status.readyReplicas === entry.status.replicas;
+  }
+
+  getStatus(entry) {
+    return this.isStatusOk(entry) ? 'running' : 'error';
+  }
+
+  getStatusType(entry) {
+    return this.isStatusOk(entry) ? 'ok' : 'error';
   }
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppConfig } from '../../../../app.config';
+import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-development',
@@ -11,6 +12,8 @@ export class LambdasComponent implements OnInit {
   public externalUrl: string = AppConfig.lambdasModuleUrl;
   public path = '/home/environments/';
   public executionAsync = false;
+
+  @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 

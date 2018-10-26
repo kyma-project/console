@@ -3,6 +3,7 @@ import { Pod } from '../../../../../shared/datamodel/k8s/pods';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -71,16 +72,6 @@ export class PodsEntryRendererComponent
     return containerStatuses;
   }
 
-  getStatus(entry) {
-    const statuses = this.getStatusesList(entry);
-    for (status of statuses) {
-      if (status !== 'Running') {
-        return status;
-      }
-    }
-    return entry.podStatus.podPhase;
-  }
-
   isPending(entry) {
     return entry.podStatus.status === 'Pending';
   }
@@ -91,13 +82,23 @@ export class PodsEntryRendererComponent
     );
   }
 
-  getClass(entry) {
+  getStatus(entry) {
+    const statuses = this.getStatusesList(entry);
+    for (status of statuses) {
+      if (status !== 'Running') {
+        return status;
+      }
+    }
+    return entry.podStatus.podPhase;
+  }
+
+  getStatusType(entry) {
     if (this.isPending(entry)) {
-      return '';
+      return 'warning';
     } else if (this.isSucceeded(entry)) {
-      return 'sf-indicator--success';
+      return 'ok';
     } else {
-      return 'sf-indicator--warning';
+      return 'error';
     }
   }
 }
