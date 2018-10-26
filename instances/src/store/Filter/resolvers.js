@@ -192,13 +192,17 @@ const filterItems = (items, activeFilters, cache) => {
     ) {
       const searchValue = activeFilters.search.toLowerCase();
       const name = item.name.toLowerCase();
-      const serviceClass = item.serviceClass.displayName.toLowerCase();
-      const plan = item.servicePlan.displayName.toLowerCase();
+      const serviceClass = item.serviceClass
+        ? item.serviceClass.displayName.toLowerCase()
+        : '';
+      const plan = item.servicePlan
+        ? item.servicePlan.displayName.toLowerCase()
+        : '';
       const statusType = item.status.type.toLowerCase();
       searchMatch =
         name.indexOf(searchValue) !== -1 ||
-        serviceClass.indexOf(searchValue) !== -1 ||
-        plan.indexOf(searchValue) !== -1 ||
+        (item.serviceClass && serviceClass.indexOf(searchValue) !== -1) ||
+        (item.servicePlan && plan.indexOf(searchValue) !== -1) ||
         statusType.indexOf(searchValue) !== -1;
     }
 
