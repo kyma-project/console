@@ -184,7 +184,43 @@ class CreateBindingModal extends React.Component {
       </CreateBindingButton>
     );
 
-    return serviceInstance.status.type === 'RUNNING' ? (
+    if (serviceInstance.status.type !== 'RUNNING') {
+      return (
+        <Tooltip
+          type="error"
+          content={
+            <span>
+              Instance must be in a <strong>Running</strong> state
+            </span>
+          }
+          minWidth="161px"
+        >
+          <CreateBindingButton disabled={true}>
+            + Create Binding
+          </CreateBindingButton>
+        </Tooltip>
+      );
+    }
+
+    if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
+      return (
+        <Tooltip
+          type="error"
+          content={
+            <span>
+              Service Class does not exist. Contact the cluster administrator.
+            </span>
+          }
+          minWidth="161px"
+        >
+          <CreateBindingButton disabled={true}>
+            + Create Binding
+          </CreateBindingButton>
+        </Tooltip>
+      );
+    }
+
+    return (
       <StepsModal
         ref={modal => {
           this.child = modal;
@@ -199,20 +235,6 @@ class CreateBindingModal extends React.Component {
         tooltipData={tooltipData}
         handleClose={this.clearState}
       />
-    ) : (
-      <Tooltip
-        type="error"
-        content={
-          <span>
-            Instance must be in a <strong>Running</strong> state
-          </span>
-        }
-        minWidth="161px"
-      >
-        <CreateBindingButton disabled={true}>
-          + Create Binding
-        </CreateBindingButton>
-      </Tooltip>
     );
   }
 }
