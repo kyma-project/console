@@ -102,14 +102,16 @@ function ServiceInstancesTable({
         size: 0.2,
         accesor: el => {
           const elClass = el.clusterServiceClass || el.serviceClass;
-          return elClass && elClass.name ? (
+          if (!elClass || !elClass.name) {
+            return '-';
+          }
+
+          return (
             <ServiceClassButton
               onClick={() => goToServiceClassDetails(elClass.name)}
             >
               {getResourceDisplayName(elClass)}
             </ServiceClassButton>
-          ) : (
-            '-'
           );
         },
       },
@@ -118,6 +120,10 @@ function ServiceInstancesTable({
         size: 0.2,
         accesor: el => {
           const plan = el.clusterServicePlan || el.servicePlan;
+          if (!plan) {
+            return '-';
+          }
+
           if (
             el.planSpec &&
             el.planSpec !== null &&
@@ -150,8 +156,11 @@ function ServiceInstancesTable({
         name: 'Status',
         size: 0.1,
         accesor: el => {
-          let type = '';
+          if (!el.status) {
+            return '-';
+          }
 
+          let type = '';
           switch (el.status.type) {
             case 'RUNNING':
               type = 'success';
