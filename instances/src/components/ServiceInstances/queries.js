@@ -67,17 +67,6 @@ export const FILTERED_ITEMS_QUERY = gql`
   query filteredItems {
     filteredItems @client {
       name
-      labels
-      status {
-        type
-        message
-      }
-      serviceClass {
-        ${serviceClassQGL}
-      }
-      servicePlan {
-        ${servicePlanQGL}
-      }
     }
   }
 `;

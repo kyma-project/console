@@ -113,7 +113,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                         }
                       />
                     ) : (
-                      `${getResourceDisplayName(instancePlan)}`
+                      `${getResourceDisplayName(instancePlan) || '-'}`
                     )}
                   </Element>
                 </Grid.Unit>
