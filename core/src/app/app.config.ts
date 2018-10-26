@@ -47,6 +47,7 @@ const config = {
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
   serviceCatalogModuleUrl: `https://catalog.${domain}`,
   serviceInstancesModuleUrl: `https://instances.${domain}`,
+  serviceBrokersModuleUrl: `https://brokers.${domain}`,
   docsModuleUrl: `https://docs.${domain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl
