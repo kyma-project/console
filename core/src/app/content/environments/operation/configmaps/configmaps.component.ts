@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { CurrentEnvironmentService } from '../../../environments/services/current-environment.service';
-import { AppConfig } from '../../../../app.config';
-import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { DataConverter } from '@kyma-project/y-generic-list';
+import { AppConfig } from '../../../../app.config';
+import { CurrentEnvironmentService } from '../../../environments/services/current-environment.service';
+import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs';
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
 import {
