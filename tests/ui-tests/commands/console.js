@@ -2,34 +2,34 @@ import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import request from 'request';
 import address from '../utils/address';
 
+async function _loginViaDex(page, config) {
+  const loginButtonSelector = '.dex-btn';
+  console.log(`Trying to log in ${config.login} via dex`);
+  await page.reload({ waitUntil: 'networkidle0' });
+  await page.type('#login', config.login);
+  await page.type('#password', config.password);
+  return await page.click(loginButtonSelector);
+}
+
 async function login(page, config) {
-  await loginViaDex(page, config);
+  await _loginViaDex(page, config);
   return await page.waitForSelector('.sf-header');
-}
-
-async function getEnvironments(page) {
-  return await page.evaluate(() => {
-    const environmentsArraySelector =
-      '.sf-dropdown .tn-dropdown__menu .tn-dropdown__item';
-    const envs = Array.from(
-      document.querySelectorAll(environmentsArraySelector)
-    );
-    return envs.map(env => env.textContent);
-  });
-}
-
-async function getRemoteEnvironments(page) {
-  return await page.evaluate(() => {
-    const remoteEnvironmentsSelector = '.remoteenv-name';
-    const envs = Array.from(
-      document.querySelectorAll(remoteEnvironmentsSelector)
-    );
-    return envs.map(env => env.textContent);
-  });
 }
 
 async function getFrame(page) {
   return await page.frames().find(f => f.name() === 'frame');
+}
+
+async function openLink(page, element, name) {
+  await page.$$eval(
+    element,
+    (item, name) => {
+      item.find(text => text.innerText.includes(name)).click();
+    },
+    name
+  );
+  await page.reload({ waitUntil: 'networkidle0' });
+  await waitForNavigationAndContext(page);
 }
 
 function clearData(token, env) {
@@ -52,6 +52,17 @@ function clearData(token, env) {
         resolve(response);
       }
     });
+  });
+}
+
+async function getEnvironments(page) {
+  return await page.evaluate(() => {
+    const environmentsArraySelector =
+      '.sf-dropdown .tn-dropdown__menu .tn-dropdown__item';
+    const envs = Array.from(
+      document.querySelectorAll(environmentsArraySelector)
+    );
+    return envs.map(env => env.textContent);
   });
 }
 
@@ -79,6 +90,16 @@ async function createEnvironment(page, name) {
 
   const environments = await getEnvironments(page);
   expect(environments).toContain(name);
+}
+
+async function getRemoteEnvironments(page) {
+  return await page.evaluate(() => {
+    const remoteEnvironmentsSelector = '.remoteenv-name';
+    const envs = Array.from(
+      document.querySelectorAll(remoteEnvironmentsSelector)
+    );
+    return envs.map(env => env.textContent);
+  });
 }
 
 async function createRemoteEnvironment(page, name) {
@@ -128,35 +149,14 @@ async function deleteRemoteEnvironment(page, name) {
   });
 }
 
-async function openLink(page, element, name) {
-  await page.$$eval(
-    element,
-    (item, name) => {
-      item.find(text => text.innerText.includes(name)).click();
-    },
-    name
-  );
-  await page.reload({ waitUntil: 'networkidle0' });
-  await waitForNavigationAndContext(page);
-}
-
-async function loginViaDex(page, config) {
-  const loginButtonSelector = '.dex-btn';
-  console.log(`Trying to log in ${config.login} via dex`);
-  await page.reload({ waitUntil: 'networkidle0' });
-  await page.type('#login', config.login);
-  await page.type('#password', config.password);
-  return await page.click(loginButtonSelector);
-}
-
 module.exports = {
   login,
-  getEnvironments,
-  getRemoteEnvironments,
   getFrame,
+  openLink,
   clearData,
+  getEnvironments,
   createEnvironment,
+  getRemoteEnvironments,
   createRemoteEnvironment,
-  deleteRemoteEnvironment,
-  openLink
+  deleteRemoteEnvironment
 };
