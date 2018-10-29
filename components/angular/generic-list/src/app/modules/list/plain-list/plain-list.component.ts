@@ -109,12 +109,17 @@ export class PlainListComponent implements OnChanges {
       error => {
         this.setLoaded(true);
         this.setLoading(false);
-        this.errorMessage = error.message ? error.message : error.error;
+
+        if (error.error && error.error.message) {
+          this.errorMessage = error.error.message;
+        } else {
+          this.errorMessage = error.message || error;
+        }
+
         this.data = [];
         if (!(this.changeDetector as ViewRef).destroyed) {
           this.changeDetector.detectChanges();
         }
-        throw error;
       },
     );
   }

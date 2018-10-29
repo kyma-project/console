@@ -53,7 +53,7 @@ export class CreatePresetModalComponent {
   validatePresetNameRegex() {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
     this.wrongPresetName = this.presetName
-      ? !regex.test(this.presetName)
+      ? !regex.test(this.presetName) || this.presetName.length > 253
       : false;
   }
 
@@ -75,8 +75,7 @@ export class CreatePresetModalComponent {
         });
       },
       err => {
-        this.error = `Error: ${err.message}`;
-        console.log(err);
+        this.error = `Error: ${err}`;
       }
     );
   }

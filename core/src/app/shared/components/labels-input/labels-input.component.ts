@@ -35,21 +35,23 @@ export class LabelsInputComponent implements OnInit {
   }
 
   public validateNewLabel() {
+    this.removeWhitespaces();
     this.setWrongLabelMessage(this.newLabel);
     this.labelsChangeEmitter$.emit({
       wrongLabels: Boolean(this.wrongLabelMessage)
     });
   }
 
+  public removeWhitespaces() {
+    if (this.newLabel) {
+      this.newLabel = this.newLabel.trim();
+    }
+  }
+
   public addLabel() {
     this.validateNewLabel();
     if (this.newLabel && !this.wrongLabelMessage) {
-      this.labels.push(
-        this.newLabel
-          .split(':')
-          .map(s => s.trim())
-          .join(':')
-      );
+      this.labels.push(this.newLabel);
       this.newLabel = '';
       // Avoid sharing of same array copy among parent and child component
       this.labelsChangeEmitter$.emit({ labels: [...this.labels] });
@@ -86,8 +88,8 @@ export class LabelsInputComponent implements OnInit {
       return true;
     }
 
-    const key: string = label.split(':')[0].trim();
-    const value: string = label.split(':')[1].trim();
+    const key: string = label.split(':')[0];
+    const value: string = label.split(':')[1];
 
     const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
     const foundKey = key.match(regex);

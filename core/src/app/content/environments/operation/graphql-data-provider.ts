@@ -73,7 +73,9 @@ export class GraphQLDataProvider implements DataProvider {
             )
           );
         },
-        err => console.log(err)
+        err => {
+          observer.error(err);
+        }
       );
     });
   }

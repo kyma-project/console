@@ -178,7 +178,6 @@ export class GenericListComponent implements OnChanges, OnInit {
             this.changeDetector.detectChanges();
           }
           observer.error(error);
-          throw error;
         },
       );
   }
