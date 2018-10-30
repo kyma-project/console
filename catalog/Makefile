@@ -1,6 +1,10 @@
 IMG_NAME = catalog-ui
-IMG = $(DOCKER_PUSH_REPOSITORY)/$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
+IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
+
+ci-pr: resolve build validate build-image push-image
+ci-master: resolve build validate build-image push-image
+ci-release: resolve build validate build-image push-image
 
 resolve:
 	npm install
