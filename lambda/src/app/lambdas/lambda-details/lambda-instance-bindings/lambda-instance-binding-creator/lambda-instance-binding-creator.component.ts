@@ -21,9 +21,11 @@ import { ServiceInstanceList } from '../../../../shared/datamodel/k8s/service-in
 export class LambdaInstanceBindingCreatorComponent {
   public isActive = false;
   private isValid = false;
+  private isSelectedInstanceBindingPrefixInvalid = false;
   private createSecrets = true;
   private selectedInstance: ServiceInstance;
   private selectedBinding: ServiceBinding;
+  private selectedInstanceBindingPrefix: string;
   private relevantServiceBindings = new ServiceBindingList({
     items: [],
   });
@@ -82,6 +84,16 @@ export class LambdaInstanceBindingCreatorComponent {
     });
   }
 
+  public validatesPrefix() {
+    const regex = /[a-z0-9]([(-|_)a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/;
+    const found = this.selectedInstanceBindingPrefix.match(regex);
+    this.isSelectedInstanceBindingPrefixInvalid =
+      (found && found[0] === this.selectedInstanceBindingPrefix) ||
+      this.selectedInstanceBindingPrefix === ''
+        ? false
+        : true;
+  }
+
   public cancel(event: Event) {
     this.isActive = false;
     this.reset();
@@ -99,6 +111,7 @@ export class LambdaInstanceBindingCreatorComponent {
         ? '-'
         : this.selectedBinding.spec.secretName,
       envVarNames: [],
+      instanceBindingPrefix: this.selectedInstanceBindingPrefix,
     };
 
     this.selectedServiceBindingEmitter.emit(ibInfo);

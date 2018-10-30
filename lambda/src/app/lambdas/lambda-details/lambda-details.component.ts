@@ -385,6 +385,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
           Function: this.lambda.metadata.name,
           ServiceBinding: serviceBindingName,
         };
+        serviceBindingUsage.spec.parameters.envPrefix.name =
+          bs.currentState.instanceBindingPrefix + '-';
         createRequests.push(
           this.serviceBindingsService
             .createServiceBinding(serviceBinding, this.token)
@@ -401,6 +403,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
           Function: this.lambda.metadata.name,
           ServiceBinding: bs.currentState.serviceBinding,
         };
+        serviceBindingUsage.spec.parameters.envPrefix.name =
+          bs.currentState.instanceBindingPrefix + '-';
       }
       serviceBindingUsage.spec.usedBy.kind = 'function';
       serviceBindingUsage.spec.usedBy.name = this.lambda.metadata.name;
