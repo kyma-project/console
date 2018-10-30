@@ -7,12 +7,6 @@
         <h1 class="sf-toolbar__header">
             <span>{{ environment.getLabel() }}</span>
         </h1>
-        <div class="sf-toolbar__right">
-            <button class="tn-button tn-button--text tn-button--small sf-toolbar__item" (click)="openUploadResourceModal()"
-                *ngIf="!showSelectFileButton">
-                + Deploy new resource to the environment
-            </button>
-        </div>
     </div>
     <div class="sf-section">
         <div class="row">
