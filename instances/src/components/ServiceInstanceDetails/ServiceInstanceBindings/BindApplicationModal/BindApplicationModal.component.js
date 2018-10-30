@@ -11,17 +11,13 @@ import BindingsStep from './BindingsStep.component';
 import Resources from './Resources.component';
 import SchemaData from './SchemaData.component';
 
-import {
-  BindApplicationButton,
-  SubSectionTitle,
-  SubSectionDescription,
-} from './styled';
+import { bindingVariables } from '../InfoButton/variables';
+import InfoButton from '../InfoButton/InfoButton.component';
+
+import { BindApplicationButton, SubSectionTitle } from './styled';
 
 import builder from '../../../../commons/builder';
-import {
-  clearEmptyPropertiesInObject,
-  randomNameGenerator,
-} from '../../../../commons/helpers';
+import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -32,15 +28,8 @@ class BindApplicationModal extends React.Component {
 
   getInitialState = () => {
     return {
-      checkbox: this.props.serviceInstance.serviceBindings.items.length === 0,
-      nameServiceBinding:
-        this.props.serviceInstance.name + '-binding-' + randomNameGenerator(),
+      checkbox: true,
       selectedExistingBinding: '',
-
-      nameServiceBindingUsage:
-        this.props.serviceInstance.name +
-        '-binding-usage-' +
-        randomNameGenerator(),
       selectedKind: '',
       selectedResource: '',
       prefixEnvironmentValue: '',
@@ -73,11 +62,9 @@ class BindApplicationModal extends React.Component {
     this.setState({ ...data });
   };
 
-  prepareData = params => {
+  prepareData = createdBindingName => {
     const {
       checkbox,
-      nameServiceBinding,
-      nameServiceBindingUsage,
       selectedExistingBinding,
       selectedResource,
       prefixEnvironmentValue,
@@ -86,10 +73,9 @@ class BindApplicationModal extends React.Component {
     const parsedSelectedResource = JSON.parse(selectedResource);
 
     return {
-      name: nameServiceBindingUsage,
       environment: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
-        name: checkbox ? nameServiceBinding : selectedExistingBinding,
+        name: checkbox ? createdBindingName : selectedExistingBinding,
       },
       usedBy: {
         kind: parsedSelectedResource.kind.split(' ')[0],
@@ -104,11 +90,7 @@ class BindApplicationModal extends React.Component {
   };
 
   create = async params => {
-    const {
-      checkbox,
-      nameServiceBinding,
-      nameServiceBindingUsage,
-    } = this.state;
+    const { checkbox } = this.state;
     const {
       serviceInstance,
       createBinding,
@@ -116,9 +98,9 @@ class BindApplicationModal extends React.Component {
       serviceInstanceRefetch,
       sendNotification,
     } = this.props;
-    const dataToSend = this.prepareData(params);
 
     try {
+      let createdBindingName, createdBindingUsageName;
       if (checkbox) {
         let bindingCreateParameters;
         if (params && params.formData) {
@@ -127,21 +109,41 @@ class BindApplicationModal extends React.Component {
         } else {
           bindingCreateParameters = {};
         }
-        await createBinding(
-          nameServiceBinding,
+        const createdBinding = await createBinding(
           serviceInstance.name,
           bindingCreateParameters,
         );
+
+        if (
+          createdBinding &&
+          createdBinding.data &&
+          createdBinding.data.createServiceBinding &&
+          createdBinding.data.createServiceBinding.name
+        ) {
+          createdBindingName = createdBinding.data.createServiceBinding.name;
+        }
       }
-      await createBindingUsage(dataToSend);
+      const dataToSend = this.prepareData(createdBindingName);
+      const createdBindingUsage = await createBindingUsage(dataToSend);
+      if (
+        createdBindingUsage &&
+        createdBindingUsage.data &&
+        createdBindingUsage.data.createServiceBindingUsage &&
+        createdBindingUsage.data.createServiceBindingUsage.name
+      ) {
+        createdBindingUsageName =
+          createdBindingUsage.data.createServiceBindingUsage.name;
+      }
+
       this.child.child.handleCloseModal();
       if (typeof sendNotification === 'function') {
         sendNotification({
           variables: {
-            title: `Service binding usage "${nameServiceBindingUsage}" created successfully`,
+            content: `Application binding "${createdBindingUsageName}" created successfully`,
+            title: `${createdBindingUsageName}`,
             color: '#359c46',
             icon: '\uE05B',
-            instanceName: nameServiceBindingUsage,
+            instanceName: createdBindingUsageName,
           },
         });
       }
@@ -222,11 +224,6 @@ class BindApplicationModal extends React.Component {
       bindingsStepFilled: bindingsStepFilled,
     };
 
-    const bindingDescription =
-      'To use ServiceInstance, you need credentials for this service. To obtain credentials, proceed with this form. One instance can have numerous credentials to use in the Deployment or Function. When you raise a credentials request, the system returns the credentials in the form of a Secret. The system creates a Secret in a given Environment.';
-    const bindingUsageDescription =
-      "The Secret allows you to run the service successfully. However, a problem appears each time you need to change the definition of the yaml file in the Deployment to specify the Secrets' usage. The manual process of editing the file is tedious and time-consuming. Kyma handles it by offering a custom resource called ServiceBindingUsage. This custom resource applies the Kubernetes PodPreset resource and allows you to enforce an automated flow in which the ServiceBindingUsage controller injects credentials into a given Application or Function.";
-
     const content = [
       <div key={serviceInstance.name}>
         <Resources
@@ -235,11 +232,16 @@ class BindApplicationModal extends React.Component {
           fetchUsageKindResources={fetchUsageKindResources}
           callback={this.callback}
         />
+        {bindingCreateParameterSchema && (
+          <Fragment>
+            <Separator margin="16px -16px" />
 
-        <Separator margin="16px -16px" />
-
-        <SubSectionTitle bold>Create Credentials</SubSectionTitle>
-        <SubSectionDescription>{bindingDescription}</SubSectionDescription>
+            <SubSectionTitle bold>
+              Create Credentials
+              <InfoButton content={bindingVariables.serviceBinding} />
+            </SubSectionTitle>
+          </Fragment>
+        )}
 
         {bindingCreateParameterSchema && (
           <Fragment>
@@ -268,6 +270,7 @@ class BindApplicationModal extends React.Component {
         <BindingsStep
           data={bindingsStepData}
           existingServiceBindings={serviceInstance.serviceBindings.items}
+          showInfo={bindingCreateParameterSchema ? true : false}
           callback={this.callback}
         />
       </div>,
@@ -331,7 +334,7 @@ class BindApplicationModal extends React.Component {
         tooltipData={tooltipData}
         borderFooter={true}
         handleClose={this.clearState}
-        headerAdditionalInfo={bindingUsageDescription}
+        headerAdditionalInfo={bindingVariables.serviceBingingUsage}
       />
     );
   }

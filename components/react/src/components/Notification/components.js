@@ -30,6 +30,18 @@ export const NotificationHeader = styled.div`
   box-sizing: border-box;
   position: relative;
 `;
+export const NotificationBody = styled.div`
+  font-family: '72';
+  font-size: 13px;
+  line-height: 1.31;
+  font-weight: normal;
+  text-align: left;
+  color: #32363a;
+  position: relative;
+  padding: 12px 12px;
+  box-sizing: border-box;
+  position: relative;
+`;
 
 export const NotificationTitleWrapper = styled.span`
   margin-right: 32px;

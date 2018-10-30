@@ -92,6 +92,11 @@ export const SERVICE_INSTANCE_QUERY = gql`
           name
           kind
         }
+        parameters { 
+          envPrefix {
+            name
+          }
+        }
       }
     }
   }

@@ -18,6 +18,7 @@ import StatusIndicator from './StatusIndicator/StatusIndicator.component';
 import { statusColor } from '../../../commons/helpers';
 
 import {
+  Bold,
   ServiceInstanceBindingsWrapper,
   SecretModalButton,
   ParametersModalButton,
@@ -74,6 +75,7 @@ class ServiceInstanceBindings extends React.Component {
       deleteBindingUsage,
       serviceInstanceRefetch,
       serviceInstance,
+      callback,
     } = this.props;
 
     const serviceBindingsUsageTable = {
@@ -99,11 +101,16 @@ class ServiceInstanceBindings extends React.Component {
           name: 'Secret',
           size: 0.2,
           accesor: el => {
+            const prefix =
+              el.parameters &&
+              el.parameters.envPrefix &&
+              el.parameters.envPrefix.name;
             const secret = el.serviceBinding && el.serviceBinding.secret;
             return secret && Object.keys(secret).length ? (
               <SecretDataModal
                 title={`Secret "${secret.name}"`}
                 data={secret.data}
+                prefix={prefix}
                 modalOpeningComponent={
                   <SecretModalButton>{secret.name}</SecretModalButton>
                 }
@@ -137,18 +144,15 @@ class ServiceInstanceBindings extends React.Component {
           name: '',
           size: 0.1,
           accesor: el => (
-            <DeleteBindingModal
-              deleteBinding={deleteBinding}
-              deleteBindingUsage={deleteBindingUsage}
-              bindingName={
-                (el.serviceBinding && el.serviceBinding.name) || null
-              }
-              bindingExists={Boolean(el.serviceBinding)}
-              bindingUsageName={el.name}
-              bindingUsageCount={this.countBindingUsage(el)}
-              serviceInstanceRefetch={serviceInstanceRefetch}
-              id={`service-binding-delete-${el.name}`}
-            />
+            <ActionsWrapper>
+              <DeleteBindingModal
+                deleteBindingUsage={deleteBindingUsage}
+                bindingUsageName={el.name}
+                bindingUsageCount={this.countBindingUsage(el)}
+                serviceInstanceRefetch={serviceInstanceRefetch}
+                id={`service-binding-delete-${el.name}`}
+              />
+            </ActionsWrapper>
           ),
         },
       ],
@@ -170,7 +174,11 @@ class ServiceInstanceBindings extends React.Component {
             const secret = el && el.secret;
             return secret && Object.keys(secret).length ? (
               <SecretDataModal
-                title={`Secret "${secret.name}"`}
+                title={
+                  <Fragment>
+                    Secret <Bold>"{secret.name}"</Bold>
+                  </Fragment>
+                }
                 data={secret.data}
                 modalOpeningComponent={
                   <SecretModalButton>{secret.name}</SecretModalButton>
@@ -204,24 +212,37 @@ class ServiceInstanceBindings extends React.Component {
         {
           name: '',
           size: 0.15,
+          halign: 'right',
           accesor: el => {
             const parameters = el && el.parameters;
             return (
               <ActionsWrapper>
                 {parameters &&
                   Object.keys(parameters).length > 0 && (
-                    <ParametersDataModal
-                      title={`Parameters "${el.name}"`}
-                      data={parameters}
-                      modalOpeningComponent={
-                        <ParametersModalButton
-                          id={`service-binding-parameters-${el.name}`}
-                          margin={'0 8px'}
-                        >
-                          <Icon icon={'\uE139'} />
-                        </ParametersModalButton>
-                      }
-                    />
+                    <Tooltip content={'Parameters'}>
+                      <span
+                        style={{
+                          cursor: 'help',
+                        }}
+                      >
+                        <ParametersDataModal
+                          title={
+                            <Fragment>
+                              Parameters for <Bold>"{el.name}"</Bold>
+                            </Fragment>
+                          }
+                          data={parameters}
+                          modalOpeningComponent={
+                            <ParametersModalButton
+                              id={`service-binding-parameters-${el.name}`}
+                              margin={'0 8px'}
+                            >
+                              <Icon icon={'\uE139'} />
+                            </ParametersModalButton>
+                          }
+                        />
+                      </span>
+                    </Tooltip>
                   )}
 
                 <DeleteBindingModal
@@ -276,7 +297,10 @@ class ServiceInstanceBindings extends React.Component {
 
     return (
       <ServiceInstanceBindingsWrapper>
-        <Tabs>
+        <Tabs
+          defaultActiveTabIndex={this.props.defaultActiveTabIndex}
+          callback={callback}
+        >
           <Tab
             title={'Bound Applications'}
             id={'service-binding-usage-tab'}

@@ -15,7 +15,6 @@ import {
   ModalFooter,
   ModalCloseButton,
   ModalInfoButton,
-  ModalInfoButtonWrapper,
 } from './components';
 
 class Modal extends React.Component {

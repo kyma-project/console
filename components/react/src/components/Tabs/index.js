@@ -15,6 +15,7 @@ class Tabs extends React.Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
     defaultActiveTabIndex: PropTypes.number,
+    callback: PropTypes.func,
   };
 
   static defaultProps = {
@@ -35,6 +36,12 @@ class Tabs extends React.Component {
     this.setState({
       activeTabIndex: tabIndex,
     });
+
+    if (typeof this.props.callback === 'function') {
+      this.props.callback({
+        defaultActiveTabIndex: tabIndex,
+      });
+    }
   };
 
   renderHeader = () => {

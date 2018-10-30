@@ -47,9 +47,3 @@ export const SubSectionTitle = styled.p`
   line-height: 1.14;
   color: #32363b;
 `;
-
-export const SubSectionDescription = styled.p`
-  margin: ${props => props.margin || '0 0 20px'};
-  line-height: 1.57;
-  color: #515559;
-`;

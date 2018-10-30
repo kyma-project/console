@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql, withApollo, compose } from 'react-apollo';
 
 import { USAGE_KIND_RESOURCES_QUERY, USAGE_KINDS_QUERY } from './queries';
-import { SEND_NOTIFICATION } from './mutations';
+import { SEND_NOTIFICATION } from '../mutations';
 
 import BindApplicationModal from './BindApplicationModal.component';
 

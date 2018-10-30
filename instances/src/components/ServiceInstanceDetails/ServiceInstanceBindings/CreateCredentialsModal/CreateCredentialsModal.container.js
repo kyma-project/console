@@ -1,6 +1,6 @@
 import { graphql, withApollo, compose } from 'react-apollo';
 
-import { SEND_NOTIFICATION } from './mutations';
+import { SEND_NOTIFICATION } from '../mutations';
 
 import CreateCredentialsModal from './CreateCredentialsModal.component';
 

@@ -78,8 +78,10 @@ export const TooltipContainer = styled.div`
     ${props => (props.type === 'default' ? 'transform: translateX(6px)' : '')};
     margin-left: -10px;
     position: absolute;
-    ${props => (props.orientation === 'top' ? 'top: 100%;' : 'bottom: 100%')};
-    margin-top: -1px;
+    ${props =>
+      props.orientation === 'top'
+        ? 'top: 100%; margin-top: -1px;'
+        : 'bottom: 100%; margin-bottom: -1px;'};
   }
 `;
 

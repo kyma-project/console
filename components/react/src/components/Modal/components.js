@@ -77,11 +77,4 @@ export const ModalInfoButton = styled.button`
   display: inline-block;
   padding: 0;
   margin-left: 20px;
-  &:hover {
-    background-color: #e2effd;
-  }
-`;
-export const ModalInfoButtonWrapper = styled.button`
-  display: inline-block;
-  margin: 8px 8px 0 0;
 `;

@@ -2,13 +2,11 @@ import gql from 'graphql-tag';
 
 export const BINDING_CREATE_MUTATION = gql`
   mutation CreateServiceBinding(
-    $serviceBindingName: String!
     $serviceInstanceName: String!
     $environment: String!
     $parameters: JSON
   ) {
     createServiceBinding(
-      serviceBindingName: $serviceBindingName
       serviceInstanceName: $serviceInstanceName
       environment: $environment
       parameters: $parameters
@@ -54,6 +52,26 @@ export const BINDING_USAGE_DELETE_MUTATION = gql`
       environment: $environment
     ) {
       name
+    }
+  }
+`;
+
+export const SEND_NOTIFICATION = gql`
+  mutation sendNotification(
+    $title: String!
+    $content: String!
+    $color: String!
+    $icon: String!
+    $instanceName: String!
+  ) {
+    sendNotification(
+      title: $title
+      content: $content
+      color: $color
+      icon: $icon
+      instanceName: $instanceName
+    ) @client {
+      title
     }
   }
 `;

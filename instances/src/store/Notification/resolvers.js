@@ -8,6 +8,7 @@ const resolvers = {
         visible: true,
         __typename: 'Notification',
       };
+
       cache.writeData({
         data: {
           notification,
@@ -21,6 +22,7 @@ const resolvers = {
           query notification {
             notification @client {
               title
+              content
               color
               icon
               visible

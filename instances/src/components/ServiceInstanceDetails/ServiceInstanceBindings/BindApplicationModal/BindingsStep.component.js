@@ -5,6 +5,9 @@ import { Select } from '@kyma-project/react-components';
 import { compareTwoObjects } from '../../../../commons/helpers';
 import { Link, SubSectionTitle } from './styled';
 
+import { bindingVariables } from '../InfoButton/variables';
+import InfoButton from '../InfoButton/InfoButton.component';
+
 class BindingsStep extends React.Component {
   constructor(props) {
     super(props);
@@ -102,19 +105,25 @@ class BindingsStep extends React.Component {
   };
 
   render() {
-    const { checkbox } = this.state;
+    const { checkbox, showInfo } = this.state;
 
     return (
       <div>
-        <SubSectionTitle margin={'20px 0'}>
+        <SubSectionTitle margin={checkbox ? '20px 0 10px' : '20px 0'}>
           {checkbox && (
             <Link onClick={() => this.handleCheckbox(false)}>
               {'Select existing credentials'}
+              {showInfo && (
+                <InfoButton content={bindingVariables.serviceBinding} />
+              )}
             </Link>
           )}
           {!checkbox && (
             <Link onClick={() => this.handleCheckbox(true)}>
               {'Create new credentials'}
+              {showInfo && (
+                <InfoButton content={bindingVariables.serviceBinding} />
+              )}
             </Link>
           )}
         </SubSectionTitle>

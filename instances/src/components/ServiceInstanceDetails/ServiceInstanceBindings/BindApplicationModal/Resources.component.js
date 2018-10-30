@@ -4,6 +4,9 @@ import { Input, Select, Spinner } from '@kyma-project/react-components';
 
 import { compareTwoObjects } from '../../../../commons/helpers';
 
+import { bindingVariables } from '../InfoButton/variables';
+import InfoButton from '../InfoButton/InfoButton.component';
+
 import { Link, SubSectionTitle } from './styled';
 
 class Resources extends React.Component {
@@ -143,11 +146,12 @@ class Resources extends React.Component {
         )}
 
         <Select
-          label={'Select Resource'}
+          label={'Select Application'}
           handleChange={this.handleSelect}
           name={'selectedResource'}
           current={selectedResource}
           groupedItems={groupedItems}
+          placeholderText={'List of applications grouped by kind'}
           firstEmptyValue
           required={true}
           noBottomMargin
@@ -157,11 +161,13 @@ class Resources extends React.Component {
           {!showPrefixInput && (
             <Link onClick={() => this.handleTogglePrefixButton(true)}>
               {'Set environment prefix'}
+              <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
           )}
           {showPrefixInput && (
             <Link onClick={() => this.handleTogglePrefixButton(false)}>
               {'Unselect environment prefix'}
+              <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
           )}
         </SubSectionTitle>

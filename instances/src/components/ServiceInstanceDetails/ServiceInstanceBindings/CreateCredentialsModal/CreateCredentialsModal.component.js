@@ -4,13 +4,11 @@ import dcopy from 'deep-copy';
 import { ConfirmationModal, Tooltip } from '@kyma-project/react-components';
 
 import SchemaData from './SchemaData.component';
+import { bindingVariables } from '../InfoButton/variables';
 
 import { CreateCredentialsButton } from './styled';
 
-import {
-  clearEmptyPropertiesInObject,
-  randomNameGenerator,
-} from '../../../../commons/helpers';
+import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 
 class CreateCredentialsModal extends React.Component {
   constructor(props) {
@@ -30,8 +28,6 @@ class CreateCredentialsModal extends React.Component {
 
     return {
       bindingCreateParameterSchema: bindingCreateParameterSchema,
-      nameServiceBinding:
-        this.props.serviceInstance.name + '-binding-' + randomNameGenerator(),
       bindingCreateParameters: {},
       tooltipData: null,
     };
@@ -57,8 +53,7 @@ class CreateCredentialsModal extends React.Component {
     this.setState({ ...data });
   };
 
-  create = async params => {
-    const { nameServiceBinding } = this.state;
+  create = async (params, isOpenedModal) => {
     const {
       serviceInstance,
       createBinding,
@@ -74,20 +69,33 @@ class CreateCredentialsModal extends React.Component {
       } else {
         bindingCreateParameters = {};
       }
-      await createBinding(
-        nameServiceBinding,
+      const createdBinding = await createBinding(
         serviceInstance.name,
         bindingCreateParameters,
       );
 
-      this.child.child.handleCloseModal();
+      let createdBindingName;
+      if (
+        createdBinding &&
+        createdBinding.data &&
+        createdBinding.data.createServiceBinding &&
+        createdBinding.data.createServiceBinding.name
+      ) {
+        createdBindingName = createdBinding.data.createServiceBinding.name;
+      }
+
+      if (isOpenedModal) {
+        this.child.child.handleCloseModal();
+      }
+
       if (typeof sendNotification === 'function') {
         sendNotification({
           variables: {
-            title: `Credentials "${nameServiceBinding}" created successfully`,
+            content: `Credentials "${createdBindingName}" created successfully`,
+            title: `${createdBindingName}`,
             color: '#359c46',
             icon: '\uE05B',
-            instanceName: nameServiceBinding,
+            instanceName: createdBindingName,
           },
         });
       }
@@ -113,14 +121,20 @@ class CreateCredentialsModal extends React.Component {
     if (this.submitBtn) {
       this.submitBtn.click();
     } else {
-      this.create();
+      this.create(null, true);
     }
   };
 
   handleOpen = () => {
     const { bindingCreateParameterSchema } = this.state;
     if (!bindingCreateParameterSchema) {
-      this.create();
+      this.create(null, true);
+    }
+  };
+  createWithoutOpening = () => {
+    const { bindingCreateParameterSchema } = this.state;
+    if (!bindingCreateParameterSchema) {
+      this.create(null);
     }
   };
 
@@ -138,9 +152,6 @@ class CreateCredentialsModal extends React.Component {
     const schemaData = {
       bindingCreateParameters: bindingCreateParameters,
     };
-
-    const bindingDescription =
-      'To use ServiceInstance, you need credentials for this service. To obtain credentials, proceed with this form. One instance can have numerous credentials to use in the Deployment or Function. When you raise a credentials request, the system returns the credentials in the form of a Secret. The system creates a Secret in a given Environment.';
 
     const content = [
       <Fragment key={serviceInstance.name}>
@@ -173,23 +184,34 @@ class CreateCredentialsModal extends React.Component {
     );
 
     return serviceInstance.status.type === 'RUNNING' ? (
-      <ConfirmationModal
-        ref={modal => {
-          this.child = modal;
-        }}
-        key={serviceInstance.name}
-        title={'Bind Application'}
-        confirmText="Create"
-        cancelText="Cancel"
-        content={content}
-        handleConfirmation={this.handleConfirmation}
-        modalOpeningComponent={createCredentialsButton}
-        disabled={disabled}
-        tooltipData={tooltipData}
-        borderFooter={true}
-        handleClose={this.clearState}
-        headerAdditionalInfo={bindingDescription}
-      />
+      <Fragment>
+        {bindingCreateParameterSchema ? (
+          <ConfirmationModal
+            ref={modal => {
+              this.child = modal;
+            }}
+            key={serviceInstance.name}
+            title={'Bind Application'}
+            confirmText="Create"
+            cancelText="Cancel"
+            content={content}
+            handleConfirmation={this.handleConfirmation}
+            modalOpeningComponent={createCredentialsButton}
+            disabled={disabled}
+            tooltipData={tooltipData}
+            borderFooter={true}
+            handleClose={this.clearState}
+            headerAdditionalInfo={bindingVariables.serviceBinding}
+          />
+        ) : (
+          <CreateCredentialsButton
+            data-e2e-id={id}
+            onClick={this.createWithoutOpening}
+          >
+            + Create Credentials
+          </CreateCredentialsButton>
+        )}
+      </Fragment>
     ) : (
       <Tooltip
         type="error"

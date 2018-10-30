@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -14,6 +14,7 @@ const Select = ({
   groupedItems,
   current,
   firstEmptyValue,
+  placeholderText,
   required,
   noBottomMargin,
 }) => {
@@ -26,7 +27,7 @@ const Select = ({
       {(groupedItems || items) &&
         firstEmptyValue && [
           <option key={''} value={''}>
-            {'Select your option...'}
+            {placeholderText || 'Select your option...'}
           </option>,
         ]}
 
@@ -64,6 +65,7 @@ Select.propTypes = {
   groupedItems: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.element),
   current: PropTypes.string,
+  placeholderText: PropTypes.string,
   firstEmptyValue: PropTypes.bool,
   required: PropTypes.bool,
   noBottomMargin: PropTypes.bool,
