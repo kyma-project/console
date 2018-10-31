@@ -58,7 +58,7 @@ podTemplate(label: label) {
                         }
 
                         stage("test $application") {
-                            execute("make test", ["CI=true"])
+                            execute("make test")
                         }
 
                         if (isMaster) {
