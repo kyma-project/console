@@ -2,9 +2,9 @@ IMG_NAME = brokers-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: resolve build validate build-image push-image
-ci-master: resolve build validate build-image push-image
-ci-release: resolve build validate build-image push-image
+ci-pr: resolve build validate test build-image push-image
+ci-master: resolve build validate test build-image push-image
+ci-release: resolve build validate test build-image push-image
 
 resolve:
 	npm install
@@ -16,7 +16,7 @@ build:
 validate:
 	eslint -c .eslinterrc ./src
 
-unit-tests:
+test:
 	CI=true npm run test
 
 build-image:
