@@ -42,6 +42,7 @@ export class LambdaInstanceBindingsComponent {
   serviceBindingList: IServiceBindingList;
   bindingUsageList: IServiceBindingUsageList;
   environment: string;
+  bindingPrefix: string;
   token: string;
   error: string = null;
   bindingState = new Map<string, InstanceBindingState>();
@@ -92,6 +93,8 @@ export class LambdaInstanceBindingsComponent {
                           instanceName: binding.spec.instanceRef.name,
                           secretName: binding.spec.secretName,
                           envVarNames: Object.keys(secrets),
+                          instanceBindingPrefix:
+                            usage.spec.parameters.envPrefix.name,
                         };
 
                         const cs: InstanceBindingInfo = {
@@ -99,6 +102,7 @@ export class LambdaInstanceBindingsComponent {
                           envVarNames: [],
                           secretName: '',
                           serviceBinding: '',
+                          instanceBindingPrefix: '',
                         };
 
                         const ibs: InstanceBindingState = {

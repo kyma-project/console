@@ -18,10 +18,15 @@
       {{ instanceBinding.instanceName }}
     </div>
     <div class="col-8">
-      <div *ngFor="let envVar of instanceBinding.envVarNames; index as j" [attr.data-index]="j">
-        <div class="col-12 env-var-position">
-          {{ envVar }}
+      <div *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
+        <div class="col-12 env-var-position" *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
+          {{ instanceBinding.instanceBindingPrefix + envVar }}
         </div>
+        <ng-template #onlyEnvVar>
+          <div class="col-12 env-var-position">
+            {{ envVar }}
+          </div>
+        </ng-template>
       </div>
     </div>
     <div class="col-1">

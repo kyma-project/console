@@ -1,7 +1,8 @@
 export class InstanceBindingInfo {
-    instanceName: string;
-    createSecret?: boolean;
-    serviceBinding: string;
-    envVarNames: string[];
-    secretName: string;
+  instanceName: string;
+  instanceBindingPrefix: string;
+  createSecret?: boolean;
+  serviceBinding: string;
+  envVarNames: string[];
+  secretName: string;
 }
