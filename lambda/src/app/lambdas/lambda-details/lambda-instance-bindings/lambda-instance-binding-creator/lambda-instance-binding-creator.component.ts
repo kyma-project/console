@@ -92,6 +92,9 @@ export class LambdaInstanceBindingCreatorComponent {
       this.selectedInstanceBindingPrefix === ''
         ? false
         : true;
+    if (this.selectedInstanceBindingPrefix.length > 61) {
+      this.isSelectedInstanceBindingPrefixInvalid = true;
+    }
   }
 
   public cancel(event: Event) {
