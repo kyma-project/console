@@ -7,7 +7,7 @@ import {
   Separator,
 } from '@kyma-project/react-components';
 
-import { TextWrapper, Text } from './styled';
+import { TextWrapper, Text, Bold } from './styled';
 
 class DeleteBindingModal extends React.Component {
   constructor(props) {
@@ -78,7 +78,9 @@ class DeleteBindingModal extends React.Component {
         <div>
           {bindingUsageName && (
             <TextWrapper>
-              <Text>Are you sure you want to delete "{bindingUsageName}".</Text>
+              <Text>
+                Are you sure you want to delete <Bold>{bindingUsageName}</Bold>.
+              </Text>
 
               <Text warning>
                 Removing Service Binding Usage will prevent your application
@@ -89,7 +91,9 @@ class DeleteBindingModal extends React.Component {
 
           {bindingExists && (
             <TextWrapper>
-              <Text>Are you sure you want to delete "{bindingName}".</Text>
+              <Text>
+                Are you sure you want to delete <Bold>{bindingName}</Bold>.
+              </Text>
 
               <Text warning>
                 Removing Service Binding will make all related applications stop

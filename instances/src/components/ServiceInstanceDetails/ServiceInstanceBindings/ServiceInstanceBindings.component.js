@@ -108,7 +108,11 @@ class ServiceInstanceBindings extends React.Component {
             const secret = el.serviceBinding && el.serviceBinding.secret;
             return secret && Object.keys(secret).length ? (
               <SecretDataModal
-                title={`Secret "${secret.name}"`}
+                title={
+                  <Fragment>
+                    Secret <Bold>{secret.name}</Bold>
+                  </Fragment>
+                }
                 data={secret.data}
                 prefix={prefix}
                 modalOpeningComponent={
@@ -176,7 +180,7 @@ class ServiceInstanceBindings extends React.Component {
               <SecretDataModal
                 title={
                   <Fragment>
-                    Secret <Bold>"{secret.name}"</Bold>
+                    Secret <Bold>{secret.name}</Bold>
                   </Fragment>
                 }
                 data={secret.data}
@@ -228,7 +232,7 @@ class ServiceInstanceBindings extends React.Component {
                         <ParametersDataModal
                           title={
                             <Fragment>
-                              Parameters for <Bold>"{el.name}"</Bold>
+                              Parameters for <Bold>{el.name}</Bold>
                             </Fragment>
                           }
                           data={parameters}
@@ -302,13 +306,17 @@ class ServiceInstanceBindings extends React.Component {
           callback={callback}
         >
           <Tab
-            title={'Bound Applications'}
+            title={
+              <Tooltip
+                content="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application."
+                minWidth="210px"
+                showTooltipTimeout={750}
+              >
+                Bound Applications
+              </Tooltip>
+            }
             id={'service-binding-usage-tab'}
             addHeaderContent={boundApplicationContent}
-            additionalTitle={
-              'ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application.'
-            }
-            tooltipMinWidth={'230px'}
             aditionalStatus={this.status(
               serviceBindingsUsageTable.data,
               'service-binding-usage-tab',
@@ -322,13 +330,17 @@ class ServiceInstanceBindings extends React.Component {
             />
           </Tab>
           <Tab
-            title={'Credentials'}
+            title={
+              <Tooltip
+                content="ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications."
+                minWidth="210px"
+                showTooltipTimeout={750}
+              >
+                Credentials
+              </Tooltip>
+            }
             id={'service-binding-tab'}
             addHeaderContent={createCredentialsContent}
-            additionalTitle={
-              'ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications.'
-            }
-            tooltipMinWidth={'230px'}
             aditionalStatus={this.status(
               serviceBindingsTable.data,
               'service-binding-tab',

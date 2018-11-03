@@ -16,3 +16,7 @@ export const Text = styled.p`
   margin: ${props => (props.margin ? props.margin : '0 0 20px 0')};
   width: ${props => props.width};
 `;
+
+export const Bold = styled.span`
+  font-weight: bold;
+`;

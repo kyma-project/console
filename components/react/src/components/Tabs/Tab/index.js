@@ -3,17 +3,7 @@ import PropTypes from 'prop-types';
 
 import { TabLink, TabTooltip, TabWrapper } from './components';
 
-const Tab = ({
-  additionalTitle,
-  aditionalStatus,
-  title,
-  onClick,
-  tabIndex,
-  id,
-  isActive,
-  tooltipMinWidth,
-  tooltipMaxWidth,
-}) => {
+const Tab = ({ aditionalStatus, title, onClick, tabIndex, id, isActive }) => {
   return (
     <TabWrapper key={tabIndex}>
       <TabLink
@@ -26,16 +16,13 @@ const Tab = ({
       >
         {title}
         {!isActive && aditionalStatus}
-        <TabTooltip minWidth={tooltipMinWidth} maxWidth={tooltipMaxWidth}>
-          {additionalTitle}
-        </TabTooltip>
       </TabLink>
     </TabWrapper>
   );
 };
 
 Tab.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.any,
   onClick: PropTypes.func,
   tabIndex: PropTypes.number,
   isActive: PropTypes.bool,
