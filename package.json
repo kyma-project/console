@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "precommit": "npm run git-ignore-config && lint-staged",
-    "bootstrap": "lerna bootstrap && npm run build:components",
+    "precommit": "lint-staged",
+    "bootstrap": "lerna bootstrap && npm run build:components && npm run git-ignore-config",
     "clean": "lerna clean",
     "start": "lerna exec --ignore ui-tests --ignore @kyma-project/react-components --parallel -- npm run start:kyma",
     "start:api": "lerna exec --ignore ui-tests --ignore @kyma-project/react-components --parallel -- npm run start:kyma:api",
