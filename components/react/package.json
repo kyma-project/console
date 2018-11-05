@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/react-components",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "main": "lib/index.js",
   "private": false,
   "license": "Apache-2.0",
