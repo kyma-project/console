@@ -112,19 +112,30 @@ const appRoutes: Routes = [
           { path: 'secrets/:name', component: SecretDetailComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
           {
-            path: 'extensions/:pathSegment1',
+            path: 'extensions',
             component: ExternalViewComponent,
-            data: { navigationContext: 'environment' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'environment' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2/:pathSegment3',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'environment' }
+            data: { navigationContext: 'environment' },
+            children: [
+              {
+                path: ':pathSegment1',
+                component: ExternalViewComponent,
+                data: { navigationContext: 'environment' },
+                children: [
+                  {
+                    path: ':pathSegment2',
+                    component: ExternalViewComponent,
+                    data: { navigationContext: 'environment' },
+                    children: [
+                      {
+                        path: ':pathSegment3',
+                        component: ExternalViewComponent,
+                        data: { navigationContext: 'environment' }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           { path: 'resources', component: ResourcesComponent },
           {
@@ -205,19 +216,30 @@ const appRoutes: Routes = [
             data: { global: true }
           },
           {
-            path: 'extensions/:pathSegment1',
+            path: 'extensions',
             component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2/:pathSegment3',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
+            data: { navigationContext: 'cluster' },
+            children: [
+              {
+                path: ':pathSegment1',
+                component: ExternalViewComponent,
+                data: { navigationContext: 'cluster' },
+                children: [
+                  {
+                    path: ':pathSegment2',
+                    component: ExternalViewComponent,
+                    data: { navigationContext: 'cluster' },
+                    children: [
+                      {
+                        path: ':pathSegment3',
+                        component: ExternalViewComponent,
+                        data: { navigationContext: 'cluster' }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           { path: '', redirectTo: 'organisation', pathMatch: 'full' },
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
