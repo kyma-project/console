@@ -4,7 +4,7 @@
   "version": "0.7.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/react-components": "0.0.37",
+    "@kyma-project/react-components": "0.0.38",
     "@kyma-project/luigi-client": "0.3.2",
     "ajv": "^6.0.0",
     "apollo-boost": "^0.1.3",
