@@ -57,7 +57,6 @@ class CreateCredentialsModal extends React.Component {
     const {
       serviceInstance,
       createBinding,
-      serviceInstanceRefetch,
       sendNotification,
     } = this.props;
 
@@ -99,11 +98,6 @@ class CreateCredentialsModal extends React.Component {
           },
         });
       }
-      setTimeout(() => {
-        if (typeof serviceInstanceRefetch === 'function') {
-          serviceInstanceRefetch();
-        }
-      }, 1000);
     } catch (e) {
       this.setState({
         tooltipData: {

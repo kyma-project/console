@@ -1,3 +1,6 @@
-const defaults = {};
+const defaults = {
+  serviceInstances: [],
+  filteredItems: [],
+};
 
 module.exports = defaults;

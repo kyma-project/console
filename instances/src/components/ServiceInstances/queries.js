@@ -1,45 +1,5 @@
 import gql from 'graphql-tag';
-
-const serviceClassQGL = `
-  displayName
-  externalName
-  name
-`;
-
-const servicePlanQGL = `
-  displayName
-  externalName
-  name
-`;
-
-export const SERVICE_INSTANCES_QUERY = gql`
-  query ServiceInstances($environment: String!) {
-    serviceInstances(environment: $environment) {
-      name
-      labels
-      planSpec
-      status {
-        type
-        message
-      }
-      serviceClass {
-        ${serviceClassQGL}
-      }
-      clusterServiceClass {
-        ${serviceClassQGL}
-      }
-      servicePlan {
-        ${servicePlanQGL}
-      }
-      clusterServicePlan {
-        ${servicePlanQGL}
-      }
-      serviceBindingUsages {
-        name
-      }
-    }
-  }
-`;
+import { SERVICE_INSTANCE_DETAILS_FRAGMENT } from '../DataProvider/fragments';
 
 export const ACTIVE_FILTERS_QUERY = gql`
   query activeFilters {
@@ -63,10 +23,20 @@ export const ALL_FILTERS_QUERY = gql`
   }
 `;
 
+export const ALL_ITEMS_QUERY = gql`
+  query allItems($environment: String!) {
+    serviceInstances(environment: $environment) @client {
+      ...serviceInstanceDetails
+    }
+  }
+  ${SERVICE_INSTANCE_DETAILS_FRAGMENT}
+`;
+
 export const FILTERED_ITEMS_QUERY = gql`
   query filteredItems {
     filteredItems @client {
       name
     }
   }
+  ${SERVICE_INSTANCE_DETAILS_FRAGMENT}
 `;

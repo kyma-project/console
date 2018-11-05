@@ -95,7 +95,6 @@ class BindApplicationModal extends React.Component {
       serviceInstance,
       createBinding,
       createBindingUsage,
-      serviceInstanceRefetch,
       sendNotification,
     } = this.props;
 
@@ -147,11 +146,6 @@ class BindApplicationModal extends React.Component {
           },
         });
       }
-      setTimeout(() => {
-        if (typeof serviceInstanceRefetch === 'function') {
-          serviceInstanceRefetch();
-        }
-      }, 1000);
     } catch (e) {
       this.setState({
         tooltipData: {

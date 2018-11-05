@@ -31,6 +31,13 @@ class ServiceInstanceBindings extends React.Component {
   };
 
   countBindingUsage = usage => {
+    if (
+      !this.props.serviceInstance ||
+      !this.props.serviceInstance.serviceBindingUsages
+    ) {
+      return 0;
+    }
+
     return this.props.serviceInstance.serviceBindingUsages.filter(item => {
       if (!item.serviceBinding || !usage.serviceBinding) {
         return false;
@@ -73,7 +80,6 @@ class ServiceInstanceBindings extends React.Component {
       createBindingUsage,
       deleteBinding,
       deleteBindingUsage,
-      serviceInstanceRefetch,
       serviceInstance,
       callback,
     } = this.props;
@@ -153,7 +159,6 @@ class ServiceInstanceBindings extends React.Component {
                 deleteBindingUsage={deleteBindingUsage}
                 bindingUsageName={el.name}
                 bindingUsageCount={this.countBindingUsage(el)}
-                serviceInstanceRefetch={serviceInstanceRefetch}
                 id={`service-binding-delete-${el.name}`}
               />
             </ActionsWrapper>
@@ -257,7 +262,6 @@ class ServiceInstanceBindings extends React.Component {
                     serviceBinding: el,
                   })}
                   relatedBindingUsage={this.relatedBindingUsage(el.name)}
-                  serviceInstanceRefetch={serviceInstanceRefetch}
                   id={`service-binding-delete-${el.name}`}
                 />
               </ActionsWrapper>
@@ -273,7 +277,6 @@ class ServiceInstanceBindings extends React.Component {
         createBinding={createBinding}
         createBindingUsage={createBindingUsage}
         serviceInstance={serviceInstance}
-        serviceInstanceRefetch={serviceInstanceRefetch}
         id={`create-service-binding`}
       />
     );
@@ -289,7 +292,6 @@ class ServiceInstanceBindings extends React.Component {
         createBinding={createBinding}
         createBindingUsage={createBindingUsage}
         serviceInstance={serviceInstance}
-        serviceInstanceRefetch={serviceInstanceRefetch}
         id={`create-credentials`}
       />
     );

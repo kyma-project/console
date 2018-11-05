@@ -21,20 +21,9 @@ import {
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
 
-function ServiceInstancesTable({
-  data,
-  deleteServiceInstance,
-  refetch,
-  loading,
-}) {
+function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
   const handleDelete = async element => {
     await deleteServiceInstance(element.name);
-    setTimeout(() => {
-      if (typeof refetch === 'function') {
-        // Improve that
-        refetch();
-      }
-    }, 1000);
   };
 
   const displayBindingsUsages = (bindings = []) => {

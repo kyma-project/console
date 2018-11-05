@@ -26,7 +26,6 @@ class DeleteBindingModal extends React.Component {
       bindingUsageName,
       deleteBindingUsage,
       deleteBinding,
-      serviceInstanceRefetch,
     } = this.props;
 
     if (shouldDeleteBindingUsage) {
@@ -35,12 +34,6 @@ class DeleteBindingModal extends React.Component {
     if (shouldDeleteBinding && bindingExists) {
       await deleteBinding(bindingName);
     }
-
-    setTimeout(() => {
-      if (typeof serviceInstanceRefetch === 'function') {
-        serviceInstanceRefetch();
-      }
-    }, 1000);
   };
 
   handleConfirmation = () => {
