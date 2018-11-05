@@ -18,7 +18,6 @@ export const ModalHeader = styled.header`
   text-align: left;
   color: #32363a;
   padding: 16px;
-  overflow: hidden;
   border-bottom: 1px solid rgba(204, 204, 204, 0.3);
   position: relative > p {
     display: inline-block;
@@ -65,4 +64,17 @@ export const ModalCloseButton = styled.button`
   top: 15px;
   right: 16px;
   padding: 0;
+`;
+export const ModalInfoButton = styled.button`
+  text-decoration: none;
+  cursor: pointer;
+  outline: 0;
+  border: 0;
+  font-family: 'SAP-icons';
+  font-size: 16px;
+  text-align: left;
+  color: #0b74de;
+  display: inline-block;
+  padding: 0;
+  margin-left: 20px;
 `;

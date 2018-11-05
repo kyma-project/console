@@ -38,6 +38,24 @@ export const getResourceDisplayName = resource => {
   return resource.displayName || resource.externalName || resource.name;
 };
 
+export function clearEmptyPropertiesInObject(object) {
+  for (const key in object) {
+    if (typeof object[key] === 'undefined' || object[key] === '') {
+      delete object[key];
+      continue;
+    }
+
+    if (!object[key] || typeof object[key] !== 'object') {
+      continue;
+    }
+
+    clearEmptyPropertiesInObject(object[key]);
+    if (Object.keys(object[key]).length === 0) {
+      delete object[key];
+    }
+  }
+}
+
 export function compareTwoObjects(obj1, obj2) {
   for (const p in obj1) {
     if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;

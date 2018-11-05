@@ -11,8 +11,10 @@ const Select = ({
   handleChange,
   name,
   items,
+  groupedItems,
   current,
   firstEmptyValue,
+  placeholderText,
   required,
   noBottomMargin,
 }) => {
@@ -22,14 +24,26 @@ const Select = ({
       name={name}
       value={current ? current : ''}
     >
-      {firstEmptyValue
-        ? [
-            <option key={''} value={''}>
-              {'Select your option...'}
-            </option>,
-            ...items,
-          ]
-        : items}
+      {(groupedItems || items) &&
+        firstEmptyValue && [
+          <option key={''} value={''}>
+            {placeholderText || 'Select your option...'}
+          </option>,
+        ]}
+
+      {groupedItems &&
+        groupedItems.map((group, index) => {
+          return (
+            group.items &&
+            group.items.length > 0 && (
+              <optgroup key={group.name} label={group.name}>
+                {group.items}
+              </optgroup>
+            )
+          );
+        })}
+
+      {items}
     </SelectField>
   );
 
@@ -48,8 +62,10 @@ Select.propTypes = {
   label: PropTypes.string.isRequired,
   handleChange: PropTypes.func,
   name: PropTypes.string,
+  groupedItems: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.element),
   current: PropTypes.string,
+  placeholderText: PropTypes.string,
   firstEmptyValue: PropTypes.bool,
   required: PropTypes.bool,
   noBottomMargin: PropTypes.bool,

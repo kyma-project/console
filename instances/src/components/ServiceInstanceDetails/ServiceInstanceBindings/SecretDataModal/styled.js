@@ -25,6 +25,14 @@ export const Item = styled.li`
   color: #515559;
   word-break: break-all;
 `;
+export const Text = styled.p`
+  font-family: 72;
+  font-size: 14px;
+  line-height: 1.57;
+  text-align: left;
+  color: #515559;
+  margin-bottom: 20px;
+`;
 
 export const Bold = styled.span`
   font-weight: bold;

@@ -14,11 +14,17 @@ import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.compo
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 
 class ServiceInstanceDetails extends React.Component {
+  state = { defaultActiveTabIndex: 0 };
+
+  callback = data => {
+    this.setState({ ...data });
+  };
   render() {
     const { serviceInstance = {}, deleteServiceInstance, history } = this.props;
 
-    const instance =
+    let instance =
       serviceInstance.serviceInstance && serviceInstance.serviceInstance;
+
     const serviceClass =
       instance && (instance.serviceClass || instance.clusterServiceClass);
 
@@ -49,6 +55,8 @@ class ServiceInstanceDetails extends React.Component {
         <ServiceInstanceWrapper>
           <ServiceInstanceInfo serviceInstance={instance} />
           <ServiceInstanceBindings
+            defaultActiveTabIndex={this.state.defaultActiveTabIndex}
+            callback={this.callback}
             serviceInstance={instance}
             serviceInstanceRefetch={serviceInstance.refetch}
           />
