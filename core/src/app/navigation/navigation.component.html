@@ -27,7 +27,7 @@
     </div>
 
     <div *ngIf="currentEnvironmentId" class="sf-toolbar__item">
-      <button (click)="openUploadResourceModal()">+ Deploy new resource</button>
+      <button class="navigation-button" (click)="openUploadResourceModal()">+ Deploy new resource</button>
     </div>
 
     <div *ngIf="currentEnvironmentId || !currentNavModel?.showEnvChooser">
