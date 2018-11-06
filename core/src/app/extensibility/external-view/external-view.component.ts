@@ -85,6 +85,10 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       children = children[0].children;
     }
 
+    if (!params['pathSegment1']) {
+      return;
+    }
+
     let path = params['pathSegment1'];
     if (params['pathSegment2']) {
       path += '/' + params['pathSegment2'];
@@ -135,7 +139,8 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
                   this.renderExternalView();
                 },
                 error => {
-                  this.renderExternalView();
+                  this.externalViewLocation = '';
+                  throw error;
                 }
               );
           }
@@ -201,8 +206,11 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     ) as HTMLIFrameElement;
 
     if (
+      !this.externalViewLocation ||
       !this.extensionsService.isUsingSecureProtocol(this.externalViewLocation)
     ) {
+      element.src = '';
+      this.extAppViewRegistryService.deregisterView(element.contentWindow);
       return;
     }
 

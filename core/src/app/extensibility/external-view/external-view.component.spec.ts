@@ -113,7 +113,7 @@ describe('ExternalViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterModule],
+      imports: [HttpClientTestingModule, [RouterModule.forRoot([])]],
       declarations: [ExternalViewComponent],
       providers: [
         ExtensionsService,
