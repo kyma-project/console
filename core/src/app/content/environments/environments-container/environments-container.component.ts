@@ -76,7 +76,9 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       }
       if (val instanceof NavigationEnd) {
         if (this.isSignificantUrlChange(val.url, this.previousUrl)) {
-          this.toggleFade();
+          if (!this.isSmoothNavigationUrlChange(val.url, this.previousUrl)) {
+            this.toggleFade();
+          }
           this.checkIfResourceLimitExceeded(val.url);
         }
         this.previousUrl = val.url;
@@ -141,6 +143,29 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       }
     }
     return true;
+  }
+
+  private isSmoothNavigationUrlChange(
+    url: string,
+    previousUrl: string
+  ): boolean {
+    const envExtUrlPattern = /^\/home\/environments\/[^\/]+\/extensions\/.+$/;
+    const clusterExtUrlPattern = /^\/home\/settings\/extensions\/.+$/;
+    if (previousUrl) {
+      if (url === previousUrl) {
+        return false;
+      }
+      if (url.match(envExtUrlPattern) && previousUrl.match(envExtUrlPattern)) {
+        return true;
+      }
+      if (
+        url.match(clusterExtUrlPattern) &&
+        previousUrl.match(clusterExtUrlPattern)
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public hideError() {
