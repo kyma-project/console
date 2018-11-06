@@ -8,6 +8,7 @@
     <a *ngIf='currentNavModel.topEntry' (click)="changeRoute(currentNavModel.topEntry.link)" routerLink="{{currentNavModel.topEntry.link}}"
       routerLinkActive="is-active" class="sf-toolbar__item">{{ currentNavModel.topEntry.name }}</a>
     <span *ngIf='currentNavModel.topEntry' class="sf-toolbar__item sf-toolbar__item--seperator"></span>
+
     <div class="sf-toolbar__item" *ngIf='currentNavModel?.showEnvChooser'>
       <div class="tn-dropdown sf-dropdown" (clickOutside)="closeDropDown()" clickOutsideEvents="click,mousedown"
         excludeBeforeClick="true">
@@ -24,6 +25,9 @@
         </ul>
       </div>
     </div>
+
+    <a *ngIf="currentEnvironmentId" class="sf-toolbar__item navigation-button"(click)="openUploadResourceModal()">+ Deploy new resource</a>
+
     <div *ngIf="currentEnvironmentId || !currentNavModel?.showEnvChooser">
       <ng-container *ngFor="let group of currentNavModel.groups">
         <ng-container *ngIf="group.link">
@@ -39,7 +43,7 @@
             <div class="sf-toolbar__group">
               <ng-container *ngFor="let entry of group.entries">
                 <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}"
-                  routerLinkActive="is-active" class="sf-toolbar__item" style="cursor: pointer">{{ entry.name }}</a>
+                  routerLinkActive="is-active" class="sf-toolbar__item">{{ entry.name }}</a>
                 <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
                   <img src="assets/external.svg" />
                 </a>
@@ -49,6 +53,7 @@
         </ng-container>
       </ng-container>
     </div>
+
     <div *ngIf="!currentEnvironmentId && currentNavModel.showEnvChooser">
       <ng-container *ngFor="let group of externalViewsGroups">
         <ng-container *ngIf="group.link">
@@ -64,7 +69,7 @@
             <div class="sf-toolbar__group">
               <ng-container *ngFor="let entry of group.entries">
                 <a *ngIf="!entry.external" (click)="changeRoute(entry.link)" routerLink="{{entry.link}}"
-                  routerLinkActive="is-active" class="sf-toolbar__item" style="cursor: pointer">{{ entry.name }}</a>
+                  routerLinkActive="is-active" class="sf-toolbar__item navigation-button">{{ entry.name }}</a>
                 <a *ngIf="entry.external" class="sf-toolbar__item" [href]="entry.link" target="_blank">{{ entry.name }}
                   <img src="assets/external.svg" />
                 </a>
@@ -74,6 +79,7 @@
         </ng-container>
       </ng-container>
     </div>
+    
   </div>
   <div class="sf-toolbar__footer">
     <span class="sf-toolbar__item sf-toolbar__item--seperator"></span>
@@ -89,3 +95,4 @@
 </div>
 
 <app-environment-create #createmodal></app-environment-create>
+<app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>
