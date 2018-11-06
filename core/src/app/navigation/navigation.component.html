@@ -26,9 +26,7 @@
       </div>
     </div>
 
-    <div *ngIf="currentEnvironmentId" class="sf-toolbar__item">
-      <button class="navigation-button" (click)="openUploadResourceModal()">+ Deploy new resource</button>
-    </div>
+    <a *ngIf="currentEnvironmentId" class="sf-toolbar__item new-resource-button"(click)="openUploadResourceModal()">+ Deploy new resource</a>
 
     <div *ngIf="currentEnvironmentId || !currentNavModel?.showEnvChooser">
       <ng-container *ngFor="let group of currentNavModel.groups">
