@@ -8,7 +8,7 @@ The [Create React App](https://github.com/facebook/create-react-app) project pro
 
 ## OSBA Contract
 
-Contract with the [Open Service Broker API](https://www.openservicebrokerapi.org/) (OSBA) is available in the [OSBAContract](OSBAContract.md) document.
+Contract with the [Open Service Broker API](https://www.openservicebrokerapi.org/) (OSBA) is available in the [OSBAContract](https://github.com/kyma-project/kyma/tree/master/docs/service-catalog/docs/063-osba-brokers.md) document.
 
 ## Installation
 
@@ -30,7 +30,7 @@ The build is minified and the filenames include hashes.
 Run the following command to build and run the Docker image:
 
 ```
-sh ../scripts/build-docker-image.sh brokers-ui 
+sh ../scripts/build-docker-image.sh brokers-ui
 docker run --rm -p 3000:80 brokers-ui
 open http://localhost:3000 or http://localhost:3000/status in a browser
 ```
