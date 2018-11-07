@@ -11,5 +11,7 @@ export const InfoButtonWrapper = styled.button`
   color: #0b74de;
   display: inline-block;
   padding: 0;
+  position: relative;
+  top: 2px;
   margin-left: 20px;
 `;

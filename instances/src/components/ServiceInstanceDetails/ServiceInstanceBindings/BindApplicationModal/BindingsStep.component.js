@@ -42,7 +42,7 @@ class BindingsStep extends React.Component {
     });
   }
 
-  componentDidUpdate(nextProps, nextState) {
+  componentDidUpdate(_, nextState) {
     const { checkbox, selectedExistingBinding } = this.state;
 
     if (!compareTwoObjects(this.state, nextState)) {
@@ -105,19 +105,23 @@ class BindingsStep extends React.Component {
   };
 
   render() {
-    const { checkbox, showInfo } = this.state;
+    const { checkbox } = this.state;
+    const { showInfo, existingServiceBindings } = this.props;
+    const serviceBindingsExist =
+      (existingServiceBindings && existingServiceBindings.length > 0) || false;
 
     return (
       <div>
         <SubSectionTitle margin={checkbox ? '20px 0 10px' : '20px 0'}>
-          {checkbox && (
-            <Link onClick={() => this.handleCheckbox(false)}>
-              {'Select existing credentials'}
-              {showInfo && (
-                <InfoButton content={bindingVariables.serviceBinding} />
-              )}
-            </Link>
-          )}
+          {checkbox &&
+            serviceBindingsExist && (
+              <Link onClick={() => this.handleCheckbox(false)}>
+                {'Select existing credentials'}
+                {showInfo && (
+                  <InfoButton content={bindingVariables.serviceBinding} />
+                )}
+              </Link>
+            )}
           {!checkbox && (
             <Link onClick={() => this.handleCheckbox(true)}>
               {'Create new credentials'}
