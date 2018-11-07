@@ -313,6 +313,7 @@ class ServiceInstanceBindings extends React.Component {
                 content="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application."
                 minWidth="210px"
                 showTooltipTimeout={750}
+                key="service-binding-usage-tooltip"
               >
                 Bound Applications
               </Tooltip>
@@ -337,6 +338,7 @@ class ServiceInstanceBindings extends React.Component {
                 content="ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications."
                 minWidth="210px"
                 showTooltipTimeout={750}
+                key="service-binding-tooltip"
               >
                 Credentials
               </Tooltip>
