@@ -66,7 +66,7 @@ export const DeleteButtonWrapper = styled.div`
   display: block;
 `;
 
-export const CustomTableCell = styled.div`
+export const TextOverflowWrapper = styled.div`
   display: block;
   white-space: nowrap;
   overflow: hidden;

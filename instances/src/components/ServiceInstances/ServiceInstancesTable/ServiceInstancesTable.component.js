@@ -18,7 +18,7 @@ import {
   ServicePlanButton,
   JSONCode,
   DeleteButtonWrapper,
-  CustomTableCell,
+  TextOverflowWrapper,
 } from './styled';
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
@@ -78,7 +78,7 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
         name: 'Name',
         size: 0.2,
         accesor: el => (
-          <CustomTableCell>
+          <TextOverflowWrapper>
             <LinkButton data-e2e-id="instance-name">
               <Link
                 onClick={() => goToServiceInstanceDetails(el.name)}
@@ -88,7 +88,7 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
                 {el.name}
               </Link>
             </LinkButton>
-          </CustomTableCell>
+          </TextOverflowWrapper>
         ),
       },
       {
@@ -102,14 +102,14 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
 
           const classTitle = getResourceDisplayName(elClass);
           return (
-            <CustomTableCell>
+            <TextOverflowWrapper>
               <ServiceClassButton
                 onClick={() => goToServiceClassDetails(elClass.name)}
                 title={classTitle}
               >
                 {classTitle}
               </ServiceClassButton>
-            </CustomTableCell>
+            </TextOverflowWrapper>
           );
         },
       },
@@ -130,7 +130,7 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
             Object.keys(el.planSpec).length
           ) {
             return (
-              <CustomTableCell>
+              <TextOverflowWrapper>
                 <InformationModal
                   title="Instances Parameters"
                   modalOpeningComponent={
@@ -142,13 +142,13 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
                     <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
                   }
                 />
-              </CustomTableCell>
+              </TextOverflowWrapper>
             );
           }
           return (
-            <CustomTableCell>
+            <TextOverflowWrapper>
               <span title={planDisplayName}>{planDisplayName}</span>
-            </CustomTableCell>
+            </TextOverflowWrapper>
           );
         },
       },
@@ -158,9 +158,9 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
         accesor: el => {
           const bindingUsages = displayBindingsUsages(el.serviceBindingUsages);
           return (
-            <CustomTableCell>
+            <TextOverflowWrapper>
               <span title={bindingUsages}>{bindingUsages}</span>
-            </CustomTableCell>
+            </TextOverflowWrapper>
           );
         },
       },
@@ -190,7 +190,7 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
               content={el.status.message}
               minWidth="250px"
             >
-              <CustomTableCell>
+              <TextOverflowWrapper>
                 <span
                   style={{
                     color: statusColor(el.status.type),
@@ -200,7 +200,7 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
                 >
                   {el.status.type}
                 </span>
-              </CustomTableCell>
+              </TextOverflowWrapper>
             </Tooltip>
           );
         },

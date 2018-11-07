@@ -24,6 +24,7 @@ import {
   ParametersModalButton,
   ActionsWrapper,
 } from './styled';
+import { TextOverflowWrapper } from '../../ServiceInstances/ServiceInstancesTable/styled';
 
 class ServiceInstanceBindings extends React.Component {
   capitalize = str => {
@@ -90,18 +91,38 @@ class ServiceInstanceBindings extends React.Component {
         {
           name: 'Service Binding Usage',
           size: 0.2,
-          accesor: el => el.name,
+          accesor: el => (
+            <TextOverflowWrapper>
+              <span title={el.name}>{el.name}</span>
+            </TextOverflowWrapper>
+          ),
         },
         {
           name: 'Bound Applications',
           size: 0.2,
-          accesor: el =>
-            `${el.usedBy.name} (${this.capitalize(el.usedBy.kind)})`,
+          accesor: el => {
+            const text = `${el.usedBy.name} (${this.capitalize(
+              el.usedBy.kind,
+            )})`;
+
+            return (
+              <TextOverflowWrapper>
+                <span title={text}>{text}</span>
+              </TextOverflowWrapper>
+            );
+          },
         },
         {
           name: 'Service Binding',
           size: 0.2,
-          accesor: el => el.serviceBinding && el.serviceBinding.name,
+          accesor: el =>
+            el.serviceBinding && (
+              <TextOverflowWrapper>
+                <span title={el.serviceBinding.name}>
+                  {el.serviceBinding.name}
+                </span>
+              </TextOverflowWrapper>
+            ),
         },
         {
           name: 'Secret',
@@ -112,19 +133,24 @@ class ServiceInstanceBindings extends React.Component {
               el.parameters.envPrefix &&
               el.parameters.envPrefix.name;
             const secret = el.serviceBinding && el.serviceBinding.secret;
+
             return secret && Object.keys(secret).length ? (
-              <SecretDataModal
-                title={
-                  <Fragment>
-                    Secret <Bold>{secret.name}</Bold>
-                  </Fragment>
-                }
-                data={secret.data}
-                prefix={prefix}
-                modalOpeningComponent={
-                  <SecretModalButton>{secret.name}</SecretModalButton>
-                }
-              />
+              <TextOverflowWrapper>
+                <SecretDataModal
+                  title={
+                    <span title={secret.name}>
+                      Secret <Bold>{secret.name}</Bold>
+                    </span>
+                  }
+                  data={secret.data}
+                  prefix={prefix}
+                  modalOpeningComponent={
+                    <SecretModalButton title={secret.name}>
+                      {secret.name}
+                    </SecretModalButton>
+                  }
+                />
+              </TextOverflowWrapper>
             ) : (
               '-'
             );
@@ -135,18 +161,22 @@ class ServiceInstanceBindings extends React.Component {
           size: 0.1,
           accesor: el => (
             <Tooltip
+              wrapperStyles="max-width: 100%;"
               type={this.getStatusType(el.status.type)}
               content={el.status.message}
               minWidth="250px"
             >
-              <span
-                style={{
-                  color: statusColor(el.status.type),
-                  cursor: `${el.status.message ? 'help' : 'default'}`,
-                }}
-              >
-                {el.status.type}
-              </span>
+              <TextOverflowWrapper>
+                <span
+                  style={{
+                    color: statusColor(el.status.type),
+                    cursor: `${el.status.message ? 'help' : 'default'}`,
+                  }}
+                  title={el.status.type}
+                >
+                  {el.status.type}
+                </span>
+              </TextOverflowWrapper>
             </Tooltip>
           ),
         },
@@ -173,26 +203,34 @@ class ServiceInstanceBindings extends React.Component {
       columns: [
         {
           name: 'Service Binding',
-          size: 0.2,
-          accesor: el => el.name,
+          size: 0.3,
+          accesor: el => (
+            <TextOverflowWrapper>
+              <span title={el.name}>{el.name}</span>
+            </TextOverflowWrapper>
+          ),
         },
         {
           name: 'Secret',
-          size: 0.45,
+          size: 0.3,
           accesor: el => {
             const secret = el && el.secret;
             return secret && Object.keys(secret).length ? (
-              <SecretDataModal
-                title={
-                  <Fragment>
-                    Secret <Bold>{secret.name}</Bold>
-                  </Fragment>
-                }
-                data={secret.data}
-                modalOpeningComponent={
-                  <SecretModalButton>{secret.name}</SecretModalButton>
-                }
-              />
+              <TextOverflowWrapper>
+                <SecretDataModal
+                  title={
+                    <Fragment>
+                      Secret <Bold>{secret.name}</Bold>
+                    </Fragment>
+                  }
+                  data={secret.data}
+                  modalOpeningComponent={
+                    <SecretModalButton title={secret.name}>
+                      {secret.name}
+                    </SecretModalButton>
+                  }
+                />
+              </TextOverflowWrapper>
             ) : (
               '-'
             );
@@ -200,21 +238,25 @@ class ServiceInstanceBindings extends React.Component {
         },
         {
           name: 'Status',
-          size: 0.2,
+          size: 0.25,
           accesor: el => (
             <Tooltip
               type={this.getStatusType(el.status.type)}
               content={el.status.message}
               minWidth="250px"
+              wrapperStyles="max-width: 100%;"
             >
-              <span
-                style={{
-                  color: statusColor(el.status.type),
-                  cursor: `${el.status.message ? 'help' : 'default'}`,
-                }}
-              >
-                {el.status.type}
-              </span>
+              <TextOverflowWrapper>
+                <span
+                  style={{
+                    color: statusColor(el.status.type),
+                    cursor: `${el.status.message ? 'help' : 'default'}`,
+                  }}
+                  title={el.status.type}
+                >
+                  {el.status.type}
+                </span>
+              </TextOverflowWrapper>
             </Tooltip>
           ),
         },
