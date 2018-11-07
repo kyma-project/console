@@ -8,11 +8,10 @@ Monorepo root orchestrator: This Jenkinsfile runs the Jenkinsfiles of all subpro
     - passes info of:
         - revision
         - branch
-        - current app version
+        - current app version (first 7 characters of git revision)
 
 */
 def label = "console-${UUID.randomUUID().toString()}"
-appVersion = "0.1." + env.BUILD_NUMBER
 
 /* 
     Projects that are built when changed. 
@@ -52,6 +51,7 @@ podTemplate(label: label) {
                                 script: "git rev-parse origin/${env.BRANCH_NAME}",
                                 returnStdout: true
                             ).trim()
+                            appVersion = commitID.substring(0,8)
                             committerEmail = sh (
                                 script: 'git --no-pager show -s --format=\'%ae\'',
                                 returnStdout: true
