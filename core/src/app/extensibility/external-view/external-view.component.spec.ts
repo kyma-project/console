@@ -93,7 +93,7 @@ describe('ExternalViewComponent', () => {
     }
   };
 
-  const testNavigationEvent = function() {
+  const testNavigationEvent = () => {
     rCallback(
       new NavigationEnd(1, '/home/environments/tets/extensions/tets', '')
     );
