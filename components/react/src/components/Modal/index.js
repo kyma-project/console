@@ -136,8 +136,8 @@ class Modal extends React.Component {
             style={reactModalCustomModalStyles}
           >
             <ModalHeader>
+              <div>{title}</div>
               <div>
-                {title}
                 {headerAdditionalInfo && (
                   <ModalInfoButton>
                     <Tooltip
