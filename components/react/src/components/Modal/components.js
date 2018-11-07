@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ModalWrapper = styled.div`
   text-align: ${props => props.align};
+  display: inline;
 `;
 
 export const ModalOpeningComponent = styled.div`

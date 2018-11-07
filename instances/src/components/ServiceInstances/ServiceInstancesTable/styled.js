@@ -35,7 +35,7 @@ export const AddServiceInstanceRedirectButton = styled.button`
   cursor: pointer;
 `;
 
-export const ServicePlanButton = styled.button`
+export const ServicePlanButton = styled.span`
   padding: 0;
   background: none;
   border: 0;
@@ -59,4 +59,16 @@ export const JSONCode = styled.code`
   white-space: -moz-pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
+`;
+
+export const DeleteButtonWrapper = styled.div`
+  text-align: right;
+  display: block;
+`;
+
+export const CustomTableCell = styled.div`
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

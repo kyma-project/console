@@ -90,6 +90,8 @@ export const TooltipWrapper = styled.div`
   position: relative;
   display: inline-block;
 
+  ${props => (props.wrapperStyles ? props.wrapperStyles : '')}
+
   &:hover ${TooltipContainer} {
     visibility: visible;
     opacity: 1;

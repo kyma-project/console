@@ -17,6 +17,8 @@ import {
   AddServiceInstanceRedirectButton,
   ServicePlanButton,
   JSONCode,
+  DeleteButtonWrapper,
+  CustomTableCell,
 } from './styled';
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
@@ -56,11 +58,11 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
   };
 
   const deleteButton = (
-    <div style={{ textAlign: 'right' }}>
+    <DeleteButtonWrapper>
       <Button padding={'0'} marginTop={'0'} marginBottom={'0'}>
         <Icon icon={'\uE03D'} />
       </Button>
-    </div>
+    </DeleteButtonWrapper>
   );
 
   const addServiceInstanceRedirectButton = (
@@ -76,43 +78,51 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
         name: 'Name',
         size: 0.2,
         accesor: el => (
-          <LinkButton data-e2e-id="instance-name">
-            <Link
-              onClick={() => goToServiceInstanceDetails(el.name)}
-              data-e2e-id={`instance-name-${el.name}`}
-            >
-              {el.name}
-            </Link>
-          </LinkButton>
+          <CustomTableCell>
+            <LinkButton data-e2e-id="instance-name">
+              <Link
+                onClick={() => goToServiceInstanceDetails(el.name)}
+                data-e2e-id={`instance-name-${el.name}`}
+                title={el.name}
+              >
+                {el.name}
+              </Link>
+            </LinkButton>
+          </CustomTableCell>
         ),
       },
       {
         name: 'Service Class',
-        size: 0.2,
+        size: 0.15,
         accesor: el => {
           const elClass = el.clusterServiceClass || el.serviceClass;
           if (!elClass || !elClass.name) {
             return '-';
           }
 
+          const classTitle = getResourceDisplayName(elClass);
           return (
-            <ServiceClassButton
-              onClick={() => goToServiceClassDetails(elClass.name)}
-            >
-              {getResourceDisplayName(elClass)}
-            </ServiceClassButton>
+            <CustomTableCell>
+              <ServiceClassButton
+                onClick={() => goToServiceClassDetails(elClass.name)}
+                title={classTitle}
+              >
+                {classTitle}
+              </ServiceClassButton>
+            </CustomTableCell>
           );
         },
       },
       {
         name: 'Plan',
-        size: 0.2,
+        size: 0.15,
         accesor: el => {
           const plan = el.clusterServicePlan || el.servicePlan;
           if (!plan) {
             return '-';
           }
 
+          const planDisplayName = getResourceDisplayName(plan);
           if (
             el.planSpec &&
             el.planSpec !== null &&
@@ -120,30 +130,43 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
             Object.keys(el.planSpec).length
           ) {
             return (
-              <InformationModal
-                title="Instances Parameters"
-                modalOpeningComponent={
-                  <ServicePlanButton>
-                    {getResourceDisplayName(plan)}
-                  </ServicePlanButton>
-                }
-                content={
-                  <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
-                }
-              />
+              <CustomTableCell>
+                <InformationModal
+                  title="Instances Parameters"
+                  modalOpeningComponent={
+                    <ServicePlanButton title={planDisplayName}>
+                      {planDisplayName}
+                    </ServicePlanButton>
+                  }
+                  content={
+                    <JSONCode>{JSON.stringify(el.planSpec, null, 2)}</JSONCode>
+                  }
+                />
+              </CustomTableCell>
             );
           }
-          return getResourceDisplayName(plan);
+          return (
+            <CustomTableCell>
+              <span title={planDisplayName}>{planDisplayName}</span>
+            </CustomTableCell>
+          );
         },
       },
       {
         name: 'Bound Applications',
         size: 0.2,
-        accesor: el => displayBindingsUsages(el.serviceBindingUsages),
+        accesor: el => {
+          const bindingUsages = displayBindingsUsages(el.serviceBindingUsages);
+          return (
+            <CustomTableCell>
+              <span title={bindingUsages}>{bindingUsages}</span>
+            </CustomTableCell>
+          );
+        },
       },
       {
         name: 'Status',
-        size: 0.1,
+        size: 0.2,
         accesor: el => {
           if (!el.status) {
             return '-';
@@ -161,12 +184,23 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
               type = 'warning';
           }
           return (
-            <Tooltip type={type} content={el.status.message} minWidth="250px">
-              <span
-                style={{ color: statusColor(el.status.type), cursor: 'help' }}
-              >
-                {el.status.type}
-              </span>
+            <Tooltip
+              wrapperStyles="max-width: 100%;"
+              type={type}
+              content={el.status.message}
+              minWidth="250px"
+            >
+              <CustomTableCell>
+                <span
+                  style={{
+                    color: statusColor(el.status.type),
+                    cursor: 'help',
+                  }}
+                  title={el.status.type}
+                >
+                  {el.status.type}
+                </span>
+              </CustomTableCell>
             </Tooltip>
           );
         },
