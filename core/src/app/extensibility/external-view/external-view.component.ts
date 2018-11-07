@@ -172,30 +172,17 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     return processedUrl;
   }
 
-  getUrlWithoutHash(url) {
-    if (!url) {
-      return false;
-    }
-    const urlWithoutHash = url.split('#')[0];
-
-    // We assume that any URL not starting with
-    // http is on the current page's domain
-    if (!urlWithoutHash.startsWith('http')) {
-      return (
-        window.location.origin +
-        (urlWithoutHash.startsWith('/') ? '' : '/') +
-        urlWithoutHash
-      );
-    }
-
-    return urlWithoutHash;
+  getHostname(url) {
+    const urlParser = document.createElement('a'); // new URL() is not supported by all browsers
+    urlParser.href = url;
+    return urlParser.hostname;
   }
 
   isNotSameDomain(viewUrl, iframe) {
     if (iframe) {
-      const previousUrl = this.getUrlWithoutHash(iframe.src);
-      const nextUrl = this.getUrlWithoutHash(viewUrl);
-      return previousUrl !== nextUrl;
+      const previousUrlHostname = this.getHostname(iframe.src);
+      const nextUrlHostname = this.getHostname(viewUrl);
+      return previousUrlHostname !== nextUrlHostname;
     }
     return true;
   }
