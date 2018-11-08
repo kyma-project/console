@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 
 let domain = 'kyma.local';
-let gateway_kyma_cx_api_version = 'v1alpha2';
+let gateway_kyma_project_io_version = 'v1alpha2';
 let idpLogoutUrl = null;
 
 const clusterConfig: object = window['clusterConfig'];
@@ -9,8 +9,8 @@ if (clusterConfig) {
   if (clusterConfig['domain']) {
     domain = clusterConfig['domain'];
   }
-  if (clusterConfig['gateway_kyma_cx_api_version']) {
-    gateway_kyma_cx_api_version = clusterConfig['gateway_kyma_cx_api_version'];
+  if (clusterConfig['gateway_kyma_project_io_version']) {
+    gateway_kyma_project_io_version = clusterConfig['gateway_kyma_project_io_version'];
   }
   idpLogoutUrl = clusterConfig['idpLogoutUrl']
     ? clusterConfig['idpLogoutUrl']
@@ -26,8 +26,8 @@ const config = {
   domain,
   graphqlApiUrl: `https://ui-api.${domain}/graphql`,
   k8sApiServerUrl: `${k8sServerUrl}/api/v1/`,
-  gateway_kyma_cx_api_version,
-  k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma.cx/${gateway_kyma_cx_api_version}/`,
+  gateway_kyma_project_io_version,
+  k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_project_io_version}/`,
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1beta1/`,
   k8sApiServerUrl_extensions: `${k8sServerUrl}/apis/extensions/v1beta1/`,
   k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/remoteenvironments/`,
