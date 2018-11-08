@@ -41,6 +41,16 @@ $hover: #008ac6;
   }
 }
 
+.sf-toolbar__right {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: auto !important;
+    font-size: 1rem;
+    color: #21262c;
+    padding: 0.8em 2em 0.8em 2em;
+}
+
 .sf-trigger-list-elements {
   grid-column-start: 1;
 }
@@ -327,6 +337,8 @@ $hover: #008ac6;
 
 .sf-dropdown__lambda-type {
   margin-bottom: 0;
+  margin-right: 40px;
+  padding-right: 60px;
   &:before {
     content: '';
     width: 1px;
