@@ -44,7 +44,7 @@ export const ContentDescription = styled.div`
   box-sizing: border-box;
   width: 100%;
   margin: 0;
-  padding: 22px;
+  padding: 8px 22px 22px;
   font-size: 14px;
   font-weight: normal;
   font-style: normal;

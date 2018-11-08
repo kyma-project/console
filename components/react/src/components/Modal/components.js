@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ModalWrapper = styled.div`
   text-align: ${props => props.align};
+  display: inline;
 `;
 
 export const ModalOpeningComponent = styled.div`
@@ -24,6 +25,12 @@ export const ModalHeader = styled.header`
     margin-right: 35px;
   }
 `;
+
+export const ModalHeaderTitle = styled.div`
+  display: inline-block;
+`;
+
+export const ModalHeaderAdditionalInfo = ModalHeaderTitle;
 
 export const ModalAdditionalContent = styled.div`
   font-family: '72';

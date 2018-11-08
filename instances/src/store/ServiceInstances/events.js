@@ -1,4 +1,4 @@
-const handleInstanceEvent = (obj, event) => {
+const handleInstanceEvent = (obj = {}, event = {}) => {
   const currentItems = obj.serviceInstances || [];
   const instance = event.serviceInstance;
   if (!instance) {
@@ -40,8 +40,12 @@ const handleInstanceEvent = (obj, event) => {
   return { ...obj, serviceInstances: result };
 };
 
-const handleServiceBindingUsageEvent = (instancesObj, event) => {
-  const currentItems = instancesObj.serviceInstances;
+const handleServiceBindingUsageEvent = (instancesObj = {}, event = {}) => {
+  const currentItems = instancesObj.serviceInstances || [];
+  if (currentItems.length === 0) {
+    return instancesObj;
+  }
+
   const bindingUsage = event.serviceBindingUsage;
   if (!bindingUsage) {
     return instancesObj;
@@ -124,8 +128,12 @@ const handleServiceBindingUsageEvent = (instancesObj, event) => {
   return { ...instancesObj, serviceInstances: result };
 };
 
-const handleServiceBindingEvent = (instancesObj, event) => {
-  const currentItems = instancesObj.serviceInstances;
+const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
+  const currentItems = instancesObj.serviceInstances || [];
+  if (currentItems.length === 0) {
+    return instancesObj;
+  }
+
   const binding = event.serviceBinding;
   if (!binding) {
     return instancesObj;
