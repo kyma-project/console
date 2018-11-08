@@ -26,6 +26,12 @@ export const ModalHeader = styled.header`
   }
 `;
 
+export const ModalHeaderTitle = styled.div`
+  display: inline-block;
+`;
+
+export const ModalHeaderAdditionalInfo = ModalHeaderTitle;
+
 export const ModalAdditionalContent = styled.div`
   font-family: '72';
   height: auto;

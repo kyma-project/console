@@ -15,6 +15,8 @@ import {
   ModalFooter,
   ModalCloseButton,
   ModalInfoButton,
+  ModalHeaderTitle,
+  ModalHeaderAdditionalInfo,
 } from './components';
 
 class Modal extends React.Component {
@@ -136,8 +138,8 @@ class Modal extends React.Component {
             style={reactModalCustomModalStyles}
           >
             <ModalHeader>
-              <div>{title}</div>
-              <div>
+              <ModalHeaderTitle>{title}</ModalHeaderTitle>
+              <ModalHeaderAdditionalInfo>
                 {headerAdditionalInfo && (
                   <ModalInfoButton>
                     <Tooltip
@@ -150,7 +152,7 @@ class Modal extends React.Component {
                     </Tooltip>
                   </ModalInfoButton>
                 )}
-              </div>
+              </ModalHeaderAdditionalInfo>
               <ModalCloseButton onClick={this.handleCloseModal}>
                 <Icon icon={'\ue03e'} />
               </ModalCloseButton>

@@ -4,7 +4,7 @@ import { statusColor } from '../../../../commons/helpers';
 import { StatusWrapper, Status } from './styled';
 
 const StatusIndicator = ({ data }) => {
-  const countByType = () => {
+  const evaluateStatusesStats = () => {
     if (!data) return;
     let statusCounts = {};
     const statusTypes = data
@@ -19,19 +19,22 @@ const StatusIndicator = ({ data }) => {
     return statusCounts;
   };
 
-  const statuses = countByType();
+  const statusesStats = evaluateStatusesStats();
 
   let statusType;
-  if (statuses && statuses.FAILED) {
+  if (statusesStats && statusesStats.FAILED) {
     statusType = 'FAILED';
-  } else if (statuses && (statuses.PENDING || statuses.UNKNOWN)) {
+  } else if (
+    statusesStats &&
+    (statusesStats.PENDING || statusesStats.UNKNOWN)
+  ) {
     statusType = 'PENDING';
   }
   return (
     <Fragment>
       {statusType && (
         <StatusWrapper backgroundColor={statusColor(statusType)}>
-          <Status>{statuses[statusType]}</Status>
+          <Status>{statusesStats[statusType]}</Status>
         </StatusWrapper>
       )}
     </Fragment>
