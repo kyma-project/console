@@ -77,6 +77,7 @@ class Tooltip extends React.Component {
       icon,
       type,
       orientation,
+      wrapperStyles,
     } = this.props;
 
     return (
@@ -84,6 +85,7 @@ class Tooltip extends React.Component {
         onMouseEnter={this.handleShowTooltip}
         onMouseLeave={this.handleHideTooltip}
         type={type === undefined ? 'default' : type}
+        wrapperStyles={wrapperStyles}
       >
         {children}
         {visibleTooltip &&

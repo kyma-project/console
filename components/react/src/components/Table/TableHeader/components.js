@@ -55,7 +55,6 @@ export const TableHeaderColumnsWrapper = styled.div`
 
 export const TableHeaderColumnName = styled.div`
   padding: 13px 20px;
-  height: 13px;
   opacity: 0.6;
   font-size: 11px;
   font-weight: normal;
