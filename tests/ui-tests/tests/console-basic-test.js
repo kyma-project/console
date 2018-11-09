@@ -89,6 +89,15 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     expect(environments).not.toContain(config.testEnv);
   });
 
+  test('Check if remote environment exist', async () => {
+    common.validateTestEnvironment(dexReady);
+    const remoteEnvironmentsUrl = address.console.getRemoteEnvironments();
+    await page.goto(remoteEnvironmentsUrl, { waitUntil: 'networkidle0' });
+    const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
+    console.log('Check if remote environment exists', remoteEnvironments);
+    expect(remoteEnvironments).not.toContain(config.testEnv);
+  });
+
   test('Create remote environment', async () => {
     common.validateTestEnvironment(dexReady);
     await kymaConsole.createRemoteEnvironment(page, config.testEnv);
