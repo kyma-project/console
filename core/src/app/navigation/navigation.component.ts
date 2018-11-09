@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { Router, ActivatedRoute, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { cloneDeep } from 'lodash';
@@ -8,7 +8,6 @@ import { EnvironmentsService } from '../content/environments/services/environmen
 import { ExtensionsService } from '../extensibility/services/extensions.service';
 import { navModel, INavTypes } from './app.navigation.data';
 import { CurrentEnvironmentService } from '../content/environments/services/current-environment.service';
-import { ResourceUploaderModalComponent } from '../shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 
 @Component({
   selector: 'app-navigation',
@@ -18,8 +17,6 @@ import { ResourceUploaderModalComponent } from '../shared/components/resource-up
 })
 export class NavigationComponent implements OnInit {
   @Input() navCtx: INavTypes;
-  @ViewChild('uploaderModal')
-  private uploaderModal: ResourceUploaderModalComponent;
   environment: EnvironmentInfo;
   environmentsService: EnvironmentsService;
   extensionsService: ExtensionsService;
@@ -272,9 +269,5 @@ export class NavigationComponent implements OnInit {
         this.filteredEnvironments.push(element);
       }
     });
-  }
-
-  private openUploadResourceModal() {
-    this.uploaderModal.show();
   }
 }
