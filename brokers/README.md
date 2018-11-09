@@ -6,10 +6,6 @@ The project contains an application with the Service Brokers UI page for the Kym
 
 The [Create React App](https://github.com/facebook/create-react-app) project provides the structure for this application. Read the project's [README](https://github.com/facebook/create-react-app/tree/next/packages/react-scripts/template) document for more information.
 
-## OSBA Contract
-
-Contract with the [Open Service Broker API](https://www.openservicebrokerapi.org/) (OSBA) is available in the [OSBAContract](https://github.com/kyma-project/kyma/tree/master/docs/service-catalog/docs/063-osba-brokers.md) document.
-
 ## Installation
 
 To install the dependencies, run the `npm install` command.
