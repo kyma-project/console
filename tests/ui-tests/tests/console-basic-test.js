@@ -95,7 +95,6 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await page.goto(remoteEnvironmentsUrl, { waitUntil: 'networkidle0' });
     const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
     console.log('Check if remote environment exists', remoteEnvironments);
-    expect(remoteEnvironments.length).toBeGreaterThan(0);
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 
