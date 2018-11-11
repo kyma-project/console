@@ -124,7 +124,6 @@ class ServiceClassList extends React.Component {
     items = items.map(entry => {
       const remoteEntry = serviceClasses.find(
         remoteEntry =>
-          remoteEntry.displayName === entry.displayName ||
           remoteEntry.externalName === entry.externalName ||
           remoteEntry.name === entry.name,
       );
