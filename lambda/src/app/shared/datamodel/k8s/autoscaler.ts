@@ -19,7 +19,7 @@ export interface IScaleTargetRef {
 
 export interface IMetricResource {
   name: string;
-  targetAverageUtilization: any;
+  targetAverageUtilization: number;
 }
 
 export interface IMetricSpec {

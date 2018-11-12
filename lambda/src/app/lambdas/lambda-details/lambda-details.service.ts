@@ -106,16 +106,7 @@ export class LambdaDetailsService {
       name: '',
       image: '',
       env: [],
-      resources: {
-        limits: {
-          cpu: '100m',
-          memory: '100Mi',
-        },
-        requests: {
-          cpu: '100m',
-          memory: '100Mi',
-        },
-      },
+      resources: {},
     };
 
     const podSpec: IPodTemplateSpec = {
@@ -127,6 +118,7 @@ export class LambdaDetailsService {
     };
 
     const depSpec: IDeploymentSpec = {
+      replicas: 1,
       template: podTemplate,
     };
 
@@ -165,26 +157,16 @@ export class LambdaDetailsService {
       targetAverageUtilization: 1,
     };
 
-    const memoryResource: IMetricResource = {
-      name: 'memory',
-      targetAverageUtilization: '128Mi',
-    };
-
     const cpuMetricSpec: IMetricSpec = {
       type: 'Resource',
       resource: cpuResource,
-    };
-
-    const memoryMetricSpec: IMetricSpec = {
-      type: 'Resource',
-      resource: memoryResource,
     };
 
     const scalerSpec: IHPAutoscalerSpec = {
       scaleTargetRef: scaleTargetRef,
       maxReplicas: 2,
       minReplicas: 1,
-      metrics: [cpuMetricSpec, memoryMetricSpec],
+      metrics: [cpuMetricSpec],
     };
 
     const hpAutoscaler = new HPAutoscaler({

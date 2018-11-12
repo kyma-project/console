@@ -7,6 +7,46 @@ if (clusterConfig && clusterConfig['domain']) {
   domain = clusterConfig['domain'];
 }
 
+const functionSizes: object[] = [
+  {
+    size: {
+      name: 'S',
+      memory: '128Mi',
+      cpu: '100m',
+      minReplicas: 1,
+      maxReplicas: 2,
+      description: '',
+    },
+  },
+  {
+    size: {
+      name: 'M',
+      memory: '256Mi',
+      cpu: '500m',
+      minReplicas: 2,
+      maxReplicas: 5,
+      description: '',
+    },
+  },
+  {
+    size: {
+      name: 'L',
+      memory: '512Mi',
+      cpu: '1.0',
+      minReplicas: 5,
+      maxReplicas: 10,
+      description: '',
+    },
+  },
+];
+
+const functionResourceRequest = {
+  requests: {
+    cpu: '100m',
+    memory: '100Mi',
+  },
+};
+
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
@@ -21,6 +61,8 @@ const config = {
   subscriptionApiUrl: `${k8sServerUrl}/apis/eventing.kyma.cx/v1alpha1`,
   graphqlApiUrl: `https://ui-api.${domain}/graphql`,
   domain,
+  functionSizes,
+  functionResourceRequest,
 };
 
 if (clusterConfig) {

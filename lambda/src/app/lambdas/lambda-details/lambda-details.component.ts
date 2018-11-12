@@ -73,36 +73,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
     },
   ];
 
-  sizes: object[] = [
-    {
-      size: {
-        name: 'S',
-        memory: '128Mi',
-        cpu: '100m',
-        replicas: '2',
-        description: '',
-      },
-    },
-    {
-      size: {
-        name: 'M',
-        memory: '256Mi',
-        cpu: '500m',
-        replicas: '5',
-        description: '',
-      },
-    },
-    {
-      size: {
-        name: 'L',
-        memory: '512Mi',
-        cpu: '1.0',
-        replicas: '1000m',
-        description: '',
-      },
-    },
-  ];
-
   theme: string;
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('eventTriggerChooserModal')
@@ -116,7 +86,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   mode = 'create';
   title = '';
   kind: string;
-  functionSize: object;
+  selectedFunctionSize: object;
   showSample = false;
   toggleTrigger = false;
   toggleTriggerType = false;
@@ -167,14 +137,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
     protected route: ActivatedRoute,
     router: Router,
   ) {
-    this.functionSizes = this.sizes.map(s => s['size']).map(s => {
+    this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
       s.description = `${s.name} (Memory: ${s.memory} CPU: ${s.cpu} Replicas: ${
         s.replicas
       })`;
       return s;
     });
 
-    this.functionSize = this.functionSizes[0];
+    this.selectedFunctionSize = this.functionSizes[0];
 
     this.theme = 'eclipse';
     this.aceMode = 'javascript';
@@ -265,7 +235,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   selectSize(selectedSize) {
-    this.functionSize = selectedSize;
+    this.selectedFunctionSize = selectedSize;
     this.sizeDropdownHidden = true;
   }
 
@@ -313,7 +283,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   updateFunction(): void {
     this.warnUnsavedChanges(false);
-    this.updateAutoscaler();
     this.lambda.metadata.labels = this.changeLabels();
     this.lambda.spec.runtime = this.kind;
     this.lambda.spec.topic =
@@ -321,6 +290,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
         ? this.selectedTriggers[0].eventType
         : 'undefined';
     this.setChecksum();
+
+    if (this.functionSizeHasChanged()) {
+      this.setFunctionSize();
+    }
+
     this.lambdaDetailsService.updateLambda(this.lambda, this.token).subscribe(
       lambda => {
         if (this.isHTTPTriggerAdded) {
@@ -699,7 +673,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   createFunction(): void {
     this.warnUnsavedChanges(false);
-    this.updateAutoscaler();
     this.lambda.metadata.namespace = this.environment;
     this.lambda.spec.runtime = this.kind;
     if (this.selectedTriggers.length > 0) {
@@ -709,7 +682,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
       'created-by': 'kubeless',
       function: this.lambda.metadata.name,
     };
+    this.labels.push(`'function-size' : ${this.selectedFunctionSize['name']}`);
     this.lambda.metadata.labels = this.changeLabels();
+
+    this.setFunctionSize();
 
     this.lambdaDetailsService.createLambda(this.lambda, this.token).subscribe(
       lambda => {
@@ -1151,33 +1127,48 @@ export class LambdaDetailsComponent implements AfterViewInit {
     );
   }
 
-  private updateAutoscaler() {
-    if (this.mode === 'create') {
-      const hpaName = `${this.lambda.metadata.name}-hpa`;
-      this.lambda.spec.horizontalPodAutoscaler.metadata.name = hpaName;
-      this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.environment;
-      this.lambda.spec.horizontalPodAutoscaler.spec.scaleTargetRef.name = this.lambda.metadata.name;
-    }
+  setFunctionSize() {
+    const resources = {
+      limits: {
+        cpu: this.selectedFunctionSize['cpu'],
+        memory: this.selectedFunctionSize['memory'],
+      },
+      requests: AppConfig.functionResourceRequest.requests,
+    };
 
-    // horizontalPodAutoscaler -> spec -> maxReplicas
-    //this.lambda.spec.horizontalPodAutoscaler.spec.maxReplicas = this.functionSize["replicas"];
-    console.log(
-      'this.functionSize["replicas"]' + this.functionSize['replicas'],
-    );
-    this.lambda.spec.horizontalPodAutoscaler.spec.maxReplicas = 2;
+    // Function Size
+    this.lambda.spec.deployment.spec.replicas = this.selectedFunctionSize[
+      'minReplicas'
+    ];
+    this.lambda.spec.deployment.spec.template.spec.containers[0].name = this.lambda.metadata.name;
+    this.lambda.spec.deployment.spec.template.spec.containers[0].resources = resources;
 
-    // cpu: spec -> metrics -> resource -> targetAverageUtilization
-    this.lambda.spec.horizontalPodAutoscaler.spec.metrics[0].resource.targetAverageUtilization = this.functionSize[
-      'cpu'
+    // Autoscaler
+    const hpaName = `${this.lambda.metadata.name}-hpa`;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.name = hpaName;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.environment;
+    this.lambda.spec.horizontalPodAutoscaler.spec.scaleTargetRef.name = this.lambda.metadata.name;
+
+    // horizontalPodAutoscaler -> spec -> minReplicas and maxReplicas
+    this.lambda.spec.horizontalPodAutoscaler.spec.minReplicas = this.selectedFunctionSize[
+      'minReplicas'
+    ];
+    this.lambda.spec.horizontalPodAutoscaler.spec.maxReplicas = this.selectedFunctionSize[
+      'maxReplicas'
     ];
 
-    // memory: spec -> metrics -> type
-    //this.lambda.spec.horizontalPodAutoscaler.spec.metrics[1].type = "Resource";
-    // memory: spec -> metrics -> resource -> name
-    //this.lambda.spec.horizontalPodAutoscaler.spec.metrics[1].resource.name = "memory";
-    // memory: spec -> metrics -> resource -> targetAverageUtilization
-    //this.lambda.spec.horizontalPodAutoscaler.spec.metrics[1].resource.targetAverageUtilization = this.functionSize["memory"];
+    // cpu: spec -> metrics -> resource -> targetAverageUtilization
+    this.lambda.spec.horizontalPodAutoscaler.spec.metrics[0].resource.targetAverageUtilization = 50;
+  }
 
-    console.log(this.functionSize);
+  functionSizeHasChanged(): boolean {
+    console.log('this.labels ' + this.labels);
+    if (this.labels.length > 0) {
+      this.labels.forEach(label => {
+        const labelSplitted = label.split(':');
+        //newLabels[labelSplitted[0]] = labelSplitted[1];
+      });
+      return false;
+    }
   }
 }

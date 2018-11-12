@@ -122,7 +122,7 @@
                 <div class="tn-dropdown" (mouseleave)="closeSizeDropDown()">
                   <button class="tn-dropdown__control" aria-controls="nNJnB2719" aria-expanded="false" aria-haspopup="true"
                           (click)="toggleSizeDropDown()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">
-                  {{ functionSize.description }}
+                  {{ selectedFunctionSize.name }}
                   </button>
                   <div class="tn-dropdown__menu text-left" [attr.aria-hidden]="sizeDropdownHidden">
                     <div class="tn-dropdown__item" *ngFor="let item of functionSizes" (click)="selectSize(item)">
