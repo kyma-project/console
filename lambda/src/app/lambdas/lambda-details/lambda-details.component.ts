@@ -96,6 +96,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   showHTTPURL: HTTPEndpoint = null;
   httpURL = '';
   labels = [];
+  annotations = [];
   md: IMetaData = {
     name: '',
   };
@@ -283,7 +284,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   updateFunction(): void {
     this.warnUnsavedChanges(false);
-    this.lambda.metadata.labels = this.changeLabels();
+
     this.lambda.spec.runtime = this.kind;
     this.lambda.spec.topic =
       this.selectedTriggers.length > 0
@@ -291,9 +292,28 @@ export class LambdaDetailsComponent implements AfterViewInit {
         : 'undefined';
     this.setChecksum();
 
-    if (this.functionSizeHasChanged()) {
-      this.setFunctionSize();
+    if (this.functionSizeHasChanged() === true) {
+      this.lambdaDetailsService.deleteHPA(this.lambda, this.token).subscribe(
+        hpa => {
+          console.log('here');
+          this.setFunctionSize();
+          this.lambda.metadata.annotations = {
+            'function-size': `${this.selectedFunctionSize['name']}`,
+          };
+          this.handleFunctionUpdate();
+        },
+        err => {
+          console.log(err);
+          this.error = err.message;
+        },
+      );
+    } else {
+      this.handleFunctionUpdate();
     }
+  }
+
+  handleFunctionUpdate() {
+    this.lambda.metadata.labels = this.changeLabels();
 
     this.lambdaDetailsService.updateLambda(this.lambda, this.token).subscribe(
       lambda => {
@@ -682,7 +702,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
       'created-by': 'kubeless',
       function: this.lambda.metadata.name,
     };
-    this.labels.push(`'function-size' : ${this.selectedFunctionSize['name']}`);
+    this.lambda.metadata.annotations = {
+      'function-size': `${this.selectedFunctionSize['name']}`,
+    };
+
     this.lambda.metadata.labels = this.changeLabels();
 
     this.setFunctionSize();
@@ -759,6 +782,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         lambda => {
           this.lambda = lambda;
           this.labels = this.getLabels(lambda);
+          this.annotations = this.getAnnotations(lambda);
           this.code = lambda.spec.function;
           this.kind = lambda.spec.runtime;
           this.dependency = lambda.spec.deps;
@@ -787,6 +811,20 @@ export class LambdaDetailsComponent implements AfterViewInit {
       }
     }
     return labels;
+  }
+
+  getAnnotations(lambda): string[] {
+    const annotations = [];
+    for (const key in lambda.metadata.annotations) {
+      if (lambda.metadata.annotations.hasOwnProperty(key)) {
+        if (lambda.metadata.annotations[key] === 'undefined') {
+          annotations.push(key);
+        } else {
+          annotations.push(key + ':' + lambda.metadata.annotations[key]);
+        }
+      }
+    }
+    return annotations;
   }
 
   cancel() {
@@ -1144,7 +1182,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.lambda.spec.deployment.spec.template.spec.containers[0].resources = resources;
 
     // Autoscaler
-    const hpaName = `${this.lambda.metadata.name}-hpa`;
+    const hpaName = `${this.lambda.metadata.name}`;
     this.lambda.spec.horizontalPodAutoscaler.metadata.name = hpaName;
     this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.environment;
     this.lambda.spec.horizontalPodAutoscaler.spec.scaleTargetRef.name = this.lambda.metadata.name;
@@ -1162,13 +1200,19 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   functionSizeHasChanged(): boolean {
-    console.log('this.labels ' + this.labels);
-    if (this.labels.length > 0) {
-      this.labels.forEach(label => {
-        const labelSplitted = label.split(':');
-        //newLabels[labelSplitted[0]] = labelSplitted[1];
+    let functionSizeChanged = false;
+    if (this.annotations.length > 0) {
+      this.annotations.forEach(label => {
+        const annotationsSplitted = label.split(':');
+        if (annotationsSplitted[0] === 'function-size') {
+          if (annotationsSplitted[1] !== this.selectedFunctionSize['name']) {
+            functionSizeChanged = true;
+          }
+        }
       });
-      return false;
+      return functionSizeChanged;
     }
   }
+
+  updateFunctionSizeLabel(): void {}
 }

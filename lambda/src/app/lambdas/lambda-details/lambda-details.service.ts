@@ -82,6 +82,14 @@ export class LambdaDetailsService {
     return this.http.post<Lambda>(url, func, httpOptions);
   }
 
+  deleteHPA(func: Lambda, token: string): Observable<HPAutoscaler> {
+    const httpOptions = this.getHTTPOptions(token);
+    const url = `${AppConfig.autoscalingUrl}/namespaces/${
+      func.metadata.namespace
+    }/horizontalpodautoscalers/${func.metadata.name}`;
+    return this.http.delete<HPAutoscaler>(url, httpOptions);
+  }
+
   getHTTPOptions(token: string): object {
     let httpHeaders: any;
     httpHeaders = {
@@ -100,6 +108,7 @@ export class LambdaDetailsService {
       labels: {
         'created-by': 'kubeless',
       },
+      annotations: {},
     };
 
     const con: IContainer = {
@@ -171,7 +180,7 @@ export class LambdaDetailsService {
 
     const hpAutoscaler = new HPAutoscaler({
       kind: 'HorizontalPodAutoscaler',
-      apiVersion: 'autoscaling/v2beta1',
+      apiVersion: 'autoscaling/v1',
       metadata: mdScaler,
       spec: scalerSpec,
     });
