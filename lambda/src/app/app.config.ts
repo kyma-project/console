@@ -7,7 +7,7 @@ if (clusterConfig && clusterConfig['domain']) {
   domain = clusterConfig['domain'];
 }
 
-const functionSizes: object[] = [
+const defaultFunctionSizes: object[] = [
   {
     size: {
       name: 'S',
@@ -39,6 +39,12 @@ const functionSizes: object[] = [
     },
   },
 ];
+
+let functionSizes = defaultFunctionSizes;
+const functionSizesConfig: object = window['functionSizes'];
+if (functionSizesConfig && functionSizesConfig['functionSizes']) {
+  domain = functionSizesConfig['functionSizes'];
+}
 
 const functionResourceRequest = {
   requests: {

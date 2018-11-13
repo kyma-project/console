@@ -150,9 +150,7 @@ export class LambdaDetailsService {
     const mdScaler: IMetaData = {
       name: '',
       namespace: '',
-      labels: {
-        autoscaler: 'hpa',
-      },
+      labels: {},
     };
 
     const scaleTargetRef = {

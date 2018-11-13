@@ -295,7 +295,6 @@ export class LambdaDetailsComponent implements AfterViewInit {
     if (this.functionSizeHasChanged() === true) {
       this.lambdaDetailsService.deleteHPA(this.lambda, this.token).subscribe(
         hpa => {
-          console.log('here');
           this.setFunctionSize();
           this.lambda.metadata.annotations = {
             'function-size': `${this.selectedFunctionSize['name']}`,
@@ -791,7 +790,13 @@ export class LambdaDetailsComponent implements AfterViewInit {
               this.dependency !== undefined &&
               this.dependency !== '',
           );
+
           this.loaded = observableOf(true);
+          this.functionSizes.forEach(s => {
+            if (`${s.name}` === lambda.metadata.annotations['function-size']) {
+              this.selectedFunctionSize = s;
+            }
+          });
         },
         err => {
           this.navigateToList();
@@ -1182,9 +1187,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.lambda.spec.deployment.spec.template.spec.containers[0].resources = resources;
 
     // Autoscaler
-    const hpaName = `${this.lambda.metadata.name}`;
-    this.lambda.spec.horizontalPodAutoscaler.metadata.name = hpaName;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.name = `${
+      this.lambda.metadata.name
+    }`;
     this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.environment;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.labels = {
+      function: `${this.lambda.metadata.name}`,
+    };
+
     this.lambda.spec.horizontalPodAutoscaler.spec.scaleTargetRef.name = this.lambda.metadata.name;
 
     // horizontalPodAutoscaler -> spec -> minReplicas and maxReplicas
@@ -1213,6 +1223,4 @@ export class LambdaDetailsComponent implements AfterViewInit {
       return functionSizeChanged;
     }
   }
-
-  updateFunctionSizeLabel(): void {}
 }
