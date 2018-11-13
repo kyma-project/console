@@ -64,7 +64,7 @@ export class ExposeApiService {
       metadata: {
         name: data.apiName
       },
-      apiVersion: `gateway.kyma.cx/${AppConfig.gateway_kyma_cx_api_version}`,
+      apiVersion: `gateway.kyma-project.io/${AppConfig.gateway_kyma_project_io_version}`,
       spec: {
         service: {
           name: data.serviceName,

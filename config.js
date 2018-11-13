@@ -15,7 +15,7 @@ window.clusterConfig = {
   orgName: 'My Organization',
   scope:
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-  gateway_kyma_cx_api_version: 'v1alpha2',
+  gateway_kyma_project_io_version: 'v1alpha2',
 
   serviceCatalogModuleUrl: 'http://' + localDomain + ':8000',
   serviceInstancesModuleUrl: 'http://' + localDomain + ':8001',
