@@ -122,12 +122,13 @@ class ServiceClassList extends React.Component {
     // https://github.com/apollographql/apollo-client/issues/2920
     // Possible solution: do resolver logic on component side
     items = items.map(entry => {
-      const remoteEntry = serviceClasses.find(
-        remoteEntry =>
-          remoteEntry.displayName === entry.displayName ||
-          remoteEntry.externalName === entry.externalName ||
-          remoteEntry.name === entry.name,
-      );
+      const remoteEntry = serviceClasses.find(remoteEntry => {
+        if (remoteEntry.name) return remoteEntry.name === entry.name;
+        if (remoteEntry.externalName) {
+          return remoteEntry.externalName === entry.externalName;
+        }
+        return remoteEntry.displayName === entry.displayName;
+      });
 
       return {
         ...entry,
