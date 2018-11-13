@@ -139,9 +139,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
     router: Router,
   ) {
     this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
-      s.description = `${s.name} (Memory: ${s.memory} CPU: ${s.cpu} Replicas: ${
-        s.replicas
-      })`;
+      s.description = `${s.name} (Memory: ${s.memory} CPU: ${
+        s.cpu
+      } minReplicas: ${s.minReplicas} maxReplicas: ${s.minReplicas})`;
       return s;
     });
 
