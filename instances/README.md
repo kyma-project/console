@@ -8,7 +8,7 @@ The [create-react-app](https://github.com/facebook/create-react-app) project pro
 
 ## OSBA Contract
 
-Contract with [OSBA](https://www.openservicebrokerapi.org/) is available in the [OSBAContract.md](https://github.com/kyma-project/kyma/tree/master/docs/service-catalog/docs/062-osba-instances.md) document.
+Contract with [OSBA](https://www.openservicebrokerapi.org/) is available in the [OSBAContract.md](https://github.com/kyma-project/kyma/tree/master/docs/service-catalog/docs/062-ui-instances.md) document.
 
 ## Installation
 
