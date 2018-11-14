@@ -80,19 +80,19 @@ async function getElements(page, e2eIdName) {
 
 async function select(page, selectorName, itemName) {
   const selector = await page.$(selectorName);
-
   const properties = await selector.getProperties();
   for (const property of properties.values()) {
     const element = property.asElement();
-    if (element) {
-      const hText = await element.getProperty('text');
-      const text = await hText.jsonValue();
-      if (text === itemName) {
-        const hValue = await element.getProperty('value');
-        const value = await hValue.jsonValue();
-        await page.select(selectorName, value); // or use 58730
-        console.log(`Selected ${text} which is value ${value}.`);
-      }
+    if (!element) {
+      continue;
     }
+    const text = await element.getProperty('text');
+    const textJson = await text.jsonValue();
+    if (textJson !== itemName) {
+      continue;
+    }
+    const value = await element.getProperty('value');
+    const valueJson = await value.jsonValue();
+    await page.select(selectorName, valueJson);
   }
 }

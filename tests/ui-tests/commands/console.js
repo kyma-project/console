@@ -126,22 +126,17 @@ async function createRemoteEnvironment(page, name) {
   await page.waitForSelector(createEnvModal, { hidden: true });
 }
 
-async function getRemoteEnvironmentsWithRetry(page, initialRemoteEnvironments) {
-  let remoteEnvironments;
-  for (var i = 0; i < 3; i++) {
-    console.log(
-      'Wait for remote enviromnets to update (try ' + (i + 1) + ' of 3)'
-    );
-    await page.reload({ waitUntil: 'networkidle0' });
-    remoteEnvironments = await getRemoteEnvironments(page);
-    if (initialRemoteEnvironments > remoteEnvironments) {
-      console.log('Remote environments was updated');
-      return remoteEnvironments;
-    }
-    await page.waitFor(1000);
+async function getRemoteEnvironmentsAfterDelete(
+  page,
+  initialRemoteEnvironments
+) {
+  await page.reload({ waitUntil: 'networkidle0' });
+  const remoteEnvironments = await getRemoteEnvironments(page);
+  if (initialRemoteEnvironments > remoteEnvironments) {
+    console.log('Remote environments was updated');
+    return remoteEnvironments;
   }
-  console.log('Failed to update remote environments');
-  return remoteEnvironments;
+  throw new Error(`Remote environments was not updated`);
 }
 
 async function deleteRemoteEnvironment(page, name) {
@@ -176,7 +171,7 @@ module.exports = {
   getEnvironments,
   createEnvironment,
   getRemoteEnvironments,
-  getRemoteEnvironmentsWithRetry,
+  getRemoteEnvironmentsAfterDelete,
   createRemoteEnvironment,
   deleteRemoteEnvironment
 };

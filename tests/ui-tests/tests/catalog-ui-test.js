@@ -201,7 +201,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     await page.goto(instancesUrl, { waitUntil: 'networkidle0' });
     await waitForNavigationAndContext(page);
-
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(instancesHeaderSelector);
     const instancesHeader = await frame.$eval(
