@@ -3,17 +3,41 @@ import request from 'request';
 import address from '../utils/address';
 
 async function _loginViaDex(page, config) {
+  //ask whether there are planned other methods of logging in
+  //if no, then body of this funtion can go into 'login' blow
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   await page.reload({ waitUntil: 'networkidle0' });
-  await page.type('#login', config.login);
-  await page.type('#password', config.password);
-  return await page.click(loginButtonSelector);
+  try {
+    await page.waitForSelector('#login', { timeout: 2000 });
+    await page.type('#login', config.login);
+    await page.waitForSelector('#password', { timeout: 2000 });
+    await page.type('#password', config.password);
+    return await page.click(loginButtonSelector);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function login(page, config) {
   await _loginViaDex(page, config);
-  return await page.waitForSelector('.sf-header');
+  try {
+    return await page.waitForSelector('.sf-header', { timeout: 2000 });
+  } catch (err) {
+    try {
+      await page.waitForSelector('#login-error', { timeout: 2000 });
+      const loginError = await page.evaluate(
+        () => document.querySelector('#login-error').textContent
+      );
+      console.error(
+        `Page returned following error message: ${loginError.trim()}`
+      );
+      console.error(`URL: ${page.url()}`);
+      console.error(err);
+    } catch (error) {
+      console.error("Couldn't find #login-error", error);
+    }
+  }
 }
 
 async function getFrame(page) {
