@@ -8,6 +8,8 @@ module.exports = {
       const modal = '.ReactModal__Content--after-open';
       const nameServiceInstancesInput = `[name="nameServiceInstances"]`;
       const labels = `[name="nameServiceBindingUsage"]`;
+      const plan = `[name="selectedKind"]`;
+      const planName = 'Micro';
       const modalCreate = `[${config.catalogTestingAtribute}="modal-create"]`;
 
       const frame = await kymaConsole.getFrame(page);
@@ -19,6 +21,8 @@ module.exports = {
       await classTitle.focus();
       await classTitle.click({ clickCount: 3 });
       await classTitle.type(instanceTitle);
+
+      await select(frame, plan, planName);
 
       const classLabel = await frame.$(labels);
 
@@ -71,5 +75,24 @@ async function getElements(page, e2eIdName) {
   } catch (e) {
     console.log(document.documentElement.innerHTML);
     throw e;
+  }
+}
+
+async function select(page, selectorName, itemName) {
+  const selector = await page.$(selectorName);
+
+  const properties = await selector.getProperties();
+  for (const property of properties.values()) {
+    const element = property.asElement();
+    if (element) {
+      const hText = await element.getProperty('text');
+      const text = await hText.jsonValue();
+      if (text === itemName) {
+        const hValue = await element.getProperty('value');
+        const value = await hValue.jsonValue();
+        await page.select(selectorName, value); // or use 58730
+        console.log(`Selected ${text} which is value ${value}.`);
+      }
+    }
   }
 }

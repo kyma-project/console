@@ -124,9 +124,15 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
 
   test('Delete remote environment', async () => {
     common.validateTestEnvironment(dexReady);
+    const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironments(
+      page
+    );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-    await page.reload({ waitUntil: 'networkidle0' });
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
+
+    const remoteEnvironments = await kymaConsole.getRemoteEnvironmentsWithRetry(
+      page,
+      initialRemoteEnvironments
+    );
     console.log(
       'Delete remote environment, remaining remote envs: ',
       remoteEnvironments

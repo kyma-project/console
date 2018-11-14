@@ -126,9 +126,28 @@ async function createRemoteEnvironment(page, name) {
   await page.waitForSelector(createEnvModal, { hidden: true });
 }
 
+async function getRemoteEnvironmentsWithRetry(page, initialRemoteEnvironments) {
+  let remoteEnvironments;
+  for (var i = 0; i < 3; i++) {
+    console.log(
+      'Wait for remote enviromnets to update (try ' + (i + 1) + ' of 3)'
+    );
+    await page.reload({ waitUntil: 'networkidle0' });
+    remoteEnvironments = await getRemoteEnvironments(page);
+    if (initialRemoteEnvironments > remoteEnvironments) {
+      console.log('Remote environments was updated');
+      return remoteEnvironments;
+    }
+    await page.waitFor(1000);
+  }
+  console.log('Failed to update remote environments');
+  return remoteEnvironments;
+}
+
 async function deleteRemoteEnvironment(page, name) {
   const remoteEnvironmentsSelector = '.row.sf-list__body';
   const modalSelector = '.sf-modal';
+  await page.waitForSelector(remoteEnvironmentsSelector);
   await page.$$eval(
     remoteEnvironmentsSelector,
     (item, name) => {
@@ -157,6 +176,7 @@ module.exports = {
   getEnvironments,
   createEnvironment,
   getRemoteEnvironments,
+  getRemoteEnvironmentsWithRetry,
   createRemoteEnvironment,
   deleteRemoteEnvironment
 };
