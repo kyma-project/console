@@ -22,10 +22,12 @@ async function login(page, config) {
   try {
     return await page.waitForSelector('.sf-header');
   } catch (err) {
-    await obtainLoginErrorMessage(err);
+    await obtainLoginErrorMessage();
+    console.error(`URL: ${page.url()}`);
+    console.error(err);
   }
 
-  async function obtainLoginErrorMessage(err) {
+  async function obtainLoginErrorMessage() {
     try {
       await page.waitForSelector('#login-error');
       const loginError = await page.evaluate(
@@ -34,9 +36,8 @@ async function login(page, config) {
       console.error(
         `Page returned following error message: ${loginError.trim()}`
       );
-      console.error(`URL: ${page.url()}`);
-      console.error(err);
     } catch (error) {
+      console.error('Invalid Email Address and password.');
       console.error("Couldn't find #login-error", error);
     }
   }
