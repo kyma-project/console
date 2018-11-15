@@ -24,6 +24,10 @@ async function login(page, config) {
   try {
     return await page.waitForSelector('.sf-header', { timeout: 2000 });
   } catch (err) {
+    await obtainLoginErrorMessage(err);
+  }
+
+  async function obtainLoginErrorMessage(err) {
     try {
       await page.waitForSelector('#login-error', { timeout: 2000 });
       const loginError = await page.evaluate(
