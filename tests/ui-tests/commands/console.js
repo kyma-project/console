@@ -3,15 +3,13 @@ import request from 'request';
 import address from '../utils/address';
 
 async function _loginViaDex(page, config) {
-  //ask whether there are planned other methods of logging in
-  //if no, then body of this funtion can go into 'login' blow
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   await page.reload({ waitUntil: 'networkidle0' });
   try {
-    await page.waitForSelector('#login', { timeout: 2000 });
+    await page.waitForSelector('#login');
     await page.type('#login', config.login);
-    await page.waitForSelector('#password', { timeout: 2000 });
+    await page.waitForSelector('#password');
     await page.type('#password', config.password);
     return await page.click(loginButtonSelector);
   } catch (err) {
@@ -22,14 +20,14 @@ async function _loginViaDex(page, config) {
 async function login(page, config) {
   await _loginViaDex(page, config);
   try {
-    return await page.waitForSelector('.sf-header', { timeout: 2000 });
+    return await page.waitForSelector('.sf-header');
   } catch (err) {
     await obtainLoginErrorMessage(err);
   }
 
   async function obtainLoginErrorMessage(err) {
     try {
-      await page.waitForSelector('#login-error', { timeout: 2000 });
+      await page.waitForSelector('#login-error');
       const loginError = await page.evaluate(
         () => document.querySelector('#login-error').textContent
       );
