@@ -230,8 +230,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   onDependencyChange(event) {
+    const isChange = this.lambda.spec.deps !== event;
     this.lambda.spec.deps = event;
-    this.warnUnsavedChanges(true);
+    if (isChange) {
+      this.warnUnsavedChanges(true);
+    }
   }
 
   selectedServiceInstance($event): object {
