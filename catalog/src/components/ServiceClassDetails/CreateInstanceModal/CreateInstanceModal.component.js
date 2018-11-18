@@ -229,9 +229,7 @@ class CreateInstanceModal extends React.Component {
           serviceClass={serviceClass}
           callback={this.callback}
         />
-        {!instanceCreateParameterSchema ||
-        (instanceCreateParameterSchema &&
-          !instanceCreateParameterSchema.properties) ? null : (
+        {instanceCreateParameterSchema && (
           <div>
             <Separator margin="16px -16px" />
             <SchemaData
