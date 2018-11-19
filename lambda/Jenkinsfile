@@ -1,14 +1,15 @@
 #!/usr/bin/env groovy
 def label = "kyma-${UUID.randomUUID().toString()}"
 def application = 'lambda'
+def isMaster =  true;
 
-def dockerPushRoot = "${env.DOCKER_REGISTRY}"
-def dockerImageTag =
-sh(
-    script: "git rev-parse origin/${env.BRANCH_NAME}",
-    returnStdout: true
-).trim().substring(0,8)
+def dockerPushRoot = isMaster
+    ? "${env.DOCKER_REGISTRY}"
+    : "${env.DOCKER_REGISTRY}snapshot/"
 
+def dockerImageTag = isMaster
+    ? params.APP_VERSION
+    : params.GIT_BRANCH
 
 echo """
 ********************************
@@ -54,17 +55,17 @@ podTemplate(label: label) {
                             execute("make test")
                         }
 
-
-                        stage("IP scan $application (WhiteSource)") {
-                            withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]) {
-                                execute("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
+                        if (isMaster) {
+                            stage("IP scan $application (WhiteSource)") {
+                                withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]) {
+                                    execute("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
+                                }
                             }
+
+                            // stage("security scan $application (Checkmarx)"){
+                            //     scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
+                            // }
                         }
-
-                        // stage("security scan $application (Checkmarx)"){
-                        //     scan.checkmarx(projectname: "KYMA_" + application.toUpperCase() + "_" + "MASTER", credentialsId: 'checkmarx' )
-                        // }
-
 
                         stage("build $application") {
                             execute('make build')
