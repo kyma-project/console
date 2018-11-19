@@ -5,12 +5,13 @@ import address from '../utils/address';
 async function _loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
-  await page.reload({ waitUntil: 'networkidle0' });
   try {
+    await page.reload({ waitUntil: 'networkidle0' });
     await page.waitForSelector('#login');
     await page.type('#login', config.login);
     await page.waitForSelector('#password');
     await page.type('#password', config.password);
+    await page.waitForSelector(loginButtonSelector);
     return await page.click(loginButtonSelector);
   } catch (err) {
     console.error(err);
