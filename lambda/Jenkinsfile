@@ -7,9 +7,7 @@ def dockerPushRoot = isMaster
     ? "${env.DOCKER_REGISTRY}"
     : "${env.DOCKER_REGISTRY}snapshot/"
 
-def dockerImageTag = isMaster
-    ? params.APP_VERSION
-    : params.GIT_BRANCH
+def dockerImageTag = `expr substr ${params.GIT_REVISION} 0 8`
 
 echo """
 ********************************
