@@ -14,18 +14,21 @@ async function _loginViaDex(page, config) {
     await page.waitForSelector(loginButtonSelector);
     return await page.click(loginButtonSelector);
   } catch (err) {
-    console.error(err);
+    throw new Error(`Couldn't log in`, err);
   }
 }
 
 async function login(page, config) {
   await _loginViaDex(page, config);
+  const headerSelector = '.sf-header';
   try {
-    return await page.waitForSelector('.sf-header');
+    return await page.waitForSelector(headerSelector);
   } catch (err) {
     await obtainLoginErrorMessage();
-    console.error(`URL: ${page.url()}`);
-    console.error(err);
+    throw new Error(
+      `Couldn't find ${headerSelector} selector on ${page.url()}`,
+      err
+    );
   }
 
   async function obtainLoginErrorMessage() {
@@ -34,12 +37,11 @@ async function login(page, config) {
       const loginError = await page.evaluate(
         () => document.querySelector('#login-error').textContent
       );
-      console.error(
+      throw new Error(
         `Page returned following error message: ${loginError.trim()}`
       );
     } catch (error) {
-      console.error('Invalid Email Address and password.');
-      console.error("Couldn't find #login-error", error);
+      throw new Error("Couldn't get login error message", error);
     }
   }
 }
