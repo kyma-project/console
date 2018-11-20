@@ -24,6 +24,7 @@ async function login(page, config) {
   try {
     return await page.waitForSelector(headerSelector);
   } catch (err) {
+    console.log('Trying to obtain error message');
     await obtainLoginErrorMessage();
   }
 
