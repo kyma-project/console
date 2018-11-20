@@ -25,24 +25,16 @@ async function login(page, config) {
     return await page.waitForSelector(headerSelector);
   } catch (err) {
     await obtainLoginErrorMessage();
-    throw new Error(
-      `Couldn't find ${headerSelector} selector on ${page.url()}`,
-      err
-    );
   }
 
   async function obtainLoginErrorMessage() {
-    try {
-      await page.waitForSelector('#login-error');
-      const loginError = await page.evaluate(
-        () => document.querySelector('#login-error').textContent
-      );
-      throw new Error(
-        `Page returned following error message: ${loginError.trim()}`
-      );
-    } catch (error) {
-      throw new Error("Couldn't get login error message", error);
-    }
+    await page.waitForSelector('#login-error');
+    const loginError = await page.evaluate(
+      () => document.querySelector('#login-error').textContent
+    );
+    throw new Error(
+      `Page returned following error message: ${loginError.trim()}`
+    );
   }
 }
 
