@@ -37,6 +37,10 @@ import { ResourcesComponent } from '../content/environments/configuration/resour
 import { LoginErrorComponent } from '../content/login-error/login-error.component';
 import { RequestErrorComponent } from '../content/request-error/request-error.component';
 
+import { ConfigMapsComponent } from '../content/environments/operation/configmaps/configmaps.component';
+import { UnsavedChanges } from './unsaved-changes';
+import { BrokersContainerComponent } from '../content/environments/brokers-container/brokers-container.component';
+
 const appRoutes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   {
@@ -81,8 +85,16 @@ const appRoutes: Routes = [
             data: { path: '/details/:name' }
           },
           { path: 'lambdas', component: LambdasComponent },
-          { path: 'lambdas/create', component: LambdasComponent },
-          { path: 'lambdas/details/:name', component: LambdasComponent },
+          {
+            path: 'lambdas/create',
+            component: LambdasComponent,
+            canDeactivate: [UnsavedChanges]
+          },
+          {
+            path: 'lambdas/details/:name',
+            component: LambdasComponent,
+            canDeactivate: [UnsavedChanges]
+          },
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
@@ -98,20 +110,32 @@ const appRoutes: Routes = [
           { path: 'apis/create', component: ExposeApiComponent },
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
+          { path: 'configmaps', component: ConfigMapsComponent },
           {
-            path: 'extensions/:pathSegment1',
+            path: 'extensions',
             component: ExternalViewComponent,
-            data: { navigationContext: 'environment' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'environment' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2/:pathSegment3',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'environment' }
+            data: { navigationContext: 'environment' },
+            children: [
+              {
+                path: ':pathSegment1',
+                component: ExternalViewComponent,
+                data: { navigationContext: 'environment' },
+                children: [
+                  {
+                    path: ':pathSegment2',
+                    component: ExternalViewComponent,
+                    data: { navigationContext: 'environment' },
+                    children: [
+                      {
+                        path: ':pathSegment3',
+                        component: ExternalViewComponent,
+                        data: { navigationContext: 'environment' }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           { path: 'resources', component: ResourcesComponent },
           {
@@ -137,6 +161,10 @@ const appRoutes: Routes = [
             path: 'service-catalog/details/:name',
             component: CatalogContainerComponent,
             data: { path: '/details/:name' }
+          },
+          {
+            path: 'brokers',
+            component: BrokersContainerComponent
           },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }
@@ -188,19 +216,30 @@ const appRoutes: Routes = [
             data: { global: true }
           },
           {
-            path: 'extensions/:pathSegment1',
+            path: 'extensions',
             component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
-          },
-          {
-            path: 'extensions/:pathSegment1/:pathSegment2/:pathSegment3',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' }
+            data: { navigationContext: 'cluster' },
+            children: [
+              {
+                path: ':pathSegment1',
+                component: ExternalViewComponent,
+                data: { navigationContext: 'cluster' },
+                children: [
+                  {
+                    path: ':pathSegment2',
+                    component: ExternalViewComponent,
+                    data: { navigationContext: 'cluster' },
+                    children: [
+                      {
+                        path: ':pathSegment3',
+                        component: ExternalViewComponent,
+                        data: { navigationContext: 'cluster' }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           { path: '', redirectTo: 'organisation', pathMatch: 'full' },
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }

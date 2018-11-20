@@ -11,10 +11,10 @@ import App from './components/App/App.container';
 import builder from './commons/builder';
 
 import { createApolloClient } from './store';
-const client = createApolloClient();
 
 (async () => {
   await builder.init();
+  const client = createApolloClient();
   ReactDOM.render(
     <BrowserRouter>
       <ApolloProvider client={client}>

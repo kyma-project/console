@@ -1,14 +1,15 @@
 {
   "scripts": {
-    "precommit": "npm run git-ignore-config && lint-staged",
-    "bootstrap": "lerna bootstrap && npm run build:components",
+    "precommit": "lint-staged",
+    "bootstrap": "lerna bootstrap && npm run build:components && npm run git-ignore-config && sudo npm run append-host",
     "clean": "lerna clean",
     "start": "lerna exec --ignore ui-tests --ignore @kyma-project/react-components --parallel -- npm run start:kyma",
     "start:api": "lerna exec --ignore ui-tests --ignore @kyma-project/react-components --parallel -- npm run start:kyma:api",
     "build:components": "npm run build:components:react",
     "build:components:react": "cd components/react && npm run build",
     "build:components:angular": "lerna run packagr",
-    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js content/public/config/config.js"
+    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js brokers/public/config/config.js content/public/config/config.js",
+    "append-host": "echo '127.0.0.1 console-dev.kyma.local' >> /etc/hosts"
   },
   "devDependencies": {
     "husky": "^0.14.0",

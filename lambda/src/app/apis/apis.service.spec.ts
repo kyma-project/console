@@ -75,7 +75,7 @@ describe('ApisService', () => {
 
     const api = new Api({
       kind: 'Api',
-      apiVersion: 'gateway.kyma.cx/v1alpha2',
+      apiVersion: 'gateway.kyma-project.io/v1alpha2',
       metadata: md,
       spec: sp,
     });
@@ -124,7 +124,7 @@ describe('ApisService', () => {
 
     const api = new Api({
       kind: 'Api',
-      apiVersion: 'gateway.kyma.cx/v1alpha2',
+      apiVersion: 'gateway.kyma-project.io/v1alpha2',
       metadata: md,
       spec: sp,
     });

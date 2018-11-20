@@ -5,8 +5,8 @@ window.clusterConfig = {
   graphqlApiUrl: 'https://ui-api.' + domain + '/graphql',
   graphqlApiUrlLocal: 'http://' + localDomain + ':3000/graphql',
 
-  subscriptionsApiUrl: 'ws://ui-api.' + domain + '/subscriptions',
-  subscriptionsApiUrlLocal: 'ws://' + localDomain + ':3000/subscriptions',
+  subscriptionsApiUrl: 'wss://ui-api.' + domain + '/graphql',
+  subscriptionsApiUrlLocal: 'ws://' + localDomain + ':3000/graphql',
 
   authRedirectUri: 'http://' + localDomain + ':4200',
   domain: domain,
@@ -15,10 +15,11 @@ window.clusterConfig = {
   orgName: 'My Organization',
   scope:
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-  gateway_kyma_cx_api_version: 'v1alpha2',
+  gateway_kyma_project_io_version: 'v1alpha2',
 
   serviceCatalogModuleUrl: 'http://' + localDomain + ':8000',
   serviceInstancesModuleUrl: 'http://' + localDomain + ':8001',
-  docsModuleUrl: 'http://' + localDomain + ':8002',
+  serviceBrokersModuleUrl: 'http://' + localDomain + ':8002',
+  docsModuleUrl: 'http://' + localDomain + ':8003',
   lambdasModuleUrl: 'http://' + localDomain + ':4201',
 };

@@ -1,6 +1,6 @@
 /* tslint:disable:no-submodule-imports */
 
-import { catchError, timeout } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
 import {
   Component,
@@ -17,7 +17,7 @@ import 'brace/snippets/text';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
 import 'brace/theme/eclipse';
-import { Lambda, IFunctionSpec } from '../../shared/datamodel/k8s/function';
+import { Lambda } from '../../shared/datamodel/k8s/function';
 import { LambdaDetailsService } from './lambda-details.service';
 import { IMetaData } from '../../shared/datamodel/k8s/generic/meta-data';
 import { sha256 } from 'js-sha256';
@@ -27,7 +27,7 @@ import { Clipboard } from 'ts-clipboard';
 import { HTTPEndpoint } from '../../shared/datamodel/http-endpoint';
 import { Event } from '../../shared/datamodel/event';
 import { ApisService } from '../../apis/apis.service';
-import { Api, IApi, IApiSpec } from '../../shared/datamodel/k8s/api';
+import { Api } from '../../shared/datamodel/k8s/api';
 import { FetchTokenModalComponent } from '../../fetch-token-modal/fetch-token-modal.component';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
@@ -42,9 +42,12 @@ import * as randomatic from 'randomatic';
 
 import * as luigiClient from '@kyma-project/luigi-client';
 
-import { Service } from '../../shared/datamodel/k8s/api-service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
+
+const DEFAULT_CODE = `module.exports = { main: function (event, context) {
+
+} }`;
 
 @Component({
   selector: 'app-lambda-details',
@@ -75,9 +78,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   eventTriggerChooserModal: EventTriggerChooserComponent;
   @ViewChild('httpTriggerModal') httpTriggerModal: HttpTriggerComponent;
 
-  code = `module.exports = { main: function (event, context) {
-
-} }`;
+  code: string;
   dependency: string;
   aceMode: string;
   aceDependencyMode: string;
@@ -183,8 +184,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
           } else {
             this.title = 'Create Lambda Function';
             this.lambda = this.lambdaDetailsService.initializeLambda();
-            this.lambda.spec.function = this.code;
+            this.lambda.spec.function = this.code = DEFAULT_CODE;
             this.loaded = observableOf(true);
+
             if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
               this.editor.setReadOnly(true);
             }
@@ -220,11 +222,19 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   onCodeChange(event) {
+    const isChange = this.lambda.spec.function !== event;
     this.lambda.spec.function = event;
+    if (isChange) {
+      this.warnUnsavedChanges(true);
+    }
   }
 
   onDependencyChange(event) {
+    const isChange = this.lambda.spec.deps !== event;
     this.lambda.spec.deps = event;
+    if (isChange) {
+      this.warnUnsavedChanges(true);
+    }
   }
 
   selectedServiceInstance($event): object {
@@ -257,6 +267,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   updateFunction(): void {
+    this.warnUnsavedChanges(false);
     this.lambda.metadata.labels = this.changeLabels();
     this.lambda.spec.runtime = this.kind;
     this.lambda.spec.topic =
@@ -377,6 +388,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
           Function: this.lambda.metadata.name,
           ServiceBinding: serviceBindingName,
         };
+        serviceBindingUsage.spec.parameters.envPrefix.name =
+          bs.currentState.instanceBindingPrefix + '-';
         createRequests.push(
           this.serviceBindingsService
             .createServiceBinding(serviceBinding, this.token)
@@ -393,6 +406,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
           Function: this.lambda.metadata.name,
           ServiceBinding: bs.currentState.serviceBinding,
         };
+        serviceBindingUsage.spec.parameters.envPrefix.name =
+          bs.currentState.instanceBindingPrefix + '-';
       }
       serviceBindingUsage.spec.usedBy.kind = 'function';
       serviceBindingUsage.spec.usedBy.name = this.lambda.metadata.name;
@@ -637,6 +652,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   createFunction(): void {
+    this.warnUnsavedChanges(false);
     this.lambda.metadata.namespace = this.environment;
     this.lambda.spec.runtime = this.kind;
     if (this.selectedTriggers.length > 0) {
@@ -854,6 +870,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
       this.newLabel = '';
       this.wrongLabel = false;
       this.isLambdaFormValid = true;
+      this.warnUnsavedChanges(true);
     } else {
       this.isLambdaFormValid = this.newLabel ? false : true;
       this.wrongLabel = this.newLabel ? true : false;
@@ -867,6 +884,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   updateLabel(label) {
+    this.warnUnsavedChanges(true);
     this.removeLabel(label);
     this.newLabel = label;
     setTimeout(() => {
@@ -1035,14 +1053,17 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   handleBindingStateEmitter($event): void {
     this.bindingState = $event;
+    this.warnUnsavedChanges(true);
   }
 
   handleEnvEmitter($event): void {
     this.lambda.spec.deployment.spec.template.spec.containers[0].env = $event;
+    this.warnUnsavedChanges(true);
   }
 
   handleEventEmitter($event): void {
     this.selectedTriggers = $event;
+    this.warnUnsavedChanges(true);
   }
 
   handleHttpEmitter($event): void {
@@ -1056,6 +1077,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
         this.isHTTPTriggerAdded = true;
         this.isHTTPTriggerAuthenticated = (trigger as HTTPEndpoint).isAuthEnabled;
+        this.warnUnsavedChanges(true);
 
         if ((trigger as HTTPEndpoint).isAuthEnabled) {
           this.authType = (trigger as HTTPEndpoint).authentication.type;
@@ -1064,5 +1086,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
         }
       }
     });
+  }
+
+  warnUnsavedChanges(hasChanges: boolean): void {
+    window.parent.postMessage(
+      { msg: 'luigi.set-page-dirty', dirty: hasChanges },
+      '*',
+    );
   }
 }

@@ -44,7 +44,7 @@ describe('LabelsInputComponent', () => {
   describe('validateNewLabel()', () => {
     beforeEach(() => {
       component['setWrongLabelMessage'] = jasmine.createSpy();
-      component.labelsChangeEmitter$.emit = jasmine.createSpy();
+      spyOn(component.labelsChangeEmitter$, 'emit');
     });
 
     it('calls function that sets wrong label message', () => {
@@ -96,7 +96,7 @@ describe('LabelsInputComponent', () => {
 
       it('updates labels', () => {
         component.labels = [];
-        component.newLabel = ' newkey  : newval  ';
+        component.newLabel = 'newkey:newval';
         component.addLabel();
         expect(component.labels).toEqual(['newkey:newval']);
       });
@@ -159,7 +159,7 @@ describe('LabelsInputComponent', () => {
     });
 
     it('if valid format and invalid characters, sets message and return true', () => {
-      const label = ' öö : val1 ';
+      const label = 'öö:val1';
       const result: boolean = component['setWrongLabelMessage'](label);
       const expected = `Invalid label öö:val1! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
       expect(component.wrongLabelMessage).toBe(expected);
@@ -168,7 +168,7 @@ describe('LabelsInputComponent', () => {
 
     it('if valid format and valid characters but duplicated key, sets message and return true', () => {
       component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
-      const label = ' k2 : v-other ';
+      const label = 'k2:v-other';
       const result: boolean = component['setWrongLabelMessage'](label);
       const expected = `Invalid label k2:v-other! Keys cannot be reused!`;
       expect(component.wrongLabelMessage).toBe(expected);
@@ -177,7 +177,7 @@ describe('LabelsInputComponent', () => {
 
     it('if valid label, returns false ', () => {
       component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
-      const label = ' k4 : v4 ';
+      const label = 'k4:v4';
       const result: boolean = component['setWrongLabelMessage'](label);
       expect(component.wrongLabelMessage).toBe('');
       expect(result).toBe(false);

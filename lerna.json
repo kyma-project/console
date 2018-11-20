@@ -4,6 +4,7 @@
     "core",
     "catalog",
     "instances",
+    "brokers",
     "content",
     "components/react",
     "lambda",

@@ -2,24 +2,34 @@ import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import request from 'request';
 import address from '../utils/address';
 
-async function login(page, config) {
-  await loginViaDex(page, config);
-  return await page.waitForSelector('.sf-header');
+async function _loginViaDex(page, config) {
+  const loginButtonSelector = '.dex-btn';
+  console.log(`Trying to log in ${config.login} via dex`);
+  await page.reload({ waitUntil: 'networkidle0' });
+  await page.type('#login', config.login);
+  await page.type('#password', config.password);
+  return await page.click(loginButtonSelector);
 }
 
-async function getEnvironments(page) {
-  return await page.evaluate(() => {
-    const environmentsArraySelector =
-      '.sf-dropdown .tn-dropdown__menu .tn-dropdown__item';
-    const envs = Array.from(
-      document.querySelectorAll(environmentsArraySelector)
-    );
-    return envs.map(env => env.textContent);
-  });
+async function login(page, config) {
+  await _loginViaDex(page, config);
+  return await page.waitForSelector('.sf-header');
 }
 
 async function getFrame(page) {
   return await page.frames().find(f => f.name() === 'frame');
+}
+
+async function openLink(page, element, name) {
+  await page.$$eval(
+    element,
+    (item, name) => {
+      item.find(text => text.innerText.includes(name)).click();
+    },
+    name
+  );
+  await page.reload({ waitUntil: 'networkidle0' });
+  await waitForNavigationAndContext(page);
 }
 
 function clearData(token, env) {
@@ -42,6 +52,17 @@ function clearData(token, env) {
         resolve(response);
       }
     });
+  });
+}
+
+async function getEnvironments(page) {
+  return await page.evaluate(() => {
+    const environmentsArraySelector =
+      '.sf-dropdown .tn-dropdown__menu .tn-dropdown__item';
+    const envs = Array.from(
+      document.querySelectorAll(environmentsArraySelector)
+    );
+    return envs.map(env => env.textContent);
   });
 }
 
@@ -71,35 +92,71 @@ async function createEnvironment(page, name) {
   expect(environments).toContain(name);
 }
 
-async function openLink(page, name) {
-  const navItem = 'a.sf-toolbar__item';
+async function getRemoteEnvironments(page) {
+  return await page.evaluate(() => {
+    const remoteEnvironmentsSelector = '.remoteenv-name';
+    const envs = Array.from(
+      document.querySelectorAll(remoteEnvironmentsSelector)
+    );
+    return envs.map(env => env.textContent);
+  });
+}
 
+async function createRemoteEnvironment(page, name) {
+  // consts
+  const createEnvBtn = '.open-create-env-modal';
+  const createEnvModal = '.sf-modal.sf-modal--min';
+  const nameInput = 'input[name=remoteEnvName]';
+  const descriptionInput = 'input[name=remoteEnvDescription]';
+  const labelsInput = 'input[name=labelsInput]';
+  const createButton = '.tn-modal__button-primary';
+
+  await page.click(createEnvBtn);
+  await page.waitFor(createEnvModal);
+  await page.focus(nameInput);
+  await page.type(nameInput, name);
+  await page.focus(descriptionInput);
+  await page.type(
+    descriptionInput,
+    'This is the Remote Environment for testing'
+  );
+  await page.focus(labelsInput);
+  await page.type(labelsInput, 'testKey:testValue');
+  await page.click(createButton);
+  await page.waitForSelector(createEnvModal, { hidden: true });
+}
+
+async function deleteRemoteEnvironment(page, name) {
+  const remoteEnvironmentsSelector = '.row.sf-list__body';
+  const modalSelector = '.sf-modal';
   await page.$$eval(
-    navItem,
+    remoteEnvironmentsSelector,
     (item, name) => {
-      item.find(text => text.innerText.includes(name)).click();
+      const actionsSelector = '.tn-icon';
+      const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
+      const testRemoteEnvironment = item.find(row =>
+        row.textContent.includes(name)
+      );
+      testRemoteEnvironment.querySelector(actionsSelector).click();
+      testRemoteEnvironment.querySelector(deleteActionSelector).click();
     },
     name
   );
-
-  await page.reload({ waitUntil: 'networkidle0' });
-  await waitForNavigationAndContext(page);
-}
-
-async function loginViaDex(page, config) {
-  const loginButtonSelector = '.dex-btn';
-  console.log(`Trying to log in ${config.login} via dex`);
-  await page.reload({ waitUntil: 'networkidle0' });
-  await page.type('#login', config.login);
-  await page.type('#password', config.password);
-  return await page.click(loginButtonSelector);
+  await page.waitForSelector(modalSelector);
+  await page.evaluate(() => {
+    const deleteButton = `.tn-modal__button-primary.sf-button--primary.tn-button--small`;
+    document.querySelector(deleteButton).click();
+  });
 }
 
 module.exports = {
   login,
-  getEnvironments,
   getFrame,
+  openLink,
   clearData,
+  getEnvironments,
   createEnvironment,
-  openLink
+  getRemoteEnvironments,
+  createRemoteEnvironment,
+  deleteRemoteEnvironment
 };

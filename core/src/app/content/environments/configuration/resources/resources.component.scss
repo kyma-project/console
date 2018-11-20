@@ -5,9 +5,10 @@ span.toolbar-hint {
   color: rgba(50, 54, 58, 0.6);
 }
 
-.resources-header {
-  display: block;
-  .sf-toolbar__header {
-    padding-bottom: 0px;
-  }
+.resources-toolbar-hint {
+  padding-bottom: 20px
+}
+
+.resources-toolbar-header {
+  padding-bottom: 0px
 }

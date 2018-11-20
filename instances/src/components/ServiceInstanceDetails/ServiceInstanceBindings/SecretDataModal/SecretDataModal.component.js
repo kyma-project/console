@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Grid from 'styled-components-grid';
 
 import { Button, InformationModal } from '@kyma-project/react-components';
 
-import { List, Item, Bold } from './styled';
+import { List, Item, Bold, Text } from './styled';
 
 class SecretDataModal extends React.Component {
   constructor(props) {
@@ -39,11 +39,20 @@ class SecretDataModal extends React.Component {
   };
 
   render() {
-    const { title, data, modalOpeningComponent } = this.props;
+    const { title, data, modalOpeningComponent, prefix } = this.props;
     const { encoded } = this.state;
 
     const items = this.populateItems(data, encoded);
-    const content = <List>{items}</List>;
+    const content = (
+      <Fragment>
+        {prefix && (
+          <Text>
+            All variables will be prefixed with: <Bold>'{prefix}'</Bold>.
+          </Text>
+        )}
+        <List>{items}</List>
+      </Fragment>
+    );
     const footer = (
       <Button normal first last onClick={this.toggleEncoded}>
         {encoded ? 'Decode' : 'Encode'}

@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import Icon from '../Icon';
+import Separator from '../Separator';
 
 import {
   NotificationWrapper,
   NotificationHeader,
   NotificationTitleWrapper,
   NotificationIconWrapper,
+  NotificationBody,
 } from './components';
 
-const Notification = ({ title, color, icon, onClick, visible }) => (
+const Notification = ({ title, color, icon, onClick, content, visible }) => (
   <NotificationWrapper color={color} onClick={onClick} visible={visible}>
     <NotificationHeader>
       <NotificationTitleWrapper>{title}</NotificationTitleWrapper>
@@ -17,6 +19,12 @@ const Notification = ({ title, color, icon, onClick, visible }) => (
         <Icon color={color} icon={icon} />
       </NotificationIconWrapper>
     </NotificationHeader>
+    {content && (
+      <Fragment>
+        <Separator />
+        <NotificationBody>{content}</NotificationBody>
+      </Fragment>
+    )}
   </NotificationWrapper>
 );
 

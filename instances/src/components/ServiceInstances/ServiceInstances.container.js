@@ -2,10 +2,10 @@ import React from 'react';
 import { graphql, compose } from 'react-apollo';
 
 import {
-  SERVICE_INSTANCES_QUERY,
   ACTIVE_FILTERS_QUERY,
   ALL_FILTERS_QUERY,
   FILTERED_ITEMS_QUERY,
+  ALL_ITEMS_QUERY,
 } from './queries';
 import {
   FILTER_INSTANCES_MUTATION,
@@ -17,16 +17,19 @@ import ServiceInstances from './ServiceInstances.component';
 
 import builder from '../../commons/builder';
 
+const ServiceInstanceContainer = props => {
+  return (
+    <ServiceInstances
+      {...props}
+      filterClassesAndSetActiveFilters={(key, value) => {
+        props.setActiveFilters({ variables: { key, value } });
+        props.filterItems();
+      }}
+    />
+  );
+};
+
 export default compose(
-  graphql(SERVICE_INSTANCES_QUERY, {
-    name: 'serviceInstances',
-    options: () => ({
-      fetchPolicy: 'network-only',
-      variables: {
-        environment: builder.getCurrentEnvironmentId(),
-      },
-    }),
-  }),
   graphql(SERVICE_INSTANCES_DELETE_MUTATION, {
     props: ({ mutate }) => ({
       deleteServiceInstance: name =>
@@ -44,33 +47,24 @@ export default compose(
   graphql(SET_ACTIVE_FILTERS_MUTATION, {
     name: 'setActiveFilters',
   }),
-)(
-  compose(
-    graphql(FILTERED_ITEMS_QUERY, {
-      name: 'filteredItems',
-      options: {
-        fetchPolicy: 'cache-and-network',
+  graphql(ALL_ITEMS_QUERY, {
+    name: 'allItems',
+    options: () => ({
+      variables: {
+        environment: builder.getCurrentEnvironmentId(),
       },
     }),
-    graphql(ACTIVE_FILTERS_QUERY, {
-      name: 'activeFilters',
-      options: {
-        fetchPolicy: 'cache-and-network',
-      },
-    }),
-    graphql(ALL_FILTERS_QUERY, {
-      name: 'allFilters',
-      options: {
-        fetchPolicy: 'cache-and-network',
-      },
-    }),
-  )(props => (
-    <ServiceInstances
-      {...props}
-      filterClassesAndSetActiveFilters={(key, value) => {
-        props.setActiveFilters({ variables: { key, value } });
-        props.filterItems();
-      }}
-    />
-  )),
-);
+  }),
+  graphql(FILTERED_ITEMS_QUERY, {
+    name: 'filteredItems',
+  }),
+  graphql(ACTIVE_FILTERS_QUERY, {
+    name: 'activeFilters',
+    options: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }),
+  graphql(ALL_FILTERS_QUERY, {
+    name: 'allFilters',
+  }),
+)(ServiceInstanceContainer);

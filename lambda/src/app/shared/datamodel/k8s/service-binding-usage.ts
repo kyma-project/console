@@ -1,32 +1,41 @@
 import { IMetaDataOwner, MetaDataOwner } from './generic/meta-data-owner';
 
 export interface IServiceBindingUsage extends IMetaDataOwner {
-    spec?: IServiceBindingUsageSpec;
+  spec?: IServiceBindingUsageSpec;
 }
 
-
 export interface IServiceBindingUsageSpec {
-    serviceBindingRef: ILocalReferenceByName;
-    usedBy: ILocalReferenceByKindAndName;
+  serviceBindingRef: ILocalReferenceByName;
+  usedBy: ILocalReferenceByKindAndName;
+  parameters: ILocalParams;
 }
 
 export interface ILocalReferenceByName {
-    name: string;
+  name: string;
 }
 
 export interface ILocalReferenceByKindAndName {
-    name: string;
-    kind: string;
+  name: string;
+  kind: string;
+}
+
+export interface ILocalParams {
+  envPrefix: ILocalEnvPrefix;
+}
+
+export interface ILocalEnvPrefix {
+  name: string;
 }
 
 export interface IServiceBindingUsageList extends IMetaDataOwner {
-    items: IServiceBindingUsage[];
+  items: IServiceBindingUsage[];
 }
 
-export class ServiceBindingUsage extends MetaDataOwner implements IServiceBindingUsage {
-    spec?: IServiceBindingUsageSpec;
-    constructor(input?: IServiceBindingUsage) {
-        super(input.metadata, input.status, input.kind, input.apiVersion);
-        this.spec = input.spec;
-    }
+export class ServiceBindingUsage extends MetaDataOwner
+  implements IServiceBindingUsage {
+  spec?: IServiceBindingUsageSpec;
+  constructor(input?: IServiceBindingUsage) {
+    super(input.metadata, input.status, input.kind, input.apiVersion);
+    this.spec = input.spec;
+  }
 }

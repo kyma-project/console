@@ -24,6 +24,10 @@ export const navModel = {
           {
             name: 'Instances',
             link: 'instances'
+          },
+          {
+            name: 'Brokers',
+            link: 'brokers'
           }
         ]
       },
@@ -41,6 +45,10 @@ export const navModel = {
           {
             name: 'Resources',
             link: 'resources'
+          },
+          {
+            name: 'Config Maps',
+            link: 'configmaps'
           }
         ]
       },
@@ -119,6 +127,11 @@ export const navModel = {
           {
             name: 'Stats & Metrics',
             link: `https://grafana.${AppConfig.domain}/`,
+            external: true
+          },
+          {
+            name: 'Tracing',
+            link: `https://jaeger.${AppConfig.domain}/`,
             external: true
           }
         ]

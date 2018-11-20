@@ -8,7 +8,7 @@ The [create-react-app](https://github.com/facebook/create-react-app) project pro
 
 ## OSBA Contract
 
-Contract with [OSBA](https://www.openservicebrokerapi.org/) is available in the [OSBAContract.md](OSBAContract.md) file.
+Contract with [OSBA](https://www.openservicebrokerapi.org/) is available in the [Instances view](https://github.com/kyma-project/kyma/tree/master/docs/service-catalog/docs/062-ui-instances.md) document.
 
 ## Installation
 
@@ -30,7 +30,7 @@ The build is minified and the filenames include hashes.
 Run the following command to build and run the Docker image:
 
 ```
-sh ../scripts/build-docker-image.sh instances-ui 
+sh ../scripts/build-docker-image.sh instances-ui
 docker run --rm -p 3000:80 instances-ui
 open http://localhost:3000 or http://localhost:3000/status in a browser
 ```
@@ -51,4 +51,4 @@ If lint errors appear, the console displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode.
 
-See the **Running Tests** section in this [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests) file for more information.
+See the **Running Tests** section in this [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) file for more information.

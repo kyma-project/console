@@ -26,4 +26,9 @@ export const ParametersModalButton = SecretModalButton;
 
 export const ActionsWrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
+`;
+
+export const Bold = styled.span`
+  font-weight: bold;
 `;

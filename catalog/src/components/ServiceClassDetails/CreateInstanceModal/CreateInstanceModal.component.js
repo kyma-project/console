@@ -50,11 +50,16 @@ class CreateInstanceModal extends React.Component {
 
     if (!serviceClass) return;
 
+    const planName =
+      serviceClass &&
+      serviceClass.plans &&
+      serviceClass.plans[0] &&
+      serviceClass.plans[0].name;
     this.setState({
       formData: {
         ...this.state.formData,
         name: '',
-        plan: serviceClass && serviceClass.plans[0].name,
+        plan: planName,
       },
     });
   }
@@ -224,7 +229,6 @@ class CreateInstanceModal extends React.Component {
           serviceClass={serviceClass}
           callback={this.callback}
         />
-
         {!instanceCreateParameterSchema ||
         (instanceCreateParameterSchema &&
           !instanceCreateParameterSchema.properties) ? null : (

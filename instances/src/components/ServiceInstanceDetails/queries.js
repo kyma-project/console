@@ -1,96 +1,11 @@
 import gql from 'graphql-tag';
+import { SERVICE_INSTANCE_DETAILS_FRAGMENT } from '../DataProvider/fragments';
 
-const serviceClassQGL = `
-  name
-  displayName
-  externalName
-  description
-  documentationUrl
-  supportUrl
-  content
-  asyncApiSpec
-  apiSpec
-`;
-
-const servicePlanQGL = `
-  name
-  displayName
-  externalName
-  description
-  instanceCreateParameterSchema
-`;
-
-export const SERVICE_INSTANCE_QUERY = gql`
-  query ServiceInstance($environment: String!, $name: String!) {
-    serviceInstance(environment: $environment, name: $name) {
-      name
-      environment
-      planSpec
-      labels
-      status {
-        type
-        message
-      }
-      serviceClass {
-        ${serviceClassQGL}
-        environment
-      }
-      clusterServiceClass {
-        ${serviceClassQGL}
-      }
-      servicePlan {
-        ${servicePlanQGL}
-        environment
-        relatedServiceClassName
-      }
-      clusterServicePlan {
-        ${servicePlanQGL}
-        relatedClusterServiceClassName
-      }
-      serviceBindings {
-        items {
-          name
-          environment
-          parameters
-          secret {
-            name
-            data
-            environment
-          }
-          serviceInstanceName
-          status {
-            type
-            reason
-            message
-          }
-        }
-        stats {
-          ready
-          failed
-          pending
-          unknown
-        }
-      }
-      serviceBindingUsages {
-        name
-        environment
-        serviceBinding {
-          name
-          secret {
-            name
-            data
-          }
-        }
-        status {
-          type
-          reason
-          message
-        }
-        usedBy {
-          name
-          kind
-        }
-      }
+export const SERVICE_INSTANCES_DETAILS = gql`
+  query allItems($environment: String!) {
+    serviceInstances(environment: $environment) @client {
+      ...serviceInstanceDetails
     }
   }
+  ${SERVICE_INSTANCE_DETAILS_FRAGMENT}
 `;

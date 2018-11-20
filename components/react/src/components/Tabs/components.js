@@ -18,7 +18,7 @@ export const TabsHeader = styled.ul`
 
 export const TabsHeaderAdditionalContent = styled.li`
   margin: 0 15px 0 auto;
-  padding: 19px 0 15px;
+  padding: 17px 0 15px;
   border: none;
   position: relative;
   color: ${props => (props.active ? '#0a6ed1' : '#32363b')};

@@ -1,6 +1,11 @@
 /* tslint:disable:max-classes-per-file */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import {
+  Router,
+  ActivatedRoute,
+  RouterModule,
+  NavigationEnd
+} from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, of, throwError } from 'rxjs';
@@ -19,12 +24,6 @@ describe('ExternalViewComponent', () => {
   let fixture: ComponentFixture<ExternalViewComponent>;
   let extensionsService: ExtensionsService;
   let extAppViewRegistryService: ExtAppViewRegistryService;
-
-  class RouterMock {
-    navigateByUrl() {
-      return Promise.resolve(true);
-    }
-  }
 
   class OAuthMock {
     getIdToken() {
@@ -71,8 +70,33 @@ describe('ExternalViewComponent', () => {
   };
 
   const ActivatedRouteMock = {
-    params: of({ id: 'testId', pathSegment1: 'tets' }),
-    data: of({ placement: 'environment' })
+    snapshot: {
+      data: { placement: 'environment' },
+      children: [
+        {
+          params: { id: 'testId', pathSegment1: 'tets' },
+          children: []
+        }
+      ]
+    }
+  };
+
+  let rCallback;
+  const RouterMock = {
+    navigateByUrl() {
+      return Promise.resolve(true);
+    },
+    events: {
+      subscribe(callback) {
+        rCallback = callback;
+      }
+    }
+  };
+
+  const testNavigationEvent = () => {
+    rCallback(
+      new NavigationEnd(1, '/home/environments/tets/extensions/tets', '')
+    );
   };
 
   const ExtensionsServiceStub = {
@@ -89,14 +113,14 @@ describe('ExternalViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterModule],
+      imports: [HttpClientTestingModule, [RouterModule.forRoot([])]],
       declarations: [ExternalViewComponent],
       providers: [
         ExtensionsService,
         CurrentEnvironmentService,
         ExtAppViewRegistryService,
         { provide: ActivatedRoute, useValue: ActivatedRouteMock },
-        { provide: Router, useValue: new RouterMock() },
+        { provide: Router, useValue: RouterMock },
         { provide: OAuthService, useValue: new OAuthMock() },
         { provide: ExtensionsService, useValue: ExtensionsServiceStub }
       ]
@@ -118,6 +142,8 @@ describe('ExternalViewComponent', () => {
     );
     spyOn(extensionsService, 'getExternalExtensions').and.returnValue(of([]));
 
+    testNavigationEvent();
+
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(extensionsService.getExtensions).toHaveBeenCalled();
@@ -130,6 +156,8 @@ describe('ExternalViewComponent', () => {
         of([new MicroFrontend(frontend)])
       );
       spyOn(extensionsService, 'getExternalExtensions').and.returnValue(of([]));
+
+      testNavigationEvent();
 
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
@@ -146,6 +174,8 @@ describe('ExternalViewComponent', () => {
         of([new MicroFrontend(frontend)])
       );
 
+      testNavigationEvent();
+
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
       expect(iFrame.getAttribute('src')).toEqual(
@@ -159,6 +189,8 @@ describe('ExternalViewComponent', () => {
       spyOn(extensionsService, 'getExtensions').and.returnValue(of([]));
       spyOn(extensionsService, 'getExternalExtensions').and.returnValue(of([]));
 
+      testNavigationEvent();
+
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
       expect(iFrame.getAttribute('src')).toEqual('');
@@ -171,6 +203,8 @@ describe('ExternalViewComponent', () => {
         return throwError('error');
       });
       spyOn(extensionsService, 'getExternalExtensions').and.returnValue(of([]));
+
+      testNavigationEvent();
 
       fixture.detectChanges();
       const iFrame = document.getElementById('externalViewFrame');
@@ -190,6 +224,8 @@ describe('ExternalViewComponent', () => {
         '10-10-10'
       );
 
+      testNavigationEvent();
+
       fixture.detectChanges();
       expect(extensionsService.getExtensions).toHaveBeenCalled();
       expect(extensionsService.getExternalExtensions).not.toHaveBeenCalled();
@@ -201,6 +237,8 @@ describe('ExternalViewComponent', () => {
       spyOn(extensionsService, 'getExtensions').and.returnValue(of([]));
       spyOn(extensionsService, 'getExternalExtensions').and.returnValue(of([]));
       spyOn(extAppViewRegistryService, 'deregisterView');
+
+      testNavigationEvent();
 
       fixture.detectChanges();
       expect(extensionsService.getExtensions).toHaveBeenCalled();
@@ -216,6 +254,8 @@ describe('ExternalViewComponent', () => {
       );
       spyOn(extensionsService, 'getExternalExtensions').and.returnValue(of([]));
       spyOn(extAppViewRegistryService, 'deregisterView');
+
+      testNavigationEvent();
 
       fixture.detectChanges();
       component.ngOnDestroy();

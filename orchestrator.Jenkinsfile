@@ -8,11 +8,10 @@ Monorepo root orchestrator: This Jenkinsfile runs the Jenkinsfiles of all subpro
     - passes info of:
         - revision
         - branch
-        - current app version
+        - current app version (first 7 characters of git revision)
 
 */
 def label = "console-${UUID.randomUUID().toString()}"
-appVersion = "0.1." + env.BUILD_NUMBER
 
 /* 
     Projects that are built when changed. 
@@ -20,8 +19,9 @@ appVersion = "0.1." + env.BUILD_NUMBER
 */
 projects = [
     "core",
-    "instances",
     "catalog",
+    "instances",
+    "brokers",
     "content",
     "components/react",
     "tests",
@@ -38,11 +38,6 @@ properties([
     buildDiscarder(logRotator(numToKeepStr: '30')),
 ])
 
-/*
-    if email of commiter will be "kyma.bot@sap.com", then build will aborted
-*/
-def autoCancelled = false
-
 podTemplate(label: label) {
     node(label) {
         try {
@@ -56,17 +51,13 @@ podTemplate(label: label) {
                                 script: "git rev-parse origin/${env.BRANCH_NAME}",
                                 returnStdout: true
                             ).trim()
+                            appVersion = commitID.substring(0,8)
                             committerEmail = sh (
                                 script: 'git --no-pager show -s --format=\'%ae\'',
                                 returnStdout: true
                             ).trim()
 
-                            if(committerEmail == "kyma.bot@sap.com") {
-                                autoCancelled = true
-                                error("Aborting the build to prevent a loop")
-                            }
-
-                            changes = changedProjects()
+                            changes = changedProjects(committerEmail)
                         }
 
                         stage('collect projects') {
@@ -90,14 +81,9 @@ podTemplate(label: label) {
             }
         } catch (ex) {
             echo "Got exception: ${ex}"
-
-            if(autoCancelled) {
-                currentBuild.result = "SUCCESS"
-            } else {
-                currentBuild.result = "FAILURE"
-                def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
-                emailext body: body, recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-            }
+            currentBuild.result = "FAILURE"
+            def body = "${currentBuild.currentResult} ${env.JOB_NAME}${env.BUILD_DISPLAY_NAME}: on branch: ${env.BRANCH_NAME}. See details: ${env.BUILD_URL}"
+            emailext body: body, recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
         }
     }
 }
@@ -107,14 +93,13 @@ stage('build projects') {
     parallel jobs
 }
 
-
 /* -------- Helper Functions -------- */
 
 /**
  * Provides a list with the projects that have changes within the given projects list.
  * If no changes found, all projects will be returned.
  */
-String[] changedProjects() {
+String[] changedProjects(String committerEmail) {
     res = []
     def allProjects = projects
     echo "Looking for changes in the following projects: $allProjects."
@@ -123,20 +108,23 @@ String[] changedProjects() {
     allChanges = changeset().split("\n")
 
         // if no changes build all projects
-        if (allChanges.size() == 0) {
+    if (allChanges.size() == 0) {
         echo "No changes found or could not be fetched, triggering all projects."
         return allProjects
     }
 
     // parse changeset and keep only relevant folders -> match with projects defined
     for (int i=0; i < allProjects.size(); i++) {
+        if (env.BRANCH_NAME == 'master' && committerEmail == "kyma.bot@sap.com" && allProjects[i] == "components/react") {
+            continue
+        } 
         for (int j=0; j < allChanges.size(); j++) {
             if (allChanges[j].startsWith(allProjects[i]) && changeIsValidFileType(allChanges[j],allProjects[i]) && !res.contains(allProjects[i])) {
                 res.add(allProjects[i])
                 break // already found a change in the current project, no need to continue iterating the changeset
             }
-            if (projects[i] == "governance" && allChanges[j].endsWith(".md") && !res.contains(projects[i])) {
-                res.add(projects[i])
+            if (env.BRANCH_NAME != 'master' && allProjects[i] == "governance" && allChanges[j].endsWith(".md") && !res.contains(allProjects[i])) {
+                res.add(allProjects[i])
                 break // already found a change in one of the .md files, no need to continue iterating the changeset
             }
         }
@@ -155,7 +143,7 @@ boolean changeIsValidFileType(String change, String project){
 @NonCPS
 String changeset() {
     // on branch get changeset comparing with master
-    if (env.BRANCH_NAME != "master") {
+    if (env.BRANCH_NAME != 'master') {
         echo "Fetching changes between origin/${env.BRANCH_NAME} and origin/master."
         return sh (script: "git --no-pager diff --name-only origin/master...origin/${env.BRANCH_NAME} | grep -v 'vendor\\|node_modules' || echo ''", returnStdout: true)
     }

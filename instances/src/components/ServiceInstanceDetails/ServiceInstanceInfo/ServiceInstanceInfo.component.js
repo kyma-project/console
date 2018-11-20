@@ -26,6 +26,9 @@ import {
 
 import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
 
+const INFORMATION_KEY_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.3 };
+const INFORMATION_VALUE_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.7 };
+
 const ServiceInstanceInfo = ({ serviceInstance }) => {
   const statusIcon = statusType => {
     switch (statusType) {
@@ -68,11 +71,11 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
             <Separator />
             <ContentDescription>
               <Grid>
-                <Grid.Unit size={0.2}>
-                  <Element margin="0">Service Class</Element>
+                <Grid.Unit size={INFORMATION_KEY_SIZE}>
+                  <Element>Service Class</Element>
                 </Grid.Unit>
-                <Grid.Unit size={0.8}>
-                  <Element margin="0" data-e2e-id="instance-service-class">
+                <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+                  <Element data-e2e-id="instance-service-class">
                     {instanceClass && instanceClass.name ? (
                       <ServiceClassButton
                         onClick={() =>
@@ -86,10 +89,10 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     )}
                   </Element>
                 </Grid.Unit>
-                <Grid.Unit size={0.2}>
+                <Grid.Unit size={INFORMATION_KEY_SIZE}>
                   <Element>Plan</Element>
                 </Grid.Unit>
-                <Grid.Unit size={0.8}>
+                <Grid.Unit size={INFORMATION_VALUE_SIZE}>
                   <Element>
                     {serviceInstance.planSpec &&
                     serviceInstance.planSpec !== null &&
@@ -113,7 +116,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                         }
                       />
                     ) : (
-                      `${getResourceDisplayName(instancePlan)}`
+                      `${getResourceDisplayName(instancePlan) || '-'}`
                     )}
                   </Element>
                 </Grid.Unit>
@@ -121,10 +124,10 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               {serviceInstance.labels &&
                 serviceInstance.labels.length > 0 && (
                   <Grid>
-                    <Grid.Unit size={0.2}>
+                    <Grid.Unit size={INFORMATION_KEY_SIZE}>
                       <Element>Labels</Element>
                     </Grid.Unit>
-                    <Grid.Unit size={0.8}>
+                    <Grid.Unit size={INFORMATION_VALUE_SIZE}>
                       <Element margin="1px 0 0 0">
                         {serviceInstance.labels.map(label => (
                           <Label key={label}>{label}</Label>
@@ -135,7 +138,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 )}
               {instanceClass && instanceClass.documentationUrl ? (
                 <Grid>
-                  <Grid.Unit size={0.2}>
+                  <Grid.Unit size={INFORMATION_KEY_SIZE}>
                     <Element
                       margin={
                         serviceInstance.labels &&
@@ -147,7 +150,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                       Documentation
                     </Element>
                   </Grid.Unit>
-                  <Grid.Unit size={0.8}>
+                  <Grid.Unit size={INFORMATION_VALUE_SIZE}>
                     <Element
                       margin={
                         serviceInstance.labels &&
@@ -169,10 +172,10 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               ) : null}
               {instanceClass && instanceClass.supportUrl ? (
                 <Grid>
-                  <Grid.Unit size={0.2}>
+                  <Grid.Unit size={INFORMATION_KEY_SIZE}>
                     <Element>Support</Element>
                   </Grid.Unit>
-                  <Grid.Unit size={0.8}>
+                  <Grid.Unit size={INFORMATION_VALUE_SIZE}>
                     <Element>
                       <ExternalLink
                         href={instanceClass.supportUrl}

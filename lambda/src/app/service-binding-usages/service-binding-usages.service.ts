@@ -7,6 +7,8 @@ import {
   ILocalReferenceByName,
   ILocalReferenceByKindAndName,
   IServiceBindingUsageList,
+  ILocalEnvPrefix,
+  ILocalParams,
 } from '../shared/datamodel/k8s/service-binding-usage';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../app.config';
@@ -79,9 +81,16 @@ export class ServiceBindingUsagesService {
       name: '',
       kind: '',
     };
+    const prefix: ILocalEnvPrefix = {
+      name: '',
+    };
+    const params: ILocalParams = {
+      envPrefix: prefix,
+    };
     const sp: IServiceBindingUsageSpec = {
       serviceBindingRef: sbName,
       usedBy: ub,
+      parameters: params,
     };
     const serviceBindingUsage = new ServiceBindingUsage({
       kind: 'ServiceBindingUsage',

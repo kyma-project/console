@@ -26,6 +26,8 @@ class Tooltip extends React.Component {
     minWidth: PropTypes.string,
     maxWidth: PropTypes.string,
     orientation: PropTypes.string,
+    showTooltipTimeout: PropTypes.number,
+    hideTooltipTimeout: PropTypes.number,
   };
 
   static defaultProps = {
@@ -45,14 +47,22 @@ class Tooltip extends React.Component {
   };
 
   handleShowTooltip = () => {
+    const { showTooltipTimeout } = this.props;
     if (typeof this.setVisibility === 'function' && !this.state.showTooltip) {
-      setTimeout(() => this.setVisibility(true), 100);
+      setTimeout(
+        () => this.setVisibility(true),
+        showTooltipTimeout ? showTooltipTimeout : 100,
+      );
     }
   };
 
   handleHideTooltip = () => {
+    const { hideTooltipTimeout } = this.props;
     if (typeof this.setVisibility === 'function' && !this.state.showTooltip) {
-      setTimeout(() => this.setVisibility(false), 100);
+      setTimeout(
+        () => this.setVisibility(false),
+        hideTooltipTimeout ? hideTooltipTimeout : 100,
+      );
     }
   };
 
@@ -67,6 +77,7 @@ class Tooltip extends React.Component {
       icon,
       type,
       orientation,
+      wrapperStyles,
     } = this.props;
 
     return (
@@ -74,6 +85,7 @@ class Tooltip extends React.Component {
         onMouseEnter={this.handleShowTooltip}
         onMouseLeave={this.handleHideTooltip}
         type={type === undefined ? 'default' : type}
+        wrapperStyles={wrapperStyles}
       >
         {children}
         {visibleTooltip &&

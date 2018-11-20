@@ -10,6 +10,7 @@ class InformationModal extends React.Component {
     footer: PropTypes.any,
     modalOpeningComponent: PropTypes.any,
     width: PropTypes.string,
+    headerAdditionalInfo: PropTypes.string,
   };
 
   static defaultProps = {
@@ -21,7 +22,14 @@ class InformationModal extends React.Component {
   }
 
   render() {
-    const { title, content, footer, modalOpeningComponent, width } = this.props;
+    const {
+      title,
+      content,
+      footer,
+      modalOpeningComponent,
+      width,
+      headerAdditionalInfo,
+    } = this.props;
 
     return (
       <Modal
@@ -30,6 +38,7 @@ class InformationModal extends React.Component {
         footer={footer}
         modalOpeningComponent={modalOpeningComponent}
         width={width}
+        headerAdditionalInfo={headerAdditionalInfo}
       />
     );
   }

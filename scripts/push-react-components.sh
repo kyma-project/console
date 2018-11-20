@@ -41,6 +41,7 @@ echo "Push new version of react-components..."
 
 git add ./catalog/package.json
 git add ./instances/package.json
+git add ./brokers/package.json
 git add ./content/package.json
 git add ./components/react/package.json
 git add ./components/react/package-lock.json

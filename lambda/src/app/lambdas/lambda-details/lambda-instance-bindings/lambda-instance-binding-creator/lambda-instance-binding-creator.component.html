@@ -10,6 +10,12 @@
           <h4 class="tn-modal__title">Create Service Binding</h4>
         </div>
         <div class="tn-modal__body">
+            <label class="control-label">Service Instance Prefix</label>
+            <input class="tn-form__control" type="text" id="input-svc-instance-prefix" (keyup)="validatesPrefix()"  [(ngModel)]="selectedInstanceBindingPrefix">
+            <div *ngIf="isSelectedInstanceBindingPrefixInvalid">
+              <p class="alert">Invalid prefix: must consist of lower case alphanumeric characters, '-', '_' or '.', no spaces
+                and must start and end with an alphanumeric character. It should not be more than 61 characters long.</p>
+            </div>
           <p>
             <label for="instanceSelect" class="control-label">Service Instance</label>
             <select id="instanceSelect" class="form-control input-lg" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">

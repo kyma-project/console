@@ -30,5 +30,6 @@ button {
   &:disabled {
     cursor: default;
     outline: none;
+    color: darkgrey;
   }
 }

@@ -10,6 +10,7 @@ The Console project consists of the following UI projects:
 - [`Core`](./core) - The main frame of Kyma UI
 - [`Catalog`](./catalog) - The UI layer for Service Catalog
 - [`Instances`](./instances) - The view for displaying Service Instances
+- [`Brokers`](./brokers) - The view for displaying Service Brokers
 - [`Lambda`](./lambda) - The view for lambda functions
 - [`Content`](./content) - The documentation view
 - [`Tests`](./tests) - Acceptance and end-to-end tests
@@ -20,7 +21,7 @@ Console also includes the libraries with components for the React and Angular fr
 
 ## Installation
 
-1. Install [Kyma](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-gs-local-installation.md) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
+1. Install [Kyma](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-inst-local-installation-from-sources.md) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
 2. Install Console that uses [Lerna](https://github.com/lerna/lerna) for managing local dependencies. To install all dependencies for all UI projects and prepare symlinks for local packages within this repository that are components for the React and Angular in the [`components`](./components) folder, run the following commands:
 ```
 npm install
@@ -41,8 +42,9 @@ The `Core` and other UIs run at the following addresses:
 - `Core` - [http://console-dev.kyma.local:4200](http://console-dev.kyma.local:4200)
 - `Catalog` - [http://console-dev.kyma.local:8000](http://console-dev.kyma.local:8000)
 - `Instances` - [http://console-dev.kyma.local:8001](http://console-dev.kyma.local:8001)
+- `Brokers` - [http://console-dev.kyma.local:8002](http://console-dev.kyma.local:8002)
 - `Lambda` - [http://console-dev.kyma.local:4201](http://console-dev.kyma.local:4201)
-- `Content` - [http://console-dev.kyma.local:8002](http://console-dev.kyma.local:8002)
+- `Content` - [http://console-dev.kyma.local:8003](http://console-dev.kyma.local:8003)
 
 If you want to run only a specific UI, follow the instructions in the appropriate folder.
 

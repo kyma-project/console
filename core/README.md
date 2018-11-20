@@ -31,7 +31,7 @@ To simplify development, set up another instance of the Console application serv
 - Run `npm i ng-cli` to install angular CLI
 - Update your `/etc/hosts` file to include `127.0.0.1 console-dev.kyma.local`
 - Run the command `npm start` to serve the console locally,
-- Access tho local instance of Console in the browser at `http://console-dev.kyma.local:4200`
+- Access the local instance of Console in the browser at `http://console-dev.kyma.local:4200`
 - Login to Console as `admin@kyma.cx`
 
 

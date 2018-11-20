@@ -3,8 +3,7 @@ import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import ScrollArea from 'react-scrollbar';
 
-import Button from '../Button';
-import Separator from '../Separator';
+import Tooltip from '../Tooltip';
 import Icon from '../Icon';
 
 import {
@@ -15,6 +14,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalCloseButton,
+  ModalInfoButton,
+  ModalHeaderTitle,
+  ModalHeaderAdditionalInfo,
 } from './components';
 
 class Modal extends React.Component {
@@ -87,6 +89,7 @@ class Modal extends React.Component {
       borderFooter,
       modalOpeningComponent,
       width,
+      headerAdditionalInfo,
     } = this.props;
     const { showModal, heightContent, heightAdditionalContent } = this.state;
 
@@ -135,7 +138,21 @@ class Modal extends React.Component {
             style={reactModalCustomModalStyles}
           >
             <ModalHeader>
-              <div>{title}</div>
+              <ModalHeaderTitle>{title}</ModalHeaderTitle>
+              <ModalHeaderAdditionalInfo>
+                {headerAdditionalInfo && (
+                  <ModalInfoButton>
+                    <Tooltip
+                      content={headerAdditionalInfo}
+                      orientation={'bottom'}
+                      minWidth={'300px'}
+                      type="light"
+                    >
+                      <Icon icon={'\ue1c4'} />
+                    </Tooltip>
+                  </ModalInfoButton>
+                )}
+              </ModalHeaderAdditionalInfo>
               <ModalCloseButton onClick={this.handleCloseModal}>
                 <Icon icon={'\ue03e'} />
               </ModalCloseButton>

@@ -31,8 +31,8 @@ Run the following command to build and run the Docker image:
 
 ```
 sh ../scripts/build-docker-image.sh docs-ui
-docker run --rm -p 8002:80 docs-ui
-open http://localhost:8002 or http://localhost:8002/status in a browser
+docker run --rm -p 8003:80 docs-ui
+open http://localhost:8003 or http://localhost:8003/status in a browser
 ```
 
 ## Development
@@ -42,7 +42,7 @@ This section describes how to run the application.
 ### Run the application
 
 Run the `npm start` command to start the application in the development mode.
-Open the `[http://localhost:8002](http://localhost:8002)` link to view it in the browser.
+Open the `[http://localhost:8003](http://localhost:8003)` link to view it in the browser.
 
 The page reloads if you make edits.
 If lint errors appear, the console displays them.
@@ -51,4 +51,4 @@ If lint errors appear, the console displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode.
 
-See the **Running Tests** section in the Create React App [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests) document for more information.
+See the **Running Tests** section in the Create React App [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) document for more information.

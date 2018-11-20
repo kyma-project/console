@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ExtensionsService } from '../services/extensions.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
@@ -23,6 +23,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
   private currentEnvironmentSubscription: Subscription;
   private currentEnvironmentId: string;
   private confirmationCheckTimeout: number = null;
+  private routeEventSubscription = null;
 
   constructor(
     private router: Router,
@@ -40,6 +41,12 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
       });
+
+    this.routeEventSubscription = this.router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.handleRouteChange();
+      }
+    });
   }
 
   private getMatchingViewsForPathAndContext(
@@ -66,72 +73,82 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  ngOnInit() {
-    combineLatest(this.route.params, this.route.data).subscribe(
-      paramsAndData => {
-        const params = paramsAndData[0];
-        const data = paramsAndData[1];
-        let path = params['pathSegment1'];
-        if (params['pathSegment2']) {
-          path += '/' + params['pathSegment2'];
-        }
-        if (params['pathSegment3']) {
-          path += '/' + params['pathSegment3'];
-        }
+  ngOnInit() {}
 
-        this.extensionsService
-          .getExtensions(this.currentEnvironmentId)
-          .pipe(
-            map(res => this.getMatchingViewsForPathAndContext(res, path, null)),
-            first(),
-            catchError(error => {
-              this.externalViewLocation = '';
-              throw error;
-            })
-          )
-          .subscribe(
-            extensions => {
-              if (extensions.length > 0) {
-                this.externalViewLocation =
-                  extensions[0].navigationNode.computedViewUrl;
-                this.renderExternalView();
-              } else {
-                this.extensionsService
-                  .getExternalExtensions()
-                  .pipe(
-                    map(res =>
-                      this.getMatchingViewsForPathAndContext(
-                        res,
-                        path,
-                        data.navigationContext
-                      )
-                    ),
-                    first(),
-                    catchError(error => {
-                      this.externalViewLocation = '';
-                      throw error;
-                    })
+  handleRouteChange() {
+    const data = this.route.snapshot.data;
+
+    const params = {};
+    let children = this.route.snapshot.children;
+    while (children && children.length > 0) {
+      Object.assign(params, children[0].params);
+      children = children[0].children;
+    }
+
+    if (!params['pathSegment1']) {
+      return;
+    }
+
+    let path = params['pathSegment1'];
+    if (params['pathSegment2']) {
+      path += '/' + params['pathSegment2'];
+    }
+    if (params['pathSegment3']) {
+      path += '/' + params['pathSegment3'];
+    }
+
+    this.extensionsService
+      .getExtensions(this.currentEnvironmentId)
+      .pipe(
+        map(res => this.getMatchingViewsForPathAndContext(res, path, null)),
+        first(),
+        catchError(error => {
+          this.externalViewLocation = '';
+          throw error;
+        })
+      )
+      .subscribe(
+        extensions => {
+          if (extensions.length > 0) {
+            this.externalViewLocation =
+              extensions[0].navigationNode.computedViewUrl;
+            this.renderExternalView();
+          } else {
+            this.extensionsService
+              .getExternalExtensions()
+              .pipe(
+                map(res =>
+                  this.getMatchingViewsForPathAndContext(
+                    res,
+                    path,
+                    data.navigationContext
                   )
-                  .subscribe(
-                    clusterExtensions => {
-                      this.externalViewLocation =
-                        clusterExtensions.length > 0
-                          ? clusterExtensions[0].navigationNode.computedViewUrl
-                          : '';
-                      this.renderExternalView();
-                    },
-                    error => {
-                      this.renderExternalView();
-                    }
-                  );
-              }
-            },
-            error => {
-              this.renderExternalView();
-            }
-          );
-      }
-    );
+                ),
+                first(),
+                catchError(error => {
+                  this.externalViewLocation = '';
+                  throw error;
+                })
+              )
+              .subscribe(
+                clusterExtensions => {
+                  this.externalViewLocation =
+                    clusterExtensions.length > 0
+                      ? clusterExtensions[0].navigationNode.computedViewUrl
+                      : '';
+                  this.renderExternalView();
+                },
+                error => {
+                  this.externalViewLocation = '';
+                  throw error;
+                }
+              );
+          }
+        },
+        error => {
+          this.renderExternalView();
+        }
+      );
   }
 
   escapeRegExp(string) {
@@ -155,30 +172,17 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     return processedUrl;
   }
 
-  getUrlWithoutHash(url) {
-    if (!url) {
-      return false;
-    }
-    const urlWithoutHash = url.split('#')[0];
-
-    // We assume that any URL not starting with
-    // http is on the current page's domain
-    if (!urlWithoutHash.startsWith('http')) {
-      return (
-        window.location.origin +
-        (urlWithoutHash.startsWith('/') ? '' : '/') +
-        urlWithoutHash
-      );
-    }
-
-    return urlWithoutHash;
+  getHostname(url) {
+    const urlParser = document.createElement('a'); // new URL() is not supported by all browsers
+    urlParser.href = url;
+    return urlParser.hostname;
   }
 
   isNotSameDomain(viewUrl, iframe) {
     if (iframe) {
-      const previousUrl = this.getUrlWithoutHash(iframe.src);
-      const nextUrl = this.getUrlWithoutHash(viewUrl);
-      return previousUrl !== nextUrl;
+      const previousUrlHostname = this.getHostname(iframe.src);
+      const nextUrlHostname = this.getHostname(viewUrl);
+      return previousUrlHostname !== nextUrlHostname;
     }
     return true;
   }
@@ -189,8 +193,11 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     ) as HTMLIFrameElement;
 
     if (
+      !this.externalViewLocation ||
       !this.extensionsService.isUsingSecureProtocol(this.externalViewLocation)
     ) {
+      element.src = '';
+      this.extAppViewRegistryService.deregisterView(element.contentWindow);
       return;
     }
 
@@ -264,6 +271,10 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.routeEventSubscription) {
+      this.routeEventSubscription.unsubscribe();
+    }
+
     if (this.confirmationCheckTimeout !== null) {
       window.clearTimeout(this.confirmationCheckTimeout);
       this.confirmationCheckTimeout = null;

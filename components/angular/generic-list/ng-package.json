@@ -12,7 +12,8 @@
       "core-js": "core-js",
       "zone.js": "zone.js",
       "ng-click-outside": "ng-click-outside"
-    }
+    },
+    "styleIncludePaths": ["./src/styles"]
   },
   "whitelistedNonPeerDependencies": ["."]
 }

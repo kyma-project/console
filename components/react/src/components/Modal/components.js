@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ModalWrapper = styled.div`
   text-align: ${props => props.align};
+  display: inline;
 `;
 
 export const ModalOpeningComponent = styled.div`
@@ -18,13 +19,18 @@ export const ModalHeader = styled.header`
   text-align: left;
   color: #32363a;
   padding: 16px;
-  overflow: hidden;
   border-bottom: 1px solid rgba(204, 204, 204, 0.3);
   position: relative > p {
     display: inline-block;
     margin-right: 35px;
   }
 `;
+
+export const ModalHeaderTitle = styled.div`
+  display: inline-block;
+`;
+
+export const ModalHeaderAdditionalInfo = ModalHeaderTitle;
 
 export const ModalAdditionalContent = styled.div`
   font-family: '72';
@@ -65,4 +71,17 @@ export const ModalCloseButton = styled.button`
   top: 15px;
   right: 16px;
   padding: 0;
+`;
+export const ModalInfoButton = styled.button`
+  text-decoration: none;
+  cursor: pointer;
+  outline: 0;
+  border: 0;
+  font-family: 'SAP-icons';
+  font-size: 16px;
+  text-align: left;
+  color: #0b74de;
+  display: inline-block;
+  padding: 0;
+  margin-left: 20px;
 `;

@@ -6,7 +6,7 @@ export function getURL(endpoint) {
   let config = {
     catalogUrl: 'http://localhost:8000',
     graphqlApiUrl: 'http://localhost:3000/graphql',
-    subscriptionsApiUrl: 'ws://localhost:3000/subscriptions',
+    subscriptionsApiUrl: 'ws://localhost:3000/graphql',
   };
   const clusterConfig = window['clusterConfig'];
   config = { ...config, ...clusterConfig };

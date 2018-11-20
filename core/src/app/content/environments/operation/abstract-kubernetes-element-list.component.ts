@@ -30,7 +30,7 @@ export class AbstractKubernetesElementListComponent
       new Filter('objectMeta.name', '', false)
     ]
   };
-  pagingState = { pageNumber: 1, pageSize: 9999 };
+  pagingState = { pageNumber: 1, pageSize: 50 };
   entryEventHandler = this.getEntryEventHandler();
 
   public resourceKind: string;
@@ -65,7 +65,7 @@ export class AbstractKubernetesElementListComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  getEntryEventHandler() {
+  getEntryEventHandler(): any {
     return {
       delete: (entry: any) => {
         this.confirmationModal
