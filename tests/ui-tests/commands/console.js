@@ -12,7 +12,7 @@ async function _loginViaDex(page, config) {
     await page.waitForSelector('#password');
     await page.type('#password', config.password);
     await page.waitForSelector(loginButtonSelector);
-    return await page.click(loginButtonSelector);
+    await page.click(loginButtonSelector);
   } catch (err) {
     throw new Error(`Couldn't log in`, err);
   }
@@ -22,7 +22,7 @@ async function login(page, config) {
   await _loginViaDex(page, config);
   const headerSelector = '.sf-header';
   try {
-    return await page.waitForSelector(headerSelector);
+    await page.waitForSelector(headerSelector);
   } catch (err) {
     console.log('Trying to obtain error message');
     await obtainLoginErrorMessage();
