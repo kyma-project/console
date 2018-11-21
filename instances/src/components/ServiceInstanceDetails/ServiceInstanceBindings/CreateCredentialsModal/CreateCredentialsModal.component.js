@@ -27,6 +27,7 @@ class CreateCredentialsModal extends React.Component {
       (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
 
     return {
+      servicePlan: servicePlan,
       bindingCreateParameterSchema: bindingCreateParameterSchema,
       bindingCreateParameters: {},
       tooltipData: null,
@@ -133,6 +134,7 @@ class CreateCredentialsModal extends React.Component {
       bindingCreateParameters,
       tooltipData,
       bindingCreateParameterSchema,
+      servicePlan,
     } = this.state;
 
     const { serviceInstance, id } = this.props;
@@ -150,6 +152,7 @@ class CreateCredentialsModal extends React.Component {
             data={schemaData}
             bindingCreateParameterSchema={bindingCreateParameterSchema}
             onSubmitSchemaForm={this.create}
+            planName={servicePlan.displayName}
             callback={this.callback}
           >
             {/* Styled components don't work here */}
