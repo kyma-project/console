@@ -1,20 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ErrorBoundary from '../../ErrorBoundary/ErrorBoundary.component';
-
-import { JsonSchemaForm, Icon } from '@kyma-project/react-components';
+import { JsonSchemaForm, ErrorBoundary, Icon } from '@kyma-project/react-components';
+import { Bold } from './styled';
 
 class SchemaData extends React.Component {
   static propTypes = {
     callback: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     children: PropTypes.element,
-    instanceCreateParameterSchema: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.string,
-    ]),
+    instanceCreateParameterSchema: PropTypes.object,
     onSubmitSchemaForm: PropTypes.func.isRequired,
+    planName: PropTypes.string,
   };
 
   constructor(props) {
@@ -39,24 +36,20 @@ class SchemaData extends React.Component {
       instanceCreateParameterSchema,
       onSubmitSchemaForm,
       children,
+      planName,
     } = this.props;
     const { instanceCreateParameters } = this.state;
-
-    const schema =
-      typeof instanceCreateParameterSchema === 'string'
-        ? JSON.parse(JSON.stringify(instanceCreateParameterSchema))
-        : instanceCreateParameterSchema;
 
     return (
       <ErrorBoundary
         content={
           <div>
-            <Icon icon={'\uE1EC'} /> Incorrect schema
+            <Icon icon={'\uE1EC'} /> Incorrect Instance Create Parameter schema in <Bold>{planName}</Bold> plan
           </div>
         }
       >
         <JsonSchemaForm
-          schema={schema}
+          schema={instanceCreateParameterSchema}
           onChange={this.onChangeSchemaForm}
           liveValidate={true}
           onSubmit={onSubmitSchemaForm}

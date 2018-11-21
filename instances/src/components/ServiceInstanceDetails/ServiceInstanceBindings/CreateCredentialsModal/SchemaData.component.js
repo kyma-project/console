@@ -1,19 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ErrorBoundary from '../../../ErrorBoundary/ErrorBoundary.component';
-
-import { JsonSchemaForm, Icon } from '@kyma-project/react-components';
+import { JsonSchemaForm, Icon, ErrorBoundary } from '@kyma-project/react-components';
 
 class SchemaData extends React.Component {
   static propTypes = {
     callback: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     children: PropTypes.element,
-    bindingCreateParameterSchema: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.string,
-    ]),
+    bindingCreateParameterSchema: PropTypes.object,
     onSubmitSchemaForm: PropTypes.func.isRequired,
   };
 
@@ -42,21 +37,16 @@ class SchemaData extends React.Component {
     } = this.props;
     const { bindingCreateParameters } = this.state;
 
-    const schema =
-      typeof bindingCreateParameterSchema === 'string'
-        ? JSON.parse(JSON.stringify(bindingCreateParameterSchema))
-        : bindingCreateParameterSchema;
-
     return (
       <ErrorBoundary
         content={
           <div>
-            <Icon icon={'\uE1EC'} /> Incorrect schema
+            <Icon icon={'\uE1EC'} /> Incorrect Binding Create Parameter schema
           </div>
         }
       >
         <JsonSchemaForm
-          schema={schema}
+          schema={bindingCreateParameterSchema}
           onChange={this.onChangeSchemaForm}
           liveValidate={true}
           onSubmit={onSubmitSchemaForm}
