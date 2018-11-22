@@ -150,9 +150,23 @@ async function createRemoteEnvironment(page, name) {
   await page.waitForSelector(createEnvModal, { hidden: true });
 }
 
+async function getRemoteEnvironmentsAfterDelete(
+  page,
+  initialRemoteEnvironments
+) {
+  await page.reload({ waitUntil: 'networkidle0' });
+  const remoteEnvironments = await getRemoteEnvironments(page);
+  if (initialRemoteEnvironments > remoteEnvironments) {
+    console.log('Remote environments was updated');
+    return remoteEnvironments;
+  }
+  throw new Error(`Remote environments was not updated`);
+}
+
 async function deleteRemoteEnvironment(page, name) {
   const remoteEnvironmentsSelector = '.row.sf-list__body';
   const modalSelector = '.sf-modal';
+  await page.waitForSelector(remoteEnvironmentsSelector);
   await page.$$eval(
     remoteEnvironmentsSelector,
     (item, name) => {
@@ -181,6 +195,7 @@ module.exports = {
   getEnvironments,
   createEnvironment,
   getRemoteEnvironments,
+  getRemoteEnvironmentsAfterDelete,
   createRemoteEnvironment,
   deleteRemoteEnvironment
 };

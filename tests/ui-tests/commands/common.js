@@ -19,6 +19,11 @@ async function beforeAll(isTestEnvironmentReady) {
   const height = config.viewportHeight;
   await page.setViewport({ width, height });
   await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
+
+  process.on('unhandledRejection', (reason, p) => {
+    console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    browser.close();
+  });
   await waitForNavigationAndContext(page);
 
   return { page, browser };
@@ -32,8 +37,24 @@ async function testLogin(isTestEnvironmentReady, page) {
   await page.waitForSelector('.sf-toolbar', { visible: true });
 }
 
+async function retry(page, functionToRetry, retryNumber = 3) {
+  for (let i = 1; i <= retryNumber; i++) {
+    console.log('Retrying... Attempt No. ' + i + ' of ' + retryNumber);
+    try {
+      return await functionToRetry();
+    } catch (e) {
+      if (i === retryNumber) {
+        console.log('Retry failed:', e);
+        throw e;
+      }
+      await page.waitFor(2000);
+    }
+  }
+}
+
 module.exports = {
   validateTestEnvironment,
   beforeAll,
-  testLogin
+  testLogin,
+  retry
 };

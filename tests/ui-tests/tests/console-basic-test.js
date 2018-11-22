@@ -65,6 +65,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     //checking list of environments before delete
     const dropdownButton = '.tn-dropdown__control';
     const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
+    await page.waitForSelector(dropdownButton, { visible: true });
     await page.click(dropdownButton);
     await page.waitForSelector(dropdownMenu, { visible: true });
     const existingEnvironments = await kymaConsole.getEnvironments(page);
@@ -79,6 +80,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await page.waitForSelector(deleteConfirmButton, { hidden: true });
     //checking list of environments after delete
     await page.reload({ waitUntil: 'networkidle0' });
+    await page.waitForSelector(dropdownButton, { visible: true });
     await page.click(dropdownButton);
     await page.waitForSelector(dropdownMenu, { visible: true });
     const environments = await kymaConsole.getEnvironments(page);
@@ -124,9 +126,19 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
 
   test('Delete remote environment', async () => {
     common.validateTestEnvironment(dexReady);
+    const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironments(
+      page
+    );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-    await page.reload({ waitUntil: 'networkidle0' });
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
+
+    const remoteEnvironments = await common.retry(
+      page,
+      async () =>
+        await kymaConsole.getRemoteEnvironmentsAfterDelete(
+          page,
+          initialRemoteEnvironments
+        )
+    );
     console.log(
       'Delete remote environment, remaining remote envs: ',
       remoteEnvironments

@@ -18,6 +18,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       const data = await common.beforeAll(isEnvironmentReady);
       browser = data.browser;
       page = data.page;
+
       await common.testLogin(isEnvironmentReady, page);
     } catch (e) {
       isEnvironmentReady = false;
