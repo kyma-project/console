@@ -27,7 +27,7 @@ Console also includes the libraries with components for the React and Angular fr
     npm install
     npm run bootstrap
     ```
-    **NOTE:** `npm run bootstrap` command updates your `/etc/hosts` with `127.0.0.1 console-dev.kyma.local` host.
+    **NOTE:** The `npm run bootstrap` command updates your `/etc/hosts` with the `127.0.0.1 console-dev.kyma.local` host.
 3. Run the following command to run the Console with [`core`](./core) and all the views locally:
     ```
     npm run start
