@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { JsonSchemaForm } from '@kyma-project/react-components';
+import { JsonSchemaForm, Icon, ErrorBoundary } from '@kyma-project/react-components';
+import { Bold } from './styled';
 
 class SchemaData extends React.Component {
   static propTypes = {
     callback: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     children: PropTypes.element,
-    bindingCreateParameterSchemachema: PropTypes.object,
+    bindingCreateParameterSchema: PropTypes.object,
     onSubmitSchemaForm: PropTypes.func.isRequired,
+    planName: PropTypes.string,
   };
 
   constructor(props) {
@@ -34,19 +36,28 @@ class SchemaData extends React.Component {
       bindingCreateParameterSchema,
       onSubmitSchemaForm,
       children,
+      planName,
     } = this.props;
     const { bindingCreateParameters } = this.state;
 
     return (
-      <JsonSchemaForm
-        schema={bindingCreateParameterSchema}
-        onChange={this.onChangeSchemaForm}
-        liveValidate={true}
-        onSubmit={onSubmitSchemaForm}
-        formData={bindingCreateParameters}
+      <ErrorBoundary
+        content={
+          <div>
+            <Icon icon={'\uE1EC'} /> Incorrect Binding Create Parameter schema in <Bold>{planName}</Bold> plan
+          </div>
+        }
       >
-        {children}
-      </JsonSchemaForm>
+        <JsonSchemaForm
+          schema={bindingCreateParameterSchema}
+          onChange={this.onChangeSchemaForm}
+          liveValidate={true}
+          onSubmit={onSubmitSchemaForm}
+          formData={bindingCreateParameters}
+        >
+          {children}
+        </JsonSchemaForm>
+      </ErrorBoundary>
     );
   }
 }

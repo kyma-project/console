@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { JsonSchemaForm } from '@kyma-project/react-components';
+import { JsonSchemaForm, ErrorBoundary, Icon } from '@kyma-project/react-components';
+import { Bold } from './styled';
 
 class SchemaData extends React.Component {
   static propTypes = {
@@ -10,6 +11,7 @@ class SchemaData extends React.Component {
     children: PropTypes.element,
     instanceCreateParameterSchema: PropTypes.object,
     onSubmitSchemaForm: PropTypes.func.isRequired,
+    planName: PropTypes.string,
   };
 
   constructor(props) {
@@ -34,19 +36,28 @@ class SchemaData extends React.Component {
       instanceCreateParameterSchema,
       onSubmitSchemaForm,
       children,
+      planName,
     } = this.props;
     const { instanceCreateParameters } = this.state;
 
     return (
-      <JsonSchemaForm
-        schema={instanceCreateParameterSchema}
-        onChange={this.onChangeSchemaForm}
-        liveValidate={true}
-        onSubmit={onSubmitSchemaForm}
-        formData={instanceCreateParameters}
+      <ErrorBoundary
+        content={
+          <div>
+            <Icon icon={'\uE1EC'} /> Incorrect Instance Create Parameter schema in <Bold>{planName}</Bold> plan
+          </div>
+        }
       >
-        {children}
-      </JsonSchemaForm>
+        <JsonSchemaForm
+          schema={instanceCreateParameterSchema}
+          onChange={this.onChangeSchemaForm}
+          liveValidate={true}
+          onSubmit={onSubmitSchemaForm}
+          formData={instanceCreateParameters}
+        >
+          {children}
+        </JsonSchemaForm>
+      </ErrorBoundary>
     );
   }
 }

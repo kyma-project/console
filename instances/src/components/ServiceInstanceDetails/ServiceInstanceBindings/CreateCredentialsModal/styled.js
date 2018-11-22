@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Bold = styled.span`
+  font-weight: 700;
+`;
+
 export const CreateCredentialsButton = styled.button`
   padding: 0;
   background: none;
