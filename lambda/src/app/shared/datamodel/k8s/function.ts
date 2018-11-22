@@ -3,6 +3,7 @@ import { Deployment, IDeployment, IDeploymentStatus } from './deployment';
 import { Service, IServiceSpec } from './service';
 import { IMetaDataOwner, MetaDataOwner } from './generic/meta-data-owner';
 import { IPodTemplate } from './pod-template';
+import { HPAutoscaler, IHPAutoscaler } from './autoscaler';
 
 export interface IFunction extends IMetaDataOwner {
   spec?: IFunctionSpec;
@@ -20,7 +21,7 @@ export interface IFunctionSpec {
   deps: string;
   service: IServiceSpec;
   deployment: IDeployment;
-  // horizontalPodAutoscaler HorizontalPodAutoscaler;
+  horizontalPodAutoscaler?: IHPAutoscaler;
 }
 
 export class Lambda extends MetaDataOwner implements IFunction {

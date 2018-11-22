@@ -72,6 +72,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
       kind: 'nodejs8',
     },
   ];
+
   theme: string;
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('eventTriggerChooserModal')
@@ -85,14 +86,18 @@ export class LambdaDetailsComponent implements AfterViewInit {
   mode = 'create';
   title = '';
   kind: string;
+  selectedFunctionSize: object;
+  selectedFunctionSizeName: string;
   showSample = false;
   toggleTrigger = false;
   toggleTriggerType = false;
   typeDropdownHidden = true;
+  sizeDropdownHidden = true;
   isLambdaFormValid = true;
   showHTTPURL: HTTPEndpoint = null;
   httpURL = '';
   labels = [];
+  annotations = [];
   md: IMetaData = {
     name: '',
   };
@@ -114,6 +119,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
   sessionId: string;
+  functionSizes = [];
 
   public issuer: string;
   public jwksUri: string;
@@ -133,6 +139,16 @@ export class LambdaDetailsComponent implements AfterViewInit {
     protected route: ActivatedRoute,
     router: Router,
   ) {
+    this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
+      s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
+        s.minReplicas
+      } maxReplicas: ${s.maxReplicas}`;
+      return s;
+    });
+
+    this.selectedFunctionSize = this.functionSizes[0];
+    this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
+
     this.theme = 'eclipse';
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
@@ -221,6 +237,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.typeDropdownHidden = true;
   }
 
+  selectSize(selectedSize) {
+    this.selectedFunctionSize = selectedSize;
+    this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
+    this.sizeDropdownHidden = true;
+  }
+
   onCodeChange(event) {
     const isChange = this.lambda.spec.function !== event;
     this.lambda.spec.function = event;
@@ -275,6 +297,27 @@ export class LambdaDetailsComponent implements AfterViewInit {
         ? this.selectedTriggers[0].eventType
         : 'undefined';
     this.setChecksum();
+
+    if (this.functionSizeHasChanged() === true) {
+      this.lambdaDetailsService.deleteHPA(this.lambda, this.token).subscribe(
+        hpa => {
+          this.setFunctionSize();
+          this.lambda.metadata.annotations = {
+            'function-size': `${this.selectedFunctionSize['name']}`,
+          };
+          this.handleFunctionUpdate();
+        },
+        err => {
+          console.log(err);
+          this.error = err.message;
+        },
+      );
+    } else {
+      this.handleFunctionUpdate();
+    }
+  }
+
+  handleFunctionUpdate() {
     this.lambdaDetailsService.updateLambda(this.lambda, this.token).subscribe(
       lambda => {
         if (this.isHTTPTriggerAdded) {
@@ -662,7 +705,13 @@ export class LambdaDetailsComponent implements AfterViewInit {
       'created-by': 'kubeless',
       function: this.lambda.metadata.name,
     };
+    this.lambda.metadata.annotations = {
+      'function-size': `${this.selectedFunctionSize['name']}`,
+    };
+
     this.lambda.metadata.labels = this.changeLabels();
+
+    this.setFunctionSize();
 
     this.lambdaDetailsService.createLambda(this.lambda, this.token).subscribe(
       lambda => {
@@ -674,6 +723,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         }
       },
       err => {
+        console.log(err);
         this.error = err.message;
       },
     );
@@ -699,8 +749,16 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.typeDropdownHidden = !this.typeDropdownHidden;
   }
 
+  toggleSizeDropDown() {
+    this.sizeDropdownHidden = !this.sizeDropdownHidden;
+  }
+
   closeTypeDropDown() {
     return (this.typeDropdownHidden = true);
+  }
+
+  closeSizeDropDown() {
+    return (this.sizeDropdownHidden = true);
   }
 
   closeTriggerTypeDropDown() {
@@ -727,6 +785,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         lambda => {
           this.lambda = lambda;
           this.labels = this.getLabels(lambda);
+          this.annotations = this.getAnnotations(lambda);
           this.code = lambda.spec.function;
           this.kind = lambda.spec.runtime;
           this.dependency = lambda.spec.deps;
@@ -735,7 +794,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
               this.dependency !== undefined &&
               this.dependency !== '',
           );
+
           this.loaded = observableOf(true);
+          this.functionSizes.forEach(s => {
+            if (`${s.name}` === lambda.metadata.annotations['function-size']) {
+              this.selectedFunctionSize = s;
+              this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
+            }
+          });
         },
         err => {
           this.navigateToList();
@@ -755,6 +821,20 @@ export class LambdaDetailsComponent implements AfterViewInit {
       }
     }
     return labels;
+  }
+
+  getAnnotations(lambda): string[] {
+    const annotations = [];
+    for (const key in lambda.metadata.annotations) {
+      if (lambda.metadata.annotations.hasOwnProperty(key)) {
+        if (lambda.metadata.annotations[key] === 'undefined') {
+          annotations.push(key);
+        } else {
+          annotations.push(key + ':' + lambda.metadata.annotations[key]);
+        }
+      }
+    }
+    return annotations;
   }
 
   cancel() {
@@ -1093,5 +1173,60 @@ export class LambdaDetailsComponent implements AfterViewInit {
       { msg: 'luigi.set-page-dirty', dirty: hasChanges },
       '*',
     );
+  }
+
+  setFunctionSize() {
+    const resources = {
+      limits: {
+        cpu: this.selectedFunctionSize['cpu'],
+        memory: this.selectedFunctionSize['memory'],
+      },
+      requests: AppConfig.functionResourceRequest.requests,
+    };
+
+    // Function Size
+    this.lambda.spec.deployment.spec.replicas = this.selectedFunctionSize[
+      'minReplicas'
+    ];
+    this.lambda.spec.deployment.spec.template.spec.containers[0].name = this.lambda.metadata.name;
+    this.lambda.spec.deployment.spec.template.spec.containers[0].resources = resources;
+
+    // Autoscaler
+    this.lambda.spec.horizontalPodAutoscaler.metadata.name = `${
+      this.lambda.metadata.name
+    }`;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.environment;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.labels = {
+      function: `${this.lambda.metadata.name}`,
+    };
+
+    this.lambda.spec.horizontalPodAutoscaler.spec.scaleTargetRef.name = this.lambda.metadata.name;
+
+    // horizontalPodAutoscaler -> spec -> minReplicas and maxReplicas
+    this.lambda.spec.horizontalPodAutoscaler.spec.minReplicas = this.selectedFunctionSize[
+      'minReplicas'
+    ];
+    this.lambda.spec.horizontalPodAutoscaler.spec.maxReplicas = this.selectedFunctionSize[
+      'maxReplicas'
+    ];
+
+    // cpu: spec -> metrics -> resource -> targetAverageUtilization
+    this.lambda.spec.horizontalPodAutoscaler.spec.metrics[0].resource.targetAverageUtilization =
+      AppConfig.targetAverageUtilization;
+  }
+
+  functionSizeHasChanged(): boolean {
+    let functionSizeChanged = false;
+    if (this.annotations.length > 0) {
+      this.annotations.forEach(label => {
+        const annotationsSplitted = label.split(':');
+        if (annotationsSplitted[0] === 'function-size') {
+          if (annotationsSplitted[1] !== this.selectedFunctionSize['name']) {
+            functionSizeChanged = true;
+          }
+        }
+      });
+      return functionSizeChanged;
+    }
   }
 }

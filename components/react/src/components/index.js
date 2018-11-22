@@ -3,6 +3,7 @@
 
 import Button from './Button';
 import Dropdown from './Dropdown';
+import ErrorBoundary from './ErrorBoundary';
 import Input from './Forms/Input';
 import Select from './Forms/Select';
 import Checkbox from './Forms/Checkbox';
@@ -34,6 +35,7 @@ import Tooltip from './Tooltip';
 module.exports = {
   Button,
   Dropdown,
+  ErrorBoundary,
   Input,
   Select,
   Checkbox,

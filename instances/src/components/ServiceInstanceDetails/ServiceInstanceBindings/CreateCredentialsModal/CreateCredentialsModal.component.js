@@ -27,6 +27,7 @@ class CreateCredentialsModal extends React.Component {
       (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
 
     return {
+      servicePlan: servicePlan,
       bindingCreateParameterSchema: bindingCreateParameterSchema,
       bindingCreateParameters: {},
       tooltipData: null,
@@ -54,11 +55,7 @@ class CreateCredentialsModal extends React.Component {
   };
 
   create = async (params, isOpenedModal) => {
-    const {
-      serviceInstance,
-      createBinding,
-      sendNotification,
-    } = this.props;
+    const { serviceInstance, createBinding, sendNotification } = this.props;
 
     try {
       let bindingCreateParameters;
@@ -137,6 +134,7 @@ class CreateCredentialsModal extends React.Component {
       bindingCreateParameters,
       tooltipData,
       bindingCreateParameterSchema,
+      servicePlan,
     } = this.state;
 
     const { serviceInstance, id } = this.props;
@@ -149,25 +147,24 @@ class CreateCredentialsModal extends React.Component {
 
     const content = [
       <Fragment key={serviceInstance.name}>
-        {bindingCreateParameterSchema &&
-          bindingCreateParameterSchema &&
-          bindingCreateParameterSchema.properties && (
-            <SchemaData
-              data={schemaData}
-              bindingCreateParameterSchema={bindingCreateParameterSchema}
-              onSubmitSchemaForm={this.create}
-              callback={this.callback}
+        {bindingCreateParameterSchema && (
+          <SchemaData
+            data={schemaData}
+            bindingCreateParameterSchema={bindingCreateParameterSchema}
+            onSubmitSchemaForm={this.create}
+            planName={servicePlan.displayName}
+            callback={this.callback}
+          >
+            {/* Styled components don't work here */}
+            <button
+              className="hidden"
+              type="submit"
+              ref={submitBtn => (this.submitBtn = submitBtn)}
             >
-              {/* Styled components don't work here */}
-              <button
-                className="hidden"
-                type="submit"
-                ref={submitBtn => (this.submitBtn = submitBtn)}
-              >
-                Submit
-              </button>
-            </SchemaData>
-          )}
+              Submit
+            </button>
+          </SchemaData>
+        )}
       </Fragment>,
     ];
 

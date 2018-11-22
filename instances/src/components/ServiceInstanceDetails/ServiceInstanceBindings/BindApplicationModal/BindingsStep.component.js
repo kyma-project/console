@@ -92,7 +92,7 @@ class BindingsStep extends React.Component {
 
     return (
       <Select
-        label={'Select Existing Service Binding'}
+        label={'Select Existing Credentials'}
         handleChange={this.handleSelect}
         name={'selectedExistingBinding'}
         current={selectedExistingBinding}
