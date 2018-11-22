@@ -32,7 +32,7 @@ Console also includes the libraries with components for the React and Angular fr
     ```
     npm run start
     ```
-4. To access the local instance of the Console at http://console-dev.kyma.local:4200, use credentials from [this](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-gs-local-installation.md#access-the-kyma-console) document.
+4. To access the local instance of the Console at `http://console-dev.kyma.local:4200`, use credentials from [this](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-gs-local-installation.md#access-the-kyma-console) document.
 
 ## Development
 
