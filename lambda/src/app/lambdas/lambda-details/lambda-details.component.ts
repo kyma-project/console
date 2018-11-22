@@ -514,7 +514,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
         });
     });
     // Reaches here when there are deleteBindingStates are empty
-    this.executeCreateBindingRequests(createRequests);
+    if (deleteBindingStates.length === 0) {
+      this.executeCreateBindingRequests(createRequests);
+    }
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {
