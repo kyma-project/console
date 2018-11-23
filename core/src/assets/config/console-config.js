@@ -1,9 +1,20 @@
-let k8sDomain = 'kyma.local';
 var clusterConfig = window['clusterConfig'];
-if (clusterConfig && clusterConfig['domain']) {
-  k8sDomain = clusterConfig['domain'];
+
+var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
+var k8sServerUrl = 'https://apiserver.' + k8sDomain;
+
+var config = {
+  serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain
+};
+
+if (clusterConfig) {
+  for (var propertyName in config) {
+    if (clusterConfig.hasOwnProperty(propertyName)) {
+      config[propertyName] = clusterConfig[propertyName];
+    }
+  }
 }
-var k8sServerUrl = `https://apiserver.${k8sDomain}`;
+
 var token;
 if (localStorage.getItem('luigi.auth')) {
   token = 'Bearer ' + JSON.parse(localStorage.getItem('luigi.auth')).idToken;
@@ -18,12 +29,22 @@ function getNodes(environment) {
     },
     {
       category: 'Service Catalog',
+      navigationContext: 'service-catalog',
       pathSegment: 'service-catalog',
       label: 'Catalog',
-      viewUrl:
-        '/consoleapp.html#/home/environments/' +
-        environment +
-        '/service-catalog'
+      viewUrl: config.serviceCatalogModuleUrl,
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':serviceId',
+              viewUrl: config.serviceCatalogModuleUrl + '/details/:serviceId'
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Service Catalog',
@@ -128,6 +149,7 @@ function getEnvs() {
           envs.push({
             // has to be visible for all views exept 'settings'
             category: 'Environments',
+            navigationContext: 'environments',
             label: envName,
             pathSegment: envName,
             context: {

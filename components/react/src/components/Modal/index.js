@@ -3,6 +3,8 @@ import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import ScrollArea from 'react-scrollbar';
 
+import LuigiClient from '@kyma-project/luigi-client';
+
 import Tooltip from '../Tooltip';
 import Icon from '../Icon';
 
@@ -55,6 +57,7 @@ class Modal extends React.Component {
 
   handleOpenModal = () => {
     this.setState({ showModal: true });
+    LuigiClient.uxManager().addBackdrop();
   };
 
   handleCloseModal = () => {
@@ -69,6 +72,7 @@ class Modal extends React.Component {
       }
     }
     this.setState({ showModal: false });
+    LuigiClient.uxManager().removeBackdrop();
   };
 
   onScrollContent = value => {

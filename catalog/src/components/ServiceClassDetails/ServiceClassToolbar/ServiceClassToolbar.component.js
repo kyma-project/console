@@ -13,8 +13,8 @@ const ServiceClassToolbar = ({
 }) => {
   const goToServiceInstanceList = () => {
     LuigiClient.linkManager()
-      .fromContext('environment')
-      .navigate(`service-catalog`);
+      .fromClosestContext()
+      .navigate('/');
   };
 
   return (

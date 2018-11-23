@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dcopy from 'deep-copy';
 
-import { ConfirmationModal , Separator} from '@kyma-project/react-components';
+import { ConfirmationModal, Separator } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import BasicData from './BasicData.component';
 import SchemaData from './SchemaData.component';
@@ -86,6 +87,7 @@ class CreateInstanceModal extends React.Component {
     } else {
       this.onSubmitSchemaForm();
     }
+    LuigiClient.uxManager().removeBackdrop();
   };
 
   prepareDataToCreateServiceInstance = params => {
