@@ -4,7 +4,8 @@ var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
-  serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain
+  serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
+  lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain
 };
 
 if (clusterConfig) {
@@ -91,19 +92,19 @@ function getNodes(environment) {
       pathSegment: 'lambdas',
       navigationContext: 'lambdas',
       label: 'Lambdas',
-      viewUrl: lambdasModuleUrl + '#/lambdas',
+      viewUrl: config.lambdasModuleUrl + '#/lambdas',
       keepSelectedForChildren: true,
       children: [
         {
           pathSegment: 'create',
-          viewUrl: lambdasModuleUrl + '#/create'
+          viewUrl: config.lambdasModuleUrl + '#/create'
         },
         {
           pathSegment: 'details',
           children: [
             {
               pathSegment: ':lambda',
-              viewUrl: lambdasModuleUrl + '#/lambdas/:lambda'
+              viewUrl: config.lambdasModuleUrl + '#/lambdas/:lambda'
             }
           ]
         }
