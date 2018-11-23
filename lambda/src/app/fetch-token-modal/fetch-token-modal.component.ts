@@ -5,7 +5,7 @@ import * as luigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-fetch-token-modal',
-  styleUrls: ['../app.component.scss', './fetch-token-modal.component.scss'],
+  styleUrls: ['./fetch-token-modal.component.scss'],
   templateUrl: './fetch-token-modal.component.html',
 })
 export class FetchTokenModalComponent {
@@ -17,11 +17,9 @@ export class FetchTokenModalComponent {
   public show() {
     this.title = 'Fetch token';
     this.isActive = true;
-    let sessionId;
 
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      sessionId = eventData.sessionId;
       this.token = `Bearer ${eventData.idToken}`;
     });
   }

@@ -17,7 +17,7 @@ if (clusterConfig) {
 
 var token;
 if (localStorage.getItem('luigi.auth')) {
-  token = 'Bearer ' + JSON.parse(localStorage.getItem('luigi.auth')).idToken;
+  token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
 }
 
 function getNodes(environment) {
@@ -89,8 +89,25 @@ function getNodes(environment) {
     {
       category: 'Development',
       pathSegment: 'lambdas',
+      navigationContext: 'lambdas',
       label: 'Lambdas',
-      viewUrl: '/consoleapp.html#/home/environments/' + environment + '/lambdas'
+      viewUrl: lambdasModuleUrl + '#/lambdas',
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'create',
+          viewUrl: lambdasModuleUrl + '#/create'
+        },
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':lambda',
+              viewUrl: lambdasModuleUrl + '#/lambdas/:lambda'
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Operation',
@@ -172,7 +189,7 @@ function getEnvs() {
       k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true',
       true
     );
-    xmlHttp.setRequestHeader('Authorization', token);
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.send(null);
   });
 }

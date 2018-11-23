@@ -209,7 +209,10 @@ class CreateInstanceModal extends React.Component {
     const instanceCreateParameterSchema =
       (schema && schema.instanceCreateParameterSchema) || null;
 
-    const instanceCreateParameterSchemaExists = instanceCreateParameterSchema && (instanceCreateParameterSchema.$ref || instanceCreateParameterSchema.properties);
+    const instanceCreateParameterSchemaExists =
+      instanceCreateParameterSchema &&
+      (instanceCreateParameterSchema.$ref ||
+        instanceCreateParameterSchema.properties);
 
     const disabled = !firstStepFilled;
 
