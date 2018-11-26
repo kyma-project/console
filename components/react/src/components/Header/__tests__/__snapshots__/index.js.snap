@@ -2,16 +2,16 @@
 
 exports[`Header Element renders correctly 1`] = `
 .c0 {
-  font-family: '72';
-  font-size: 16px;
+  font-size: 100%;
+  font-size-adjust: 0.5;
   font-weight: normal;
   color: #32363a;
   margin: 0;
 }
 
-<p
+<header
   className="c0"
 >
   A Header tag
-</p>
+</header>
 `;
