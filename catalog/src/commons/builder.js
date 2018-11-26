@@ -24,7 +24,10 @@ class Builder {
   }
 
   getBearerToken() {
-    return this.token;
+    if (!this.token) {
+      return null;
+    }
+    return `Bearer ${this.token}`;
   }
 
   getCurrentEnvironmentId() {
