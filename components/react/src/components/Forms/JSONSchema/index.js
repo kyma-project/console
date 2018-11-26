@@ -223,15 +223,6 @@ const StyledForm = styled(Form)`
     white-space: pre;
   }
 
-  pre,
-  .config-error {
-    /*
-      FIXME: Temporary solution, remove it afer resolving:
-      https://github.com/mozilla-services/react-jsonschema-form/issues/963
-    */
-    display: none;
-  }
-
   i {
     display: inline-block;
     margin-top: 16px;
