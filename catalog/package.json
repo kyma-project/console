@@ -19,7 +19,7 @@
     "react-apollo": "^2.0.4",
     "react-app-rewired": "^1.5.2",
     "react-dom": "^16.2.0",
-    "react-jsonschema-form": "^1.0.3",
+    "react-jsonschema-form": "^1.0.6",
     "react-modal": "^3.4.1",
     "react-moment": "^0.7.0",
     "react-router": "^4.2.0",
@@ -31,7 +31,8 @@
   },
   "devDependencies": {
     "mkdirp": "^0.5.1",
-    "safe-buffer": "5.1.2"
+    "safe-buffer": "5.1.2",
+    "source-map-explorer": "^1.6.0"
   },
   "scripts": {
     "start": "echo `` > public/config/config.js && PORT=8000 react-app-rewired start",

@@ -26,7 +26,8 @@
   },
   "devDependencies": {
     "mkdirp": "^0.5.1",
-    "safe-buffer": "5.1.2"
+    "safe-buffer": "5.1.2",
+    "source-map-explorer": "^1.6.0"
   },
   "scripts": {
     "start": "echo `` > public/config/config.js && PORT=8002 react-app-rewired start",
