@@ -471,18 +471,30 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
     deleteBindingStates.forEach(bs => {
       this.serviceBindingUsagesService
-        .getServiceBindingUsages(this.environment, this.token, {
-          labelSelector: `Function=${
-            this.lambda.metadata.name
-          }, ServiceBinding=${bs.previousState.serviceBinding}`,
-        })
+        .getServiceBindingUsages(this.environment, this.token, {})
         .subscribe(bsuList => {
           bsuList.items.forEach(bsu => {
-            if (bs.previousState.serviceBinding === bsu.metadata.name) {
+            if (
+              bs.previousState.serviceBinding ===
+              bsu.spec.serviceBindingRef.name
+            ) {
               deleteRequests.push(
                 this.serviceBindingUsagesService
                   .deleteServiceBindingUsage(
                     bsu.metadata.name,
+                    this.environment,
+                    this.token,
+                  )
+                  .pipe(
+                    catchError(err => {
+                      return observableOf(err);
+                    }),
+                  ),
+              );
+              deleteRequests.push(
+                this.serviceBindingsService
+                  .deleteServiceBinding(
+                    bs.previousState.serviceBinding,
                     this.environment,
                     this.token,
                   )
