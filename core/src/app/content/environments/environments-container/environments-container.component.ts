@@ -51,6 +51,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public previousEnv = '';
   public displayErrorGlobal = false;
   public resourceExceeded = false;
+  public exceededResources = [];
   public overview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
@@ -94,6 +95,16 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       if (e.data && e.data.resourceQuotasStatus) {
         this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
         this.displayErrorGlobal = true;
+      }
+      if (
+        e.data &&
+        e.data.resourceQuotasStatus &&
+        e.data.resourceQuotasStatus.exceededQuotas &&
+        e.data.resourceQuotasStatus.exceededQuotas.length > 0
+      ) {
+        this.setExceededQuotasMessage(
+          e.data.resourceQuotasStatus.exceededQuotas
+        );
       }
     });
     this.route.params.subscribe(params => {
@@ -187,22 +198,48 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
               quotaExceeded:
                 res && res.resourceQuotasStatus
                   ? res.resourceQuotasStatus.exceeded
-                  : false
+                  : false,
+              exceededResources:
+                res && res.resourceQuotasStatus && res.resourceQuotasStatus
+                  ? res.resourceQuotasStatus.exceededQuotas
+                  : []
             }))
           )
         )
       )
       .subscribe(
-        ({ env, quotaExceeded }) => {
+        ({ env, quotaExceeded, exceededResources }) => {
           this.resourceExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
             this.displayErrorGlobal = quotaExceeded;
+          }
+          if (
+            quotaExceeded &&
+            exceededResources &&
+            exceededResources.length > 0
+          ) {
+            this.setExceededQuotasMessage(exceededResources);
           }
         },
         err => {
           console.log(err);
         }
       );
+  }
+
+  private setExceededQuotasMessage(exceededResources) {
+    this.exceededResources = [];
+    exceededResources.forEach(resource => {
+      if (resource.affectedResources && resource.affectedResources.length > 0) {
+        resource.affectedResources.forEach(affectedResource => {
+          this.exceededResources.push(
+            `'${resource.resourceName}' by '${affectedResource}' (${
+              resource.quotaName
+            })`
+          );
+        });
+      }
+    });
   }
 }
