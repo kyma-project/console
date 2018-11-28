@@ -6,6 +6,7 @@ var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 var config = {
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
+  serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain
 };
 
@@ -60,7 +61,7 @@ function getNodes(context) {
       category: 'Service Catalog',
       pathSegment: 'brokers',
       label: 'Brokers',
-      viewUrl: '/consoleapp.html#/home/environments/' + environment + '/brokers'
+      viewUrl: config.serviceBrokersModuleUrl
     },
     {
       category: 'Configuration',
