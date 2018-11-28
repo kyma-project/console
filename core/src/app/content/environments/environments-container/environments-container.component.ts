@@ -39,8 +39,6 @@ const fadeInAnimation = trigger('fadeInAnimation', [
 })
 export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public navCtx: string;
-  private router: Router;
-  private route: ActivatedRoute;
   public isActive: boolean;
   private navSub: Subscription;
   private routerSub: Subscription;
@@ -56,19 +54,17 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
 
   constructor(
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     @Inject(NavVisibilityService) navVisibilityService: NavVisibilityService,
     private environmentsService: EnvironmentsService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
-    this.router = router;
-    this.route = route;
     this.navSub = navVisibilityService.visibilityStateEmitter$.subscribe(
       visible => (this.isActive = visible)
     );
-    this.routerSub = router.events.subscribe(val => {
+    this.routerSub = this.router.events.subscribe(val => {
       if (val instanceof ActivationEnd) {
         this.leftNavCollapsed = NavigationUtils.computeLeftNavCollapseState(
           val.snapshot

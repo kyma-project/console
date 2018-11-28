@@ -4,6 +4,7 @@ import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abs
 import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
@@ -66,4 +67,10 @@ export class ApiDefinitionEntryRendererComponent
       entry.spec.authentication.length > 0
     );
   };
+
+  private navigateToDetails(apiName) {
+    LuigiClient.linkManager()
+      .fromContext('apis')
+      .navigate(`details/${apiName}`);
+  }
 }

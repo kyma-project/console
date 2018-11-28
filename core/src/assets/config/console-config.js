@@ -65,19 +65,59 @@ function getNodes(context) {
     {
       category: 'Configuration',
       pathSegment: 'apis',
+      navigationContext: 'apis',
       label: 'APIs',
-      viewUrl: '/consoleapp.html#/home/environments/' + environment + '/apis'
+      viewUrl: '/consoleapp.html#/home/environments/' + environment + '/apis',
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'create',
+          viewUrl:
+            '/consoleapp.html#/home/environments/' +
+            environment +
+            '/apis/create'
+        },
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':name',
+              viewUrl:
+                '/consoleapp.html#/home/environments/' +
+                environment +
+                '/apis/details/:name'
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Configuration',
       pathSegment: 'permissions',
+      navigationContext: 'permissions',
       label: 'Permissions',
       viewUrl:
-        '/consoleapp.html#/home/environments/' + environment + '/permissions'
+        '/consoleapp.html#/home/environments/' + environment + '/permissions',
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'roles',
+          children: [
+            {
+              pathSegment: ':name',
+              viewUrl:
+                '/consoleapp.html#/home/environments/' +
+                environment +
+                '/permissions/roles/:name'
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Configuration',
       pathSegment: 'resources',
+      navigationContext: 'resources',
       label: 'Resources',
       viewUrl:
         '/consoleapp.html#/home/environments/' + environment + '/resources'
@@ -85,6 +125,7 @@ function getNodes(context) {
     {
       category: 'Configuration',
       pathSegment: 'config-maps',
+      navigationContext: 'config-maps',
       label: 'Config maps',
       viewUrl:
         '/consoleapp.html#/home/environments/' + environment + '/configmaps'
@@ -115,6 +156,7 @@ function getNodes(context) {
     {
       category: 'Operation',
       pathSegment: 'deployments',
+      navigationContext: 'deployments',
       label: 'Deployments',
       viewUrl:
         '/consoleapp.html#/home/environments/' + environment + '/deployments'
@@ -122,6 +164,7 @@ function getNodes(context) {
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
+      navigationContext: 'replica-sets',
       label: 'Replica Sets',
       viewUrl:
         '/consoleapp.html#/home/environments/' + environment + '/replicaSets'
@@ -129,21 +172,81 @@ function getNodes(context) {
     {
       category: 'Operation',
       pathSegment: 'pods',
+      navigationContext: 'pods',
       label: 'Pods',
       viewUrl: '/consoleapp.html#/home/environments/' + environment + '/pods'
     },
     {
       category: 'Operation',
       pathSegment: 'services',
+      navigationContext: 'services',
       label: 'Services',
       viewUrl:
-        '/consoleapp.html#/home/environments/' + environment + '/services'
+        '/consoleapp.html#/home/environments/' + environment + '/services',
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':name',
+              viewUrl:
+                '/consoleapp.html#/home/environments/' +
+                environment +
+                '/services/:name',
+              children: [
+                {
+                  pathSegment: 'apis',
+                  children: [
+                    {
+                      pathSegment: 'create',
+                      viewUrl:
+                        '/consoleapp.html#/home/environments/' +
+                        environment +
+                        '/services/:name/apis/create'
+                    },
+                    {
+                      pathSegment: 'details',
+                      children: [
+                        {
+                          pathSegment: ':apiName',
+                          viewUrl:
+                            '/consoleapp.html#/home/environments/' +
+                            environment +
+                            '/services/:name/apis/details/:apiName'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Operation',
       pathSegment: 'secrets',
+      navigationContext: 'secrets',
       label: 'Secrets',
-      viewUrl: '/consoleapp.html#/home/environments/' + environment + '/secrets'
+      viewUrl:
+        '/consoleapp.html#/home/environments/' + environment + '/secrets',
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':name',
+              viewUrl:
+                '/consoleapp.html#/home/environments/' +
+                environment +
+                '/secrets/:name'
+            }
+          ]
+        }
+      ]
     }
   ];
 }
@@ -160,7 +263,6 @@ function getEnvs() {
           envs.push({
             // has to be visible for all views exept 'settings'
             category: 'Environments',
-            navigationContext: 'environments',
             label: envName,
             pathValue: envName
           });
@@ -243,7 +345,8 @@ Luigi.setConfig({
             context: {
               environmentId: ':environmentId'
             },
-            children: getNodes
+            children: getNodes,
+            navigationContext: 'environments'
           }
         ]
       },
@@ -257,36 +360,68 @@ Luigi.setConfig({
           {
             // has to be visible for all views exept 'settings'
             pathSegment: 'settings',
+            navigationContext: 'settings',
             label: 'Administration',
             children: [
               {
                 pathSegment: 'organisation',
+                navigationContext: 'organisation',
                 label: 'General Settings',
                 viewUrl: '/consoleapp.html#/home/settings/organisation'
               },
               {
                 pathSegment: 'remote-envs',
+                navigationContext: 'remote-envs',
                 label: 'Remote Environments',
                 category: 'Integration',
-                viewUrl: '/consoleapp.html#/home/settings/remoteEnvs'
+                viewUrl: '/consoleapp.html#/home/settings/remoteEnvs',
+                keepSelectedForChildren: true,
+                children: [
+                  {
+                    pathSegment: 'details',
+                    children: [
+                      {
+                        pathSegment: ':name',
+                        viewUrl:
+                          '/consoleapp.html#/home/settings/remoteEnvs/:name'
+                      }
+                    ]
+                  }
+                ]
               },
               {
                 pathSegment: 'service-brokers',
+                navigationContext: 'service-brokers',
                 label: 'Service Brokers',
                 category: 'Integration',
                 viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
               },
               {
                 pathSegment: 'idp-presets',
+                navigationContext: 'idp-presets',
                 label: 'IDP Presets',
                 category: 'Integration',
                 viewUrl: '/consoleapp.html#/home/settings/idpPresets'
               },
               {
                 pathSegment: 'global-permissions',
+                navigationContext: 'global-permissions',
                 label: 'Global Permissions',
                 category: 'Administration',
-                viewUrl: '/consoleapp.html#/home/settings/globalPermissions'
+                viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
+                keepSelectedForChildren: true,
+                children: [
+                  {
+                    pathSegment: 'roles',
+                    children: [
+                      {
+                        pathSegment: ':name',
+                        viewUrl:
+                          '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                      }
+                    ]
+                  }
+                ]
               },
               {
                 label: 'Stats & Metrics',

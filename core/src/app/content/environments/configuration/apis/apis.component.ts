@@ -13,7 +13,7 @@ import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider';
 import { DataConverter, Filter } from '@kyma-project/y-generic-list';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-apis',
@@ -36,9 +36,7 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
     private http: HttpClient,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
     const converter: DataConverter<IApiDefinition, ApiDefinition> = {
@@ -70,17 +68,23 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
       });
   }
 
-  navigateToDetails(entry: any) {
-    this.router.navigate(['details/' + entry.metadata.name], {
-      relativeTo: this.activatedRoute
-    });
-  }
-
   public getResourceUrl(kind: string, entry: any): string {
     return `${this.baseUrl}/${entry.metadata.name}`;
   }
 
   public ngOnDestroy() {
     this.currentEnvironmentSubscription.unsubscribe();
+  }
+
+  public navigateToDetails(entry) {
+    LuigiClient.linkManager()
+      .fromContext('apis')
+      .navigate(`details/${entry.metadata.name}`);
+  }
+
+  private navigateToCreate() {
+    LuigiClient.linkManager()
+      .fromContext('apis')
+      .navigate('create');
   }
 }

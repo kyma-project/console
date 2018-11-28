@@ -1,6 +1,6 @@
 import { IdpPresetsService } from './../../../../../settings/idp-presets/idp-presets.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CurrentEnvironmentService } from '../../../../services/current-environment.service';
 import { ExposeApiService } from './expose-api.service';
 import { AppConfig } from '../../../../../../app.config';
@@ -11,6 +11,7 @@ import { InformationModalComponent } from '../../../../../../shared/components/i
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Copy2ClipboardModalComponent } from '../../../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-expose-api',
@@ -59,7 +60,6 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     private currentEnvironmentService: CurrentEnvironmentService,
     private exposeApiService: ExposeApiService,
     private route: ActivatedRoute,
-    private router: Router,
     private http: HttpClient,
     private idpPresetsService: IdpPresetsService,
     private oAuthService: OAuthService
@@ -79,30 +79,22 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.secure = !this.secure;
   }
 
-  public navigateToServiceDetails() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/services/${
-        this.serviceName
-      }`
-    ]);
+  private navigateToList(list) {
+    LuigiClient.linkManager()
+      .fromContext('environments')
+      .navigate(list);
   }
 
-  public navigateToServicesList() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/services`
-    ]);
-  }
-
-  public navigateToApiList() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/apis`
-    ]);
+  private navigateToDetails(apiName) {
+    LuigiClient.linkManager()
+      .fromContext('environments')
+      .navigate(`services/details/${apiName}`);
   }
 
   public goBack() {
     this.routedFromServiceDetails
-      ? this.navigateToServiceDetails()
-      : this.navigateToApiList();
+      ? this.navigateToDetails(this.serviceName)
+      : this.navigateToList('apis');
   }
 
   public isAbleToMakeRequest() {

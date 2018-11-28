@@ -44,7 +44,7 @@
                             <div class="col">
                                 <div class="sf-sku sf-sku--center">
                                     <span class="sf-sku__value">{{ services ? services.length : 0 }}</span>
-                                    <a class="sf-sku__label" routerLink="../services">{{ services &&
+                                    <a class="sf-sku__label" (click)="navigateToServices()">{{ services &&
                                         (services.length===1)
                                         ? "Service" : "Services" }}</a>
                                 </div>
@@ -54,7 +54,7 @@
                                     <span class="sf-sku__value">{{ boundRemoteEnvironmentsCount | async }}</span>
                                     <span>{{ (boundRemoteEnvironmentsCount | async) ===1 ? "Bound Remote Environment" :
                                         "Bound Remote Environments"}}</span>
-                                    <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Remote
+                                    <a class="sf-sku__label" (click)="navigateToRemoteEnvs()">Show All Remote
                                         Environments</a>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                 <tbody class="sf-table__body">
                     <tr *ngFor="let env of remoteEnvironments">
                         <td class="sf-table__td sf-table__td--primary">
-                            <a routerLink="/home/settings/remoteEnvs/{{env.name}}">{{ env.name }}</a>
+                            <a (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
                         </td>
                         <td class="sf-table__td sf-table__td--min sf-table__td--text-right">
                             <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>

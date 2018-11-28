@@ -1,6 +1,6 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
   <div class="col-2 sf-list__body--primary">
-    <a routerLink="{{entry.objectMeta.name}}">{{ entry.objectMeta.name }}</a>
+    <a (click)="navigateToDetails(entry.objectMeta.name)">{{ entry.objectMeta.name }}</a>
   </div>
   <div class="col-1 col-lg-1">{{ entry.clusterIP }}</div>
   <div class="col-3">

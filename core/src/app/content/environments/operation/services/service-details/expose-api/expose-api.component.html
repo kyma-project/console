@@ -1,11 +1,11 @@
 <div class="container-fluid sf-content">
   <div class="sf-toolbar">
       <div *ngIf="routedFromServiceDetails" class="sf-toolbar__item sf-toolbar__item--breadcrumb">
-        <a (click)="navigateToServicesList()">Services</a> / <a class="service-name" (click)="navigateToServiceDetails()">{{ serviceName }}</a>
+        <a (click)="navigateToList('services')">Services</a> / <a class="service-name" (click)="navigateToDetails(serviceName)">{{ serviceName }}</a>
         / {{ apiDefinition ? (  apiName  )  : ('Create API') }}
       </div>
       <div *ngIf="!routedFromServiceDetails" class="sf-toolbar__item sf-toolbar__item--breadcrumb">
-        <a (click)="navigateToApiList()"> APIs </a> / {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
+        <a (click)="navigateToList('apis')"> APIs </a> / {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
       </div>
     <div class="sf-toolbar__right">
       <div class="sf-toolbar__item">

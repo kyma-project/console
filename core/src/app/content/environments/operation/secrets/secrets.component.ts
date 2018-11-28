@@ -14,7 +14,7 @@ import { SecretsHeaderRendererComponent } from './secrets-header-renderer/secret
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-secrets',
@@ -37,9 +37,7 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
     private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
     const converter: DataConverter<IDashboardSecret, DashboardSecret> = {
@@ -66,10 +64,10 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
       });
   }
 
-  navigateToDetails(entry: any) {
-    this.router.navigate([entry.objectMeta.name], {
-      relativeTo: this.activatedRoute
-    });
+  public navigateToDetails(entry) {
+    LuigiClient.linkManager()
+      .fromContext('secrets')
+      .navigate(`details/${entry.objectMeta.name}`);
   }
 
   createNewElement() {

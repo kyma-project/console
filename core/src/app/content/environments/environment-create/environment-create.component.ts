@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { EnvironmentsService } from '../services/environments.service';
-import { Router } from '@angular/router';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-environment-create',
@@ -14,18 +14,13 @@ export class EnvironmentCreateComponent {
   private err: string;
   private wrongName = false;
 
-  constructor(
-    private environmentsService: EnvironmentsService,
-    private router: Router
-  ) {}
+  constructor(private environmentsService: EnvironmentsService) {}
 
   public createEnvironment() {
     this.environmentsService.createEnvironment(this.environmentName).subscribe(
       () => {
         this.isActive = false;
-        this.router.navigateByUrl(
-          '/home/environments/' + this.environmentName + '/details'
-        );
+        this.navigateToDetails(this.environmentName);
       },
       err => {
         this.err = err.error.message;
@@ -49,5 +44,9 @@ export class EnvironmentCreateComponent {
     this.environmentName = '';
     this.err = undefined;
     this.isActive = true;
+  }
+
+  private navigateToDetails(envName) {
+    LuigiClient.linkManager().navigate(`/environments/${envName}/details`);
   }
 }

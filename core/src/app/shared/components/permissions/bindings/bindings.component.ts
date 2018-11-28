@@ -16,7 +16,6 @@ import { CurrentEnvironmentService } from '../../../../content/environments/serv
 import { BindingEntryRendererComponent } from './binding-entry-renderer/binding-entry-renderer.component';
 import { BindingHeaderRendererComponent } from './binding-header-renderer/binding-header-renderer.component';
 import { IRoleBinding, RoleBinding } from '../../../datamodel/k8s/role-binding';
-import { ActivatedRoute } from '@angular/router';
 import { RoleBindingModalComponent } from '../../role-binding-modal/role-binding-modal.component';
 
 @Component({
@@ -44,7 +43,6 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
     private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    private route: ActivatedRoute,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);

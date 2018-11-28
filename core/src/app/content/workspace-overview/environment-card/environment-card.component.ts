@@ -2,6 +2,7 @@ import { Component, Input, Injector, OnInit, OnDestroy } from '@angular/core';
 import { Environment } from '../../../shared/datamodel/k8s/environment';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'environment-card',
@@ -46,5 +47,9 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.communicationServiceSubscription.unsubscribe();
+  }
+
+  private navigateToDetails(envName) {
+    LuigiClient.linkManager().navigate(`/environments/${envName}/details`);
   }
 }

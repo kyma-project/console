@@ -1,11 +1,10 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import * as tippy from 'tippy.js';
 import { AbstractKubernetesEntryRendererComponent } from '../../../environments/operation/abstract-kubernetes-entry-renderer.component';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
-import { StatusLabelComponent } from '../../../../shared/components/status-label/status-label.component';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -17,8 +16,6 @@ export class RemoteEnvironmentsEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
-    private route: ActivatedRoute,
-    private router: Router,
     private remoteEnvironmentsService: RemoteEnvironmentsService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
@@ -73,10 +70,6 @@ export class RemoteEnvironmentsEntryRendererComponent
     }
   }
 
-  public openRemoteEnvDetails() {
-    this.router.navigate(['home/settings/remoteEnvs/' + this.entry.name]);
-  }
-
   getStatus(entry) {
     return entry.status;
   }
@@ -86,5 +79,9 @@ export class RemoteEnvironmentsEntryRendererComponent
       return 'ok';
     }
     return 'warning';
+  }
+
+  private navigateToDetails(renvName) {
+    LuigiClient.linkManager().navigate(`details/${renvName}`);
   }
 }

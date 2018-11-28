@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppConfig } from '../../../../app.config';
 import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
 import { finalize } from 'rxjs/operators';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   templateUrl: './role-details.component.html'
@@ -24,7 +25,6 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private currentEnvironmentService: CurrentEnvironmentService,
-    private router: Router,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -57,6 +57,16 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  private navigateToList() {
+    if (!this.isGlobalMode) {
+      LuigiClient.linkManager()
+        .fromContext('permissions')
+        .navigate('');
+    } else {
+      LuigiClient.linkManager().navigate(`/home/settings/global-permissions`);
+    }
   }
 
   public goBack() {

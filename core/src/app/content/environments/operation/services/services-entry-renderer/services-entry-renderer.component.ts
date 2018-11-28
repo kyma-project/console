@@ -3,6 +3,7 @@ import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kuberne
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-services-entry-renderer',
@@ -73,5 +74,11 @@ export class ServicesEntryRendererComponent
     } else {
       return 'error';
     }
+  }
+
+  private navigateToDetails(serviceName) {
+    LuigiClient.linkManager()
+      .fromContext('services')
+      .navigate(`details/${serviceName}`);
   }
 }
