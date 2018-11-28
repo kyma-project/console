@@ -26,7 +26,7 @@ const ServiceInstanceToolbar = ({
 
   const goToServiceInstances = () => {
     LuigiClient.linkManager()
-      .fromContext('environment')
+      .fromContext('environments')
       .navigate('instances');
   };
 

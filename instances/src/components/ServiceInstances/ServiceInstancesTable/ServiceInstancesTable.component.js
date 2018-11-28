@@ -41,19 +41,19 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
 
   const goToServiceCatalog = () => {
     LuigiClient.linkManager()
-      .fromContext('environment')
+      .fromContext('environments')
       .navigate('service-catalog');
   };
 
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
-      .fromContext('environment')
+      .fromContext('environments')
       .navigate(`service-catalog/details/${name}`);
   };
 
   const goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
-      .fromContext('environment')
+      .fromContext('environments')
       .navigate(`instances/details/${name}`);
   };
 

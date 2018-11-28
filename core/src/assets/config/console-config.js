@@ -5,6 +5,7 @@ var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
+  serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain
@@ -52,10 +53,21 @@ function getNodes(context) {
     },
     {
       category: 'Service Catalog',
+      keepSelectedForChildren: true,
       pathSegment: 'instances',
       label: 'Instances',
-      viewUrl:
-        '/consoleapp.html#/home/environments/' + environment + '/instances'
+      viewUrl: config.serviceInstancesModuleUrl,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':name',
+              viewUrl: config.serviceInstancesModuleUrl + '/details/:name'
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Service Catalog',
