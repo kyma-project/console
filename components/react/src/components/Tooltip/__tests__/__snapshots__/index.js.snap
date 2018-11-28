@@ -2,9 +2,10 @@
 
 exports[`Tooltip Element renders correctly 1`] = `
 <div
-  className="sc-bwzfXH kTnZog"
+  className="sc-htpNat gHmJEJ"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
+  type="default"
 >
   Content for tooltip
 </div>
