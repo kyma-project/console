@@ -5,7 +5,8 @@ var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
-  lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain
+  lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
+  docsModuleUrl: 'https://docs.' + k8sDomain
 };
 
 if (clusterConfig) {
@@ -229,8 +230,9 @@ Luigi.setConfig({
     nodes: () => [
       {
         pathSegment: 'environments',
-        label: 'Overview',
+        label: 'Workspace',
         viewUrl: '/consoleapp.html#/home/environments/workspace',
+        // navCollapse: true,
         context: {
           idToken: token
         },
@@ -247,7 +249,7 @@ Luigi.setConfig({
       },
       {
         pathSegment: 'home',
-        label: 'Settings',
+        label: 'General Settings',
         context: {
           idToken: token
         },
@@ -301,8 +303,18 @@ Luigi.setConfig({
                   url: 'https://jaeger.' + k8sDomain,
                   sameWindow: false
                 }
+              },
+              {
+                category: 'Documentation',
+                link: '/home/docs',
+                label: 'Docs'
               }
             ]
+          },
+          {
+            pathSegment: 'docs',
+            viewUrl: config.docsModuleUrl
+            // navCollapse: true
           }
         ]
       }
