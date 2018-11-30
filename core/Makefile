@@ -7,7 +7,7 @@ ci-master: install-dependencies validate test build build-image push-image
 ci-release: install-dependencies validate test build build-image push-image
 
 install-dependencies:
-	npm ci
+	npm install -f
 
 validate:
 	npm run lint
