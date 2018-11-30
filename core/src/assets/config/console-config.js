@@ -1,5 +1,4 @@
 var clusterConfig = window['clusterConfig'];
-
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
@@ -305,10 +304,11 @@ function relogin() {
 }
 
 function reloginIfTokenExpired() {
-  var accessTokenExpirationDate = JSON.parse(localStorage.getItem('luigi.auth'))
-    .accessTokenExpirationDate;
+  var authData = JSON.parse(localStorage.getItem('luigi.auth'));
+  var accessTokenExpirationDate =
+    authData && authData.accessTokenExpirationDate;
   var currentDate = new Date();
-  if (accessTokenExpirationDate < currentDate) {
+  if (!authData || accessTokenExpirationDate < currentDate) {
     relogin();
   }
 }
@@ -477,17 +477,7 @@ Luigi.setConfig({
         //   label: '+ New Environment',
         //   link: '/create-environment'
         // }
-      ],
-
-      /**
-       * fallbackLabelResolver
-       * Resolve what do display in the context switcher (Label) in case the activated
-       * context (option) is not listed in available options (eg kyma-system namespace),
-       * or if options have not been fetched yet
-       */
-      fallbackLabelResolver: id => {
-        return id.replace(/\b\w/g, l => l.toUpperCase());
-      }
+      ]
     }
   },
   routing: {

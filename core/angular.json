@@ -25,6 +25,7 @@
               "src/favicon.ico",
               "src/version.html",
               "src/index.html",
+              "src/logout.html",
               {
                 "glob": "**",
                 "input": "node_modules/@kyma-project/luigi-core",
