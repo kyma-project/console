@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-confirmation-modal',
@@ -23,6 +24,7 @@ export class ConfirmationModalComponent implements OnInit {
       this.message = message;
     }
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
     return new Promise((resolve, reject) => {
       this.okPromise = resolve;
       this.cancelPromise = reject;
@@ -32,12 +34,14 @@ export class ConfirmationModalComponent implements OnInit {
   cancel(event: Event) {
     this.cancelPromise(false);
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
     event.stopPropagation();
   }
 
   ok(event: Event) {
     this.okPromise(true);
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
     event.stopPropagation();
   }
 }

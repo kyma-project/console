@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { JsonEditorComponent } from './json-editor/json-editor.component';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-json-editor-modal',
@@ -17,10 +18,12 @@ export class JsonEditorModalComponent {
 
   show() {
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
   }
 
   cancel(event: Event) {
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
     this.error = false;
     event.stopPropagation();
   }
@@ -30,6 +33,7 @@ export class JsonEditorModalComponent {
       data => {
         event.stopPropagation();
         this.isActive = false;
+        LuigiClient.uxManager().removeBackdrop();
         this.communicationService.sendEvent({
           type: 'updateResource',
           data

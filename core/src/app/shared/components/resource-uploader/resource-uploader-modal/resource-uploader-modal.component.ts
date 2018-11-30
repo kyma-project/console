@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { UploaderComponent } from '../uploader/uploader.component';
 import { InformationModalComponent } from '../../information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
-
+import LuigiClient from '@kyma-project/luigi-client';
 @Component({
   selector: 'app-resource-uploader-modal',
   templateUrl: './resource-uploader-modal.component.html',
@@ -19,6 +19,7 @@ export class ResourceUploaderModalComponent {
 
   show(): Promise<boolean> {
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
     return new Promise((resolve, reject) => {
       this.okPromise = resolve;
     });
@@ -26,6 +27,7 @@ export class ResourceUploaderModalComponent {
 
   cancel(event: Event) {
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
     event.stopPropagation();
   }
 
@@ -34,6 +36,7 @@ export class ResourceUploaderModalComponent {
       () => {
         this.okPromise(true);
         this.isActive = false;
+        LuigiClient.uxManager().removeBackdrop();
         this.communicationService.sendEvent({ type: 'createResource' });
         event.stopPropagation();
         this.infoModal.show(

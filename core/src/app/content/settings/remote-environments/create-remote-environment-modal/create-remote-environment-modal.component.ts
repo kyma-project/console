@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-create-remote-environment-modal',
@@ -24,10 +25,12 @@ export class CreateRemoteEnvironmentModalComponent {
   public show(): void {
     this.resetForm();
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
   }
 
   public close(): void {
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
   }
 
   private resetForm(): void {

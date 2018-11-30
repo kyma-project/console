@@ -3,6 +3,7 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-edit-remote-environment-modal',
@@ -30,10 +31,12 @@ export class EditRemoteEnvironmentModalComponent {
   public show(): void {
     this.resetForm();
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
   }
 
   public close(): void {
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
   }
 
   private resetForm(): void {

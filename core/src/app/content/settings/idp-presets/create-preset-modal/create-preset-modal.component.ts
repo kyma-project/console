@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IdpPresetsService } from '../idp-presets.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-create-preset-modal',
@@ -23,10 +24,12 @@ export class CreatePresetModalComponent {
 
   show() {
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
   }
 
   close() {
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
     this.presetName = '';
     this.issuer = '';
     this.jwks = '';

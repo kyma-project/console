@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-role-binding-modal',
@@ -89,6 +90,7 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   public show() {
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
     if (this.isGlobalPermissionsView) {
       this.selectKind('ClusterRole');
     }
@@ -96,6 +98,7 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   public close() {
     this.isActive = false;
+    LuigiClient.uxManager().removeBackdrop();
     this.userGroup = '';
     this.selectedRole = '';
     this.selectedKind = '';
