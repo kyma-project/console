@@ -2,14 +2,14 @@ IMG_NAME = console
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: install-dependencies lint test build validate build-image push-image
-ci-master: install-dependencies lint test build validate build-image push-image
-ci-release: install-dependencies lint test build validate build-image push-image
+ci-pr: install-dependencies validate test build build-image push-image
+ci-master: install-dependencies validate test build build-image push-image
+ci-release: install-dependencies validate test build build-image push-image
 
 install-dependencies:
 	npm ci
 
-lint:
+validate:
 	npm run lint
 
 test:
