@@ -73,38 +73,41 @@ export class WorkspaceOverviewComponent extends GenericListComponent {
             'Confirm delete',
             'Do you really want to delete ' + entry.getName() + '?'
           )
-          .then(() => {
-            entry.disabled = true;
-            this.communicationService.sendEvent({
-              type: 'disable',
-              entry
-            });
-            this.environmentsService
-              .deleteEnvironment(entry.getName())
-              .subscribe(
-                () => {
-                  this.communicationService.sendEvent({
-                    type: 'deleteResource',
-                    data: entry
-                  });
-                  this.router.navigateByUrl('/home/environments');
-                },
-                err => {
-                  entry.disabled = false;
-                  this.communicationService.sendEvent({
-                    type: 'disable',
-                    entry
-                  });
-                  this.infoModal.show(
-                    'Error',
-                    'There was an error trying to delete environment ' +
-                      (entry.name || entry.getName()) +
-                      ': ' +
-                      (err.error.message || err.message || err)
-                  );
-                }
-              );
-          });
+          .then(
+            () => {
+              entry.disabled = true;
+              this.communicationService.sendEvent({
+                type: 'disable',
+                entry
+              });
+              this.environmentsService
+                .deleteEnvironment(entry.getName())
+                .subscribe(
+                  () => {
+                    this.communicationService.sendEvent({
+                      type: 'deleteResource',
+                      data: entry
+                    });
+                    this.router.navigateByUrl('/home/environments');
+                  },
+                  err => {
+                    entry.disabled = false;
+                    this.communicationService.sendEvent({
+                      type: 'disable',
+                      entry
+                    });
+                    this.infoModal.show(
+                      'Error',
+                      'There was an error trying to delete environment ' +
+                        (entry.name || entry.getName()) +
+                        ': ' +
+                        (err.error.message || err.message || err)
+                    );
+                  }
+                );
+            },
+            () => {}
+          );
       }
     };
   }
