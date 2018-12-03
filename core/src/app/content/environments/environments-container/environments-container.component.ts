@@ -102,7 +102,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
         e.data.resourceQuotasStatus.exceededQuotas &&
         e.data.resourceQuotasStatus.exceededQuotas.length > 0
       ) {
-        this.setExceededQuotasMessage(
+        this.setLimitExceededErrorsMessages(
           e.data.resourceQuotasStatus.exceededQuotas
         );
       }
@@ -221,7 +221,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             limitExceededErrors &&
             limitExceededErrors.length > 0
           ) {
-            this.setExceededQuotasMessage(limitExceededErrors);
+            this.setLimitExceededErrorsMessages(limitExceededErrors);
           }
         },
         err => {
@@ -230,7 +230,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       );
   }
 
-  private setExceededQuotasMessage(limitExceededErrors) {
+  private setLimitExceededErrorsMessages(limitExceededErrors) {
     this.limitExceededErrors = [];
     limitExceededErrors.forEach(resource => {
       if (resource.affectedResources && resource.affectedResources.length > 0) {
