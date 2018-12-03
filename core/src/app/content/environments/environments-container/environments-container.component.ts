@@ -50,8 +50,8 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public previousUrl = '';
   public previousEnv = '';
   public displayErrorGlobal = false;
-  public resourceExceeded = false;
-  public exceededResources = [];
+  public limitHasBeenExceeded = false;
+  public limitExceededErrors = [];
   public overview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
@@ -93,7 +93,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     window.addEventListener('message', e => {
       if (e.data && e.data.resourceQuotasStatus) {
-        this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
+        this.limitHasBeenExceeded = e.data.resourceQuotasStatus.exceeded;
         this.displayErrorGlobal = true;
       }
       if (
@@ -199,7 +199,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
                 res && res.resourceQuotasStatus
                   ? res.resourceQuotasStatus.exceeded
                   : false,
-              exceededResources:
+              limitExceededErrors:
                 res && res.resourceQuotasStatus && res.resourceQuotasStatus
                   ? res.resourceQuotasStatus.exceededQuotas
                   : []
@@ -208,18 +208,20 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe(
-        ({ env, quotaExceeded, exceededResources }) => {
-          this.resourceExceeded = quotaExceeded;
+        ({ env, quotaExceeded, limitExceededErrors }) => {
+          console.log(quotaExceeded);
+          console.log(limitExceededErrors);
+          this.limitHasBeenExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
             this.displayErrorGlobal = quotaExceeded;
           }
           if (
             quotaExceeded &&
-            exceededResources &&
-            exceededResources.length > 0
+            limitExceededErrors &&
+            limitExceededErrors.length > 0
           ) {
-            this.setExceededQuotasMessage(exceededResources);
+            this.setExceededQuotasMessage(limitExceededErrors);
           }
         },
         err => {
@@ -228,12 +230,12 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       );
   }
 
-  private setExceededQuotasMessage(exceededResources) {
-    this.exceededResources = [];
-    exceededResources.forEach(resource => {
+  private setExceededQuotasMessage(limitExceededErrors) {
+    this.limitExceededErrors = [];
+    limitExceededErrors.forEach(resource => {
       if (resource.affectedResources && resource.affectedResources.length > 0) {
         resource.affectedResources.forEach(affectedResource => {
-          this.exceededResources.push(
+          this.limitExceededErrors.push(
             `'${resource.resourceName}' by '${affectedResource}' (${
               resource.quotaName
             })`
