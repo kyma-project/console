@@ -40,20 +40,6 @@ export class TokenInterceptor implements HttpInterceptor {
       tap(
         (event: HttpEvent<any>) => {},
         (err: any) => {
-          if (err.status === 401) {
-            if (this.isNewToken()) {
-              sessionStorage.setItem(
-                'requestError',
-                JSON.stringify({
-                  data: err
-                })
-              );
-              this.router.navigateByUrl('/requestError');
-            } else {
-              sessionStorage.clear();
-              this.router.navigateByUrl('/');
-            }
-          }
           return err;
         }
       )
