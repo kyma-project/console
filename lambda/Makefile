@@ -10,7 +10,7 @@ resolve:
 	npm install --no-optional
 
 validate:
-	eslint -c .eslinterrc ./src
+	npm run lint
 
 test:
 	npm run test

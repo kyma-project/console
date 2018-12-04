@@ -44,6 +44,7 @@
     "pipe-impure": true,
     "i18n": false,
     "no-string-literal": false,
+    "no-console": false,
     "ordered-imports": false,
     "no-submodule-imports": [
       true,
