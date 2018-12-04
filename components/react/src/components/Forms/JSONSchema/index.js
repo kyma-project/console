@@ -233,13 +233,18 @@ const StyledForm = styled(Form)`
       margin-bottom: 12px;
     }
     div.form-group {
-      border-left: 2px solid rgba(204, 204, 204, 0.3);
+      border-bottom: 2px solid rgba(204, 204, 204, 0.3);
+      div.form-group:nth-of-type(1) {
+        margin-top: 16px;
+        border: none;
+      }
       margin-bottom: 0;
-      padding: 0 0 16px 16px;
+      padding: 0 0 16px 0px;
     }
     div.form-group:last-child {
       padding: 0 0 0 16px;
     }
+
     div.row div.form-group {
       border-left: none;
       padding: 0;
