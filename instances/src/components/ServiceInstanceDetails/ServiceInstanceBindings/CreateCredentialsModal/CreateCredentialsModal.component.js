@@ -174,49 +174,53 @@ class CreateCredentialsModal extends React.Component {
       </CreateCredentialsButton>
     );
 
-    return serviceInstance.status.type === 'RUNNING' ? (
-      <Fragment>
-        {bindingCreateParameterSchema ? (
-          <ConfirmationModal
-            ref={modal => {
-              this.child = modal;
-            }}
-            key={serviceInstance.name}
-            title={'Bind Application'}
-            confirmText="Create"
-            cancelText="Cancel"
-            content={content}
-            handleConfirmation={this.handleConfirmation}
-            modalOpeningComponent={createCredentialsButton}
-            disabled={disabled}
-            tooltipData={tooltipData}
-            borderFooter={true}
-            handleClose={this.clearState}
-            headerAdditionalInfo={bindingVariables.serviceBinding}
-          />
-        ) : (
-          <CreateCredentialsButton
-            data-e2e-id={id}
-            onClick={this.createWithoutOpening}
-          >
+    if (serviceInstance.status.type !== 'RUNNING') {
+      return (
+        <Tooltip
+          type="error"
+          content={
+            <span>
+              Instance must be in a <strong>Running</strong> state
+            </span>
+          }
+          minWidth="161px"
+        >
+          <CreateCredentialsButton disabled={true}>
             + Create Credentials
           </CreateCredentialsButton>
-        )}
-      </Fragment>
-    ) : (
-      <Tooltip
-        type="error"
-        content={
-          <span>
-            Instance must be in a <strong>Running</strong> state
-          </span>
-        }
-        minWidth="161px"
-      >
-        <CreateCredentialsButton disabled={true}>
+        </Tooltip>
+      );
+    }
+
+    if (!bindingCreateParameterSchema) {
+      return (
+        <CreateCredentialsButton
+          data-e2e-id={id}
+          onClick={this.createWithoutOpening}
+        >
           + Create Credentials
         </CreateCredentialsButton>
-      </Tooltip>
+      );
+    }
+
+    return (
+      <ConfirmationModal
+        ref={modal => {
+          this.child = modal;
+        }}
+        key={serviceInstance.name}
+        title={'Bind Application'}
+        confirmText="Create"
+        cancelText="Cancel"
+        content={content}
+        handleConfirmation={this.handleConfirmation}
+        modalOpeningComponent={createCredentialsButton}
+        disabled={disabled}
+        tooltipData={tooltipData}
+        borderFooter={true}
+        handleClose={this.clearState}
+        headerAdditionalInfo={bindingVariables.serviceBinding}
+      />
     );
   }
 }
