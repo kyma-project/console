@@ -1,4 +1,4 @@
-IMG_NAME = console-integration
+IMG_NAME = ui-tests
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
