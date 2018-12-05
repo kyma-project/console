@@ -209,8 +209,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         ({ env, quotaExceeded, limitExceededErrors }) => {
-          console.log(quotaExceeded);
-          console.log(limitExceededErrors);
           this.limitHasBeenExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
