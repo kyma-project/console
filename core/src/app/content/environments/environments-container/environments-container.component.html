@@ -6,7 +6,7 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideError()">
         <span aria-hidden="true">×</span>
       </button>
-      <div *ngFor="let error of limitExceededErrors">- {{error}}</div>
+      <div *ngFor="let error of limitExceededErrors">- {{ error }}</div>
     </div>
   </ng-container>
   <router-outlet></router-outlet>

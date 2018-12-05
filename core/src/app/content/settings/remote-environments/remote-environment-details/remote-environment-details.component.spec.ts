@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { empty } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { RemoteEnvironmentDetailsComponent } from './remote-environment-details.component';
@@ -21,13 +21,13 @@ describe('RemoteEnvironmentDetailsComponent', () => {
         {
           provide: RemoteEnvironmentsService,
           useValue: {
-            getConnectorServiceUrl: () => empty(),
-            getRemoteEnvironment: () => empty()
+            getConnectorServiceUrl: () => EMPTY,
+            getRemoteEnvironment: () => EMPTY
           }
         },
         {
           provide: ComponentCommunicationService,
-          useValue: { observable$: empty() }
+          useValue: { observable$: EMPTY }
         },
         {
           provide: RemoteEnvironmentBindingService,

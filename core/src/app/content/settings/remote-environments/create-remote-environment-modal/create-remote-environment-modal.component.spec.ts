@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError, empty } from 'rxjs';
+import { of, throwError, EMPTY } from 'rxjs';
 
 import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal.component';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
@@ -156,7 +156,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       spyOn(
         mockRemoteEnvironmentsService,
         'createRemoteEnvironment'
-      ).and.returnValue(empty());
+      ).and.returnValue(EMPTY);
       component.name = 're-name';
       component.description = 're-desc';
       component.labels = ['key1:val1'];
