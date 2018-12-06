@@ -87,19 +87,22 @@ export class IdpPresetsComponent extends GenericTableComponent {
             'Confirm delete',
             'Do you really want to delete ' + entry.name + '?'
           )
-          .then(() => {
-            this.idpPresetsService.deleteIdpPreset(entry.name).subscribe(
-              res => {
-                const response: any = res;
+          .then(
+            () => {
+              this.idpPresetsService.deleteIdpPreset(entry.name).subscribe(
+                res => {
+                  const response: any = res;
 
-                this.communicationService.sendEvent({
-                  type: 'deleteResource',
-                  data: response.deleteIDPPreset
-                });
-              },
-              err => console.log(err)
-            );
-          });
+                  this.communicationService.sendEvent({
+                    type: 'deleteResource',
+                    data: response.deleteIDPPreset
+                  });
+                },
+                err => console.log(err)
+              );
+            },
+            () => {}
+          );
       }
     };
   }

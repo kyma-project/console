@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve --port 4000` for a dev server. Navigate to `http://localhost:4000/`. The app will automatically reload if you change any of the source files.
+Run `ng serve --port 4000 --ssl true` for a dev server. Navigate to `https://localhost:4000/`. The application reloads automatically if you change any of the source files.
 
 ## Code scaffolding
 

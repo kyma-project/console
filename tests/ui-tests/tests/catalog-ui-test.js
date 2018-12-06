@@ -91,7 +91,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const searchBySth = 'lololo';
     const searchByDatabase = 'database';
     const searchID = 'search-filter';
-    const searchSelector = catalog.prepareSelector(searchID);
 
     const frame = await kymaConsole.getFrame(page);
     await frame.click(filterDropdownButton);

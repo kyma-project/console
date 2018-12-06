@@ -48,7 +48,8 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public previousUrl = '';
   public previousEnv = '';
   public displayErrorGlobal = false;
-  public resourceExceeded = false;
+  public limitHasBeenExceeded = false;
+  public limitExceededErrors = [];
   public overview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
@@ -88,8 +89,18 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     window.addEventListener('message', e => {
       if (e.data && e.data.resourceQuotasStatus) {
-        this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
+        this.limitHasBeenExceeded = e.data.resourceQuotasStatus.exceeded;
         this.displayErrorGlobal = true;
+      }
+      if (
+        e.data &&
+        e.data.resourceQuotasStatus &&
+        e.data.resourceQuotasStatus.exceededQuotas &&
+        e.data.resourceQuotasStatus.exceededQuotas.length > 0
+      ) {
+        this.setLimitExceededErrorsMessages(
+          e.data.resourceQuotasStatus.exceededQuotas
+        );
       }
     });
     this.route.params.subscribe(params => {
@@ -183,22 +194,48 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
               quotaExceeded:
                 res && res.resourceQuotasStatus
                   ? res.resourceQuotasStatus.exceeded
-                  : false
+                  : false,
+              limitExceededErrors:
+                res && res.resourceQuotasStatus && res.resourceQuotasStatus
+                  ? res.resourceQuotasStatus.exceededQuotas
+                  : []
             }))
           )
         )
       )
       .subscribe(
-        ({ env, quotaExceeded }) => {
-          this.resourceExceeded = quotaExceeded;
+        ({ env, quotaExceeded, limitExceededErrors }) => {
+          this.limitHasBeenExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
             this.displayErrorGlobal = quotaExceeded;
+          }
+          if (
+            quotaExceeded &&
+            limitExceededErrors &&
+            limitExceededErrors.length > 0
+          ) {
+            this.setLimitExceededErrorsMessages(limitExceededErrors);
           }
         },
         err => {
           console.log(err);
         }
       );
+  }
+
+  private setLimitExceededErrorsMessages(limitExceededErrors) {
+    this.limitExceededErrors = [];
+    limitExceededErrors.forEach(resource => {
+      if (resource.affectedResources && resource.affectedResources.length > 0) {
+        resource.affectedResources.forEach(affectedResource => {
+          this.limitExceededErrors.push(
+            `'${resource.resourceName}' by '${affectedResource}' (${
+              resource.quotaName
+            })`
+          );
+        });
+      }
+    });
   }
 }
