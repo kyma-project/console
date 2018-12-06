@@ -2,11 +2,15 @@
 <div [@fadeInAnimation]="fadeIn" class="main-container" [ngClass]="{'left-nav-collapsed': leftNavCollapsed === true}">
   <ng-container *ngIf="limitHasBeenExceeded && limitExceededErrors">
     <div class="alert resource-alert" [hidden]="!displayErrorGlobal" role="alert">
-      Error! The following resource quota limit has been exceeded by the given resource:
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideError()">
-        <span aria-hidden="true">×</span>
-      </button>
-      <div *ngFor="let error of limitExceededErrors">- {{ error }}</div>
+      <div class="close-button">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideError()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div>
+        Error! The following resource quota limit has been exceeded by the given resource:
+        <div *ngFor="let error of limitExceededErrors">- {{ error }}</div>
+      </div>
     </div>
   </ng-container>
   <router-outlet></router-outlet>
