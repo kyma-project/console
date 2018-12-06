@@ -74,7 +74,7 @@ export class SubscriptionsService {
 
     const subscription = new Subscription({
       kind: 'Subscription',
-      apiVersion: 'eventing.kyma.cx/v1alpha1',
+      apiVersion: 'eventing.kyma-project.io/v1alpha1',
       metadata: md,
       spec: sp,
     });
