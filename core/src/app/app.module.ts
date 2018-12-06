@@ -123,8 +123,6 @@ import { RequestErrorComponent } from './content/request-error/request-error.com
 import { ConfigMapsComponent } from './content/environments/operation/configmaps/configmaps.component';
 import { ConfigMapsEntryRendererComponent } from './content/environments/operation/configmaps/configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './content/environments/operation/configmaps/configmaps-header-renderer/configmaps-header-renderer.component';
-import { UnsavedChanges } from './navigation/unsaved-changes';
-import { PageDirtyStateService } from './shared/services/page-dirty-state.service';
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
 import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 import { BrokersContainerComponent } from './content/environments/brokers-container/brokers-container.component';
@@ -259,9 +257,7 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
     RemoteEnvironmentBindingService,
     RbacService,
     GraphQLClientService,
-    IdpPresetsService,
-    UnsavedChanges,
-    PageDirtyStateService
+    IdpPresetsService
   ],
   entryComponents: [
     EnvironmentCardComponent,

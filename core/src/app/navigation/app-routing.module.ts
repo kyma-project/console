@@ -38,7 +38,6 @@ import { LoginErrorComponent } from '../content/login-error/login-error.componen
 import { RequestErrorComponent } from '../content/request-error/request-error.component';
 
 import { ConfigMapsComponent } from '../content/environments/operation/configmaps/configmaps.component';
-import { UnsavedChanges } from './unsaved-changes';
 import { BrokersContainerComponent } from '../content/environments/brokers-container/brokers-container.component';
 
 const appRoutes: Routes = [
@@ -87,13 +86,11 @@ const appRoutes: Routes = [
           { path: 'lambdas', component: LambdasComponent },
           {
             path: 'lambdas/create',
-            component: LambdasComponent,
-            canDeactivate: [UnsavedChanges]
+            component: LambdasComponent
           },
           {
             path: 'lambdas/details/:name',
-            component: LambdasComponent,
-            canDeactivate: [UnsavedChanges]
+            component: LambdasComponent
           },
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },

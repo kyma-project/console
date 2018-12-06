@@ -6,12 +6,10 @@ import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.ser
 import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { ReplaySubject } from 'rxjs';
-import { PageDirtyStateService } from '../../shared/services/page-dirty-state.service';
 
 describe('ExtAppListenerDirective', () => {
   let extAppListenerDirective: ExtAppListenerDirective;
   let extAppViewRegistryService: ExtAppViewRegistryService;
-  let pageDirtyStateService: PageDirtyStateService;
   let router;
 
   const routerMock = {
@@ -46,7 +44,6 @@ describe('ExtAppListenerDirective', () => {
       providers: [
         ExtAppListenerDirective,
         ExtAppViewRegistryService,
-        PageDirtyStateService,
         {
           provide: CurrentEnvironmentService,
           useValue: CurrentEnvironmentServiceMock
@@ -57,7 +54,6 @@ describe('ExtAppListenerDirective', () => {
     });
     extAppViewRegistryService = TestBed.get(ExtAppViewRegistryService);
     extAppListenerDirective = TestBed.get(ExtAppListenerDirective);
-    pageDirtyStateService = TestBed.get(PageDirtyStateService);
     router = TestBed.get(Router);
   });
 
