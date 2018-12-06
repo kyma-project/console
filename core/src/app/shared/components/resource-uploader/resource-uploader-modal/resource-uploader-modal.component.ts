@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { UploaderComponent } from '../uploader/uploader.component';
 import { InformationModalComponent } from '../../information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
-
 @Component({
   selector: 'app-resource-uploader-modal',
   templateUrl: './resource-uploader-modal.component.html',

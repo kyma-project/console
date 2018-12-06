@@ -128,6 +128,7 @@ import { PageDirtyStateService } from './shared/services/page-dirty-state.servic
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
 import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 import { BrokersContainerComponent } from './content/environments/brokers-container/brokers-container.component';
+import { LuigiClientCommunicationDirective } from './shared/directives/luigi-client-communication/luigi-client-communication.directive';
 
 @NgModule({
   declarations: [
@@ -223,7 +224,8 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     LabelsInputComponent,
     RequestErrorComponent,
     StatusLabelComponent,
-    TooltipComponent
+    TooltipComponent,
+    LuigiClientCommunicationDirective
   ],
   imports: [
     BrowserModule,

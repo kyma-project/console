@@ -1,49 +1,51 @@
-<ng-template [ngIf]="isActive">
-<div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
-  <div class="tn-modal" role="document">
-    <div class="tn-modal__content">
-      <div class="tn-modal__header">
-        <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
-          <span class="tn-icon tn-icon--close" role="presentation"></span>
-        </button>
-        <h4 class="tn-modal__title">Create Environment Binding</h4>
-      </div>
-      <div class="tn-modal__body">
-            <div class="tn-modal__body">
-                <div class="tn-form__group">
-                  <div class="error-message-placeholder" *ngIf="error"></div>
-                    <div class="tn-dropdown sf-dropdown environment-chooser"
-                      (clickOutside)="closeDropDown()"  
-                      clickOutsideEvents="click,mousedown" 
-                      excludeBeforeClick="true">
-                      <button class="tn-dropdown__control" 
-                        aria-controls="nNJnB279" 
-                        [attr.aria-expanded]="ariaExpanded" 
-                        aria-haspopup="true" 
-                        (click)="toggleDropDown()">
-                        <input class="filter-input"
-                          type="text" 
-                          name="environmentName"
-                          placeholder="Choose environment"
-                          [(ngModel)]="environmentName"
-                          (ngModelChange)="filterEnvsNames()"
-                          (keydown)="openDropDown($event)"
-                          (click)="openDropDown($event)">
-                      </button>
-                      <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaHidden" id="nNJnB279">
-                        <li class="tn-dropdown__item" *ngFor="let env of filteredEnvsNames" (click)="toggleDropDown(); selectedEnv(env);">{{ env.label }}</li>
-                      </ul>
-                    </div>
-                </div>
-              </div>
+<div luigiClientCommunication [isActive]="isActive">
+  <ng-template [ngIf]="isActive">
+    <div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+      <div class="tn-modal" role="document">
+        <div class="tn-modal__content">
+          <div class="tn-modal__header">
+            <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
+              <span class="tn-icon tn-icon--close" role="presentation"></span>
+            </button>
+            <h4 class="tn-modal__title">Create Environment Binding</h4>
           </div>
-      <footer class="tn-modal__footer-items">
-        <button class="tn-modal__button-primary sf-button--primary tn-button--small" 
-          ngClass="{{checkIfEnvironmentExists() ? '' : 'disabled'}}"
-          [disabled]="!checkIfEnvironmentExists()"
-          (click)="save()">OK</button>
-      </footer>
+          <div class="tn-modal__body">
+                <div class="tn-modal__body">
+                    <div class="tn-form__group">
+                      <div class="error-message-placeholder" *ngIf="error"></div>
+                        <div class="tn-dropdown sf-dropdown environment-chooser"
+                          (clickOutside)="closeDropDown()"  
+                          clickOutsideEvents="click,mousedown" 
+                          excludeBeforeClick="true">
+                          <button class="tn-dropdown__control" 
+                            aria-controls="nNJnB279" 
+                            [attr.aria-expanded]="ariaExpanded" 
+                            aria-haspopup="true" 
+                            (click)="toggleDropDown()">
+                            <input class="filter-input"
+                              type="text" 
+                              name="environmentName"
+                              placeholder="Choose environment"
+                              [(ngModel)]="environmentName"
+                              (ngModelChange)="filterEnvsNames()"
+                              (keydown)="openDropDown($event)"
+                              (click)="openDropDown($event)">
+                          </button>
+                          <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaHidden" id="nNJnB279">
+                            <li class="tn-dropdown__item" *ngFor="let env of filteredEnvsNames" (click)="toggleDropDown(); selectedEnv(env);">{{ env.label }}</li>
+                          </ul>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          <footer class="tn-modal__footer-items">
+            <button class="tn-modal__button-primary sf-button--primary tn-button--small" 
+              ngClass="{{checkIfEnvironmentExists() ? '' : 'disabled'}}"
+              [disabled]="!checkIfEnvironmentExists()"
+              (click)="save()">OK</button>
+          </footer>
+        </div>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </div>
-</ng-template>

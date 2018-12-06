@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Clipboard } from 'ts-clipboard';
 
-import * as luigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-fetch-token-modal',
@@ -17,9 +17,10 @@ export class FetchTokenModalComponent {
   public show() {
     this.title = 'Fetch token';
     this.isActive = true;
+    LuigiClient.uxManager().addBackdrop();
 
-    luigiClient.addInitListener(() => {
-      const eventData = luigiClient.getEventData();
+    LuigiClient.addInitListener(() => {
+      const eventData = LuigiClient.getEventData();
       this.token = `Bearer ${eventData.idToken}`;
     });
   }
@@ -27,6 +28,7 @@ export class FetchTokenModalComponent {
   public cancel(event: Event) {
     this.isActive = false;
     this.isTokenCopied = false;
+    LuigiClient.uxManager().removeBackdrop();
     event.stopPropagation();
   }
 
