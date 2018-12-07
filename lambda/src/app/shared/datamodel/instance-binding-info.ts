@@ -5,4 +5,6 @@ export class InstanceBindingInfo {
   serviceBinding: string;
   envVarNames: string[];
   secretName: string;
+  status: string;
+  statusType: string;
 }

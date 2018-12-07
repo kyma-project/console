@@ -1,0 +1,22 @@
+$prefix: 'sf-indicator';
+
+.#{$prefix} {
+	border-radius: 50%;
+	height: 12px;
+	width: 12px;
+	margin: 0 4px;
+	overflow: hidden;
+	display: inline-block;
+	background-color: grey;
+	transition: background-color 2s ease-in 0.5s;
+
+	&--success{
+		background-color: #61bf33;
+	}
+	&--warning{
+		background-color: #e97326;
+	}
+	&--error{
+		background-color: #df1919;
+	}
+}
