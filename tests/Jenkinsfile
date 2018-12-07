@@ -93,7 +93,7 @@ podTemplate(label: label) {
 
 def execute(command, envs = []) {
     def repositoryName = 'console'
-    def buildpack = 'prow/test-infra/buildpack-node-chromium:v20181207-d46c013'
+    def buildpack = 'node-buildpack:0.0.10'
     def envText = ''
     for (it in envs) {
         envText = "$envText --env $it"
