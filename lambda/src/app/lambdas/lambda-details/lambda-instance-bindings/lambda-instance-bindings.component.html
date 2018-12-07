@@ -10,15 +10,14 @@
 <div class="sf-list" *ngIf="instanceBindingInfoList.length > 0">
   <div class="row sf-list__head">
     <div class="col-3">Instance</div>
-    <div class="col-6">Environment Variable Name</div>
-    <div class="col-2">Status</div>
+    <div class="col-8">Environment Variable Name</div>
     <div class="col-1"></div>
   </div>
   <div class="row sf-list__body" *ngFor="let instanceBinding of instanceBindingInfoList; let i = index; last as isLast">
     <div class="col-3">
       {{ instanceBinding.instanceName }}
     </div>
-    <div class="col-6">
+    <div class="col-8">
       <div *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
         <div class="col-12 env-var-position" *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
           {{ instanceBinding.instanceBindingPrefix + envVar }}
@@ -29,9 +28,6 @@
           </div>
         </ng-template>
       </div>
-    </div>
-    <div class="col-sm-2">
-      <span class="sf-indicator" [ngClass]="determineClass(instanceBinding)"></span> <span>{{ instanceBinding.statusType }}</span>
     </div>
     <div class="col-1">
       <button class="tn-icon tn-icon--delete tn-button tn-button--small tn-button--icon tn-button--text" (click)="remove(i)" [disabled]="!lambdaName || isLambdaNameInvalid"></button>
