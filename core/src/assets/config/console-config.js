@@ -36,6 +36,7 @@ function getNodes(context) {
       navigationContext: 'service-catalog',
       pathSegment: 'service-catalog',
       label: 'Catalog',
+      viewGroup: 'catalog',
       viewUrl: config.serviceCatalogModuleUrl,
       keepSelectedForChildren: true,
       children: [
@@ -56,6 +57,7 @@ function getNodes(context) {
       pathSegment: 'instances',
       label: 'Instances',
       viewUrl: config.serviceInstancesModuleUrl,
+      viewGroup: 'instances',
       children: [
         {
           pathSegment: 'details',
@@ -147,6 +149,7 @@ function getNodes(context) {
       pathSegment: 'lambdas',
       navigationContext: 'lambdas',
       label: 'Lambdas',
+      viewGroup: 'lambdas',
       viewUrl: config.lambdasModuleUrl + '#/lambdas',
       keepSelectedForChildren: true,
       children: [
@@ -482,7 +485,7 @@ Luigi.setConfig({
   },
   routing: {
     nodeParamPrefix: '~',
-    useHashRouting: true
+    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
   },
   settings: {
     header: () => ({
