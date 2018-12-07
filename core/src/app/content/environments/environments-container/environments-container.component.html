@@ -11,6 +11,9 @@
         Error! The following resource quota limit has been exceeded by the given resource:
         <div *ngFor="let error of limitExceededErrors">- {{ error }}</div>
       </div>
+      <div class="link">
+        See <a (click)="navigateToResources()">Resources Configuration</a> for details.
+      </div>
     </div>
   </ng-container>
   <router-outlet></router-outlet>

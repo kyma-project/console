@@ -242,4 +242,10 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  public navigateToResources() {
+    this.currentEnvironmentService.getCurrentEnvironmentId().subscribe(env => {
+      this.router.navigate([`home/environments/${env}/resources`]);
+    });
+  }
 }
