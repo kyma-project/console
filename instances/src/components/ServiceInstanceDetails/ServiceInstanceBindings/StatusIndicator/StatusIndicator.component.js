@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { statusColor } from '../../../../commons/helpers';
-import { StatusWrapper, Status } from './styled';
+import { StatusesList, StatusWrapper, Status } from './styled';
 
 const StatusIndicator = ({ data }) => {
   if (!data) return;
@@ -21,21 +21,23 @@ const StatusIndicator = ({ data }) => {
 
   return (
     <Fragment>
-      {statusesLength > 0 ? (
-        <StatusWrapper backgroundColor={"#0a6ed1"}>
-          <Status>{statusesLength}</Status>
-        </StatusWrapper>
-      ) : null}
-      {statusesStats && (statusesStats.PENDING || statusesStats.UNKNOWN) ? (
-        <StatusWrapper backgroundColor={statusColor('PENDING')}>
-          <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
-        </StatusWrapper>
-      ) : null}
-      {statusesStats && statusesStats.FAILED && (
-        <StatusWrapper backgroundColor={statusColor('FAILED')}>
-          <Status>{statusesStats.FAILED}</Status>
-        </StatusWrapper>
-      )}
+      <StatusesList>
+        {statusesLength > 0 ? (
+          <StatusWrapper backgroundColor={"#0a6ed1"}>
+            <Status>{statusesLength}</Status>
+          </StatusWrapper>
+        ) : null}
+        {statusesStats && (statusesStats.PENDING || statusesStats.UNKNOWN) ? (
+          <StatusWrapper backgroundColor={statusColor('PENDING')}>
+            <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
+          </StatusWrapper>
+        ) : null}
+        {statusesStats && statusesStats.FAILED && (
+          <StatusWrapper backgroundColor={statusColor('FAILED')}>
+            <Status>{statusesStats.FAILED}</Status>
+          </StatusWrapper>
+        )}
+      </StatusesList>
     </Fragment>
   );
 };
