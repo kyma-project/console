@@ -1,5 +1,5 @@
 import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import LuigiClient from '@kyma-project/luigi-client';
+import * as luigiClient from '@kyma-project/luigi-client';
 
 @Directive({
   selector: '[luigiClientCommunication]'
@@ -11,9 +11,9 @@ export class LuigiClientCommunicationDirective implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.isActive) {
       if (changes.isActive.currentValue) {
-        LuigiClient.uxManager().addBackdrop();
+        luigiClient.uxManager().addBackdrop();
       } else {
-        LuigiClient.uxManager().removeBackdrop();
+        luigiClient.uxManager().removeBackdrop();
       }
     }
   }

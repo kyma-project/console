@@ -5,7 +5,7 @@ import { AppModule } from '../../../../app.module';
 import { ListModule } from '@kyma-project/y-generic-list';
 import { APP_BASE_HREF } from '@angular/common';
 
-describe('ConfigmapsComponent', () => {
+describe('PodsComponent', () => {
   let component: PodsComponent;
   let fixture: ComponentFixture<PodsComponent>;
 

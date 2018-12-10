@@ -7,14 +7,12 @@ describe('EnvironmentDetailsComponent', () => {
   let component: EnvironmentDetailsComponent;
   let fixture: ComponentFixture<EnvironmentDetailsComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [AppModule],
-        providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [AppModule],
+      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EnvironmentDetailsComponent);

@@ -1,3 +1,4 @@
+import { LuigiClientCommunicationDirective } from './../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
@@ -30,7 +31,10 @@ describe('CreatePresetModalComponent', () => {
         { provide: IdpPresetsService, useClass: IdpPresetsServiceMock },
         ComponentCommunicationService
       ],
-      declarations: [CreatePresetModalComponent]
+      declarations: [
+        CreatePresetModalComponent,
+        LuigiClientCommunicationDirective
+      ]
     }).compileComponents();
   }));
 

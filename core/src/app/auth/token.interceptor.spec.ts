@@ -115,15 +115,6 @@ describe('TokenInterceptor', () => {
           // then
           expect(error).toBeTruthy();
           expect(error.status).toEqual(401);
-          expect(sessionStorage.setItem).toHaveBeenCalledWith(
-            'requestError',
-            JSON.stringify({
-              data: error
-            })
-          );
-          expect(RouterMock.navigateByUrl).toHaveBeenCalledWith(
-            '/requestError'
-          );
         }
       );
       const request = httpClientMock.expectOne('/api');
@@ -151,8 +142,6 @@ describe('TokenInterceptor', () => {
           // then
           expect(error).toBeTruthy();
           expect(error.status).toEqual(401);
-          expect(sessionStorage.clear).toHaveBeenCalled();
-          expect(RouterMock.navigateByUrl).toHaveBeenCalledWith('/');
         }
       );
       const request = httpClientMock.expectOne('/api');
