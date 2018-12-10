@@ -14,6 +14,7 @@ import H2 from './Header/H2';
 import H3 from './Header/H3';
 import H4 from './Header/H4';
 import Icon from './Icon';
+import Markdown from './Markdown';
 import Modal from './Modal';
 import InformationModal from './Modal/Information';
 import ConfirmationModal from './Modal/Confirmation';
@@ -46,6 +47,7 @@ module.exports = {
   H3,
   H4,
   Icon,
+  Markdown,
   Modal,
   InformationModal,
   ConfirmationModal,

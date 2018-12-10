@@ -58,6 +58,12 @@ export const ExternalLink = styled.a`
   font-family: '72';
   font-size: 14px;
   font-weight: normal;
+  color: #167ee6;
+  text-decoration: none;
+
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 export const TagsWrapper = styled.div`

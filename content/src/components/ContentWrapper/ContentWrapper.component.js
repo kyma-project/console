@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Toolbar } from '@kyma-project/react-components';
+import { Markdown, Toolbar } from '@kyma-project/react-components';
 import { sortByOrder, filterWithoutInternal } from '../../commons/helpers';
 import Highlight from 'react-highlight/lib/optimized.js';
 
@@ -96,12 +96,14 @@ function ContentWrapper(props) {
                   <ContentHeader id={hash}>{item.title}</ContentHeader>
                   <ContentDescription>
                     <TextWrapper>
-                      <Highlight
-                        languages={['javascript', 'go']}
-                        innerHTML={true}
-                      >
-                        {item.source}
-                      </Highlight>
+                      <Markdown>
+                        <Highlight
+                          languages={['javascript', 'go']}
+                          innerHTML={true}
+                        >
+                          {item.source}
+                        </Highlight>
+                      </Markdown>
                     </TextWrapper>
                   </ContentDescription>
                 </Wrapper>
