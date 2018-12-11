@@ -85,6 +85,12 @@ class ServiceInstanceBindings extends React.Component {
       callback,
     } = this.props;
 
+    const bindable = serviceInstance.bindable;
+
+    if (!bindable) {
+      return null;
+    }
+
     const serviceBindingsUsageTable = {
       title: 'Bindings',
       columns: [
