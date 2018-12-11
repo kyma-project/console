@@ -1,14 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Clipboard } from 'ts-clipboard';
 import { ServiceInstance } from '../../../../shared/datamodel/k8s/service-instance';
 import { ServiceInstancesService } from '../../../../service-instances/service-instances.service';
 import { ServiceBindingsService } from '../../../../service-bindings/service-bindings.service';
 import { ServiceBinding } from '../../../../shared/datamodel/k8s/service-binding';
-import { Observable } from 'rxjs';
 import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-binding-info';
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
-import { ServiceInstanceList } from '../../../../shared/datamodel/k8s/service-instance-list';
 
 @Component({
   selector: 'app-lambda-instance-binding-creator',
@@ -20,18 +17,16 @@ import { ServiceInstanceList } from '../../../../shared/datamodel/k8s/service-in
 })
 export class LambdaInstanceBindingCreatorComponent {
   public isActive = false;
-  private isValid = false;
-  private isSelectedInstanceBindingPrefixInvalid = false;
-  private createSecrets = true;
-  private selectedInstance: ServiceInstance;
-  private selectedBinding: ServiceBinding;
-  private selectedInstanceBindingPrefix: string;
-  private relevantServiceBindings = new ServiceBindingList({
+  public isValid = false;
+  public isSelectedInstanceBindingPrefixInvalid = false;
+  public createSecrets = true;
+  public selectedInstance: ServiceInstance;
+  public selectedBinding: ServiceBinding;
+  public selectedInstanceBindingPrefix: string;
+  public relevantServiceBindings = new ServiceBindingList({
     items: [],
   });
-  private instances = new ServiceInstanceList({
-    items: [],
-  });
+  public instances: ServiceInstance[];
   private serviceBindings = new ServiceBindingList({
     items: [],
   });
@@ -53,23 +48,25 @@ export class LambdaInstanceBindingCreatorComponent {
       this.environment = eventData.currentEnvironmentId;
       this.token = eventData.idToken;
       this.serviceInstancesService
-        .getServiceInstances(this.environment, this.token)
+        .getServiceInstances(this.environment, this.token, 'RUNNING')
         .subscribe(
           instances => {
-            instances.items = instances.items.filter(i => {
-              if (i.status.provisionStatus !== 'Provisioned') {
-                return;
-              }
-              let isAdded = false;
-              this.alreadyAddedInstances.forEach(alreadyAddedInst => {
-                if (i.metadata.name === alreadyAddedInst.instanceName) {
-                  isAdded = true;
-                  return;
+            instances.data.serviceInstances = instances.data.serviceInstances.filter(
+              i => {
+                if (!i.bindable) {
+                  return false;
                 }
-              });
-              return !isAdded;
-            });
-            this.instances = instances;
+                let isAdded = false;
+                this.alreadyAddedInstances.forEach(alreadyAddedInst => {
+                  if (i.name === alreadyAddedInst.instanceName) {
+                    isAdded = true;
+                    return;
+                  }
+                });
+                return !isAdded;
+              },
+            );
+            this.instances = instances.data.serviceInstances;
           },
           err => {},
         );
@@ -105,7 +102,7 @@ export class LambdaInstanceBindingCreatorComponent {
 
   public submit(event: Event) {
     const ibInfo: InstanceBindingInfo = {
-      instanceName: this.selectedInstance.metadata.name,
+      instanceName: this.selectedInstance.name,
       createSecret: this.createSecrets,
       serviceBinding: this.createSecrets
         ? ''
@@ -129,8 +126,7 @@ export class LambdaInstanceBindingCreatorComponent {
       item => {
         return (
           this.selectedInstance !== undefined &&
-          this.selectedInstance.metadata !== undefined &&
-          item.spec.instanceRef.name === this.selectedInstance.metadata.name
+          item.spec.instanceRef.name === this.selectedInstance.name
         );
       },
     );
