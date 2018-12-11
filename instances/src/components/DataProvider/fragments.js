@@ -61,7 +61,7 @@ export const SERVICE_BINDING_USAGE_DETAILS_FRAGMENT = gql`
       name
       kind
     }
-    parameters { 
+    parameters {
       envPrefix {
         name
       }
@@ -75,6 +75,7 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
       environment
       planSpec
       labels
+      bindable
       status {
         type
         message
