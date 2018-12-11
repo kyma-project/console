@@ -81,7 +81,7 @@ export class RemoteEnvironmentsEntryRendererComponent
     return 'warning';
   }
 
-  private navigateToDetails(renvName) {
+  public navigateToDetails(renvName) {
     LuigiClient.linkManager().navigate(`details/${renvName}`);
   }
 }

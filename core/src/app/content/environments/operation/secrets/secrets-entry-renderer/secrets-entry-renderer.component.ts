@@ -44,7 +44,7 @@ export class SecretsEntryRendererComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  private navigateToDetails(secretName) {
+  public navigateToDetails(secretName) {
     LuigiClient.linkManager()
       .fromContext('secrets')
       .navigate(`details/${secretName}`);

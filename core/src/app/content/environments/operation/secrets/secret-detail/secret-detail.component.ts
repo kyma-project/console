@@ -123,7 +123,7 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  private navigateToList() {
+  public navigateToList() {
     LuigiClient.linkManager()
       .fromContext('secrets')
       .navigate('');

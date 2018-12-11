@@ -172,7 +172,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     this.editRemoteEnvModal.show();
   }
 
-  private navigateToList() {
+  public navigateToList() {
     LuigiClient.linkManager()
       .fromContext('remote-envs')
       .navigate('');

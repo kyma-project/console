@@ -49,7 +49,7 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  private navigateToDetails(envName) {
+  public navigateToDetails(envName) {
     LuigiClient.linkManager().navigate(`/environments/${envName}/details`);
   }
 }

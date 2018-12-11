@@ -26,7 +26,7 @@ export class RolesEntryRendererComponent extends AbstractKubernetesEntryRenderer
       });
   }
 
-  private navigateToDetails(roleName) {
+  public navigateToDetails(roleName) {
     if (this.activeTab === 'roles') {
       LuigiClient.linkManager()
         .fromContext('permissions')

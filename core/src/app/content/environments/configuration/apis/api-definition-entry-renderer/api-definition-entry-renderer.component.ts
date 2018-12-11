@@ -68,7 +68,7 @@ export class ApiDefinitionEntryRendererComponent
     );
   };
 
-  private navigateToDetails(apiName) {
+  public navigateToDetails(apiName) {
     LuigiClient.linkManager()
       .fromContext('apis')
       .navigate(`details/${apiName}`);

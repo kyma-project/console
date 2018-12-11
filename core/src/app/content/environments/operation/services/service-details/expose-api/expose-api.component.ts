@@ -79,13 +79,13 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.secure = !this.secure;
   }
 
-  private navigateToList(list) {
+  public navigateToList(list) {
     LuigiClient.linkManager()
       .fromContext('environments')
       .navigate(list);
   }
 
-  private navigateToDetails(apiName) {
+  public navigateToDetails(apiName) {
     LuigiClient.linkManager()
       .fromContext('environments')
       .navigate(`services/details/${apiName}`);

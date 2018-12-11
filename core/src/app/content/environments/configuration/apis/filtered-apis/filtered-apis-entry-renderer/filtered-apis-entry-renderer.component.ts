@@ -75,7 +75,7 @@ export class FilteredApisEntryRendererComponent
       : 'Other';
   }
 
-  private navigateToDetails(serviceName, apiName) {
+  public navigateToDetails(serviceName, apiName) {
     LuigiClient.linkManager()
       .fromContext('services')
       .navigate(`details/${serviceName}/apis/details/${apiName}`);

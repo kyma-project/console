@@ -76,7 +76,7 @@ export class ServicesEntryRendererComponent
     }
   }
 
-  private navigateToDetails(serviceName) {
+  public navigateToDetails(serviceName) {
     LuigiClient.linkManager()
       .fromContext('services')
       .navigate(`details/${serviceName}`);
