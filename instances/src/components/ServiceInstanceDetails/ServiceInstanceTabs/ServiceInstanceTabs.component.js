@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Tabs, Tab } from '@kyma-project/react-components';
+import { Markdown, Tabs, Tab } from '@kyma-project/react-components';
 
 import Events from '../Events/Events.component';
 import ApiConsole from '../SwaggerApi/SwaggerApiConsole.component';
@@ -54,17 +54,19 @@ const ServiceInstanceTabs = ({ serviceClass }) => {
                 documentsByType[type] &&
                 validatDocumentsByType(documentsByType[type]) ? (
                   <Tab key={type} title={type}>
-                    {documentsByType[type].map(
-                      (item, i) =>
-                        item.source || item.Source ? (
-                          <div
-                            key={i}
-                            dangerouslySetInnerHTML={{
-                              __html: item.source || item.Source,
-                            }}
-                          />
-                        ) : null,
-                    )}
+                    <Markdown>
+                      {documentsByType[type].map(
+                        (item, i) =>
+                          item.source || item.Source ? (
+                            <div
+                              key={i}
+                              dangerouslySetInnerHTML={{
+                                __html: item.source || item.Source,
+                              }}
+                            />
+                          ) : null,
+                      )}
+                    </Markdown>
                   </Tab>
                 ) : null,
             )}
