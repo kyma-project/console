@@ -145,9 +145,10 @@ class CreateCredentialsModal extends React.Component {
       bindingCreateParameters: bindingCreateParameters,
     };
 
+    const bindingCreateParameterSchemaExists = bindingCreateParameterSchema && (bindingCreateParameterSchema.$ref || bindingCreateParameterSchema.properties);
+
     const content = [
       <Fragment key={serviceInstance.name}>
-        {bindingCreateParameterSchema && (
           <SchemaData
             data={schemaData}
             bindingCreateParameterSchema={bindingCreateParameterSchema}
@@ -164,7 +165,6 @@ class CreateCredentialsModal extends React.Component {
               Submit
             </button>
           </SchemaData>
-        )}
       </Fragment>,
     ];
 
@@ -192,7 +192,7 @@ class CreateCredentialsModal extends React.Component {
       );
     }
 
-    if (!bindingCreateParameterSchema) {
+    if (!bindingCreateParameterSchemaExists) {
       return (
         <CreateCredentialsButton
           data-e2e-id={id}
