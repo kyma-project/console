@@ -59,6 +59,15 @@ export const asyncApiTheme = {
           margin: 18px 0;
           font-weight: bold;
         }
+        h2 {
+          font-size: 20px;
+        }
+        h3 {
+          font-size: 18px;
+        }
+        h4 {
+          font-size: 16px;
+        }
       }
     `,
     table: css`
@@ -177,7 +186,6 @@ export const asyncApiTheme = {
       }
     `,
     tableBodyCellNested: css`
-      background: #f9fafa;
       padding: 8px 20px;
       vertical-align: top;
       font-size: 13px;
@@ -301,6 +309,7 @@ export const asyncApiTheme = {
         margin-top: 0;
         font-weight: bold;
         margin-bottom: 20px;
+        font-size: 24px;
       }
 
       > div > h2 {
