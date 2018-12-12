@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AsyncApi from '@kyma-project/asyncapi-react';
 import { Markdown, Tabs, Tab } from '@kyma-project/react-components';
 
-import Events from '../Events/Events.component';
 import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 
 import { ServiceClassTabsContentWrapper } from './styled';
 
 import {
   sortDocumentsByType,
-  validateContent,
-  validateAsyncApiSpec,
+  validateContent
 } from '../../../commons/helpers';
+
+import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
 const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
   const content = serviceClass.content && serviceClass.content;
@@ -22,9 +23,7 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
   if (
     (content && Object.keys(content).length && validateContent(content)) ||
     (apiSpec && Object.keys(apiSpec).length) ||
-    (asyncApiSpec &&
-      Object.keys(asyncApiSpec).length &&
-      validateAsyncApiSpec(asyncApiSpec))
+    (asyncApiSpec && Object.keys(asyncApiSpec).length)
   ) {
     let documentsByType = [],
       documentsTypes = [];
@@ -80,11 +79,9 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
             </Tab>
           ) : null}
 
-          {asyncApiSpec &&
-          Object.keys(asyncApiSpec).length &&
-          validateAsyncApiSpec(asyncApiSpec) ? (
-            <Tab title={'Events'}>
-              <Events asyncApiSpec={asyncApiSpec} />
+          {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
+            <Tab title={'Events'} margin="0" background="inherit">
+              <AsyncApi schema={asyncApiSpec} theme={asyncApiTheme} config={asyncApiConfig} />
             </Tab>
           ) : null}
         </Tabs>

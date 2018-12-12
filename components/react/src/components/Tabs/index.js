@@ -66,10 +66,18 @@ class Tabs extends React.Component {
     }
   };
 
+  getPropsFromActiveTab = children => {
+    if (children[this.state.activeTabIndex]) {
+      return children[this.state.activeTabIndex].props;
+    }
+  }
+
   render() {
     const children = []
       .concat(...this.props.children)
       .filter(child => child !== null && child !== undefined);
+
+    const props = this.getPropsFromActiveTab(children);
 
     return (
       <TabsWrapper>
@@ -80,7 +88,7 @@ class Tabs extends React.Component {
           </TabsHeaderAdditionalContent>
         </TabsHeader>
         <Separator />
-        <TabsContent>{this.renderActiveTab(children)}</TabsContent>
+        <TabsContent margin={props.margin ? props.margin : ""} background={props.background ? props.background : ""}>{this.renderActiveTab(children)}</TabsContent>
       </TabsWrapper>
     );
   }
