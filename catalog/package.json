@@ -4,7 +4,7 @@
   "version": "0.7.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/asyncapi-react": "0.1.1",
+    "@kyma-project/asyncapi-react": "0.1.2",
     "@kyma-project/luigi-client": "0.3.2",
     "@kyma-project/react-components": "0.0.43",
     "ajv": "^6.0.0",
@@ -24,9 +24,7 @@
     "react-moment": "^0.7.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-app-rewired": "^1.5.2",
-    "react-scripts": "1.1.1",
-    "styled-components": "^3.3.3",
+    "styled-components": "^3.4.10",
     "styled-components-grid": "^2.1.0",
     "swagger-ui-dist": "^3.17.3"
   },
