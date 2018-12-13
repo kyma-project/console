@@ -5,7 +5,6 @@ import {
   IServiceBroker
 } from '../../../shared/datamodel/k8s/service-broker';
 import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
@@ -30,7 +29,6 @@ export class ServiceBrokersComponent extends AbstractKubernetesElementListCompon
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

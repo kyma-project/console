@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { ExtAppViewRegistryService } from '../../services/ext-app-view-registry.service';
 import { Subscription } from 'rxjs';
 import { ExtensionsService } from '../../services/extensions.service';
@@ -19,7 +18,6 @@ export class ExternalAppComponent implements OnChanges, OnDestroy {
 
   constructor(
     private currentEnvironmentService: CurrentEnvironmentService,
-    private oauthService: OAuthService,
     private extAppViewRegistryService: ExtAppViewRegistryService,
     private extensionsService: ExtensionsService
   ) {}
@@ -69,13 +67,11 @@ export class ExternalAppComponent implements OnChanges, OnDestroy {
   }
 
   getMessage(element, basePath, data?) {
-    const token = this.oauthService.getIdToken();
     const session = this.extAppViewRegistryService.registerView(
       element.contentWindow
     );
     const dataToSend = {
       currentEnvironmentId: this.environmentId ? this.environmentId : 'default',
-      idToken: token,
       sessionId: session,
       linkManagerData: {
         basePath

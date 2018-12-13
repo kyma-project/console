@@ -3,7 +3,6 @@ import {
   DashboardReplicaSets,
   IDashboardReplicaSets
 } from './../../../../shared/datamodel/k8s/dashboard-replica-sets';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from './../../../environments/services/current-environment.service';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../../app.config';
@@ -33,7 +32,6 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

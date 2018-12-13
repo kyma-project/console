@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { Subscription } from 'rxjs';
-import { OAuthService } from 'angular-oauth2-oidc';
 
 @Directive({
   selector: '[extAppListener]'
@@ -16,7 +15,6 @@ export class ExtAppListenerDirective {
   constructor(
     private router: Router,
     private extAppViewRegistryService: ExtAppViewRegistryService,
-    private oauthService: OAuthService,
     currentEnvironmentService: CurrentEnvironmentService
   ) {
     window.addEventListener('message', this.processMessage.bind(this), false);
@@ -142,8 +140,7 @@ export class ExtAppListenerDirective {
   processLuigiMessage(data, source) {
     if ('luigi.get-context' === data.msg && source) {
       const context = {
-        currentEnvironmentId: this.currentEnvironmentId,
-        idToken: this.oauthService.getIdToken()
+        currentEnvironmentId: this.currentEnvironmentId
       };
 
       this.sendContextToClient(source, context);

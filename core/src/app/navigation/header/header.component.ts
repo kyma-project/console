@@ -7,11 +7,8 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 
-import { OAuthService } from 'angular-oauth2-oidc';
-
 import { NavVisibilityService } from '../services/nav-visibility.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
-import { LoginService } from '../../auth/login.service';
 import { AppConfig } from '../../app.config';
 import { Subscription } from 'rxjs';
 import NavigationUtils from '../services/navigation-utils';
@@ -44,8 +41,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private currentEnvironmentService: CurrentEnvironmentService,
-    private oauthService: OAuthService,
-    private loginService: LoginService,
     private sanitizer: DomSanitizer,
     @Inject(DOCUMENT) private document: any
   ) {
@@ -80,8 +75,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         );
       }
     });
-
-    this.loginService.isLoggedIn().subscribe(val => (this.loggedIn = val));
   }
 
   public goToEnvironments() {
@@ -111,16 +104,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   get name() {
-    const claims = this.oauthService.getIdentityClaims();
-    if (!claims) {
-      return null;
-    }
-    return claims['name'];
+    return null;
   }
 
-  public logout() {
-    this.loginService.logout();
-  }
+  public logout() {}
 
   public ngOnDestroy() {
     this.currentEnvironmentSubscription.unsubscribe();

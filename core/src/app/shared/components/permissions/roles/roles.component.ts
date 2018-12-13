@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from '../../../../app.config';
 import { AbstractKubernetesElementListComponent } from '../../../../content/environments/operation/abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../../../../content/environments/operation/kubernetes-data-provider';
@@ -31,7 +30,6 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

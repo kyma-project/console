@@ -14,9 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './navigation/app-routing.module';
 
-import { AuthGuard } from './auth/auth-guard.service';
-import { LoginComponent } from './auth/login.component';
-import { LoginService } from './auth/login.service';
 import { TokenInterceptor } from './auth/token.interceptor';
 
 import { SortablejsModule } from 'angular-sortablejs';
@@ -33,7 +30,6 @@ import { EnvironmentsService } from './content/environments/services/environment
 import { EnvironmentCardComponent } from './content/workspace-overview/environment-card/environment-card.component';
 import { NavVisibilityService } from './navigation/services/nav-visibility.service';
 
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { CatalogContainerComponent } from './content/environments/catalog-container/catalog-container.component';
 import { ApiDefinitionEntryRendererComponent } from './content/environments/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
@@ -140,7 +136,6 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
     WorkspaceOverviewComponent,
     EnvironmentCreateComponent,
     EnvironmentCardComponent,
-    LoginComponent,
     DeploymentsComponent,
     PodsComponent,
     TimeAgoPipe,
@@ -232,7 +227,6 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    OAuthModule.forRoot(),
     SortablejsModule,
     ListModule,
     ClipboardModule,
@@ -243,10 +237,8 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
     EnvironmentsService,
     CurrentEnvironmentService,
     NavVisibilityService,
-    AuthGuard,
     RemoteEnvironmentsService,
     WormholeStatusService,
-    LoginService,
     EventService,
     ExtensionsService,
     ExtAppViewRegistryService,

@@ -5,7 +5,6 @@ import {
 } from '../../../../shared/datamodel/k8s/dashboard-services';
 import { CurrentEnvironmentService } from '../../services/current-environment.service';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
@@ -34,7 +33,6 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

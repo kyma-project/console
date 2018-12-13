@@ -2,7 +2,6 @@ import {
   DashboardSecret,
   IDashboardSecret
 } from './../../../../shared/datamodel/k8s/dashboard-secrets';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from './../../../environments/services/current-environment.service';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -34,7 +33,6 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

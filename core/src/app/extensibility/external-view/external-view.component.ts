@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ExtensionsService } from '../services/extensions.service';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { combineLatest, Subscription } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { MicroFrontend } from '../../shared/datamodel/k8s/microfrontend';
@@ -30,7 +29,6 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     extensionsService: ExtensionsService,
     currentEnvironmentService: CurrentEnvironmentService,
-    private oauthService: OAuthService,
     private extAppViewRegistryService: ExtAppViewRegistryService
   ) {
     this.extensionsService = extensionsService;
@@ -207,8 +205,7 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
     }
 
     const context = {
-      currentEnvironmentId: this.currentEnvironmentId,
-      idToken: this.oauthService.getIdToken()
+      currentEnvironmentId: this.currentEnvironmentId
     };
 
     const viewUrl = this.replaceVars(

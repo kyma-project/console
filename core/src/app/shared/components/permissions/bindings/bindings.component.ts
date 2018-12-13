@@ -6,7 +6,6 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { AppConfig } from '../../../../app.config';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
@@ -40,7 +39,6 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

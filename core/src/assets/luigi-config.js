@@ -332,9 +332,7 @@ Luigi.setConfig({
       onLogout: () => {
         console.log('onLogout');
       },
-      onAuthSuccessful: data => {
-        console.log('onAuthSuccessful', data);
-      },
+      onAuthSuccessful: data => {},
       onAuthExpired: () => {
         console.log('onAuthExpired');
       },

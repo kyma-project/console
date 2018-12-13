@@ -10,12 +10,6 @@ export class AppComponent {
   public environmentId: string;
 
   public constructor() {
-    LuigiClient.addInitListener(initialContext => {
-      // this.environmentId = initialContext.environmentId;
-      console.info(
-        'project ID as luigi param: ' + initialContext.environmentId
-      );
-    });
     LuigiClient.addContextUpdateListener(updatedContext => {
       this.environmentId = updatedContext.environmentId;
       console.info(

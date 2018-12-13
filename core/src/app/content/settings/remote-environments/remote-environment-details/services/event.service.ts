@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, of } from 'rxjs';
 
 @Injectable()
@@ -36,7 +35,7 @@ export class EventService {
     }
   ];
 
-  constructor(private http: HttpClient, private oAuthService: OAuthService) {}
+  constructor(private http: HttpClient) {}
 
   getRemoteEvents(envId?: string): Observable<any[]> {
     return of(this.fallback);

@@ -8,10 +8,9 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../../../shared/components/information-modal/information-modal.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { Copy2ClipboardModalComponent } from '../../../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
-import LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-expose-api',
@@ -61,8 +60,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     private exposeApiService: ExposeApiService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private idpPresetsService: IdpPresetsService,
-    private oAuthService: OAuthService
+    private idpPresetsService: IdpPresetsService
   ) {}
 
   public validateDetails() {
@@ -450,7 +448,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   private fetchToken() {
-    const message = `Bearer ${this.oAuthService.getIdToken()}`;
+    const token = LuigiClient.getEventData().idToken;
+    const message = `Bearer ${token}`;
     this.fetchModal.show('Fetch token', message);
   }
 

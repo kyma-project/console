@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 
 import { ExtAppListenerDirective } from './ext-app-listener.directive';
 import { ExtAppViewRegistryService } from '../services/ext-app-view-registry.service';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from '../../content/environments/services/current-environment.service';
 import { ReplaySubject } from 'rxjs';
 
@@ -19,15 +18,6 @@ describe('ExtAppListenerDirective', () => {
       } else {
         return Promise.reject(false);
       }
-    }
-  };
-
-  const OAuthServiceMock = {
-    getIdToken: () => {
-      return 'token';
-    },
-    initImplicitFlow: () => {
-      return;
     }
   };
 
@@ -48,7 +38,6 @@ describe('ExtAppListenerDirective', () => {
           provide: CurrentEnvironmentService,
           useValue: CurrentEnvironmentServiceMock
         },
-        { provide: OAuthService, useValue: OAuthServiceMock },
         { provide: Router, useValue: routerMock }
       ]
     });

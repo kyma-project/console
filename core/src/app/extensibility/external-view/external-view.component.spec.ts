@@ -7,7 +7,6 @@ import {
   NavigationEnd
 } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, of, throwError } from 'rxjs';
 
 import { ExternalViewComponent } from './external-view.component';
@@ -24,12 +23,6 @@ describe('ExternalViewComponent', () => {
   let fixture: ComponentFixture<ExternalViewComponent>;
   let extensionsService: ExtensionsService;
   let extAppViewRegistryService: ExtAppViewRegistryService;
-
-  class OAuthMock {
-    getIdToken() {
-      return 'token';
-    }
-  }
 
   const frontend: IMicroFrontend = {
     metadata: {
@@ -121,7 +114,6 @@ describe('ExternalViewComponent', () => {
         ExtAppViewRegistryService,
         { provide: ActivatedRoute, useValue: ActivatedRouteMock },
         { provide: Router, useValue: RouterMock },
-        { provide: OAuthService, useValue: new OAuthMock() },
         { provide: ExtensionsService, useValue: ExtensionsServiceStub }
       ]
     }).compileComponents();
