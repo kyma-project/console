@@ -52,10 +52,9 @@
                             <div class="col">
                                 <div class="sf-sku sf-sku--center">
                                     <span class="sf-sku__value">{{ boundRemoteEnvironmentsCount | async }}</span>
-                                    <span>{{ (boundRemoteEnvironmentsCount | async) ===1 ? "Bound Remote Environment" :
-                                        "Bound Remote Environments"}}</span>
-                                    <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Remote
-                                        Environments</a>
+                                    <span>{{ (boundRemoteEnvironmentsCount | async) ===1 ? "Bound Application" :
+                                        "Bound Applications"}}</span>
+                                    <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Applications</a>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +67,7 @@
     <div class="sf-section" *ngIf="remoteEnvironments && remoteEnvironments.length > 0">
         <div class="sf-panel">
             <div class="sf-panel__head">
-                <h2 class="sf-section__headline">Connected Remote Environments</h2>
+                <h2 class="sf-section__headline">Connected Applications</h2>
             </div>
             <table class="sf-table">
                 <thead class="sf-table__head">

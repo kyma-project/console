@@ -99,7 +99,7 @@ export const navModel = {
         name: 'Integration',
         entries: [
           {
-            name: 'Remote Environments',
+            name: 'Applications',
             link: 'remoteEnvs'
           },
           {

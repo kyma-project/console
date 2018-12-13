@@ -1,14 +1,14 @@
 <div class="container-fluid sf-content">
   <div class="sf-toolbar">
     <div class="sf-toolbar__item sf-toolbar__item--breadcrumb">
-      <a (click)="goBack()">Remote Environments</a> / {{ currentREnvId }}
+      <a (click)="goBack()">Applications</a> / {{ currentREnvId }}
     </div>
     <div class="sf-toolbar__right">
       <div class="sf-toolbar__item">
         <button *ngIf="connectorServiceUrl || connectorServiceError"
           class="tn-button tn-button--small tn-button--text"
           (click)="fetchUrl()">
-            Connect Remote Environment
+            Connect Application
         </button>
       </div>
     </div>
@@ -72,7 +72,7 @@
       <div class="sf-panel">
         <div class="sf-panel__head">
           <div class="sf-toolbar">
-              <h2>Environment Bindings</h2>
+              <h2>Application Bindings</h2>
             <div class="sf-toolbar__right">
               <button class="tn-button tn-button--small tn-button--text sf-toolbar__item" (click)="openEditBindingsModal()">
                 + Create Binding

@@ -20,9 +20,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   host: { class: 'sf-content' }
 })
 export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent {
-  title = 'Remote Environments';
-  emptyListText = 'It looks like you don’t have any remote environments yet.';
-  createNewElementText = 'Add Remote Environment';
+  title = 'Applications';
+  emptyListText = 'It looks like you don’t have any Applications yet.';
+  createNewElementText = 'Add Application';
   baseUrl = AppConfig.k8sApiServerUrl_remoteenvs;
   resourceKind = 'RemoteEnvironment';
   environments = [];

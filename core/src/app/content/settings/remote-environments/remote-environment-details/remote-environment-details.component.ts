@@ -81,7 +81,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
           res
             ? (this.connectorServiceUrl = res.connectorService.url)
             : (this.connectorServiceError =
-                'There is no URL available to connect your external systems to the Remote Environment');
+                'There is no URL available to connect your external systems to the Application');
         },
         err => {
           this.connectorServiceError = err;
@@ -146,7 +146,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   private fetchUrl() {
     this.connectorServiceUrl
       ? this.fetchModal.show(
-          'URL to connect Remote Environment',
+          'URL to connect Application',
           this.connectorServiceUrl,
           `Copy the following URL and use it at the external system that you would like to connect to:`
         )
