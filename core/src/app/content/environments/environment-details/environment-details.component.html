@@ -54,7 +54,7 @@
                                     <span class="sf-sku__value">{{ boundRemoteEnvironmentsCount | async }}</span>
                                     <span>{{ (boundRemoteEnvironmentsCount | async) ===1 ? "Bound Application" :
                                         "Bound Applications"}}</span>
-                                    <a class="sf-sku__label" routerLink="/home/settings/remoteEnvs">Show All Applications</a>
+                                    <a class="sf-sku__label" routerLink="/home/settings/apps">Show All Applications</a>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                 <tbody class="sf-table__body">
                     <tr *ngFor="let env of remoteEnvironments">
                         <td class="sf-table__td sf-table__td--primary">
-                            <a routerLink="/home/settings/remoteEnvs/{{env.name}}">{{ env.name }}</a>
+                            <a routerLink="/home/settings/apps/{{env.name}}">{{ env.name }}</a>
                         </td>
                         <td class="sf-table__td sf-table__td--min sf-table__td--text-right">
                             <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>

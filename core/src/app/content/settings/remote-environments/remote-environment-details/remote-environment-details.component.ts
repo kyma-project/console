@@ -154,7 +154,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['home/settings/remoteEnvs']);
+    this.router.navigate(['home/settings/apps']);
   }
 
   hasType(entries, type) {

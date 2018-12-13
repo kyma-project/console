@@ -74,7 +74,7 @@ export class RemoteEnvironmentsEntryRendererComponent
   }
 
   public openRemoteEnvDetails() {
-    this.router.navigate(['home/settings/remoteEnvs/' + this.entry.name]);
+    this.router.navigate(['home/settings/apps/' + this.entry.name]);
   }
 
   getStatus(entry) {
