@@ -74,24 +74,6 @@ export const validateContent = content => {
   return numberOfSources > 0;
 };
 
-export const validateAsyncApiSpec = asyncApiSpec => {
-  if (
-    !asyncApiSpec ||
-    !asyncApiSpec.topics ||
-    !Object.keys(asyncApiSpec.topics).length ||
-    !asyncApiSpec.info ||
-    !asyncApiSpec.info.title ||
-    !asyncApiSpec.info.version
-  )
-    return false;
-
-  for (const topic in asyncApiSpec.topics) {
-    if (!topic || !asyncApiSpec.topics[topic].subscribe) return false;
-  }
-
-  return true;
-};
-
 export function clearEmptyPropertiesInObject(object) {
   for (const key in object) {
     if (typeof object[key] === 'undefined' || object[key] === '') {

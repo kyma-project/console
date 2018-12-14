@@ -1,16 +1,26 @@
 import styled from 'styled-components';
 
-export const StatusWrapper = styled.div`
+export const StatusesList = styled.ul`
+  margin: 0 0 0 10px;
+`;
+
+export const StatusWrapper = styled.li`
   background-color: ${props =>
     props.backgroundColor ? props.backgroundColor : '#b0b2b4'};
   position: relative;
   border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  margin-left: 10px;
+  width: 14px;
+  height: 14px;
+  margin-left: 3px;
   border: none;
   overflow: hidden;
+  float: left;
+
+  &:first-child {
+    margin-left: 0;
+  }
 `;
+
 export const Status = styled.span`
   position: absolute;
   left: 50%;
@@ -20,7 +30,7 @@ export const Status = styled.span`
   margin: 0;
   padding: 0;
   font-family: '72';
-  line-height: 16px;
-  font-size: 10px;
+  line-height: 14px;
+  font-size: 9px;
   color: #ffffff;
 `;

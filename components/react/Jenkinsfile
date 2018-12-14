@@ -66,29 +66,29 @@ podTemplate(label: label) {
                             execute('make build')
                         }
 
-                        if (isMaster || params.REACT_COMPONENTS_VERSION) {
-                            stage("publish new version of $application") {
-                                withCredentials([string(credentialsId: 'npmrc-kyma-bot', variable: 'npmrctoken')]) {
-                                    execute("../../scripts/publish-react-components.sh -t $npmrctoken -v ${params.REACT_COMPONENTS_VERSION}")
-                                }
-                            }
+                        // if (isMaster || params.REACT_COMPONENTS_VERSION) {
+                        //     stage("publish new version of $application") {
+                        //         withCredentials([string(credentialsId: 'npmrc-kyma-bot', variable: 'npmrctoken')]) {
+                        //             execute("../../scripts/publish-react-components.sh -t $npmrctoken -v ${params.REACT_COMPONENTS_VERSION}")
+                        //         }
+                        //     }
 
-                            stage("push updated packages to master") {
-                                withCredentials([sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')]) {
-                                    sh "./scripts/push-react-components.sh -s $sshfile --overwrite-git-config"
-                                }
-                            }
+                        //     stage("push updated packages to master") {
+                        //         withCredentials([sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')]) {
+                        //             sh "./scripts/push-react-components.sh -s $sshfile --overwrite-git-config"
+                        //         }
+                        //     }
 
-                            stage("prepare gh-page of $application") {
-                                execute('npm run styleguide:build')
-                            }
+                        //     stage("prepare gh-page of $application") {
+                        //         execute('npm run styleguide:build')
+                        //     }
 
-                            stage("publish gh-page of $application") {
-                                withCredentials([sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')]) {
-                                    sh "./scripts/publish-gh-page.sh -s $sshfile --overwrite-git-config"
-                                }
-                            }
-                        }
+                        //     stage("publish gh-page of $application") {
+                        //         withCredentials([sshUserPrivateKey(credentialsId: "bitbucket-rw", keyFileVariable: 'sshfile')]) {
+                        //             sh "./scripts/publish-gh-page.sh -s $sshfile --overwrite-git-config"
+                        //         }
+                        //     }
+                        // }
                     }
                 }
             }
