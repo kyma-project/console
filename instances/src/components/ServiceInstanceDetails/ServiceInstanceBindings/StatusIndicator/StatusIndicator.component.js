@@ -28,21 +28,21 @@ const StatusIndicator = ({ data }) => {
   return (
     <Fragment>
       <StatusesList>
-        {statusesLength > 0 ? (
+        {statusesLength > 0 && (
           <StatusWrapper backgroundColor={"#0a6ed1"}>
             <Status>{statusesLength}</Status>
           </StatusWrapper>
-        ) : null}
-        {statusesStats && (statusesStats.PENDING || statusesStats.UNKNOWN) ? (
+        )}
+        {statusesStats && (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
           <StatusWrapper backgroundColor={statusColor('PENDING')}>
             <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
           </StatusWrapper>
-        ) : null}
-        {statusesStats && statusesStats.FAILED ? (
+        )}
+        {statusesStats && statusesStats.FAILED > 0 && (
           <StatusWrapper backgroundColor={statusColor('FAILED')}>
             <Status>{statusesStats.FAILED}</Status>
           </StatusWrapper>
-        ) : null}
+        )}
       </StatusesList>
     </Fragment>
   );
