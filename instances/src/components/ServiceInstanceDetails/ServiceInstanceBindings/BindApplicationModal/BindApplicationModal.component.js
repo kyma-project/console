@@ -218,6 +218,8 @@ class BindApplicationModal extends React.Component {
       bindingsStepFilled: bindingsStepFilled,
     };
 
+    const bindingCreateParameterSchemaExists = bindingCreateParameterSchema && (bindingCreateParameterSchema.$ref || bindingCreateParameterSchema.properties);
+
     const content = [
       <div key={serviceInstance.name}>
         <Resources
@@ -226,7 +228,7 @@ class BindApplicationModal extends React.Component {
           fetchUsageKindResources={fetchUsageKindResources}
           callback={this.callback}
         />
-        {bindingCreateParameterSchema && (
+        {bindingCreateParameterSchemaExists && (
           <Fragment>
             <Separator margin="16px -16px" />
 
@@ -237,12 +239,9 @@ class BindApplicationModal extends React.Component {
           </Fragment>
         )}
 
-        {bindingCreateParameterSchema && (
+        {bindingCreateParameterSchemaExists && (
           <Fragment>
-            {[
-              bindingCreateParameterSchema &&
-                !bindingCreateParameterSchema.properties,
-            ] && !checkbox ? null : (
+            {!checkbox ? null : (
               <SchemaData
                 data={schemaData}
                 bindingCreateParameterSchema={bindingCreateParameterSchema}
