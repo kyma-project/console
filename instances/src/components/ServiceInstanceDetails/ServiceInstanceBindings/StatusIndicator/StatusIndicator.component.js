@@ -5,7 +5,13 @@ import { StatusesList, StatusWrapper, Status } from './styled';
 
 const StatusIndicator = ({ data }) => {
   if (!data) return;
-  let statusesStats = {};
+
+  let statusesStats = {
+    RUNNING: 0,
+    PENDING: 0,
+    UNKNOWN: 0,
+    FAILED: 0,
+  };
   const statusTypes = data
     .map(item => item.status.type)
     .filter((type, index, array) => array.indexOf(type) === index);
@@ -22,17 +28,17 @@ const StatusIndicator = ({ data }) => {
   return (
     <Fragment>
       <StatusesList>
-        {statusesLength > 0 ? (
+        {statusesLength > 0 && (
           <StatusWrapper backgroundColor={"#0a6ed1"}>
             <Status>{statusesLength}</Status>
           </StatusWrapper>
-        ) : null}
-        {statusesStats && (statusesStats.PENDING || statusesStats.UNKNOWN) ? (
+        )}
+        {statusesStats && (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
           <StatusWrapper backgroundColor={statusColor('PENDING')}>
             <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
           </StatusWrapper>
-        ) : null}
-        {statusesStats && statusesStats.FAILED && (
+        )}
+        {statusesStats && statusesStats.FAILED > 0 && (
           <StatusWrapper backgroundColor={statusColor('FAILED')}>
             <Status>{statusesStats.FAILED}</Status>
           </StatusWrapper>
