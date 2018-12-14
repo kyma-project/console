@@ -1,42 +1,49 @@
 import React, { Fragment } from 'react';
 
 import { statusColor } from '../../../../commons/helpers';
-import { StatusWrapper, Status } from './styled';
+import { StatusesList, StatusWrapper, Status } from './styled';
 
 const StatusIndicator = ({ data }) => {
-  const evaluateStatusesStats = () => {
-    if (!data) return;
-    let statusCounts = {};
-    const statusTypes = data
-      .map(item => item.status.type)
-      .filter((type, index, array) => array.indexOf(type) === index);
+  if (!data) return;
 
-    for (let type of statusTypes) {
-      statusCounts[type] = data.filter(
-        item => item.status.type === type,
-      ).length;
-    }
-    return statusCounts;
+  let statusesStats = {
+    RUNNING: 0,
+    PENDING: 0,
+    UNKNOWN: 0,
+    FAILED: 0,
   };
+  const statusTypes = data
+    .map(item => item.status.type)
+    .filter((type, index, array) => array.indexOf(type) === index);
 
-  const statusesStats = evaluateStatusesStats();
-
-  let statusType;
-  if (statusesStats && statusesStats.FAILED) {
-    statusType = 'FAILED';
-  } else if (
-    statusesStats &&
-    (statusesStats.PENDING || statusesStats.UNKNOWN)
-  ) {
-    statusType = 'PENDING';
+  let statusesLength = 0;
+  for (let type of statusTypes) {
+    const length = data.filter(item => item.status.type === type).length;
+    statusesStats[type] = length;
+    statusesLength += length;
   }
+
   return (
     <Fragment>
-      {statusType && (
-        <StatusWrapper backgroundColor={statusColor(statusType)}>
-          <Status>{statusesStats[statusType]}</Status>
-        </StatusWrapper>
-      )}
+      <StatusesList>
+        {statusesLength > 0 && (
+          <StatusWrapper backgroundColor={'#0a6ed1'}>
+            <Status>{statusesLength}</Status>
+          </StatusWrapper>
+        )}
+        {statusesStats &&
+          (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
+            <StatusWrapper backgroundColor={statusColor('PENDING')}>
+              <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
+            </StatusWrapper>
+          )}
+        {statusesStats &&
+          statusesStats.FAILED > 0 && (
+            <StatusWrapper backgroundColor={statusColor('FAILED')}>
+              <Status>{statusesStats.FAILED}</Status>
+            </StatusWrapper>
+          )}
+      </StatusesList>
     </Fragment>
   );
 };

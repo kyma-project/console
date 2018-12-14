@@ -9,7 +9,6 @@ import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-bindi
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
 import { ServiceInstanceList } from '../../../../shared/datamodel/k8s/service-instance-list';
-import { CoreServicesService } from '../../../../core-services/core-services.service';
 
 @Component({
   selector: 'app-lambda-instance-binding-creator',
@@ -38,10 +37,7 @@ export class LambdaInstanceBindingCreatorComponent {
   constructor(
     private serviceInstancesService: ServiceInstancesService,
     private serviceBindingsService: ServiceBindingsService,
-    private coreService: CoreServicesService,
   ) {}
-
-  private secrets: Map<string, string>;
 
   @Input() alreadyAddedInstances: InstanceBindingInfo[];
   @Output()
@@ -117,27 +113,8 @@ export class LambdaInstanceBindingCreatorComponent {
         ? '-'
         : this.selectedBinding.spec.secretName,
       envVarNames: [],
-      status: this.createSecrets
-        ? ''
-        : this.selectedBinding.status.conditions[0].status,
-      statusType: this.createSecrets
-        ? ''
-        : this.selectedBinding.status.conditions[0].type,
       instanceBindingPrefix: this.selectedInstanceBindingPrefix,
     };
-
-    if (!this.createSecrets && this.selectedBinding.spec.secretName !== '') {
-      this.coreService
-        .getSecret(
-          this.selectedBinding.spec.secretName,
-          this.environment,
-          this.token,
-        )
-        .subscribe(res => {
-          this.secrets = res.data;
-          ibInfo.envVarNames = Object.keys(this.secrets);
-        });
-    }
 
     this.selectedServiceBindingEmitter.emit(ibInfo);
 

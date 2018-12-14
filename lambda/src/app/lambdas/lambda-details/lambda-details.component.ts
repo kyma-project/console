@@ -502,19 +502,6 @@ export class LambdaDetailsComponent
                     }),
                   ),
               );
-              deleteRequests.push(
-                this.serviceBindingsService
-                  .deleteServiceBinding(
-                    bs.previousState.serviceBinding,
-                    this.environment,
-                    this.token,
-                  )
-                  .pipe(
-                    catchError(err => {
-                      return observableOf(err);
-                    }),
-                  ),
-              );
             }
           });
           forkJoin(deleteRequests).subscribe(responses => {

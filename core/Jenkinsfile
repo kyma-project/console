@@ -64,7 +64,7 @@ podTemplate(label: label) {
                         if (isMaster) {
                             stage("IP scan $application (WhiteSource)") {
                                 withCredentials([string(credentialsId: 'whitesource_apikey', variable: 'apikey'), string(credentialsId: 'whitesource_userkey', variable: 'userkey')]) {
-                                    execute("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
+                                    executeInOldBuildpack("make scan", ["API_KEY=$apikey", "USER_KEY=$userkey"])
                                 }
                             }
 
@@ -102,6 +102,17 @@ podTemplate(label: label) {
 def execute(command, envs = []) {
     def repositoryName = 'console'
     def buildpack = 'prow/test-infra/buildpack-node-chromium:v20181207-d46c013'
+    def envText = ''
+    for (it in envs) {
+        envText = "$envText --env $it"
+    }
+    workDir = pwd()
+    sh "docker run --rm -v $workDir:/$repositoryName -w /$repositoryName/$env.APP_FOLDER $envText ${env.DOCKER_REGISTRY}$buildpack /bin/bash -c '$command'"
+}
+
+def executeInOldBuildpack(command, envs = []) {
+    def repositoryName = 'console'
+    def buildpack = 'node-buildpack:0.0.10'
     def envText = ''
     for (it in envs) {
         envText = "$envText --env $it"

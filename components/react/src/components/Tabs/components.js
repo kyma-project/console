@@ -5,6 +5,7 @@ export const TabsContent = styled.div`
   font-size: 14px;
   color: #515559;
   line-height: 1.57;
+  background: ${props => (props.background ? props.background : '#fff')};
 `;
 
 export const TabsHeader = styled.ul`

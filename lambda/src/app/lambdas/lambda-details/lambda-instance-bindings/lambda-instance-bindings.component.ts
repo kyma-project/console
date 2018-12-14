@@ -15,20 +15,14 @@ import { InstanceBindingInfo } from '../../../shared/datamodel/instance-binding-
 import {
   ServiceBindingUsage,
   IServiceBindingUsageList,
-  IServiceBindingUsage,
 } from '../../../shared/datamodel/k8s/service-binding-usage';
 import { ServiceBindingsService } from '../../../service-bindings/service-bindings.service';
 import { ServiceBindingUsagesService } from '../../../service-binding-usages/service-binding-usages.service';
 import { forEach } from '@angular/router/src/utils/collection';
-import {
-  IServiceBinding,
-  IServiceBindingList,
-  ServiceBinding,
-} from '../../../shared/datamodel/k8s/service-binding';
+import { IServiceBindingList } from '../../../shared/datamodel/k8s/service-binding';
 import { InstanceBindingState } from '../../../shared/datamodel/instance-binding-state';
 import * as luigiClient from '@kyma-project/luigi-client';
 import { CoreServicesService } from '../../../core-services/core-services.service';
-import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
 
 @Component({
   selector: 'app-lambda-instance-bindings',
@@ -99,8 +93,6 @@ export class LambdaInstanceBindingsComponent {
                           instanceName: binding.spec.instanceRef.name,
                           secretName: binding.spec.secretName,
                           envVarNames: Object.keys(secrets),
-                          status: binding.status.conditions[0].status,
-                          statusType: binding.status.conditions[0].type,
                           instanceBindingPrefix:
                             usage.spec.parameters.envPrefix.name,
                         };
@@ -110,8 +102,6 @@ export class LambdaInstanceBindingsComponent {
                           envVarNames: [],
                           secretName: '',
                           serviceBinding: '',
-                          status: '',
-                          statusType: '',
                           instanceBindingPrefix: '',
                         };
 
@@ -177,20 +167,5 @@ export class LambdaInstanceBindingsComponent {
 
     this.instanceBindingInfoList.push(instanceBindinginfo);
     this.bindingStateEmitter.emit(this.bindingState);
-  }
-
-  public determineClass(instanceBinding) {
-    switch (instanceBinding.statusType) {
-      case 'Failed':
-        return 'sf-indicator--error';
-      case 'Ready':
-        return 'sf-indicator--success';
-      case 'Unknown':
-      case 'Pending':
-      default:
-        instanceBinding.statusType = 'Pending';
-        instanceBinding.status = 'Pending';
-        return 'sf-indicator--warning';
-    }
   }
 }

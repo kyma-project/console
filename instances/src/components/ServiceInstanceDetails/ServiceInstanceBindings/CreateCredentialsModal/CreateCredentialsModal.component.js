@@ -145,26 +145,29 @@ class CreateCredentialsModal extends React.Component {
       bindingCreateParameters: bindingCreateParameters,
     };
 
+    const bindingCreateParameterSchemaExists =
+      bindingCreateParameterSchema &&
+      (bindingCreateParameterSchema.$ref ||
+        bindingCreateParameterSchema.properties);
+
     const content = [
       <Fragment key={serviceInstance.name}>
-        {bindingCreateParameterSchema && (
-          <SchemaData
-            data={schemaData}
-            bindingCreateParameterSchema={bindingCreateParameterSchema}
-            onSubmitSchemaForm={this.create}
-            planName={servicePlan.displayName}
-            callback={this.callback}
+        <SchemaData
+          data={schemaData}
+          bindingCreateParameterSchema={bindingCreateParameterSchema}
+          onSubmitSchemaForm={this.create}
+          planName={servicePlan.displayName}
+          callback={this.callback}
+        >
+          {/* Styled components don't work here */}
+          <button
+            className="hidden"
+            type="submit"
+            ref={submitBtn => (this.submitBtn = submitBtn)}
           >
-            {/* Styled components don't work here */}
-            <button
-              className="hidden"
-              type="submit"
-              ref={submitBtn => (this.submitBtn = submitBtn)}
-            >
-              Submit
-            </button>
-          </SchemaData>
-        )}
+            Submit
+          </button>
+        </SchemaData>
       </Fragment>,
     ];
 
@@ -174,49 +177,53 @@ class CreateCredentialsModal extends React.Component {
       </CreateCredentialsButton>
     );
 
-    return serviceInstance.status.type === 'RUNNING' ? (
-      <Fragment>
-        {bindingCreateParameterSchema ? (
-          <ConfirmationModal
-            ref={modal => {
-              this.child = modal;
-            }}
-            key={serviceInstance.name}
-            title={'Bind Application'}
-            confirmText="Create"
-            cancelText="Cancel"
-            content={content}
-            handleConfirmation={this.handleConfirmation}
-            modalOpeningComponent={createCredentialsButton}
-            disabled={disabled}
-            tooltipData={tooltipData}
-            borderFooter={true}
-            handleClose={this.clearState}
-            headerAdditionalInfo={bindingVariables.serviceBinding}
-          />
-        ) : (
-          <CreateCredentialsButton
-            data-e2e-id={id}
-            onClick={this.createWithoutOpening}
-          >
+    if (serviceInstance.status.type !== 'RUNNING') {
+      return (
+        <Tooltip
+          type="error"
+          content={
+            <span>
+              Instance must be in a <strong>Running</strong> state
+            </span>
+          }
+          minWidth="161px"
+        >
+          <CreateCredentialsButton disabled={true}>
             + Create Credentials
           </CreateCredentialsButton>
-        )}
-      </Fragment>
-    ) : (
-      <Tooltip
-        type="error"
-        content={
-          <span>
-            Instance must be in a <strong>Running</strong> state
-          </span>
-        }
-        minWidth="161px"
-      >
-        <CreateCredentialsButton disabled={true}>
+        </Tooltip>
+      );
+    }
+
+    if (!bindingCreateParameterSchemaExists) {
+      return (
+        <CreateCredentialsButton
+          data-e2e-id={id}
+          onClick={this.createWithoutOpening}
+        >
           + Create Credentials
         </CreateCredentialsButton>
-      </Tooltip>
+      );
+    }
+
+    return (
+      <ConfirmationModal
+        ref={modal => {
+          this.child = modal;
+        }}
+        key={serviceInstance.name}
+        title={'Bind Application'}
+        confirmText="Create"
+        cancelText="Cancel"
+        content={content}
+        handleConfirmation={this.handleConfirmation}
+        modalOpeningComponent={createCredentialsButton}
+        disabled={disabled}
+        tooltipData={tooltipData}
+        borderFooter={true}
+        handleClose={this.clearState}
+        headerAdditionalInfo={bindingVariables.serviceBinding}
+      />
     );
   }
 }

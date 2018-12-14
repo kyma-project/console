@@ -117,8 +117,13 @@ export const Label = styled.span`
 export const ExternalLink = styled.a`
   font-family: '72';
   font-size: 14px;
-  color: #0b74de;
+  color: #167ee6;
   font-weight: 300;
+  text-decoration: none;
+
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 export const JSONCode = styled.code`
