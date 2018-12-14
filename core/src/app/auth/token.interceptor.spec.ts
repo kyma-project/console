@@ -107,33 +107,6 @@ describe('TokenInterceptor', () => {
     const newToken = 1538040400000 - 1000;
     const olderToken = 1538040400000 - 50000;
 
-    it('fresh token sets requestError and navigates to /requestError', () => {
-      spyOn(Date, 'now').and.callFake(() => {
-        return currDate;
-      });
-      sessionStorage.setItem('id_token_stored_at', newToken.toString());
-
-      // given
-      http.get('/api').subscribe(
-        response => {},
-        error => {
-          // then
-          expect(error).toBeTruthy();
-          expect(error.status).toEqual(401);
-        }
-      );
-      const request = httpClientMock.expectOne('/api');
-
-      // when
-      request.flush(
-        {},
-        {
-          status: 401,
-          statusText: 'Unauthorized'
-        }
-      );
-    });
-
     it('old token clears sessionStorage, triggers implicit flow and navigates to /', () => {
       spyOn(Date, 'now').and.callFake(() => {
         return currDate;

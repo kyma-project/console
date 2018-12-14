@@ -1,10 +1,7 @@
 import { AppConfig } from './../app.config';
-import { CustomExternalAppComponent } from './../extensibility/components/custom-external-app/custom-external-app.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ApisComponent } from '../content/environments/configuration/apis/apis.component';
-
-import { CatalogContainerComponent } from '../content/environments/catalog-container/catalog-container.component';
 import { EnvironmentCreateComponent } from '../content/environments/environment-create/environment-create.component';
 import { EnvironmentDetailsComponent } from '../content/environments/environment-details/environment-details.component';
 import { EnvironmentsContainerComponent } from '../content/environments/environments-container/environments-container.component';
@@ -21,35 +18,14 @@ import { RemoteEnvironmentsComponent } from '../content/settings/remote-environm
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
 import { WorkspaceOverviewComponent } from '../content/workspace-overview/workspace-overview/workspace-overview.component';
 import { ExposeApiComponent } from '../content/environments/operation/services/service-details/expose-api/expose-api.component';
-
-import { ExternalViewComponent } from '../extensibility/external-view/external-view.component';
-
-import { LambdasComponent } from '../content/environments/development/lambdas/lambdas.component';
 import { PermissionsComponent } from '../shared/components/permissions/permissions.component';
 import { RoleDetailsComponent } from '../shared/components/permissions/role-details/role-details.component';
-import { InstancesContainerComponent } from '../content/environments/instances-container/instances-container.component';
-import { LogoutComponent } from '../content/logout/logout.component';
 import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets.component';
 import { ResourcesComponent } from '../content/environments/configuration/resources/resources.component';
-import { LoginErrorComponent } from '../content/login-error/login-error.component';
-import { RequestErrorComponent } from '../content/request-error/request-error.component';
 
 import { ConfigMapsComponent } from '../content/environments/operation/configmaps/configmaps.component';
-import { BrokersContainerComponent } from '../content/environments/brokers-container/brokers-container.component';
 
 const appRoutes: Routes = [
-  {
-    path: 'logout',
-    component: LogoutComponent
-  },
-  {
-    path: 'loginError',
-    component: LoginErrorComponent
-  },
-  {
-    path: 'requestError',
-    component: RequestErrorComponent
-  },
   {
     path: 'home',
     children: [
@@ -72,21 +48,6 @@ const appRoutes: Routes = [
           { path: 'yVirtual', component: EnvironmentDetailsComponent },
           { path: 'details', component: EnvironmentDetailsComponent },
           { path: 'workspace', component: WorkspaceOverviewComponent },
-          { path: 'instances', component: InstancesContainerComponent },
-          {
-            path: 'instances/details/:name',
-            component: InstancesContainerComponent,
-            data: { path: '/details/:name' }
-          },
-          { path: 'lambdas', component: LambdasComponent },
-          {
-            path: 'lambdas/create',
-            component: LambdasComponent
-          },
-          {
-            path: 'lambdas/details/:name',
-            component: LambdasComponent
-          },
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
@@ -103,32 +64,6 @@ const appRoutes: Routes = [
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
-          {
-            path: 'extensions',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'environment' },
-            children: [
-              {
-                path: ':pathSegment1',
-                component: ExternalViewComponent,
-                data: { navigationContext: 'environment' },
-                children: [
-                  {
-                    path: ':pathSegment2',
-                    component: ExternalViewComponent,
-                    data: { navigationContext: 'environment' },
-                    children: [
-                      {
-                        path: ':pathSegment3',
-                        component: ExternalViewComponent,
-                        data: { navigationContext: 'environment' }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
           { path: 'resources', component: ResourcesComponent },
           {
             path: 'permissions',
@@ -145,43 +80,9 @@ const appRoutes: Routes = [
             component: RoleDetailsComponent,
             data: { global: true }
           },
-          {
-            path: 'service-catalog',
-            component: CatalogContainerComponent
-          },
-          {
-            path: 'service-catalog/details/:name',
-            component: CatalogContainerComponent,
-            data: { path: '/details/:name' }
-          },
-          {
-            path: 'brokers',
-            component: BrokersContainerComponent
-          },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }
         ]
-      },
-      {
-        path: 'docs',
-        component: CustomExternalAppComponent,
-        data: {
-          leftNavCollapsed: true,
-          externalUrl: AppConfig.docsModuleUrl,
-          mountingPath: '/home/',
-          executionAsync: false
-        }
-      },
-      {
-        path: 'docs/:type/:id',
-        component: CustomExternalAppComponent,
-        data: {
-          path: '/:type/:id',
-          externalUrl: AppConfig.docsModuleUrl,
-          leftNavCollapsed: true,
-          mountingPath: '/home/',
-          executionAsync: false
-        }
       },
       {
         path: 'settings',
@@ -206,32 +107,6 @@ const appRoutes: Routes = [
             path: 'globalPermissions/roles/:name',
             component: RoleDetailsComponent,
             data: { global: true }
-          },
-          {
-            path: 'extensions',
-            component: ExternalViewComponent,
-            data: { navigationContext: 'cluster' },
-            children: [
-              {
-                path: ':pathSegment1',
-                component: ExternalViewComponent,
-                data: { navigationContext: 'cluster' },
-                children: [
-                  {
-                    path: ':pathSegment2',
-                    component: ExternalViewComponent,
-                    data: { navigationContext: 'cluster' },
-                    children: [
-                      {
-                        path: ':pathSegment3',
-                        component: ExternalViewComponent,
-                        data: { navigationContext: 'cluster' }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
           },
           { path: '', redirectTo: 'organisation', pathMatch: 'full' },
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
