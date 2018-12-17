@@ -49,6 +49,8 @@ const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
 
+const FUNCTION = 'function';
+
 @Component({
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
@@ -456,7 +458,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
             bs.currentState.instanceBindingPrefix + '-';
         }
       }
-      serviceBindingUsage.spec.usedBy.kind = 'function';
+      serviceBindingUsage.spec.usedBy.kind = FUNCTION;
       serviceBindingUsage.spec.usedBy.name = this.lambda.metadata.name;
       createRequests.push(
         this.serviceBindingUsagesService
@@ -476,7 +478,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
           bsuList.items.forEach(bsu => {
             if (
               bs.previousState.serviceBinding ===
-              bsu.spec.serviceBindingRef.name
+                bsu.spec.serviceBindingRef.name &&
+              this.lambda.metadata.name === bsu.spec.usedBy.name &&
+              bsu.spec.usedBy.kind === FUNCTION
             ) {
               deleteRequests.push(
                 this.serviceBindingUsagesService
