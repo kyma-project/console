@@ -7,6 +7,8 @@ import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-bindi
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
 
+const RUNNING = 'RUNNING';
+
 @Component({
   selector: 'app-lambda-instance-binding-creator',
   templateUrl: './lambda-instance-binding-creator.component.html',
@@ -48,7 +50,7 @@ export class LambdaInstanceBindingCreatorComponent {
       this.environment = eventData.currentEnvironmentId;
       this.token = eventData.idToken;
       this.serviceInstancesService
-        .getServiceInstances(this.environment, this.token, 'RUNNING')
+        .getServiceInstances(this.environment, this.token, RUNNING)
         .subscribe(
           instances => {
             instances.data.serviceInstances = instances.data.serviceInstances.filter(
