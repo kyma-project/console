@@ -28,7 +28,7 @@ const LeftSideWrapper = styled.div`
 
 const CenterSideWrapper = styled.div`
   box-sizing: border-box;
-  max-width: 1500px;
+  max-width: 1272px;
   padding: 0 30px;
   padding-left: 311px;
 

@@ -48,6 +48,10 @@ const TextWrapper = styled.div`
   color: #515559;
   line-height: 1.57;
   margin: 0;
+
+  code {
+    font-size: 14px;
+  }
 `;
 
 function ContentWrapper(props) {
