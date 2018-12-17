@@ -65,7 +65,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
           },
           err => {
             this.errorMessage = err.message;
-            console.log(`error loading environment ${envId}`, err);
+            console.log(`error loading namespace ${envId}`, err);
           }
         );
       });

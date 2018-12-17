@@ -119,7 +119,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             if (err.status === 404) {
               this.infoModal.show(
                 'Error',
-                `Environment ${envId} doesn't exist.`,
+                `Namespace ${envId} doesn't exist.`,
                 '/home/namespaces'
               );
             }

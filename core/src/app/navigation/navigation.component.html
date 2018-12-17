@@ -13,7 +13,7 @@
         excludeBeforeClick="true">
         <button class="tn-dropdown__control" aria-controls="nNJnB279" [attr.aria-expanded]="ariaExpanded" aria-haspopup="true"
           (click)="toggleDropDown()">
-          <input class="filter-input" type="text" name="environmentName" placeholder="Choose environment" [(ngModel)]="environmentName"
+          <input class="filter-input" type="text" name="environmentName" placeholder="Choose namespace" [(ngModel)]="environmentName"
             (ngModelChange)="filterEnvs()" (keydown)="openDropDown($event)" (click)="openDropDown($event)">
         </button>
         <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaHidden" id="nNJnB279">

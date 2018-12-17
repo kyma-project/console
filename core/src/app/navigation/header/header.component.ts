@@ -89,8 +89,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const link =
       'home/' +
       (currentEnvironmentId
-        ? 'environments/' + currentEnvironmentId
-        : 'environments');
+        ? 'namespaces/' + currentEnvironmentId
+        : 'namespaces');
     this.router.navigateByUrl(link);
   }
 
