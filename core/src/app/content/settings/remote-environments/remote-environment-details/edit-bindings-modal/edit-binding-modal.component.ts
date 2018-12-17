@@ -47,7 +47,7 @@ export class EditBindingsModalComponent {
         data => {
           const response: any = data;
 
-          this.remoteEnv = response[0].remoteEnvironment;
+          this.remoteEnv = response[0].application;
           this.environments = response[1];
 
           this.environments.forEach(env => {

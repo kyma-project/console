@@ -44,7 +44,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     super(currentEnvironmentService, changeDetector, http, commService);
 
     const query = `query {
-      remoteEnvironments{
+      applications{
         name
         status
         enabledInEnvironments,

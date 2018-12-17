@@ -52,6 +52,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.currentREnvId = params['id'];
+      console.log('app id ' + this.currentREnvId);
       this.getRemoteEnv();
     });
 
@@ -94,15 +95,14 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
       .getRemoteEnvironment(this.currentREnvId)
       .subscribe(
         data => {
-          if (data && data.remoteEnvironment) {
-            this.remoteEnvironment = data.remoteEnvironment;
+          if (data && data.application) {
+            this.remoteEnvironment = data.application;
             this.transformedLabels = this.getTransformedLabels(
               this.remoteEnvironment.labels
             );
-            this.boundEnvironments =
-              data.remoteEnvironment.enabledInEnvironments;
+            this.boundEnvironments = data.application.enabledInEnvironments;
             this.prettyStatus = this.remoteEnvironmentsService.printPrettyConnectionStatus(
-              data.remoteEnvironment.status
+              data.application.status
             );
           } else {
             this.goBack();
@@ -132,7 +132,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
               const response: any = data;
               this.boundEnvironments = _.without(
                 this.boundEnvironments,
-                response.disableRemoteEnvironment.environment
+                response.disableApplication.environment
               );
             },
             err => {
