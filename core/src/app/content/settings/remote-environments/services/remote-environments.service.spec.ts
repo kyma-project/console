@@ -44,8 +44,8 @@ describe('RemoteEnvironmentsService', () => {
 
   describe('createRemoteEnvironment()', () => {
     it('calls request method with params', () => {
-      const mutation = `mutation createRemoteEnvironment($name: String!, $description: String!, $labels: Labels) {
-      createRemoteEnvironment(name: $name, description: $description, labels: $labels) {
+      const mutation = `mutation createApplication($name: String!, $description: String!, $labels: Labels) {
+      createApplication(name: $name, description: $description, labels: $labels) {
         name
       }
     }`;
@@ -69,8 +69,8 @@ describe('RemoteEnvironmentsService', () => {
 
   describe('updateRemoteEnvironment()', () => {
     it('calls request method with params', () => {
-      const mutation = `mutation updateRemoteEnvironment($name: String!, $description: String, $labels: Labels) {
-      updateRemoteEnvironment(name: $name, description: $description, labels: $labels) {
+      const mutation = `mutation updateApplication($name: String!, $description: String, $labels: Labels) {
+      updateApplication(name: $name, description: $description, labels: $labels) {
         name
       }
     }`;
@@ -92,11 +92,11 @@ describe('RemoteEnvironmentsService', () => {
     });
   });
 
-  describe('getRemoteEnvironment()', () => {
+  describe('getApplication()', () => {
     it('calls request method with params', () => {
       const name = 'some-name';
-      const query = `query RemoteEnvironment($name: String!) {
-        remoteEnvironment(name: $name){
+      const query = `query Application($name: String!) {
+        application(name: $name){
           description
           labels
           name
