@@ -20,7 +20,7 @@
             <label for="instanceSelect" class="control-label">Service Instance</label>
             <select id="instanceSelect" class="form-control input-lg" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">
               <option></option>
-              <option *ngFor="let i of instances.items" [ngValue]="i">{{ i.metadata.name }}</option>
+              <option *ngFor="let i of instances" [ngValue]="i">{{ i.name }}</option>
             </select>
           </p>
           <p class="checkbox">
