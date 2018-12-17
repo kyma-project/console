@@ -24,7 +24,7 @@ export class EnvironmentCreateComponent {
       () => {
         this.isActive = false;
         this.router.navigateByUrl(
-          '/home/environments/' + this.environmentName + '/details'
+          '/home/namespaces/' + this.environmentName + '/details'
         );
       },
       err => {

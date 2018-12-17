@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class InstancesContainerComponent {
   public externalUrl: string = AppConfig.serviceInstancesModuleUrl;
   public relativePath = '';
-  public path = '/home/environments/';
+  public path = '/home/namespaces/';
   public executionAsync = false;
   protected route: ActivatedRoute;
 

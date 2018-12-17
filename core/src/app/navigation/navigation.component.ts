@@ -195,8 +195,8 @@ export class NavigationComponent implements OnInit {
     const link =
       'home/' +
       (currentEnvironmentId
-        ? 'environments/' + currentEnvironmentId
-        : 'environments');
+        ? 'namespaces/' + currentEnvironmentId
+        : 'namespaces');
     this.router.navigateByUrl(link);
   }
 
@@ -245,19 +245,17 @@ export class NavigationComponent implements OnInit {
     let routeTarget = '';
     if (this.currentEnvironmentId) {
       const currentPath: string = this.router.url;
-      const envRoot: string = '/home/environments/' + this.currentEnvironmentId;
+      const envRoot: string = '/home/namespaces/' + this.currentEnvironmentId;
       routeTarget = currentPath.replace(envRoot, '');
     }
     this.router
-      .navigateByUrl('/home/environments/' + env.id + '/workspace')
+      .navigateByUrl('/home/namespaces/' + env.id + '/workspace')
       .then(dontcare => {
         if (
           routeTarget.indexOf('extensions/') < 0 ||
           routeTarget.indexOf('extensions/') > 1
         ) {
-          this.router.navigateByUrl(
-            '/home/environments/' + env.id + routeTarget
-          );
+          this.router.navigateByUrl('/home/namespaces/' + env.id + routeTarget);
         }
       });
   }

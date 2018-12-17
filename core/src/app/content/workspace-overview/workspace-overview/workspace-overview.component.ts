@@ -88,7 +88,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent {
                       type: 'deleteResource',
                       data: entry
                     });
-                    this.router.navigateByUrl('/home/environments');
+                    this.router.navigateByUrl('/home/namespaces');
                   },
                   err => {
                     entry.disabled = false;

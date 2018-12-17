@@ -1,6 +1,6 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
     <div class="sf-list__body--primary col-2">
-      <a routerLink="/home/environments/{{currentEnvironmentId}}/apis/details/{{entry.metadata.name}}">{{ entry.metadata.name }}</a>
+      <a routerLink="/home/namespaces/{{currentEnvironmentId}}/apis/details/{{entry.metadata.name}}">{{ entry.metadata.name }}</a>
     </div>
     <div class ="col-2">{{ entry.spec.hostname }}</div>
     <div class="col-1 col-lg-2">{{ entry.spec.service.name }}</div>

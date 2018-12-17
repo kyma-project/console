@@ -109,7 +109,7 @@ export class ExtAppListenerDirective {
     let path = null;
     if (data.params && data.params.link) {
       const currEnvPath =
-        '/home/environments/' + encodeURIComponent(this.currentEnvironmentId);
+        '/home/namespaces/' + encodeURIComponent(this.currentEnvironmentId);
       if (data.params.fromClosestContext) {
         // from the closest navigation context
         if (this.router.url.startsWith(currEnvPath)) {

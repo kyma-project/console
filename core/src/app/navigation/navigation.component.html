@@ -1,6 +1,6 @@
 <div *ngIf="currentNavModel" class="sf-toolbar sf-toolbar--vertical sf-toolbar--mainnavigation">
   <div class="sf-toolbar__content">
-    <a *ngIf='!currentNavModel?.showEnvChooser' class="sf-toolbar__item" routerLink="/home/environments" (click)="goToEnvironments()"
+    <a *ngIf='!currentNavModel?.showEnvChooser' class="sf-toolbar__item" routerLink="/home/namespaces" (click)="goToEnvironments()"
       routerLinkActive="is-active">
       ← Back to {{ (navCtx === 'cluster') ? 'Workspace' : 'Namespace' }}
     </a>

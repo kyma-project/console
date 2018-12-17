@@ -60,7 +60,7 @@ const appRoutes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
-        path: 'environments',
+        path: 'namespaces',
         component: EnvironmentsContainerComponent,
         data: { navCtx: 'environment' },
         children: [
@@ -71,7 +71,7 @@ const appRoutes: Routes = [
         ]
       },
       {
-        path: 'environments/:environmentId',
+        path: 'namespaces/:environmentId',
         component: EnvironmentsContainerComponent,
         data: { navCtx: 'environment' },
         children: [
@@ -245,8 +245,8 @@ const appRoutes: Routes = [
           { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
         ]
       },
-      { path: '', pathMatch: 'full', redirectTo: 'environments/workspace' },
-      { path: '**', pathMatch: 'full', redirectTo: 'environments/workspace' }
+      { path: '', pathMatch: 'full', redirectTo: 'namespaces/workspace' },
+      { path: '**', pathMatch: 'full', redirectTo: 'namespaces/workspace' }
     ]
   }
 ];
