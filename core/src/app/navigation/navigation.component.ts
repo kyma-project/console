@@ -115,7 +115,10 @@ export class NavigationComponent implements OnInit {
       if (
         !navigationContext ||
         (extension.spec.placement &&
-          extension.spec.placement.split(',').includes(navigationContext))
+          (extension.spec.placement.split(',').includes(navigationContext) ||
+            // for backward compability after renaming environments to namespaces
+            (navigationContext === 'namespace' &&
+              extension.spec.placement.split(',').includes('environment'))))
       ) {
         if (extension.spec.navigationNodes) {
           extension.spec.navigationNodes.forEach(node => {
@@ -169,7 +172,7 @@ export class NavigationComponent implements OnInit {
           this.manageExternalViews(
             clusterExtensions,
             'extensions/',
-            'environment'
+            'namespace'
           );
         }
       });
