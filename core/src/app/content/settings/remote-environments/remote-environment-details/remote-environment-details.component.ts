@@ -52,7 +52,6 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.currentREnvId = params['id'];
-      console.log('app id ' + this.currentREnvId);
       this.getRemoteEnv();
     });
 
