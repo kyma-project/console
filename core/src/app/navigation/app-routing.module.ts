@@ -114,22 +114,22 @@ const appRoutes: Routes = [
           {
             path: 'extensions',
             component: ExternalViewComponent,
-            data: { navigationContext: 'environment' },
+            data: { navigationContext: 'namespace' },
             children: [
               {
                 path: ':pathSegment1',
                 component: ExternalViewComponent,
-                data: { navigationContext: 'environment' },
+                data: { navigationContext: 'namespace' },
                 children: [
                   {
                     path: ':pathSegment2',
                     component: ExternalViewComponent,
-                    data: { navigationContext: 'environment' },
+                    data: { navigationContext: 'namespace' },
                     children: [
                       {
                         path: ':pathSegment3',
                         component: ExternalViewComponent,
-                        data: { navigationContext: 'environment' }
+                        data: { navigationContext: 'namespace' }
                       }
                     ]
                   }
