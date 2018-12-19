@@ -22,7 +22,7 @@ export class EnvironmentDataConverter
       .getBoundRemoteEnvironments(environment.getId())
       .pipe(
         map(boundEnvironments => {
-          const envs = boundEnvironments['remoteEnvironments'];
+          const envs = boundEnvironments['applications'];
           return envs ? envs.length : 0;
         }),
         catchError(() => {

@@ -79,7 +79,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   private getRemoteEnvs(id) {
     this.remoteEnvBindingService.getBoundRemoteEnvironments(id).subscribe(
       res => {
-        this.remoteEnvironments = res['remoteEnvironments'];
+        this.remoteEnvironments = res['applications'];
         this.boundRemoteEnvironmentsCount = of(
           this.remoteEnvironments ? this.remoteEnvironments.length : 0
         );

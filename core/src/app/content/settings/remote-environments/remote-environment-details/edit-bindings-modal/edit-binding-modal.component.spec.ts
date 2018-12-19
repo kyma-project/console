@@ -86,7 +86,7 @@ describe('EditBindingsModalComponent', () => {
   it('should show and set envs and remoteevns', done => {
     // given
     const remoteEnvs = of({
-      remoteEnvironment: {
+      application: {
         enabledInEnvironments: ['env1', 'env2']
       }
     });

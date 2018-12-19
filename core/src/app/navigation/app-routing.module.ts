@@ -91,9 +91,9 @@ const appRoutes: Routes = [
         children: [
           { path: 'yVirtual', component: OrganisationComponent },
           { path: 'organisation', component: OrganisationComponent },
-          { path: 'remoteEnvs', component: RemoteEnvironmentsComponent },
+          { path: 'apps', component: RemoteEnvironmentsComponent },
           {
-            path: 'remoteEnvs/:id',
+            path: 'apps/:id',
             component: RemoteEnvironmentDetailsComponent
           },
           { path: 'idpPresets', component: IdpPresetsComponent },

@@ -20,11 +20,11 @@ import LuigiClient from '@kyma-project/luigi-client';
   host: { class: 'sf-content' }
 })
 export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent {
-  title = 'Remote Environments';
-  emptyListText = 'It looks like you don’t have any remote environments yet.';
-  createNewElementText = 'Add Remote Environment';
+  title = 'Applications';
+  emptyListText = 'It looks like you don’t have any Applications yet.';
+  createNewElementText = 'Add Application';
   baseUrl = AppConfig.k8sApiServerUrl_remoteenvs;
-  resourceKind = 'RemoteEnvironment';
+  resourceKind = 'Application';
   environments = [];
   ariaExpanded = false;
   ariaHidden = true;
@@ -42,7 +42,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     super(currentEnvironmentService, changeDetector, http, commService);
 
     const query = `query {
-      remoteEnvironments{
+      applications{
         name
         status
         enabledInEnvironments,

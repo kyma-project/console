@@ -2,14 +2,13 @@ import { RemoteEnvironmentBindingService } from './remote-environment-binding-se
 import { ComponentCommunicationService } from './../../../../shared/services/component-communication.service';
 import { RemoteEnvironmentsService } from './../services/remote-environments.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-modal.component';
 
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../shared/components/information-modal/information-modal.component';
 import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { EditRemoteEnvironmentModalComponent } from '../edit-remote-environment-modal/edit-remote-environment-modal.component';
-import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-remote-environment-details',
@@ -42,6 +41,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private remoteEnvironmentsService: RemoteEnvironmentsService,
     private communication: ComponentCommunicationService,
     private remoteEnvironmentBindingService: RemoteEnvironmentBindingService
@@ -81,7 +81,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
           res
             ? (this.connectorServiceUrl = res.connectorService.url)
             : (this.connectorServiceError =
-                'There is no URL available to connect your external systems to the Remote Environment');
+                'There is no URL available to connect your external systems to the Application');
         },
         err => {
           this.connectorServiceError = err;
@@ -94,18 +94,17 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
       .getRemoteEnvironment(this.currentREnvId)
       .subscribe(
         data => {
-          if (data && data.remoteEnvironment) {
-            this.remoteEnvironment = data.remoteEnvironment;
+          if (data && data.application) {
+            this.remoteEnvironment = data.application;
             this.transformedLabels = this.getTransformedLabels(
               this.remoteEnvironment.labels
             );
-            this.boundEnvironments =
-              data.remoteEnvironment.enabledInEnvironments;
+            this.boundEnvironments = data.application.enabledInEnvironments;
             this.prettyStatus = this.remoteEnvironmentsService.printPrettyConnectionStatus(
-              data.remoteEnvironment.status
+              data.application.status
             );
           } else {
-            this.navigateToList();
+            this.goBack();
           }
         },
         err => {
@@ -132,7 +131,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
               const response: any = data;
               this.boundEnvironments = _.without(
                 this.boundEnvironments,
-                response.disableRemoteEnvironment.environment
+                response.disableApplication.environment
               );
             },
             err => {
@@ -146,11 +145,15 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   private fetchUrl() {
     this.connectorServiceUrl
       ? this.fetchModal.show(
-          'URL to connect Remote Environment',
+          'URL to connect Application',
           this.connectorServiceUrl,
           `Copy the following URL and use it at the external system that you would like to connect to:`
         )
       : this.infoModal.show('Error', this.connectorServiceError);
+  }
+
+  goBack() {
+    this.router.navigate(['home/settings/apps']);
   }
 
   hasType(entries, type) {
@@ -170,11 +173,5 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   public openEditRemoteEnvModal() {
     this.editRemoteEnvModal.show();
-  }
-
-  public navigateToList() {
-    LuigiClient.linkManager()
-      .fromContext('remote-envs')
-      .navigate('');
   }
 }
