@@ -474,18 +474,18 @@ export class LambdaDetailsComponent implements AfterViewInit {
     deleteBindingStates.forEach(bs => {
       this.serviceBindingUsagesService
         .getServiceBindingUsages(this.environment, this.token, {})
-        .subscribe(bsuList => {
-          bsuList.items.forEach(bsu => {
+        .subscribe(sbuList => {
+          sbuList.items.forEach(sbu => {
             if (
               bs.previousState.serviceBinding ===
-                bsu.spec.serviceBindingRef.name &&
-              this.lambda.metadata.name === bsu.spec.usedBy.name &&
-              bsu.spec.usedBy.kind === FUNCTION
+                sbu.spec.serviceBindingRef.name &&
+              this.lambda.metadata.name === sbu.spec.usedBy.name &&
+              sbu.spec.usedBy.kind === FUNCTION
             ) {
               deleteRequests.push(
                 this.serviceBindingUsagesService
                   .deleteServiceBindingUsage(
-                    bsu.metadata.name,
+                    sbu.metadata.name,
                     this.environment,
                     this.token,
                   )
@@ -995,9 +995,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.hasDependencies = observableOf(false);
   }
 
-  /** validatesName checks whether a function name is abiding by RFC 1123 or not */
+  /** validatesName checks whether a function name is a valid DNS-1035 label */
   validatesName(): void {
-    const regex = /[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/;
+    const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
