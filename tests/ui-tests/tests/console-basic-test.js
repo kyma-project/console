@@ -91,24 +91,21 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     expect(environments).not.toContain(config.testEnv);
   });
 
-  test('Check if remote environment exist', async () => {
+  test('Check if Application exist', async () => {
     common.validateTestEnvironment(dexReady);
     const remoteEnvironmentsUrl = address.console.getRemoteEnvironments();
     await page.goto(remoteEnvironmentsUrl, { waitUntil: 'networkidle0' });
     const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
-    console.log('Check if remote environment exists', remoteEnvironments);
+    console.log('Check if Application exists', remoteEnvironments);
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 
-  test('Create remote environment', async () => {
+  test('Create Application', async () => {
     common.validateTestEnvironment(dexReady);
     await kymaConsole.createRemoteEnvironment(page, config.testEnv);
     await page.reload({ waitUntil: 'networkidle0' });
     const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
-    console.log(
-      'Create new remote environment, remote envs: ',
-      remoteEnvironments
-    );
+    console.log('Create new Application, remote envs: ', remoteEnvironments);
     expect(remoteEnvironments).toContain(config.testEnv);
   });
 
@@ -118,13 +115,13 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     const detailsText = await page.evaluate(() => document.body.innerText);
     expect(detailsText).toContain(config.testEnv);
     expect(detailsText).toContain('General Information');
-    await kymaConsole.openLink(page, 'a', 'Remote Environments');
+    await kymaConsole.openLink(page, 'a', 'Applications');
     const listText = await page.evaluate(() => document.body.innerText);
     expect(listText).toContain(config.testEnv);
     expect(listText).toContain('Search');
   });
 
-  test('Delete remote environment', async () => {
+  test('Delete Application', async () => {
     common.validateTestEnvironment(dexReady);
     const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironments(
       page
@@ -140,7 +137,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
         )
     );
     console.log(
-      'Delete remote environment, remaining remote envs: ',
+      'Delete Application, remaining remote envs: ',
       remoteEnvironments
     );
     expect(remoteEnvironments).not.toContain(config.testEnv);

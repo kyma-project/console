@@ -10,7 +10,8 @@ if (clusterConfig) {
     domain = clusterConfig['domain'];
   }
   if (clusterConfig['gateway_kyma_project_io_version']) {
-    gateway_kyma_project_io_version = clusterConfig['gateway_kyma_project_io_version'];
+    gateway_kyma_project_io_version =
+      clusterConfig['gateway_kyma_project_io_version'];
   }
   idpLogoutUrl = clusterConfig['idpLogoutUrl']
     ? clusterConfig['idpLogoutUrl']
@@ -30,7 +31,7 @@ const config = {
   k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_project_io_version}/`,
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1beta1/`,
   k8sApiServerUrl_extensions: `${k8sServerUrl}/apis/extensions/v1beta1/`,
-  k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/remoteenvironments/`,
+  k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
   k8sDashboardApiUrl: `${k8sServerUrl}/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/api/v1/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_ui: `${k8sServerUrl}/apis/ui.kyma-project.io/v1alpha1/`,

@@ -140,10 +140,7 @@ async function createRemoteEnvironment(page, name) {
   await page.focus(nameInput);
   await page.type(nameInput, name);
   await page.focus(descriptionInput);
-  await page.type(
-    descriptionInput,
-    'This is the Remote Environment for testing'
-  );
+  await page.type(descriptionInput, 'This is the Application for testing');
   await page.focus(labelsInput);
   await page.type(labelsInput, 'testKey:testValue');
   await page.click(createButton);
@@ -157,10 +154,10 @@ async function getRemoteEnvironmentsAfterDelete(
   await page.reload({ waitUntil: 'networkidle0' });
   const remoteEnvironments = await getRemoteEnvironments(page);
   if (initialRemoteEnvironments > remoteEnvironments) {
-    console.log('Remote environments was updated');
+    console.log('Applications was updated');
     return remoteEnvironments;
   }
-  throw new Error(`Remote environments was not updated`);
+  throw new Error(`Applications was not updated`);
 }
 
 async function deleteRemoteEnvironment(page, name) {

@@ -7,7 +7,7 @@
           <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
             <span class="tn-icon tn-icon--close" role="presentation"></span>
           </button>
-          <h4 class="tn-modal__title">Create Remote Environment</h4>
+          <h4 class="tn-modal__title">Create Application</h4>
         </div>
         <form>
           <div class="tn-modal__body">
@@ -17,10 +17,10 @@
                 <label class="tn-form__label">Name *</label>
                 <input #nameInput autofocus class="tn-form__control" type="text" name="remoteEnvName"
                     [(ngModel)]="name" (ngModelChange)=validateRemoteEnvNameRegex()
-                    placeholder="Specify a name for your Remote Environment"
+                    placeholder="Specify a name for your Application"
                   >
                 <div *ngIf="wrongRemoteEnvName" class="alert">
-                  The Remote Environment name has the wrong format. The name must consist
+                  The Application name has the wrong format. The name must consist
                   of lower case alphanumeric characters, dashes or dots, must start and end with an alphanumeric
                   character and can not be longer that 253 characters(e.g. 'my-name1.com').
                 </div>
@@ -29,7 +29,7 @@
                 <label class="tn-form__label">Description *</label>
                 <input class="tn-form__control" type="text" name="remoteEnvDescription"
                     [(ngModel)]="description"
-                    placeholder="Specify a description for your Remote Environment"
+                    placeholder="Specify a description for your Application"
                 >
               </div>
               <div class="tn-form__item">
