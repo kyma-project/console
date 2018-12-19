@@ -384,11 +384,11 @@ Luigi.setConfig({
                 viewUrl: '/consoleapp.html#/home/settings/organisation'
               },
               {
-                pathSegment: 'remote-envs',
-                navigationContext: 'remote-envs',
-                label: 'Remote Environments',
+                pathSegment: 'apps',
+                navigationContext: 'apps',
+                label: 'Applications',
                 category: 'Integration',
-                viewUrl: '/consoleapp.html#/home/settings/remoteEnvs',
+                viewUrl: '/consoleapp.html#/home/settings/apps',
                 keepSelectedForChildren: true,
                 children: [
                   {
@@ -396,8 +396,7 @@ Luigi.setConfig({
                     children: [
                       {
                         pathSegment: ':name',
-                        viewUrl:
-                          '/consoleapp.html#/home/settings/remoteEnvs/:name'
+                        viewUrl: '/consoleapp.html#/home/settings/apps/:name'
                       }
                     ]
                   }
