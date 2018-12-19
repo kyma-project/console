@@ -10,7 +10,7 @@ import { ConfirmationModalComponent } from '../../../../shared/components/confir
 })
 export class LambdasComponent implements OnInit {
   public externalUrl: string = AppConfig.lambdasModuleUrl;
-  public path = '/home/environments/';
+  public path = '/home/namespaces/';
   public executionAsync = false;
 
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;

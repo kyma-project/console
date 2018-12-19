@@ -10,7 +10,7 @@
         <div class="sf-toolbar__right">
             <button class="tn-button tn-button--text tn-button--small sf-toolbar__item" (click)="openUploadResourceModal()"
                 *ngIf="!showSelectFileButton">
-                + Deploy new resource to the environment
+                + Deploy new resource to the namespace
             </button>
         </div>
     </div>
@@ -30,7 +30,7 @@
                         </div>
                         <div class="tn-form__group">
                             <div class="tn-form__item">
-                                <label class="tn-form__label">Environment-ID</label>
+                                <label class="tn-form__label">Namespace-ID</label>
                                 <input class="tn-form__control" type="text" value="{{environment.getUid()}}" readonly>
                             </div>
                         </div>

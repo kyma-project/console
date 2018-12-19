@@ -81,7 +81,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
 
   public navigateToServiceDetails() {
     this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/services/${
+      `home/namespaces/${this.currentEnvironmentId}/services/${
         this.serviceName
       }`
     ]);
@@ -89,14 +89,12 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
 
   public navigateToServicesList() {
     this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/services`
+      `home/namespaces/${this.currentEnvironmentId}/services`
     ]);
   }
 
   public navigateToApiList() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/apis`
-    ]);
+    this.router.navigate([`home/namespaces/${this.currentEnvironmentId}/apis`]);
   }
 
   public goBack() {

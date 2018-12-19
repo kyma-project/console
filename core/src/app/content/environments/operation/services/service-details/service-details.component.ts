@@ -66,7 +66,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
             err => {
               if (err.status === 404) {
                 this.router.navigate([
-                  `/home/environments/${this.currentEnvironmentId}/services`
+                  `/home/namespaces/${this.currentEnvironmentId}/services`
                 ]);
               } else {
                 this.serviceDetailsLoading = false;
@@ -113,13 +113,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
   public goBack() {
     this.router.navigate([
-      'home/environments/' + this.currentEnvironmentId + '/services'
+      'home/namespaces/' + this.currentEnvironmentId + '/services'
     ]);
   }
 
   public openExposeApi() {
     this.router.navigate([
-      'home/environments/' +
+      'home/namespaces/' +
         this.currentEnvironmentId +
         '/services/' +
         this.serviceName +

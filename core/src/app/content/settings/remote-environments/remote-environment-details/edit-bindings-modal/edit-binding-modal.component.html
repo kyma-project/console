@@ -6,7 +6,7 @@
         <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
           <span class="tn-icon tn-icon--close" role="presentation"></span>
         </button>
-        <h4 class="tn-modal__title">Create Environment Binding</h4>
+        <h4 class="tn-modal__title">Create Namespace Binding</h4>
       </div>
       <div class="tn-modal__body">
             <div class="tn-modal__body">
@@ -24,7 +24,7 @@
                         <input class="filter-input"
                           type="text" 
                           name="environmentName"
-                          placeholder="Choose environment"
+                          placeholder="Choose namespace"
                           [(ngModel)]="environmentName"
                           (ngModelChange)="filterEnvsNames()"
                           (keydown)="openDropDown($event)"

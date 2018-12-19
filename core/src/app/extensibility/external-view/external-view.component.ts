@@ -61,7 +61,9 @@ export class ExternalViewComponent implements OnInit, OnDestroy {
         if (navigationContext) {
           if (
             mf.spec.placement &&
-            mf.spec.placement.split(',').includes(navigationContext)
+            (mf.spec.placement.split(',').includes(navigationContext) ||
+              (navigationContext === 'namespace' &&
+                mf.spec.placement.split(',').includes('environment')))
           ) {
             result.push({ mf, navigationNode });
           }

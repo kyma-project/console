@@ -64,7 +64,7 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
       err => {
         if (err.status === 404) {
           this.router.navigate([
-            `/home/environments/${this.currentEnvironmentId}/secrets`
+            `/home/namespaces/${this.currentEnvironmentId}/secrets`
           ]);
         } else {
           this.loading = false;
@@ -128,7 +128,7 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.router.navigate([
-      'home/environments/' + this.currentEnvironmentId + '/secrets'
+      'home/namespaces/' + this.currentEnvironmentId + '/secrets'
     ]);
   }
 
