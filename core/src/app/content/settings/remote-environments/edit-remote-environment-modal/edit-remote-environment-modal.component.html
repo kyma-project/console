@@ -7,7 +7,7 @@
           <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
             <span class="tn-icon tn-icon--close" role="presentation"></span>
           </button>
-          <h4 class="tn-modal__title">Edit Remote Environment</h4>
+          <h4 class="tn-modal__title">Edit Application</h4>
         </div>
         <form #editRemoteEnvsForm="ngForm">
           <div class="tn-modal__body">
@@ -17,7 +17,7 @@
                 <label class="tn-form__label">Description *</label>
                 <input autofocus class="tn-form__control" type="text" name="remoteEnvDescription"
                     [(ngModel)]="updatedDescription"
-                    placeholder="Specify a description for your Remote Environment"
+                    placeholder="Specify a description for your Application"
                 >
               </div>
               <div class="tn-form__item">

@@ -8,7 +8,7 @@
         (onFilterChanged)="onFilterChanged($event)">
       </y-list-filter>
       <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="openModal()">+ Create
-        Remote Environment</button>
+        Application</button>
     </div>
   </div>
 </div>
@@ -23,7 +23,7 @@
       <p>{{ emptyListText }}</p>
     </div>
   </y-plain-table>
-  
+
 
   <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
 </div>
