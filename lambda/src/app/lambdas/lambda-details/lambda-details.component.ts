@@ -997,7 +997,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
   /** validatesName checks whether a function name is abiding by RFC 1123 or not */
   validatesName(): void {
-    const regex = /[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/;
+    const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
