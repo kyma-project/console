@@ -995,7 +995,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.hasDependencies = observableOf(false);
   }
 
-  /** validatesName checks whether a function name is abiding by RFC 1123 or not */
+  /** validatesName checks whether a function name is a valid DNS-1035 label */
   validatesName(): void {
     const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
