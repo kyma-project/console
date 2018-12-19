@@ -8,11 +8,15 @@ class Console {
   }
 
   getEnvironment(environment) {
-    return this.getConsole() + '/home/environments/' + environment;
+    return this.getConsole() + '/environments/' + environment;
   }
 
   getRemoteEnvironments() {
     return this.getConsole() + '/home/settings/apps';
+  }
+
+  getEnvironmentsAddress() {
+    return this.getConsole() + '/environments';
   }
 
   getCatalog(environment) {

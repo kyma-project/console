@@ -46,7 +46,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const catalogExpectedHeader = 'Service Catalog';
     const searchSelector = catalog.prepareSelector('search');
     const searchBySth = 'lololo';
-    const navItem = 'a.sf-toolbar__item';
+    const navItem = 'a.fd-side-nav__sublink';
 
     await kymaConsole.openLink(page, navItem, 'Catalog');
 
