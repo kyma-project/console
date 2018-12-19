@@ -13,11 +13,24 @@
     border-bottom: none;
     padding: 1px 0;
     color: #21262c;
+
+    .link {
+      word-break: break-word;
+    }
+
+    button {
+      float: none;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+    &>div {
+      padding-left: 4px;
+      padding-right: 4px;
+    }
 }
 
 .separation {
-    padding-right: 1px;
-    padding-left: 1px;
     padding-top: 10px;
 }
 
