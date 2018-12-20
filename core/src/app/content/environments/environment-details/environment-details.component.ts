@@ -131,7 +131,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   public navigateToRemoteEnvs(envName) {
     LuigiClient.linkManager().navigate(
-      envName ? '/home/settings/apps/details/' + envName : '/home/settings/apps'
+      envName ? '/home/apps/details/' + envName : '/home/apps'
     );
   }
 }

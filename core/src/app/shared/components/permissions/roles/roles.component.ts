@@ -7,6 +7,7 @@ import { CurrentEnvironmentService } from '../../../../content/environments/serv
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   host: { class: '' },
@@ -87,6 +88,18 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
       return `${AppConfig.k8sApiServerUrl_rbac}clusterroles/${
         entry.metadata.name
       }`;
+    }
+  }
+
+  public navigateToDetails(entry: any) {
+    if (this.mode === 'roles') {
+      LuigiClient.linkManager()
+        .fromContext('permissions')
+        .navigate(`roles/${entry.metadata.name}`);
+    } else {
+      LuigiClient.linkManager().navigate(
+        `/home/global-permissions/roles/${entry.metadata.name}`
+      );
     }
   }
 }

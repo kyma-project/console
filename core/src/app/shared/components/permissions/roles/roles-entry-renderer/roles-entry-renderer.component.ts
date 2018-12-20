@@ -33,7 +33,7 @@ export class RolesEntryRendererComponent extends AbstractKubernetesEntryRenderer
         .navigate(`roles/${roleName}`);
     } else {
       LuigiClient.linkManager().navigate(
-        `/home/settings/global-permissions/roles/${roleName}`
+        `/home/global-permissions/roles/${roleName}`
       );
     }
   }

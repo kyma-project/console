@@ -65,7 +65,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
         .fromContext('permissions')
         .navigate('');
     } else {
-      LuigiClient.linkManager().navigate(`/home/settings/global-permissions`);
+      LuigiClient.linkManager().navigate(`/home/global-permissions`);
     }
   }
 
