@@ -37,7 +37,7 @@ class ServiceClassDetails extends React.Component {
 
     const modalOpeningComponent = (
       <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
-        Add to your Environment
+        Add to your Namespace
       </Button>
     );
 
@@ -50,7 +50,7 @@ class ServiceClassDetails extends React.Component {
     }
     if (!this.props.serviceClass.loading && !serviceClass) {
       return (
-        <EmptyList>Service Class doesn't exist in this environment</EmptyList>
+        <EmptyList>Service Class doesn't exist in this namespace</EmptyList>
       );
     }
 
