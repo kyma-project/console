@@ -125,7 +125,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   public navigateToServices() {
     LuigiClient.linkManager()
-      .fromContext('environments')
+      .fromContext('namespaces')
       .navigate('services');
   }
 

@@ -45,7 +45,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
 
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
-      .fromContext('environments')
+      .fromContext('namespaces')
       .navigate(`service-catalog/details/${name}`);
   };
 

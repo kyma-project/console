@@ -41,7 +41,7 @@ class App extends React.Component {
 
   goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
-      .fromContext('environments')
+      .fromContext('namespaces')
       .navigate(`instances/details/${name}`);
   };
 
