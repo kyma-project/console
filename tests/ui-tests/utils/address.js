@@ -12,11 +12,11 @@ class Console {
   }
 
   getRemoteEnvironments() {
-    return this.getConsole() + '/home/settings/apps';
+    return this.getConsole() + '/home/apps';
   }
 
   getEnvironmentsAddress() {
-    return this.getConsole() + '/environments';
+    return this.getConsole() + '/home/namespaces';
   }
 
   getCatalog(environment) {
@@ -32,7 +32,7 @@ class Console {
   }
 
   getDocs() {
-    return this.getConsole() + '/home/docs';
+    return this.getConsole() + '/docs';
   }
 }
 
