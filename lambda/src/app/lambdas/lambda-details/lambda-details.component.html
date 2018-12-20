@@ -26,9 +26,7 @@
             <input class="tn-form__control" type="text" id="input-1" [(ngModel)]="lambda.metadata.name" [attr.disabled]="mode==='create'?null:''"
                    (keyup)="validatesName()">
             <div *ngIf="isFunctionNameInvalid">
-              <p class="alert">Invalid name: must consist of lower case alphanumeric characters, '-' or '.', no spaces
-                and must start and
-                end with an alphanumeric character (e.g. 'example.com')</p>
+              <p class="alert">Invalid name: must consist of lower case alphanumeric characters or '-', start with an alphabetic character, and end with an alphanumeric character (e.g. 'my-name',  or 'abc-123')</p>
             </div>
           </div>
         </div>

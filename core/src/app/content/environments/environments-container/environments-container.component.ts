@@ -103,8 +103,8 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             if (err.status === 404) {
               this.infoModal.show(
                 'Error',
-                `Environment ${envId} doesn't exist.`,
-                '/home/environments'
+                `Namespace ${envId} doesn't exist.`,
+                '/home/namespaces'
               );
             }
           }
@@ -143,7 +143,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     url: string,
     previousUrl: string
   ): boolean {
-    const envExtUrlPattern = /^\/home\/environments\/[^\/]+\/extensions\/.+$/;
+    const envExtUrlPattern = /^\/home\/namespaces\/[^\/]+\/extensions\/.+$/;
     const clusterExtUrlPattern = /^\/home\/settings\/extensions\/.+$/;
     if (previousUrl) {
       if (url === previousUrl) {
@@ -171,7 +171,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       .getCurrentEnvironmentId()
       .pipe(
         tap(env => (this.overview = url.includes(`${env}/details`))),
-        filter(env => url.includes('environments/' + env)),
+        filter(env => url.includes('namespaces/' + env)),
         filter(env => env !== this.previousEnv || this.overview),
         take(1),
         concatMap(env =>
@@ -228,7 +228,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
 
   public navigateToResources() {
     this.currentEnvironmentService.getCurrentEnvironmentId().subscribe(env => {
-      this.router.navigate([`home/environments/${env}/resources`]);
+      this.router.navigate([`home/namespaces/${env}/resources`]);
     });
   }
 }

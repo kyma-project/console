@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 const Markdown = styled.div`
+  max-width: 899px;
+
   h1,
   h2,
   h3,
