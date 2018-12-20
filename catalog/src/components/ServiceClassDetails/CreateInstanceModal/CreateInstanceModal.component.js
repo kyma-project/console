@@ -271,7 +271,7 @@ class CreateInstanceModal extends React.Component {
             {serviceClass.__typename === 'ClusterServiceClass'
               ? 'Cluster Service Class'
               : 'Service Class'}{' '}
-            <Bold>{serviceClass.displayName}</Bold> in environment{' '}
+            <Bold>{serviceClass.displayName}</Bold> in namespace{' '}
             <Bold>{environment}</Bold>
           </p>
         }
