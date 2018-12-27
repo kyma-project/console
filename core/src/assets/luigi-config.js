@@ -405,7 +405,10 @@ function getEnvs() {
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
   ).then(function(response) {
     var envs = [];
-    response.items.forEach(env => {
+    response.items.map(env => {
+      if (env.status && env.status.phase !== 'Active') {
+        return; //"pretend" that inactive env is already removed
+      }
       envName = env.metadata.name;
       envs.push({
         // has to be visible for all views exept 'settings'
@@ -475,7 +478,8 @@ Luigi.setConfig({
               {
                 pathSegment: 'workspace',
                 label: 'Namespaces',
-                viewUrl: '/consoleapp.html#/home/namespaces/workspace'
+                viewUrl:
+                  '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}'
               },
               {
                 pathSegment: 'namespaces',
@@ -589,7 +593,13 @@ Luigi.setConfig({
       defaultLabel: 'Select Namespace ...',
       parentNodePath: '/home/namespaces', // absolute path
       lazyloadOptions: true, // load options on click instead on page load
-      options: getEnvs
+      options: getEnvs,
+      actions: [
+        {
+          label: '+ New Namespace',
+          link: '/home/workspace?~showModal=true'
+        }
+      ]
     }
   },
   routing: {

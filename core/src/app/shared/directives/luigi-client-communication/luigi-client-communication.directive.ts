@@ -9,7 +9,7 @@ export class LuigiClientCommunicationDirective implements OnChanges {
 
   constructor() {}
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.isActive) {
+    if (changes.isActive && !changes.isActive.firstChange) {
       if (changes.isActive.currentValue) {
         luigiClient.uxManager().addBackdrop();
       } else {

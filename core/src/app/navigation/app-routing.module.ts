@@ -2,7 +2,7 @@ import { AppConfig } from './../app.config';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ApisComponent } from '../content/environments/configuration/apis/apis.component';
-import { EnvironmentCreateComponent } from '../content/environments/environment-create/environment-create.component';
+
 import { EnvironmentDetailsComponent } from '../content/environments/environment-details/environment-details.component';
 import { EnvironmentsContainerComponent } from '../content/environments/environments-container/environments-container.component';
 import { DeploymentsComponent } from '../content/environments/operation/deployments/deployments.component';
@@ -36,7 +36,6 @@ const appRoutes: Routes = [
         children: [
           { path: 'yVirtual', component: WorkspaceOverviewComponent },
           { path: 'workspace', component: WorkspaceOverviewComponent },
-          { path: '_create_', component: EnvironmentCreateComponent },
           { path: '', redirectTo: 'workspace', pathMatch: 'full' }
         ]
       },

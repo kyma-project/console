@@ -1193,7 +1193,7 @@ export class LambdaDetailsComponent
   }
 
   warnUnsavedChanges(hasChanges: boolean): void {
-    // luigiClient.uxManager().setDirtyStatus(hasChanges);
+    luigiClient.uxManager().setDirtyStatus(hasChanges);
   }
 
   setFunctionSize() {

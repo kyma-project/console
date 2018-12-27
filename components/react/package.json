@@ -20,7 +20,7 @@
   },
   "homepage": "https://kyma-project.github.io/console/react",
   "dependencies": {
-    "@kyma-project/luigi-client": "0.4.1",
+    "@kyma-project/luigi-client": "0.4.2",
     "file-loader": "^1.1.11",
     "polished": "^1.8.1",
     "react-scrollbar": "^0.5.4",

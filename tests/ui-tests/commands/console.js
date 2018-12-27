@@ -95,7 +95,7 @@ function clearData(token, env) {
 
 async function getEnvironmentsFromContextSwitcher(page) {
   return await page.evaluate(() => {
-    const menuListContainer = document.querySelector('ul.fd-menu__list');
+    const menuListContainer = document.querySelector('ul#context_menu_middle');
     const environmentsArraySelector = 'li > a';
     const envs = Array.from(
       menuListContainer.querySelectorAll(environmentsArraySelector)

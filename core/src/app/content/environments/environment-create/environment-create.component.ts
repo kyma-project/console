@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { EnvironmentsService } from '../services/environments.service';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -8,6 +8,8 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./environment-create.component.css']
 })
 export class EnvironmentCreateComponent {
+  @Output() onCancel: EventEmitter<any> = new EventEmitter();
+
   public environments = [];
   public environmentName: string;
   public isActive: boolean;
@@ -20,6 +22,7 @@ export class EnvironmentCreateComponent {
     this.environmentsService.createEnvironment(this.environmentName).subscribe(
       () => {
         this.isActive = false;
+        this.refreshContextSwitcher();
         this.navigateToDetails(this.environmentName);
       },
       err => {
@@ -28,16 +31,10 @@ export class EnvironmentCreateComponent {
     );
   }
 
-  private validateRegex() {
-    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
-    this.environmentName
-      ? (this.wrongName = !regex.test(this.environmentName))
-      : (this.wrongName = false);
-  }
-
   public cancel() {
     this.isActive = false;
     this.wrongName = false;
+    this.onCancel.emit();
   }
 
   public show() {
@@ -48,5 +45,16 @@ export class EnvironmentCreateComponent {
 
   public navigateToDetails(envName) {
     LuigiClient.linkManager().navigate(`/home/namespaces/${envName}/details`);
+  }
+
+  private validateRegex() {
+    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
+    this.environmentName
+      ? (this.wrongName = !regex.test(this.environmentName))
+      : (this.wrongName = false);
+  }
+
+  private refreshContextSwitcher() {
+    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 }
