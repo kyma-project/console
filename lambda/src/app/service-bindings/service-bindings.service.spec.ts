@@ -3,10 +3,13 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ServiceBindingsService } from './service-bindings.service';
 import {
   HttpClientTestingModule,
-  HttpTestingController
+  HttpTestingController,
 } from '@angular/common/http/testing';
 import { AppConfig } from '../app.config';
-import { ServiceBinding, IServiceBindingSpec } from '../shared/datamodel/k8s/service-binding';
+import {
+  ServiceBinding,
+  IServiceBindingSpec,
+} from '../shared/datamodel/k8s/service-binding';
 import { IMetaData } from '../shared/datamodel/k8s/generic/meta-data';
 import { IMetaDataOwner } from '../shared/datamodel/k8s/generic/meta-data-owner';
 import { HttpHeaders } from '@angular/common/http';
@@ -19,24 +22,28 @@ describe('ServiceBindingsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ServiceBindingsService]
+      providers: [ServiceBindingsService],
     });
 
     serviceBindingsService = TestBed.get(ServiceBindingsService);
     httpClientMock = TestBed.get(HttpTestingController);
   });
 
-  it('should get Service Binding', (done) => {
+  it('should get Service Binding', done => {
     const name = 'fakeServiceBindingName';
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
 
-    serviceBindingsService.getServiceBinding(name, namespace, token).subscribe((res) => {
-      done();
-    });
+    serviceBindingsService
+      .getServiceBinding(name, namespace, token)
+      .subscribe(res => {
+        done();
+      });
 
     const req = httpClientMock.expectOne(
-      `${AppConfig.serviceCatalogApiUrl}/namespaces/${namespace}/servicebindings/${name}`
+      `${
+        AppConfig.serviceCatalogApiUrl
+      }/namespaces/${namespace}/servicebindings/${name}`,
     );
 
     expect(req.request.method).toEqual('GET');
@@ -46,73 +53,90 @@ describe('ServiceBindingsService', () => {
     httpClientMock.verify();
   });
 
-  it('should get all the Service Bindings', (done) => {
+  it('should get all the Service Bindings', done => {
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
 
-    serviceBindingsService.getServiceBindings(namespace, token).subscribe((res) => {
-      done();
-    });
+    serviceBindingsService
+      .getServiceBindings(namespace, token)
+      .subscribe(res => {
+        done();
+      });
     const req = httpClientMock.expectOne(
-      `${AppConfig.serviceCatalogApiUrl}/namespaces/${namespace}/servicebindings`
+      `${
+        AppConfig.serviceCatalogApiUrl
+      }/namespaces/${namespace}/servicebindings`,
     );
     req.flush({});
     httpClientMock.verify();
     expect(req.request.method).toEqual('GET');
     expect(req.request.headers.get('Content-Type')).toEqual('application/json');
-    expect(req.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
+    expect(req.request.headers.get('Authorization')).toEqual(
+      'Bearer fakeToken',
+    );
   });
 
-  it('should create the Service Binding', (done) => {
+  it('should create the Service Binding', done => {
     const md: IMetaData = {
       name: '',
-      namespace: 'fakeNamespace'
+      namespace: 'fakeNamespace',
     };
 
     const lor: LocalObjectReference = {
-      name: ''
-    }
+      name: '',
+    };
     const sp: IServiceBindingSpec = {
       instanceRef: lor,
-      secretName: ''
-    }
+      secretName: '',
+    };
 
     const fakeServiceBinding = new ServiceBinding({
       kind: 'ServiceBindingUsage',
-      apiVersion: 'servicecatalog.ysf.io/v1alpha1',
+      apiVersion: 'servicecatalog.kyma-project.io/v1alpha1',
       metadata: md,
       spec: sp,
     });
     const token = 'fakeToken';
-    serviceBindingsService.createServiceBinding(fakeServiceBinding, token).subscribe((res) => {
-      done();
-    });
+    serviceBindingsService
+      .createServiceBinding(fakeServiceBinding, token)
+      .subscribe(res => {
+        done();
+      });
     const req = httpClientMock.expectOne(
-      `${AppConfig.serviceCatalogApiUrl}/namespaces/${fakeServiceBinding.metadata.namespace}/servicebindings`
+      `${AppConfig.serviceCatalogApiUrl}/namespaces/${
+        fakeServiceBinding.metadata.namespace
+      }/servicebindings`,
     );
     req.flush({});
     httpClientMock.verify();
     expect(req.request.method).toEqual('POST');
     expect(req.request.headers.get('Content-Type')).toEqual('application/json');
-    expect(req.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
+    expect(req.request.headers.get('Authorization')).toEqual(
+      'Bearer fakeToken',
+    );
   });
 
-
-  it('should delete the Service Binding', (done) => {
+  it('should delete the Service Binding', done => {
     const name = 'fakeServiceBindingName';
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
 
-    serviceBindingsService.deleteServiceBinding(name, namespace, token).subscribe((res) => {
-      done();
-    });
+    serviceBindingsService
+      .deleteServiceBinding(name, namespace, token)
+      .subscribe(res => {
+        done();
+      });
     const req = httpClientMock.expectOne(
-      `${AppConfig.serviceCatalogApiUrl}/namespaces/${namespace}/servicebindings/${name}`
+      `${
+        AppConfig.serviceCatalogApiUrl
+      }/namespaces/${namespace}/servicebindings/${name}`,
     );
     req.flush({});
     httpClientMock.verify();
     expect(req.request.method).toEqual('DELETE');
     expect(req.request.headers.get('Content-Type')).toEqual('application/json');
-    expect(req.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
+    expect(req.request.headers.get('Authorization')).toEqual(
+      'Bearer fakeToken',
+    );
   });
 });
