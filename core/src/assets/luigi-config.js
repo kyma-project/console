@@ -25,7 +25,7 @@ if (localStorage.getItem('luigi.auth')) {
 
 function getNodes(context) {
   var environment = context.environmentId;
-  return [
+  var staticNodes = [
     {
       link: '/home/workspace',
       label: 'Back to Home'
@@ -263,25 +263,129 @@ function getNodes(context) {
       ]
     }
   ];
+  return Promise.all([
+    getUiEntities('microfrontends', environment),
+    getUiEntities('clustermicrofrontends', undefined, [
+      'environment',
+      'namespace'
+    ])
+  ]).then(function(values) {
+    var nodeTree = staticNodes;
+    values.forEach(function(val) {
+      nodeTree = [].concat.apply(nodeTree, val);
+    });
+    return nodeTree;
+  });
 }
 
-function getEnvs() {
+/**
+ * getUiEntities
+ * @param {string} entityname microfrontends | clustermicrofrontends
+ * @param {array} placements array of strings: namespace | environment | cluster
+ */
+function getUiEntities(entityname, environment, placements) {
+  var fetchUrl =
+    k8sServerUrl +
+    '/apis/ui.kyma-project.io/v1alpha1/' +
+    (environment ? 'namespaces/' + environment + '/' : '') +
+    entityname;
+  var segmentPrefix = entityname === 'clustermicrofrontends' ? 'cmf-' : 'mf-';
+
+  return fetchFromKyma(fetchUrl)
+    .then(result => {
+      if (!result.items.length) {
+        return [];
+      }
+      return result.items
+        .filter(function(item) {
+          // placement only exists in clustermicrofrontends
+          return !placements || placements.includes(item.spec.placement);
+        })
+        .map(function(item) {
+          function buildNode(node, spec) {
+            var node = {
+              label: node.label,
+              pathSegment: node.navigationPath.split('/').pop(),
+              viewUrl: spec.viewBaseUrl
+                ? spec.viewBaseUrl + node.viewUrl
+                : node.viewUrl,
+              hideFromNav: node.showInNavigation || undefined
+            };
+            return node;
+          }
+
+          function buildNodeWithChildren(specNode, spec) {
+            var parentNodeSegments = specNode.navigationPath.split('/');
+            var children = getDirectChildren(parentNodeSegments, spec);
+
+            var node = buildNode(specNode, spec);
+            if (children.length) {
+              node.children = children;
+            }
+            return node;
+          }
+
+          function getDirectChildren(parentNodeSegments, spec) {
+            // process only direct childs
+            return spec.navigationNodes
+              .filter(function(node) {
+                var currentNodeSegments = node.navigationPath.split('/');
+                var isDirectChild =
+                  parentNodeSegments.length ===
+                    currentNodeSegments.length - 1 &&
+                  parentNodeSegments.filter(function(segment) {
+                    return currentNodeSegments.includes(segment);
+                  }).length > 0;
+                return isDirectChild;
+              })
+              .map(function mapSecondLevelNodes(node) {
+                // map direct childs
+                return buildNodeWithChildren(node, spec);
+              });
+          }
+
+          function buildTree(spec) {
+            return spec.navigationNodes
+              .filter(function getTopLevelNodes(node) {
+                var segments = node.navigationPath.split('/');
+                return segments.length === 1;
+              })
+              .map(function processTopLevelNodes(node) {
+                return buildNodeWithChildren(node, spec);
+              })
+              .map(function addSettingsForTopLevelNodes(node) {
+                if (!node.pathSegment.startsWith(segmentPrefix)) {
+                  node.pathSegment = segmentPrefix + node.pathSegment;
+                }
+                if (spec.category) {
+                  node.category = spec.category;
+                }
+                node.navigationContext = spec.appName;
+                node.viewGroup = spec.appName;
+                node.keepSelectedForChildren = true;
+                return node;
+              });
+          }
+          if (item.spec.navigationNodes) {
+            var tree = buildTree(item.spec);
+            return tree;
+          }
+          return [];
+        });
+    })
+    .catch(err => {
+      console.error('Error fetching UiEntity ' + name, err);
+      return [];
+    });
+}
+
+function fetchFromKyma(url) {
   reloginIfTokenExpired();
   return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        var envs = [];
-        JSON.parse(xmlHttp.response).items.forEach(env => {
-          envName = env.metadata.name;
-          envs.push({
-            // has to be visible for all views exept 'settings'
-            category: 'Namespaces',
-            label: envName,
-            pathValue: envName
-          });
-        });
-        resolve(envs);
+        resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
         if (xmlHttp.status === 401) {
           relogin();
@@ -290,13 +394,27 @@ function getEnvs() {
       }
     };
 
-    xmlHttp.open(
-      'GET',
-      k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true',
-      true
-    );
+    xmlHttp.open('GET', url, true);
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.send(null);
+  });
+}
+
+function getEnvs() {
+  return fetchFromKyma(
+    k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
+  ).then(function(response) {
+    var envs = [];
+    response.items.forEach(env => {
+      envName = env.metadata.name;
+      envs.push({
+        // has to be visible for all views exept 'settings'
+        category: 'Namespaces',
+        label: envName,
+        pathValue: envName
+      });
+    });
+    return envs;
   });
 }
 
@@ -349,105 +467,113 @@ Luigi.setConfig({
         context: {
           idToken: token
         },
-        children: [
-          {
-            pathSegment: 'workspace',
-            label: 'Namespaces',
-            viewUrl: '/consoleapp.html#/home/namespaces/workspace'
-          },
-          {
-            pathSegment: 'namespaces',
-            viewUrl: '/consoleapp.html#/home/namespaces/workspace',
-            hideFromNav: true,
-            children: [
+        children: function() {
+          return getUiEntities('clustermicrofrontends', undefined, [
+            'cluster'
+          ]).then(function(cmf) {
+            var staticNodes = [
               {
-                pathSegment: ':environmentId',
-                context: {
-                  environmentId: ':environmentId'
-                },
-                children: getNodes,
-                navigationContext: 'namespaces',
-                defaultChildNode: 'details'
-              }
-            ]
-          },
-          {
-            pathSegment: 'apps',
-            navigationContext: 'apps',
-            label: 'Applications',
-            category: 'Integration',
-            viewUrl: '/consoleapp.html#/home/settings/apps',
-            keepSelectedForChildren: true,
-            children: [
+                pathSegment: 'workspace',
+                label: 'Namespaces',
+                viewUrl: '/consoleapp.html#/home/namespaces/workspace'
+              },
               {
-                pathSegment: 'details',
+                pathSegment: 'namespaces',
+                viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+                hideFromNav: true,
                 children: [
                   {
-                    pathSegment: ':name',
-                    viewUrl: '/consoleapp.html#/home/settings/apps/:name'
+                    pathSegment: ':environmentId',
+                    context: {
+                      environmentId: ':environmentId'
+                    },
+                    children: getNodes,
+                    navigationContext: 'namespaces',
+                    defaultChildNode: 'details'
                   }
                 ]
-              }
-            ]
-          },
-          {
-            pathSegment: 'service-brokers',
-            navigationContext: 'service-brokers',
-            label: 'Service Brokers',
-            category: 'Integration',
-            viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
-          },
-          {
-            pathSegment: 'idp-presets',
-            navigationContext: 'idp-presets',
-            label: 'IDP Presets',
-            category: 'Integration',
-            viewUrl: '/consoleapp.html#/home/settings/idpPresets'
-          },
-          {
-            pathSegment: 'settings',
-            navigationContext: 'settings',
-            label: 'General Settings',
-            category: 'Settings',
-            viewUrl: '/consoleapp.html#/home/settings/organisation'
-          },
-          {
-            pathSegment: 'global-permissions',
-            navigationContext: 'global-permissions',
-            label: 'Global Permissions',
-            category: 'Settings',
-            viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
-            keepSelectedForChildren: true,
-            children: [
+              },
               {
-                pathSegment: 'roles',
+                pathSegment: 'apps',
+                navigationContext: 'apps',
+                label: 'Applications',
+                category: 'Integration',
+                viewUrl: '/consoleapp.html#/home/settings/apps',
+                keepSelectedForChildren: true,
                 children: [
                   {
-                    pathSegment: ':name',
-                    viewUrl:
-                      '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                    pathSegment: 'details',
+                    children: [
+                      {
+                        pathSegment: ':name',
+                        viewUrl: '/consoleapp.html#/home/settings/apps/:name'
+                      }
+                    ]
                   }
                 ]
+              },
+              {
+                pathSegment: 'service-brokers',
+                navigationContext: 'service-brokers',
+                label: 'Service Brokers',
+                category: 'Integration',
+                viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
+              },
+              {
+                pathSegment: 'idp-presets',
+                navigationContext: 'idp-presets',
+                label: 'IDP Presets',
+                category: 'Integration',
+                viewUrl: '/consoleapp.html#/home/settings/idpPresets'
+              },
+              {
+                pathSegment: 'settings',
+                navigationContext: 'settings',
+                label: 'General Settings',
+                category: 'Settings',
+                viewUrl: '/consoleapp.html#/home/settings/organisation'
+              },
+              {
+                pathSegment: 'global-permissions',
+                navigationContext: 'global-permissions',
+                label: 'Global Permissions',
+                category: 'Settings',
+                viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
+                keepSelectedForChildren: true,
+                children: [
+                  {
+                    pathSegment: 'roles',
+                    children: [
+                      {
+                        pathSegment: ':name',
+                        viewUrl:
+                          '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                label: 'Stats & Metrics',
+                category: 'Diagnostics',
+                externalLink: {
+                  url: 'https://grafana.' + k8sDomain,
+                  sameWindow: false
+                }
+              },
+              {
+                label: 'Tracing',
+                category: 'Diagnostics',
+                externalLink: {
+                  url: 'https://jaeger.' + k8sDomain,
+                  sameWindow: false
+                }
               }
-            ]
-          },
-          {
-            label: 'Stats & Metrics',
-            category: 'Diagnostics',
-            externalLink: {
-              url: 'https://grafana.' + k8sDomain,
-              sameWindow: false
-            }
-          },
-          {
-            label: 'Tracing',
-            category: 'Diagnostics',
-            externalLink: {
-              url: 'https://jaeger.' + k8sDomain,
-              sameWindow: false
-            }
-          }
-        ]
+            ];
+            var fetchedNodes = [].concat.apply([], cmf);
+            return [].concat.apply(staticNodes, fetchedNodes);
+          });
+        }
       },
       {
         pathSegment: 'docs',
@@ -463,13 +589,7 @@ Luigi.setConfig({
       defaultLabel: 'Select Namespace ...',
       parentNodePath: '/home/namespaces', // absolute path
       lazyloadOptions: true, // load options on click instead on page load
-      options: getEnvs,
-      actions: [
-        // {
-        //   label: '+ New Environment',
-        //   link: '/create-environment'
-        // }
-      ]
+      options: getEnvs
     }
   },
   routing: {
