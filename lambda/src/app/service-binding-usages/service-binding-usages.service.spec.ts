@@ -80,7 +80,7 @@ describe('ServiceBindingUsagesService', () => {
     };
     const fakeServiceBindingUsage = new ServiceBindingUsage({
       kind: 'ServiceBindingUsage',
-      apiVersion: 'servicecatalog.ysf.io/v1alpha1',
+      apiVersion: 'servicecatalog.kyma-project.io/v1alpha1',
       metadata: md,
       spec: sp,
     });
