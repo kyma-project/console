@@ -145,29 +145,26 @@ class CreateCredentialsModal extends React.Component {
       bindingCreateParameters: bindingCreateParameters,
     };
 
-    const bindingCreateParameterSchemaExists =
-      bindingCreateParameterSchema &&
-      (bindingCreateParameterSchema.$ref ||
-        bindingCreateParameterSchema.properties);
+    const bindingCreateParameterSchemaExists = bindingCreateParameterSchema && (bindingCreateParameterSchema.$ref || bindingCreateParameterSchema.properties);
 
     const content = [
       <Fragment key={serviceInstance.name}>
-        <SchemaData
-          data={schemaData}
-          bindingCreateParameterSchema={bindingCreateParameterSchema}
-          onSubmitSchemaForm={this.create}
-          planName={servicePlan.displayName}
-          callback={this.callback}
-        >
-          {/* Styled components don't work here */}
-          <button
-            className="hidden"
-            type="submit"
-            ref={submitBtn => (this.submitBtn = submitBtn)}
+          <SchemaData
+            data={schemaData}
+            bindingCreateParameterSchema={bindingCreateParameterSchema}
+            onSubmitSchemaForm={this.create}
+            planName={servicePlan.displayName}
+            callback={this.callback}
           >
-            Submit
-          </button>
-        </SchemaData>
+            {/* Styled components don't work here */}
+            <button
+              className="hidden"
+              type="submit"
+              ref={submitBtn => (this.submitBtn = submitBtn)}
+            >
+              Submit
+            </button>
+          </SchemaData>
       </Fragment>,
     ];
 

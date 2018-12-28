@@ -8,7 +8,10 @@ import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 
 import { ServiceClassTabsContentWrapper } from './styled';
 
-import { sortDocumentsByType, validateContent } from '../../../commons/helpers';
+import {
+  sortDocumentsByType,
+  validateContent
+} from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
@@ -78,11 +81,7 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
 
           {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
             <Tab title={'Events'} margin="0" background="inherit">
-              <AsyncApi
-                schema={asyncApiSpec}
-                theme={asyncApiTheme}
-                config={asyncApiConfig}
-              />
+              <AsyncApi schema={asyncApiSpec} theme={asyncApiTheme} config={asyncApiConfig} />
             </Tab>
           ) : null}
         </Tabs>

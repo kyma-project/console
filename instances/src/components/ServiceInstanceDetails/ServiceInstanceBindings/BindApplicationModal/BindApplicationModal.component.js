@@ -218,10 +218,7 @@ class BindApplicationModal extends React.Component {
       bindingsStepFilled: bindingsStepFilled,
     };
 
-    const bindingCreateParameterSchemaExists =
-      bindingCreateParameterSchema &&
-      (bindingCreateParameterSchema.$ref ||
-        bindingCreateParameterSchema.properties);
+    const bindingCreateParameterSchemaExists = bindingCreateParameterSchema && (bindingCreateParameterSchema.$ref || bindingCreateParameterSchema.properties);
 
     const content = [
       <div key={serviceInstance.name}>

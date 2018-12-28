@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  JsonSchemaForm,
-  Icon,
-  ErrorBoundary,
-} from '@kyma-project/react-components';
+import { JsonSchemaForm, Icon, ErrorBoundary } from '@kyma-project/react-components';
 import { Bold } from './styled';
 
 class SchemaData extends React.Component {
@@ -48,8 +44,7 @@ class SchemaData extends React.Component {
       <ErrorBoundary
         content={
           <div>
-            <Icon icon={'\uE1EC'} /> Incorrect Binding Create Parameter schema
-            in <Bold>{planName}</Bold> plan
+            <Icon icon={'\uE1EC'} /> Incorrect Binding Create Parameter schema in <Bold>{planName}</Bold> plan
           </div>
         }
       >

@@ -3,7 +3,7 @@ module.exports = {
   password: process.env.PASSWORD || 'nimda123',
   domain: process.env.DOMAIN || 'kyma.local',
   devConsoleUrl:
-    process.env.DEV_CONSOLE_URL || 'http://console-dev.kyma.local:4200',
+    process.env.DEV_CONSOLE_URl || 'http://console-dev.kyma.local:4200',
   localdev: process.env.LOCAL_DEV || false,
   testEnv: process.env.TEST_ENV || 'testenvironment',
   catalogTestEnv: process.env.CATALOG_TEST_ENV || 'catalogtestenvironment',
