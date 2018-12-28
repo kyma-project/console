@@ -8,7 +8,7 @@
     </div>
   </div>
 </div>
-<app-environment-create (onCancel)="onEnvCreateCancelled()" #createModal></app-environment-create>
+<app-environment-create (cancelEvent)="onEnvCreateCancelled()" #createModal></app-environment-create>
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>
 <app-information-modal #infoModal></app-information-modal>
 <div class="row">
