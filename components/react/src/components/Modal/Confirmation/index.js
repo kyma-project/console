@@ -22,6 +22,8 @@ class ConfirmationModal extends React.Component {
     borderFooter: PropTypes.bool,
     handleClose: PropTypes.any,
     headerAdditionalInfo: PropTypes.string,
+    onShow: PropTypes.func,
+    onHide: PropTypes.func,
   };
 
   static defaultProps = {
@@ -62,6 +64,8 @@ class ConfirmationModal extends React.Component {
       borderFooter,
       handleClose,
       headerAdditionalInfo,
+      onShow,
+      onHide,
     } = this.props;
 
     const confirmMessage = waiting ? (
@@ -129,6 +133,8 @@ class ConfirmationModal extends React.Component {
         borderFooter={borderFooter}
         handleClose={handleClose}
         headerAdditionalInfo={headerAdditionalInfo}
+        onShow={onShow}
+        onHide={onHide}
       />
     );
   }

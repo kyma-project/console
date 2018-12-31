@@ -11,6 +11,8 @@ class InformationModal extends React.Component {
     modalOpeningComponent: PropTypes.any,
     width: PropTypes.string,
     headerAdditionalInfo: PropTypes.string,
+    onShow: PropTypes.func,
+    onHide: PropTypes.func,
   };
 
   static defaultProps = {
@@ -29,6 +31,8 @@ class InformationModal extends React.Component {
       modalOpeningComponent,
       width,
       headerAdditionalInfo,
+      onHide,
+      onShow,
     } = this.props;
 
     return (
@@ -39,6 +43,8 @@ class InformationModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         width={width}
         headerAdditionalInfo={headerAdditionalInfo}
+        onHide={onHide}
+        onShow={onShow}
       />
     );
   }

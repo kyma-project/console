@@ -63,6 +63,8 @@ const ServiceInstanceToolbar = ({
         }
         warning={true}
         width={'481px'}
+        onShow={() => LuigiClient.uxManager().addBackdrop()}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       />
     </Toolbar>
   );

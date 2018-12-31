@@ -77,6 +77,14 @@ class CreateInstanceModal extends React.Component {
     return await this.props.instanceExists(name);
   };
 
+  onShow = () => {
+    LuigiClient.uxManager().addBackdrop();
+  };
+
+  onHide = () => {
+    LuigiClient.uxManager().removeBackdrop();
+  };
+
   callback = data => {
     this.setState({ ...data });
   };
@@ -87,7 +95,6 @@ class CreateInstanceModal extends React.Component {
     } else {
       this.onSubmitSchemaForm();
     }
-    LuigiClient.uxManager().removeBackdrop();
   };
 
   prepareDataToCreateServiceInstance = params => {
@@ -186,6 +193,7 @@ class CreateInstanceModal extends React.Component {
     if (success) {
       this.clearState();
       this.child.child.setState({ showModal: false });
+      LuigiClient.uxManager().removeBackdrop();
     }
   };
 
@@ -285,6 +293,8 @@ class CreateInstanceModal extends React.Component {
         handleClose={this.clearState}
         borderFooter={true}
         waiting={creatingInstance}
+        onShow={this.onShow}
+        onHide={this.onHide}
       />
     );
   }

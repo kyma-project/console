@@ -218,6 +218,8 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
             modalOpeningComponent={deleteButton}
             warning={true}
             width={'481px'}
+            onShow={() => LuigiClient.uxManager().addBackdrop()}
+            onHide={() => LuigiClient.uxManager().removeBackdrop()}
           />
         ),
       },

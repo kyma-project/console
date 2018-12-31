@@ -8,6 +8,7 @@ import {
 } from '@kyma-project/react-components';
 
 import { TextWrapper, Text, Bold } from './styled';
+import LuigiClient from '@kyma-project/luigi-client';
 
 class DeleteBindingModal extends React.Component {
   constructor(props) {
@@ -129,6 +130,8 @@ class DeleteBindingModal extends React.Component {
         }
         warning={true}
         disabled={!submitEnabled}
+        onShow={() => LuigiClient.uxManager().addBackdrop()}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       />
     );
   }
