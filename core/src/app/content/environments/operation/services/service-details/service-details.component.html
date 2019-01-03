@@ -3,8 +3,8 @@
     <div class="sf-toolbar__item sf-toolbar__item--breadcrumb">
       <a (click)="navigateToList()">Services</a> / {{ serviceName }}
     </div>
-    <div class="sf-toolbar__right">
-      <app-edit-resource [resourceData]="serviceDetailsToEdit" *ngIf="!serviceDetailsToEditLoading" class="sf-toolbar__item"></app-edit-resource>
+    <div class="sf-toolbar__right" [hidden]="serviceDetailsToEditLoading">
+      <app-edit-resource [resourceData]="serviceDetailsToEdit" class="sf-toolbar__item"></app-edit-resource>
     </div>
   </div>
   <p *ngIf="serviceDetailsLoading">
