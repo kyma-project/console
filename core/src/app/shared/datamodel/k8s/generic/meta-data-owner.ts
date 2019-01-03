@@ -26,7 +26,7 @@ export class MetaDataOwner implements IMetaDataOwner {
         if (this.metadata.labels[key] === 'undefined') {
           labels.push(key);
         } else {
-          labels.push(key + ':' + this.metadata.labels[key]);
+          labels.push(key + '=' + this.metadata.labels[key]);
         }
       }
     }

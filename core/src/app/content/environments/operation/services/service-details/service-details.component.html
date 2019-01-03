@@ -53,7 +53,7 @@
               <label class="tn-form__label">Labels</label>
             </div>
             <div class="col-sm-10" *ngIf="serviceDetails.objectMeta.labels">
-              <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let key of objectKeys(serviceDetails.objectMeta.labels)">{{ key }}: {{ serviceDetails.objectMeta.labels[key] }} </span>
+              <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let key of objectKeys(serviceDetails.objectMeta.labels)">{{ key }}={{ serviceDetails.objectMeta.labels[key] }} </span>
             </div>
             <div class="col-sm-2">
               <label class="tn-form__label">Internal endpoints</label>

@@ -52,7 +52,7 @@ export class GraphQLDataProvider implements DataProvider {
               const labels = [];
               if (entry.labels) {
                 Object.getOwnPropertyNames(entry.labels).map(key => {
-                  const label = key + ':' + entry.labels[key];
+                  const label = key + '=' + entry.labels[key];
                   if (label.startsWith('pod-template-hash')) {
                     return;
                   }
@@ -86,7 +86,7 @@ export class GraphQLDataProvider implements DataProvider {
       const labels = entry.labels;
       if (labels) {
         Object.getOwnPropertyNames(labels).map(key => {
-          const label = key + ':' + labels[key];
+          const label = key + '=' + labels[key];
           if (label.startsWith('pod-template-hash')) {
             return;
           }

@@ -825,7 +825,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         if (lambda.metadata.labels[key] === 'undefined') {
           labels.push(key);
         } else {
-          labels.push(key + ':' + lambda.metadata.labels[key]);
+          labels.push(key + '=' + lambda.metadata.labels[key]);
         }
       }
     }
@@ -839,7 +839,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         if (lambda.metadata.annotations[key] === 'undefined') {
           annotations.push(key);
         } else {
-          annotations.push(key + ':' + lambda.metadata.annotations[key]);
+          annotations.push(key + '=' + lambda.metadata.annotations[key]);
         }
       }
     }
@@ -908,7 +908,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const newLabels = {};
     if (this.labels.length > 0) {
       this.labels.forEach(label => {
-        const labelSplitted = label.split(':');
+        const labelSplitted = label.split('=');
         newLabels[labelSplitted[0]] = labelSplitted[1];
       });
     }
@@ -916,8 +916,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   isNewLabelValid(label) {
-    const key = label.split(':')[0].trim();
-    const value = label.split(':')[1].trim();
+    const key = label.split('=')[0].trim();
+    const value = label.split('=')[1].trim();
     if (this.duplicateKeyExists(key)) {
       this.wrongLabelMessage = `Invalid label ${key}:${value}! Keys cannot be reused!`;
       return false;
@@ -938,7 +938,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   duplicateKeyExists(key) {
     let hasDuplicate = false;
     this.labels.forEach(l => {
-      if (l.split(':')[0] === key) {
+      if (l.split('=')[0] === key) {
         hasDuplicate = true;
         return;
       }
@@ -950,11 +950,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.wrongLabelMessage = '';
     if (
       this.newLabel &&
-      this.newLabel.split(':').length === 2 &&
+      this.newLabel.split('=').length === 2 &&
       this.isNewLabelValid(this.newLabel)
     ) {
-      const newLabelArr = this.newLabel.split(':');
-      this.newLabel = `${newLabelArr[0].trim()}:${newLabelArr[1].trim()}`;
+      const newLabelArr = this.newLabel.split('=');
+      this.newLabel = `${newLabelArr[0].trim()}=${newLabelArr[1].trim()}`;
       this.labels.push(this.newLabel);
       this.newLabel = '';
       this.wrongLabel = false;
@@ -968,7 +968,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           ? this.wrongLabelMessage
           : `Invalid label ${
               this.newLabel
-            }! A key and value should be separated by a ":"`;
+            }! A key and value should be separated by a "="`;
     }
   }
 
@@ -1228,7 +1228,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     let functionSizeChanged = false;
     if (this.annotations.length > 0) {
       this.annotations.forEach(label => {
-        const annotationsSplitted = label.split(':');
+        const annotationsSplitted = label.split('=');
         if (annotationsSplitted[0] === 'function-size') {
           if (annotationsSplitted[1] !== this.selectedFunctionSize['name']) {
             functionSizeChanged = true;
