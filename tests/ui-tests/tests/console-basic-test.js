@@ -5,6 +5,7 @@ import logOnEvents from '../utils/logging';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import address from '../utils/address';
+import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 
 const context = require('../utils/testContext');
 let page, browser;
@@ -18,18 +19,16 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     browser = data.browser;
     page = data.page;
     logOnEvents(page, t => (token = t));
+
+    await common.testLogin(dexReady, page);
+    await page.waitFor(800);
+    await page.reload({ waitUntil: 'networkidle0' });
+    await waitForNavigationAndContext(page);
   });
 
   afterAll(async () => {
     await kymaConsole.clearData(token, config.testEnv);
     await browser.close();
-  });
-
-  test('Login', async () => {
-    //the code looks strange.. but it uneasy to stop test execution as a result of a check in  'beforeAll'
-    // https://github.com/facebook/jest/issues/2713
-
-    await common.testLogin(dexReady, page);
   });
 
   test('Check if envs exist', async () => {

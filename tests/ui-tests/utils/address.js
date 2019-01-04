@@ -16,7 +16,7 @@ class Console {
   }
 
   getEnvironmentsAddress() {
-    return this.getConsole() + '/home/namespaces';
+    return this.getConsole() + '/home/workspace';
   }
 
   getCatalog(environment) {

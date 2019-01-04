@@ -30,7 +30,7 @@ const context = (function() {
       return puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: config.headless,
-        slowMo: 80,
+        slowMo: 120,
         args: [
           `--window-size=${config.viewportWidth},${config.viewportHeight}`,
           '--no-sandbox',
