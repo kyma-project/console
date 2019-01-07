@@ -20,7 +20,7 @@
                       placeholder="Specify a name for your new IDP preset"
                       [(ngModel)]="presetName"
                       (ngModelChange)=validatePresetNameRegex()>
-                <div *ngIf="wrongPresetName" class="alert">The IDPPreset name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character and can not be longer that 253 characters (e.g. 'my-name1.com').</div>
+                <div *ngIf="wrongPresetName" class="alert">The IDPPreset name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character and cannot be longer that 253 characters (e.g. 'my-name1.com').</div>
               </div>
               <div class="tn-dropdown sf-dropdown environment-chooser">
                 <label class="tn-form__label">Issuer</label>
