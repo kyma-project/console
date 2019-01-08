@@ -156,7 +156,7 @@ class CreateCredentialsModal extends React.Component {
         <SchemaData
           data={schemaData}
           bindingCreateParameterSchema={bindingCreateParameterSchema}
-          onSubmitSchemaForm={this.create}
+          onSubmitSchemaForm={el => this.create(el, true)}
           planName={servicePlan.displayName}
           callback={this.callback}
         >
