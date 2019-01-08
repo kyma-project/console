@@ -54,7 +54,7 @@ export class LambdaInstanceBindingsComponent {
   ) {
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.currentEnvironmentId;
+      this.environment = eventData.environmentId;
       this.token = eventData.idToken;
     });
 

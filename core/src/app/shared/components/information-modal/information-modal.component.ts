@@ -37,6 +37,7 @@ export class InformationModalComponent {
   }
 
   private redirect() {
+    this.isActive = false;
     if (this.redirectUrl) {
       this.router.navigate([this.redirectUrl]);
     }

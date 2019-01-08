@@ -1,4 +1,4 @@
-<div class="tn-card tn-card--button" routerLink="/home/namespaces/{{entry.getId()}}" [ngClass]="{'sf-list__disabled': disabled === true}">
+<div class="tn-card tn-card--button" (click)="navigateToDetails(entry.getId())" [ngClass]="{'sf-list__disabled': disabled === true}">
   <div class="tn-card__content">
     <div class="row">
       <div class="col">

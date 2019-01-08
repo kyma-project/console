@@ -26,7 +26,7 @@ const ServiceInstanceToolbar = ({
 
   const goToServiceInstances = () => {
     LuigiClient.linkManager()
-      .fromContext('environment')
+      .fromContext('namespaces')
       .navigate('instances');
   };
 
@@ -63,6 +63,8 @@ const ServiceInstanceToolbar = ({
         }
         warning={true}
         width={'481px'}
+        onShow={() => LuigiClient.uxManager().addBackdrop()}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       />
     </Toolbar>
   );

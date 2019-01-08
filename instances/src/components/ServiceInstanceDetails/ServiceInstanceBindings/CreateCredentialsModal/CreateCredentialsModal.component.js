@@ -9,6 +9,7 @@ import { bindingVariables } from '../InfoButton/variables';
 import { CreateCredentialsButton } from './styled';
 
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
+import { LuigiClient } from '@kyma-project/luigi-client';
 
 class CreateCredentialsModal extends React.Component {
   constructor(props) {
@@ -223,6 +224,8 @@ class CreateCredentialsModal extends React.Component {
         borderFooter={true}
         handleClose={this.clearState}
         headerAdditionalInfo={bindingVariables.serviceBinding}
+        onShow={() => LuigiClient.uxManager().addBackdrop()}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       />
     );
   }

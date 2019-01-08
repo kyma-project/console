@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AppConfig } from '../../../../../app.config';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { CurrentEnvironmentService } from '../../../../environments/services/current-environment.service';
 import { Subscription } from 'rxjs';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-service-details',
@@ -26,7 +27,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private currentEnvironmentService: CurrentEnvironmentService,
-    private router: Router,
     private route: ActivatedRoute,
     private communicationService: ComponentCommunicationService
   ) {
@@ -65,9 +65,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
             },
             err => {
               if (err.status === 404) {
-                this.router.navigate([
-                  `/home/namespaces/${this.currentEnvironmentId}/services`
-                ]);
+                this.navigateToList();
               } else {
                 this.serviceDetailsLoading = false;
                 this.errorMessage = err.message;
@@ -111,19 +109,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     return Object.keys(o);
   }
 
-  public goBack() {
-    this.router.navigate([
-      'home/namespaces/' + this.currentEnvironmentId + '/services'
-    ]);
+  public openExposeApi() {
+    LuigiClient.linkManager().navigate(`apis/create`);
   }
 
-  public openExposeApi() {
-    this.router.navigate([
-      'home/namespaces/' +
-        this.currentEnvironmentId +
-        '/services/' +
-        this.serviceName +
-        '/apis/create'
-    ]);
+  public navigateToList() {
+    LuigiClient.linkManager()
+      .fromContext('services')
+      .navigate('');
   }
 }

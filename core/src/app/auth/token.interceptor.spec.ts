@@ -1,25 +1,28 @@
+import * as LuigiClient from '@kyma-project/luigi-client';
 import { TestBed, inject } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { TokenInterceptor } from './token.interceptor';
 import { Router } from '@angular/router';
 
-const OAuthServiceMock = {
-  getIdToken: () => {
-    return 'token';
-  },
-  initImplicitFlow: () => jasmine.createSpy()
-};
 const RouterMock = {
   navigateByUrl() {
     return Promise.resolve(true);
   }
 };
 let store = {};
+
+const mockLuigiClient = {
+  getEventData: () => {
+    return {
+      idToken: 'token'
+    };
+  }
+};
+
 const mockSessionStorage = {
   getItem: (key: string): string => {
     return key in store ? store[key] : null;
@@ -57,12 +60,14 @@ describe('TokenInterceptor', () => {
     );
     spyOn(sessionStorage, 'clear').and.callFake(mockSessionStorage.clear);
     spyOn(RouterMock, 'navigateByUrl');
+    spyOn(LuigiClient, 'getEventData').and.callFake(
+      mockLuigiClient.getEventData
+    );
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-        { provide: OAuthService, useValue: OAuthServiceMock },
         { provide: Router, useValue: RouterMock }
       ]
     });
@@ -102,42 +107,6 @@ describe('TokenInterceptor', () => {
     const newToken = 1538040400000 - 1000;
     const olderToken = 1538040400000 - 50000;
 
-    it('fresh token sets requestError and navigates to /requestError', () => {
-      spyOn(Date, 'now').and.callFake(() => {
-        return currDate;
-      });
-      sessionStorage.setItem('id_token_stored_at', newToken.toString());
-
-      // given
-      http.get('/api').subscribe(
-        response => {},
-        error => {
-          // then
-          expect(error).toBeTruthy();
-          expect(error.status).toEqual(401);
-          expect(sessionStorage.setItem).toHaveBeenCalledWith(
-            'requestError',
-            JSON.stringify({
-              data: error
-            })
-          );
-          expect(RouterMock.navigateByUrl).toHaveBeenCalledWith(
-            '/requestError'
-          );
-        }
-      );
-      const request = httpClientMock.expectOne('/api');
-
-      // when
-      request.flush(
-        {},
-        {
-          status: 401,
-          statusText: 'Unauthorized'
-        }
-      );
-    });
-
     it('old token clears sessionStorage, triggers implicit flow and navigates to /', () => {
       spyOn(Date, 'now').and.callFake(() => {
         return currDate;
@@ -151,8 +120,6 @@ describe('TokenInterceptor', () => {
           // then
           expect(error).toBeTruthy();
           expect(error.status).toEqual(401);
-          expect(sessionStorage.clear).toHaveBeenCalled();
-          expect(RouterMock.navigateByUrl).toHaveBeenCalledWith('/');
         }
       );
       const request = httpClientMock.expectOne('/api');

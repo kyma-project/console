@@ -1,9 +1,10 @@
+import LuigiClient from '@kyma-project/luigi-client';
+
 const DEFAULT_ENVIRONMENT_ID = 'production';
 
 class Builder {
   currentEnvironmentId = DEFAULT_ENVIRONMENT_ID;
   token = null;
-  sessionId = null;
 
   init() {
     return new Promise((resolve, reject) => {
@@ -13,12 +14,9 @@ class Builder {
         return;
       }
       const timeout = setTimeout(resolve, 1000);
-      window.addEventListener('message', e => {
-        if (!e.data || e.data[0] !== 'init') return;
-        const data = e.data[1];
-        this.currentEnvironmentId = data.currentEnvironmentId;
-        this.token = data.idToken;
-        this.sessionId = data.sessionId;
+      LuigiClient.addInitListener(e => {
+        this.currentEnvironmentId = e.environmentId;
+        this.token = e.idToken;
         clearTimeout(timeout);
         resolve();
       });
@@ -34,10 +32,6 @@ class Builder {
 
   getCurrentEnvironmentId() {
     return this.currentEnvironmentId;
-  }
-
-  getSessionId() {
-    return this.sessionId;
   }
 }
 

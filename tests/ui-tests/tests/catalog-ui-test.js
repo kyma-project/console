@@ -24,6 +24,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       logOnEvents(page, t => (token = t));
 
       await common.testLogin(isEnvironmentReady, page);
+      await page.waitFor(1000);
+      await page.reload({ waitUntil: 'networkidle0' });
+      await waitForNavigationAndContext(page);
       await kymaConsole.createEnvironment(page, config.catalogTestEnv);
     } catch (e) {
       isEnvironmentReady = false;
@@ -46,7 +49,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const catalogExpectedHeader = 'Service Catalog';
     const searchSelector = catalog.prepareSelector('search');
     const searchBySth = 'lololo';
-    const navItem = 'a.sf-toolbar__item';
+    const navItem = 'a.fd-side-nav__sublink';
 
     await kymaConsole.openLink(page, navItem, 'Catalog');
 

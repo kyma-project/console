@@ -1,3 +1,4 @@
+import { LuigiClientCommunicationDirective } from './../../directives/luigi-client-communication/luigi-client-communication.directive';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RoleBindingModalComponent } from './role-binding-modal.component';
 import { Observable, of, throwError } from 'rxjs';
@@ -47,7 +48,10 @@ describe('RoleBindingModalComponent', () => {
         },
         ComponentCommunicationService
       ],
-      declarations: [RoleBindingModalComponent]
+      declarations: [
+        RoleBindingModalComponent,
+        LuigiClientCommunicationDirective
+      ]
     }).compileComponents();
   }));
 

@@ -1,3 +1,4 @@
+import * as LuigiClient from '@kyma-project/luigi-client';
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -5,7 +6,6 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from './../app.config';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -13,25 +13,17 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(public oAuthService: OAuthService, private router: Router) {}
-
-  private isNewToken(): boolean {
-    const now = Date.now();
-    const maximumAgeInSeconds = 10;
-    return (
-      parseInt(sessionStorage.getItem('id_token_stored_at'), 10) >
-      now - 1000 * maximumAgeInSeconds
-    );
-  }
+  constructor(private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (!request.url.startsWith(AppConfig.authIssuer)) {
+      const token = LuigiClient.getEventData().idToken;
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.oAuthService.getIdToken()}`
+          Authorization: `Bearer ${token}`
         }
       });
     }
@@ -40,20 +32,6 @@ export class TokenInterceptor implements HttpInterceptor {
       tap(
         (event: HttpEvent<any>) => {},
         (err: any) => {
-          if (err.status === 401) {
-            if (this.isNewToken()) {
-              sessionStorage.setItem(
-                'requestError',
-                JSON.stringify({
-                  data: err
-                })
-              );
-              this.router.navigateByUrl('/requestError');
-            } else {
-              sessionStorage.clear();
-              this.router.navigateByUrl('/');
-            }
-          }
           return err;
         }
       )

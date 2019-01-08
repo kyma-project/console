@@ -1,15 +1,8 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Injector,
-  ApplicationRef,
-} from '@angular/core';
+import { Component, Injector, ApplicationRef } from '@angular/core';
 import { AbstractTableEntryRendererComponent } from '@kyma-project/y-generic-list';
-import { IStatus } from '../../../shared/datamodel/k8s/generic/status';
 import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
 
-import * as luigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-lambdas-entry-renderer',
@@ -17,8 +10,6 @@ import * as luigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./lambdas-entry-renderer.component.scss'],
 })
 export class LambdasEntryRendererComponent extends AbstractTableEntryRendererComponent {
-  private sessionId: string;
-  private eventData: any;
   public statusText: string;
   public status: boolean;
   actions = [
@@ -30,10 +21,6 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
 
   constructor(private appRef: ApplicationRef, protected injector: Injector) {
     super(injector);
-    luigiClient.addInitListener(() => {
-      this.eventData = luigiClient.getEventData();
-      this.sessionId = this.eventData.sessionId;
-    });
     this.entry.functionStatus.subscribe(status => {
       this.statusText = this.getStatus(status);
       this.status = this.isStatusOk(status);
@@ -72,8 +59,6 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
   }
 
   goToDetails(entry) {
-    luigiClient
-      .linkManager()
-      .openInCurrentEnvironment(`lambdas/details/${entry}`, this.sessionId);
+    LuigiClient.linkManager().navigate(`details/${entry}`);
   }
 }

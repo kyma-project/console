@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
-
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';

@@ -1,29 +1,11 @@
 {
   "rules": {
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
-    "angular-whitespace": [
-      true,
-      "check-interpolation",
-      "check-semicolon"
-    ],
+    "quotemark": [true, "single", "avoid-escape"],
+    "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
     "banana-in-box": true,
     "templates-no-negated-async": true,
-    "directive-selector": [
-      true,
-      "attribute",
-      "",
-      "camelCase"
-    ],
-    "component-selector": [
-      true,
-      "element",
-      "",
-      "kebab-case"
-    ],
+    "directive-selector": [true, "attribute", "", "camelCase"],
+    "component-selector": [true, "element", "", "kebab-case"],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": false,
@@ -59,12 +41,6 @@
     ],
     "interface-name": false
   },
-  "rulesDirectory": [
-    "node_modules/codelyzer"
-  ],
-  "extends": [
-    "tslint:latest",
-    "tslint-angular",
-    "tslint-config-prettier"
-  ]
+  "rulesDirectory": ["node_modules/codelyzer"],
+  "extends": ["tslint:latest", "tslint-angular", "tslint-config-prettier"]
 }

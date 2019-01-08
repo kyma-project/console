@@ -1,5 +1,12 @@
 import { EnvironmentDataConverter } from './environment-data-converter';
-import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  ViewChild,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 import { EnvironmentCardComponent } from './../environment-card/environment-card.component';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
@@ -8,7 +15,7 @@ import {
   Environment,
   IEnvironment
 } from '../../../shared/datamodel/k8s/environment';
-import { RemoteEnvironmentsService } from '../../settings/remote-environments/services/remote-environments.service';
+import LuigiClient from '@kyma-project/luigi-client';
 import { EnvironmentsService } from '../../../content/environments/services/environments.service';
 import {
   DataConverter,
@@ -16,10 +23,11 @@ import {
   GenericListComponent
 } from '@kyma-project/y-generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
+import { EnvironmentCreateComponent } from '../../environments/environment-create/environment-create.component';
 
 @Component({
   selector: 'app-workspace-overview',
@@ -27,18 +35,20 @@ import { InformationModalComponent } from '../../../shared/components/informatio
   styleUrls: ['./workspace-overview.component.scss'],
   host: { class: 'sf-content' }
 })
-export class WorkspaceOverviewComponent extends GenericListComponent {
+export class WorkspaceOverviewComponent extends GenericListComponent
+  implements OnInit, OnDestroy {
   environmentsService: EnvironmentsService;
-
   entryEventHandler = this.getEntryEventHandler();
+  private queryParamsSubscription: any;
 
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
+  @ViewChild('createModal') createModal: EnvironmentCreateComponent;
 
   constructor(
     private http: HttpClient,
-    private remoteEnvironmentsService: RemoteEnvironmentsService,
     private router: Router,
+    private route: ActivatedRoute,
     changeDetector: ChangeDetectorRef,
     @Inject(EnvironmentsService) environmentsService: EnvironmentsService,
     private communicationService: ComponentCommunicationService,
@@ -64,7 +74,23 @@ export class WorkspaceOverviewComponent extends GenericListComponent {
       this.reload();
     });
   }
-
+  ngOnInit() {
+    super.ngOnInit();
+    this.queryParamsSubscription = this.route.queryParams.subscribe(params =>
+      this.handleQueryParamsChange(params)
+    );
+  }
+  ngOnDestroy() {
+    this.queryParamsSubscription.unsubscribe();
+  }
+  onEnvCreateCancelled() {
+    LuigiClient.linkManager().navigate('/');
+  }
+  handleQueryParamsChange(queryParams: any) {
+    if (queryParams && queryParams.showModal === 'true') {
+      this.createModal.show();
+    }
+  }
   getEntryEventHandler() {
     return {
       delete: (entry: any) => {
@@ -103,6 +129,9 @@ export class WorkspaceOverviewComponent extends GenericListComponent {
                         ': ' +
                         (err.error.message || err.message || err)
                     );
+                  },
+                  () => {
+                    this.refreshContextSwitcher();
                   }
                 );
             },
@@ -110,5 +139,9 @@ export class WorkspaceOverviewComponent extends GenericListComponent {
           );
       }
     };
+  }
+
+  private refreshContextSwitcher() {
+    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 }

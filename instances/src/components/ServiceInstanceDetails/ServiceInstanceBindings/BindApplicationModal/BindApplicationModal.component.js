@@ -18,6 +18,7 @@ import { BindApplicationButton, SubSectionTitle } from './styled';
 
 import builder from '../../../../commons/builder';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
+import LuigiClient from '@kyma-project/luigi-client';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -218,7 +219,10 @@ class BindApplicationModal extends React.Component {
       bindingsStepFilled: bindingsStepFilled,
     };
 
-    const bindingCreateParameterSchemaExists = bindingCreateParameterSchema && (bindingCreateParameterSchema.$ref || bindingCreateParameterSchema.properties);
+    const bindingCreateParameterSchemaExists =
+      bindingCreateParameterSchema &&
+      (bindingCreateParameterSchema.$ref ||
+        bindingCreateParameterSchema.properties);
 
     const content = [
       <div key={serviceInstance.name}>
@@ -328,6 +332,8 @@ class BindApplicationModal extends React.Component {
         borderFooter={true}
         handleClose={this.clearState}
         headerAdditionalInfo={bindingVariables.serviceBingingUsage}
+        onShow={() => LuigiClient.uxManager().addBackdrop()}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       />
     );
   }

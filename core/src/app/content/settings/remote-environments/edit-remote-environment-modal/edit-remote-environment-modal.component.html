@@ -1,41 +1,43 @@
-<ng-container *ngIf="isActive">
-  <div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm"
-    (click)="$event.stopPropagation()">
-    <div class="tn-modal" role="document">
-      <div class="tn-modal__content">
-        <div class="tn-modal__header">
-          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
-            <span class="tn-icon tn-icon--close" role="presentation"></span>
-          </button>
-          <h4 class="tn-modal__title">Edit Application</h4>
-        </div>
-        <form #editRemoteEnvsForm="ngForm">
-          <div class="tn-modal__body">
-            <div class="tn-form__group">
-              <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
-              <div class="tn-form__item">
-                <label class="tn-form__label">Description *</label>
-                <input autofocus class="tn-form__control" type="text" name="remoteEnvDescription"
-                    [(ngModel)]="updatedDescription"
-                    placeholder="Specify a description for your Application"
-                >
-              </div>
-              <div class="tn-form__item">
-                <label class="tn-form__label">Labels</label>
-                <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)"
-                ></app-labels-input>
-              </div>
-            </div>
-          </div>
-          <footer class="tn-modal__footer-items">
-            <button class="tn-modal__button-primary sf-button--primary tn-button--small" ngClass="{{isReadyToSave() ? '' : 'disabled'}}"
-              [disabled]="!isReadyToSave()" (click)="save()">
-              Save
+<div luigiClientCommunication [isActive]="isActive">
+  <ng-container *ngIf="isActive">
+    <div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm"
+      (click)="$event.stopPropagation()">
+      <div class="tn-modal" role="document">
+        <div class="tn-modal__content">
+          <div class="tn-modal__header">
+            <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
+              <span class="tn-icon tn-icon--close" role="presentation"></span>
             </button>
-            <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
-          </footer>
-        </form>
+            <h4 class="tn-modal__title">Edit Application</h4>
+          </div>
+          <form #editRemoteEnvsForm="ngForm">
+            <div class="tn-modal__body">
+              <div class="tn-form__group">
+                <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
+                <div class="tn-form__item">
+                  <label class="tn-form__label">Description *</label>
+                  <input autofocus class="tn-form__control" type="text" name="remoteEnvDescription"
+                      [(ngModel)]="updatedDescription"
+                      placeholder="Specify a description for your Application"
+                  >
+                </div>
+                <div class="tn-form__item">
+                  <label class="tn-form__label">Labels</label>
+                  <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)"
+                  ></app-labels-input>
+                </div>
+              </div>
+              <footer class="tn-modal__footer-items">
+                <button class="tn-modal__button-primary sf-button--primary tn-button--small" ngClass="{{isReadyToSave() ? '' : 'disabled'}}"
+                  [disabled]="!isReadyToSave()" (click)="save()">
+                  Save
+                </button>
+                <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
+              </footer>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</ng-container>
+  </ng-container>
+</div>

@@ -14,12 +14,9 @@ import {
 } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter, tap, take, map, concatMap } from 'rxjs/operators';
-
-import { NavVisibilityService } from '../../../navigation/services/nav-visibility.service';
 import { CurrentEnvironmentService } from '../services/current-environment.service';
 import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
-import NavigationUtils from '../../../navigation/services/navigation-utils';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 
 const fadeInAnimation = trigger('fadeInAnimation', [
@@ -39,8 +36,6 @@ const fadeInAnimation = trigger('fadeInAnimation', [
 })
 export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public navCtx: string;
-  private router: Router;
-  private route: ActivatedRoute;
   public isActive: boolean;
   private navSub: Subscription;
   private routerSub: Subscription;
@@ -57,24 +52,13 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
 
   constructor(
-    router: Router,
-    route: ActivatedRoute,
-    @Inject(NavVisibilityService) navVisibilityService: NavVisibilityService,
+    private router: Router,
+    private route: ActivatedRoute,
     private environmentsService: EnvironmentsService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
-    this.router = router;
-    this.route = route;
-    this.navSub = navVisibilityService.visibilityStateEmitter$.subscribe(
-      visible => (this.isActive = visible)
-    );
-    this.routerSub = router.events.subscribe(val => {
-      if (val instanceof ActivationEnd) {
-        this.leftNavCollapsed = NavigationUtils.computeLeftNavCollapseState(
-          val.snapshot
-        );
-      }
+    this.routerSub = this.router.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
         if (this.isSignificantUrlChange(val.url, this.previousUrl)) {
           if (!this.isSmoothNavigationUrlChange(val.url, this.previousUrl)) {
@@ -130,7 +114,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.navSub.unsubscribe();
     this.routerSub.unsubscribe();
   }
 

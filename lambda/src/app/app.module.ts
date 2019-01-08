@@ -35,7 +35,7 @@ import { EventTriggerChooserComponent } from './lambdas/lambda-details/event-tri
 import { HttpTriggerComponent } from './lambdas/lambda-details/http-trigger/http-trigger.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/lambdas', pathMatch: 'full' },
+  { path: '', redirectTo: 'lambdas', pathMatch: 'full' },
   { path: 'lambdas', component: LambdasComponent },
   { path: 'lambdas/:name', component: LambdaDetailsComponent },
   { path: 'create', component: LambdaDetailsComponent },
@@ -62,7 +62,9 @@ const routes: Routes = [
     BrowserModule,
     ListModule,
     HttpClientModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {
+      useHash: true,
+    }),
     AceEditorModule,
     FormsModule,
     ClickOutsideModule,

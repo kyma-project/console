@@ -9,7 +9,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { IdpPresetsService } from '../../../../../settings/idp-presets/idp-presets.service';
 import { AppConfig } from '../../../../../../app.config';
-import { OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 
 describe('ExposeApiComponent', () => {
   let component: ExposeApiComponent;
@@ -59,8 +58,6 @@ describe('ExposeApiComponent', () => {
       declarations: [ExposeApiComponent],
       imports: [FormsModule, RouterModule],
       providers: [
-        OAuthService,
-        UrlHelperService,
         CurrentEnvironmentService,
         { provide: ExposeApiService, useValue: ExposeApiServiceMock },
         HttpClient,

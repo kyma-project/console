@@ -7,10 +7,10 @@ import { AppConfig } from '../../../app.config';
 import { ResourceUploaderModalComponent } from '../../../shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 import { EnvironmentCreateComponent } from '../environment-create/environment-create.component';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-environment-details',
@@ -40,7 +40,6 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
     private remoteEnvironmentsService: RemoteEnvironmentsService,
     private environmentsService: EnvironmentsService,
     private currentEnvironmentService: CurrentEnvironmentService,
@@ -122,5 +121,17 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
         );
       }
     };
+  }
+
+  public navigateToServices() {
+    LuigiClient.linkManager()
+      .fromContext('namespaces')
+      .navigate('services');
+  }
+
+  public navigateToRemoteEnvs(envName) {
+    LuigiClient.linkManager().navigate(
+      envName ? '/home/apps/details/' + envName : '/home/apps'
+    );
   }
 }

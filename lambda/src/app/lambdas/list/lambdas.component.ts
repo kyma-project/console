@@ -1,7 +1,13 @@
 import { refCount, publishReplay, map, catchError } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
 
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ChangeDetectorRef,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { IFunction, Lambda } from './../../shared/datamodel/k8s/function';
 import {
   HttpClient,
@@ -33,18 +39,20 @@ import * as luigiClient from '@kyma-project/luigi-client';
   templateUrl: './lambdas.component.html',
   styleUrls: ['./lambdas.component.scss'],
 })
-export class LambdasComponent extends GenericTableComponent {
+export class LambdasComponent extends GenericTableComponent
+  implements OnInit, OnDestroy {
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
 
   title = 'Lambdas';
   emptyListText =
     'It looks like you don’t have any lambdas in your namespace yet.';
   createNewElementText = 'Add Lambda';
-  private sessionId: string;
+
   public lambdasEventHandler;
   token: string;
   environment: string;
   error: string;
+  listenerId: string;
 
   filterState = { filters: [new Filter('metadata.name', '', false)] };
   pagingState = { pageNumber: 1, pageSize: 10 };
@@ -119,7 +127,6 @@ export class LambdasComponent extends GenericTableComponent {
           });
       },
     };
-    this.listeningForChangingTitle();
   }
 
   deleteSubscriptions(lambdaName: string): void {
@@ -189,6 +196,16 @@ export class LambdasComponent extends GenericTableComponent {
       });
   }
 
+  ngOnInit() {
+    this.listeningForChangingTitle();
+  }
+
+  ngOnDestroy() {
+    if (this.listenerId) {
+      luigiClient.removeInitListener(this.listenerId);
+    }
+  }
+
   listeningForChangingTitle() {
     // tslint:disable-next-line:no-this-assignment
     const that: LambdasComponent = this;
@@ -213,10 +230,9 @@ export class LambdasComponent extends GenericTableComponent {
       },
     };
 
-    luigiClient.addInitListener(() => {
+    this.listenerId = luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.currentEnvironmentId;
-      this.sessionId = eventData.sessionId;
+      this.environment = eventData.environmentId;
       this.token = eventData.idToken;
       this.source = new KubernetesDataProvider(
         `${AppConfig.kubelessApiUrl}/namespaces/${this.environment}/functions`,
@@ -229,8 +245,6 @@ export class LambdasComponent extends GenericTableComponent {
   }
 
   goToCreate() {
-    luigiClient
-      .linkManager()
-      .openInCurrentEnvironment(`lambdas/create`, this.sessionId);
+    luigiClient.linkManager().navigate(`create`);
   }
 }

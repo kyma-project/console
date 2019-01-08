@@ -4,21 +4,23 @@ import { InformationModalComponent } from './information-modal.component';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Routes } from '@angular/router';
+import { LuigiClientCommunicationDirective } from '../../directives/luigi-client-communication/luigi-client-communication.directive';
 
 describe('InformationModalComponent', () => {
   let component: InformationModalComponent;
   let fixture: ComponentFixture<InformationModalComponent>;
   const routes: Routes = [];
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes(routes)],
-        declarations: [InformationModalComponent],
-        providers: [{ provide: APP_BASE_HREF, useValue: '/my/app' }]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes(routes)],
+      declarations: [
+        InformationModalComponent,
+        LuigiClientCommunicationDirective
+      ],
+      providers: [{ provide: APP_BASE_HREF, useValue: '/my/app' }]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InformationModalComponent);
