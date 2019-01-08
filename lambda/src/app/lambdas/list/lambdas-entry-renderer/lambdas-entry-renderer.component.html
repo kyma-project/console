@@ -5,12 +5,21 @@
   <!-- <div class="col-3">{{getTrigger(entry)}}</div> -->
   <div class="col-2">
     <span class="sf-indicator" [ngClass]="status ? 'sf-indicator--success' : ''"></span>{{ statusText }}</div>
-  <div class="col-6 sf-list__label-column">
+  <div class="col-3 sf-list__label-column">
     <div *ngIf='entry.getLabels()'>
       <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of entry.getLabels()">{{ label }}</span>
     </div>
     <div *ngIf='!entry.getLabels()'>
       <span>None</span>
+    </div>
+  </div>
+  <div class="col-3 sf-list__label-column">
+    <div>
+      <span>
+        <a [href]="functionMetrics" target="_blank">Dashboard
+          <img src="assets/external.svg" />
+        </a>
+       </span>
     </div>
   </div>
   <div class="col-1">

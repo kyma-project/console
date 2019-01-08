@@ -78,6 +78,7 @@ const config = {
   functionSizes,
   functionResourceRequest,
   targetAverageUtilization,
+  metricsUrl: `https://grafana.${domain}/`,
 };
 
 if (clusterConfig) {

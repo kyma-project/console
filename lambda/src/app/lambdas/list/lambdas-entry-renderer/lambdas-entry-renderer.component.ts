@@ -4,6 +4,8 @@ import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
 
 import LuigiClient from '@kyma-project/luigi-client';
 
+import { AppConfig } from '../../../app.config';
+
 @Component({
   selector: 'app-lambdas-entry-renderer',
   templateUrl: './lambdas-entry-renderer.component.html',
@@ -12,6 +14,8 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class LambdasEntryRendererComponent extends AbstractTableEntryRendererComponent {
   public statusText: string;
   public status: boolean;
+  public functionMetrics: string;
+
   actions = [
     {
       function: 'delete',
@@ -26,6 +30,7 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
       this.status = this.isStatusOk(status);
       appRef.tick();
     });
+    this.functionMetrics = this.getFunctionMetricsUrl(this.entry);
   }
 
   getTrigger(entry) {
@@ -60,5 +65,15 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
 
   goToDetails(entry) {
     LuigiClient.linkManager().navigate(`details/${entry}`);
+  }
+
+  getFunctionMetricsUrl(entry) {
+    const url = `${
+      AppConfig.metricsUrl
+    }d/opc3b8Tyik/lambda-dashboard?refresh=30s&orgId=1&var-source=All&var-environment=${
+      entry.metadata.namespace
+    }&var-lambda_service=${entry.metadata.name}`;
+
+    return url;
   }
 }
