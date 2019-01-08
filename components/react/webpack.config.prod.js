@@ -15,6 +15,8 @@ plugins.push(
 const webpackConfig = {
   ...webpackConfigBase,
   devtool: false,
+  mode: 'production',
+  performance: { hints: false },
   plugins,
 };
 

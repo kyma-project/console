@@ -22,6 +22,7 @@ class StepsModal extends React.Component {
     tooltipData: PropTypes.object,
     width: PropTypes.string,
     handleClose: PropTypes.any,
+    modalAppRef: PropTypes.string,
   };
 
   static defaultProps = {
@@ -88,6 +89,7 @@ class StepsModal extends React.Component {
       tooltipData,
       width,
       handleClose,
+      modalAppRef,
     } = this.props;
     const { currentStage } = this.state;
 
@@ -201,6 +203,7 @@ class StepsModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         borderFooter={true}
         width={width}
+        modalAppRef={modalAppRef}
       />
     );
   }

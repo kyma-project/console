@@ -7,5 +7,6 @@
         (<div>two</div>),
     ]}
     modalOpeningComponent={<div>Button</div>}
+    modalAppRef= {'body'}
 />
 ```

@@ -9,15 +9,22 @@ let libraryName = pkg.name;
 module.exports = {
   entry: ['./src/index'],
   module: {
-    loaders: [
-      { test: /\.js?$/, loader: 'babel-loader', exclude: /node_modules/ },
+    rules: [
+      {
+        test: /\.js?$/,
+        loader: 'babel-loader',
+        type: 'javascript/auto',
+        exclude: /node_modules/,
+      },
       {
         test: /\.css$/,
         use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+        type: 'javascript/auto',
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
         loader: 'file-loader?name=fonts/[name].[ext]',
+        type: 'javascript/auto',
       },
     ],
   },
