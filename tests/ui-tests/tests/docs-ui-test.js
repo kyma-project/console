@@ -20,7 +20,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       page = data.page;
 
       await common.testLogin(isEnvironmentReady, page);
-      await page.waitFor(800);
+      await page.waitFor(1000);
     } catch (e) {
       isEnvironmentReady = false;
       throw e;

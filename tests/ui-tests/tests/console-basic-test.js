@@ -21,7 +21,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     logOnEvents(page, t => (token = t));
 
     await common.testLogin(dexReady, page);
-    await page.waitFor(800);
+    await page.waitFor(1000);
     await page.reload({ waitUntil: 'networkidle0' });
     await waitForNavigationAndContext(page);
   });
@@ -118,7 +118,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
     const remoteEnvironments = await common.retry(page, async () => {
-      await page.waitFor(800);
+      await page.waitFor(1000);
       await page.reload({ waitUntil: 'networkidle0' });
       const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
         page
