@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ApolloProvider } from "react-apollo";
+import { BrowserRouter } from "react-router-dom";
+
 import "./index.css";
 import App from "./App";
 import builder from "./commons/builder";
-import { ApolloProvider } from "react-apollo";
-import { BrowserRouter } from "react-router-dom";
 
 import { createApolloClient } from "./store";
 const client = createApolloClient();
