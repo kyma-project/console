@@ -25,7 +25,6 @@ export function openLink(path) {
   window.parent.postMessage(
     {
       msg: 'navigation.open',
-      sessionId: builder.getSessionId(),
       params: {
         link: redirectPath,
       },

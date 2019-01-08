@@ -1,3 +1,3 @@
 export interface IStatus {
-    phase: string;
+  phase: string;
 }

@@ -1,7 +1,7 @@
+import * as LuigiClient from '@kyma-project/luigi-client';
 import { Injectable, OnDestroy } from '@angular/core';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
 import { AppConfig } from '../../../../app.config';
 
@@ -15,8 +15,7 @@ export class ResourceUploadService implements OnDestroy {
 
   constructor(
     private httpClient: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
-    private oAuthService: OAuthService
+    private currentEnvironmentService: CurrentEnvironmentService
   ) {
     this.currentEnvironmentSubscription = this.currentEnvironmentService
       .getCurrentEnvironmentId()
@@ -119,13 +118,14 @@ export class ResourceUploadService implements OnDestroy {
   }
 
   public upload(url: string, fileContents: string[]) {
+    const token = LuigiClient.getEventData().idToken;
     const observables = [];
 
     _.each(fileContents, c => {
       observables.push(
         this.httpClient.post(url, c, {
           headers: new HttpHeaders()
-            .set('Authorization', `Bearer ${this.oAuthService.getIdToken()}`)
+            .set('Authorization', `Bearer ${token}`)
             .set('Content-Type', 'application/json')
         })
       );
@@ -135,6 +135,7 @@ export class ResourceUploadService implements OnDestroy {
   }
 
   public uploadWorkaround(fileContents: string[]) {
+    const token = LuigiClient.getEventData().idToken;
     const observables = [];
 
     _.each(fileContents, c => {
@@ -142,7 +143,7 @@ export class ResourceUploadService implements OnDestroy {
       observables.push(
         this.httpClient.post(url, c, {
           headers: new HttpHeaders()
-            .set('Authorization', `Bearer ${this.oAuthService.getIdToken()}`)
+            .set('Authorization', `Bearer ${token}`)
             .set('Content-Type', 'application/json')
         })
       );

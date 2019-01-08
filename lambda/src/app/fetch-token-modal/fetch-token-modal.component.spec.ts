@@ -2,19 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FetchTokenModalComponent } from './fetch-token-modal.component';
 
-const FakeOAuthService = {};
-
 describe('FetchTokenModalComponent', () => {
   let component = new FetchTokenModalComponent();
   let fixture: ComponentFixture<FetchTokenModalComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [FetchTokenModalComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [FetchTokenModalComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FetchTokenModalComponent);
@@ -28,5 +24,4 @@ describe('FetchTokenModalComponent', () => {
     expect(component['isActive']).toBe(true);
     expect(component['title']).toEqual('Fetch token');
   });
-
 });

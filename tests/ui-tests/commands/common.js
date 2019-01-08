@@ -34,7 +34,7 @@ async function testLogin(isTestEnvironmentReady, page) {
   await kymaConsole.login(page, config);
 
   // as title is configurable, test need to check something else
-  await page.waitForSelector('.sf-toolbar', { visible: true });
+  await page.waitForSelector('.fd-shellbar', { visible: true });
 }
 
 async function retry(page, functionToRetry, retryNumber = 3) {

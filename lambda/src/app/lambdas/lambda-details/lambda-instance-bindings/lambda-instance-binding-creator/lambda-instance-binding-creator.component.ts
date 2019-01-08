@@ -12,10 +12,7 @@ const RUNNING = 'RUNNING';
 @Component({
   selector: 'app-lambda-instance-binding-creator',
   templateUrl: './lambda-instance-binding-creator.component.html',
-  styleUrls: [
-    '../../../../app.component.scss',
-    '../../lambda-details.component.scss',
-  ],
+  styleUrls: ['../../lambda-details.component.scss'],
 })
 export class LambdaInstanceBindingCreatorComponent {
   public isActive = false;
@@ -45,9 +42,10 @@ export class LambdaInstanceBindingCreatorComponent {
 
   public show() {
     this.isActive = true;
+    luigiClient.uxManager().addBackdrop();
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.currentEnvironmentId;
+      this.environment = eventData.environmentId;
       this.token = eventData.idToken;
       this.serviceInstancesService
         .getServiceInstances(this.environment, this.token, RUNNING)
@@ -98,6 +96,7 @@ export class LambdaInstanceBindingCreatorComponent {
 
   public cancel(event: Event) {
     this.isActive = false;
+    luigiClient.uxManager().removeBackdrop();
     this.reset();
     event.stopPropagation();
   }
@@ -119,6 +118,7 @@ export class LambdaInstanceBindingCreatorComponent {
     this.selectedServiceBindingEmitter.emit(ibInfo);
 
     this.isActive = false;
+    luigiClient.uxManager().removeBackdrop();
     this.reset();
     event.stopPropagation();
   }

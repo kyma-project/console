@@ -9,8 +9,8 @@ import { getResourceDisplayName } from '../../../commons/helpers';
 const Cards = ({ items, history }) => {
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
-      .fromContext('environment')
-      .navigate(`service-catalog/details/${name}`);
+      .fromClosestContext()
+      .navigate(`details/${name}`);
   };
 
   return items.map(item => (

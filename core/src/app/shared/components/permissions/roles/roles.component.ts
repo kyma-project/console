@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { AppConfig } from '../../../../app.config';
 import { AbstractKubernetesElementListComponent } from '../../../../content/environments/operation/abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../../../../content/environments/operation/kubernetes-data-provider';
@@ -8,7 +7,7 @@ import { CurrentEnvironmentService } from '../../../../content/environments/serv
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   host: { class: '' },
@@ -32,12 +31,9 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
@@ -97,13 +93,13 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
 
   public navigateToDetails(entry: any) {
     if (this.mode === 'roles') {
-      this.router.navigate(['roles/' + entry.metadata.name], {
-        relativeTo: this.activatedRoute
-      });
+      LuigiClient.linkManager()
+        .fromContext('permissions')
+        .navigate(`roles/${entry.metadata.name}`);
     } else {
-      this.router.navigate([
-        '/home/settings/globalPermissions/roles/' + entry.metadata.name
-      ]);
+      LuigiClient.linkManager().navigate(
+        `/home/global-permissions/roles/${entry.metadata.name}`
+      );
     }
   }
 }

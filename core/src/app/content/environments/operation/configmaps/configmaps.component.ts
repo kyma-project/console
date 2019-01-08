@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { AppConfig } from '../../../../app.config';
 import { CurrentEnvironmentService } from '../../../environments/services/current-environment.service';
@@ -32,7 +31,6 @@ export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

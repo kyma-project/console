@@ -1,14 +1,12 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { EventTrigger } from '../../../shared/datamodel/event-trigger';
 import * as _ from 'lodash';
+import * as luigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-event-trigger-chooser',
   templateUrl: './event-trigger-chooser.component.html',
-  styleUrls: [
-    '../../../app.component.scss',
-    './event-trigger-chooser.component.scss',
-  ],
+  styleUrls: ['./event-trigger-chooser.component.scss'],
 })
 export class EventTriggerChooserComponent {
   availableEventTriggers: EventTrigger[] = [];
@@ -51,6 +49,7 @@ export class EventTriggerChooserComponent {
     this.availableEventTriggers = this.filteredTriggers;
     this.title = 'Add Event Trigger';
     this.isActive = true;
+    luigiClient.uxManager().addBackdrop();
   }
 
   filterEvents(search) {
@@ -88,6 +87,7 @@ export class EventTriggerChooserComponent {
 
   closeEventTriggerChooserModal() {
     this.isActive = false;
+    luigiClient.uxManager().removeBackdrop();
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {

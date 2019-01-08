@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../../app.config';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',
@@ -72,5 +73,11 @@ export class FilteredApisEntryRendererComponent
       AppConfig.authIssuer.toLowerCase().includes('dex')
       ? 'DEX'
       : 'Other';
+  }
+
+  public navigateToDetails(serviceName, apiName) {
+    LuigiClient.linkManager()
+      .fromContext('services')
+      .navigate(`details/${serviceName}/apis/details/${apiName}`);
   }
 }

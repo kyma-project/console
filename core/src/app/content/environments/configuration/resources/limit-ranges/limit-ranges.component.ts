@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs';
 import { Filter } from '@kyma-project/y-generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
@@ -29,7 +28,6 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,

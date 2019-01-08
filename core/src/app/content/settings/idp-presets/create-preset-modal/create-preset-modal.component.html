@@ -1,56 +1,58 @@
-<ng-template [ngIf]="isActive">
-  <div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
-    <div class="tn-modal" role="document">
-      <div class="tn-modal__content">
-        <div class="tn-modal__header">
-          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
-            <span class="tn-icon tn-icon--close" role="presentation"></span>
-          </button>
-          <h4 class="tn-modal__title">Create Preset</h4>
-        </div>
-        <div class="tn-modal__body">
-          <div class="tn-form__group">
-            <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
-            <div class="tn-dropdown sf-dropdown environment-chooser">
-              <label class="tn-form__label">Name</label>
-              <input class="tn-form__control"
-                     type="text"
-                     name="presetName"
-                     placeholder="Specify a name for your new IDP preset"
-                     [(ngModel)]="presetName"
-                     (ngModelChange)=validatePresetNameRegex()>
-              <div *ngIf="wrongPresetName" class="alert">The IDPPreset name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character and can not be longer that 253 characters (e.g. 'my-name1.com').</div>
-            </div>
-            <div class="tn-dropdown sf-dropdown environment-chooser">
-              <label class="tn-form__label">Issuer</label>
-              <input class="tn-form__control"
-                     type="text"
-                     name="issuer"
-                     placeholder="Specify an issuer for your new IDP preset"
-                     [(ngModel)]="issuer">
-            </div>
-            <div class="tn-dropdown sf-dropdown environment-chooser">
-              <label class="tn-form__label">JWKS URI</label>
-              <input class="tn-form__control"
-                     type="text"
-                     name="jwks"
-                     placeholder="Specify JSON Web Key Set URI"
-                     [(ngModel)]="jwks"
-                     (ngModelChange)=validateJwksRegex()>
-                <div *ngIf="wrongJwks" class="alert">The JWKS URI has the wrong format. It must start with https:// (e.g. 'https://uri.com').</div>
+<div luigiClientCommunication [isActive]="isActive">
+  <ng-template [ngIf]="isActive">
+    <div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+      <div class="tn-modal" role="document">
+        <div class="tn-modal__content">
+          <div class="tn-modal__header">
+            <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
+              <span class="tn-icon tn-icon--close" role="presentation"></span>
+            </button>
+            <h4 class="tn-modal__title">Create Preset</h4>
+          </div>
+          <div class="tn-modal__body">
+            <div class="tn-form__group">
+              <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
+              <div class="tn-dropdown sf-dropdown environment-chooser">
+                <label class="tn-form__label">Name</label>
+                <input class="tn-form__control"
+                      type="text"
+                      name="presetName"
+                      placeholder="Specify a name for your new IDP preset"
+                      [(ngModel)]="presetName"
+                      (ngModelChange)=validatePresetNameRegex()>
+                <div *ngIf="wrongPresetName" class="alert">The IDPPreset name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character and cannot be longer that 253 characters (e.g. 'my-name1.com').</div>
+              </div>
+              <div class="tn-dropdown sf-dropdown environment-chooser">
+                <label class="tn-form__label">Issuer</label>
+                <input class="tn-form__control"
+                      type="text"
+                      name="issuer"
+                      placeholder="Specify an issuer for your new IDP preset"
+                      [(ngModel)]="issuer">
+              </div>
+              <div class="tn-dropdown sf-dropdown environment-chooser">
+                <label class="tn-form__label">JWKS URI</label>
+                <input class="tn-form__control"
+                      type="text"
+                      name="jwks"
+                      placeholder="Specify JSON Web Key Set URI"
+                      [(ngModel)]="jwks"
+                      (ngModelChange)=validateJwksRegex()>
+                  <div *ngIf="wrongJwks" class="alert">The JWKS URI has the wrong format. It must start with https:// (e.g. 'https://uri.com').</div>
+              </div>
             </div>
           </div>
+          <footer class="tn-modal__footer-items">
+            <button class="tn-modal__button-primary sf-button--primary tn-button--small"
+                    ngClass="{{isReadyToCreate() ? '' : 'disabled'}}"
+                    [disabled]="!isReadyToCreate()"
+                    (click)="save()">
+              Create
+            </button>
+            <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
+          </footer>
         </div>
-        <footer class="tn-modal__footer-items">
-          <button class="tn-modal__button-primary sf-button--primary tn-button--small"
-                  ngClass="{{isReadyToCreate() ? '' : 'disabled'}}"
-                  [disabled]="!isReadyToCreate()"
-                  (click)="save()">
-            Create
-          </button>
-          <button class="tn-modal__button-secondary sf-button--secondary tn-button--small" (click)="close()">Cancel</button>
-        </footer>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
+</div>

@@ -6,7 +6,10 @@ async function _loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   try {
+    await page.waitFor(1000);
     await page.reload({ waitUntil: 'networkidle0' });
+    await waitForNavigationAndContext(page);
+
     await page.waitForSelector('#login');
     await page.type('#login', config.login);
     await page.waitForSelector('#password');
@@ -20,7 +23,7 @@ async function _loginViaDex(page, config) {
 
 async function login(page, config) {
   await _loginViaDex(page, config);
-  const headerSelector = '.sf-header';
+  const headerSelector = '.fd-shellbar';
   try {
     await page.waitForSelector(headerSelector);
   } catch (err) {
@@ -41,7 +44,18 @@ async function login(page, config) {
 }
 
 async function getFrame(page) {
-  return await page.frames().find(f => f.name() === 'frame');
+  return page.frames().find(frame => frame.parentFrame() !== null);
+}
+
+async function openLinkOnFrame(page, element, name) {
+  const frame = await getFrame(page);
+  await frame.$$eval(
+    element,
+    (item, name) => {
+      item.find(text => text.innerText.includes(name)).click();
+    },
+    name
+  );
 }
 
 async function openLink(page, element, name) {
@@ -52,8 +66,8 @@ async function openLink(page, element, name) {
     },
     name
   );
+  await page.waitFor(1000);
   await page.reload({ waitUntil: 'networkidle0' });
-  await waitForNavigationAndContext(page);
 }
 
 function clearData(token, env) {
@@ -79,54 +93,73 @@ function clearData(token, env) {
   });
 }
 
-async function getEnvironments(page) {
+async function getEnvironmentsFromContextSwitcher(page) {
   return await page.evaluate(() => {
-    const environmentsArraySelector =
-      '.sf-dropdown .tn-dropdown__menu .tn-dropdown__item';
+    const menuListContainer = document.querySelector('ul#context_menu_middle');
+    const environmentsArraySelector = 'li > a';
     const envs = Array.from(
-      document.querySelectorAll(environmentsArraySelector)
+      menuListContainer.querySelectorAll(environmentsArraySelector)
     );
     return envs.map(env => env.textContent);
   });
+}
+
+async function getEnvironmentNamesFromEnvironmentsPage(page) {
+  return await getNamesOnCurrentPage(page, '.tn-card__header');
+}
+
+async function getRemoteEnvironmentNames(page) {
+  return await getNamesOnCurrentPage(page, '.remoteenv-name');
+}
+
+async function getNamesOnCurrentPage(page, nameSelector) {
+  const frame = await getFrame(page);
+  return await frame.$$eval(nameSelector, nameComponents => {
+    const envs = Array.from(nameComponents);
+    return envs.map(env => env.textContent);
+  });
+}
+
+async function getTextContentOnFrameBySelector(frame, selector) {
+  const text = await frame.$eval(selector, component => {
+    return component.textContent;
+  });
+  return text;
 }
 
 async function createEnvironment(page, name) {
-  // consts
-  const dropdownButton = '.tn-dropdown__control';
-  const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
-  const createEnvBtn = '.open-create-env-modal';
+  const frame = await getFrame(page);
   const createEnvModal = '.sf-modal.sf-modal--min';
   const createBtn = '.env-create-btn';
   const envNameInput = 'input[name=environmentName].tn-form__control';
+  const createButtonSelector = '.open-create-env-modal';
 
-  await page.waitForSelector(dropdownButton);
-  await page.click(dropdownButton);
-  await page.waitForSelector(dropdownMenu, { visible: true });
-  await page.click(dropdownButton);
-  await page.click(createEnvBtn);
-  await page.waitFor(createEnvModal);
-  await page.focus(envNameInput);
-  await page.type(envNameInput, name);
-  await page.click(createBtn);
-  await page.waitForSelector(createEnvModal, { hidden: true });
+  await frame.waitForSelector(createButtonSelector);
+  await frame.click(createButtonSelector);
+  await frame.waitFor(createEnvModal);
+  await frame.focus(envNameInput);
+  await frame.type(envNameInput, name);
+  await frame.click(createBtn);
+  await frame.waitForSelector(createEnvModal, { hidden: true });
+
   await page.reload({ waitUntil: 'networkidle0' });
   await waitForNavigationAndContext(page);
-
-  const environments = await getEnvironments(page);
-  expect(environments).toContain(name);
 }
 
-async function getRemoteEnvironments(page) {
-  return await page.evaluate(() => {
-    const remoteEnvironmentsSelector = '.remoteenv-name';
-    const envs = Array.from(
-      document.querySelectorAll(remoteEnvironmentsSelector)
-    );
-    return envs.map(env => env.textContent);
-  });
+async function deleteEnvironment(page, envName) {
+  const frame = await getFrame(page);
+  const deleteConfirmButton =
+    '.tn-modal__button-primary.sf-button--primary.tn-button--small';
+  const dropDownCard = `button[aria-controls=${envName}]`;
+  await frame.click(dropDownCard);
+  await frame.click(`#${envName} > li > a[name=Delete]`);
+  await frame.waitFor(deleteConfirmButton);
+  await frame.click(deleteConfirmButton);
+  await frame.waitForSelector(deleteConfirmButton, { hidden: true });
 }
 
 async function createRemoteEnvironment(page, name) {
+  const frame = await getFrame(page);
   // consts
   const createEnvBtn = '.open-create-env-modal';
   const createEnvModal = '.sf-modal.sf-modal--min';
@@ -135,36 +168,24 @@ async function createRemoteEnvironment(page, name) {
   const labelsInput = 'input[name=labelsInput]';
   const createButton = '.tn-modal__button-primary';
 
-  await page.click(createEnvBtn);
-  await page.waitFor(createEnvModal);
-  await page.focus(nameInput);
-  await page.type(nameInput, name);
-  await page.focus(descriptionInput);
-  await page.type(descriptionInput, 'This is the Application for testing');
-  await page.focus(labelsInput);
-  await page.type(labelsInput, 'testKey:testValue');
-  await page.click(createButton);
-  await page.waitForSelector(createEnvModal, { hidden: true });
-}
-
-async function getRemoteEnvironmentsAfterDelete(
-  page,
-  initialRemoteEnvironments
-) {
-  await page.reload({ waitUntil: 'networkidle0' });
-  const remoteEnvironments = await getRemoteEnvironments(page);
-  if (initialRemoteEnvironments > remoteEnvironments) {
-    console.log('Applications was updated');
-    return remoteEnvironments;
-  }
-  throw new Error(`Applications was not updated`);
+  await frame.click(createEnvBtn);
+  await frame.waitFor(createEnvModal);
+  await frame.focus(nameInput);
+  await frame.type(nameInput, name);
+  await frame.focus(descriptionInput);
+  await frame.type(descriptionInput, 'This is the Application for testing');
+  await frame.focus(labelsInput);
+  await frame.type(labelsInput, 'testKey:testValue');
+  await frame.click(createButton);
+  await frame.waitForSelector(createEnvModal, { hidden: true });
 }
 
 async function deleteRemoteEnvironment(page, name) {
+  const frame = await getFrame(page);
   const remoteEnvironmentsSelector = '.row.sf-list__body';
   const modalSelector = '.sf-modal';
-  await page.waitForSelector(remoteEnvironmentsSelector);
-  await page.$$eval(
+  await frame.waitForSelector(remoteEnvironmentsSelector);
+  await frame.$$eval(
     remoteEnvironmentsSelector,
     (item, name) => {
       const actionsSelector = '.tn-icon';
@@ -177,22 +198,26 @@ async function deleteRemoteEnvironment(page, name) {
     },
     name
   );
-  await page.waitForSelector(modalSelector);
-  await page.evaluate(() => {
+  await frame.waitForSelector(modalSelector);
+  await frame.evaluate(() => {
     const deleteButton = `.tn-modal__button-primary.sf-button--primary.tn-button--small`;
     document.querySelector(deleteButton).click();
   });
+  console.log(`Application ${name} deleted!`);
 }
 
 module.exports = {
   login,
   getFrame,
   openLink,
+  openLinkOnFrame,
   clearData,
-  getEnvironments,
+  getEnvironmentsFromContextSwitcher,
   createEnvironment,
-  getRemoteEnvironments,
-  getRemoteEnvironmentsAfterDelete,
   createRemoteEnvironment,
-  deleteRemoteEnvironment
+  deleteRemoteEnvironment,
+  getEnvironmentNamesFromEnvironmentsPage,
+  deleteEnvironment,
+  getRemoteEnvironmentNames,
+  getTextContentOnFrameBySelector
 };

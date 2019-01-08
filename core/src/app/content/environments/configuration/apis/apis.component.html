@@ -3,7 +3,7 @@
     <div class="sf-toolbar__right">
         <div class="sf-toolbar__item">
             <button class="tn-button tn-button--small tn-button--text sf-toolbar__item"
-                    routerLink="/home/namespaces/{{currentEnvironmentId}}/apis/create">
+                (click)="navigateToCreate()">
                 + Create API
             </button>
             <y-list-search [hidden]="!initialized || showEmptyPage"

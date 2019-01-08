@@ -2,13 +2,14 @@ import { RemoteEnvironmentBindingService } from './remote-environment-binding-se
 import { ComponentCommunicationService } from './../../../../shared/services/component-communication.service';
 import { RemoteEnvironmentsService } from './../services/remote-environments.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-modal.component';
 
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../shared/components/information-modal/information-modal.component';
 import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { EditRemoteEnvironmentModalComponent } from '../edit-remote-environment-modal/edit-remote-environment-modal.component';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-remote-environment-details',
@@ -41,7 +42,6 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private remoteEnvironmentsService: RemoteEnvironmentsService,
     private communication: ComponentCommunicationService,
     private remoteEnvironmentBindingService: RemoteEnvironmentBindingService
@@ -104,7 +104,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
               data.application.status
             );
           } else {
-            this.goBack();
+            this.navigateToList();
           }
         },
         err => {
@@ -152,10 +152,6 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
       : this.infoModal.show('Error', this.connectorServiceError);
   }
 
-  goBack() {
-    this.router.navigate(['home/settings/apps']);
-  }
-
   hasType(entries, type) {
     return _.some(entries, { type });
   }
@@ -173,5 +169,11 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   public openEditRemoteEnvModal() {
     this.editRemoteEnvModal.show();
+  }
+
+  public navigateToList() {
+    LuigiClient.linkManager()
+      .fromContext('apps')
+      .navigate('');
   }
 }
