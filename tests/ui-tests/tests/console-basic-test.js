@@ -113,19 +113,22 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
 
   test('Delete Application', async () => {
     common.validateTestEnvironment(dexReady);
-    await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-
     const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
       page
     );
-    const remoteEnvironments = await common.retry(
-      page,
-      async () =>
-        await kymaConsole.getRemoteEnvironmentsAfterDelete(
-          page,
-          initialRemoteEnvironments
-        )
-    );
+    await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
+    const remoteEnvironments = await common.retry(page, async () => {
+      await page.waitFor(800);
+      await page.reload({ waitUntil: 'networkidle0' });
+      const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
+        page
+      );
+      if (initialRemoteEnvironments > remoteEnvironmentsAfterRemoval) {
+        console.log('Applications was updated');
+        return remoteEnvironmentsAfterRemoval;
+      }
+      throw new Error(`Applications was not updated`);
+    });
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 });

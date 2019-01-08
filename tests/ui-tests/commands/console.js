@@ -6,7 +6,7 @@ async function _loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   try {
-    await page.waitFor(1000);
+    await page.waitFor(800);
     await page.reload({ waitUntil: 'networkidle0' });
     await waitForNavigationAndContext(page);
 
@@ -44,12 +44,6 @@ async function login(page, config) {
 }
 
 async function getFrame(page) {
-  if (page.frames().length === 1) {
-    console.log(`Only ${page.frames().length} frame on the page`);
-    await page.reload({ waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
-  }
-
   return page.frames().find(frame => frame.parentFrame() !== null);
 }
 
@@ -72,8 +66,6 @@ async function openLink(page, element, name) {
     },
     name
   );
-  await page.reload({ waitUntil: 'networkidle0' });
-  await waitForNavigationAndContext(page);
 }
 
 function clearData(token, env) {
@@ -120,11 +112,10 @@ async function getRemoteEnvironmentNames(page) {
 
 async function getNamesOnCurrentPage(page, nameSelector) {
   const frame = await getFrame(page);
-  const names = await frame.$$eval(nameSelector, nameComponents => {
+  return await frame.$$eval(nameSelector, nameComponents => {
     const envs = Array.from(nameComponents);
     return envs.map(env => env.textContent);
   });
-  return names;
 }
 
 async function getTextContentOnFrameBySelector(frame, selector) {
@@ -187,19 +178,6 @@ async function createRemoteEnvironment(page, name) {
   await frame.waitForSelector(createEnvModal, { hidden: true });
 }
 
-async function getRemoteEnvironmentsAfterDelete(
-  page,
-  initialRemoteEnvironments
-) {
-  await page.reload({ waitUntil: 'networkidle0' });
-  const remoteEnvironments = await getRemoteEnvironmentNames(page);
-  if (initialRemoteEnvironments > remoteEnvironments) {
-    console.log('Applications was updated');
-    return remoteEnvironments;
-  }
-  throw new Error(`Applications was not updated`);
-}
-
 async function deleteRemoteEnvironment(page, name) {
   const frame = await getFrame(page);
   const remoteEnvironmentsSelector = '.row.sf-list__body';
@@ -223,6 +201,7 @@ async function deleteRemoteEnvironment(page, name) {
     const deleteButton = `.tn-modal__button-primary.sf-button--primary.tn-button--small`;
     document.querySelector(deleteButton).click();
   });
+  console.log(`Application ${name} deleted!`);
 }
 
 module.exports = {
@@ -233,7 +212,6 @@ module.exports = {
   clearData,
   getEnvironmentsFromContextSwitcher,
   createEnvironment,
-  getRemoteEnvironmentsAfterDelete,
   createRemoteEnvironment,
   deleteRemoteEnvironment,
   getEnvironmentNamesFromEnvironmentsPage,
