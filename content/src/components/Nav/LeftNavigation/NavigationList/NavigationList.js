@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+import { Separator } from '@kyma-project/react-components';
 
 import ScrollSpy from "../../ScrollSpy/ScrollSpy";
 import NavigationGroup from "./NavigationGroup";
-import { Wrapper, Separator } from "./styled";
+import { Wrapper } from "./styled";
 
-import { getDocsPath } from "../../../../../helpers/docsPath";
-import { tokenize } from "../../../../../helpers/tokenize";
+import { SCROLL_SPY_ROOT_ELEMENT } from '../../../../commons/variables';
+import { tokenize } from '../../../../commons/helpers';
+
+// import { getDocsPath } from "../../../../../helpers/docsPath";
+// import { tokenize } from "../../../../../helpers/tokenize";
 
 class Navigation extends Component {
   state = {
@@ -13,15 +17,9 @@ class Navigation extends Component {
   };
 
   render() {
-    const getPathLink = ((version, includeVersionInPath) => {
-      return ({ id, type, hash }) => {
-        return getDocsPath(version, { type, id, hash }, includeVersionInPath);
-      };
-    })(this.props.currentVersion, this.props.includeVersionInPath);
-
     const isLinkActive = (() => {
       return ({ id, type }) => {
-        const content = this.props.currentContent;
+        const content = this.props.activeContent;
         return (
           tokenize(id) === tokenize(content.id) &&
           tokenize(type) === tokenize(content.type)
@@ -33,15 +31,17 @@ class Navigation extends Component {
       items,
       topics,
       activeNav,
-      hideNavIfShouldOnMobile,
+      chooseActive,
       setActiveNav,
-      currentContent,
+      history,
     } = this.props;
     const { activeNodes } = this.state;
 
+    console.log(activeNodes)
+
     return (
       <ScrollSpy
-        rootElement="#docs-content"
+        rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}
         nodeTypes={["groupOfDocuments", "document", "header"]}
         offset={{
           groupOfDocuments: 40,
@@ -56,13 +56,12 @@ class Navigation extends Component {
             items={[items.root]}
             topics={topics}
             groupType="root"
-            getPathLink={getPathLink}
             isLinkActive={isLinkActive}
             activeNav={activeNav}
             activeNodes={activeNodes}
             setActiveNav={setActiveNav}
-            hideNavIfShouldOnMobile={hideNavIfShouldOnMobile}
-            currentContent={currentContent}
+            chooseActive={chooseActive}
+            history={history}
           />
           <Separator />
           <NavigationGroup
@@ -70,13 +69,12 @@ class Navigation extends Component {
             items={items.components}
             topics={topics}
             groupType="components"
-            getPathLink={getPathLink}
             isLinkActive={isLinkActive}
             activeNav={activeNav}
             activeNodes={activeNodes}
             setActiveNav={setActiveNav}
-            hideNavIfShouldOnMobile={hideNavIfShouldOnMobile}
-            currentContent={currentContent}
+            chooseActive={chooseActive}
+            history={history}
           />
         </Wrapper>
       </ScrollSpy>

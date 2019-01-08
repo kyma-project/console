@@ -6,22 +6,22 @@ import {
   NavigationHeader,
   NavigationItems,
   NavigationItem,
-  LinkWrapper,
-  NavigationLink,
   NavigationSectionArrow,
+  NavigationLinkWrapper,
+  NavigationLink
 } from "./styled";
 
 function NavigationGroup({
   title,
-  groupType,
   items,
-  setActiveNav,
+  groupType,
   isLinkActive,
-  getPathLink,
   activeNav,
   activeNodes,
-  hideNavIfShouldOnMobile,
-  ...otherProps
+  chooseActive,
+  setActiveNav,
+  history,
+  ...otherProps,
 }) {
   const renderArrow = item => (
     <NavigationSectionArrow
@@ -48,35 +48,33 @@ function NavigationGroup({
 
     return (
       <NavigationItem key={item.id}>
-        <LinkWrapper>
+        <NavigationLinkWrapper>
           {topics && topics.sections && renderArrow(item)}
           <NavigationLink
             active={isLinkActive({
               id: item.id,
               type: groupType,
             })}
-            to={getPathLink({
-              id: item.id,
-              type: groupType,
-              hash: "",
-            })}
-            onClick={() => hideNavIfShouldOnMobile(topics && topics.length > 0)}
+            onClick={() => {
+              chooseActive({
+                id: item.id,
+                type: groupType,
+              })
+            }}
           >
             {item.displayName}
           </NavigationLink>
-        </LinkWrapper>
+        </NavigationLinkWrapper>
         {topics && topics.sections && (
           <NavigationSections
             items={topics.sections}
             groupType={groupType}
             rootId={item.id}
-            isLinkActive={isLinkActive}
             activeNav={activeNav}
             activeNodes={activeNodes}
-            getPathLink={getPathLink}
-            hideNavIfShouldOnMobile={hideNavIfShouldOnMobile}
             setActiveNav={setActiveNav}
-            currentContent={otherProps.currentContent}
+            chooseActive={chooseActive}
+            isLinkActive={isLinkActive}
           />
         )}
       </NavigationItem>

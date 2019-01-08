@@ -1,3 +1,4 @@
+import React from 'react';
 import { graphql, compose } from 'react-apollo';
 
 import MainPage from './MainPage.component';
@@ -20,4 +21,8 @@ export default compose(
       };
     },
   }),
-)(MainPage);
+)(props => {
+  if (props.topics.loading || !props.topics.topics) return null;
+
+  return <MainPage { ...props } topics={props.topics.topics} />
+});

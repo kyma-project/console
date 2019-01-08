@@ -95,6 +95,8 @@ class ScrollSpy extends React.Component {
     }
 
     const rootNode = document.querySelector(rootElement);
+    if (!rootNode) return;
+    
     const nodesInRootNode = rootNode.querySelectorAll("*[id]");
     const dataScrollSpyNodeTypeAtr = "scrollspyNodeType";
 

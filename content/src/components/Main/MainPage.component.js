@@ -1,41 +1,37 @@
 import React, { Component } from 'react';
 import { ThemeWrapper, Toolbar } from '@kyma-project/react-components';
 
-import NavigationList from '../Nav/NavigationList.component';
+import NavigationList from '../Navigation/NavigationList.component';
+import DocsContent from '../DocsContent/DocsContent.container';
+import LeftNavigation from '../Nav/LeftNavigation/LeftNavigation';
 import { 
+  ColumnsWrapper,
   LeftSideWrapper,
   CenterSideWrapper,
 } from './styled';
 
 import { parseYaml } from '../../commons/yaml.js';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
+import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      active: {},
-      activeNav: {},
-      navigationList: {},
-    };
+    this.state = this.setInitialState(props.match, props.location)
   }
 
-  componentDidMount() {
-    const { match, location } = this.props;
+  setInitialState = (match, location) => {
+    const active = {
+      id: match.params.id || this.getRoot(),
+      type: match.params.type || 'root',
+      hash: location.hash.replace(/#/g, ''),
+    }
 
-    this.setState({
-      active: {
-        id: this.props.match.params.id || this.getRoot(),
-        type: this.props.match.params.type || 'root',
-        hash: this.props.location.hash.replace(/#/g, ''),
-      },
-      activeNav: {
-        id: this.props.match.params.id || this.getRoot(),
-        type: this.props.match.params.type || 'root',
-        hash: this.props.location.hash.replace(/#/g, ''),
-      },
+    return {
+      activeContent: active,
+      activeNav: active,
       navigationList: parseYaml(),
-    })
+    }
   }
 
   getRoot = () => {
@@ -48,10 +44,10 @@ class MainPage extends Component {
 
   chooseActive = (activeLink) => {
     const { history } = this.props;
-    this.setState({
-      active: activeLink,
-      activeNav: activeLink,
-    });
+    // this.setState({
+    //   activeContent: activeLink,
+    //   activeNav: activeLink,
+    // });
 
     let link = `/${activeLink.type}/${activeLink.id}`;
     if (activeLink.hash) {
@@ -102,43 +98,27 @@ class MainPage extends Component {
   }
 
   render() {
-    let topics = null;
-    if (!this.props.topics.loading && this.props.topics.topics) {
-      topics = this.props.topics.topics;
-    }
+    const { history, topics } = this.props;
+    const { activeContent, activeNav, navigationList } = this.state;
     
     return (
       <ThemeWrapper>
-        <div className="App">
-          <ColumnsWrapper>
-            <LeftSideWrapper>
-              <Toolbar
-                headline="Docs"
-                addSeparator
-                smallText
-                back={() => {
-                  this.props.history.goBack();
-                }}
-              />
-              <NavigationList
-                items={this.state.navigationList}
-                topics={topics}
-                active={this.state.active}
-                activeNav={this.state.activeNav}
-                callbackParent={newState => {
-                  this.chooseActive(newState);
-                }}
-                setActiveNav={newState => {
-                  this.setActiveNav(newState);
-                }}
-                history={this.props.history}
-              />
-            </LeftSideWrapper>
-            <CenterSideWrapper>
-              <ContentWrapper item={this.state.active} />
-            </CenterSideWrapper>
-          </ColumnsWrapper>
-        </div>
+        <ColumnsWrapper>
+          <LeftSideWrapper>
+            <LeftNavigation 
+              items={navigationList}
+              topics={topics}
+              activeContent={activeContent}
+              activeNav={activeNav}
+              chooseActive={this.chooseActive}
+              setActiveNav={this.setActiveNav}
+              history={history}
+            />
+          </LeftSideWrapper>
+          <CenterSideWrapper id={SCROLL_SPY_ROOT_ELEMENT}>
+            <DocsContent contentMetadata={activeContent} />
+          </CenterSideWrapper>
+        </ColumnsWrapper>
       </ThemeWrapper>
     );
   }

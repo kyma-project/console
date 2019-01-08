@@ -7,6 +7,8 @@ import NavigationList from '../Navigation/NavigationList.component';
 import { parseYaml } from '../../commons/yaml.js';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
 
+import DocsContent from '../DocsContent/DocsContent.container';
+
 const LeftSideWrapper = styled.div`
   box-sizing: border-box;
   text-align: left;
@@ -150,7 +152,7 @@ class MainPage extends Component {
               />
             </LeftSideWrapper>
             <CenterSideWrapper>
-              <ContentWrapper item={this.state.active} />
+              <DocsContent contentMetadata={this.state.active} />
             </CenterSideWrapper>
           </ColumnsWrapper>
         </div>

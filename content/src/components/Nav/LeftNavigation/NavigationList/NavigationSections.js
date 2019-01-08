@@ -3,33 +3,31 @@ import React from "react";
 import {
   NavigationItems,
   NavigationItem,
-  LinkWrapper,
+  NavigationLinkWrapper,
   NavigationLink,
   NavigationSectionArrow,
 } from "./styled";
 
 function NavigationSections({
+  items,
+  groupType,
   rootId,
   parentId,
-  groupType,
-  items,
-  setActiveNav,
   isLinkActive,
-  getPathLink,
   activeNav,
   activeNodes,
-  hideNavIfShouldOnMobile,
-  ...otherProps
+  chooseActive,
+  setActiveNav,
+  history,
+  ...otherProps,
 }) {
   const hashing = item => {
-    if (parentId) {
-      return `${parentId}-${item.anchor}`;
-    } else {
-      const topicType = item.topicType
-        ? item.topicType.replace(/ /g, "-").toLowerCase()
-        : item.anchor;
-      return `${topicType}-${item.anchor}`;
-    }
+    if (parentId) return `${parentId}-${item.anchor}`;
+
+    const topicType = item.topicType
+      ? item.topicType.replace(/ /g, "-").toLowerCase()
+      : item.anchor;
+    return `${topicType}-${item.anchor}`;
   };
 
   const renderArrow = (hash, isActive, isActiveNavArrow) => (
@@ -83,23 +81,23 @@ function NavigationSections({
 
     return (
       <NavigationItem key={key}>
-        <LinkWrapper>
+        <NavigationLinkWrapper>
           {hasSubElements && renderArrow(hash, isActive, isActiveNavArrow)}
           <NavigationLink
             active={isActive}
-            to={getPathLink({
-              id: rootId,
-              type: groupType,
-              hash: hash,
-            })}
+            noArrow={!hasSubElements}
             onClick={() => {
-              hideNavIfShouldOnMobile();
+              chooseActive({
+                id: rootId,
+                type: groupType,
+                hash: hash,
+              })
             }}
             parentId={parentId}
           >
             {item.name}
           </NavigationLink>
-        </LinkWrapper>
+        </NavigationLinkWrapper>
         {hasSubElements && (
           <NavigationSections
             items={item.titles}
@@ -109,10 +107,9 @@ function NavigationSections({
             isLinkActive={isLinkActive}
             activeNav={activeNav}
             activeNodes={activeNodes}
-            getPathLink={getPathLink}
-            hideNavIfShouldOnMobile={hideNavIfShouldOnMobile}
             setActiveNav={setActiveNav}
-            currentContent={otherProps.currentContent}
+            chooseActive={chooseActive}
+            history={history}
           />
         )}
       </NavigationItem>

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import MainPage from './components/MainPage/MainPage.container';
+import MainPage from './components/Main/MainPage.container';
 
 function App() {
   return (
