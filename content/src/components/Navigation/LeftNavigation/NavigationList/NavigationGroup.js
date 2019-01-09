@@ -38,6 +38,7 @@ function NavigationGroup({
         id: item.id,
         type: groupType,
       })}
+      data-e2e-id={`navigation-arrow-${groupType}-${item.id}`}
     />
   );
 
@@ -62,6 +63,7 @@ function NavigationGroup({
                 type: groupType,
               })
             }}
+            data-e2e-id={`navigation-link-${groupType}-${item.id}`}
           >
             {item.displayName}
           </NavigationLink>

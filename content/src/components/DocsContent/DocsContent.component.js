@@ -12,22 +12,8 @@ import {
 
 import { tokenize } from '../../commons/helpers';
 
-const DocsContent = ({ content }) => {
+const DocsContent = ({ content, docsTypesLength }) => {
   const { docs = [] } = content;
-
-  const docsTypesLength = (() => {
-    let docsTypesLength = {};
-    docs.map(doc => {
-      const type = doc.type || doc.title;
-      if (!(type in docsTypesLength)) {
-        docsTypesLength[type] = 0;
-      }
-      if (doc.title) docsTypesLength[type]++;
-
-      return doc;
-    });
-    return docsTypesLength;
-  })();
   let lastType = "";
 
   return (
@@ -36,16 +22,8 @@ const DocsContent = ({ content }) => {
         <div>
           <Toolbar headline={content.displayName} customPadding={'28px 0'} />
 
-          {content.docs &&
-            content.docs.map((doc, index) => {
-              // const type = doc.type ? doc.type : doc.title;
-              // const hash = `${tokenize(type)}-${tokenize(doc.title)}`;
-              // let isFirtsOfType = false;
-              // const currentTypeHash = `${tokenize(type)}-${tokenize(type)}`;
-
-              // isFirtsOfType = lastTypeHash !== currentTypeHash;
-              // lastTypeHash = currentTypeHash;
-
+          {docs &&
+            docs.map((doc, index) => {
               const type = doc.type || doc.title;
               const tokenizedType = tokenize(type);
               const hash = `${tokenizedType}-${tokenize(doc.title)}`;

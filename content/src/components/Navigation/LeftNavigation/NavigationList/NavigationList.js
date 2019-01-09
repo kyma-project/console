@@ -49,6 +49,7 @@ class Navigation extends Component {
       >
         <Wrapper>
           <NavigationGroup
+            data-e2e-id="navigation-root"
             title=""
             items={[items.root]}
             topics={topics}
@@ -63,6 +64,7 @@ class Navigation extends Component {
           />
           <Separator />
           <NavigationGroup
+            data-e2e-id="navigation-components"
             title="Components"
             items={items.components}
             topics={topics}

@@ -29,9 +29,21 @@ const DocsContentContainer = ({ content: { loading, content }, setDocsLoadingSta
     .sortByType()
     .result();
 
+  let docsTypesLength = {};
+  newContent.docs.map(doc => {
+    const type = doc.type || doc.title;
+    if (!(type in docsTypesLength)) {
+      docsTypesLength[type] = 0;
+    }
+    if (doc.title) docsTypesLength[type]++;
+
+    return doc;
+  });
+
   return (
     <DocsContent
       content={newContent}
+      docsTypesLength={docsTypesLength}
     />
   );
 };

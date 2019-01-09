@@ -31,7 +31,7 @@ function NavigationSections({
     return `${topicType}-${item.anchor}`;
   };
 
-  const renderArrow = (hash, isActive, isActiveNavArrow) => (
+  const renderArrow = (anchor, hash, isActive, isActiveNavArrow) => (
     <NavigationSectionArrow
       onClick={() => {
         setActiveNav({
@@ -42,6 +42,7 @@ function NavigationSections({
       }}
       activeArrow={isActiveNavArrow}
       active={isActive}
+      data-e2e-id={`navigation-arrow-${groupType}-${rootId}-${anchor}`}
     />
   );
 
@@ -88,7 +89,7 @@ function NavigationSections({
     return (
       <NavigationItem key={key}>
         <NavigationLinkWrapper>
-          {hasSubElements && renderArrow(hash, isActive, isActiveNavArrow)}
+          {hasSubElements && renderArrow(item.anchor, hash, isActive, isActiveNavArrow)}
           <NavigationLink
             active={isActive}
             noArrow={!hasSubElements}
@@ -100,6 +101,7 @@ function NavigationSections({
               })
             }}
             parentId={parentId}
+            data-e2e-id={`navigation-link-${groupType}-${rootId}-${item.anchor}`}
           >
             {item.name}
           </NavigationLink>
@@ -141,8 +143,11 @@ function NavigationSections({
       activeNav.hash.startsWith(parentId)
     : activeNav.id === rootId;
 
+  const e2eId =
+    `navigation-items-${groupType}-${rootId}${parentId ? `-${parentId}` : ``}`;
+
   return (
-    <NavigationItems secondary marginTop show={isActiveNav || isClickedNav}>
+    <NavigationItems secondary marginTop show={isActiveNav || isClickedNav} data-e2e-id={e2eId}>
       {items && items.map(item => renderNavigationItem(item))}
     </NavigationItems>
   );
