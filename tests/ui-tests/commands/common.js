@@ -3,18 +3,11 @@ import address from '../utils/address';
 import kymaConsole from './console';
 const context = require('../utils/testContext');
 
-function validateTestEnvironment(isTestEnvironmentReady) {
-  if (!isTestEnvironmentReady) {
-    throw new Error("Test environment wasn't ready");
-  }
-}
-
-async function beforeAll(isTestEnvironmentReady) {
-  validateTestEnvironment(isTestEnvironmentReady);
+async function beforeAll() {
   const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
 
-  // throttle network to test variable  conditions
+  // throttle network to test variable conditions
   if (config.throttleNetwork) {
     browser.on('targetchanged', async target => {
       const page = await target.page();
@@ -23,7 +16,7 @@ async function beforeAll(isTestEnvironmentReady) {
         await client.send('Network.setCacheDisabled', { cacheDisabled: true });
         await client.send(
           'Network.emulateNetworkConditions',
-          config.networkConditions
+          config.throttledNetworkConditions
         );
       }
     });
@@ -43,8 +36,7 @@ async function beforeAll(isTestEnvironmentReady) {
   return { page, browser };
 }
 
-async function testLogin(isTestEnvironmentReady, page) {
-  validateTestEnvironment(isTestEnvironmentReady);
+async function testLogin(page) {
   await kymaConsole.login(page, config);
 
   // as title is configurable, test need to check something else
@@ -67,7 +59,6 @@ async function retry(page, functionToRetry, retryNumber = 3) {
 }
 
 module.exports = {
-  validateTestEnvironment,
   beforeAll,
   testLogin,
   retry

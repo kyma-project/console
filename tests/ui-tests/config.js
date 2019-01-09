@@ -15,7 +15,7 @@ module.exports = {
   verbose: process.env.VERBOSE || false,
   dexConfig: process.env.DEX_CONFIG || '/etc/dex/cfg/config.yaml',
   throttleNetwork: process.env.THROTTLE_NETWORK || false,
-  networkConditions: {
+  throttledNetworkConditions: {
     offline: false,
     latency: 800,
     downloadThroughput: 280000,

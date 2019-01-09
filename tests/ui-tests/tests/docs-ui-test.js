@@ -8,18 +8,15 @@ import dex from '../utils/dex';
 
 const context = require('../utils/testContext');
 let page, browser;
-let isEnvironmentReady = false;
 
 describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   beforeAll(async () => {
     try {
-      isEnvironmentReady = await context.isDexReady();
-      const data = await common.beforeAll(isEnvironmentReady);
+      const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      await common.testLogin(isEnvironmentReady, page);
+      await common.testLogin(page);
     } catch (e) {
-      isEnvironmentReady = false;
       throw e;
     }
   });
@@ -29,8 +26,6 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   });
 
   test('Go to docs', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // Hardcodes for specific page
     const docsUrl = address.console.getDocs();
 
@@ -52,7 +47,6 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   });
 
   test('Check if documentation is shown', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
     // Hardcodes for specific page
     const articleExpectedHeader = 'Kyma';
     const articleExpectedServiceCatalogHeader = 'Service Catalog';

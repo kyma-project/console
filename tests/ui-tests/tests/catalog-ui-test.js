@@ -11,18 +11,16 @@ import dex from '../utils/dex';
 const context = require('../utils/testContext');
 let page, browser;
 let token = '';
-let isEnvironmentReady = false;
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
     try {
-      isEnvironmentReady = await context.isDexReady();
-      const data = await common.beforeAll(isEnvironmentReady);
+      const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
       logOnEvents(page, t => (token = t));
 
-      await common.testLogin(isEnvironmentReady, page);
+      await common.testLogin(page);
       await Promise.all([
         kymaConsole.createEnvironment(page, config.catalogTestEnv),
         page.waitForNavigation({
@@ -30,7 +28,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         })
       ]);
     } catch (e) {
-      isEnvironmentReady = false;
       throw e;
     }
   });
@@ -41,7 +38,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   test('Check service class list', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
     // Hardcodes for specific service class
     const exampleServiceClassName = serviceClassConfig.exampleServiceClassName;
 
@@ -80,8 +76,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   test('Check filters', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // consts
     const filterDropdownButton = catalog.prepareSelector('toggle-filter');
     const filterWrapper = catalog.prepareSelector('wrapper-filter');
@@ -126,8 +120,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   test('Check details', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // Hardcodes for specific service class
     const exampleServiceClassButton =
       serviceClassConfig.exampleServiceClassButton;
@@ -160,8 +152,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   test('Check provisioning', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // Hardcodes for specific service class / page
     const catalogUrl = address.console.getCatalog(config.catalogTestEnv);
     const instanceTitle = serviceClassConfig.instanceTitle;
@@ -190,8 +180,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   test('Check instances list', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
     const instancesUrl = address.console.getInstancesList(
@@ -235,8 +223,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   test('Check details', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // Hardcodes for specific service class
     const exampleInstanceLink = catalog.prepareSelector(
       `instance-name-${serviceClassConfig.instanceTitle}`
