@@ -45,6 +45,7 @@ class Navigation extends Component {
           header: 40,
         }}
         onUpdate={activeNodes => this.setState({ activeNodes })}
+        activeContent={activeContent}
       >
         <Wrapper>
           <NavigationGroup

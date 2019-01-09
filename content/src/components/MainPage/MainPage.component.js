@@ -35,10 +35,17 @@ class MainPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { docsLoadingStatus: { docsLoadingStatus } } = this.props;
-    const { activeNav } = this.state;
+    const { activeContent } = this.state;
+    const hash = activeContent.hash
 
     if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
-      const hash = activeNav.hash;
+      if (hash) {
+        goToAnchor(hash);
+      }
+    }
+
+
+    if (activeContent && (prevState.activeContent.id !== activeContent.id)) {
       if (hash) {
         goToAnchor(hash);
       }
