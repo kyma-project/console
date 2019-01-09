@@ -24,6 +24,7 @@ const DocsContentContainer = ({ content: { loading, content }, setDocsLoadingSta
   newContent.docs = new DocsProcessor(docs)
     .filterExternal()
     .improveRelativeLinks()
+    .changeHeadersAtrs()
     .sortByOrder()
     .sortByType()
     .result();

@@ -35,14 +35,16 @@ class Navigation extends Component {
     } = this.props;
     const { activeNodes } = this.state;
 
+    console.log(activeNodes)
+
     return (
       <ScrollSpy
         rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}
         nodeTypes={["groupOfDocuments", "document", "header"]}
         offset={{
-          groupOfDocuments: 40,
-          document: 40,
-          header: 40,
+          groupOfDocuments: 10,
+          document: 10,
+          header: 5,
         }}
         onUpdate={activeNodes => this.setState({ activeNodes })}
         activeContent={activeContent}
