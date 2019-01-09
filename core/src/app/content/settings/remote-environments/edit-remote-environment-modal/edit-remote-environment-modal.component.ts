@@ -70,7 +70,7 @@ export class EditRemoteEnvironmentModalComponent {
       name: this.name,
       description: this.updatedDescription,
       labels: (this.updatedLabels || []).reduce((acc, label) => {
-        return { ...acc, [label.split(':')[0]]: label.split(':')[1] };
+        return { ...acc, [label.split('=')[0]]: label.split('=')[1] };
       }, {})
     };
 

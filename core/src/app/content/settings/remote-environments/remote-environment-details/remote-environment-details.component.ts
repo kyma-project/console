@@ -164,7 +164,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     if (!labels) {
       return [];
     }
-    return Object.entries(labels).map(([key, value]) => key + ':' + value);
+    return Object.entries(labels).map(([key, value]) => key + '=' + value);
   }
 
   public openEditRemoteEnvModal() {

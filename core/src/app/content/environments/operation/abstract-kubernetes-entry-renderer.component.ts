@@ -25,7 +25,7 @@ export abstract class AbstractKubernetesEntryRendererComponent {
     return _.transform(
       labels,
       (result, value, key) => {
-        return result.push(key + ':' + value);
+        return result.push(key + '=' + value);
       },
       []
     );
