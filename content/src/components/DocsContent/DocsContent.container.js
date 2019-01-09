@@ -7,7 +7,7 @@ import { DocsProcessor } from "./DocsProcessor";
 import { CONTENT_QUERY } from './queries';
 import { SET_DOCS_LOADING_STATUS } from './mutations';
 
-const DocsContentContainer = ({ content: { loading, content }, docsLoadingStatus, setDocsLoadingStatus }) => {
+const DocsContentContainer = ({ content: { loading, content }, setDocsLoadingStatus }) => {
   setDocsLoadingStatus({
     variables: {
       docsLoadingStatus: loading,
@@ -18,11 +18,12 @@ const DocsContentContainer = ({ content: { loading, content }, docsLoadingStatus
     return null;
   }
 
-  const { docs = [], type, id } = content;
+  const { docs = [] } = content;
   const newContent = { ...content };
 
   newContent.docs = new DocsProcessor(docs)
     .filterExternal()
+    .improveRelativeLinks()
     .sortByOrder()
     .sortByType()
     .result();

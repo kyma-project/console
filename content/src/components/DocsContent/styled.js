@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
   font-family: '72';
   font-weight: normal;
-  padding: 16px;
+  padding: 0 16px 16px;
 `;
 
 export const ContentHeader = styled.h2`
@@ -18,6 +18,7 @@ export const ContentHeader = styled.h2`
   width: 100%;
   margin: 0;
   margin-bottom: 26px;
+  padding-top: 16px;
   font-size: 20px;
   font-weight: bold;
   &:first-letter {

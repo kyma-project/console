@@ -582,7 +582,7 @@ Luigi.setConfig({
       {
         pathSegment: 'docs',
         viewUrl: config.docsModuleUrl,
-        label: 'Help',
+        label: 'Docs',
         hideSideNav: true,
         context: {
           idToken: token

@@ -13,7 +13,7 @@ import {
 
 function NavigationGroup({
   title,
-  items,
+  items = [],
   groupType,
   isLinkActive,
   activeContent,
@@ -87,7 +87,7 @@ function NavigationGroup({
     <NavigationContainer>
       {title && <NavigationHeader>{title}</NavigationHeader>}
       <NavigationItems showAll>
-        {items && items.map(item => renderNavigationItem(item))}
+        {items.map(item => renderNavigationItem(item))}
       </NavigationItems>
     </NavigationContainer>
   );

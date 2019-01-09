@@ -1,6 +1,7 @@
 export class DocsProcessor {
   constructor(docs = []) {
-    this.docs = [...docs];
+    // for rewrite readonly fields
+    this.docs = JSON.parse(JSON.stringify([...docs]))
   }
 
   replaceImagePaths = ({ type, id, version, versions }) => {
@@ -29,8 +30,9 @@ export class DocsProcessor {
   sortByType = () => {
     let docsTypes = [];
     this.docs.map(doc => {
-      if (!docsTypes.includes(doc.type || doc.title))
+      if (!docsTypes.includes(doc.type || doc.title)) {
         docsTypes.push(doc.type || doc.title);
+      }
       return doc;
     });
 
@@ -39,7 +41,6 @@ export class DocsProcessor {
       for (const doc of this.docs) {
         if (type === doc.type || (!doc.type && type === doc.title)) {
           sortedDocs.push(doc);
-          continue;
         }
       }
     }
@@ -69,6 +70,32 @@ export class DocsProcessor {
     this.docs = this.docs.filter(item => !item.internal);
     return this;
   };
+
+  improveRelativeLinks = () => {
+    const hrefLinksRegexp = /href="\/docs(.*?)"/g;
+    this.docs.map(doc => {
+      if (doc.source.search(hrefLinksRegexp) !== -1) {
+        try {
+          doc.source = doc.source.replace(
+            hrefLinksRegexp,
+            occurrence => {
+              hrefLinksRegexp.lastIndex = 0;
+              let href = hrefLinksRegexp.exec(occurrence);
+          
+              if (!href || !href[1]) return occurrence;
+              return `href=${href[1]}`
+            }
+          );
+        } catch(e) {
+          console.error(e)
+        }
+      }
+
+      return doc;
+    })
+
+    return this
+  }
 
   result() {
     return this.docs;
