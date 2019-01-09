@@ -28,15 +28,17 @@ function getNodes(context) {
   var staticNodes = [
     {
       link: '/home/workspace',
-      label: 'Back to Home'
+      label: 'Back to Home',
+      icon: 'nav-back'
     },
     {
       pathSegment: 'details',
       label: 'Overview',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/details'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/details',
+      icon: 'product'
     },
     {
-      category: 'Service Catalog',
+      category: { label: 'Service Catalog', icon: 'add-coursebook' },
       navigationContext: 'service-catalog',
       pathSegment: 'service-catalog',
       label: 'Catalog',
@@ -81,7 +83,7 @@ function getNodes(context) {
       viewUrl: config.serviceBrokersModuleUrl
     },
     {
-      category: 'Configuration',
+      category: { label: 'Configuration', icon: 'key-user-settings' },
       pathSegment: 'apis',
       navigationContext: 'apis',
       label: 'APIs',
@@ -146,7 +148,7 @@ function getNodes(context) {
         '/consoleapp.html#/home/namespaces/' + environment + '/configmaps'
     },
     {
-      category: 'Development',
+      category: { label: 'Development', icon: 'source-code' },
       pathSegment: 'lambdas',
       navigationContext: 'lambdas',
       label: 'Lambdas',
@@ -170,7 +172,7 @@ function getNodes(context) {
       ]
     },
     {
-      category: 'Operation',
+      category: { label: 'Operation', icon: 'instance' },
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
@@ -479,7 +481,8 @@ Luigi.setConfig({
                 pathSegment: 'workspace',
                 label: 'Namespaces',
                 viewUrl:
-                  '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}'
+                  '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                icon: 'dimension'
               },
               {
                 pathSegment: 'namespaces',
@@ -501,7 +504,7 @@ Luigi.setConfig({
                 pathSegment: 'apps',
                 navigationContext: 'apps',
                 label: 'Applications',
-                category: 'Integration',
+                category: { label: 'Integration', icon: 'overview-chart' },
                 viewUrl: '/consoleapp.html#/home/settings/apps',
                 keepSelectedForChildren: true,
                 children: [
@@ -534,7 +537,7 @@ Luigi.setConfig({
                 pathSegment: 'settings',
                 navigationContext: 'settings',
                 label: 'General Settings',
-                category: 'Settings',
+                category: { label: 'Settings', icon: 'settings' },
                 viewUrl: '/consoleapp.html#/home/settings/organisation'
               },
               {
@@ -559,7 +562,7 @@ Luigi.setConfig({
               },
               {
                 label: 'Stats & Metrics',
-                category: 'Diagnostics',
+                category: { label: 'Diagnostics', icon: 'electrocardiogram' },
                 externalLink: {
                   url: 'https://grafana.' + k8sDomain,
                   sameWindow: false
@@ -586,7 +589,8 @@ Luigi.setConfig({
         hideSideNav: true,
         context: {
           idToken: token
-        }
+        },
+        icon: 'sys-help'
       }
     ],
     contextSwitcher: {
