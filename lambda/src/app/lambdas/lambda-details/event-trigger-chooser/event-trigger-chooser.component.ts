@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 import { EventTrigger } from '../../../shared/datamodel/event-trigger';
 import * as _ from 'lodash';
 import * as luigiClient from '@kyma-project/luigi-client';
@@ -29,6 +29,12 @@ export class EventTriggerChooserComponent {
     this.filteredTriggers = [];
     this.eventsSelected = 0;
     this.enableAdd = false;
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.closeEventTriggerChooserModal();
   }
 
   public show(availableEventTriggers, selectedEventTriggers) {
