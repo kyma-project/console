@@ -16,6 +16,7 @@ function NavigationGroup({
   items,
   groupType,
   isLinkActive,
+  activeContent,
   activeNav,
   activeNodes,
   chooseActive,
@@ -32,7 +33,7 @@ function NavigationGroup({
           hash: "",
         });
       }}
-      activeArrow={item.id === activeNav.id}
+      activeArrow={item.id === activeNav.id || item.id === activeContent.id}
       active={isLinkActive({
         id: item.id,
         type: groupType,
@@ -70,6 +71,7 @@ function NavigationGroup({
             items={topics.sections}
             groupType={groupType}
             rootId={item.id}
+            activeContent={activeContent}
             activeNav={activeNav}
             activeNodes={activeNodes}
             setActiveNav={setActiveNav}

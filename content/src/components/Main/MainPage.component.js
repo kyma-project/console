@@ -34,6 +34,18 @@ class MainPage extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { docsLoadingStatus: { docsLoadingStatus } } = this.props;
+    const { activeNav } = this.state;
+
+    if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
+      const hash = activeNav.hash;
+      if (hash) {
+        goToAnchor(hash);
+      }
+    }
+  }
+
   getRoot = () => {
     const yaml = parseYaml();
     if (yaml && yaml.root) {
@@ -43,11 +55,14 @@ class MainPage extends Component {
   }
 
   chooseActive = (activeLink) => {
-    const { history } = this.props;
-    // this.setState({
-    //   activeContent: activeLink,
-    //   activeNav: activeLink,
-    // });
+    const { props: { history }, state: { activeContent } } = this;
+    
+    if (activeContent.id !== activeLink.id) {
+      this.setState({
+        activeContent: activeLink,
+        activeNav: activeLink,
+      });
+    }
 
     let link = `/${activeLink.type}/${activeLink.id}`;
     if (activeLink.hash) {
@@ -98,7 +113,7 @@ class MainPage extends Component {
   }
 
   render() {
-    const { history, topics } = this.props;
+    const { history, topics, docsLoadingStatus } = this.props;
     const { activeContent, activeNav, navigationList } = this.state;
     
     return (

@@ -1,7 +1,10 @@
 import ApolloClient from 'apollo-boost';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import builder from './../commons/builder';
+
+import resolvers from './resolvers';
 import defaults from './defaults';
+
+import builder from './../commons/builder';
 import { getURL } from './../commons/api-url';
 
 export function createApolloClient() {
@@ -31,6 +34,7 @@ export function createApolloClient() {
     },
     clientState: {
       defaults,
+      resolvers,
     },
   });
 

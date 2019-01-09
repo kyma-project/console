@@ -10,6 +10,7 @@ class ScrollSpy extends React.Component {
       offset: PropTypes.object,
       endOffset: PropTypes.number,
       onUpdate: PropTypes.func,
+      docsLoadingStatus: PropTypes.object,
     };
   }
 
@@ -21,6 +22,7 @@ class ScrollSpy extends React.Component {
       offset: 0,
       endOffset: 0,
       onUpdate() {},
+      activeContent: {},
     };
   }
 
@@ -63,9 +65,13 @@ class ScrollSpy extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      props: { nodeTypes, onUpdate },
+      props: { nodeTypes, onUpdate, docsLoadingStatus: { docsLoadingStatus } },
       state: { activeNodes },
     } = this;
+
+    if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
+      this.onResize();
+    }
 
     if (typeof onUpdate === "function") {
       for (const type of nodeTypes) {

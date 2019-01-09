@@ -14,6 +14,7 @@ function NavigationSections({
   rootId,
   parentId,
   isLinkActive,
+  activeContent,
   activeNav,
   activeNodes,
   chooseActive,
@@ -49,13 +50,30 @@ function NavigationSections({
     const hasSubElements = item && item.titles && item.titles.length > 0;
 
     let isActiveNavArrow = false;
-    if (
-      activeNodes &&
-      activeNodes.groupOfDocuments &&
-      activeNodes.groupOfDocuments.id.startsWith(hash)
-    ) {
-      isActiveNavArrow = true;
-    } else {
+    let isActive = false;
+
+    if (activeContent.id === rootId) {  
+      if (parentId) {
+        isActive =
+          activeNodes &&
+          (activeNodes.document && activeNodes.document.id === hash);
+      } else {
+        isActive =
+          activeNodes &&
+          (activeNodes.groupOfDocuments &&
+            activeNodes.groupOfDocuments.id === hash);
+      }
+
+      if (
+        activeNodes &&
+        activeNodes.groupOfDocuments &&
+        activeNodes.groupOfDocuments.id.startsWith(hash)
+      ) {
+        isActiveNavArrow = true;
+      }
+    }
+
+    if (!isActiveNavArrow) {
       isActiveNavArrow =
         hasSubElements &&
         activeNav.id === rootId &&
@@ -66,18 +84,6 @@ function NavigationSections({
     const key = parentId
       ? `${rootId}-${parentId}-${item.anchor}`
       : `${rootId}-${item.anchor}`;
-
-    let isActive = false;
-    if (parentId) {
-      isActive =
-        activeNodes &&
-        (activeNodes.document && activeNodes.document.id === hash);
-    } else {
-      isActive =
-        activeNodes &&
-        (activeNodes.groupOfDocuments &&
-          activeNodes.groupOfDocuments.id === hash);
-    }
 
     return (
       <NavigationItem key={key}>
@@ -105,6 +111,7 @@ function NavigationSections({
             rootId={rootId}
             parentId={item.anchor}
             isLinkActive={isLinkActive}
+            activeContent={activeContent}
             activeNav={activeNav}
             activeNodes={activeNodes}
             setActiveNav={setActiveNav}
@@ -123,12 +130,12 @@ function NavigationSections({
     activeNodes.groupOfDocuments &&
     activeNodes.groupOfDocuments.id.startsWith(parentId)
   ) {
-    isActiveNav = true;
+    isActiveNav = activeContent.id === rootId;
   } else {
-    isActiveNav = !parentId ? activeNav.id === rootId : false;
+    isActiveNav = !parentId ? activeContent.id === rootId : false;
   }
 
-  const isClickedNav = parentId
+  let isClickedNav = parentId
     ? activeNav.id === rootId &&
       activeNav.hash &&
       activeNav.hash.startsWith(parentId)

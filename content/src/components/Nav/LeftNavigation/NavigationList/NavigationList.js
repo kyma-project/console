@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { Separator } from '@kyma-project/react-components';
 
-import ScrollSpy from "../../ScrollSpy/ScrollSpy";
+import ScrollSpy from "../../ScrollSpy/ScrollSpy.container";
 import NavigationGroup from "./NavigationGroup";
 import { Wrapper } from "./styled";
 
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../../../commons/variables';
 import { tokenize } from '../../../../commons/helpers';
-
-// import { getDocsPath } from "../../../../../helpers/docsPath";
-// import { tokenize } from "../../../../../helpers/tokenize";
 
 class Navigation extends Component {
   state = {
@@ -31,13 +28,12 @@ class Navigation extends Component {
       items,
       topics,
       activeNav,
+      activeContent,
       chooseActive,
       setActiveNav,
       history,
     } = this.props;
     const { activeNodes } = this.state;
-
-    console.log(activeNodes)
 
     return (
       <ScrollSpy
@@ -57,6 +53,7 @@ class Navigation extends Component {
             topics={topics}
             groupType="root"
             isLinkActive={isLinkActive}
+            activeContent={activeContent}
             activeNav={activeNav}
             activeNodes={activeNodes}
             setActiveNav={setActiveNav}
@@ -70,6 +67,7 @@ class Navigation extends Component {
             topics={topics}
             groupType="components"
             isLinkActive={isLinkActive}
+            activeContent={activeContent}
             activeNav={activeNav}
             activeNodes={activeNodes}
             setActiveNav={setActiveNav}

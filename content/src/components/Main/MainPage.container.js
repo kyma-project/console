@@ -3,7 +3,7 @@ import { graphql, compose } from 'react-apollo';
 
 import MainPage from './MainPage.component';
 
-import { TOPICS_QUERY } from './queries';
+import { TOPICS_QUERY, DOCS_LOADING_STATUS } from './queries';
 
 import { prepareTopicsList } from '../../commons/yaml.js';
 
@@ -20,6 +20,9 @@ export default compose(
         },
       };
     },
+  }),
+  graphql(DOCS_LOADING_STATUS, {
+    name: 'docsLoadingStatus',
   }),
 )(props => {
   if (props.topics.loading || !props.topics.topics) return null;

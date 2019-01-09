@@ -5,8 +5,15 @@ import DocsContent from "./DocsContent.component";
 import { DocsProcessor } from "./DocsProcessor";
 
 import { CONTENT_QUERY } from './queries';
+import { SET_DOCS_LOADING_STATUS } from './mutations';
 
-const DocsContentContainer = ({ content: { loading, content } }) => {
+const DocsContentContainer = ({ content: { loading, content }, docsLoadingStatus, setDocsLoadingStatus }) => {
+  setDocsLoadingStatus({
+    variables: {
+      docsLoadingStatus: loading,
+    }
+  })
+
   if (loading || !content) {
     return null;
   }
@@ -41,5 +48,8 @@ export default compose(
         },
       };
     },
+  }),
+  graphql(SET_DOCS_LOADING_STATUS, {
+    name: 'setDocsLoadingStatus',
   }),
 )(DocsContentContainer);
