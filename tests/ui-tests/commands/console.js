@@ -1,4 +1,3 @@
-import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import request from 'request';
 import address from '../utils/address';
 
@@ -6,16 +5,15 @@ async function _loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   try {
-    await page.waitFor(1000);
-    await page.reload({ waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
-
     await page.waitForSelector('#login');
     await page.type('#login', config.login);
     await page.waitForSelector('#password');
     await page.type('#password', config.password);
     await page.waitForSelector(loginButtonSelector);
     await page.click(loginButtonSelector);
+    return page.waitForNavigation({
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
   } catch (err) {
     throw new Error(`Couldn't log in`, err);
   }
@@ -49,7 +47,7 @@ async function getFrame(page) {
 
 async function openLinkOnFrame(page, element, name) {
   const frame = await getFrame(page);
-  await frame.$$eval(
+  return frame.$$eval(
     element,
     (item, name) => {
       item.find(text => text.innerText.includes(name)).click();
@@ -59,15 +57,15 @@ async function openLinkOnFrame(page, element, name) {
 }
 
 async function openLink(page, element, name) {
-  await page.$$eval(
-    element,
-    (item, name) => {
-      item.find(text => text.innerText.includes(name)).click();
-    },
-    name
-  );
-  await page.waitFor(1000);
-  await page.reload({ waitUntil: 'networkidle0' });
+  return Promise.all([
+    page.$$eval(
+      element,
+      (item, name) => {
+        item.find(text => text.innerText.includes(name)).click();
+      },
+      name
+    )
+  ]);
 }
 
 function clearData(token, env) {
@@ -140,10 +138,7 @@ async function createEnvironment(page, name) {
   await frame.focus(envNameInput);
   await frame.type(envNameInput, name);
   await frame.click(createBtn);
-  await frame.waitForSelector(createEnvModal, { hidden: true });
-
-  await page.reload({ waitUntil: 'networkidle0' });
-  await waitForNavigationAndContext(page);
+  return frame.waitForSelector(createEnvModal, { hidden: true });
 }
 
 async function deleteEnvironment(page, envName) {
@@ -155,7 +150,7 @@ async function deleteEnvironment(page, envName) {
   await frame.click(`#${envName} > li > a[name=Delete]`);
   await frame.waitFor(deleteConfirmButton);
   await frame.click(deleteConfirmButton);
-  await frame.waitForSelector(deleteConfirmButton, { hidden: true });
+  return frame.waitForSelector(deleteConfirmButton, { hidden: true });
 }
 
 async function createRemoteEnvironment(page, name) {
@@ -176,8 +171,13 @@ async function createRemoteEnvironment(page, name) {
   await frame.type(descriptionInput, 'This is the Application for testing');
   await frame.focus(labelsInput);
   await frame.type(labelsInput, 'testKey:testValue');
-  await frame.click(createButton);
-  await frame.waitForSelector(createEnvModal, { hidden: true });
+  return Promise.all([
+    frame.click(createButton),
+    frame.waitForSelector(createEnvModal, { hidden: true }),
+    frame.waitForXPath(
+      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
+    )
+  ]);
 }
 
 async function deleteRemoteEnvironment(page, name) {

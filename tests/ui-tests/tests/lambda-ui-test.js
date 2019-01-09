@@ -3,19 +3,15 @@ import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
 import logOnEvents from '../utils/logging';
-import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
-const context = require('../utils/testContext');
 
 let browser, page;
-let dexReady = false;
 let token = '';
 
 describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
-    const data = await common.beforeAll(dexReady);
+    const data = await common.beforeAll();
     browser = data.browser;
     page = data.page;
     logOnEvents(page, t => (token = t));
@@ -27,11 +23,10 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   });
 
   test('Login to console', async () => {
-    await common.testLogin(dexReady, page);
+    await common.testLogin(page);
   });
 
   test('Create Lambda Function', async () => {
-    common.validateTestEnvironment(dexReady);
     const contentHeader = '.sf-toolbar__header';
 
     // given (go to Lambdas view)
@@ -45,8 +40,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await page.$$eval(navItem, item =>
       item.find(text => text.innerText.includes('Lambdas')).click()
     );
-    await page.reload({ waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
+    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
     // given (go to create lambda)
     const frame = await kymaConsole.getFrame(page);
@@ -85,7 +79,6 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   });
 
   test('Delete Lambda Function', async () => {
-    common.validateTestEnvironment(dexReady);
     // given
     const frame = await kymaConsole.getFrame(page);
     const dropdownButton = '.tn-button.tn-button--icon.tn-button--text';

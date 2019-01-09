@@ -1,36 +1,43 @@
 import config from '../config';
 import address from '../utils/address';
-import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import kymaConsole from './console';
 const context = require('../utils/testContext');
 
-function validateTestEnvironment(isTestEnvironmentReady) {
-  if (!isTestEnvironmentReady) {
-    throw new Error("Test environment wasn't ready");
-  }
-}
-
-async function beforeAll(isTestEnvironmentReady) {
-  validateTestEnvironment(isTestEnvironmentReady);
+async function beforeAll() {
   const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
+
+  // throttle network to test variable conditions
+  if (config.throttleNetwork) {
+    browser.on('targetchanged', async target => {
+      const page = await target.page();
+      if (!page) {
+        return;
+      }
+      const client = await page.target().createCDPSession();
+      await client.send('Network.setCacheDisabled', { cacheDisabled: true });
+      await client.send(
+        'Network.emulateNetworkConditions',
+        config.throttledNetworkConditions
+      );
+    });
+  }
+
   let page = await browser.newPage();
   const width = config.viewportWidth;
   const height = config.viewportHeight;
   await page.setViewport({ width, height });
-  await page.goto(consoleUrl, { waitUntil: 'networkidle0' });
-
+  await page.goto(consoleUrl, {
+    waitUntil: ['domcontentloaded', 'networkidle0']
+  });
   process.on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
     browser.close();
   });
-  await waitForNavigationAndContext(page);
-
   return { page, browser };
 }
 
-async function testLogin(isTestEnvironmentReady, page) {
-  validateTestEnvironment(isTestEnvironmentReady);
+async function testLogin(page) {
   await kymaConsole.login(page, config);
 
   // as title is configurable, test need to check something else
@@ -53,7 +60,6 @@ async function retry(page, functionToRetry, retryNumber = 3) {
 }
 
 module.exports = {
-  validateTestEnvironment,
   beforeAll,
   testLogin,
   retry
