@@ -35,8 +35,6 @@ class Navigation extends Component {
     } = this.props;
     const { activeNodes } = this.state;
 
-    console.log(activeNodes)
-
     return (
       <ScrollSpy
         rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}

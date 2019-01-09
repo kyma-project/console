@@ -131,7 +131,6 @@ class ScrollSpy extends React.Component {
   updateActiveNode = (nodes, scrollTop) => {
     const [firstNode] = nodes;
 
-    let activeNode;
     if (firstNode && scrollTop <= firstNode.offsetTop) return firstNode;
 
     return nodes

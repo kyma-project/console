@@ -22,7 +22,7 @@ function NavigationGroup({
   chooseActive,
   setActiveNav,
   history,
-  ...otherProps,
+  ...otherProps
 }) {
   const renderArrow = item => (
     <NavigationSectionArrow

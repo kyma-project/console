@@ -98,7 +98,7 @@ export class DocsProcessor {
   }
 
   changeHeadersAtrs = () => {
-    const headerIDRegexp = /id=(\"|')(.*?)(\"|')/g;
+    const headerIDRegexp = /id=("|')(.*?)("|')/g;
     this.docs.map(doc => {
       if (doc.source.search(headerIDRegexp) !== -1) {
         try {

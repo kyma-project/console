@@ -20,7 +20,7 @@ function NavigationSections({
   chooseActive,
   setActiveNav,
   history,
-  ...otherProps,
+  ...otherProps
 }) {
   const hashing = item => {
     if (parentId) return `${parentId}-${item.anchor}`;
