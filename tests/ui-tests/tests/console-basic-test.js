@@ -56,10 +56,10 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       const environmentNamesAfterDelete = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
         page
       );
-      if (initialEnvironmentNames > environmentNamesAfterDelete) {
-        return environmentNamesAfterDelete;
+      if (initialEnvironmentNames <= environmentNamesAfterDelete) {
+        throw new Error(`Namespace ${config.testEnv} not yet deleted`);
       }
-      throw new Error(`Namespace ${config.testEnv} not yet deleted`);
+      return environmentNamesAfterDelete;
     });
 
     //assert
@@ -128,10 +128,10 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
         const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
           page
         );
-        if (initialRemoteEnvironments > remoteEnvironmentsAfterRemoval) {
-          return remoteEnvironmentsAfterRemoval;
+        if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
+          throw new Error(`Application ${config.testEnv} was not yet removed`);
         }
-        throw new Error(`Application ${config.testEnv} was not yet removed`);
+        return remoteEnvironmentsAfterRemoval;
       },
       5
     );

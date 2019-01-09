@@ -11,14 +11,15 @@ async function beforeAll() {
   if (config.throttleNetwork) {
     browser.on('targetchanged', async target => {
       const page = await target.page();
-      if (page) {
-        const client = await page.target().createCDPSession();
-        await client.send('Network.setCacheDisabled', { cacheDisabled: true });
-        await client.send(
-          'Network.emulateNetworkConditions',
-          config.throttledNetworkConditions
-        );
+      if (!page) {
+        return;
       }
+      const client = await page.target().createCDPSession();
+      await client.send('Network.setCacheDisabled', { cacheDisabled: true });
+      await client.send(
+        'Network.emulateNetworkConditions',
+        config.throttledNetworkConditions
+      );
     });
   }
 
