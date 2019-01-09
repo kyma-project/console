@@ -5,7 +5,6 @@ import catalog from '../commands/catalog';
 import common from '../commands/common';
 import logOnEvents from '../utils/logging';
 import address from '../utils/address';
-import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 
@@ -24,10 +23,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       logOnEvents(page, t => (token = t));
 
       await common.testLogin(isEnvironmentReady, page);
-      await page.waitFor(1000);
-      await page.reload({ waitUntil: 'networkidle0' });
-      await waitForNavigationAndContext(page);
-      await kymaConsole.createEnvironment(page, config.catalogTestEnv);
+      await Promise.all([
+        kymaConsole.createEnvironment(page, config.catalogTestEnv),
+        page.waitForNavigation({
+          waitUntil: ['domcontentloaded', 'networkidle0']
+        })
+      ]);
     } catch (e) {
       isEnvironmentReady = false;
       throw e;
@@ -49,10 +50,10 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const catalogExpectedHeader = 'Service Catalog';
     const searchSelector = catalog.prepareSelector('search');
     const searchBySth = 'lololo';
-    const navItem = 'a.fd-side-nav__sublink';
 
-    await kymaConsole.openLink(page, navItem, 'Catalog');
-
+    await page.goto(address.console.getCatalog(config.catalogTestEnv), {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(catalogHeaderSelector);
     const catalogHeader = await frame.$eval(
@@ -142,9 +143,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     const frame = await kymaConsole.getFrame(page);
     const redis = await frame.$(exampleServiceClassButton);
-    await redis.click();
-    await waitForNavigationAndContext(page);
-
+    await Promise.all([
+      redis.click(),
+      frame.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
     const frame2 = await kymaConsole.getFrame(page);
     await frame2.waitForSelector(exampleServiceClassTitle);
     const title = await frame2.$(exampleServiceClassTitle);
@@ -169,20 +173,19 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     // consts
     const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
-
     await catalog.createInstance(page, instanceTitle, instanceLabel);
-
-    await page.goto(catalogUrl, { waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
-
+    await page.goto(catalogUrl, {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
     const frame = await kymaConsole.getFrame(page);
     const redis = await frame.$(exampleServiceClassButton);
-    await redis.click();
-    await waitForNavigationAndContext(page);
-
-    const frame2 = await kymaConsole.getFrame(page);
-    await frame2.waitForSelector(addToEnvButton, { visible: true });
-
+    await Promise.all([
+      redis.click(),
+      frame.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
+    await frame.waitForSelector(addToEnvButton, { visible: true });
     await catalog.createInstance(page, instanceTitle2, instanceLabel2);
   });
 
@@ -201,8 +204,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const toggleSearchSelector = catalog.prepareSelector('toggle-search');
     const searchBySth = 'lololo';
 
-    await page.goto(instancesUrl, { waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
+    await page.goto(instancesUrl, {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(instancesHeaderSelector);
     const instancesHeader = await frame.$eval(
@@ -259,20 +263,21 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const redis = await frame.waitForSelector(exampleInstanceLink, {
       visible: true
     });
-    await redis.click();
-    await waitForNavigationAndContext(page);
+    await Promise.all([
+      redis.click(),
+      frame.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
 
-    await kymaConsole.getFrame(page);
-    const frame2 = await kymaConsole.getFrame(page);
-
-    await frame2.waitForSelector(exampleInstanceServiceClass);
-    const serviceClass = await frame2.$(exampleInstanceServiceClass);
-    const servicePlan = await frame2.$(exampleInstanceServicePlan);
-    const documentationLink = await frame2.$(
+    await frame.waitForSelector(exampleInstanceServiceClass);
+    const serviceClass = await frame.$(exampleInstanceServiceClass);
+    const servicePlan = await frame.$(exampleInstanceServicePlan);
+    const documentationLink = await frame.$(
       exampleInstanceServiceDocumentationLink
     );
-    const supportLink = await frame2.$(exampleInstanceServiceSupportLink);
-    const statusType = await frame2.$(exampleInstanceStatusType);
+    const supportLink = await frame.$(exampleInstanceServiceSupportLink);
+    const statusType = await frame.$(exampleInstanceStatusType);
 
     expect(serviceClass.toString()).not.toBeNull();
     expect(servicePlan.toString()).not.toBeNull();

@@ -3,7 +3,6 @@ import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
 import logOnEvents from '../utils/logging';
-import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 const context = require('../utils/testContext');
@@ -45,8 +44,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await page.$$eval(navItem, item =>
       item.find(text => text.innerText.includes('Lambdas')).click()
     );
-    await page.reload({ waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
+    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
     // given (go to create lambda)
     const frame = await kymaConsole.getFrame(page);
