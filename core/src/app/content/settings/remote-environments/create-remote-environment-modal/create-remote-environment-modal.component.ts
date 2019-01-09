@@ -72,7 +72,7 @@ export class CreateRemoteEnvironmentModalComponent {
       name: this.name,
       description: this.description,
       labels: (this.labels || []).reduce((acc, label) => {
-        return { ...acc, [label.split(':')[0]]: label.split(':')[1] };
+        return { ...acc, [label.split('=')[0]]: label.split('=')[1] };
       }, {})
     };
 

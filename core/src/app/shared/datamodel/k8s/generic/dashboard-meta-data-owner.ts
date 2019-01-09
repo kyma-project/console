@@ -27,7 +27,7 @@ export class DashboardMetaDataOwner implements IDashboardMetaDataOwner {
         if (this.objectMeta.labels[key] === 'undefined') {
           labels.push(key);
         } else {
-          labels.push(key + ':' + this.objectMeta.labels[key]);
+          labels.push(key + '=' + this.objectMeta.labels[key]);
         }
       }
     }
