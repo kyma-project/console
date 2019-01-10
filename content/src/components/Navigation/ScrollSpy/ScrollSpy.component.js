@@ -66,11 +66,11 @@ class ScrollSpy extends React.Component {
     } = this;
 
     if ((prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus)) {
-      setTimeout(this.onResize, 200);
+      setTimeout(this.onResize, 350);
     }
 
     if (prevProps.activeContent.id !== activeContent.id) {
-      setTimeout(this.onResize, 200);
+      setTimeout(this.onResize, 350);
     }
 
     if (typeof onUpdate !== "function")  {
