@@ -15,7 +15,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      await common.testLogin(page);
+      await kymaConsole.testLogin(page);
     } catch (e) {
       throw e;
     }

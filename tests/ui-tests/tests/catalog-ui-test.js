@@ -20,7 +20,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       page = data.page;
       logOnEvents(page, t => (token = t));
 
-      await common.testLogin(page);
+      await kymaConsole.testLogin(page);
       await Promise.all([
         kymaConsole.createEnvironment(page, config.catalogTestEnv),
         page.waitForNavigation({

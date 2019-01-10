@@ -1,32 +1,32 @@
 import config from '../config';
 import address from '../utils/address';
-import kymaConsole from './console';
 const context = require('../utils/testContext');
 
 async function beforeAll() {
   const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
 
-  // throttle network to test variable conditions
-  if (config.throttleNetwork) {
-    browser.on('targetchanged', async target => {
-      const page = await target.page();
-      if (!page) {
-        return;
-      }
-      const client = await page.target().createCDPSession();
-      await client.send('Network.setCacheDisabled', { cacheDisabled: true });
+  browser.on('targetchanged', async target => {
+    const page = await target.page();
+    if (!page) {
+      return;
+    }
+    const client = await page.target().createCDPSession();
+    await client.send('Network.setCacheDisabled', { cacheDisabled: true });
+    // throttle network to test variable conditions
+    if (config.throttleNetwork) {
       await client.send(
         'Network.emulateNetworkConditions',
         config.throttledNetworkConditions
       );
-    });
-  }
+    }
+  });
 
   let page = await browser.newPage();
   const width = config.viewportWidth;
   const height = config.viewportHeight;
   await page.setViewport({ width, height });
+  console.log(`Opening ${consoleUrl}`);
   await page.goto(consoleUrl, {
     waitUntil: ['domcontentloaded', 'networkidle0']
   });
@@ -35,13 +35,6 @@ async function beforeAll() {
     browser.close();
   });
   return { page, browser };
-}
-
-async function testLogin(page) {
-  await kymaConsole.login(page, config);
-
-  // as title is configurable, test need to check something else
-  await page.waitForSelector('.fd-shellbar', { visible: true });
 }
 
 async function retry(page, functionToRetry, retryNumber = 3) {
@@ -61,6 +54,5 @@ async function retry(page, functionToRetry, retryNumber = 3) {
 
 module.exports = {
   beforeAll,
-  testLogin,
   retry
 };

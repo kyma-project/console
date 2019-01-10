@@ -23,7 +23,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   });
 
   test('Login to console', async () => {
-    await common.testLogin(page);
+    await kymaConsole.testLogin(page);
   });
 
   test('Create Lambda Function', async () => {
