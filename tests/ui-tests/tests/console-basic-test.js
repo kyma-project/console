@@ -15,7 +15,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     browser = data.browser;
     page = data.page;
     logOnEvents(page, t => (token = t));
-    await common.testLogin(page);
+    await kymaConsole.testLogin(page);
   });
 
   afterAll(async () => {

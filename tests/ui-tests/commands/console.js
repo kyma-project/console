@@ -1,5 +1,14 @@
 import request from 'request';
 import address from '../utils/address';
+import common from './common';
+import config from '../config';
+
+async function testLogin(page) {
+  await login(page, config);
+
+  // as title is configurable, test need to check something else
+  await page.waitForSelector('.fd-shellbar', { visible: true });
+}
 
 async function _loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
@@ -171,13 +180,23 @@ async function createRemoteEnvironment(page, name) {
   await frame.type(descriptionInput, 'This is the Application for testing');
   await frame.focus(labelsInput);
   await frame.type(labelsInput, 'testKey:testValue');
-  return Promise.all([
+  await Promise.all([
     frame.click(createButton),
-    frame.waitForSelector(createEnvModal, { hidden: true }),
-    frame.waitForXPath(
-      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
-    )
+    frame.waitForSelector(createEnvModal, { hidden: true })
   ]);
+
+  return common.retry(page, async () => {
+    try {
+      await frame.waitForXPath(
+        `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
+      );
+    } catch (e) {
+      throw new Error(`Application ${name} not yet created`);
+    }
+    return frame.waitForXPath(
+      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
+    );
+  });
 }
 
 async function deleteRemoteEnvironment(page, name) {
@@ -208,6 +227,7 @@ async function deleteRemoteEnvironment(page, name) {
 
 module.exports = {
   login,
+  testLogin,
   getFrame,
   openLink,
   openLinkOnFrame,
