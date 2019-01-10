@@ -179,7 +179,7 @@ async function createRemoteEnvironment(page, name) {
   await frame.focus(descriptionInput);
   await frame.type(descriptionInput, 'This is the Application for testing');
   await frame.focus(labelsInput);
-  await frame.type(labelsInput, 'testKey:testValue');
+  await frame.type(labelsInput, 'testKey=testValue');
   await Promise.all([
     frame.click(createButton),
     frame.waitForSelector(createEnvModal, { hidden: true })
