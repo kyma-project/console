@@ -179,24 +179,12 @@ async function createRemoteEnvironment(page, name) {
   await frame.focus(descriptionInput);
   await frame.type(descriptionInput, 'This is the Application for testing');
   await frame.focus(labelsInput);
-  await frame.type(labelsInput, 'testKey=testValue');
-  await Promise.all([
-    frame.click(createButton),
-    frame.waitForSelector(createEnvModal, { hidden: true })
-  ]);
-
-  return common.retry(page, async () => {
-    try {
-      await frame.waitForXPath(
-        `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
-      );
-    } catch (e) {
-      throw new Error(`Application ${name} not yet created`);
-    }
-    return frame.waitForXPath(
-      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
-    );
-  });
+  await frame.type(labelsInput, 'testKey:testValue');
+  await frame.click(createButton);
+  await frame.waitForSelector(createEnvModal, { hidden: true });
+  return frame.waitForXPath(
+    `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
+  );
 }
 
 async function deleteRemoteEnvironment(page, name) {
