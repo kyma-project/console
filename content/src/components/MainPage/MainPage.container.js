@@ -1,16 +1,19 @@
+import React from 'react';
 import { graphql, compose } from 'react-apollo';
-import { TOPICS_QUERY } from './queries';
+
 import MainPage from './MainPage.component';
+
+import { TOPICS_QUERY, DOCS_LOADING_STATUS } from './queries';
+
 import { prepareTopicsList } from '../../commons/yaml.js';
 
-const topics = prepareTopicsList();
 export default compose(
   graphql(TOPICS_QUERY, {
     name: 'topics',
     options: props => {
       return {
         variables: {
-          input: topics
+          input: prepareTopicsList(),
         },
         options: {
           fetchPolicy: 'cache-and-network',
@@ -18,4 +21,11 @@ export default compose(
       };
     },
   }),
-)(MainPage);
+  graphql(DOCS_LOADING_STATUS, {
+    name: 'docsLoadingStatus',
+  }),
+)(props => {
+  if (props.topics.loading || !props.topics.topics) return null;
+
+  return <MainPage { ...props } topics={props.topics.topics} />
+});

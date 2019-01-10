@@ -1,5 +1,5 @@
-import ContentWrapper from './ContentWrapper/defaults';
+import DocsContent from './DocsContent/defaults';
 
 export default {
-  ...ContentWrapper,
+  ...DocsContent,
 };

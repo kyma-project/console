@@ -1,60 +1,58 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { ThemeWrapper, Toolbar } from '@kyma-project/react-components';
-import ColumnsWrapper from '../ColumnsWrapper/ColumnsWrapper.component';
-import ContentWrapper from '../ContentWrapper/ContentWrapper.container';
-import NavigationList from '../Navigation/NavigationList.component';
+import { ThemeWrapper } from '@kyma-project/react-components';
+
+import DocsContent from '../DocsContent/DocsContent.container';
+import LeftNavigation from '../Navigation/LeftNavigation/LeftNavigation';
+import { 
+  ColumnsWrapper,
+  LeftSideWrapper,
+  CenterSideWrapper,
+} from './styled';
+
 import { parseYaml } from '../../commons/yaml.js';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
-
-const LeftSideWrapper = styled.div`
-  box-sizing: border-box;
-  text-align: left;
-  flex: 0 0 auto;
-  position: fixed;
-  height: 100%;
-  width: 280px;
-  bottom: 0;
-  z-index: 1;
-  overflow: auto;
-  background-color: #fff;
-  -webkit-transition: -webkit-transform 0.2s ease-in-out;
-  transition: -webkit-transform 0.2s ease-in-out;
-  transition: transform 0.2s ease-in-out;
-  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
-  -webkit-box-shadow: 0 0 1px #ebebeb;
-  box-shadow: 0 0 1px #ebebeb;
-`;
-
-const CenterSideWrapper = styled.div`
-  box-sizing: border-box;
-  max-width: 1272px;
-  padding: 0 30px;
-  padding-left: 311px;
-
-  text-align: left;
-  flex: 1 1 auto;
-`;
+import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      active: {
-        id: this.props.match.params.id || this.getRoot(),
-        type: this.props.match.params.type || 'root',
-        hash: this.props.location.hash.replace(/#/g, ''),
-      },
-      activeNav: {
-        id: this.props.match.params.id || this.getRoot(),
-        type: this.props.match.params.type || 'root',
-        hash: this.props.location.hash.replace(/#/g, ''),
-      },
-      navigationList: parseYaml(),
-    };
+    this.state = this.setInitialState(props.match, props.location)
   }
 
-  getRoot() {
+  setInitialState = (match, location) => {
+    const active = {
+      id: match.params.id || this.getRoot(),
+      type: match.params.type || 'root',
+      hash: location.hash.replace(/#/g, ''),
+    }
+
+    return {
+      activeContent: active,
+      activeNav: {},
+      navigationList: parseYaml(),
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { docsLoadingStatus: { docsLoadingStatus } } = this.props;
+    const { activeContent } = this.state;
+    const hash = activeContent.hash
+
+    if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
+      if (hash) {
+        goToAnchor(hash);
+      }
+    }
+
+
+    if (activeContent && (prevState.activeContent.id !== activeContent.id)) {
+      if (hash) {
+        goToAnchor(hash);
+      }
+    }
+  }
+
+  getRoot = () => {
     const yaml = parseYaml();
     if (yaml && yaml.root) {
       return yaml.root.id;
@@ -62,23 +60,37 @@ class MainPage extends Component {
     return null;
   }
 
-  chooseActive(activeLink) {
-    this.setState({
-      active: activeLink,
-      activeNav: activeLink,
-    });
+  chooseActive = (activeLink) => {
+    const { props: { history }, state: { activeContent } } = this;
+    
+    if (activeContent.id !== activeLink.id) {
+      this.setState({
+        activeContent: activeLink,
+        activeNav: activeLink,
+      });
+    } else {
+      this.setState({
+        activeContent: activeLink,
+        activeNav: {
+          id: activeLink.id,
+          type: "",
+          hash: "",
+        }
+      });
+    }
+
     let link = `/${activeLink.type}/${activeLink.id}`;
     if (activeLink.hash) {
       link = `${link}#${activeLink.hash}`;
-      this.props.history.push(link);
+      history.push(link);
       goToAnchor(activeLink.hash);
     } else {
-      this.props.history.push(link);
+      history.push(link);
       goToTop();
     }
   }
 
-  setActiveNav(activeNav) {
+  setActiveNav = (activeNav) => {
     if (
       JSON.stringify(activeNav) === JSON.stringify(this.state.activeNav) ||
       (activeNav.type === this.state.activeNav.type &&
@@ -91,13 +103,13 @@ class MainPage extends Component {
     }
   }
 
-  expandNav(activeNav) {
+  expandNav = (activeNav) => {
     this.setState({
       activeNav: activeNav,
     });
   }
 
-  colapseNav(activeNav) {
+  colapseNav = (activeNav) => {
     const nav = activeNav.hash
       ? {
           id: activeNav.id,
@@ -116,44 +128,27 @@ class MainPage extends Component {
   }
 
   render() {
-    let topics = null;
-    if (!this.props.topics.loading) {
-      if (this.props.topics.topics) {
-        topics = this.props.topics.topics;
-      }
-    }
+    const { history, topics } = this.props;
+    const { activeContent, activeNav, navigationList } = this.state;
+    
     return (
       <ThemeWrapper>
-        <div className="App">
-          <ColumnsWrapper>
-            <LeftSideWrapper>
-              <Toolbar
-                headline="Docs"
-                addSeparator
-                smallText
-                back={() => {
-                  this.props.history.goBack();
-                }}
-              />
-              <NavigationList
-                items={this.state.navigationList}
-                topics={topics}
-                active={this.state.active}
-                activeNav={this.state.activeNav}
-                callbackParent={newState => {
-                  this.chooseActive(newState);
-                }}
-                setActiveNav={newState => {
-                  this.setActiveNav(newState);
-                }}
-                history={this.props.history}
-              />
-            </LeftSideWrapper>
-            <CenterSideWrapper>
-              <ContentWrapper item={this.state.active} />
-            </CenterSideWrapper>
-          </ColumnsWrapper>
-        </div>
+        <ColumnsWrapper>
+          <LeftSideWrapper>
+            <LeftNavigation 
+              items={navigationList}
+              topics={topics}
+              activeContent={activeContent}
+              activeNav={activeNav}
+              chooseActive={this.chooseActive}
+              setActiveNav={this.setActiveNav}
+              history={history}
+            />
+          </LeftSideWrapper>
+          <CenterSideWrapper id={SCROLL_SPY_ROOT_ELEMENT}>
+            <DocsContent contentMetadata={activeContent} />
+          </CenterSideWrapper>
+        </ColumnsWrapper>
       </ThemeWrapper>
     );
   }
