@@ -8,6 +8,7 @@ async function beforeAll() {
 
   browser.on('targetchanged', async target => {
     const page = await target.page();
+    page.setDefaultNavigationTimeout(config.defaultNavigationTimeout);
     if (!page) {
       return;
     }
@@ -23,6 +24,7 @@ async function beforeAll() {
   });
 
   let page = await browser.newPage();
+  page.setDefaultNavigationTimeout(config.defaultNavigationTimeout);
   const width = config.viewportWidth;
   const height = config.viewportHeight;
   await page.setViewport({ width, height });

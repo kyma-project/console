@@ -20,5 +20,6 @@ module.exports = {
     latency: 800,
     downloadThroughput: 280000,
     uploadThroughput: 256000
-  }
+  },
+  defaultNavigationTimeout: 60000
 };
