@@ -28,7 +28,7 @@ class MainPage extends Component {
 
     return {
       activeContent: active,
-      activeNav: active,
+      activeNav: {},
       navigationList: parseYaml(),
     }
   }
@@ -67,6 +67,15 @@ class MainPage extends Component {
       this.setState({
         activeContent: activeLink,
         activeNav: activeLink,
+      });
+    } else {
+      this.setState({
+        activeContent: activeLink,
+        activeNav: {
+          id: activeLink.id,
+          type: "",
+          hash: "",
+        }
       });
     }
 
