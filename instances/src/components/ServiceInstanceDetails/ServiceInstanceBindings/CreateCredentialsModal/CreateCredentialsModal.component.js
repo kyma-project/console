@@ -9,7 +9,7 @@ import { bindingVariables } from '../InfoButton/variables';
 import { CreateCredentialsButton } from './styled';
 
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
-import { LuigiClient } from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 class CreateCredentialsModal extends React.Component {
   constructor(props) {
