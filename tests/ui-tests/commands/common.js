@@ -6,22 +6,23 @@ async function beforeAll() {
   const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
 
-  browser.on('targetchanged', async target => {
-    const page = await target.page();
-    page.setDefaultNavigationTimeout(config.defaultNavigationTimeout);
-    if (!page) {
-      return;
-    }
-    const client = await page.target().createCDPSession();
-    await client.send('Network.setCacheDisabled', { cacheDisabled: true });
-    // throttle network to test variable conditions
-    if (config.throttleNetwork) {
+  // throttle network to test variable conditions
+  if (config.throttleNetwork) {
+    console.log('WARNING! Network Throttling Enabled');
+    browser.on('targetchanged', async target => {
+      const page = await target.page();
+      page.setDefaultNavigationTimeout(config.defaultNavigationTimeout);
+      if (!page) {
+        return;
+      }
+      const client = await page.target().createCDPSession();
+      await client.send('Network.setCacheDisabled', { cacheDisabled: true });
       await client.send(
         'Network.emulateNetworkConditions',
         config.throttledNetworkConditions
       );
-    }
-  });
+    });
+  }
 
   let page = await browser.newPage();
   page.setDefaultNavigationTimeout(config.defaultNavigationTimeout);

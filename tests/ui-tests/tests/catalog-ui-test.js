@@ -249,12 +249,10 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const redis = await frame.waitForSelector(exampleInstanceLink, {
       visible: true
     });
-    await Promise.all([
-      redis.click(),
-      frame.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0']
-      })
-    ]);
+    await redis.click();
+    await frame.waitForNavigation({
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
 
     await frame.waitForSelector(exampleInstanceServiceClass);
     const serviceClass = await frame.$(exampleInstanceServiceClass);

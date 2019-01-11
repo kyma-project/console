@@ -14,6 +14,9 @@ async function _loginViaDex(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   try {
+    await page.reload({
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
     await page.waitForSelector('#login');
     await page.type('#login', config.login);
     await page.waitForSelector('#password');

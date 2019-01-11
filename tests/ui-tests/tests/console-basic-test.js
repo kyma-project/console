@@ -11,11 +11,15 @@ let token = '';
 
 describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   beforeAll(async () => {
-    const data = await common.beforeAll();
-    browser = data.browser;
-    page = data.page;
-    logOnEvents(page, t => (token = t));
-    await kymaConsole.testLogin(page);
+    try {
+      const data = await common.beforeAll();
+      browser = data.browser;
+      page = data.page;
+      logOnEvents(page, t => (token = t));
+      await kymaConsole.testLogin(page);
+    } catch (e) {
+      throw e;
+    }
   });
 
   afterAll(async () => {
