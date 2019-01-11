@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/luigi-client": "^0.4.2",
+    "@kyma-project/luigi-client": "^0.4.4",
     "@kyma-project/react-components": "0.0.43",
     "apollo-boost": "^0.1.3",
     "graphql": "^0.13.2",
