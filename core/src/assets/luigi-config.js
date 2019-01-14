@@ -611,8 +611,17 @@ Luigi.setConfig({
     skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
   },
   settings: {
-    header: () => ({
-      logo: '/assets/logo.svg'
-    })
+    header: () => {
+      logo = clusterConfig.headerLogoUrl
+        ? clusterConfig.headerLogoUrl
+        : '/assets/logo.svg';
+      title = clusterConfig.headerTitle;
+      favicon = clusterConfig.faviconUrl;
+      return {
+        logo,
+        title,
+        favicon
+      };
+    }
   }
 });
