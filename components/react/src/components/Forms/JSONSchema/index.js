@@ -178,7 +178,11 @@ const StyledForm = styled(Form)`
   .array-item-remove {
     color: #ee0000;
     i:before {
-      content: 'Delete';
+      content: '\uE03D';
+      font-family: SAP-icons;
+      font-size: 1.4em;
+      display: inline-block;
+      padding: 0 10px;
     }
   }
 
@@ -223,28 +227,31 @@ const StyledForm = styled(Form)`
     white-space: pre;
   }
 
-  pre,
-  .config-error {
-    /*
-      FIXME: Temporary solution, remove it afer resolving:
-      https://github.com/mozilla-services/react-jsonschema-form/issues/963
-    */
-    display: none;
-  }
-
   i {
     display: inline-block;
     margin-top: 16px;
   }
 
   .field-object .field-object {
+    .row {
+      display: flex;
+      padding-top: 10px;
+      .form-additional {
+        flex-grow: 1;
+        padding-right: 10px;
+      }
+      .col-xs-2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
     p.field-description {
       margin-bottom: 12px;
     }
     div.form-group {
-      border-left: 2px solid rgba(204, 204, 204, 0.3);
       margin-bottom: 0;
-      padding: 0 0 16px 16px;
+      padding: 0 0 16px 0px;
     }
     div.form-group:last-child {
       padding: 0 0 0 16px;
@@ -253,6 +260,9 @@ const StyledForm = styled(Form)`
       border-left: none;
       padding: 0;
     }
+  }
+  fieldset#root_tags > div.form-group {
+    border-bottom: 2px solid rgba(204, 204, 204, 0.3);
   }
 `;
 
