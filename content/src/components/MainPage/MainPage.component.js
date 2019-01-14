@@ -3,11 +3,7 @@ import { ThemeWrapper } from '@kyma-project/react-components';
 
 import DocsContent from '../DocsContent/DocsContent.container';
 import LeftNavigation from '../Navigation/LeftNavigation/LeftNavigation';
-import { 
-  ColumnsWrapper,
-  LeftSideWrapper,
-  CenterSideWrapper,
-} from './styled';
+import { ColumnsWrapper, LeftSideWrapper, CenterSideWrapper } from './styled';
 
 import { parseYaml } from '../../commons/yaml.js';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
@@ -16,7 +12,7 @@ import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = this.setInitialState(props.match, props.location)
+    this.state = this.setInitialState(props.match, props.location);
   }
 
   setInitialState = (match, location) => {
@@ -24,19 +20,21 @@ class MainPage extends Component {
       id: match.params.id || this.getRoot(),
       type: match.params.type || 'root',
       hash: location.hash.replace(/#/g, ''),
-    }
+    };
 
     return {
       activeContent: active,
       activeNav: {},
       navigationList: parseYaml(),
-    }
-  }
+    };
+  };
 
   componentDidUpdate(prevProps, prevState) {
-    const { docsLoadingStatus: { docsLoadingStatus } } = this.props;
+    const {
+      docsLoadingStatus: { docsLoadingStatus },
+    } = this.props;
     const { activeContent } = this.state;
-    const hash = activeContent.hash
+    const hash = activeContent.hash;
 
     if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
       if (hash) {
@@ -44,8 +42,7 @@ class MainPage extends Component {
       }
     }
 
-
-    if (activeContent && (prevState.activeContent.id !== activeContent.id)) {
+    if (activeContent && prevState.activeContent.id !== activeContent.id) {
       if (hash) {
         goToAnchor(hash);
       }
@@ -58,11 +55,14 @@ class MainPage extends Component {
       return yaml.root.id;
     }
     return null;
-  }
+  };
 
-  chooseActive = (activeLink) => {
-    const { props: { history }, state: { activeContent } } = this;
-    
+  chooseActive = activeLink => {
+    const {
+      props: { history },
+      state: { activeContent },
+    } = this;
+
     if (activeContent.id !== activeLink.id) {
       this.setState({
         activeContent: activeLink,
@@ -73,9 +73,9 @@ class MainPage extends Component {
         activeContent: activeLink,
         activeNav: {
           id: activeLink.id,
-          type: "",
-          hash: "",
-        }
+          type: '',
+          hash: '',
+        },
       });
     }
 
@@ -88,9 +88,9 @@ class MainPage extends Component {
       history.push(link);
       goToTop();
     }
-  }
+  };
 
-  setActiveNav = (activeNav) => {
+  setActiveNav = activeNav => {
     if (
       JSON.stringify(activeNav) === JSON.stringify(this.state.activeNav) ||
       (activeNav.type === this.state.activeNav.type &&
@@ -101,15 +101,15 @@ class MainPage extends Component {
     } else {
       this.expandNav(activeNav);
     }
-  }
+  };
 
-  expandNav = (activeNav) => {
+  expandNav = activeNav => {
     this.setState({
       activeNav: activeNav,
     });
-  }
+  };
 
-  colapseNav = (activeNav) => {
+  colapseNav = activeNav => {
     const nav = activeNav.hash
       ? {
           id: activeNav.id,
@@ -125,17 +125,17 @@ class MainPage extends Component {
     this.setState({
       activeNav: nav,
     });
-  }
+  };
 
   render() {
     const { history, topics } = this.props;
     const { activeContent, activeNav, navigationList } = this.state;
-    
+
     return (
       <ThemeWrapper>
         <ColumnsWrapper>
           <LeftSideWrapper>
-            <LeftNavigation 
+            <LeftNavigation
               items={navigationList}
               topics={topics}
               activeContent={activeContent}

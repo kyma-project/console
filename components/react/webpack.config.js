@@ -40,7 +40,6 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },
-  devtool: 'source-map',
   devServer: {
     contentBase: './src',
     hot: true,
@@ -50,6 +49,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],
+  optimization: {
+    minimize: false,
+  },
   externals: {
     'styled-components': {
       commonjs: 'styled-components',
