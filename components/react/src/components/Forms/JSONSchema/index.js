@@ -176,11 +176,11 @@ const StyledForm = styled(Form)`
   }
 
   .array-item-remove {
-    color: #ee0000;
+    color: #0a6ed1;
     i:before {
       content: '\uE03D';
       font-family: SAP-icons;
-      font-size: 1.4em;
+      font-size: 14px;
       display: inline-block;
       padding: 0 10px;
     }
