@@ -460,7 +460,6 @@ function getEnvs() {
       }
       envName = env.metadata.name;
       envs.push({
-        // has to be visible for all views exept 'settings'
         category: 'Namespaces',
         label: envName,
         pathValue: envName
