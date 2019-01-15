@@ -277,9 +277,7 @@ function getNodes(context) {
     var nodeTree = staticNodes;
     nodeTree = [].concat.apply(nodeTree, values[0]);
     nodeTree = [].concat.apply(nodeTree, values[1]);
-    const backendModules = values[1].data
-      ? values[2].data.backendModules
-      : undefined;
+    const backendModules = values[2].backendModules;
     nodeTree.forEach(node => {
       node.context
         ? (node.context.backendModules = backendModules)
@@ -416,8 +414,17 @@ function fetchFromGraphQL(query, variables) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        console.log(xmlHttp.response);
-        resolve(JSON.parse(xmlHttp.response));
+        try {
+          const response = JSON.parse(xmlHttp.response);
+          if (response && response.errors) {
+            reject(response.errors[0].message);
+          } else if (response && response.data) {
+            return resolve(response.data);
+          }
+          resolve(response);
+        } catch {
+          reject(xmlHttp.response);
+        }
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
         if (xmlHttp.status === 401) {
           relogin();
@@ -620,9 +627,7 @@ Luigi.setConfig({
             ];
             var fetchedNodes = [].concat.apply([], values[0]);
             const nodes = [].concat.apply(staticNodes, fetchedNodes);
-            const backendModules = values[1].data
-              ? values[1].data.backendModules
-              : undefined;
+            const backendModules = values[1].backendModules;
             nodes.forEach(node => {
               node.context
                 ? (node.context.backendModules = backendModules)
