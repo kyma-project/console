@@ -389,7 +389,6 @@ function getUiEntities(entityname, environment, placements) {
 }
 
 function fetchFromKyma(url) {
-  // reloginIfTokenExpired();
   return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
@@ -472,16 +471,6 @@ function getEnvs() {
 function relogin() {
   localStorage.removeItem('luigi.auth');
   location.reload();
-}
-
-function reloginIfTokenExpired() {
-  var authData = JSON.parse(localStorage.getItem('luigi.auth'));
-  var accessTokenExpirationDate =
-    authData && authData.accessTokenExpirationDate;
-  var currentDate = new Date();
-  if (!authData || accessTokenExpirationDate < currentDate) {
-    relogin();
-  }
 }
 
 Luigi.setConfig({
