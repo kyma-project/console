@@ -612,11 +612,12 @@ Luigi.setConfig({
   },
   settings: {
     header: () => {
-      logo = clusterConfig.headerLogoUrl
-        ? clusterConfig.headerLogoUrl
-        : '/assets/logo.svg';
-      title = clusterConfig.headerTitle;
-      favicon = clusterConfig.faviconUrl;
+      logo =
+        clusterConfig && clusterConfig.headerLogoUrl
+          ? clusterConfig.headerLogoUrl
+          : '/assets/logo.svg';
+      title = clusterConfig ? clusterConfig.headerTitle : undefined;
+      favicon = clusterConfig ? clusterConfig.faviconUrl : undefined;
       return {
         logo,
         title,
