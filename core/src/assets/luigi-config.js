@@ -7,7 +7,8 @@ var config = {
   serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
-  docsModuleUrl: 'https://docs.' + k8sDomain
+  docsModuleUrl: 'https://docs.' + k8sDomain,
+  graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
 };
 
 if (clusterConfig) {
@@ -21,6 +22,37 @@ if (clusterConfig) {
 var token;
 if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
+}
+
+function getBackendModules() {
+  const query = `query {
+    backendModules{
+      name
+    }
+  }`;
+  return getFromGraphQL(query);
+}
+
+function getFromGraphQL(query, variables) {
+  return new Promise(function(resolve, reject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        console.log(xmlHttp.response);
+        resolve(JSON.parse(xmlHttp.response));
+      } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
+        reject(xmlHttp.response);
+      }
+    };
+
+    xmlHttp.open('POST', config.graphqlApiUrl, true);
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(JSON.stringify({ query, variables }));
+  });
 }
 
 function getNodes(context) {
@@ -382,7 +414,7 @@ function getUiEntities(entityname, environment, placements) {
 }
 
 function fetchFromKyma(url) {
-  reloginIfTokenExpired();
+  // reloginIfTokenExpired();
   return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
