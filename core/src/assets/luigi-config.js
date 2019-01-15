@@ -24,37 +24,6 @@ if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
 }
 
-function getBackendModules() {
-  const query = `query {
-    backendModules{
-      name
-    }
-  }`;
-  return getFromGraphQL(query);
-}
-
-function getFromGraphQL(query, variables) {
-  return new Promise(function(resolve, reject) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        console.log(xmlHttp.response);
-        resolve(JSON.parse(xmlHttp.response));
-      } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        if (xmlHttp.status === 401) {
-          relogin();
-        }
-        reject(xmlHttp.response);
-      }
-    };
-
-    xmlHttp.open('POST', config.graphqlApiUrl, true);
-    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify({ query, variables }));
-  });
-}
-
 function getNodes(context) {
   var environment = context.environmentId;
   var staticNodes = [
@@ -302,11 +271,19 @@ function getNodes(context) {
     getUiEntities('clustermicrofrontends', undefined, [
       'environment',
       'namespace'
-    ])
+    ]),
+    getBackendModules()
   ]).then(function(values) {
     var nodeTree = staticNodes;
-    values.forEach(function(val) {
-      nodeTree = [].concat.apply(nodeTree, val);
+    nodeTree = [].concat.apply(nodeTree, values[0]);
+    nodeTree = [].concat.apply(nodeTree, values[1]);
+    const backendModules = values[1].data
+      ? values[2].data.backendModules
+      : undefined;
+    nodeTree.forEach(node => {
+      node.context
+        ? (node.context.backendModules = backendModules)
+        : (node.context = { backendModules });
     });
     return nodeTree;
   });
@@ -434,6 +411,37 @@ function fetchFromKyma(url) {
   });
 }
 
+function fetchFromGraphQL(query, variables) {
+  return new Promise(function(resolve, reject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        console.log(xmlHttp.response);
+        resolve(JSON.parse(xmlHttp.response));
+      } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
+        reject(xmlHttp.response);
+      }
+    };
+
+    xmlHttp.open('POST', config.graphqlApiUrl, true);
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(JSON.stringify({ query, variables }));
+  });
+}
+
+function getBackendModules() {
+  const query = `query {
+    backendModules{
+      name
+    }
+  }`;
+  return fetchFromGraphQL(query);
+}
+
 function getEnvs() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
@@ -505,9 +513,10 @@ Luigi.setConfig({
           idToken: token
         },
         children: function() {
-          return getUiEntities('clustermicrofrontends', undefined, [
-            'cluster'
-          ]).then(function(cmf) {
+          return Promise.all([
+            getUiEntities('clustermicrofrontends', undefined, ['cluster']),
+            getBackendModules()
+          ]).then(function(values) {
             var staticNodes = [
               {
                 pathSegment: 'workspace',
@@ -609,8 +618,17 @@ Luigi.setConfig({
                 }
               }
             ];
-            var fetchedNodes = [].concat.apply([], cmf);
-            return [].concat.apply(staticNodes, fetchedNodes);
+            var fetchedNodes = [].concat.apply([], values[0]);
+            const nodes = [].concat.apply(staticNodes, fetchedNodes);
+            const backendModules = values[1].data
+              ? values[1].data.backendModules
+              : undefined;
+            nodes.forEach(node => {
+              node.context
+                ? (node.context.backendModules = backendModules)
+                : (node.context = { backendModules });
+            });
+            return nodes;
           });
         }
       },
