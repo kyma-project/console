@@ -47,9 +47,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const searchSelector = catalog.prepareSelector('search');
     const searchBySth = 'lololo';
 
-    await page.goto(address.console.getCatalog(config.catalogTestEnv), {
-      waitUntil: ['domcontentloaded', 'networkidle0']
-    });
+    await Promise.all([
+      page.goto(address.console.getCatalog(config.catalogTestEnv)),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(catalogHeaderSelector);
     const catalogHeader = await frame.$eval(

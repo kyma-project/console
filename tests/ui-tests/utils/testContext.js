@@ -15,7 +15,6 @@ const context = (function() {
         ignoreHTTPSErrors: true,
         headless: config.headless,
         slowMo: 80,
-        devtools: true,
         args: [
           `--window-size=${config.viewportWidth},${config.viewportHeight}`,
           '--no-sandbox',
