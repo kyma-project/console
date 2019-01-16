@@ -467,198 +467,203 @@ function relogin() {
   location.reload();
 }
 
-Luigi.setConfig({
-  auth: {
-    use: 'openIdConnect',
-    openIdConnect: {
-      authority: 'https://dex.' + k8sDomain,
-      client_id: 'console',
-      scope:
-        'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-      automaticSilentRenew: true,
-      loadUserInfo: false
-    },
+getBackendModules().then(
+  backendModules => {
+    Luigi.setConfig({
+      auth: {
+        use: 'openIdConnect',
+        openIdConnect: {
+          authority: 'https://dex.' + k8sDomain,
+          client_id: 'console',
+          scope:
+            'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
+          automaticSilentRenew: true,
+          loadUserInfo: false
+        },
 
-    events: {
-      onLogout: () => {
-        console.log('onLogout');
+        events: {
+          onLogout: () => {
+            console.log('onLogout');
+          },
+          onAuthSuccessful: data => {},
+          onAuthExpired: () => {
+            console.log('onAuthExpired');
+          },
+          // TODO: define luigi-client api for getting errors
+          onAuthError: err => {
+            console.log('authErrorHandler 1', err);
+          }
+        }
       },
-      onAuthSuccessful: data => {},
-      onAuthExpired: () => {
-        console.log('onAuthExpired');
-      },
-      // TODO: define luigi-client api for getting errors
-      onAuthError: err => {
-        console.log('authErrorHandler 1', err);
-      }
-    }
-  },
-  navigation: {
-    nodes: () => [
-      {
-        pathSegment: 'home',
-        hideFromNav: true,
-        context: {
-          idToken: token
-        },
-        children: function() {
-          return Promise.all([
-            getUiEntities('clustermicrofrontends', undefined, ['cluster']),
-            getBackendModules()
-          ]).then(function(values) {
-            var staticNodes = [
-              {
-                pathSegment: 'workspace',
-                label: 'Namespaces',
-                viewUrl:
-                  '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
-                icon: 'dimension'
-              },
-              {
-                pathSegment: 'namespaces',
-                viewUrl: '/consoleapp.html#/home/namespaces/workspace',
-                hideFromNav: true,
-                children: [
+      navigation: {
+        nodes: () => [
+          {
+            pathSegment: 'home',
+            hideFromNav: true,
+            context: {
+              idToken: token,
+              backendModules
+            },
+            children: function() {
+              return getUiEntities('clustermicrofrontends', undefined, [
+                'cluster'
+              ]).then(function(cmf) {
+                var staticNodes = [
                   {
-                    pathSegment: ':environmentId',
-                    context: {
-                      environmentId: ':environmentId'
+                    pathSegment: 'workspace',
+                    label: 'Namespaces',
+                    viewUrl:
+                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                    icon: 'dimension'
+                  },
+                  {
+                    pathSegment: 'namespaces',
+                    viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+                    hideFromNav: true,
+                    children: [
+                      {
+                        pathSegment: ':environmentId',
+                        context: {
+                          environmentId: ':environmentId'
+                        },
+                        children: getNodes,
+                        navigationContext: 'namespaces',
+                        defaultChildNode: 'details'
+                      }
+                    ]
+                  },
+                  {
+                    pathSegment: 'apps',
+                    navigationContext: 'apps',
+                    label: 'Applications',
+                    category: { label: 'Integration', icon: 'overview-chart' },
+                    viewUrl: '/consoleapp.html#/home/settings/apps',
+                    keepSelectedForChildren: true,
+                    children: [
+                      {
+                        pathSegment: 'details',
+                        children: [
+                          {
+                            pathSegment: ':name',
+                            viewUrl:
+                              '/consoleapp.html#/home/settings/apps/:name'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    pathSegment: 'service-brokers',
+                    navigationContext: 'service-brokers',
+                    label: 'Service Brokers',
+                    category: 'Integration',
+                    viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
+                  },
+                  {
+                    pathSegment: 'idp-presets',
+                    navigationContext: 'idp-presets',
+                    label: 'IDP Presets',
+                    category: 'Integration',
+                    viewUrl: '/consoleapp.html#/home/settings/idpPresets'
+                  },
+                  {
+                    pathSegment: 'settings',
+                    navigationContext: 'settings',
+                    label: 'General Settings',
+                    category: { label: 'Settings', icon: 'settings' },
+                    viewUrl: '/consoleapp.html#/home/settings/organisation'
+                  },
+                  {
+                    pathSegment: 'global-permissions',
+                    navigationContext: 'global-permissions',
+                    label: 'Global Permissions',
+                    category: 'Settings',
+                    viewUrl:
+                      '/consoleapp.html#/home/settings/globalPermissions',
+                    keepSelectedForChildren: true,
+                    children: [
+                      {
+                        pathSegment: 'roles',
+                        children: [
+                          {
+                            pathSegment: ':name',
+                            viewUrl:
+                              '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    label: 'Stats & Metrics',
+                    category: {
+                      label: 'Diagnostics',
+                      icon: 'electrocardiogram'
                     },
-                    children: getNodes,
-                    navigationContext: 'namespaces',
-                    defaultChildNode: 'details'
-                  }
-                ]
-              },
-              {
-                pathSegment: 'apps',
-                navigationContext: 'apps',
-                label: 'Applications',
-                category: { label: 'Integration', icon: 'overview-chart' },
-                viewUrl: '/consoleapp.html#/home/settings/apps',
-                keepSelectedForChildren: true,
-                children: [
+                    externalLink: {
+                      url: 'https://grafana.' + k8sDomain,
+                      sameWindow: false
+                    }
+                  },
                   {
-                    pathSegment: 'details',
-                    children: [
-                      {
-                        pathSegment: ':name',
-                        viewUrl: '/consoleapp.html#/home/settings/apps/:name'
-                      }
-                    ]
+                    label: 'Tracing',
+                    category: 'Diagnostics',
+                    externalLink: {
+                      url: 'https://jaeger.' + k8sDomain,
+                      sameWindow: false
+                    }
                   }
-                ]
-              },
-              {
-                pathSegment: 'service-brokers',
-                navigationContext: 'service-brokers',
-                label: 'Service Brokers',
-                category: 'Integration',
-                viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
-              },
-              {
-                pathSegment: 'idp-presets',
-                navigationContext: 'idp-presets',
-                label: 'IDP Presets',
-                category: 'Integration',
-                viewUrl: '/consoleapp.html#/home/settings/idpPresets'
-              },
-              {
-                pathSegment: 'settings',
-                navigationContext: 'settings',
-                label: 'General Settings',
-                category: { label: 'Settings', icon: 'settings' },
-                viewUrl: '/consoleapp.html#/home/settings/organisation'
-              },
-              {
-                pathSegment: 'global-permissions',
-                navigationContext: 'global-permissions',
-                label: 'Global Permissions',
-                category: 'Settings',
-                viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
-                keepSelectedForChildren: true,
-                children: [
-                  {
-                    pathSegment: 'roles',
-                    children: [
-                      {
-                        pathSegment: ':name',
-                        viewUrl:
-                          '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                label: 'Stats & Metrics',
-                category: { label: 'Diagnostics', icon: 'electrocardiogram' },
-                externalLink: {
-                  url: 'https://grafana.' + k8sDomain,
-                  sameWindow: false
-                }
-              },
-              {
-                label: 'Tracing',
-                category: 'Diagnostics',
-                externalLink: {
-                  url: 'https://jaeger.' + k8sDomain,
-                  sameWindow: false
-                }
-              }
-            ];
-            var fetchedNodes = [].concat.apply([], values[0]);
-            const nodes = [].concat.apply(staticNodes, fetchedNodes);
-            const backendModules = values[1].backendModules;
-            nodes.forEach(node => {
-              node.context
-                ? (node.context.backendModules = backendModules)
-                : (node.context = { backendModules });
-            });
-            return nodes;
-          });
+                ];
+                var fetchedNodes = [].concat.apply([], cmf);
+                return [].concat.apply(staticNodes, fetchedNodes);
+              });
+            }
+          },
+          {
+            pathSegment: 'docs',
+            viewUrl: config.docsModuleUrl,
+            label: 'Docs',
+            hideSideNav: true,
+            context: {
+              idToken: token
+            },
+            icon: 'sys-help'
+          }
+        ],
+        contextSwitcher: {
+          defaultLabel: 'Select Namespace ...',
+          parentNodePath: '/home/namespaces', // absolute path
+          lazyloadOptions: true, // load options on click instead on page load
+          options: getEnvs,
+          actions: [
+            {
+              label: '+ New Namespace',
+              link: '/home/workspace?~showModal=true'
+            }
+          ]
         }
       },
-      {
-        pathSegment: 'docs',
-        viewUrl: config.docsModuleUrl,
-        label: 'Docs',
-        hideSideNav: true,
-        context: {
-          idToken: token
-        },
-        icon: 'sys-help'
-      }
-    ],
-    contextSwitcher: {
-      defaultLabel: 'Select Namespace ...',
-      parentNodePath: '/home/namespaces', // absolute path
-      lazyloadOptions: true, // load options on click instead on page load
-      options: getEnvs,
-      actions: [
-        {
-          label: '+ New Namespace',
-          link: '/home/workspace?~showModal=true'
+      routing: {
+        nodeParamPrefix: '~',
+        skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+      },
+      settings: {
+        header: () => {
+          logo = clusterConfig.headerLogoUrl
+            ? clusterConfig.headerLogoUrl
+            : '/assets/logo.svg';
+          title = clusterConfig.headerTitle;
+          favicon = clusterConfig.faviconUrl;
+          return {
+            logo,
+            title,
+            favicon
+          };
         }
-      ]
-    }
+      }
+    });
   },
-  routing: {
-    nodeParamPrefix: '~',
-    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
-  },
-  settings: {
-    header: () => {
-      logo = clusterConfig.headerLogoUrl
-        ? clusterConfig.headerLogoUrl
-        : '/assets/logo.svg';
-      title = clusterConfig.headerTitle;
-      favicon = clusterConfig.faviconUrl;
-      return {
-        logo,
-        title,
-        favicon
-      };
-    }
+  err => {
+    console.error('Error while fetching backend modules');
   }
-});
+);
