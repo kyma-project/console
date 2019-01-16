@@ -213,7 +213,7 @@ export default {
         activeTagsFilters,
       );
       filteredClasses = filteredClasses.map(filteredClass => {
-        delete filteredClass.labels;
+        // delete filteredClass.labels;
         return filteredClass;
       });
 
