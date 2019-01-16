@@ -47,3 +47,9 @@
     text-overflow: ellipsis;
   }
 }
+
+.sf-table__td--min {
+  &.text-right {
+    text-align: right;
+  }
+}
