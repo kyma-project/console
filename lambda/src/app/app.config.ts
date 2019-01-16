@@ -61,7 +61,7 @@ if (clusterConfig && clusterConfig['hpaCpuTargetAverageUtilization']) {
 }
 
 const defaultSubscriptionConfSpec = {
-  pushRequestTimeoutMS: 6000,
+  pushRequestTimeoutMS: 2000,
   maxInflight: 400,
   includeSubscriptionNameHeader: true,
   eventType: true,
@@ -71,8 +71,6 @@ const defaultSubscriptionConfSpec = {
 let subscriptionConfigSpec = defaultSubscriptionConfSpec;
 if (clusterConfig && clusterConfig['subscriptionConfig']) {
   subscriptionConfigSpec = clusterConfig['subscriptionConfig'];
-  console.log('invoked');
-  console.log(subscriptionConfigSpec);
 }
 
 const k8sServerUrl = `https://apiserver.${domain}`;
