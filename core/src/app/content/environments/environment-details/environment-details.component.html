@@ -77,35 +77,35 @@
       </fd-panel>
     </fd-panel-grid>
   </div>
-  <div
-    class="sf-section"
-    *ngIf="remoteEnvironments && remoteEnvironments.length > 0"
-  >
-    <div class="sf-panel">
-      <div class="sf-panel__head">
-        <h2 class="sf-section__headline">Connected Applications</h2>
-      </div>
-      <table class="sf-table">
-        <thead class="sf-table__head">
-          <th class="sf-table__th">Name</th>
-          <th class="sf-table__th">Actions</th>
-        </thead>
-        <tbody class="sf-table__body">
-          <tr *ngFor="let env of remoteEnvironments">
-            <td class="sf-table__td sf-table__td--primary">
-              <a (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
-            </td>
-            <td class="sf-table__td sf-table__td--min sf-table__td--text-right">
-              <y-list-actions
-                [entry]="env"
-                [entryEventHandler]="entryEventHandler"
-                [actions]="actions"
-              ></y-list-actions>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+</div>
+<div
+  class="sf-section"
+  *ngIf="remoteEnvironments && remoteEnvironments.length > 0"
+>
+  <div class="sf-panel">
+    <div class="sf-panel__head">
+      <h2 class="sf-section__headline">Connected Applications</h2>
     </div>
+    <table class="sf-table">
+      <thead class="sf-table__head">
+        <th class="sf-table__th">Name</th>
+        <th class="sf-table__th">Actions</th>
+      </thead>
+      <tbody class="sf-table__body">
+        <tr *ngFor="let env of remoteEnvironments">
+          <td class="sf-table__td sf-table__td--primary">
+            <a (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
+          </td>
+          <td class="sf-table__td sf-table__td--min sf-table__td--text-right">
+            <y-list-actions
+              [entry]="env"
+              [entryEventHandler]="entryEventHandler"
+              [actions]="actions"
+            ></y-list-actions>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
