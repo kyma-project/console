@@ -9,8 +9,10 @@
 
 .download-icon {
   margin-left: 10px;
-  height: 40%;
 }
-.fd-container--flex.reverse {
-  flex-direction: column-reverse;
+.fd-container--flex.direction--column {
+  flex-direction: column;
+}
+.align-to-end {
+  align-self: flex-end;
 }
