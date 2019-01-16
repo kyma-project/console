@@ -82,7 +82,7 @@ export class SubscriptionsService {
     subscription.spec['push_request_timeout_ms'] =
       AppConfig.subscriptionConfigSpec.pushRequestTimeoutMS;
     subscription.spec['max_inflight'] =
-      AppConfig.subscriptionConfigSpec.maxInflight;
+      AppConfig.subscriptionConfigSpec.maxInFlight;
     subscription.spec['include_subscription_name_header'] =
       AppConfig.subscriptionConfigSpec.includeSubscriptionNameHeader;
     subscription.spec['event_type'] =
