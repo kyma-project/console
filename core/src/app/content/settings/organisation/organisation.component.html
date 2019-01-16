@@ -1,59 +1,57 @@
-<ng-container>
-  <div class="sf-toolbar">
-    <div class="sf-toolbar__header">Your Organisation</div>
+<div class="sf-section">
+  <div class="fd-section__header">
+    <h1 class="fd-section__title">Your Organisation</h1>
   </div>
   <fd-panel-grid [col]="1">
     <fd-panel>
       <fd-panel-body>
-        <fieldset fd-form-set>
+        <fieldset fd-form-set class="fd-col--6">
           <fd-form-group>
-            <div class="tn-form__group">
-              <div class="tn-form__item">
-                <label class="tn-form__label">Name</label>
-                <input
-                  class="tn-form__control"
-                  type="text"
-                  placeholder="Function name"
-                  value="{{ orgName }}"
-                  readonly
-                />
-              </div>
-            </div>
-          </fd-form-group>
-          <fd-form-group>
-            <div class="tn-form__item">
-              <label class="tn-form__label">Org-ID</label>
+            <div fd-form-item>
+              <fd-form-label>Name</fd-form-label>
               <input
-                class="tn-form__control"
-                type="text"
-                value="{{ orgId }}"
+                fd-form-control
+                [type]="'text'"
+                placeholder="Function name"
+                value="{{ orgName }}"
                 readonly
               />
             </div>
           </fd-form-group>
 
+          <div class="fd-container fd-container--fluid fd-has-padding-tiny ">
+            <fd-form-label>kubeconfig</fd-form-label>
+            <span class="info-text">
+              kubeconfig is a file used to configure access to a cluster.
+              Download it to access the cluster using command line.
+            </span>
+          </div>
+          <div
+            class="fd-container fd-container--flex reverse fd-has-padding-tiny"
+          >
+            <button
+              fd-button
+              [glyph]="'download'"
+              (click)="downloadKubeconfig()"
+            >
+              Download config
+            </button>
+          </div>
+        </fieldset>
+        <fieldset fd-form-set class="fd-col--6">
           <fd-form-group>
-            <div class="tn-form__group">
-              <div class="tn-form__item">
-                <label class="tn-form__label">kubeconfig</label>
-                <span class="info-text"
-                  >kubeconfig is a file used to configure access to a cluster.
-                  Download it to access the cluster using command line.</span
-                >
-                <button
-                  class="tn-button tn-button--small tn-button--text download-button"
-                  (click)="downloadKubeconfig()"
-                >
-                  Download config<img
-                    src="assets/download.svg"
-                    class="download-icon"
-                  />
-                </button>
-              </div>
+            <div fd-form-item>
+              <fd-form-label>Org-ID</fd-form-label>
+              <input
+                fd-form-control
+                [type]="'text'"
+                value="{{ orgId }}"
+                readonly
+              />
             </div>
           </fd-form-group>
         </fieldset>
       </fd-panel-body>
     </fd-panel>
   </fd-panel-grid>
-</ng-container>
+</div>
