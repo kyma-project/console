@@ -471,7 +471,11 @@ let backendModules = [];
 getBackendModules()
   .then(
     res => {
-      backendModules = res.backendModules;
+      if (res && res.backendModules && res.backendModules.length > 0) {
+        res.backendModules.forEach(backendModule => {
+          backendModules.push(backendModule.name);
+        });
+      }
     },
     err => {
       console.error('Error while fetching backend modules', err);
