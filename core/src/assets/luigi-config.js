@@ -271,17 +271,11 @@ function getNodes(context) {
     getUiEntities('clustermicrofrontends', undefined, [
       'environment',
       'namespace'
-    ]),
-    getBackendModules()
+    ])
   ]).then(function(values) {
     var nodeTree = staticNodes;
-    nodeTree = [].concat.apply(nodeTree, values[0]);
-    nodeTree = [].concat.apply(nodeTree, values[1]);
-    const backendModules = values[2].backendModules;
-    nodeTree.forEach(node => {
-      node.context
-        ? (node.context.backendModules = backendModules)
-        : (node.context = { backendModules });
+    values.forEach(function(val) {
+      nodeTree = [].concat.apply(nodeTree, val);
     });
     return nodeTree;
   });
