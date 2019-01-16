@@ -19,7 +19,8 @@ const context = (function() {
           `--window-size=${config.viewportWidth},${config.viewportHeight}`,
           '--no-sandbox',
           '--disable-setuid-sandbox',
-          '--disk-cache-size=10000000'
+          '--disk-cache-size=10000000',
+          '--media-cache-size=10000000'
         ]
       });
     }
