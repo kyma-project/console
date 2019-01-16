@@ -79,11 +79,16 @@ export class SubscriptionsService {
       spec: sp,
     });
 
-    subscription.spec['push_request_timeout_ms'] = 2000;
-    subscription.spec['max_inflight'] = 400;
-    subscription.spec['include_subscription_name_header'] = true;
-    subscription.spec['event_type'] = true;
-    subscription.spec['event_type_version'] = true;
+    subscription.spec['push_request_timeout_ms'] =
+      AppConfig.subscriptionConfigSpec.pushRequestTimeoutMS;
+    subscription.spec['max_inflight'] =
+      AppConfig.subscriptionConfigSpec.maxInflight;
+    subscription.spec['include_subscription_name_header'] =
+      AppConfig.subscriptionConfigSpec.includeSubscriptionNameHeader;
+    subscription.spec['event_type'] =
+      AppConfig.subscriptionConfigSpec.eventType;
+    subscription.spec['event_type_version'] =
+      AppConfig.subscriptionConfigSpec.eventTypeVersion;
     return subscription;
   }
 }

@@ -60,6 +60,19 @@ if (clusterConfig && clusterConfig['hpaCpuTargetAverageUtilization']) {
   targetAverageUtilization = clusterConfig['hpaCpuTargetAverageUtilization'];
 }
 
+const defaultSubscriptionConfSpec = {
+  pushRequestTimeoutMS: 6000,
+  maxInflight: 400,
+  includeSubscriptionNameHeader: true,
+  eventType: true,
+  eventTypeVersion: true,
+};
+
+let subscriptionConfigSpec = defaultSubscriptionConfSpec;
+if (clusterConfig && clusterConfig['subscriptionConfig']) {
+  subscriptionConfigSpec = clusterConfig['subscriptionConfig'];
+}
+
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
@@ -78,6 +91,7 @@ const config = {
   functionSizes,
   functionResourceRequest,
   targetAverageUtilization,
+  subscriptionConfigSpec,
   metricsUrl: `https://grafana.${domain}/`,
 };
 
