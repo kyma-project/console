@@ -96,7 +96,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   test('Create Application', async () => {
     await common.retry(page, async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-      return kymaConsole.createRemoteEnvironment(page, config.testEnv);
+      await kymaConsole.createRemoteEnvironment(page, config.testEnv);
     });
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
     const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
