@@ -1,11 +1,17 @@
 const path = require('path');
 const theme = require('./config/theme');
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+const { generateCSSReferences, generateJSReferences } = MiniHtmlWebpackPlugin;
 
 module.exports = {
   sections: [
     {
       name: 'Components',
-      ignore: ['**/__tests__/**', '**/components/index.js'],
+      ignore: [
+        '**/__tests__/**',
+        '**/components/index.js',
+        'src/components/ThemeWrapper/index.js',
+      ],
       components: 'src/components/**/index.js',
       description: '',
     },
@@ -14,7 +20,8 @@ module.exports = {
     Wrapper: path.join(__dirname, 'src/components/ThemeWrapper'),
   },
   styleguideDir: 'docs',
-  template: 'templates/index.html',
+
+  title: 'ReactJS UI Components library for Kyma',
   theme: {
     color: {
       base: theme.colors.text,

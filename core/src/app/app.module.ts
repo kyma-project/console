@@ -106,6 +106,8 @@ import { StatusLabelComponent } from './shared/components/status-label/status-la
 import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 import { LuigiClientCommunicationDirective } from './shared/directives/luigi-client-communication/luigi-client-communication.directive';
 
+import { FundamentalNgxModule } from 'fundamental-ngx';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -198,7 +200,8 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
     SortablejsModule,
     ListModule,
     ClipboardModule,
-    ClickOutsideModule
+    ClickOutsideModule,
+    FundamentalNgxModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

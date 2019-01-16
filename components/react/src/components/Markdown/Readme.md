@@ -8,7 +8,7 @@
     <li>List element</li>
   </ol>
   <pre>
-    <code class="hljs">
+    <code className="hljs">
       code block
     </code>
   </pre>
