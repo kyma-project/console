@@ -467,8 +467,17 @@ function relogin() {
   location.reload();
 }
 
-getBackendModules().then(
-  backendModules => {
+let backendModules = [];
+getBackendModules()
+  .then(
+    res => {
+      backendModules = res.backendModules;
+    },
+    err => {
+      console.error('Error while fetching backend modules', err);
+    }
+  )
+  .finally(() => {
     Luigi.setConfig({
       auth: {
         use: 'openIdConnect',
@@ -662,8 +671,4 @@ getBackendModules().then(
         }
       }
     });
-  },
-  err => {
-    console.error('Error while fetching backend modules');
-  }
-);
+  });
