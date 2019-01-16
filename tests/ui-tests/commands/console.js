@@ -22,10 +22,12 @@ async function _loginViaDex(page, config) {
     await page.waitForSelector('#password');
     await page.type('#password', config.password);
     await page.waitForSelector(loginButtonSelector);
-    await page.click(loginButtonSelector);
-    return page.waitForNavigation({
-      waitUntil: ['domcontentloaded', 'networkidle0']
-    });
+    return Promise.all([
+      page.click(loginButtonSelector),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
   } catch (err) {
     throw new Error(`Couldn't log in`, err);
   }
