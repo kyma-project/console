@@ -8,11 +8,8 @@
         <span>{{ environment.getLabel() }}</span>
       </h1>
       <div class="sf-toolbar__right">
-        <button
-          class="tn-button tn-button--text tn-button--small sf-toolbar__item"
-          (click)="openUploadResourceModal()"
-          *ngIf="!showSelectFileButton"
-        >
+        <button class="tn-button tn-button--text tn-button--small sf-toolbar__item" (click)="openUploadResourceModal()"
+          *ngIf="!showSelectFileButton">
           + Deploy new resource to the namespace
         </button>
       </div>
@@ -23,23 +20,13 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label>Name</fd-form-label>
-              <input
-                fd-form-control
-                [type]="'text'"
-                value="{{ environment.getLabel() }}"
-                readonly
-              />
+              <input fd-form-control [type]="'text'" value="{{ environment.getLabel() }}" readonly />
             </div>
           </div>
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label>Namespace-ID</fd-form-label>
-              <input
-                fd-form-control
-                [type]="'text'"
-                value="{{ environment.getUid() }}"
-                readonly
-              />
+              <input fd-form-control [type]="'text'" value="{{ environment.getUid() }}" readonly />
             </div>
           </div>
         </fd-panel-body>
@@ -49,27 +36,25 @@
           <div class="row">
             <div class="col">
               <div class="sf-sku sf-sku--center">
-                <span class="sf-sku__value">{{
-                  services ? services.length : 0
-                }}</span>
-                <a class="sf-sku__label" (click)="navigateToServices()">{{
-                  services && services.length === 1 ? 'Service' : 'Services'
-                }}</a>
+                <span class="sf-sku__value">
+                  {{ services ? services.length : 0 }}
+                </span>
+                <a class="sf-sku__label" (click)="navigateToServices()">
+                  {{ services && services.length === 1 ? 'Service' : 'Services' }}
+                </a>
               </div>
             </div>
             <div class="col">
               <div class="sf-sku sf-sku--center">
-                <span class="sf-sku__value">{{
-                  boundRemoteEnvironmentsCount | async
-                }}</span>
-                <span>{{
-                  (boundRemoteEnvironmentsCount | async) === 1
-                    ? 'Bound Application'
-                    : 'Bound Applications'
-                }}</span>
-                <a class="sf-sku__label" (click)="navigateToRemoteEnvs()"
-                  >Show All Applications</a
-                >
+                <span class="sf-sku__value">
+                  {{ boundRemoteEnvironmentsCount | async }}
+                </span>
+                <span>
+                  {{ (boundRemoteEnvironmentsCount | async) === 1
+                  ? 'Bound Application'
+                  : 'Bound Applications' }}
+                </span>
+                <a class="sf-sku__label" (click)="navigateToRemoteEnvs()">Show All Applications</a>
               </div>
             </div>
           </div>
@@ -78,10 +63,7 @@
     </fd-panel-grid>
   </div>
 </div>
-<div
-  class="sf-section"
-  *ngIf="remoteEnvironments && remoteEnvironments.length > 0"
->
+<div class="sf-section" *ngIf="remoteEnvironments && remoteEnvironments.length > 0">
   <fd-panel>
     <fd-panel-header>
       <fd-panel-head>
@@ -100,12 +82,7 @@
               <a (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
             </td>
             <td class="sf-table__td--min text-right">
-              <y-list-actions
-                class=""
-                [entry]="env"
-                [entryEventHandler]="entryEventHandler"
-                [actions]="actions"
-              ></y-list-actions>
+              <y-list-actions class="" [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
             </td>
           </tr>
         </fd-table-body>
