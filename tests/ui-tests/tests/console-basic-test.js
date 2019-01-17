@@ -16,6 +16,16 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       browser = data.browser;
       page = data.page;
       logOnEvents(page, t => (token = t));
+
+      //throw an error for NETWORK_CHANGED case so that it can be retried
+      page.on('requestfailed', request => {
+        if (request._failureText === 'net::ERR_NETWORK_CHANGED') {
+          console.log(
+            'Error net::ERR_NETWORK_CHANGED. Operation will be retried'
+          );
+          throw new Error('ERR_NETWORK_CHANGED');
+        }
+      });
       await kymaConsole.testLogin(page);
     } catch (e) {
       throw e;
@@ -84,7 +94,10 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   test('Create Application', async () => {
-    await kymaConsole.createRemoteEnvironment(page, config.testEnv);
+    await common.retry(page, async () => {
+      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+      await kymaConsole.createRemoteEnvironment(page, config.testEnv);
+    });
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
     const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
       page
