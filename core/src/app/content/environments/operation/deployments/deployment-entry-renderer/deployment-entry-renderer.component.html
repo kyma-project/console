@@ -8,14 +8,14 @@
   <div class="col-1" *ngIf="showBoundServices && entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
     <span *ngFor="let instance of entry.boundServiceInstanceNames">{{ instance }}</span>
   </div>
-  <div class="col-1" *ngIf="!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0">
+  <div class="col-1" *ngIf="showBoundServices && (!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0)">
     <span></span>
   </div>
-  <div class="col-2 sf-list__label-column">
+  <div class="sf-list__label-column" ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
     <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">{{ label }}</span>
   </div>
   <div class="col-2">
-      <app-status-label 
+      <app-status-label
         [statusType]="getStatusType(entry)">
         {{ getStatus(entry) }}
       </app-status-label>
