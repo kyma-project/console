@@ -30,10 +30,9 @@ async function beforeAll() {
   const height = config.viewportHeight;
   await page.setViewport({ width, height });
   console.log(`Opening ${consoleUrl}`);
-  await Promise.all([
-    page.goto(consoleUrl),
-    page.waitForNavigation({ waitUntil: ['domcontentloaded'] })
-  ]);
+  await page.goto(consoleUrl, {
+    waitUntil: ['domcontentloaded', 'networkidle0']
+  });
   process.on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
     browser.close();
