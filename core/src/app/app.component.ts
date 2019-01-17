@@ -12,13 +12,6 @@ export class AppComponent {
   public constructor() {
     LuigiClient.addContextUpdateListener(updatedContext => {
       this.environmentId = updatedContext.environmentId;
-      console.info(
-        'context update: project ID as luigi param: ' +
-          updatedContext.environmentId,
-        updatedContext.goBackContext
-          ? 'goBackContext? ' + updatedContext.goBackContext
-          : ''
-      );
     });
   }
 }
