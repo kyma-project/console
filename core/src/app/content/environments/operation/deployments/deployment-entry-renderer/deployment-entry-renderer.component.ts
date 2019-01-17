@@ -3,6 +3,7 @@ import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kuberne
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
+import { LuigiClientService } from '../../../../../shared/services/luigi-client.service';
 
 @Component({
   selector: 'app-deployment-entry-renderer',
@@ -14,11 +15,13 @@ export class DeploymentEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private luigiClientService: LuigiClientService
   ) {
     super(injector);
   }
   public disabled = false;
+  public showBoundServices: boolean;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
@@ -29,6 +32,10 @@ export class DeploymentEntryRendererComponent
           this.disabled = event.entry.disabled;
         }
       }
+    );
+
+    this.showBoundServices = this.luigiClientService.hasBackendModule(
+      'servicecatalogaddons'
     );
   }
 
