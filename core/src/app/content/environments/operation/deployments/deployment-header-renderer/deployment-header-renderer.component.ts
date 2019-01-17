@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LuigiClientService } from '../../../../../shared/services/luigi-client.service';
+
+import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 @Component({
   selector: 'app-deployment-header-renderer',

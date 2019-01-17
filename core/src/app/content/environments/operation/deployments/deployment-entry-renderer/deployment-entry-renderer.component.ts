@@ -3,7 +3,7 @@ import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kuberne
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
-import { LuigiClientService } from '../../../../../shared/services/luigi-client.service';
+import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 @Component({
   selector: 'app-deployment-entry-renderer',
