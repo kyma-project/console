@@ -419,9 +419,9 @@ function fetchFromGraphQL(query, variables) {
           reject(xmlHttp.response);
         }
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        if (xmlHttp.status === 401) {
-          relogin();
-        }
+        // if (xmlHttp.status === 401) {
+        // relogin();
+        // }
         reject(xmlHttp.response);
       }
     };
