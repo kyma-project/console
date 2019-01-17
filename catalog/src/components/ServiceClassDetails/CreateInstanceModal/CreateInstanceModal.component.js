@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dcopy from 'deep-copy';
 
-import { ConfirmationModal , Separator} from '@kyma-project/react-components';
+import { ConfirmationModal, Separator } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import BasicData from './BasicData.component';
 import SchemaData from './SchemaData.component';
@@ -74,6 +75,14 @@ class CreateInstanceModal extends React.Component {
 
   refetchInstanceExists = async name => {
     return await this.props.instanceExists(name);
+  };
+
+  onShow = () => {
+    LuigiClient.uxManager().addBackdrop();
+  };
+
+  onHide = () => {
+    LuigiClient.uxManager().removeBackdrop();
   };
 
   callback = data => {
@@ -184,6 +193,7 @@ class CreateInstanceModal extends React.Component {
     if (success) {
       this.clearState();
       this.child.child.setState({ showModal: false });
+      LuigiClient.uxManager().removeBackdrop();
     }
   };
 
@@ -207,7 +217,10 @@ class CreateInstanceModal extends React.Component {
     const instanceCreateParameterSchema =
       (schema && schema.instanceCreateParameterSchema) || null;
 
-    const instanceCreateParameterSchemaExists = instanceCreateParameterSchema && (instanceCreateParameterSchema.$ref || instanceCreateParameterSchema.properties);
+    const instanceCreateParameterSchemaExists =
+      instanceCreateParameterSchema &&
+      (instanceCreateParameterSchema.$ref ||
+        instanceCreateParameterSchema.properties);
 
     const disabled = !firstStepFilled;
 
@@ -266,7 +279,7 @@ class CreateInstanceModal extends React.Component {
             {serviceClass.__typename === 'ClusterServiceClass'
               ? 'Cluster Service Class'
               : 'Service Class'}{' '}
-            <Bold>{serviceClass.displayName}</Bold> in environment{' '}
+            <Bold>{serviceClass.displayName}</Bold> in namespace{' '}
             <Bold>{environment}</Bold>
           </p>
         }
@@ -280,6 +293,8 @@ class CreateInstanceModal extends React.Component {
         handleClose={this.clearState}
         borderFooter={true}
         waiting={creatingInstance}
+        onShow={this.onShow}
+        onHide={this.onHide}
       />
     );
   }

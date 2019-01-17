@@ -8,22 +8,16 @@ import { ApisComponent } from './content/environments/configuration/apis/apis.co
 import { FilteredApisComponent } from './content/environments/configuration/apis/filtered-apis/filtered-apis.component';
 import { EventService } from './content/settings/remote-environments/remote-environment-details/services/event.service';
 import { RemoteEnvironmentsService } from './content/settings/remote-environments/services/remote-environments.service';
-import { WormholeStatusService } from './content/settings/remote-environments/services/wormhole-status.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './navigation/app-routing.module';
 
-import { AuthGuard } from './auth/auth-guard.service';
-import { LoginComponent } from './auth/login.component';
-import { LoginService } from './auth/login.service';
 import { TokenInterceptor } from './auth/token.interceptor';
 
 import { SortablejsModule } from 'angular-sortablejs';
 import { EnvironmentsContainerComponent } from './content/environments/environments-container/environments-container.component';
 import { WorkspaceOverviewComponent } from './content/workspace-overview/workspace-overview/workspace-overview.component';
-import { HeaderComponent } from './navigation//header/header.component';
-import { NavigationComponent } from './navigation/navigation.component';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ListModule } from '@kyma-project/y-generic-list';
@@ -31,16 +25,12 @@ import { EnvironmentCreateComponent } from './content/environments/environment-c
 import { CurrentEnvironmentService } from './content/environments/services/current-environment.service';
 import { EnvironmentsService } from './content/environments/services/environments.service';
 import { EnvironmentCardComponent } from './content/workspace-overview/environment-card/environment-card.component';
-import { NavVisibilityService } from './navigation/services/nav-visibility.service';
 
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { TimeAgoPipe } from 'time-ago-pipe';
-import { CatalogContainerComponent } from './content/environments/catalog-container/catalog-container.component';
 import { ApiDefinitionEntryRendererComponent } from './content/environments/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
 import { ApiDefinitionHeaderRendererComponent } from './content/environments/configuration/apis/api-definition-header-renderer/api-definition-header-renderer.component';
 import { FilteredApisEntryRendererComponent } from './content/environments/configuration/apis/filtered-apis/filtered-apis-entry-renderer/filtered-apis-entry-renderer.component';
 import { FilteredApisHeaderRendererComponent } from './content/environments/configuration/apis/filtered-apis/filtered-apis-header-renderer/filtered-apis-header-renderer.component';
-import { LambdasComponent } from './content/environments/development/lambdas/lambdas.component';
 import { EnvironmentDetailsComponent } from './content/environments/environment-details/environment-details.component';
 import { DeploymentEntryRendererComponent } from './content/environments/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/environments/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
@@ -68,12 +58,6 @@ import { RemoteEnvironmentsEntryRendererComponent } from './content/settings/rem
 import { RemoteEnvironmentsHeaderRendererComponent } from './content/settings/remote-environments/remote-environments-header-renderer/remote-environments-header-renderer.component';
 import { RemoteEnvironmentsComponent } from './content/settings/remote-environments/remote-environments.component';
 import { ServiceBrokersComponent } from './content/settings/service-brokers/service-brokers.component';
-import { CustomExternalAppComponent } from './extensibility/components/custom-external-app/custom-external-app.component';
-import { ExternalAppComponent } from './extensibility/components/external-app/external-app.component';
-import { ExtAppListenerDirective } from './extensibility/directives/ext-app-listener.directive';
-import { ExternalViewComponent } from './extensibility/external-view/external-view.component';
-import { ExtAppViewRegistryService } from './extensibility/services/ext-app-view-registry.service';
-import { ExtensionsService } from './extensibility/services/extensions.service';
 import { ConfirmationModalComponent } from './shared/components/confirmation-modal/confirmation-modal.component';
 import { EditResourceComponent } from './shared/components/edit-resource/edit-resource.component';
 import { InformationModalComponent } from './shared/components/information-modal/information-modal.component';
@@ -84,7 +68,6 @@ import { ResourceUploaderComponent } from './shared/components/resource-uploader
 import { ResourceUploaderModalComponent } from './shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 import { ResourceUploadService } from './shared/components/resource-uploader/services/resource-upload.service';
 import { UploaderComponent } from './shared/components/resource-uploader/uploader/uploader.component';
-import { ReplaceDirective } from './shared/directives/replace/replace.directive';
 import { ComponentCommunicationService } from './shared/services/component-communication.service';
 import { RoleBindingModalComponent } from './shared/components/role-binding-modal/role-binding-modal.component';
 import { GraphQLClientService } from './shared/services/graphql-client-service';
@@ -97,11 +80,9 @@ import { RolesHeaderRendererComponent } from './shared/components/permissions/ro
 import { BindingsComponent } from './shared/components/permissions/bindings/bindings.component';
 import { BindingEntryRendererComponent } from './shared/components/permissions/bindings/binding-entry-renderer/binding-entry-renderer.component';
 import { BindingHeaderRendererComponent } from './shared/components/permissions/bindings/binding-header-renderer/binding-header-renderer.component';
-import { InstancesContainerComponent } from './content/environments/instances-container/instances-container.component';
 import { AbstractKubernetesElementListComponent } from './content/environments/operation/abstract-kubernetes-element-list.component';
 import { ServiceBrokerHeaderRendererComponent } from './content/settings/service-brokers/services-header-renderer/service-broker-header-renderer.component';
 import { ServiceBrokerEntryRendererComponent } from './content/settings/service-brokers/services-entry-renderer/service-broker-entry-renderer.component';
-import { LogoutComponent } from './content/logout/logout.component';
 import { IdpPresetsComponent } from './content/settings/idp-presets/idp-presets.component';
 import { IdpPresetsEntryRendererComponent } from './content/settings/idp-presets/idp-presets-entry-renderer/idp-presets-entry-renderer.component';
 import { IdpPresetsHeaderRendererComponent } from './content/settings/idp-presets/idp-presets-header-renderer/idp-presets-header-renderer.component';
@@ -115,33 +96,25 @@ import { LimitRangesComponent } from './content/environments/configuration/resou
 import { LimitRangeEntryRendererComponent } from './content/environments/configuration/resources/limit-ranges/limit-range-entry-renderer/limit-range-entry-renderer.component';
 import { LimitRangeHeaderRendererComponent } from './content/environments/configuration/resources/limit-ranges/limit-range-header-renderer/limit-range-header-renderer.component';
 import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
-import { LoginErrorComponent } from './content/login-error/login-error.component';
 import { CreateRemoteEnvironmentModalComponent } from './content/settings/remote-environments/create-remote-environment-modal/create-remote-environment-modal.component';
 import { EditRemoteEnvironmentModalComponent } from './content/settings/remote-environments/edit-remote-environment-modal/edit-remote-environment-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
-import { RequestErrorComponent } from './content/request-error/request-error.component';
 import { ConfigMapsComponent } from './content/environments/operation/configmaps/configmaps.component';
 import { ConfigMapsEntryRendererComponent } from './content/environments/operation/configmaps/configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './content/environments/operation/configmaps/configmaps-header-renderer/configmaps-header-renderer.component';
-import { UnsavedChanges } from './navigation/unsaved-changes';
-import { PageDirtyStateService } from './shared/services/page-dirty-state.service';
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
 import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
-import { BrokersContainerComponent } from './content/environments/brokers-container/brokers-container.component';
+import { LuigiClientCommunicationDirective } from './shared/directives/luigi-client-communication/luigi-client-communication.directive';
+
+import { FundamentalNgxModule } from 'fundamental-ngx';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    NavigationComponent,
-    CatalogContainerComponent,
-    BrokersContainerComponent,
-    InstancesContainerComponent,
     EnvironmentsContainerComponent,
     WorkspaceOverviewComponent,
     EnvironmentCreateComponent,
     EnvironmentCardComponent,
-    LoginComponent,
     DeploymentsComponent,
     PodsComponent,
     TimeAgoPipe,
@@ -149,7 +122,6 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     RemoteEnvironmentDetailsComponent,
     OrganisationComponent,
     EnvironmentDetailsComponent,
-    ReplaceDirective,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
     ServicesComponent,
@@ -171,16 +143,11 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     ServicesHeaderRendererComponent,
     ServicesEntryRendererComponent,
     EditBindingsModalComponent,
-    ExternalViewComponent,
-    ExtAppListenerDirective,
     RemoteEnvironmentsHeaderRendererComponent,
     RemoteEnvironmentsEntryRendererComponent,
     JsonEditorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
-    ExternalAppComponent,
-    CustomExternalAppComponent,
-    LambdasComponent,
     ServiceDetailsComponent,
     UploaderComponent,
     ResourceUploaderModalComponent,
@@ -205,7 +172,6 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     AbstractKubernetesElementListComponent,
     ServiceBrokerEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
-    LogoutComponent,
     IdpPresetsComponent,
     IdpPresetsEntryRendererComponent,
     IdpPresetsHeaderRendererComponent,
@@ -217,13 +183,12 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     LimitRangesComponent,
     LimitRangeEntryRendererComponent,
     LimitRangeHeaderRendererComponent,
-    LoginErrorComponent,
     CreateRemoteEnvironmentModalComponent,
     EditRemoteEnvironmentModalComponent,
     LabelsInputComponent,
-    RequestErrorComponent,
     StatusLabelComponent,
-    TooltipComponent
+    TooltipComponent,
+    LuigiClientCommunicationDirective
   ],
   imports: [
     BrowserModule,
@@ -232,24 +197,18 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    OAuthModule.forRoot(),
     SortablejsModule,
     ListModule,
     ClipboardModule,
-    ClickOutsideModule
+    ClickOutsideModule,
+    FundamentalNgxModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     EnvironmentsService,
     CurrentEnvironmentService,
-    NavVisibilityService,
-    AuthGuard,
     RemoteEnvironmentsService,
-    WormholeStatusService,
-    LoginService,
     EventService,
-    ExtensionsService,
-    ExtAppViewRegistryService,
     K8sResourceEditorService,
     ComponentCommunicationService,
     ResourceUploadService,
@@ -257,9 +216,7 @@ import { BrokersContainerComponent } from './content/environments/brokers-contai
     RemoteEnvironmentBindingService,
     RbacService,
     GraphQLClientService,
-    IdpPresetsService,
-    UnsavedChanges,
-    PageDirtyStateService
+    IdpPresetsService
   ],
   entryComponents: [
     EnvironmentCardComponent,

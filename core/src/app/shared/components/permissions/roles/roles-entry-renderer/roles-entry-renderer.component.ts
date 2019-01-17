@@ -2,6 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../../content/environments/operation/abstract-kubernetes-entry-renderer.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { map } from 'rxjs/operators';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   templateUrl: './roles-entry-renderer.component.html'
@@ -25,11 +26,15 @@ export class RolesEntryRendererComponent extends AbstractKubernetesEntryRenderer
       });
   }
 
-  public getRoute(entry) {
+  public navigateToDetails(roleName) {
     if (this.activeTab === 'roles') {
-      return `roles/${entry.metadata.name}`;
+      LuigiClient.linkManager()
+        .fromContext('permissions')
+        .navigate(`roles/${roleName}`);
     } else {
-      return `/home/settings/globalPermissions/roles/${entry.metadata.name}`;
+      LuigiClient.linkManager().navigate(
+        `/home/global-permissions/roles/${roleName}`
+      );
     }
   }
 }

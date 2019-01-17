@@ -37,6 +37,7 @@ export const IconWrapper = styled.span`
 
 export const Link = styled.a`
   cursor: pointer;
+  color: #0b74de;
   text-decoration: none !important;
   margin: 10px 0 0;
 `;

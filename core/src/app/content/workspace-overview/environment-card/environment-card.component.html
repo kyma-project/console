@@ -1,4 +1,4 @@
-<div class="tn-card tn-card--button" routerLink="/home/environments/{{entry.getId()}}" [ngClass]="{'sf-list__disabled': disabled === true}">
+<div class="tn-card tn-card--button" (click)="navigateToDetails(entry.getId())" [ngClass]="{'sf-list__disabled': disabled === true}">
   <div class="tn-card__content">
     <div class="row">
       <div class="col">
@@ -18,7 +18,7 @@
       <div class="col">
         <div class="sf-sku">
           <span class="sf-sku__value">{{ entry.remoteEnvs && (entry.remoteEnvs | async) !== null ? (entry.remoteEnvs | async) : 0 }}</span>
-          <span class="sf-sku__label">{{ (entry.remoteEnvs |async) === 1 ? "Bound Remote Environment":"Bound Remote Environments" }}</span>
+          <span class="sf-sku__label">{{ (entry.remoteEnvs |async) === 1 ? "Bound Application":"Bound Applications" }}</span>
         </div>
       </div>
     </div>

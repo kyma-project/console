@@ -1,3 +1,4 @@
+import { LuigiClientCommunicationDirective } from './../../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditBindingsModalComponent } from './edit-binding-modal.component';
 import { ActivatedRoute } from '@angular/router';
@@ -53,7 +54,10 @@ describe('EditBindingsModalComponent', () => {
         },
         ComponentCommunicationService
       ],
-      declarations: [EditBindingsModalComponent]
+      declarations: [
+        EditBindingsModalComponent,
+        LuigiClientCommunicationDirective
+      ]
     }).compileComponents();
   }));
 
@@ -82,7 +86,7 @@ describe('EditBindingsModalComponent', () => {
   it('should show and set envs and remoteevns', done => {
     // given
     const remoteEnvs = of({
-      remoteEnvironment: {
+      application: {
         enabledInEnvironments: ['env1', 'env2']
       }
     });

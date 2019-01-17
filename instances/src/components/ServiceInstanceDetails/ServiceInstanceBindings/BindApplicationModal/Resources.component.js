@@ -160,13 +160,13 @@ class Resources extends React.Component {
         <SubSectionTitle margin={'20px 0'}>
           {!showPrefixInput && (
             <Link onClick={() => this.handleTogglePrefixButton(true)}>
-              {'Set environment prefix'}
+              {'Set namespace prefix'}
               <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
           )}
           {showPrefixInput && (
             <Link onClick={() => this.handleTogglePrefixButton(false)}>
-              {'Unselect environment prefix'}
+              {'Unselect namespace prefix'}
               <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
           )}
@@ -174,7 +174,7 @@ class Resources extends React.Component {
 
         {showPrefixInput && (
           <Input
-            label={'Prefix environment value'}
+            label={'Prefix namespace value'}
             placeholder={''}
             value={prefixEnvironmentValue}
             handleChange={this.handlePrefixInput}

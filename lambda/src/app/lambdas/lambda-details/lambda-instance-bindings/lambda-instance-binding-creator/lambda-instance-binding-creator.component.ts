@@ -1,37 +1,31 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Clipboard } from 'ts-clipboard';
 import { ServiceInstance } from '../../../../shared/datamodel/k8s/service-instance';
 import { ServiceInstancesService } from '../../../../service-instances/service-instances.service';
 import { ServiceBindingsService } from '../../../../service-bindings/service-bindings.service';
 import { ServiceBinding } from '../../../../shared/datamodel/k8s/service-binding';
-import { Observable } from 'rxjs';
 import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-binding-info';
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
-import { ServiceInstanceList } from '../../../../shared/datamodel/k8s/service-instance-list';
+
+const RUNNING = 'RUNNING';
 
 @Component({
   selector: 'app-lambda-instance-binding-creator',
   templateUrl: './lambda-instance-binding-creator.component.html',
-  styleUrls: [
-    '../../../../app.component.scss',
-    '../../lambda-details.component.scss',
-  ],
+  styleUrls: ['../../lambda-details.component.scss'],
 })
 export class LambdaInstanceBindingCreatorComponent {
   public isActive = false;
-  private isValid = false;
-  private isSelectedInstanceBindingPrefixInvalid = false;
-  private createSecrets = true;
-  private selectedInstance: ServiceInstance;
-  private selectedBinding: ServiceBinding;
-  private selectedInstanceBindingPrefix: string;
-  private relevantServiceBindings = new ServiceBindingList({
+  public isValid = false;
+  public isSelectedInstanceBindingPrefixInvalid = false;
+  public createSecrets = true;
+  public selectedInstance: ServiceInstance;
+  public selectedBinding: ServiceBinding;
+  public selectedInstanceBindingPrefix: string;
+  public relevantServiceBindings = new ServiceBindingList({
     items: [],
   });
-  private instances = new ServiceInstanceList({
-    items: [],
-  });
+  public instances: ServiceInstance[];
   private serviceBindings = new ServiceBindingList({
     items: [],
   });
@@ -48,28 +42,31 @@ export class LambdaInstanceBindingCreatorComponent {
 
   public show() {
     this.isActive = true;
+    luigiClient.uxManager().addBackdrop();
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.currentEnvironmentId;
+      this.environment = eventData.environmentId;
       this.token = eventData.idToken;
       this.serviceInstancesService
-        .getServiceInstances(this.environment, this.token)
+        .getServiceInstances(this.environment, this.token, RUNNING)
         .subscribe(
           instances => {
-            instances.items = instances.items.filter(i => {
-              if (i.status.provisionStatus !== 'Provisioned') {
-                return;
-              }
-              let isAdded = false;
-              this.alreadyAddedInstances.forEach(alreadyAddedInst => {
-                if (i.metadata.name === alreadyAddedInst.instanceName) {
-                  isAdded = true;
-                  return;
+            instances.data.serviceInstances = instances.data.serviceInstances.filter(
+              i => {
+                if (!i.bindable) {
+                  return false;
                 }
-              });
-              return !isAdded;
-            });
-            this.instances = instances;
+                let isAdded = false;
+                this.alreadyAddedInstances.forEach(alreadyAddedInst => {
+                  if (i.name === alreadyAddedInst.instanceName) {
+                    isAdded = true;
+                    return;
+                  }
+                });
+                return !isAdded;
+              },
+            );
+            this.instances = instances.data.serviceInstances;
           },
           err => {},
         );
@@ -99,13 +96,14 @@ export class LambdaInstanceBindingCreatorComponent {
 
   public cancel(event: Event) {
     this.isActive = false;
+    luigiClient.uxManager().removeBackdrop();
     this.reset();
     event.stopPropagation();
   }
 
   public submit(event: Event) {
     const ibInfo: InstanceBindingInfo = {
-      instanceName: this.selectedInstance.metadata.name,
+      instanceName: this.selectedInstance.name,
       createSecret: this.createSecrets,
       serviceBinding: this.createSecrets
         ? ''
@@ -120,6 +118,7 @@ export class LambdaInstanceBindingCreatorComponent {
     this.selectedServiceBindingEmitter.emit(ibInfo);
 
     this.isActive = false;
+    luigiClient.uxManager().removeBackdrop();
     this.reset();
     event.stopPropagation();
   }
@@ -129,8 +128,7 @@ export class LambdaInstanceBindingCreatorComponent {
       item => {
         return (
           this.selectedInstance !== undefined &&
-          this.selectedInstance.metadata !== undefined &&
-          item.spec.instanceRef.name === this.selectedInstance.metadata.name
+          item.spec.instanceRef.name === this.selectedInstance.name
         );
       },
     );

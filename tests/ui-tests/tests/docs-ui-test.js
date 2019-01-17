@@ -3,24 +3,20 @@ import catalog from '../commands/catalog';
 import common from '../commands/common';
 import docs from '../commands/docs';
 import address from '../utils/address';
-import waitForNavigationAndContext from '../utils/waitForNavigationAndContext';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 
 const context = require('../utils/testContext');
 let page, browser;
-let isEnvironmentReady = false;
 
 describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   beforeAll(async () => {
     try {
-      isEnvironmentReady = await context.isDexReady();
-      const data = await common.beforeAll(isEnvironmentReady);
+      const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      await common.testLogin(isEnvironmentReady, page);
+      await kymaConsole.testLogin(page);
     } catch (e) {
-      isEnvironmentReady = false;
       throw e;
     }
   });
@@ -30,8 +26,6 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   });
 
   test('Go to docs', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
-
     // Hardcodes for specific page
     const docsUrl = address.console.getDocs();
 
@@ -39,8 +33,9 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     const docsHeaderSelector = catalog.prepareSelector('toolbar-headline');
     const docsExpectedHeader = 'Docs';
 
-    await page.goto(docsUrl, { waitUntil: 'networkidle0' });
-    await waitForNavigationAndContext(page);
+    await page.goto(docsUrl, {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
 
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(docsHeaderSelector);
@@ -52,7 +47,6 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   });
 
   test('Check if documentation is shown', async () => {
-    common.validateTestEnvironment(isEnvironmentReady);
     // Hardcodes for specific page
     const articleExpectedHeader = 'Kyma';
     const articleExpectedServiceCatalogHeader = 'Service Catalog';
@@ -111,8 +105,12 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       expectedCollapsedHeight
     );
 
-    await frame.click(serviceCatalogLink);
-    await waitForNavigationAndContext(frame);
+    await Promise.all([
+      frame.click(serviceCatalogLink),
+      frame.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
     await frame.$$eval(
       articleHeaderSelector,
       (item, articleExpectedServiceCatalogHeader) => {

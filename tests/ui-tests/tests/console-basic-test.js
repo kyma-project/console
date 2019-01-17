@@ -6,18 +6,30 @@ import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import address from '../utils/address';
 
-const context = require('../utils/testContext');
 let page, browser;
-let dexReady = false;
 let token = '';
 
 describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   beforeAll(async () => {
-    dexReady = await context.isDexReady();
-    const data = await common.beforeAll(dexReady);
-    browser = data.browser;
-    page = data.page;
-    logOnEvents(page, t => (token = t));
+    try {
+      const data = await common.beforeAll();
+      browser = data.browser;
+      page = data.page;
+      logOnEvents(page, t => (token = t));
+
+      //throw an error for NETWORK_CHANGED case so that it can be retried
+      page.on('requestfailed', request => {
+        if (request._failureText === 'net::ERR_NETWORK_CHANGED') {
+          console.log(
+            'Error net::ERR_NETWORK_CHANGED. Operation will be retried'
+          );
+          throw new Error('ERR_NETWORK_CHANGED');
+        }
+      });
+      await kymaConsole.testLogin(page);
+    } catch (e) {
+      throw e;
+    }
   });
 
   afterAll(async () => {
@@ -25,111 +37,120 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await browser.close();
   });
 
-  test('Login', async () => {
-    //the code looks strange.. but it uneasy to stop test execution as a result of a check in  'beforeAll'
-    // https://github.com/facebook/jest/issues/2713
-
-    await common.testLogin(dexReady, page);
-  });
-
   test('Check if envs exist', async () => {
-    common.validateTestEnvironment(dexReady);
-    const dropdownButton = '.tn-dropdown__control';
-    const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
-    await page.reload({ waitUntil: 'networkidle0' });
+    const dropdownButton = '.fd-button--shell';
+    const dropdownMenu = 'ul#context_menu_middle > li';
     await page.click(dropdownButton);
     await page.waitForSelector(dropdownMenu, { visible: true });
-    const environments = await kymaConsole.getEnvironments(page);
+    const environments = await kymaConsole.getEnvironmentsFromContextSwitcher(
+      page
+    );
     await page.click(dropdownButton);
     console.log('Check if envs exist', environments);
     expect(environments.length).toBeGreaterThan(1);
   });
 
   test('Create env', async () => {
-    common.validateTestEnvironment(dexReady);
-    const navItem = 'a.sf-toolbar__item';
-    const dropdownButton = '.tn-dropdown__control';
-    const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
     await kymaConsole.createEnvironment(page, config.testEnv);
-    await page.$$eval(navItem, item =>
-      item.find(text => text.innerText.includes('Workspace')).click()
+    await page.goto(address.console.getEnvironmentsAddress(), {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
+    const environmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
+      page
     );
-    await page.click(dropdownButton);
-    await page.waitForSelector(dropdownMenu, { visible: true });
-    const environments = await kymaConsole.getEnvironments(page);
-    expect(environments).toContain(config.testEnv);
+    expect(environmentNames).toContain(config.testEnv);
   });
 
   test('Delete env', async () => {
-    common.validateTestEnvironment(dexReady);
-    //checking list of environments before delete
-    const dropdownButton = '.tn-dropdown__control';
-    const dropdownMenu = '.tn-dropdown.sf-dropdown > .tn-dropdown__menu';
-    await page.click(dropdownButton);
-    await page.waitForSelector(dropdownMenu, { visible: true });
-    const existingEnvironments = await kymaConsole.getEnvironments(page);
-    //delete operation
-    const deleteConfirmButton =
-      '.tn-modal__button-primary.sf-button--primary.tn-button--small';
-    const dropDownCard = `button[aria-controls=${config.testEnv}]`;
-    await page.click(dropDownCard);
-    await page.click(`#${config.testEnv} > li > a[name=Delete]`);
-    await page.waitFor(deleteConfirmButton);
-    await page.click(deleteConfirmButton);
-    await page.waitForSelector(deleteConfirmButton, { hidden: true });
-    //checking list of environments after delete
-    await page.reload({ waitUntil: 'networkidle0' });
-    await page.click(dropdownButton);
-    await page.waitForSelector(dropdownMenu, { visible: true });
-    const environments = await kymaConsole.getEnvironments(page);
-    //temporary logout for debugging purpose
-    console.log('Delete env - exist envs', existingEnvironments);
-    console.log('Delete env - envs after deletion', environments);
+    const initialEnvironmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
+      page
+    );
+    await kymaConsole.deleteEnvironment(page, config.testEnv);
+    const environmentNames = await common.retry(page, async () => {
+      const environmentNamesAfterDelete = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
+        page
+      );
+      if (initialEnvironmentNames <= environmentNamesAfterDelete) {
+        throw new Error(`Namespace ${config.testEnv} not yet deleted`);
+      }
+      return environmentNamesAfterDelete;
+    });
+
     //assert
-    expect(environments).not.toContain(config.testEnv);
+    expect(initialEnvironmentNames).toContain(config.testEnv);
+    expect(environmentNames).not.toContain(config.testEnv);
   });
 
-  test('Check if remote environment exist', async () => {
-    common.validateTestEnvironment(dexReady);
+  test('Check if Application exist', async () => {
     const remoteEnvironmentsUrl = address.console.getRemoteEnvironments();
-    await page.goto(remoteEnvironmentsUrl, { waitUntil: 'networkidle0' });
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
-    console.log('Check if remote environment exists', remoteEnvironments);
+    await page.goto(remoteEnvironmentsUrl, {
+      waitUntil: ['domcontentloaded', 'networkidle0']
+    });
+    const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
+      page
+    );
+    console.log('Check if application exists', remoteEnvironments);
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 
-  test('Create remote environment', async () => {
-    common.validateTestEnvironment(dexReady);
-    await kymaConsole.createRemoteEnvironment(page, config.testEnv);
-    await page.reload({ waitUntil: 'networkidle0' });
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
-    console.log(
-      'Create new remote environment, remote envs: ',
-      remoteEnvironments
+  test('Create Application', async () => {
+    await common.retry(page, async () => {
+      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+      await kymaConsole.createRemoteEnvironment(page, config.testEnv);
+    });
+    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+    const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
+      page
     );
     expect(remoteEnvironments).toContain(config.testEnv);
   });
 
   test('Go to details and back', async () => {
-    common.validateTestEnvironment(dexReady);
-    await kymaConsole.openLink(page, 'div.remoteenv-name', config.testEnv);
-    const detailsText = await page.evaluate(() => document.body.innerText);
-    expect(detailsText).toContain(config.testEnv);
-    expect(detailsText).toContain('General Information');
-    await kymaConsole.openLink(page, 'a', 'Remote Environments');
-    const listText = await page.evaluate(() => document.body.innerText);
-    expect(listText).toContain(config.testEnv);
-    expect(listText).toContain('Search');
+    const frame = await kymaConsole.getFrame(page);
+    await frame.waitForXPath(
+      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
+        config.testEnv
+      }")]`
+    );
+    await kymaConsole.openLinkOnFrame(
+      page,
+      'div.remoteenv-name',
+      config.testEnv
+    );
+    frame.waitForXPath(`//div[contains(string(), "${config.testEnv}")]`);
+    frame.waitForXPath(`//h2[contains(string(), "General Information")]`);
+    await frame.waitForXPath(`//a[contains(string(), "Applications")]`);
+    await kymaConsole.openLinkOnFrame(page, 'a', 'Applications');
+    frame.waitForXPath(
+      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
+        config.testEnv
+      }")]`
+    );
   });
 
-  test('Delete remote environment', async () => {
-    common.validateTestEnvironment(dexReady);
+  test('Delete Application', async () => {
+    const frame = await kymaConsole.getFrame(page);
+    await frame.waitForXPath(
+      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
+        config.testEnv
+      }")]`
+    );
+    const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
+      page
+    );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-    await page.reload({ waitUntil: 'networkidle0' });
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironments(page);
-    console.log(
-      'Delete remote environment, remaining remote envs: ',
-      remoteEnvironments
+    const remoteEnvironments = await common.retry(
+      page,
+      async () => {
+        const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
+          page
+        );
+        if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
+          throw new Error(`Application ${config.testEnv} was not yet removed`);
+        }
+        return remoteEnvironmentsAfterRemoval;
+      },
+      5
     );
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });

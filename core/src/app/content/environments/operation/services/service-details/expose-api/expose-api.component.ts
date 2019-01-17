@@ -1,6 +1,6 @@
 import { IdpPresetsService } from './../../../../../settings/idp-presets/idp-presets.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CurrentEnvironmentService } from '../../../../services/current-environment.service';
 import { ExposeApiService } from './expose-api.service';
 import { AppConfig } from '../../../../../../app.config';
@@ -8,9 +8,9 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../../../shared/components/information-modal/information-modal.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { Copy2ClipboardModalComponent } from '../../../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-expose-api',
@@ -59,10 +59,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     private currentEnvironmentService: CurrentEnvironmentService,
     private exposeApiService: ExposeApiService,
     private route: ActivatedRoute,
-    private router: Router,
     private http: HttpClient,
-    private idpPresetsService: IdpPresetsService,
-    private oAuthService: OAuthService
+    private idpPresetsService: IdpPresetsService
   ) {}
 
   public validateDetails() {
@@ -79,30 +77,22 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.secure = !this.secure;
   }
 
-  public navigateToServiceDetails() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/services/${
-        this.serviceName
-      }`
-    ]);
+  public navigateToList(list) {
+    LuigiClient.linkManager()
+      .fromContext('namespaces')
+      .navigate(list);
   }
 
-  public navigateToServicesList() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/services`
-    ]);
-  }
-
-  public navigateToApiList() {
-    this.router.navigate([
-      `home/environments/${this.currentEnvironmentId}/apis`
-    ]);
+  public navigateToDetails(apiName) {
+    LuigiClient.linkManager()
+      .fromContext('namespaces')
+      .navigate(`services/details/${apiName}`);
   }
 
   public goBack() {
     this.routedFromServiceDetails
-      ? this.navigateToServiceDetails()
-      : this.navigateToApiList();
+      ? this.navigateToDetails(this.serviceName)
+      : this.navigateToList('apis');
   }
 
   public isAbleToMakeRequest() {
@@ -458,7 +448,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   private fetchToken() {
-    const message = `Bearer ${this.oAuthService.getIdToken()}`;
+    const token = LuigiClient.getEventData().idToken;
+    const message = `Bearer ${token}`;
     this.fetchModal.show('Fetch token', message);
   }
 

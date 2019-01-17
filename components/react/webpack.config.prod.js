@@ -1,21 +1,8 @@
-const webpack = require('webpack');
-const path = require('path');
-const pkg = require('./package.json');
-const webpackConfigBase = require('./webpack.config');
-require('babel-polyfill');
+const merge = require('webpack-merge');
+const common = require('./webpack.config');
 
-const plugins = Array.from(webpackConfigBase.plugins);
-
-plugins.push(
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify('production'),
-  }),
-);
-
-const webpackConfig = {
-  ...webpackConfigBase,
+module.exports = merge(common, {
   devtool: false,
-  plugins,
-};
-
-module.exports = webpackConfig;
+  mode: 'production',
+  performance: { hints: false },
+});

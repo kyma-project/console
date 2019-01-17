@@ -7,6 +7,8 @@ import {
   ViewChild,
   AfterViewInit,
   HostListener,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'brace';
@@ -49,13 +51,16 @@ const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
 
+const FUNCTION = 'function';
+
 @Component({
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
   styleUrls: ['./lambda-details.component.scss'],
 })
 @HostListener('sf-content')
-export class LambdaDetailsComponent implements AfterViewInit {
+export class LambdaDetailsComponent
+  implements AfterViewInit, OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];
   availableEventTriggers: EventTrigger[] = [];
   existingEventTriggers: EventTrigger[] = [];
@@ -118,7 +123,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   isHTTPTriggerAuthenticated = true;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
-  sessionId: string;
+  listenerId: string;
   functionSizes = [];
 
   public issuer: string;
@@ -153,12 +158,14 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
     this.kind = 'nodejs8';
+  }
+
+  ngOnInit() {
     this.route.params.subscribe(
       params => {
-        luigiClient.addInitListener(() => {
+        this.listenerId = luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
-          this.environment = eventData.currentEnvironmentId;
-          this.sessionId = eventData.sessionId;
+          this.environment = eventData.environmentId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';
@@ -229,6 +236,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
         this.navigateToList();
       },
     );
+  }
+
+  ngOnDestroy() {
+    if (this.listenerId) {
+      luigiClient.removeInitListener(this.listenerId);
+    }
   }
 
   selectType(selectedType) {
@@ -431,8 +444,10 @@ export class LambdaDetailsComponent implements AfterViewInit {
           Function: this.lambda.metadata.name,
           ServiceBinding: serviceBindingName,
         };
-        serviceBindingUsage.spec.parameters.envPrefix.name =
-          bs.currentState.instanceBindingPrefix + '-';
+        if (bs.currentState.instanceBindingPrefix !== undefined) {
+          serviceBindingUsage.spec.parameters.envPrefix.name =
+            bs.currentState.instanceBindingPrefix + '-';
+        }
         createRequests.push(
           this.serviceBindingsService
             .createServiceBinding(serviceBinding, this.token)
@@ -449,10 +464,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
           Function: this.lambda.metadata.name,
           ServiceBinding: bs.currentState.serviceBinding,
         };
-        serviceBindingUsage.spec.parameters.envPrefix.name =
-          bs.currentState.instanceBindingPrefix + '-';
+        if (bs.currentState.instanceBindingPrefix !== undefined) {
+          serviceBindingUsage.spec.parameters.envPrefix.name =
+            bs.currentState.instanceBindingPrefix + '-';
+        }
       }
-      serviceBindingUsage.spec.usedBy.kind = 'function';
+      serviceBindingUsage.spec.usedBy.kind = FUNCTION;
       serviceBindingUsage.spec.usedBy.name = this.lambda.metadata.name;
       createRequests.push(
         this.serviceBindingUsagesService
@@ -467,18 +484,19 @@ export class LambdaDetailsComponent implements AfterViewInit {
 
     deleteBindingStates.forEach(bs => {
       this.serviceBindingUsagesService
-        .getServiceBindingUsages(this.environment, this.token, {
-          labelSelector: `Function=${
-            this.lambda.metadata.name
-          }, ServiceBinding=${bs.previousState.serviceBinding}`,
-        })
-        .subscribe(bsuList => {
-          bsuList.items.forEach(bsu => {
-            if (bs.previousState.serviceBinding === bsu.metadata.name) {
+        .getServiceBindingUsages(this.environment, this.token, {})
+        .subscribe(sbuList => {
+          sbuList.items.forEach(sbu => {
+            if (
+              bs.previousState.serviceBinding ===
+                sbu.spec.serviceBindingRef.name &&
+              this.lambda.metadata.name === sbu.spec.usedBy.name &&
+              sbu.spec.usedBy.kind === FUNCTION
+            ) {
               deleteRequests.push(
                 this.serviceBindingUsagesService
                   .deleteServiceBindingUsage(
-                    bsu.metadata.name,
+                    sbu.metadata.name,
                     this.environment,
                     this.token,
                   )
@@ -510,7 +528,9 @@ export class LambdaDetailsComponent implements AfterViewInit {
         });
     });
     // Reaches here when there are deleteBindingStates are empty
-    this.executeCreateBindingRequests(createRequests);
+    if (deleteBindingStates.length === 0) {
+      this.executeCreateBindingRequests(createRequests);
+    }
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {
@@ -816,7 +836,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         if (lambda.metadata.labels[key] === 'undefined') {
           labels.push(key);
         } else {
-          labels.push(key + ':' + lambda.metadata.labels[key]);
+          labels.push(key + '=' + lambda.metadata.labels[key]);
         }
       }
     }
@@ -830,7 +850,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
         if (lambda.metadata.annotations[key] === 'undefined') {
           annotations.push(key);
         } else {
-          annotations.push(key + ':' + lambda.metadata.annotations[key]);
+          annotations.push(key + '=' + lambda.metadata.annotations[key]);
         }
       }
     }
@@ -845,7 +865,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
     setTimeout(() => {
       luigiClient
         .linkManager()
-        .openInCurrentEnvironment(`lambdas`, this.sessionId);
+        .fromContext('lambdas')
+        .navigate('/');
     }, 100);
   }
 
@@ -899,7 +920,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     const newLabels = {};
     if (this.labels.length > 0) {
       this.labels.forEach(label => {
-        const labelSplitted = label.split(':');
+        const labelSplitted = label.split('=');
         newLabels[labelSplitted[0]] = labelSplitted[1];
       });
     }
@@ -907,8 +928,8 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   isNewLabelValid(label) {
-    const key = label.split(':')[0].trim();
-    const value = label.split(':')[1].trim();
+    const key = label.split('=')[0].trim();
+    const value = label.split('=')[1].trim();
     if (this.duplicateKeyExists(key)) {
       this.wrongLabelMessage = `Invalid label ${key}:${value}! Keys cannot be reused!`;
       return false;
@@ -929,7 +950,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   duplicateKeyExists(key) {
     let hasDuplicate = false;
     this.labels.forEach(l => {
-      if (l.split(':')[0] === key) {
+      if (l.split('=')[0] === key) {
         hasDuplicate = true;
         return;
       }
@@ -941,11 +962,11 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.wrongLabelMessage = '';
     if (
       this.newLabel &&
-      this.newLabel.split(':').length === 2 &&
+      this.newLabel.split('=').length === 2 &&
       this.isNewLabelValid(this.newLabel)
     ) {
-      const newLabelArr = this.newLabel.split(':');
-      this.newLabel = `${newLabelArr[0].trim()}:${newLabelArr[1].trim()}`;
+      const newLabelArr = this.newLabel.split('=');
+      this.newLabel = `${newLabelArr[0].trim()}=${newLabelArr[1].trim()}`;
       this.labels.push(this.newLabel);
       this.newLabel = '';
       this.wrongLabel = false;
@@ -959,7 +980,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
           ? this.wrongLabelMessage
           : `Invalid label ${
               this.newLabel
-            }! A key and value should be separated by a ":"`;
+            }! A key and value should be separated by a "="`;
     }
   }
 
@@ -986,9 +1007,12 @@ export class LambdaDetailsComponent implements AfterViewInit {
     this.hasDependencies = observableOf(false);
   }
 
-  /** validatesName checks whether a function name is abiding by RFC 1123 or not */
+  /** validatesName checks whether a function name is a valid DNS-1035 label */
   validatesName(): void {
-    const regex = /[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/;
+    if (this.lambda.metadata.name.length > 0) {
+      this.warnUnsavedChanges(true);
+    }
+    const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
@@ -1169,10 +1193,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
   }
 
   warnUnsavedChanges(hasChanges: boolean): void {
-    window.parent.postMessage(
-      { msg: 'luigi.set-page-dirty', dirty: hasChanges },
-      '*',
-    );
+    luigiClient.uxManager().setDirtyStatus(hasChanges);
   }
 
   setFunctionSize() {
@@ -1219,7 +1240,7 @@ export class LambdaDetailsComponent implements AfterViewInit {
     let functionSizeChanged = false;
     if (this.annotations.length > 0) {
       this.annotations.forEach(label => {
-        const annotationsSplitted = label.split(':');
+        const annotationsSplitted = label.split('=');
         if (annotationsSplitted[0] === 'function-size') {
           if (annotationsSplitted[1] !== this.selectedFunctionSize['name']) {
             functionSizeChanged = true;

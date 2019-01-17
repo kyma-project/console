@@ -18,6 +18,7 @@ import { BindApplicationButton, SubSectionTitle } from './styled';
 
 import builder from '../../../../commons/builder';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
+import LuigiClient from '@kyma-project/luigi-client';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -218,6 +219,11 @@ class BindApplicationModal extends React.Component {
       bindingsStepFilled: bindingsStepFilled,
     };
 
+    const bindingCreateParameterSchemaExists =
+      bindingCreateParameterSchema &&
+      (bindingCreateParameterSchema.$ref ||
+        bindingCreateParameterSchema.properties);
+
     const content = [
       <div key={serviceInstance.name}>
         <Resources
@@ -226,7 +232,7 @@ class BindApplicationModal extends React.Component {
           fetchUsageKindResources={fetchUsageKindResources}
           callback={this.callback}
         />
-        {bindingCreateParameterSchema && (
+        {bindingCreateParameterSchemaExists && (
           <Fragment>
             <Separator margin="16px -16px" />
 
@@ -237,12 +243,9 @@ class BindApplicationModal extends React.Component {
           </Fragment>
         )}
 
-        {bindingCreateParameterSchema && (
+        {bindingCreateParameterSchemaExists && (
           <Fragment>
-            {[
-              bindingCreateParameterSchema &&
-                !bindingCreateParameterSchema.properties,
-            ] && !checkbox ? null : (
+            {!checkbox ? null : (
               <SchemaData
                 data={schemaData}
                 bindingCreateParameterSchema={bindingCreateParameterSchema}
@@ -329,6 +332,8 @@ class BindApplicationModal extends React.Component {
         borderFooter={true}
         handleClose={this.clearState}
         headerAdditionalInfo={bindingVariables.serviceBingingUsage}
+        onShow={() => LuigiClient.uxManager().addBackdrop()}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       />
     );
   }

@@ -85,6 +85,12 @@ class ServiceInstanceBindings extends React.Component {
       callback,
     } = this.props;
 
+    const bindable = serviceInstance.bindable;
+
+    if (!bindable) {
+      return null;
+    }
+
     const serviceBindingsUsageTable = {
       title: 'Bindings',
       columns: [
@@ -270,7 +276,7 @@ class ServiceInstanceBindings extends React.Component {
               <ActionsWrapper>
                 {parameters &&
                   Object.keys(parameters).length > 0 && (
-                    <Tooltip content={'Parameters'}>
+                    <Tooltip content={'Parameters'} minWidth="90px">
                       <span
                         style={{
                           cursor: 'help',

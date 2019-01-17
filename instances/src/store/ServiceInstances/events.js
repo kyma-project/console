@@ -1,4 +1,4 @@
-const handleInstanceEvent = (obj = {}, event = {}) => {
+export const handleInstanceEvent = (obj = {}, event = {}) => {
   const currentItems = obj.serviceInstances || [];
   const instance = event.serviceInstance;
   if (!instance) {
@@ -40,7 +40,10 @@ const handleInstanceEvent = (obj = {}, event = {}) => {
   return { ...obj, serviceInstances: result };
 };
 
-const handleServiceBindingUsageEvent = (instancesObj = {}, event = {}) => {
+export const handleServiceBindingUsageEvent = (
+  instancesObj = {},
+  event = {},
+) => {
   const currentItems = instancesObj.serviceInstances || [];
   if (currentItems.length === 0) {
     return instancesObj;
@@ -128,7 +131,7 @@ const handleServiceBindingUsageEvent = (instancesObj = {}, event = {}) => {
   return { ...instancesObj, serviceInstances: result };
 };
 
-const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
+export const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
   const currentItems = instancesObj.serviceInstances || [];
   if (currentItems.length === 0) {
     return instancesObj;
@@ -268,9 +271,3 @@ function recalculateServiceBindingStats(items = []) {
 
   return stats;
 }
-
-module.exports = {
-  handleInstanceEvent,
-  handleServiceBindingEvent,
-  handleServiceBindingUsageEvent,
-};

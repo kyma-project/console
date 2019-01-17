@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Tabs, Tab } from '@kyma-project/react-components';
+import AsyncApi from '@kyma-project/asyncapi-react';
+import { Markdown, Tabs, Tab } from '@kyma-project/react-components';
 
-import Events from '../Events/Events.component';
 import ApiConsole from '../SwaggerApi/SwaggerApiConsole.component';
 
 import { ServiceInstanceTabsContentWrapper } from './styled';
@@ -11,8 +11,9 @@ import { ServiceInstanceTabsContentWrapper } from './styled';
 import {
   sortDocumentsByType,
   validateContent,
-  validateAsyncApiSpec,
 } from '../../../commons/helpers';
+
+import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
 const ServiceInstanceTabs = ({ serviceClass }) => {
   const content = serviceClass.content && serviceClass.content;
@@ -22,9 +23,7 @@ const ServiceInstanceTabs = ({ serviceClass }) => {
   if (
     (content && Object.keys(content).length && validateContent(content)) ||
     (apiSpec && Object.keys(apiSpec).length) ||
-    (asyncApiSpec &&
-      Object.keys(asyncApiSpec).length &&
-      validateAsyncApiSpec(asyncApiSpec))
+    (asyncApiSpec && Object.keys(asyncApiSpec).length)
   ) {
     let documentsByType = [],
       documentsTypes = [];
@@ -54,17 +53,19 @@ const ServiceInstanceTabs = ({ serviceClass }) => {
                 documentsByType[type] &&
                 validatDocumentsByType(documentsByType[type]) ? (
                   <Tab key={type} title={type}>
-                    {documentsByType[type].map(
-                      (item, i) =>
-                        item.source || item.Source ? (
-                          <div
-                            key={i}
-                            dangerouslySetInnerHTML={{
-                              __html: item.source || item.Source,
-                            }}
-                          />
-                        ) : null,
-                    )}
+                    <Markdown>
+                      {documentsByType[type].map(
+                        (item, i) =>
+                          item.source || item.Source ? (
+                            <div
+                              key={i}
+                              dangerouslySetInnerHTML={{
+                                __html: item.source || item.Source,
+                              }}
+                            />
+                          ) : null,
+                      )}
+                    </Markdown>
                   </Tab>
                 ) : null,
             )}
@@ -78,11 +79,9 @@ const ServiceInstanceTabs = ({ serviceClass }) => {
             </Tab>
           ) : null}
 
-          {asyncApiSpec &&
-          Object.keys(asyncApiSpec).length &&
-          validateAsyncApiSpec(asyncApiSpec) ? (
-            <Tab title={'Events'}>
-              <Events asyncApiSpec={asyncApiSpec} />
+          {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
+            <Tab title={'Events'} margin="0" background="inherit">
+              <AsyncApi schema={asyncApiSpec} theme={asyncApiTheme} config={asyncApiConfig} />
             </Tab>
           ) : null}
         </Tabs>

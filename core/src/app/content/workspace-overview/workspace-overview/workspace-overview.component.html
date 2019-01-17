@@ -1,14 +1,14 @@
 <div class="sf-toolbar">
-  <div class="sf-toolbar__header">Environments</div>
+  <div class="sf-toolbar__header">Namespaces</div>
   <div class="sf-toolbar__right">
     <div class="sf-toolbar__item">
       <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
       <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-      <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="createmodal.show()">+ Create Environment</button>
+      <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="createModal.show()">+ Create Namespace</button>
     </div>
   </div>
 </div>
-<app-environment-create #createmodal></app-environment-create>
+<app-environment-create (cancelEvent)="onEnvCreateCancelled()" #createModal></app-environment-create>
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>
 <app-information-modal #infoModal></app-information-modal>
 <div class="row">

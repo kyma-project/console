@@ -15,7 +15,6 @@ describe('ReplicaSetsComponent', () => {
       providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
     }).compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(ReplicaSetsComponent);
     component = fixture.componentInstance;

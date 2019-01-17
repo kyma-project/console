@@ -1,35 +1,37 @@
-<div *ngIf="isActive" class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="createEnv">
+<div luigiClientCommunication [isActive]="isActive">
+  <div *ngIf="isActive" class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="createEnv">
     <div class="tn-modal" role="document">
         <div class="tn-modal__content">
             <div class="tn-modal__header">
                 <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="cancel()">
                 <span class="tn-icon tn-icon--close" role="presentation"></span>
-            </button>
-                <h4 class="tn-modal__title">Create New Environment</h4>
+              </button>
+                <h4 class="tn-modal__title">Create New Namespace</h4>
             </div>
             <div class="tn-modal__body">
                 <div class="error-message-placeholder" *ngIf="err">{{ err }}</div>
                 <div class="tn-form__group">
                     <div class="tn-form__item">
-                        <label class="tn-form__label">Environment Name *</label>
-                        <input class="tn-form__control" 
-                            type="text" 
-                            placeholder="" 
-                            name="environmentName" 
+                        <label class="tn-form__label">Namespace Name *</label>
+                        <input class="tn-form__control"
+                            type="text"
+                            placeholder=""
+                            name="environmentName"
                             [(ngModel)]="environmentName"
                             (ngModelChange)=validateRegex()>
-                            <div *ngIf="wrongName" class="alert">The environment name has the wrong format. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character. (e.g. 'my-name1')</div>
+                            <div *ngIf="wrongName" class="alert">The namespace name has the wrong format. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character. (e.g. 'my-name1')</div>
                     </div>
                 </div>
+                <footer class="tn-modal__footer-items">
+                    <button class="tn-modal__button-primary sf-button--primary tn-button--small env-create-btn"
+                        (click)="createEnvironment()"
+                        [disabled]="(!environmentName) || wrongName">
+                        Create
+                    </button>
+                    <button class="tn-modal__button-secondary tn-button--small" (click)="cancel()">Cancel</button>
+                </footer>
             </div>
-            <footer class="tn-modal__footer-items">
-                <button class="tn-modal__button-primary sf-button--primary tn-button--small env-create-btn" 
-                    (click)="createEnvironment()"
-                    [disabled]="(!environmentName) || wrongName">
-                    Create
-                </button>
-                <button class="tn-modal__button-secondary tn-button--small" (click)="cancel()">Cancel</button>
-            </footer>
         </div>
     </div>
+  </div>
 </div>

@@ -21,3 +21,9 @@ export const TOPICS_QUERY = gql`
     }
   }
 `;
+
+export const DOCS_LOADING_STATUS = gql`
+  query docsLoadingStatus {
+    docsLoadingStatus @client
+  }
+`;

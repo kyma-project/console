@@ -94,7 +94,7 @@ export class ServiceBindingUsagesService {
     };
     const serviceBindingUsage = new ServiceBindingUsage({
       kind: 'ServiceBindingUsage',
-      apiVersion: 'servicecatalog.kyma.cx/v1alpha1',
+      apiVersion: 'servicecatalog.kyma-project.io/v1alpha1',
       metadata: md,
       spec: sp,
     });

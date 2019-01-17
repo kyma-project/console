@@ -11,7 +11,7 @@ import { Filter } from '@kyma-project/y-generic-list';
 import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal/create-remote-environment-modal.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-remote-environments',
@@ -20,11 +20,11 @@ import { ActivatedRoute, Router } from '@angular/router';
   host: { class: 'sf-content' }
 })
 export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent {
-  title = 'Remote Environments';
-  emptyListText = 'It looks like you don’t have any remote environments yet.';
-  createNewElementText = 'Add Remote Environment';
+  title = 'Applications';
+  emptyListText = 'It looks like you don’t have any Applications yet.';
+  createNewElementText = 'Add Application';
   baseUrl = AppConfig.k8sApiServerUrl_remoteenvs;
-  resourceKind = 'RemoteEnvironment';
+  resourceKind = 'Application';
   environments = [];
   ariaExpanded = false;
   ariaHidden = true;
@@ -37,14 +37,12 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
     const query = `query {
-      remoteEnvironments{
+      applications{
         name
         status
         enabledInEnvironments,
@@ -68,8 +66,8 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     return `${this.baseUrl}${entry.name}`;
   }
 
-  navigateToDetails(entry: any) {
-    this.router.navigate([entry.name], { relativeTo: this.activatedRoute });
+  navigateToDetails(entry) {
+    LuigiClient.linkManager().navigate(`details/${entry.name}`);
   }
 
   toggleDropDown() {

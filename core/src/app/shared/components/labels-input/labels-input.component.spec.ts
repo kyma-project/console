@@ -35,9 +35,9 @@ describe('LabelsInputComponent', () => {
     });
 
     it('does not change labels value if it is truthy', () => {
-      component.labels = ['k1:v1'];
+      component.labels = ['k1=v1'];
       component.ngOnInit();
-      expect(component.labels).toEqual(['k1:v1']);
+      expect(component.labels).toEqual(['k1=v1']);
     });
   });
 
@@ -67,7 +67,7 @@ describe('LabelsInputComponent', () => {
   describe('addLabel()', () => {
     beforeEach(() => {
       component.wrongLabelMessage = '';
-      component.newLabel = 'any:label';
+      component.newLabel = 'any=label';
       spyOn(component, 'validateNewLabel');
     });
 
@@ -96,23 +96,23 @@ describe('LabelsInputComponent', () => {
 
       it('updates labels', () => {
         component.labels = [];
-        component.newLabel = 'newkey:newval';
+        component.newLabel = 'newkey=newval';
         component.addLabel();
-        expect(component.labels).toEqual(['newkey:newval']);
+        expect(component.labels).toEqual(['newkey=newval']);
       });
 
       it('resets label input', () => {
-        component.newLabel = 'any:label';
+        component.newLabel = 'any=label';
         component.addLabel();
         expect(component.newLabel).toEqual('');
       });
 
       it('emits updated labels', () => {
         component.labels = [];
-        component.newLabel = 'any:label';
+        component.newLabel = 'any=label';
         component.addLabel();
         expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
-          labels: ['any:label']
+          labels: ['any=label']
         });
       });
     });
@@ -121,30 +121,30 @@ describe('LabelsInputComponent', () => {
   describe('updateLabel()', () => {
     it('removes label from list', () => {
       spyOn(component, 'removeLabel');
-      component.updateLabel('key:val');
-      expect(component.removeLabel).toHaveBeenCalledWith('key:val');
+      component.updateLabel('key=val');
+      expect(component.removeLabel).toHaveBeenCalledWith('key=val');
     });
 
     it('sets label input to label to edit', () => {
       this.newLabel = 'any-value';
-      component.updateLabel('key:val');
-      expect(component.newLabel).toEqual('key:val');
+      component.updateLabel('key=val');
+      expect(component.newLabel).toEqual('key=val');
     });
   });
 
   describe('removeLabel()', () => {
     it('removes label from list', () => {
-      component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
-      component.removeLabel('k2:v2');
-      expect(component.labels).toEqual(['k1:v1', 'k3:v3']);
+      component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
+      component.removeLabel('k2=v2');
+      expect(component.labels).toEqual(['k1=v1', 'k3=v3']);
     });
 
     it('emits updated labels', () => {
       spyOn(component.labelsChangeEmitter$, 'emit');
-      component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
-      component.removeLabel('k2:v2');
+      component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
+      component.removeLabel('k2=v2');
       expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
-        labels: ['k1:v1', 'k3:v3']
+        labels: ['k1=v1', 'k3=v3']
       });
     });
   });
@@ -153,31 +153,31 @@ describe('LabelsInputComponent', () => {
     it('if invalid format, sets message and return true', () => {
       const label = 'ööööööö';
       const result: boolean = component['setWrongLabelMessage'](label);
-      const expected = `Invalid label ${label}! A key and value should be separated by a ':'`;
+      const expected = `Invalid label ${label}! A key and value should be separated by a '='`;
       expect(component.wrongLabelMessage).toBe(expected);
       expect(result).toBe(true);
     });
 
     it('if valid format and invalid characters, sets message and return true', () => {
-      const label = 'öö:val1';
+      const label = 'öö=val1';
       const result: boolean = component['setWrongLabelMessage'](label);
-      const expected = `Invalid label öö:val1! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+      const expected = `Invalid label öö=val1! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
       expect(component.wrongLabelMessage).toBe(expected);
       expect(result).toBe(true);
     });
 
     it('if valid format and valid characters but duplicated key, sets message and return true', () => {
-      component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
-      const label = 'k2:v-other';
+      component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
+      const label = 'k2=v-other';
       const result: boolean = component['setWrongLabelMessage'](label);
-      const expected = `Invalid label k2:v-other! Keys cannot be reused!`;
+      const expected = `Invalid label k2=v-other! Keys cannot be reused!`;
       expect(component.wrongLabelMessage).toBe(expected);
       expect(result).toBe(true);
     });
 
     it('if valid label, returns false ', () => {
-      component.labels = ['k1:v1', 'k2:v2', 'k3:v3'];
-      const label = 'k4:v4';
+      component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
+      const label = 'k4=v4';
       const result: boolean = component['setWrongLabelMessage'](label);
       expect(component.wrongLabelMessage).toBe('');
       expect(result).toBe(false);

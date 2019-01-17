@@ -5,7 +5,6 @@
   .main-container {
     height: 100%;
     padding-top: 0;
-    padding-left: 321px;
     padding-right: 0;
     flex-wrap: wrap;
     transform: padding 0.2s ease-in-out;
@@ -26,7 +25,22 @@
   margin: 20px auto 0 auto;
   z-index: 1;
   right: 0;
-  left: 320px;
+  left: 0px;
+  text-align: left;
+
+  .close-button {
+    float: right;
+    padding-left: 5px;
+    button {
+      font-size: 1.5rem;
+    }
+  }
+  .link {
+    padding-top: 5px;
+    a {
+      cursor: pointer;
+    }
+  }
 
   @media (max-width: 768px) {
     left: 0;

@@ -1,10 +1,10 @@
 <div class="sf-content container-fluid">
   <div class="sf-toolbar">
     <div class="sf-toolbar__item sf-toolbar__item--breadcrumb">
-      <a (click)="goBack()">Services</a> / {{ serviceName }}
+      <a (click)="navigateToList()">Services</a> / {{ serviceName }}
     </div>
-    <div class="sf-toolbar__right">
-      <app-edit-resource [resourceData]="serviceDetailsToEdit" *ngIf="!serviceDetailsToEditLoading" class="sf-toolbar__item"></app-edit-resource>
+    <div class="sf-toolbar__right" [hidden]="serviceDetailsToEditLoading">
+      <app-edit-resource [resourceData]="serviceDetailsToEdit" class="sf-toolbar__item"></app-edit-resource>
     </div>
   </div>
   <p *ngIf="serviceDetailsLoading">
@@ -53,7 +53,7 @@
               <label class="tn-form__label">Labels</label>
             </div>
             <div class="col-sm-10" *ngIf="serviceDetails.objectMeta.labels">
-              <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let key of objectKeys(serviceDetails.objectMeta.labels)">{{ key }}: {{ serviceDetails.objectMeta.labels[key] }} </span>
+              <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let key of objectKeys(serviceDetails.objectMeta.labels)">{{ key }}={{ serviceDetails.objectMeta.labels[key] }} </span>
             </div>
             <div class="col-sm-2">
               <label class="tn-form__label">Internal endpoints</label>

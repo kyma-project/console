@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../environments/services/current-environment.service';
 import { AppConfig } from '../../../../app.config';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
@@ -32,7 +31,6 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private oAuthService: OAuthService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef

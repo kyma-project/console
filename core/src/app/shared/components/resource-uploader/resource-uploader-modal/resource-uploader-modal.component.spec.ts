@@ -5,25 +5,25 @@ import { UploaderComponent } from '../uploader/uploader.component';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Routes } from '@angular/router';
+import { LuigiClientCommunicationDirective } from '../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
 
 describe('ResourceUploaderModalComponent', () => {
   let component: ResourceUploaderModalComponent;
   let fixture: ComponentFixture<ResourceUploaderModalComponent>;
   const routes: Routes = [];
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ResourceUploaderModalComponent,
-          InformationModalComponent,
-          UploaderComponent
-        ],
-        providers: [ComponentCommunicationService],
-        imports: [RouterTestingModule.withRoutes(routes)]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ResourceUploaderModalComponent,
+        InformationModalComponent,
+        UploaderComponent,
+        LuigiClientCommunicationDirective
+      ],
+      providers: [ComponentCommunicationService],
+      imports: [RouterTestingModule.withRoutes(routes)]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceUploaderModalComponent);

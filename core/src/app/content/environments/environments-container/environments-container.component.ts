@@ -14,12 +14,9 @@ import {
 } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter, tap, take, map, concatMap } from 'rxjs/operators';
-
-import { NavVisibilityService } from '../../../navigation/services/nav-visibility.service';
 import { CurrentEnvironmentService } from '../services/current-environment.service';
 import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
-import NavigationUtils from '../../../navigation/services/navigation-utils';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 
 const fadeInAnimation = trigger('fadeInAnimation', [
@@ -39,8 +36,6 @@ const fadeInAnimation = trigger('fadeInAnimation', [
 })
 export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public navCtx: string;
-  private router: Router;
-  private route: ActivatedRoute;
   public isActive: boolean;
   private navSub: Subscription;
   private routerSub: Subscription;
@@ -50,30 +45,20 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public previousUrl = '';
   public previousEnv = '';
   public displayErrorGlobal = false;
-  public resourceExceeded = false;
+  public limitHasBeenExceeded = false;
+  public limitExceededErrors = [];
   public overview = false;
 
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
 
   constructor(
-    router: Router,
-    route: ActivatedRoute,
-    @Inject(NavVisibilityService) navVisibilityService: NavVisibilityService,
+    private router: Router,
+    private route: ActivatedRoute,
     private environmentsService: EnvironmentsService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
-    this.router = router;
-    this.route = route;
-    this.navSub = navVisibilityService.visibilityStateEmitter$.subscribe(
-      visible => (this.isActive = visible)
-    );
-    this.routerSub = router.events.subscribe(val => {
-      if (val instanceof ActivationEnd) {
-        this.leftNavCollapsed = NavigationUtils.computeLeftNavCollapseState(
-          val.snapshot
-        );
-      }
+    this.routerSub = this.router.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
         if (this.isSignificantUrlChange(val.url, this.previousUrl)) {
           if (!this.isSmoothNavigationUrlChange(val.url, this.previousUrl)) {
@@ -92,8 +77,18 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     window.addEventListener('message', e => {
       if (e.data && e.data.resourceQuotasStatus) {
-        this.resourceExceeded = e.data.resourceQuotasStatus.exceeded;
+        this.limitHasBeenExceeded = e.data.resourceQuotasStatus.exceeded;
         this.displayErrorGlobal = true;
+      }
+      if (
+        e.data &&
+        e.data.resourceQuotasStatus &&
+        e.data.resourceQuotasStatus.exceededQuotas &&
+        e.data.resourceQuotasStatus.exceededQuotas.length > 0
+      ) {
+        this.setLimitExceededErrorsMessages(
+          e.data.resourceQuotasStatus.exceededQuotas
+        );
       }
     });
     this.route.params.subscribe(params => {
@@ -108,8 +103,8 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             if (err.status === 404) {
               this.infoModal.show(
                 'Error',
-                `Environment ${envId} doesn't exist.`,
-                '/home/environments'
+                `Namespace ${envId} doesn't exist.`,
+                '/home/namespaces'
               );
             }
           }
@@ -119,7 +114,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.navSub.unsubscribe();
     this.routerSub.unsubscribe();
   }
 
@@ -149,7 +143,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     url: string,
     previousUrl: string
   ): boolean {
-    const envExtUrlPattern = /^\/home\/environments\/[^\/]+\/extensions\/.+$/;
+    const envExtUrlPattern = /^\/home\/namespaces\/[^\/]+\/extensions\/.+$/;
     const clusterExtUrlPattern = /^\/home\/settings\/extensions\/.+$/;
     if (previousUrl) {
       if (url === previousUrl) {
@@ -177,7 +171,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
       .getCurrentEnvironmentId()
       .pipe(
         tap(env => (this.overview = url.includes(`${env}/details`))),
-        filter(env => url.includes('environments/' + env)),
+        filter(env => url.includes('namespaces/' + env)),
         filter(env => env !== this.previousEnv || this.overview),
         take(1),
         concatMap(env =>
@@ -187,22 +181,54 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
               quotaExceeded:
                 res && res.resourceQuotasStatus
                   ? res.resourceQuotasStatus.exceeded
-                  : false
+                  : false,
+              limitExceededErrors:
+                res && res.resourceQuotasStatus && res.resourceQuotasStatus
+                  ? res.resourceQuotasStatus.exceededQuotas
+                  : []
             }))
           )
         )
       )
       .subscribe(
-        ({ env, quotaExceeded }) => {
-          this.resourceExceeded = quotaExceeded;
+        ({ env, quotaExceeded, limitExceededErrors }) => {
+          this.limitHasBeenExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
             this.displayErrorGlobal = quotaExceeded;
+          }
+          if (
+            quotaExceeded &&
+            limitExceededErrors &&
+            limitExceededErrors.length > 0
+          ) {
+            this.setLimitExceededErrorsMessages(limitExceededErrors);
           }
         },
         err => {
           console.log(err);
         }
       );
+  }
+
+  private setLimitExceededErrorsMessages(limitExceededErrors) {
+    this.limitExceededErrors = [];
+    limitExceededErrors.forEach(resource => {
+      if (resource.affectedResources && resource.affectedResources.length > 0) {
+        resource.affectedResources.forEach(affectedResource => {
+          this.limitExceededErrors.push(
+            `'${resource.resourceName}' by '${affectedResource}' (${
+              resource.quotaName
+            })`
+          );
+        });
+      }
+    });
+  }
+
+  public navigateToResources() {
+    this.currentEnvironmentService.getCurrentEnvironmentId().subscribe(env => {
+      this.router.navigate([`home/namespaces/${env}/resources`]);
+    });
   }
 }

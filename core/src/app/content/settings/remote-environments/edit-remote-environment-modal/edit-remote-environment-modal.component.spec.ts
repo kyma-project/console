@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError, empty } from 'rxjs';
+import { of, throwError, EMPTY } from 'rxjs';
 
 import { EditRemoteEnvironmentModalComponent } from './edit-remote-environment-modal.component';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
@@ -113,15 +113,15 @@ describe('EditRemoteEnvironmentModalComponent', () => {
 
   describe('updateLabelsData', () => {
     it('updates labels with input value', () => {
-      component.initialLabels = ['key1:val1'];
-      component.updateLabelsData({ labels: ['key1:val1', 'key2:val:2'] });
-      expect(component.updatedLabels).toEqual(['key1:val1', 'key2:val:2']);
+      component.initialLabels = ['key1=val1'];
+      component.updateLabelsData({ labels: ['key1=val1', 'key2=val=2'] });
+      expect(component.updatedLabels).toEqual(['key1=val1', 'key2=val=2']);
     });
 
     it('does not update labels if no input value', () => {
-      component.updatedLabels = ['key1:val1'];
+      component.updatedLabels = ['key1=val1'];
       component.updateLabelsData({});
-      expect(component.updatedLabels).toEqual(['key1:val1']);
+      expect(component.updatedLabels).toEqual(['key1=val1']);
     });
 
     it('updates labels validation field with input value', () => {
@@ -142,10 +142,10 @@ describe('EditRemoteEnvironmentModalComponent', () => {
       spyOn(
         mockRemoteEnvironmentsService,
         'updateRemoteEnvironment'
-      ).and.returnValue(empty());
+      ).and.returnValue(EMPTY);
       component.name = 're-name';
       component.updatedDescription = 're-desc';
-      component.updatedLabels = ['key1:val1'];
+      component.updatedLabels = ['key1=val1'];
       const expectedData = {
         name: 're-name',
         description: 're-desc',

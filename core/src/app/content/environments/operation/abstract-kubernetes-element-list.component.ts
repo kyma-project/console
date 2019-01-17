@@ -75,42 +75,45 @@ export class AbstractKubernetesElementListComponent
               (entry.name || entry.getName()) +
               '?'
           )
-          .then(() => {
-            entry.disabled = true;
-            this.communicationService.sendEvent({
-              type: 'disable',
-              entry
-            });
-            this.httpClient
-              .delete(
-                this.getResourceUrl(this.resourceKind.toLowerCase(), entry)
-              )
-              .subscribe(
-                () => {
-                  setTimeout(() => {
+          .then(
+            () => {
+              entry.disabled = true;
+              this.communicationService.sendEvent({
+                type: 'disable',
+                entry
+              });
+              this.httpClient
+                .delete(
+                  this.getResourceUrl(this.resourceKind.toLowerCase(), entry)
+                )
+                .subscribe(
+                  () => {
+                    setTimeout(() => {
+                      this.communicationService.sendEvent({
+                        type: 'deleteResource',
+                        data: entry
+                      });
+                    }, 275);
+                  },
+                  error => {
+                    entry.disabled = false;
                     this.communicationService.sendEvent({
-                      type: 'deleteResource',
-                      data: entry
+                      type: 'disable',
+                      entry
                     });
-                  }, 275);
-                },
-                error => {
-                  entry.disabled = false;
-                  this.communicationService.sendEvent({
-                    type: 'disable',
-                    entry
-                  });
-                  this.infoModal.show(
-                    'Error',
-                    'There was an error trying to delete ' +
-                      (entry.name || entry.getName()) +
-                      ': ' +
-                      (error.message || error)
-                  );
-                  this.reload();
-                }
-              );
-          });
+                    this.infoModal.show(
+                      'Error',
+                      'There was an error trying to delete ' +
+                        (entry.name || entry.getName()) +
+                        ': ' +
+                        (error.message || error)
+                    );
+                    this.reload();
+                  }
+                );
+            },
+            () => {}
+          );
       },
       edit: (entry: any) => {
         this.httpClient

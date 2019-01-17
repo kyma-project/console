@@ -15,7 +15,7 @@ import { Jwt } from '../../../shared/datamodel/jwt';
 @Component({
   selector: 'app-http-trigger',
   templateUrl: './http-trigger.component.html',
-  styleUrls: ['../../../app.component.scss', './http-trigger.component.scss'],
+  styleUrls: ['./http-trigger.component.scss'],
 })
 export class HttpTriggerComponent {
   lambda: Lambda;
@@ -65,13 +65,12 @@ export class HttpTriggerComponent {
 
     this.title = 'Expose via HTTPS';
     this.isActive = true;
-    let sessionId;
 
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      sessionId = eventData.sessionId;
       this.token = `${eventData.idToken}`;
     });
+    luigiClient.uxManager().addBackdrop();
   }
 
   addTrigger() {
@@ -109,6 +108,7 @@ export class HttpTriggerComponent {
 
   closeHttpTriggerModal() {
     this.isActive = false;
+    luigiClient.uxManager().removeBackdrop();
   }
 
   public getIDPPresets() {

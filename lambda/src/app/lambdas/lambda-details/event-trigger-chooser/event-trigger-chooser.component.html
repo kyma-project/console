@@ -3,6 +3,9 @@
     <div class="tn-modal add-event-modal" role="document">
       <div class="tn-modal__content">
         <div class="tn-modal__header">
+          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="closeEventTriggerChooserModal()">
+            <span class="tn-icon tn-icon--close" role="presentation"></span>
+          </button>
           <h4 class="tn-modal__title">{{ title }}</h4>
           <input type="search" class="triggers-dropdown__search" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
             placeholder="Search">
@@ -13,12 +16,12 @@
                 <div class="col-1"></div>
                 <div class="col-4">Event</div>
                 <div class="col-1">Version</div>
-                <div class="col-2">Remote Environment</div>
+                <div class="col-2">Application</div>
                 <div class="description col-4">Description</div>
               </div>
             </div>
           </div>
-          <div class="sf-list trigger-entry-list">
+          <div class="sf-list trigger-entry-list scroll-list">
             <div *ngFor="let event of filteredTriggers">
               <div class="row sf-list__body">
                 <div class="data col-1"><input type="checkbox" (change)="toggleEventSelection(event, $event)"></div>

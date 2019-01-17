@@ -1,26 +1,28 @@
-<ng-template [ngIf]="isActive">
-  <div class="sf-modal sf-modal--mid" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
-    <div class="tn-modal" role="document">
-      <div class="tn-modal__content">
-        <div class="tn-modal__header">
-          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="cancel($event)">
-            <span class="tn-icon tn-icon--close" role="presentation"></span>
-          </button>
-          <h4 class="tn-modal__title">Edit</h4>
-        </div>
-        <div class="tn-modal__body">
-          <div class="tn-form__group">
-            <div class="error-message-placeholder" *ngIf="error">{{ error.message }}</div>
-            <div class="json-editor">
-              <app-json-editor #jsoneditor [resourceData]="resourceData"></app-json-editor>
+<div luigiClientCommunication [isActive]="isActive">
+  <ng-template [ngIf]="isActive">
+    <div class="sf-modal sf-modal--mid" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+      <div class="tn-modal" role="document">
+        <div class="tn-modal__content">
+          <div class="tn-modal__header">
+            <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="cancel($event)">
+              <span class="tn-icon tn-icon--close" role="presentation"></span>
+            </button>
+            <h4 class="tn-modal__title">Edit</h4>
+          </div>
+          <div class="tn-modal__body">
+            <div class="tn-form__group">
+              <div class="error-message-placeholder" *ngIf="error">{{ error.message }}</div>
+              <div class="json-editor">
+                <app-json-editor #jsoneditor [resourceData]="resourceData"></app-json-editor>
+              </div>
             </div>
           </div>
+          <footer class="tn-modal__footer-items">
+            <button class="tn-modal__button-primary sf-button--primary tn-button--small" (click)="update($event)">Update</button>
+            <button class="tn-modal__button-secondary tn-button--small" (click)="cancel($event)">Cancel</button>
+          </footer>
         </div>
-        <footer class="tn-modal__footer-items">
-          <button class="tn-modal__button-primary sf-button--primary tn-button--small" (click)="update($event)">Update</button>
-          <button class="tn-modal__button-secondary tn-button--small" (click)="cancel($event)">Cancel</button>
-        </footer>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
+</div>

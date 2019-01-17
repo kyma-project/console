@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
-
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
@@ -71,7 +70,7 @@ export class EditRemoteEnvironmentModalComponent {
       name: this.name,
       description: this.updatedDescription,
       labels: (this.updatedLabels || []).reduce((acc, label) => {
-        return { ...acc, [label.split(':')[0]]: label.split(':')[1] };
+        return { ...acc, [label.split('=')[0]]: label.split('=')[1] };
       }, {})
     };
 
