@@ -33,7 +33,6 @@ export class DeploymentEntryRendererComponent
         }
       }
     );
-
     this.showBoundServices = this.luigiClientService.hasBackendModule(
       'servicecatalogaddons'
     );
