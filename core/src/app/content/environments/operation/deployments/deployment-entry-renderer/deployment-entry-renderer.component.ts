@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { CurrentEnvironmentService } from '../../../services/current-environment.service';
+import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';

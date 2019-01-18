@@ -6,7 +6,8 @@
     "module": "es2015",
     "types": ["node"],
     "paths": {
-      "shared/*": ["app/shared/*"]
+      "shared/*": ["app/shared/*"],
+      "environments/*": ["app/content/environments/*"]
     }
   },
   "exclude": ["test.ts", "**/*.spec.ts"]

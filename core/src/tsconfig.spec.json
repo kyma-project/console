@@ -7,7 +7,8 @@
     "target": "es5",
     "types": ["jasmine", "node"],
     "paths": {
-      "shared/*": ["app/shared/*"]
+      "shared/*": ["app/shared/*"],
+      "environments/*": ["app/content/environments/*"]
     }
   },
   "files": ["test.ts", "polyfills.ts"],

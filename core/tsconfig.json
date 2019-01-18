@@ -13,7 +13,8 @@
     "module": "es2015",
     "baseUrl": "./",
     "paths": {
-      "shared/*": ["src/app/shared/*"]
+      "shared/*": ["src/app/shared/*"],
+      "environments/*": ["src/app/content/environments/*"]
     }
   },
   "include": ["src/**/*", "node_modules/ng2-ace-editor/src/**/*"]
