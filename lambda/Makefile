@@ -20,6 +20,7 @@ scan:
 	whitesource run
 
 build:
+	cd ../components/angular/generic-list && npm install && npm run packagr
 	npm run build
 
 build-image:

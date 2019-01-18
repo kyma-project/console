@@ -6,6 +6,7 @@
     "instances",
     "brokers",
     "content",
+    "components/angular/generic-list/dist",
     "components/react",
     "lambda",
     "tests"

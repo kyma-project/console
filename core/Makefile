@@ -16,6 +16,7 @@ test:
 	npm run test:single
 
 build:
+	cd ../components/angular/generic-list && npm install && npm run packagr
 	npm run build
 
 scan:
