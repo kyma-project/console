@@ -2,9 +2,9 @@
   <div class="col-2 col-lg-2">Name</div>
   <div class="col-1">Pods</div>
   <div class="col-1">Age</div>
-  <div class="col-2">Images</div>
-  <div class="col-1" *ngIf="showBoundServices">Bound services</div>
+  <div ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">Images</div>
+  <div class="col-2" *ngIf="showBoundServices">Bound services</div>
   <div ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">Labels</div>
-  <div class="col-2">Status</div>
+  <div class="col-1">Status</div>
   <div class="col-1 actions-icon">Actions</div>
 </div>
