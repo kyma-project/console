@@ -1,3 +1,9 @@
-<div *ngIf="showPaging">
-  <button *ngFor="let pn of pageNumbers" (click)="goToPage(pn)" [disabled]="pn === pagingState.pageNumber">{{pn}}</button>
-</div>
+<fd-pagination
+  [class]="'fd-pagination'"
+  (selected)="goToPage($event)"
+  [pagination]="{
+    totalItems: pagingState.totalCount,
+    itemsPerPage: pagingState.pageSize,
+    currentPage: pagingState.pageNumber
+  }"
+></fd-pagination>

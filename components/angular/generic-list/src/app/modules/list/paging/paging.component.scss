@@ -1,13 +1,13 @@
-div {
+.fd-pagination {
   padding-bottom: 6px;
   padding-top: 6px;
   text-align: center;
 }
 
-div>button {
+div > button {
   margin-right: 4px;
   margin-left: 4px;
-  display:inline-block;
+  display: inline-block;
 }
 
 button {
@@ -20,7 +20,7 @@ button {
   background: none;
   line-height: 1;
   font-size: 14px;
-  text-transform: none!important;
+  text-transform: none !important;
   border: none;
   outline: none;
   &:focus {
