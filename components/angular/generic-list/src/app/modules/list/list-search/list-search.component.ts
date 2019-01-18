@@ -46,8 +46,8 @@ export class ListSearchComponent extends ListFilterComponent
     this.searching = true;
     setTimeout(() => {
       // temporary solution until Fundamental-ngx provides such a possibility
-      const searchInput = document.querySelector(
-        '.search input[type="search"]',
+      const searchInput = <HTMLElement>(
+        document.querySelector('.search input[type="search"]')
       );
       if (searchInput && typeof searchInput.focus === 'function') {
         searchInput.focus();
