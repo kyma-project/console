@@ -1,4 +1,7 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
+import LuigiClient from '@kyma-project/luigi-client';
+
+import { CurrentEnvironmentService } from '../../../services/current-environment.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
@@ -13,12 +16,22 @@ import { LuigiClientService } from 'shared/services/luigi-client.service';
 export class DeploymentEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
+  public currentEnvironmentId: string;
+  private currentEnvironmentSubscription: Subscription;
+
   constructor(
     protected injector: Injector,
     private componentCommunicationService: ComponentCommunicationService,
+    private currentEnvironmentService: CurrentEnvironmentService,
     private luigiClientService: LuigiClientService
   ) {
     super(injector);
+
+    this.currentEnvironmentSubscription = this.currentEnvironmentService
+      .getCurrentEnvironmentId()
+      .subscribe(envId => {
+        this.currentEnvironmentId = envId;
+      });
   }
   public disabled = false;
   public showBoundServices: boolean;
@@ -40,6 +53,7 @@ export class DeploymentEntryRendererComponent
 
   ngOnDestroy() {
     this.communicationServiceSubscription.unsubscribe();
+    this.currentEnvironmentSubscription.unsubscribe();
   }
 
   isStatusOk(entry): boolean {
@@ -52,5 +66,13 @@ export class DeploymentEntryRendererComponent
 
   getStatusType(entry) {
     return this.isStatusOk(entry) ? 'ok' : 'error';
+  }
+
+  goToServiceInstanceDetails(serviceInstanceId: string) {
+    LuigiClient.linkManager().navigate(
+      `/home/namespaces/${
+        this.currentEnvironmentId
+      }/instances/details/${serviceInstanceId}`
+    );
   }
 }
