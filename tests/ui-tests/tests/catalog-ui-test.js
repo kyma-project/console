@@ -19,6 +19,18 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       browser = data.browser;
       page = data.page;
       logOnEvents(page, t => (token = t));
+      //throw an error for NETWORK_CHANGED at a POST request so that it can be retried
+      page.on('requestfailed', request => {
+        if (
+          request._method === 'POST' &&
+          request._failureText === 'net::ERR_NETWORK_CHANGED'
+        ) {
+          console.log(
+            'Error net::ERR_NETWORK_CHANGED during POST request. Operation will be retried'
+          );
+          throw new Error('ERR_NETWORK_CHANGED');
+        }
+      });
 
       await kymaConsole.testLogin(page);
       await Promise.all([
@@ -166,10 +178,18 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     // consts
     const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
-    await catalog.createInstance(page, instanceTitle, instanceLabel);
-    await page.goto(catalogUrl, {
-      waitUntil: ['domcontentloaded', 'networkidle0']
+
+    await common.retry(page, async () => {
+      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+      await catalog.createInstance(page, instanceTitle, instanceLabel);
     });
+
+    await Promise.all([
+      page.goto(catalogUrl),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
     const frame = await kymaConsole.getFrame(page);
     const redis = await frame.$(exampleServiceClassButton);
     await Promise.all([
@@ -179,7 +199,10 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       })
     ]);
     await frame.waitForSelector(addToEnvButton, { visible: true });
-    await catalog.createInstance(page, instanceTitle2, instanceLabel2);
+    await common.retry(page, async () => {
+      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+      await catalog.createInstance(page, instanceTitle2, instanceLabel2);
+    });
   });
 
   test('Check instances list', async () => {
@@ -195,9 +218,13 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const toggleSearchSelector = catalog.prepareSelector('toggle-search');
     const searchBySth = 'lololo';
 
-    await page.goto(instancesUrl, {
-      waitUntil: ['domcontentloaded', 'networkidle0']
-    });
+    await Promise.all([
+      page.goto(instancesUrl),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
+
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(instancesHeaderSelector);
     const instancesHeader = await frame.$eval(
