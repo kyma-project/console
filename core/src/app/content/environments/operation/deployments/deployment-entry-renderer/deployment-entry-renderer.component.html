@@ -7,7 +7,7 @@
   </div>
   <ng-container *ngIf="showBoundServices">
     <div class="col-2" *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
-      <a *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
+      <a class="bound-services" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
         {{ instance }}
       </a>
     </div>
