@@ -1,4 +1,4 @@
-<fd-pagination *ngIf="pagingState.totalCount"
+<fd-pagination *ngIf="pagingState.totalCount && pagingState.pageSize && pagingState.totalCount>pagingState.pageSize"
   [class]="'fd-pagination'"
   (selected)="goToPage($event)"
   [pagination]="{
