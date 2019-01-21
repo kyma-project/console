@@ -15,5 +15,6 @@
     },
     "styleIncludePaths": ["./src/styles"]
   },
-  "whitelistedNonPeerDependencies": ["."]
+  "whitelistedNonPeerDependencies": ["."],
+  "deleteDestPath": false
 }
