@@ -10,7 +10,7 @@
     "packagr": "ng-packagr -p ng-package.json",
     "packagr-develop": "ng-packagr -w -p ng-package.json"
   },
-  "private": false,
+  "private": true,
   "dependencies": {
     "fundamental-ui": "^1.2.2",
     "ng-click-outside": "^4.0.0"

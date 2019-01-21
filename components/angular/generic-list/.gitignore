@@ -1,7 +1,11 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# keep folder of compiled output to allow early lerna linking
+!/dist
+!/dist/.gitignore
+/dist/*
+
 # compiled output
-/dist
 /dist-server
 /tmp
 /out-tsc
