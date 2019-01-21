@@ -64,8 +64,8 @@ const defaultSubscriptionConfSpec = {
   pushRequestTimeoutMS: 2000,
   maxInFlight: 400,
   includeSubscriptionNameHeader: true,
-  eventType: true,
-  eventTypeVersion: true,
+  eventType: '',
+  eventTypeVersion: '',
 };
 
 let subscriptionConfigSpec = defaultSubscriptionConfSpec;
