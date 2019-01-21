@@ -1,14 +1,14 @@
 # Default owners of the repository
-* @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r
+* @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @johannesdoberer @marynakhromova
 
 /catalog/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu
 /instances/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu
 /brokers/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu @aszecowka @PK85 @mszostok @piotrmiskiewicz @polskikiel @jasiu001
 /content/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu
-/components/angular/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
+/components/angular/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @johannesdoberer @marynakhromova
 /components/react/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu
-/core/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @parostatkiem
-/tests/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld
+/core/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @parostatkiem @johannesdoberer @marynakhromova
+/tests/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @johannesdoberer @marynakhromova
 /lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r
 
 # Owners of all .md files in the repository
