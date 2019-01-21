@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "packagr": "ng-packagr -p ng-package.json"
   },
-  "private": false,
+  "private": true,
   "dependencies": {
     "@angular/router": "^7.2.1",
     "fiori-fundamentals": "^1.4.1",
