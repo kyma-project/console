@@ -7,6 +7,7 @@ ci-master: install-dependencies validate test build build-image push-image
 ci-release: install-dependencies validate test build build-image push-image
 
 install-dependencies:
+	cd .. && npm run build:components:angular
 	npm ci
 
 validate:
@@ -16,7 +17,7 @@ test:
 	npm run test:single
 
 build:
-	cd ../components/angular/generic-list && npm install && npm run packagr
+	cd .. && npm run build:components:angular
 	npm run build
 
 scan:
