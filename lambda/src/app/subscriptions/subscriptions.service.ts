@@ -69,7 +69,14 @@ export class SubscriptionsService {
     };
     const sp: ISubscriptionSpec = {
       endpoint: '',
-      source_id: '',
+      sourceID: '',
+      pushRequestTimeoutMS:
+        AppConfig.subscriptionConfigSpec.pushRequestTimeoutMS,
+      maxInflight: AppConfig.subscriptionConfigSpec.maxInFlight,
+      includeSubscriptionNameHeader:
+        AppConfig.subscriptionConfigSpec.includeSubscriptionNameHeader,
+      eventType: AppConfig.subscriptionConfigSpec.eventType,
+      evetTypeVersion: AppConfig.subscriptionConfigSpec.eventTypeVersion,
     };
 
     const subscription = new Subscription({
@@ -78,12 +85,6 @@ export class SubscriptionsService {
       metadata: md,
       spec: sp,
     });
-
-    subscription.spec['push_request_timeout_ms'] = 2000;
-    subscription.spec['max_inflight'] = 400;
-    subscription.spec['include_subscription_name_header'] = true;
-    subscription.spec['event_type'] = true;
-    subscription.spec['event_type_version'] = true;
     return subscription;
   }
 }
