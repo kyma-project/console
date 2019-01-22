@@ -17,11 +17,14 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       page = data.page;
       logOnEvents(page, t => (token = t));
 
-      //throw an error for NETWORK_CHANGED case so that it can be retried
+      //throw an error for NETWORK_CHANGED at a POST request so that it can be retried
       page.on('requestfailed', request => {
-        if (request._failureText === 'net::ERR_NETWORK_CHANGED') {
+        if (
+          request._method === 'POST' &&
+          request._failureText === 'net::ERR_NETWORK_CHANGED'
+        ) {
           console.log(
-            'Error net::ERR_NETWORK_CHANGED. Operation will be retried'
+            'Error net::ERR_NETWORK_CHANGED during POST request. Operation will be retried'
           );
           throw new Error('ERR_NETWORK_CHANGED');
         }
@@ -52,9 +55,12 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
 
   test('Create env', async () => {
     await kymaConsole.createEnvironment(page, config.testEnv);
-    await page.goto(address.console.getEnvironmentsAddress(), {
-      waitUntil: ['domcontentloaded', 'networkidle0']
-    });
+    await Promise.all([
+      page.goto(address.console.getEnvironmentsAddress()),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
     const environmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
       page
     );
@@ -83,9 +89,12 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
 
   test('Check if Application exist', async () => {
     const remoteEnvironmentsUrl = address.console.getRemoteEnvironments();
-    await page.goto(remoteEnvironmentsUrl, {
-      waitUntil: ['domcontentloaded', 'networkidle0']
-    });
+    await Promise.all([
+      page.goto(remoteEnvironmentsUrl),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
     const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
       page
     );

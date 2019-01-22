@@ -33,9 +33,12 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     const docsHeaderSelector = catalog.prepareSelector('toolbar-headline');
     const docsExpectedHeader = 'Docs';
 
-    await page.goto(docsUrl, {
-      waitUntil: ['domcontentloaded', 'networkidle0']
-    });
+    await Promise.all([
+      page.goto(docsUrl),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
+    ]);
 
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(docsHeaderSelector);
