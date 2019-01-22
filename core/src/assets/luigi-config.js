@@ -7,7 +7,8 @@ var config = {
   serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
-  docsModuleUrl: 'https://docs.' + k8sDomain
+  docsModuleUrl: 'https://docs.' + k8sDomain,
+  graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
 };
 
 if (clusterConfig) {
@@ -382,7 +383,6 @@ function getUiEntities(entityname, environment, placements) {
 }
 
 function fetchFromKyma(url) {
-  reloginIfTokenExpired();
   return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
@@ -402,6 +402,46 @@ function fetchFromKyma(url) {
   });
 }
 
+function fetchFromGraphQL(query, variables) {
+  return new Promise(function(resolve, reject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        try {
+          const response = JSON.parse(xmlHttp.response);
+          if (response && response.errors) {
+            reject(response.errors[0].message);
+          } else if (response && response.data) {
+            return resolve(response.data);
+          }
+          resolve(response);
+        } catch {
+          reject(xmlHttp.response);
+        }
+      } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+        // if (xmlHttp.status === 401) {
+        // relogin();
+        // }
+        reject(xmlHttp.response);
+      }
+    };
+
+    xmlHttp.open('POST', config.graphqlApiUrl, true);
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(JSON.stringify({ query, variables }));
+  });
+}
+
+function getBackendModules() {
+  const query = `query {
+    backendModules{
+      name
+    }
+  }`;
+  return fetchFromGraphQL(query);
+}
+
 function getEnvs() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
@@ -413,7 +453,6 @@ function getEnvs() {
       }
       envName = env.metadata.name;
       envs.push({
-        // has to be visible for all views exept 'settings'
         category: 'Namespaces',
         label: envName,
         pathValue: envName
@@ -428,201 +467,213 @@ function relogin() {
   location.reload();
 }
 
-function reloginIfTokenExpired() {
-  var authData = JSON.parse(localStorage.getItem('luigi.auth'));
-  var accessTokenExpirationDate =
-    authData && authData.accessTokenExpirationDate;
-  var currentDate = new Date();
-  if (!authData || accessTokenExpirationDate < currentDate) {
-    relogin();
-  }
-}
-
-Luigi.setConfig({
-  auth: {
-    use: 'openIdConnect',
-    openIdConnect: {
-      authority: 'https://dex.' + k8sDomain,
-      client_id: 'console',
-      scope:
-        'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-      automaticSilentRenew: true,
-      loadUserInfo: false
+let backendModules = [];
+getBackendModules()
+  .then(
+    res => {
+      if (res && res.backendModules && res.backendModules.length > 0) {
+        res.backendModules.forEach(backendModule => {
+          backendModules.push(backendModule.name);
+        });
+      }
     },
+    err => {
+      console.error('Error while fetching backend modules', err);
+    }
+  )
+  .finally(() => {
+    Luigi.setConfig({
+      auth: {
+        use: 'openIdConnect',
+        openIdConnect: {
+          authority: 'https://dex.' + k8sDomain,
+          client_id: 'console',
+          scope:
+            'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
+          automaticSilentRenew: true,
+          loadUserInfo: false
+        },
 
-    events: {
-      onLogout: () => {
-        console.log('onLogout');
+        events: {
+          onLogout: () => {
+            console.log('onLogout');
+          },
+          onAuthSuccessful: data => {},
+          onAuthExpired: () => {
+            console.log('onAuthExpired');
+          },
+          // TODO: define luigi-client api for getting errors
+          onAuthError: err => {
+            console.log('authErrorHandler 1', err);
+          }
+        }
       },
-      onAuthSuccessful: data => {},
-      onAuthExpired: () => {
-        console.log('onAuthExpired');
-      },
-      // TODO: define luigi-client api for getting errors
-      onAuthError: err => {
-        console.log('authErrorHandler 1', err);
-      }
-    }
-  },
-  navigation: {
-    nodes: () => [
-      {
-        pathSegment: 'home',
-        hideFromNav: true,
-        context: {
-          idToken: token
-        },
-        children: function() {
-          return getUiEntities('clustermicrofrontends', undefined, [
-            'cluster'
-          ]).then(function(cmf) {
-            var staticNodes = [
-              {
-                pathSegment: 'workspace',
-                label: 'Namespaces',
-                viewUrl:
-                  '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
-                icon: 'dimension'
-              },
-              {
-                pathSegment: 'namespaces',
-                viewUrl: '/consoleapp.html#/home/namespaces/workspace',
-                hideFromNav: true,
-                children: [
+      navigation: {
+        nodes: () => [
+          {
+            pathSegment: 'home',
+            hideFromNav: true,
+            context: {
+              idToken: token,
+              backendModules
+            },
+            children: function() {
+              return getUiEntities('clustermicrofrontends', undefined, [
+                'cluster'
+              ]).then(function(cmf) {
+                var staticNodes = [
                   {
-                    pathSegment: ':environmentId',
-                    context: {
-                      environmentId: ':environmentId'
+                    pathSegment: 'workspace',
+                    label: 'Namespaces',
+                    viewUrl:
+                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                    icon: 'dimension'
+                  },
+                  {
+                    pathSegment: 'namespaces',
+                    viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+                    hideFromNav: true,
+                    children: [
+                      {
+                        pathSegment: ':environmentId',
+                        context: {
+                          environmentId: ':environmentId'
+                        },
+                        children: getNodes,
+                        navigationContext: 'namespaces',
+                        defaultChildNode: 'details'
+                      }
+                    ]
+                  },
+                  {
+                    pathSegment: 'apps',
+                    navigationContext: 'apps',
+                    label: 'Applications',
+                    category: { label: 'Integration', icon: 'overview-chart' },
+                    viewUrl: '/consoleapp.html#/home/settings/apps',
+                    keepSelectedForChildren: true,
+                    children: [
+                      {
+                        pathSegment: 'details',
+                        children: [
+                          {
+                            pathSegment: ':name',
+                            viewUrl:
+                              '/consoleapp.html#/home/settings/apps/:name'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    pathSegment: 'service-brokers',
+                    navigationContext: 'service-brokers',
+                    label: 'Service Brokers',
+                    category: 'Integration',
+                    viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
+                  },
+                  {
+                    pathSegment: 'idp-presets',
+                    navigationContext: 'idp-presets',
+                    label: 'IDP Presets',
+                    category: 'Integration',
+                    viewUrl: '/consoleapp.html#/home/settings/idpPresets'
+                  },
+                  {
+                    pathSegment: 'settings',
+                    navigationContext: 'settings',
+                    label: 'General Settings',
+                    category: { label: 'Settings', icon: 'settings' },
+                    viewUrl: '/consoleapp.html#/home/settings/organisation'
+                  },
+                  {
+                    pathSegment: 'global-permissions',
+                    navigationContext: 'global-permissions',
+                    label: 'Global Permissions',
+                    category: 'Settings',
+                    viewUrl:
+                      '/consoleapp.html#/home/settings/globalPermissions',
+                    keepSelectedForChildren: true,
+                    children: [
+                      {
+                        pathSegment: 'roles',
+                        children: [
+                          {
+                            pathSegment: ':name',
+                            viewUrl:
+                              '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    label: 'Stats & Metrics',
+                    category: {
+                      label: 'Diagnostics',
+                      icon: 'electrocardiogram'
                     },
-                    children: getNodes,
-                    navigationContext: 'namespaces',
-                    defaultChildNode: 'details'
-                  }
-                ]
-              },
-              {
-                pathSegment: 'apps',
-                navigationContext: 'apps',
-                label: 'Applications',
-                category: { label: 'Integration', icon: 'overview-chart' },
-                viewUrl: '/consoleapp.html#/home/settings/apps',
-                keepSelectedForChildren: true,
-                children: [
+                    externalLink: {
+                      url: 'https://grafana.' + k8sDomain,
+                      sameWindow: false
+                    }
+                  },
                   {
-                    pathSegment: 'details',
-                    children: [
-                      {
-                        pathSegment: ':name',
-                        viewUrl: '/consoleapp.html#/home/settings/apps/:name'
-                      }
-                    ]
+                    label: 'Tracing',
+                    category: 'Diagnostics',
+                    externalLink: {
+                      url: 'https://jaeger.' + k8sDomain,
+                      sameWindow: false
+                    }
                   }
-                ]
-              },
-              {
-                pathSegment: 'service-brokers',
-                navigationContext: 'service-brokers',
-                label: 'Service Brokers',
-                category: 'Integration',
-                viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
-              },
-              {
-                pathSegment: 'idp-presets',
-                navigationContext: 'idp-presets',
-                label: 'IDP Presets',
-                category: 'Integration',
-                viewUrl: '/consoleapp.html#/home/settings/idpPresets'
-              },
-              {
-                pathSegment: 'settings',
-                navigationContext: 'settings',
-                label: 'General Settings',
-                category: { label: 'Settings', icon: 'settings' },
-                viewUrl: '/consoleapp.html#/home/settings/organisation'
-              },
-              {
-                pathSegment: 'global-permissions',
-                navigationContext: 'global-permissions',
-                label: 'Global Permissions',
-                category: 'Settings',
-                viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
-                keepSelectedForChildren: true,
-                children: [
-                  {
-                    pathSegment: 'roles',
-                    children: [
-                      {
-                        pathSegment: ':name',
-                        viewUrl:
-                          '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                label: 'Stats & Metrics',
-                category: { label: 'Diagnostics', icon: 'electrocardiogram' },
-                externalLink: {
-                  url: 'https://grafana.' + k8sDomain,
-                  sameWindow: false
-                }
-              },
-              {
-                label: 'Tracing',
-                category: 'Diagnostics',
-                externalLink: {
-                  url: 'https://jaeger.' + k8sDomain,
-                  sameWindow: false
-                }
-              }
-            ];
-            var fetchedNodes = [].concat.apply([], cmf);
-            return [].concat.apply(staticNodes, fetchedNodes);
-          });
+                ];
+                var fetchedNodes = [].concat.apply([], cmf);
+                return [].concat.apply(staticNodes, fetchedNodes);
+              });
+            }
+          },
+          {
+            pathSegment: 'docs',
+            viewUrl: config.docsModuleUrl,
+            label: 'Docs',
+            hideSideNav: true,
+            context: {
+              idToken: token
+            },
+            icon: 'sys-help'
+          }
+        ],
+        contextSwitcher: {
+          defaultLabel: 'Select Namespace ...',
+          parentNodePath: '/home/namespaces', // absolute path
+          lazyloadOptions: true, // load options on click instead on page load
+          options: getEnvs,
+          actions: [
+            {
+              label: '+ New Namespace',
+              link: '/home/workspace?~showModal=true'
+            }
+          ]
         }
       },
-      {
-        pathSegment: 'docs',
-        viewUrl: config.docsModuleUrl,
-        label: 'Docs',
-        hideSideNav: true,
-        context: {
-          idToken: token
-        },
-        icon: 'sys-help'
-      }
-    ],
-    contextSwitcher: {
-      defaultLabel: 'Select Namespace ...',
-      parentNodePath: '/home/namespaces', // absolute path
-      lazyloadOptions: true, // load options on click instead on page load
-      options: getEnvs,
-      actions: [
-        {
-          label: '+ New Namespace',
-          link: '/home/workspace?~showModal=true'
+      routing: {
+        nodeParamPrefix: '~',
+        skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+      },
+      settings: {
+        header: () => {
+          logo =
+            clusterConfig && clusterConfig.headerLogoUrl
+              ? clusterConfig.headerLogoUrl
+              : '/assets/logo.svg';
+          title = clusterConfig ? clusterConfig.headerTitle : undefined;
+          favicon = clusterConfig ? clusterConfig.faviconUrl : undefined;
+          return {
+            logo,
+            title,
+            favicon
+          };
         }
-      ]
-    }
-  },
-  routing: {
-    nodeParamPrefix: '~',
-    skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
-  },
-  settings: {
-    header: () => {
-      logo =
-        clusterConfig && clusterConfig.headerLogoUrl
-          ? clusterConfig.headerLogoUrl
-          : '/assets/logo.svg';
-      title = clusterConfig ? clusterConfig.headerTitle : undefined;
-      favicon = clusterConfig ? clusterConfig.faviconUrl : undefined;
-      return {
-        logo,
-        title,
-        favicon
-      };
-    }
-  }
-});
+      }
+    });
+  });

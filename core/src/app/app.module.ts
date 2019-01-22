@@ -71,6 +71,7 @@ import { UploaderComponent } from './shared/components/resource-uploader/uploade
 import { ComponentCommunicationService } from './shared/services/component-communication.service';
 import { RoleBindingModalComponent } from './shared/components/role-binding-modal/role-binding-modal.component';
 import { GraphQLClientService } from './shared/services/graphql-client-service';
+import { LuigiClientService } from './shared/services/luigi-client.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { PermissionsComponent } from './shared/components/permissions/permissions.component';
 import { RolesComponent } from './shared/components/permissions/roles/roles.component';
@@ -216,7 +217,8 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
     RemoteEnvironmentBindingService,
     RbacService,
     GraphQLClientService,
-    IdpPresetsService
+    IdpPresetsService,
+    LuigiClientService
   ],
   entryComponents: [
     EnvironmentCardComponent,

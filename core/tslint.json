@@ -37,8 +37,11 @@
       "@angular/common/http",
       "@angular/router/src/utils/collection",
       "@angular/http/testing",
-      "@angular/router/testing"
+      "@angular/router/testing",
+      "shared",
+      "environments"
     ],
+    "no-implicit-dependencies": [true, ["shared", "environments"]],
     "interface-name": false
   },
   "rulesDirectory": ["node_modules/codelyzer"],
