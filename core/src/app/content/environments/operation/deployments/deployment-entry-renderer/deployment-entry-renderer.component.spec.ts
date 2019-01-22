@@ -4,13 +4,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DeploymentEntryRendererComponent } from './deployment-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { of, Subject } from 'rxjs';
+import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 describe('DeploymentEntryRendererComponent', () => {
   let component: DeploymentEntryRendererComponent;
   let fixture: ComponentFixture<DeploymentEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
+  let luigiClientService: LuigiClientService;
 
   beforeEach(async(() => {
+    const mockLuigiClientService = {
+      hasBackendModule: () => true
+    };
+
     TestBed.configureTestingModule({
       imports: [AppModule],
       providers: [
@@ -28,7 +34,8 @@ describe('DeploymentEntryRendererComponent', () => {
           }
         ],
         [{ provide: 'entryEventHandler', useValue: {} }],
-        ComponentCommunicationService
+        ComponentCommunicationService,
+        { provide: LuigiClientService, useValue: mockLuigiClientService }
       ]
     }).compileComponents();
   }));
@@ -36,12 +43,23 @@ describe('DeploymentEntryRendererComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeploymentEntryRendererComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     componentCommunicationService = TestBed.get(ComponentCommunicationService);
+    luigiClientService = TestBed.get(LuigiClientService);
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it("set 'showBoundService' value on component init", () => {
+    expect(this.showBoundServices).toBeUndefined();
+    spyOn(luigiClientService, 'hasBackendModule').and.returnValue(true);
+    fixture.detectChanges();
+    expect(luigiClientService.hasBackendModule).toHaveBeenCalledWith(
+      'servicecatalogaddons'
+    );
+    expect(component.showBoundServices).toBe(true);
   });
 
   it("should disable the deployment if 'disable' event with rigth data has been sent", async done => {

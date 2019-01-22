@@ -1,8 +1,12 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
+import LuigiClient from '@kyma-project/luigi-client';
+
+import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
+import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 @Component({
   selector: 'app-deployment-entry-renderer',
@@ -12,13 +16,25 @@ import { StatusLabelComponent } from '../../../../../shared/components/status-la
 export class DeploymentEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
+  public currentEnvironmentId: string;
+  private currentEnvironmentSubscription: Subscription;
+
   constructor(
     protected injector: Injector,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private currentEnvironmentService: CurrentEnvironmentService,
+    private luigiClientService: LuigiClientService
   ) {
     super(injector);
+
+    this.currentEnvironmentSubscription = this.currentEnvironmentService
+      .getCurrentEnvironmentId()
+      .subscribe(envId => {
+        this.currentEnvironmentId = envId;
+      });
   }
   public disabled = false;
+  public showBoundServices: boolean;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
@@ -30,10 +46,14 @@ export class DeploymentEntryRendererComponent
         }
       }
     );
+    this.showBoundServices = this.luigiClientService.hasBackendModule(
+      'servicecatalogaddons'
+    );
   }
 
   ngOnDestroy() {
     this.communicationServiceSubscription.unsubscribe();
+    this.currentEnvironmentSubscription.unsubscribe();
   }
 
   isStatusOk(entry): boolean {
@@ -46,5 +66,13 @@ export class DeploymentEntryRendererComponent
 
   getStatusType(entry) {
     return this.isStatusOk(entry) ? 'ok' : 'error';
+  }
+
+  goToServiceInstanceDetails(serviceInstanceId: string) {
+    LuigiClient.linkManager().navigate(
+      `/home/namespaces/${
+        this.currentEnvironmentId
+      }/instances/details/${serviceInstanceId}`
+    );
   }
 }

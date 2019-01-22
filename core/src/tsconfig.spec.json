@@ -5,7 +5,11 @@
     "baseUrl": "./",
     "module": "commonjs",
     "target": "es5",
-    "types": ["jasmine", "node"]
+    "types": ["jasmine", "node"],
+    "paths": {
+      "shared/*": ["app/shared/*"],
+      "environments/*": ["app/content/environments/*"]
+    }
   },
   "files": ["test.ts", "polyfills.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts"]
