@@ -1,11 +1,15 @@
-<div class="tn-dropdown" (clickOutside)="closeActionsBtn($event)" clickOutsideEvents="click,mousedown">
-  <button class="tn-button tn-button--icon tn-button--text" [attr.aria-controls]="entryAsString()"
-          aria-haspopup="true" aria-label="More" (click)="toggleActionsBtn($event)">
-    <span class="tn-icon tn-icon--more tn-icon--medium" role="presentation"></span>
-  </button>
-  <ul class="tn-dropdown__menu tn-contextual-menu text-left" [attr.aria-hidden]="ariaHidden" [id]="entryAsString()">
-    <li *ngFor="let action of actions" >
-      <a (click)="closeActionsBtn($event); executeAction(action, $event);" class="tn-dropdown__item" [name]="action.name">{{action.name}}</a>
-    </li>
-  </ul>
-</div>
+
+<fd-popover [alignment]="'right'">
+  <fd-popover-control>
+          <button aria-label="contextual menu" fd-button [fdType]="'light'" [glyph]="'vertical-grip'"></button>
+      </fd-popover-control>
+      <fd-popover-body >
+          <fd-menu>
+              <fd-menu-list>
+                  <li fd-menu-item *ngFor="let action of actions">
+                      <a (click)="executeAction(action, $event);" [name]="action.name">{{action.name}}</a>
+                  </li>
+              </fd-menu-list>
+          </fd-menu>
+      </fd-popover-body>
+</fd-popover>
