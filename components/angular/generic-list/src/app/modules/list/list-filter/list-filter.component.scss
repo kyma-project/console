@@ -14,30 +14,15 @@ $disabled-color: #7f90a4;
 
 .fd-button {
   margin-left: 0.5rem;
-}
-
-.filters {
-  margin-top: 12px;
-  font-size: 10px;
-  position: absolute;
-  margin-left: 5px;
-  border-radius: 8px;
-  height: 16px;
-  min-width: 16px;
-  line-height: 14px;
-  background: $middle-blue;
-  color: $circle-font-color;
-  text-align: center;
+  .fd-badge {
+    vertical-align: text-bottom;
+  }
 }
 
 .actions-menu--disabled {
   display: none;
 }
 
-.tn-dropdown__item {
-  input[type='checkbox'] {
-    cursor: pointer;
-  }
-}
 input[type='checkbox']:checked::after {
+  content: none;
 }
