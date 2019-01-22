@@ -12,6 +12,6 @@
     "lib": ["es2017", "dom"],
     "module": "es2015",
     "baseUrl": "./"
-  },
-  "paths": { "@angular/*": ["../../../core/node_modules/@angular/*"] }
+  }
+  //"paths": { "@angular/*": ["../../../core/node_modules/@angular/*"] }
 }
