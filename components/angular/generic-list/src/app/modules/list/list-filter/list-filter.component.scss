@@ -6,10 +6,14 @@ $disabled-color: #7f90a4;
   outline: none;
   box-shadow: none;
 
-&--disabled {
-   color: $disabled-color;
-   cursor: not-allowed;
- }
+  &--disabled {
+    color: $disabled-color;
+    cursor: not-allowed;
+  }
+}
+
+.fd-button {
+  margin-left: 0.5rem;
 }
 
 .filters {
@@ -31,8 +35,9 @@ $disabled-color: #7f90a4;
 }
 
 .tn-dropdown__item {
-  input[type=checkbox] {
+  input[type='checkbox'] {
     cursor: pointer;
   }
 }
-
+input[type='checkbox']:checked::after {
+}
