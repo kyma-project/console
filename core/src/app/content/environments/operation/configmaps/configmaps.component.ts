@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { DataConverter } from '@kyma-project/y-generic-list';
+import { DataConverter } from 'app/generic-list';
 import { AppConfig } from '../../../../app.config';
 import { CurrentEnvironmentService } from '../../../environments/services/current-environment.service';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';

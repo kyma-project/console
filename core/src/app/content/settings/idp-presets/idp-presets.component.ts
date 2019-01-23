@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { IdpPresetsHeaderRendererComponent } from './idp-presets-header-renderer/idp-presets-header-renderer.component';
 import { IdpPresetsEntryRendererComponent } from './idp-presets-entry-renderer/idp-presets-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { Filter, GenericTableComponent } from '@kyma-project/y-generic-list';
+import { Filter, GenericTableComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { CreatePresetModalComponent } from './create-preset-modal/create-preset-modal.component';
 import { IdpPresetsService } from './idp-presets.service';

@@ -1,10 +1,9 @@
 import { Component, Injector, ApplicationRef } from '@angular/core';
-import { AbstractTableEntryRendererComponent } from '@kyma-project/y-generic-list';
-import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
-
 import LuigiClient from '@kyma-project/luigi-client';
 
+import { AbstractTableEntryRendererComponent } from 'app/generic-list';
 import { AppConfig } from '../../../app.config';
+import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
 
 @Component({
   selector: 'app-lambdas-entry-renderer',

@@ -7,7 +7,7 @@ import { RemoteEnvironmentsHeaderRendererComponent } from './remote-environments
 import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
 import { AbstractKubernetesElementListComponent } from '../../environments/operation/abstract-kubernetes-element-list.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { Filter } from '@kyma-project/y-generic-list';
+import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal/create-remote-environment-modal.component';

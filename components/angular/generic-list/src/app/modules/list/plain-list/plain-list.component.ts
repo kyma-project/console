@@ -34,10 +34,8 @@ export class PlainListComponent implements OnChanges {
   initialized = false;
   errorMessage = '';
 
-  componentFactoryResolver: ComponentFactoryResolver;
-
   constructor(
-    componentFactoryResolver: ComponentFactoryResolver,
+    public componentFactoryResolver: ComponentFactoryResolver,
     private changeDetector: ChangeDetectorRef,
   ) {
     this.componentFactoryResolver = componentFactoryResolver;

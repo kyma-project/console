@@ -11,7 +11,7 @@ import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer
 import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { DataConverter } from '@kyma-project/y-generic-list';
+import { DataConverter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 
 @Component({

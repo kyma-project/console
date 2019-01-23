@@ -10,7 +10,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Filter, GenericTableComponent } from '@kyma-project/y-generic-list';
+import { Filter, GenericTableComponent } from 'app/generic-list';
 import { ImplicitReceiver } from '@angular/compiler';
 import { Subscription } from 'rxjs';
 

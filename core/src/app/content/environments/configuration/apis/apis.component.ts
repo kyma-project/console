@@ -11,7 +11,7 @@ import { CurrentEnvironmentService } from '../../services/current-environment.se
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider';
-import { DataConverter, Filter } from '@kyma-project/y-generic-list';
+import { DataConverter, Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 

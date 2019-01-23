@@ -11,7 +11,7 @@ import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ServicesHeaderRendererComponent } from './services-header-renderer/services-header-renderer.component';
 import { ServicesEntryRendererComponent } from './services-entry-renderer/services-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { DataConverter } from '@kyma-project/y-generic-list';
+import { DataConverter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 

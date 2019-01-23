@@ -11,7 +11,7 @@ import {
   DashboardPods
 } from '../../../../shared/datamodel/k8s/dashboard-pods';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { DataConverter } from '@kyma-project/y-generic-list';
+import { DataConverter } from 'app/generic-list';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({

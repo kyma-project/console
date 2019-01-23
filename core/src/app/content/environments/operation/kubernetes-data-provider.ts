@@ -9,7 +9,7 @@ import {
   Filter,
   Facet,
   DataProviderResult
-} from '@kyma-project/y-generic-list';
+} from 'app/generic-list';
 import { Observable } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
 
