@@ -7,7 +7,6 @@ ci-master: resolve validate test build build-image push-image
 ci-release: resolve validate test build build-image push-image
 
 resolve:
-	cd .. && npm run build:components:angular
 	npm install --no-optional
 
 validate:
@@ -21,7 +20,6 @@ scan:
 	whitesource run
 
 build:
-	cd .. && npm run build:components:angular
 	npm run build
 
 build-image:
