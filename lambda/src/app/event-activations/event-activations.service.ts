@@ -19,7 +19,7 @@ export class EventActivationsService {
     token: string,
   ): Observable<EventActivationResponse> {
     const query = `query EventActivations($environment: String!) {
-      eventActivations(environment: $environment) {
+      eventActivations(namespace: $environment) {
         name
         displayName
         sourceId
