@@ -10,7 +10,12 @@ export interface ISubscription extends IMetaDataOwner {
 
 export interface ISubscriptionSpec {
   endpoint: string;
-  source_id: string;
+  sourceID: string;
+  pushRequestTimeoutMS: number;
+  maxInflight: number;
+  includeSubscriptionNameHeader: boolean;
+  eventType: string;
+  evetTypeVersion: string;
 }
 
 export class Subscription extends MetaDataOwner implements ISubscription {

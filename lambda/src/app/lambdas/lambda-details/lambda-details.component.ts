@@ -196,9 +196,9 @@ export class LambdaDetailsComponent
               .subscribe(resp => {
                 resp.items.forEach(sub => {
                   const evTrigger: EventTrigger = {
-                    eventType: sub.spec['event_type'],
-                    version: sub.spec['event_type_version'],
-                    sourceId: sub.spec.source_id,
+                    eventType: sub.spec.eventType,
+                    version: sub.spec.evetTypeVersion,
+                    sourceId: sub.spec.sourceID,
                   };
                   this.selectedTriggers.push(evTrigger);
                   this.existingEventTriggers.push(evTrigger);
@@ -591,9 +591,9 @@ export class LambdaDetailsComponent
           sub.spec.endpoint = `http://${this.lambda.metadata.name}.${
             this.environment
           }:8080/`;
-          sub.spec['event_type'] = trigger.eventType;
-          sub.spec['event_type_version'] = trigger.version;
-          sub.spec.source_id = trigger.sourceId;
+          sub.spec.eventType = trigger.eventType;
+          sub.spec.evetTypeVersion = trigger.version;
+          sub.spec.sourceID = trigger.sourceId;
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
             .pipe(

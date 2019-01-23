@@ -2,20 +2,24 @@
   <div class="col-2 col-lg-2 sf-list__body--primary">{{ entry.name }}</div>
   <div class="col-1">{{ entry.status.readyReplicas ? entry.status.readyReplicas : 0 }} /{{ entry.status.replicas }}</div>
   <div class="col-1">{{ entry.creationTimestamp * 1000 | timeAgo }}</div>
-  <div class="col-2">
+  <div ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
     <span *ngFor="let image of entry.containers">{{ image.image }}</span>
   </div>
-  <div class="col-1" *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
-    <span *ngFor="let instance of entry.boundServiceInstanceNames">{{ instance }}</span>
-  </div>
-  <div class="col-1" *ngIf="!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0">
-    <span></span>
-  </div>
-  <div class="col-2 sf-list__label-column">
+  <ng-container *ngIf="showBoundServices">
+    <div class="col-2" *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
+      <a class="bound-services" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
+        {{ instance }}
+      </a>
+    </div>
+    <div class="col-2" *ngIf="(!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0)">
+      <span></span>
+    </div>
+  </ng-container>
+  <div class="sf-list__label-column" ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
     <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">{{ label }}</span>
   </div>
-  <div class="col-2">
-      <app-status-label 
+  <div class="col-1">
+      <app-status-label
         [statusType]="getStatusType(entry)">
         {{ getStatus(entry) }}
       </app-status-label>
