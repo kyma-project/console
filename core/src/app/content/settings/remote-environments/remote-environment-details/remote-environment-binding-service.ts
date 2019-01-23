@@ -25,7 +25,7 @@ export class RemoteEnvironmentBindingService {
   public bind(environment, remoteEnvironment) {
     const query = `mutation($environment: String!, $remoteEnvironment: String!){
       enableApplication(namespace: $environment, application: $remoteEnvironment) {
-        environment
+        namespace
         application
       }
     }`;
@@ -43,7 +43,7 @@ export class RemoteEnvironmentBindingService {
   public unbind(environment, remoteEnvironment) {
     const query = `mutation($environment: String!, $remoteEnvironment: String!){
       disableApplication(namespace: $environment, application: $remoteEnvironment) {
-        environment
+        namespace
         application
       }
     }`;
