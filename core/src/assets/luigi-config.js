@@ -441,6 +441,33 @@ function getBackendModules() {
   }`;
   return fetchFromGraphQL(query);
 }
+function navigationPermissionChecker(
+  nodeToCheckPermissionFor,
+  parentNode,
+  currentContext
+) {
+  const luigiAuth = localStorage.getItem('luigi.auth');
+  if (luigiAuth) {
+    try {
+      const authData = JSON.parse(luigiAuth);
+      if (authData && authData.profile && authData.profile.groups) {
+        const groups = authData.profile.groups;
+        if (nodeToCheckPermissionFor.constraints) {
+          return (
+            nodeToCheckPermissionFor.constraints.filter(
+              c => groups.indexOf(c) !== -1
+            ).length !== 0
+          );
+        }
+        return true;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+}
 
 function getEnvs() {
   return fetchFromKyma(
@@ -509,6 +536,7 @@ getBackendModules()
         }
       },
       navigation: {
+        nodeAccessibilityResolver: navigationPermissionChecker,
         nodes: () => [
           {
             pathSegment: 'home',
@@ -563,21 +591,24 @@ getBackendModules()
                           }
                         ]
                       }
-                    ]
+                    ],
+                    constraints: ['kyma-admins']
                   },
                   {
                     pathSegment: 'service-brokers',
                     navigationContext: 'service-brokers',
                     label: 'Service Brokers',
                     category: 'Integration',
-                    viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
+                    viewUrl: '/consoleapp.html#/home/settings/serviceBrokers',
+                    constraints: ['kyma-admins']
                   },
                   {
                     pathSegment: 'idp-presets',
                     navigationContext: 'idp-presets',
                     label: 'IDP Presets',
                     category: 'Integration',
-                    viewUrl: '/consoleapp.html#/home/settings/idpPresets'
+                    viewUrl: '/consoleapp.html#/home/settings/idpPresets',
+                    constraints: ['kyma-admins']
                   },
                   {
                     pathSegment: 'settings',
@@ -605,7 +636,8 @@ getBackendModules()
                           }
                         ]
                       }
-                    ]
+                    ],
+                    constraints: ['kyma-admins']
                   },
                   {
                     label: 'Stats & Metrics',
@@ -616,7 +648,8 @@ getBackendModules()
                     externalLink: {
                       url: 'https://grafana.' + k8sDomain,
                       sameWindow: false
-                    }
+                    },
+                    constraints: ['kyma-admins']
                   },
                   {
                     label: 'Tracing',
@@ -624,7 +657,8 @@ getBackendModules()
                     externalLink: {
                       url: 'https://jaeger.' + k8sDomain,
                       sameWindow: false
-                    }
+                    },
+                    constraints: ['kyma-admins']
                   }
                 ];
                 var fetchedNodes = [].concat.apply([], cmf);
