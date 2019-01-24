@@ -15,8 +15,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 @Component({
   selector: 'app-environment-details',
   templateUrl: './environment-details.component.html',
-  styleUrls: ['./environment-details.component.scss'],
-  host: { class: 'sf-content' }
+  styleUrls: ['./environment-details.component.scss']
 })
 export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('uploaderModal')
