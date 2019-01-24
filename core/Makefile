@@ -7,7 +7,7 @@ ci-master: install-dependencies validate test build build-image push-image
 ci-release: install-dependencies validate test build build-image push-image
 
 install-dependencies:
-  cd ../components/angular/generic-list && npm i codelyzer
+	cd ../components/angular/generic-list && npm i codelyzer
 	npm ci
 
 validate:
