@@ -1,9 +1,10 @@
-import { ListModule } from 'app/generic-list';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
+
 import { FilteredApisEntryRendererComponent } from './filtered-apis-entry-renderer.component';
-import { AppModule } from '../../../../../../app.module';
-import { AppConfig } from '../../../../../../app.config';
+import { AppModule } from 'app/app.module';
+import { AppConfig } from 'app/app.config';
+import { ListModule } from 'app/generic-list';
 
 describe('DeploymentsComponent', () => {
   let component: FilteredApisEntryRendererComponent;

@@ -4,12 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "echo `` > src/assets/config/config.js && ng serve --disable-host-check --host console-dev.kyma.local",
-    "start:kyma": "npm run copy-config && ng serve --disable-host-check --host console-dev.kyma.local",
-    "start:kyma:api": "npm run copy-config && ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local",
-    "build": "ng build --prod",
-    "test": "ng test",
-    "test:single": "ng test --watch=false",
+    "start": "echo `` > src/assets/config/config.js && ng serve --preserve-symlinks --disable-host-check --host console-dev.kyma.local",
+    "start:kyma": "npm run copy-config && ng serve --preserve-symlinks --disable-host-check --host console-dev.kyma.local",
+    "start:kyma:api": "npm run copy-config && ng serve --preserve-symlinks --disable-host-check --host console-dev.kyma.local --configuration api-local",
+    "build": "ng build --prod --preserve-symlinks",
+    "test": "ng test --preserve-symlinks",
+    "test:single": "ng test --watch=false --preserve-symlinks",
     "lint": "ng lint",
     "copy-config": "cp ../config.js src/assets/config/config.js"
   },

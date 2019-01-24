@@ -17,5 +17,9 @@
       "environments/*": ["src/app/content/environments/*"]
     }
   },
-  "include": ["src/**/*", "node_modules/ng2-ace-editor/src/**/*"]
+  "include": [
+    "src/**/*",
+    "node_modules/ng2-ace-editor/src/**/*",
+    "../../components/angular/generic-list/src/app/modules/list/**/*.ts"
+  ]
 }
