@@ -481,7 +481,8 @@ getBackendModules()
       console.error('Error while fetching backend modules', err);
     }
   )
-  .finally(() => {
+  // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
+  .then(() => {
     Luigi.setConfig({
       auth: {
         use: 'openIdConnect',
@@ -662,12 +663,12 @@ getBackendModules()
       },
       settings: {
         header: () => {
-          logo =
+          const logo =
             clusterConfig && clusterConfig.headerLogoUrl
               ? clusterConfig.headerLogoUrl
               : '/assets/logo.svg';
-          title = clusterConfig ? clusterConfig.headerTitle : undefined;
-          favicon = clusterConfig ? clusterConfig.faviconUrl : undefined;
+          const title = clusterConfig ? clusterConfig.headerTitle : undefined;
+          const favicon = clusterConfig ? clusterConfig.faviconUrl : undefined;
           return {
             logo,
             title,
