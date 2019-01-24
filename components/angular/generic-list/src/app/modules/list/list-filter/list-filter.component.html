@@ -1,6 +1,5 @@
-<fd-popover [alignment]="'right'">
+<fd-popover [alignment]="'right'" *ngIf="filterState.availableFacets.length">
   <fd-popover-control>
-
     <button fd-button [fdType]="'toolbar'" [glyph]="'filter'" [ngClass]="{ 'tn-button--disabled': !hasFacets() }"
       [attr.aria-expanded]="ariaExpanded">
       Filter
@@ -11,9 +10,9 @@
   </fd-popover-control>
   <fd-popover-body>
     <fd-list>
-      <li fd-list-item *ngFor="let facet of filterState.availableFacets">
+      <li fd-list-item *ngFor="let facet of filterState.availableFacets" (click)="toggleFacet(facet.label, $event)">
         <div class="fd-form__item fd-form__item--check">
-          <label class="fd-form__label" for="{{facet.label }}" (click)="toggleFacet(facet.label, $event)">
+          <label class="fd-form__label" for="{{facet.label }}" >
             <input class="fd-form__control" id="{{facet.label }}" type="checkbox" [checked]="facetSelected(facet.label)">
             {{ facet.label }} ({{ facet.count }})
           </label>
