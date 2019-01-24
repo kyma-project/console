@@ -25,7 +25,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   private orgName = AppConfig.orgName;
   public environment: EnvironmentInfo = new EnvironmentInfo('', '');
   private boundRemoteEnvironmentsCount: Observable<number> = of(0);
-  private remoteEnvironments: any;
+  public remoteEnvironments: any;
   private services: any;
   public errorMessage: string;
   private id: string;
