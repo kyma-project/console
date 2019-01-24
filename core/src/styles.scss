@@ -14,6 +14,11 @@ body {
   background: $mf-base-color-light-grey;
 }
 
+// Include Fiori Fundamentals
+$fd-icons-path: "~fiori-fundamentals/scss/icons/";
+$fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
+@import "~fiori-fundamentals/scss/all.scss";
+
 @import 'overrides';
 @import 'toolbar';
 @import 'section';
@@ -28,6 +33,7 @@ body {
 @import 'content';
 @import 'list';
 @import 'panel';
+@import 'fiori-fundamentals-overrides';
 
 pre {
   background: #f4f4f4;
