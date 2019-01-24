@@ -28,7 +28,7 @@ export class GenericListComponent implements OnChanges, OnInit {
   @Input() createNewElementText;
 
   data: Observable<any[]>;
-  showEmptyPage: Boolean = false;
+  showEmptyPage = false;
   loaded = false;
   loading = false;
   initialized = false;
@@ -195,8 +195,8 @@ export class GenericListComponent implements OnChanges, OnInit {
     }
     return {
       filters: filterState.filters,
-      availableFacets: availableFacets,
-      facets: facets,
+      availableFacets,
+      facets,
     };
   }
 
