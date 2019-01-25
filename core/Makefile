@@ -21,7 +21,9 @@ validate:
 	npm run lint
 
 test:
+	make copy-generic-list
 	npm run test:single
+	make recreate-symlink
 
 build:
 	npm run build

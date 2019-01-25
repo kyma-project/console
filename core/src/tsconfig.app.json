@@ -10,5 +10,6 @@
       "environments/*": ["app/content/environments/*"]
     }
   },
+  "include": ["**/*.ts"],
   "exclude": ["test.ts", "**/*.spec.ts"]
 }

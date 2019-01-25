@@ -12,9 +12,5 @@
     }
   },
   "files": ["test.ts", "polyfills.ts"],
-  "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts",
-    "../../components/angular/generic-list/src/app/modules/list/**/*.ts"
-  ]
+  "include": ["**/*.spec.ts", "**/*.d.ts"]
 }
