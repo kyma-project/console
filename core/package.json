@@ -10,7 +10,7 @@
     "build": "ng build --prod --preserve-symlinks",
     "test": "ng test --preserve-symlinks",
     "test:single": "ng test --watch=false --preserve-symlinks",
-    "lint": "ng lint",
+    "lint": "ng lint --tslint-config tslint.json",
     "copy-config": "cp ../config.js src/assets/config/config.js"
   },
   "private": true,

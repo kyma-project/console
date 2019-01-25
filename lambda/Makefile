@@ -2,9 +2,9 @@ IMG_NAME = lambda
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: copy-generic-list resolve validate test build build-image push-image
-ci-master: copy-generic-list resolve validate test build build-image push-image
-ci-release: copy-generic-list resolve validate test build build-image push-image
+ci-pr: resolve validate test build build-image push-image
+ci-master: resolve validate test build build-image push-image
+ci-release: resolve validate test build build-image push-image
 
 copy-generic-list:
 	rm -r src/app/generic-list
