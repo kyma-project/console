@@ -41,8 +41,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/fiori-fundamentals/dist/fiori-fundamentals.min.css"
+              "src/styles.scss"
             ],
             "scripts": ["node_modules/tippy.js/dist/tippy.all.min.js"]
           },
