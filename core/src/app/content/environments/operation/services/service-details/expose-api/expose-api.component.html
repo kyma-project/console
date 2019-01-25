@@ -5,7 +5,7 @@
         / {{ apiDefinition ? (  apiName  )  : ('Create API') }}
       </div>
       <div *ngIf="!routedFromServiceDetails" class="sf-toolbar__item sf-toolbar__item--breadcrumb">
-        <a (click)="navigateToList('apis')"> APIs </a> / {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
+        <a (click)="navigateToList('cmf-apis')"> APIs </a> / {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
       </div>
     <div class="sf-toolbar__right">
       <div class="sf-toolbar__item">

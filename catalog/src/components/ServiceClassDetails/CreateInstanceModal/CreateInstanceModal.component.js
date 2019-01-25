@@ -275,15 +275,12 @@ class CreateInstanceModal extends React.Component {
         }}
         title={
           <p style={{ marginRight: '25px' }}>
-           Provision the{' '}
-           <Bold>{serviceClass.displayName}</Bold>{' '}
-           {serviceClass.__typename === 'ClusterServiceClass'
-             ? 'Cluster Service Class'
-             : 'Service Class'}{' '}
-           in the{' '}
-           <Bold>{environment}</Bold>
-           {' '}Namespace
-         </p>
+            Provision the <Bold>{serviceClass.displayName}</Bold>{' '}
+            {serviceClass.__typename === 'ClusterServiceClass'
+              ? 'Cluster Service Class'
+              : 'Service Class'}{' '}
+            in the <Bold>{environment}</Bold> Namespace
+          </p>
         }
         modalOpeningComponent={modalOpeningComponent}
         content={content}
