@@ -10,6 +10,10 @@ copy-generic-list:
 	rm -r src/app/generic-list
 	cp -R ../components/angular/generic-list/src/app/modules/list src/app/generic-list
 
+recreate-symlink:
+	rm -r src/app/generic-list
+	ln -s ../../../components/angular/generic-list/src/app/modules/list src/app/generic-list
+
 install-dependencies:
 	ls -lah src/app
 	ls -lah src/app/generic-list
