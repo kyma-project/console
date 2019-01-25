@@ -42,19 +42,19 @@ function ServiceInstancesTable({ data, deleteServiceInstance, loading }) {
   const goToServiceCatalog = () => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate('service-catalog');
+      .navigate('cmf-service-catalog');
   };
 
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`service-catalog/details/${name}`);
+      .navigate(`cmf-service-catalog/details/${name}`);
   };
 
   const goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`instances/details/${name}`);
+      .navigate(`cmf-instances/details/${name}`);
   };
 
   const deleteButton = (
