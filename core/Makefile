@@ -11,6 +11,8 @@ copy-generic-list:
 	cp -R ../components/angular/generic-list/src/app/modules/list src/app/generic-list
 
 install-dependencies:
+	ls -lah src/app
+	ls -lah src/app/generic-list
 	npm ci
 
 validate:
