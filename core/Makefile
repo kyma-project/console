@@ -2,12 +2,15 @@ IMG_NAME = console
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: install-dependencies validate test build build-image push-image
-ci-master: install-dependencies validate test build build-image push-image
-ci-release: install-dependencies validate test build build-image push-image
+ci-pr: copy-generic-list install-dependencies validate test build build-image push-image
+ci-master: copy-generic-list install-dependencies validate test build build-image push-image
+ci-release: copy-generic-list install-dependencies validate test build build-image push-image
+
+copy-generic-list:
+	rm -r src/app/generic-list
+	cp -R ../components/angular/generic-list/src/app/modules/list src/app/generic-list
 
 install-dependencies:
-	cd ../components/angular/generic-list && npm i codelyzer
 	npm ci
 
 validate:
