@@ -40,75 +40,13 @@ function getNodes(context) {
     },
     {
       category: { label: 'Service Catalog', icon: 'add-coursebook' },
-      navigationContext: 'service-catalog',
-      pathSegment: 'service-catalog',
-      label: 'Catalog',
-      viewGroup: 'catalog',
-      viewUrl: config.serviceCatalogModuleUrl,
-      keepSelectedForChildren: true,
-      children: [
-        {
-          pathSegment: 'details',
-          children: [
-            {
-              pathSegment: ':serviceId',
-              viewUrl: config.serviceCatalogModuleUrl + '/details/:serviceId'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      category: 'Service Catalog',
-      keepSelectedForChildren: true,
-      pathSegment: 'instances',
-      label: 'Instances',
-      viewUrl: config.serviceInstancesModuleUrl,
-      viewGroup: 'instances',
-      children: [
-        {
-          pathSegment: 'details',
-          children: [
-            {
-              pathSegment: ':name',
-              viewUrl: config.serviceInstancesModuleUrl + '/details/:name'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      category: 'Service Catalog',
-      pathSegment: 'brokers',
-      label: 'Brokers',
-      viewUrl: config.serviceBrokersModuleUrl
+      pathSegment: '_service_catalog_category_placeholder_',
+      hideFromNav: true
     },
     {
       category: { label: 'Configuration', icon: 'key-user-settings' },
-      pathSegment: 'apis',
-      navigationContext: 'apis',
-      label: 'APIs',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/apis',
-      keepSelectedForChildren: true,
-      children: [
-        {
-          pathSegment: 'create',
-          viewUrl:
-            '/consoleapp.html#/home/namespaces/' + environment + '/apis/create'
-        },
-        {
-          pathSegment: 'details',
-          children: [
-            {
-              pathSegment: ':name',
-              viewUrl:
-                '/consoleapp.html#/home/namespaces/' +
-                environment +
-                '/apis/details/:name'
-            }
-          ]
-        }
-      ]
+      pathSegment: '_configuration_category_placeholder_',
+      hideFromNav: true
     },
     {
       category: 'Configuration',
@@ -150,27 +88,8 @@ function getNodes(context) {
     },
     {
       category: { label: 'Development', icon: 'source-code' },
-      pathSegment: 'lambdas',
-      navigationContext: 'lambdas',
-      label: 'Lambdas',
-      viewGroup: 'lambdas',
-      viewUrl: config.lambdasModuleUrl + '#/lambdas',
-      keepSelectedForChildren: true,
-      children: [
-        {
-          pathSegment: 'create',
-          viewUrl: config.lambdasModuleUrl + '#/create'
-        },
-        {
-          pathSegment: 'details',
-          children: [
-            {
-              pathSegment: ':lambda',
-              viewUrl: config.lambdasModuleUrl + '#/lambdas/:lambda'
-            }
-          ]
-        }
-      ]
+      pathSegment: '_development_category_placeholder_',
+      hideFromNav: true
     },
     {
       category: { label: 'Operation', icon: 'instance' },
@@ -273,7 +192,7 @@ function getNodes(context) {
       'namespace'
     ])
   ]).then(function(values) {
-    var nodeTree = staticNodes;
+    var nodeTree = [...staticNodes];
     values.forEach(function(val) {
       nodeTree = [].concat.apply(nodeTree, val);
     });
@@ -292,94 +211,161 @@ function getUiEntities(entityname, environment, placements) {
     '/apis/ui.kyma-project.io/v1alpha1/' +
     (environment ? 'namespaces/' + environment + '/' : '') +
     entityname;
-  var segmentPrefix = entityname === 'clustermicrofrontends' ? 'cmf-' : 'mf-';
-
-  return fetchFromKyma(fetchUrl)
-    .then(result => {
-      if (!result.items.length) {
-        return [];
-      }
-      return result.items
-        .filter(function(item) {
-          // placement only exists in clustermicrofrontends
-          return !placements || placements.includes(item.spec.placement);
-        })
-        .map(function(item) {
-          function buildNode(node, spec) {
-            var node = {
-              label: node.label,
-              pathSegment: node.navigationPath.split('/').pop(),
-              viewUrl: spec.viewBaseUrl
-                ? spec.viewBaseUrl + node.viewUrl
-                : node.viewUrl,
-              hideFromNav: node.showInNavigation || undefined
-            };
-            return node;
-          }
-
-          function buildNodeWithChildren(specNode, spec) {
-            var parentNodeSegments = specNode.navigationPath.split('/');
-            var children = getDirectChildren(parentNodeSegments, spec);
-
-            var node = buildNode(specNode, spec);
-            if (children.length) {
-              node.children = children;
-            }
-            return node;
-          }
-
-          function getDirectChildren(parentNodeSegments, spec) {
-            // process only direct childs
-            return spec.navigationNodes
-              .filter(function(node) {
-                var currentNodeSegments = node.navigationPath.split('/');
-                var isDirectChild =
-                  parentNodeSegments.length ===
-                    currentNodeSegments.length - 1 &&
-                  parentNodeSegments.filter(function(segment) {
-                    return currentNodeSegments.includes(segment);
-                  }).length > 0;
-                return isDirectChild;
-              })
-              .map(function mapSecondLevelNodes(node) {
-                // map direct childs
-                return buildNodeWithChildren(node, spec);
-              });
-          }
-
-          function buildTree(spec) {
-            return spec.navigationNodes
-              .filter(function getTopLevelNodes(node) {
-                var segments = node.navigationPath.split('/');
-                return segments.length === 1;
-              })
-              .map(function processTopLevelNodes(node) {
-                return buildNodeWithChildren(node, spec);
-              })
-              .map(function addSettingsForTopLevelNodes(node) {
-                if (!node.pathSegment.startsWith(segmentPrefix)) {
-                  node.pathSegment = segmentPrefix + node.pathSegment;
-                }
-                if (spec.category) {
-                  node.category = spec.category;
-                }
-                node.navigationContext = spec.appName;
-                node.viewGroup = spec.appName;
-                node.keepSelectedForChildren = true;
-                return node;
-              });
-          }
-          if (item.spec.navigationNodes) {
-            var tree = buildTree(item.spec);
-            return tree;
-          }
+  const segmentPrefix = entityname === 'clustermicrofrontends' ? 'cmf-' : 'mf-';
+  const cacheName = '_console_mf_cache_';
+  if (!window[cacheName]) {
+    window[cacheName] = {};
+  }
+  const cache = window[cacheName];
+  const cacheKey = fetchUrl + (placements || '');
+  const fromCache = cache[cacheKey];
+  return (
+    fromCache ||
+    fetchFromKyma(fetchUrl)
+      .then(result => {
+        if (!result.items.length) {
           return [];
+        }
+        return result.items
+          .filter(function(item) {
+            // placement only exists in clustermicrofrontends
+            return !placements || placements.includes(item.spec.placement);
+          })
+          .map(function(item) {
+            function buildNode(node, spec) {
+              var n = {
+                label: node.label,
+                pathSegment: node.navigationPath.split('/').pop(),
+                viewUrl: spec.viewBaseUrl
+                  ? spec.viewBaseUrl + node.viewUrl
+                  : node.viewUrl,
+                hideFromNav: node.showInNavigation === false || undefined,
+                order: node.order
+              };
+              if (node.externalLink) {
+                delete n.viewUrl;
+                delete n.pathSegment;
+                n.externalLink = {
+                  url: node.externalLink,
+                  sameWindow: false
+                };
+              }
+              processNodeForLocalDevelopment(n);
+              return n;
+            }
+
+            function processNodeForLocalDevelopment(node) {
+              const isLocalDev = window.location.href.startsWith(
+                'http://console-dev.kyma.local:4200'
+              );
+              if (!isLocalDev || !node.viewUrl) {
+                return;
+              }
+              if (node.viewUrl.startsWith('https://console.kyma.local')) {
+                node.viewUrl =
+                  'http://console-dev.kyma.local:4200' +
+                  node.viewUrl.substring('https://console.kyma.local'.length);
+              } else if (
+                node.viewUrl.startsWith('https://catalog.kyma.local')
+              ) {
+                node.viewUrl =
+                  config.serviceCatalogModuleUrl +
+                  node.viewUrl.substring('https://catalog.kyma.local'.length);
+              } else if (
+                node.viewUrl.startsWith('https://instances.kyma.local')
+              ) {
+                node.viewUrl =
+                  config.serviceInstancesModuleUrl +
+                  node.viewUrl.substring('https://instances.kyma.local'.length);
+              } else if (
+                node.viewUrl.startsWith('https://brokers.kyma.local')
+              ) {
+                node.viewUrl =
+                  config.serviceBrokersModuleUrl +
+                  node.viewUrl.substring('https://brokers.kyma.local'.length);
+              } else if (
+                node.viewUrl.startsWith('https://lambdas-ui.kyma.local')
+              ) {
+                node.viewUrl =
+                  config.lambdasModuleUrl +
+                  node.viewUrl.substring(
+                    'https://lambdas-ui.kyma.local'.length
+                  );
+              }
+              return node;
+            }
+
+            function buildNodeWithChildren(specNode, spec) {
+              var parentNodeSegments = specNode.navigationPath.split('/');
+              var children = getDirectChildren(parentNodeSegments, spec);
+              var node = buildNode(specNode, spec);
+              if (children.length) {
+                node.children = children;
+              }
+              return node;
+            }
+
+            function getDirectChildren(parentNodeSegments, spec) {
+              // process only direct children
+              return spec.navigationNodes
+                .filter(function(node) {
+                  var currentNodeSegments = node.navigationPath.split('/');
+                  var isDirectChild =
+                    parentNodeSegments.length ===
+                      currentNodeSegments.length - 1 &&
+                    parentNodeSegments.filter(function(segment) {
+                      return currentNodeSegments.includes(segment);
+                    }).length > 0;
+                  return isDirectChild;
+                })
+                .map(function mapSecondLevelNodes(node) {
+                  // map direct children
+                  return buildNodeWithChildren(node, spec);
+                });
+            }
+
+            function buildTree(name, spec) {
+              return spec.navigationNodes
+                .filter(function getTopLevelNodes(node) {
+                  var segments = node.navigationPath.split('/');
+                  return segments.length === 1;
+                })
+                .map(function processTopLevelNodes(node) {
+                  return buildNodeWithChildren(node, spec, name);
+                })
+                .map(function addSettingsForTopLevelNodes(node) {
+                  if (spec.category) {
+                    node.category = spec.category;
+                  }
+                  if (!node.externalLink) {
+                    if (!node.pathSegment.startsWith(segmentPrefix)) {
+                      node.pathSegment = segmentPrefix + node.pathSegment;
+                    }
+                    node.navigationContext = spec.appName ? spec.appName : name;
+                    node.viewGroup = node.navigationContext;
+                    node.keepSelectedForChildren = true;
+                  }
+                  return node;
+                });
+            }
+            if (item.spec.navigationNodes) {
+              var tree = buildTree(item.metadata.name, item.spec);
+              return tree;
+            }
+            return [];
+          });
+      })
+      .catch(err => {
+        console.error('Error fetching UiEntity ' + name, err);
+        return [];
+      })
+      .then(result => {
+        cache[cacheKey] = new Promise(function(resolve) {
+          resolve(result);
         });
-    })
-    .catch(err => {
-      console.error('Error fetching UiEntity ' + name, err);
-      return [];
-    });
+        return result;
+      })
+  );
 }
 
 function fetchFromKyma(url) {
@@ -547,38 +533,9 @@ getBackendModules()
                     ]
                   },
                   {
-                    pathSegment: 'apps',
-                    navigationContext: 'apps',
-                    label: 'Applications',
                     category: { label: 'Integration', icon: 'overview-chart' },
-                    viewUrl: '/consoleapp.html#/home/settings/apps',
-                    keepSelectedForChildren: true,
-                    children: [
-                      {
-                        pathSegment: 'details',
-                        children: [
-                          {
-                            pathSegment: ':name',
-                            viewUrl:
-                              '/consoleapp.html#/home/settings/apps/:name'
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    pathSegment: 'service-brokers',
-                    navigationContext: 'service-brokers',
-                    label: 'Service Brokers',
-                    category: 'Integration',
-                    viewUrl: '/consoleapp.html#/home/settings/serviceBrokers'
-                  },
-                  {
-                    pathSegment: 'idp-presets',
-                    navigationContext: 'idp-presets',
-                    label: 'IDP Presets',
-                    category: 'Integration',
-                    viewUrl: '/consoleapp.html#/home/settings/idpPresets'
+                    pathSegment: '_integration_category_placeholder_',
+                    hideFromNav: true
                   },
                   {
                     pathSegment: 'settings',
@@ -609,23 +566,12 @@ getBackendModules()
                     ]
                   },
                   {
-                    label: 'Stats & Metrics',
                     category: {
                       label: 'Diagnostics',
                       icon: 'electrocardiogram'
                     },
-                    externalLink: {
-                      url: 'https://grafana.' + k8sDomain,
-                      sameWindow: false
-                    }
-                  },
-                  {
-                    label: 'Tracing',
-                    category: 'Diagnostics',
-                    externalLink: {
-                      url: 'https://jaeger.' + k8sDomain,
-                      sameWindow: false
-                    }
+                    pathSegment: '_integration_category_placeholder_',
+                    hideFromNav: true
                   }
                 ];
                 var fetchedNodes = [].concat.apply([], cmf);
