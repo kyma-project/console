@@ -865,7 +865,7 @@ export class LambdaDetailsComponent
     setTimeout(() => {
       luigiClient
         .linkManager()
-        .fromContext('lambdas')
+        .fromContext('lambdasmicrofrontend')
         .navigate('/');
     }, 100);
   }
