@@ -16,6 +16,8 @@ install-dependencies:
 	npm ci
 
 validate:
+	echo "we are here:"
+	pwd
 	npm run lint
 
 test:
