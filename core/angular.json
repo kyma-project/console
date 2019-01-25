@@ -77,7 +77,6 @@
         "serve": {
           "builder": "@angular-builders/dev-server:generic",
           "options": {
-            "preserveSymlinks": true,
             "browserTarget": "console:build"
           },
           "configurations": {
