@@ -46,7 +46,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`service-catalog/details/${name}`);
+      .navigate(`cmf-service-catalog/details/${name}`);
   };
 
   if (!serviceInstance) {

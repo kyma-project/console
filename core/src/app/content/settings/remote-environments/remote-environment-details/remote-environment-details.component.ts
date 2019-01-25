@@ -173,7 +173,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   public navigateToList() {
     LuigiClient.linkManager()
-      .fromContext('apps')
+      .fromClosestContext()
       .navigate('');
   }
 }

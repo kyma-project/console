@@ -70,7 +70,7 @@ export class ApiDefinitionEntryRendererComponent
 
   public navigateToDetails(apiName) {
     LuigiClient.linkManager()
-      .fromContext('apis')
+      .fromContext('apismicrofrontend')
       .navigate(`details/${apiName}`);
   }
 }

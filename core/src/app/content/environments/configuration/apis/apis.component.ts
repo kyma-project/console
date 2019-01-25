@@ -78,13 +78,13 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
 
   public navigateToDetails(entry) {
     LuigiClient.linkManager()
-      .fromContext('apis')
+      .fromContext('apismicrofrontend')
       .navigate(`details/${entry.metadata.name}`);
   }
 
   public navigateToCreate() {
     LuigiClient.linkManager()
-      .fromContext('apis')
+      .fromContext('apismicrofrontend')
       .navigate('create');
   }
 }
