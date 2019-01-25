@@ -1,4 +1,9 @@
-@import 'font';
+// Include Fiori Fundamentals
+$fd-icons-path: "~fiori-fundamentals/scss/icons/";
+$fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
+@import "~fiori-fundamentals/scss/all.scss";
+@import 'fiori-fundamentals-overrides';
+
 @import '_helper';
 @import '_variables';
 body,
@@ -14,11 +19,6 @@ body {
   background: $mf-base-color-light-grey;
 }
 
-// Include Fiori Fundamentals
-$fd-icons-path: "~fiori-fundamentals/scss/icons/";
-$fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
-@import "~fiori-fundamentals/scss/all.scss";
-
 @import 'overrides';
 @import 'toolbar';
 @import 'section';
@@ -33,7 +33,6 @@ $fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
 @import 'content';
 @import 'list';
 @import 'panel';
-@import 'fiori-fundamentals-overrides';
 
 pre {
   background: #f4f4f4;
