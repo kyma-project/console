@@ -33,7 +33,8 @@ npm-debug.log
 testem.log
 /typings
 
-
+# config
+/src/assets/*.bundle.js
 
 # System Files
 .DS_Store
