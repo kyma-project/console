@@ -389,9 +389,9 @@ function fetchFromKyma(url) {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        if (xmlHttp.status === 401) {
-          relogin();
-        }
+        // if (xmlHttp.status === 401) {
+        //   relogin();
+        // }
         reject(xmlHttp.response);
       }
     };
@@ -433,6 +433,103 @@ function fetchFromGraphQL(query, variables) {
   });
 }
 
+function postToKyma(url, body) {
+  return new Promise(function(resolve, reject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (
+        xmlHttp.readyState == 4 &&
+        (xmlHttp.status == 200 || xmlHttp.status == 201)
+      ) {
+        try {
+          const response = JSON.parse(xmlHttp.response);
+          resolve(response);
+        } catch {
+          reject(xmlHttp.response);
+        }
+      } else if (
+        xmlHttp.readyState == 4 &&
+        xmlHttp.status != 200 &&
+        xmlHttp.status != 201
+      ) {
+        // if (xmlHttp.status === 401) {
+        // relogin();
+        // }
+        console.log(xmlHttp);
+        reject(xmlHttp.response);
+      }
+    };
+
+    xmlHttp.open('POST', url, true);
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(JSON.stringify(body));
+  });
+}
+
+function getSelfSubjectRulesReview() {
+  const url =
+    k8sServerUrl + '/apis/authorization.k8s.io/v1/selfsubjectrulesreviews ';
+  const body = {
+    kind: 'SelfSubjectRulesReview',
+    apiVersion: 'authorization.k8s.io/v1',
+    spec: {
+      namespace: 'allNamespaces'
+    }
+  };
+  return new Promise(function(resolve, reject) {
+    postToKyma(url, body).then(
+      res => {
+        let resourceRules = [];
+        if (res.status) {
+          resourceRules = res.status.resourceRules;
+        }
+        resolve(resourceRules);
+      },
+      err => {
+        reject(err);
+      }
+    );
+  });
+}
+
+function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+  let hasPermissions = false;
+  if (
+    nodeToCheckPermissionsFor.constraints &&
+    nodeToCheckPermissionsFor.constraints.length > 0
+  ) {
+    if (selfSubjectRulesReview.length > 0) {
+      let readPermissions = [];
+      selfSubjectRulesReview.forEach(rule => {
+        if (
+          rule.verbs &&
+          (rule.verbs.includes('get') ||
+            rule.verbs.includes('list') ||
+            rule.verbs.includes('*'))
+        ) {
+          readPermissions.push(rule);
+        }
+      });
+      if (readPermissions.length > 0) {
+        readPermissions.forEach(permission => {
+          nodeToCheckPermissionsFor.constraints.forEach(constraint => {
+            if (
+              permission.resources.includes(constraint) ||
+              permission.apiGroups.includes(constraint)
+            ) {
+              hasPermissions = true;
+            }
+          });
+        });
+      }
+    }
+  } else {
+    hasPermissions = true;
+  }
+  return hasPermissions;
+}
+
 function getBackendModules() {
   const query = `query {
     backendModules{
@@ -440,33 +537,6 @@ function getBackendModules() {
     }
   }`;
   return fetchFromGraphQL(query);
-}
-function navigationPermissionChecker(
-  nodeToCheckPermissionFor,
-  parentNode,
-  currentContext
-) {
-  const luigiAuth = localStorage.getItem('luigi.auth');
-  if (luigiAuth) {
-    try {
-      const authData = JSON.parse(luigiAuth);
-      if (authData && authData.profile && authData.profile.groups) {
-        const groups = authData.profile.groups;
-        if (nodeToCheckPermissionFor.constraints) {
-          return (
-            nodeToCheckPermissionFor.constraints.filter(
-              c => groups.indexOf(c) !== -1
-            ).length !== 0
-          );
-        }
-        return true;
-      }
-      return true;
-    } catch {
-      return false;
-    }
-  }
-  return false;
 }
 
 function getEnvs() {
@@ -495,13 +565,23 @@ function relogin() {
 }
 
 let backendModules = [];
-getBackendModules()
+let selfSubjectRulesReview = [];
+Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
   .then(
     res => {
-      if (res && res.backendModules && res.backendModules.length > 0) {
-        res.backendModules.forEach(backendModule => {
+      const modules = res[0];
+      const subjectRules = res[1];
+      if (
+        modules &&
+        modules.backendModules &&
+        modules.backendModules.length > 0
+      ) {
+        modules.backendModules.forEach(backendModule => {
           backendModules.push(backendModule.name);
         });
+      }
+      if (subjectRules && subjectRules.length > 0) {
+        selfSubjectRulesReview = subjectRules;
       }
     },
     err => {
@@ -592,7 +672,7 @@ getBackendModules()
                         ]
                       }
                     ],
-                    constraints: ['kyma-admins']
+                    constraints: ['apps']
                   },
                   {
                     pathSegment: 'service-brokers',
@@ -600,7 +680,7 @@ getBackendModules()
                     label: 'Service Brokers',
                     category: 'Integration',
                     viewUrl: '/consoleapp.html#/home/settings/serviceBrokers',
-                    constraints: ['kyma-admins']
+                    constraints: ['apps']
                   },
                   {
                     pathSegment: 'idp-presets',
@@ -608,7 +688,7 @@ getBackendModules()
                     label: 'IDP Presets',
                     category: 'Integration',
                     viewUrl: '/consoleapp.html#/home/settings/idpPresets',
-                    constraints: ['kyma-admins']
+                    constraints: ['apps']
                   },
                   {
                     pathSegment: 'settings',
@@ -637,7 +717,7 @@ getBackendModules()
                         ]
                       }
                     ],
-                    constraints: ['kyma-admins']
+                    constraints: ['apps']
                   },
                   {
                     label: 'Stats & Metrics',
@@ -649,7 +729,7 @@ getBackendModules()
                       url: 'https://grafana.' + k8sDomain,
                       sameWindow: false
                     },
-                    constraints: ['kyma-admins']
+                    constraints: ['apps']
                   },
                   {
                     label: 'Tracing',
@@ -658,7 +738,7 @@ getBackendModules()
                       url: 'https://jaeger.' + k8sDomain,
                       sameWindow: false
                     },
-                    constraints: ['kyma-admins']
+                    constraints: ['apps']
                   }
                 ];
                 var fetchedNodes = [].concat.apply([], cmf);
