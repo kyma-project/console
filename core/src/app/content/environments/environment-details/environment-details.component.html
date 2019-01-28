@@ -33,7 +33,7 @@
       <fd-panel-body>
         <div class="row">
           <div class="col">
-            <div class="text-center">
+            <div class="fd-has-text-align-center">
               <h3 class="fd-has-type-6 fd-has-font-weight-bold">
                 {{ services ? services.length : 0 }}
               </h3>
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="text-center">
+            <div class="fd-has-text-align-center">
               <h3 class="fd-has-type-6 fd-has-font-weight-bold">
                 {{ boundRemoteEnvironmentsCount | async }}
               </h3>
@@ -79,7 +79,7 @@
           <td>
             <a class="fd-has-font-weight-semi" (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
           </td>
-          <td class="sf-table__td--min text-center">
+          <td class="sf-table__td--min fd-has-text-align-center">
             <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
           </td>
         </tr>

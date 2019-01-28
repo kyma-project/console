@@ -21,17 +21,16 @@
 
           <div class="fd-container fd-container--fluid fd-has-padding-tiny ">
             <fd-form-label>kubeconfig</fd-form-label>
-            <span class="info-text">
+            <span class="fd-has-type fd-has-color-text-3 fd-has-font-style-italic">
               kubeconfig is a file used to configure access to a cluster.
               Download it to access the cluster using command line.
             </span>
           </div>
           <div
-            class="fd-container fd-container--flex direction--column fd-has-padding-tiny"
+            class="fd-container fd-container--flex fd-has-float-right fd-has-padding-tiny"
           >
             <button
               fd-button
-              class="align-to-end"
               [glyph]="'download'"
               (click)="downloadKubeconfig()"
             >
