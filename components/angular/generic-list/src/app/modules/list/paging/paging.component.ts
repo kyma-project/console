@@ -33,8 +33,8 @@ export class PagingComponent implements OnInit, OnChanges {
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     for (const propName in changes) {
       if (
-        (propName === 'pagingState' && !this.pagingState === null) ||
-        this.pagingState === undefined
+        propName === 'pagingState' &&
+        !(this.pagingState === null || this.pagingState === undefined)
       ) {
         this.showPaging = false;
         this.pageNumbers = [];
