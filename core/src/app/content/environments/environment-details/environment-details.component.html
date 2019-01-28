@@ -30,9 +30,8 @@
       </fd-panel-body>
     </fd-panel>
     <fd-panel>
-      <fd-panel-body>
-        <div class="row">
-          <div class="col">
+      <fd-panel-body class="fd-container fd-container--fluid">
+          <div class="fd-col--6">
             <div class="fd-has-text-align-center">
               <h3 class="fd-has-type-6 fd-has-font-weight-bold">
                 {{ services ? services.length : 0 }}
@@ -42,7 +41,7 @@
               </button>
             </div>
           </div>
-          <div class="col">
+          <div class="fd-col--6">
             <div class="fd-has-text-align-center">
               <h3 class="fd-has-type-6 fd-has-font-weight-bold">
                 {{ boundRemoteEnvironmentsCount | async }}
@@ -55,7 +54,6 @@
               <button fd-button [options]="'light'" (click)="navigateToRemoteEnvs()">Show All Applications</button>
             </div>
           </div>
-        </div>
       </fd-panel-body>
     </fd-panel>
   </fd-panel-grid>
