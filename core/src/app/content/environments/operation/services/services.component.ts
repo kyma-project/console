@@ -1,8 +1,4 @@
 import { AppConfig } from '../../../../app.config';
-import {
-  DashboardServices,
-  IDashboardServices
-} from '../../../../shared/datamodel/k8s/dashboard-services';
 import { CurrentEnvironmentService } from '../../services/current-environment.service';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +6,8 @@ import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-e
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ServicesHeaderRendererComponent } from './services-header-renderer/services-header-renderer.component';
 import { ServicesEntryRendererComponent } from './services-entry-renderer/services-entry-renderer.component';
-import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
+import { Service, IService } from 'shared/datamodel/k8s/service';
 import { DataConverter } from '@kyma-project/y-generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -38,9 +35,9 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
-    const converter: DataConverter<IDashboardServices, DashboardServices> = {
-      convert(entry: IDashboardServices) {
-        return new DashboardServices(entry);
+    const converter: DataConverter<IService, Service> = {
+      convert(entry: IService) {
+        return new Service(entry);
       }
     };
 
@@ -49,15 +46,10 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
 
-        const url = `${AppConfig.k8sDashboardApiUrl}service/${
+        const url = `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentEnvironmentId
-        }`;
-        this.source = new KubernetesDataProvider(
-          url,
-          converter,
-          this.http,
-          'services'
-        );
+        }/services`;
+        this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = ServicesEntryRendererComponent;
         this.headerRenderer = ServicesHeaderRendererComponent;
       });
@@ -66,13 +58,13 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   getEntryEventHandler() {
     const handler = super.getEntryEventHandler();
     handler.exposeApi = (entry: any) => {
-      this.navigateToCreate(entry.objectMeta.name);
+      this.navigateToCreate(entry.metadata.name);
     };
     return handler;
   }
 
   public navigateToDetails(entry) {
-    LuigiClient.linkManager().navigate(`details/${entry.objectMeta.name}`);
+    LuigiClient.linkManager().navigate(`details/${entry.metadata.name}`);
   }
 
   public navigateToCreate(serviceName) {

@@ -3,12 +3,12 @@ import { ApiDefinitionEntryRendererComponent } from './api-definition-entry-rend
 import {
   IApiDefinition,
   ApiDefinition
-} from './../../../../shared/datamodel/k8s/kyma-api/api-definition';
+} from 'shared/datamodel/k8s/kyma-api/api-definition';
 import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from '../../operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
 import { CurrentEnvironmentService } from '../../services/current-environment.service';
-import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider';
 import { DataConverter, Filter } from '@kyma-project/y-generic-list';
@@ -56,8 +56,7 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
         this.source = new KubernetesDataProvider(
           this.baseUrl,
           converter,
-          this.http,
-          'items'
+          this.http
         );
         this.entryRenderer = ApiDefinitionEntryRendererComponent;
         this.headerRenderer = ApiDefinitionHeaderRendererComponent;
