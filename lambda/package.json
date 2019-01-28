@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "echo `` > src/assets/config/config.js && ng serve --preserve-symlinks",
-    "start:kyma": "npm run copy-config && ng serve --preserve-symlinks --disable-host-check --host console-dev.kyma.local --port 4201",
-    "start:kyma:api": "npm run copy-config && ng serve --preserve-symlinks --disable-host-check --host console-dev.kyma.local --port 4201 --env api-local",
-    "build": "ng build --prod --preserve-symlinks",
-    "test": "ng test --preserve-symlinks",
+    "start": "echo `` > src/assets/config/config.js && ng serve",
+    "start:kyma": "npm run copy-config && ng serve --disable-host-check --host console-dev.kyma.local --port 4201",
+    "start:kyma:api": "npm run copy-config && ng serve --disable-host-check --host console-dev.kyma.local --port 4201 --env api-local",
+    "build": "ng build --prod",
+    "test": "ng test",
     "lint": "ng lint --tslint-config tslint.json",
     "e2e": "ng e2e",
     "copy-config": "cp ../config.js src/assets/config/config.js"
