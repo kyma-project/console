@@ -44,12 +44,15 @@
             {{ boundRemoteEnvironmentsCount | async }}
           </h3>
           <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
-            {{ (boundRemoteEnvironmentsCount | async) === 1
+            {{
+            (boundRemoteEnvironmentsCount | async) === 1
             ? 'Bound Application'
-            : 'Bound Applications' }}
+            : 'Bound Applications'
+            }}
           </span>
-          <button fd-button [options]="'light'" (click)="navigateToRemoteEnvs()">Show All
-            Applications</button>
+          <button fd-button [options]="'light'" (click)="navigateToRemoteEnvs()">
+            Show All Applications
+          </button>
         </div>
       </fd-panel-body>
     </fd-panel>
@@ -81,6 +84,5 @@
     </fd-table>
   </fd-panel-body>
 </fd-panel>
-
 
 <app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>
