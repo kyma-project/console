@@ -474,7 +474,7 @@ function getSelfSubjectRulesReview() {
     kind: 'SelfSubjectRulesReview',
     apiVersion: 'authorization.k8s.io/v1',
     spec: {
-      namespace: 'allNamespaces'
+      namespace: '*'
     }
   };
   return new Promise(function(resolve, reject) {
