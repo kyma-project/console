@@ -389,6 +389,7 @@ function fetchFromKyma(url) {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+        // TODO: investigate it, falls into infinite loop
         // if (xmlHttp.status === 401) {
         //   relogin();
         // }
@@ -419,6 +420,7 @@ function fetchFromGraphQL(query, variables) {
           reject(xmlHttp.response);
         }
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+        // TODO: investigate it, falls into infinite loop
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
@@ -452,6 +454,7 @@ function postToKyma(url, body) {
         xmlHttp.status != 200 &&
         xmlHttp.status != 201
       ) {
+        // TODO: investigate it, falls into infinite loop
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
