@@ -40,9 +40,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": ["node_modules/tippy.js/dist/tippy.all.min.js"]
           },
           "configurations": {
