@@ -9,7 +9,7 @@ You will see a sandbox app that uses <y-generic-table> & <y-generic-list> compon
 
 ## How to use it in a component
 
-Add `--preserve-symlink` option to `ng serve`, `ng test` and `ng build`. 
+Add `"preserveSymlinks": true` to `angular.json` test and build options. Or alternatively add `--preserve-symlink` option to `ng test` and `ng build`. 
 Add `"include": [ /components/angular/generic-list/src/app/modules/list/**/*.ts" ]` to your component's `tsconfig.json`
 Add `"app"` to `tslint.json` if you have the following rules: 
 

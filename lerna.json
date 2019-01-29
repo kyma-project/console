@@ -7,7 +7,6 @@
     "brokers",
     "content",
     "components/react",
-    "components/angular/generic-list",
     "lambda",
     "tests"
   ],

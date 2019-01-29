@@ -6,10 +6,6 @@ ci-pr: resolve validate test build build-image push-image
 ci-master: resolve validate test build build-image push-image
 ci-release: resolve validate test build build-image push-image
 
-copy-generic-list:
-	rm -r src/app/generic-list
-	cp -R ../components/angular/generic-list/src/app/modules/list src/app/generic-list
-
 resolve:
 	npm install --no-optional
 
