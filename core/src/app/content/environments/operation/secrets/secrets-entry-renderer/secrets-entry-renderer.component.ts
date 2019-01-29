@@ -1,7 +1,7 @@
 import { Component, Injector, Input, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
-import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import LuigiClient from '@kyma-project/luigi-client';
 @Component({
   selector: 'app-secrets-entry-renderer',
@@ -32,7 +32,7 @@ export class SecretsEntryRendererComponent
         const event: any = e;
         if (
           'disable' === event.type &&
-          this.entry.objectMeta.name === event.entry.objectMeta.name
+          this.entry.metadata.name === event.entry.metadata.name
         ) {
           this.disabled = event.entry.disabled;
         }

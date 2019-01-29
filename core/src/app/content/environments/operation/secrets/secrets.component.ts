@@ -1,7 +1,3 @@
-import {
-  DashboardSecret,
-  IDashboardSecret
-} from './../../../../shared/datamodel/k8s/dashboard-secrets';
 import { CurrentEnvironmentService } from './../../../environments/services/current-environment.service';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -14,6 +10,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
 import { DataConverter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
+import { ISecret, Secret } from 'shared/datamodel/k8s/secret';
 
 @Component({
   selector: 'app-secrets',
@@ -38,9 +35,9 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
-    const converter: DataConverter<IDashboardSecret, DashboardSecret> = {
-      convert(entry: IDashboardSecret) {
-        return new DashboardSecret(entry);
+    const converter: DataConverter<ISecret, Secret> = {
+      convert(entry: ISecret) {
+        return new Secret(entry);
       }
     };
 
@@ -48,15 +45,10 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
       .getCurrentEnvironmentId()
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
-        const url = `${AppConfig.k8sDashboardApiUrl}secret/${
+        const url = `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentEnvironmentId
-        }`;
-        this.source = new KubernetesDataProvider(
-          url,
-          converter,
-          this.http,
-          'secrets'
-        );
+        }/secrets`;
+        this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = SecretsEntryRendererComponent;
         this.headerRenderer = SecretsHeaderRendererComponent;
       });
@@ -65,7 +57,7 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
   public navigateToDetails(entry) {
     LuigiClient.linkManager()
       .fromContext('secrets')
-      .navigate(`details/${entry.objectMeta.name}`);
+      .navigate(`details/${entry.metadata.name}`);
   }
 
   createNewElement() {

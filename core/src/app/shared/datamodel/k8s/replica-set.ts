@@ -2,20 +2,20 @@ import { IMetaDataOwner, MetaDataOwner } from './generic/meta-data-owner';
 import { IStatus } from './generic/status';
 import { IPodTemplate, IPodTemplateSpec } from './pod-template';
 
-export interface IReplicaSets extends IMetaDataOwner {
-  spec: IReplicaSetsSpec;
-  status: IReplicaSetsStatus;
+export interface IReplicaSet extends IMetaDataOwner {
+  spec: IReplicaSetSpec;
+  status: IReplicaSetStatus;
 
   getImages();
   getBoundAppName();
 }
 
-export interface IReplicaSetsSpec {
+export interface IReplicaSetSpec {
   replicas: number;
   template: IPodTemplate;
 }
 
-export interface IReplicaSetsStatus extends IStatus {
+export interface IReplicaSetStatus extends IStatus {
   fullyLabeledReplicas: number;
   observedGeneration: number;
   replicas: number;
@@ -23,11 +23,11 @@ export interface IReplicaSetsStatus extends IStatus {
   availableReplicas: number;
 }
 
-export class ReplicaSets extends MetaDataOwner implements IReplicaSets {
-  spec: IReplicaSetsSpec;
-  status: IReplicaSetsStatus;
+export class ReplicaSet extends MetaDataOwner implements IReplicaSet {
+  spec: IReplicaSetSpec;
+  status: IReplicaSetStatus;
 
-  constructor(input: IReplicaSets) {
+  constructor(input: IReplicaSet) {
     super(input.metadata, input.status);
     this.spec = input.spec;
     this.status = input.status;

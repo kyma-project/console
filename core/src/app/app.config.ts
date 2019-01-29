@@ -32,11 +32,9 @@ const config = {
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1beta1/`,
   k8sApiServerUrl_extensions: `${k8sServerUrl}/apis/extensions/v1beta1/`,
   k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
-  k8sDashboardApiUrl: `${k8sServerUrl}/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/api/v1/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_ui: `${k8sServerUrl}/apis/ui.kyma-project.io/v1alpha1/`,
   k8sApiServerUrl_rbac: `${k8sServerUrl}/apis/rbac.authorization.k8s.io/v1/`,
-  k8sDashboardUrl: `${k8sServerUrl}/namespaces/kube-system/services/kubernetes-dashboard/proxy`,
   k8sServerUrl,
   lambdasModuleUrl: `https://lambdas-ui.${domain}`,
   orgId: 'my-org-123',
@@ -70,12 +68,6 @@ if (
   config.graphqlApiUrl = environment.localApi
     ? clusterConfig['graphqlApiUrlLocal']
     : clusterConfig['graphqlApiUrl'];
-}
-
-// TEMPORARY ;) WORKAROUND, TO BE DELETED ONCE THE GRAPHQL FACADE IS IN PLACE
-// YSF-1330
-if (clusterConfig && !window.location.hostname.endsWith('.kyma.local')) {
-  config.k8sDashboardApiUrl = `${k8sServerUrl}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/api/v1/`;
 }
 
 export const AppConfig = { ...config };

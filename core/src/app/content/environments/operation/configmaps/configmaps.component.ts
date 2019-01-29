@@ -9,10 +9,7 @@ import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
-import {
-  IDashboardConfigMap,
-  DashboardConfigMap
-} from '../../../../shared/datamodel/k8s/dashboard-configmaps';
+import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html',
@@ -36,9 +33,9 @@ export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
-    const converter: DataConverter<IDashboardConfigMap, DashboardConfigMap> = {
-      convert(entry: IDashboardConfigMap) {
-        return new DashboardConfigMap(entry);
+    const converter: DataConverter<IConfigMap, ConfigMap> = {
+      convert(entry: IConfigMap) {
+        return new ConfigMap(entry);
       }
     };
 
@@ -47,17 +44,11 @@ export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
 
-        const url = `${AppConfig.k8sDashboardApiUrl}configmap/${
+        const url = `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentEnvironmentId
-        }`;
+        }/configmaps`;
 
-        this.source = new KubernetesDataProvider(
-          url,
-          converter,
-          this.http,
-          'items'
-        );
-
+        this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = ConfigMapsEntryRendererComponent;
         this.headerRenderer = ConfigMapsHeaderRendererComponent;
       });
