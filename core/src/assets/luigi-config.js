@@ -495,34 +495,17 @@ function getSelfSubjectRulesReview() {
 
 function navigationPermissionChecker(nodeToCheckPermissionsFor) {
   let hasPermissions = false;
-  if (
-    nodeToCheckPermissionsFor.constraints &&
-    nodeToCheckPermissionsFor.constraints.length > 0
-  ) {
+  if (nodeToCheckPermissionsFor.adminOnly) {
     if (selfSubjectRulesReview.length > 0) {
-      let readPermissions = [];
       selfSubjectRulesReview.forEach(rule => {
         if (
-          rule.verbs &&
-          (rule.verbs.includes('get') ||
-            rule.verbs.includes('list') ||
-            rule.verbs.includes('*'))
+          rule.verbs.includes('*') &&
+          rule.apiGroups.includes('') &&
+          rule.resources.includes('*')
         ) {
-          readPermissions.push(rule);
+          hasPermissions = true;
         }
       });
-      if (readPermissions.length > 0) {
-        readPermissions.forEach(permission => {
-          nodeToCheckPermissionsFor.constraints.forEach(constraint => {
-            if (
-              permission.resources.includes(constraint) ||
-              permission.apiGroups.includes(constraint)
-            ) {
-              hasPermissions = true;
-            }
-          });
-        });
-      }
     }
   } else {
     hasPermissions = true;
@@ -672,7 +655,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                         ]
                       }
                     ],
-                    constraints: ['apps']
+                    adminOnly: true
                   },
                   {
                     pathSegment: 'service-brokers',
@@ -680,7 +663,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     label: 'Service Brokers',
                     category: 'Integration',
                     viewUrl: '/consoleapp.html#/home/settings/serviceBrokers',
-                    constraints: ['apps']
+                    adminOnly: true
                   },
                   {
                     pathSegment: 'idp-presets',
@@ -688,7 +671,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     label: 'IDP Presets',
                     category: 'Integration',
                     viewUrl: '/consoleapp.html#/home/settings/idpPresets',
-                    constraints: ['apps']
+                    adminOnly: true
                   },
                   {
                     pathSegment: 'settings',
@@ -717,7 +700,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                         ]
                       }
                     ],
-                    constraints: ['apps']
+                    adminOnly: true
                   },
                   {
                     label: 'Stats & Metrics',
@@ -729,7 +712,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                       url: 'https://grafana.' + k8sDomain,
                       sameWindow: false
                     },
-                    constraints: ['apps']
+                    adminOnly: true
                   },
                   {
                     label: 'Tracing',
@@ -738,7 +721,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                       url: 'https://jaeger.' + k8sDomain,
                       sameWindow: false
                     },
-                    constraints: ['apps']
+                    adminOnly: true
                   }
                 ];
                 var fetchedNodes = [].concat.apply([], cmf);
