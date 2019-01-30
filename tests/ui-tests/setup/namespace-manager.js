@@ -10,7 +10,7 @@ export class NamespaceManager {
 
   async createIfDoesntExist() {
     if (await this.exists) {
-      console.log('exists');
+      console.log(`Namespace ${this.namespaceName} already exists`);
       return;
     }
 

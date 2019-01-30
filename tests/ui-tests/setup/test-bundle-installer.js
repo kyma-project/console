@@ -2,30 +2,28 @@ import * as k8s from '@kubernetes/client-node';
 import config from '../config';
 import { loadKubeConfig } from './kubeconfig';
 import { NamespaceManager } from './namespace-manager';
+import { HelmBrokerConfigurer } from './helm-broker/configurer';
 
 export class TestBundleInstaller {
   constructor(namespace) {
     this.kubeConfig = loadKubeConfig();
     this.namespaceName = namespace;
     this.namespaceManager = new NamespaceManager(namespace);
+
+    this.helmBrokerConfigurer = new HelmBrokerConfigurer();
   }
 
   async install() {
     console.log('Installing test bundle...');
-    // create ns
     await this.namespaceManager.createIfDoesntExist();
-
-    // add repository to HB
-    // wait for HB deployment ready
-    // bump relistRequests for ClusterServiceBroker
+    await this.helmBrokerConfigurer.includeTestBundleRepository();
+    await this.helmBrokerConfigurer.waitForBrokerReady();
   }
 
   async cleanup() {
     console.log('Cleaning up test bundle...');
-    // unregister HB repository
-    // bump relistRequests for ClusterServiceBroker
-    // wait for HB deploy ready
-    // delete ns
+    await this.helmBrokerConfigurer.excludeTestBundleRepository();
+    await this.helmBrokerConfigurer.waitForBrokerReady();
     await this.namespaceManager.delete();
   }
 }
