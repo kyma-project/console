@@ -1,12 +1,18 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Dropdown, Search, Separator } from '@kyma-project/react-components';
+import {
+  Button,
+  Dropdown,
+  Search,
+  Separator,
+} from '@kyma-project/react-components';
 
 import Filter from './Filter.component';
 
 import {
-  FilterContainer,
+  FiltersDropdown,
+  FiltersContainer,
   SearchWrapper,
   ClearAllActiveFiltersButton,
 } from './styled';
@@ -21,59 +27,69 @@ const FilterList = ({
   activeTagsFilters,
   activeFiltersCount,
   clearAllActiveFilters,
-}) => (
-  <Dropdown
-    name={activeFiltersCount ? `Filter (${activeFiltersCount})` : 'Filter'}
-    enabled={filters && filters.length > 0}
-    buttonWidth="97px"
-    marginTop="0"
-    lastButton
-    primary
-    arrowTop
-    arrowTopRight="41px"
-  >
-    <SearchWrapper>
-      <Search
-        backgroundColor="#fff"
-        placeholder="Search"
-        onChange={onSearch}
-        id="search-filter"
-      />
-      <ClearAllActiveFiltersButton
-        onClick={clearAllActiveFilters}
-        data-e2e-id="clear-all-filters"
+}) => {
+  const disabled = !(filters && filters.length > 0);
+  return (
+    <FiltersDropdown>
+      <Dropdown
+        disabled={disabled}
+        control={
+          <Button
+            option="emphasized"
+            disabled={disabled}
+            data-e2e-id="toggle-filter"
+          >
+            {`Filter${activeFiltersCount ? ` (${activeFiltersCount})` : ''}`}
+          </Button>
+        }
       >
-        Clear all filters
-      </ClearAllActiveFiltersButton>
-      <Separator margin="15px -16px 15px" />
-    </SearchWrapper>
-    <FilterContainer data-e2e-id="filter">
-      {filters &&
-        filters.map((filter, idx) => (
-          <Fragment key={filter.name}>
-            {filter.values &&
-              filter.values.length > 0 &&
-              filtersExists[filter.name] && (
-                <Fragment>
-                  <Filter
-                    name={filter.name}
-                    items={filter.values}
-                    activeValue={active[filter.name]}
-                    onChange={onChange}
-                    activeTagsFilters={activeTagsFilters}
-                    onSeeMore={onSeeMore}
-                    isMore={filter.isMore}
-                  />
-                  {idx < filters.length - 1 && (
-                    <Separator margin="15px -16px 15px" />
-                  )}
+        <div data-e2e-id="wrapper-filter">
+          <SearchWrapper>
+            <Search
+              noSearchBtn
+              placeholder="Search"
+              onChange={onSearch}
+              data-e2e-id="search-filter"
+            />
+            <ClearAllActiveFiltersButton
+              onClick={clearAllActiveFilters}
+              option="light"
+              data-e2e-id="clear-all-filters"
+            >
+              Clear all filters
+            </ClearAllActiveFiltersButton>
+          </SearchWrapper>
+          <Separator />
+          <FiltersContainer data-e2e-id="filter">
+            {filters &&
+              filters.map((filter, idx) => (
+                <Fragment key={filter.name}>
+                  {filter.values &&
+                    filter.values.length > 0 &&
+                    filtersExists[filter.name] && (
+                      <Fragment>
+                        <Filter
+                          name={filter.name}
+                          items={filter.values}
+                          activeValue={active[filter.name]}
+                          onChange={onChange}
+                          activeTagsFilters={activeTagsFilters}
+                          onSeeMore={onSeeMore}
+                          isMore={filter.isMore}
+                        />
+                        {idx < filters.length - 1 && (
+                          <Separator margin="0 -10px 0" />
+                        )}
+                      </Fragment>
+                    )}
                 </Fragment>
-              )}
-          </Fragment>
-        ))}
-    </FilterContainer>
-  </Dropdown>
-);
+              ))}
+          </FiltersContainer>
+        </div>
+      </Dropdown>
+    </FiltersDropdown>
+  );
+};
 
 FilterList.propTypes = {
   filters: PropTypes.array,

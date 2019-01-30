@@ -3,7 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   Button,
-  ConfirmationModal,
+  Modal,
   Toolbar,
 } from '@kyma-project/react-components';
 
@@ -38,7 +38,7 @@ const ServiceInstanceToolbar = ({
 
   return (
     <Toolbar
-      headline={
+      title={
         <ServiceInstanceToolbarHeadline>
           <ServiceInstanceToolbarHeadlineLink onClick={goToServiceInstances}>
             Service Instances
@@ -48,24 +48,24 @@ const ServiceInstanceToolbar = ({
       }
       description={instanceClass && instanceClass.description}
     >
-      <ConfirmationModal
+      <Modal
         title="Delete"
-        content={`Are you sure you want to delete instance "${
-          serviceInstance.name
-        }"?`}
         confirmText="Delete"
         cancelText="Cancel"
-        handleConfirmation={handleDelete}
+        onConfirm={handleDelete}
         modalOpeningComponent={
-          <Button normal last remove>
+          <Button type="negative">
             Delete
           </Button>
         }
-        warning={true}
-        width={'481px'}
+        type="negative"
         onShow={() => LuigiClient.uxManager().addBackdrop()}
         onHide={() => LuigiClient.uxManager().removeBackdrop()}
-      />
+      >
+        {`Are you sure you want to delete instance "${
+          serviceInstance.name
+        }"?`}
+      </Modal>
     </Toolbar>
   );
 };

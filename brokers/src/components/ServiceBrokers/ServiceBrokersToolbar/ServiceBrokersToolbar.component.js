@@ -5,7 +5,7 @@ import { Toolbar } from '@kyma-project/react-components';
 const ServiceBrokersToolbar = () => {
   return (
     <Toolbar
-      headline="Service Brokers"
+      title="Service Brokers"
       description="You can view your brokers here"
     >
       {/*{serviceBrokersExists ? (*/}
