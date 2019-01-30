@@ -25,6 +25,7 @@ export const Item = styled.li`
   color: #515559;
   word-break: break-all;
 `;
+
 export const Text = styled.p`
   font-family: 72;
   font-size: 14px;
@@ -36,4 +37,5 @@ export const Text = styled.p`
 
 export const Bold = styled.span`
   font-weight: bold;
+  white-space: nowrap;
 `;

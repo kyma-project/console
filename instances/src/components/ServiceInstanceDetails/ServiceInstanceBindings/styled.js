@@ -22,7 +22,6 @@ export const SecretModalButton = styled.span`
   color: #0a6ed1;
   margin: ${props => props.margin};
 `;
-export const ParametersModalButton = SecretModalButton;
 
 export const ActionsWrapper = styled.div`
   display: flex;

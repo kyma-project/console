@@ -65,9 +65,19 @@ class BasicData extends React.Component {
 
   componentDidMount() {
     clearTimeout(this.timer);
+    const {
+      formData,
+      invalidInstanceName,
+      instanceWithNameAlreadyExists,
+    } = this.state;
+    const stepFilled =
+      formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
+    this.props.callback({
+      stepFilled,
+    });
   }
 
-  componentDidUpdate(nextProps, nextState) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       formData,
       invalidInstanceName,
@@ -75,7 +85,7 @@ class BasicData extends React.Component {
       enableCheckNameExists,
     } = this.state;
 
-    if (compareTwoObjects(this.state, nextState)) return;
+    if (compareTwoObjects(this.state, prevState)) return;
 
     const stepFilled =
       formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
@@ -252,6 +262,7 @@ class BasicData extends React.Component {
               name="nameServiceBindingUsage"
               noBottomMargin
               noMessageField
+              marginTop={15}
             />
           </Grid.Unit>
         </Grid>
