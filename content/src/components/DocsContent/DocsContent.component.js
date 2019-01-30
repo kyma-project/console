@@ -3,6 +3,7 @@ import Highlight from 'react-highlight/lib/optimized.js';
 import { Markdown, Toolbar } from '@kyma-project/react-components';
 
 import {
+  DocsWrapper,
   Wrapper,
   ContentHeader,
   ContentDescription,
@@ -17,10 +18,10 @@ const DocsContent = ({ content, docsTypesLength }) => {
   let lastType = "";
 
   return (
-    <div>
+    <>
       {content && (
-        <div>
-          <Toolbar headline={content.displayName} customPadding={'28px 0'} />
+        <DocsWrapper>
+          <Toolbar title={content.displayName} customPadding={'28px 0'} />
 
           {docs &&
             docs.map((doc, index) => {
@@ -53,9 +54,9 @@ const DocsContent = ({ content, docsTypesLength }) => {
                 </Wrapper>
               );
             })}
-        </div>
+        </DocsWrapper>
       )}
-    </div>
+    </>
   );
 };
 

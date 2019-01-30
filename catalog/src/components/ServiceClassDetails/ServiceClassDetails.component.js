@@ -36,7 +36,7 @@ class ServiceClassDetails extends React.Component {
     const serviceClassDescription = getDescription(serviceClass);
 
     const modalOpeningComponent = (
-      <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
+      <Button option="emphasized" data-e2e-id="add-to-env">
         Add to your Namespace
       </Button>
     );
@@ -61,8 +61,6 @@ class ServiceClassDetails extends React.Component {
             <div> {this.arrayOfJsx} </div>
             {this.renObjData}
             <ServiceClassToolbar
-              arrayOfJsx={this.arrayOfJsx}
-              renObjData={this.renObjData}
               history={history}
               serviceClassDisplayName={serviceClassDisplayName}
             >

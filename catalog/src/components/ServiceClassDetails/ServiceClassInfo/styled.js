@@ -1,41 +1,54 @@
 import styled from 'styled-components';
-import { media } from '@kyma-project/react-components';
+import { Tile, TileMedia, TileContent, Image as Img } from '@kyma-project/react-components';
 
-export const ServiceClassInfoContentWrapper = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  align-items: flex-start;
-  padding: 0;
-  display: flex;
-  flex-flow: row nowrap;
-  ${props => (props.phoneRows ? media.phone`flex-flow: column nowrap;` : '')};
+export const ServiceClassInfoContentWrapper = styled(Tile)`
+  && {
+    background-color: #edeef0;
+  }
 `;
 
-export const ImagePlaceholder = styled.div`
-  position: relative;
-  width: 90px;
-  height: 90px;
-  min-width: 90px;
-  min-height: 90px;
-  margin-right: 20px;
-  line-height: 90px;
-  text-align: center;
-  border-radius: 4px;
-  background-color: #fff;
-  border: solid 1px rgba(63, 80, 96, 0.15);
-  color: #32363a;
-  font-size: 32px;
+export const ImagePlaceholder = styled(TileMedia)`
+  && {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    min-height: 90px;
+    margin-right: 20px;
+    line-height: 90px;
+    text-align: center;
+    border-radius: 4px;
+    background-color: #fff;
+    border: solid 1px rgba(63, 80, 96, 0.15);
+    color: #32363a;
+    font-size: 32px;
+  }
 `;
 
-export const Image = styled.img`
-  max-width: 40px;
-  max-height: 40px;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+export const Image = styled(Img)`
+  && {
+    max-width: 40px;
+    max-height: 40px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+`;
+
+export const ServiceClassInfoContent = styled(TileContent)`
+  && {
+    align-self: flex-start;
+    padding: 0;
+
+    > h2 {
+      color: rgb(50, 54, 58);
+      font-size: 16px;
+      font-weight: normal;
+    }
+  }
 `;
 
 export const ServiceTitle = styled.h3`
@@ -66,36 +79,13 @@ export const ExternalLink = styled.a`
   }
 `;
 
-export const TagsWrapper = styled.div`
+export const LabelsWrapper = styled.div`
   margin-top: 32px;
   width: 100%;
   height: auto;
 `;
 
-export const TagWrapper = styled.div`
+export const LabelWrapper = styled.div`
   display: inline-block;
   margin: 0 10px 10px 0;
-`;
-
-export const Tag = styled.span`
-  display: inline-block;
-  max-width: 220px;
-  mix-blend-mode: multiply;
-  border-radius: 4px;
-  background-color: #e2eaf2;
-  font-size: 12px;
-  font-family: 72;
-  font-weight: 300;
-  text-transform: uppercase;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: #73787d;
-  padding: 6px 10px;
-  cursor: pointer;
 `;

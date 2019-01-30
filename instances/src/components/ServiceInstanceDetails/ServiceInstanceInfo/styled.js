@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import Grid from 'styled-components-grid';
+import { PanelGrid, Panel, PanelHeader, PanelBody } from '@kyma-project/react-components';
 
-export const ServiceInstanceInfoWrapper = styled(Grid)`
+export const ServiceInstanceInfoWrapper = styled(PanelGrid)`
   display: flex;
+  padding-bottom: 20px; 
 `;
 
 export const ContentWrapper = styled.div`
@@ -22,37 +23,21 @@ export const StretchedContentWrapper = styled(ContentWrapper)`
   align-self: stretch;
 `;
 
-export const CenterSideWrapper = styled.div`
-  box-sizing: border-box;
-  margin: ${props => ('left' === props.margin ? '30px 20px 0 0' : '30px 0 0')};
-  text-align: left;
-  flex: 0 1 auto;
-  display: flex;
-  min-height: calc(100% - 30px);
+export const CenterSideWrapper = styled(Panel)`
+  && {
+    border-left: ${props => (props.color ? '6px solid ' + props.color : 'none')};
+  }
 `;
 
-export const ContentHeader = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-  line-height: 1.19;
-  font-size: 16px;
-  padding: 16px 20px;
+export const ContentHeader = styled(PanelHeader)`
+  && {
+    color: rgb(50, 54, 58);
+    font-size: 16px;
+    font-weight: normal;
+  }
 `;
 
-export const ContentDescription = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-  padding: 8px 22px 22px;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.14;
-  letter-spacing: normal;
-  text-align: left;
-  color: #32363b;
+export const ContentDescription = styled(PanelBody)`
 `;
 
 export const Element = styled.div`
@@ -78,12 +63,11 @@ export const ServiceClassButton = styled.span`
   cursor: pointer;
 `;
 
-export const PlanModalButton = styled.button`
-  font-family: '72';
+export const PlanModalButton = styled.span`
   font-size: 14px;
   font-weight: normal;
   display: inline-block;
-  font-weight: 300;
+  font-weight: 500;
   border: none;
   margin: 0;
   padding: 0;
@@ -94,35 +78,21 @@ export const PlanModalButton = styled.button`
   cursor: pointer;
 `;
 
-export const Label = styled.span`
-  width: auto;
+export const LabelWrapper = styled.div`
   display: inline-block;
-  mix-blend-mode: multiply;
-  border-radius: 4px;
-  background-color: #eef5fc;
-  font-size: 12px;
-  font-family: 72;
-  font-weight: 300;
-  text-transform: uppercase;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  color: #64696d;
-  padding: 5px 8px;
   margin: 10px 10px 0 0;
 `;
 
 export const ExternalLink = styled.a`
-  font-family: '72';
-  font-size: 14px;
-  color: #167ee6;
-  font-weight: 300;
-  text-decoration: none;
+  && {
+    font-size: 14px;
+    color: #167ee6;
+    font-weight: 500;
+    text-decoration: none;
 
-  :hover {
-    text-decoration: underline;
+    :hover {
+      text-decoration: underline;
+    }
   }
 `;
 

@@ -3,23 +3,21 @@ import Grid from 'styled-components-grid';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import {
+  Label,
   Icon,
-  Header,
-  Separator,
-  InformationModal,
+  Modal,
+  PanelActions,
 } from '@kyma-project/react-components';
 
 import {
   ServiceInstanceInfoWrapper,
-  StretchedContentWrapper,
   CenterSideWrapper,
   ContentHeader,
   ContentDescription,
   Element,
-  InfoIcon,
   PlanModalButton,
   ServiceClassButton,
-  Label,
+  LabelWrapper,
   ExternalLink,
   JSONCode,
 } from './styled';
@@ -33,13 +31,13 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
   const statusIcon = statusType => {
     switch (statusType) {
       case ('PROVISIONING', 'DEPROVISIONING', 'PENDING'):
-        return '\uE1C4';
+        return 'sys-help';
       case 'FAILED':
-        return '\uE0B1';
+        return 'sys-cancel';
       case 'RUNNING':
-        return '\uE1C2';
+        return 'sys-enter';
       default:
-        return '\uE1C4';
+        return 'sys-help';
     }
   };
 
@@ -61,169 +59,152 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     : serviceInstance.servicePlan;
 
   return (
-    <ServiceInstanceInfoWrapper>
-      <Grid.Unit size={0.7}>
-        <CenterSideWrapper margin={'left'}>
-          <StretchedContentWrapper>
-            <ContentHeader>
-              <Header>General Information</Header>
-            </ContentHeader>
-            <Separator />
-            <ContentDescription>
-              <Grid>
-                <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                  <Element>Service Class</Element>
-                </Grid.Unit>
-                <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                  <Element data-e2e-id="instance-service-class">
-                    {instanceClass && instanceClass.name ? (
-                      <ServiceClassButton
-                        onClick={() =>
-                          goToServiceClassDetails(instanceClass.name)
-                        }
-                      >
-                        {getResourceDisplayName(instanceClass)}
-                      </ServiceClassButton>
-                    ) : (
-                      '-'
-                    )}
-                  </Element>
-                </Grid.Unit>
-                <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                  <Element>Plan</Element>
-                </Grid.Unit>
-                <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                  <Element>
-                    {serviceInstance.planSpec &&
-                    serviceInstance.planSpec !== null &&
-                    typeof serviceInstance.planSpec === 'object' &&
-                    Object.keys(serviceInstance.planSpec).length ? (
-                      <InformationModal
-                        modalOpeningComponent={
-                          <PlanModalButton data-e2e-id="instance-service-plan">
-                            {getResourceDisplayName(instancePlan)}
-                          </PlanModalButton>
-                        }
-                        title="Instance Parameters"
-                        content={
-                          <JSONCode>
-                            {JSON.stringify(
-                              serviceInstance.planSpec,
-                              undefined,
-                              2,
-                            )}
-                          </JSONCode>
-                        }
-                      />
-                    ) : (
-                      `${getResourceDisplayName(instancePlan) || '-'}`
-                    )}
-                  </Element>
-                </Grid.Unit>
-              </Grid>
-              {serviceInstance.labels &&
-                serviceInstance.labels.length > 0 && (
-                  <Grid>
-                    <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                      <Element>Labels</Element>
-                    </Grid.Unit>
-                    <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                      <Element margin="1px 0 0 0">
-                        {serviceInstance.labels.map(label => (
-                          <Label key={label}>{label}</Label>
-                        ))}
-                      </Element>
-                    </Grid.Unit>
-                  </Grid>
+    <ServiceInstanceInfoWrapper cols={3}>
+      <CenterSideWrapper colSpan={2}>
+        <ContentHeader>General Information</ContentHeader>
+
+        <ContentDescription>
+          <Grid>
+            <Grid.Unit size={INFORMATION_KEY_SIZE}>
+              <Element margin="0">Service Class</Element>
+            </Grid.Unit>
+            <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+              <Element margin="0" data-e2e-id="instance-service-class">
+                {instanceClass && instanceClass.name ? (
+                  <ServiceClassButton
+                    onClick={() => goToServiceClassDetails(instanceClass.name)}
+                  >
+                    {getResourceDisplayName(instanceClass)}
+                  </ServiceClassButton>
+                ) : (
+                  '-'
                 )}
-              {instanceClass && instanceClass.documentationUrl ? (
-                <Grid>
-                  <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                    <Element
-                      margin={
-                        serviceInstance.labels &&
-                        serviceInstance.labels.length > 0
-                          ? '11px 0 0 0'
-                          : '16px 0 0 0'
-                      }
-                    >
-                      Documentation
-                    </Element>
-                  </Grid.Unit>
-                  <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                    <Element
-                      margin={
-                        serviceInstance.labels &&
-                        serviceInstance.labels.length > 0
-                          ? '11px 0 0 0'
-                          : '16px 0 0 0'
-                      }
-                    >
-                      <ExternalLink
-                        href={instanceClass.documentationUrl}
-                        target="_blank"
-                        data-e2e-id="instance-service-documentation-link"
-                      >
-                        Link
-                      </ExternalLink>
-                    </Element>
-                  </Grid.Unit>
-                </Grid>
-              ) : null}
-              {instanceClass && instanceClass.supportUrl ? (
-                <Grid>
-                  <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                    <Element>Support</Element>
-                  </Grid.Unit>
-                  <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                    <Element>
-                      <ExternalLink
-                        href={instanceClass.supportUrl}
-                        target="_blank"
-                        data-e2e-id="instance-service-support-link"
-                      >
-                        Link
-                      </ExternalLink>
-                    </Element>
-                  </Grid.Unit>
-                </Grid>
-              ) : null}
-            </ContentDescription>
-          </StretchedContentWrapper>
-        </CenterSideWrapper>
-      </Grid.Unit>
-      <Grid.Unit size={0.3}>
-        <CenterSideWrapper>
-          <StretchedContentWrapper
-            color={statusColor(serviceInstance.status.type)}
-          >
-            <ContentHeader>
+              </Element>
+            </Grid.Unit>
+            <Grid.Unit size={INFORMATION_KEY_SIZE}>
+              <Element>Plan</Element>
+            </Grid.Unit>
+            <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+              <Element data-e2e-id="instance-service-plan">
+                {serviceInstance.planSpec &&
+                serviceInstance.planSpec !== null &&
+                typeof serviceInstance.planSpec === 'object' &&
+                Object.keys(serviceInstance.planSpec).length ? (
+                  <Modal
+                    modalOpeningComponent={
+                      <PlanModalButton>
+                        {getResourceDisplayName(instancePlan)}
+                      </PlanModalButton>
+                    }
+                    title="Instance Parameters"
+                    onShow={() => LuigiClient.uxManager().addBackdrop()}
+                    onHide={() => LuigiClient.uxManager().removeBackdrop()}
+                  >
+                    <JSONCode>
+                      {JSON.stringify(serviceInstance.planSpec, undefined, 2)}
+                    </JSONCode>
+                  </Modal>
+                ) : (
+                  `${getResourceDisplayName(instancePlan) || '-'}`
+                )}
+              </Element>
+            </Grid.Unit>
+          </Grid>
+          {serviceInstance.labels &&
+            serviceInstance.labels.length > 0 && (
               <Grid>
-                <Grid.Unit size={0.9}>
-                  <Header>Status</Header>
+                <Grid.Unit size={INFORMATION_KEY_SIZE}>
+                  <Element>Labels</Element>
                 </Grid.Unit>
-                <Grid.Unit size={0.1}>
-                  <InfoIcon color={statusColor(serviceInstance.status.type)}>
-                    <Icon icon={statusIcon(serviceInstance.status.type)} />
-                  </InfoIcon>
+                <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+                  <Element margin="1px 0 0 0">
+                    {serviceInstance.labels.map((label, index) => (
+                      <LabelWrapper key={`${label}-${index}`}>
+                        <Label key={label}>{label}</Label>
+                      </LabelWrapper>
+                    ))}
+                  </Element>
                 </Grid.Unit>
               </Grid>
-            </ContentHeader>
-            <Separator />
-            <ContentDescription>
-              <Element data-e2e-id="instance-status-type">
-                {serviceInstance.status.type}
-              </Element>
-              <Element
-                style={{ padding: '0' }}
-                data-e2e-id="instance-status-message"
-              >
-                {serviceInstance.status.message}
-              </Element>
-            </ContentDescription>
-          </StretchedContentWrapper>
-        </CenterSideWrapper>
-      </Grid.Unit>
+            )}
+          {instanceClass && instanceClass.documentationUrl ? (
+            <Grid>
+              <Grid.Unit size={INFORMATION_KEY_SIZE}>
+                <Element
+                  margin={
+                    serviceInstance.labels && serviceInstance.labels.length > 0
+                      ? '11px 0 0 0'
+                      : '16px 0 0 0'
+                  }
+                >
+                  Documentation
+                </Element>
+              </Grid.Unit>
+              <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+                <Element
+                  margin={
+                    serviceInstance.labels && serviceInstance.labels.length > 0
+                      ? '11px 0 0 0'
+                      : '16px 0 0 0'
+                  }
+                >
+                  <ExternalLink
+                    href={instanceClass.documentationUrl}
+                    target="_blank"
+                    data-e2e-id="instance-service-documentation-link"
+                  >
+                    Link
+                  </ExternalLink>
+                </Element>
+              </Grid.Unit>
+            </Grid>
+          ) : null}
+          {instanceClass && instanceClass.supportUrl ? (
+            <Grid>
+              <Grid.Unit size={INFORMATION_KEY_SIZE}>
+                <Element>Support</Element>
+              </Grid.Unit>
+              <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+                <Element>
+                  <ExternalLink
+                    href={instanceClass.supportUrl}
+                    target="_blank"
+                    data-e2e-id="instance-service-support-link"
+                  >
+                    Link
+                  </ExternalLink>
+                </Element>
+              </Grid.Unit>
+            </Grid>
+          ) : null}
+        </ContentDescription>
+      </CenterSideWrapper>
+      <CenterSideWrapper
+        colSpan={1}
+        color={statusColor(serviceInstance.status.type)}
+      >
+        <ContentHeader>
+          Status
+          <PanelActions>
+            <Icon
+              glyph={statusIcon(serviceInstance.status.type)}
+              style={{ color: statusColor(serviceInstance.status.type) }}
+            />
+          </PanelActions>
+        </ContentHeader>
+
+        <ContentDescription>
+          <Element margin="0" data-e2e-id="instance-status-type">
+            {serviceInstance.status.type}
+          </Element>
+          <Element
+            style={{ padding: '0' }}
+            data-e2e-id="instance-status-message"
+          >
+            {serviceInstance.status.message}
+          </Element>
+        </ContentDescription>
+      </CenterSideWrapper>
     </ServiceInstanceInfoWrapper>
   );
 };
