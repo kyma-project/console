@@ -16,13 +16,14 @@ export class TestBundleInstaller {
   async install() {
     console.log('Installing test bundle...');
     await this.namespaceManager.createIfDoesntExist();
-    await this.helmBrokerConfigurer.includeTestBundleRepository();
+    // await this.helmBrokerConfigurer.includeTestBundleRepository();
     await this.helmBrokerConfigurer.waitForBrokerReady();
+    await this.helmBrokerConfigurer.waitForTestBundle();
   }
 
   async cleanup() {
     console.log('Cleaning up test bundle...');
-    await this.helmBrokerConfigurer.excludeTestBundleRepository();
+    // await this.helmBrokerConfigurer.excludeTestBundleRepository();
     await this.helmBrokerConfigurer.waitForBrokerReady();
     await this.namespaceManager.delete();
   }

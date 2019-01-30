@@ -64,39 +64,65 @@ export class HelmBrokerConfigurer {
   async excludeTestBundleRepository() {}
 
   async waitForBrokerReady() {
+    return this.watch(
+      `/apis/extensions/v1beta1/namespaces/${
+        helmBrokerConfig.namespace
+      }/deployments`,
+      { fieldSelector: `metadata.name=${helmBrokerConfig.name}` },
+      (resolve, reject) => (type, obj) => {
+        if (type === 'DELETED') {
+          return;
+        }
+
+        if (obj.status.replicas === 1 && obj.status.readyReplicas === 1) {
+          resolve(obj);
+        }
+      },
+      (resolve, reject) => err => {
+        reject(err);
+      }
+    );
+  }
+
+  waitForTestBundle() {
+    return this.watch(
+      `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceclasses`,
+      {},
+      (resolve, reject) => (type, obj) => {
+        if (type === 'DELETED') {
+          return;
+        }
+
+        if (obj.spec.externalName === helmBrokerConfig.testBundleExternalName) {
+          resolve(obj);
+        }
+      },
+      (resolve, reject) => err => {
+        reject(err);
+      }
+    );
+  }
+
+  async watch(path, queryParams, callbackFn, doneFn) {
     const watch = new k8s.Watch(this.kubeConfig);
 
-    let req;
     const promise = new Promise((resolve, reject) => {
-      req = watch.watch(
-        `/apis/extensions/v1beta1/namespaces/${
-          helmBrokerConfig.namespace
-        }/deployments`,
-        {
-          fieldSelector: `metadata.name=${helmBrokerConfig.name}`
-        },
-        (type, obj) => {
-          if (type !== 'MODIFIED') {
-            return;
-          }
-
-          if (obj.status.replicas === 1 && obj.status.readyReplicas === 1) {
-            resolve(obj);
-          }
-        },
-        err => {
-          reject(err);
-        }
+      const req = watch.watch(
+        path,
+        queryParams,
+        callbackFn(resolve, reject),
+        doneFn(resolve, reject)
       );
+
+      setTimeout(() => {
+        if (!req) {
+          return;
+        }
+
+        req.abort();
+      }, helmBrokerConfig.readyTimeout);
     });
 
-    setTimeout(() => {
-      if (!req) {
-        return;
-      }
-
-      req.abort();
-    }, 120 * 1000);
     return promise;
   }
 }
