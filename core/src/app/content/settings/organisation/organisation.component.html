@@ -1,4 +1,4 @@
-<div class="sf-section">
+<div class="fd-section">
   <div class="fd-section__header">
     <h1 class="fd-section__title">Your Organisation</h1>
   </div>
@@ -9,32 +9,18 @@
           <fd-form-group>
             <div fd-form-item>
               <fd-form-label>Name</fd-form-label>
-              <input
-                fd-form-control
-                [type]="'text'"
-                placeholder="Function name"
-                value="{{ orgName }}"
-                readonly
-              />
+              <input fd-form-control [type]="'text'" placeholder="Function name" value="{{ orgName }}" readonly />
             </div>
           </fd-form-group>
-
           <div class="fd-container fd-container--fluid fd-has-padding-tiny ">
             <fd-form-label>kubeconfig</fd-form-label>
-            <span class="info-text">
+            <span class="fd-has-type fd-has-color-text-3 fd-has-font-style-italic">
               kubeconfig is a file used to configure access to a cluster.
               Download it to access the cluster using command line.
             </span>
           </div>
-          <div
-            class="fd-container fd-container--flex direction--column fd-has-padding-tiny"
-          >
-            <button
-              class="align-to-end"
-              fd-button
-              [glyph]="'download'"
-              (click)="downloadKubeconfig()"
-            >
+          <div class="fd-container fd-container--flex fd-has-float-right fd-has-padding-tiny">
+            <button fd-button [glyph]="'download'" (click)="downloadKubeconfig()">
               Download config
             </button>
           </div>
@@ -43,12 +29,7 @@
           <fd-form-group>
             <div fd-form-item>
               <fd-form-label>Org-ID</fd-form-label>
-              <input
-                fd-form-control
-                [type]="'text'"
-                value="{{ orgId }}"
-                readonly
-              />
+              <input fd-form-control [type]="'text'" value="{{ orgId }}" readonly />
             </div>
           </fd-form-group>
         </fieldset>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
   NotificationMessage,
-  Paragraph,
   Search,
   Spinner,
   Toolbar,
@@ -167,34 +166,25 @@ class ServiceClassList extends React.Component {
       if (items) {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
-            <Paragraph>No Service Classes found</Paragraph>
+            No Service Classes found
           </EmptyServiceListMessageWrapper>
         ) : (
           <Cards data-e2e-id="cards" items={items} history={history} />
         );
       }
       return (
-        <Spinner
-          padding="75px 0 50px 0"
-          size="50px"
-          color="rgba(50,54,58,0.6)"
-        />
+        <Spinner />
       );
     };
 
     return (
-      <div>
+      <>
         <Toolbar
-          headline="Service Catalog"
+          title="Service Catalog"
           description="Enrich your experience with additional services"
         >
           <SearchWrapper>
-            <Search
-              noIcon
-              darkBorder
-              placeholder="Search"
-              onChange={searchFn}
-            />
+            <Search noSearchBtn placeholder="Search" onChange={searchFn} data-e2e-id='search' />
           </SearchWrapper>
 
           {!classFilters.loading && (
@@ -217,7 +207,7 @@ class ServiceClassList extends React.Component {
         <ServiceClassListWrapper>
           <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
         </ServiceClassListWrapper>
-      </div>
+      </>
     );
   }
 }

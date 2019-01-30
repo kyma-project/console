@@ -6,11 +6,7 @@ import { List, Item, Checkmark } from './styled';
 
 const FilterDropdown = ({ filter, activeValues = [], onChange }) =>
   !filter ? null : (
-    <Dropdown
-      name="Filter"
-      enabled={filter.values && filter.values.length > 0}
-      lastButton
-    >
+    <Dropdown disabled={!(filter.values && filter.values.length > 0)}>
       <List>
         {filter.values.map(item => {
           const count = item.count !== null ? ` (${item.count})` : '';

@@ -30,8 +30,8 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     const docsUrl = address.console.getDocs();
 
     // consts
-    const docsHeaderSelector = catalog.prepareSelector('toolbar-headline');
-    const docsExpectedHeader = 'Docs';
+    const docsHeaderSelector = catalog.prepareSelector('go-to-environment');
+    const docsExpectedHeader = 'Back to Environment';
 
     await Promise.all([
       page.goto(docsUrl),
@@ -73,7 +73,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     const expectedCollapsedHeight = '0px';
 
     // consts
-    const articleHeaderSelector = catalog.prepareSelector('toolbar-headline');
+    const articleHeaderSelector = catalog.prepareSelector('toolbar-header');
 
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(articleHeaderSelector);
@@ -107,6 +107,16 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     expect(kymaDetailsItemsStylesAfterClick).not.toEqual(
       expectedCollapsedHeight
     );
+
+    await frame.click(kymaDetailsArrow);
+    await frame.waitForSelector(kymaDetailsItems, { timeout: 10000 });
+
+    const kymaDetailsItemsStylesAfterSecondClick = await docs.getStyles(
+      frame,
+      kymaDetailsItems,
+      'maxHeight'
+    );
+    expect(kymaDetailsItemsStylesAfterSecondClick).toEqual(expectedCollapsedHeight);
 
     await Promise.all([
       frame.click(serviceCatalogLink),

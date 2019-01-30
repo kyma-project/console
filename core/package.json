@@ -33,7 +33,7 @@
     "core-js": "^2.5.7",
     "file-saver": "^1.3.8",
     "fiori-fundamentals": "^1.4.1",
-    "fundamental-ngx": "0.0.27-beta",
+    "fundamental-ngx": "0.0.29-beta",
     "js-yaml": "^3.12.0",
     "jsoneditor": "^5.24.3",
     "lodash": "^4.17.10",

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Separator } from '@kyma-project/react-components';
 
 import ScrollSpy from "../../ScrollSpy/ScrollSpy.container";
 import NavigationGroup from "./NavigationGroup";
@@ -50,7 +49,8 @@ class Navigation extends Component {
         <Wrapper>
           <NavigationGroup
             data-e2e-id="navigation-root"
-            title=""
+            title="Root"
+            icon={"database"}
             items={[items.root]}
             topics={topics}
             groupType="root"
@@ -62,10 +62,10 @@ class Navigation extends Component {
             chooseActive={chooseActive}
             history={history}
           />
-          <Separator />
           <NavigationGroup
             data-e2e-id="navigation-components"
             title="Components"
+            icon={"Chart-Tree-Map"}
             items={items.components}
             topics={topics}
             groupType="components"
