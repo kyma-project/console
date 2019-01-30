@@ -53,6 +53,7 @@ import {
   FormSelect,
   FormSet,
 } from 'fundamental-react';
+import { Counter } from 'fundamental-react';
 
 import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 
@@ -110,4 +111,5 @@ module.exports = {
   PanelBody,
   FormSet,
   Modal,
+  Counter,
 };

@@ -34,7 +34,7 @@ const Table = ({
           headers={headers}
           tableData={tableData}
         />
-        {loadingData && <Spinner padding="20px" size="30px" color="rgba(50,54,58,0.6)" />}
+        {loadingData && <Spinner />}
         {!loadingData && !(tableData && tableData.length) ? <NotFoundMessage>{notFoundMessage}</NotFoundMessage> : null}
       </TableBody>
     </TableWrapper>

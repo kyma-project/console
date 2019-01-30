@@ -44,7 +44,7 @@ class ServiceClassDetails extends React.Component {
     if (this.props.serviceClass.loading) {
       return (
         <EmptyList>
-          <Spinner size="40px" color="#32363a" />
+          <Spinner />
         </EmptyList>
       );
     }

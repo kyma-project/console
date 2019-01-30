@@ -7,7 +7,6 @@ export const ServiceInstanceBindingsWrapper = styled.div`
   text-align: left;
   border-radius: 4px;
   background-color: #ffffff;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
   font-family: '72';
   font-weight: normal;
   border-left: ${props => (props.color ? '6px solid ' + props.color : 'none')};

@@ -37,7 +37,7 @@ export default compose(
   if (serviceInstances.loading) {
     return (
       <EmptyList>
-        <Spinner size="40px" color="#32363a" />
+        <Spinner />
       </EmptyList>
     );
   }

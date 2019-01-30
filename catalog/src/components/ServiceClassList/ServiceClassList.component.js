@@ -173,11 +173,7 @@ class ServiceClassList extends React.Component {
         );
       }
       return (
-        <Spinner
-          padding="75px 0 50px 0"
-          size="50px"
-          color="rgba(50,54,58,0.6)"
-        />
+        <Spinner />
       );
     };
 
