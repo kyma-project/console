@@ -25,10 +25,7 @@ export class AbstractKubernetesElementListComponent
   showSelectFileButton = false;
   showSuccessInfo = false;
   filterState = {
-    filters: [
-      new Filter('metadata.name', '', false),
-      new Filter('objectMeta.name', '', false)
-    ]
+    filters: [new Filter('metadata.name', '', false)]
   };
   pagingState = { pageNumber: 1, pageSize: 50 };
   entryEventHandler = this.getEntryEventHandler();

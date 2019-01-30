@@ -1,18 +1,18 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
   <div class="col-1 col-lg-3">
-       <div class="sf-list__body--primary">{{ entry.objectMeta.name }}</div>
+       <div class="sf-list__body--primary">{{ entry.metadata.name }}</div>
   </div>
-  <div class="col-1">{{ entry.nodeName }}</div>
+  <div class="col-1">{{ entry.spec.nodeName }}</div>
 
-  <div class="col-1">{{ entry.restartCount }}</div>
-  <div class="col-2">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
+  <div class="col-1">{{ getRestartCount(entry.status.containerStatuses) }}</div>
+  <div class="col-2">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
   <div class="col-2 sf-list__label-column">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.objectMeta.labels)">
+    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.metadata.labels)">
       {{ label }}
     </span>
   </div>
   <div class="col-2">
-      <app-status-label 
+      <app-status-label
         [statusType]="getStatusType(entry)">
         {{ getStatus(entry) }}
       </app-status-label>
@@ -21,6 +21,10 @@
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </div>
   <div class="sf-list__warning col-12">
-    <span *ngFor="let warning of entry.warnings">{{ warning.message }} <br></span>
+    <span *ngFor="let containerStatus of entry.status.containerStatuses">
+      <span *ngIf="containerStatus.state[objectKeys(containerStatus.state)[0]] !== 'running'">
+        {{ containerStatus.state[objectKeys(containerStatus.state)[0]].message }}<br>
+      </span>
+    </span>
   </div>
 </div>

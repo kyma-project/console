@@ -92,7 +92,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public goBack() {
     this.routedFromServiceDetails
       ? this.navigateToDetails(this.serviceName)
-      : this.navigateToList('apis');
+      : this.navigateToList('cmf-apis');
   }
 
   public isAbleToMakeRequest() {

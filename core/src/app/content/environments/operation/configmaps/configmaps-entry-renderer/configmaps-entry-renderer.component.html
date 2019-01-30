@@ -1,8 +1,8 @@
 <div class="row sf-list__body">
-  <div class="col-4 sf-list__body--primary">{{ entry.objectMeta.name }}</div>
-  <div class="col-3">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
+  <div class="col-4 sf-list__body--primary">{{ entry.metadata.name }}</div>
+  <div class="col-3">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
   <div class="col-4 sf-list__label-column">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.objectMeta.labels)">
+    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.metadata.labels)">
       {{ label }}
     </span>
   </div>

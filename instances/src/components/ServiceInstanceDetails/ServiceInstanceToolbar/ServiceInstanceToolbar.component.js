@@ -27,7 +27,7 @@ const ServiceInstanceToolbar = ({
   const goToServiceInstances = () => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate('instances');
+      .navigate('cmf-instances');
   };
 
   const instanceClass =

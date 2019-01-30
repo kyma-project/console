@@ -1,25 +1,25 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
   <div class="col-2 sf-list__body--primary">
-    <a (click)="navigateToDetails(entry.objectMeta.name)">{{ entry.objectMeta.name }}</a>
+    <a (click)="navigateToDetails(entry.metadata.name)">{{ entry.metadata.name }}</a>
   </div>
-  <div class="col-1 col-lg-1">{{ entry.clusterIP }}</div>
+  <div class="col-1 col-lg-1">{{ entry.spec.clusterIP }}</div>
   <div class="col-3">
-    <span *ngIf="entry.internalEndpoint">
-      <span *ngFor="let port of entry.internalEndpoint.ports">
-        <span>{{ entry.internalEndpoint.host }}:{{ port.port }} {{ port.protocol }}</span> <br>
-        <span>{{ entry.internalEndpoint.host }}:{{ port.nodePort }} {{ port.protocol }}</span> <br>
+    <span *ngIf="entry.spec.ports">
+      <span *ngFor="let port of entry.spec.ports">
+        <span>{{ entry.metadata.name }}.{{ entry.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span> <br>
+        <span>{{ entry.metadata.name }}.{{ entry.metadata.namespace }}:{{ port.nodePort || 0 }} {{ port.protocol }}</span> <br>
       </span>
     </span>
-    <span *ngIf="!entry.internalEndpoint">-</span>
+    <span *ngIf="!entry.spec.ports">-</span>
   </div>
-  <div class="col-1">{{ entry.objectMeta.creationTimestamp | timeAgo }}</div>
+  <div class="col-1">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
   <div class="col-2 sf-list__label-column">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.objectMeta.labels)">
+    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.metadata.labels)">
       {{ label }}
     </span>
   </div>
   <div class="col-2">
-      <app-status-label 
+      <app-status-label
           [statusType]="getStatusType(entry)">
            {{ getStatus(entry) }}
       </app-status-label>
