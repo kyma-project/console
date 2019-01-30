@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 
 import {
-  ConfirmationModal,
-  Icon,
+  Modal,
   Button,
   Separator,
 } from '@kyma-project/react-components';
@@ -40,7 +39,6 @@ class DeleteBindingModal extends React.Component {
   handleConfirmation = () => {
     const { bindingUsageChecked, bindingChecked } = this.state;
     this.handleDeletion(bindingUsageChecked, bindingChecked);
-    this.child.child.handleCloseModal();
   };
 
   toggleBinding = () => {
@@ -61,7 +59,6 @@ class DeleteBindingModal extends React.Component {
       bindingExists,
       bindingUsageName,
       relatedBindingUsage,
-      id,
     } = this.props;
     const { bindingChecked, bindingUsageChecked } = this.state;
 
@@ -115,24 +112,21 @@ class DeleteBindingModal extends React.Component {
     );
 
     return (
-      <ConfirmationModal
+      <Modal
         ref={modal => (this.child = modal)}
-        title={'Warning'}
+        title='Warning'
         confirmText="Delete"
-        content={modalContent}
-        handleConfirmation={this.handleConfirmation}
+        onConfirm={this.handleConfirmation}
         modalOpeningComponent={
-          <div style={{ textAlign: 'right' }}>
-            <Button padding={'0'} marginTop={'0'} marginBottom={'0'} id={id}>
-              <Icon icon={'\uE03D'} />
-            </Button>
-          </div>
+          <Button compact option="light" glyph="delete" />
         }
-        warning={true}
+        type="negative"
         disabled={!submitEnabled}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
         onHide={() => LuigiClient.uxManager().removeBackdrop()}
-      />
+      >
+        {modalContent}
+      </Modal>
     );
   }
 }
