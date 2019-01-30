@@ -9,7 +9,7 @@ You will see a sandbox app that uses <y-generic-table> & <y-generic-list> compon
 
 ## How to use it in a component
 
-To use the package in an component, perform the following steps.
+To use the package in a component, perform the following steps:
 
 1. Add `"preserveSymlinks": true` to `angular.json` test and build options. Or alternatively add `--preserve-symlink` option to `ng test` and `ng build`. 
 
@@ -17,16 +17,16 @@ To use the package in an component, perform the following steps.
 
 3. Add `"app"` to  the `tslint.json` file if it includes the following rules: 
 
-    "no-submodule-imports": [true, "app"],
-    "no-implicit-dependencies": [true, ["app"]],
+   * "no-submodule-imports": [true, "app"],
+   * "no-implicit-dependencies": [true, ["app"]],
 
 4. Add a symlink to `components/angular/generic-list/src/app/modules/list` inside your application.  
-For example:  
-Console core has the following symlink set:
+ 
+For example, the console core has the following symlink set:
 
     core/src/app/generic-list > components/angular/generic-list/src/app/modules/list
     
-5. Use generic list with `import * as GerericList from 'app/generic-list'`
+5. Use the generic list in `import * as GenericList from 'app/generic-list'` command.
     
 
 
