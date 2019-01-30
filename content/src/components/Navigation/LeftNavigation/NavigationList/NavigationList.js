@@ -50,7 +50,7 @@ class Navigation extends Component {
           <NavigationGroup
             data-e2e-id="navigation-root"
             title="Root"
-            icon={"world"}
+            icon={"database"}
             items={[items.root]}
             topics={topics}
             groupType="root"

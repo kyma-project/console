@@ -17,10 +17,11 @@ export const CardContent = styled(Panel)`
     box-sizing: border-box;
     height: 100%;
     padding: 20px;
-    transition: 0.125s box-shadow ease-in-out;
+    transition: box-shadow .125s ease-in;
+    box-shadow: 0 5px 20px 0 rgba(50,54,58,.08);
 
     &:hover {
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 2px 14px 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 5px 0 rgba(106,109,112,.4);
       cursor: pointer;
     }
   }
@@ -76,6 +77,7 @@ export const CardHeaderContent = styled(TileContent)`
     align-self: flex-start;
 
     > h2 {
+      font-size: 16px;
       color: rgb(50, 54, 58);
       font-weight: normal;
     }

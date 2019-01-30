@@ -70,7 +70,7 @@ class Modal extends Component {
 
     const confirmMessage = waiting ? (
       <div style={{ width: '97px', height: '16px' }}>
-        <Spinner color="#fff" padding="0 16px" size="14px" />
+        <Spinner />
       </div>
     ) : (
       confirmText

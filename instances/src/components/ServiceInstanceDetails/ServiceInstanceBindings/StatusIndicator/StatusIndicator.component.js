@@ -27,23 +27,25 @@ const StatusIndicator = ({ data }) => {
 
   return (
     <Fragment>
-      <StatusesList>
-        {statusesLength > 0 && (
-          <StatusWrapper backgroundColor={"#0a6ed1"}>
-            <Status>{statusesLength}</Status>
-          </StatusWrapper>
-        )}
-        {statusesStats && (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
-          <StatusWrapper backgroundColor={statusColor('PENDING')}>
-            <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
-          </StatusWrapper>
-        )}
-        {statusesStats && statusesStats.FAILED > 0 && (
-          <StatusWrapper backgroundColor={statusColor('FAILED')}>
-            <Status>{statusesStats.FAILED}</Status>
-          </StatusWrapper>
-        )}
-      </StatusesList>
+      {statusesLength > 0 && (
+        <StatusesList>
+          {statusesLength > 0 && (
+            <StatusWrapper backgroundColor={"#0a6ed1"}>
+              <Status>{statusesLength}</Status>
+            </StatusWrapper>
+          )}
+          {statusesStats && (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
+            <StatusWrapper backgroundColor={statusColor('PENDING')}>
+              <Status>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
+            </StatusWrapper>
+          )}
+          {statusesStats && statusesStats.FAILED > 0 && (
+            <StatusWrapper backgroundColor={statusColor('FAILED')}>
+              <Status>{statusesStats.FAILED}</Status>
+            </StatusWrapper>
+          )}
+        </StatusesList>
+      )}
     </Fragment>
   );
 };
