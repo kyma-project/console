@@ -31,6 +31,7 @@
     "copy-webpack-plugin": "^4.3.0",
     "core-js": "^2.5.7",
     "fiori-fundamentals": "^1.4.1",
+    "fundamental-ngx": "0.0.31",
     "js-sha256": "^0.9.0",
     "lodash": "4.17.10",
     "ng-click-outside": "^4.0.0",
