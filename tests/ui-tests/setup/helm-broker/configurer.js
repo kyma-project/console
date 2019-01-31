@@ -85,11 +85,20 @@ export class HelmBrokerConfigurer {
     const watch = new k8s.Watch(this.kubeConfig);
 
     const promise = new Promise((resolve, reject) => {
-      const req = watch.watch(
+      let req;
+
+      const resolveFn = x => {
+        if (req) {
+          req.abort();
+        }
+        resolve(x);
+      };
+
+      req = watch.watch(
         path,
         queryParams,
-        callbackFn(resolve, reject),
-        doneFn(resolve, reject)
+        callbackFn(resolveFn, reject),
+        doneFn(resolveFn, reject)
       );
 
       setTimeout(() => {
