@@ -9,9 +9,8 @@
     "test:watch": "LOCAL_DEV=true jest --watch",
     "test:watch:cluster": "jest --watch"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
+    "@kubernetes/client-node": "^0.8.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
@@ -22,7 +21,8 @@
     "request": "^2.88.0"
   },
   "jest": {
-    "testRegex": "/tests/(console-basic-test|catalog-ui-test|docs-ui-test).jsx?$"
+    "testRegex": "/ui-tests/tests/*.js$",
+    "setupTestFrameworkScriptFile": "./jest-setup.js"
   },
   "prettier": {
     "singleQuote": true

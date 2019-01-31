@@ -8,12 +8,24 @@ import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 
+import { TestBundleInstaller } from '../setup/test-bundle-installer';
+
+const TEST_NAMESPACE = 'service-catalog-ui-test';
+const testBundleInstaller = new TestBundleInstaller(TEST_NAMESPACE);
+
 const context = require('../utils/testContext');
 let page, browser;
 let token = '';
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
+    try {
+      await testBundleInstaller.install();
+    } catch (err) {
+      await testBundleInstaller.cleanup();
+      throw new Error('Failed to install test bundle:', err);
+    }
+
     try {
       const data = await common.beforeAll();
       browser = data.browser;
@@ -34,7 +46,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       await kymaConsole.testLogin(page);
       await Promise.all([
-        kymaConsole.createEnvironment(page, config.catalogTestEnv),
+        kymaConsole.createEnvironment(page, TEST_NAMESPACE),
         page.waitForNavigation({
           waitUntil: ['domcontentloaded', 'networkidle0']
         })
@@ -45,7 +57,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   afterAll(async () => {
-    await kymaConsole.clearData(token, config.catalogTestEnv);
+    await testBundleInstaller.cleanup();
     await browser.close();
   });
 
@@ -60,7 +72,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const searchBySth = 'lololo';
 
     await Promise.all([
-      page.goto(address.console.getCatalog(config.catalogTestEnv)),
+      page.goto(address.console.getCatalog(TEST_NAMESPACE)),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0']
       })
@@ -140,7 +152,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       serviceClassConfig.exampleServiceClassButton;
 
     // consts
-    const exampleServiceClassTitleAndProvider = catalog.prepareSelector('service-title-and-provider');
+    const exampleServiceClassTitleAndProvider = catalog.prepareSelector(
+      'service-title-and-provider'
+    );
     const exampleServiceClassDescription = catalog.prepareSelector(
       'service-description'
     );
@@ -155,7 +169,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     ]);
     const frame2 = await kymaConsole.getFrame(page);
     await frame2.waitForSelector(exampleServiceClassTitleAndProvider);
-    const titleAndProvider = await frame2.$(exampleServiceClassTitleAndProvider);
+    const titleAndProvider = await frame2.$(
+      exampleServiceClassTitleAndProvider
+    );
     const description = await frame2.$(exampleServiceClassDescription);
     expect(titleAndProvider.toString()).not.toBeNull();
     expect(description.toString()).not.toBeNull();
@@ -163,7 +179,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
   test('Check provisioning', async () => {
     // Hardcodes for specific service class / page
-    const catalogUrl = address.console.getCatalog(config.catalogTestEnv);
+    const catalogUrl = address.console.getCatalog(TEST_NAMESPACE);
     const instanceTitle = serviceClassConfig.instanceTitle;
     const instanceTitle2 = serviceClassConfig.instanceTitle2;
     const instanceLabel = serviceClassConfig.instanceLabel;
@@ -203,9 +219,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   test('Check instances list', async () => {
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
-    const instancesUrl = address.console.getInstancesList(
-      config.catalogTestEnv
-    );
+    const instancesUrl = address.console.getInstancesList(TEST_NAMESPACE);
     // consts
     const instancesHeaderSelector = catalog.prepareSelector('toolbar-header');
     const instancesExpectedHeader = 'Service Instances';

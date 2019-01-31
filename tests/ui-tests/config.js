@@ -6,7 +6,6 @@ module.exports = {
     process.env.DEV_CONSOLE_URl || 'http://console-dev.kyma.local:4200',
   localdev: process.env.LOCAL_DEV || false,
   testEnv: process.env.TEST_ENV || 'testenvironment',
-  catalogTestEnv: process.env.CATALOG_TEST_ENV || 'catalogtestenvironment',
   headless: process.env.HEADLESS || false,
   viewportWidth: process.env.WIDTH || 1400,
   viewportHeight: process.env.HEIGHT || 1080,
