@@ -1,4 +1,4 @@
-import { ListModule } from '@kyma-project/y-generic-list';
+import { ListModule } from 'app/generic-list';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DeploymentsComponent } from './deployments.component';
 import { AppModule } from '../../../../app.module';

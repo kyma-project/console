@@ -9,7 +9,7 @@ import {
   Facet,
   SimpleFacetMatcher,
   SimpleFilterMatcher,
-} from '@kyma-project/y-generic-list';
+} from 'app/generic-list';
 import { List } from '../datamodel/list';
 import { IMetaDataOwner } from '../datamodel/k8s/generic/meta-data-owner';
 

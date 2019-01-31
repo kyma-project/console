@@ -3,11 +3,10 @@ import {
   EventEmitter,
   Input,
   OnInit,
+  OnChanges,
   Output,
   SimpleChange,
 } from '@angular/core';
-import { isNullOrUndefined } from 'util';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'y-list-paging',
@@ -33,7 +32,10 @@ export class PagingComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     for (const propName in changes) {
-      if (propName === 'pagingState' && !isNullOrUndefined(this.pagingState)) {
+      if (
+        propName === 'pagingState' &&
+        !(this.pagingState === null || this.pagingState === undefined)
+      ) {
         this.showPaging = false;
         this.pageNumbers = [];
         if (this.pagingState.totalCount && this.pagingState.pageSize) {

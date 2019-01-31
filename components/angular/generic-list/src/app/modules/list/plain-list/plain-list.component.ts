@@ -3,6 +3,7 @@ import {
   Component,
   ComponentFactoryResolver,
   Input,
+  Injector,
   OnChanges,
   SimpleChange,
   Type,
@@ -12,7 +13,6 @@ import {
 } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Injector } from '@angular/core';
 
 @Component({
   selector: 'y-plain-list',
@@ -34,10 +34,8 @@ export class PlainListComponent implements OnChanges {
   initialized = false;
   errorMessage = '';
 
-  componentFactoryResolver: ComponentFactoryResolver;
-
   constructor(
-    componentFactoryResolver: ComponentFactoryResolver,
+    public componentFactoryResolver: ComponentFactoryResolver,
     private changeDetector: ChangeDetectorRef,
   ) {
     this.componentFactoryResolver = componentFactoryResolver;
@@ -110,11 +108,8 @@ export class PlainListComponent implements OnChanges {
         this.setLoaded(true);
         this.setLoading(false);
 
-        if (error.error && error.error.message) {
-          this.errorMessage = error.error.message;
-        } else {
-          this.errorMessage = error.message || error;
-        }
+        this.errorMessage =
+          (error.error && error.error.message) || error.message || error;
 
         this.data = [];
         if (!(this.changeDetector as ViewRef).destroyed) {

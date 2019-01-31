@@ -1,16 +1,17 @@
-import { AppConfig } from '../../../../app.config';
-import { CurrentEnvironmentService } from '../../services/current-environment.service';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import LuigiClient from '@kyma-project/luigi-client';
+
+import { AppConfig } from '../../../../app.config';
+import { CurrentEnvironmentService } from '../../services/current-environment.service';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ServicesHeaderRendererComponent } from './services-header-renderer/services-header-renderer.component';
 import { ServicesEntryRendererComponent } from './services-entry-renderer/services-entry-renderer.component';
+import { DataConverter } from 'app/generic-list';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { Service, IService } from 'shared/datamodel/k8s/service';
-import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-services',

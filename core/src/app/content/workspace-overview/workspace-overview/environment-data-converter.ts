@@ -2,7 +2,7 @@ import {
   Environment,
   IEnvironment
 } from './../../../shared/datamodel/k8s/environment';
-import { DataConverter } from '@kyma-project/y-generic-list';
+import { DataConverter } from 'app/generic-list';
 import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
 import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';

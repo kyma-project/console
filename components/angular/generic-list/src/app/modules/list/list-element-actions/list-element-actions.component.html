@@ -5,7 +5,7 @@
   </button>
   <ul class="tn-dropdown__menu tn-contextual-menu text-left" [attr.aria-hidden]="ariaHidden" [id]="entryAsString()">
     <li *ngFor="let action of actions" >
-      <a (click)="closeActionsBtn($event); executeAction(action, $event);" class="tn-dropdown__item" [name]="action.name">{{action.name}}</a>
+      <a (click)="closeActionsBtn($event); executeAction(action, $event);" class="tn-dropdown__item" [name]="action.name">{{ action.name }}</a>
     </li>
   </ul>
 </div>

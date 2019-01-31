@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ListModule } from '@kyma-project/y-generic-list';
+import { ListModule } from 'app/generic-list/list.module';
 
 import { AppComponent } from './app.component';
 import { LambdasComponent } from './lambdas/list/lambdas.component';
