@@ -10,7 +10,7 @@
   </div>
   <div class="col-8">{{entry.name}}</div>
   <div class="col-1">
-    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" (click)="event.stopPropagation();" [actions]="actions"></y-list-actions>
   </div>
 </div>
 
