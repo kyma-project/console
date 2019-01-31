@@ -9,10 +9,7 @@ import dex from '../utils/dex';
 let browser, page;
 let token = '';
 
-//TODO: Enable test by removing this variable
-const SHOULD_RUN_TEST = false;
-
-describeIf(SHOULD_RUN_TEST && dex.isStaticUser(), 'Lambda UI tests', () => {
+describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   beforeAll(async () => {
     const data = await common.beforeAll();
     browser = data.browser;

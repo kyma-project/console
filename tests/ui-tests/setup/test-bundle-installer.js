@@ -21,7 +21,7 @@ export class TestBundleInstaller {
   async cleanup() {
     console.log('Cleaning up test bundle...');
     await this.helmBrokerConfigurer.excludeTestBundleRepository();
-    await this.helmBrokerConfigurer.waitForBrokerReady();
     await this.namespaceManager.deleteIfExists();
+    await this.helmBrokerConfigurer.waitForBrokerReady();
   }
 }

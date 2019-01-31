@@ -59,8 +59,8 @@ export class HelmBrokerConfigurer {
     );
   }
 
-  waitForTestBundle() {
-    console.log('Waiting for ready Helm Broker deployment...');
+  async waitForTestBundle() {
+    console.log('Waiting for ready test bundle...');
     return this.watch(
       `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceclasses`,
       {},
@@ -70,7 +70,7 @@ export class HelmBrokerConfigurer {
         }
 
         if (obj.spec.externalName === helmBrokerConfig.testBundleExternalName) {
-          console.log('Test Bundle is available.');
+          console.log('Test bundle is available.');
           resolve(obj);
         }
       },
