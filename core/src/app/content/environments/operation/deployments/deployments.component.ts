@@ -36,8 +36,8 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
-    const query = `query Deployments($environment: String!) {
-      deployments(environment: $environment) {
+    const query = `query Deployments($namespace: String!) {
+      deployments(namespace: $namespace) {
         name
         boundServiceInstanceNames
         labels
@@ -70,7 +70,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
           AppConfig.graphqlApiUrl,
           query,
           {
-            environment: this.currentEnvironmentId
+            namespace: this.currentEnvironmentId
           },
           this.graphQLClientService
         );

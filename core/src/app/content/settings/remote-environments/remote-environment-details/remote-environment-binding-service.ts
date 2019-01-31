@@ -22,15 +22,15 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public bind(environment, remoteEnvironment) {
-    const query = `mutation($environment: String!, $remoteEnvironment: String!){
-      enableApplication(namespace: $environment, application: $remoteEnvironment) {
+  public bind(namespace, remoteEnvironment) {
+    const query = `mutation($namespace: String!, $remoteEnvironment: String!){
+      enableApplication(namespace: $namespace, application: $remoteEnvironment) {
         namespace
         application
       }
     }`;
     const variables = {
-      environment,
+      namespace,
       remoteEnvironment
     };
     return this.graphQLClientService.request(
@@ -40,15 +40,15 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public unbind(environment, remoteEnvironment) {
-    const query = `mutation($environment: String!, $remoteEnvironment: String!){
-      disableApplication(namespace: $environment, application: $remoteEnvironment) {
+  public unbind(namespace, remoteEnvironment) {
+    const query = `mutation($namespace: String!, $remoteEnvironment: String!){
+      disableApplication(namespace: $namespace, application: $remoteEnvironment) {
         namespace
         application
       }
     }`;
     const variables = {
-      environment,
+      namespace,
       remoteEnvironment
     };
     return this.graphQLClientService.request(
@@ -60,7 +60,7 @@ export class RemoteEnvironmentBindingService {
 
   public getBoundEnvironments(remoteEnvironment) {
     const query = `query Environment($remoteEnvironment: String!){
-      environments(application: $remoteEnvironment) {
+      namespaces(application: $remoteEnvironment) {
         name
       }
     }`;
@@ -72,13 +72,13 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public getBoundRemoteEnvironments(environment) {
-    const query = `query Application($environment: String!){
-      applications(namespace: $environment) {
+  public getBoundRemoteEnvironments(namespace) {
+    const query = `query Application($namespace: String!){
+      applications(namespace: $namespace) {
         name
       }
     }`;
-    const variables = { environment };
+    const variables = { namespace };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
       query,
