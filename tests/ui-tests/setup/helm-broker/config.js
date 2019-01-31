@@ -14,6 +14,6 @@ export const helmBrokerConfig = {
     : 'APP_REPOSITORY_URLS',
   readyTimeout: process.env.HELM_BROKER_READY_TIMEOUT
     ? Number(process.env.HELM_BROKER_READY_TIMEOUT)
-    : 5 * 1000,
+    : 120 * 1000,
   repositoriesSeparator: ';'
 };

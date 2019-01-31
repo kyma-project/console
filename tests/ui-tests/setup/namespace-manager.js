@@ -10,7 +10,11 @@ export class NamespaceManager {
 
   async createIfDoesntExist() {
     if (await this.exists) {
-      console.log(`Namespace ${this.namespaceName} already exists`);
+      console.log(
+        `Namespace ${
+          this.namespaceName
+        } already exists. Skipping creating it...`
+      );
       return;
     }
 
@@ -18,9 +22,11 @@ export class NamespaceManager {
     await this.api.createNamespace(this.getNamespaceObj());
   }
 
-  async delete() {
+  async deleteIfExists() {
     if (!(await this.exists)) {
-      console.log(`namespace ${this.namespaceName} has been already deleted.`);
+      console.log(
+        `Namespace ${this.namespaceName} not found. Skipping deleting it...`
+      );
     }
 
     console.log(`Deleting namespace ${this.namespaceName}...`);
