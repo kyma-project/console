@@ -4,7 +4,7 @@
       Search
     </button>
     <div class="search" *ngIf="searching">
-      <fd-input-group-search [ngModel]="searchText" (ngModelChange)="searchTextChange($event)" placeholder="What are you looking for?">
+      <fd-input-group-search [ngModel]="searchText" (ngModelChange)="searchTextChange($event)" >
       </fd-input-group-search>
     </div>
   </div>
