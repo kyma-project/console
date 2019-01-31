@@ -557,7 +557,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
       }
     },
     err => {
-      console.error('Error while fetching backend modules', err);
+      console.error(err);
     }
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
