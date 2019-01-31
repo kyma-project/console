@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon } from '@kyma-project/react-components';
+import { Token } from '@kyma-project/react-components';
 
 import {
   ActiveFiltersListWrapper,
-  ActiveFilter,
-  CancelButton,
+  ActiveFilterWrapper,
   ClearAllActiveFiltersButton,
 } from './styled';
 
@@ -21,12 +20,14 @@ const ActiveFiltersList = ({
     <ActiveFiltersListWrapper data-e2e-id="active-filters-wrapper">
       {filterCategories.map(category =>
         activeFilters[category].map((filter, id) => (
-          <ActiveFilter key={`${filter}-${id}`} data-e2e-id="active-filter">
-            {filter}
-            <CancelButton onClick={() => onCancel(category, filter)}>
-              <Icon icon={'\uE1C7'} color="#0a6ed1" />
-            </CancelButton>
-          </ActiveFilter>
+          <ActiveFilterWrapper key={`${filter}-${id}`}>
+            <Token
+              data-e2e-id="active-filter"
+              clickHandler={() => onCancel(category, filter)}
+            >
+              {filter}
+            </Token>
+          </ActiveFilterWrapper>
         )),
       )}
       <ClearAllActiveFiltersButton onClick={clearAllActiveFilters}>

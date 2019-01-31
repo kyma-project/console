@@ -28,7 +28,7 @@ export class ReplicaSetsEntryRendererComponent
         const event: any = e;
         if (
           'disable' === event.type &&
-          this.entry.objectMeta.name === event.entry.objectMeta.name
+          this.entry.metadata.name === event.entry.metadata.name
         ) {
           this.disabled = event.entry.disabled;
         }
@@ -41,14 +41,19 @@ export class ReplicaSetsEntryRendererComponent
   }
 
   hasWarnings(entry) {
-    return entry.pods.warnings.length > 0;
+    // TODO adjust when ui-api-layer for replica sets is ready
+    return entry.status.readyReplicas !== entry.status.replicas;
+    // return entry.pods.warnings.length > 0;
   }
 
   isPending(entry) {
-    return !this.hasWarnings(entry) && entry.pods.pending > 0;
+    // TODO adjust when ui-api-layer for replica sets is ready
+    return false;
+    // return !this.hasWarnings(entry) && entry.pods.pending > 0;
   }
 
   getClass(entry) {
+    // TODO adjust when ui-api-layer for replica sets is ready
     if (this.hasWarnings(entry)) {
       return 'sf-indicator--warning';
     } else if (this.isPending(entry)) {
@@ -59,6 +64,7 @@ export class ReplicaSetsEntryRendererComponent
   }
 
   getStatus(entry) {
+    // TODO adjust when ui-api-layer for replica sets is ready
     if (this.isPending(entry)) {
       return 'pending';
     }
@@ -69,6 +75,7 @@ export class ReplicaSetsEntryRendererComponent
   }
 
   getStatusType(entry) {
+    // TODO adjust when ui-api-layer for replica sets is ready
     if (this.isPending(entry) || this.hasWarnings(entry)) {
       return 'warning';
     }

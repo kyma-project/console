@@ -6,8 +6,7 @@ import * as FileSaver from 'file-saver';
 @Component({
   selector: 'app-organisation',
   templateUrl: './organisation.component.html',
-  styleUrls: ['./organisation.component.scss'],
-  host: { class: 'sf-content' }
+  styleUrls: ['./organisation.component.scss']
 })
 export class OrganisationComponent implements OnInit {
   public orgId: string;

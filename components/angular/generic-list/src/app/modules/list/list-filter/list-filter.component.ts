@@ -7,7 +7,6 @@ import {
   Output,
   SimpleChange,
 } from '@angular/core';
-import { isArray, isNullOrUndefined } from 'util';
 import { Facet } from '../filter/Facet';
 
 @Component({
@@ -34,7 +33,7 @@ export class ListFilterComponent implements OnInit, OnChanges {
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     for (const propName in changes) {
       if (propName === 'filterState') {
-        if (isNullOrUndefined(this.filterState)) {
+        if (this.filterState === null || this.filterState === undefined) {
           this.filterState = this.createEmptyFilterState();
         }
         this.autoCorrect();
@@ -51,15 +50,15 @@ export class ListFilterComponent implements OnInit, OnChanges {
   }
 
   autoCorrect() {
-    if (!this.filterState.filters || !isArray(this.filterState.filters)) {
+    if (!this.filterState.filters || !Array.isArray(this.filterState.filters)) {
       this.filterState.filters = [];
     }
-    if (!this.filterState.facets || !isArray(this.filterState.facets)) {
+    if (!this.filterState.facets || !Array.isArray(this.filterState.facets)) {
       this.filterState.facets = [];
     }
     if (
       !this.filterState.availableFacets ||
-      !isArray(this.filterState.availableFacets)
+      !Array.isArray(this.filterState.availableFacets)
     ) {
       this.filterState.availableFacets = [];
     }

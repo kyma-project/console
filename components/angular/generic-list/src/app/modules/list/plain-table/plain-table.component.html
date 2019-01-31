@@ -9,4 +9,4 @@
 <p *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
   <ng-content select="[empty-list-placeholder]"></ng-content>
 </p>
-<p *ngIf="!loading && errorMessage" style="color:red">{{errorMessage}}</p>
+<p *ngIf="!loading && errorMessage" style="color:red">{{ errorMessage }}</p>

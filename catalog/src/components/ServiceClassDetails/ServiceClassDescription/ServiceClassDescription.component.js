@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Header, Separator, Text } from '@kyma-project/react-components';
+import { Text } from '@kyma-project/react-components';
 
 import {
   ServiceClassDescriptionContentWrapper,
@@ -12,11 +12,8 @@ import {
 const ServiceClassDescription = ({ description }) => {
   return (
     <ServiceClassDescriptionContentWrapper data-e2e-id="service-docs">
-      <ContentHeader>
-        <Header>General Information</Header>
-      </ContentHeader>
+      <ContentHeader>General Information</ContentHeader>
 
-      <Separator />
       <ContentDescription>
         <Text data-e2e-id="service-description" fontSize="14px">
           {description}

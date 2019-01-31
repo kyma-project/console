@@ -6,7 +6,7 @@ export const TabLink = styled.div`
   display: flex;
   align-items: center;
   margin: 0 15px;
-  padding: 19px 0 15px;
+  padding: 21px 0 20px;
   border: none;
   position: relative;
   color: ${props => (props.active ? '#0a6ed1' : '#32363b')};

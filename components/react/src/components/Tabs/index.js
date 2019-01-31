@@ -70,7 +70,7 @@ class Tabs extends React.Component {
     if (children[this.state.activeTabIndex]) {
       return children[this.state.activeTabIndex].props;
     }
-  }
+  };
 
   render() {
     const children = []
@@ -78,7 +78,6 @@ class Tabs extends React.Component {
       .filter(child => child !== null && child !== undefined);
 
     const props = this.getPropsFromActiveTab(children);
-
     return (
       <TabsWrapper>
         <TabsHeader>
@@ -88,7 +87,12 @@ class Tabs extends React.Component {
           </TabsHeaderAdditionalContent>
         </TabsHeader>
         <Separator />
-        <TabsContent margin={props.margin ? props.margin : ""} background={props.background ? props.background : ""}>{this.renderActiveTab(children)}</TabsContent>
+        <TabsContent
+          noMargin={props.noMargin}
+          background={props.background ? props.background : ''}
+        >
+          {this.renderActiveTab(children)}
+        </TabsContent>
       </TabsWrapper>
     );
   }

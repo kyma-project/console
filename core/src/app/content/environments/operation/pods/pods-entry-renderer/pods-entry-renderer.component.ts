@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { Pod } from '../../../../../shared/datamodel/k8s/pods';
+import { Pod } from '../../../../../shared/datamodel/k8s/pod';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
@@ -19,6 +19,7 @@ export class PodsEntryRendererComponent
     super(injector);
   }
   public disabled = false;
+  public objectKeys = Object.keys;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
@@ -27,7 +28,7 @@ export class PodsEntryRendererComponent
         const event: any = e;
         if (
           'disable' === event.type &&
-          this.entry.objectMeta.name === event.entry.objectMeta.name
+          this.entry.metadata.name === event.entry.metadata.name
         ) {
           this.disabled = event.entry.disabled;
         }
@@ -43,24 +44,34 @@ export class PodsEntryRendererComponent
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  getRestartCount(containerStatuses) {
+    return containerStatuses.reduce(
+      (prev, curr) => prev + curr.restartCount,
+      0
+    );
+  }
+
   getStatusesList(entry) {
     const containerStatuses = [];
-    if (entry.podStatus && entry.podStatus.containerStates) {
-      entry.podStatus.containerStates.forEach(status => {
-        for (const key in status) {
-          if (status[key].reason) {
+    if (entry.status && entry.status.containerStatuses) {
+      entry.status.containerStatuses.forEach(status => {
+        for (const key in status.state) {
+          if (status.state[key].reason) {
             containerStatuses.push(
-              this.capitalize(key) + ': ' + status[key].reason
+              this.capitalize(key) + ': ' + status.state[key].reason
             );
-          } else if (status[key].signal) {
+          } else if (status.state[key].signal) {
             containerStatuses.push(
-              this.capitalize(key) + ' (Signal: ' + status[key].signal + ')'
+              this.capitalize(key) +
+                ' (Signal: ' +
+                status.state[key].signal +
+                ')'
             );
-          } else if (status[key].exitCode) {
+          } else if (status.state[key].exitCode) {
             containerStatuses.push(
               this.capitalize(key) +
                 ' (Exit code: ' +
-                status[key].exitCode +
+                status.state[key].exitCode +
                 ')'
             );
           } else {
@@ -73,12 +84,12 @@ export class PodsEntryRendererComponent
   }
 
   isPending(entry) {
-    return entry.podStatus.status === 'Pending';
+    return entry.status.phase === 'Pending';
   }
+
   isSucceeded(entry) {
     return (
-      entry.podStatus.status === 'Succeeded' ||
-      entry.podStatus.status === 'Running'
+      entry.status.phase === 'Succeeded' || entry.status.phase === 'Running'
     );
   }
 
@@ -89,7 +100,7 @@ export class PodsEntryRendererComponent
         return status;
       }
     }
-    return entry.podStatus.podPhase;
+    return entry.status.phase;
   }
 
   getStatusType(entry) {

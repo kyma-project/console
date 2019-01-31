@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ServiceInstanceWrapper = styled.div`
-  margin: 0 34px;
+  margin: 30px;
 `;
 
 export const EmptyList = styled.div`

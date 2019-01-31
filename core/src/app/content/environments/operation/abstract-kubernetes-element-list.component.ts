@@ -7,14 +7,19 @@ import {
   ChangeDetectorRef,
   Injectable,
   ViewChild,
-  OnDestroy
+  OnDestroy,
+  Component
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Filter, GenericTableComponent } from '@kyma-project/y-generic-list';
+import { Filter, GenericTableComponent } from 'app/generic-list';
 import { ImplicitReceiver } from '@angular/compiler';
 import { Subscription } from 'rxjs';
 
 @Injectable()
+@Component({
+  selector: 'abstract-kubernetes-element-list',
+  templateUrl: './kubernetes-element-list.component.html'
+})
 export class AbstractKubernetesElementListComponent
   extends GenericTableComponent
   implements OnDestroy {
@@ -22,13 +27,11 @@ export class AbstractKubernetesElementListComponent
   @ViewChild('infoModal') infoModal: InformationModalComponent;
   @ViewChild('editResourceModal') editResourceModal: JsonEditorModalComponent;
 
+  hideFilter = false;
   showSelectFileButton = false;
   showSuccessInfo = false;
   filterState = {
-    filters: [
-      new Filter('metadata.name', '', false),
-      new Filter('objectMeta.name', '', false)
-    ]
+    filters: [new Filter('metadata.name', '', false)]
   };
   pagingState = { pageNumber: 1, pageSize: 50 };
   entryEventHandler = this.getEntryEventHandler();

@@ -5,7 +5,7 @@ import { PodsEntryRendererComponent } from './pods-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { of, Subject } from 'rxjs';
 
-describe('ConfigmapsEntryRendererComponent', () => {
+describe('PodsEntryRendererComponent', () => {
   let component: PodsEntryRendererComponent;
   let fixture: ComponentFixture<PodsEntryRendererComponent>;
   let componentCommunicationService: ComponentCommunicationService;
@@ -19,11 +19,15 @@ describe('ConfigmapsEntryRendererComponent', () => {
           {
             provide: 'entry',
             useValue: {
-              objectMeta: {
+              metadata: {
                 name: 'name'
               },
-              podStatus: {
-                status: 'Running'
+              status: {
+                phase: 'Running',
+                containerStatuses: []
+              },
+              spec: {
+                nodeName: 'name'
               }
             }
           }
@@ -47,77 +51,85 @@ describe('ConfigmapsEntryRendererComponent', () => {
 
   it('should display pod status', () => {
     const waitingStatus = {
-      podPhase: 'Doing something..',
-      containerStates: [
+      phase: 'Doing something..',
+      containerStatuses: [
         {
-          waiting: {
-            reason: 'Some reason'
+          state: {
+            waiting: {
+              reason: 'Some reason'
+            }
           }
         }
       ]
     };
-    expect(component.getStatus({ podStatus: waitingStatus })).toEqual(
+    expect(component.getStatus({ status: waitingStatus })).toEqual(
       'Waiting: Some reason'
     );
     const signalStatus = {
-      podPhase: 'Doing something..',
-      containerStates: [
+      phase: 'Doing something..',
+      containerStatuses: [
         {
-          stopped: {
-            signal: 'Some signal'
+          state: {
+            stopped: {
+              signal: 'Some signal'
+            }
           }
         }
       ]
     };
-    expect(component.getStatus({ podStatus: signalStatus })).toEqual(
+    expect(component.getStatus({ status: signalStatus })).toEqual(
       'Stopped (Signal: Some signal)'
     );
 
     const exitCodeStatus = {
-      podPhase: 'Doing something..',
-      containerStates: [
+      phase: 'Doing something..',
+      containerStatuses: [
         {
-          foo: {
-            exitCode: 'Some exitCode'
+          state: {
+            foo: {
+              exitCode: 'Some exitCode'
+            }
           }
         },
         {
-          bar: {
-            exitCode: 'Sample code'
+          status: {
+            bar: {
+              exitCode: 'Sample code'
+            }
           }
         }
       ]
     };
-    expect(component.getStatus({ podStatus: exitCodeStatus })).toEqual(
+    expect(component.getStatus({ status: exitCodeStatus })).toEqual(
       'Foo (Exit code: Some exitCode)'
     );
 
     const otherCodeStatus = {
-      podPhase: 'Doing something..',
-      containerStates: [
+      phase: 'Doing something..',
+      containerStatuses: [
         {
-          other: {
-            foo: 'bar'
+          state: {
+            other: {
+              foo: 'bar'
+            }
           }
         }
       ]
     };
-    expect(component.getStatus({ podStatus: otherCodeStatus })).toEqual(
-      'Other'
-    );
+    expect(component.getStatus({ status: otherCodeStatus })).toEqual('Other');
     const noContainerStatesStatus = {
-      podPhase: 'Doing something..'
+      phase: 'Doing something..'
     };
-    expect(component.getStatus({ podStatus: noContainerStatesStatus })).toEqual(
+    expect(component.getStatus({ status: noContainerStatesStatus })).toEqual(
       'Doing something..'
     );
   });
 
-  it("should disable the pod if 'disable' event with rigth data has been sent", async done => {
+  it("should disable the pod if 'disable' event with right data has been sent", async done => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      objectMeta: {
+      metadata: {
         name: 'name'
       },
       disabled: true
@@ -142,7 +154,7 @@ describe('ConfigmapsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      objectMeta: {
+      metadata: {
         name: 'name2'
       },
       disabled: true
@@ -167,7 +179,7 @@ describe('ConfigmapsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      objectMeta: {
+      metadata: {
         name: 'name'
       },
       disabled: false

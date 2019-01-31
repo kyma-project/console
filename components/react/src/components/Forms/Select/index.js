@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
-import { FieldWrapper, FieldLabel, FieldRequired } from '../field-components';
-
-import { SelectWrapper, SelectField } from './components';
+import { FormSet, FormItem, FormLabel, FormSelect } from 'fundamental-react';
 
 const Select = ({
   label,
@@ -12,17 +9,16 @@ const Select = ({
   name,
   items,
   groupedItems,
-  current,
   firstEmptyValue,
   placeholderText,
   required,
-  noBottomMargin,
 }) => {
+  const randomId = `select-${(Math.random() + 1).toString(36).substr(2, 5)}`;
   const renderSelect = (
-    <SelectField
+    <FormSelect
+      id={randomId}
       onChange={e => handleChange(e.target.value)}
       name={name}
-      value={current ? current : ''}
     >
       {(groupedItems || items) &&
         firstEmptyValue && [
@@ -32,7 +28,7 @@ const Select = ({
         ]}
 
       {groupedItems &&
-        groupedItems.map((group, index) => {
+        groupedItems.map(group => {
           return (
             group.items &&
             group.items.length > 0 && (
@@ -44,17 +40,18 @@ const Select = ({
         })}
 
       {items}
-    </SelectField>
+    </FormSelect>
   );
 
   return (
-    <FieldWrapper noBottomMargin={noBottomMargin}>
-      <FieldLabel>
-        {label}
-        {required ? <FieldRequired>*</FieldRequired> : ''}
-      </FieldLabel>
-      <SelectWrapper>{renderSelect}</SelectWrapper>
-    </FieldWrapper>
+    <FormSet>
+      <FormItem>
+        <FormLabel htmlFor={randomId} required={required}>
+          {label}
+        </FormLabel>
+        {renderSelect}
+      </FormItem>
+    </FormSet>
   );
 };
 
@@ -64,7 +61,6 @@ Select.propTypes = {
   name: PropTypes.string,
   groupedItems: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.element),
-  current: PropTypes.string,
   placeholderText: PropTypes.string,
   firstEmptyValue: PropTypes.bool,
   required: PropTypes.bool,

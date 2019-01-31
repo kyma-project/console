@@ -12,7 +12,7 @@ class Console {
   }
 
   getRemoteEnvironments() {
-    return this.getConsole() + '/home/apps';
+    return this.getConsole() + '/home/cmf-apps';
   }
 
   getEnvironmentsAddress() {
@@ -20,11 +20,11 @@ class Console {
   }
 
   getCatalog(environment) {
-    return this.getEnvironment(environment) + '/service-catalog';
+    return this.getEnvironment(environment) + '/cmf-service-catalog';
   }
 
   getInstancesList(environment) {
-    return this.getEnvironment(environment) + '/instances';
+    return this.getEnvironment(environment) + '/cmf-instances';
   }
 
   getInstance(environment, instanceName) {

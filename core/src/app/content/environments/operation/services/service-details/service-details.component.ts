@@ -17,11 +17,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public serviceName: string;
   public serviceDetails: any;
-  public serviceDetailsToEdit: any;
   public serviceDetailsLoading = true;
-  public serviceDetailsToEditLoading = true;
   public serviceDetailsUrl: string;
-  public serviceDetailsToEditUrl: string;
   public currentEnvironmentSubscription: Subscription;
 
   constructor(
@@ -42,26 +39,14 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         this.route.params.subscribe(params => {
           this.serviceName = params['name'];
 
-          this.serviceDetailsUrl = `${AppConfig.k8sDashboardApiUrl}service/${
+          this.serviceDetailsUrl = `${AppConfig.k8sApiServerUrl}namespaces/${
             this.currentEnvironmentId
-          }/${this.serviceName}`;
-
-          this.serviceDetailsToEditUrl = `${
-            AppConfig.k8sApiServerUrl
-          }namespaces/${this.currentEnvironmentId}/services/${
-            this.serviceName
-          }`;
+          }/services/${this.serviceName}`;
 
           this.fetchData(this.serviceDetailsUrl).subscribe(
             res => {
               this.serviceDetails = res;
               this.serviceDetailsLoading = false;
-              this.fetchData(this.serviceDetailsToEditUrl).subscribe(
-                response => {
-                  this.serviceDetailsToEdit = response;
-                  this.serviceDetailsToEditLoading = false;
-                }
-              );
             },
             err => {
               if (err.status === 404) {
@@ -83,20 +68,11 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public subscribeToRefreshComponent() {
     this.communicationService.observable$.subscribe(e => {
       const event: any = e;
-      this.serviceDetailsLoading = true;
-      this.serviceDetailsToEditLoading = true;
+
       if ('updateResource' === event.type && 'Service' === event.data.kind) {
         this.fetchData(this.serviceDetailsUrl).subscribe(res => {
           this.serviceDetails = res;
-          this.serviceDetailsLoading = false;
         });
-        this.fetchData(this.serviceDetailsToEditUrl).subscribe(res => {
-          this.serviceDetailsToEdit = res;
-          this.serviceDetailsToEditLoading = false;
-        });
-      } else {
-        this.serviceDetailsLoading = false;
-        this.serviceDetailsToEditLoading = false;
       }
     });
   }

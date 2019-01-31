@@ -5,12 +5,14 @@ module.exports = {
   createInstance: async (page, instanceTitle, instanceLabel) => {
     try {
       const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
-      const modal = '.ReactModal__Content--after-open';
+      const modal = '.fd-modal';
       const nameServiceInstancesInput = `[name="nameServiceInstances"]`;
       const labels = `[name="nameServiceBindingUsage"]`;
       const plan = `[name="selectedKind"]`;
       const planName = 'Micro';
-      const modalCreate = `[${config.catalogTestingAtribute}="modal-create"]`;
+      const modalCreate = `[${
+        config.catalogTestingAtribute
+      }="modal-confirmation-button"]`;
 
       const frame = await kymaConsole.getFrame(page);
       await frame.click(addToEnvButton);

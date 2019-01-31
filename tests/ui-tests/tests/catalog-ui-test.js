@@ -54,7 +54,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const exampleServiceClassName = serviceClassConfig.exampleServiceClassName;
 
     // consts
-    const catalogHeaderSelector = catalog.prepareSelector('toolbar-headline');
+    const catalogHeaderSelector = catalog.prepareSelector('toolbar-header');
     const catalogExpectedHeader = 'Service Catalog';
     const searchSelector = catalog.prepareSelector('search');
     const searchBySth = 'lololo';
@@ -80,7 +80,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     await catalog.feelInInput(frame, exampleServiceClassName, 'search');
     const searchedServices = await catalog.getServices(frame);
-    expect(searchedServices).toContain(exampleServiceClassName);
+    expect(searchedServices[0]).toContain(exampleServiceClassName);
 
     await catalog.feelInInput(frame, searchBySth, 'search');
     const newSearchedServices = await catalog.getServices(frame);
@@ -140,9 +140,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       serviceClassConfig.exampleServiceClassButton;
 
     // consts
-    const exampleServiceClassTitle = catalog.prepareSelector('service-title');
-    const exampleServiceClassProvider = catalog.prepareSelector(
-      'service-provider'
+    const exampleServiceClassTitleAndProvider = catalog.prepareSelector(
+      'service-title-and-provider'
     );
     const exampleServiceClassDescription = catalog.prepareSelector(
       'service-description'
@@ -157,12 +156,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       })
     ]);
     const frame2 = await kymaConsole.getFrame(page);
-    await frame2.waitForSelector(exampleServiceClassTitle);
-    const title = await frame2.$(exampleServiceClassTitle);
-    const provider = await frame2.$(exampleServiceClassProvider);
+    await frame2.waitForSelector(exampleServiceClassTitleAndProvider);
+    const titleAndProvider = await frame2.$(
+      exampleServiceClassTitleAndProvider
+    );
     const description = await frame2.$(exampleServiceClassDescription);
-    expect(title.toString()).not.toBeNull();
-    expect(provider.toString()).not.toBeNull();
+    expect(titleAndProvider.toString()).not.toBeNull();
     expect(description.toString()).not.toBeNull();
   });
 
@@ -212,10 +211,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       config.catalogTestEnv
     );
     // consts
-    const instancesHeaderSelector = catalog.prepareSelector('toolbar-headline');
+    const instancesHeaderSelector = catalog.prepareSelector('toolbar-header');
     const instancesExpectedHeader = 'Service Instances';
     const searchSelector = catalog.prepareSelector('search');
-    const toggleSearchSelector = catalog.prepareSelector('toggle-search');
     const searchBySth = 'lololo';
 
     await Promise.all([
@@ -236,8 +234,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const currentInstances = await catalog.getInstances(frame);
     expect(currentInstances.length).toBeGreaterThan(0);
 
-    const toggleSearch = await frame.$(toggleSearchSelector);
-    await toggleSearch.click();
     const searchInput = await frame.$(searchSelector);
 
     await catalog.feelInInput(frame, exampleInstanceName, 'search');

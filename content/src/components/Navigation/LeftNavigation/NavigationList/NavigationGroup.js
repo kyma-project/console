@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
+import { Icon } from '@kyma-project/react-components';
 
-import NavigationSections from "./NavigationSections";
+import NavigationSections from './NavigationSections';
 import {
   NavigationContainer,
   NavigationHeader,
@@ -8,11 +9,12 @@ import {
   NavigationItem,
   NavigationSectionArrow,
   NavigationLinkWrapper,
-  NavigationLink
-} from "./styled";
+  NavigationLink,
+} from './styled';
 
 function NavigationGroup({
   title,
+  icon,
   items = [],
   groupType,
   isLinkActive,
@@ -30,7 +32,7 @@ function NavigationGroup({
         setActiveNav({
           id: item.id,
           type: groupType,
-          hash: "",
+          hash: '',
         });
       }}
       activeArrow={item.id === activeNav.id || item.id === activeContent.id}
@@ -61,33 +63,40 @@ function NavigationGroup({
               chooseActive({
                 id: item.id,
                 type: groupType,
-              })
+              });
             }}
             data-e2e-id={`navigation-link-${groupType}-${item.id}`}
           >
             {item.displayName}
           </NavigationLink>
         </NavigationLinkWrapper>
-        {topics && topics.sections && (
-          <NavigationSections
-            items={topics.sections}
-            groupType={groupType}
-            rootId={item.id}
-            activeContent={activeContent}
-            activeNav={activeNav}
-            activeNodes={activeNodes}
-            setActiveNav={setActiveNav}
-            chooseActive={chooseActive}
-            isLinkActive={isLinkActive}
-          />
-        )}
+        {topics &&
+          topics.sections && (
+            <NavigationSections
+              items={topics.sections}
+              groupType={groupType}
+              rootId={item.id}
+              activeContent={activeContent}
+              activeNav={activeNav}
+              activeNodes={activeNodes}
+              setActiveNav={setActiveNav}
+              chooseActive={chooseActive}
+              isLinkActive={isLinkActive}
+            />
+          )}
       </NavigationItem>
     );
   };
 
   return (
     <NavigationContainer>
-      {title && <NavigationHeader>{title}</NavigationHeader>}
+      {title &&
+        icon && (
+          <NavigationHeader>
+            <Icon size="m" glyph={icon} />
+            {title}
+          </NavigationHeader>
+        )}
       <NavigationItems showAll>
         {items.map(item => renderNavigationItem(item))}
       </NavigationItems>

@@ -1,18 +1,16 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import {
-  DashboardReplicaSets,
-  IDashboardReplicaSets
-} from './../../../../shared/datamodel/k8s/dashboard-replica-sets';
-import { CurrentEnvironmentService } from './../../../environments/services/current-environment.service';
 import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
 import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
-import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { DataConverter } from '@kyma-project/y-generic-list';
-import { Subscription } from 'rxjs';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
+import { DataConverter } from 'app/generic-list';
+import { IReplicaSet, ReplicaSet } from 'shared/datamodel/k8s/replica-set';
 
 @Component({
   selector: 'app-replica-sets',
@@ -37,12 +35,9 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
-    const converter: DataConverter<
-      IDashboardReplicaSets,
-      DashboardReplicaSets
-    > = {
-      convert(entry: IDashboardReplicaSets) {
-        return new DashboardReplicaSets(entry);
+    const converter: DataConverter<IReplicaSet, ReplicaSet> = {
+      convert(entry: IReplicaSet) {
+        return new ReplicaSet(entry);
       }
     };
 
@@ -51,15 +46,10 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
 
-        const url = `${AppConfig.k8sDashboardApiUrl}replicaset/${
+        const url = `${AppConfig.k8sApiServerUrl_extensions}namespaces/${
           this.currentEnvironmentId
-        }`;
-        this.source = new KubernetesDataProvider(
-          url,
-          converter,
-          this.http,
-          'replicaSets'
-        );
+        }/replicasets`;
+        this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = ReplicaSetsEntryRendererComponent;
         this.headerRenderer = ReplicaSetsHeaderRendererComponent;
       });

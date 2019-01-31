@@ -141,9 +141,7 @@ class Resources extends React.Component {
 
     return (
       <div>
-        {usageKindResourcesLoading && (
-          <Spinner padding="20px" size="30px" color="rgba(50,54,58,0.6)" />
-        )}
+        {usageKindResourcesLoading && <Spinner />}
 
         <Select
           label={'Select Application'}

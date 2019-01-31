@@ -9,6 +9,8 @@
   },
   "scripts": {
     "start": "npm run styleguide",
+    "start:kyma": "npm run build:watch",
+    "start:kyma:api": "npm run build:watch",
     "build": "webpack --config webpack.config.prod.js",
     "build:watch": "webpack -w --config webpack.config.prod.js",
     "styleguide": "styleguidist server",
@@ -21,6 +23,7 @@
   "homepage": "https://kyma-project.github.io/console/react",
   "dependencies": {
     "file-loader": "^1.1.11",
+    "fundamental-react": "0.2.0-rc.3",
     "polished": "^1.8.1",
     "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"
@@ -37,6 +40,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "fiori-fundamentals": "1.4.1",
     "css-loader": "^0.28.10",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",

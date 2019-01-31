@@ -1,4 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
+export const DocsWrapper = styled.div`
+  .fd-action-bar {
+    padding: 30px 0 0;
+  }
+`;
 
 export const Wrapper = styled.div`
   box-sizing: border-box;
