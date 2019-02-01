@@ -44,19 +44,12 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
   testPluggable(REQUIRED_MODULE, 'Login to console', async () => {
     await kymaConsole.testLogin(page);
-  });
-
+});
   testPluggable(REQUIRED_MODULE, 'Create Lambda Function', async () => {
-    const contentHeader = '.sf-toolbar__header';
+    const contentHeader = 'li.fd-side-nav__title';
 
-    // given (go to Lambdas view)
-    const cardHeader = '.tn-card__header';
-    await page.waitForSelector(cardHeader);
-    await page.$$eval(cardHeader, header =>
-      header.find(text => text.innerText.includes('qa')).click()
-    );
     await page.waitForSelector(contentHeader);
-    const navItem = 'a.sf-toolbar__item';
+    const navItem = 'a.fd-side-nav__link';
     await page.$$eval(navItem, item =>
       item.find(text => text.innerText.includes('Lambdas')).click()
     );
@@ -71,7 +64,6 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.$$eval(addLambdaButton, btn =>
       btn.find(text => text.innerText.includes('Add Lambda')).click()
     );
-
     // when (fill the input and save)
     const frame2 = await kymaConsole.getFrame(page);
     const input = '#input-1';
@@ -79,12 +71,6 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame2.type(input, config.testLambda);
     const createLambdaButton = '.tn-button.tn-button--small.sf-button--primary';
     await frame2.$eval(createLambdaButton, btn => btn.click());
-
-    // workaround -> sometimes navigate to lambdas list after successful create doesn't work
-    // so we force it
-    await page.$$eval(navItem, item =>
-      item.find(text => text.innerText.includes('Lambdas')).click()
-    );
 
     // then
     const frame3 = await kymaConsole.getFrame(page);
