@@ -13,7 +13,7 @@ export default compose(
       return {
         variables: {
           name: props.match.params.name,
-          environment: builder.getCurrentEnvironmentId(),
+          namespace: builder.getCurrentEnvironmentId(),
         },
         options: {
           fetchPolicy: 'cache-and-network',

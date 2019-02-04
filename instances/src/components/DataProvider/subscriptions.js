@@ -6,8 +6,8 @@ import {
 } from './fragments';
 
 export const SERVICE_INSTANCE_EVENT_SUBSCRIPTION = gql`
-  subscription ServiceInstanceEvent($environment: String!) {
-    serviceInstanceEvent(environment: $environment) {
+  subscription ServiceInstanceEvent($namespace: String!) {
+    serviceInstanceEvent(namespace: $namespace) {
       type
       serviceInstance {
         ...serviceInstanceDetails
@@ -18,8 +18,8 @@ export const SERVICE_INSTANCE_EVENT_SUBSCRIPTION = gql`
 `;
 
 export const SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION = gql`
-  subscription ServiceBindingUsageEvent($environment: String!) {
-    serviceBindingUsageEvent(environment: $environment) {
+  subscription ServiceBindingUsageEvent($namespace: String!) {
+    serviceBindingUsageEvent(namespace: $namespace) {
       type
       serviceBindingUsage {
         ...serviceBindingUsageDetails
@@ -30,8 +30,8 @@ export const SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION = gql`
 `;
 
 export const SERVICE_BINDING_EVENT_SUBSCRIPTION = gql`
-  subscription ServiceBinding($environment: String!) {
-    serviceBindingEvent(environment: $environment) {
+  subscription ServiceBinding($namespace: String!) {
+    serviceBindingEvent(namespace: $namespace) {
       type
       serviceBinding {
         ...serviceBindingDetails

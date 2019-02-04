@@ -74,7 +74,7 @@ export default {
       let items = cache.readQuery({
         query: SERVICE_INSTANCES_QUERY,
         variables: {
-          environment: builder.getCurrentEnvironmentId(),
+          namespace: builder.getCurrentEnvironmentId(),
         },
       }).serviceInstances;
       items = transformDataScalarObjectsToStrings(items);
