@@ -99,7 +99,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
             this.transformedLabels = this.getTransformedLabels(
               this.remoteEnvironment.labels
             );
-            this.boundEnvironments = data.application.enabledInEnvironments;
+            this.boundEnvironments = data.application.enabledInNamespaces;
             this.prettyStatus = this.remoteEnvironmentsService.printPrettyConnectionStatus(
               data.application.status
             );

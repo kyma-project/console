@@ -51,9 +51,9 @@ export class EditBindingsModalComponent {
           this.environments = response[1];
 
           this.environments.forEach(env => {
-            if (this.remoteEnv && this.remoteEnv.enabledInEnvironments) {
+            if (this.remoteEnv && this.remoteEnv.enabledInNamespaces) {
               this.getFilteredEnvironments(
-                this.remoteEnv.enabledInEnvironments,
+                this.remoteEnv.enabledInNamespaces,
                 env
               );
             }
