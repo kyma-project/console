@@ -4,7 +4,6 @@ import {
   Input,
   ViewRef,
   ViewChild,
-  ElementRef,
 } from '@angular/core';
 
 @Component({
@@ -16,13 +15,9 @@ export class ListElementActionsComponent {
   @Input() entry: any;
   @Input() entryEventHandler: any;
   @Input() actions: any[];
-  @ViewChild('popover') popover: ElementRef;
-
-  isExpanded = false;
-  ariaHidden = true;
+  @ViewChild('popover') private popover: any;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
-  //---------------------------------
 
   handlePopoverClick(event) {
     event.stopPropagation();
