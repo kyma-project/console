@@ -45,7 +45,7 @@ export class ListElementActionsComponent {
 
   entryAsString() {
     if (this.entry instanceof Object) {
-      return this.entry.toString();
+      return this.entry.name ? this.entry.name : this.entry.toString();
     }
     return this.entry;
   }
