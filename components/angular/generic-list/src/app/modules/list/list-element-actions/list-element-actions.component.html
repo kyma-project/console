@@ -1,10 +1,10 @@
 <fd-popover [alignment]="'right'" (click)="handlePopoverClick($event);" #popover>
     <fd-popover-control>
-        <button aria-label="contextual menu" fd-button [fdType]="'light'" [glyph]="'vertical-grip'"></button>
+        <button aria-label="contextual menu" fd-button [fdType]="'light'" [glyph]="'vertical-grip'" [attr.aria-controls]="entryAsString()"></button>
     </fd-popover-control>
     <fd-popover-body>
         <fd-menu>
-            <fd-menu-list>
+            <fd-menu-list [id]="entryAsString()">
                 <li fd-menu-item *ngFor="let action of actions">
                     <a (click)="executeAction(action, $event);" [name]="action.name">{{action.name}}</a>
                 </li>
