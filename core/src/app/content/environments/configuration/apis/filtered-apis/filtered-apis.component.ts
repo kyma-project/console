@@ -41,7 +41,7 @@ export class FilteredApisComponent
     super(currentEnvironmentService, changeDetector, http, commService);
 
     const query = `query API($environment: String!, $serviceName: String!) {
-      apis(environment: $environment, serviceName: $serviceName) {
+      apis(namespace: $environment, serviceName: $serviceName) {
         name
         hostname
         service {
