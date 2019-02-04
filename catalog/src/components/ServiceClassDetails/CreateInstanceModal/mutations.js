@@ -5,12 +5,14 @@ export const SEND_NOTIFICATION = gql`
     $title: String!
     $color: String!
     $icon: String!
+    $type: String!
     $instanceName: String!
   ) {
     sendNotification(
       title: $title
       color: $color
       icon: $icon
+      type: $type
       instanceName: $instanceName
     ) @client {
       title

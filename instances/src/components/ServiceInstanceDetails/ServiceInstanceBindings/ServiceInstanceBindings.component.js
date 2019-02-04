@@ -69,7 +69,7 @@ class ServiceInstanceBindings extends React.Component {
   };
 
   status = (data, id) => {
-    return <StatusIndicator data={data} key={id} />;
+    return <StatusIndicator testId={id} data={data} key={id} />;
   };
 
   createBindingUsagesTableData = data => {
@@ -79,7 +79,9 @@ class ServiceInstanceBindings extends React.Component {
       return {
         rowData: [
           <TextOverflowWrapper>
-            <span title={bindingUsage.name}>{bindingUsage.name}</span>
+            <span data-e2e-id="binding-name" title={bindingUsage.name}>
+              {bindingUsage.name}
+            </span>
           </TextOverflowWrapper>,
           (_ => {
             const text = `${bindingUsage.usedBy.name} (${this.capitalize(
@@ -120,7 +122,9 @@ class ServiceInstanceBindings extends React.Component {
                     </span>
                   }
                   modalOpeningComponent={
-                    <SecretModalButton>{secret.name}</SecretModalButton>
+                    <SecretModalButton data-e2e-id="secret-button">
+                      {secret.name}
+                    </SecretModalButton>
                   }
                   data={secret.data}
                   prefix={prefix}
@@ -165,7 +169,9 @@ class ServiceInstanceBindings extends React.Component {
       return {
         rowData: [
           <TextOverflowWrapper>
-            <span title={binding.name}>{binding.name}</span>
+            <span data-e2e-id="credential-name" title={binding.name}>
+              {binding.name}
+            </span>
           </TextOverflowWrapper>,
           (_ => {
             const secret = binding && binding.secret;
@@ -178,7 +184,9 @@ class ServiceInstanceBindings extends React.Component {
                     </span>
                   }
                   modalOpeningComponent={
-                    <SecretModalButton>{secret.name}</SecretModalButton>
+                    <SecretModalButton data-e2e-id="secret-button">
+                      {secret.name}
+                    </SecretModalButton>
                   }
                   data={secret.data}
                 />
@@ -331,7 +339,7 @@ class ServiceInstanceBindings extends React.Component {
               addHeaderContent={boundApplicationContent}
               aditionalStatus={this.status(
                 serviceInstance.serviceBindingUsages,
-                'service-binding-usage-tab',
+                'status-service-binding-usage',
               )}
               noMargin
             >
@@ -357,7 +365,7 @@ class ServiceInstanceBindings extends React.Component {
             addHeaderContent={createCredentialsContent}
             aditionalStatus={this.status(
               serviceInstance.serviceBindings.items,
-              'service-binding-tab',
+              'status-service-binding',
             )}
             noMargin
           >
