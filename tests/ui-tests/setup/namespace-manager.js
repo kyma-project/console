@@ -1,15 +1,11 @@
-import * as k8s from '@kubernetes/client-node';
-import { loadKubeConfig } from './kubeconfig';
-
 export class NamespaceManager {
-  constructor(namespace) {
-    const kubeConfig = loadKubeConfig();
-    this.api = kubeConfig.makeApiClient(k8s.Core_v1Api);
+  constructor(apiClient, namespace) {
+    this.api = apiClient;
     this.namespaceName = namespace;
   }
 
   async createIfDoesntExist() {
-    if (await this.exists) {
+    if (await this.exists()) {
       console.log(
         `Namespace ${
           this.namespaceName
@@ -23,7 +19,7 @@ export class NamespaceManager {
   }
 
   async deleteIfExists() {
-    if (!(await this.exists)) {
+    if (!(await this.exists())) {
       console.log(
         `Namespace ${this.namespaceName} not found. Skipping deleting it...`
       );

@@ -1,11 +1,9 @@
 import * as k8s from '@kubernetes/client-node';
-import { loadKubeConfig } from '../kubeconfig';
 import { helmBrokerConfig } from './config';
 
 export class HelmBrokerConfigurer {
-  constructor() {
-    this.kubeConfig = loadKubeConfig();
-    this.api = this.kubeConfig.makeApiClient(k8s.Extensions_v1beta1Api);
+  constructor(apiClient) {
+    this.api = apiClient;
   }
 
   async includeTestBundleRepository() {

@@ -20,5 +20,6 @@ module.exports = {
     downloadThroughput: 280000,
     uploadThroughput: 256000
   },
-  defaultNavigationTimeout: 60000
+  defaultNavigationTimeout: 60000,
+  kubeConfigPath: process.env.KUBECONFIG ? process.env.KUBECONFIG : undefined
 };
