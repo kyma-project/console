@@ -1,7 +1,7 @@
 import * as k8s from '@kubernetes/client-node';
 import config from '../config';
 
-export const loadKubeConfig = () => {
+const loadKubeConfig = () => {
   const kubeConfig = new k8s.KubeConfig();
 
   if (!config.outsideCluster) {
@@ -17,3 +17,5 @@ export const loadKubeConfig = () => {
   kubeConfig.loadFromDefault();
   return kubeConfig;
 };
+
+export const kubeConfig = loadKubeConfig();
