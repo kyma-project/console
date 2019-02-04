@@ -9,7 +9,7 @@ import { ListFilterComponent } from '../list-filter/list-filter.component';
 export class ListSearchComponent extends ListFilterComponent
   implements OnChanges {
   searching = false;
-  searchText: string = '';
+  searchText = '';
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     super.ngOnChanges(changes);
@@ -45,10 +45,9 @@ export class ListSearchComponent extends ListFilterComponent
     event.stopPropagation();
     this.searching = true;
     setTimeout(() => {
-      // temporary solution until Fundamental-ngx provides such a possibility
-      const searchInput = <HTMLElement>(
-        document.querySelector('.search input[type="search"]')
-      );
+      const searchInput = document.querySelector(
+        '.search input[type="search"]',
+      ) as HTMLElement;
       if (searchInput && typeof searchInput.focus === 'function') {
         searchInput.focus();
       }

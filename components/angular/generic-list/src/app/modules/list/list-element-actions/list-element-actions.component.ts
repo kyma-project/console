@@ -43,8 +43,7 @@ export class ListElementActionsComponent {
     }
   }
 
-  entryAsString() {
-    const { entry } = this;
+  entryAsString = (entry: any): string => {
     if (entry instanceof Object) {
       return entry.name
         ? entry.name
@@ -53,5 +52,5 @@ export class ListElementActionsComponent {
           : entry.toString();
     }
     return entry;
-  }
+  };
 }
