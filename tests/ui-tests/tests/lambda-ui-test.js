@@ -81,11 +81,11 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   test('Delete Lambda Function', async () => {
     // given
     const frame = await kymaConsole.getFrame(page);
-    const dropdownButton = '.tn-button.tn-button--icon.tn-button--text';
+    const dropdownButton = `button[aria-controls=${config.testLambda}]`;
     await frame.click(dropdownButton);
 
     // given
-    const deleteButton = 'a.tn-dropdown__item';
+    const deleteButton = `#${config.testLambda} li > a[name=Delete]`;
     await frame.waitFor(deleteButton);
     await frame.click(deleteButton);
 
