@@ -45,12 +45,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       });
 
       await kymaConsole.testLogin(page);
-      await Promise.all([
-        kymaConsole.createEnvironment(page, TEST_NAMESPACE),
-        page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0']
-        })
-      ]);
+      await page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      });
     } catch (e) {
       throw e;
     }
