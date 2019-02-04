@@ -1,7 +1,7 @@
 export const helmBrokerConfig = {
   name: process.env.HELM_BROKER_NAME
     ? process.env.HELM_BROKER_NAME
-    : 'core-helm-broker',
+    : 'helm-broker',
   namespace: process.env.HELM_BROKER_NAMESPACE
     ? process.env.HELM_BROKER_NAMESPACE
     : 'kyma-system',
