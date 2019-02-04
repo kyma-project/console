@@ -39,7 +39,7 @@ export class NamespaceManager {
 
   async exists() {
     try {
-      this.api.readNamespace(this.namespaceName);
+      await this.api.readNamespace(this.namespaceName);
       return true;
     } catch (err) {
       if (err.body && err.body.code !== 404) {

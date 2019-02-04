@@ -12,7 +12,10 @@ export class TestBundleInstaller {
     const extensionsApiClient = kubeConfig.makeApiClient(
       k8s.Extensions_v1beta1Api
     );
-    this.helmBrokerConfigurer = new HelmBrokerConfigurer(extensionsApiClient);
+    this.helmBrokerConfigurer = new HelmBrokerConfigurer(
+      kubeConfig,
+      extensionsApiClient
+    );
   }
 
   async install() {

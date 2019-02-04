@@ -2,7 +2,8 @@ import * as k8s from '@kubernetes/client-node';
 import { helmBrokerConfig } from './config';
 
 export class HelmBrokerConfigurer {
-  constructor(apiClient) {
+  constructor(kubeConfig, apiClient) {
+    this.kubeConfig = kubeConfig;
     this.api = apiClient;
   }
 
