@@ -21,7 +21,11 @@ export class ListElementActionsComponent {
 
   handlePopoverClick(event) {
     event.stopPropagation();
-    this.popover.onClickHandler(event);
+    if (this.popover && typeof this.popover.onClickHandler === 'function') {
+      this.popover.onClickHandler(event);
+    } else {
+      console.warn("Could not fire Popover's built-in click event");
+    }
   }
 
   executeAction(action: string, event) {
