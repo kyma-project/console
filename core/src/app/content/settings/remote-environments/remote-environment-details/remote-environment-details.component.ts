@@ -22,8 +22,6 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   private sub: any;
   private prettyStatus = '';
   remoteEnvironment: any;
-  connectorServiceUrl: string;
-  connectorServiceError: string;
 
   private actions = [
     {
@@ -73,20 +71,6 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
         this.getRemoteEnv();
       }
     });
-
-    this.remoteEnvironmentsService
-      .getConnectorServiceUrl(this.currentREnvId)
-      .subscribe(
-        res => {
-          res
-            ? (this.connectorServiceUrl = res.connectorService.url)
-            : (this.connectorServiceError =
-                'There is no URL available to connect your external systems to the Application');
-        },
-        err => {
-          this.connectorServiceError = err;
-        }
-      );
   }
 
   public getRemoteEnv() {
@@ -142,14 +126,26 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  private fetchUrl() {
-    this.connectorServiceUrl
-      ? this.fetchModal.show(
-          'URL to connect Application',
-          this.connectorServiceUrl,
-          `Copy the following URL and use it at the external system that you would like to connect to:`
-        )
-      : this.infoModal.show('Error', this.connectorServiceError);
+  public showUrl() {
+    this.remoteEnvironmentsService
+      .getConnectorServiceUrl(this.currentREnvId)
+      .subscribe(
+        res => {
+          res
+            ? this.fetchModal.show(
+                'URL to connect Application',
+                res.connectorService.url,
+                'Copy the following URL and use it at the external system that you would like to connect to:'
+              )
+            : this.infoModal.show(
+                'Error',
+                'There is no URL available to connect your external systems to the Application'
+              );
+        },
+        err => {
+          this.infoModal.show('Error', err);
+        }
+      );
   }
 
   hasType(entries, type) {
