@@ -19,8 +19,11 @@ let token = '';
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
+    jest.setTimeout(240 * 1000);
     try {
+      console.log('>> Install');
       await testBundleInstaller.install();
+      console.log('>> After Install');
     } catch (err) {
       await testBundleInstaller.cleanup();
       throw new Error('Failed to install test bundle:', err);

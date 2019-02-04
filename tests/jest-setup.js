@@ -1,1 +1,4 @@
-jest.setTimeout(240 * 1000);
+const TIMEOUT_SECONDS = 240;
+
+console.log(`Setting default timeout to ${TIMEOUT_SECONDS} seconds`);
+jest.setTimeout(TIMEOUT_SECONDS * 1000);

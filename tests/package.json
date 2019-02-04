@@ -22,7 +22,7 @@
   },
   "jest": {
     "testRegex": "/tests/(console-basic-test|catalog-ui-test|docs-ui-test).jsx?$",
-    "setupTestFrameworkScriptFile": "./jest-setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/jest-setup.js"
   },
   "prettier": {
     "singleQuote": true
