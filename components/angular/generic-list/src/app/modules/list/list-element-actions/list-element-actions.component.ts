@@ -44,9 +44,14 @@ export class ListElementActionsComponent {
   }
 
   entryAsString() {
-    if (this.entry instanceof Object) {
-      return this.entry.name ? this.entry.name : this.entry.toString();
+    const { entry } = this;
+    if (entry instanceof Object) {
+      return entry.name
+        ? entry.name
+        : entry.metadata.name
+          ? entry.metadata.name
+          : entry.toString();
     }
-    return this.entry;
+    return entry;
   }
 }
