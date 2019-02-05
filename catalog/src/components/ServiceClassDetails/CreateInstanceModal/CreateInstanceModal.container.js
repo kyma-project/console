@@ -13,7 +13,7 @@ const CreateInstanceContainer = ({ client, ...props }) => {
       query: CHECK_INSTANCE_EXISTS,
       variables: {
         name: name,
-        environment: builder.getCurrentEnvironmentId(),
+        namespace: builder.getCurrentEnvironmentId(),
       },
       fetchPolicy: 'network-only',
       errorPolicy: 'all',

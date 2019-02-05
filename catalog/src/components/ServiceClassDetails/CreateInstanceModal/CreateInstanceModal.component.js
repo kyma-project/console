@@ -114,7 +114,7 @@ class CreateInstanceModal extends Component {
 
     return {
       name: instanceName,
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       externalServiceClassName: serviceClass.externalName,
       externalPlanName: currentPlan && currentPlan.externalName,
       classClusterWide: isClusterServiceClass,

@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 export const CREATE_SERVICE_INSTANCE = gql`
   mutation CreateServiceInstance(
     $name: String!
-    $environment: String!
+    $namespace: String!
     $externalServiceClassName: String!
     $externalPlanName: String!
     $labels: [String!]!
@@ -14,7 +14,7 @@ export const CREATE_SERVICE_INSTANCE = gql`
     createServiceInstance(
       params: {
         name: $name
-        environment: $environment
+        namespace: $namespace
         classRef: {
           externalName: $externalServiceClassName
           clusterWide: $classClusterWide

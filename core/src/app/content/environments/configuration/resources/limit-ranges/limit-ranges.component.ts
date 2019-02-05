@@ -35,8 +35,8 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
-    const query = `query LimitRanges($environment: String!) {
-      limitRanges(environment: $environment) {
+    const query = `query LimitRanges($namespace: String!) {
+      limitRanges(namespace: $namespace) {
         name
         limits {
           limitType
@@ -63,7 +63,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
           AppConfig.graphqlApiUrl,
           query,
           {
-            environment: this.currentEnvironmentId
+            namespace: this.currentEnvironmentId
           },
           this.graphQLClientService
         );

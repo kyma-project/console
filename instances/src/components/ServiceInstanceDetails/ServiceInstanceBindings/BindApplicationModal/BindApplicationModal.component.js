@@ -74,7 +74,7 @@ class BindApplicationModal extends React.Component {
     const parsedSelectedResource = JSON.parse(selectedResource);
 
     return {
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
         name: checkbox ? createdBindingName : selectedExistingBinding,
       },

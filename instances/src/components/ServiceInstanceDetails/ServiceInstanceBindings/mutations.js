@@ -3,12 +3,12 @@ import gql from 'graphql-tag';
 export const BINDING_CREATE_MUTATION = gql`
   mutation CreateServiceBinding(
     $serviceInstanceName: String!
-    $environment: String!
+    $namespace: String!
     $parameters: JSON
   ) {
     createServiceBinding(
       serviceInstanceName: $serviceInstanceName
-      environment: $environment
+      namespace: $namespace
       parameters: $parameters
     ) {
       name
@@ -31,11 +31,11 @@ export const BINDING_USAGE_CREATE_MUTATION = gql`
 export const BINDING_DELETE_MUTATION = gql`
   mutation DeleteServiceBinding(
     $serviceBindingName: String!
-    $environment: String!
+    $namespace: String!
   ) {
     deleteServiceBinding(
       serviceBindingName: $serviceBindingName
-      environment: $environment
+      namespace: $namespace
     ) {
       name
     }
@@ -45,11 +45,11 @@ export const BINDING_DELETE_MUTATION = gql`
 export const BINDING_USAGE_DELETE_MUTATION = gql`
   mutation DeleteServiceBindingUsage(
     $serviceBindingUsageName: String!
-    $environment: String!
+    $namespace: String!
   ) {
     deleteServiceBindingUsage(
       serviceBindingUsageName: $serviceBindingUsageName
-      environment: $environment
+      namespace: $namespace
     ) {
       name
     }

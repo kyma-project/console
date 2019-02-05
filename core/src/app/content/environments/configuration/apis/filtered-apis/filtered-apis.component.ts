@@ -40,8 +40,8 @@ export class FilteredApisComponent
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
-    const query = `query API($environment: String!, $serviceName: String!) {
-      apis(environment: $environment, serviceName: $serviceName) {
+    const query = `query API($namespace: String!, $serviceName: String!) {
+      apis(namespace: $namespace, serviceName: $serviceName) {
         name
         hostname
         service {
@@ -77,7 +77,7 @@ export class FilteredApisComponent
           `${AppConfig.graphqlApiUrl}`,
           query,
           {
-            environment: this.currentEnvironmentId,
+            namespace: this.currentEnvironmentId,
             serviceName: this.serviceName
           },
           this.graphQLClientService

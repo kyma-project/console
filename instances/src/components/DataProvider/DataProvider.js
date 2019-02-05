@@ -22,7 +22,7 @@ const DataProvider = ({ serviceInstances, children }) => {
 
     serviceInstances.subscribeToMore({
       document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
-      variables: { environment: builder.getCurrentEnvironmentId() },
+      variables: { namespace: builder.getCurrentEnvironmentId() },
       updateQuery: (prev, { subscriptionData }) => {
         if (
           !subscriptionData.data ||
@@ -40,7 +40,7 @@ const DataProvider = ({ serviceInstances, children }) => {
 
     serviceInstances.subscribeToMore({
       document: SERVICE_BINDING_EVENT_SUBSCRIPTION,
-      variables: { environment: builder.getCurrentEnvironmentId() },
+      variables: { namespace: builder.getCurrentEnvironmentId() },
       updateQuery: (prev, { subscriptionData }) => {
         if (
           !subscriptionData.data ||
@@ -58,7 +58,7 @@ const DataProvider = ({ serviceInstances, children }) => {
 
     serviceInstances.subscribeToMore({
       document: SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
-      variables: { environment: builder.getCurrentEnvironmentId() },
+      variables: { namespace: builder.getCurrentEnvironmentId() },
       updateQuery: (prev, { subscriptionData }) => {
         if (
           !subscriptionData.data ||
@@ -92,7 +92,7 @@ export default compose(
     options: () => ({
       fetchPolicy: 'network-only',
       variables: {
-        environment: builder.getCurrentEnvironmentId(),
+        namespace: builder.getCurrentEnvironmentId(),
       },
     }),
   }),

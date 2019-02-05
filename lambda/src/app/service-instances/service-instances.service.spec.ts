@@ -25,8 +25,8 @@ describe('ServiceInstancesService', () => {
     const name = 'fakeServiceInstanceName';
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
-    const expectedQuery = `query ServiceInstance($name: String!, $environment: String!){
-      serviceInstance(name: $name, environment: $environment) {
+    const expectedQuery = `query ServiceInstance($name: String!, $namespace: String!){
+      serviceInstance(name: $name, namespace: $namespace) {
         name,
         bindable
       }}`;
@@ -53,8 +53,8 @@ describe('ServiceInstancesService', () => {
     const token = 'fakeToken';
     const status = 'RUNNING';
 
-    const expectedQuery = `query ServiceInstances($environment: String!, $status: InstanceStatusType){
-      serviceInstances(environment: $environment, status: $status) {
+    const expectedQuery = `query ServiceInstances($namespace: String!, $status: InstanceStatusType){
+      serviceInstances(namespace: $namespace, status: $status) {
         name,
         bindable
       }}`;
