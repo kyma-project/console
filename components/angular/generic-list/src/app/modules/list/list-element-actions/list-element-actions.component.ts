@@ -53,4 +53,10 @@ export class ListElementActionsComponent {
     }
     return entry;
   };
+
+  closeDropdown() {
+    if (this.popover) {
+      this.popover.isOpen = false;
+    }
+  }
 }

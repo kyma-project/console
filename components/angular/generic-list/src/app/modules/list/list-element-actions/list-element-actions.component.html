@@ -1,4 +1,4 @@
-<fd-popover [alignment]="'right'" (click)="handlePopoverClick($event);" #popover>
+<fd-popover [alignment]="'right'" (click)="handlePopoverClick($event);" (clickOutside)="closeDropdown()" clickOutsideEvents="click,mousedown" #popover>
     <fd-popover-control>
         <button aria-label="contextual menu" fd-button [fdType]="'light'" [glyph]="'vertical-grip'" [attr.aria-controls]="entryAsString(entry)"></button>
     </fd-popover-control>
