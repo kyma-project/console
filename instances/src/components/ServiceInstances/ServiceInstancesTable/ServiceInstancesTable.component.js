@@ -12,12 +12,14 @@ import {
   TextOverflowWrapper,
 } from './styled';
 
-import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
+import { getResourceDisplayName, statusColor, backendModuleExists } from '../../../commons/helpers';
 
 const deleteButton = <Button compact option="light" glyph="delete" />;
 
 export class ServiceInstancesTable extends Component {
   displayBindingsUsages = (bindings = []) => {
+    if (!bindings) return null;
+    
     switch (bindings.length) {
       case 0:
         return '-';
@@ -51,6 +53,8 @@ export class ServiceInstancesTable extends Component {
     const handleDelete = async element => {
       await deleteServiceInstance(element.name);
     };
+
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
 
     const createTableData = () => {
       return data.map(instance => {
@@ -129,6 +133,7 @@ export class ServiceInstancesTable extends Component {
               const bindingUsages = this.displayBindingsUsages(
                 instance.serviceBindingUsages,
               );
+
               return (
                 <TextOverflowWrapper>
                   <span>{bindingUsages}</span>
@@ -187,13 +192,17 @@ export class ServiceInstancesTable extends Component {
         };
       });
     };
+
     const addServiceInstanceRedirectButton = (
       <Button compact option="light" onClick={this.goToServiceCatalog}>
         + Add Instance
       </Button>
     );
+
     const title = 'Manage Service Instances';
-    const headers = [
+    const tableData = createTableData();
+
+    let headers = [
       'Name',
       'Service Class',
       'Plan',
@@ -201,7 +210,14 @@ export class ServiceInstancesTable extends Component {
       'Status',
       '',
     ];
-    const tableData = createTableData();
+
+    if (!serviceCatalogAddonsBackendModuleExists) {
+      headers.splice(3, 1);
+      tableData.map(row => {
+        row.rowData.splice(3, 1);
+        return row;
+      })
+    } 
 
     return (
       <Table

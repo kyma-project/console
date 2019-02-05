@@ -5,17 +5,17 @@ const DEFAULT_ENVIRONMENT_ID = 'production';
 class Builder {
   currentEnvironmentId = DEFAULT_ENVIRONMENT_ID;
   token = null;
+  backendModules = [];
 
   init() {
     return new Promise((resolve, reject) => {
-      if (!process.env.REACT_APP_ENV === 'production') {
-        resolve();
-        return;
-      }
       const timeout = setTimeout(resolve, 1000);
+
       LuigiClient.addInitListener(e => {
         this.currentEnvironmentId = e.environmentId;
         this.token = e.idToken;
+        this.backendModules = e.backendModules;
+
         clearTimeout(timeout);
         resolve();
       });
@@ -31,6 +31,10 @@ class Builder {
 
   getCurrentEnvironmentId() {
     return this.currentEnvironmentId;
+  }
+
+  getBackendModules() {
+    return this.backendModules;
   }
 }
 

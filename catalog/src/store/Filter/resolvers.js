@@ -258,6 +258,9 @@ const populateServiceClassFilters = (
       if (isStringValueEqualToTrue(labels.showcase)) {
         basic.push('showcase');
       }
+      if (isStringValueEqualToTrue(labels.provisionOnlyOnce)) {
+        basic.push('provisionOnlyOnce');
+      }
 
       tags.push(...item.tags);
     }
@@ -282,6 +285,9 @@ const populateServiceClassFilters = (
       }
       if (isStringValueEqualToTrue(labels.showcase)) {
         filteredBasic.push('showcase');
+      }
+      if (isStringValueEqualToTrue(labels.provisionOnlyOnce)) {
+        filteredBasic.push('provisionOnlyOnce');
       }
 
       filteredTags.push(...item.tags);
@@ -465,9 +471,16 @@ const filterServiceClasses = (classes, activeFilters) => {
           labels.push('connectedapp');
           labels.push(item.labels['connected-app']);
         }
-        if (isStringValueEqualToTrue(item.labels.local)) labels.push('local');
-        if (isStringValueEqualToTrue(item.labels.showcase))
+        if (isStringValueEqualToTrue(item.labels.local)) {
+          labels.push('local');
+        }
+        if (isStringValueEqualToTrue(item.labels.showcase)) {
           labels.push('showcase');
+        }
+        if (isStringValueEqualToTrue(item.labels.provisionOnlyOnce)) {
+          labels.push('provisionOnlyOnce');
+          labels.push('provision-only-once');
+        }
       }
 
       searchMatch =

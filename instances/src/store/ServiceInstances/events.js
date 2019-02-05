@@ -177,36 +177,40 @@ export const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
         break;
       }
       result[idx].serviceBindings.items[bindingIdx] = binding;
-      result[idx].serviceBindingUsages = instance.serviceBindingUsages.map(
-        usage => {
-          if (
-            usage &&
-            usage.serviceBinding &&
-            usage.serviceBinding.name === binding.name
-          ) {
-            usage.serviceBinding = binding;
-          }
-          return { ...usage };
-        },
-      );
+      if (instance.serviceBindingUsages) {
+        result[idx].serviceBindingUsages = instance.serviceBindingUsages.map(
+          usage => {
+            if (
+              usage &&
+              usage.serviceBinding &&
+              usage.serviceBinding.name === binding.name
+            ) {
+              usage.serviceBinding = binding;
+            }
+            return { ...usage };
+          },
+        );
+      }
       break;
     case 'DELETE':
       result[idx].serviceBindings.items = currentInstanceServiceBindings.filter(
         b => b.name !== binding.name,
       );
-      result[idx].serviceBindingUsages = instance.serviceBindingUsages.map(
-        usage => {
-          if (
-            usage &&
-            usage.serviceBinding &&
-            usage.serviceBinding.name === binding.name
-          ) {
-            usage.serviceBinding = null;
-          }
-
-          return usage;
-        },
-      );
+      if (instance.serviceBindingUsages) {
+        result[idx].serviceBindingUsages = instance.serviceBindingUsages.map(
+          usage => {
+            if (
+              usage &&
+              usage.serviceBinding &&
+              usage.serviceBinding.name === binding.name
+            ) {
+              usage.serviceBinding = null;
+            }
+  
+            return usage;
+          },
+        );
+      }
       break;
     default:
       result = currentItems;
