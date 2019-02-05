@@ -2,6 +2,9 @@
   padding-bottom: 6px;
   padding-top: 6px;
   text-align: center;
+  &.fd-pagination__link {
+    cursor: pointer;
+  }
 }
 
 div > button {
