@@ -10,7 +10,7 @@ export default compose(
     options: () => ({
       fetchPolicy: 'network-only',
       variables: {
-        environment: builder.getCurrentEnvironmentId(),
+        namespace: builder.getCurrentEnvironmentId(),
       },
     }),
   }),

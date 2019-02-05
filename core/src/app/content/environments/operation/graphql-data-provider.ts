@@ -5,7 +5,7 @@ import {
   SimpleFilterMatcher,
   Facet,
   Filter
-} from '@kyma-project/y-generic-list';
+} from 'app/generic-list';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { Observable } from 'rxjs';
 import { delay, publishReplay, refCount } from 'rxjs/operators';

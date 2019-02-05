@@ -23,7 +23,7 @@ export default compose(
     options: () => {
       return {
         variables: {
-          environment: builder.getCurrentEnvironmentId(),
+          namespace: builder.getCurrentEnvironmentId(),
         },
         options: {
           fetchPolicy: 'cache-and-network',

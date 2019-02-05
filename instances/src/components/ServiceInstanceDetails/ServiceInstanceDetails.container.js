@@ -17,7 +17,7 @@ export default compose(
     options: () => {
       return {
         variables: {
-          environment: builder.getCurrentEnvironmentId(),
+          namespace: builder.getCurrentEnvironmentId(),
         },
       };
     },
@@ -28,7 +28,7 @@ export default compose(
         mutate({
           variables: {
             name,
-            environment: builder.getCurrentEnvironmentId(),
+            namespace: builder.getCurrentEnvironmentId(),
           },
         }),
     }),
@@ -37,7 +37,7 @@ export default compose(
   if (serviceInstances.loading) {
     return (
       <EmptyList>
-        <Spinner size="40px" color="#32363a" />
+        <Spinner />
       </EmptyList>
     );
   }

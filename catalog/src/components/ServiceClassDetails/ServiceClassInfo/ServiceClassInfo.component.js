@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
 import {
+  Label,
   Icon,
   Header,
   Separator,
@@ -13,13 +14,11 @@ import {
 import {
   ServiceClassInfoContentWrapper,
   ImagePlaceholder,
-  ServiceTitle,
-  ServiceProvider,
+  ServiceClassInfoContent,
   ExternalLink,
   Image,
-  TagsWrapper,
-  TagWrapper,
-  Tag,
+  LabelsWrapper,
+  LabelWrapper,
 } from './styled';
 
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
@@ -76,17 +75,19 @@ const ServiceClassInfo = ({
   return (
     <div>
       <ServiceClassInfoContentWrapper>
-        <ImagePlaceholder imageUrl={imageUrl}>
-          {imageUrl ? <Image src={imageUrl} /> : <Icon icon={'\ue113'} />}
+        <ImagePlaceholder>
+          {imageUrl ? (
+            <Image size="l" photo={imageUrl} />
+          ) : (
+            <Icon icon={'\ue113'} />
+          )}
         </ImagePlaceholder>
-        <div>
-          <ServiceTitle data-e2e-id="service-title">
-            {serviceClassDisplayName}
-          </ServiceTitle>
-          <ServiceProvider data-e2e-id="service-provider">
-            {providerDisplayName || ''}
-          </ServiceProvider>
-        </div>
+        <ServiceClassInfoContent
+          title={serviceClassDisplayName}
+          data-e2e-id="service-title-and-provider"
+        >
+          {providerDisplayName || ''}
+        </ServiceClassInfoContent>
       </ServiceClassInfoContentWrapper>
       <Separator margin="30px 0 30px" />
       <div>
@@ -115,18 +116,18 @@ const ServiceClassInfo = ({
         )}
         {modifiedTags &&
           modifiedTags.length > 0 && (
-            <TagsWrapper>
+            <LabelsWrapper>
               {modifiedTags.sort(sortTags).map(tag => (
-                <TagWrapper key={`${tag.type}-${tag.name}`}>
+                <LabelWrapper key={`${tag.type}-${tag.name}`}>
                   <Tooltip
                     content={tagsDescription[tag.type]}
                     minWidth={tooltipWidth[tag.type]}
                   >
-                    <Tag>{tag.name}</Tag>
+                    <Label cursorType="help">{tag.name}</Label>
                   </Tooltip>
-                </TagWrapper>
+                </LabelWrapper>
               ))}
-            </TagsWrapper>
+            </LabelsWrapper>
           )}
       </div>
     </div>

@@ -14,7 +14,7 @@ const BindApplicationContainer = ({ client, ...props }) => {
       query: USAGE_KIND_RESOURCES_QUERY,
       variables: {
         usageKind: usageKind,
-        environment: builder.getCurrentEnvironmentId(),
+        namespace: builder.getCurrentEnvironmentId(),
       },
       fetchPolicy: 'network-only',
     });

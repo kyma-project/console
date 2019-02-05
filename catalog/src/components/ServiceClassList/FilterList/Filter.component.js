@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Text } from '@kyma-project/react-components';
 
-import { Checkmark, FilterHeader, Items, Item } from './styled';
+import { Checkmark, FilterHeader, FilterContainer, Items, Item } from './styled';
 
 const Filter = ({
   name,
@@ -32,7 +32,7 @@ const Filter = ({
   };
 
   return (
-    <div>
+    <FilterContainer>
       {items &&
         items.length > 0 && (
           <FilterHeader data-e2e-id={`filter-header-${name}`}>
@@ -66,11 +66,7 @@ const Filter = ({
         {isMore && (
           <Item>
             <Button
-              first
-              last
-              normal
-              padding="0 0 0 26px"
-              marginTop="0"
+              option="light"
               onClick={() => onSeeMoreClick(name)}
             >
               see more
@@ -78,7 +74,7 @@ const Filter = ({
           </Item>
         )}
       </Items>
-    </div>
+    </FilterContainer>
   );
 };
 

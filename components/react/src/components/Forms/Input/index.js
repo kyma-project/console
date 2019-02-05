@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import {
-  FieldWrapper,
-  FieldLabel,
-  FieldIcon,
-  FieldMessage,
-  FieldRequired,
-} from '../field-components';
+  FormSet,
+  FormItem,
+  FormLabel,
+  FormInput,
+  FormMessage,
+} from 'fundamental-react';
 
-import { InputWrapper, InputField, InputPasswordField } from './components';
+const FormSetWrapper = styled.div`
+  padding-top: ${props => props.marginTop || '0'}px;
+`;
 
 class Input extends React.Component {
   static propTypes = {
@@ -28,6 +31,7 @@ class Input extends React.Component {
     type: PropTypes.string,
     noBottomMargin: PropTypes.bool,
     noMessageField: PropTypes.bool,
+    marginTop: PropTypes.number,
   };
 
   static defaultProps = {
@@ -74,7 +78,6 @@ class Input extends React.Component {
     let results = [],
       numberOfSucesses = 0;
     validFunctions.map(func => results.push(func(value)));
-
     for (const result of results) {
       if (result !== undefined) {
         if (
@@ -93,11 +96,11 @@ class Input extends React.Component {
         }
       }
       this.setState({
-        validationType: numberOfSucesses === results.length ? 'success' : '',
+        validationType: numberOfSucesses === results.length ? 'valid' : '',
       });
     }
     this.setState({
-      validationType: 'success',
+      validationType: 'valid',
       validationMessage: '',
     });
   };
@@ -114,83 +117,56 @@ class Input extends React.Component {
       label,
       placeholder,
       handleChange,
-      validFunctions,
       name,
       required,
       message = '',
-      onBlur,
       isSuccess,
       isWarning,
       isError,
-      type,
-      noBottomMargin,
       noMessageField,
+      marginTop,
     } = this.props;
 
-    const {
-      value,
-      showPassword,
-      typeField,
-      validationType,
-      validationMessage,
-    } = this.state;
+    const { value, typeField, validationType, validationMessage } = this.state;
 
     const finalMessage = validationMessage ? validationMessage : message;
-    const success = validationType === 'success' ? true : isSuccess;
-    const warning = validationType === 'warning' ? true : isWarning;
-    const error = validationType === 'error' ? true : isError;
+    const valid = validationType === 'valid' || isSuccess ? 'valid' : '';
+    const warning = validationType === 'warning' || isWarning ? 'warning' : '';
+    const error = validationType === 'error' || isError ? 'error' : '';
 
-    const isPassword = type === 'password';
-
+    const randomId = `input-${(Math.random() + 1).toString(36).substring(7)}`;
     return (
-      <FieldWrapper noBottomMargin={noBottomMargin}>
-        <FieldLabel>
-          {label}
-          {required ? <FieldRequired>*</FieldRequired> : ''}
-        </FieldLabel>
-        <InputWrapper>
-          <InputField
-            type={typeField ? typeField : 'text'}
-            placeholder={placeholder}
-            value={value}
-            name={name}
-            onChange={e => {
-              const value = e.target.value;
-              this.setState({ value: value });
-              this.validate(value);
-              handleChange(value);
-            }}
-            isSuccess={success}
-            isWarning={warning}
-            isError={error}
-            required={required}
-          />
-          <FieldIcon
-            visible={success || warning || error}
-            isSuccess={success}
-            isWarning={warning}
-            isError={error}
-            isPassword={isPassword}
-          >
-            {this.extractIcon(success, warning, error)}
-          </FieldIcon>
-          {isPassword && (
-            <InputPasswordField onClick={this.handleClickEyeIcon}>
-              {showPassword ? '\uE1EA' : '\uE1E9'}
-            </InputPasswordField>
-          )}
-        </InputWrapper>
-        {noMessageField ? null : (
-          <FieldMessage
-            visible={finalMessage}
-            isSuccess={success}
-            isWarning={warning}
-            isError={error}
-          >
-            {finalMessage}
-          </FieldMessage>
-        )}
-      </FieldWrapper>
+      <FormSetWrapper marginTop={marginTop}>
+        <FormSet>
+          <FormItem>
+            {label && (
+              <FormLabel htmlFor={randomId} required={required}>
+                {label}
+              </FormLabel>
+            )}
+            <FormInput
+              id={randomId}
+              type={typeField ? typeField : 'text'}
+              placeholder={placeholder}
+              name={name}
+              value={value}
+              state={error ? 'invalid' : '' || warning || valid}
+              onChange={e => {
+                const value = e.target.value;
+                this.setState({ value: value });
+                this.validate(value);
+                handleChange(value);
+              }}
+            />
+            {!noMessageField &&
+              finalMessage && (
+                <FormMessage type={error || warning || valid}>
+                  {finalMessage}
+                </FormMessage>
+              )}
+          </FormItem>
+        </FormSet>
+      </FormSetWrapper>
     );
   }
 }

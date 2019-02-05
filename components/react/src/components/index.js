@@ -13,14 +13,23 @@ import H1 from './Header/H1';
 import H2 from './Header/H2';
 import H3 from './Header/H3';
 import H4 from './Header/H4';
+import Label from './Label';
+import Image from './Image';
 import Icon from './Icon';
 import Markdown from './Markdown';
-import Modal from './Modal';
-import InformationModal from './Modal/Information';
-import ConfirmationModal from './Modal/Confirmation';
-import StepsModal from './Modal/Steps';
 import Notification from './Notification';
 import NotificationMessage from './NotificationMessage';
+import {
+  Panel,
+  PanelGrid,
+  PanelBody,
+  PanelHeader,
+  PanelHead,
+  PanelActions,
+  PanelFilters,
+  PanelContent,
+  PanelFooter,
+} from './Panel';
 import Paragraph from './Paragraph';
 import Search from './Search';
 import Separator from './Separator';
@@ -30,8 +39,23 @@ import Tab from './Tabs/Tab';
 import Table from './Table';
 import Text from './Text';
 import ThemeWrapper from './ThemeWrapper';
+import { Tile, TileMedia, TileContent } from './Tile';
+import Token from './Token';
 import Toolbar from './Toolbar';
 import Tooltip from './Tooltip';
+import { MenuItem, MenuList, Menu } from 'fundamental-react';
+import Modal from './Modal';
+import {
+  FormFieldset,
+  FormItem,
+  FormInput,
+  FormLabel,
+  FormSelect,
+  FormSet,
+} from 'fundamental-react';
+import { Counter } from 'fundamental-react';
+
+import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 
 module.exports = {
   Button,
@@ -46,14 +70,21 @@ module.exports = {
   H2,
   H3,
   H4,
+  Label,
+  Image,
   Icon,
   Markdown,
-  Modal,
-  InformationModal,
-  ConfirmationModal,
-  StepsModal,
   Notification,
   NotificationMessage,
+  Panel,
+  PanelGrid,
+  PanelBody,
+  PanelHeader,
+  PanelHead,
+  PanelActions,
+  PanelFilters,
+  PanelContent,
+  PanelFooter,
   Paragraph,
   Search,
   Separator,
@@ -63,6 +94,22 @@ module.exports = {
   Table,
   Text,
   ThemeWrapper,
+  Tile,
+  TileMedia,
+  TileContent,
+  Token,
   Toolbar,
   Tooltip,
+  MenuItem,
+  Menu,
+  MenuList,
+  FormFieldset,
+  FormItem,
+  FormInput,
+  FormLabel,
+  Panel,
+  PanelBody,
+  FormSet,
+  Modal,
+  Counter,
 };

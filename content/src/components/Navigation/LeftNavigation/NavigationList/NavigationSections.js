@@ -147,7 +147,7 @@ function NavigationSections({
     `navigation-items-${groupType}-${rootId}${parentId ? `-${parentId}` : ``}`;
 
   return (
-    <NavigationItems secondary marginTop show={isActiveNav || isClickedNav} data-e2e-id={e2eId}>
+    <NavigationItems marginTop secondary show={isActiveNav || isClickedNav} data-e2e-id={e2eId}>
       {items && items.map(item => renderNavigationItem(item))}
     </NavigationItems>
   );

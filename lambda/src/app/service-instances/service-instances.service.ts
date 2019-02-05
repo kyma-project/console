@@ -19,12 +19,12 @@ export class ServiceInstancesService {
     token: string,
     status?: string,
   ): Observable<ServiceInstancesResponse> {
-    const query = `query ServiceInstances($environment: String!, $status: InstanceStatusType){
-      serviceInstances(environment: $environment, status: $status) {
+    const query = `query ServiceInstances($namespace: String!, $status: InstanceStatusType){
+      serviceInstances(namespace: $namespace, status: $status) {
         name,
         bindable
       }}`;
-    const variables = { environment: namespace, status };
+    const variables = { namespace, status };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
       query,
@@ -38,12 +38,12 @@ export class ServiceInstancesService {
     namespace: string,
     token: string,
   ): Observable<ServiceInstanceResponse> {
-    const query = `query ServiceInstance($name: String!, $environment: String!){
-      serviceInstance(name: $name, environment: $environment) {
+    const query = `query ServiceInstance($name: String!, $namespace: String!){
+      serviceInstance(name: $name, namespace: $namespace) {
         name,
         bindable
       }}`;
-    const variables = { name, environment: namespace };
+    const variables = { name, namespace };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
       query,

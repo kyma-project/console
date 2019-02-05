@@ -1,66 +1,53 @@
 import React from 'react';
 import Moment from 'react-moment';
+
 import { Table, Tooltip } from '@kyma-project/react-components';
+
 import { statusColor } from '../../../commons/helpers';
 
 function ServiceBrokersTable({ data, refetch, loading }) {
-  const table = {
-    title: 'Manage Service Brokers',
-    columns: [
-      {
-        name: 'NAME',
-        size: 0.2,
-        accesor: el => {
-          return el.name;
-        },
-      },
-      {
-        name: 'AGE',
-        size: 0.2,
-        accesor: el => {
-          return (
+  const createTableData = () => {
+    return data.map(broker => {
+      return {
+        rowData: [
+          broker.name,
+          (
             <Moment unix fromNow>
-              {el.creationTimestamp}
+              {broker.creationTimestamp}
             </Moment>
-          );
-        },
-      },
-      {
-        name: 'URL',
-        size: 0.4,
-        accesor: el => {
-          return el.url;
-        },
-      },
-      {
-        name: 'STATUS',
-        size: 0.1,
-        accesor: el => {
-          let type = '';
-          el.status.ready === true ? (type = 'RUNNING') : (type = 'FAILED');
-          return (
-            <Tooltip
-              type={type === 'RUNNING' ? 'success' : 'error'}
-              content={el.status.message}
-              minWidth="250px"
-            >
-              <span style={{ color: statusColor(type), cursor: 'help' }}>
-                {type}
-              </span>
-            </Tooltip>
-          );
-        },
-      },
-    ],
-    data: data,
+          ),
+          broker.url,
+          (_ => {
+            let type = '';
+            broker.status.ready === true ? (type = 'RUNNING') : (type = 'FAILED');
+
+            return (
+              <Tooltip
+                type={type === 'RUNNING' ? 'success' : 'error'}
+                content={broker.status.message}
+                minWidth="250px"
+              >
+                <span style={{ color: statusColor(type), cursor: 'help' }}>
+                  {type}
+                </span>
+              </Tooltip>
+            );
+          })()
+        ]
+      }
+    })
   };
+
+  const title = 'Manage Service Brokers';
+  const headers = ['Name', 'Age', 'Url', 'Status'];
+  const tableData = createTableData();
 
   return (
     <Table
-      title={table.title}
-      columns={table.columns}
-      data={table.data}
-      loading={loading}
+      title={title}
+      headers={headers}
+      tableData={tableData}
+      loadingData={loading}
       notFoundMessage="No Service Brokers found"
     />
   );

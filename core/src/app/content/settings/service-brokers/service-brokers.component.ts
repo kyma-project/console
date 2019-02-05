@@ -5,7 +5,7 @@ import {
   IServiceBroker
 } from '../../../shared/datamodel/k8s/service-broker';
 import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
-import { DataConverter } from '@kyma-project/y-generic-list';
+import { DataConverter } from 'app/generic-list';
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';

@@ -54,9 +54,7 @@ export class ListSearchComponent extends ListFilterComponent
     }
     this.keyUpSubs = fromEvent(this.searchInputElement.nativeElement, 'keyup')
       .pipe(
-        map(function(e: any) {
-          return e.target.value;
-        }),
+        map((e: any) => e.target.value),
         debounceTime(150), // Only run after specified ms without input
         distinctUntilChanged(), // Only if the value has changed
       )

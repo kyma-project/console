@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { CurrentEnvironmentService } from '../../../services/current-environment.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../app.config';
-import { Filter } from '@kyma-project/y-generic-list';
+import { Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
@@ -40,8 +40,8 @@ export class FilteredApisComponent
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
-    const query = `query API($environment: String!, $serviceName: String!) {
-      apis(environment: $environment, serviceName: $serviceName) {
+    const query = `query API($namespace: String!, $serviceName: String!) {
+      apis(namespace: $namespace, serviceName: $serviceName) {
         name
         hostname
         service {
@@ -77,7 +77,7 @@ export class FilteredApisComponent
           `${AppConfig.graphqlApiUrl}`,
           query,
           {
-            environment: this.currentEnvironmentId,
+            namespace: this.currentEnvironmentId,
             serviceName: this.serviceName
           },
           this.graphQLClientService

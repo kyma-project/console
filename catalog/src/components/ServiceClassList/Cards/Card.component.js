@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon, Tooltip } from '@kyma-project/react-components';
+import { Label, Icon, Tooltip } from '@kyma-project/react-components';
 
 import {
   CardWrapper,
   CardContent,
   CardTop,
   CardHeader,
+  CardHeaderContent,
   CardThumbnail,
   CardImage,
-  CardTitle,
-  CardCompany,
   CardDescription,
   CardFooter,
   CardLabelWrapper,
-  CardLabelWithTooltip,
 } from './styled';
 
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
@@ -41,13 +39,14 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
     <CardWrapper data-e2e-id="card">
       <CardContent onClick={onClick} data-e2e-id={`go-to-details-${itemId}`}>
         <CardTop>
-          <CardThumbnail imageUrl={imageUrl}>
-            {imageUrl ? <CardImage src={imageUrl} /> : <Icon icon={'\ue113'} />}
-          </CardThumbnail>
-
           <CardHeader>
-            <CardTitle data-e2e-id="card-title">{title}</CardTitle>
-            <CardCompany>{company}</CardCompany>
+            <CardThumbnail>
+              {imageUrl ? <CardImage size="s" photo={imageUrl} /> : <Icon icon={'\ue113'} />}
+            </CardThumbnail>
+
+            <CardHeaderContent data-e2e-id="card-title" title={title}>
+              {company}
+            </CardHeaderContent>
           </CardHeader>
         </CardTop>
 
@@ -65,11 +64,11 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
                 )) ? (
                   <CardLabelWrapper key={label}>
                     <Tooltip content={labelsDescription[label]}>
-                      <CardLabelWithTooltip>
+                      <Label cursorType="help">
                         {label === 'connected-app'
                           ? labels['connected-app']
                           : label}
-                      </CardLabelWithTooltip>
+                      </Label>
                     </Tooltip>
                   </CardLabelWrapper>
                 ) : null,

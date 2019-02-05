@@ -26,7 +26,7 @@ class ServiceInstanceDetails extends React.Component {
     if (serviceInstance && serviceInstance.loading) {
       return (
         <EmptyList>
-          <Spinner size="40px" color="#32363a" />
+          <Spinner />
         </EmptyList>
       );
     }

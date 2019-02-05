@@ -1,13 +1,13 @@
 import {
   Component,
   Input,
+  Injector,
   Type,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { PlainListComponent } from '../plain-list/plain-list.component';
 import { Observable } from 'rxjs';
-import { Injector } from '@angular/core';
 
 @Component({
   selector: 'y-plain-table',

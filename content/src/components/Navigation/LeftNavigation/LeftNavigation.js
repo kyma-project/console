@@ -1,19 +1,17 @@
-import React, { Fragment } from "react";
+import React from 'react';
+import { Icon } from '@kyma-project/react-components';
+import NavigationList from './NavigationList/NavigationList';
 
-import { Toolbar } from '@kyma-project/react-components';
-import NavigationList from "./NavigationList/NavigationList";
+import { GoBack } from './styled';
 
 function LeftNavigation(props) {
   return (
-    <Fragment>
-      <Toolbar
-        headline="Docs"
-        addSeparator
-        smallText
-        back={props.history.goBack}
-      />
+    <>
+      <GoBack data-e2e-id="go-to-environment" onClick={props.history.goBack}>
+        <Icon size="m" glyph="nav-back" />Back to Environment
+      </GoBack>
       <NavigationList {...props} />
-    </Fragment>
+    </>
   );
 }
 

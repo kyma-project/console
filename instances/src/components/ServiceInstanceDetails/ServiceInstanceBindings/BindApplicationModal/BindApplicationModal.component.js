@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import dcopy from 'deep-copy';
 
 import {
-  ConfirmationModal,
+  Button,
+  Modal,
   Tooltip,
   Separator,
 } from '@kyma-project/react-components';
@@ -14,7 +15,7 @@ import SchemaData from './SchemaData.component';
 import { bindingVariables } from '../InfoButton/variables';
 import InfoButton from '../InfoButton/InfoButton.component';
 
-import { BindApplicationButton, SubSectionTitle } from './styled';
+import { SubSectionTitle } from './styled';
 
 import builder from '../../../../commons/builder';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
@@ -23,7 +24,6 @@ import LuigiClient from '@kyma-project/luigi-client';
 class BindApplicationModal extends React.Component {
   constructor(props) {
     super(props);
-    this.child = React.createRef();
     this.state = this.getInitialState();
   }
 
@@ -74,7 +74,7 @@ class BindApplicationModal extends React.Component {
     const parsedSelectedResource = JSON.parse(selectedResource);
 
     return {
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
         name: checkbox ? createdBindingName : selectedExistingBinding,
       },
@@ -99,12 +99,14 @@ class BindApplicationModal extends React.Component {
       sendNotification,
     } = this.props;
 
+    let success = true;
+
     try {
       let createdBindingName, createdBindingUsageName;
       if (checkbox) {
         let bindingCreateParameters;
-        if (params && params.formData) {
-          bindingCreateParameters = dcopy(params.formData);
+        if (this.state.bindingCreateParameters) {
+          bindingCreateParameters = dcopy(this.state.bindingCreateParameters);
           clearEmptyPropertiesInObject(bindingCreateParameters);
         } else {
           bindingCreateParameters = {};
@@ -135,7 +137,6 @@ class BindApplicationModal extends React.Component {
           createdBindingUsage.data.createServiceBindingUsage.name;
       }
 
-      this.child.child.handleCloseModal();
       if (typeof sendNotification === 'function') {
         sendNotification({
           variables: {
@@ -148,6 +149,7 @@ class BindApplicationModal extends React.Component {
         });
       }
     } catch (e) {
+      success = false;
       this.setState({
         tooltipData: {
           type: 'error',
@@ -158,14 +160,14 @@ class BindApplicationModal extends React.Component {
         },
       });
     }
+    if (success) {
+      this.clearState();
+      LuigiClient.uxManager().removeBackdrop();
+    }
   };
 
   handleConfirmation = () => {
-    if (this.submitBtn) {
-      this.submitBtn.click();
-    } else {
-      this.create();
-    }
+    this.create();
   };
 
   handleOpen = () => {
@@ -251,16 +253,7 @@ class BindApplicationModal extends React.Component {
                 bindingCreateParameterSchema={bindingCreateParameterSchema}
                 onSubmitSchemaForm={this.create}
                 callback={this.callback}
-              >
-                {/* Styled components don't work here */}
-                <button
-                  className="hidden"
-                  type="submit"
-                  ref={submitBtn => (this.submitBtn = submitBtn)}
-                >
-                  Submit
-                </button>
-              </SchemaData>
+              />
             )}
           </Fragment>
         )}
@@ -274,9 +267,9 @@ class BindApplicationModal extends React.Component {
     ];
 
     const bindApplicationButton = (
-      <BindApplicationButton data-e2e-id={id} onClick={this.handleOpen}>
+      <Button compact option="light" data-e2e-id={id} onClick={this.handleOpen}>
         + Bind Application
-      </BindApplicationButton>
+      </Button>
     );
 
     if (serviceInstance.status.type !== 'RUNNING') {
@@ -290,9 +283,9 @@ class BindApplicationModal extends React.Component {
           }
           minWidth="161px"
         >
-          <BindApplicationButton disabled={true}>
+          <Button compact option="light" disabled={true}>
             + Bind Application
-          </BindApplicationButton>
+          </Button>
         </Tooltip>
       );
     }
@@ -308,33 +301,40 @@ class BindApplicationModal extends React.Component {
           }
           minWidth="161px"
         >
-          <BindApplicationButton disabled={true}>
+          <Button compact option="light" disabled={true}>
             + Bind Application
-          </BindApplicationButton>
+          </Button>
         </Tooltip>
       );
     }
 
+    const title = (
+      <>
+        <span>{'Bind Application'}</span>
+        <InfoButton
+          content={bindingVariables.serviceBingingUsage}
+          orientation="bottom"
+        />
+      </>
+    );
+
     return (
-      <ConfirmationModal
-        ref={modal => {
-          this.child = modal;
-        }}
+      <Modal
+        width="681px"
         key={serviceInstance.name}
-        title={'Bind Application'}
-        confirmText="Create"
-        cancelText="Cancel"
-        content={content}
-        handleConfirmation={this.handleConfirmation}
+        type={'emphasized'}
+        title={title}
+        confirmText="Bind Application"
+        onConfirm={this.handleConfirmation}
         modalOpeningComponent={bindApplicationButton}
-        disabled={disabled}
+        disabledConfirm={disabled}
         tooltipData={tooltipData}
-        borderFooter={true}
         handleClose={this.clearState}
-        headerAdditionalInfo={bindingVariables.serviceBingingUsage}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
         onHide={() => LuigiClient.uxManager().removeBackdrop()}
-      />
+      >
+        {content}
+      </Modal>
     );
   }
 }

@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LambdasComponent } from './lambdas/list/lambdas.component';
 import { LambdaDetailsComponent } from './lambdas/lambda-details/lambda-details.component';
 import { Router } from '@angular/router';
-import { ListModule } from '@kyma-project/y-generic-list';
+import { ListModule } from 'app/generic-list';
 import { FormsModule } from '@angular/forms';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ClickOutsideModule } from 'ng-click-outside';

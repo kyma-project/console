@@ -1,4 +1,5 @@
 import React from "react";
+import { Icon } from "@kyma-project/react-components";
 
 import NavigationSections from "./NavigationSections";
 import {
@@ -13,6 +14,7 @@ import {
 
 function NavigationGroup({
   title,
+  icon,
   items = [],
   groupType,
   isLinkActive,
@@ -87,7 +89,7 @@ function NavigationGroup({
 
   return (
     <NavigationContainer>
-      {title && <NavigationHeader>{title}</NavigationHeader>}
+      {title && icon && <NavigationHeader><Icon size="m" glyph={icon} />{title}</NavigationHeader>}
       <NavigationItems showAll>
         {items.map(item => renderNavigationItem(item))}
       </NavigationItems>

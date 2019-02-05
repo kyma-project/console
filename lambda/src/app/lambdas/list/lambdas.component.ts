@@ -14,11 +14,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
-import {
-  Filter,
-  GenericTableComponent,
-  DataConverter,
-} from '@kyma-project/y-generic-list';
+import { Filter, GenericTableComponent, DataConverter } from 'app/generic-list';
 
 import { LambdasEntryRendererComponent } from './lambdas-entry-renderer/lambdas-entry-renderer.component';
 import { LambdasHeaderRendererComponent } from './lambdas-header-renderer/lambdas-header-renderer.component';
