@@ -30,8 +30,8 @@ const resourceQuotaLimitExceeded = {
 
 const graphlQLClientServiceMock = {
   request: (url = '', query, variables) => {
-    switch (variables.environment) {
-      case 'environment':
+    switch (variables.namespace) {
+      case 'namespace':
         return of(resourceQuotaLimitOK);
       default:
         return of(resourceQuotaLimitExceeded);
@@ -248,7 +248,7 @@ describe('EnvironmentsService', () => {
 
   it('should return the status of resource quota with an empty list if everything is ok', done => {
     // given
-    const environment = 'environment';
+    const environment = 'namespace';
 
     // when
     const result = environmentsService.getResourceQueryStatus(environment);

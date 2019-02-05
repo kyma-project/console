@@ -66,7 +66,7 @@ class CreateBindingModal extends React.Component {
 
     return {
       name: nameServiceBindingUsage,
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
         name: checkbox ? nameServiceBinding : selectedExistingBinding,
       },

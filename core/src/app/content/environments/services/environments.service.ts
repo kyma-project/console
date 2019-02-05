@@ -25,12 +25,12 @@ export class EnvironmentsService {
       .pipe(
         map(
           response => {
-            const environments: EnvironmentInfo[] = [];
+            const namespaces: EnvironmentInfo[] = [];
 
             if (response.items) {
               response.items.forEach(namespace => {
                 if (namespace.status.phase === 'Active') {
-                  environments.push(
+                  namespaces.push(
                     new EnvironmentInfo(
                       namespace.metadata.uid,
                       namespace.metadata.name
@@ -39,7 +39,7 @@ export class EnvironmentsService {
                 }
               });
             }
-            return environments;
+            return namespaces;
           },
           err => console.log(err)
         )
@@ -62,11 +62,11 @@ export class EnvironmentsService {
       );
   }
 
-  public createEnvironment(environmentName: string) {
+  public createEnvironment(namespaceName: string) {
     const body = {
-      metadata: { name: environmentName, labels: { env: 'true' } }
+      metadata: { name: namespaceName, labels: { env: 'true' } }
     };
-    if (environmentName) {
+    if (namespaceName) {
       return this.http
         .post<any>(`${AppConfig.k8sApiServerUrl}namespaces`, body, {
           headers: new HttpHeaders().set('Content-Type', 'application/json')
@@ -83,10 +83,10 @@ export class EnvironmentsService {
     }
   }
 
-  public deleteEnvironment(environmentName: string) {
-    if (environmentName) {
+  public deleteEnvironment(namespaceName: string) {
+    if (namespaceName) {
       return this.http
-        .delete(`${AppConfig.k8sApiServerUrl}namespaces/${environmentName}`)
+        .delete(`${AppConfig.k8sApiServerUrl}namespaces/${namespaceName}`)
         .pipe(
           map(response => {
             this.envChangeStateEmitter$.emit(true);
@@ -96,9 +96,9 @@ export class EnvironmentsService {
     }
   }
 
-  public getResourceQueryStatus(environment: string) {
-    const query = `query ResourceQuotasStatus($environment: String!) {
-      resourceQuotasStatus(environment: $environment){
+  public getResourceQueryStatus(namespace: string) {
+    const query = `query ResourceQuotasStatus($namespace: String!) {
+      resourceQuotasStatus(namespace: $namespace){
         exceeded
         exceededQuotas{
           quotaName
@@ -109,7 +109,7 @@ export class EnvironmentsService {
     }`;
 
     const variables = {
-      environment
+      namespace
     };
 
     return this.graphQLClientService.request(

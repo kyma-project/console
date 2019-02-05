@@ -15,17 +15,17 @@ export default {
       try {
         let result = cache.readQuery({
           query: gql`
-              query serviceClassesFilterData($environment: String!) {
+              query serviceClassesFilterData($namespace: String!) {
                 clusterServiceClasses {
                   ${serviceClassesFilterDataQGL}
                 }
-                serviceClasses(environment: $environment) {
+                serviceClasses(namespace: $namespace) {
                   ${serviceClassesFilterDataQGL}
                 }
               }
             `,
           variables: {
-            environment: builder.getCurrentEnvironmentId(),
+            namespace: builder.getCurrentEnvironmentId(),
           },
         });
         result =
@@ -188,17 +188,17 @@ export default {
       `;
       let classes = cache.readQuery({
         query: gql`
-          query serviceClasses($environment: String!) {
+          query serviceClasses($namespace: String!) {
             clusterServiceClasses {
               ${serviceClassesQGL}
             }
-            serviceClasses(environment: $environment) {
+            serviceClasses(namespace: $namespace) {
               ${serviceClassesQGL}
             }
           }
         `,
         variables: {
-          environment: args.environment,
+          namespace: args.namespace,
         },
       });
       classes =

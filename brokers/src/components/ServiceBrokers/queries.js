@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
 
 export const BROKERS_QUERY = gql`
-  query ServiceBrokers($environment: String!) {
-    serviceBrokers(environment: $environment) {
+  query ServiceBrokers($namespace: String!) {
+    serviceBrokers(namespace: $namespace) {
       name
-      environment
+      namespace
       creationTimestamp
       url
       labels
