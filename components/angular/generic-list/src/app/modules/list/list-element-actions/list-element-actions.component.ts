@@ -12,6 +12,7 @@ import {
   styleUrls: ['./list-element-actions.component.scss'],
 })
 export class ListElementActionsComponent {
+  // tslint:disable:no-unnecessary-semicolons
   @Input() entry: any;
   @Input() entryEventHandler: any;
   @Input() actions: any[];
@@ -19,12 +20,13 @@ export class ListElementActionsComponent {
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
-  handlePopoverClick(event) {
+  handlePopoverClick(event: Event): void {
     event.stopPropagation();
+    this.fireClick(document);
     if (this.popover && typeof this.popover.onClickHandler === 'function') {
       this.popover.onClickHandler(event);
     } else {
-      console.warn("Could not fire Popover's built-in click event");
+      console.warn(`Could not fire Popover's built-in click event`);
     }
   }
 
@@ -51,6 +53,17 @@ export class ListElementActionsComponent {
           ? entry.metadata.name
           : entry.toString();
     }
+
     return entry;
   };
+
+  private fireClick(node: Document): void {
+    if (document.createEvent) {
+      const evt = document.createEvent('MouseEvents');
+      evt.initEvent('click', true, false);
+      node.dispatchEvent(evt);
+    } else if (typeof node.onclick === 'function') {
+      node.onclick(new MouseEvent('click'));
+    }
+  }
 }
