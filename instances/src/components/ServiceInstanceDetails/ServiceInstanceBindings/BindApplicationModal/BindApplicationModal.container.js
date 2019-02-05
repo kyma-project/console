@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql, withApollo, compose } from 'react-apollo';
 
-import { USAGE_KIND_RESOURCES_QUERY, USAGE_KINDS_QUERY } from './queries';
+import { BINDABLE_RESOURCES_QUERY, USAGE_KINDS_QUERY } from './queries';
 import { SEND_NOTIFICATION } from '../mutations';
 
 import BindApplicationModal from './BindApplicationModal.component';
@@ -9,11 +9,10 @@ import BindApplicationModal from './BindApplicationModal.component';
 import builder from '../../../../commons/builder';
 
 const BindApplicationContainer = ({ client, ...props }) => {
-  const fetchUsageKindResources = usageKind => {
+  const fetchBindableResources = () => {
     return client.query({
-      query: USAGE_KIND_RESOURCES_QUERY,
+      query: BINDABLE_RESOURCES_QUERY,
       variables: {
-        usageKind: usageKind,
         namespace: builder.getCurrentEnvironmentId(),
       },
       fetchPolicy: 'network-only',
@@ -21,7 +20,7 @@ const BindApplicationContainer = ({ client, ...props }) => {
   };
   return (
     <BindApplicationModal
-      fetchUsageKindResources={fetchUsageKindResources}
+      fetchBindableResources={fetchBindableResources}
       {...props}
     />
   );
