@@ -4,8 +4,9 @@
   "description": "UI Integration tests for the Kyma ",
   "main": "index.js",
   "scripts": {
-    "test": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) jest -i --forceExit --detectOpenHandles",
+    "test": "LOCAL_DEV=true OUTSIDE_CLUSTER=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) jest -i --forceExit --detectOpenHandles",
     "test:cluster": "jest -i --forceExit --detectOpenHandles",
+    "test:cluster-outside": "OUTSIDE_CLUSTER=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) jest -i --forceExit --detectOpenHandles",
     "test:watch": "LOCAL_DEV=true jest --watch",
     "test:watch:cluster": "jest --watch"
   },

@@ -4,7 +4,7 @@ import config from '../config';
 export const loadKubeConfig = () => {
   const kubeConfig = new k8s.KubeConfig();
 
-  if (!config.localdev) {
+  if (!config.outsideCluster) {
     kubeConfig.loadFromCluster();
     return kubeConfig;
   }

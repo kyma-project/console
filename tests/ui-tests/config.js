@@ -21,5 +21,8 @@ module.exports = {
     uploadThroughput: 256000
   },
   defaultNavigationTimeout: 60000,
+  outsideCluster: process.env.OUTSIDE_CLUSTER
+    ? process.env.OUTSIDE_CLUSTER
+    : false,
   kubeConfigPath: process.env.KUBECONFIG ? process.env.KUBECONFIG : undefined
 };

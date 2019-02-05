@@ -21,9 +21,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
     jest.setTimeout(240 * 1000);
     try {
-      console.log('>> Install');
       await testBundleInstaller.install();
-      console.log('>> After Install');
     } catch (err) {
       await testBundleInstaller.cleanup();
       throw new Error('Failed to install test bundle:', err);
@@ -48,9 +46,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       });
 
       await kymaConsole.testLogin(page);
-      await page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0']
-      });
     } catch (e) {
       throw e;
     }
@@ -58,7 +53,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
   afterAll(async () => {
     await testBundleInstaller.cleanup();
-    await browser.close();
+    if (browser) {
+      await browser.close();
+    }
   });
 
   test('Check service class list', async () => {
