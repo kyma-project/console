@@ -2,19 +2,20 @@ import config from '../config';
 import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
-import logOnEvents from '../utils/logging';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+import { retry } from '../utils/retry';
 
 let browser, page;
 let token = '';
 
 describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   beforeAll(async () => {
-    const data = await common.beforeAll();
-    browser = data.browser;
-    page = data.page;
-    logOnEvents(page, t => (token = t));
+    await retry(async () => {
+      const data = await common.beforeAll(t => (token = t));
+      browser = data.browser;
+      page = data.page;
+    });
   });
 
   afterAll(async () => {

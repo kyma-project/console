@@ -3,23 +3,20 @@ import serviceClassConfig from '../utils/serviceClassConfig';
 import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
 import common from '../commands/common';
-import logOnEvents from '../utils/logging';
 import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 
 import { TestBundleInstaller } from '../setup/test-bundle-installer';
+import { retry } from '../utils/retry';
 
 const TEST_NAMESPACE = 'service-catalog-ui-test';
 const testBundleInstaller = new TestBundleInstaller(TEST_NAMESPACE);
 
-const context = require('../utils/testContext');
 let page, browser;
-let token = '';
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
-    jest.setTimeout(240 * 1000);
     try {
       await testBundleInstaller.install();
     } catch (err) {
@@ -27,28 +24,11 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       throw new Error('Failed to install test bundle:', err);
     }
 
-    try {
+    await retry(async () => {
       const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      logOnEvents(page, t => (token = t));
-      //throw an error for NETWORK_CHANGED at a POST request so that it can be retried
-      page.on('requestfailed', request => {
-        if (
-          request._method === 'POST' &&
-          request._failureText === 'net::ERR_NETWORK_CHANGED'
-        ) {
-          console.log(
-            'Error net::ERR_NETWORK_CHANGED during POST request. Operation will be retried'
-          );
-          throw new Error('ERR_NETWORK_CHANGED');
-        }
-      });
-
-      await kymaConsole.testLogin(page);
-    } catch (e) {
-      throw e;
-    }
+    });
   });
 
   afterAll(async () => {
@@ -187,7 +167,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     // consts
     const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
 
-    await common.retry(page, async () => {
+    await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
       await catalog.createInstance(page, instanceTitle, instanceLabel);
     });
@@ -207,7 +187,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       })
     ]);
     await frame.waitForSelector(addToEnvButton, { visible: true });
-    await common.retry(page, async () => {
+    await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
       await catalog.createInstance(page, instanceTitle2, instanceLabel2);
     });

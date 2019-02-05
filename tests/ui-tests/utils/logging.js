@@ -20,7 +20,9 @@ module.exports = function(page, callback) {
       if (config.verbose) {
         console.log(request._headers.authorization);
       }
-      callback(request._headers.authorization);
+      if (typeof callback === 'function') {
+        callback(request._headers.authorization);
+      }
     }
   });
 

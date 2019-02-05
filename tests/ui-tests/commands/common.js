@@ -1,8 +1,10 @@
 import config from '../config';
 import address from '../utils/address';
+import kymaConsole from './console';
+import logOnEvents from '../utils/logging';
 const context = require('../utils/testContext');
 
-async function beforeAll() {
+async function beforeAll(tokenCallback) {
   const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
 
@@ -38,25 +40,26 @@ async function beforeAll() {
     console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
     browser.close();
   });
+  page.on('requestfailed', request => {
+    const errText = request.failure().errorText;
+    if (
+      request.method() !== 'POST' ||
+      (errText !== 'net::ERR_NETWORK_CHANGED' && errText !== 'net::ERR_FAILED')
+    ) {
+      console.log(
+        `Request failed:\nURL: ${request.url()} \nMethod: ${request.method()}\nFailure: ${request.failure()}`
+      );
+      return;
+    }
+
+    throw new Error(
+      `Request failed:\nURL: ${request.url()} \nMethod: ${request.method()}\nFailure: ${request.failure()}`
+    );
+  });
+  logOnEvents(page, tokenCallback);
+  await kymaConsole.testLogin(page);
   return { page, browser };
 }
-
-async function retry(page, functionToRetry, retryNumber = 3) {
-  for (let i = 1; i <= retryNumber; i++) {
-    console.log('Retrying... Attempt No. ' + i + ' of ' + retryNumber);
-    try {
-      return await functionToRetry();
-    } catch (e) {
-      if (i === retryNumber) {
-        console.log('Retry failed:', e);
-        throw e;
-      }
-      await page.waitFor(2000);
-    }
-  }
-}
-
 module.exports = {
-  beforeAll,
-  retry
+  beforeAll
 };
