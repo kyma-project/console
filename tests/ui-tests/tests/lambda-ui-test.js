@@ -47,6 +47,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 });
   testPluggable(REQUIRED_MODULE, 'Create Lambda Function', async () => {
     const contentHeader = 'li.fd-side-nav__title';
+    const testLambda = 'testlambda';
 
     await page.waitForSelector(contentHeader);
     const navItem = 'a.fd-side-nav__link';
@@ -68,7 +69,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const frame2 = await kymaConsole.getFrame(page);
     const input = '#input-1';
     await frame2.waitForSelector(input);
-    await frame2.type(input, config.testLambda);
+    await frame2.type(input, testLambda);
     const createLambdaButton = '.tn-button.tn-button--small.sf-button--primary';
     await frame2.$eval(createLambdaButton, btn => btn.click());
 

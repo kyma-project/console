@@ -9,8 +9,6 @@ module.exports = {
   headless: process.env.HEADLESS || false,
   viewportWidth: process.env.WIDTH || 1400,
   viewportHeight: process.env.HEIGHT || 1080,
-  lambdaTestEnv: process.env.LAMBDA_TEST_ENV || 'lambdatestenvironment',
-  testLambda: process.env.TEST_LAMBDA || 'testlambda',
   catalogTestingAtribute: 'data-e2e-id',
   verbose: process.env.VERBOSE || false,
   dexConfig: process.env.DEX_CONFIG || '/etc/dex/cfg/config.yaml',
