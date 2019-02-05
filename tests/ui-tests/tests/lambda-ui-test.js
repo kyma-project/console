@@ -5,12 +5,24 @@ import common from '../commands/common';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import { retry } from '../utils/retry';
+import {
+  testPluggable,
+  isModuleEnabled,
+  logModuleDisabled
+} from '../setup/test-pluggable';
 
 let browser, page;
 let token = '';
 
+const REQUIRED_MODULE = 'kubeless';
+
 describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   beforeAll(async () => {
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'beforeAll');
+      return;
+    }
+
     await retry(async () => {
       const data = await common.beforeAll(t => (token = t));
       browser = data.browser;
@@ -19,15 +31,22 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   });
 
   afterAll(async () => {
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'afterAll');
+      return;
+    }
+
     await lambdas.clearData(token);
-    await browser.close();
+    if (browser) {
+      await browser.close();
+    }
   });
 
-  test('Login to console', async () => {
+  testPluggable(REQUIRED_MODULE, 'Login to console', async () => {
     await kymaConsole.testLogin(page);
   });
 
-  test('Create Lambda Function', async () => {
+  testPluggable(REQUIRED_MODULE, 'Create Lambda Function', async () => {
     const contentHeader = '.sf-toolbar__header';
 
     // given (go to Lambdas view)
@@ -79,7 +98,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     expect(expectedNumberOfLambdas).toBe(previousNumberOfLambdas + 1);
   });
 
-  test('Delete Lambda Function', async () => {
+  testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
     const frame = await kymaConsole.getFrame(page);
     const dropdownButton = '.tn-button.tn-button--icon.tn-button--text';

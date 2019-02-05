@@ -1,11 +1,10 @@
 import * as k8s from '@kubernetes/client-node';
-import { loadKubeConfig } from './kubeconfig';
+import { kubeConfig } from './kubeconfig';
 import { NamespaceManager } from './namespace-manager';
 import { HelmBrokerConfigurer } from './helm-broker/configurer';
 
 export class TestBundleInstaller {
   constructor(namespace) {
-    const kubeConfig = loadKubeConfig();
     const coreApiClient = kubeConfig.makeApiClient(k8s.Core_v1Api);
     this.namespaceManager = new NamespaceManager(coreApiClient, namespace);
 

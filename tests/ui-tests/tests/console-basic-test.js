@@ -5,9 +5,13 @@ import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import address from '../utils/address';
 import { retry } from '../utils/retry';
+import { testPluggable } from '../setup/test-pluggable';
 
 let page, browser;
 let token = '';
+
+// TODO: Move application tests to a separate file
+const REQUIRED_MODULE = 'application';
 
 describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   beforeAll(async () => {
@@ -20,7 +24,9 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
 
   afterAll(async () => {
     await kymaConsole.clearData(token, config.testEnv);
-    await browser.close();
+    if (browser) {
+      await browser.close();
+    }
   });
 
   test('Check if envs exist', async () => {
@@ -85,7 +91,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 
-  test('Create Application', async () => {
+  testPluggable(REQUIRED_MODULE, 'Create Application', async () => {
     await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
       await kymaConsole.createRemoteEnvironment(page, config.testEnv);
@@ -97,7 +103,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     expect(remoteEnvironments).toContain(config.testEnv);
   });
 
-  test('Go to details and back', async () => {
+  testPluggable(REQUIRED_MODULE, 'Go to details and back', async () => {
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForXPath(
       `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
@@ -120,7 +126,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     );
   });
 
-  test('Delete Application', async () => {
+  testPluggable(REQUIRED_MODULE, 'Delete Application', async () => {
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForXPath(
       `//div[contains(@class, 'remoteenv-name') and contains(string(), "${

@@ -9,14 +9,27 @@ import dex from '../utils/dex';
 
 import { TestBundleInstaller } from '../setup/test-bundle-installer';
 import { retry } from '../utils/retry';
+import {
+  testPluggable,
+  isModuleEnabled,
+  logModuleDisabled
+} from '../setup/test-pluggable';
 
 const TEST_NAMESPACE = 'service-catalog-ui-test';
+const REQUIRED_MODULE = 'servicecatalog';
+
 const testBundleInstaller = new TestBundleInstaller(TEST_NAMESPACE);
 
 let page, browser;
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'beforeAll');
+      return;
+    }
+
+    jest.setTimeout(240 * 1000);
     try {
       await testBundleInstaller.install();
     } catch (err) {
@@ -32,13 +45,18 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   });
 
   afterAll(async () => {
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'afterAll');
+      return;
+    }
+
     await testBundleInstaller.cleanup();
     if (browser) {
       await browser.close();
     }
   });
 
-  test('Check service class list', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check service class list', async () => {
     // Hardcodes for specific service class
     const exampleServiceClassName = serviceClassConfig.exampleServiceClassName;
 
@@ -79,7 +97,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await searchInput.press('Backspace');
   });
 
-  test('Check filters', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check filters', async () => {
     // consts
     const filterDropdownButton = catalog.prepareSelector('toggle-filter');
     const filterWrapper = catalog.prepareSelector('wrapper-filter');
@@ -123,7 +141,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     expect(currectActiveFiltersAfterClear.length).toEqual(0);
   });
 
-  test('Check details', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check details', async () => {
     // Hardcodes for specific service class
     const exampleServiceClassButton =
       serviceClassConfig.exampleServiceClassButton;
@@ -154,7 +172,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     expect(description.toString()).not.toBeNull();
   });
 
-  test('Check provisioning', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check provisioning', async () => {
     // Hardcodes for specific service class / page
     const catalogUrl = address.console.getCatalog(TEST_NAMESPACE);
     const instanceTitle = serviceClassConfig.instanceTitle;
@@ -193,7 +211,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     });
   });
 
-  test('Check instances list', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check instances list', async () => {
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
     const instancesUrl = address.console.getInstancesList(TEST_NAMESPACE);
@@ -235,7 +253,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await searchInput.press('Backspace');
   });
 
-  test('Check details', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check details', async () => {
     // Hardcodes for specific service class
     const exampleInstanceLink = catalog.prepareSelector(
       `instance-name-${serviceClassConfig.instanceTitle}`
