@@ -12,7 +12,7 @@
   "dependencies": {
     "@angular/router": "^7.2.1",
     "fiori-fundamentals": "^1.4.1",
-    "fundamental-ngx": "0.0.29-beta",
+    "fundamental-ngx": "0.0.31",
     "fundamental-ui": "^1.2.2",
     "ng-click-outside": "^4.0.0"
   },
