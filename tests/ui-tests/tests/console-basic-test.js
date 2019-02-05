@@ -131,19 +131,15 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       page
     );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-    const remoteEnvironments = await common.retry(
-      page,
-      async () => {
-        const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
-          page
-        );
-        if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
-          throw new Error(`Application ${config.testEnv} was not yet removed`);
-        }
-        return remoteEnvironmentsAfterRemoval;
-      },
-      5
-    );
+    const remoteEnvironments = await retry(async () => {
+      const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
+        page
+      );
+      if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
+        throw new Error(`Application ${config.testEnv} was not yet removed`);
+      }
+      return remoteEnvironmentsAfterRemoval;
+    }, 5);
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 });

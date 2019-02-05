@@ -4,6 +4,23 @@ import kymaConsole from './console';
 import logOnEvents from '../utils/logging';
 const context = require('../utils/testContext');
 
+const retryFailedRequestListener = request => {
+  const errText = request.failure().errorText;
+  const text = `Request failed:\nURL: ${request.url()} \nMethod: ${request.method()}\nFailure: ${
+    request.failure().errorText
+  }`;
+
+  if (
+    request.method() !== 'POST' ||
+    (errText !== 'net::ERR_NETWORK_CHANGED' && errText !== 'net::ERR_FAILED')
+  ) {
+    console.log(text);
+    return;
+  }
+
+  throw new Error(text);
+};
+
 async function beforeAll(tokenCallback) {
   const consoleUrl = address.console.getConsole();
   let browser = await context.getBrowser();
@@ -40,24 +57,12 @@ async function beforeAll(tokenCallback) {
     console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
     browser.close();
   });
-  page.on('requestfailed', request => {
-    const errText = request.failure().errorText;
-    if (
-      request.method() !== 'POST' ||
-      (errText !== 'net::ERR_NETWORK_CHANGED' && errText !== 'net::ERR_FAILED')
-    ) {
-      console.log(
-        `Request failed:\nURL: ${request.url()} \nMethod: ${request.method()}\nFailure: ${request.failure()}`
-      );
-      return;
-    }
-
-    throw new Error(
-      `Request failed:\nURL: ${request.url()} \nMethod: ${request.method()}\nFailure: ${request.failure()}`
-    );
-  });
+  page.on('requestfailed', retryFailedRequestListener);
   logOnEvents(page, tokenCallback);
+
   await kymaConsole.testLogin(page);
+
+  page.removeListener('requestfailed', retryFailedRequestListener);
   return { page, browser };
 }
 module.exports = {
