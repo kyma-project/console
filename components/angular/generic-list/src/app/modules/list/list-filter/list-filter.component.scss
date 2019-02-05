@@ -1,27 +1,7 @@
-$middle-blue: #009cdf;
-$circle-font-color: #fff;
-$disabled-color: #7f90a4;
-
-.tn-button {
-  outline: none;
-  box-shadow: none;
-
-  &--disabled {
-    color: $disabled-color;
-    cursor: not-allowed;
-  }
-}
 
 .fd-button {
   margin-left: 0.5rem;
-  .fd-badge {
-    vertical-align: text-bottom;
   }
-}
-
-.actions-menu--disabled {
-  display: none;
-}
 
 input[type='checkbox']:checked::after {
   content: none;
