@@ -8,12 +8,17 @@ This project contains UI acceptance tests for Kyma.
 
 If you do not have the dependencies installed through Lerna, use the `npm install` command to install them.
 
-To run all acceptance tests from the [local cluster](https://console.kyma.local), use the following command:
+To run all acceptance tests inside the [local cluster](https://console.kyma.local), use the following command:
 ```
 npm run test:cluster
 ```
 
-To run all acceptance tests from `http://console-dev.kyma.local:4200`, use the following command:
+To run all acceptance tests outside the [local cluster](https://console.kyma.local), use the following command:
+```
+npm run test:cluster-outside
+```
+
+To run all acceptance tests on `http://console-dev.kyma.local:4200`, use the following command:
 ```
 npm run test
 ```
