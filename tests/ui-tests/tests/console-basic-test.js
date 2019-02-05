@@ -1,38 +1,21 @@
 import config from '../config';
 import kymaConsole from '../commands/console';
 import common from '../commands/common';
-import logOnEvents from '../utils/logging';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import address from '../utils/address';
+import { retry } from '../utils/retry';
 
 let page, browser;
 let token = '';
 
 describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   beforeAll(async () => {
-    try {
-      const data = await common.beforeAll();
+    await retry(async () => {
+      const data = await common.beforeAll(t => (token = t));
       browser = data.browser;
       page = data.page;
-      logOnEvents(page, t => (token = t));
-
-      //throw an error for NETWORK_CHANGED at a POST request so that it can be retried
-      page.on('requestfailed', request => {
-        if (
-          request._method === 'POST' &&
-          request._failureText === 'net::ERR_NETWORK_CHANGED'
-        ) {
-          console.log(
-            'Error net::ERR_NETWORK_CHANGED during POST request. Operation will be retried'
-          );
-          throw new Error('ERR_NETWORK_CHANGED');
-        }
-      });
-      await kymaConsole.testLogin(page);
-    } catch (e) {
-      throw e;
-    }
+    });
   });
 
   afterAll(async () => {
@@ -72,7 +55,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       page
     );
     await kymaConsole.deleteEnvironment(page, config.testEnv);
-    const environmentNames = await common.retry(page, async () => {
+    const environmentNames = await retry(async () => {
       const environmentNamesAfterDelete = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
         page
       );
@@ -103,7 +86,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   test('Create Application', async () => {
-    await common.retry(page, async () => {
+    await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
       await kymaConsole.createRemoteEnvironment(page, config.testEnv);
     });
@@ -148,19 +131,15 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       page
     );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-    const remoteEnvironments = await common.retry(
-      page,
-      async () => {
-        const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
-          page
-        );
-        if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
-          throw new Error(`Application ${config.testEnv} was not yet removed`);
-        }
-        return remoteEnvironmentsAfterRemoval;
-      },
-      5
-    );
+    const remoteEnvironments = await retry(async () => {
+      const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
+        page
+      );
+      if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
+        throw new Error(`Application ${config.testEnv} was not yet removed`);
+      }
+      return remoteEnvironmentsAfterRemoval;
+    }, 5);
     expect(remoteEnvironments).not.toContain(config.testEnv);
   });
 });

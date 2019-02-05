@@ -1,6 +1,5 @@
 import request from 'request';
 import address from '../utils/address';
-import common from './common';
 import config from '../config';
 
 async function testLogin(page) {

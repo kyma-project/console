@@ -5,20 +5,17 @@ import docs from '../commands/docs';
 import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+import { retry } from '../utils/retry';
 
-const context = require('../utils/testContext');
 let page, browser;
 
 describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   beforeAll(async () => {
-    try {
+    await retry(async () => {
       const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      await kymaConsole.testLogin(page);
-    } catch (e) {
-      throw e;
-    }
+    });
   });
 
   afterAll(async () => {
@@ -116,7 +113,9 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       kymaDetailsItems,
       'maxHeight'
     );
-    expect(kymaDetailsItemsStylesAfterSecondClick).toEqual(expectedCollapsedHeight);
+    expect(kymaDetailsItemsStylesAfterSecondClick).toEqual(
+      expectedCollapsedHeight
+    );
 
     await Promise.all([
       frame.click(serviceCatalogLink),
