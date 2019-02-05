@@ -54,13 +54,6 @@ export class ListSearchComponent extends ListFilterComponent
     });
   }
 
-  closeSearch(event) {
-    event.stopPropagation();
-    this.searching = false;
-    this.searchText = '';
-    this.searchTextChange('');
-  }
-
   closeIfEmpty() {
     if (!this.searchText) {
       this.searching = false;

@@ -13,5 +13,4 @@
     "module": "es2015",
     "baseUrl": "./"
   }
-  //"paths": { "@angular/*": ["../../../core/node_modules/@angular/*"] }
 }
