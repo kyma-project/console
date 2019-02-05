@@ -39,17 +39,18 @@ class BackendModuleFetcher {
 const moduleFetcher = new BackendModuleFetcher();
 
 export const testPluggable = (requiredModule, name, fn) => {
-  return test(name, async done => {
+  return test(name, async () => {
     await moduleFetcher.fetchIfShould();
 
     if (!moduleFetcher.isModuleEnabled(requiredModule)) {
-      console.log(
-        `Module ${requiredModule} is disabled. Skipping test ${name}...`
-      );
-      return done();
+      return () => {
+        console.log(
+          `Module ${requiredModule} is disabled. Skipping test ${name}...`
+        );
+      };
     }
 
-    return await fn(done);
+    return fn();
   });
 };
 
