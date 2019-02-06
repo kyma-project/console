@@ -17,7 +17,7 @@ To use the package in a component, perform the following steps:
     ```
    in your project directory.
 
-2. Add `"preserveSymlinks": true` to `angular.json` test and build options. Or alternatively add `--preserve-symlink` option to `ng test` and `ng build`. 
+2. Add `"preserveSymlinks": true` to `angular.json` test and build options. Alternatively, add `--preserve-symlink` option to `ng test` and `ng build`. 
 
 3. Include 
     ```
