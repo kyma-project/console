@@ -24,14 +24,18 @@ export class ListElementActionsComponent {
     event.stopPropagation();
     this.fireClick(document);
     if (this.popover && typeof this.popover.onClickHandler === 'function') {
-      !wasPopoverOpened && this.popover.onClickHandler(event);
+      if (!wasPopoverOpened) {
+        this.popover.onClickHandler(event);
+      }
     } else {
       console.warn(`Could not fire Popover's built-in click event`);
     }
   }
 
   executeAction(action: string, event) {
-    this.popover && this.popover.close();
+    if (this.popover) {
+      this.popover.close();
+    }
     event.stopPropagation();
     const functionName = action['function'];
     if (
