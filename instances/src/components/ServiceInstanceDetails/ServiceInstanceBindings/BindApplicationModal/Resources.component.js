@@ -15,7 +15,7 @@ class Resources extends React.Component {
     this.state = {
       selectedResource: props.data.selectedResource,
       resourcesFilled: props.data.resourcesFilled,
-      usageKindResources: props.data.usageKindResources,
+      bindableResources: props.data.bindableResources,
       usageKindResourcesLoading: false,
       showPrefixInput: false,
       prefixEnvironmentValue: '',
@@ -71,25 +71,32 @@ class Resources extends React.Component {
   getResources = async () => {
     this.setState({
       usageKindResourcesLoading: true,
-      usageKindResources: null,
+      bindableResources: null,
     });
 
     const { usageKinds } = this.props;
     let response = [];
-
     for (let i = 0; i < usageKinds.length; i++) {
       const usageKind = usageKinds[i];
-      if (usageKind.name) {
+      let resources = [];
+      (await this.props.fetchBindableResources()).data.bindableResources.forEach(
+        res => {
+          if (res.kind === usageKind.name && res.resources.length > 0) {
+            resources = res.resources;
+          }
+        },
+      );
+
+      if (usageKind.name && resources.length > 0) {
         response.push({
-          name: usageKind.name,
-          items: (await this.props.fetchUsageKindResources(usageKind.name)).data
-            .usageKindResources,
+          name: usageKind.displayName,
+          items: resources,
         });
       }
     }
 
     this.setState({
-      usageKindResources: response,
+      bindableResources: response,
       usageKindResourcesLoading: false,
     });
   };
@@ -115,15 +122,15 @@ class Resources extends React.Component {
     const {
       selectedResource,
       usageKindResourcesLoading,
-      usageKindResources,
+      bindableResources,
       showPrefixInput,
       prefixEnvironmentValue,
     } = this.state;
 
     let groupedItems = [];
 
-    if (usageKindResources && usageKindResources.length > 0) {
-      groupedItems = usageKindResources.map((kind, index) => ({
+    if (bindableResources && bindableResources.length > 0) {
+      groupedItems = bindableResources.map(kind => ({
         name: kind.name,
         items: kind.items.map((resource, index) => (
           <option
@@ -141,9 +148,7 @@ class Resources extends React.Component {
 
     return (
       <div>
-        {usageKindResourcesLoading && (
-          <Spinner />
-        )}
+        {usageKindResourcesLoading && <Spinner />}
 
         <Select
           label={'Select Application'}
