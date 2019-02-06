@@ -12,7 +12,6 @@ import {
   styleUrls: ['./list-element-actions.component.scss'],
 })
 export class ListElementActionsComponent {
-  // tslint:disable:no-unnecessary-semicolons
   @Input() entry: any;
   @Input() entryEventHandler: any;
   @Input() actions: any[];
