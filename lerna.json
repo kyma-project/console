@@ -8,7 +8,8 @@
     "content",
     "components/react",
     "lambda",
-    "tests"
+    "tests",
+    "logs"
   ],
   "version": "0.0.0",
   "command": {

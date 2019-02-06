@@ -13,6 +13,7 @@ The Console project consists of the following UI projects:
 - [`Brokers`](./brokers) - The view for displaying Service Brokers
 - [`Lambda`](./lambda) - The view for lambda functions
 - [`Content`](./content) - The documentation view
+- [`Log UI`](./content) - The logs view
 - [`Tests`](./tests) - Acceptance and end-to-end tests
 
 Console also includes the libraries with components for the React and Angular front-end frameworks:
