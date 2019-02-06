@@ -296,9 +296,6 @@ describe('ExposeApiComponent', () => {
         }
       });
 
-      // this.exposeApiService
-      //   .getPodsByLabelSelector
-
       expect(component.canBeSecured).toBeTruthy();
     });
   });
