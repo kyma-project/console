@@ -58,13 +58,23 @@ export class ExposeApiService {
     );
   }
 
+  getPodsByLabelSelector(environment: string, labelValue: string) {
+    return this.httpClient.get<any>(
+      `${
+        AppConfig.k8sApiServerUrl
+      }namespaces/${environment}/pods?labelSelector=app=${labelValue}`
+    );
+  }
+
   prepareApiDefinitionToCreate(data) {
     const result = {
       kind: 'Api',
       metadata: {
         name: data.apiName
       },
-      apiVersion: `gateway.kyma-project.io/${AppConfig.gateway_kyma_project_io_version}`,
+      apiVersion: `gateway.kyma-project.io/${
+        AppConfig.gateway_kyma_project_io_version
+      }`,
       spec: {
         service: {
           name: data.serviceName,
