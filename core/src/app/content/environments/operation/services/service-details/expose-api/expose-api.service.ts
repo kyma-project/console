@@ -52,11 +52,11 @@ export class ExposeApiService {
     );
   }
 
-  getPodsByLabelSelector(environment: string, labelValue: string) {
+  getPodsByLabelSelector(environment: string, labels: string) {
     return this.httpClient.get<any>(
       `${
         AppConfig.k8sApiServerUrl
-      }namespaces/${environment}/pods?labelSelector=app=${labelValue}`
+      }namespaces/${environment}/pods?labelSelector=${labels}`
     );
   }
 

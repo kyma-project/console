@@ -309,12 +309,18 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
 
   public checkIfServiceCanBeSecured(service) {
     try {
-      const serviceLabelValue = Object.values(
-        service.spec.selector
-      )[0] as string;
+      let labels = '';
+
+      Object.entries(service.spec.selector).forEach(labelPair => {
+        labels += `${labelPair[0]}=${labelPair[1]},`;
+      });
+
+      if (labels.endsWith(',')) {
+        labels = labels.slice(0, -1);
+      }
 
       this.exposeApiService
-        .getPodsByLabelSelector(this.currentEnvironmentId, serviceLabelValue)
+        .getPodsByLabelSelector(this.currentEnvironmentId, labels)
         .subscribe(pods => {
           this.pods = pods.items;
           this.canBeSecured = this.pods.find(pod => {
