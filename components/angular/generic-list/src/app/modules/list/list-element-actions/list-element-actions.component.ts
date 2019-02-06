@@ -20,10 +20,11 @@ export class ListElementActionsComponent {
   constructor(private changeDetector: ChangeDetectorRef) {}
 
   handlePopoverClick(event: Event): void {
+    const wasPopoverOpened = this.popover && this.popover.isOpen;
     event.stopPropagation();
     this.fireClick(document);
     if (this.popover && typeof this.popover.onClickHandler === 'function') {
-      this.popover.onClickHandler(event);
+      !wasPopoverOpened && this.popover.onClickHandler(event);
     } else {
       console.warn(`Could not fire Popover's built-in click event`);
     }
