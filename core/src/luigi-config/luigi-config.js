@@ -375,9 +375,10 @@ function fetchFromKyma(url) {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        if (xmlHttp.status === 401) {
-          relogin();
-        }
+        // TODO: investigate it, falls into infinite loop
+        // if (xmlHttp.status === 401) {
+        //   relogin();
+        // }
         reject(xmlHttp.response);
       }
     };
@@ -405,6 +406,7 @@ function fetchFromGraphQL(query, variables) {
           reject(xmlHttp.response);
         }
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+        // TODO: investigate it, falls into infinite loop
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
@@ -417,6 +419,87 @@ function fetchFromGraphQL(query, variables) {
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(JSON.stringify({ query, variables }));
   });
+}
+
+function postToKyma(url, body) {
+  return new Promise(function(resolve, reject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (
+        xmlHttp.readyState == 4 &&
+        (xmlHttp.status == 200 || xmlHttp.status == 201)
+      ) {
+        try {
+          const response = JSON.parse(xmlHttp.response);
+          resolve(response);
+        } catch {
+          reject(xmlHttp.response);
+        }
+      } else if (
+        xmlHttp.readyState == 4 &&
+        xmlHttp.status != 200 &&
+        xmlHttp.status != 201
+      ) {
+        // TODO: investigate it, falls into infinite loop
+        // if (xmlHttp.status === 401) {
+        // relogin();
+        // }
+        console.log(xmlHttp);
+        reject(xmlHttp.response);
+      }
+    };
+
+    xmlHttp.open('POST', url, true);
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(JSON.stringify(body));
+  });
+}
+
+function getSelfSubjectRulesReview() {
+  const url =
+    k8sServerUrl + '/apis/authorization.k8s.io/v1/selfsubjectrulesreviews ';
+  const body = {
+    kind: 'SelfSubjectRulesReview',
+    apiVersion: 'authorization.k8s.io/v1',
+    spec: {
+      namespace: '*'
+    }
+  };
+  return new Promise(function(resolve, reject) {
+    postToKyma(url, body).then(
+      res => {
+        let resourceRules = [];
+        if (res.status) {
+          resourceRules = res.status.resourceRules;
+        }
+        resolve(resourceRules);
+      },
+      err => {
+        reject(err);
+      }
+    );
+  });
+}
+
+function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+  let hasPermissions = false;
+  if (nodeToCheckPermissionsFor.adminOnly) {
+    if (selfSubjectRulesReview.length > 0) {
+      selfSubjectRulesReview.forEach(rule => {
+        if (
+          rule.verbs.includes('*') &&
+          rule.apiGroups.includes('') &&
+          rule.resources.includes('*')
+        ) {
+          hasPermissions = true;
+        }
+      });
+    }
+  } else {
+    hasPermissions = true;
+  }
+  return hasPermissions;
 }
 
 function getBackendModules() {
@@ -454,17 +537,27 @@ function relogin() {
 }
 
 let backendModules = [];
-getBackendModules()
+let selfSubjectRulesReview = [];
+Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
   .then(
     res => {
-      if (res && res.backendModules && res.backendModules.length > 0) {
-        res.backendModules.forEach(backendModule => {
+      const modules = res[0];
+      const subjectRules = res[1];
+      if (
+        modules &&
+        modules.backendModules &&
+        modules.backendModules.length > 0
+      ) {
+        modules.backendModules.forEach(backendModule => {
           backendModules.push(backendModule.name);
         });
       }
+      if (subjectRules && subjectRules.length > 0) {
+        selfSubjectRulesReview = subjectRules;
+      }
     },
     err => {
-      console.error('Error while fetching backend modules', err);
+      console.error(err);
     }
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
@@ -496,6 +589,7 @@ getBackendModules()
         }
       },
       navigation: {
+        nodeAccessibilityResolver: navigationPermissionChecker,
         nodes: () => [
           {
             pathSegment: 'home',
@@ -563,7 +657,8 @@ getBackendModules()
                           }
                         ]
                       }
-                    ]
+                    ],
+                    adminOnly: true
                   },
                   {
                     category: {
@@ -574,6 +669,11 @@ getBackendModules()
                     hideFromNav: true
                   }
                 ];
+                if (cmf.length > 0) {
+                  cmf.forEach(clusterMF => {
+                    clusterMF[0].adminOnly = true;
+                  });
+                }
                 var fetchedNodes = [].concat.apply([], cmf);
                 return [].concat.apply(staticNodes, fetchedNodes);
               });

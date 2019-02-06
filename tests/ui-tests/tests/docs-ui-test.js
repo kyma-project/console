@@ -5,27 +5,38 @@ import docs from '../commands/docs';
 import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+import { retry } from '../utils/retry';
+import {
+  testPluggable,
+  isModuleEnabled,
+  logModuleDisabled
+} from '../setup/test-pluggable';
 
-const context = require('../utils/testContext');
 let page, browser;
+
+const REQUIRED_MODULE = 'content';
 
 describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
   beforeAll(async () => {
-    try {
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'beforeAll');
+      return;
+    }
+    
+    await retry(async () => {
       const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      await kymaConsole.testLogin(page);
-    } catch (e) {
-      throw e;
-    }
+    })
   });
 
   afterAll(async () => {
-    await browser.close();
+    if (browser) {
+      await browser.close();
+    }
   });
 
-  test('Go to docs', async () => {
+  testPluggable(REQUIRED_MODULE, 'Go to docs', async () => {
     // Hardcodes for specific page
     const docsUrl = address.console.getDocs();
 
@@ -49,7 +60,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     expect(docsHeader).toContain(docsExpectedHeader);
   });
 
-  test('Check if documentation is shown', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check if documentation is shown', async () => {
     // Hardcodes for specific page
     const articleExpectedHeader = 'Kyma';
     const articleExpectedServiceCatalogHeader = 'Service Catalog';

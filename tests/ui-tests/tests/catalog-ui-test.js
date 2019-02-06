@@ -3,53 +3,60 @@ import serviceClassConfig from '../utils/serviceClassConfig';
 import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
 import common from '../commands/common';
-import logOnEvents from '../utils/logging';
 import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 
-const context = require('../utils/testContext');
+import { TestBundleInstaller } from '../setup/test-bundle-installer';
+import { retry } from '../utils/retry';
+import {
+  testPluggable,
+  isModuleEnabled,
+  logModuleDisabled
+} from '../setup/test-pluggable';
+
+const TEST_NAMESPACE = 'service-catalog-ui-test';
+const REQUIRED_MODULE = 'servicecatalog';
+
+const testBundleInstaller = new TestBundleInstaller(TEST_NAMESPACE);
+
 let page, browser;
-let token = '';
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'beforeAll');
+      return;
+    }
+
+    jest.setTimeout(240 * 1000);
     try {
+      await testBundleInstaller.install();
+    } catch (err) {
+      await testBundleInstaller.cleanup();
+      throw new Error('Failed to install test bundle:', err);
+    }
+
+    await retry(async () => {
       const data = await common.beforeAll();
       browser = data.browser;
       page = data.page;
-      logOnEvents(page, t => (token = t));
-      //throw an error for NETWORK_CHANGED at a POST request so that it can be retried
-      page.on('requestfailed', request => {
-        if (
-          request._method === 'POST' &&
-          request._failureText === 'net::ERR_NETWORK_CHANGED'
-        ) {
-          console.log(
-            'Error net::ERR_NETWORK_CHANGED during POST request. Operation will be retried'
-          );
-          throw new Error('ERR_NETWORK_CHANGED');
-        }
-      });
-
-      await kymaConsole.testLogin(page);
-      await Promise.all([
-        kymaConsole.createEnvironment(page, config.catalogTestEnv),
-        page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0']
-        })
-      ]);
-    } catch (e) {
-      throw e;
-    }
+    });
   });
 
   afterAll(async () => {
-    await kymaConsole.clearData(token, config.catalogTestEnv);
-    await browser.close();
+    if (!(await isModuleEnabled(REQUIRED_MODULE))) {
+      logModuleDisabled(REQUIRED_MODULE, 'afterAll');
+      return;
+    }
+
+    await testBundleInstaller.cleanup();
+    if (browser) {
+      await browser.close();
+    }
   });
 
-  test('Check service class list', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check service class list', async () => {
     // Hardcodes for specific service class
     const exampleServiceClassName = serviceClassConfig.exampleServiceClassName;
 
@@ -60,7 +67,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     const searchBySth = 'lololo';
 
     await Promise.all([
-      page.goto(address.console.getCatalog(config.catalogTestEnv)),
+      page.goto(address.console.getCatalog(TEST_NAMESPACE)),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0']
       })
@@ -90,7 +97,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await searchInput.press('Backspace');
   });
 
-  test('Check filters', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check filters', async () => {
     // consts
     const filterDropdownButton = catalog.prepareSelector('toggle-filter');
     const filterWrapper = catalog.prepareSelector('wrapper-filter');
@@ -134,7 +141,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     expect(currectActiveFiltersAfterClear.length).toEqual(0);
   });
 
-  test('Check details', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check details', async () => {
     // Hardcodes for specific service class
     const exampleServiceClassButton =
       serviceClassConfig.exampleServiceClassButton;
@@ -165,9 +172,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     expect(description.toString()).not.toBeNull();
   });
 
-  test('Check provisioning', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check provisioning', async () => {
     // Hardcodes for specific service class / page
-    const catalogUrl = address.console.getCatalog(config.catalogTestEnv);
+    const catalogUrl = address.console.getCatalog(TEST_NAMESPACE);
     const instanceTitle = serviceClassConfig.instanceTitle;
     const instanceTitle2 = serviceClassConfig.instanceTitle2;
     const instanceLabel = serviceClassConfig.instanceLabel;
@@ -178,7 +185,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     // consts
     const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
 
-    await common.retry(page, async () => {
+    await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
       await catalog.createInstance(page, instanceTitle, instanceLabel);
     });
@@ -198,18 +205,16 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       })
     ]);
     await frame.waitForSelector(addToEnvButton, { visible: true });
-    await common.retry(page, async () => {
+    await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
       await catalog.createInstance(page, instanceTitle2, instanceLabel2);
     });
   });
 
-  test('Check instances list', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check instances list', async () => {
     // Hardcodes for specific service class / page
     const exampleInstanceName = serviceClassConfig.instanceTitle;
-    const instancesUrl = address.console.getInstancesList(
-      config.catalogTestEnv
-    );
+    const instancesUrl = address.console.getInstancesList(TEST_NAMESPACE);
     // consts
     const instancesHeaderSelector = catalog.prepareSelector('toolbar-header');
     const instancesExpectedHeader = 'Service Instances';
@@ -248,7 +253,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await searchInput.press('Backspace');
   });
 
-  test('Check details', async () => {
+  testPluggable(REQUIRED_MODULE, 'Check details', async () => {
     // Hardcodes for specific service class
     const exampleInstanceLink = catalog.prepareSelector(
       `instance-name-${serviceClassConfig.instanceTitle}`

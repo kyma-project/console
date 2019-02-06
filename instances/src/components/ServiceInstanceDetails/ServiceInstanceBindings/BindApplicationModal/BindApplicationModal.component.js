@@ -34,7 +34,7 @@ class BindApplicationModal extends React.Component {
       selectedKind: '',
       selectedResource: '',
       prefixEnvironmentValue: '',
-      usageKindResources: null,
+      bindableResources: null,
       bindingCreateParameters: {},
       bindingsStepFilled: false,
       resourcesFilled: false,
@@ -191,7 +191,7 @@ class BindApplicationModal extends React.Component {
     const {
       serviceInstance,
       usageKinds,
-      fetchUsageKindResources,
+      fetchBindableResources,
       id,
     } = this.props;
 
@@ -231,7 +231,7 @@ class BindApplicationModal extends React.Component {
         <Resources
           data={resourcesData}
           usageKinds={usageKinds.usageKinds}
-          fetchUsageKindResources={fetchUsageKindResources}
+          fetchBindableResources={fetchBindableResources}
           callback={this.callback}
         />
         {bindingCreateParameterSchemaExists && (
