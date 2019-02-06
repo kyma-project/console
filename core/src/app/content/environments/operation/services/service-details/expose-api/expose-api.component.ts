@@ -308,18 +308,25 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   public checkIfServiceCanBeSecured(service) {
-    const serviceLabelValue = Object.values(service.spec.selector)[0] as string;
+    try {
+      const serviceLabelValue = Object.values(
+        service.spec.selector
+      )[0] as string;
 
-    this.exposeApiService
-      .getPodsByLabelSelector(this.currentEnvironmentId, serviceLabelValue)
-      .subscribe(pods => {
-        this.pods = pods.items;
-        this.canBeSecured = this.pods.find(pod => {
-          return pod.spec.containers.find(container => {
-            return container.name === 'istio-proxy';
+      this.exposeApiService
+        .getPodsByLabelSelector(this.currentEnvironmentId, serviceLabelValue)
+        .subscribe(pods => {
+          this.pods = pods.items;
+          this.canBeSecured = this.pods.find(pod => {
+            return pod.spec.containers.find(container => {
+              return container.name === 'istio-proxy';
+            });
           });
         });
-      });
+    } catch (e) {
+      // nop
+      // secure api creation not possible
+    }
   }
 
   public filterServices() {
