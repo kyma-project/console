@@ -89,7 +89,8 @@ class Resources extends React.Component {
 
       if (usageKind.name && resources.length > 0) {
         response.push({
-          name: usageKind.displayName,
+          name: usageKind.name,
+          displayName: usageKind.displayName,
           items: resources,
         });
       }
@@ -131,7 +132,7 @@ class Resources extends React.Component {
 
     if (bindableResources && bindableResources.length > 0) {
       groupedItems = bindableResources.map(kind => ({
-        name: kind.name,
+        name: kind.displayName,
         items: kind.items.map((resource, index) => (
           <option
             key={index}
