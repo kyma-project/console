@@ -30,6 +30,7 @@ export class ListElementActionsComponent {
   }
 
   executeAction(action: string, event) {
+    this.popover && this.popover.close();
     event.stopPropagation();
     const functionName = action['function'];
     if (
