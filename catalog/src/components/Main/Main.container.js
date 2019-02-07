@@ -16,12 +16,10 @@ export default compose(
     name: 'serviceClasses',
     options: () => {
       return {
+        fetchPolicy: 'cache-and-network',
+        errorPolicy: 'all',
         variables: {
           namespace: builder.getCurrentEnvironmentId(),
-        },
-        options: {
-          fetchPolicy: 'cache-and-network',
-          errorPolicy: 'all',
         },
       };
     },

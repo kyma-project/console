@@ -18,7 +18,7 @@ import {
 const FilterDropdown = ({ filter, onChange }) => {
   const disabled = !(filter && filter.values && filter.values.length > 0);
   const control = (
-    <Button option="emphasized" disabled={disabled}>
+    <Button option="emphasized" disabled={disabled} data-e2e-id="toggle-filter">
       Filter
     </Button>
   );
@@ -35,6 +35,7 @@ const FilterDropdown = ({ filter, onChange }) => {
                 return (
                   <FormItem isCheck key={index}>
                     <FormInput
+                      data-e2e-id={`filter-${item.name}`}
                       type="checkbox"
                       id={`checkbox-${index}`}
                       name={`checkbox-name-${index}`}

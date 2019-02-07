@@ -6,6 +6,8 @@ import {
   Search,
   Spinner,
   Toolbar,
+  Panel,
+  PanelBody,
 } from '@kyma-project/react-components';
 
 import FilterList from './FilterList/FilterList.component';
@@ -166,7 +168,9 @@ class ServiceClassList extends React.Component {
       if (items) {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
-            No Service Classes found
+            <Panel>
+              <PanelBody>No Service Classes found</PanelBody>
+            </Panel>
           </EmptyServiceListMessageWrapper>
         ) : (
           <Cards data-e2e-id="cards" items={items} history={history} />

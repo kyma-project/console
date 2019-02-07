@@ -1,6 +1,6 @@
 <fd-popover [alignment]="'right'" *ngIf="filterState.availableFacets.length">
   <fd-popover-control>
-    <button fd-button [fdType]="'toolbar'" [glyph]="'filter'" [state]="hasFacets()?'':'disabled'">
+    <button fd-button [glyph]="'filter'" [state]="hasFacets()?'':'disabled'">
       Filter
       <fd-badge *ngIf="filterState.facets && 0 < filterState.facets.length && hasFacets()">
         {{ filterState.facets.length }}

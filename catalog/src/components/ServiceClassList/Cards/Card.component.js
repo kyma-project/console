@@ -33,6 +33,8 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
       'This Service Class provisions physical resources inside the cluster.',
     showcase:
       'This Service Class demonstrate a specific functionality. Do not use it on the production.',
+    provisionOnlyOnce:
+      'This Service Class can be provisioned only once in a given namespace.',
   };
 
   return (
@@ -61,7 +63,9 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
             Object.keys(labels).length &&
             Object.keys(labels).map(
               label =>
-                (label === 'local' || label === 'showcase' ? (
+                (label === 'local' ||
+                label === 'showcase' ||
+                label === 'provisionOnlyOnce' ? (
                   isStringValueEqualToTrue(labels[label])
                 ) : (
                   label === 'connected-app' && labels[label]

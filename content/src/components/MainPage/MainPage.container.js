@@ -12,11 +12,10 @@ export default compose(
     name: 'topics',
     options: props => {
       return {
+        fetchPolicy: 'cache-and-network',
+        errorPolicy: 'all',
         variables: {
           input: prepareTopicsList(),
-        },
-        options: {
-          fetchPolicy: 'cache-and-network',
         },
       };
     },
@@ -27,5 +26,5 @@ export default compose(
 )(props => {
   if (props.topics.loading || !props.topics.topics) return null;
 
-  return <MainPage { ...props } topics={props.topics.topics} />
+  return <MainPage {...props} topics={props.topics.topics} />;
 });

@@ -4,7 +4,7 @@
   "version": "0.5.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/asyncapi-react": "0.1.2",
+    "@kyma-project/asyncapi-react": "0.2.0",
     "@kyma-project/luigi-client": "0.4.4",
     "@kyma-project/react-components": "0.0.43",
     "ajv": "^6.0.0",
@@ -13,6 +13,7 @@
     "apollo-client-transform": "^0.1.0",
     "apollo-link": "^1.2.3",
     "apollo-link-context": "^1.0.9",
+    "apollo-link-error": "^1.1.7",
     "apollo-link-http": "^1.5.5",
     "apollo-link-state": "^0.4.2",
     "apollo-utilities": "^1.0.24",

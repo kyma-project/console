@@ -113,7 +113,14 @@ class DeleteBindingModal extends React.Component {
         title="Warning"
         confirmText="Delete"
         onConfirm={this.handleConfirmation}
-        modalOpeningComponent={<Button compact option="light" glyph="delete" />}
+        modalOpeningComponent={
+          <Button
+            data-e2e-id="delete-button"
+            compact
+            option="light"
+            glyph="delete"
+          />
+        }
         type="negative"
         disabled={!submitEnabled}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
