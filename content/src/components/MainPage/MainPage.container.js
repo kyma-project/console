@@ -12,11 +12,10 @@ export default compose(
     name: 'topics',
     options: props => {
       return {
+        fetchPolicy: 'cache-and-network',
+        errorPolicy: 'all',
         variables: {
           input: prepareTopicsList(),
-        },
-        options: {
-          fetchPolicy: 'cache-and-network',
         },
       };
     },

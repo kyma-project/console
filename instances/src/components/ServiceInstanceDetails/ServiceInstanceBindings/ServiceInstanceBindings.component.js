@@ -9,8 +9,6 @@ import ParametersDataModal from './ParametersDataModal/ParametersDataModal.compo
 import DeleteBindingModal from './DeleteBindingModal/DeleteBindingModal.component';
 import StatusIndicator from './StatusIndicator/StatusIndicator.component';
 
-import { statusColor } from '../../../commons/helpers';
-
 import {
   Bold,
   ServiceInstanceBindingsWrapper,
@@ -20,15 +18,10 @@ import {
 
 import { TextOverflowWrapper } from '../../ServiceInstances/ServiceInstancesTable/styled';
 
+import { statusColor } from '../../../commons/helpers';
+import { backendModuleExists } from '../../../commons/helpers';
+
 class ServiceInstanceBindings extends React.Component {
-  state = {
-    bindingUsageSecretModal: Array(
-      this.props.serviceInstance.serviceBindingUsages.length,
-    ).fill(false),
-    bindingTableSecretModal: Array(
-      this.props.serviceInstance.serviceBindings.items.length,
-    ).fill(false),
-  };
   capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
@@ -50,6 +43,8 @@ class ServiceInstanceBindings extends React.Component {
   };
 
   relatedBindingUsage = bindingName => {
+    if (!this.props.serviceInstance.serviceBindingUsages) return null;
+
     return this.props.serviceInstance.serviceBindingUsages.filter(item => {
       if (!item.serviceBinding) {
         return null;
@@ -292,6 +287,8 @@ class ServiceInstanceBindings extends React.Component {
       </>
     );
 
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
+
     const bindingUsagesHeaders = [
       'Service Binding Usage',
       'Bound Applications',
@@ -300,10 +297,12 @@ class ServiceInstanceBindings extends React.Component {
       'Status',
       '',
     ];
-
-    const bindingUsagesTableData = this.createBindingUsagesTableData(
-      serviceInstance.serviceBindingUsages,
-    );
+    let bindingUsagesTableData = null;
+    if (serviceCatalogAddonsBackendModuleExists) {
+      bindingUsagesTableData = this.createBindingUsagesTableData(
+        serviceInstance.serviceBindingUsages,
+      );
+    }
 
     const bindingsHeaders = ['Bindings', 'Secret', 'Status', ''];
     const bindingsTableData = this.createBindingsTableData(
@@ -316,31 +315,33 @@ class ServiceInstanceBindings extends React.Component {
           defaultActiveTabIndex={this.props.defaultActiveTabIndex}
           callback={callback}
         >
-          <Tab
-            title={
-              <Tooltip
-                content="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application."
-                minWidth="210px"
-                showTooltipTimeout={750}
-                key="service-binding-usage-tooltip"
-              >
-                Bound Applications
-              </Tooltip>
-            }
-            id={'service-binding-usage-tab'}
-            addHeaderContent={boundApplicationContent}
-            aditionalStatus={this.status(
-              serviceInstance.serviceBindingUsages,
-              'service-binding-usage-tab',
-            )}
-            noMargin
-          >
-            <Table
-              headers={bindingUsagesHeaders}
-              tableData={bindingUsagesTableData}
-              notFoundMessage="No applications found"
-            />
-          </Tab>
+          {serviceCatalogAddonsBackendModuleExists ? (
+            <Tab
+              title={
+                <Tooltip
+                  content="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application."
+                  minWidth="210px"
+                  showTooltipTimeout={750}
+                  key="service-binding-usage-tooltip"
+                >
+                  Bound Applications
+                </Tooltip>
+              }
+              id={'service-binding-usage-tab'}
+              addHeaderContent={boundApplicationContent}
+              aditionalStatus={this.status(
+                serviceInstance.serviceBindingUsages,
+                'service-binding-usage-tab',
+              )}
+              noMargin
+            >
+              <Table
+                headers={bindingUsagesHeaders}
+                tableData={bindingUsagesTableData}
+                notFoundMessage="No applications found"
+              />
+            </Tab>
+          ) : null}
           <Tab
             title={
               <Tooltip

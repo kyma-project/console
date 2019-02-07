@@ -1,6 +1,7 @@
 // this is the primary export for Blocks
 // All components are exported from lib/index.js
 
+import BackendModuleDisabled from './BackendModuleDisabled';
 import Button from './Button';
 import Dropdown from './Dropdown';
 import ErrorBoundary from './ErrorBoundary';
@@ -58,6 +59,7 @@ import { Counter } from 'fundamental-react';
 import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 
 module.exports = {
+  BackendModuleDisabled,
   Button,
   Dropdown,
   ErrorBoundary,

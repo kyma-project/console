@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   text-align: left;
   border-radius: 4px;
   background-color: #ffffff;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 5px 20px 0 rgba(50,54,58,.08);
   font-family: '72';
   font-weight: normal;
   padding: 0 16px 16px;
