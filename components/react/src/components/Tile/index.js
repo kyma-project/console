@@ -1,5 +1,1 @@
-export { 
-    Tile,
-    TileMedia,
-    TileContent,
-} from 'fundamental-react';
+export { Tile, TileMedia, TileContent } from 'fundamental-react';

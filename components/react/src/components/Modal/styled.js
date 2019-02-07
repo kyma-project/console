@@ -11,7 +11,7 @@ export const FdModal = styled(Modal)`
       min-width: 320px;
       width: ${props => props.width || 'unset'};
       border-left: ${props =>
-        props.type === 'negative' ? '6px solid #ee0000' : ''}
+        props.type === 'negative' ? '6px solid #ee0000' : ''};
     }
 
     .fd-modal__footer {

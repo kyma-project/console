@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import ScrollSpy from "../../ScrollSpy/ScrollSpy.container";
-import NavigationGroup from "./NavigationGroup";
-import { Wrapper } from "./styled";
+import ScrollSpy from '../../ScrollSpy/ScrollSpy.container';
+import NavigationGroup from './NavigationGroup';
+import { Wrapper } from './styled';
 
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../../../commons/variables';
 import { tokenize } from '../../../../commons/helpers';
@@ -37,7 +37,7 @@ class Navigation extends Component {
     return (
       <ScrollSpy
         rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}
-        nodeTypes={["groupOfDocuments", "document", "header"]}
+        nodeTypes={['groupOfDocuments', 'document', 'header']}
         offset={{
           groupOfDocuments: 10,
           document: 10,
@@ -50,7 +50,7 @@ class Navigation extends Component {
           <NavigationGroup
             data-e2e-id="navigation-root"
             title="Root"
-            icon={"database"}
+            icon={'database'}
             items={[items.root]}
             topics={topics}
             groupType="root"
@@ -65,7 +65,7 @@ class Navigation extends Component {
           <NavigationGroup
             data-e2e-id="navigation-components"
             title="Components"
-            icon={"Chart-Tree-Map"}
+            icon={'Chart-Tree-Map'}
             items={items.components}
             topics={topics}
             groupType="components"

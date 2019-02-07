@@ -16,10 +16,7 @@ const ServiceClassToolbar = ({
   };
 
   return (
-    <Toolbar 
-      goBack={goToServiceInstanceList} 
-      title={serviceClassDisplayName}
-    >
+    <Toolbar goBack={goToServiceInstanceList} title={serviceClassDisplayName}>
       {children}
     </Toolbar>
   );

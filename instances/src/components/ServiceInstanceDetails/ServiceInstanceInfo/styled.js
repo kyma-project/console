@@ -1,9 +1,14 @@
 import styled from 'styled-components';
-import { PanelGrid, Panel, PanelHeader, PanelBody } from '@kyma-project/react-components';
+import {
+  PanelGrid,
+  Panel,
+  PanelHeader,
+  PanelBody,
+} from '@kyma-project/react-components';
 
 export const ServiceInstanceInfoWrapper = styled(PanelGrid)`
   display: flex;
-  padding-bottom: 20px; 
+  padding-bottom: 20px;
 `;
 
 export const ContentWrapper = styled.div`
@@ -25,7 +30,8 @@ export const StretchedContentWrapper = styled(ContentWrapper)`
 
 export const CenterSideWrapper = styled(Panel)`
   && {
-    border-left: ${props => (props.color ? '6px solid ' + props.color : 'none')};
+    border-left: ${props =>
+      props.color ? '6px solid ' + props.color : 'none'};
   }
 `;
 
@@ -37,8 +43,7 @@ export const ContentHeader = styled(PanelHeader)`
   }
 `;
 
-export const ContentDescription = styled(PanelBody)`
-`;
+export const ContentDescription = styled(PanelBody)``;
 
 export const Element = styled.div`
   margin: ${props => (props.margin ? props.margin : '16px 0 0 0')};

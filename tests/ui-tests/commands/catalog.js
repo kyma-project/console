@@ -10,7 +10,9 @@ module.exports = {
       const labels = `[name="nameServiceBindingUsage"]`;
       const plan = `[name="selectedKind"]`;
       const planName = 'Micro';
-      const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
+      const modalCreate = `[${
+        config.catalogTestingAtribute
+      }="modal-confirmation-button"]`;
 
       const frame = await kymaConsole.getFrame(page);
       await frame.click(addToEnvButton);

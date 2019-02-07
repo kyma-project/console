@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { Tile, TileMedia, TileContent, Image as Img } from '@kyma-project/react-components';
+import {
+  Tile,
+  TileMedia,
+  TileContent,
+  Image as Img,
+} from '@kyma-project/react-components';
 
 export const ServiceClassInfoContentWrapper = styled(Tile)`
   && {
@@ -20,7 +25,7 @@ export const ImagePlaceholder = styled(TileMedia)`
     border-radius: 4px;
     background-color: #fff;
     border: solid 1px rgba(63, 80, 96, 0.15);
-    box-shadow: 0 5px 20px 0 rgba(50,54,58,.08);
+    box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
     color: #32363a;
     font-size: 32px;
   }

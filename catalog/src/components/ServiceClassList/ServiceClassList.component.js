@@ -174,9 +174,7 @@ class ServiceClassList extends React.Component {
           <Cards data-e2e-id="cards" items={items} history={history} />
         );
       }
-      return (
-        <Spinner />
-      );
+      return <Spinner />;
     };
 
     return (
@@ -186,7 +184,12 @@ class ServiceClassList extends React.Component {
           description="Enrich your experience with additional services"
         >
           <SearchWrapper>
-            <Search noSearchBtn placeholder="Search" onChange={searchFn} data-e2e-id='search' />
+            <Search
+              noSearchBtn
+              placeholder="Search"
+              onChange={searchFn}
+              data-e2e-id="search"
+            />
           </SearchWrapper>
 
           {!classFilters.loading && (

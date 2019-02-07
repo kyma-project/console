@@ -11,12 +11,14 @@ import { PlainTableComponent } from './plain-table/plain-table.component';
 import { ListElementActionsComponent } from './list-element-actions/list-element-actions.component';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { AbstractTableEntryRendererComponent } from './abstract-table-entry-renderer/abstract-table-entry-renderer.component';
+import { FundamentalNgxModule } from 'fundamental-ngx';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ClickOutsideModule
+    ClickOutsideModule,
+    FundamentalNgxModule,
   ],
   declarations: [
     GenericListComponent,
@@ -27,7 +29,7 @@ import { AbstractTableEntryRendererComponent } from './abstract-table-entry-rend
     PlainListComponent,
     PlainTableComponent,
     ListElementActionsComponent,
-    AbstractTableEntryRendererComponent
+    AbstractTableEntryRendererComponent,
   ],
   exports: [
     GenericListComponent,
@@ -37,11 +39,11 @@ import { AbstractTableEntryRendererComponent } from './abstract-table-entry-rend
     PagingComponent,
     PlainListComponent,
     PlainTableComponent,
-    ListElementActionsComponent
-  ]
+    ListElementActionsComponent,
+  ],
 })
-export class ListModule { }
-export { Filter } from  './filter/Filter';
+export class ListModule {}
+export { Filter } from './filter/Filter';
 export { Facet } from './filter/Facet';
 export { SimpleFacetMatcher } from './filter/simple-facet-matcher';
 export { SimpleFilterMatcher } from './filter/simple-filter-matcher';
@@ -49,8 +51,8 @@ export { ArrayDataProvider } from './source/array-data-provider';
 export { DataConverter } from './source/data-converter';
 export { DataProviderResult } from './source/data-provider-result';
 export { DataProvider } from './source/data-provider';
-export { AbstractTableEntryRendererComponent } from './abstract-table-entry-renderer/abstract-table-entry-renderer.component';
+export {
+  AbstractTableEntryRendererComponent,
+} from './abstract-table-entry-renderer/abstract-table-entry-renderer.component';
 export { GenericListComponent } from './generic-list/generic-list.component';
 export { GenericTableComponent } from './generic-table/generic-table.component';
-
-

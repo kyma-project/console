@@ -120,7 +120,9 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                   <Element margin="1px 0 0 0">
                     {serviceInstance.labels.map((label, index) => (
                       <LabelWrapper key={`${label}-${index}`}>
-                        <Label key={label} cursorType="auto">{label}</Label>
+                        <Label key={label} cursorType="auto">
+                          {label}
+                        </Label>
                       </LabelWrapper>
                     ))}
                   </Element>

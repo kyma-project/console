@@ -1,8 +1,14 @@
 import styled from 'styled-components';
-import { Panel, PanelHeader, PanelHead, PanelActions, PanelBody, Table } from 'fundamental-react';
+import {
+  Panel,
+  PanelHeader,
+  PanelHead,
+  PanelActions,
+  PanelBody,
+  Table,
+} from 'fundamental-react';
 
-export const TableWrapper = styled(Panel)`
-`;
+export const TableWrapper = styled(Panel)``;
 
 export const TableHeader = styled(PanelHeader)`
   && {
@@ -10,11 +16,9 @@ export const TableHeader = styled(PanelHeader)`
   }
 `;
 
-export const TableHeaderHead = styled(PanelHead)`
-`;
+export const TableHeaderHead = styled(PanelHead)``;
 
-export const TableHeaderActions = styled(PanelActions)`
-`;
+export const TableHeaderActions = styled(PanelActions)``;
 
 export const TableBody = styled(PanelBody)`
   && {

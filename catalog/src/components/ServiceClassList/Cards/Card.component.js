@@ -43,7 +43,11 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
         <CardTop>
           <CardHeader>
             <CardThumbnail>
-              {imageUrl ? <CardImage size="s" photo={imageUrl} /> : <Icon icon={'\ue113'} />}
+              {imageUrl ? (
+                <CardImage size="s" photo={imageUrl} />
+              ) : (
+                <Icon icon={'\ue113'} />
+              )}
             </CardThumbnail>
 
             <CardHeaderContent data-e2e-id="card-title" title={title}>

@@ -13,7 +13,7 @@ const SpinnerWrapper = styled.div`
 const Spinner = () => (
   <SpinnerWrapper>
     <div className="fd-spinner" aria-hidden="false" aria-label="Loading">
-      <div></div>
+      <div />
     </div>
   </SpinnerWrapper>
 );

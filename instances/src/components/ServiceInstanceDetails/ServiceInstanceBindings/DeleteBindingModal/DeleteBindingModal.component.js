@@ -1,10 +1,6 @@
 import React, { Fragment } from 'react';
 
-import {
-  Modal,
-  Button,
-  Separator,
-} from '@kyma-project/react-components';
+import { Modal, Button, Separator } from '@kyma-project/react-components';
 
 import { TextWrapper, Text, Bold } from './styled';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -114,12 +110,10 @@ class DeleteBindingModal extends React.Component {
     return (
       <Modal
         ref={modal => (this.child = modal)}
-        title='Warning'
+        title="Warning"
         confirmText="Delete"
         onConfirm={this.handleConfirmation}
-        modalOpeningComponent={
-          <Button compact option="light" glyph="delete" />
-        }
+        modalOpeningComponent={<Button compact option="light" glyph="delete" />}
         type="negative"
         disabled={!submitEnabled}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
