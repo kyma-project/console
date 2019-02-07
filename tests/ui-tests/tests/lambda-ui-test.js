@@ -1,9 +1,9 @@
-import config from '../config';
 import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+
 import { retry } from '../utils/retry';
 import {
   testPluggable,
@@ -11,10 +11,11 @@ import {
   logModuleDisabled
 } from '../setup/test-pluggable';
 
+const REQUIRED_MODULE = 'kubeless';
+const TEST_NAMESPACE = 'lambdatest';
+
 let browser, page;
 let token = '';
-
-const REQUIRED_MODULE = 'kubeless';
 
 describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   beforeAll(async () => {
@@ -28,6 +29,8 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
       browser = data.browser;
       page = data.page;
     });
+
+    await kymaConsole.createEnvironment(page, TEST_NAMESPACE);
   });
 
   afterAll(async () => {
@@ -36,15 +39,12 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
       return;
     }
 
-    await lambdas.clearData(token);
+    await kymaConsole.clearData(token, TEST_NAMESPACE);
     if (browser) {
       await browser.close();
     }
   });
 
-  testPluggable(REQUIRED_MODULE, 'Login to console', async () => {
-    await kymaConsole.testLogin(page);
-});
   testPluggable(REQUIRED_MODULE, 'Create Lambda Function', async () => {
     const contentHeader = 'li.fd-side-nav__title';
     const testLambda = 'testlambda';
