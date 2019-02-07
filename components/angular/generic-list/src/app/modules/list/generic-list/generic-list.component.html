@@ -1,27 +1,32 @@
-<div class="sf-toolbar">
-  <div class="sf-toolbar__header" *ngIf="!showEmptyPage">{{ title }}</div>
-  <div class="sf-toolbar__right">
-    <div class="sf-toolbar__item" [hidden]="!initialized">
-      <y-list-search [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-      <y-list-filter [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-    </div>
-  </div>
-</div>
+<fd-action-bar>
+  <fd-action-bar-header>
+    <fd-action-bar-title *ngIf="!showEmptyPage">{{ title }}</fd-action-bar-title>
+  </fd-action-bar-header>
+  <fd-action-bar-actions [hidden]="!initialized">
+    <y-list-search [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+    <y-list-filter [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+  </fd-action-bar-actions>
+</fd-action-bar>
 
 <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
 
-<y-plain-list [source]="data"
-  [entryRenderer]="entryRenderer"
-  [entryEventHandler]="entryEventHandler">
-  <div empty-list-placeholder *ngIf="loading" class="sf-section__empty-spinner">
-    <div aria-hidden="false" aria-label="Loading">
-        <div class="fd-spinner"><div></div></div>
-    </div>
-  </div>
-  <div empty-list-placeholder *ngIf="showEmptyPage" class="sf-section__empty-teaser">
-    <h1>{{ title }}</h1>
-    <p>{{ emptyListText }}</p>
-    <button class="tn-button tn-button--small tn-button--text" (click)="createNewElement()">+ {{ createNewElementText }}</button>
+<y-plain-list [source]="data" [entryRenderer]="entryRenderer" [entryEventHandler]="entryEventHandler">
+  <fd-loading-spinner empty-list-placeholder [loading]="loading"></fd-loading-spinner>
+
+  <div empty-list-placeholder *ngIf="showEmptyPage" class="fd-container fd-container--centered">
+    <fd-panel class="fd-col--4 fd-col--shift-4">
+      <fd-panel-header>
+        <fd-panel-head>
+          <fd-panel-title>{{ title }}</fd-panel-title>
+          <fd-panel-description>{{ emptyListText }}</fd-panel-description>
+        </fd-panel-head>
+      </fd-panel-header>
+
+      <fd-panel-footer>
+        <button fd-button (click)="createNewElement()" [glyph]="'add'">{{ createNewElementText }}</button>
+      </fd-panel-footer>
+
+    </fd-panel>
   </div>
 </y-plain-list>
 
