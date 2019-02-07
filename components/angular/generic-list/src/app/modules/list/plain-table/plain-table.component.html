@@ -1,11 +1,11 @@
-<div class="sf-list" [hidden]="loading || errorMessage || !data || data.length === 0">
+<div [hidden]="loading || errorMessage || !data || data.length === 0">
   <ng-template #header></ng-template>
   <ng-template class="container" #entries></ng-template>
   <ng-template #footer></ng-template>
 </div>
-<div *ngIf="loading" aria-hidden="false" aria-label="Loading" class="loading-container">
-  <div class="fd-spinner"><div></div></div>
-</div>
+
+<fd-loading-spinner [loading]="loading"></fd-loading-spinner>
+
 <p *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
   <ng-content select="[empty-list-placeholder]"></ng-content>
 </p>
