@@ -111,12 +111,14 @@ export class ServiceInstancesTable extends Component {
                     <Modal
                       title="Instance's Parameters"
                       modalOpeningComponent={
-                        <ServicePlanButton>{planDisplayName}</ServicePlanButton>
+                        <ServicePlanButton data-e2e-id="service-plan">
+                          {planDisplayName}
+                        </ServicePlanButton>
                       }
                       onShow={() => LuigiClient.uxManager().addBackdrop()}
                       onHide={() => LuigiClient.uxManager().removeBackdrop()}
                     >
-                      <JSONCode>
+                      <JSONCode data-e2e-id="service-plan-content">
                         {JSON.stringify(instance.planSpec, null, 2)}
                       </JSONCode>
                     </Modal>
@@ -194,7 +196,12 @@ export class ServiceInstancesTable extends Component {
     };
 
     const addServiceInstanceRedirectButton = (
-      <Button compact option="light" onClick={this.goToServiceCatalog}>
+      <Button
+        compact
+        option="light"
+        onClick={this.goToServiceCatalog}
+        data-e2e-id="add-instance"
+      >
         + Add Instance
       </Button>
     );

@@ -96,7 +96,7 @@ const ServiceClassInfo = ({
       <Separator margin="30px 0 30px" />
       <div>
         <Header margin="0 0 20px">Vendor Information</Header>
-        <Text fontSize="14px">
+        <Text fontSize="14px" data-e2e-id="service-last-update">
           Last Update:{' '}
           <Moment unix format="MMM DD, YYYY">
             {creationTimestamp}
@@ -120,14 +120,16 @@ const ServiceClassInfo = ({
         )}
         {modifiedTags &&
           modifiedTags.length > 0 && (
-            <LabelsWrapper>
+            <LabelsWrapper data-e2e-id="service-labels">
               {modifiedTags.sort(sortTags).map(tag => (
                 <LabelWrapper key={`${tag.type}-${tag.name}`}>
                   <Tooltip
                     content={tagsDescription[tag.type]}
                     minWidth={tooltipWidth[tag.type]}
                   >
-                    <Label cursorType="help">{tag.name}</Label>
+                    <Label cursorType="help" data-e2e-id="service-label">
+                      {tag.name}
+                    </Label>
                   </Tooltip>
                 </LabelWrapper>
               ))}

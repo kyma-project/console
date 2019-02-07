@@ -61,6 +61,7 @@ class App extends React.Component {
             {...notification}
             title={
               <NotificationLink
+                data-e2e-id={`notification-${notification.type}`}
                 onClick={() => {
                   this.goToServiceInstanceDetails(notification.instanceName);
                 }}

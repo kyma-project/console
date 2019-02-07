@@ -165,13 +165,19 @@ class Resources extends React.Component {
 
         <SubSectionTitle margin={'20px 0'}>
           {!showPrefixInput && (
-            <Link onClick={() => this.handleTogglePrefixButton(true)}>
+            <Link
+              data-e2e-id="set-prefix"
+              onClick={() => this.handleTogglePrefixButton(true)}
+            >
               {'Set namespace prefix'}
               <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
           )}
           {showPrefixInput && (
-            <Link onClick={() => this.handleTogglePrefixButton(false)}>
+            <Link
+              data-e2e-id="unset-prefix"
+              onClick={() => this.handleTogglePrefixButton(false)}
+            >
               {'Unselect namespace prefix'}
               <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
