@@ -63,9 +63,7 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
             Object.keys(labels).length &&
             Object.keys(labels).map(
               label =>
-                (label === 'local' ||
-                label === 'showcase' ||
-                label === 'provisionOnlyOnce' ? (
+                (label === 'local' || label === 'showcase' || label === "provisionOnlyOnce" ? (
                   isStringValueEqualToTrue(labels[label])
                 ) : (
                   label === 'connected-app' && labels[label]

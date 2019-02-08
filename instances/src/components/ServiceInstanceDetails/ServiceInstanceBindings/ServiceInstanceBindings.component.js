@@ -295,9 +295,7 @@ class ServiceInstanceBindings extends React.Component {
       </>
     );
 
-    const serviceCatalogAddonsBackendModuleExists = backendModuleExists(
-      'servicecatalogaddons',
-    );
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
 
     const bindingUsagesHeaders = [
       'Service Binding Usage',

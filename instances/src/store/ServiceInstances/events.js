@@ -206,7 +206,7 @@ export const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
             ) {
               usage.serviceBinding = null;
             }
-
+  
             return usage;
           },
         );
