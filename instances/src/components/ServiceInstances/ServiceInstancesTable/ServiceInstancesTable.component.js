@@ -24,10 +24,16 @@ export class ServiceInstancesTable extends Component {
       case 0:
         return '-';
       case 1:
-        return bindings[0].name;
+        return `${bindings[0].usedBy.name} (${this.capitalize(
+          bindings[0].usedBy.kind,
+        )})`;
       default:
         return `Multiple (${bindings.length})`;
     }
+  };
+
+  capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
 
   goToServiceCatalog = () => {
