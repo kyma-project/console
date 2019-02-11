@@ -1,3 +1,4 @@
+import config from '../config';
 import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
