@@ -21,10 +21,6 @@ describeIf(dex.isStaticUser(), 'Log UI tests', () => {
     await browser.close();
   });
 
-  test('Login to console', async () => {
-    await kymaConsole.testLogin(page);
-  });
-
   test('Check Log UI', async () => {
     const contentHeader = '.fd-side-nav__group';
 
