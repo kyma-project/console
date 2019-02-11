@@ -1,5 +1,14 @@
 import styled from 'styled-components';
-import { Panel, PanelHeader, PanelBody, PanelFooter, Tile, TileMedia, TileContent, Image } from '@kyma-project/react-components';
+import {
+  Panel,
+  PanelHeader,
+  PanelBody,
+  PanelFooter,
+  Tile,
+  TileMedia,
+  TileContent,
+  Image,
+} from '@kyma-project/react-components';
 
 export const CardWrapper = styled.div`
   box-sizing: border-box;
@@ -17,11 +26,11 @@ export const CardContent = styled(Panel)`
     box-sizing: border-box;
     height: 100%;
     padding: 20px;
-    transition: box-shadow .125s ease-in;
-    box-shadow: 0 5px 20px 0 rgba(50,54,58,.08);
+    transition: box-shadow 0.125s ease-in;
+    box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
 
     &:hover {
-      box-shadow: 0 0 5px 0 rgba(106,109,112,.4);
+      box-shadow: 0 0 5px 0 rgba(106, 109, 112, 0.4);
       cursor: pointer;
     }
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   NavigationItems,
@@ -6,7 +6,7 @@ import {
   NavigationLinkWrapper,
   NavigationLink,
   NavigationSectionArrow,
-} from "./styled";
+} from './styled';
 
 function NavigationSections({
   items,
@@ -26,7 +26,7 @@ function NavigationSections({
     if (parentId) return `${parentId}-${item.anchor}`;
 
     const topicType = item.topicType
-      ? item.topicType.replace(/ /g, "-").toLowerCase()
+      ? item.topicType.replace(/ /g, '-').toLowerCase()
       : item.anchor;
     return `${topicType}-${item.anchor}`;
   };
@@ -53,7 +53,7 @@ function NavigationSections({
     let isActiveNavArrow = false;
     let isActive = false;
 
-    if (activeContent.id === rootId) {  
+    if (activeContent.id === rootId) {
       if (parentId) {
         isActive =
           activeNodes &&
@@ -89,7 +89,8 @@ function NavigationSections({
     return (
       <NavigationItem key={key}>
         <NavigationLinkWrapper>
-          {hasSubElements && renderArrow(item.anchor, hash, isActive, isActiveNavArrow)}
+          {hasSubElements &&
+            renderArrow(item.anchor, hash, isActive, isActiveNavArrow)}
           <NavigationLink
             active={isActive}
             noArrow={!hasSubElements}
@@ -98,10 +99,12 @@ function NavigationSections({
                 id: rootId,
                 type: groupType,
                 hash: hash,
-              })
+              });
             }}
             parentId={parentId}
-            data-e2e-id={`navigation-link-${groupType}-${rootId}-${item.anchor}`}
+            data-e2e-id={`navigation-link-${groupType}-${rootId}-${
+              item.anchor
+            }`}
           >
             {item.name}
           </NavigationLink>
@@ -143,11 +146,17 @@ function NavigationSections({
       activeNav.hash.startsWith(parentId)
     : activeNav.id === rootId;
 
-  const e2eId =
-    `navigation-items-${groupType}-${rootId}${parentId ? `-${parentId}` : ``}`;
+  const e2eId = `navigation-items-${groupType}-${rootId}${
+    parentId ? `-${parentId}` : ``
+  }`;
 
   return (
-    <NavigationItems marginTop secondary show={isActiveNav || isClickedNav} data-e2e-id={e2eId}>
+    <NavigationItems
+      marginTop
+      secondary
+      show={isActiveNav || isClickedNav}
+      data-e2e-id={e2eId}
+    >
       {items && items.map(item => renderNavigationItem(item))}
     </NavigationItems>
   );

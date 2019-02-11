@@ -4,7 +4,7 @@ import { Icon, Tooltip } from '@kyma-project/react-components';
 
 import { InfoButtonWrapper } from './styled';
 
-const InfoButton = ({ content, orientation = "top" }) => {
+const InfoButton = ({ content, orientation = 'top' }) => {
   return (
     <InfoButtonWrapper>
       <Tooltip

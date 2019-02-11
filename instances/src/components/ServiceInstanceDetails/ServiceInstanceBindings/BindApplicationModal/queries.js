@@ -8,10 +8,15 @@ export const USAGE_KINDS_QUERY = gql`
     }
   }
 `;
-export const USAGE_KIND_RESOURCES_QUERY = gql`
-  query usageKindsResources($usageKind: String!, $environment: String!) {
-    usageKindResources(usageKind: $usageKind, environment: $environment) {
-      name
+export const BINDABLE_RESOURCES_QUERY = gql`
+  query bindableResources($namespace: String!) {
+    bindableResources(namespace: $namespace) {
+      kind
+      displayName
+      resources {
+        name
+        namespace
+      }
     }
   }
 `;

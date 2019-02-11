@@ -18,7 +18,7 @@ export default compose(
         mutate({
           variables: {
             serviceInstanceName,
-            environment: builder.getCurrentEnvironmentId(),
+            namespace: builder.getCurrentEnvironmentId(),
             parameters,
           },
         }),
@@ -40,7 +40,7 @@ export default compose(
         mutate({
           variables: {
             serviceBindingName: name,
-            environment: builder.getCurrentEnvironmentId(),
+            namespace: builder.getCurrentEnvironmentId(),
           },
         }),
     }),
@@ -51,7 +51,7 @@ export default compose(
         mutate({
           variables: {
             serviceBindingUsageName: name,
-            environment: builder.getCurrentEnvironmentId(),
+            namespace: builder.getCurrentEnvironmentId(),
           },
         }),
     }),

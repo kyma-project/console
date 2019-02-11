@@ -12,9 +12,7 @@ import {
 const ServiceClassDescription = ({ description }) => {
   return (
     <ServiceClassDescriptionContentWrapper data-e2e-id="service-docs">
-      <ContentHeader>
-        General Information
-      </ContentHeader>
+      <ContentHeader>General Information</ContentHeader>
 
       <ContentDescription>
         <Text data-e2e-id="service-description" fontSize="14px">

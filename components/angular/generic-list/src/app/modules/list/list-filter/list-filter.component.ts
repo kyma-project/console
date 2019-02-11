@@ -19,9 +19,6 @@ export class ListFilterComponent implements OnInit, OnChanges {
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onFilterChanged = new EventEmitter();
 
-  ariaExpanded = false;
-  ariaHidden = true;
-
   constructor() {}
 
   ngOnInit() {
@@ -104,16 +101,5 @@ export class ListFilterComponent implements OnInit, OnChanges {
       this.filterState.availableFacets &&
       this.filterState.availableFacets.length > 0
     );
-  }
-
-  toggleDropdown(event) {
-    event.stopPropagation();
-    this.ariaExpanded = !this.ariaExpanded;
-    this.ariaHidden = !this.ariaHidden;
-  }
-
-  autoCloseDropdown() {
-    this.ariaExpanded = false;
-    this.ariaHidden = true;
   }
 }

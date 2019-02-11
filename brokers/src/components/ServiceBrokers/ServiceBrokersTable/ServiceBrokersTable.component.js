@@ -11,15 +11,15 @@ function ServiceBrokersTable({ data, refetch, loading }) {
       return {
         rowData: [
           broker.name,
-          (
-            <Moment unix fromNow>
-              {broker.creationTimestamp}
-            </Moment>
-          ),
+          <Moment unix fromNow>
+            {broker.creationTimestamp}
+          </Moment>,
           broker.url,
           (_ => {
             let type = '';
-            broker.status.ready === true ? (type = 'RUNNING') : (type = 'FAILED');
+            broker.status.ready === true
+              ? (type = 'RUNNING')
+              : (type = 'FAILED');
 
             return (
               <Tooltip
@@ -32,10 +32,10 @@ function ServiceBrokersTable({ data, refetch, loading }) {
                 </span>
               </Tooltip>
             );
-          })()
-        ]
-      }
-    })
+          })(),
+        ],
+      };
+    });
   };
 
   const title = 'Manage Service Brokers';

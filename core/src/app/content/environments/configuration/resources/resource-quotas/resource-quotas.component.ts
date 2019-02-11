@@ -36,8 +36,8 @@ export class ResourceQuotasComponent
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
 
-    const query = `query ResourceQuota($environment: String!) {
-      resourceQuotas(environment: $environment) {
+    const query = `query ResourceQuota($namespace: String!) {
+      resourceQuotas(namespace: $namespace) {
         name
         pods
         limits {
@@ -58,7 +58,7 @@ export class ResourceQuotasComponent
           AppConfig.graphqlApiUrl,
           query,
           {
-            environment: this.currentEnvironmentId
+            namespace: this.currentEnvironmentId
           },
           this.graphQLClientService
         );

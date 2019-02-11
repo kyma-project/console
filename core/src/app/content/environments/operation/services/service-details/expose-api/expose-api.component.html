@@ -43,7 +43,7 @@
                       (click)="openDropDown($event)">
                   </button>
                   <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaServiceHidden" id="nNJnB279">
-                    <li class="tn-dropdown__item" *ngFor="let svc of filteredServices" (click)="toggleDropDown(); selectService(svc); setApiName()">{{ svc.metadata.name }}</li>
+                    <li class="tn-dropdown__item" *ngFor="let svc of filteredServices" (click)="toggleDropDown(); selectService(svc); checkIfServiceCanBeSecured(svc); setApiName()">{{ svc.metadata.name }}</li>
                   </ul>
                 </div>
               </div>

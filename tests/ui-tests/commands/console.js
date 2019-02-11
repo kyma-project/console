@@ -1,6 +1,5 @@
 import request from 'request';
 import address from '../utils/address';
-import common from './common';
 import config from '../config';
 
 async function testLogin(page) {
@@ -161,7 +160,7 @@ async function deleteEnvironment(page, envName) {
     '.tn-modal__button-primary.sf-button--primary.tn-button--small';
   const dropDownCard = `button[aria-controls=${envName}]`;
   await frame.click(dropDownCard);
-  await frame.click(`#${envName} > li > a[name=Delete]`);
+  await frame.click(`#${envName} li > a[name=Delete]`);
   await frame.waitFor(deleteConfirmButton);
   await frame.click(deleteConfirmButton);
   return frame.waitForSelector(deleteConfirmButton, { hidden: true });
@@ -196,12 +195,13 @@ async function deleteRemoteEnvironment(page, name) {
   const frame = await getFrame(page);
   const remoteEnvironmentsSelector = '.row.sf-list__body';
   const modalSelector = '.sf-modal';
+
   await frame.waitForSelector(remoteEnvironmentsSelector);
   await frame.$$eval(
     remoteEnvironmentsSelector,
     (item, name) => {
-      const actionsSelector = '.tn-icon';
-      const deleteActionSelector = `.tn-dropdown__item[name=Delete]`;
+      const actionsSelector = `button[aria-controls=${name}]`;
+      const deleteActionSelector = `#${name} li > a[name=Delete]`;
       const testRemoteEnvironment = item.find(row =>
         row.textContent.includes(name)
       );

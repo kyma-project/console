@@ -114,7 +114,7 @@ class CreateInstanceModal extends Component {
 
     return {
       name: instanceName,
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       externalServiceClassName: serviceClass.externalName,
       externalPlanName: currentPlan && currentPlan.externalName,
       classClusterWide: isClusterServiceClass,
@@ -156,6 +156,7 @@ class CreateInstanceModal extends Component {
       if (typeof sendNotification === 'function') {
         sendNotification({
           variables: {
+            type: 'success',
             title: `Instance "${variables.name}" created successfully`,
             color: '#359c46',
             icon: '\uE05B',

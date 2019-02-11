@@ -30,12 +30,11 @@ const Table = ({
         </TableHeader>
       )}
       <TableBody>
-        <TableContent
-          headers={headers}
-          tableData={tableData}
-        />
+        <TableContent headers={headers} tableData={tableData} />
         {loadingData && <Spinner />}
-        {!loadingData && !(tableData && tableData.length) ? <NotFoundMessage>{notFoundMessage}</NotFoundMessage> : null}
+        {!loadingData && !(tableData && tableData.length) ? (
+          <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
+        ) : null}
       </TableBody>
     </TableWrapper>
   );

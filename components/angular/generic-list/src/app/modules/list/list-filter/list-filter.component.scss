@@ -1,38 +1,8 @@
-$middle-blue: #009cdf;
-$circle-font-color: #fff;
-$disabled-color: #7f90a4;
 
-.tn-button {
-  outline: none;
-  box-shadow: none;
-
-&--disabled {
-   color: $disabled-color;
-   cursor: not-allowed;
- }
-}
-
-.filters {
-  margin-top: 12px;
-  font-size: 10px;
-  position: absolute;
-  margin-left: 5px;
-  border-radius: 8px;
-  height: 16px;
-  min-width: 16px;
-  line-height: 14px;
-  background: $middle-blue;
-  color: $circle-font-color;
-  text-align: center;
-}
-
-.actions-menu--disabled {
-  display: none;
-}
-
-.tn-dropdown__item {
-  input[type=checkbox] {
-    cursor: pointer;
+.fd-button {
+  margin-left: 0.5rem;
   }
-}
 
+input[type='checkbox']:checked::after {
+  content: none;
+}

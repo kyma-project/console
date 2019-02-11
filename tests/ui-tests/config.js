@@ -6,7 +6,6 @@ module.exports = {
     process.env.DEV_CONSOLE_URl || 'http://console-dev.kyma.local:4200',
   localdev: process.env.LOCAL_DEV || false,
   testEnv: process.env.TEST_ENV || 'testenvironment',
-  catalogTestEnv: process.env.CATALOG_TEST_ENV || 'catalogtestenvironment',
   headless: process.env.HEADLESS || false,
   viewportWidth: process.env.WIDTH || 1400,
   viewportHeight: process.env.HEIGHT || 1080,
@@ -21,5 +20,9 @@ module.exports = {
     downloadThroughput: 280000,
     uploadThroughput: 256000
   },
-  defaultNavigationTimeout: 60000
+  defaultNavigationTimeout: 60000,
+  outsideCluster: process.env.OUTSIDE_CLUSTER
+    ? process.env.OUTSIDE_CLUSTER
+    : false,
+  kubeConfigPath: process.env.KUBECONFIG ? process.env.KUBECONFIG : undefined
 };

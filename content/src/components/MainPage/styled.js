@@ -22,12 +22,10 @@ export const LeftSideWrapper = styled.div`
   z-index: 1;
   overflow: auto;
   background-color: #fff;
-  -webkit-transition: -webkit-transform 0.2s ease-in-out;
   transition: -webkit-transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
-  -webkit-box-shadow: 0 0 1px #ebebeb;
-  box-shadow: 0 0 1px #ebebeb;
+  box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
 `;
 
 export const CenterSideWrapper = styled.div`

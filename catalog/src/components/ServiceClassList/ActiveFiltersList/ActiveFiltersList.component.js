@@ -21,7 +21,10 @@ const ActiveFiltersList = ({
       {filterCategories.map(category =>
         activeFilters[category].map((filter, id) => (
           <ActiveFilterWrapper key={`${filter}-${id}`}>
-            <Token data-e2e-id="active-filter" clickHandler={() => onCancel(category, filter)}>
+            <Token
+              data-e2e-id="active-filter"
+              clickHandler={() => onCancel(category, filter)}
+            >
               {filter}
             </Token>
           </ActiveFilterWrapper>

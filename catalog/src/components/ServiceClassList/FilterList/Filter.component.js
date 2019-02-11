@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Text } from '@kyma-project/react-components';
 
-import { Checkmark, FilterHeader, FilterContainer, Items, Item } from './styled';
+import {
+  Checkmark,
+  FilterHeader,
+  FilterContainer,
+  Items,
+  Item,
+} from './styled';
 
 const Filter = ({
   name,
@@ -65,10 +71,7 @@ const Filter = ({
         })}
         {isMore && (
           <Item>
-            <Button
-              option="light"
-              onClick={() => onSeeMoreClick(name)}
-            >
+            <Button option="light" onClick={() => onSeeMoreClick(name)}>
               see more
             </Button>
           </Item>

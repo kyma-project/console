@@ -27,7 +27,9 @@ class SecretDataModal extends React.Component {
           </Item>
         </Grid.Unit>
         <Grid.Unit size={0.75}>
-          <Item>{encoded ? this.randomizeAsterisks(data[key]) : value}</Item>
+          <Item data-e2e-id={`secret-${encoded ? 'encoded' : 'decoded'}`}>
+            {encoded ? this.randomizeAsterisks(data[key]) : value}
+          </Item>
         </Grid.Unit>
       </Grid>
     ));
@@ -46,14 +48,18 @@ class SecretDataModal extends React.Component {
       <Fragment>
         {prefix && (
           <Text>
-            All variables will be prefixed with: <Bold>'{prefix}'</Bold>.
+            All variables will be prefixed with:{' '}
+            <Bold data-e2e-id="secret-prefix">'{prefix}'</Bold>.
           </Text>
         )}
         <List>{items}</List>
       </Fragment>
     );
     const actions = (
-      <Button onClick={this.toggleEncoded}>
+      <Button
+        data-e2e-id={`button-${encoded ? 'decode' : 'encode'}`}
+        onClick={this.toggleEncoded}
+      >
         {encoded ? 'Decode' : 'Encode'}
       </Button>
     );

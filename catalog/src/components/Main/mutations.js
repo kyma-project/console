@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const FILTER_SERVICE_CLASS_MUTATION = gql`
-  mutation filterServiceClasses($environment: String!) {
-    filterServiceClasses(environment: $environment) @client
+  mutation filterServiceClasses($namespace: String!) {
+    filterServiceClasses(namespace: $namespace) @client
   }
 `;
 

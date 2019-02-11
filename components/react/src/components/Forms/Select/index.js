@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  FormSet,
-  FormItem,
-  FormLabel,
-  FormSelect,
-} from 'fundamental-react';
+import { FormSet, FormItem, FormLabel, FormSelect } from 'fundamental-react';
 
 const Select = ({
   label,

@@ -13,8 +13,8 @@ export const SET_ACTIVE_FILTERS_MUTATION = gql`
 `;
 
 export const SERVICE_INSTANCES_DELETE_MUTATION = gql`
-  mutation DeleteServiceInstance($name: String!, $environment: String!) {
-    deleteServiceInstance(name: $name, environment: $environment) {
+  mutation DeleteServiceInstance($name: String!, $namespace: String!) {
+    deleteServiceInstance(name: $name, namespace: $namespace) {
       name
     }
   }

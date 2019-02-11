@@ -26,7 +26,10 @@
                 "output": "/node_modules/ace-builds/src-min"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss",
+              "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
+            ],
             "scripts": []
           },
           "configurations": {
