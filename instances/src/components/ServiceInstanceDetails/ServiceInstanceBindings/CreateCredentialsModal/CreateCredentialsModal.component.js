@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
-import dcopy from 'deep-copy';
 
-import { ConfirmationModal, Tooltip } from '@kyma-project/react-components';
+import { Button, Modal, Tooltip } from '@kyma-project/react-components';
 
 import SchemaData from './SchemaData.component';
 import { bindingVariables } from '../InfoButton/variables';
-
-import { CreateCredentialsButton } from './styled';
+import InfoButton from '../InfoButton/InfoButton.component';
 
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -55,17 +53,14 @@ class CreateCredentialsModal extends React.Component {
     this.setState({ ...data });
   };
 
-  create = async (params, isOpenedModal) => {
+  create = async isOpenedModal => {
     const { serviceInstance, createBinding, sendNotification } = this.props;
+    const { bindingCreateParameters } = this.state;
+
+    let success = true;
 
     try {
-      let bindingCreateParameters;
-      if (params && params.formData) {
-        bindingCreateParameters = dcopy(params.formData);
-        clearEmptyPropertiesInObject(bindingCreateParameters);
-      } else {
-        bindingCreateParameters = {};
-      }
+      clearEmptyPropertiesInObject(bindingCreateParameters);
       const createdBinding = await createBinding(
         serviceInstance.name,
         bindingCreateParameters,
@@ -97,6 +92,7 @@ class CreateCredentialsModal extends React.Component {
         });
       }
     } catch (e) {
+      success = false;
       this.setState({
         tooltipData: {
           type: 'error',
@@ -107,26 +103,26 @@ class CreateCredentialsModal extends React.Component {
         },
       });
     }
+    if (success) {
+      this.clearState();
+      LuigiClient.uxManager().removeBackdrop();
+    }
   };
 
   handleConfirmation = () => {
-    if (this.submitBtn) {
-      this.submitBtn.click();
-    } else {
-      this.create(null, true);
-    }
+    this.create();
   };
 
   handleOpen = () => {
     const { bindingCreateParameterSchema } = this.state;
     if (!bindingCreateParameterSchema) {
-      this.create(null, true);
+      this.create(true);
     }
   };
   createWithoutOpening = () => {
     const { bindingCreateParameterSchema } = this.state;
     if (!bindingCreateParameterSchema) {
-      this.create(null);
+      this.create();
     }
   };
 
@@ -156,26 +152,17 @@ class CreateCredentialsModal extends React.Component {
         <SchemaData
           data={schemaData}
           bindingCreateParameterSchema={bindingCreateParameterSchema}
-          onSubmitSchemaForm={el => this.create(el, true)}
+          onSubmitSchemaForm={el => this.create(true)}
           planName={servicePlan.displayName}
           callback={this.callback}
-        >
-          {/* Styled components don't work here */}
-          <button
-            className="hidden"
-            type="submit"
-            ref={submitBtn => (this.submitBtn = submitBtn)}
-          >
-            Submit
-          </button>
-        </SchemaData>
+        />
       </Fragment>,
     ];
 
     const createCredentialsButton = (
-      <CreateCredentialsButton data-e2e-id={id} onClick={this.handleOpen}>
+      <Button compact option="light" data-e2e-id={id} onClick={this.handleOpen}>
         + Create Credentials
-      </CreateCredentialsButton>
+      </Button>
     );
 
     if (serviceInstance.status.type !== 'RUNNING') {
@@ -189,44 +176,54 @@ class CreateCredentialsModal extends React.Component {
           }
           minWidth="161px"
         >
-          <CreateCredentialsButton disabled={true}>
+          <Button compact option="light" disabled={true}>
             + Create Credentials
-          </CreateCredentialsButton>
+          </Button>
         </Tooltip>
       );
     }
 
     if (!bindingCreateParameterSchemaExists) {
       return (
-        <CreateCredentialsButton
+        <Button
+          compact
+          option="light"
           data-e2e-id={id}
           onClick={this.createWithoutOpening}
         >
           + Create Credentials
-        </CreateCredentialsButton>
+        </Button>
       );
     }
 
+    const title = (
+      <>
+        <span>{'Bind Application'}</span>
+        <InfoButton
+          content={bindingVariables.serviceBinding}
+          orientation="bottom"
+        />
+      </>
+    );
+
     return (
-      <ConfirmationModal
+      <Modal
         ref={modal => {
           this.child = modal;
         }}
         key={serviceInstance.name}
-        title={'Bind Application'}
+        title={title}
         confirmText="Create"
-        cancelText="Cancel"
-        content={content}
-        handleConfirmation={this.handleConfirmation}
+        onConfirm={this.handleConfirmation}
         modalOpeningComponent={createCredentialsButton}
-        disabled={disabled}
+        disabledConfirm={disabled}
         tooltipData={tooltipData}
-        borderFooter={true}
         handleClose={this.clearState}
-        headerAdditionalInfo={bindingVariables.serviceBinding}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
         onHide={() => LuigiClient.uxManager().removeBackdrop()}
-      />
+      >
+        {content}
+      </Modal>
     );
   }
 }

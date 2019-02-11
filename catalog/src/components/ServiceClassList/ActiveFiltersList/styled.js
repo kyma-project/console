@@ -6,26 +6,9 @@ export const ActiveFiltersListWrapper = styled.div`
   padding: 0 34px;
 `;
 
-export const ActiveFilter = styled.div`
+export const ActiveFilterWrapper = styled.div`
   display: inline-block;
-  color: #515559;
-  font-family: '72';
-  font-size: 14px;
-  font-weight: normal;
-  font-weight: normal;
-  padding: 6px 10px;
   margin: 0 12px 12px 0;
-  border-radius: 4px;
-  background-color: #e0eaf3;
-`;
-
-export const CancelButton = styled.div`
-  display: inline-block;
-  position: relative;
-  top: 1px;
-  margin-left: 6px;
-  font-size: 12px;
-  cursor: pointer;
 `;
 
 export const ClearAllActiveFiltersButton = styled.button`

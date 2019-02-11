@@ -1,36 +1,59 @@
 import React from 'react';
 
-import { Dropdown, Text } from '@kyma-project/react-components';
+import {
+  Button,
+  Dropdown,
+  FormFieldset,
+  FormInput,
+} from '@kyma-project/react-components';
 
-import { List, Item, Checkmark } from './styled';
+import {
+  FiltersDropdownWrapper,
+  FormLabel,
+  FormItem,
+  Panel,
+  PanelBody,
+} from './styled';
 
-const FilterDropdown = ({ filter, activeValues = [], onChange }) =>
-  !filter ? null : (
-    <Dropdown
-      name="Filter"
-      enabled={filter.values && filter.values.length > 0}
-      lastButton
-    >
-      <List>
-        {filter.values.map(item => {
-          const count = item.count !== null ? ` (${item.count})` : '';
-          const active = activeValues.some(value => value === item.value);
-
-          return (
-            <Item
-              key={item.name}
-              onClick={() => onChange(filter.name, item.value)}
-            >
-              <Checkmark checked={active} />
-              <Text>
-                {item.name}
-                {count}
-              </Text>
-            </Item>
-          );
-        })}
-      </List>
-    </Dropdown>
+const FilterDropdown = ({ filter, onChange }) => {
+  const disabled = !(filter && filter.values && filter.values.length > 0);
+  const control = (
+    <Button option="emphasized" disabled={disabled} data-e2e-id="toggle-filter">
+      Filter
+    </Button>
   );
+
+  return !filter ? null : (
+    <FiltersDropdownWrapper>
+      <Dropdown control={control} disabled={disabled}>
+        <Panel>
+          <PanelBody>
+            <FormFieldset>
+              {filter.values.map((item, index) => {
+                const count = item.count !== null ? ` (${item.count})` : '';
+
+                return (
+                  <FormItem isCheck key={index}>
+                    <FormInput
+                      data-e2e-id={`filter-${item.name}`}
+                      type="checkbox"
+                      id={`checkbox-${index}`}
+                      name={`checkbox-name-${index}`}
+                      onClick={() => onChange(filter.name, item.value)}
+                    />
+                    <FormLabel htmlFor={`checkbox-${index}`}>
+                      {item.name}
+                      {count}
+                    </FormLabel>
+                  </FormItem>
+                );
+              })}
+            </FormFieldset>
+          </PanelBody>
+        </Panel>
+      </Dropdown>
+    </FiltersDropdownWrapper>
+  );
+};
 
 export default FilterDropdown;

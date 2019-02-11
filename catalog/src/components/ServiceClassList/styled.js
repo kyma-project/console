@@ -21,10 +21,12 @@ export const CardsWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   width: 100%;
-  padding: 0 20px;
+  padding: 0 20px 30px 20px;
 `;
 
 export const EmptyServiceListMessageWrapper = styled.div`
+  text-align: center;
+  font-size: 18px;
   padding: 20px 0;
   margin: 0 auto;
 `;

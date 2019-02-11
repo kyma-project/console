@@ -16,12 +16,10 @@ export default compose(
     name: 'serviceClasses',
     options: () => {
       return {
+        fetchPolicy: 'cache-and-network',
+        errorPolicy: 'all',
         variables: {
-          environment: builder.getCurrentEnvironmentId(),
-        },
-        options: {
-          fetchPolicy: 'cache-and-network',
-          errorPolicy: 'all',
+          namespace: builder.getCurrentEnvironmentId(),
         },
       };
     },
@@ -31,7 +29,7 @@ export default compose(
     options: () => {
       return {
         variables: {
-          environment: builder.getCurrentEnvironmentId(),
+          namespace: builder.getCurrentEnvironmentId(),
         },
       };
     },

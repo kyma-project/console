@@ -13,16 +13,19 @@ import {
   handleServiceBindingUsageEvent,
 } from '../../store/ServiceInstances/events';
 import builder from '../../commons/builder';
+import { backendModuleExists } from '../../commons/helpers';
 
 const DataProvider = ({ serviceInstances, children }) => {
   const subscribeToEvents = () => {
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
+
     if (!serviceInstances) {
       return;
     }
 
     serviceInstances.subscribeToMore({
       document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
-      variables: { environment: builder.getCurrentEnvironmentId() },
+      variables: { namespace: builder.getCurrentEnvironmentId() },
       updateQuery: (prev, { subscriptionData }) => {
         if (
           !subscriptionData.data ||
@@ -40,7 +43,7 @@ const DataProvider = ({ serviceInstances, children }) => {
 
     serviceInstances.subscribeToMore({
       document: SERVICE_BINDING_EVENT_SUBSCRIPTION,
-      variables: { environment: builder.getCurrentEnvironmentId() },
+      variables: { namespace: builder.getCurrentEnvironmentId() },
       updateQuery: (prev, { subscriptionData }) => {
         if (
           !subscriptionData.data ||
@@ -56,9 +59,13 @@ const DataProvider = ({ serviceInstances, children }) => {
       },
     });
 
+    if (!serviceCatalogAddonsBackendModuleExists) {
+      return;
+    }
+
     serviceInstances.subscribeToMore({
       document: SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
-      variables: { environment: builder.getCurrentEnvironmentId() },
+      variables: { namespace: builder.getCurrentEnvironmentId() },
       updateQuery: (prev, { subscriptionData }) => {
         if (
           !subscriptionData.data ||
@@ -91,8 +98,9 @@ export default compose(
     name: 'serviceInstances',
     options: () => ({
       fetchPolicy: 'network-only',
+      errorPolicy: 'all',
       variables: {
-        environment: builder.getCurrentEnvironmentId(),
+        namespace: builder.getCurrentEnvironmentId(),
       },
     }),
   }),

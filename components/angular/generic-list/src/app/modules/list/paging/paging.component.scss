@@ -1,35 +1,6 @@
-div {
+.fd-pagination {
   padding-bottom: 6px;
   padding-top: 6px;
   text-align: center;
-}
-
-div>button {
-  margin-right: 4px;
-  margin-left: 4px;
-  display:inline-block;
-}
-
-button {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  display: inline-block;
-  vertical-align: middle;
-  white-space: normal;
-  background: none;
-  line-height: 1;
-  font-size: 14px;
-  text-transform: none!important;
-  border: none;
-  outline: none;
-  &:focus {
-    border: none;
-  }
   cursor: pointer;
-  &:disabled {
-    cursor: default;
-    outline: none;
-    color: darkgrey;
-  }
 }

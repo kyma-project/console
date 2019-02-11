@@ -1,4 +1,4 @@
-import { IdpPresetsService } from './../../../../../settings/idp-presets/idp-presets.service';
+import { IdpPresetsService } from '../../../../../settings/idp-presets/idp-presets.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CurrentEnvironmentService } from '../../../../services/current-environment.service';
@@ -7,8 +7,8 @@ import { AppConfig } from '../../../../../../app.config';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
-import { InformationModalComponent } from '../../../../../../shared/components/information-modal/information-modal.component';
-import { Copy2ClipboardModalComponent } from '../../../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
+import { InformationModalComponent } from 'shared/components/information-modal/information-modal.component';
+import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
@@ -36,15 +36,14 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public apiDefinition: any;
   private apiDefUrl = '';
   private service: any;
-  private deployment: any;
   public canBeSecured = false;
   public jwksUri: string;
   public issuer: string;
   private defaultAuthConfig: any;
   public listOfServices;
   public filteredServices;
-  public listOfDeployments;
   public routedFromServiceDetails = true;
+  private pods: any;
 
   public ariaExpanded = false;
   public ariaHidden = true;
@@ -92,11 +91,10 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public goBack() {
     this.routedFromServiceDetails
       ? this.navigateToDetails(this.serviceName)
-      : this.navigateToList('apis');
+      : this.navigateToList('cmf-apis');
   }
 
   public isAbleToMakeRequest() {
-    this.findMatchingDeployment();
     return (
       _.isEmpty(this.error) &&
       _.isEmpty(this.errorPort) &&
@@ -286,13 +284,9 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
           if (!this.servicePort) {
             this.servicePort = service.spec.ports[0].port;
           }
-          if (this.service.spec && this.service.spec.selector) {
-            if (
-              Object.getOwnPropertyNames(this.service.spec.selector).length > 0
-            ) {
-              this.fetchDeployment(this.service.spec.selector);
-            }
-          }
+
+          this.checkIfServiceCanBeSecured(service);
+
           this.setApiName();
           this.fetchAuthIssuer();
         },
@@ -307,73 +301,37 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
         services => {
           this.filteredServices = services.items;
           this.listOfServices = services.items;
-          this.fetchListOfDeployments();
           this.fetchAuthIssuer();
         },
         err => console.log(err)
       );
   }
 
-  public fetchListOfDeployments() {
-    this.exposeApiService
-      .getListOfDeplotments(this.currentEnvironmentId)
-      .pipe(
-        map(deployments => {
-          if (
-            deployments &&
-            deployments.items &&
-            deployments.items.length > 0
-          ) {
-            return deployments.items;
-          }
-          return null;
-        })
-      )
-      .subscribe(
-        deployments => {
-          this.listOfDeployments = deployments;
-        },
-        err => console.log(err)
-      );
-  }
+  public checkIfServiceCanBeSecured(service) {
+    try {
+      let labels = '';
 
-  public findMatchingDeployment() {
-    let matchingDeployment = null;
-    if (this.listOfDeployments && this.listOfDeployments.length > 0) {
-      this.listOfDeployments.forEach(deployment => {
-        if (
-          this.service &&
-          this.service.spec &&
-          this.service.spec.selector &&
-          deployment.spec &&
-          deployment.spec.selector &&
-          deployment.spec.selector.matchLabels.app ===
-            this.service.spec.selector.app
-        ) {
-          matchingDeployment = deployment;
-        }
+      Object.entries(service.spec.selector).forEach(labelPair => {
+        labels += `${labelPair[0]}=${labelPair[1]},`;
       });
-      this.deployment = matchingDeployment;
-    }
-    this.checkIfServiceCanBeSecured();
-  }
 
-  public checkIfServiceCanBeSecured() {
-    if (
-      this.deployment &&
-      this.deployment.spec &&
-      this.deployment.spec.template &&
-      this.deployment.spec.template.metadata &&
-      this.deployment.spec.template.metadata.annotations
-    ) {
-      this.canBeSecured =
-        this.deployment.spec.template.metadata.annotations[
-          'sidecar.istio.io/inject'
-        ] === 'true'
-          ? true
-          : false;
-    } else {
-      this.canBeSecured = false;
+      if (labels.endsWith(',')) {
+        labels = labels.slice(0, -1);
+      }
+
+      this.exposeApiService
+        .getPodsByLabelSelector(this.currentEnvironmentId, labels)
+        .subscribe(pods => {
+          this.pods = pods.items;
+          this.canBeSecured = this.pods.find(pod => {
+            return pod.spec.containers.find(container => {
+              return container.name === 'istio-proxy';
+            });
+          });
+        });
+    } catch (e) {
+      // nop
+      // secure api creation not possible
     }
   }
 
@@ -416,35 +374,6 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.service = service;
     this.serviceName = service.metadata.name;
     this.servicePort = service.spec.ports[0].port;
-  }
-
-  private fetchDeployment(selector: any) {
-    const selectorKey = Object.getOwnPropertyNames(selector)[0];
-    const selectorValue = selector[selectorKey];
-    const url = `${AppConfig.k8sApiServerUrl_apps}namespaces/${
-      this.currentEnvironmentId
-    }/deployments?labelSelector=${selectorKey}=${selectorValue}`;
-    this.http
-      .get<any>(url, {})
-      .pipe(
-        map(deployments => {
-          if (
-            deployments &&
-            deployments.items &&
-            deployments.items.length > 0
-          ) {
-            return deployments.items[0];
-          }
-          return null;
-        })
-      )
-      .subscribe(
-        deployment => {
-          this.deployment = deployment;
-          this.checkIfServiceCanBeSecured();
-        },
-        err => console.log(err)
-      );
   }
 
   private fetchToken() {

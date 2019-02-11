@@ -1,4 +1,22 @@
 import styled from 'styled-components';
+import { Button } from '@kyma-project/react-components';
+
+export const FiltersDropdown = styled.div`
+  .fd-popover__body--right {
+    &:after {
+      right: 22px;
+    }
+  }
+
+  .fd-popover__body--right {
+    margin-top: 5px;
+    right: 0px;
+
+    &:before {
+      right: 22px;
+    }
+  }
+`;
 
 export const Checkmark = styled.div`
   flex: 0 0 auto;
@@ -29,20 +47,23 @@ export const Checkmark = styled.div`
   }
 `;
 
-export const FilterContainer = styled.div`
+export const FiltersContainer = styled.div`
   box-sizing: border-box;
   margin: 10px 10px;
   text-align: left;
 `;
 
 export const FilterHeader = styled.div`
-  font-family: '72';
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 500;
   text-align: left;
   color: rgba(63, 80, 96, 0.6);
   padding: 10px 0;
   text-transform: uppercase;
+`;
+
+export const FilterContainer = styled.div`
+  margin: 10px 5px;
 `;
 
 export const Items = styled.ul`
@@ -85,24 +106,11 @@ export const Link = styled.a`
 
 export const SearchWrapper = styled.div`
   width: 200px;
-  padding: 10px;
-  padding-bottom: 0;
+  padding: 15px;
 `;
 
-export const ClearAllActiveFiltersButton = styled.button`
-  color: #0a6ed1;
-  padding: 0;
-  margin: 16px 0 0 0;
-  font-family: '72';
-  font-size: 14px;
-  font-weight: normal;
-  font-weight: normal;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-    color: #0a6ed1;
+export const ClearAllActiveFiltersButton = styled(Button)`
+  && {
+    margin-top: 6px;
   }
 `;

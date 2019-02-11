@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
 import {
+  Label,
   Icon,
   Header,
   Separator,
@@ -13,13 +14,11 @@ import {
 import {
   ServiceClassInfoContentWrapper,
   ImagePlaceholder,
-  ServiceTitle,
-  ServiceProvider,
+  ServiceClassInfoContent,
   ExternalLink,
   Image,
-  TagsWrapper,
-  TagWrapper,
-  Tag,
+  LabelsWrapper,
+  LabelWrapper,
 } from './styled';
 
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
@@ -51,6 +50,8 @@ const ServiceClassInfo = ({
         extractedLabels.push({ name: 'local', type: 'basic' });
       if (isStringValueEqualToTrue(labels.showcase))
         extractedLabels.push({ name: 'showcase', type: 'basic' });
+      if (isStringValueEqualToTrue(labels.provisionOnlyOnce))
+        extractedLabels.push({ name: 'provision-only-once', type: 'basic' });
     }
 
     return extractedLabels;
@@ -64,34 +65,38 @@ const ServiceClassInfo = ({
   const tagsDescription = {
     basic: 'Basic filter',
     'connected-app': 'Connected application',
+    provisionOnlyOnce: "Provision only once",
     tag: 'Tag',
   };
 
   const tooltipWidth = {
     basic: '80px',
     'connected-app': '140px',
+    provisionOnlyOnce: "140px",
     tag: '50px',
   };
 
   return (
     <div>
       <ServiceClassInfoContentWrapper>
-        <ImagePlaceholder imageUrl={imageUrl}>
-          {imageUrl ? <Image src={imageUrl} /> : <Icon icon={'\ue113'} />}
+        <ImagePlaceholder>
+          {imageUrl ? (
+            <Image size="l" photo={imageUrl} />
+          ) : (
+            <Icon icon={'\ue113'} />
+          )}
         </ImagePlaceholder>
-        <div>
-          <ServiceTitle data-e2e-id="service-title">
-            {serviceClassDisplayName}
-          </ServiceTitle>
-          <ServiceProvider data-e2e-id="service-provider">
-            {providerDisplayName || ''}
-          </ServiceProvider>
-        </div>
+        <ServiceClassInfoContent
+          title={serviceClassDisplayName}
+          data-e2e-id="service-title-and-provider"
+        >
+          {providerDisplayName || ''}
+        </ServiceClassInfoContent>
       </ServiceClassInfoContentWrapper>
       <Separator margin="30px 0 30px" />
       <div>
         <Header margin="0 0 20px">Vendor Information</Header>
-        <Text fontSize="14px">
+        <Text fontSize="14px" data-e2e-id="service-last-update">
           Last Update:{' '}
           <Moment unix format="MMM DD, YYYY">
             {creationTimestamp}
@@ -115,18 +120,20 @@ const ServiceClassInfo = ({
         )}
         {modifiedTags &&
           modifiedTags.length > 0 && (
-            <TagsWrapper>
+            <LabelsWrapper data-e2e-id="service-labels">
               {modifiedTags.sort(sortTags).map(tag => (
-                <TagWrapper key={`${tag.type}-${tag.name}`}>
+                <LabelWrapper key={`${tag.type}-${tag.name}`}>
                   <Tooltip
                     content={tagsDescription[tag.type]}
                     minWidth={tooltipWidth[tag.type]}
                   >
-                    <Tag>{tag.name}</Tag>
+                    <Label cursorType="help" data-e2e-id="service-label">
+                      {tag.name}
+                    </Label>
                   </Tooltip>
-                </TagWrapper>
+                </LabelWrapper>
               ))}
-            </TagsWrapper>
+            </LabelsWrapper>
           )}
       </div>
     </div>

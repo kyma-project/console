@@ -5,8 +5,6 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { Toolbar } from '@kyma-project/react-components';
 
 const ServiceClassToolbar = ({
-  arrayOfJsx,
-  renObjData,
   history,
   serviceClassDisplayName,
   children,
@@ -18,18 +16,9 @@ const ServiceClassToolbar = ({
   };
 
   return (
-    <div>
-      <div> {arrayOfJsx} </div>
-      {renObjData}
-
-      <Toolbar
-        back={goToServiceInstanceList}
-        headline={serviceClassDisplayName}
-        addSeparator
-      >
-        {children}
-      </Toolbar>
-    </div>
+    <Toolbar goBack={goToServiceInstanceList} title={serviceClassDisplayName}>
+      {children}
+    </Toolbar>
   );
 };
 

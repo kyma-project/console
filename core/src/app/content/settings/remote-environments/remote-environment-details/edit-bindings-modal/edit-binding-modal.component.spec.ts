@@ -87,7 +87,7 @@ describe('EditBindingsModalComponent', () => {
     // given
     const remoteEnvs = of({
       application: {
-        enabledInEnvironments: ['env1', 'env2']
+        enabledInNamespaces: ['env1', 'env2']
       }
     });
     const envs = of([
@@ -128,7 +128,7 @@ describe('EditBindingsModalComponent', () => {
       );
       expect(console.log).not.toHaveBeenCalled();
       expect(component.remoteEnv).toEqual({
-        enabledInEnvironments: ['env1', 'env2']
+        enabledInNamespaces: ['env1', 'env2']
       });
       expect(component.environments).toEqual([
         {
@@ -149,7 +149,7 @@ describe('EditBindingsModalComponent', () => {
     // given
     const remoteEnvs = of({
       remoteEnvironment: {
-        enabledInEnvironments: ['env1', 'env2']
+        enabledInNamespaces: ['env1', 'env2']
       }
     });
     const envs = throwError('error');
@@ -199,7 +199,7 @@ describe('EditBindingsModalComponent', () => {
     const remoteEnvs = of({
       remoteEnvironment: {
         name: 'test',
-        enabledInEnvironments: ['env1', 'env2']
+        enabledInNamespaces: ['env1', 'env2']
       }
     });
     const envs = of([

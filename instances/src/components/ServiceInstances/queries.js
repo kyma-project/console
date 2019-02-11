@@ -24,8 +24,8 @@ export const ALL_FILTERS_QUERY = gql`
 `;
 
 export const ALL_ITEMS_QUERY = gql`
-  query allItems($environment: String!) {
-    serviceInstances(environment: $environment) @client {
+  query allItems($namespace: String!) {
+    serviceInstances(namespace: $namespace) @client {
       ...serviceInstanceDetails
     }
   }

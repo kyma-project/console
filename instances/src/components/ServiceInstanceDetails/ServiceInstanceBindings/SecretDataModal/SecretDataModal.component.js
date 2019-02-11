@@ -1,10 +1,8 @@
 import React, { Fragment } from 'react';
 import Grid from 'styled-components-grid';
-
-import { Button, InformationModal } from '@kyma-project/react-components';
-
-import { List, Item, Bold, Text } from './styled';
 import LuigiClient from '@kyma-project/luigi-client';
+import { Button, Modal } from '@kyma-project/react-components';
+import { List, Item, Bold, Text } from './styled';
 
 class SecretDataModal extends React.Component {
   constructor(props) {
@@ -29,7 +27,9 @@ class SecretDataModal extends React.Component {
           </Item>
         </Grid.Unit>
         <Grid.Unit size={0.75}>
-          <Item>{encoded ? this.randomizeAsterisks(data[key]) : value}</Item>
+          <Item data-e2e-id={`secret-${encoded ? 'encoded' : 'decoded'}`}>
+            {encoded ? this.randomizeAsterisks(data[key]) : value}
+          </Item>
         </Grid.Unit>
       </Grid>
     ));
@@ -40,7 +40,7 @@ class SecretDataModal extends React.Component {
   };
 
   render() {
-    const { title, data, modalOpeningComponent, prefix } = this.props;
+    const { title, data, prefix, modalOpeningComponent } = this.props;
     const { encoded } = this.state;
 
     const items = this.populateItems(data, encoded);
@@ -48,27 +48,33 @@ class SecretDataModal extends React.Component {
       <Fragment>
         {prefix && (
           <Text>
-            All variables will be prefixed with: <Bold>'{prefix}'</Bold>.
+            All variables will be prefixed with:{' '}
+            <Bold data-e2e-id="secret-prefix">'{prefix}'</Bold>.
           </Text>
         )}
         <List>{items}</List>
       </Fragment>
     );
-    const footer = (
-      <Button normal first last onClick={this.toggleEncoded}>
+    const actions = (
+      <Button
+        data-e2e-id={`button-${encoded ? 'decode' : 'encode'}`}
+        onClick={this.toggleEncoded}
+      >
         {encoded ? 'Decode' : 'Encode'}
       </Button>
     );
 
     return (
-      <InformationModal
+      <Modal
+        width={'681px'}
         title={title}
-        content={content}
-        footer={footer}
         modalOpeningComponent={modalOpeningComponent}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
         onHide={() => LuigiClient.uxManager().removeBackdrop()}
-      />
+        actions={actions}
+      >
+        {content}
+      </Modal>
     );
   }
 }

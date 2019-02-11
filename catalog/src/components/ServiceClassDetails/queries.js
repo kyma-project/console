@@ -26,7 +26,7 @@ const plansQGL = `
 `;
 
 export const GET_SERVICE_CLASS = gql`
-  query getServiceClass($name: String!, $environment: String!) {
+  query getServiceClass($name: String!, $namespace: String!) {
     clusterServiceClass(name: $name) {
       ${serviceClassQGL}
       plans {
@@ -34,12 +34,12 @@ export const GET_SERVICE_CLASS = gql`
         relatedClusterServiceClassName
       }
     }
-    serviceClass(name: $name, environment: $environment) {
+    serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
-      environment
+      namespace
       plans {
         ${plansQGL}
-        environment
+        namespace
         relatedServiceClassName
       }
     }

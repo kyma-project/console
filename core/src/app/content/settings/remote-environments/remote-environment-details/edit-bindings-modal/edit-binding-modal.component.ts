@@ -51,9 +51,9 @@ export class EditBindingsModalComponent {
           this.environments = response[1];
 
           this.environments.forEach(env => {
-            if (this.remoteEnv && this.remoteEnv.enabledInEnvironments) {
+            if (this.remoteEnv && this.remoteEnv.enabledInNamespaces) {
               this.getFilteredEnvironments(
-                this.remoteEnv.enabledInEnvironments,
+                this.remoteEnv.enabledInNamespaces,
                 env
               );
             }
@@ -67,8 +67,8 @@ export class EditBindingsModalComponent {
     });
   }
 
-  private getFilteredEnvironments(enabledInEnvironments, env) {
-    const exists = _.includes(enabledInEnvironments, env.label);
+  private getFilteredEnvironments(enabledInNamespaces, env) {
+    const exists = _.includes(enabledInNamespaces, env.label);
 
     if (!exists) {
       this.filteredEnvs.push(env);

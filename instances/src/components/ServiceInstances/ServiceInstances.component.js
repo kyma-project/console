@@ -71,7 +71,6 @@ class ServiceInstances extends React.Component {
         <ServiceInstancesToolbar
           filterClassesAndSetActiveFilters={filterClassesAndSetActiveFilters}
           labelFilter={labelFilter}
-          allActiveFilters={allActiveFilters}
           serviceInstancesExists={allInstances.length > 0}
         />
 

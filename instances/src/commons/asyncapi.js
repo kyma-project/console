@@ -12,7 +12,6 @@ export const asyncApiTheme = {
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       font-smoothing: antialiased;
-      background: #f3f4f5;
     `,
     header: css`
     `,
@@ -301,8 +300,6 @@ export const asyncApiTheme = {
       border-radius: 5px;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      padding: 20px;
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
     `,
     infoHeader: css`
       > h1 {
@@ -401,8 +398,6 @@ export const asyncApiTheme = {
       margin-top: 24px;
       background: #fff;
       border-radius: 5px;
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
-      padding: 20px;
     `,
     topicsHeader: css`
       > h2 {
@@ -517,8 +512,6 @@ export const asyncApiTheme = {
       margin-top: 24px;
       background: #fff;
       border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
     `,
     messagesHeader: css`
       > h2 {
@@ -603,8 +596,6 @@ export const asyncApiTheme = {
       margin-top: 24px;
       background: #fff;
       border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
     `,
     schemasHeader: css`
       > h2 {
@@ -645,8 +636,6 @@ export const asyncApiTheme = {
       margin-top: 24px;
       background: #fff;
       border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
   
       > table {
         margin: 0;

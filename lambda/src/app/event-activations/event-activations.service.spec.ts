@@ -32,8 +32,8 @@ describe('EventActivationsService', () => {
     const name = 'fakeApiName';
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
-    const expectedQuery = `query EventActivations($environment: String!) {
-      eventActivations(namespace: $environment) {
+    const expectedQuery = `query EventActivations($namespace: String!) {
+      eventActivations(namespace: $namespace) {
         name
         displayName
         sourceId

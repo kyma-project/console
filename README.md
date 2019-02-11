@@ -21,7 +21,7 @@ Console also includes the libraries with components for the React and Angular fr
 
 ## Installation
 
-1. Install [Kyma](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/031-inst-local-installation-from-sources.md) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
+1. Install [Kyma](https://github.com/kyma-project/kyma/blob/master/docs/kyma/docs/04-03-local-installation-from-sources.md) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
 2. Install Console that uses [Lerna](https://github.com/lerna/lerna) for managing local dependencies. To install all dependencies for all UI projects and prepare symlinks for local packages within this repository that are components for the React and Angular in the [`components`](./components) folder, run the following commands:
     ```
     npm install

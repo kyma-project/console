@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
-import { Modal, Notification } from '@kyma-project/react-components';
+import { Modal, Notification, BackendModuleDisabled } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import MainPage from '../Main/Main.container';
 import InstanceDetails from '../ServiceClassDetails/ServiceClassDetails.container';
 
 import { NotificationLink } from './styled';
+
+import { backendModuleExists } from '../../commons/helpers';
 
 Modal.MODAL_APP_REF = '#root';
 const NOTIFICATION_VISIBILITY_TIME = 5000;
@@ -42,7 +44,7 @@ class App extends React.Component {
   goToServiceInstanceDetails = name => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`instances/details/${name}`);
+      .navigate(`cmf-instances/details/${name}`);
   };
 
   render() {
@@ -59,6 +61,7 @@ class App extends React.Component {
             {...notification}
             title={
               <NotificationLink
+                data-e2e-id={`notification-${notification.type}`}
                 onClick={() => {
                   this.goToServiceInstanceDetails(notification.instanceName);
                 }}
@@ -70,10 +73,14 @@ class App extends React.Component {
           />
         )}
         <div className="ph3 pv1 background-gray">
-          <Switch>
-            <Route exact path="/" component={MainPage} />
-            <Route exact path="/details/:name" component={InstanceDetails} />
-          </Switch>
+          {backendModuleExists("servicecatalog") ? (
+            <Switch>
+              <Route exact path="/" component={MainPage} />
+              <Route exact path="/details/:name" component={InstanceDetails} />
+            </Switch>
+          ) : (
+            <BackendModuleDisabled mod="Service Catalog" />
+          )}
         </div>
       </div>
     );

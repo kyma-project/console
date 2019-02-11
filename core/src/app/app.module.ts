@@ -20,7 +20,7 @@ import { EnvironmentsContainerComponent } from './content/environments/environme
 import { WorkspaceOverviewComponent } from './content/workspace-overview/workspace-overview/workspace-overview.component';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ListModule } from '@kyma-project/y-generic-list';
+import { ListModule } from 'app/generic-list/list.module';
 import { EnvironmentCreateComponent } from './content/environments/environment-create/environment-create.component';
 import { CurrentEnvironmentService } from './content/environments/services/current-environment.service';
 import { EnvironmentsService } from './content/environments/services/environments.service';

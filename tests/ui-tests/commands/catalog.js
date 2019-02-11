@@ -2,41 +2,149 @@ import config from '../config';
 import kymaConsole from '../commands/console';
 
 module.exports = {
-  createInstance: async (page, instanceTitle, instanceLabel) => {
+  createInstance: async (
+    page,
+    instancePlan,
+    instanceTitle,
+    instanceLabel,
+    instanceAdditionalData,
+    instancePlanName
+  ) => {
     try {
       const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
-      const modal = '.ReactModal__Content--after-open';
+      const modal = '.fd-modal';
       const nameServiceInstancesInput = `[name="nameServiceInstances"]`;
       const labels = `[name="nameServiceBindingUsage"]`;
       const plan = `[name="selectedKind"]`;
-      const planName = 'Micro';
-      const modalCreate = `[${config.catalogTestingAtribute}="modal-create"]`;
+      const additionalData = '#root_additionalData';
+      const planName = '#root_planName';
+      const modalCreate = `[${
+        config.catalogTestingAtribute
+      }="modal-confirmation-button"]`;
 
       const frame = await kymaConsole.getFrame(page);
       await frame.click(addToEnvButton);
       await frame.waitForSelector(modal, { visible: true });
 
-      const classTitle = await frame.$(nameServiceInstancesInput);
+      await select(frame, plan, instancePlan);
 
-      await classTitle.focus();
-      await classTitle.click({ clickCount: 3 });
-      await classTitle.type(instanceTitle);
+      if (instanceTitle) {
+        const classTitle = await frame.$(nameServiceInstancesInput);
 
-      await select(frame, plan, planName);
+        await classTitle.focus();
+        await classTitle.click({ clickCount: 3 });
+        await classTitle.type(instanceTitle);
+      }
 
-      const classLabel = await frame.$(labels);
+      if (instanceLabel) {
+        const classLabel = await frame.$(labels);
 
-      await classLabel.focus();
-      await classLabel.click({ clickCount: 3 });
-      await classLabel.type(instanceLabel);
+        await classLabel.focus();
+        await classLabel.click({ clickCount: 3 });
+        await classLabel.type(instanceLabel);
+      }
+      if (instanceAdditionalData) {
+        const classData = await frame.$(additionalData);
+
+        await classData.focus();
+        await classData.type(instanceAdditionalData);
+      }
+      if (instancePlanName) {
+        const classPlanName = await frame.$(planName);
+
+        await classPlanName.focus();
+        await classPlanName.type(instancePlanName);
+      }
+      const create = await frame.waitForSelector(modalCreate);
+      await create.click();
+    } catch (e) {
+      console.log('Create instance failed');
+      throw e;
+    }
+  },
+  createCredentials: async (page, additionalData) => {
+    try {
+      const createCredentialsButton = `[${
+        config.catalogTestingAtribute
+      }="create-credentials"]`;
+      const modal = '.fd-modal';
+      const additionalDataInput = '#root_exampleField';
+      const modalCreate = `[${
+        config.catalogTestingAtribute
+      }="modal-confirmation-button"]`;
+
+      const frame = await kymaConsole.getFrame(page);
+      await frame.click(createCredentialsButton);
+      await frame.waitForSelector(modal, { visible: true });
+
+      if (additionalData) {
+        const additionalDataField = await frame.$(additionalDataInput);
+        await additionalDataField.focus();
+        await additionalDataField.type(additionalData);
+      }
 
       const create = await frame.waitForSelector(modalCreate);
       await create.click();
     } catch (e) {
-      console.log(document.documentElement.innerHTML);
+      console.log('Create credentials failed');
       throw e;
     }
   },
+  bindApplication: async (page, resource, prefix, additionalData) => {
+    try {
+      const bindAplicationButton = `[${
+        config.catalogTestingAtribute
+      }="create-service-binding"]`;
+      const modal = '.fd-modal';
+      const resourcesInput = `[name="selectedResource"]`;
+      const prefixInput = `[name="prefixEnvironmentValue"]`;
+      const existingBindingInput = `[name="selectedExistingBinding"]`;
+      const additionalDataInput = '#root_exampleField';
+
+      const setPrefixButton = `[${config.catalogTestingAtribute}="set-prefix"]`;
+      const selectExistingCredButton = `[${
+        config.catalogTestingAtribute
+      }="select-existing-cred"]`;
+
+      const modalCreate = `[${
+        config.catalogTestingAtribute
+      }="modal-confirmation-button"]`;
+
+      const frame = await kymaConsole.getFrame(page);
+      await frame.click(bindAplicationButton);
+      await frame.waitForSelector(modal, { visible: true });
+
+      await select(frame, resourcesInput, resource, true);
+
+      if (prefix) {
+        const prefixButton = await frame.$(setPrefixButton);
+        await prefixButton.click();
+
+        const bindingPrefix = await frame.$(prefixInput);
+        await bindingPrefix.focus();
+        await bindingPrefix.type(prefix);
+      }
+
+      if (additionalData) {
+        const dataButton = await frame.$(additionalDataInput);
+        await dataButton.focus();
+        await dataButton.type(additionalData);
+      } else {
+        const selectButton = await frame.$(selectExistingCredButton);
+        await selectButton.click();
+
+        await select(frame, existingBindingInput, '-', true);
+      }
+
+      const create = await frame.waitForSelector(modalCreate);
+      await create.click();
+    } catch (e) {
+      console.log('Bind application failed');
+      throw e;
+    }
+  },
+  deleteBinding: async page => await confirmModal(page),
+  deleteCredentials: async page => await confirmModal(page),
   feelInInput: async (frame, searchByText, searchId) => {
     try {
       const searchSelector = `[${config.catalogTestingAtribute}=${searchId}]`;
@@ -53,10 +161,38 @@ module.exports = {
   getInstances: async page => await getElements(page, 'instance-name'),
   getServices: async page => await getElements(page, 'card-title'),
   getFilters: async page => await getElements(page, 'filter-item'),
+  getLabels: async page => await getElements(page, 'service-label'),
   getActiveFilters: async page => await getElements(page, 'active-filter'),
+  getCredentials: async page => await getElements(page, 'credential-name'),
+  getBindings: async page => await getElements(page, 'binding-name'),
+  getCredentialsStatus: async page =>
+    await getElements(page, 'status-service-binding'),
+  getBindingsStatus: async page =>
+    await getElements(page, 'status-service-binding-usage'),
   prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`
 };
+async function confirmModal(page) {
+  try {
+    const deleteBindingButton = `[${
+      config.catalogTestingAtribute
+    }="delete-button"]`;
+    const modal = '.fd-modal';
 
+    const modalDelete = `[${
+      config.catalogTestingAtribute
+    }="modal-confirmation-button"]`;
+
+    const frame = await kymaConsole.getFrame(page);
+    await frame.click(deleteBindingButton);
+    await frame.waitForSelector(modal, { visible: true });
+
+    const doDelete = await frame.waitForSelector(modalDelete);
+    await doDelete.click();
+  } catch (e) {
+    console.log('Confirm modal function failed');
+    throw e;
+  }
+}
 async function getElements(page, e2eIdName) {
   try {
     return await page.evaluate(
@@ -78,7 +214,7 @@ async function getElements(page, e2eIdName) {
   }
 }
 
-async function select(page, selectorName, itemName) {
+async function select(page, selectorName, itemName, notEqualMode) {
   const selector = await page.$(selectorName);
   const properties = await selector.getProperties();
   for (const property of properties.values()) {
@@ -88,7 +224,10 @@ async function select(page, selectorName, itemName) {
     }
     const text = await element.getProperty('text');
     const textJson = await text.jsonValue();
-    if (textJson !== itemName) {
+    if (
+      (!notEqualMode && textJson !== itemName) ||
+      (notEqualMode && textJson.indexOf(itemName) === -1)
+    ) {
       continue;
     }
     const value = await element.getProperty('value');

@@ -1,66 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TableWrapper } from './components';
-import TableHeader from './TableHeader';
-import TableContent from './TableContent';
-import TableFooter from './TableFooter';
+import Spinner from '../Spinner';
 
-class Table extends React.Component {
-  static propTypes = {
-    title: PropTypes.string,
-    addHeaderContent: PropTypes.any,
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
-    loading: PropTypes.bool,
-    notFoundMessage: PropTypes.string,
-  };
+import {
+  TableWrapper,
+  TableHeader,
+  TableHeaderHead,
+  TableHeaderActions,
+  TableBody,
+  TableContent,
+  NotFoundMessage,
+} from './styled';
 
-  static defaultProps = {
-    loading: false,
-    notFoundMessage: 'Not found resources',
-  };
+const Table = ({
+  title,
+  addHeaderContent,
+  headers,
+  tableData,
+  loadingData,
+  notFoundMessage,
+}) => {
+  return (
+    <TableWrapper>
+      {title && (
+        <TableHeader>
+          <TableHeaderHead title={title} />
+          <TableHeaderActions>{addHeaderContent}</TableHeaderActions>
+        </TableHeader>
+      )}
+      <TableBody>
+        <TableContent headers={headers} tableData={tableData} />
+        {loadingData && <Spinner />}
+        {!loadingData && !(tableData && tableData.length) ? (
+          <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
+        ) : null}
+      </TableBody>
+    </TableWrapper>
+  );
+};
 
-  constructor(props) {
-    super(props);
-  }
+Table.defaultProps = {
+  loadingData: false,
+  notFoundMessage: 'Not found resources',
+};
 
-  extractHeaderData(columns) {
-    let columnsData = [];
-    columns.map(column => {
-      columnsData.push({ size: column.size, name: column.name });
-    });
-
-    return columnsData;
-  }
-
-  render() {
-    const {
-      title,
-      addHeaderContent,
-      columns,
-      data,
-      loading,
-      notFoundMessage,
-      margin,
-    } = this.props;
-
-    return (
-      <TableWrapper margin={margin}>
-        <TableHeader
-          title={title}
-          addContent={addHeaderContent}
-          columns={this.extractHeaderData(columns)}
-        />
-        <TableContent
-          elements={data}
-          columnsData={columns}
-          loading={loading}
-          notFoundMessage={notFoundMessage}
-        />
-      </TableWrapper>
-    );
-  }
-}
+Table.propTypes = {
+  title: PropTypes.string,
+  addHeaderContent: PropTypes.any,
+  headers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loadingData: PropTypes.bool,
+  notFoundMessage: PropTypes.string,
+};
 
 export default Table;

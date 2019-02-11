@@ -13,6 +13,7 @@ import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.compo
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { transformDataScalarStringsToObjects } from '../../store/transformers';
+import { backendModuleExists } from '../../commons/helpers';
 
 class ServiceInstanceDetails extends React.Component {
   state = { defaultActiveTabIndex: 0 };
@@ -20,13 +21,14 @@ class ServiceInstanceDetails extends React.Component {
   callback = data => {
     this.setState({ ...data });
   };
+
   render() {
     const { serviceInstance = {}, deleteServiceInstance, history } = this.props;
 
     if (serviceInstance && serviceInstance.loading) {
       return (
         <EmptyList>
-          <Spinner size="40px" color="#32363a" />
+          <Spinner />
         </EmptyList>
       );
     }
@@ -62,7 +64,7 @@ class ServiceInstanceDetails extends React.Component {
             callback={this.callback}
             serviceInstance={instance}
           />
-          {serviceClass && <ServiceInstanceTabs serviceClass={serviceClass} />}
+          {serviceClass && backendModuleExists("content") ? <ServiceInstanceTabs serviceClass={serviceClass} /> : null}
         </ServiceInstanceWrapper>
       </ThemeWrapper>
     );

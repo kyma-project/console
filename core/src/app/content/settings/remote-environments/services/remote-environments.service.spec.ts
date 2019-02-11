@@ -100,7 +100,7 @@ describe('RemoteEnvironmentsService', () => {
           description
           labels
           name
-          enabledInEnvironments
+          enabledInNamespaces
           status
           services {
             displayName

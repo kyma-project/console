@@ -14,7 +14,7 @@ export const ServiceClassDetailsWrapper = styled.div`
 export const CenterSideWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 30px 30px 0 0;
+  padding: 30px 30px 0 30px;
   text-align: left;
   flex: 1 1 auto;
 
@@ -30,7 +30,7 @@ export const CenterSideWrapper = styled.div`
 export const LeftSideWrapper = styled.div`
   box-sizing: border-box;
   width: 300px;
-  padding: 30px;
+  padding: 30px 30px 0 30px;
   text-align: left;
   flex: 0 0 auto;
 
@@ -46,5 +46,5 @@ export const EmptyList = styled.div`
   text-align: center;
   font-size: 20px;
   color: #32363a;
-  margin: 50px 0;
+  padding: 30px;
 `;

@@ -9,7 +9,7 @@ import {
   Filter,
   Facet,
   DataProviderResult
-} from '@kyma-project/y-generic-list';
+} from 'app/generic-list';
 import { Observable } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
 
@@ -22,8 +22,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
   constructor(
     private resourceUrl: string,
     private dataConverter: DataConverter<S, T>,
-    private http: HttpClient,
-    private dashboardApiResource?: string
+    private http: HttpClient
   ) {}
 
   getData(
@@ -39,7 +38,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
           .get<List<S>>(this.resourceUrl)
           .pipe(
             map(res => {
-              const resourcesList = this.extractResourcesList(res);
+              const resourcesList = res.items;
 
               return resourcesList
                 .map(item => {
@@ -103,12 +102,6 @@ export class KubernetesDataProvider<S extends any, T extends any>
       result.push(new Facet(key, facetMap[key]));
     });
     return result;
-  }
-
-  extractResourcesList(res) {
-    return this.dashboardApiResource
-      ? res[this.dashboardApiResource]
-      : res.items;
   }
 
   selectActiveEnvironments(item) {

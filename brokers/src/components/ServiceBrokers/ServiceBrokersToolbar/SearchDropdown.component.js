@@ -4,7 +4,7 @@ import { Dropdown, Search } from '@kyma-project/react-components';
 
 const SearchDropdown = ({ onChange }) => {
   return (
-    <Dropdown name="Search" firstButton>
+    <Dropdown>
       <Search placeholder="Search" onChange={onChange} />
     </Dropdown>
   );

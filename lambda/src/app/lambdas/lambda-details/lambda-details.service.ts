@@ -204,9 +204,9 @@ export class LambdaDetailsService {
     return lambda;
   }
 
-  public getResourceQuotaStatus(environment: string, token: string) {
-    const query = ` query ResourceQuotasStatus($environment: String!) {
-      resourceQuotasStatus(environment: $environment){
+  public getResourceQuotaStatus(namespace: string, token: string) {
+    const query = ` query ResourceQuotasStatus($namespace: String!) {
+      resourceQuotasStatus(namespace: $namespace){
         exceeded
         exceededQuotas{
           quotaName
@@ -217,7 +217,7 @@ export class LambdaDetailsService {
     }`;
 
     const variables = {
-      environment,
+      namespace,
     };
 
     return this.graphQLClientService.request(

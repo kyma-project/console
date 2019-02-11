@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import dcopy from 'deep-copy';
 
-import { ConfirmationModal, Separator } from '@kyma-project/react-components';
+import { Separator, Modal } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import BasicData from './BasicData.component';
@@ -13,7 +12,7 @@ import { Bold } from './styled';
 import builder from '../../../commons/builder';
 import { clearEmptyPropertiesInObject } from '../../../commons/helpers';
 
-class CreateInstanceModal extends React.Component {
+class CreateInstanceModal extends Component {
   static propTypes = {
     serviceClass: PropTypes.object.isRequired,
     createServiceInstance: PropTypes.func.isRequired,
@@ -24,7 +23,6 @@ class CreateInstanceModal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.child = React.createRef();
     this.state = this.getInitialState();
   }
 
@@ -90,16 +88,12 @@ class CreateInstanceModal extends React.Component {
   };
 
   handleConfirmation = () => {
-    if (this.submitBtn) {
-      this.submitBtn.click();
-    } else {
-      this.onSubmitSchemaForm();
-    }
+    this.onSubmitSchemaForm();
   };
 
   prepareDataToCreateServiceInstance = params => {
     const { serviceClass } = this.props;
-    const { formData } = this.state;
+    const { formData, instanceCreateParameters } = this.state;
 
     const instanceName = formData.name;
     const currentPlan =
@@ -113,20 +107,14 @@ class CreateInstanceModal extends React.Component {
             .toLowerCase()
             .split(',');
 
-    let instanceCreateParameters;
-    if (params.formData) {
-      instanceCreateParameters = dcopy(params.formData);
-      clearEmptyPropertiesInObject(instanceCreateParameters);
-    } else {
-      instanceCreateParameters = {};
-    }
+    clearEmptyPropertiesInObject(instanceCreateParameters);
 
     const isClusterServiceClass =
       serviceClass.__typename === 'ClusterServiceClass';
 
     return {
       name: instanceName,
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       externalServiceClassName: serviceClass.externalName,
       externalPlanName: currentPlan && currentPlan.externalName,
       classClusterWide: isClusterServiceClass,
@@ -168,6 +156,7 @@ class CreateInstanceModal extends React.Component {
       if (typeof sendNotification === 'function') {
         sendNotification({
           variables: {
+            type: 'success',
             title: `Instance "${variables.name}" created successfully`,
             color: '#359c46',
             icon: '\uE05B',
@@ -192,7 +181,6 @@ class CreateInstanceModal extends React.Component {
     });
     if (success) {
       this.clearState();
-      this.child.child.setState({ showModal: false });
       LuigiClient.uxManager().removeBackdrop();
     }
   };
@@ -202,8 +190,8 @@ class CreateInstanceModal extends React.Component {
     const {
       formData,
       firstStepFilled,
-      tooltipData,
       creatingInstance,
+      tooltipData,
       instanceCreateParameters,
     } = this.state;
 
@@ -234,7 +222,7 @@ class CreateInstanceModal extends React.Component {
     };
 
     const content = (
-      <div>
+      <Fragment>
         <BasicData
           data={firstStepData}
           serviceClassExternalName={externalName}
@@ -245,7 +233,7 @@ class CreateInstanceModal extends React.Component {
           callback={this.callback}
         />
         {instanceCreateParameterSchemaExists && (
-          <div>
+          <Fragment>
             <Separator margin="16px -16px" />
             <SchemaData
               data={SecondStepData}
@@ -253,51 +241,40 @@ class CreateInstanceModal extends React.Component {
               onSubmitSchemaForm={this.onSubmitSchemaForm}
               planName={schema.displayName}
               callback={this.callback}
-            >
-              {/* Styled components don't work here */}
-              <button
-                className="hidden"
-                type="submit"
-                ref={submitBtn => (this.submitBtn = submitBtn)}
-              >
-                Submit
-              </button>
-            </SchemaData>
-          </div>
+            />
+          </Fragment>
         )}
-      </div>
+      </Fragment>
     );
 
     return (
-      <ConfirmationModal
-        ref={modal => {
-          this.child = modal;
-        }}
+      <Modal
+        width={'681px'}
         title={
           <p style={{ marginRight: '25px' }}>
-           Provision the{' '}
-           <Bold>{serviceClass.displayName}</Bold>{' '}
-           {serviceClass.__typename === 'ClusterServiceClass'
-             ? 'Cluster Service Class'
-             : 'Service Class'}{' '}
-           in the{' '}
-           <Bold>{environment}</Bold>
-           {' '}Namespace
-         </p>
+            Provision the <Bold>{serviceClass.displayName}</Bold>{' '}
+            {serviceClass.__typename === 'ClusterServiceClass'
+              ? 'Cluster Service Class'
+              : 'Service Class'}{' '}
+            in the <Bold>{environment}</Bold> Namespace
+          </p>
         }
+        type={'emphasized'}
         modalOpeningComponent={modalOpeningComponent}
-        content={content}
         confirmText="Create Instance"
         cancelText="Cancel"
         tooltipData={tooltipData}
-        disabled={disabled}
-        handleConfirmation={this.handleConfirmation}
-        handleClose={this.clearState}
-        borderFooter={true}
+        disabledConfirm={disabled}
+        onConfirm={this.handleConfirmation}
         waiting={creatingInstance}
         onShow={this.onShow}
-        onHide={this.onHide}
-      />
+        onHide={() => {
+          this.clearState();
+          this.onHide();
+        }}
+      >
+        {content}
+      </Modal>
     );
   }
 }

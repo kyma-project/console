@@ -24,12 +24,12 @@ export const servicePlanGql = `
 export const SERVICE_BINDING_DETAILS_FRAGMENT = gql`
   fragment serviceBindingDetails on ServiceBinding {
     name
-    environment
+    namespace
     parameters
     secret {
       name
       data
-      environment
+      namespace
     }
     serviceInstanceName
     status {
@@ -43,7 +43,7 @@ export const SERVICE_BINDING_DETAILS_FRAGMENT = gql`
 export const SERVICE_BINDING_USAGE_DETAILS_FRAGMENT = gql`
   fragment serviceBindingUsageDetails on ServiceBindingUsage {
     name
-    environment
+    namespace
     serviceBinding {
       name
       serviceInstanceName
@@ -72,7 +72,7 @@ export const SERVICE_BINDING_USAGE_DETAILS_FRAGMENT = gql`
 export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
   fragment serviceInstanceDetails on ServiceInstance {
       name
-      environment
+      namespace
       planSpec
       labels
       bindable
@@ -82,14 +82,14 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
       }
       serviceClass {
         ${serviceClassGql}
-        environment
+        namespace
       }
       clusterServiceClass {
         ${serviceClassGql}
       }
       servicePlan {
         ${servicePlanGql}
-        environment
+        namespace
         relatedServiceClassName
       }
       clusterServicePlan {

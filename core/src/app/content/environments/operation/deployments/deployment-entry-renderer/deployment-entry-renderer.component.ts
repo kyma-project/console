@@ -5,7 +5,6 @@ import { CurrentEnvironmentService } from 'environments/services/current-environ
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
-import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 @Component({
@@ -72,7 +71,7 @@ export class DeploymentEntryRendererComponent
     LuigiClient.linkManager().navigate(
       `/home/namespaces/${
         this.currentEnvironmentId
-      }/instances/details/${serviceInstanceId}`
+      }/cmf-instances/details/${serviceInstanceId}`
     );
   }
 }

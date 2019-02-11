@@ -15,11 +15,11 @@ export class EventActivationsService {
   ) {}
 
   getEventActivations(
-    environment: string,
+    namespace: string,
     token: string,
   ): Observable<EventActivationResponse> {
-    const query = `query EventActivations($environment: String!) {
-      eventActivations(namespace: $environment) {
+    const query = `query EventActivations($namespace: String!) {
+      eventActivations(namespace: $namespace) {
         name
         displayName
         sourceId
@@ -30,7 +30,7 @@ export class EventActivationsService {
         }
       }
     }`;
-    const variables = { environment };
+    const variables = { namespace };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
       query,

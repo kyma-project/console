@@ -17,5 +17,5 @@
       "environments/*": ["src/app/content/environments/*"]
     }
   },
-  "include": ["src/**/*", "node_modules/ng2-ace-editor/src/**/*"]
+  "include": ["**/*", "node_modules/ng2-ace-editor/src/**/*"]
 }

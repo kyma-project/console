@@ -17,11 +17,7 @@ import {
 } from '../../../shared/datamodel/k8s/environment';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EnvironmentsService } from '../../../content/environments/services/environments.service';
-import {
-  DataConverter,
-  Filter,
-  GenericListComponent
-} from '@kyma-project/y-generic-list';
+import { DataConverter, Filter, GenericListComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';

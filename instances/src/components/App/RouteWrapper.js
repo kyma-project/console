@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { NotificationMessage, Spinner } from '@kyma-project/react-components';
+import { Spinner } from '@kyma-project/react-components';
 
 import ServiceInstances from '../ServiceInstances/ServiceInstances.container';
 import ServiceInstanceDetails from '../ServiceInstanceDetails/ServiceInstanceDetails.container';
@@ -18,18 +18,8 @@ class RouteWrapper extends React.Component {
     if (serviceInstances.loading) {
       return (
         <EmptyList>
-          <Spinner size="40px" color="#32363a" />
+          <Spinner />
         </EmptyList>
-      );
-    }
-
-    if (serviceInstances.error) {
-      return (
-        <NotificationMessage
-          type="error"
-          title="Error"
-          message={serviceInstances.error && serviceInstances.error.message}
-        />
       );
     }
 

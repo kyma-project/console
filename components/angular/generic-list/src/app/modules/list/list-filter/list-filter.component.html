@@ -1,16 +1,22 @@
-<div class="tn-dropdown" (clickOutside)="autoCloseDropdown()" clickOutsideEvents="click,mousedown">
-    <button class="tn-button tn-button--small tn-button--text"
-            [ngClass]="{'tn-button--disabled': !hasFacets()}"
-            (click)="toggleDropdown($event)"
-            [attr.aria-expanded]="ariaExpanded">
+<fd-popover [alignment]="'right'" *ngIf="filterState.availableFacets.length">
+  <fd-popover-control>
+    <button fd-button [glyph]="'filter'" [state]="hasFacets()?'':'disabled'">
       Filter
-      <div class="filters" *ngIf="filterState.facets && 0 < filterState.facets.length && hasFacets()">{{filterState.facets.length}}</div>
+      <fd-badge *ngIf="filterState.facets && 0 < filterState.facets.length && hasFacets()">
+        {{ filterState.facets.length }}
+      </fd-badge>
     </button>
-    <ul class="tn-dropdown__menu tn-contextual-menu actions-menu text-left"
-        [ngClass]="{'actions-menu--disabled': !hasFacets()}"
-        [attr.aria-hidden]="ariaHidden">
-      <li class="tn-dropdown__item" *ngFor="let facet of filterState.availableFacets">
-        <input type="checkbox" (click)="toggleFacet(facet.label, $event)" [checked]="facetSelected(facet.label)" id="{{facet.label}}">{{facet.label}} ({{facet.count}})
-      </li>
-    </ul>
-</div>
+  </fd-popover-control>
+  <fd-popover-body>
+    <fd-menu>
+      <fd-menu-list>
+        <li fd-menu-item *ngFor="let facet of filterState.availableFacets" (click)="toggleFacet(facet.label, $event)">
+          <a title="facet.label">
+            <input class="fd-form__control" id="{{facet.label }}" type="checkbox" [checked]="facetSelected(facet.label)">
+            {{ facet.label }} ({{ facet.count }})
+          </a>
+        </li>
+      </fd-menu-list>
+    </fd-menu>
+  </fd-popover-body>
+</fd-popover>

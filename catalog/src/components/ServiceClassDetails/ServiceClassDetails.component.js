@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Spinner } from '@kyma-project/react-components';
+import { Button, Spinner, Panel, PanelBody } from '@kyma-project/react-components';
 
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from './ServiceClassInfo/ServiceClassInfo.component';
@@ -16,7 +16,7 @@ import {
   EmptyList,
 } from './styled';
 
-import { getResourceDisplayName, getDescription } from '../../commons/helpers';
+import { getResourceDisplayName, getDescription, backendModuleExists } from '../../commons/helpers';
 
 class ServiceClassDetails extends React.Component {
   static propTypes = {
@@ -36,7 +36,7 @@ class ServiceClassDetails extends React.Component {
     const serviceClassDescription = getDescription(serviceClass);
 
     const modalOpeningComponent = (
-      <Button normal primary first last microFullWidth data-e2e-id="add-to-env">
+      <Button option="emphasized" data-e2e-id="add-to-env">
         Add to your Namespace
       </Button>
     );
@@ -44,13 +44,15 @@ class ServiceClassDetails extends React.Component {
     if (this.props.serviceClass.loading) {
       return (
         <EmptyList>
-          <Spinner size="40px" color="#32363a" />
+          <Spinner />
         </EmptyList>
       );
     }
     if (!this.props.serviceClass.loading && !serviceClass) {
       return (
-        <EmptyList>Service Class doesn't exist in this namespace</EmptyList>
+        <EmptyList>
+          <Panel><PanelBody>Service Class doesn't exist in this namespace</PanelBody></Panel>
+        </EmptyList>
       );
     }
 
@@ -61,8 +63,6 @@ class ServiceClassDetails extends React.Component {
             <div> {this.arrayOfJsx} </div>
             {this.renObjData}
             <ServiceClassToolbar
-              arrayOfJsx={this.arrayOfJsx}
-              renObjData={this.renObjData}
               history={history}
               serviceClassDisplayName={serviceClassDisplayName}
             >
@@ -92,10 +92,12 @@ class ServiceClassDetails extends React.Component {
                     description={serviceClassDescription}
                   />
                 )}
-                <ServiceClassTabs
-                  serviceClass={serviceClass}
-                  serviceClassLoading={this.props.serviceClass.loading}
-                />
+                {backendModuleExists("content") ? 
+                  <ServiceClassTabs
+                    serviceClass={serviceClass}
+                    serviceClassLoading={this.props.serviceClass.loading}
+                  />
+                : null}
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>

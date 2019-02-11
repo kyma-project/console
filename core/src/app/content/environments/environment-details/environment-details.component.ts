@@ -15,8 +15,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 @Component({
   selector: 'app-environment-details',
   templateUrl: './environment-details.component.html',
-  styleUrls: ['./environment-details.component.scss'],
-  host: { class: 'sf-content' }
+  styleUrls: ['./environment-details.component.scss']
 })
 export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('uploaderModal')
@@ -25,7 +24,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   private orgName = AppConfig.orgName;
   public environment: EnvironmentInfo = new EnvironmentInfo('', '');
   private boundRemoteEnvironmentsCount: Observable<number> = of(0);
-  private remoteEnvironments: any;
+  public remoteEnvironments: any;
   private services: any;
   public errorMessage: string;
   private id: string;
@@ -131,7 +130,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   public navigateToRemoteEnvs(envName) {
     LuigiClient.linkManager().navigate(
-      envName ? '/home/apps/details/' + envName : '/home/apps'
+      envName ? '/home/cmf-apps/details/' + envName : '/home/cmf-apps'
     );
   }
 }

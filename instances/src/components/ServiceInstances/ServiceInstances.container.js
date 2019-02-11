@@ -36,7 +36,7 @@ export default compose(
         mutate({
           variables: {
             name,
-            environment: builder.getCurrentEnvironmentId(),
+            namespace: builder.getCurrentEnvironmentId(),
           },
         }),
     }),
@@ -51,7 +51,7 @@ export default compose(
     name: 'allItems',
     options: () => ({
       variables: {
-        environment: builder.getCurrentEnvironmentId(),
+        namespace: builder.getCurrentEnvironmentId(),
       },
     }),
   }),

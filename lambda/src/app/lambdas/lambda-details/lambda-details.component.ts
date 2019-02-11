@@ -65,7 +65,7 @@ export class LambdaDetailsComponent
   availableEventTriggers: EventTrigger[] = [];
   existingEventTriggers: EventTrigger[] = [];
 
-  environment: string;
+  namespace: string;
   token: string;
   types: object[] = [
     {
@@ -165,7 +165,7 @@ export class LambdaDetailsComponent
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
-          this.environment = eventData.environmentId;
+          this.namespace = eventData.environmentId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';
@@ -173,7 +173,7 @@ export class LambdaDetailsComponent
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
-              .getApi(lambdaName, this.environment, this.token)
+              .getApi(lambdaName, this.namespace, this.token)
               .subscribe(
                 api => {
                   this.existingHTTPEndpoint = api;
@@ -190,15 +190,15 @@ export class LambdaDetailsComponent
                 },
               );
             this.subscriptionsService
-              .getSubscriptions(this.environment, this.token, {
+              .getSubscriptions(this.namespace, this.token, {
                 labelSelector: `Function=${lambdaName}`,
               })
               .subscribe(resp => {
                 resp.items.forEach(sub => {
                   const evTrigger: EventTrigger = {
-                    eventType: sub.spec.eventType,
-                    version: sub.spec.evetTypeVersion,
-                    sourceId: sub.spec.sourceID,
+                    eventType: sub.spec.event_type,
+                    version: sub.spec.event_type_version,
+                    sourceId: sub.spec.source_id,
                   };
                   this.selectedTriggers.push(evTrigger);
                   this.existingEventTriggers.push(evTrigger);
@@ -216,7 +216,7 @@ export class LambdaDetailsComponent
           }
 
           this.eventActivationsService
-            .getEventActivations(this.environment, this.token)
+            .getEventActivations(this.namespace, this.token)
             .subscribe(resp => {
               resp.data.eventActivations.forEach(ea => {
                 ea.events.forEach(ev => {
@@ -278,7 +278,7 @@ export class LambdaDetailsComponent
 
   deployLambda() {
     this.lambdaDetailsService
-      .getResourceQuotaStatus(this.environment, this.token)
+      .getResourceQuotaStatus(this.namespace, this.token)
       .subscribe(res => {
         window.parent.postMessage(res.data, '*');
         if (this.mode === 'create') {
@@ -342,7 +342,7 @@ export class LambdaDetailsComponent
         } else if (!this.isHTTPTriggerAdded && this.existingHTTPEndpoint) {
           // delete API and manage service bindings
           this.apisService
-            .deleteApi(this.lambda.metadata.name, this.environment, this.token)
+            .deleteApi(this.lambda.metadata.name, this.namespace, this.token)
             .subscribe(
               () => {
                 this.manageServiceBindings();
@@ -429,11 +429,11 @@ export class LambdaDetailsComponent
     createBindingStates.forEach(bs => {
       const serviceBindingName = randomatic('a', 10, {});
       const serviceBindingUsage = this.serviceBindingUsagesService.initializeServiceBindingUsage();
-      serviceBindingUsage.metadata.namespace = this.environment;
+      serviceBindingUsage.metadata.namespace = this.namespace;
       serviceBindingUsage.metadata.name = serviceBindingName;
       if (bs.currentState.createSecret) {
         const serviceBinding = this.serviceBindingsService.initializeServiceBinding();
-        serviceBinding.metadata.namespace = this.environment;
+        serviceBinding.metadata.namespace = this.namespace;
         serviceBinding.metadata.name = serviceBindingName;
         serviceBinding.metadata.labels = {
           Function: this.lambda.metadata.name,
@@ -484,7 +484,7 @@ export class LambdaDetailsComponent
 
     deleteBindingStates.forEach(bs => {
       this.serviceBindingUsagesService
-        .getServiceBindingUsages(this.environment, this.token, {})
+        .getServiceBindingUsages(this.namespace, this.token, {})
         .subscribe(sbuList => {
           sbuList.items.forEach(sbu => {
             if (
@@ -497,7 +497,7 @@ export class LambdaDetailsComponent
                 this.serviceBindingUsagesService
                   .deleteServiceBindingUsage(
                     sbu.metadata.name,
-                    this.environment,
+                    this.namespace,
                     this.token,
                   )
                   .pipe(
@@ -586,14 +586,14 @@ export class LambdaDetailsComponent
           sub.metadata.name = `lambda-${this.lambda.metadata.name}-${
             trigger.eventType
           }-${trigger.version}`.toLowerCase();
-          sub.metadata.namespace = this.environment;
+          sub.metadata.namespace = this.namespace;
           sub.metadata.labels['Function'] = this.lambda.metadata.name;
           sub.spec.endpoint = `http://${this.lambda.metadata.name}.${
-            this.environment
+            this.namespace
           }:8080/`;
-          sub.spec.eventType = trigger.eventType;
-          sub.spec.evetTypeVersion = trigger.version;
-          sub.spec.sourceID = trigger.sourceId;
+          sub.spec.event_type = trigger.eventType;
+          sub.spec.event_type_version = trigger.version;
+          sub.spec.source_id = trigger.sourceId;
           const req = this.subscriptionsService
             .createSubscription(sub, this.token)
             .pipe(
@@ -611,7 +611,7 @@ export class LambdaDetailsComponent
           `lambda-${this.lambda.metadata.name}-${et.eventType}-${
             et.version
           }`.toLowerCase(),
-          this.environment,
+          this.namespace,
           this.token,
         )
         .pipe(
@@ -716,7 +716,7 @@ export class LambdaDetailsComponent
 
   createFunction(): void {
     this.warnUnsavedChanges(false);
-    this.lambda.metadata.namespace = this.environment;
+    this.lambda.metadata.namespace = this.namespace;
     this.lambda.spec.runtime = this.kind;
     if (this.selectedTriggers.length > 0) {
       this.lambda.spec.topic = this.selectedTriggers[0].eventType;
@@ -800,7 +800,7 @@ export class LambdaDetailsComponent
 
   getFunction(functionName): void {
     this.lambdaDetailsService
-      .getLambda(functionName, this.environment, this.token)
+      .getLambda(functionName, this.namespace, this.token)
       .subscribe(
         lambda => {
           this.lambda = lambda;
@@ -865,14 +865,14 @@ export class LambdaDetailsComponent
     setTimeout(() => {
       luigiClient
         .linkManager()
-        .fromContext('lambdas')
+        .fromClosestContext()
         .navigate('/');
     }, 100);
   }
 
   getEventActivations(): void {
     this.eventActivationsService
-      .getEventActivations(this.environment, this.token)
+      .getEventActivations(this.namespace, this.token)
       .subscribe(
         events => {
           this.loaded = observableOf(true);
@@ -900,7 +900,7 @@ export class LambdaDetailsComponent
   showHTTPTrigger(): void {
     this.isHTTPTriggerAuthenticated = true;
     this.toggleTriggerType = false;
-    this.httpTriggerModal.show(this.lambda, this.environment, [
+    this.httpTriggerModal.show(this.lambda, this.namespace, [
       ...this.selectedTriggers,
     ]);
   }
@@ -1052,7 +1052,7 @@ export class LambdaDetailsComponent
   getApi(): void {
     this.apisService.getApi(
       this.lambda.metadata.name,
-      this.environment,
+      this.namespace,
       this.token,
     );
   }
@@ -1060,7 +1060,7 @@ export class LambdaDetailsComponent
   createApi(): void {
     const api: Api = this.apisService.initializeApi(
       this.lambda,
-      this.environment,
+      this.namespace,
       this.existingHTTPEndpoint,
       this.isHTTPTriggerAuthenticated,
       this.httpURL,
@@ -1068,7 +1068,7 @@ export class LambdaDetailsComponent
       this.jwksUri,
       this.issuer,
     );
-    this.apisService.createApi(api, this.environment, this.token).subscribe(
+    this.apisService.createApi(api, this.namespace, this.token).subscribe(
       () => {
         this.manageServiceBindings();
       },
@@ -1076,11 +1076,7 @@ export class LambdaDetailsComponent
         this.error = err.message;
         if (this.mode === 'create') {
           this.lambdaDetailsService
-            .deleteLambda(
-              this.lambda.metadata.name,
-              this.environment,
-              this.token,
-            )
+            .deleteLambda(this.lambda.metadata.name, this.namespace, this.token)
             .subscribe(
               () => {
                 // Deleting function which as part of create-flow as creation of api fails
@@ -1097,7 +1093,7 @@ export class LambdaDetailsComponent
   updateApi(): void {
     const api: Api = this.apisService.initializeApi(
       this.lambda,
-      this.environment,
+      this.namespace,
       this.existingHTTPEndpoint,
       this.isHTTPTriggerAuthenticated,
       this.httpURL,
@@ -1105,7 +1101,7 @@ export class LambdaDetailsComponent
       this.jwksUri,
       this.issuer,
     );
-    this.apisService.updateApi(api, this.environment, this.token).subscribe(
+    this.apisService.updateApi(api, this.namespace, this.token).subscribe(
       () => {
         this.manageServiceBindings();
       },
@@ -1175,7 +1171,7 @@ export class LambdaDetailsComponent
 
     this.selectedTriggers.forEach(trigger => {
       if (trigger.eventType === 'http') {
-        this.httpURL = `${this.lambda.metadata.name}-${this.environment}.${
+        this.httpURL = `${this.lambda.metadata.name}-${this.namespace}.${
           AppConfig.domain
         }`.toLowerCase();
 
@@ -1216,7 +1212,7 @@ export class LambdaDetailsComponent
     this.lambda.spec.horizontalPodAutoscaler.metadata.name = `${
       this.lambda.metadata.name
     }`;
-    this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.environment;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.namespace;
     this.lambda.spec.horizontalPodAutoscaler.metadata.labels = {
       function: `${this.lambda.metadata.name}`,
     };

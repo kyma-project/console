@@ -26,7 +26,7 @@ class CreateBindingModal extends React.Component {
         this.props.serviceInstance.name + '-binding-usage',
       selectedKind: '',
       selectedResource: '',
-      usageKindResources: null,
+      bindableResources: null,
 
       firstStepFilled: false,
       possibilityToCreate: false,
@@ -66,7 +66,7 @@ class CreateBindingModal extends React.Component {
 
     return {
       name: nameServiceBindingUsage,
-      environment: builder.getCurrentEnvironmentId(),
+      namespace: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
         name: checkbox ? nameServiceBinding : selectedExistingBinding,
       },
@@ -118,7 +118,7 @@ class CreateBindingModal extends React.Component {
       nameServiceBindingUsage,
       selectedKind,
       selectedResource,
-      usageKindResources,
+      bindableResources,
 
       firstStepFilled,
       possibilityToCreate,
@@ -127,7 +127,7 @@ class CreateBindingModal extends React.Component {
     const {
       serviceInstance,
       usageKinds,
-      fetchUsageKindResources,
+      fetchBindableResources,
       id,
     } = this.props;
 
@@ -149,7 +149,7 @@ class CreateBindingModal extends React.Component {
       nameServiceBindingUsage: nameServiceBindingUsage,
       selectedKind: selectedKind,
       selectedResource: selectedResource,
-      usageKindResources: usageKindResources,
+      bindableResources: bindableResources,
       possibilityToCreate: possibilityToCreate,
     };
 
@@ -162,7 +162,7 @@ class CreateBindingModal extends React.Component {
       <SecondStep
         data={secondStepData}
         usageKinds={usageKinds.usageKinds}
-        fetchUsageKindResources={fetchUsageKindResources}
+        fetchBindableResources={fetchBindableResources}
         callback={this.callback}
       />,
     ];

@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -25,7 +26,10 @@
                 "output": "/node_modules/ace-builds/src-min"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss",
+              "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -83,6 +87,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "preserveSymlinks": true,
             "scripts": [],
             "styles": ["src/styles.scss"],
             "assets": [

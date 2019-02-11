@@ -5,7 +5,7 @@
         / {{ apiDefinition ? (  apiName  )  : ('Create API') }}
       </div>
       <div *ngIf="!routedFromServiceDetails" class="sf-toolbar__item sf-toolbar__item--breadcrumb">
-        <a (click)="navigateToList('apis')"> APIs </a> / {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
+        <a (click)="navigateToList('cmf-apis')"> APIs </a> / {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
       </div>
     <div class="sf-toolbar__right">
       <div class="sf-toolbar__item">
@@ -43,7 +43,7 @@
                       (click)="openDropDown($event)">
                   </button>
                   <ul class="tn-dropdown__menu" [attr.aria-hidden]="ariaServiceHidden" id="nNJnB279">
-                    <li class="tn-dropdown__item" *ngFor="let svc of filteredServices" (click)="toggleDropDown(); selectService(svc); setApiName()">{{ svc.metadata.name }}</li>
+                    <li class="tn-dropdown__item" *ngFor="let svc of filteredServices" (click)="toggleDropDown(); selectService(svc); checkIfServiceCanBeSecured(svc); setApiName()">{{ svc.metadata.name }}</li>
                   </ul>
                 </div>
               </div>
