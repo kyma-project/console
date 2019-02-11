@@ -10,7 +10,7 @@
     "components/angular/generic-list/dist",
     "lambda",
     "tests",
-    "logs"
+    "log-ui"
   ],
   "version": "0.0.0",
   "command": {
