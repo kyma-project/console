@@ -78,7 +78,6 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const lambdasEntry = '.sf-list__body';
     await frame3.waitForSelector(lambdasEntry);
     const expectedLambdas = await lambdas.getLambdas(frame3);
-
     const previousNumberOfLambdas = currentLambdas.length;
     const expectedNumberOfLambdas = expectedLambdas.length;
 
@@ -102,6 +101,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.waitFor(deleteConfirmButton);
     await frame.click(deleteConfirmButton);
     await frame.waitForSelector(deleteConfirmButton, { hidden: true });
+    await page.reload({ waitUntil: 'networkidle0' });
     await page.reload({ waitUntil: 'networkidle0' });
 
     // then
