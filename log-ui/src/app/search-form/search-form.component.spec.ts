@@ -14,13 +14,7 @@ describe('SearchFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        FormsModule,
-        FormModule,
-        FormLabelComponent,
-        ButtonGroupComponent,
-      ],
+      imports: [HttpClientTestingModule],
       declarations: [SearchFormComponent],
     }).compileComponents();
   }));
