@@ -1,4 +1,3 @@
-import config from '../config';
 import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
@@ -14,6 +13,7 @@ import {
 
 const REQUIRED_MODULE = 'kubeless';
 const TEST_NAMESPACE = 'lambdatest';
+const testLambda = 'testlambda';
 
 let browser, page;
 let token = '';
@@ -48,7 +48,6 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
   testPluggable(REQUIRED_MODULE, 'Create Lambda Function', async () => {
     const contentHeader = 'li.fd-side-nav__title';
-    const testLambda = 'testlambda';
 
     await page.waitForSelector(contentHeader);
     const navItem = 'a.fd-side-nav__link';
@@ -89,11 +88,11 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
     const frame = await kymaConsole.getFrame(page);
-    const dropdownButton = `button[aria-controls=${config.testLambda}]`;
+    const dropdownButton = `button[aria-controls=${testLambda}]`;
     await frame.click(dropdownButton);
 
     // given
-    const deleteButton = `#${config.testLambda} li > a[name=Delete]`;
+    const deleteButton = `#${testLambda} li > a[name=Delete]`;
     await frame.waitFor(deleteButton);
     await frame.click(deleteButton);
 
