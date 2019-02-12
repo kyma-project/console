@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchFormData } from './data/search-form-data';
 import { SearchService } from './service/search-service';
-
 import { PlainLogQuery } from './data/plain-log-query';
+
 import {
   debounceTime,
   delay,

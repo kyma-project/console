@@ -28,7 +28,7 @@
     "@kyma-project/luigi-core": "^0.4.3",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "core-js": "^2.5.4",
-    "fiori-fundamentals": "^1.4.1",
+    "fiori-fundamentals": "^1.4.2",
     "fundamental-ngx": "0.0.21-beta",
     "rxjs": "~6.3.3",
     "rxjs-observe": "^2.0.0",

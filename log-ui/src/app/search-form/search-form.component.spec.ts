@@ -1,12 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SearchFormComponent } from './search-form.component';
-
-import { FormModule } from 'fundamental-ngx';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule } from '@angular/forms';
-import { FormLabelComponent } from 'fundamental-ngx/lib/form/form-label.component';
-import { ButtonGroupComponent } from 'fundamental-ngx/lib/button-group/button-group.component';
+import {
+  BadgeLabelModule,
+  FormModule,
+  FundamentalNgxModule,
+} from 'fundamental-ngx';
+import { FormsModule, NgForm } from '@angular/forms';
+import { SearchService } from './service/search-service';
+import { LuigiContextService } from './service/luigi-context.service';
 
 describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
@@ -14,8 +16,15 @@ describe('SearchFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [
+        HttpClientTestingModule,
+        FundamentalNgxModule,
+        BadgeLabelModule,
+        FormModule,
+        FormsModule,
+      ],
       declarations: [SearchFormComponent],
+      providers: [SearchService, LuigiContextService],
     }).compileComponents();
   }));
 
