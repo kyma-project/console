@@ -9,6 +9,7 @@
     "@types/react-dom": "16.8.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "react-responsive-modal": "^3.6.0",
     "react-scripts": "2.1.4",
     "react-xml-parser": "^1.1.2",
     "typescript": "3.3.3",

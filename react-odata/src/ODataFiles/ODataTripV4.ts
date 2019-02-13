@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+export default `<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="4.0"
     xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
     <edmx:DataServices>
@@ -334,4 +334,4 @@
             </Annotations>
         </Schema>
     </edmx:DataServices>
-</edmx:Edmx>
+</edmx:Edmx>`;
