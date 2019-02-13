@@ -1,4 +1,4 @@
-.sf-panel {
+.sf-panel, .tn-modal {
   input[type=checkbox], 
   input[type=radio] {
     margin-right: 8px;
@@ -28,9 +28,18 @@
       }
     }
   }
-
+  
+  .tn-modal__header .tn-button--icon {
+    margin-top: -7px;
+  }
 }
 
-.tn-modal__header .tn-button--icon {
-  margin-top: -7px;
+app-role-binding-modal {
+  input[type=text] {
+    height: 34px;
+    &:focus {
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
 }
