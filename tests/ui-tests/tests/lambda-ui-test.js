@@ -101,17 +101,19 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.waitFor(deleteConfirmButton);
     await frame.click(deleteConfirmButton);
     await frame.waitForSelector(deleteConfirmButton, { hidden: true });
-    await page.reload({ waitUntil: 'networkidle0' });
-    await page.reload({ waitUntil: 'networkidle0' });
 
-    // then
-    const frame2 = await kymaConsole.getFrame(page);
-    const lambdasEmptyPage = '.sf-section__empty-teaser';
-    await frame2.waitForSelector(lambdasEmptyPage);
-    const expectedLambdas = await lambdas.getLambdas(frame2);
+    //then
+    await retry(async () => {
+      await page.reload({ waitUntil: 'networkidle0' });
 
-    const expectedNumberOfLambdas = expectedLambdas.length;
+      const frame2 = await kymaConsole.getFrame(page);
+      const lambdasEmptyPage = '.sf-section__empty-teaser';
+      await frame2.waitForSelector(lambdasEmptyPage);
+      const expectedLambdas = await lambdas.getLambdas(frame2);
 
-    expect(expectedNumberOfLambdas).toBe(0);
+      const expectedNumberOfLambdas = expectedLambdas.length;
+
+      expect(expectedNumberOfLambdas).toBe(0);
+    });
   });
 });
