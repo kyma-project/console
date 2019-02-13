@@ -1,40 +1,58 @@
-import React, { Component } from 'react';
+import React from 'react';
 import xslt from 'xslt';
-// import XMLParser from 'react-xml-parser';
-import ODataFile from './ODataFile';
-// import ODataGorn from './ODataGorn'; //V1 :v it's too old
+
+// import ODataFile from './ODataFile2'; //works
+
+// import ODataFile from './ODataProductV2'; //works
+
+// import ODataFile from './ODataNext'; //library cuts off many fields, not working
+
+// import ODataFile from './SAPodata'; //works
+
+import ODataFile from './ODataTripV4'; //works
+
 import v2tov4 from './v2tov4';
 import convert from 'xml-js';
 import './App.css';
+import { isArray } from 'util';
 
-class App extends Component {
-  render() {
-    const outXmlString = xslt(ODataFile, v2tov4);
-    const options = {
-      // attributeNameFn: (val: any) => val.toUpperCase(),
-    };
-    const schema = convert.xml2js(outXmlString, options).elements;
+const App = () => {
+  const outXmlString = xslt(ODataFile, v2tov4);
+  const options = {
+    // attributeNameFn: (val: any) => val.toUpperCase(),
+  };
+  const schema = convert.xml2js(outXmlString, options).elements;
+  // const schema = convert.xml2js(outXmlString, options).elements[0].elements[5]
+  // .elements[0].elements;
+  console.log(convert.xml2js(outXmlString, options));
 
-    return (
-      <div className="App">
-        {schema[0].elements.map((elem: any, index: number) => (
-          <Table key={index} data={elem} />
-        ))}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      {schema.map((elem: any, index: number) => (
+        <Table key={index} data={elem} />
+      ))}
+    </div>
+
+    // <div>{JSON.stringify(schema)}</div>
+  );
+};
 
 const Table = ({ data }: { data: any }): JSX.Element => {
   function makeUnique(value: any, index: number, self: any) {
     return self.indexOf(value) === index;
   }
+  console.log(data);
+  if (!isArray(data.elements)) {
+    return <div>{JSON.stringify(data)}</div>;
+  }
+
   const filteredData: any[] = data.elements.filter((el: any) => {
     if (el.name === 'Key' || el.name === 'NavigationProperty') {
       return false;
     }
     return true;
   });
+
   const columnData = filteredData
     .flatMap((elem: any) => Object.keys(elem.attributes))
     .filter(makeUnique);
@@ -68,13 +86,5 @@ const Table = ({ data }: { data: any }): JSX.Element => {
     </table>
   );
 };
-
-const Header = ({
-  span,
-  children,
-}: {
-  span?: number;
-  children?: JSX.Element | string;
-}): JSX.Element => <th colSpan={span}>{children}</th>;
 
 export default App;
