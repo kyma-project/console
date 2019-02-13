@@ -9,6 +9,7 @@
     "start:kyma:api": "npm run copy-config && ng serve --disable-host-check --host console-dev.kyma.local --port 4400 --env api-local",
     "build": "ng build --prod",
     "test": "ng test",
+    "test:single": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "copy-config": "cp ../config.js src/assets/config/config.js"
