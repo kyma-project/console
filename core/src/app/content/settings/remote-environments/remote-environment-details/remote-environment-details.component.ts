@@ -115,7 +115,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
               const response: any = data;
               this.boundEnvironments = _.without(
                 this.boundEnvironments,
-                response.disableApplication.environment
+                response.disableApplication.namespace
               );
             },
             err => {
