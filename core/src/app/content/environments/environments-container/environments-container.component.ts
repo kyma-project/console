@@ -210,11 +210,11 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
                 url: `/home/namespaces/${env}/resources`
               }
             };
-            let errorText = `Error! The following resource quota limit has been exceeded by the given resource:<br><br>`;
+            let errorText = `Error! The following resource quota limit has been exceeded by the given resource:<br>`;
             this.limitExceededErrors.forEach(error => {
               errorText += `- ${error}<br>`;
             });
-            errorText += `<br>See {goToResourcesConfig} for details.`;
+            errorText += `See {goToResourcesConfig} for details.`;
             const settings = {
               text: errorText,
               type: 'error',
