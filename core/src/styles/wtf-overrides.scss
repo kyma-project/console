@@ -1,0 +1,10 @@
+.sf-panel {
+  input[type=checkbox], 
+  input[type=radio] {
+    margin-right: 8px;
+    & + label {
+      line-height: 16px;
+      vertical-align: middle;
+    }
+  }
+}

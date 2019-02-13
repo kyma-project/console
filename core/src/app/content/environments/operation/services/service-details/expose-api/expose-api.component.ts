@@ -36,7 +36,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public apiDefinition: any;
   private apiDefUrl = '';
   private service: any;
-  public canBeSecured = false;
+  public canBeSecured = true;
   public jwksUri: string;
   public issuer: string;
   private defaultAuthConfig: any;
@@ -328,6 +328,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
               return container.name === 'istio-proxy';
             });
           });
+          this.canBeSecured = true;
         });
     } catch (e) {
       // nop
