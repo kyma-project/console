@@ -18,6 +18,7 @@ import { CurrentEnvironmentService } from '../services/current-environment.servi
 import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 const fadeInAnimation = trigger('fadeInAnimation', [
   state('1', style({ opacity: 1 })),
@@ -203,6 +204,25 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             limitExceededErrors.length > 0
           ) {
             this.setLimitExceededErrorsMessages(limitExceededErrors);
+            const linkdata = {
+              goToResourcesConfig: {
+                text: 'Resources Configuration',
+                url: `/home/namespaces/${env}/resources`
+              }
+            };
+            let errorText = `Error! The following resource quota limit has been exceeded by the given resource:<br><br>`;
+            this.limitExceededErrors.forEach(error => {
+              errorText += `- ${error}<br>`;
+            });
+            errorText += `<br>See {goToResourcesConfig} for details.`;
+            let settings = {
+              text: errorText,
+              type: 'error',
+              links: linkdata
+            };
+            LuigiClient.uxManager()
+              .showAlert(settings)
+              .then(() => {});
           }
         },
         err => {
@@ -223,12 +243,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
           );
         });
       }
-    });
-  }
-
-  public navigateToResources() {
-    this.currentEnvironmentService.getCurrentEnvironmentId().subscribe(env => {
-      this.router.navigate([`home/namespaces/${env}/resources`]);
     });
   }
 }
