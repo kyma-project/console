@@ -215,7 +215,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
               errorText += `- ${error}<br>`;
             });
             errorText += `<br>See {goToResourcesConfig} for details.`;
-            let settings = {
+            const settings = {
               text: errorText,
               type: 'error',
               links: linkdata
