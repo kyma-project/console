@@ -746,14 +746,14 @@ window.addEventListener('message', e => {
       const linkdata = {
         goToResourcesConfig: {
           text: 'Resources Configuration',
-          url: `/home/namespaces/$ {env}/resources`
+          url: `/home/namespaces/${env}/resources`
         }
       };
-      let errorText = `Error ! The following resource quota limit has been exceeded by the given resource: < br > `;
+      let errorText = `Error ! The following resource quota limit has been exceeded by the given resource:<br>`;
       limitExceededErrors.forEach(error => {
         errorText += `-${error}<br>`;
       });
-      errorText += `See {goToResourcesConfig}for details.`;
+      errorText += `See {goToResourcesConfig} for details.`;
       const settings = {
         text: errorText,
         type: 'error',
@@ -776,9 +776,9 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
     if (resource.affectedResources && resource.affectedResources.length > 0) {
       resource.affectedResources.forEach(affectedResource => {
         limitExceededErrorscomposed.push(
-          `'${
-            resource.resourceName
-          }' by '${affectedResource}' ($ {resource.quotaName})`
+          `'${resource.resourceName}' by '${affectedResource}' (${
+            resource.quotaName
+          })`
         );
       });
     }
