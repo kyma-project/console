@@ -76,22 +76,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    window.addEventListener('message', e => {
-      if (e.data && e.data.resourceQuotasStatus) {
-        this.limitHasBeenExceeded = e.data.resourceQuotasStatus.exceeded;
-        this.displayErrorGlobal = true;
-      }
-      if (
-        e.data &&
-        e.data.resourceQuotasStatus &&
-        e.data.resourceQuotasStatus.exceededQuotas &&
-        e.data.resourceQuotasStatus.exceededQuotas.length > 0
-      ) {
-        this.setLimitExceededErrorsMessages(
-          e.data.resourceQuotasStatus.exceededQuotas
-        );
-      }
-    });
     this.route.params.subscribe(params => {
       const envId = params['environmentId'];
       if (envId) {
@@ -203,46 +187,23 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             limitExceededErrors &&
             limitExceededErrors.length > 0
           ) {
-            this.setLimitExceededErrorsMessages(limitExceededErrors);
-            const linkdata = {
-              goToResourcesConfig: {
-                text: 'Resources Configuration',
-                url: `/home/namespaces/${env}/resources`
+            const data = {
+              resourceQuotasStatus: {
+                exceeded: quotaExceeded,
+                exceededQuotas: limitExceededErrors
               }
             };
-            let errorText = `Error! The following resource quota limit has been exceeded by the given resource:<br>`;
-            this.limitExceededErrors.forEach(error => {
-              errorText += `- ${error}<br>`;
-            });
-            errorText += `See {goToResourcesConfig} for details.`;
-            const settings = {
-              text: errorText,
-              type: 'error',
-              links: linkdata
+            const msg = {
+              msg: 'console.quotaexceeded',
+              data: data,
+              env: this.previousEnv
             };
-            LuigiClient.uxManager()
-              .showAlert(settings)
-              .then(() => {});
+            window.parent.postMessage(msg, '*');
           }
         },
         err => {
           console.log(err);
         }
       );
-  }
-
-  private setLimitExceededErrorsMessages(limitExceededErrors) {
-    this.limitExceededErrors = [];
-    limitExceededErrors.forEach(resource => {
-      if (resource.affectedResources && resource.affectedResources.length > 0) {
-        resource.affectedResources.forEach(affectedResource => {
-          this.limitExceededErrors.push(
-            `'${resource.resourceName}' by '${affectedResource}' (${
-              resource.quotaName
-            })`
-          );
-        });
-      }
-    });
   }
 }

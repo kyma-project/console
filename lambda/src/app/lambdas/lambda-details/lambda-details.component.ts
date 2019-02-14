@@ -280,7 +280,12 @@ export class LambdaDetailsComponent
     this.lambdaDetailsService
       .getResourceQuotaStatus(this.namespace, this.token)
       .subscribe(res => {
-        window.parent.postMessage(res.data, '*');
+        const msg = {
+          msg: 'console.quotaexceeded',
+          data: res.data,
+          env: this.namespace,
+        };
+        window.parent.postMessage(msg, '*');
         if (this.mode === 'create') {
           this.createFunction();
         } else {
