@@ -195,7 +195,7 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
             };
             const msg = {
               msg: 'console.quotaexceeded',
-              data: data,
+              data,
               env: this.previousEnv
             };
             window.parent.postMessage(msg, '*');
