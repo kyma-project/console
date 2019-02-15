@@ -45,7 +45,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public leftNavCollapsed = false;
   public previousUrl = '';
   public previousEnv = '';
-  public displayErrorGlobal = false;
   public limitHasBeenExceeded = false;
   public limitExceededErrors = [];
   public overview = false;
@@ -147,10 +146,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  public hideError() {
-    this.displayErrorGlobal = false;
-  }
-
   private checkIfResourceLimitExceeded(url) {
     this.currentEnvironmentService
       .getCurrentEnvironmentId()
@@ -180,7 +175,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
           this.limitHasBeenExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
-            this.displayErrorGlobal = quotaExceeded;
           }
           if (
             quotaExceeded &&

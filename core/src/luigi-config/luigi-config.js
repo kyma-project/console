@@ -732,7 +732,6 @@ window.addEventListener('message', e => {
     const data = e.data.data;
     if (data && data.resourceQuotasStatus) {
       limitHasBeenExceeded = data.resourceQuotasStatus.exceeded;
-      displayErrorGlobal = true;
     }
     if (
       data &&
