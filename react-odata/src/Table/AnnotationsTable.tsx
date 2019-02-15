@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, Fragment } from 'react';
 import AnnotationsModal from './AnnotationsModal';
 import TableHeader from './TableHeader';
 interface Props {
@@ -28,16 +28,23 @@ const AnnotationsTable = (props: Props): JSX.Element | null => {
       </thead>
       <tbody>
         {data.map((value: any, index: number) => {
+          const [open, setOpen] = useState<boolean>(false);
           return (
-            <tr key={index}>
-              <td>{value.attributes.Target}</td>
-              <td>
-                <AnnotationsModal
-                  data={value}
-                  modalOpeningComponent={<button>{'>'}</button>}
-                />
-              </td>
-            </tr>
+            <Fragment key={index}>
+              <tr>
+                <td>{value.attributes.Target}</td>
+                <td>
+                  <button onClick={() => setOpen(!open)}>
+                    {open ? '⇧' : '⇩'}
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  <AnnotationsModal open={open} data={value} />
+                </td>
+              </tr>
+            </Fragment>
           );
         })}
       </tbody>

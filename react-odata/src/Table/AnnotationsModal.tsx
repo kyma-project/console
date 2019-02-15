@@ -1,80 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Modal from 'react-modal';
+
 import { makeUnique } from './utils/utils';
 interface Props {
-  modalOpeningComponent: any;
-  children?: any;
+  open?: boolean;
   data: any;
 }
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
-
-Modal.setAppElement('#root');
+const StyledTable = styled.table`
+  background-color: #eee;
+  ${(props: { open?: boolean }) => !props.open && 'display: none'};
+  width: 100%;
+`;
 
 const AnnotationsModal = (props: Props): JSX.Element => {
-  const { modalOpeningComponent, children, data } = props;
+  const { data, open } = props;
 
-  const [open, setOpen] = useState<boolean>(false);
-
-  const columnData = data.children
+  const attributesColumn = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);
 
-  return (
-    <>
-      <div onClick={() => setOpen(true)}>{modalOpeningComponent}</div>
-      <Modal
-        isOpen={open}
-        onRequestClose={() => setOpen(false)}
-        contentLabel="Example Modal"
-        style={customStyles}
-      >
-        <AlignRight>
-          <button onClick={() => setOpen(false)}>
-            <b>{'Close'}</b>
-          </button>
-        </AlignRight>
+  const specialData = data.children
+    .map((elem: any) => {
+      return elem.children && elem.children.length > 0 && elem.children[0].name;
+    })
+    .filter((elem: any) => !!elem)
+    .filter(makeUnique);
+  const columnHeaders = [...attributesColumn, ...specialData];
 
-        {children}
-        <table>
-          <thead>
-            <tr>
-              {columnData.map((elem: string, index: number) => (
-                <th key={index}>{elem}</th>
-              ))}
+  return (
+    <StyledTable open={open}>
+      <thead>
+        <tr>
+          {columnHeaders.map((elem: string, index: number) => (
+            <th key={index}>{elem}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.children.map((child: any, index: number) => {
+          const specialHeader = child.children[0];
+          return (
+            <tr key={index}>
+              {columnHeaders.map((el: any, idx: number) => {
+                return (
+                  <th key={idx}>
+                    {child.attributes[el] ||
+                      (specialHeader &&
+                        specialHeader.name === el &&
+                        specialHeader.value)}
+                  </th>
+                );
+              })}
             </tr>
-          </thead>
-          <tbody>
-            {data.children.map((child: any, index: number) => {
-              return (
-                <tr key={index}>
-                  {columnData.map((el: any, idx: number) => {
-                    return <th key={idx}>{child.attributes[el]}</th>;
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </Modal>
-    </>
+          );
+        })}
+      </tbody>
+    </StyledTable>
   );
 };
-
-const AlignRight = styled.section`
-  display: flex;
-  justify-content: flex-end;
-  padding-bottom: 10px;
-`;
 
 export default AnnotationsModal;

@@ -10,12 +10,6 @@ interface Props {
 
 const Table = (props: Props): JSX.Element => {
   const { columnData, title, filteredData } = props;
-  if (title === 'EntityType Trip') {
-    console.group();
-    console.log(columnData);
-    console.log(filteredData.map((elem: any) => elem.children));
-    console.groupEnd();
-  }
 
   return (
     <table>
