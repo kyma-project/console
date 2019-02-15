@@ -1,6 +1,6 @@
 /* tslint:disable:no-submodule-imports */
 
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
 import {
   Component,
@@ -279,6 +279,15 @@ export class LambdaDetailsComponent
   deployLambda() {
     this.lambdaDetailsService
       .getResourceQuotaStatus(this.namespace, this.token)
+      .pipe(
+        finalize(() => {
+          if (this.mode === 'create') {
+            this.createFunction();
+          } else {
+            this.updateFunction();
+          }
+        }),
+      )
       .subscribe(res => {
         const msg = {
           msg: 'console.quotaexceeded',
@@ -286,11 +295,6 @@ export class LambdaDetailsComponent
           env: this.namespace,
         };
         window.parent.postMessage(msg, '*');
-        if (this.mode === 'create') {
-          this.createFunction();
-        } else {
-          this.updateFunction();
-        }
       });
   }
 
