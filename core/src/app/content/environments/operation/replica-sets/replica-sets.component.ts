@@ -1,16 +1,15 @@
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
 import { AppConfig } from '../../../../app.config';
-import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
+import { GraphQLDataProvider } from '../graphql-data-provider';
+import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
-import { DataConverter } from 'app/generic-list';
-import { IReplicaSet, ReplicaSet } from 'shared/datamodel/k8s/replica-set';
+import { Filter } from 'app/generic-list';
 
 @Component({
   selector: 'app-replica-sets',
@@ -28,44 +27,53 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
   private currentEnvironmentSubscription: Subscription;
   public hideFilter = false;
 
+  filterState = {
+    filters: [new Filter('name', '', false)]
+  };
+
   constructor(
-    private http: HttpClient,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
-    const converter: DataConverter<IReplicaSet, ReplicaSet> = {
-      convert(entry: IReplicaSet) {
-        return new ReplicaSet(entry);
+    super(currentEnvironmentService, changeDetector, null, commService);
+
+    const query = `query ReplicaSets($namespace: String!) {
+      replicaSets(namespace: $namespace) {
+        name
+        labels
+        creationTimestamp
+        images
+        pods
+        json
       }
-    };
+    }`;
 
     this.currentEnvironmentSubscription = this.currentEnvironmentService
       .getCurrentEnvironmentId()
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
 
-        const url = `${AppConfig.k8sApiServerUrl_extensions}namespaces/${
-          this.currentEnvironmentId
-        }/replicasets`;
-        this.source = new KubernetesDataProvider(url, converter, this.http);
+        this.source = new GraphQLDataProvider(
+          AppConfig.graphqlApiUrl,
+          query,
+          {
+            namespace: this.currentEnvironmentId
+          },
+          this.graphQLClientService
+        );
         this.entryRenderer = ReplicaSetsEntryRendererComponent;
         this.headerRenderer = ReplicaSetsHeaderRendererComponent;
       });
   }
 
-  createNewElement() {
-    // TODO
-  }
-
-  getResourceUrl(kind: string, entry: any): string {
-    return `${AppConfig.k8sApiServerUrl_extensions}namespaces/${
-      this.currentEnvironmentId
-    }/replicasets/${entry.getId()}`;
-  }
-
   public ngOnDestroy() {
     this.currentEnvironmentSubscription.unsubscribe();
+  }
+
+  editEntryEventCallback(entry) {
+    this.editResourceModal.resourceData = entry.json;
+    this.editResourceModal.show();
   }
 }

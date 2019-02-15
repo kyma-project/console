@@ -119,24 +119,26 @@ export class AbstractKubernetesElementListComponent
           );
       },
       edit: (entry: any) => {
-        this.httpClient
-          .get(this.getResourceUrl(this.resourceKind.toLowerCase(), entry))
-          .subscribe(
-            res => {
-              this.editResourceModal.resourceData = res;
-              this.editResourceModal.show();
-            },
-            error => {
-              console.log(
-                'Error loading resource: ' + (error.message || error)
-              );
-            }
-          );
+        this.editEntryEventCallback(entry);
       },
       details: (entry: any) => {
         this.navigateToDetails(entry);
       }
     };
+  }
+
+  editEntryEventCallback(entry) {
+    this.httpClient
+      .get(this.getResourceUrl(this.resourceKind.toLowerCase(), entry))
+      .subscribe(
+        res => {
+          this.editResourceModal.resourceData = res;
+          this.editResourceModal.show();
+        },
+        error => {
+          console.log('Error loading resource: ' + (error.message || error));
+        }
+      );
   }
 
   subscribeToRefreshComponent() {
