@@ -15,7 +15,12 @@ module.exports = function(page, callback) {
   });
 
   page.on('request', request => {
-    if (request._headers && request._headers.authorization && 0 === counter) {
+    if (
+      request._headers &&
+      request._headers.authorization &&
+      request._headers.authorization.indexOf('undefined') === -1 &&
+      0 === counter
+    ) {
       counter = counter + 1;
       if (config.verbose) {
         console.log(request._headers.authorization);
