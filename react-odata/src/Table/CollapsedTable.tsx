@@ -5,7 +5,7 @@ import { makeUnique } from './utils/utils';
 import { Children } from '../Interfaces';
 
 interface Props {
-  data: { children: Children[] };
+  data: Children;
 }
 const StyledTable = styled.table`
   background-color: #eee;

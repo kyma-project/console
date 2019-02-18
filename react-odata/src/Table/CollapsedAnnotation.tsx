@@ -7,7 +7,7 @@ const CollapsedAnnotation = ({ data }: { data: Children }): JSX.Element => {
     .map((child: Children) => child.name)
     .filter(makeUnique);
   if (headers.length > 1) {
-    //so fat I've seen only headers with length 1, e.g. "string" in XOData
+    //so far I've seen only headers with length 1, e.g. "string" in XOData
     console.error('Take care of this issue');
   }
 
@@ -29,7 +29,7 @@ const CollapsedAnnotation = ({ data }: { data: Children }): JSX.Element => {
           <tr>
             <td>
               <SimpleTable
-                title={'text'}
+                title={'Text'}
                 data={data.children.map((elem: Children) => elem.value)}
               />
             </td>

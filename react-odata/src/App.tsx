@@ -6,24 +6,25 @@ import v2tov4 from './ODataFiles/v2tov4';
 // import ODataFile from './ODataFiles/ODataProductV2'; //does not work, properties cut off
 // import ODataFile from './ODataFiles/ODataNext'; //library cuts off many fields, not working
 // import ODataFile from './ODataFiles/ODataProductV2'; //doesnt work
-// import ODataFile from './ODataFiles/ODataFile2'; //works
-// import ODataFile from './ODataFiles/SAPodata'; //works
+// import ODataFile from './ODataFiles/ODataFile'; //works
+import ODataFile from './ODataFiles/SAPodata'; //works
 // import ODataFile from './ODataFiles/ODataTripV4'; //works
 // import ODataFile from './ODataFiles/ODataFavourite3'; //works - no annotations
 // import ODataFile from './ODataFiles/ODataFav5'; //works
 // import ODataFile from './ODataFiles/ODataFav1'; //works - basic annotations
 // import ODataFile from './ODataFiles/ODataProductV4'; //works
 // import ODataFile from './ODataFiles/ODataProductsV3'; //works
-import ODataFile from './ODataFiles/ODataFav11'; //works
+// import ODataFile from './ODataFiles/ODataFav11'; //works
 
-import Container from './Table/Container';
+import TableContainer from './Table/TableContainer';
 
 const App = () => {
+  //TODO make sap:label etc work
+
   const outXmlString = xslt(ODataFile, v2tov4);
   const xml = new XMLParser().parseFromString(outXmlString);
-
   const schema = xml.getElementsByTagName('Schema');
-  //TODO make Collection work
+
   if (schema.length < 1) {
     return (
       <p>
@@ -32,10 +33,7 @@ const App = () => {
     );
   }
 
-  return (
-    <Container arg={schema[0].children} />
-    // <div>{JSON.stringify(schema)}</div>
-  );
+  return <TableContainer arg={schema[0].children} />;
 };
 
 export default App;
