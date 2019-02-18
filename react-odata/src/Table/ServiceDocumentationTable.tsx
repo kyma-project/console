@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import AnnotationsModal from './AnnotationsModal';
+import CollapsedTable from './CollapsedTable';
 import TableHeader from './TableHeader';
 interface Props {
   data: any[];
@@ -28,21 +28,19 @@ const AnnotationsTable = (props: Props): JSX.Element | null => {
       </thead>
       <tbody>
         {data.map((value: any, index: number) => {
-          const [open, setOpen] = useState<boolean>(false);
+          const [show, setShow] = useState<boolean>(false);
           return (
             <Fragment key={index}>
               <tr>
                 <td>{value.attributes.Target}</td>
                 <td>
-                  <button onClick={() => setOpen(!open)}>
-                    {open ? '⇧' : '⇩'}
+                  <button onClick={() => setShow(!show)}>
+                    {show ? '⇧' : '⇩'}
                   </button>
                 </td>
               </tr>
               <tr>
-                <td colSpan={2}>
-                  <AnnotationsModal open={open} data={value} />
-                </td>
+                <td colSpan={2}>{show && <CollapsedTable data={value} />}</td>
               </tr>
             </Fragment>
           );

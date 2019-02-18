@@ -1,21 +1,18 @@
 import React from 'react';
-import AnnotationsTable from './AnnotationsTable';
+import ServiceDocumentationTable from './ServiceDocumentationTable';
 import TableContainer from './TableContainer';
 import { makeUnique } from './utils/utils';
 import Table from './Table';
 interface IFilteredData {
   name: string;
 }
-interface ISortedSchema {
-  name: string;
-}
 
-const Container = ({ arg }: { arg: any }): JSX.Element => {
-  const Annotations: any[] = [];
+const Container = ({ arg }: { arg: any[] }): JSX.Element => {
+  const Documentation: any[] = [];
   const Rest: any[] = [];
   arg.forEach((elem: any) => {
     if (elem.name === 'Annotations') {
-      Annotations.push(elem);
+      Documentation.push(elem);
     } else {
       Rest.push(elem);
     }
@@ -23,8 +20,10 @@ const Container = ({ arg }: { arg: any }): JSX.Element => {
 
   return (
     <>
-      {Annotations &&
-        Annotations.length > 0 && <AnnotationsTable data={Annotations} />}
+      {Documentation &&
+        Documentation.length > 0 && (
+          <ServiceDocumentationTable data={Documentation} />
+        )}
       {Rest.map(
         (data: any, idx: number): JSX.Element | null => {
           if (!Array.isArray(data.children)) {
@@ -58,14 +57,9 @@ const Container = ({ arg }: { arg: any }): JSX.Element => {
             )
             .filter(makeUnique);
 
-          let title;
-          if (data.name === 'Annotations') {
-            title = 'Service Documentation / Annotations';
-          } else {
-            title = `${data.name || 'Entity'} ${data.attributes.Name ||
-              data.attributes.Term ||
-              data.attributes.Target}`;
-          }
+          const title = `${data.name || 'Entity'} ${data.attributes.Name ||
+            data.attributes.Term ||
+            data.attributes.Target}`;
 
           return (
             <Table

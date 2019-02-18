@@ -1,6 +1,5 @@
 import React from 'react';
 import TableHeader from './TableHeader';
-import AnnotationsRow from './AnnotationsRow';
 
 interface Props {
   columnData: string[];
@@ -28,11 +27,6 @@ const Table = (props: Props): JSX.Element => {
           return (
             <tr key={idx}>
               {columnData.map((row: string, index: number) => {
-                if (elem.name === 'Annotation') {
-                  return (
-                    <AnnotationsRow data={{ element: elem, row }} key={index} />
-                  );
-                }
                 return (
                   <td key={index}>
                     {elem.attributes[row] || elem[row.toLowerCase()]}
