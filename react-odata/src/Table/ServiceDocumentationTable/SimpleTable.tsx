@@ -1,8 +1,4 @@
-import React from 'react';
-import styled from 'styled-components';
-const StyledHeader = styled.th`
-  text-align: left;
-`;
+import React from "react";
 
 const SimpleTable = ({
   title,
@@ -15,7 +11,7 @@ const SimpleTable = ({
     <table>
       <thead>
         <tr>
-          <StyledHeader>{title}</StyledHeader>
+          <td>{title}</td>
         </tr>
       </thead>
       <tbody>

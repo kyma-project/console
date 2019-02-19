@@ -3,7 +3,7 @@
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "rules": {
     "interface-name": [true, "never-prefix"],
-    "no-console": false,
+    "no-console": { "severity": "warning" },
     "member-access": [true, "no-public"],
     "no-unused-expression": true,
     "object-literal-sort-keys": false,

@@ -41,7 +41,13 @@ const Table = (props: Props): JSX.Element => {
       <tbody>
         {filteredData.map((elem: any, idx: number) => {
           if (elem.children.length > 0) {
-            return <CollapsibleRow data={elem} columnHeaders={columnHeaders} />;
+            return (
+              <CollapsibleRow
+                data={elem}
+                columnHeaders={columnHeaders}
+                key={idx}
+              />
+            );
           }
           return (
             <tr key={idx}>
