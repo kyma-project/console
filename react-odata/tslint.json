@@ -4,6 +4,7 @@
   "rules": {
     "arrow-parens": [true, "ban-single-arg-parens"],
     "interface-name": [true, "never-prefix"],
+    "no-console": false,
     "member-access": [true, "no-public"],
     "no-unused-expression": true,
     "object-literal-sort-keys": false,

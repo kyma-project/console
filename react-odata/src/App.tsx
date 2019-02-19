@@ -2,7 +2,7 @@ import React from "react";
 import xslt from "xslt";
 import XMLParser from "react-xml-parser";
 import "./App.css";
-import v2tov4 from "./ODataFiles/v2tov4";
+import v2tov4 from "./tools/V2V3toV4";
 import { Children } from "./Interfaces";
 // import ODataFile from './ODataFiles/ODataProductV2'; //does not work, properties cut off
 // import ODataFile from './ODataFiles/ODataNext'; //library cuts off many fields, not working
@@ -29,8 +29,6 @@ const App = () => {
     removeAllNamespaces: false,
     removeNamespacedNamespace: false,
   });
-
-  // console.log(outXmlString);
 
   const xml = new XMLParser().parseFromString(outXmlString);
 

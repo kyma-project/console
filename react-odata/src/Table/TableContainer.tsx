@@ -1,14 +1,14 @@
-import React from 'react';
-import ServiceDocumentationTable from './ServiceDocumentationTable/ServiceDocumentationTable';
-import { Children } from '../Interfaces';
-import { makeUnique } from './utils';
-import Table from './MainDataTable/Table';
+import React from "react";
+import ServiceDocumentationTable from "./ServiceDocumentationTable/ServiceDocumentationTable";
+import { Children } from "../Interfaces";
+import { makeUnique } from "./utils";
+import Table from "./MainDataTable/Table";
 
 const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
   const Documentation: Children[] = [];
   const Rest: Children[] = [];
   arg.forEach((elem: Children) => {
-    if (elem.name === 'Annotations') {
+    if (elem.name === "Annotations") {
       Documentation.push(elem);
     } else {
       Rest.push(elem);
@@ -17,10 +17,9 @@ const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
 
   return (
     <>
-      {Documentation &&
-        Documentation.length > 0 && (
-          <ServiceDocumentationTable data={Documentation} />
-        )}
+      {Documentation && Documentation.length > 0 && (
+        <ServiceDocumentationTable data={Documentation} />
+      )}
       {Rest.map(
         (data: Children, idx: number): JSX.Element | null => {
           if (!Array.isArray(data.children)) {
@@ -28,7 +27,7 @@ const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
           }
 
           if (
-            ['EntityContainer', 'EnumType', 'Annotation'].includes(data.name)
+            ["EntityContainer", "EnumType", "Annotation"].includes(data.name)
           ) {
             return null;
           }
@@ -36,10 +35,10 @@ const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
           const filteredData: any[] = data.children.filter(
             (el: Children) =>
               ![
-                'Key',
-                'NavigationProperty',
-                'EntityContainer',
-                'Annotation',
+                "Key",
+                "NavigationProperty",
+                "EntityContainer",
+                "Annotation",
               ].includes(el.name),
           );
 
@@ -47,12 +46,11 @@ const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
             .flatMap((elem: { attributes: string }) =>
               Object.keys(elem.attributes),
             )
-            .filter(
-              (elem: string, index: number, self: string[]) =>
-                elem === 'Term' ? false : makeUnique(elem, index, self),
+            .filter((elem: string, index: number, self: string[]) =>
+              elem === "Term" ? false : makeUnique(elem, index, self),
             );
 
-          const title = `${data.name || 'Entity'} ${data.attributes.Name ||
+          const title = `${data.name || "Entity"} ${data.attributes.Name ||
             data.attributes.Term ||
             data.attributes.Target}`;
 
