@@ -15,9 +15,9 @@ import { Children } from "./Interfaces";
 // import ODataFile from './ODataFiles/ODataFav1'; //works - basic annotations
 // import ODataFile from './ODataFiles/ODataProductV4'; //works
 // import ODataFile from './ODataFiles/ODataProductsV3'; //works
-import ODataFile from "./ODataFiles/ODataFav11"; // works //most complex
-// import ODataFile from './ODataFiles/ODataNorthWindV2'; //works
-// import ODataFile from './ODataFiles/ODataFav3'; //works
+// import ODataFile from "./ODataFiles/ODataFav11"; // works //most complex
+import ODataFile from "./ODataFiles/ODataNorthWindV2"; // works
+// import ODataFile from "./ODataFiles/ODataFav3"; // works, but there are certain errors - look at console
 
 import TableContainer from "./Table/TableContainer";
 
@@ -38,13 +38,22 @@ const App = () => {
     return <p>{`No schema in data / format of the data is wrong`}</p>;
   }
 
-  const errors: Children[] = schema[0].children.filter(
-    (elem: Children) => elem.name === "parsererror",
-  );
+  const errors: Children[] = [];
+  const dataForComponent: Children[] = [];
+
+  schema[0].children.forEach((elem: Children) => {
+    if (elem.name === "parsererror") {
+      errors.push(elem);
+    } else {
+      dataForComponent.push(elem);
+    }
+  });
+
   if (errors.length > 0) {
     console.error(errors[0]);
   }
-  return <TableContainer arg={schema[0].children} />;
+
+  return <TableContainer arg={dataForComponent} />;
 };
 
 export default App;
