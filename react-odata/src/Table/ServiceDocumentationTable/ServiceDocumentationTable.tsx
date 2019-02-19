@@ -1,6 +1,6 @@
-import React, { useState, Fragment } from 'react';
-import CollapsedTable from './CollapsedTable';
-import { TableHeader } from '../styled/index';
+import React, { useState, Fragment } from "react";
+import CollapsedTable from "./CollapsedTable";
+
 interface Props {
   data: any[];
 }
@@ -15,13 +15,11 @@ const ServiceDocumentationTable = (props: Props): JSX.Element | null => {
     <table>
       <thead>
         <tr>
-          <TableHeader colSpan={2}>
-            {'Service Documentation / Annotations'}
-          </TableHeader>
+          <th colSpan={2}>{"Service Documentation / Annotations"}</th>
         </tr>
         <tr>
-          <TableHeader>{'Target'}</TableHeader>
-          <TableHeader width={'150px'}>{'Annotation'}</TableHeader>
+          <td>{"Target"}</td>
+          <td>{"Annotation"}</td>
         </tr>
       </thead>
       <tbody>
@@ -33,7 +31,7 @@ const ServiceDocumentationTable = (props: Props): JSX.Element | null => {
                 <td>{value.attributes.Target}</td>
                 <td>
                   <button onClick={() => setShow(!show)}>
-                    {show ? '⇧' : '⇩'}
+                    {show ? "⇧" : "⇩"}
                   </button>
                 </td>
               </tr>
