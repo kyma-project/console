@@ -29,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose"
+    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
+    "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {
     "hooks": {
