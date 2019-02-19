@@ -20,21 +20,21 @@ export class GraphqlMutatorModalComponent extends JsonEditorModalComponent {
   }
 
   sendUpdateRequest() {
-    const resourceValue = this.jsonEditor.getCurrentValue();
-    const name = resourceValue.metadata.name;
-    const namespace = resourceValue.metadata.namespace;
-    const resourceKindCamelCase = this.lowerFirstLetter(resourceValue.kind);
+    const newResourceValue = this.jsonEditor.getCurrentValue();
+    const name = this.resourceData.metadata.name;
+    const namespace = this.resourceData.metadata.namespace;
+    const resourceKindCamelCase = this.lowerFirstLetter(this.resourceData.kind);
     const parameters = {
       name,
       namespace
     };
-    parameters[resourceKindCamelCase] = resourceValue;
+    parameters[resourceKindCamelCase] = newResourceValue;
 
     const mutation = `mutation update${
-      resourceValue.kind
+      this.resourceData.kind
     }($name: String!, $namespace: String!, $${resourceKindCamelCase}: JSON!) {
       update${
-        resourceValue.kind
+        this.resourceData.kind
       }(name: $name, namespace: $namespace, ${resourceKindCamelCase}: $${resourceKindCamelCase}) {
         name
       }
