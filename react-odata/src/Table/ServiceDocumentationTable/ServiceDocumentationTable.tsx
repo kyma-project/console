@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import CollapsedTable from "./CollapsibleTable";
+import CollapsibleTable from "./CollapsibleTable";
 
 interface Props {
   data: any[];
@@ -35,9 +35,14 @@ const ServiceDocumentationTable = (props: Props): JSX.Element | null => {
                   </button>
                 </td>
               </tr>
-              <tr>
-                <td colSpan={2}>{show && <CollapsedTable data={value} />}</td>
-              </tr>
+              {show && (
+                <tr>
+                  <td colSpan={2}>
+                    {" "}
+                    <CollapsibleTable data={value} />
+                  </td>
+                </tr>
+              )}
             </Fragment>
           );
         })}

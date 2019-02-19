@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
-import CollapsedAnnotation from "./CollapsibleAnnotation";
+import CollapsibleAnnotation from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
 import { Children } from "../../Interfaces";
 
-const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
+const CollapisbleTable = ({ data }: { data: Children }): JSX.Element => {
   const attributesColumn: string[] = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);
@@ -51,7 +51,7 @@ const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
                 {show && (
                   <tr>
                     <td colSpan={columnHeaders.length}>
-                      <CollapsedAnnotation data={specialHeader} />
+                      <CollapsibleAnnotation data={specialHeader} />
                     </td>
                   </tr>
                 )}
@@ -77,7 +77,7 @@ const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
   );
 };
 
-export default CollapsedTable;
+export default CollapisbleTable;
 
 const StyledTable = styled.table`
   background-color: #eee;

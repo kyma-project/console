@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Children } from "../../Interfaces";
 import { makeUnique } from "../utils";
 import SimpleTable from "./SimpleTable";
-const CollapsedAnnotation = ({ data }: { data: Children }): JSX.Element => {
+const CollapsibleAnnotation = ({ data }: { data: Children }): JSX.Element => {
   const headers = data.children
     .map((child: Children) => child.name)
     .filter(makeUnique);
@@ -36,4 +36,4 @@ const CollapsedAnnotation = ({ data }: { data: Children }): JSX.Element => {
   );
 };
 
-export default CollapsedAnnotation;
+export default CollapsibleAnnotation;
