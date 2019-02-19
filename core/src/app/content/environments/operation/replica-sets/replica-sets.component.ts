@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { GraphqlMutatorModalComponent } from './../../../../shared/components/json-editor-modal/graphql-mutator-modal.component';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
@@ -27,6 +33,9 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
   private currentEnvironmentSubscription: Subscription;
   public hideFilter = false;
 
+  @ViewChild('mutateResourceModal')
+  mutateResourceModal: GraphqlMutatorModalComponent;
+
   filterState = {
     filters: [new Filter('name', '', false)]
   };
@@ -46,7 +55,6 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
         creationTimestamp
         images
         pods
-        json
       }
     }`;
 
@@ -73,7 +81,35 @@ export class ReplicaSetsComponent extends AbstractKubernetesElementListComponent
   }
 
   editEntryEventCallback(entry) {
-    this.editResourceModal.resourceData = entry.json;
-    this.editResourceModal.show();
+    const query = `query ReplicaSet($name: String! $namespace: String!) {
+      replicaSet(name: $name, namespace: $namespace) {
+        json
+      }
+    }`;
+    this.graphQLClientService
+      .request(AppConfig.graphqlApiUrl, query, {
+        name: entry.name,
+        namespace: this.currentEnvironmentId
+      })
+      .subscribe(data => {
+        this.mutateResourceModal.resourceData = data.replicaSet.json;
+        this.mutateResourceModal.show();
+      });
+  }
+
+  sendDeleteRequest(entry) {
+    const name = entry.name;
+    const namespace = this.currentEnvironmentId;
+    const mutation = `mutation deleteReplicaSet($name: String!, $namespace: String!) {
+      deleteReplicaSet(name: $name, namespace: $namespace) {
+        name
+      }
+    }`;
+
+    return this.graphQLClientService.request(
+      AppConfig.graphqlApiUrl,
+      mutation,
+      { name, namespace }
+    );
   }
 }

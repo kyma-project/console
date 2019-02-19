@@ -3,7 +3,7 @@
   {{ entry.name }}
   </div>
   <div class="col-1">{{ entry.pods }}</div>
-  <div class="col-1">{{ entry.creationTimestamp | timeAgo }}</div>
+  <div class="col-1">{{ entry.creationTimestamp * 1000 | timeAgo }}</div>
   <div class="col-4">
     <span *ngFor="let image of entry.images">
       {{ image }}

@@ -108,6 +108,7 @@ import { TooltipComponent } from './shared/components/tooltip/tooltip.component'
 import { LuigiClientCommunicationDirective } from './shared/directives/luigi-client-communication/luigi-client-communication.directive';
 
 import { FundamentalNgxModule } from 'fundamental-ngx';
+import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
     RemoteEnvironmentsHeaderRendererComponent,
     RemoteEnvironmentsEntryRendererComponent,
     JsonEditorModalComponent,
+    GraphqlMutatorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
     ServiceDetailsComponent,
