@@ -1,5 +1,6 @@
 {
   "trailingComma": "all",
-  "singleQuote": false,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "singleQuote": false
 }

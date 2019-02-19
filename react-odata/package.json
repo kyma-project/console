@@ -30,6 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
+    "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix",
     "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {

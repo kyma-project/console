@@ -19,7 +19,9 @@
     "no-duplicate-variable": true,
     "no-var-keyword": true,
     "triple-equals": true,
-    "use-isnan": true
+    "use-isnan": true,
+    "no-debugger": true,
+    "radix": true
   },
   "linterOptions": { "exclude": ["src/serviceWorker.ts"] },
   "jsRules": {}
