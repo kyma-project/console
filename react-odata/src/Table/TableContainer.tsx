@@ -1,7 +1,7 @@
 import React from 'react';
-import ServiceDocumentationTable from './ServiceDocumentationTable';
+import ServiceDocumentationTable from './ServiceDocumentationTable/ServiceDocumentationTable';
 import { Children } from '../Interfaces';
-import { makeUnique } from './utils/utils';
+import { makeUnique } from './utils';
 import Table from './MainDataTable/Table';
 
 const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
@@ -24,15 +24,12 @@ const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
       {Rest.map(
         (data: Children, idx: number): JSX.Element | null => {
           if (!Array.isArray(data.children)) {
-            return <div>{JSON.stringify(data)}</div>;
-            //get rid of this later
+            return null;
           }
 
           if (
             ['EntityContainer', 'EnumType', 'Annotation'].includes(data.name)
           ) {
-            // return <div>{JSON.stringify(data)}</div>;
-            //get rid of this later
             return null;
           }
 

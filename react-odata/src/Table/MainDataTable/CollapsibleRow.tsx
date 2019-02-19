@@ -1,49 +1,40 @@
-import React from 'react';
-import { Children } from './../../Interfaces';
-import { makeUnique } from './../utils/utils';
-import styled from 'styled-components';
+import React, { useState, Fragment } from 'react';
+import { Children } from '../../Interfaces';
+import HideableSubTable from './HideableSubTable';
 
-const StyledTable = styled.table`
-  background-color: #eee;
-`;
-
-const CollapsibleRow = ({ data }: { data: Children }) => {
-  const filteredHeaders = data.children
-    .flatMap((elem: any) => {
-      console.log(elem);
-      return [
-        ...Object.keys(elem.attributes),
-        ...elem.children.map((child: Children) => child.name),
-      ];
-    })
-    .filter(makeUnique);
-  //   console.log(data);
-  //   console.log(data.children.map((child: Children) => child));
-  //   console.log(filteredHeaders);
+const CollapsibleRow = ({
+  columnHeaders,
+  data,
+}: {
+  columnHeaders: string[];
+  data: Children & { [key: string]: string };
+}) => {
+  const [show, setShow] = useState<boolean>(false);
   return (
-    <StyledTable>
-      <thead>
-        <tr>
-          {filteredHeaders.map((arg: string) => <td key={arg}>{arg}</td>)}
-        </tr>
-      </thead>
-      <tbody>
-        {data.children.map((elem: Children, index: number) => {
+    <Fragment>
+      <tr>
+        {columnHeaders.map((row: string, index: number) => {
           return (
-            <tr key={index}>
-              {filteredHeaders.map((el: string) => {
-                return (
-                  <td>
-                    {elem.attributes[el] ||
-                      (elem.children.length > 0 && elem.children[0].value)}
-                  </td>
-                );
-              })}
-            </tr>
+            <td key={index}>
+              {row === 'Annotation' ? (
+                <button onClick={() => setShow(!show)}>
+                  {show ? '⇧' : '⇩'}
+                </button>
+              ) : (
+                data.attributes[row] || data[row.toLowerCase()] || ''
+              )}
+            </td>
           );
         })}
-      </tbody>
-    </StyledTable>
+      </tr>
+      {show && (
+        <tr>
+          <td colSpan={columnHeaders.length}>
+            <HideableSubTable data={data} />
+          </td>
+        </tr>
+      )}
+    </Fragment>
   );
 };
 

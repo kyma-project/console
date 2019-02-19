@@ -1,24 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
 import CollapsedAnnotation from './CollapsedAnnotation';
-import { makeUnique } from './utils/utils';
-import { Children } from '../Interfaces';
+import { makeUnique } from '../utils';
+import { Children } from '../../Interfaces';
 
-interface Props {
-  data: Children;
-}
-const StyledTable = styled.table`
-  background-color: #eee;
-  width: 100%;
-  max-width: 100%;
-`;
-
-const StyledHeader = styled.th`
-  text-align: left;
-`;
-const CollapsedTable = (props: Props): JSX.Element => {
-  const { data } = props;
-
+const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
   const attributesColumn: string[] = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);
@@ -93,3 +79,13 @@ const CollapsedTable = (props: Props): JSX.Element => {
 };
 
 export default CollapsedTable;
+
+const StyledTable = styled.table`
+  background-color: #eee;
+  width: 100%;
+  max-width: 100%;
+`;
+
+const StyledHeader = styled.th`
+  text-align: left;
+`;

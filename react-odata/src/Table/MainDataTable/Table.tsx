@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from 'react';
-import TableHeader from '../TableHeader';
+import React from 'react';
+import TableHeader from '../styled/TableHeader';
 import { Children } from '../../Interfaces';
-import { makeUnique } from '../utils/utils';
+import { makeUnique } from '../utils';
 import CollapsibleRow from './CollapsibleRow';
 interface Props {
   columnData: string[];
@@ -42,33 +42,34 @@ const Table = (props: Props): JSX.Element => {
       <tbody>
         {filteredData.map((elem: any, idx: number) => {
           if (elem.children.length > 0) {
-            const [show, setShow] = useState<boolean>(false);
-            return (
-              <Fragment key={idx}>
-                <tr key={idx}>
-                  {columnHeaders.map((row: string, index: number) => {
-                    return (
-                      <td key={index}>
-                        {row === 'Annotation' ? (
-                          <button onClick={() => setShow(!show)}>
-                            {show ? '⇧' : '⇩'}
-                          </button>
-                        ) : (
-                          elem.attributes[row] || elem[row.toLowerCase()] || ''
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-                {show && (
-                  <tr>
-                    <td colSpan={columnHeaders.length}>
-                      <CollapsibleRow data={elem} />
-                    </td>
-                  </tr>
-                )}
-              </Fragment>
-            );
+            // const [show, setShow] = useState<boolean>(false);
+            // return (
+            //   <Fragment key={idx}>
+            //     <tr key={idx}>
+            //       {columnHeaders.map((row: string, index: number) => {
+            //         return (
+            //           <td key={index}>
+            //             {row === 'Annotation' ? (
+            //               <button onClick={() => setShow(!show)}>
+            //                 {show ? '⇧' : '⇩'}
+            //               </button>
+            //             ) : (
+            //               elem.attributes[row] || elem[row.toLowerCase()] || ''
+            //             )}
+            //           </td>
+            //         );
+            //       })}
+            //     </tr>
+            //     {show && (
+            //       <tr>
+            //         <td colSpan={columnHeaders.length}>
+            //           <HideableSubTable data={elem} />
+            //         </td>
+            //       </tr>
+            //     )}
+            //   </Fragment>
+            // );
+            return <CollapsibleRow data={elem} columnHeaders={columnHeaders} />;
           }
           return (
             <tr key={idx}>

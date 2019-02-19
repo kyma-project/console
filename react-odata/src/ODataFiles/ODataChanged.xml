@@ -1,0 +1,1180 @@
+<?xml version="1.0" encoding="UTF-8" ?><edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Namespace="Org.OData.Core.V1" Alias="Core"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="Capabilities"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Measures.V1.xml">
+    <edmx:Include Namespace="Org.OData.Measures.V1" Alias="Measures"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml">
+    <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470971/Communication.xml">
+    <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="GWSAMPLE_BASIC">
+      <Annotation Term="com.sap.vocabularies.Common.v1.OriginalProtocolVersion" String="2.0"/>
+      <EntityType Name="BusinessPartner">
+        <Key>
+          <PropertyRef Name="BusinessPartnerID"/>
+        </Key>
+        <Property Name="Address" Type="GWSAMPLE_BASIC.CT_Address" Nullable="false"/>
+        <Property Name="BusinessPartnerID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Business Partner ID"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="CompanyName" Type="Edm.String" Nullable="false" MaxLength="80">
+          <Annotation Term="Common.Label" String="Company"/>
+        </Property>
+        <Property Name="WebAddress" Type="Edm.String">
+          <Annotation Term="Common.Label" String="Web Address"/>
+          <Annotation Term="Core.IsURL"/>
+        </Property>
+        <Property Name="EmailAddress" Type="Edm.String" Nullable="false" MaxLength="255">
+          <Annotation Term="Common.Label" String="E-Mail"/>
+          <Annotation Term="Communication.IsEmailAddress"/>
+        </Property>
+        <Property Name="PhoneNumber" Type="Edm.String" MaxLength="30">
+          <Annotation Term="Common.Label" String="Phone No."/>
+          <Annotation Term="Communication.IsPhoneNumber"/>
+        </Property>
+        <Property Name="FaxNumber" Type="Edm.String" MaxLength="30">
+          <Annotation Term="Common.Label" String="Fax Number"/>
+        </Property>
+        <Property Name="LegalForm" Type="Edm.String" MaxLength="10">
+          <Annotation Term="Common.Label" String="Legal Form"/>
+        </Property>
+        <Property Name="CurrencyCode" Type="Edm.String" Nullable="false" MaxLength="5">
+          <Annotation Term="Common.Label" String="Currency Code"/>
+        </Property>
+        <Property Name="BusinessPartnerRole" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Bus. Part. Role"/>
+        </Property>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <NavigationProperty Name="ToSalesOrders" Type="Collection(GWSAMPLE_BASIC.SalesOrder)" Partner="ToBusinessPartner"/>
+        <NavigationProperty Name="ToContacts" Type="Collection(GWSAMPLE_BASIC.Contact)" Partner="ToBusinessPartner"/>
+        <NavigationProperty Name="ToProducts" Type="Collection(GWSAMPLE_BASIC.Product)" Partner="ToSupplier"/>
+      </EntityType>
+      <EntityType Name="Product">
+        <Key>
+          <PropertyRef Name="ProductID"/>
+        </Key>
+        <Property Name="ProductID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Product ID"/>
+          <Annotation Term="Core.Immutable"/>
+        </Property>
+        <Property Name="TypeCode" Type="Edm.String" Nullable="false" MaxLength="2">
+          <Annotation Term="Common.Label" String="Type Code"/>
+        </Property>
+        <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="40">
+          <Annotation Term="Common.Label" String="Category"/>
+        </Property>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255">
+          <Annotation Term="Common.Label" String="Product Name"/>
+        </Property>
+        <Property Name="NameLanguage" Type="Edm.String" MaxLength="2">
+          <Annotation Term="Common.Label" String="Language"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Description" Type="Edm.String" MaxLength="255">
+          <Annotation Term="Common.Label" String="Prod.Descrip."/>
+        </Property>
+        <Property Name="DescriptionLanguage" Type="Edm.String" MaxLength="2">
+          <Annotation Term="Common.Label" String="Language"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="SupplierID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Business Partner ID"/>
+        </Property>
+        <Property Name="SupplierName" Type="Edm.String" MaxLength="80">
+          <Annotation Term="Common.Label" String="Company"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="TaxTarifCode" Type="Edm.Byte" Nullable="false">
+          <Annotation Term="Common.Label" String="Tax Tariff Code"/>
+        </Property>
+        <Property Name="MeasureUnit" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Unit of Measure"/>
+        </Property>
+        <Property Name="WeightMeasure" Type="Edm.Decimal" Precision="13" Scale="3">
+          <Annotation Term="Measures.Unit" Path="WeightUnit"/>
+          <Annotation Term="Common.Label" String="Weight"/>
+        </Property>
+        <Property Name="WeightUnit" Type="Edm.String" MaxLength="3">
+          <Annotation Term="Common.Label" String="Unit of Measure"/>
+        </Property>
+        <Property Name="CurrencyCode" Type="Edm.String" Nullable="false" MaxLength="5">
+          <Annotation Term="Common.Label" String="Currency Code"/>
+        </Property>
+        <Property Name="Price" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Price"/>
+        </Property>
+        <Property Name="Width" Type="Edm.Decimal" Precision="13" Scale="3">
+          <Annotation Term="Measures.Unit" Path="DimUnit"/>
+          <Annotation Term="Common.Label" String="Dimensions"/>
+        </Property>
+        <Property Name="Depth" Type="Edm.Decimal" Precision="13" Scale="3">
+          <Annotation Term="Measures.Unit" Path="DimUnit"/>
+          <Annotation Term="Common.Label" String="Dimensions"/>
+        </Property>
+        <Property Name="Height" Type="Edm.Decimal" Precision="13" Scale="3">
+          <Annotation Term="Measures.Unit" Path="DimUnit"/>
+          <Annotation Term="Common.Label" String="Dimensions"/>
+        </Property>
+        <Property Name="DimUnit" Type="Edm.String" MaxLength="3">
+          <Annotation Term="Common.Label" String="Dimension Unit"/>
+        </Property>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <NavigationProperty Name="ToSalesOrderLineItems" Type="Collection(GWSAMPLE_BASIC.SalesOrderLineItem)" Partner="ToProduct"/>
+        <NavigationProperty Name="ToSupplier" Type="GWSAMPLE_BASIC.BusinessPartner" Nullable="false" Partner="ToProducts">
+          <ReferentialConstraint Property="SupplierID" ReferencedProperty="BusinessPartnerID"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="SalesOrder">
+        <Key>
+          <PropertyRef Name="SalesOrderID"/>
+        </Key>
+        <Property Name="SalesOrderID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Sales Order ID"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Note" Type="Edm.String" MaxLength="255">
+          <Annotation Term="Common.Label" String="Description"/>
+          <Annotation Term="Core.Immutable"/>
+        </Property>
+        <Property Name="NoteLanguage" Type="Edm.String" MaxLength="2">
+          <Annotation Term="Common.Label" String="Language"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="CustomerID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Business Partner ID"/>
+          <Annotation Term="Core.Immutable"/>
+        </Property>
+        <Property Name="CustomerName" Type="Edm.String" MaxLength="80">
+          <Annotation Term="Common.Label" String="Company"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="CurrencyCode" Type="Edm.String" MaxLength="5">
+          <Annotation Term="Common.Label" String="Currency Code"/>
+          <Annotation Term="Core.Immutable"/>
+        </Property>
+        <Property Name="GrossAmount" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Gross Amount"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="NetAmount" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Net Amount"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="TaxAmount" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Tax Amount"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="LifecycleStatus" Type="Edm.String" MaxLength="1">
+          <Annotation Term="Common.Label" String="Lifecycle Status"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="LifecycleStatusDescription" Type="Edm.String" MaxLength="60">
+          <Annotation Term="Common.Label" String="Lifecycle Descript."/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="BillingStatus" Type="Edm.String" MaxLength="1">
+          <Annotation Term="Common.Label" String="Confirmation Status"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="BillingStatusDescription" Type="Edm.String" MaxLength="60">
+          <Annotation Term="Common.Label" String="Billing Description"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="DeliveryStatus" Type="Edm.String" MaxLength="1">
+          <Annotation Term="Common.Label" String="Ordering Status"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="DeliveryStatusDescription" Type="Edm.String" MaxLength="60">
+          <Annotation Term="Common.Label" String="Delivery Description"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <NavigationProperty Name="ToBusinessPartner" Type="GWSAMPLE_BASIC.BusinessPartner" Nullable="false" Partner="ToSalesOrders">
+          <ReferentialConstraint Property="CustomerID" ReferencedProperty="BusinessPartnerID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="ToLineItems" Type="Collection(GWSAMPLE_BASIC.SalesOrderLineItem)" Partner="ToHeader"/>
+      </EntityType>
+      <EntityType Name="SalesOrderLineItem">
+        <Key>
+          <PropertyRef Name="SalesOrderID"/>
+          <PropertyRef Name="ItemPosition"/>
+        </Key>
+        <Property Name="SalesOrderID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Sales Order ID"/>
+          <Annotation Term="Core.Immutable"/>
+        </Property>
+        <Property Name="ItemPosition" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Item Position"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="ProductID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Product ID"/>
+        </Property>
+        <Property Name="Note" Type="Edm.String" MaxLength="255">
+          <Annotation Term="Common.Label" String="Description"/>
+        </Property>
+        <Property Name="NoteLanguage" Type="Edm.String" MaxLength="2">
+          <Annotation Term="Common.Label" String="Language"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="CurrencyCode" Type="Edm.String" MaxLength="5">
+          <Annotation Term="Common.Label" String="Currency Code"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="GrossAmount" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Gross Amount"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="NetAmount" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Net Amount"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="TaxAmount" Type="Edm.Decimal" Precision="16" Scale="3">
+          <Annotation Term="Measures.ISOCurrency" Path="CurrencyCode"/>
+          <Annotation Term="Common.Label" String="Tax Amount"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="DeliveryDate" Type="Edm.DateTimeOffset" Nullable="false" Precision="7">
+          <Annotation Term="Common.Label" String="Time Stamp"/>
+        </Property>
+        <Property Name="Quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3">
+          <Annotation Term="Measures.Unit" Path="QuantityUnit"/>
+          <Annotation Term="Common.Label" String="Quantity"/>
+        </Property>
+        <Property Name="QuantityUnit" Type="Edm.String" MaxLength="3">
+          <Annotation Term="Common.Label" String="Unit of Measure"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <NavigationProperty Name="ToHeader" Type="GWSAMPLE_BASIC.SalesOrder" Nullable="false" Partner="ToLineItems">
+          <ReferentialConstraint Property="SalesOrderID" ReferencedProperty="SalesOrderID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="ToProduct" Type="GWSAMPLE_BASIC.Product" Nullable="false" Partner="ToSalesOrderLineItems">
+          <ReferentialConstraint Property="ProductID" ReferencedProperty="ProductID"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Contact">
+        <Key>
+          <PropertyRef Name="ContactGuid"/>
+        </Key>
+        <Property Name="Address" Type="GWSAMPLE_BASIC.CT_Address" Nullable="false"/>
+        <Property Name="ContactGuid" Type="Edm.Guid" Nullable="false">
+          <Annotation Term="Common.Label" String="Contact GUID"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="BusinessPartnerID" Type="Edm.String" Nullable="false" MaxLength="10">
+          <Annotation Term="Common.Label" String="Business Partner ID"/>
+          <Annotation Term="Core.Immutable"/>
+        </Property>
+        <Property Name="Title" Type="Edm.String" MaxLength="10">
+          <Annotation Term="Common.Label" String="Title"/>
+        </Property>
+        <Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="40">
+          <Annotation Term="Common.Label" String="First Name"/>
+          <Annotation Term="TODO.semantics" String="givenname"/>
+        </Property>
+        <Property Name="MiddleName" Type="Edm.String" MaxLength="40">
+          <Annotation Term="Common.Label" String="Middle Name"/>
+          <Annotation Term="TODO.semantics" String="middlename"/>
+        </Property>
+        <Property Name="LastName" Type="Edm.String" MaxLength="40">
+          <Annotation Term="Common.Label" String="Last Name"/>
+          <Annotation Term="TODO.semantics" String="familyname"/>
+        </Property>
+        <Property Name="Nickname" Type="Edm.String" MaxLength="40">
+          <Annotation Term="Common.Label" String="Nickname"/>
+          <Annotation Term="TODO.semantics" String="nickname"/>
+        </Property>
+        <Property Name="Initials" Type="Edm.String" MaxLength="10">
+          <Annotation Term="Common.Label" String="Initials"/>
+        </Property>
+        <Property Name="Sex" Type="Edm.String" Nullable="false" MaxLength="1">
+          <Annotation Term="Common.Label" String="Gender"/>
+        </Property>
+        <Property Name="PhoneNumber" Type="Edm.String" MaxLength="30">
+          <Annotation Term="Common.Label" String="Phone No."/>
+          <Annotation Term="Communication.IsPhoneNumber"/>
+        </Property>
+        <Property Name="FaxNumber" Type="Edm.String" MaxLength="30">
+          <Annotation Term="Common.Label" String="Fax Number"/>
+        </Property>
+        <Property Name="EmailAddress" Type="Edm.String" MaxLength="255">
+          <Annotation Term="Common.Label" String="E-Mail"/>
+          <Annotation Term="Communication.IsEmailAddress"/>
+        </Property>
+        <Property Name="Language" Type="Edm.String" MaxLength="2">
+          <Annotation Term="Common.Label" String="Language Key"/>
+        </Property>
+        <Property Name="DateOfBirth" Type="Edm.DateTimeOffset" Precision="7">
+          <Annotation Term="Common.Label" String="Date of Birth"/>
+          <Annotation Term="TODO.semantics" String="bday"/>
+        </Property>
+        <NavigationProperty Name="ToBusinessPartner" Type="GWSAMPLE_BASIC.BusinessPartner" Nullable="false" Partner="ToContacts">
+          <ReferentialConstraint Property="BusinessPartnerID" ReferencedProperty="BusinessPartnerID"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="VH_Sex">
+        <Key>
+          <PropertyRef Name="Sex"/>
+        </Key>
+        <Property Name="Sex" Type="Edm.String" Nullable="false" MaxLength="1">
+          <Annotation Term="Common.Label" String="Sex"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Shorttext" Type="Edm.String" Nullable="false" MaxLength="60">
+          <Annotation Term="Common.Label" String="Short Descript."/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_Country">
+        <Key>
+          <PropertyRef Name="Land1"/>
+        </Key>
+        <Property Name="Land1" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Country"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Landx" Type="Edm.String" Nullable="false" MaxLength="15">
+          <Annotation Term="Common.Label" String="Name"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Natio" Type="Edm.String" Nullable="false" MaxLength="15">
+          <Annotation Term="Common.Label" String="Nationality"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_AddressType">
+        <Key>
+          <PropertyRef Name="AddressType"/>
+        </Key>
+        <Property Name="AddressType" Type="Edm.String" Nullable="false" MaxLength="2">
+          <Annotation Term="Common.Label" String="Address Type"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Shorttext" Type="Edm.String" Nullable="false" MaxLength="60">
+          <Annotation Term="Common.Label" String="Short Descript."/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_Category">
+        <Key>
+          <PropertyRef Name="Category"/>
+        </Key>
+        <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="40">
+          <Annotation Term="Common.Label" String="Prod. Cat."/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_Currency">
+        <Key>
+          <PropertyRef Name="Waers"/>
+        </Key>
+        <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5">
+          <Annotation Term="Common.Label" String="Currency"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Ltext" Type="Edm.String" Nullable="false" MaxLength="40">
+          <Annotation Term="Common.Label" String="Long Text"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_UnitQuantity">
+        <Key>
+          <PropertyRef Name="Msehi"/>
+        </Key>
+        <Property Name="Msehi" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Int. meas. unit"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Msehl" Type="Edm.String" Nullable="false" MaxLength="30">
+          <Annotation Term="Common.Label" String="Unit text"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_UnitWeight">
+        <Key>
+          <PropertyRef Name="Msehi"/>
+        </Key>
+        <Property Name="Msehi" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Int. meas. unit"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Msehl" Type="Edm.String" Nullable="false" MaxLength="30">
+          <Annotation Term="Common.Label" String="Unit text"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_UnitLength">
+        <Key>
+          <PropertyRef Name="Msehi"/>
+        </Key>
+        <Property Name="Msehi" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Int. meas. unit"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Msehl" Type="Edm.String" Nullable="false" MaxLength="30">
+          <Annotation Term="Common.Label" String="Unit text"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_ProductTypeCode">
+        <Key>
+          <PropertyRef Name="TypeCode"/>
+        </Key>
+        <Property Name="TypeCode" Type="Edm.String" Nullable="false" MaxLength="2">
+          <Annotation Term="Common.Label" String="Prod. Type Code"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Shorttext" Type="Edm.String" Nullable="false" MaxLength="60">
+          <Annotation Term="Common.Label" String="Short Descript."/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_BPRole">
+        <Key>
+          <PropertyRef Name="BpRole"/>
+        </Key>
+        <Property Name="BpRole" Type="Edm.String" Nullable="false" MaxLength="3">
+          <Annotation Term="Common.Label" String="Bus. Part. Role"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Shorttext" Type="Edm.String" Nullable="false" MaxLength="60">
+          <Annotation Term="Common.Label" String="Short Descript."/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <EntityType Name="VH_Language">
+        <Key>
+          <PropertyRef Name="Spras"/>
+        </Key>
+        <Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2">
+          <Annotation Term="Common.Label" String="Language"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+        <Property Name="Sptxt" Type="Edm.String" Nullable="false" MaxLength="16">
+          <Annotation Term="Common.Label" String="Name"/>
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </EntityType>
+      <ComplexType Name="CT_Address">
+        <Property Name="City" Type="Edm.String" MaxLength="40">
+          <Annotation Term="Common.Label" String="City"/>
+          <Annotation Term="TODO.semantics" String="city"/>
+        </Property>
+        <Property Name="PostalCode" Type="Edm.String" MaxLength="10">
+          <Annotation Term="Common.Label" String="Postal Code"/>
+          <Annotation Term="TODO.semantics" String="zip"/>
+        </Property>
+        <Property Name="Street" Type="Edm.String" MaxLength="60">
+          <Annotation Term="Common.Label" String="Street"/>
+          <Annotation Term="TODO.semantics" String="street"/>
+        </Property>
+        <Property Name="Building" Type="Edm.String" MaxLength="10">
+          <Annotation Term="Common.Label" String="Building"/>
+        </Property>
+        <Property Name="Country" Type="Edm.String" MaxLength="3">
+          <Annotation Term="Common.Label" String="Country"/>
+          <Annotation Term="TODO.semantics" String="country"/>
+        </Property>
+        <Property Name="AddressType" Type="Edm.String" MaxLength="2">
+          <Annotation Term="Common.Label" String="Address Type"/>
+        </Property>
+      </ComplexType>
+      <ComplexType Name="CT_String">
+        <Property Name="String" Type="Edm.String" Nullable="false">
+          <Annotation Term="Core.Computed"/>
+        </Property>
+      </ComplexType>
+      <EntityContainer Name="GWSAMPLE_BASIC_Entities">
+        <EntitySet Name="BusinessPartnerSet" EntityType="GWSAMPLE_BASIC.BusinessPartner">
+          <NavigationPropertyBinding Target="ProductSet" Path="ToProducts"/>
+          <NavigationPropertyBinding Target="SalesOrderSet" Path="ToSalesOrders"/>
+          <NavigationPropertyBinding Target="ContactSet" Path="ToContacts"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>WebAddress</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>WebAddress</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="ProductSet" EntityType="GWSAMPLE_BASIC.Product">
+          <NavigationPropertyBinding Target="SalesOrderLineItemSet" Path="ToSalesOrderLineItems"/>
+          <NavigationPropertyBinding Target="BusinessPartnerSet" Path="ToSupplier"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Name</PropertyPath>
+                  <PropertyPath>NameLanguage</PropertyPath>
+                  <PropertyPath>Description</PropertyPath>
+                  <PropertyPath>DescriptionLanguage</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Name</PropertyPath>
+                  <PropertyPath>NameLanguage</PropertyPath>
+                  <PropertyPath>Description</PropertyPath>
+                  <PropertyPath>DescriptionLanguage</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="SalesOrderSet" EntityType="GWSAMPLE_BASIC.SalesOrder">
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <NavigationPropertyBinding Target="SalesOrderLineItemSet" Path="ToLineItems"/>
+          <NavigationPropertyBinding Target="BusinessPartnerSet" Path="ToBusinessPartner"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Note</PropertyPath>
+                  <PropertyPath>NoteLanguage</PropertyPath>
+                  <PropertyPath>LifecycleStatusDescription</PropertyPath>
+                  <PropertyPath>BillingStatusDescription</PropertyPath>
+                  <PropertyPath>DeliveryStatusDescription</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Note</PropertyPath>
+                  <PropertyPath>NoteLanguage</PropertyPath>
+                  <PropertyPath>LifecycleStatusDescription</PropertyPath>
+                  <PropertyPath>BillingStatusDescription</PropertyPath>
+                  <PropertyPath>DeliveryStatusDescription</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="SalesOrderLineItemSet" EntityType="GWSAMPLE_BASIC.SalesOrderLineItem">
+          <NavigationPropertyBinding Target="ProductSet" Path="ToProduct"/>
+          <NavigationPropertyBinding Target="SalesOrderSet" Path="ToHeader"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Note</PropertyPath>
+                  <PropertyPath>NoteLanguage</PropertyPath>
+                  <PropertyPath>DeliveryDate</PropertyPath>
+                  <PropertyPath>Quantity</PropertyPath>
+                  <PropertyPath>QuantityUnit</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Note</PropertyPath>
+                  <PropertyPath>NoteLanguage</PropertyPath>
+                  <PropertyPath>DeliveryDate</PropertyPath>
+                  <PropertyPath>Quantity</PropertyPath>
+                  <PropertyPath>QuantityUnit</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="ContactSet" EntityType="GWSAMPLE_BASIC.Contact">
+          <NavigationPropertyBinding Target="BusinessPartnerSet" Path="ToBusinessPartner"/>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_SexSet" EntityType="GWSAMPLE_BASIC.VH_Sex">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Sex</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Sex</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_CountrySet" EntityType="GWSAMPLE_BASIC.VH_Country">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Land1</PropertyPath>
+                  <PropertyPath>Landx</PropertyPath>
+                  <PropertyPath>Natio</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Land1</PropertyPath>
+                  <PropertyPath>Landx</PropertyPath>
+                  <PropertyPath>Natio</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_AddressTypeSet" EntityType="GWSAMPLE_BASIC.VH_AddressType">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>AddressType</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>AddressType</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_CategorySet" EntityType="GWSAMPLE_BASIC.VH_Category">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Category</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Category</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_CurrencySet" EntityType="GWSAMPLE_BASIC.VH_Currency">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Waers</PropertyPath>
+                  <PropertyPath>Ltext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Waers</PropertyPath>
+                  <PropertyPath>Ltext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_UnitQuantitySet" EntityType="GWSAMPLE_BASIC.VH_UnitQuantity">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Msehi</PropertyPath>
+                  <PropertyPath>Msehl</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Msehi</PropertyPath>
+                  <PropertyPath>Msehl</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_UnitWeightSet" EntityType="GWSAMPLE_BASIC.VH_UnitWeight">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Msehi</PropertyPath>
+                  <PropertyPath>Msehl</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Msehi</PropertyPath>
+                  <PropertyPath>Msehl</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_UnitLengthSet" EntityType="GWSAMPLE_BASIC.VH_UnitLength">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Msehi</PropertyPath>
+                  <PropertyPath>Msehl</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Msehi</PropertyPath>
+                  <PropertyPath>Msehl</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_ProductTypeCodeSet" EntityType="GWSAMPLE_BASIC.VH_ProductTypeCode">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>TypeCode</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>TypeCode</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_BPRoleSet" EntityType="GWSAMPLE_BASIC.VH_BPRole">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>BpRole</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>BpRole</PropertyPath>
+                  <PropertyPath>Shorttext</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <EntitySet Name="VH_LanguageSet" EntityType="GWSAMPLE_BASIC.VH_Language">
+          <Annotation Term="Capabilities.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false"/>
+            </Record>
+          </Annotation>
+          <Annotation Bool="false" Term="Capabilities.TopSupported"/>
+          <Annotation Bool="false" Term="Capabilities.SkipSupported"/>
+          <Annotation Term="Capabilities.FilterRestrictions">
+            <Record>
+              <PropertyValue Property="NonFilterableProperties">
+                <Collection>
+                  <PropertyPath>Spras</PropertyPath>
+                  <PropertyPath>Sptxt</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SortRestrictions">
+            <Record>
+              <PropertyValue Property="NonSortableProperties">
+                <Collection>
+                  <PropertyPath>Spras</PropertyPath>
+                  <PropertyPath>Sptxt</PropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Capabilities.SearchRestrictions">
+            <Record>
+              <PropertyValue Property="Searchable" Bool="false"/>
+            </Record>
+          </Annotation>
+        </EntitySet>
+        <ActionImport Name="RegenerateAllData" Action="GWSAMPLE_BASIC.RegenerateAllData"/>
+        <ActionImport Name="SalesOrder_Confirm" EntitySet="SalesOrderSet" Action="GWSAMPLE_BASIC.SalesOrder_Confirm"/>
+        <ActionImport Name="SalesOrder_Cancel" EntitySet="SalesOrderSet" Action="GWSAMPLE_BASIC.SalesOrder_Cancel"/>
+        <ActionImport Name="SalesOrder_InvoiceCreated" EntitySet="SalesOrderSet" Action="GWSAMPLE_BASIC.SalesOrder_InvoiceCreated"/>
+        <ActionImport Name="SalesOrder_GoodsIssueCreated" EntitySet="SalesOrderSet" Action="GWSAMPLE_BASIC.SalesOrder_GoodsIssueCreated"/>
+      </EntityContainer>
+      <Action Name="RegenerateAllData">
+        <Parameter Nullable="false" Name="NoOfSalesOrders" Type="Edm.Int32"/>
+        <ReturnType Type="GWSAMPLE_BASIC.CT_String" Nullable="false"/>
+      </Action>
+      <Action Name="SalesOrder_Confirm">
+        <Parameter Nullable="false" Name="SalesOrderID" Type="Edm.String" MaxLength="10"/>
+        <ReturnType Type="GWSAMPLE_BASIC.SalesOrder" Nullable="false"/>
+      </Action>
+      <Action Name="SalesOrder_Cancel">
+        <Parameter Nullable="false" Name="SalesOrderID" Type="Edm.String" MaxLength="10"/>
+        <ReturnType Type="GWSAMPLE_BASIC.SalesOrder" Nullable="false"/>
+      </Action>
+      <Action Name="SalesOrder_InvoiceCreated">
+        <Parameter Nullable="false" Name="SalesOrderID" Type="Edm.String" MaxLength="10"/>
+        <ReturnType Type="GWSAMPLE_BASIC.SalesOrder" Nullable="false"/>
+      </Action>
+      <Action Name="SalesOrder_GoodsIssueCreated">
+        <Parameter Nullable="false" Name="SalesOrderID" Type="Edm.String" MaxLength="10"/>
+        <ReturnType Type="GWSAMPLE_BASIC.SalesOrder" Nullable="false"/>
+      </Action>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

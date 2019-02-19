@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Children } from '../Interfaces';
-import { makeUnique } from './utils/utils';
+import { Children } from '../../Interfaces';
+import { makeUnique } from '../utils';
 import SimpleTable from './SimpleTable';
 const CollapsedAnnotation = ({ data }: { data: Children }): JSX.Element => {
   const headers = data.children

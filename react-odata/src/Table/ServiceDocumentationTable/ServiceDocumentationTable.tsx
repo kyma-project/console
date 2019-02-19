@@ -1,16 +1,14 @@
 import React, { useState, Fragment } from 'react';
 import CollapsedTable from './CollapsedTable';
-import TableHeader from './TableHeader';
+import { TableHeader } from '../styled/index';
 interface Props {
   data: any[];
 }
-const AnnotationsTable = (props: Props): JSX.Element | null => {
+const ServiceDocumentationTable = (props: Props): JSX.Element | null => {
   const { data } = props;
 
   if (!Array.isArray(data)) {
-    return <div>{JSON.stringify(data)}</div>;
-    //get rid of this later
-    //return null
+    return null;
   }
 
   return (
@@ -50,4 +48,4 @@ const AnnotationsTable = (props: Props): JSX.Element | null => {
   );
 };
 
-export default AnnotationsTable;
+export default ServiceDocumentationTable;
