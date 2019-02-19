@@ -14,8 +14,8 @@ import { Children } from "./Interfaces";
 // import ODataFile from './ODataFiles/ODataFav1'; //works - basic annotations
 // import ODataFile from './ODataFiles/ODataProductV4'; //works - use this to see Service Documentation / Annotations
 // import ODataFile from './ODataFiles/ODataProductsV3'; //works
-// import ODataFile from "./ODataFiles/ODataFav11"; // works //most complex
-import ODataFile from "./ODataFiles/ODataFav21"; // works //
+import ODataFile from "./ODataFiles/ODataFav11"; // works //most complex
+// import ODataFile from "./ODataFiles/ODataFav21"; // works // there are errors in console
 // import ODataFile from "./ODataFiles/ODataNorthWindV2"; // works
 // import ODataFile from "./ODataFiles/ODataFav3"; // works, but there are certain errors - look at console
 
@@ -27,7 +27,6 @@ const App = () => {
   });
 
   const xml = new XMLParser().parseFromString(outXmlString);
-
   const schema = xml.getElementsByTagName("Schema");
 
   if (schema.length < 1) {

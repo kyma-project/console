@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from "react";
-import CollapsedTable from "./CollapsedTable";
+import React, { Fragment, useState } from "react";
+import CollapsedTable from "./CollapsibleTable";
 
 interface Props {
   data: any[];

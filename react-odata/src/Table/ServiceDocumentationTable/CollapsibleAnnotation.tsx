@@ -6,17 +6,13 @@ const CollapsedAnnotation = ({ data }: { data: Children }): JSX.Element => {
   const headers = data.children
     .map((child: Children) => child.name)
     .filter(makeUnique);
-  if (headers.length > 1) {
-    // so far I've seen only headers with length 1, e.g. "string" in XOData
-    console.error("Take care of this issue");
-  }
 
   const [show, useShow] = useState<boolean>(false);
   return (
     <table>
       <thead>
         <tr>
-          <td>{headers[0]}</td>
+          <td>{headers[0] || "Data"}</td>
         </tr>
       </thead>
       <tbody>

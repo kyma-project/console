@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from 'react';
-import styled from 'styled-components';
-import CollapsedAnnotation from './CollapsedAnnotation';
-import { makeUnique } from '../utils';
-import { Children } from '../../Interfaces';
+import React, { Fragment, useState } from "react";
+import styled from "styled-components";
+import CollapsedAnnotation from "./CollapsibleAnnotation";
+import { makeUnique } from "../utils";
+import { Children } from "../../Interfaces";
 
 const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
   const attributesColumn: string[] = data.children
@@ -13,7 +13,7 @@ const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
     .map(
       (elem: Children) =>
         (elem.children && elem.children.length > 0 && elem.children[0].name) ||
-        '',
+        "",
     )
     .filter((elem: string) => !!elem)
     .filter(makeUnique);
@@ -32,7 +32,7 @@ const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
       <tbody>
         {data.children.map((child: Children, index: number) => {
           const specialHeader: Children = child.children[0];
-          if (specialHeader && specialHeader.name === 'Collection') {
+          if (specialHeader && specialHeader.name === "Collection") {
             const [show, setShow] = useState<boolean>(false);
             return (
               <Fragment key={index}>
@@ -40,12 +40,11 @@ const CollapsedTable = ({ data }: { data: Children }): JSX.Element => {
                   {columnHeaders.map((el: string, idx: number) => (
                     <td key={idx}>
                       {child.attributes[el] ||
-                        (specialHeader &&
-                          specialHeader.name === el && (
-                            <button onClick={() => setShow(!show)}>
-                              {show ? '⇧' : '⇩'}
-                            </button>
-                          ))}
+                        (specialHeader && specialHeader.name === el && (
+                          <button onClick={() => setShow(!show)}>
+                            {show ? "⇧" : "⇩"}
+                          </button>
+                        ))}
                     </td>
                   ))}
                 </tr>
