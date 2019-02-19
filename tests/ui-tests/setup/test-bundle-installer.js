@@ -8,12 +8,10 @@ export class TestBundleInstaller {
     const coreApiClient = kubeConfig.makeApiClient(k8s.Core_v1Api);
     this.namespaceManager = new NamespaceManager(coreApiClient, namespace);
 
-    const extensionsApiClient = kubeConfig.makeApiClient(
-      k8s.Extensions_v1beta1Api
-    );
     this.helmBrokerConfigurer = new HelmBrokerConfigurer(
+      namespace,
       kubeConfig,
-      extensionsApiClient
+      coreApiClient
     );
   }
 
@@ -21,7 +19,6 @@ export class TestBundleInstaller {
     console.log('Installing test bundle...');
     await this.namespaceManager.createIfDoesntExist();
     await this.helmBrokerConfigurer.includeTestBundleRepository();
-    await this.helmBrokerConfigurer.waitForBrokerReady();
     await this.helmBrokerConfigurer.waitForTestBundle();
   }
 
@@ -29,6 +26,5 @@ export class TestBundleInstaller {
     console.log('Cleaning up test bundle...');
     await this.helmBrokerConfigurer.excludeTestBundleRepository();
     await this.namespaceManager.deleteIfExists();
-    await this.helmBrokerConfigurer.waitForBrokerReady();
   }
 }
