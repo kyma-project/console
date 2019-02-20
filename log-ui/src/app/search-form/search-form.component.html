@@ -1,5 +1,12 @@
 <div class="fd-section">
-<div class="fd-panel">
+  <div class="fd-panel">
+  <div class="fd-panel__header">
+    <div class="fd-panel__head">
+        <h1 class="fd-panel__title">
+            Logs
+        </h1>
+    </div>
+  </div>
   <div class="fd-panel__body">
     <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="global_errors" *ngIf="error">
       <button class="fd-alert__close" aria-controls="global_errors" aria-label="Close" (click)="error = null"></button>
@@ -99,25 +106,27 @@
     </form>
   </div>
 </div>
+</div>
 
-<div class="fd-panel" *ngFor="let stream of searchResult.streams">
+<div class="fd-section" *ngFor="let stream of searchResult.streams">
+  <div class="fd-panel">
   <div class="fd-panel__filters" >
     Available labels for stream:
     <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button" *ngFor="let label of stream.availableLabels" (click)="addLabel($event.target.outerText)">{{label}}</div>
   </div>
   <div class="fd-panel__body">
-    <fd-table style="table-layout: fixed">
+    <fd-table>
       <fd-table-header>
         <th>Timestamp</th>
         <th>Log</th>
       </fd-table-header>
       <fd-table-body>
         <tr *ngFor="let row of stream.entries">
-          <td>{{row.ts}}</td>
-          <td>{{row.line}}</td>
+          <td class="no-word-break">{{row.ts / 1000}}</td>
+          <td class="word-break">{{row.line}}</td>
         </tr>
       </fd-table-body>
     </fd-table>
   </div>
-</div>
+  </div>
 </div>

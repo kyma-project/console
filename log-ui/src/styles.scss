@@ -13,3 +13,15 @@ $fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
     }
   }
 }
+
+.word-break {
+  word-break: break-all;
+}
+
+.no-word-break {
+  white-space: pre;
+}
+
+.fd-table tr {
+  cursor: default !important;
+}

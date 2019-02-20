@@ -24,8 +24,8 @@ module.exports = {
   getSearchResult: async page => {
     try {
       return await page.evaluate(() => {
-        const lambdasArraySelector = '.fd-table';
-        return Array.from(document.querySelectorAll(lambdasArraySelector));
+        const resultRowArraySelector = '.fd-table > fd-table-body > tbody > tr';
+        return Array.from(document.querySelectorAll(resultRowArraySelector));
       });
     } catch (e) {
       console.log(document.documentElement.innerHTML);

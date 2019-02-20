@@ -34,7 +34,7 @@ describeIf(dex.isStaticUser(), 'Log UI tests', () => {
 
     // check labels available
     const frame = await kymaConsole.getFrame(page);
-    const logsUIPanel = '.panel-body';
+    const logsUIPanel = '.fd-panel__body';
     await frame.waitForSelector(logsUIPanel);
     const currentLabels = await logsCommands.getLabels(frame);
     expect(currentLabels.length).toBeGreaterThan(2);
@@ -51,14 +51,26 @@ describeIf(dex.isStaticUser(), 'Log UI tests', () => {
     const labelValuesSelectBox = '#labelValue';
     await frame.select(labelValuesSelectBox, 'kyma-system');
 
+    //select from 1d
+    const fromSelectBox = '#from';
+    await frame.select(fromSelectBox, '7d');
+
+    //select limit to 10
+    const limitInput = '#limit';
+    await frame.$eval(limitInput, input => input.value = '');
+    await frame.waitForSelector(limitInput);
+    await frame.type(limitInput, '10');
+
     // search for logs
     const form = await frame.$('.fd-button');
     await form.click();
-    await frame.waitFor(1000);
+    await frame.waitFor(2000);
 
     //check log search result
     const frame2 = await kymaConsole.getFrame(page);
-    const tables = await logsCommands.getSearchResult(frame2);
-    expect(tables.length).toBeGreaterThan(1);
+    const resultRows = await logsCommands.getSearchResult(frame2);
+
+    expect(resultRows.length).toBe(10);
+
   });
 });
