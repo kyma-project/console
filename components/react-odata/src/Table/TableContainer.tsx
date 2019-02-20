@@ -1,13 +1,32 @@
 import React from "react";
 import ServiceDocumentationTable from "./ServiceDocumentationTable/ServiceDocumentationTable";
-import { Children } from "../Interfaces";
+import { Child } from "../types";
 import { makeUnique } from "./utils";
 import Table from "./MainDataTable/Table";
 
-const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
-  const Documentation: Children[] = [];
-  const Rest: Children[] = [];
-  arg.forEach((elem: Children) => {
+interface Props {
+  arg: Child[];
+}
+
+const CHILDREN_TO_IGNORE: string[] = [
+  "Key",
+  "NavigationProperty",
+  "EntityContainer",
+  "Annotation",
+];
+
+const TABLES_TO_IGNORE: string[] = [
+  "EntityContainer",
+  "EnumType",
+  "Annotation",
+];
+
+const TableContainer: React.FunctionComponent<Props> = ({
+  arg,
+}): JSX.Element => {
+  const Documentation: Child[] = [];
+  const Rest: Child[] = [];
+  arg.forEach((elem: Child) => {
     if (elem.name === "Annotations") {
       Documentation.push(elem);
     } else {
@@ -21,25 +40,17 @@ const TableContainer = ({ arg }: { arg: Children[] }): JSX.Element => {
         <ServiceDocumentationTable data={Documentation} />
       )}
       {Rest.map(
-        (data: Children, idx: number): JSX.Element | null => {
+        (data: Child, idx: number): JSX.Element | null => {
           if (!Array.isArray(data.children)) {
             return null;
           }
 
-          if (
-            ["EntityContainer", "EnumType", "Annotation"].includes(data.name)
-          ) {
+          if (TABLES_TO_IGNORE.includes(data.name)) {
             return null;
           }
 
           const filteredData: any[] = data.children.filter(
-            (el: Children) =>
-              ![
-                "Key",
-                "NavigationProperty",
-                "EntityContainer",
-                "Annotation",
-              ].includes(el.name),
+            (el: Child) => !CHILDREN_TO_IGNORE.includes(el.name),
           );
 
           const columnData: string[] = filteredData

@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { Children } from "../../Interfaces";
+import { Child } from "../../types";
 import { makeUnique } from "../utils";
 import SimpleTable from "./SimpleTable";
-const CollapsibleAnnotation = ({ data }: { data: Children }): JSX.Element => {
+
+interface Props {
+  data: Child;
+}
+
+const CollapsibleAnnotation: React.FunctionComponent<Props> = ({
+  data,
+}): JSX.Element => {
   const headers = data.children
-    .map((child: Children) => child.name)
+    .map((child: Child) => child.name)
     .filter(makeUnique);
 
   const [show, useShow] = useState<boolean>(false);
+
   return (
     <table>
       <thead>
@@ -25,8 +33,8 @@ const CollapsibleAnnotation = ({ data }: { data: Children }): JSX.Element => {
           <tr>
             <td>
               <SimpleTable
-                title={"Text"}
-                data={data.children.map((elem: Children) => elem.value)}
+                title="Text"
+                data={data.children.map((elem: Child) => elem.value)}
               />
             </td>
           </tr>

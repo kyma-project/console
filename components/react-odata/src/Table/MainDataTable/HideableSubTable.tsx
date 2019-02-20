@@ -1,44 +1,40 @@
-import React from 'react';
-import { Children } from '../../Interfaces';
-import { makeUnique } from '../utils';
-import styled from 'styled-components';
+import React from "react";
+import { Child } from "../../types";
+import { makeUnique } from "../utils";
+import { StyledTable, LeftAlignedHeader } from "../styled/styled";
 
-const StyledTable = styled.table`
-  background-color: #eee;
-`;
+interface Props {
+  data: Child;
+}
 
-const HideableSubTable = ({ data }: { data: Children }) => {
+const HideableSubTable: React.FunctionComponent<Props> = ({ data }) => {
   const filteredHeaders = data.children
-    .flatMap((elem: any) => {
-      return [
-        ...Object.keys(elem.attributes),
-        ...elem.children.map((child: Children) => child.name),
-      ];
-    })
+    .flatMap((elem: any) => [
+      ...Object.keys(elem.attributes),
+      ...elem.children.map((child: Child) => child.name),
+    ])
     .filter(makeUnique);
 
   return (
     <StyledTable>
       <thead>
         <tr>
-          {filteredHeaders.map((arg: string) => <td key={arg}>{arg}</td>)}
+          {filteredHeaders.map((arg: string) => (
+            <LeftAlignedHeader key={arg}>{arg}</LeftAlignedHeader>
+          ))}
         </tr>
       </thead>
       <tbody>
-        {data.children.map((elem: Children, index: number) => {
-          return (
-            <tr key={index}>
-              {filteredHeaders.map((el: string) => {
-                return (
-                  <td key={el}>
-                    {elem.attributes[el] ||
-                      (elem.children.length > 0 && elem.children[0].value)}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
+        {data.children.map((elem: Child, index: number) => (
+          <tr key={index}>
+            {filteredHeaders.map((el: string) => (
+              <td key={el}>
+                {elem.attributes[el] ||
+                  (elem.children[0] && elem.children[0].value)}
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </StyledTable>
   );

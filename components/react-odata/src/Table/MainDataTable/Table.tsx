@@ -1,19 +1,21 @@
 import React from "react";
-import { Children } from "../../Interfaces";
+import { Child } from "../../types";
 import { makeUnique } from "../utils";
 import CollapsibleRow from "./CollapsibleRow";
 interface Props {
   columnData: string[];
   title: string;
-  filteredData: Children[];
+  filteredData: Child[];
 }
 
-const Table = (props: Props): JSX.Element => {
-  const { columnData, title, filteredData } = props;
-
+const Table: React.FunctionComponent<Props> = ({
+  columnData,
+  title,
+  filteredData,
+}) => {
   const annotationsData: string[] = filteredData
     .map(
-      (elem: Children) =>
+      (elem: Child) =>
         (elem.children &&
           elem.children.length > 0 &&
           elem.children[0].name !== "Collection" &&
@@ -39,28 +41,23 @@ const Table = (props: Props): JSX.Element => {
         </tr>
       </thead>
       <tbody>
-        {filteredData.map((elem: any, idx: number) => {
-          if (elem.children.length > 0) {
-            return (
-              <CollapsibleRow
-                data={elem}
-                columnHeaders={columnHeaders}
-                key={idx}
-              />
-            );
-          }
-          return (
+        {filteredData.map((elem: any, idx: number) =>
+          elem.children.length > 0 ? (
+            <CollapsibleRow
+              data={elem}
+              columnHeaders={columnHeaders}
+              key={idx}
+            />
+          ) : (
             <tr key={idx}>
-              {columnHeaders.map((row: string, index: number) => {
-                return (
-                  <td key={index}>
-                    {elem.attributes[row] || elem[row.toLowerCase()] || ""}
-                  </td>
-                );
-              })}
+              {columnHeaders.map((row: string, index: number) => (
+                <td key={index}>
+                  {elem.attributes[row] || elem[row.toLowerCase()] || ""}
+                </td>
+              ))}
             </tr>
-          );
-        })}
+          ),
+        )}
       </tbody>
     </table>
   );

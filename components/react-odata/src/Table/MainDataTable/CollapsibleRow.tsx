@@ -1,31 +1,29 @@
-import React, { useState, Fragment } from 'react';
-import { Children } from '../../Interfaces';
-import HideableSubTable from './HideableSubTable';
+import React, { useState } from "react";
+import { Child } from "../../types";
+import HideableSubTable from "./HideableSubTable";
 
-const CollapsibleRow = ({
+interface Props {
+  columnHeaders: string[];
+  data: Child & { [key: string]: string };
+}
+
+const CollapsibleRow: React.FunctionComponent<Props> = ({
   columnHeaders,
   data,
-}: {
-  columnHeaders: string[];
-  data: Children & { [key: string]: string };
 }) => {
   const [show, setShow] = useState<boolean>(false);
   return (
-    <Fragment>
+    <>
       <tr>
-        {columnHeaders.map((row: string, index: number) => {
-          return (
-            <td key={index}>
-              {row === 'Annotation' ? (
-                <button onClick={() => setShow(!show)}>
-                  {show ? '⇧' : '⇩'}
-                </button>
-              ) : (
-                data.attributes[row] || data[row.toLowerCase()] || ''
-              )}
-            </td>
-          );
-        })}
+        {columnHeaders.map((row: string, index: number) => (
+          <td key={index}>
+            {row === "Annotation" ? (
+              <button onClick={() => setShow(!show)}>{show ? "⇧" : "⇩"}</button>
+            ) : (
+              data.attributes[row] || data[row.toLowerCase()] || ""
+            )}
+          </td>
+        ))}
       </tr>
       {show && (
         <tr>
@@ -34,7 +32,7 @@ const CollapsibleRow = ({
           </td>
         </tr>
       )}
-    </Fragment>
+    </>
   );
 };
 

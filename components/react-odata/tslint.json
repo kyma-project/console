@@ -12,7 +12,7 @@
     "curly": true,
     "jsx-no-lambda": false,
     "prefer-const": true,
-    "arrow-return-shorthand": true,
+    "arrow-return-shorthand": [true, "multiline"],
     "no-duplicate-super": true,
     "no-duplicate-imports": true,
     "no-duplicate-switch-case": true,

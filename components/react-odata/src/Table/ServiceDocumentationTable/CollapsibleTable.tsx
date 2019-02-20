@@ -1,19 +1,23 @@
 import React, { Fragment, useState } from "react";
-import styled from "styled-components";
 import CollapsibleAnnotation from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
-import { Children } from "../../Interfaces";
+import { Child } from "../../types";
+import { LeftAlignedHeader, StyledTable } from "./../styled/styled";
+interface Props {
+  data: Child;
+}
 
-const CollapisbleTable = ({ data }: { data: Children }): JSX.Element => {
+const CollapisbleTable: React.FunctionComponent<Props> = ({
+  data,
+}): JSX.Element => {
   const attributesColumn: string[] = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);
 
   const specialData: string[] = data.children
     .map(
-      (elem: Children) =>
-        (elem.children && elem.children.length > 0 && elem.children[0].name) ||
-        "",
+      (elem: Child) =>
+        (elem.children && elem.children[0] && elem.children[0].name) || "",
     )
     .filter((elem: string) => !!elem)
     .filter(makeUnique);
@@ -24,14 +28,14 @@ const CollapisbleTable = ({ data }: { data: Children }): JSX.Element => {
     <StyledTable>
       <thead>
         <tr>
-          {columnHeaders.map((elem: string | false, index: number) => (
-            <StyledHeader key={index}>{elem}</StyledHeader>
+          {columnHeaders.map((elem: string, index: number) => (
+            <LeftAlignedHeader key={index}>{elem}</LeftAlignedHeader>
           ))}
         </tr>
       </thead>
       <tbody>
-        {data.children.map((child: Children, index: number) => {
-          const specialHeader: Children = child.children[0];
+        {data.children.map((child: Child, index: number) => {
+          const specialHeader: Child = child.children[0];
           if (specialHeader && specialHeader.name === "Collection") {
             const [show, setShow] = useState<boolean>(false);
             return (
@@ -78,13 +82,3 @@ const CollapisbleTable = ({ data }: { data: Children }): JSX.Element => {
 };
 
 export default CollapisbleTable;
-
-const StyledTable = styled.table`
-  background-color: #eee;
-  width: 100%;
-  max-width: 100%;
-`;
-
-const StyledHeader = styled.th`
-  text-align: left;
-`;
