@@ -17,8 +17,8 @@ import ODataFile from "./ODataFiles/ODataFav21"; // works // there are errors in
 // import ODataFile from "./ODataFiles/ODataNorthWindV2"; // works
 // import ODataFile from "./ODataFiles/ODataFav3"; // works, but there are certain errors - look at console
 
-import TableContainer from "./Table/TableContainer";
-import { ErrorComponent } from "./components/ErrorComponent";
+import TableContainer from "./components/Table/TableContainer";
+import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
 
 const ODataReact = () => {
   const data = parse.ParseFromString(ODataFile);
