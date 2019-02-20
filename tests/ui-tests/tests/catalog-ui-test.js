@@ -254,6 +254,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       });
 
       expect(catalogHeader).toContain(catalogExpectedHeader);
+
+      console.log('Confirm number of provisioned instances is showed');
+      const numberOfInstances = await catalog.getNumberOfInstancesStatus(
+        frame4
+      );
+      expect(numberOfInstances).toContain('1');
     }
   );
 

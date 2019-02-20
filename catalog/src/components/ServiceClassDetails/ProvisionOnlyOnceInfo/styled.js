@@ -6,8 +6,11 @@ import {
   PanelBody,
 } from '@kyma-project/react-components';
 
-export const ServiceClassDescriptionContentWrapper = styled(Panel)`
+export const ProvisionOnlyOnceInfoContentWrapper = styled(Panel)`
   && {
+    border-left: ${props =>
+      props.color ? '6px solid ' + props.color : 'none'};
+
     ${media.phone`
       grid-column: span 1;
     `};
@@ -24,3 +27,7 @@ export const ContentHeader = styled(PanelHeader)`
 `;
 
 export const ContentDescription = styled(PanelBody)``;
+
+export const Element = styled.div`
+  margin: ${props => (props.margin ? props.margin : '16px 0 0 0')};
+`;

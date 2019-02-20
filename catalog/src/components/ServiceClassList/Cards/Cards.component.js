@@ -22,6 +22,7 @@ const Cards = ({ items, history }) => {
       description={item.description}
       imageUrl={item.imageUrl}
       labels={item.labels}
+      numberOfInstances={item.instances.length}
     />
   ));
 };

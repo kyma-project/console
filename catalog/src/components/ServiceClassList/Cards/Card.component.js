@@ -9,6 +9,9 @@ import {
   CardTop,
   CardHeader,
   CardHeaderContent,
+  CardIndicator,
+  CardIndicatorGeneral,
+  CardIndicatorProvisionOnce,
   CardThumbnail,
   CardImage,
   CardDescription,
@@ -18,7 +21,15 @@ import {
 
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
 
-const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
+const Card = ({
+  title,
+  company,
+  description,
+  imageUrl,
+  numberOfInstances = 0,
+  labels,
+  onClick,
+}) => {
   const itemId = title
     ? title
         .split(' ')
@@ -33,9 +44,22 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
       'This Service Class provisions physical resources inside the cluster.',
     showcase:
       'This Service Class demonstrate a specific functionality. Do not use it on the production.',
+  };
+
+  const tooltipDescription = {
     provisionOnlyOnce:
       'This Service Class can be provisioned only once in a given namespace.',
+    provisionOnlyOnceActive:
+      'This Service Class can be provisioned only once in a given namespace. In this namespace this is already provisioned.',
+    instancesTooltipInfo: 'This Service Class is provisioned',
+    instancesTooltipSingle: 'time.',
+    instancesTooltipPlural: 'times.',
   };
+
+  const isProvisionOnlyOnce =
+    labels &&
+    labels.provisionOnlyOnce &&
+    isStringValueEqualToTrue(labels.provisionOnlyOnce);
 
   return (
     <CardWrapper data-e2e-id="card">
@@ -53,6 +77,45 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
             <CardHeaderContent data-e2e-id="card-title" title={title}>
               {company}
             </CardHeaderContent>
+
+            <CardIndicator>
+              {isProvisionOnlyOnce && (
+                <Tooltip
+                  content={
+                    numberOfInstances > 0
+                      ? tooltipDescription.provisionOnlyOnceActive
+                      : tooltipDescription.provisionOnlyOnce
+                  }
+                >
+                  <CardIndicatorProvisionOnce
+                    data-e2e-id="card-indicator"
+                    provisionOnce
+                    active={numberOfInstances ? 'true' : 'false'}
+                  >
+                    1
+                  </CardIndicatorProvisionOnce>
+                </Tooltip>
+              )}
+              {!isProvisionOnlyOnce &&
+                numberOfInstances > 0 && (
+                  <Tooltip
+                    content={`${
+                      tooltipDescription.instancesTooltipInfo
+                    } ${numberOfInstances} ${
+                      numberOfInstances > 1
+                        ? tooltipDescription.instancesTooltipPlural
+                        : tooltipDescription.instancesTooltipSingle
+                    }`}
+                  >
+                    <CardIndicatorGeneral
+                      data-e2e-id={`instances-provisioned-${itemId}`}
+                      active={numberOfInstances ? 'true' : 'false'}
+                    >
+                      {numberOfInstances}
+                    </CardIndicatorGeneral>
+                  </Tooltip>
+                )}
+            </CardIndicator>
           </CardHeader>
         </CardTop>
 
@@ -63,7 +126,7 @@ const Card = ({ title, company, description, imageUrl, labels, onClick }) => {
             Object.keys(labels).length &&
             Object.keys(labels).map(
               label =>
-                (label === 'local' || label === 'showcase' || label === "provisionOnlyOnce" ? (
+                (label === 'local' || label === 'showcase' ? (
                   isStringValueEqualToTrue(labels[label])
                 ) : (
                   label === 'connected-app' && labels[label]

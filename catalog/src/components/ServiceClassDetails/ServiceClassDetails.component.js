@@ -1,22 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Spinner, Panel, PanelBody } from '@kyma-project/react-components';
+import {
+  Button,
+  Spinner,
+  Panel,
+  PanelBody,
+} from '@kyma-project/react-components';
 
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from './ServiceClassInfo/ServiceClassInfo.component';
 import ServiceClassDescription from './ServiceClassDescription/ServiceClassDescription.component';
+import ProvisionOnlyOnceInfo from './ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 
+import { isStringValueEqualToTrue } from '../../commons/helpers';
+
 import {
   ServiceClassDetailsWrapper,
+  ServiceGridWrapper,
   LeftSideWrapper,
   CenterSideWrapper,
   EmptyList,
 } from './styled';
 
-import { getResourceDisplayName, getDescription, backendModuleExists } from '../../commons/helpers';
+import {
+  getResourceDisplayName,
+  getDescription,
+  backendModuleExists,
+} from '../../commons/helpers';
 
 class ServiceClassDetails extends React.Component {
   static propTypes = {
@@ -35,11 +48,42 @@ class ServiceClassDetails extends React.Component {
 
     const serviceClassDescription = getDescription(serviceClass);
 
-    const modalOpeningComponent = (
-      <Button option="emphasized" data-e2e-id="add-to-env">
-        Add to your Namespace
-      </Button>
-    );
+    const isProvisionOnlyOnce =
+      serviceClass &&
+      serviceClass.labels &&
+      serviceClass.labels.provisionOnlyOnce &&
+      isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
+
+    const buttonText = {
+      provisionOnlyOnce: 'Add once',
+      provisionOnlyOnceActive: 'Added once',
+      standard: 'Add',
+    };
+    const noClassText = "Service Class doesn't exist in this namespace";
+
+    const getModalOpeningComponent = () => {
+      if (isProvisionOnlyOnce && serviceClass && serviceClass.activated) {
+        return (
+          <Button option="emphasized" data-e2e-id="add-to-env" disabled={true}>
+            {buttonText.provisionOnlyOnceActive}
+          </Button>
+        );
+      }
+
+      if (isProvisionOnlyOnce) {
+        return (
+          <Button option="emphasized" data-e2e-id="add-to-env">
+            {buttonText.provisionOnlyOnce}
+          </Button>
+        );
+      }
+
+      return (
+        <Button option="emphasized" data-e2e-id="add-to-env">
+          {buttonText.standard}
+        </Button>
+      );
+    };
 
     if (this.props.serviceClass.loading) {
       return (
@@ -51,7 +95,9 @@ class ServiceClassDetails extends React.Component {
     if (!this.props.serviceClass.loading && !serviceClass) {
       return (
         <EmptyList>
-          <Panel><PanelBody>Service Class doesn't exist in this namespace</PanelBody></Panel>
+          <Panel>
+            <PanelBody>{noClassText}</PanelBody>
+          </Panel>
         </EmptyList>
       );
     }
@@ -68,7 +114,7 @@ class ServiceClassDetails extends React.Component {
             >
               <CreateInstanceModal
                 serviceClass={serviceClass}
-                modalOpeningComponent={modalOpeningComponent}
+                modalOpeningComponent={getModalOpeningComponent()}
                 createServiceInstance={createServiceInstance}
               />
             </ServiceClassToolbar>
@@ -87,17 +133,20 @@ class ServiceClassDetails extends React.Component {
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
-                {serviceClassDescription && (
-                  <ServiceClassDescription
-                    description={serviceClassDescription}
-                  />
-                )}
-                {backendModuleExists("content") ? 
+                <ServiceGridWrapper cols={isProvisionOnlyOnce ? 4 : 1}>
+                  {serviceClassDescription && (
+                    <ServiceClassDescription
+                      description={serviceClassDescription}
+                    />
+                  )}
+                  {isProvisionOnlyOnce && <ProvisionOnlyOnceInfo />}
+                </ServiceGridWrapper>
+                {backendModuleExists('content') ? (
                   <ServiceClassTabs
                     serviceClass={serviceClass}
                     serviceClassLoading={this.props.serviceClass.loading}
                   />
-                : null}
+                ) : null}
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>
           </div>

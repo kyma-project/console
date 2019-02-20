@@ -10,6 +10,9 @@ const serviceClassesQGL = `
   providerDisplayName
   tags
   labels
+  instances {
+    name
+  }
 `;
 
 export const SERVICE_CLASSES_QUERY = gql`

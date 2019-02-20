@@ -16,6 +16,10 @@ const serviceClassQGL = `
   content
   asyncApiSpec
   apiSpec
+  activated
+  instances {
+    name
+  }
 `;
 
 const plansQGL = `

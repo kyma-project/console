@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   Panel,
+  PanelActions,
   PanelHeader,
   PanelBody,
   PanelFooter,
@@ -77,7 +78,11 @@ export const CardImage = styled(Image)`
   }
 `;
 
-export const CardHeader = styled(Tile)``;
+export const CardHeader = styled(Tile)`
+  && {
+    width: 100%;
+  }
+`;
 
 export const CardHeaderContent = styled(TileContent)`
   && {
@@ -90,6 +95,67 @@ export const CardHeaderContent = styled(TileContent)`
       color: rgb(50, 54, 58);
       font-weight: normal;
     }
+  }
+`;
+
+export const CardIndicator = styled(PanelActions)`
+  && {
+    margin: 0;
+    margin-left: 10px;
+    align-self: flex-start;
+    font-family: '72';
+    position: relative;
+  }
+`;
+
+export const CardIndicatorGeneral = styled.div`
+  && {
+    padding: 2px 6px;
+    background-color: ${props =>
+      props.active === 'true' ? '#0a6ed1' : '#eeeeef'};
+    color: ${props => (props.active === 'true' ? '#ffffff' : '#515559')};
+    border-radius: 2px;
+    font-size: 12px;
+  }
+`;
+export const CardIndicatorProvisionOnce = styled(CardIndicatorGeneral)`
+  && {
+    ${props =>
+      props.provisionOnce &&
+      `
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      font-size: 10px;
+      text-align: center;
+      border-radius: 4px;
+
+      :before {
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        font-size:16px;
+        content: '\uE010';
+        font-family: SAP-icons;
+        font-style: normal;
+        font-weight: 400;
+        text-align: center;
+        display: inline-block;
+        text-decoration: inherit;
+        text-transform: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        speak: none;
+        -webkit-transform: scaleY(-1) translate(-50%, 50%);
+        -moz-transform: scaleY(-1) translate(-50%, 50%);
+        -ms-transform: scaleY(-1) translate(-50%, 50%);
+        -o-transform: scaleY(-1) translate(-50%, 50%);
+        transform: scaleY(-1) translate(-50%, 50%);
+        filter: flipv;
+      }
+    `};
   }
 `;
 
