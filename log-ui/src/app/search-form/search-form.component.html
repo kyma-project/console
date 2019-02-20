@@ -122,7 +122,7 @@
       </fd-table-header>
       <fd-table-body>
         <tr *ngFor="let row of stream.entries">
-          <td class="no-word-break">{{row.ts / 1000}}</td>
+          <td class="no-word-break">{{row.ts}}</td>
           <td class="word-break">{{row.line}}</td>
         </tr>
       </fd-table-body>
