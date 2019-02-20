@@ -1,23 +1,23 @@
 import React from "react";
 import { parse } from "./tools/Parser";
-import { Child } from "./types";
+import { Node } from "./types";
 import { mocks } from "./ODataFiles/index";
 
 import TableContainer from "./components/Table/TableContainer";
 import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
 
 const ODataReact = () => {
-  const data = parse.ParseFromString(mocks.ODataFav11);
+  const data = parse.ParseFromString(mocks.ODataFav21);
   const schema = data.getElementsByTagName("Schema");
 
   if (schema.length < 1) {
     return <ErrorComponent />;
   }
 
-  const errors: Child[] = [];
-  const dataForComponent: Child[] = [];
+  const errors: Node[] = [];
+  const dataForComponent: Node[] = [];
 
-  schema[0].children.forEach((elem: Child) => {
+  schema[0].children.forEach((elem: Node) => {
     if (elem.name === "parsererror") {
       errors.push(elem);
     } else {

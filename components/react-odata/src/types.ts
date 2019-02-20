@@ -1,6 +1,6 @@
-export interface Child {
+export interface Node {
   attributes: { [key: string]: string };
   name: string;
   value: string;
-  children: Child[];
+  children: Node[];
 }

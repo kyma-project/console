@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from "react";
 import CollapsibleAnnotation from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
-import { Child } from "../../types";
+import { Node } from "../../../types";
 import { LeftAlignedHeader, StyledTable } from "./../styled/styled";
 interface Props {
-  data: Child;
+  data: Node;
 }
 
 const CollapisbleTable: React.FunctionComponent<Props> = ({
@@ -16,7 +16,7 @@ const CollapisbleTable: React.FunctionComponent<Props> = ({
 
   const specialData: string[] = data.children
     .map(
-      (elem: Child) =>
+      (elem: Node) =>
         (elem.children && elem.children[0] && elem.children[0].name) || "",
     )
     .filter((elem: string) => !!elem)
@@ -34,8 +34,8 @@ const CollapisbleTable: React.FunctionComponent<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {data.children.map((child: Child, index: number) => {
-          const specialHeader: Child = child.children[0];
+        {data.children.map((child: Node, index: number) => {
+          const specialHeader: Node = child.children[0];
           if (specialHeader && specialHeader.name === "Collection") {
             const [show, setShow] = useState<boolean>(false);
             return (

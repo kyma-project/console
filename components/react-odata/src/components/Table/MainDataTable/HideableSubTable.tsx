@@ -1,17 +1,17 @@
 import React from "react";
-import { Child } from "../../types";
+import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import { StyledTable, LeftAlignedHeader } from "../styled/styled";
 
 interface Props {
-  data: Child;
+  data: Node;
 }
 
 const HideableSubTable: React.FunctionComponent<Props> = ({ data }) => {
   const filteredHeaders = data.children
     .flatMap((elem: any) => [
       ...Object.keys(elem.attributes),
-      ...elem.children.map((child: Child) => child.name),
+      ...elem.children.map((child: Node) => child.name),
     ])
     .filter(makeUnique);
 
@@ -25,7 +25,7 @@ const HideableSubTable: React.FunctionComponent<Props> = ({ data }) => {
         </tr>
       </thead>
       <tbody>
-        {data.children.map((elem: Child, index: number) => (
+        {data.children.map((elem: Node, index: number) => (
           <tr key={index}>
             {filteredHeaders.map((el: string) => (
               <td key={el}>

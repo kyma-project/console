@@ -41,4 +41,4 @@ tbody > tr:nth-child(odd){
 }
 `;
 
-export default GlobalStyle;
+export { GlobalStyle };

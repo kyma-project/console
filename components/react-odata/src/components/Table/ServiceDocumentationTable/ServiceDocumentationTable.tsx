@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import CollapsibleTable from "./CollapsibleTable";
-import { Child } from "../../types";
+import { Node } from "../../../types";
 interface Props {
-  data: Child[];
+  data: Node[];
 }
 const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
   data,
@@ -23,7 +23,7 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {data.map((value: Child, index: number) => {
+        {data.map((value: Node, index: number) => {
           const [show, setShow] = useState<boolean>(false);
           return (
             <Fragment key={index}>

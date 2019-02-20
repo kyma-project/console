@@ -1,7 +1,7 @@
 import React from "react";
-import { Child } from "../types";
+import { Node } from "../../types";
 interface Props {
-  error?: Child;
+  error?: Node;
 }
 
 const ErrorComponent: React.FunctionComponent<Props> = ({
@@ -10,7 +10,7 @@ const ErrorComponent: React.FunctionComponent<Props> = ({
   if (!error) {
     return <p>{"No schema in data / format of the data is wrong"}</p>;
   }
-  const data = error.children.map((elem: Child) => elem.value);
+  const data = error.children.map((elem: Node) => elem.value);
   return (
     <div>
       <h3>{data[0]}</h3>

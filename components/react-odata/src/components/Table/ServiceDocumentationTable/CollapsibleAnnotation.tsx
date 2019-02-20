@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { Child } from "../../types";
+import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import SimpleTable from "./SimpleTable";
 
 interface Props {
-  data: Child;
+  data: Node;
 }
 
 const CollapsibleAnnotation: React.FunctionComponent<Props> = ({
   data,
 }): JSX.Element => {
   const headers = data.children
-    .map((child: Child) => child.name)
+    .map((child: Node) => child.name)
     .filter(makeUnique);
 
   const [show, useShow] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const CollapsibleAnnotation: React.FunctionComponent<Props> = ({
             <td>
               <SimpleTable
                 title="Text"
-                data={data.children.map((elem: Child) => elem.value)}
+                data={data.children.map((elem: Node) => elem.value)}
               />
             </td>
           </tr>

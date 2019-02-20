@@ -1,11 +1,11 @@
 import React from "react";
-import { Child } from "../../types";
+import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import CollapsibleRow from "./CollapsibleRow";
 interface Props {
   columnData: string[];
   title: string;
-  filteredData: Child[];
+  filteredData: Node[];
 }
 
 const Table: React.FunctionComponent<Props> = ({
@@ -15,7 +15,7 @@ const Table: React.FunctionComponent<Props> = ({
 }) => {
   const annotationsData: string[] = filteredData
     .map(
-      (elem: Child) =>
+      (elem: Node) =>
         (elem.children &&
           elem.children.length > 0 &&
           elem.children[0].name !== "Collection" &&

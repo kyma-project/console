@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Child } from "../../types";
+import { Node } from "../../../types";
 import HideableSubTable from "./HideableSubTable";
 
 interface Props {
   columnHeaders: string[];
-  data: Child & { [key: string]: string };
+  data: Node & { [key: string]: string };
 }
 
 const CollapsibleRow: React.FunctionComponent<Props> = ({

@@ -1,11 +1,11 @@
 import React from "react";
 import ServiceDocumentationTable from "./ServiceDocumentationTable/ServiceDocumentationTable";
-import { Child } from "../types";
+import { Node } from "../../types";
 import { makeUnique } from "./utils";
 import Table from "./MainDataTable/Table";
 
 interface Props {
-  arg: Child[];
+  arg: Node[];
 }
 
 const CHILDREN_TO_IGNORE: string[] = [
@@ -24,9 +24,9 @@ const TABLES_TO_IGNORE: string[] = [
 const TableContainer: React.FunctionComponent<Props> = ({
   arg,
 }): JSX.Element => {
-  const Documentation: Child[] = [];
-  const Rest: Child[] = [];
-  arg.forEach((elem: Child) => {
+  const Documentation: Node[] = [];
+  const Rest: Node[] = [];
+  arg.forEach((elem: Node) => {
     if (elem.name === "Annotations") {
       Documentation.push(elem);
     } else {
@@ -40,7 +40,7 @@ const TableContainer: React.FunctionComponent<Props> = ({
         <ServiceDocumentationTable data={Documentation} />
       )}
       {Rest.map(
-        (data: Child, idx: number): JSX.Element | null => {
+        (data: Node, idx: number): JSX.Element | null => {
           if (!Array.isArray(data.children)) {
             return null;
           }
@@ -50,7 +50,7 @@ const TableContainer: React.FunctionComponent<Props> = ({
           }
 
           const filteredData: any[] = data.children.filter(
-            (el: Child) => !CHILDREN_TO_IGNORE.includes(el.name),
+            (el: Node) => !CHILDREN_TO_IGNORE.includes(el.name),
           );
 
           const columnData: string[] = filteredData
