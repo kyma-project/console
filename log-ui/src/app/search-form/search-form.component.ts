@@ -23,7 +23,7 @@ import { observe } from 'rxjs-observe';
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
-  styleUrls: ['./search-form.component.css'],
+  styleUrls: ['./search-form.component.scss'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
   fromValues = ['5m', '15m', '1h', '12h', '1d', '3d', '7d'];
@@ -122,7 +122,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
           console.error(err);
           this.error = err.error;
         },
-        () => console.log('done...'),
+        () => {},
       );
   }
 
@@ -135,7 +135,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
         console.error(err);
         this.error = err.error;
       },
-      () => console.log('done...'),
+      () => {},
     );
   }
 
@@ -152,7 +152,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
           console.error(err);
           this.error = err.error;
         },
-        () => console.log('done...'),
+        () => {},
       );
   }
 

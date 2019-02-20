@@ -1,7 +1,6 @@
-<div class="col-md-12 offset-md-3 panel panel-default">
-  <div class="panel-body">
-
-
+<div class="fd-section">
+<div class="fd-panel">
+  <div class="fd-panel__body">
     <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="global_errors" *ngIf="error">
       <button class="fd-alert__close" aria-controls="global_errors" aria-label="Close" (click)="error = null"></button>
       {{ error }}
@@ -94,21 +93,19 @@
       </fieldset>
       <div fd-form-item>
         Selected Labels:
-        <span class="fd-token" role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">{{label.key}}={{label.value}}</span>
+        <span class="fd-token y-fd-token" role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">{{label.key}}={{label.value}}</span>
       </div>
 
     </form>
   </div>
 </div>
 
-<div class="panel panel-default" *ngFor="let stream of searchResult.streams">
-  <div class="panel-footer" >
+<div class="fd-panel" *ngFor="let stream of searchResult.streams">
+  <div class="fd-panel__filters" >
     Available labels for stream:
-    <span class="fd-token" role="button" *ngFor="let label of stream.availableLabels" (click)="addLabel($event.target.outerText)">{{label}}</span>
-
-
+    <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button" *ngFor="let label of stream.availableLabels" (click)="addLabel($event.target.outerText)">{{label}}</div>
   </div>
-  <div class="panel-body">
+  <div class="fd-panel__body">
     <fd-table style="table-layout: fixed">
       <fd-table-header>
         <th>Timestamp</th>
@@ -122,4 +119,5 @@
       </fd-table-body>
     </fd-table>
   </div>
+</div>
 </div>

@@ -20,7 +20,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.css",
+              "src/styles.scss",
               "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
             ],
             "scripts": []
@@ -76,7 +76,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "styles": ["src/styles.css"],
+            "styles": ["src/styles.scss"],
             "scripts": [],
             "assets": ["src/favicon.ico", "src/assets"]
           }
