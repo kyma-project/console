@@ -171,7 +171,6 @@ function getNodes(context) {
       keepSelectedForChildren: true,
       children: [
         {
-
           pathSegment: 'details',
           children: [
             {
@@ -217,7 +216,7 @@ function getUiEntities(entityname, environment, placements) {
   if (!window[cacheName]) {
     window[cacheName] = {};
   }
- 
+
   const cache = window[cacheName];
   const cacheKey = fetchUrl + (placements || '');
   const fromCache = cache[cacheKey];
@@ -243,9 +242,11 @@ function getUiEntities(entityname, environment, placements) {
                   : node.viewUrl,
                 hideFromNav: node.showInNavigation === false || undefined,
                 order: node.order,
-                context: node.settings ? { ...node.settings, ...node.context || undefined } : undefined
-              }
-              
+                context: node.settings
+                  ? { ...node.settings, ...(node.context || undefined) }
+                  : undefined
+              };
+
               if (node.externalLink) {
                 delete n.viewUrl;
                 delete n.pathSegment;
@@ -254,7 +255,7 @@ function getUiEntities(entityname, environment, placements) {
                   sameWindow: false
                 };
               }
-              
+
               processNodeForLocalDevelopment(n);
               return n;
             }
@@ -303,7 +304,6 @@ function getUiEntities(entityname, environment, placements) {
             function buildNodeWithChildren(specNode, spec) {
               var parentNodeSegments = specNode.navigationPath.split('/');
               var children = getDirectChildren(parentNodeSegments, spec);
-             // console.warn(' buildNodeWithChildren(specNode, spec) ', specNode,spec);
               var node = buildNode(specNode, spec);
               if (children.length) {
                 node.children = children;
@@ -314,7 +314,7 @@ function getUiEntities(entityname, environment, placements) {
             function getDirectChildren(parentNodeSegments, spec) {
               // process only direct children
               return spec.navigationNodes
-                .filter(function (node) {
+                .filter(function(node) {
                   var currentNodeSegments = node.navigationPath.split('/');
                   var isDirectChild =
                     parentNodeSegments.length ===
@@ -331,7 +331,6 @@ function getUiEntities(entityname, environment, placements) {
             }
 
             function buildTree(name, spec) {
-             
               return spec.navigationNodes
                 .filter(function getTopLevelNodes(node) {
                   var segments = node.navigationPath.split('/');
@@ -341,7 +340,6 @@ function getUiEntities(entityname, environment, placements) {
                   return buildNodeWithChildren(node, spec, name);
                 })
                 .map(function addSettingsForTopLevelNodes(node) {
-                 // console.warn('addSettingsForTopLevelNodes(node)', node);
                   if (spec.category) {
                     node.category = spec.category;
                   }
@@ -353,7 +351,7 @@ function getUiEntities(entityname, environment, placements) {
                     node.viewGroup = node.navigationContext;
                     node.keepSelectedForChildren = true;
                   }
-             
+
                   return node;
                 });
             }
@@ -610,7 +608,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
             children: function() {
               return getUiEntities('clustermicrofrontends', undefined, [
                 'cluster'
-              ]).then(function (cmf) {
+              ]).then(function(cmf) {
                 var staticNodes = [
                   {
                     pathSegment: 'workspace',
@@ -679,7 +677,6 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                   }
                 ];
                 if (cmf.length > 0) {
-      
                   cmf.forEach(clusterMF => {
                     clusterMF[0].adminOnly = true;
                   });
