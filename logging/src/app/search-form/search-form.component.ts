@@ -141,6 +141,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   loadLabelValues(selectedLabel: string) {
     this.model.label = selectedLabel;
+    if (!this.model.label) {
+      return;
+    }
     this.searchService
       .getLabelValues(selectedLabel)
       .pipe()
