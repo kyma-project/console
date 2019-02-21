@@ -30,6 +30,9 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     }
   ];
   private boundEnvironments = [];
+  private contextListenerId: string;
+
+  private isReadOnly = false;
 
   entryEventHandler = this.getEntryEventHandler();
   @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
@@ -71,6 +74,13 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
         this.getRemoteEnv();
       }
     });
+
+    this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
+      if (typeof context.readOnly !== 'undefined')
+      {
+        this.isReadOnly = context.readOnly;
+      }
+    });
   }
 
   public getRemoteEnv() {
@@ -99,6 +109,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    LuigiClient.removeContextUpdateListener(this.contextListenerId);
   }
 
   openEditBindingsModal() {
