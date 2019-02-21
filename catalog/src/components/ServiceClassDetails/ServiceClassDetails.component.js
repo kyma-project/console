@@ -61,29 +61,19 @@ class ServiceClassDetails extends React.Component {
     };
     const noClassText = "Service Class doesn't exist in this namespace";
 
-    const getModalOpeningComponent = () => {
-      if (isProvisionOnlyOnce && serviceClass && serviceClass.activated) {
-        return (
-          <Button option="emphasized" data-e2e-id="add-to-env" disabled={true}>
-            {buttonText.provisionOnlyOnceActive}
-          </Button>
-        );
-      }
-
-      if (isProvisionOnlyOnce) {
-        return (
-          <Button option="emphasized" data-e2e-id="add-to-env">
-            {buttonText.provisionOnlyOnce}
-          </Button>
-        );
-      }
-
-      return (
-        <Button option="emphasized" data-e2e-id="add-to-env">
-          {buttonText.standard}
-        </Button>
-      );
-    };
+    const modalOpeningComponent = (
+      <Button
+        option="emphasized"
+        data-e2e-id="add-to-env"
+        disabled={Boolean(isProvisionOnlyOnce && serviceClass.activated)}
+      >
+        {isProvisionOnlyOnce
+          ? serviceClass.activated
+            ? buttonText.provisionOnlyOnceActive
+            : buttonText.provisionOnlyOnce
+          : buttonText.standard}
+      </Button>
+    );
 
     if (this.props.serviceClass.loading) {
       return (
@@ -114,7 +104,7 @@ class ServiceClassDetails extends React.Component {
             >
               <CreateInstanceModal
                 serviceClass={serviceClass}
-                modalOpeningComponent={getModalOpeningComponent()}
+                modalOpeningComponent={modalOpeningComponent}
                 createServiceInstance={createServiceInstance}
               />
             </ServiceClassToolbar>

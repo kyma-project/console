@@ -116,10 +116,7 @@ export const CardIndicatorGeneral = styled.div`
     color: ${props => (props.active === 'true' ? '#ffffff' : '#515559')};
     border-radius: 2px;
     font-size: 12px;
-  }
-`;
-export const CardIndicatorProvisionOnce = styled(CardIndicatorGeneral)`
-  && {
+
     ${props =>
       props.provisionOnce &&
       `
@@ -142,16 +139,8 @@ export const CardIndicatorProvisionOnce = styled(CardIndicatorGeneral)`
         font-weight: 400;
         text-align: center;
         display: inline-block;
-        text-decoration: inherit;
         text-transform: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         speak: none;
-        -webkit-transform: scaleY(-1) translate(-50%, 50%);
-        -moz-transform: scaleY(-1) translate(-50%, 50%);
-        -ms-transform: scaleY(-1) translate(-50%, 50%);
-        -o-transform: scaleY(-1) translate(-50%, 50%);
         transform: scaleY(-1) translate(-50%, 50%);
         filter: flipv;
       }

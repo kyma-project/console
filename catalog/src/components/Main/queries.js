@@ -6,7 +6,6 @@ const serviceClassesQGL = `
   displayName
   externalName
   imageUrl
-  activated
   providerDisplayName
   tags
   labels
@@ -16,17 +15,17 @@ export const SERVICE_CLASSES_QUERY = gql`
   query serviceClasses($namespace: String!) {
     clusterServiceClasses {
       ${serviceClassesQGL}
-
-  instances(namespace: $namespace) {
-    name
-  }
+      instances(namespace: $namespace) {
+        name
+      }
+      activated(namespace: $namespace)
     }
     serviceClasses(namespace: $namespace) {
       ${serviceClassesQGL}
-
-  instances {
-    name
-  }
+      instances {
+        name
+      }
+      activated
     }
   }
 `;

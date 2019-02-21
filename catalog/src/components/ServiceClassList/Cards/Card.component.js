@@ -11,7 +11,6 @@ import {
   CardHeaderContent,
   CardIndicator,
   CardIndicatorGeneral,
-  CardIndicatorProvisionOnce,
   CardThumbnail,
   CardImage,
   CardDescription,
@@ -87,13 +86,13 @@ const Card = ({
                       : tooltipDescription.provisionOnlyOnce
                   }
                 >
-                  <CardIndicatorProvisionOnce
+                  <CardIndicatorGeneral
                     data-e2e-id="card-indicator"
                     provisionOnce
                     active={numberOfInstances ? 'true' : 'false'}
                   >
                     1
-                  </CardIndicatorProvisionOnce>
+                  </CardIndicatorGeneral>
                 </Tooltip>
               )}
               {!isProvisionOnlyOnce &&
