@@ -8,11 +8,10 @@
     </div>
   </div>
   <div class="fd-panel__body">
-    <div class="fd-alert fd-alert--error fd-alert--dismissible" role="alert" id="global_errors" *ngIf="error">
+    <div class="fd-alert fd-alert--error fd-alert--dismissible fd-has-margin-bottom-xs" role="alert" id="global_errors" *ngIf="error">
       <button class="fd-alert__close" aria-controls="global_errors" aria-label="Close" (click)="error = null"></button>
       {{ error }}
     </div>
-    <br>
     <form #searchData="ngForm" (ngSubmit)="onSubmit()">
 
 
@@ -87,15 +86,13 @@
 
         <div fd-form-item [isInline]="true">
           <button fd-button type="submit" [glyph]="'search'" [disabled]="!searchData.form.valid" >Search</button>
+          <span class="fd-has-margin-left-s">Query Examples</span>
+          <span class="fd-inline-help fd-has-margin-left-xxs">
+              <span class="fd-inline-help__content fd-inline-help__content--bottom-center">
+                  Searching keyword 'error' for a service with name my-service use '{{'{'}}app="my-service"} error'.
+              </span>
+          </span>
         </div>
-
-        Query Examples
-
-        <span class="fd-inline-help">
-            <span class="fd-inline-help__content fd-inline-help__content--bottom-center">
-                Searching keyword 'error' for a service with name my-service use '{{'{'}}app="my-service"} error'.
-            </span>
-        </span>
 
       </fieldset>
       <div fd-form-item>
