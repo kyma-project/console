@@ -1,7 +1,9 @@
 {
   "defaultSeverity": "error",
+  "rulesDirectory": ["tslint-plugin-prettier"],
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "rules": {
+    "prettier": true,
     "interface-name": [true, "never-prefix"],
     "no-console": { "severity": "warning" },
     "member-access": [true, "no-public"],
@@ -23,6 +25,8 @@
     "no-debugger": true,
     "radix": true
   },
-  "linterOptions": { "exclude": ["src/serviceWorker.ts"] },
+  "linterOptions": {
+    "exclude": ["src/serviceWorker.ts", "node_modules/**/*.ts"]
+  },
   "jsRules": {}
 }

@@ -4,9 +4,7 @@ interface Props {
   error?: Node;
 }
 
-const ErrorComponent: React.FunctionComponent<Props> = ({
-  error,
-}): JSX.Element => {
+const ErrorComponent: React.FunctionComponent<Props> = ({ error }) => {
   if (!error) {
     return <p>{"No schema in data / format of the data is wrong"}</p>;
   }

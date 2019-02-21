@@ -4,10 +4,7 @@ interface Props {
   data: string[];
 }
 
-const SimpleTable: React.FunctionComponent<Props> = ({
-  title,
-  data,
-}): JSX.Element => (
+const SimpleTable: React.FunctionComponent<Props> = ({ title, data }) => (
   <table>
     <thead>
       <tr>

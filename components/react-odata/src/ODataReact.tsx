@@ -6,8 +6,8 @@ import { mocks } from "./ODataFiles/index";
 import TableContainer from "./components/Table/TableContainer";
 import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
 
-const ODataReact = () => {
-  const data = parse.ParseFromString(mocks.ODataFav21);
+const ODataReact: React.FunctionComponent = () => {
+  const data = parse.parseFromString(mocks.ODataFav21);
   const schema = data.getElementsByTagName("Schema");
 
   if (schema.length < 1) {

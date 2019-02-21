@@ -6,12 +6,8 @@ interface Props {
 }
 const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
   data,
-}): JSX.Element | null => {
-  if (!Array.isArray(data)) {
-    return null;
-  }
-
-  return (
+}) => {
+  return !Array.isArray(data) ? null : (
     <table>
       <thead>
         <tr>

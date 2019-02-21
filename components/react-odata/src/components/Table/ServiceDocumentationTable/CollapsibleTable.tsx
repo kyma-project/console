@@ -7,9 +7,7 @@ interface Props {
   data: Node;
 }
 
-const CollapisbleTable: React.FunctionComponent<Props> = ({
-  data,
-}): JSX.Element => {
+const CollapisbleTable: React.FunctionComponent<Props> = ({ data }) => {
   const attributesColumn: string[] = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);

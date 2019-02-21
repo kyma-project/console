@@ -7,9 +7,7 @@ interface Props {
   data: Node;
 }
 
-const CollapsibleAnnotation: React.FunctionComponent<Props> = ({
-  data,
-}): JSX.Element => {
+const CollapsibleAnnotation: React.FunctionComponent<Props> = ({ data }) => {
   const headers = data.children
     .map((child: Node) => child.name)
     .filter(makeUnique);
