@@ -1,5 +1,10 @@
 import { RemoteEnvironment } from '../../../shared/datamodel/k8s/kyma-api/remote-environment';
-import { Component, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
 import { RemoteEnvironmentsEntryRendererComponent } from './remote-environments-entry-renderer/remote-environments-entry-renderer.component';
@@ -19,7 +24,9 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./remote-environments.component.scss'],
   host: { class: 'sf-content' }
 })
-export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent implements OnDestroy {
+export class RemoteEnvironmentsComponent
+  extends AbstractKubernetesElementListComponent
+  implements OnDestroy {
   title = 'Applications';
   emptyListText = 'It looks like you don’t have any Applications yet.';
   createNewElementText = 'Add Application';
@@ -30,7 +37,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
   ariaHidden = true;
   public hideFilter = true;
   private contextListenerId: string;
-  private isReadOnly = false;
+  public isReadOnly = false;
 
   @ViewChild('createModal') createModal: CreateRemoteEnvironmentModalComponent;
 
@@ -42,7 +49,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
-  
+
     const query = `query {
       applications{
         name
@@ -64,8 +71,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     this.filterState = { filters: [new Filter('name', '', false)] };
 
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
-      if (typeof context.readOnly !== 'undefined')
-      {
+      if (typeof context.readOnly !== 'undefined') {
         this.isReadOnly = context.readOnly;
       }
     });
