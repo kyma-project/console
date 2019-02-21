@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import CollapsibleAnnotation from "./CollapsibleAnnotation";
+import { CollapsibleAnnotation } from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
 import { Node } from "../../../types";
 import { LeftAlignedHeader, StyledTable } from "./../styled/styled";
@@ -7,7 +7,7 @@ interface Props {
   data: Node;
 }
 
-const CollapisbleTable: React.FunctionComponent<Props> = ({ data }) => {
+const CollapsibleTable: React.FunctionComponent<Props> = ({ data }) => {
   const attributesColumn: string[] = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);
@@ -79,4 +79,4 @@ const CollapisbleTable: React.FunctionComponent<Props> = ({ data }) => {
   );
 };
 
-export default CollapisbleTable;
+export { CollapsibleTable };

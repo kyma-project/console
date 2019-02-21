@@ -3,11 +3,11 @@ import { parse } from "./tools/Parser";
 import { Node } from "./types";
 import { mocks } from "./ODataFiles/index";
 
-import TableContainer from "./components/Table/TableContainer";
+import { TableContainer } from "./components/Table/TableContainer";
 import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
 
 const ODataReact: React.FunctionComponent = () => {
-  const data = parse.parseFromString(mocks.ODataFav21);
+  const data = parse.parseFromString(mocks.ODataFav11);
   const schema = data.getElementsByTagName("Schema");
 
   if (schema.length < 1) {
@@ -33,4 +33,4 @@ const ODataReact: React.FunctionComponent = () => {
   );
 };
 
-export default ODataReact;
+export { ODataReact };

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import CollapsibleTable from "./CollapsibleTable";
+import { CollapsibleTable } from "./CollapsibleTable";
 import { Node } from "../../../types";
 interface Props {
   data: Node[];
@@ -43,4 +43,4 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({ data }) =>
     </table>
   );
 
-export default ServiceDocumentationTable;
+export { ServiceDocumentationTable };

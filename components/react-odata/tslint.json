@@ -21,10 +21,17 @@
     "triple-equals": true,
     "use-isnan": true,
     "no-debugger": true,
-    "radix": true
+    "radix": true,
+    "no-default-export": true
   },
   "linterOptions": {
-    "exclude": ["src/serviceWorker.ts", "node_modules/**/*.ts"]
+    "exclude": [
+      "src/serviceWorker.ts",
+      "**/*.json",
+      "node_modules/**/*.ts",
+      "src/ODataFiles/*.ts", // remove this later
+      "src/ODataReact.tsx"
+    ]
   },
   "jsRules": {}
 }

@@ -40,4 +40,4 @@ const HideableSubTable: React.FunctionComponent<Props> = ({ data }) => {
   );
 };
 
-export default HideableSubTable;
+export { HideableSubTable };

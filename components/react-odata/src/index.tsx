@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ODataReact from "./ODataReact";
+import { ODataReact } from "./ODataReact";
 import * as serviceWorker from "./serviceWorker";
 import { GlobalStyle } from "./globalStyle";
 

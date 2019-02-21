@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
-import SimpleTable from "./SimpleTable";
+import { SimpleTable } from "./SimpleTable";
 
 interface Props {
   data: Node;
@@ -42,4 +42,4 @@ const CollapsibleAnnotation: React.FunctionComponent<Props> = ({ data }) => {
   );
 };
 
-export default CollapsibleAnnotation;
+export { CollapsibleAnnotation };

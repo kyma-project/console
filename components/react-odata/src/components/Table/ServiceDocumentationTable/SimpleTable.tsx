@@ -21,4 +21,4 @@ const SimpleTable: React.FunctionComponent<Props> = ({ title, data }) => (
   </table>
 );
 
-export default SimpleTable;
+export { SimpleTable };

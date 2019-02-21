@@ -1,7 +1,7 @@
 import React from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
-import CollapsibleRow from "./CollapsibleRow";
+import { CollapsibleRow } from "./CollapsibleRow";
 interface Props {
   columnData: string[];
   title: string;
@@ -63,4 +63,4 @@ const Table: React.FunctionComponent<Props> = ({
   );
 };
 
-export default Table;
+export { Table };

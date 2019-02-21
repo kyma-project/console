@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Node } from "../../../types";
-import HideableSubTable from "./HideableSubTable";
+import { HideableSubTable } from "./HideableSubTable";
 
 interface Props {
   columnHeaders: string[];
@@ -36,4 +36,4 @@ const CollapsibleRow: React.FunctionComponent<Props> = ({
   );
 };
 
-export default CollapsibleRow;
+export { CollapsibleRow };

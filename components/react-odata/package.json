@@ -45,6 +45,7 @@
     "linters": {
       "**/*.{js,jsx,json,css,html,yaml}": [
         "prettier --write",
+        "npm run lint-fix",
         "git add"
       ],
       "**/*.{ts,tsx}": [

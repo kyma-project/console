@@ -1,8 +1,8 @@
 import React from "react";
-import ServiceDocumentationTable from "./ServiceDocumentationTable/ServiceDocumentationTable";
+import { ServiceDocumentationTable } from "./ServiceDocumentationTable/ServiceDocumentationTable";
 import { Node } from "../../types";
 import { makeUnique } from "./utils";
-import Table from "./MainDataTable/Table";
+import { Table } from "./MainDataTable/Table";
 
 interface Props {
   arg: Node[];
@@ -75,4 +75,4 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
   );
 };
 
-export default TableContainer;
+export { TableContainer };
