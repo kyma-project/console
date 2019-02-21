@@ -1,5 +1,5 @@
 import { RemoteEnvironment } from '../../../shared/datamodel/k8s/kyma-api/remote-environment';
-import { Component, ChangeDetectorRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
 import { RemoteEnvironmentsEntryRendererComponent } from './remote-environments-entry-renderer/remote-environments-entry-renderer.component';
@@ -19,7 +19,7 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./remote-environments.component.scss'],
   host: { class: 'sf-content' }
 })
-export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent implements OnInit,OnDestroy {
+export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent implements OnDestroy {
   title = 'Applications';
   emptyListText = 'It looks like you don’t have any Applications yet.';
   createNewElementText = 'Add Application';
@@ -42,7 +42,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
-
+  
     const query = `query {
       applications{
         name
@@ -62,6 +62,13 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     this.entryRenderer = RemoteEnvironmentsEntryRendererComponent;
     this.headerRenderer = RemoteEnvironmentsHeaderRendererComponent;
     this.filterState = { filters: [new Filter('name', '', false)] };
+
+    this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
+      if (typeof context.readOnly !== 'undefined')
+      {
+        this.isReadOnly = context.readOnly;
+      }
+    });
   }
 
   getResourceUrl(kind: string, entry: any): string {
@@ -81,16 +88,7 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     this.createModal.show();
   }
 
-  ngOnInit() {
-    // this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
-    //   if (typeof context.readOnly !== 'undefined')
-    //   {
-    //     this.isReadOnly = context.readOnly;
-    //   }
-    // });
-  }
-
   ngOnDestroy() {
-   // LuigiClient.removeContextUpdateListener(this.contextListenerId);
+    LuigiClient.removeContextUpdateListener(this.contextListenerId);
   }
 }
