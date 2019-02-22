@@ -78,7 +78,7 @@ const Card = ({
             </CardHeaderContent>
 
             <CardIndicator>
-              {isProvisionOnlyOnce && (
+              {isProvisionedOnlyOnce && (
                 <Tooltip
                   content={
                     numberOfInstances > 0
@@ -95,7 +95,7 @@ const Card = ({
                   </CardIndicatorGeneral>
                 </Tooltip>
               )}
-              {!isProvisionOnlyOnce &&
+              {!isProvisionedOnlyOnce &&
                 numberOfInstances > 0 && (
                   <Tooltip
                     content={`${

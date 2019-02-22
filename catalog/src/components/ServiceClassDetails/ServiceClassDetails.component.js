@@ -48,7 +48,7 @@ class ServiceClassDetails extends React.Component {
 
     const serviceClassDescription = getDescription(serviceClass);
 
-    const isProvisionOnlyOnce =
+    const isProvisionedOnlyOnce =
       serviceClass &&
       serviceClass.labels &&
       serviceClass.labels.provisionOnlyOnce &&
@@ -65,9 +65,9 @@ class ServiceClassDetails extends React.Component {
       <Button
         option="emphasized"
         data-e2e-id="add-to-env"
-        disabled={Boolean(isProvisionOnlyOnce && serviceClass.activated)}
+        disabled={Boolean(isProvisionedOnlyOnce && serviceClass.activated)}
       >
-        {isProvisionOnlyOnce
+        {isProvisionedOnlyOnce
           ? serviceClass.activated
             ? buttonText.provisionOnlyOnceActive
             : buttonText.provisionOnlyOnce
@@ -123,13 +123,13 @@ class ServiceClassDetails extends React.Component {
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
-                <ServiceGridWrapper cols={isProvisionOnlyOnce ? 4 : 1}>
+                <ServiceGridWrapper cols={isProvisionedOnlyOnce ? 4 : 1}>
                   {serviceClassDescription && (
                     <ServiceClassDescription
                       description={serviceClassDescription}
                     />
                   )}
-                  {isProvisionOnlyOnce && <ProvisionOnlyOnceInfo />}
+                  {isProvisionedOnlyOnce && <ProvisionOnlyOnceInfo />}
                 </ServiceGridWrapper>
                 {backendModuleExists('content') ? (
                   <ServiceClassTabs
