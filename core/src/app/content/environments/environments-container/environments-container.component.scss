@@ -18,31 +18,3 @@
     }
   }
 }
-
-.resource-alert {
-  position: fixed;
-  width: 40%;
-  margin: 20px auto 0 auto;
-  z-index: 1;
-  right: 0;
-  left: 0px;
-  text-align: left;
-
-  .close-button {
-    float: right;
-    padding-left: 5px;
-    button {
-      font-size: 1.5rem;
-    }
-  }
-  .link {
-    padding-top: 5px;
-    a {
-      cursor: pointer;
-    }
-  }
-
-  @media (max-width: 768px) {
-    left: 0;
-  }
-}
