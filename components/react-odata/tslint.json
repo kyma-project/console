@@ -12,6 +12,7 @@
     "curly": true,
     "jsx-key": true,
     "jsx-no-lambda": false,
+    "jsx-boolean-value": "never",
     "prefer-const": true,
     "arrow-return-shorthand": [true, "multiline"],
     "no-duplicate-super": true,
