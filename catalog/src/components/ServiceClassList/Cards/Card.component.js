@@ -47,7 +47,7 @@ const Card = ({
 
   const tooltipDescription = {
     provisionOnlyOnce:
-      'This Service Class can be provisioned only once in a given namespace.',
+      'You can provision this Service Class only once in a given Namespace.',
     provisionOnlyOnceActive:
       'This Service Class can be provisioned only once in a given namespace. In this namespace this is already provisioned.',
     instancesTooltipInfo: 'This Service Class is provisioned',
