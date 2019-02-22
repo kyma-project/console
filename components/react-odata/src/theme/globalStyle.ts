@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "./styled-components";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -10,12 +10,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+table {
+  border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
 }
+  code: {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+   
+  
 /* those rules below are temporary (or not)*/
-table,
+/* table,
 th,
 td {
   border: 1px solid black;
@@ -38,7 +46,7 @@ thead > tr >td {
 }
 tbody > tr:nth-child(odd){
   background-color: #4CAAF67C;
-}
+} */
 `;
 
 export { GlobalStyle };

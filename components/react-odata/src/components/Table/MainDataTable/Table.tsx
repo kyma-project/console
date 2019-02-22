@@ -2,6 +2,8 @@ import React from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import { CollapsibleRow } from "./CollapsibleRow";
+import { StyledTable } from "../../styled/styled";
+
 interface Props {
   columnData: string[];
   title: string;
@@ -29,7 +31,7 @@ const Table: React.FunctionComponent<Props> = ({
   );
 
   return (
-    <table>
+    <StyledTable>
       <thead>
         <tr>
           <th colSpan={columnHeaders.length}>{title}</th>
@@ -59,7 +61,7 @@ const Table: React.FunctionComponent<Props> = ({
           ),
         )}
       </tbody>
-    </table>
+    </StyledTable>
   );
 };
 

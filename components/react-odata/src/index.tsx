@@ -2,14 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ODataReact } from "./ODataReact";
 import * as serviceWorker from "./serviceWorker";
-import { GlobalStyle } from "./globalStyle";
+import { ThemeProvider, GlobalStyle } from "./theme/index";
+import { defaultTheme } from "./theme/default";
 
 ReactDOM.render(
-  <>
-    <ODataReact />
-    <GlobalStyle />
-  </>,
-
+  <ThemeProvider theme={defaultTheme}>
+    <>
+      <GlobalStyle />
+      <ODataReact />
+    </>
+  </ThemeProvider>,
   document.getElementById("root"),
 );
 

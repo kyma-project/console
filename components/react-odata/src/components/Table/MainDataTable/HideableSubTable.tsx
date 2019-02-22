@@ -1,7 +1,7 @@
 import React from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
-import { StyledTable, LeftAlignedHeader } from "../styled/styled";
+import { StyledTable, LeftAlignedHeader } from "../../styled/styled";
 
 interface Props {
   data: Node;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Node } from "../../types";
+import { StyledCode } from "../styled/styled";
 interface Props {
   error?: Node;
 }
@@ -12,7 +13,7 @@ const ErrorComponent: React.FunctionComponent<Props> = ({ error }) => {
   return (
     <div>
       <h3>{data[0]}</h3>
-      <code>{data[1]}</code>
+      <StyledCode>{data[1]}</StyledCode>
       <p>{data[2]}</p>
     </div>
   );

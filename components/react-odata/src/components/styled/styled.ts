@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 export const StyledTable = styled.table`
-  background-color: #eee;
-  width: 100%;
-  max-width: 100%;
+  ${(props) => props.theme.table}
 `;
 
 export const LeftAlignedHeader = styled.th`
   text-align: left;
+`;
+
+export const StyledCode = styled.code`
+  ${(props) => props.theme.code};
 `;

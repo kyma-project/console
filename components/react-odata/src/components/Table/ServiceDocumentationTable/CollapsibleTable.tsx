@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { CollapsibleAnnotation } from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
 import { Node } from "../../../types";
-import { LeftAlignedHeader, StyledTable } from "./../styled/styled";
+import { LeftAlignedHeader, StyledTable } from "../../styled/styled";
 interface Props {
   data: Node;
 }
