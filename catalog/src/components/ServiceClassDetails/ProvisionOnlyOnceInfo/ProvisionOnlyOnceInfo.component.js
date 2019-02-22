@@ -27,10 +27,8 @@ const ProvisionOnlyOnceInfo = () => {
           <Icon glyph="message-information" style={{ color: '#0b74de' }} />
         </PanelActions>
       </ContentHeader>
-      <ContentDescription>
-        <Element margin="0" data-e2e-id="instance-status-type">
-          {noteText.description}
-        </Element>
+      <ContentDescription data-e2e-id="instance-status-type">
+        {noteText.description}
       </ContentDescription>
     </ProvisionOnlyOnceInfoContentWrapper>
   );

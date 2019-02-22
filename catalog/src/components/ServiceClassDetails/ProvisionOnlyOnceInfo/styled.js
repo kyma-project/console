@@ -27,7 +27,3 @@ export const ContentHeader = styled(PanelHeader)`
 `;
 
 export const ContentDescription = styled(PanelBody)``;
-
-export const Element = styled.div`
-  margin: ${props => (props.margin ? props.margin : '16px 0 0 0')};
-`;

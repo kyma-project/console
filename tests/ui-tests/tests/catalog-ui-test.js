@@ -255,7 +255,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       expect(catalogHeader).toContain(catalogExpectedHeader);
 
-      console.log('Confirm number of provisioned instances is showed');
+      console.log('Confirm that indicator of provisioned instances shows 1');
       const numberOfInstances = await catalog.getNumberOfInstancesStatus(
         frame4
       );
