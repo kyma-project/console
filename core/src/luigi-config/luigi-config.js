@@ -242,9 +242,11 @@ function getUiEntities(entityname, environment, placements) {
                   : node.viewUrl,
                 hideFromNav: node.showInNavigation === false || undefined,
                 order: node.order,
-                context: node.settings
-                  ? { ...node.settings, ...(node.context || undefined) }
-                  : undefined
+                context: {
+                  settings: node.settings
+                    ? { ...node.settings, ...(node.context || undefined) }
+                    : undefined
+                }
               };
 
               if (node.externalLink) {

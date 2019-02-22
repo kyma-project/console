@@ -71,9 +71,7 @@ export class RemoteEnvironmentsComponent
     this.filterState = { filters: [new Filter('name', '', false)] };
 
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
-      if (typeof context.readOnly !== 'undefined') {
-        this.isReadOnly = context.readOnly;
-      }
+      this.isReadOnly = context.settings.readOnly;
     });
   }
 

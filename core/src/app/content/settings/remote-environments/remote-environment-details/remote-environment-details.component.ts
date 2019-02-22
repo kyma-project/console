@@ -76,9 +76,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     });
     if (LuigiClient) {
       this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
-        if (typeof context.readOnly !== 'undefined') {
-          this.isReadOnly = context.readOnly;
-        }
+        this.isReadOnly = context.settings.readOnly;
       });
     }
   }
