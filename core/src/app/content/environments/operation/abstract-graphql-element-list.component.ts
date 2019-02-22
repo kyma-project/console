@@ -37,19 +37,17 @@ export class AbstractGraphqlElementListComponent
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef,
-    private graphqlListAllQuery: string
+    changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, null, commService);
 
-    this.graphqlListAllQuery = graphqlListAllQuery;
     this.currentEnvironmentSubscription = this.currentEnvironmentService
       .getCurrentEnvironmentId()
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
         this.source = new GraphQLDataProvider(
           AppConfig.graphqlApiUrl,
-          this.graphqlListAllQuery,
+          this.getReadAllQuery(),
           {
             namespace: this.currentEnvironmentId
           },
@@ -60,6 +58,10 @@ export class AbstractGraphqlElementListComponent
 
   public ngOnDestroy() {
     this.currentEnvironmentSubscription.unsubscribe();
+  }
+
+  protected getReadAllQuery() {
+    return null; // override this
   }
 
   editEntryEventCallback(entry) {

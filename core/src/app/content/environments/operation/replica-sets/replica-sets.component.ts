@@ -33,8 +33,12 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
       currentEnvironmentService,
       commService,
       graphQLClientService,
-      changeDetector,
-      `query ReplicaSets($namespace: String!) {
+      changeDetector
+    );
+  }
+
+  getReadAllQuery() {
+    return `query ReplicaSets($namespace: String!) {
       replicaSets(namespace: $namespace) {
         name
         labels
@@ -42,7 +46,6 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
         images
         pods
       }
-    }`
-    );
+    }`;
   }
 }
