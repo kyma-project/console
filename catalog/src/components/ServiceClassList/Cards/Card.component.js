@@ -49,7 +49,7 @@ const Card = ({
     provisionOnlyOnce:
       'You can provision this Service Class only once in a given Namespace.',
     provisionOnlyOnceActive:
-      'This Service Class can be provisioned only once in a given namespace. In this namespace this is already provisioned.',
+      'You can provision this Service Class only once in a given Namespace. It is already provisioned in this Namespace.',
     instancesTooltipInfo: 'This Service Class is provisioned',
     instancesTooltipSingle: 'time.',
     instancesTooltipPlural: 'times.',
