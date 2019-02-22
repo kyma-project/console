@@ -7,12 +7,10 @@ export class TestBundleInstaller {
   constructor(namespace) {
     const coreApiClient = kubeConfig.makeApiClient(k8s.Core_v1Api);
     this.namespaceManager = new NamespaceManager(coreApiClient, namespace);
-
-    this.helmBrokerConfigurer = new HelmBrokerConfigurer(
-      namespace,
+    this.helmBrokerConfigurer = new HelmBrokerConfigurer({
       kubeConfig,
-      coreApiClient
-    );
+      apiClient: coreApiClient
+    });
   }
 
   async install() {
@@ -20,6 +18,7 @@ export class TestBundleInstaller {
     await this.namespaceManager.createIfDoesntExist();
     await this.helmBrokerConfigurer.includeTestBundleRepository();
     await this.helmBrokerConfigurer.waitForTestBundle();
+    await this.helmBrokerConfigurer.waitForTestPlans();
   }
 
   async cleanup() {
