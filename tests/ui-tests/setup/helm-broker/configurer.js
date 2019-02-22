@@ -2,7 +2,7 @@ import * as k8s from '@kubernetes/client-node';
 import { helmBrokerConfig } from './config';
 
 export class HelmBrokerConfigurer {
-  constructor(namespace, kubeConfig, apiClient) {
+  constructor({ namespace, kubeConfig, apiClient }) {
     this.namespaceName = namespace;
     this.kubeConfig = kubeConfig;
     this.api = apiClient;
@@ -15,7 +15,7 @@ export class HelmBrokerConfigurer {
     await this.api.createNamespacedConfigMap(this.namespaceName, {
       metadata: {
         name: this.mapName,
-        labels: { repo: 'true' }
+        labels: { 'helm-broker-repo': 'true' }
       },
       data: { URLs: helmBrokerConfig.testBundleUrl }
     });
@@ -24,6 +24,27 @@ export class HelmBrokerConfigurer {
   async excludeTestBundleRepository() {
     console.log('Excluding test bundle repository for Helm Broker...');
     await this.api.deleteNamespacedConfigMap(this.mapName, this.namespaceName);
+  }
+
+  async waitForTestPlans() {
+    console.log('Waiting for ready minimal plan...');
+    return this.watch(
+      `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceplans`,
+      {},
+      (resolve, reject) => (type, obj) => {
+        if (type === 'DELETED') {
+          return;
+        }
+
+        if (obj.spec.externalName === helmBrokerConfig.testBundleMinimalName) {
+          console.log('Minimal plan is available.');
+          resolve(obj);
+        }
+      },
+      (resolve, reject) => err => {
+        reject(err);
+      }
+    );
   }
 
   async waitForTestBundle() {
@@ -38,7 +59,6 @@ export class HelmBrokerConfigurer {
 
         if (obj.spec.externalName === helmBrokerConfig.testBundleExternalName) {
           console.log('Test bundle is available.');
-          console.log(obj);
           resolve(obj);
         }
       },
