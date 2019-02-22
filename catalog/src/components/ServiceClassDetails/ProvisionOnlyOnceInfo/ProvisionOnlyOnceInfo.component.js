@@ -13,7 +13,7 @@ const ProvisionOnlyOnceInfo = () => {
   const noteText = {
     title: 'Note',
     description:
-      'This Service Class can be provisioned only once in a given namespace.',
+      'You can provision this Service Class only once in a given Namespace.',
   };
   return (
     <ProvisionOnlyOnceInfoContentWrapper
