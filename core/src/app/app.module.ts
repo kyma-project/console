@@ -109,6 +109,7 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
 
 import { FundamentalNgxModule } from 'fundamental-ngx';
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
+import { AbstractGraphqlElementListComponent } from 'environments/operation/abstract-graphql-element-list.component';
 
 @NgModule({
   declarations: [
@@ -173,6 +174,7 @@ import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-moda
     BindingHeaderRendererComponent,
     BindingEntryRendererComponent,
     AbstractKubernetesElementListComponent,
+    AbstractGraphqlElementListComponent,
     ServiceBrokerEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
     IdpPresetsComponent,
