@@ -55,7 +55,7 @@ const Card = ({
     instancesTooltipPlural: 'times.',
   };
 
-  const isProvisionOnlyOnce =
+  const isProvisionedOnlyOnce =
     labels &&
     labels.provisionOnlyOnce &&
     isStringValueEqualToTrue(labels.provisionOnlyOnce);
