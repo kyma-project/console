@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import { CollapsibleRow } from "./CollapsibleRow";
-import { StyledTable } from "../../styled/styled";
+import { StyledTable, TableWrapper, TableHeader } from "../../styled/styled";
 
 interface Props {
   columnData: string[];
@@ -30,38 +30,43 @@ const Table: React.FunctionComponent<Props> = ({
     makeUnique,
   );
 
+  const [show, setShow] = useState<boolean>(true);
+
   return (
-    <StyledTable>
-      <thead>
-        <tr>
-          <th colSpan={columnHeaders.length}>{title}</th>
-        </tr>
-        <tr>
-          {columnHeaders.map((elem: string, index: number) => (
-            <td key={index}>{elem}</td>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {filteredData.map((elem: any, idx: number) =>
-          elem.children.length > 0 ? (
-            <CollapsibleRow
-              data={elem}
-              columnHeaders={columnHeaders}
-              key={idx}
-            />
-          ) : (
-            <tr key={idx}>
-              {columnHeaders.map((row: string, index: number) => (
-                <td key={index}>
-                  {elem.attributes[row] || elem[row.toLowerCase()] || ""}
-                </td>
+    <TableWrapper>
+      <button onClick={() => setShow(!show)}>Show/Hide</button>
+      <TableHeader>{title}</TableHeader>
+      {show && (
+        <StyledTable>
+          <thead>
+            <tr>
+              {columnHeaders.map((elem: string, index: number) => (
+                <td key={index}>{elem}</td>
               ))}
             </tr>
-          ),
-        )}
-      </tbody>
-    </StyledTable>
+          </thead>
+          <tbody>
+            {filteredData.map((elem: any, idx: number) =>
+              elem.children.length > 0 ? (
+                <CollapsibleRow
+                  data={elem}
+                  columnHeaders={columnHeaders}
+                  key={idx}
+                />
+              ) : (
+                <tr key={idx}>
+                  {columnHeaders.map((row: string, index: number) => (
+                    <td key={index}>
+                      {elem.attributes[row] || elem[row.toLowerCase()] || ""}
+                    </td>
+                  ))}
+                </tr>
+              ),
+            )}
+          </tbody>
+        </StyledTable>
+      )}
+    </TableWrapper>
   );
 };
 
