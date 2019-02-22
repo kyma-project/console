@@ -3,7 +3,6 @@ import React from 'react';
 import { Icon, PanelActions } from '@kyma-project/react-components';
 
 import {
-  Element,
   ProvisionOnlyOnceInfoContentWrapper,
   ContentHeader,
   ContentDescription,
