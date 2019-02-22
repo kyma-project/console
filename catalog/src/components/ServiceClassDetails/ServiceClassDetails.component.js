@@ -59,7 +59,7 @@ class ServiceClassDetails extends React.Component {
       provisionOnlyOnceActive: 'Added once',
       standard: 'Add',
     };
-    const noClassText = "Service Class doesn't exist in this namespace";
+    const noClassText = "Such a Service Class doesn't exist in this Namespace";
 
     const modalOpeningComponent = (
       <Button
