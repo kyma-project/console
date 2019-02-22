@@ -10,9 +10,13 @@ import {
 } from './styled';
 
 const ServiceClassDescription = ({ description }) => {
+  const headerText = 'General Information';
   return (
-    <ServiceClassDescriptionContentWrapper data-e2e-id="service-docs">
-      <ContentHeader>General Information</ContentHeader>
+    <ServiceClassDescriptionContentWrapper
+      colSpan={3}
+      data-e2e-id="service-docs"
+    >
+      <ContentHeader>{headerText}</ContentHeader>
 
       <ContentDescription>
         <Text data-e2e-id="service-description" fontSize="14px">
