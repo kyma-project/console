@@ -42,7 +42,7 @@ const Card = ({
     local:
       'This Service Class provisions physical resources inside the cluster.',
     showcase:
-      'This Service Class demonstrate a specific functionality. Do not use it on the production.',
+      'This Service Class demonstrates a specific functionality. Do not use it on the production.',
   };
 
   const tooltipDescription = {
