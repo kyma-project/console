@@ -2,7 +2,11 @@ import React, { Fragment, useState } from "react";
 import { CollapsibleAnnotation } from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
 import { Node } from "../../../types";
-import { LeftAlignedHeader, StyledTable } from "../../styled/styled";
+import {
+  LeftAlignedHeader,
+  StyledTable,
+  CollapseArrow,
+} from "../../styled/styled";
 interface Props {
   data: Node;
 }
@@ -43,9 +47,10 @@ const CollapsibleTable: React.FunctionComponent<Props> = ({ data }) => {
                     <td key={idx}>
                       {child.attributes[el] ||
                         (specialHeader && specialHeader.name === el && (
-                          <button onClick={() => setShow(!show)}>
-                            {show ? "⇧" : "⇩"}
-                          </button>
+                          <CollapseArrow
+                            open={show}
+                            clickHandler={() => setShow(!show)}
+                          />
                         ))}
                     </td>
                   ))}

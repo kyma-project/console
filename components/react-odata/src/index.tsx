@@ -4,7 +4,7 @@ import { ODataReact } from "./ODataReact";
 import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider, GlobalStyle } from "./theme/index";
 import { defaultTheme } from "./theme/default";
-
+import "fiori-fundamentals/dist/fiori-fundamentals.min.css";
 ReactDOM.render(
   <ThemeProvider theme={defaultTheme}>
     <>

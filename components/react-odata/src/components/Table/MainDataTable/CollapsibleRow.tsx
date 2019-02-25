@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Node } from "../../../types";
 import { HideableSubTable } from "./HideableSubTable";
+import { CollapseArrow } from "../../styled/styled";
 
 interface Props {
   columnHeaders: string[];
@@ -18,7 +19,7 @@ const CollapsibleRow: React.FunctionComponent<Props> = ({
         {columnHeaders.map((row: string, index: number) => (
           <td key={index}>
             {row === "Annotation" ? (
-              <button onClick={() => setShow(!show)}>{show ? "⇧" : "⇩"}</button>
+              <CollapseArrow open={show} clickHandler={() => setShow(!show)} />
             ) : (
               data.attributes[row] || data[row.toLowerCase()] || ""
             )}

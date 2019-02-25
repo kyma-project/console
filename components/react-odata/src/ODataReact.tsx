@@ -7,7 +7,7 @@ import { TableContainer } from "./components/Table/TableContainer";
 import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
 
 const ODataReact: React.FunctionComponent = () => {
-  const data = parse.parseFromString(mocks.ODataFav11);
+  const data = parse.parseFromString(mocks.SAPodata);
   const schema = data.getElementsByTagName("Schema");
 
   if (schema.length < 1) {

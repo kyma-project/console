@@ -5,7 +5,9 @@
   "dependencies": {
     "react-scripts": "^2.1.4",
     "react-xml-parser": "^1.1.2",
-    "xslt": "^0.9.1"
+    "xslt": "^0.9.1",
+    "fiori-fundamentals": "^1.4.3",
+    "fundamental-react": "^0.4.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.0",

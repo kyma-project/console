@@ -2,7 +2,12 @@ import React, { Fragment, useState } from "react";
 import { CollapsibleTable } from "./CollapsibleTable";
 import { Node } from "../../../types";
 
-import { TableHeader, TableWrapper } from "../../styled/styled";
+import {
+  TableHeader,
+  TableWrapper,
+  CollapseArrow,
+  TableHeaderWrapper,
+} from "../../styled/styled";
 interface Props {
   data: Node[];
 }
@@ -23,17 +28,19 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
 
   return !Array.isArray(data) ? null : (
     <TableWrapper>
-      <button
-        onClick={() => {
-          if (showAll) {
-            setShowPart(Array(data.length).fill(false));
-          }
-          setShowAll(!showAll);
-        }}
-      >
-        Show/Hide
-      </button>
-      <TableHeader>{"Service Documentation / Annotations"}</TableHeader>
+      <TableHeaderWrapper className="asdfg">
+        <TableHeader>{"Service Documentation / Annotations"}</TableHeader>
+        <CollapseArrow
+          open={showAll}
+          clickHandler={() => {
+            if (showAll) {
+              setShowPart(Array(data.length).fill(false));
+            }
+            setShowAll(!showAll);
+          }}
+        />
+      </TableHeaderWrapper>
+
       {showAll && (
         <table>
           <thead>
@@ -50,13 +57,12 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
                   <tr>
                     <td>{value.attributes.Target}</td>
                     <td>
-                      <button
-                        onClick={() =>
+                      <CollapseArrow
+                        open={show}
+                        clickHandler={() =>
                           setShowPart(inverseArrayValue(showPart, index))
                         }
-                      >
-                        {show ? "⇧" : "⇩"}
-                      </button>
+                      />
                     </td>
                   </tr>
                   {show && (

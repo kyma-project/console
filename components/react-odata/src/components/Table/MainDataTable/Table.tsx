@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import { CollapsibleRow } from "./CollapsibleRow";
-import { StyledTable, TableWrapper, TableHeader } from "../../styled/styled";
+import {
+  StyledTable,
+  TableWrapper,
+  TableHeader,
+  CollapseArrow,
+  TableHeaderWrapper,
+} from "../../styled/styled";
 
 interface Props {
   columnData: string[];
@@ -34,8 +40,10 @@ const Table: React.FunctionComponent<Props> = ({
 
   return (
     <TableWrapper>
-      <button onClick={() => setShow(!show)}>Show/Hide</button>
-      <TableHeader>{title}</TableHeader>
+      <TableHeaderWrapper>
+        <TableHeader>{title}</TableHeader>
+        <CollapseArrow open={show} clickHandler={() => setShow(!show)} />
+      </TableHeaderWrapper>
       {show && (
         <StyledTable>
           <thead>

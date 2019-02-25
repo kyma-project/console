@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
 import { SimpleTable } from "./SimpleTable";
-
+import { CollapseArrow } from "./../../styled/styled";
 interface Props {
   data: Node;
 }
@@ -24,7 +24,7 @@ const CollapsibleAnnotation: React.FunctionComponent<Props> = ({ data }) => {
       <tbody>
         <tr>
           <td>
-            <button onClick={() => useShow(!show)}>{show ? "⇧" : "⇩"}</button>
+            <CollapseArrow open={show} clickHandler={() => useShow(!show)} />
           </td>
         </tr>
         {show && (
