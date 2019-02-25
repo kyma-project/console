@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { JsonEditorComponent } from './json-editor/json-editor.component';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
+import { K8sResourceEditorService } from './services/k8s-resource-editor.service';
 
 @Component({
   selector: 'app-json-editor-modal',
@@ -13,7 +14,10 @@ export class JsonEditorModalComponent {
   public isActive = false;
   public error: any;
 
-  constructor(private communicationService: ComponentCommunicationService) {}
+  constructor(
+    protected communicationService: ComponentCommunicationService,
+    private k8sResourceEditorService: K8sResourceEditorService
+  ) {}
 
   show() {
     this.isActive = true;
@@ -26,7 +30,7 @@ export class JsonEditorModalComponent {
   }
 
   update(event: Event) {
-    this.jsonEditor.updateYaml().subscribe(
+    this.sendUpdateRequest().subscribe(
       data => {
         event.stopPropagation();
         this.isActive = false;
@@ -36,6 +40,12 @@ export class JsonEditorModalComponent {
         });
       },
       err => this.displayErrorMessage(err)
+    );
+  }
+
+  sendUpdateRequest() {
+    return this.k8sResourceEditorService.updateResource(
+      this.jsonEditor.getCurrentValue()
     );
   }
 
