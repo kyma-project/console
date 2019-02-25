@@ -41,8 +41,7 @@ const Table: React.FunctionComponent<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {filteredData.map(
-          (elem: any, idx: number) =>
+        {filteredData.map((elem: any, idx: number) =>
             elem.children.length > 0 ? (
               <CollapsibleRow
                 data={elem}

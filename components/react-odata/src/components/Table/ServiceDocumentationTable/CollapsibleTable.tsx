@@ -42,12 +42,11 @@ const CollapisbleTable: React.FunctionComponent<Props> = ({ data }) => {
                   {columnHeaders.map((el: string, idx: number) => (
                     <td key={idx}>
                       {child.attributes[el] ||
-                        (specialHeader &&
-                          specialHeader.name === el && (
-                            <button onClick={() => setShow(!show)}>
-                              {show ? "⇧" : "⇩"}
-                            </button>
-                          ))}
+                        (specialHeader && specialHeader.name === el && (
+                          <button onClick={() => setShow(!show)}>
+                            {show ? "⇧" : "⇩"}
+                          </button>
+                        ))}
                     </td>
                   ))}
                 </tr>
