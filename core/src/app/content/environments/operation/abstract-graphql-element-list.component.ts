@@ -47,7 +47,7 @@ export class AbstractGraphqlElementListComponent
         this.currentEnvironmentId = envId;
         this.source = new GraphQLDataProvider(
           AppConfig.graphqlApiUrl,
-          this.getReadAllQuery(),
+          this.getGraphglQueryForList(),
           {
             namespace: this.currentEnvironmentId
           },
@@ -60,7 +60,7 @@ export class AbstractGraphqlElementListComponent
     this.currentEnvironmentSubscription.unsubscribe();
   }
 
-  protected getReadAllQuery() {
+  protected getGraphglQueryForList() {
     return null; // override this
   }
 

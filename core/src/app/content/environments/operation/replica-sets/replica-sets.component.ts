@@ -37,7 +37,7 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
     );
   }
 
-  getReadAllQuery() {
+  getGraphglQueryForList() {
     return `query ReplicaSets($namespace: String!) {
       replicaSets(namespace: $namespace) {
         name
