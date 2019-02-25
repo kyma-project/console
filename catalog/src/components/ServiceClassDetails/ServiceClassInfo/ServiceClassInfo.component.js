@@ -39,7 +39,6 @@ const ServiceClassInfo = ({
 
   const extractLabels = () => {
     const extractedLabels = [];
-
     if (labels) {
       if (labels['connected-app'])
         extractedLabels.push({
@@ -50,8 +49,6 @@ const ServiceClassInfo = ({
         extractedLabels.push({ name: 'local', type: 'basic' });
       if (isStringValueEqualToTrue(labels.showcase))
         extractedLabels.push({ name: 'showcase', type: 'basic' });
-      if (isStringValueEqualToTrue(labels.provisionOnlyOnce))
-        extractedLabels.push({ name: 'provision-only-once', type: 'basic' });
     }
 
     return extractedLabels;
@@ -65,14 +62,14 @@ const ServiceClassInfo = ({
   const tagsDescription = {
     basic: 'Basic filter',
     'connected-app': 'Connected application',
-    provisionOnlyOnce: "Provision only once",
+    provisionOnlyOnce: 'Provision only once',
     tag: 'Tag',
   };
 
   const tooltipWidth = {
     basic: '80px',
     'connected-app': '140px',
-    provisionOnlyOnce: "140px",
+    provisionOnlyOnce: '140px',
     tag: '50px',
   };
 

@@ -181,7 +181,6 @@ export default {
         displayName
         externalName
         imageUrl
-        activated
         providerDisplayName
         tags
         labels

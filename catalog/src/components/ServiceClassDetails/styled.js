@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media } from '@kyma-project/react-components';
+import { media, PanelGrid } from '@kyma-project/react-components';
 
 export const ServiceClassDetailsWrapper = styled.div`
   box-sizing: border-box;
@@ -25,6 +25,17 @@ export const CenterSideWrapper = styled.div`
     width:100%;
     padding-right: 30px;
   `};
+`;
+
+export const ServiceGridWrapper = styled(PanelGrid)`
+  display: flex;
+  && {
+    margin-bottom: 20px;
+    grid-gap: 20px;
+    ${media.phone`
+      grid-template-columns: repeat(1,1fr);
+    `};
+  }
 `;
 
 export const LeftSideWrapper = styled.div`
