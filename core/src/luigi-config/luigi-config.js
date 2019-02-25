@@ -216,6 +216,7 @@ function getUiEntities(entityname, environment, placements) {
   if (!window[cacheName]) {
     window[cacheName] = {};
   }
+
   const cache = window[cacheName];
   const cacheKey = fetchUrl + (placements || '');
   const fromCache = cache[cacheKey];
@@ -240,8 +241,14 @@ function getUiEntities(entityname, environment, placements) {
                   ? spec.viewBaseUrl + node.viewUrl
                   : node.viewUrl,
                 hideFromNav: node.showInNavigation === false || undefined,
-                order: node.order
+                order: node.order,
+                context: {
+                  settings: node.settings
+                    ? { ...node.settings, ...(node.context || undefined) }
+                    : undefined
+                }
               };
+
               if (node.externalLink) {
                 delete n.viewUrl;
                 delete n.pathSegment;
@@ -250,6 +257,7 @@ function getUiEntities(entityname, environment, placements) {
                   sameWindow: false
                 };
               }
+
               processNodeForLocalDevelopment(n);
               return n;
             }
@@ -345,6 +353,7 @@ function getUiEntities(entityname, environment, placements) {
                     node.viewGroup = node.navigationContext;
                     node.keepSelectedForChildren = true;
                   }
+
                   return node;
                 });
             }
