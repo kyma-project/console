@@ -34,10 +34,9 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
 
   return (
     <>
-      {Documentation &&
-        Documentation.length > 0 && (
-          <ServiceDocumentationTable data={Documentation} />
-        )}
+      {Documentation && Documentation.length > 0 && (
+        <ServiceDocumentationTable data={Documentation} />
+      )}
       {Rest.map((data: Node, idx: number) => {
         if (!Array.isArray(data.children)) {
           return null;
@@ -55,9 +54,8 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
           .flatMap((elem: { attributes: string }) =>
             Object.keys(elem.attributes),
           )
-          .filter(
-            (elem: string, index: number, self: string[]) =>
-              elem === "Term" ? false : makeUnique(elem, index, self),
+          .filter((elem: string, index: number, self: string[]) =>
+            elem === "Term" ? false : makeUnique(elem, index, self),
           );
 
         const title = `${data.name || "Entity"} ${data.attributes.Name ||
