@@ -62,6 +62,7 @@ export const CardThumbnail = styled(TileMedia)`
     border: solid 1px rgba(63, 80, 96, 0.15);
     color: #32363a;
     font-size: 20px;
+    padding: 0;
   }
 `;
 

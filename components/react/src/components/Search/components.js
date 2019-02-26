@@ -49,6 +49,7 @@ export const SearchIcon = styled.div`
   border: none;
   background-color: transparent;
   color: #0a6ed1;
+  border: 1px solid red;
 
   &:focus {
     outline: none;
