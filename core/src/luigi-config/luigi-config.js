@@ -300,14 +300,10 @@ function getUiEntities(entityname, environment, placements) {
                   node.viewUrl.substring(
                     'https://lambdas-ui.kyma.local'.length
                   );
-              } else if (
-                node.viewUrl.startsWith('https://log-ui.kyma.local')
-              ) {
+              } else if (node.viewUrl.startsWith('https://log-ui.kyma.local')) {
                 node.viewUrl =
                   config.logsModuleUrl +
-                  node.viewUrl.substring(
-                    'https://log-ui.kyma.local'.length
-                  );
+                  node.viewUrl.substring('https://log-ui.kyma.local'.length);
               }
               return node;
             }
@@ -718,6 +714,11 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
             {
               label: '+ New Namespace',
               link: '/home/workspace?~showModal=true'
+            },
+            {
+              label: 'Show all namespaces',
+              link: '/home/workspace?~allNamespaces=true',
+              position: 'bottom'
             }
           ]
         }
