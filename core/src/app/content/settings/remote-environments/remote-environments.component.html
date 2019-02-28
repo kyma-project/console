@@ -7,7 +7,7 @@
       <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter" [filterState]="filterState"
         (onFilterChanged)="onFilterChanged($event)">
       </y-list-filter>
-      <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="openModal()">+ Create
+      <button *ngIf="!isReadOnly" class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="openModal()">+ Create
         Application</button>
     </div>
   </div>

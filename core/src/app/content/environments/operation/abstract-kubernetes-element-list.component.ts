@@ -12,8 +12,7 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Filter, GenericTableComponent } from 'app/generic-list';
-import { ImplicitReceiver } from '@angular/compiler';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 @Injectable()
 @Component({
@@ -85,58 +84,62 @@ export class AbstractKubernetesElementListComponent
                 type: 'disable',
                 entry
               });
-              this.httpClient
-                .delete(
-                  this.getResourceUrl(this.resourceKind.toLowerCase(), entry)
-                )
-                .subscribe(
-                  () => {
-                    setTimeout(() => {
-                      this.communicationService.sendEvent({
-                        type: 'deleteResource',
-                        data: entry
-                      });
-                    }, 275);
-                  },
-                  error => {
-                    entry.disabled = false;
+              this.sendDeleteRequest(entry).subscribe(
+                () => {
+                  setTimeout(() => {
                     this.communicationService.sendEvent({
-                      type: 'disable',
-                      entry
+                      type: 'deleteResource',
+                      data: entry
                     });
-                    this.infoModal.show(
-                      'Error',
-                      'There was an error trying to delete ' +
-                        (entry.name || entry.getName()) +
-                        ': ' +
-                        (error.message || error)
-                    );
-                    this.reload();
-                  }
-                );
+                  }, 275);
+                },
+                error => {
+                  entry.disabled = false;
+                  this.communicationService.sendEvent({
+                    type: 'disable',
+                    entry
+                  });
+                  this.infoModal.show(
+                    'Error',
+                    'There was an error trying to delete ' +
+                      (entry.name || entry.getName()) +
+                      ': ' +
+                      (error.message || error)
+                  );
+                  this.reload();
+                }
+              );
             },
             () => {}
           );
       },
       edit: (entry: any) => {
-        this.httpClient
-          .get(this.getResourceUrl(this.resourceKind.toLowerCase(), entry))
-          .subscribe(
-            res => {
-              this.editResourceModal.resourceData = res;
-              this.editResourceModal.show();
-            },
-            error => {
-              console.log(
-                'Error loading resource: ' + (error.message || error)
-              );
-            }
-          );
+        this.editEntryEventCallback(entry);
       },
       details: (entry: any) => {
         this.navigateToDetails(entry);
       }
     };
+  }
+
+  sendDeleteRequest(entry): Observable<any> {
+    return this.httpClient.delete(
+      this.getResourceUrl(this.resourceKind.toLowerCase(), entry)
+    );
+  }
+
+  editEntryEventCallback(entry) {
+    this.httpClient
+      .get(this.getResourceUrl(this.resourceKind.toLowerCase(), entry))
+      .subscribe(
+        res => {
+          this.editResourceModal.resourceData = res;
+          this.editResourceModal.show();
+        },
+        error => {
+          console.log('Error loading resource: ' + (error.message || error));
+        }
+      );
   }
 
   subscribeToRefreshComponent() {
