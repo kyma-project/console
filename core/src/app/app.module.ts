@@ -108,6 +108,8 @@ import { TooltipComponent } from './shared/components/tooltip/tooltip.component'
 import { LuigiClientCommunicationDirective } from './shared/directives/luigi-client-communication/luigi-client-communication.directive';
 
 import { FundamentalNgxModule } from 'fundamental-ngx';
+import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
+import { AbstractGraphqlElementListComponent } from 'environments/operation/abstract-graphql-element-list.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +149,7 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
     RemoteEnvironmentsHeaderRendererComponent,
     RemoteEnvironmentsEntryRendererComponent,
     JsonEditorModalComponent,
+    GraphqlMutatorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
     ServiceDetailsComponent,
@@ -171,6 +174,7 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
     BindingHeaderRendererComponent,
     BindingEntryRendererComponent,
     AbstractKubernetesElementListComponent,
+    AbstractGraphqlElementListComponent,
     ServiceBrokerEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
     IdpPresetsComponent,

@@ -39,7 +39,6 @@ const ServiceClassInfo = ({
 
   const extractLabels = () => {
     const extractedLabels = [];
-
     if (labels) {
       if (labels['connected-app'])
         extractedLabels.push({
@@ -50,8 +49,6 @@ const ServiceClassInfo = ({
         extractedLabels.push({ name: 'local', type: 'basic' });
       if (isStringValueEqualToTrue(labels.showcase))
         extractedLabels.push({ name: 'showcase', type: 'basic' });
-      if (isStringValueEqualToTrue(labels.provisionOnlyOnce))
-        extractedLabels.push({ name: 'provision-only-once', type: 'basic' });
     }
 
     return extractedLabels;

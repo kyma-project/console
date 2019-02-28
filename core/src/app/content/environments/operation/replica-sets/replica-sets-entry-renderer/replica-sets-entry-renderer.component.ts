@@ -26,10 +26,7 @@ export class ReplicaSetsEntryRendererComponent
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
-        if (
-          'disable' === event.type &&
-          this.entry.metadata.name === event.entry.metadata.name
-        ) {
+        if ('disable' === event.type && this.entry.name === event.entry.name) {
           this.disabled = event.entry.disabled;
         }
       }
@@ -38,47 +35,5 @@ export class ReplicaSetsEntryRendererComponent
 
   ngOnDestroy() {
     this.communicationServiceSubscription.unsubscribe();
-  }
-
-  hasWarnings(entry) {
-    // TODO adjust when ui-api-layer for replica sets is ready
-    return entry.status.readyReplicas !== entry.status.replicas;
-    // return entry.pods.warnings.length > 0;
-  }
-
-  isPending(entry) {
-    // TODO adjust when ui-api-layer for replica sets is ready
-    return false;
-    // return !this.hasWarnings(entry) && entry.pods.pending > 0;
-  }
-
-  getClass(entry) {
-    // TODO adjust when ui-api-layer for replica sets is ready
-    if (this.hasWarnings(entry)) {
-      return 'sf-indicator--warning';
-    } else if (this.isPending(entry)) {
-      return '';
-    } else {
-      return 'sf-indicator--success';
-    }
-  }
-
-  getStatus(entry) {
-    // TODO adjust when ui-api-layer for replica sets is ready
-    if (this.isPending(entry)) {
-      return 'pending';
-    }
-    if (this.hasWarnings(entry)) {
-      return 'has warnings';
-    }
-    return 'running';
-  }
-
-  getStatusType(entry) {
-    // TODO adjust when ui-api-layer for replica sets is ready
-    if (this.isPending(entry) || this.hasWarnings(entry)) {
-      return 'warning';
-    }
-    return 'ok';
   }
 }

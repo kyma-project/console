@@ -11,11 +11,15 @@ import {
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from './ServiceClassInfo/ServiceClassInfo.component';
 import ServiceClassDescription from './ServiceClassDescription/ServiceClassDescription.component';
+import ProvisionOnlyOnceInfo from './ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 
+import { isStringValueEqualToTrue } from '../../commons/helpers';
+
 import {
   ServiceClassDetailsWrapper,
+  ServiceGridWrapper,
   LeftSideWrapper,
   CenterSideWrapper,
   EmptyList,
@@ -44,9 +48,30 @@ class ServiceClassDetails extends React.Component {
 
     const serviceClassDescription = getDescription(serviceClass);
 
+    const isProvisionedOnlyOnce =
+      serviceClass &&
+      serviceClass.labels &&
+      serviceClass.labels.provisionOnlyOnce &&
+      isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
+
+    const buttonText = {
+      provisionOnlyOnce: 'Add once',
+      provisionOnlyOnceActive: 'Added once',
+      standard: 'Add',
+    };
+    const noClassText = "Such a Service Class doesn't exist in this Namespace";
+
     const modalOpeningComponent = (
-      <Button option="emphasized" data-e2e-id="add-to-env">
-        Add to your Namespace
+      <Button
+        option="emphasized"
+        data-e2e-id="add-to-env"
+        disabled={Boolean(isProvisionedOnlyOnce && serviceClass.activated)}
+      >
+        {isProvisionedOnlyOnce
+          ? serviceClass.activated
+            ? buttonText.provisionOnlyOnceActive
+            : buttonText.provisionOnlyOnce
+          : buttonText.standard}
       </Button>
     );
 
@@ -61,7 +86,7 @@ class ServiceClassDetails extends React.Component {
       return (
         <EmptyList>
           <Panel>
-            <PanelBody>Service Class doesn't exist in this namespace</PanelBody>
+            <PanelBody>{noClassText}</PanelBody>
           </Panel>
         </EmptyList>
       );
@@ -98,11 +123,14 @@ class ServiceClassDetails extends React.Component {
                 />
               </LeftSideWrapper>
               <CenterSideWrapper>
-                {serviceClassDescription && (
-                  <ServiceClassDescription
-                    description={serviceClassDescription}
-                  />
-                )}
+                <ServiceGridWrapper cols={isProvisionedOnlyOnce ? 4 : 1}>
+                  {serviceClassDescription && (
+                    <ServiceClassDescription
+                      description={serviceClassDescription}
+                    />
+                  )}
+                  {isProvisionedOnlyOnce && <ProvisionOnlyOnceInfo />}
+                </ServiceGridWrapper>
                 {backendModuleExists('content') ? (
                   <ServiceClassTabs
                     serviceClass={serviceClass}

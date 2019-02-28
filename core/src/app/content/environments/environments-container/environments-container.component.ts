@@ -18,6 +18,7 @@ import { CurrentEnvironmentService } from '../services/current-environment.servi
 import { EnvironmentsService } from '../services/environments.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 const fadeInAnimation = trigger('fadeInAnimation', [
   state('1', style({ opacity: 1 })),
@@ -44,7 +45,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   public leftNavCollapsed = false;
   public previousUrl = '';
   public previousEnv = '';
-  public displayErrorGlobal = false;
   public limitHasBeenExceeded = false;
   public limitExceededErrors = [];
   public overview = false;
@@ -75,22 +75,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    window.addEventListener('message', e => {
-      if (e.data && e.data.resourceQuotasStatus) {
-        this.limitHasBeenExceeded = e.data.resourceQuotasStatus.exceeded;
-        this.displayErrorGlobal = true;
-      }
-      if (
-        e.data &&
-        e.data.resourceQuotasStatus &&
-        e.data.resourceQuotasStatus.exceededQuotas &&
-        e.data.resourceQuotasStatus.exceededQuotas.length > 0
-      ) {
-        this.setLimitExceededErrorsMessages(
-          e.data.resourceQuotasStatus.exceededQuotas
-        );
-      }
-    });
     this.route.params.subscribe(params => {
       const envId = params['environmentId'];
       if (envId) {
@@ -162,10 +146,6 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  public hideError() {
-    this.displayErrorGlobal = false;
-  }
-
   private checkIfResourceLimitExceeded(url) {
     this.currentEnvironmentService
       .getCurrentEnvironmentId()
@@ -195,40 +175,29 @@ export class EnvironmentsContainerComponent implements OnInit, OnDestroy {
           this.limitHasBeenExceeded = quotaExceeded;
           if (env !== this.previousEnv || this.overview) {
             this.previousEnv = env;
-            this.displayErrorGlobal = quotaExceeded;
           }
           if (
             quotaExceeded &&
             limitExceededErrors &&
             limitExceededErrors.length > 0
           ) {
-            this.setLimitExceededErrorsMessages(limitExceededErrors);
+            const data = {
+              resourceQuotasStatus: {
+                exceeded: quotaExceeded,
+                exceededQuotas: limitExceededErrors
+              }
+            };
+            const msg = {
+              msg: 'console.quotaexceeded',
+              data,
+              env: this.previousEnv
+            };
+            window.parent.postMessage(msg, '*');
           }
         },
         err => {
           console.log(err);
         }
       );
-  }
-
-  private setLimitExceededErrorsMessages(limitExceededErrors) {
-    this.limitExceededErrors = [];
-    limitExceededErrors.forEach(resource => {
-      if (resource.affectedResources && resource.affectedResources.length > 0) {
-        resource.affectedResources.forEach(affectedResource => {
-          this.limitExceededErrors.push(
-            `'${resource.resourceName}' by '${affectedResource}' (${
-              resource.quotaName
-            })`
-          );
-        });
-      }
-    });
-  }
-
-  public navigateToResources() {
-    this.currentEnvironmentService.getCurrentEnvironmentId().subscribe(env => {
-      this.router.navigate([`home/namespaces/${env}/resources`]);
-    });
   }
 }

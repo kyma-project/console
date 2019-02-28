@@ -19,22 +19,10 @@ describe('ReplicaSetsEntryRendererComponent', () => {
           {
             provide: 'entry',
             useValue: {
-              metadata: {
-                name: 'name',
-                labels: []
-              },
-              pods: {
-                warnings: [],
-                pending: []
-              },
-              spec: {
-                template: {
-                  spec: {
-                    containers: []
-                  }
-                }
-              },
-              status: {}
+              name: 'name',
+              labels: [],
+              pods: '0/1',
+              images: ['foo', 'baar']
             }
           }
         ],
@@ -59,9 +47,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      metadata: {
-        name: 'name'
-      },
+      name: 'name',
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
@@ -84,9 +70,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      metadata: {
-        name: 'name2'
-      },
+      name: 'name2',
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
@@ -109,9 +93,7 @@ describe('ReplicaSetsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      metadata: {
-        name: 'name'
-      },
+      name: 'name',
       disabled: false
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(

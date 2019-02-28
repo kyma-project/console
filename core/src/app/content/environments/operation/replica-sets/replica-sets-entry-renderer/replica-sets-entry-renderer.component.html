@@ -1,24 +1,18 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="col-2 col-lg-2 sf-list__body--primary">
-  {{ entry.metadata.name }}
+  <div class="col-3 col-lg-3 sf-list__body--primary">
+  {{ entry.name }}
   </div>
-  <div class="col-1">{{ entry.status.readyReplicas || '0' }}/{{ entry.spec.replicas }}</div>
-  <div class="col-1">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
-  <div class="col-3">
-    <span *ngFor="let container of entry.spec.template.spec.containers">
-      {{ container.image }}
+  <div class="col-1">{{ entry.pods }}</div>
+  <div class="col-1">{{ entry.creationTimestamp * 1000 | timeAgo }}</div>
+  <div class="col-4">
+    <span *ngFor="let image of entry.images">
+      {{ image }}
     </span>
   </div>
   <div class="col-2 sf-list__label-column">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.metadata.labels)">
+    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">
       {{ label }}
     </span>
-  </div>
-  <div class="col-2">
-      <app-status-label
-            [statusType]="getStatusType(entry)">
-        {{ getStatus(entry) }}
-      </app-status-label>
   </div>
   <div class="col-1 actions-icon">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
