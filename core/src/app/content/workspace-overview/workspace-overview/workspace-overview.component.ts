@@ -36,6 +36,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   environmentsService: EnvironmentsService;
   entryEventHandler = this.getEntryEventHandler();
   private queryParamsSubscription: any;
+  private k8sNamespacesFilter = 'env=true';
 
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
@@ -56,10 +57,11 @@ export class WorkspaceOverviewComponent extends GenericListComponent
       IEnvironment,
       Environment
     > = new EnvironmentDataConverter(remoteEnvBindingService, http);
-    const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector=env=true`;
+    const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector`;
     this.source = new KubernetesDataProvider(url, converter, this.http);
     this.entryRenderer = EnvironmentCardComponent;
     this.filterState = {
+      facets: [this.k8sNamespacesFilter],
       filters: [
         new Filter('metadata.name', '', false),
         new Filter('metadata.uid', '', false)
@@ -70,6 +72,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
       this.reload();
     });
   }
+
   ngOnInit() {
     super.ngOnInit();
     this.queryParamsSubscription = this.route.queryParams.subscribe(params =>
@@ -85,6 +88,12 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   handleQueryParamsChange(queryParams: any) {
     if (queryParams && queryParams.showModal === 'true') {
       this.createModal.show();
+    }
+    if (queryParams && queryParams.allNamespaces === 'true') {
+      this.filterState.facets = this.filterState.facets.filter(
+        elem => elem !== this.k8sNamespacesFilter
+      );
+      this.reload();
     }
   }
   getEntryEventHandler() {

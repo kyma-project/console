@@ -625,7 +625,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     pathSegment: 'workspace',
                     label: 'Namespaces',
                     viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
                     icon: 'dimension'
                   },
                   {
