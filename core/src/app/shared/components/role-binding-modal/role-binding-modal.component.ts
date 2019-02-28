@@ -121,9 +121,10 @@ export class RoleBindingModalComponent implements OnDestroy {
       data['namespace'] = this.currentEnvironmentId;
       data['kind'] = 'RoleBinding';
     }
-    if (this.isUserGroup) {
-      data['isUserGroup'] = this.isUserGroup;
-    }
+    data['isUserGroup'] = this.isUserGroup
+      ? this.isUserGroup
+      : !this.isUserGroup;
+
     return data;
   }
 
