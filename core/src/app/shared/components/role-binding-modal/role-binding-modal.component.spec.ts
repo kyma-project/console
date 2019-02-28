@@ -292,7 +292,7 @@ describe('RoleBindingModalComponent', () => {
     });
     component.isActive = true;
     component.isGlobalPermissionsView = false;
-    component.userGroup = 'group';
+    component.userOrGroup = 'group';
     component.isReadyToCreate();
 
     const spyGetRoles = spyOn(RbacServiceMockStub, 'getRoles').and.returnValue(
@@ -344,7 +344,7 @@ describe('RoleBindingModalComponent', () => {
     });
     component.isActive = true;
     component.isGlobalPermissionsView = true;
-    component.userGroup = 'group';
+    component.userOrGroup = 'group';
     component.isReadyToCreate();
 
     const spyGetClusterRoles = spyOn(
