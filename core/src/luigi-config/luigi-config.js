@@ -8,6 +8,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
+  logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
 };
 
@@ -298,6 +299,14 @@ function getUiEntities(entityname, environment, placements) {
                   config.lambdasModuleUrl +
                   node.viewUrl.substring(
                     'https://lambdas-ui.kyma.local'.length
+                  );
+              } else if (
+                node.viewUrl.startsWith('https://log-ui.kyma.local')
+              ) {
+                node.viewUrl =
+                  config.logsModuleUrl +
+                  node.viewUrl.substring(
+                    'https://log-ui.kyma.local'.length
                   );
               }
               return node;
