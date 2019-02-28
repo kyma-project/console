@@ -109,7 +109,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   prepareData() {
-    let data = {
+    const data = {
       roleKind: this.selectedKind,
       roleName: this.selectedRole,
       name: this.userOrGroup
