@@ -1,15 +1,36 @@
-#!/usr/bin/env bash
+#!/bin/zsh
+
+#============ EDIT ZONE ============
+MESSAGE_PREFIX="Don't forget to run"
+MESSAGE_COMMAND="npm run bootstrap"
+#===================================
+
 
 COL_NUM=`tput cols`
+COLORS=`tput colors`
+COLOR_FRAME="\e[31m"
+COLOR_MESSAGE="\e[92m"
 
-re='^[0-9]+$'
-if ! [[ $COL_NUM =~ $re ]] ; then
+isNumber='^[0-9]+$'
+if ! [[ $COL_NUM =~ $isNumber ]] ; then
    COL_NUM=100 #fallback in case `tput cols` didn't work
 fi
 
-VERTICAL_LINE=""
-MESSAGE="Don't forget to run \`npm run bootstrap\`"
-MESSAGE_LENGTH=${#MESSAGE}
+if ! [[ $COLORS =~ $isNumber ]] ; then
+   COLORS=0 #fallback in case colors are not supported
+   COLOR_FRAME=""
+   COLOR_MESSAGE=""
+fi
+
+
+
+PREFIX_LENGTH=${#MESSAGE_PREFIX} 
+COMMAND_LENGTH=${#MESSAGE_COMMAND} 
+
+MESSAGE="$COLOR_MESSAGE $MESSAGE_PREFIX \e[1m$MESSAGE_COMMAND\e[0m$COLOR_FRAME"
+
+INVISIBLE_CHARS_OFFSET=2
+MESSAGE_LENGTH=$((PREFIX_LENGTH + COMMAND_LENGTH + $INVISIBLE_CHARS_OFFSET))
 MESSAGE_OFFSET=$(((((COL_NUM - 5) - MESSAGE_LENGTH) / 2) + (100 % 2 > 0)))
 
 
@@ -39,10 +60,11 @@ done
 
 
 
-echo $VERTICAL_LINE
-echo "||$FULL_EMPTY_SPACE||"
+echo -e "$COLOR_FRAME$VERTICAL_LINE"
+echo -e "||$FULL_EMPTY_SPACE||"
 
-echo "||$OFFSET_BEFORE$MESSAGE$OFFSET_AFTER||"
+echo -e "||$OFFSET_BEFORE$MESSAGE$OFFSET_AFTER||"
 
-echo "||$FULL_EMPTY_SPACE||"
-echo $VERTICAL_LINE
+echo -e "||$FULL_EMPTY_SPACE||"
+echo -e "$COLOR_FRAME$VERTICAL_LINE"
+
