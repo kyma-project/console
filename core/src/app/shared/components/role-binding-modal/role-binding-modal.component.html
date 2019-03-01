@@ -19,15 +19,15 @@
                 <div class="fd-form__group">
                   <div class="fd-form__item fd-form__item--inline fd-form__item--check">
                     <label class="fd-form__label" for="pDidh767">
-                      <input type="radio" class="fd-form__control" id="pDidh767" name="radio"
-                        (click)='toogleUserGroup()' [checked]="!isUserGroup">
+                      <input type="radio" class="fd-form__control" id="pDidh767" name="radio" (click)='setUserMode()'
+                        [checked]="!isUserGroupMode">
                       User
                     </label>
                   </div>
                   <div class="fd-form__item fd-form__item--inline fd-form__item--check">
                     <label class="fd-form__label" for="pDidh7618">
                       <input type="radio" class="fd-form__control" id="pDidh7618" name="radio"
-                        (click)='toogleUserGroup()' [checked]="isUserGroup">
+                        (click)='setUserGroupMode()' [checked]="isUserGroupMode">
                       User Group
                     </label>
                   </div>
@@ -35,10 +35,10 @@
               </div>
 
               <div class="user-group">
-                <label class="tn-form__label">{{ isUserGroup ? 'User Group' : 'User' }}</label>
+                <label class="tn-form__label">{{ isUserGroupMode ? 'User Group' : 'User' }}</label>
                 <div class="user-group-input">
                   <input class="filter-input" type="text" name="userOrGroup"
-                    placeholder="{{isUserGroup?'Enter User Group':'Enter User'}}" [(ngModel)]="userOrGroup"
+                    placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}" [(ngModel)]="userOrGroup"
                     (ngModelChange)="validateUserGroupInput()">
                 </div>
                 <div *ngIf="userGroupError" class="alert">{{ userGroupError }}</div>

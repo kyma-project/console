@@ -25,7 +25,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   private filteredKinds = ['Role', 'ClusterRole'];
   private kinds = ['Role', 'ClusterRole'];
   private userGroupError: string;
-  public isUserGroup: boolean;
+  public isUserGroupMode: boolean;
 
   @Input() isGlobalPermissionsView: boolean;
 
@@ -76,8 +76,11 @@ export class RoleBindingModalComponent implements OnDestroy {
     this.error = '';
   }
 
-  toogleUserGroup() {
-    this.isUserGroup = !this.isUserGroup;
+  setUserGroupMode() {
+    this.isUserGroupMode = true;
+  }
+  setUserMode() {
+    this.isUserGroupMode = false;
   }
 
   selectKind(kind) {
@@ -97,7 +100,7 @@ export class RoleBindingModalComponent implements OnDestroy {
     if (this.isGlobalPermissionsView) {
       this.selectKind('ClusterRole');
     }
-    this.isUserGroup = true;
+    this.isUserGroupMode = true;
   }
 
   public close() {
@@ -121,7 +124,7 @@ export class RoleBindingModalComponent implements OnDestroy {
       data['namespace'] = this.currentEnvironmentId;
       data['kind'] = 'RoleBinding';
     }
-    data['isUserGroup'] = this.isUserGroup;
+    data['isUserGroupMode'] = this.isUserGroupMode;
 
     return data;
   }

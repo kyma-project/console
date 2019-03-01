@@ -32,7 +32,7 @@ export class RbacService {
     const subject = {
       apiGroup: 'rbac.authorization.k8s.io',
       name: data.name,
-      kind: data.isUserGroup ? 'Group' : 'User'
+      kind: data.isUserGroupMode ? 'Group' : 'User'
     };
     return {
       kind: data.kind,
