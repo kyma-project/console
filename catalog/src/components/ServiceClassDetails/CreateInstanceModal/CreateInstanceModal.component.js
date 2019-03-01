@@ -159,7 +159,7 @@ class CreateInstanceModal extends Component {
             type: 'success',
             title: `Instance "${variables.name}" created successfully`,
             color: '#359c46',
-            icon: '\uE05B',
+            icon: 'accept',
             instanceName: variables.name,
           },
         });

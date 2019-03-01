@@ -86,7 +86,7 @@ class CreateCredentialsModal extends React.Component {
             content: `Credentials "${createdBindingName}" created successfully`,
             title: `${createdBindingName}`,
             color: '#359c46',
-            icon: '\uE05B',
+            icon: 'accept',
             instanceName: createdBindingName,
           },
         });
