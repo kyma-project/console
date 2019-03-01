@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test; exit 0",
     "eject": "react-scripts eject",
-    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
+    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose && prettier --check 'src/**/*.{ts,tsx}'",
     "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --write 'src/**/*.{ts,tsx}'",
     "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
