@@ -31,9 +31,9 @@ export class RbacService {
   prepareBindingToCreate(data) {
     const subject = {
       apiGroup: 'rbac.authorization.k8s.io',
-      name: data.name
+      name: data.name,
+      kind: data.isUserGroup ? 'Group' : 'User'
     };
-    subject['kind'] = data.isUserGroup ? 'Group' : 'User';
     return {
       kind: data.kind,
       metadata: this.prepareMetadata(data),
