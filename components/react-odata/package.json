@@ -33,7 +33,7 @@
     "test": "react-scripts test; exit 0",
     "eject": "react-scripts eject",
     "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose",
-    "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix",
+    "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --write 'src/**/*.{ts,tsx}'",
     "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {
