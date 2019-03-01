@@ -8,6 +8,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
+  logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
 };
 
@@ -299,6 +300,10 @@ function getUiEntities(entityname, environment, placements) {
                   node.viewUrl.substring(
                     'https://lambdas-ui.kyma.local'.length
                   );
+              } else if (node.viewUrl.startsWith('https://log-ui.kyma.local')) {
+                node.viewUrl =
+                  config.logsModuleUrl +
+                  node.viewUrl.substring('https://log-ui.kyma.local'.length);
               }
               return node;
             }
@@ -616,7 +621,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     pathSegment: 'workspace',
                     label: 'Namespaces',
                     viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
                     icon: 'dimension'
                   },
                   {
@@ -709,6 +714,11 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
             {
               label: '+ New Namespace',
               link: '/home/workspace?~showModal=true'
+            },
+            {
+              label: 'Show all namespaces',
+              link: '/home/workspace?~allNamespaces=true',
+              position: 'bottom'
             }
           ]
         }
