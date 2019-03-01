@@ -13,7 +13,7 @@ import { ComponentCommunicationService } from '../../services/component-communic
 export class RoleBindingModalComponent implements OnDestroy {
   public isActive = false;
   public roles = [];
-  public userGroup = '';
+  public userOrGroup = '';
   private selectedRole = '';
   private selectedKind = '';
   private currentEnvironmentId: string;
@@ -25,6 +25,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   private filteredKinds = ['Role', 'ClusterRole'];
   private kinds = ['Role', 'ClusterRole'];
   private userGroupError: string;
+  public isUserGroupMode: boolean;
 
   @Input() isGlobalPermissionsView: boolean;
 
@@ -75,6 +76,13 @@ export class RoleBindingModalComponent implements OnDestroy {
     this.error = '';
   }
 
+  setUserGroupMode() {
+    this.isUserGroupMode = true;
+  }
+  setUserMode() {
+    this.isUserGroupMode = false;
+  }
+
   selectKind(kind) {
     this.error = '';
     if (this.selectedKind !== kind) {
@@ -92,38 +100,37 @@ export class RoleBindingModalComponent implements OnDestroy {
     if (this.isGlobalPermissionsView) {
       this.selectKind('ClusterRole');
     }
+    this.isUserGroupMode = true;
   }
 
   public close() {
     this.isActive = false;
-    this.userGroup = '';
+    this.userOrGroup = '';
     this.selectedRole = '';
     this.selectedKind = '';
     this.error = '';
   }
 
   prepareData() {
-    if (this.isGlobalPermissionsView) {
-      return {
-        kind: 'ClusterRoleBinding',
-        groupName: this.userGroup,
-        roleKind: this.selectedKind,
-        roleName: this.selectedRole
-      };
-    }
-
-    return {
-      kind: 'RoleBinding',
-      groupName: this.userGroup,
+    const data = {
       roleKind: this.selectedKind,
       roleName: this.selectedRole,
-      namespace: this.currentEnvironmentId
+      name: this.userOrGroup
     };
+
+    if (this.isGlobalPermissionsView) {
+      data['kind'] = 'ClusterRoleBinding';
+    } else {
+      data['namespace'] = this.currentEnvironmentId;
+      data['kind'] = 'RoleBinding';
+    }
+    data['isUserGroupMode'] = this.isUserGroupMode;
+
+    return data;
   }
 
   public save() {
     const data = this.prepareData();
-
     if (this.isGlobalPermissionsView) {
       return this.rbacService.createClusterRoleBinding(data).subscribe(
         res => {
@@ -139,7 +146,6 @@ export class RoleBindingModalComponent implements OnDestroy {
         }
       );
     }
-
     return this.rbacService.createRoleBinding(data).subscribe(
       res => {
         this.close();
@@ -228,7 +234,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   areValuesForGlobalPermissionsCorrect() {
     return (
       _.includes(this.roles, this.selectedRole) &&
-      this.userGroup &&
+      this.userOrGroup &&
       !this.userGroupError
     );
   }
@@ -236,7 +242,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   areValuesForLocalPermissionsCorrect() {
     return (
       _.includes(this.roles, this.selectedRole) &&
-      this.userGroup &&
+      this.userOrGroup &&
       !this.userGroupError &&
       _.includes(this.kinds, this.selectedKind)
     );
@@ -245,10 +251,9 @@ export class RoleBindingModalComponent implements OnDestroy {
   validateUserGroupInput() {
     // it must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com')
     const regex = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/;
-
-    this.userGroupError = regex.test(this.userGroup)
+    this.userGroupError = regex.test(this.userOrGroup)
       ? ''
       : `The user group name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name').`;
-    return regex.test(this.userGroup);
+    return regex.test(this.userOrGroup);
   }
 }
