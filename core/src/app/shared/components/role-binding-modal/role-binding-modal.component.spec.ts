@@ -345,7 +345,7 @@ describe('RoleBindingModalComponent', () => {
     });
     component.isActive = true;
     component.isGlobalPermissionsView = false;
-    component.isUserGroup = false;
+    component.isUserGroupMode = false;
     component.userOrGroup = 'user';
     component.isReadyToCreate();
 
