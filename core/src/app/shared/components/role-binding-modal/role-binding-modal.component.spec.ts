@@ -292,7 +292,7 @@ describe('RoleBindingModalComponent', () => {
     });
     component.isActive = true;
     component.isGlobalPermissionsView = false;
-    component.isUserGroup = true;
+    component.isUserGroupMode = true;
     component.userOrGroup = 'group';
     component.isReadyToCreate();
 
@@ -398,7 +398,7 @@ describe('RoleBindingModalComponent', () => {
     });
     component.isActive = true;
     component.isGlobalPermissionsView = true;
-    component.isUserGroup = true;
+    component.isUserGroupMode = true;
     component.userOrGroup = 'group';
     component.isReadyToCreate();
 
@@ -454,7 +454,7 @@ describe('RoleBindingModalComponent', () => {
     });
     component.isActive = true;
     component.isGlobalPermissionsView = true;
-    component.isUserGroup = false;
+    component.isUserGroupMode = false;
     component.userOrGroup = 'user';
     component.isReadyToCreate();
 
