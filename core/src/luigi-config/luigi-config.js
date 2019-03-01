@@ -188,7 +188,7 @@ function getNodes(context) {
   ];
   return Promise.all([
     getUiEntities('microfrontends', environment),
-    getUiEntities('clustermicrofrontends', undefined, [
+    getUiEntities('clustermicrofrontends', environment, [
       'environment',
       'namespace'
     ])
@@ -201,12 +201,27 @@ function getNodes(context) {
   });
 }
 
+async function getNamespace(namespaceName) {
+  return fetchFromKyma(`${k8sServerUrl}/api/v1/namespaces/${namespaceName}`);
+}
+
 /**
  * getUiEntities
  * @param {string} entityname microfrontends | clustermicrofrontends
+ * @param {string} environment k8s namespace name
  * @param {array} placements array of strings: namespace | environment | cluster
  */
-function getUiEntities(entityname, environment, placements) {
+async function getUiEntities(entityname, environment, placements) {
+  if (environment) {
+    const currentNamespace = await getNamespace(environment);
+    if (
+      !currentNamespace.metadata.labels ||
+      currentNamespace.metadata.labels.env !== 'true'
+    ) {
+      return [];
+    }
+  }
+
   var fetchUrl =
     k8sServerUrl +
     '/apis/ui.kyma-project.io/v1alpha1/' +
