@@ -32,8 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test; exit 0",
     "eject": "react-scripts eject",
-    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose && prettier --check 'src/**/*.{ts,tsx,js,jsx,json,html,css}'",
-    "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --write 'src/**/*.{ts,tsx,js,jsx,json,html,css}'",
+    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose && prettier --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
     "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {
@@ -43,7 +43,7 @@
   },
   "lint-staged": {
     "linters": {
-      "**/*.{js,jsx,json,css,html}": [
+      "**/*.{js,jsx,json,css,html,yaml}": [
         "prettier --write",
         "git add"
       ],
