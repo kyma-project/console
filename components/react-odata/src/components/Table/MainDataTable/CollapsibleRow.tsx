@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Node } from "../../../types";
-import { HideableSubTable } from "./HideableSubTable";
-import { CollapseArrow } from "../../styled/styled";
+import HideableSubTable from "./HideableSubTable";
+import { CollapseArrow, TableCell, TableRow } from "../../styled/styled";
 
 interface Props {
   columnHeaders: string[];
@@ -15,26 +15,26 @@ const CollapsibleRow: React.FunctionComponent<Props> = ({
   const [show, setShow] = useState<boolean>(false);
   return (
     <>
-      <tr>
+      <TableRow>
         {columnHeaders.map((row: string, index: number) => (
-          <td key={index}>
+          <TableCell key={index}>
             {row === "Annotation" ? (
               <CollapseArrow open={show} clickHandler={() => setShow(!show)} />
             ) : (
               data.attributes[row] || data[row.toLowerCase()] || ""
             )}
-          </td>
+          </TableCell>
         ))}
-      </tr>
+      </TableRow>
       {show && (
-        <tr>
-          <td colSpan={columnHeaders.length}>
+        <TableRow>
+          <TableCell colSpan={columnHeaders.length}>
             <HideableSubTable data={data} />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       )}
     </>
   );
 };
 
-export { CollapsibleRow };
+export default CollapsibleRow;

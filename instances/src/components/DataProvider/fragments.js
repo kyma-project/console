@@ -9,7 +9,8 @@ export const serviceClassGql = `
   supportUrl
   content
   asyncApiSpec
-  apiSpec
+  openApiSpec
+  odataSpec
 `;
 
 export const servicePlanGql = `

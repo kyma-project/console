@@ -1140,4 +1140,4 @@ const V2V3toV4 = `<?xml version="1.0" encoding="utf-8"?>
   </xsl:template>
 
 </xsl:stylesheet>`;
-export { V2V3toV4 };
+export default V2V3toV4;

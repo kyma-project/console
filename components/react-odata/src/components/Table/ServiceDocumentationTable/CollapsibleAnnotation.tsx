@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
-import { SimpleTable } from "./SimpleTable";
-import { CollapseArrow } from "./../../styled/styled";
+import SimpleTable from "./SimpleTable";
+import {
+  CollapseArrow,
+  StyledTable,
+  TableHead,
+  TableHeadCell,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "./../../styled/styled";
 interface Props {
   data: Node;
 }
@@ -15,31 +23,31 @@ const CollapsibleAnnotation: React.FunctionComponent<Props> = ({ data }) => {
   const [show, useShow] = useState<boolean>(false);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <td>{headers[0] || "Data"}</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
+    <StyledTable>
+      <TableHead>
+        <TableRow>
+          <TableHeadCell>{headers[0] || "Data"}</TableHeadCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>
             <CollapseArrow open={show} clickHandler={() => useShow(!show)} />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
         {show && (
-          <tr>
-            <td>
+          <TableRow>
+            <TableCell>
               <SimpleTable
                 title="Text"
                 data={data.children.map((elem: Node) => elem.value)}
               />
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         )}
-      </tbody>
-    </table>
+      </TableBody>
+    </StyledTable>
   );
 };
 
-export { CollapsibleAnnotation };
+export default CollapsibleAnnotation;

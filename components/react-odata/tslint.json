@@ -24,7 +24,6 @@
     "use-isnan": true,
     "no-debugger": true,
     "radix": true,
-    "no-default-export": true,
     "prefer-object-spread": true,
     "no-boolean-literal-compare": true
   },
@@ -33,7 +32,7 @@
       "src/serviceWorker.ts",
       "**/*.json",
       "node_modules/**/*.ts",
-      "src/ODataFiles/*.ts", // remove this later
+      "src/ODataFiles/*.ts",
       "src/ODataReact.tsx"
     ]
   },

@@ -1,23 +1,26 @@
 import React from "react";
 import { parse } from "./tools/Parser";
 import { Node } from "./types";
-import { mocks } from "./ODataFiles/index";
 
-import { TableContainer } from "./components/Table/TableContainer";
+import TableContainer from "./components/Table/TableContainer";
 import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
 
-const ODataReact: React.FunctionComponent = () => {
-  const data = parse.parseFromString(mocks.SAPodata);
-  const schema = data.getElementsByTagName("Schema");
+interface Props {
+  schema: string;
+}
 
-  if (schema.length < 1) {
+const ODataReact: React.FunctionComponent<Props> = ({ schema }) => {
+  const data = parse.parseFromString(schema);
+  const dataSchema = data.getElementsByTagName("Schema");
+
+  if (dataSchema.length < 1) {
     return <ErrorComponent />;
   }
 
   const errors: Node[] = [];
   const dataForComponent: Node[] = [];
 
-  schema[0].children.forEach((elem: Node) => {
+  dataSchema[0].children.forEach((elem: Node) => {
     if (elem.name === "parsererror") {
       errors.push(elem);
     } else {
@@ -33,4 +36,4 @@ const ODataReact: React.FunctionComponent = () => {
   );
 };
 
-export { ODataReact };
+export default ODataReact;

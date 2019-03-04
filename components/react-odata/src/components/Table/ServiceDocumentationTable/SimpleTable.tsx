@@ -1,24 +1,34 @@
 import React from "react";
+
+import {
+  StyledTable,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "../../styled/styled";
+
 interface Props {
   title: string;
   data: string[];
 }
 
 const SimpleTable: React.FunctionComponent<Props> = ({ title, data }) => (
-  <table>
-    <thead>
-      <tr>
-        <td>{title}</td>
-      </tr>
-    </thead>
-    <tbody>
+  <StyledTable>
+    <TableHead>
+      <TableRow>
+        <TableHeadCell>{title}</TableHeadCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
       {data.map((elem: string) => (
-        <tr key={elem}>
-          <td>{elem}</td>
-        </tr>
+        <TableRow key={elem}>
+          <TableCell>{elem}</TableCell>
+        </TableRow>
       ))}
-    </tbody>
-  </table>
+    </TableBody>
+  </StyledTable>
 );
 
-export { SimpleTable };
+export default SimpleTable;

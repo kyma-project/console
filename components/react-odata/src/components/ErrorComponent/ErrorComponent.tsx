@@ -1,21 +1,33 @@
 import React from "react";
 import { Node } from "../../types";
-import { StyledCode } from "../styled/styled";
+import { StyledCode, PageWrapper } from "../styled/styled";
+import { Alert } from "fundamental-react";
+
 interface Props {
   error?: Node;
 }
 
 const ErrorComponent: React.FunctionComponent<Props> = ({ error }) => {
   if (!error) {
-    return <p>{"No schema in data / format of the data is wrong"}</p>;
+    return (
+      <PageWrapper>
+        <Alert dismissible={true} type="error">
+          {"No schema in data / format of the data is wrong"}
+        </Alert>
+      </PageWrapper>
+    );
   }
+
   const data = error.children.map((elem: Node) => elem.value);
+  const [header, code, p] = data;
   return (
-    <div>
-      <h3>{data[0]}</h3>
-      <StyledCode>{data[1]}</StyledCode>
-      <p>{data[2]}</p>
-    </div>
+    <PageWrapper>
+      <Alert dismissible={true} type="error">
+        <h3>{header}</h3>
+        <StyledCode>{code}</StyledCode>
+        <p>{p}</p>
+      </Alert>
+    </PageWrapper>
   );
 };
 

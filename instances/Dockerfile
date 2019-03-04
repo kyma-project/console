@@ -15,6 +15,7 @@ COPY public /app/public
 
 # Copy local changes from react-components package
 COPY react-components/index.js /app/node_modules/@kyma-project/react-components/lib/index.js
+COPY react-odata/lib /app/node_modules/@kyma-project/odata-react/lib
 
 # Set env variables 
 ENV PRODUCTION true
