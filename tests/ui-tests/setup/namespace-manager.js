@@ -15,7 +15,7 @@ export class NamespaceManager {
     }
 
     console.log(`Creating namespace ${this.namespaceName}...`);
-    await this.api.createNamespace(this.getNonSystemNamespaceObj());
+    await this.api.createNamespace(this.getNamespaceObj());
   }
 
   async deleteIfExists() {
@@ -30,14 +30,6 @@ export class NamespaceManager {
   }
 
   getNamespaceObj() {
-    return {
-      metadata: {
-        name: this.namespaceName
-      }
-    };
-  }
-
-  getNonSystemNamespaceObj() {
     return {
       metadata: {
         name: this.namespaceName,
