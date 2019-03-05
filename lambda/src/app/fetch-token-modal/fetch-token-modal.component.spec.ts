@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FetchTokenModalComponent } from './fetch-token-modal.component';
 import { ModalService } from 'fundamental-ngx';
 
-fdescribe('FetchTokenModalComponent', () => {
+describe('FetchTokenModalComponent', () => {
   let mockModalService: ModalService;
   const modalService = {
     open: jasmine
