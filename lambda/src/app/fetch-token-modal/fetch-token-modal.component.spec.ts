@@ -3,8 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FetchTokenModalComponent } from './fetch-token-modal.component';
 import { ModalService } from 'fundamental-ngx';
 
-describe('FetchTokenModalComponent', () => {
-  const mockModalService = {
+fdescribe('FetchTokenModalComponent', () => {
+  let mockModalService: ModalService;
+  const modalService = {
     open: jasmine
       .createSpy('open')
       .and.returnValue({ result: { finally: () => {} } }),
@@ -16,12 +17,16 @@ describe('FetchTokenModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FetchTokenModalComponent],
-      providers: [ModalService],
+      providers: [
+        {
+          provide: ModalService,
+          useValue: modalService,
+        },
+      ],
     })
       .overrideComponent(FetchTokenModalComponent, {
         set: {
           template: '',
-          providers: [{ provide: ModalService, useValue: mockModalService }],
         },
       })
       .compileComponents();
@@ -30,13 +35,16 @@ describe('FetchTokenModalComponent', () => {
   beforeEach(async(() => {
     fixture = TestBed.createComponent(FetchTokenModalComponent);
     component = fixture.componentInstance;
+    mockModalService = TestBed.get(ModalService);
     fixture.detectChanges();
   }));
 
   it('should show the fetch token modal', () => {
-    expect(component['isActive']).toBe(false);
+    (component.fetchTokenModal as any) = 'mock-fetch-token-modal';
     component.show();
-    expect(component['isActive']).toBe(true);
     expect(component['title']).toEqual('Fetch token');
+    expect(mockModalService.open).toHaveBeenCalledWith(
+      'mock-fetch-token-modal',
+    );
   });
 });

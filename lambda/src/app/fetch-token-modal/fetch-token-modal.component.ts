@@ -10,7 +10,7 @@ import { ModalService, ModalComponent } from 'fundamental-ngx';
   templateUrl: './fetch-token-modal.component.html',
 })
 export class FetchTokenModalComponent {
-  @Input('useLuigiBackdrop') useLuigiBackdrop = true;
+  @Input() useLuigiBackdrop = true;
   @ViewChild('fetchTokenModal') fetchTokenModal: ModalComponent;
 
   public title: string;
