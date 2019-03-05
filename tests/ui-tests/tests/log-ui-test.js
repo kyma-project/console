@@ -57,7 +57,7 @@ describeIf(dex.isStaticUser(), 'Log UI tests', () => {
 
     //select limit to 10
     const limitInput = '#limit';
-    await frame.$eval(limitInput, input => input.value = '');
+    await frame.$eval(limitInput, input => (input.value = ''));
     await frame.waitForSelector(limitInput);
     await frame.type(limitInput, '10');
 
@@ -71,6 +71,5 @@ describeIf(dex.isStaticUser(), 'Log UI tests', () => {
     const resultRows = await logsCommands.getSearchResult(frame2);
 
     expect(resultRows.length).toBe(10);
-
   });
 });
