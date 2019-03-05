@@ -1,13 +1,15 @@
 <div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
   <div class="col-2 col-lg-2 sf-list__body--primary">{{ entry.name }}</div>
-  <div class="col-1">{{ entry.status.readyReplicas ? entry.status.readyReplicas : 0 }} /{{ entry.status.replicas }}</div>
+  <div class="col-1">{{ entry.status.readyReplicas ? entry.status.readyReplicas : 0 }} /{{ entry.status.replicas }}
+  </div>
   <div class="col-1">{{ entry.creationTimestamp * 1000 | timeAgo }}</div>
   <div ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
     <span *ngFor="let image of entry.containers">{{ image.image }}</span>
   </div>
-  <ng-container *ngIf="showBoundServices">
+  <ng-container *ngIf="showBoundServices && !isSystemNamespace">
     <div class="col-2" *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
-      <a class="bound-services" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
+      <a class="bound-services" *ngFor="let instance of entry.boundServiceInstanceNames"
+        (click)="goToServiceInstanceDetails(instance)">
         {{ instance }}
       </a>
     </div>
@@ -16,13 +18,13 @@
     </div>
   </ng-container>
   <div class="sf-list__label-column" ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">{{ label }}</span>
+    <span class="tn-badge tn-badge--pill sf-list__label"
+      *ngFor="let label of getLabels(entry.labels)">{{ label }}</span>
   </div>
   <div class="col-1">
-      <app-status-label
-        [statusType]="getStatusType(entry)">
-        {{ getStatus(entry) }}
-      </app-status-label>
+    <app-status-label [statusType]="getStatusType(entry)">
+      {{ getStatus(entry) }}
+    </app-status-label>
   </div>
   <div class="col-1 actions-icon">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>

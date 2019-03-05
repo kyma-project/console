@@ -17,6 +17,7 @@ export class DeploymentEntryRendererComponent
   implements OnInit, OnDestroy {
   public currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;
+  public isSystemNamespace: boolean;
 
   constructor(
     protected injector: Injector,
@@ -48,6 +49,7 @@ export class DeploymentEntryRendererComponent
     this.showBoundServices = this.luigiClientService.hasBackendModule(
       'servicecatalogaddons'
     );
+    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
   }
 
   ngOnDestroy() {

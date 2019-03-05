@@ -195,7 +195,19 @@ function getNodes(context) {
   ]).then(function(values) {
     var nodeTree = [...staticNodes];
     values.forEach(function(val) {
-      nodeTree = [].concat.apply(nodeTree, val);
+      if (val === 'systemNamespace') {
+        nodeTree.forEach(item => {
+          if (item.context) {
+            item.context['isSystemNamespace'] = true;
+          } else {
+            item['context'] = {
+              isSystemNamespace: true
+            };
+          }
+        });
+      } else {
+        nodeTree = [].concat.apply(nodeTree, val);
+      }
     });
     return nodeTree;
   });
@@ -218,10 +230,9 @@ async function getUiEntities(entityname, environment, placements) {
       !currentNamespace.metadata.labels ||
       currentNamespace.metadata.labels.env !== 'true'
     ) {
-      return [];
+      return 'systemNamespace';
     }
   }
-
   var fetchUrl =
     k8sServerUrl +
     '/apis/ui.kyma-project.io/v1alpha1/' +

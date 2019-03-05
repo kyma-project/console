@@ -28,6 +28,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   private services: any;
   public errorMessage: string;
   private id: string;
+  private isSystemNamespace: boolean;
   private currentEnvironmentSubscription: Subscription;
   private actions = [
     {
@@ -67,6 +68,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
           }
         );
       });
+    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
   }
 
   public ngOnDestroy() {

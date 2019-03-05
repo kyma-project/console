@@ -53,16 +53,20 @@
               <label class="tn-form__label">Labels</label>
             </div>
             <div class="col-sm-10" *ngIf="serviceDetails.metadata.labels">
-              <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }} </span>
+              <span class="tn-badge tn-badge--pill sf-list__label"
+                *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }}
+              </span>
             </div>
             <div class="col-sm-2">
               <label class="tn-form__label">Internal endpoints</label>
             </div>
             <div class="col-sm-10">
               <span *ngFor="let port of serviceDetails.spec.ports">
-                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span>
+                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }}
+                  {{ port.protocol }}</span>
                 <br>
-                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }} {{ port.protocol }}</span>
+                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }}
+                  {{ port.protocol }}</span>
                 <br>
               </span>
             </div>
@@ -71,7 +75,7 @@
       </div>
     </section>
   </div>
-  <section class="sf-section">
+  <section class="sf-section" *ngIf="!isSystemNamespace">
     <div class="sf-panel">
       <div class="sf-panel__head">
         <div class="sf-toolbar">
