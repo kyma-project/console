@@ -41,23 +41,22 @@ const Table: React.FunctionComponent<Props> = ({
         </tr>
       </thead>
       <tbody>
-        {filteredData.map(
-          (elem: any, idx: number) =>
-            elem.children.length > 0 ? (
-              <CollapsibleRow
-                data={elem}
-                columnHeaders={columnHeaders}
-                key={idx}
-              />
-            ) : (
-              <tr key={idx}>
-                {columnHeaders.map((row: string, index: number) => (
-                  <td key={index}>
-                    {elem.attributes[row] || elem[row.toLowerCase()] || ""}
-                  </td>
-                ))}
-              </tr>
-            ),
+        {filteredData.map((elem: any, idx: number) =>
+          elem.children.length > 0 ? (
+            <CollapsibleRow
+              data={elem}
+              columnHeaders={columnHeaders}
+              key={idx}
+            />
+          ) : (
+            <tr key={idx}>
+              {columnHeaders.map((row: string, index: number) => (
+                <td key={index}>
+                  {elem.attributes[row] || elem[row.toLowerCase()] || ""}
+                </td>
+              ))}
+            </tr>
+          ),
         )}
       </tbody>
     </table>
