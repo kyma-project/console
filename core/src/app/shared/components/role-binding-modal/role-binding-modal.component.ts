@@ -16,8 +16,8 @@ export class RoleBindingModalComponent implements OnDestroy {
   public isActive = false;
   public roles = [];
   public userOrGroup = '';
-  private selectedRole = '';
-  private selectedKind = '';
+  public selectedRole = '';
+  public selectedKind = '';
   private currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;
   public ariaExpandedRole = false;
@@ -26,7 +26,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   public filteredRoles = [];
   public filteredKinds = ['Role', 'ClusterRole'];
   private kinds = ['Role', 'ClusterRole'];
-  private userGroupError: string;
+  public userGroupError: string;
   public isUserGroupMode: boolean;
 
   @Input() isGlobalPermissionsView: boolean;
