@@ -271,10 +271,13 @@ async function getUiEntities(entityname, environment, placements) {
                 order: node.order,
                 context: {
                   settings: node.settings
-                    ? { ...node.settings, ...(node.context || undefined) }
-                    : undefined
+                    ? { ...node.settings, ...(node.context || {}) }
+                    : {}
                 }
               };
+
+              n.context.requiredBackendModules =
+                node.requiredBackendModules || undefined;
 
               if (node.externalLink) {
                 delete n.viewUrl;
@@ -522,7 +525,7 @@ function getSelfSubjectRulesReview() {
   });
 }
 
-function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+function checkRules(nodeToCheckPermissionsFor) {
   let hasPermissions = false;
   if (nodeToCheckPermissionsFor.adminOnly) {
     if (selfSubjectRulesReview.length > 0) {
@@ -540,6 +543,35 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
     hasPermissions = true;
   }
   return hasPermissions;
+}
+
+function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
+  let hasPermissions = true;
+  if (
+    nodeToCheckPermissionsFor.context &&
+    nodeToCheckPermissionsFor.context.requiredBackendModules &&
+    nodeToCheckPermissionsFor.context.requiredBackendModules.length > 0
+  ) {
+    if (backendModules && backendModules.length > 0) {
+      nodeToCheckPermissionsFor.context.requiredBackendModules.forEach(
+        module => {
+          if (hasPermissions && backendModules.indexOf(module) === -1) {
+            hasPermissions = false;
+          }
+        }
+      );
+    } else {
+      hasPermissions = false;
+    }
+  }
+  return hasPermissions;
+}
+
+function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+  return (
+    checkRules(nodeToCheckPermissionsFor) &&
+    checkRequiredBackendModules(nodeToCheckPermissionsFor)
+  );
 }
 
 function getBackendModules() {
