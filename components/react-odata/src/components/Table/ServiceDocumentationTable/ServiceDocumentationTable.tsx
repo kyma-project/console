@@ -4,10 +4,8 @@ import { Node } from "../../../types";
 interface Props {
   data: Node[];
 }
-const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
-  data,
-}) => {
-  return !Array.isArray(data) ? null : (
+const ServiceDocumentationTable: React.FunctionComponent<Props> = ({ data }) =>
+  !Array.isArray(data) ? null : (
     <table>
       <thead>
         <tr>
@@ -44,6 +42,5 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
       </tbody>
     </table>
   );
-};
 
 export default ServiceDocumentationTable;

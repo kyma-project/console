@@ -18,28 +18,27 @@ export class RbacService {
   prepareMetadata(data) {
     if ('RoleBinding' === data.kind) {
       return {
-        name: `${data.groupName}-${data.roleName}-binding`,
+        name: `${data.name}-${data.roleName}-binding`,
         namespace: data.namespace
       };
     }
 
     return {
-      name: `${data.groupName}-${data.roleName}-binding`
+      name: `${data.name}-${data.roleName}-binding`
     };
   }
 
   prepareBindingToCreate(data) {
+    const subject = {
+      apiGroup: 'rbac.authorization.k8s.io',
+      name: data.name,
+      kind: data.isUserGroupMode ? 'Group' : 'User'
+    };
     return {
       kind: data.kind,
       metadata: this.prepareMetadata(data),
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      subjects: [
-        {
-          kind: 'Group',
-          name: data.groupName,
-          apiGroup: 'rbac.authorization.k8s.io'
-        }
-      ],
+      subjects: [subject],
       roleRef: {
         kind: data.roleKind,
         name: data.roleName,

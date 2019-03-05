@@ -80,7 +80,7 @@ const ServiceClassInfo = ({
           {imageUrl ? (
             <Image size="l" photo={imageUrl} />
           ) : (
-            <Icon icon={'\ue113'} />
+            <Icon glyph="crm-service-manager" style={{ color: '#515559' }} />
           )}
         </ImagePlaceholder>
         <ServiceClassInfoContent

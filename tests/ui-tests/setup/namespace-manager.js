@@ -32,7 +32,8 @@ export class NamespaceManager {
   getNamespaceObj() {
     return {
       metadata: {
-        name: this.namespaceName
+        name: this.namespaceName,
+        labels: { env: 'true' }
       }
     };
   }

@@ -8,6 +8,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
+  logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
 };
 
@@ -187,7 +188,7 @@ function getNodes(context) {
   ];
   return Promise.all([
     getUiEntities('microfrontends', environment),
-    getUiEntities('clustermicrofrontends', undefined, [
+    getUiEntities('clustermicrofrontends', environment, [
       'environment',
       'namespace'
     ])
@@ -200,12 +201,27 @@ function getNodes(context) {
   });
 }
 
+async function getNamespace(namespaceName) {
+  return fetchFromKyma(`${k8sServerUrl}/api/v1/namespaces/${namespaceName}`);
+}
+
 /**
  * getUiEntities
  * @param {string} entityname microfrontends | clustermicrofrontends
+ * @param {string} environment k8s namespace name
  * @param {array} placements array of strings: namespace | environment | cluster
  */
-function getUiEntities(entityname, environment, placements) {
+async function getUiEntities(entityname, environment, placements) {
+  if (environment) {
+    const currentNamespace = await getNamespace(environment);
+    if (
+      !currentNamespace.metadata.labels ||
+      currentNamespace.metadata.labels.env !== 'true'
+    ) {
+      return [];
+    }
+  }
+
   var fetchUrl =
     k8sServerUrl +
     '/apis/ui.kyma-project.io/v1alpha1/' +
@@ -244,10 +260,13 @@ function getUiEntities(entityname, environment, placements) {
                 order: node.order,
                 context: {
                   settings: node.settings
-                    ? { ...node.settings, ...(node.context || undefined) }
-                    : undefined
+                    ? { ...node.settings, ...(node.context || {}) }
+                    : {}
                 }
               };
+
+              n.context.requiredBackendModules =
+                node.requiredBackendModules || undefined;
 
               if (node.externalLink) {
                 delete n.viewUrl;
@@ -299,6 +318,10 @@ function getUiEntities(entityname, environment, placements) {
                   node.viewUrl.substring(
                     'https://lambdas-ui.kyma.local'.length
                   );
+              } else if (node.viewUrl.startsWith('https://log-ui.kyma.local')) {
+                node.viewUrl =
+                  config.logsModuleUrl +
+                  node.viewUrl.substring('https://log-ui.kyma.local'.length);
               }
               return node;
             }
@@ -491,7 +514,7 @@ function getSelfSubjectRulesReview() {
   });
 }
 
-function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+function checkRules(nodeToCheckPermissionsFor) {
   let hasPermissions = false;
   if (nodeToCheckPermissionsFor.adminOnly) {
     if (selfSubjectRulesReview.length > 0) {
@@ -509,6 +532,35 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
     hasPermissions = true;
   }
   return hasPermissions;
+}
+
+function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
+  let hasPermissions = true;
+  if (
+    nodeToCheckPermissionsFor.context &&
+    nodeToCheckPermissionsFor.context.requiredBackendModules &&
+    nodeToCheckPermissionsFor.context.requiredBackendModules.length > 0
+  ) {
+    if (backendModules && backendModules.length > 0) {
+      nodeToCheckPermissionsFor.context.requiredBackendModules.forEach(
+        module => {
+          if (hasPermissions && backendModules.indexOf(module) === -1) {
+            hasPermissions = false;
+          }
+        }
+      );
+    } else {
+      hasPermissions = false;
+    }
+  }
+  return hasPermissions;
+}
+
+function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+  return (
+    checkRules(nodeToCheckPermissionsFor) &&
+    checkRequiredBackendModules(nodeToCheckPermissionsFor)
+  );
 }
 
 function getBackendModules() {
@@ -616,7 +668,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     pathSegment: 'workspace',
                     label: 'Namespaces',
                     viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
                     icon: 'dimension'
                   },
                   {
@@ -709,6 +761,11 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
             {
               label: '+ New Namespace',
               link: '/home/workspace?~showModal=true'
+            },
+            {
+              label: 'Show all namespaces',
+              link: '/home/workspace?~allNamespaces=true',
+              position: 'bottom'
             }
           ]
         }

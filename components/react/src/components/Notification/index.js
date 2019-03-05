@@ -16,7 +16,7 @@ const Notification = ({ title, color, icon, onClick, content, visible }) => (
     <NotificationHeader>
       <NotificationTitleWrapper>{title}</NotificationTitleWrapper>
       <NotificationIconWrapper>
-        <Icon color={color} icon={icon} />
+        <Icon style={{ color: color }} glyph={icon} />
       </NotificationIconWrapper>
     </NotificationHeader>
     {content && (
