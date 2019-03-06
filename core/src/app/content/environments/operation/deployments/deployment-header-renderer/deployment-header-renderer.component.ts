@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@kyma-project/luigi-client';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 @Component({

@@ -1,7 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import * as LuigiClient from '@kyma-project/luigi-client';
 import { DeploymentHeaderRendererComponent } from './deployment-header-renderer.component';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
+
+const mockLuigiClient = {
+  getEventData: () => {
+    return {
+      isSystemNamespace: true
+    };
+  }
+};
 
 describe('DeploymentHeaderRendererComponent', () => {
   let component: DeploymentHeaderRendererComponent;
@@ -25,6 +33,9 @@ describe('DeploymentHeaderRendererComponent', () => {
     fixture = TestBed.createComponent(DeploymentHeaderRendererComponent);
     component = fixture.componentInstance;
     luigiClientService = TestBed.get(LuigiClientService);
+    spyOn(LuigiClient, 'getEventData').and.callFake(
+      mockLuigiClient.getEventData
+    );
   });
 
   it('should create', () => {
