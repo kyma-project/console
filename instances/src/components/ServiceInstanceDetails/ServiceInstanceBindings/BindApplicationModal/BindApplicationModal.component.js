@@ -143,7 +143,7 @@ class BindApplicationModal extends React.Component {
             content: `Application binding "${createdBindingUsageName}" created successfully`,
             title: `${createdBindingUsageName}`,
             color: '#359c46',
-            icon: '\uE05B',
+            icon: 'accept',
             instanceName: createdBindingUsageName,
           },
         });
@@ -199,6 +199,7 @@ class BindApplicationModal extends React.Component {
       (serviceInstance &&
         (serviceInstance.servicePlan || serviceInstance.clusterServicePlan)) ||
       [];
+
     const bindingCreateParameterSchema =
       (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
 

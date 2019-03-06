@@ -5,7 +5,6 @@ fd-modal .fd-modal-background {
 }
 
 
-
 //Common styles for modals
 .fd-modal__footer {
   .fd-button {
@@ -20,6 +19,12 @@ fd-modal .fd-modal-background {
 .fd-modal--large {
   .fd-modal {
     max-width: 650px;
+  }
+}
+
+.fd-modal--xlarge {
+  .fd-modal {
+    max-width: 80%;
   }
 }
 
@@ -60,6 +65,15 @@ span {
   word-break: break-all;
 }
 
+// Container
+.y-fd-container--space-bottom {
+  @extend .fd-has-margin-small;
+  @extend .fd-has-padding-small;
+}
+
+.y-fd-container--border-light {
+  border-bottom: 1px solid #cccccc;
+}
 
 //Token
 .fd-panel__filters {
@@ -95,5 +109,19 @@ $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
 
   .y-fd-table__tr--no-border-below + tr {
     border-top: 0;
+  }
+}
+
+
+//Workaroud before techne is not removed
+input[type=checkbox] {
+
+  border-color: var(--fd-forms-border-color);
+  background-color: var(--fd-forms-background-color);
+
+  &:checked {
+    &:after {
+      display: none;
+    }
   }
 }

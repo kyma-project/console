@@ -4,16 +4,12 @@ $fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
 @import "~fiori-fundamentals/scss/all.scss";
 @import 'styles/fiori-fundamentals-overrides';
 
-
-
 // Legacy UI
 @import 'styles/_variables';
-
 @import 'styles/overrides';
 @import 'styles/list';
 @import 'styles/panel';
 @import 'styles/alert';
-@import 'styles/modal';
 
 .fd-input-group {
   input[type='search']:not(:disabled):focus,

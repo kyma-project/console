@@ -130,6 +130,15 @@ span {
   }
 }
 
+//helpers
+.y-word-wrap {
+  word-wrap: break-word;
+}
+
+.y-word-break {
+  word-break: break-all;
+}
+
 //Token
 .y-fd-token {
   margin-top: fd-space('tiny') / 2;
@@ -157,7 +166,3 @@ span {
   }
 }
 
-//helpers
-.y-word-wrap {
-  word-wrap: break-word;
-}

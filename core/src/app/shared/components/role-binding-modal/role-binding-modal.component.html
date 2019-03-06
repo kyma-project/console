@@ -4,15 +4,34 @@
         <fd-modal-body>
           <div class="fd-form__group">
             <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">{{ error }}</div>
+            <div class="fd-form__set">
+              <div class="fd-form__group">
+                <div class="fd-form__item fd-form__item--inline fd-form__item--check">
+                  <label class="fd-form__label" for="pDidh767">
+                    <input type="radio" class="fd-form__control" id="pDidh767" name="radio" (click)='setUserMode()'
+                      [checked]="!isUserGroupMode">
+                    User
+                  </label>
+                </div>
+                <div class="fd-form__item fd-form__item--inline fd-form__item--check">
+                  <label class="fd-form__label" for="pDidh7618">
+                    <input type="radio" class="fd-form__control" id="pDidh7618" name="radio" (click)='setUserGroupMode()'
+                      [checked]="isUserGroupMode">
+                    User Group
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <div fd-form-set>
               <div fd-form-item>
-                <fd-form-label>UserGroup *</fd-form-label>
+                <fd-form-label>{{ isUserGroupMode ? 'User Group' : 'User' }} *</fd-form-label>
                 <input fd-form__control
                   class="fd-form__control y-fd-form__control"
-                  type="text" 
-                  name="userGroup"
-                  placeholder="Enter User Group"
-                  [(ngModel)]="userGroup"
+                  type="text"
+                  name="userOrGroup"
+                  placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}"
+                  [(ngModel)]="userOrGroup"
                   (ngModelChange)="validateUserGroupInput()"
                   autocomplete="off">
                 <fd-form-message [type]="'error'" *ngIf="userGroupError">{{ userGroupError }}</fd-form-message>
@@ -27,7 +46,7 @@
                     (click)="toggleDropDown('Kind')">
                     <input fd-form__control
                       class="fd-form__control y-fd-form__control"
-                      type="text" 
+                      type="text"
                       name="selectedKind"
                       placeholder="Select Kind"
                       [(ngModel)]="selectedKind"
@@ -59,7 +78,7 @@
                     (click)="toggleDropDown('Role')">
                     <input fd-form__control
                       class="fd-form__control y-fd-form__control"
-                      type="text" 
+                      type="text"
                       name="selectedRole"
                       placeholder="Select Role"
                       [disabled]="!selectedKind"

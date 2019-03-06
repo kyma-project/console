@@ -69,7 +69,10 @@ const Card = ({
               {imageUrl ? (
                 <CardImage size="s" photo={imageUrl} />
               ) : (
-                <Icon icon={'\ue113'} />
+                <Icon
+                  glyph="crm-service-manager"
+                  style={{ color: '#515559' }}
+                />
               )}
             </CardThumbnail>
 

@@ -1,44 +1,41 @@
-<ng-template [ngIf]="isActive">
-  <div class="sf-modal sf-modal--max  modalposition" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm"
-    (click)="$event.stopPropagation()">
-    <div class="tn-modal" role="document">
-      <div class="tn-modal__content">
-        <div class="tn-modal__header">
-          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="cancel($event)">
-            <span class="tn-icon tn-icon--close" role="presentation"></span>
-          </button>
-          <h4 class="tn-modal__title">Create Service Binding</h4>
-        </div>
-        <div class="tn-modal__body">
-            <label class="control-label">Service Instance Prefix</label>
-            <input class="tn-form__control" type="text" id="input-svc-instance-prefix" (keyup)="validatesPrefix()"  [(ngModel)]="selectedInstanceBindingPrefix">
-            <div *ngIf="isSelectedInstanceBindingPrefixInvalid">
-              <p class="alert">Invalid prefix: must consist of lower case alphanumeric characters, '-', '_' or '.', no spaces
-                and must start and end with an alphanumeric character. It should not be more than 61 characters long.</p>
-            </div>
-          <p>
-            <label for="instanceSelect" class="control-label">Service Instance</label>
-            <select id="instanceSelect" class="form-control input-lg" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">
-              <option></option>
-              <option *ngFor="let i of instances" [ngValue]="i">{{ i.name }}</option>
-            </select>
-          </p>
-          <p class="checkbox">
-            <input type="checkbox" id="createSecrets" [(ngModel)]="createSecrets" (ngModelChange)="validateSelection()">
-            <label for="createSecrets" class="control-label">Create new secret for the binding</label>
-          </p>
-          <p *ngIf="!createSecrets">
-            <label for="secretSelect" class="control-label">Secrets</label>
-            <select id="secretSelect" class="form-control input-lg" [(ngModel)]="selectedBinding" (ngModelChange)="validateSelection()">
-              <option *ngFor="let binding of relevantServiceBindings.items" [ngValue]="binding">{{ binding.spec.secretName }}</option>
-            </select>
-          </p>
-        </div>
-        <footer class="tn-modal__footer-items">
-          <button [disabled]="!isValid" class="tn-modal__button-primary sf-button--primary tn-button--small" (click)="submit($event)">Create Service Binding</button>
-          <button class="tn-button tn-button--small tn-button--text cancel" (click)="cancel($event)">Cancel</button>
-        </footer>
+<fd-modal #instanceBindingCreatorModal role="dialog" aria-labelledby="confirm">
+  <fd-modal-header>
+    Create Service Binding
+  </fd-modal-header>
+  <fd-modal-body>
+    <div fd-form-set>
+      <div fd-form-item>
+        <fd-form-label class="control-label">Service Instance Prefix</fd-form-label>
+        <input fd-form-control [type]="'text'" id="input-svc-instance-prefix" (keyup)="validatesPrefix()"  [(ngModel)]="selectedInstanceBindingPrefix" [state]="isSelectedInstanceBindingPrefixInvalid ? 'invalid' : undefined">
+        <fd-form-message [type]="'error'" *ngIf="isSelectedInstanceBindingPrefixInvalid">
+          Invalid prefix: must consist of lower case alphanumeric characters, '-', '_' or '.', no spaces and must start and end with an alphanumeric character. It should not be more than 61 characters long.
+        </fd-form-message>
+      </div>
+      <div fd-form-item>
+        <fd-form-label class="control-label">Service Instance</fd-form-label>
+        <select fd-form-control id="instanceSelect" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">
+          <option></option>
+          <option *ngFor="let i of instances" [ngValue]="i">{{ i.name }}</option>
+        </select>
+      </div>
+
+      <div class="fd-form__item fd-form__item--check">
+        <label class="fd-form__label control-label" for="createSecrets">
+            <input type="checkbox" class="fd-form__control" id="createSecrets" [(ngModel)]="createSecrets" (ngModelChange)="validateSelection()">
+            Create new secret for the binding
+        </label>
+      </div>
+
+      <div fd-form-item *ngIf="!createSecrets">
+        <fd-form-label class="control-label">Secrets</fd-form-label>
+        <select fd-form-control id="secretSelect" [(ngModel)]="selectedBinding" (ngModelChange)="validateSelection()">
+          <option *ngFor="let binding of relevantServiceBindings.items" [ngValue]="binding">{{ binding.spec.secretName }}</option>
+        </select>
       </div>
     </div>
-  </div>
-</ng-template>
+  </fd-modal-body>
+  <fd-modal-footer>
+    <button fd-button (click)="closeModal($event)" [options]="'light'">Cancel</button>
+    <button fd-button [disabled]="!isValid" (click)="submit($event)" [fdType]="'main'">Create Service Binding</button>
+  </fd-modal-footer>
+</fd-modal>

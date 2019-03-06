@@ -133,7 +133,7 @@
       <ng-container *ngIf="selectedTriggers.length > 0">
         <span class="fd-token y-fd-token triggers"
             *ngFor="let trigger of selectedTriggers">
-          <div class="labels__remove" title="Remove label" (mouseover)="hideHTTPURL();$event.stopPropagation();" (click)="unselectEvent(trigger);$event.stopPropagation();"></div>
+          <div class="labels__remove" title="Remove trigger" (mouseover)="hideHTTPURL();$event.stopPropagation();" (click)="unselectEvent(trigger);$event.stopPropagation();"></div>
           <span *ngIf="trigger.eventType === 'http' && isHTTPTriggerAuthenticated" class="securedHTTPTrigger"></span>
           <span (mouseover)="onMouseOver(trigger)" (click)="onMouseOver(trigger)">
             {{ trigger.eventType }}
@@ -197,18 +197,10 @@
         </fd-panel-title>
       </fd-panel-head>
       <fd-panel-actions>
-        <button fd-button [options]="'light'" [glyph]="'add'" [compact]="true"
-          *ngIf="(hasDependencies | async) === false" (click)="addDependencies()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">
-          Add
-        </button>
-        <button fd-button [options]="'light'" [glyph]="'less'"
-          *ngIf="(hasDependencies | async)"
-                (click)="removeDependencies()">
-          Remove
-        </button>
+        <fd-toggle [size]="'xs'" (change)="changeDependencies(hasDependencies)" [(ngModel)]="hasDependencies"></fd-toggle>
       </fd-panel-actions>
     </fd-panel-header>
-    <fd-panel-body [hidden]="(hasDependencies | async) === false">
+    <fd-panel-body [hidden]="!hasDependencies">
       <ace-editor #dependencyEditor [(text)]="dependency" [mode]="aceDependencyMode" [theme]="theme" (textChanged)="onDependencyChange($event)"></ace-editor>
     </fd-panel-body>
   </fd-panel>

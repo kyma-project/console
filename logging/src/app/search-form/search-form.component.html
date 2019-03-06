@@ -1,0 +1,129 @@
+<div class="fd-section">
+  <div class="fd-panel">
+  <div class="fd-panel__header">
+    <div class="fd-panel__head">
+        <h1 class="fd-panel__title">
+            Logs
+        </h1>
+    </div>
+  </div>
+  <div class="fd-panel__body">
+    <div class="fd-alert fd-alert--error fd-alert--dismissible fd-has-margin-bottom-xs" role="alert" id="global_errors" *ngIf="error">
+      <button class="fd-alert__close" aria-controls="global_errors" aria-label="Close" (click)="error = null"></button>
+      {{ error }}
+    </div>
+    <form #searchData="ngForm" (ngSubmit)="onSubmit()">
+
+
+      <fieldset fd-form-set>
+        <div fd-form-item [isInline]="true">
+          <fd-form-label [forValue]="'label'">
+            Log Labels
+          </fd-form-label>
+          <select fd-form-control id="label" name="label" (change)="loadLabelValues($event.target.value)">
+            <option value="">Select Log Label</option>
+            <option *ngFor="let label of labels.values" [value]="label">{{label}}</option>
+          </select>
+        </div>
+
+        <div fd-form-item [isInline]="true">
+          <fd-form-label [forValue]="'labelValue'">
+            Label Values
+          </fd-form-label>
+          <select fd-form-control id="labelValue" name="labelValue" (change)="selectLabelValue($event.target.value)">
+            <option value="">Select Label Value</option>
+            <option *ngFor="let value of labelValues.values" [value]="value">{{value}}</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset fd-form-set>
+
+        <div fd-form-item [isInline]="true">
+          <fd-form-label [forValue]="'limit'">
+            Query Result Limit
+          </fd-form-label>
+          <input fd-form-control [type]="'number'" id="limit" required [(ngModel)]="model.limit"
+                 name="limit" [valueAsNumber]="model.limit">
+        </div>
+
+        <div fd-form-item [isInline]="true">
+          <fd-form-label [forValue]="'direction'">
+            Search Result Direction
+          </fd-form-label>
+          <select fd-form-control id="direction" required [(ngModel)]="model.direction" name="direction">
+            <option *ngFor="let direction of directions" [value]="direction">{{direction}}</option>
+          </select>
+        </div>
+
+        <div fd-form-item [isInline]="true">
+          <fd-form-label [forValue]="'from'">
+            From
+          </fd-form-label>
+          <select fd-form-control id="from" required [(ngModel)]="model.from" name="from">
+            <option *ngFor="let from of fromValues" [value]="from">{{from}}</option>
+          </select>
+        </div>
+
+        <div fd-form-item [isInline]="true">
+
+          <fd-form-label [forValue]="'to'">
+            To
+          </fd-form-label>
+          <select fd-form-control id="to" required [(ngModel)]="model.to" name="to">
+            <option *ngFor="let to of toValues" [value]="to">{{to}}</option>
+          </select>
+        </div>
+
+
+      </fieldset>
+      <fieldset fd-form-set>
+        <div fd-form-item>
+          <fd-form-label [forValue]="'query'" [isRequired]="true">Required Input</fd-form-label>
+          <input fd-form-control [type]="'text'" id="query" placeholder="Enter query" required [(ngModel)]="model.query"
+                 name="query">
+        </div>
+
+        <div fd-form-item [isInline]="true">
+          <button fd-button type="submit" [glyph]="'search'" [disabled]="!searchData.form.valid" >Search</button>
+          <span class="fd-has-margin-left-s">Query Examples</span>
+          <span class="fd-inline-help fd-has-margin-left-xxs">
+              <span class="fd-inline-help__content fd-inline-help__content--bottom-center">
+                  Searching keyword 'error' for a service with name my-service use '{{'{'}}app="my-service"} error'.
+              </span>
+          </span>
+        </div>
+
+      </fieldset>
+      <div fd-form-item>
+        Selected Labels:
+        <span class="fd-token y-fd-token" role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">{{label.key}}={{label.value}}</span>
+      </div>
+
+    </form>
+  </div>
+</div>
+</div>
+
+<div class="fd-section" *ngFor="let stream of searchResult.streams">
+  <div class="fd-panel">
+  <div class="fd-panel__filters" >
+    Available labels for stream:
+    <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button" *ngFor="let label of stream.availableLabels" (click)="addLabel($event.target.outerText)">{{label}}</div>
+  </div>
+  <div class="fd-panel__body">
+    <fd-table>
+      <fd-table-header>
+        <th>Timestamp</th>
+        <th>Log</th>
+      </fd-table-header>
+      <fd-table-body>
+        <tr *ngFor="let row of stream.entries">
+          <td class="no-word-break">{{row.ts}}</td>
+          <td class="word-break">{{row.line}}</td>
+        </tr>
+      </fd-table-body>
+    </fd-table>
+  </div>
+  </div>
+</div>

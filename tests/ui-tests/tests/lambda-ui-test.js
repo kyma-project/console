@@ -70,7 +70,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const input = '#input-1';
     await frame2.waitForSelector(input);
     await frame2.type(input, testLambda);
-    const createLambdaButton = '.tn-button.tn-button--small.sf-button--primary';
+    const createLambdaButton = '.fd-button.fd-button--emphasized';
     await frame2.$eval(createLambdaButton, btn => btn.click());
 
     // then

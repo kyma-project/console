@@ -1,45 +1,31 @@
-<ng-template [ngIf]="isActive">
-  <div class="sf-modal sf-modal--max modalposition" [ngClass]="{'is-active': isActive===true}">
-    <div class="tn-modal add-event-modal" role="document">
-      <div class="tn-modal__content">
-        <div class="tn-modal__header">
-          <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="closeEventTriggerChooserModal()">
-            <span class="tn-icon tn-icon--close" role="presentation"></span>
-          </button>
-          <h4 class="tn-modal__title">{{ title }}</h4>
-          <input type="search" class="triggers-dropdown__search" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
-            placeholder="Search">
 
-          <div class="sf-list">
-            <div>
-              <div class="row sf-list__head">
-                <div class="col-1"></div>
-                <div class="col-4">Event</div>
-                <div class="col-1">Version</div>
-                <div class="col-2">Application</div>
-                <div class="description col-4">Description</div>
-              </div>
-            </div>
-          </div>
-          <div class="sf-list trigger-entry-list scroll-list">
-            <div *ngFor="let event of filteredTriggers">
-              <div class="row sf-list__body">
-                <div class="data col-1"><input type="checkbox" (change)="toggleEventSelection(event, $event)"></div>
-                <div class="data data--name-event col-4 checkbox">
-                  {{ event.eventType }}
-                </div>
-                <div class="data col-1">{{ event.version }}</div>
-                <div class="data col-2">{{ event.sourceId }}</div>
-                <div class="data data--description col-4">{{ event.description }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <footer class="tn-modal__footer-items">
-          <button class="tn-modal__button-primary sf-button--primary tn-button--small" (click)="addEvents()" [disabled]="!enableAdd">Add</button>
-          <button class="tn-modal__button-secondary tn-button--small " type="button" (click)=closeEventTriggerChooserModal()>Cancel</button>
-        </footer>
-      </div>
-    </div>
-  </div>
-</ng-template>
+<fd-modal class="fd-modal--xlarge" #eventTriggerModal role="dialog">
+  <fd-modal-header>{{ title }}</fd-modal-header>
+  <fd-modal-body>
+    <input type="search" class="fd-input" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
+          placeholder="Search">
+
+    <table class="fd-table">
+      <thead>
+        <th class="y-fd-table__th--col-1"></th>
+        <th class="y-fd-table__th--col-4">Event</th>
+        <th class="y-fd-table__th--col-1">Version</th>
+        <th class="y-fd-table__th--col-2">Application</th>
+        <th class="description y-fd-table__th--col-4">Description</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of filteredTriggers">
+          <td><input type="checkbox" (change)="toggleEventSelection(event, $event)"></td>
+          <td>{{ event.eventType }}</td>
+          <td>{{ event.version }}</td>
+          <td>{{ event.sourceId }}</td>
+          <td>{{ event.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </fd-modal-body>
+  <fd-modal-footer>
+    <button fd-button [options]="'light'" (click)="closeEventTriggerChooserModal()">Cancel</button>
+    <button fd-button [fdType]="'main'" (click)="addEvents()" [disabled]="!enableAdd">Add</button>
+  </fd-modal-footer>
+</fd-modal>

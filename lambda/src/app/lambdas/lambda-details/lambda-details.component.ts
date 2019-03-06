@@ -123,8 +123,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   newLabel;
   wrongLabel = false;
   wrongLabelMessage = '';
-  error: string = null;
-  hasDependencies: Observable<boolean> = observableOf(false);
+  error: string;
+  hasDependencies = false;
   envVarKey = '';
   envVarValue = '';
   isEnvVariableNameInvalid = false;
@@ -799,26 +799,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleTypeDropDown() {
-    this.typeDropdownHidden = !this.typeDropdownHidden;
-  }
-
-  toggleSizeDropDown() {
-    this.sizeDropdownHidden = !this.sizeDropdownHidden;
-  }
-
-  closeTypeDropDown() {
-    return (this.typeDropdownHidden = true);
-  }
-
-  closeSizeDropDown() {
-    return (this.sizeDropdownHidden = true);
-  }
-
-  closeTriggerTypeDropDown() {
-    return (this.toggleTriggerType = false);
-  }
-
   setLoaded(value: boolean): void {
     this.loaded = value;
     this.cdr.detectChanges();
@@ -849,11 +829,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           this.code = lambda.spec.function;
           this.kind = lambda.spec.runtime;
           this.dependency = lambda.spec.deps;
-          this.hasDependencies = observableOf(
+          this.hasDependencies =
             this.dependency != null &&
-              this.dependency !== undefined &&
-              this.dependency !== '',
-          );
+            this.dependency !== undefined &&
+            this.dependency !== '';
 
           this.setLoaded(true);
           this.initializeEditor();
@@ -922,20 +901,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           this.showError(err.message);
         },
       );
-  }
-
-  toggleDropdown(event) {
-    const dropdown = event.target.attributes['dropdown'].value;
-    if ('trigger' === dropdown) {
-      return (this.toggleTrigger = !this.toggleTrigger);
-    }
-  }
-
-  toggleTriggerTypeDropdown(event) {
-    const dropdown = event.target.attributes['dropdown'].value;
-    if ('triggerType' === dropdown) {
-      return (this.toggleTriggerType = !this.toggleTriggerType);
-    }
   }
 
   showHTTPTrigger(): void {
@@ -1047,13 +1012,14 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }, {});
   }
 
-  addDependencies() {
-    this.hasDependencies = observableOf(true);
-  }
-  removeDependencies() {
-    this.dependency = '';
-    this.lambda.spec.deps = null;
-    this.hasDependencies = observableOf(false);
+  changeDependencies(status: boolean): void {
+    if (status) {
+      this.hasDependencies = true;
+    } else {
+      this.dependency = '';
+      this.lambda.spec.deps = null;
+      this.hasDependencies = false;
+    }
   }
 
   /** validatesName checks whether a function name is a valid DNS-1035 label */
@@ -1176,7 +1142,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   showEventTrigger(): void {
-    this.closeTriggerTypeDropDown();
     this.eventTriggerChooserModal.show(
       [...this.availableEventTriggers],
       [...this.selectedTriggers],

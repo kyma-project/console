@@ -42,7 +42,7 @@ export class UploaderComponent {
       this.fileName = this.fileToUpload.name;
 
       this.resourceUploadService.getFileContent(this.fileToUpload).subscribe(
-        data => {
+        (data: string[]) => {
           this.fileContents = data;
           this.err = false;
           this.ready = true;

@@ -15,10 +15,6 @@ validate:
 test:
 	npm run test
 
-scan:
-	sed -i -e 's/APIKEY/$(API_KEY)/g; s/USERKEY/$(USER_KEY)/g' /whitesource.config.json && cp /whitesource.config.json ./whitesource.config.json
-	whitesource run
-
 build:
 	npm run build
 

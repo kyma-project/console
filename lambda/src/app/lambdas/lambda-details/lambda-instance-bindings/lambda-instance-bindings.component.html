@@ -8,14 +8,14 @@
       <fd-panel-actions>
         <button fd-button [options]="'light'" [glyph]="'add'" [compact]="true"
           [disabled]="!lambdaName || isLambdaNameInvalid" (click)="showBindingCreatorModal()">
-          Add
+          Create Service Binding
         </button>
       </fd-panel-actions>
     </fd-panel-header>
   </fd-panel>
 
   <fd-panel *ngIf="instanceBindingInfoList.length > 0">
-    <fd-panel-body>
+    <fd-panel-body [bleed]="true">
       <table class="fd-table">
         <thead>
           <tr>
