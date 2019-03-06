@@ -33,7 +33,7 @@ export class GraphqlClientService {
         const filteredErrors = (response && response.errors && response.errors.filter((e: any) => !e.message.startsWith('MODULE_DISABLED'))
         ) || [];
         if (filteredErrors.length) {
-            throw new Error(filteredErrors[0].message);
+          throw new Error(filteredErrors[0].message);
         }
         if (response && response.data) {
           return response.data;
