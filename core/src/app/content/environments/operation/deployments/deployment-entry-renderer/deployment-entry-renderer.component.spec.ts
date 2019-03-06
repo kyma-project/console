@@ -1,3 +1,4 @@
+import * as LuigiClient from '@kyma-project/luigi-client';
 import { APP_BASE_HREF } from '@angular/common';
 import { AppModule } from './../../../../../app.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -5,6 +6,15 @@ import { DeploymentEntryRendererComponent } from './deployment-entry-renderer.co
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { of, Subject } from 'rxjs';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
+import { ClassGetter } from '@angular/compiler/src/output/output_ast';
+
+const mockLuigiClient = {
+  getEventData: () => {
+    return {
+      isSystemNamespace: true
+    };
+  }
+};
 
 describe('DeploymentEntryRendererComponent', () => {
   let component: DeploymentEntryRendererComponent;
@@ -41,6 +51,9 @@ describe('DeploymentEntryRendererComponent', () => {
   }));
 
   beforeEach(() => {
+    spyOn(LuigiClient, 'getEventData').and.callFake(
+      mockLuigiClient.getEventData
+    );
     fixture = TestBed.createComponent(DeploymentEntryRendererComponent);
     component = fixture.componentInstance;
     componentCommunicationService = TestBed.get(ComponentCommunicationService);
