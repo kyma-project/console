@@ -3,7 +3,7 @@
   <div class="col-1">{{ entry.status.readyReplicas ? entry.status.readyReplicas : 0 }} /{{ entry.status.replicas }}
   </div>
   <div class="col-1">{{ entry.creationTimestamp * 1000 | timeAgo }}</div>
-  <div ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
+  <div ngClass="{{showBoundServices && !isSystemNamespace ? 'col-2' : 'col-3'}}">
     <span *ngFor="let image of entry.containers">{{ image.image }}</span>
   </div>
   <ng-container *ngIf="showBoundServices && !isSystemNamespace">
@@ -17,7 +17,7 @@
       <span></span>
     </div>
   </ng-container>
-  <div class="sf-list__label-column" ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
+  <div class="sf-list__label-column" ngClass="{{showBoundServices && !isSystemNamespace ? 'col-2' : 'col-3'}}">
     <span class="tn-badge tn-badge--pill sf-list__label"
       *ngFor="let label of getLabels(entry.labels)">{{ label }}</span>
   </div>
