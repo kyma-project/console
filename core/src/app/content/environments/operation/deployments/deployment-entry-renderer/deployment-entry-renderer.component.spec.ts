@@ -6,7 +6,6 @@ import { DeploymentEntryRendererComponent } from './deployment-entry-renderer.co
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { of, Subject } from 'rxjs';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
-import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 
 const mockLuigiClient = {
   getEventData: () => {
