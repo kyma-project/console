@@ -11,8 +11,10 @@ export class GraphQLClientService {
     return this.http.post(url, { query, variables }).pipe(
       concatMap(res => {
         const response: any = res;
-        if (response && response.errors) {
-          return throwError(response.errors[0].message);
+        const filteredErrors = (response && response.errors && response.errors.filter((e: any) => !e.message.startsWith('MODULE_DISABLED'))
+        ) || [];
+        if (filteredErrors.length) {
+          return throwError(filteredErrors[0].message);
         } else if (response && response.data) {
           return of(response.data);
         }
