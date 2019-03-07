@@ -532,7 +532,7 @@ function checkRules(nodeToCheckPermissionsFor) {
       selfSubjectRulesReview.forEach(rule => {
         if (
           rule.verbs.includes('*') &&
-          rule.apiGroups.includes('') &&
+          (rule.apiGroups.includes('') || rule.apiGroups.includes('*')) &&
           rule.resources.includes('*')
         ) {
           hasPermissions = true;
