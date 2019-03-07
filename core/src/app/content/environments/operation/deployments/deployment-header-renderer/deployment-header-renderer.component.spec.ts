@@ -6,7 +6,7 @@ import { LuigiClientService } from 'shared/services/luigi-client.service';
 const mockLuigiClient = {
   getEventData: () => {
     return {
-      isSystemNamespace: true
+      isSystemNamespace: false
     };
   }
 };
