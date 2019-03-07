@@ -10,7 +10,7 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label>Name *</fd-form-label>
-              <input fd-form__control #nameInput autofocus type="text" name="remoteEnvName" [(ngModel)]="name"
+              <input fd-form-control #nameInput autofocus type="text" name="remoteEnvName" [(ngModel)]="name"
                 (ngModelChange)="validateRemoteEnvNameRegex()" placeholder="Specify a name for your Application"
                 autocomplete="off" />
               <fd-form-message [type]="'error'" *ngIf="wrongRemoteEnvName">
@@ -22,7 +22,7 @@
             </div>
             <div fd-form-item>
               <fd-form-label>Description *</fd-form-label>
-              <input fd-form__control type="text" name="remoteEnvDescription" [(ngModel)]="description"
+              <input fd-form-control type="text" name="remoteEnvDescription" [(ngModel)]="description"
                 placeholder="Specify a description for your Application" autocomplete="off" />
             </div>
             <div fd-form-item>

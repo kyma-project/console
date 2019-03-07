@@ -60,28 +60,31 @@
 </section>
 
 <section class='fd-section' *ngIf="remoteEnvironments && remoteEnvironments.length > 0">
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>Connected Applications</fd-action-bar-title>
-    </fd-action-bar-header>
-  </fd-action-bar>
-  <fd-table>
-    <fd-table-header>
-      <th>Name</th>
-      <th>Actions</th>
-    </fd-table-header>
-    <fd-table-body>
-      <tr *ngFor="let env of remoteEnvironments">
-        <td>
-          <a class="fd-has-font-weight-semi" (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
-        </td>
-        <td class="sf-table__td--min fd-has-text-align-center">
-          <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-        </td>
-      </tr>
-    </fd-table-body>
-  </fd-table>
-
+  <fd-panel>
+    <fd-panel-header>
+      <fd-panel-head>
+        <fd-panel-title>Connected Applications</fd-panel-title>
+      </fd-panel-head>
+    </fd-panel-header>
+    <fd-panel-body [bleed]="true">
+      <fd-table>
+        <fd-table-header>
+          <th>Name</th>
+          <th>Actions</th>
+        </fd-table-header>
+        <fd-table-body>
+          <tr *ngFor="let env of remoteEnvironments">
+            <td>
+              <a class="fd-has-font-weight-semi" (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
+            </td>
+            <td class="y-fd-table__th--col-1 fd-has-text-align-center">
+              <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+            </td>
+          </tr>
+        </fd-table-body>
+      </fd-table>
+    </fd-panel-body>
+  </fd-panel>
 </section>
 
 <app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>

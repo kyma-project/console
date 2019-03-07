@@ -48,14 +48,6 @@ fd-modal .fd-modal-background {
   display: block;
 }
 
-
-//for link-button in tables
-span {
-  &.fd-link {
-    cursor: pointer;
-  }
-}
-
 //helpers
 .y-word-wrap {
   word-wrap: break-word;
@@ -122,6 +114,21 @@ input[type=checkbox] {
   &:checked {
     &:after {
       display: none;
+    }
+  }
+}
+
+.y-fd-panel__actions {
+  .fd-panel__actions {
+    display: flex;
+
+    > *,
+    > button {
+      margin-left: 8px;
+  
+      &:first-child {
+        margin-left: 0;
+      }
     }
   }
 }
