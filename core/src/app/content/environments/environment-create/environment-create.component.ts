@@ -26,7 +26,7 @@ export class EnvironmentCreateComponent {
         this.navigateToDetails(this.environmentName);
       },
       err => {
-        this.err = err.error.message;
+        this.err = err.message;
       }
     );
   }
