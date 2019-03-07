@@ -14,9 +14,8 @@ export class DeploymentHeaderRendererComponent implements OnInit {
   constructor(private luigiClientService: LuigiClientService) {}
 
   ngOnInit() {
-    this.showBoundServices = this.luigiClientService.hasBackendModule(
-      'servicecatalogaddons'
-    );
-    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
+    this.showBoundServices =
+      this.luigiClientService.hasBackendModule('servicecatalogaddons') &&
+      !LuigiClient.getEventData().isSystemNamespace;
   }
 }

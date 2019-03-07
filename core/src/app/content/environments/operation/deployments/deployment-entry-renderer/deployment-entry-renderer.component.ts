@@ -46,10 +46,9 @@ export class DeploymentEntryRendererComponent
         }
       }
     );
-    this.showBoundServices = this.luigiClientService.hasBackendModule(
-      'servicecatalogaddons'
-    );
-    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
+    this.showBoundServices =
+      this.luigiClientService.hasBackendModule('servicecatalogaddons') &&
+      !LuigiClient.getEventData().isSystemNamespace;
   }
 
   ngOnDestroy() {
