@@ -50,6 +50,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
     this.currentEnvironmentSubscription = this.currentEnvironmentService
       .getCurrentEnvironmentId()
       .subscribe(envId => {
@@ -59,7 +60,9 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
             if (env) {
               this.environment = env;
             }
-            this.getRemoteEnvs(this.id);
+            if (!this.isSystemNamespace) {
+              this.getRemoteEnvs(this.id);
+            }
             this.getServices(this.id);
           },
           err => {
@@ -68,7 +71,6 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
           }
         );
       });
-    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
   }
 
   public ngOnDestroy() {
