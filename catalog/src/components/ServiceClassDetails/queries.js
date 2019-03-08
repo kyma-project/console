@@ -15,8 +15,8 @@ const serviceClassQGL = `
   labels
   content
   asyncApiSpec
-  apiSpec
-
+  openApiSpec
+  odataSpec
 `;
 
 const plansQGL = `

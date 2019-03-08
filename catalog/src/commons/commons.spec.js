@@ -1,4 +1,4 @@
-import { randomNameGenerator, validateAsyncApiSpec } from './helpers';
+import { randomNameGenerator } from './helpers';
 import { adjectives, nouns } from './random-names-data';
 
 const checkingFormat = name => {

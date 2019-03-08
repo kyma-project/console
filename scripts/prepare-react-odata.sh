@@ -4,7 +4,7 @@
 TEMP_FOLDER=
 
 # variables
-REACT_COMPONENTS_FOLDER="components/react"
+REACT_COMPONENTS_FOLDER="components/react-odata"
 CWD=$PWD
 
 # read arguments
@@ -31,6 +31,6 @@ cd $CWD
 
 # copy lib index.js for DOCKERFILE
 mkdir $TEMP_FOLDER
-cp ../${REACT_COMPONENTS_FOLDER}/lib/index.js ./${TEMP_FOLDER}/index.js
-rm -rf ./node_modules/@kyma-project/react-components/lib/index.js
-cp ../${REACT_COMPONENTS_FOLDER}/lib/index.js ./node_modules/@kyma-project/react-components/lib/index.js
+cp -a ../${REACT_COMPONENTS_FOLDER}/lib ./${TEMP_FOLDER}
+rm -rf ./node_modules/@kyma-project/odata-react/lib
+cp -a ../${REACT_COMPONENTS_FOLDER}/lib ./node_modules/@kyma-project/odata-react/lib

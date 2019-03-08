@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ServiceDocumentationTable from "./ServiceDocumentationTable/ServiceDocumentationTable";
 import { Node } from "../../types";
 import { makeUnique } from "./utils";
 import Table from "./MainDataTable/Table";
+import { CollapseButton } from "../styled/styled";
 
 interface Props {
   arg: Node[];
@@ -32,10 +33,16 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
     }
   });
 
+  const [showAll, setShowAll] = useState<boolean>(true);
+
   return (
     <>
+      <CollapseButton open={showAll} onClick={() => setShowAll(!showAll)}>
+        {showAll ? "Collapse" : "Expand"}
+      </CollapseButton>
+
       {Documentation && Documentation.length > 0 && (
-        <ServiceDocumentationTable data={Documentation} />
+        <ServiceDocumentationTable showAll={showAll} data={Documentation} />
       )}
       {Rest.map((data: Node, idx: number) => {
         if (!Array.isArray(data.children)) {
@@ -67,6 +74,7 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
             key={idx}
             columnData={columnData}
             title={title}
+            showAll={showAll}
             filteredData={filteredData}
           />
         );

@@ -1,19 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import ODataReact from "./ODataReact";
-import * as serviceWorker from "./serviceWorker";
-import { GlobalStyle } from "./globalStyle";
-
+import { PageWrapper } from "./components/styled/styled";
+import { mocks } from "./ODataFiles/index";
+import "fiori-fundamentals/dist/fiori-fundamentals.min.css";
 ReactDOM.render(
-  <>
-    <ODataReact />
-    <GlobalStyle />
-  </>,
-
+  <PageWrapper>
+    <ODataReact schema={mocks.SAPodata} />
+  </PageWrapper>,
   document.getElementById("root"),
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
