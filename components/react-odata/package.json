@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/odata-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "dependencies": {
     "react-xml-parser": "^1.1.2",
