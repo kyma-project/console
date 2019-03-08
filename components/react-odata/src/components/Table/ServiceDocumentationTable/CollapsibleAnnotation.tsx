@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Node } from "../../../types";
-import { makeUnique } from "../utils";
-import SimpleTable from "./SimpleTable";
+import React, { useState } from 'react';
+import { Node } from '../../../types';
+import { makeUnique } from '../utils';
+import SimpleTable from './SimpleTable';
 import {
   CollapseArrow,
   StyledTable,
@@ -10,7 +10,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "./../../styled/styled";
+} from './../../styled/styled';
 interface Props {
   data: Node;
 }
@@ -26,7 +26,7 @@ const CollapsibleAnnotation: React.FunctionComponent<Props> = ({ data }) => {
     <StyledTable>
       <TableHead>
         <TableRow>
-          <TableHeadCell>{headers[0] || "Data"}</TableHeadCell>
+          <TableHeadCell>{headers[0] || 'Data'}</TableHeadCell>
         </TableRow>
       </TableHead>
       <TableBody>

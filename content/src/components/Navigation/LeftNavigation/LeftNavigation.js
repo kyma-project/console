@@ -8,7 +8,8 @@ function LeftNavigation(props) {
   return (
     <>
       <GoBack data-e2e-id="go-to-environment" onClick={props.history.goBack}>
-        <Icon size="m" glyph="nav-back" />Back to Environment
+        <Icon size="m" glyph="nav-back" />
+        Back to Environment
       </GoBack>
       <NavigationList {...props} />
     </>

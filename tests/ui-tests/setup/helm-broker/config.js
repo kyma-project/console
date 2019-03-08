@@ -23,5 +23,5 @@ export const helmBrokerConfig = {
   readyTimeout: process.env.HELM_BROKER_READY_TIMEOUT
     ? Number(process.env.HELM_BROKER_READY_TIMEOUT)
     : 120 * 1000,
-  repositoriesSeparator: ';'
+  repositoriesSeparator: ';',
 };

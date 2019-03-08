@@ -1,7 +1,7 @@
-import React from "react";
-import { Node } from "../../types";
-import { StyledCode, PageWrapper } from "../styled/styled";
-import { Alert } from "fundamental-react";
+import React from 'react';
+import { Node } from '../../types';
+import { StyledCode, PageWrapper } from '../styled/styled';
+import { Alert } from 'fundamental-react';
 
 interface Props {
   error?: Node;
@@ -12,7 +12,7 @@ const ErrorComponent: React.FunctionComponent<Props> = ({ error }) => {
     return (
       <PageWrapper>
         <Alert dismissible={true} type="error">
-          {"No schema in data / format of the data is wrong"}
+          {'No schema in data / format of the data is wrong'}
         </Alert>
       </PageWrapper>
     );

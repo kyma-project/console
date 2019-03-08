@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
-import CollapsibleTable from "./CollapsibleTable";
-import { Node } from "../../../types";
+import React, { Fragment, useState, useEffect, useRef } from 'react';
+import CollapsibleTable from './CollapsibleTable';
+import { Node } from '../../../types';
 
-import { PanelActions, PanelHead } from "fundamental-react";
+import { PanelActions, PanelHead } from 'fundamental-react';
 import {
   StyledTable,
   TableHead,
@@ -14,7 +14,7 @@ import {
   TableBody,
   CollapseArrow,
   TableHeaderWrapper,
-} from "../../styled/styled";
+} from '../../styled/styled';
 
 interface Props {
   data: Node[];
@@ -68,7 +68,7 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
             setShow(!show);
           }}
         >
-          <PanelHead title={"Service Documentation / Annotations"} />
+          <PanelHead title={'Service Documentation / Annotations'} />
           <PanelActions>
             <CollapseArrow
               open={show}
@@ -86,8 +86,8 @@ const ServiceDocumentationTable: React.FunctionComponent<Props> = ({
           <StyledTable>
             <TableHead>
               <TableRow>
-                <TableHeadCell>{"Target"}</TableHeadCell>
-                <TableHeadCell>{"Annotation"}</TableHeadCell>
+                <TableHeadCell>{'Target'}</TableHeadCell>
+                <TableHeadCell>{'Annotation'}</TableHeadCell>
               </TableRow>
             </TableHead>
             <TableBody>

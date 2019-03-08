@@ -1,9 +1,9 @@
-import React from "react";
-import { parse } from "./tools/Parser";
-import { Node } from "./types";
+import React from 'react';
+import { parse } from './tools/Parser';
+import { Node } from './types';
 
-import TableContainer from "./components/Table/TableContainer";
-import { ErrorComponent } from "./components/ErrorComponent/ErrorComponent";
+import TableContainer from './components/Table/TableContainer';
+import { ErrorComponent } from './components/ErrorComponent/ErrorComponent';
 
 interface Props {
   schema: string;
@@ -11,7 +11,7 @@ interface Props {
 
 const ODataReact: React.FunctionComponent<Props> = ({ schema }) => {
   const data = parse.parseFromString(schema);
-  const dataSchema = data.getElementsByTagName("Schema");
+  const dataSchema = data.getElementsByTagName('Schema');
 
   if (dataSchema.length < 1) {
     return <ErrorComponent />;
@@ -21,7 +21,7 @@ const ODataReact: React.FunctionComponent<Props> = ({ schema }) => {
   const dataForComponent: Node[] = [];
 
   dataSchema[0].children.forEach((elem: Node) => {
-    if (elem.name === "parsererror") {
+    if (elem.name === 'parsererror') {
       errors.push(elem);
     } else {
       dataForComponent.push(elem);

@@ -20,10 +20,10 @@ const context = (function() {
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disk-cache-size=10000000',
-          '--media-cache-size=10000000'
-        ]
+          '--media-cache-size=10000000',
+        ],
       });
-    }
+    },
   };
 })();
 

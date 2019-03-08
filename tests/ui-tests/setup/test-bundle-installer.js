@@ -9,7 +9,7 @@ export class TestBundleInstaller {
     this.namespaceManager = new NamespaceManager(coreApiClient, namespace);
     this.helmBrokerConfigurer = new HelmBrokerConfigurer({
       kubeConfig,
-      apiClient: coreApiClient
+      apiClient: coreApiClient,
     });
   }
 

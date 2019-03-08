@@ -115,23 +115,22 @@ const ServiceClassInfo = ({
             </ExternalLink>
           </Text>
         )}
-        {modifiedTags &&
-          modifiedTags.length > 0 && (
-            <LabelsWrapper data-e2e-id="service-labels">
-              {modifiedTags.sort(sortTags).map(tag => (
-                <LabelWrapper key={`${tag.type}-${tag.name}`}>
-                  <Tooltip
-                    content={tagsDescription[tag.type]}
-                    minWidth={tooltipWidth[tag.type]}
-                  >
-                    <Label cursorType="help" data-e2e-id="service-label">
-                      {tag.name}
-                    </Label>
-                  </Tooltip>
-                </LabelWrapper>
-              ))}
-            </LabelsWrapper>
-          )}
+        {modifiedTags && modifiedTags.length > 0 && (
+          <LabelsWrapper data-e2e-id="service-labels">
+            {modifiedTags.sort(sortTags).map(tag => (
+              <LabelWrapper key={`${tag.type}-${tag.name}`}>
+                <Tooltip
+                  content={tagsDescription[tag.type]}
+                  minWidth={tooltipWidth[tag.type]}
+                >
+                  <Label cursorType="help" data-e2e-id="service-label">
+                    {tag.name}
+                  </Label>
+                </Tooltip>
+              </LabelWrapper>
+            ))}
+          </LabelsWrapper>
+        )}
       </div>
     </div>
   );

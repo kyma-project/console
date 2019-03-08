@@ -90,22 +90,21 @@ class DeleteBindingModal extends React.Component {
                 working.
               </Text>
 
-              {relatedBindingUsage &&
-                relatedBindingUsage.length > 0 && (
-                  <Fragment>
-                    <Separator margin="20px -16px" />
-                    {relatedBindingUsage.map((binding, index) => (
-                      <TextWrapper flex key={`relatedBindingUsage${index}`}>
-                        <Text bold width={'200px'} margin={'0 20px 0 0'}>
-                          {index === 0 && 'Related Applications'}
-                        </Text>
-                        <Text>{`${binding.usedBy.name} (${this.capitalize(
-                          binding.usedBy.kind,
-                        )})`}</Text>
-                      </TextWrapper>
-                    ))}
-                  </Fragment>
-                )}
+              {relatedBindingUsage && relatedBindingUsage.length > 0 && (
+                <Fragment>
+                  <Separator margin="20px -16px" />
+                  {relatedBindingUsage.map((binding, index) => (
+                    <TextWrapper flex key={`relatedBindingUsage${index}`}>
+                      <Text bold width={'200px'} margin={'0 20px 0 0'}>
+                        {index === 0 && 'Related Applications'}
+                      </Text>
+                      <Text>{`${binding.usedBy.name} (${this.capitalize(
+                        binding.usedBy.kind,
+                      )})`}</Text>
+                    </TextWrapper>
+                  ))}
+                </Fragment>
+              )}
             </TextWrapper>
           )}
         </div>
@@ -118,7 +117,14 @@ class DeleteBindingModal extends React.Component {
         title="Warning"
         confirmText="Delete"
         onConfirm={this.handleConfirmation}
-        modalOpeningComponent={<Button data-e2e-id="delete-button" compact option="light" glyph="delete" />}
+        modalOpeningComponent={
+          <Button
+            data-e2e-id="delete-button"
+            compact
+            option="light"
+            glyph="delete"
+          />
+        }
         type="negative"
         disabled={!submitEnabled}
         onShow={() => LuigiClient.uxManager().addBackdrop()}
