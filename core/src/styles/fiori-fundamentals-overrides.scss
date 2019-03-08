@@ -17,17 +17,6 @@ fd-modal {
   }
 }
 
-.fd-modal--large {
-  .fd-modal {
-    max-width: 650px;
-  }
-}
-
-//Forms
-.y-fd-form__message--disabled {
-  color: var(--fd-color-status-4) !important;
-}
-
 //Tables
 .fd-table {
   &--min {
@@ -160,7 +149,7 @@ fd-modal {
 
     > * {
       margin-left: 8px;
-  
+
       &:first-child {
         margin-left: 0;
       }

@@ -16,18 +16,6 @@ fd-modal .fd-modal-background {
   }
 }
 
-.fd-modal--large {
-  .fd-modal {
-    max-width: 650px;
-  }
-}
-
-.fd-modal--xlarge {
-  .fd-modal {
-    max-width: 80%;
-  }
-}
-
 //Forms
 .y-fd-form__message--disabled {
   color: var(--fd-color-status-4) !important;
@@ -89,7 +77,7 @@ fd-modal .fd-modal-background {
   .y-fd-token {
     margin-top: fd-space('tiny') / 2;
     margin-bottom: fd-space('tiny') / 2;
-  }  
+  }
 }
 
 .y-fd-token {
@@ -172,7 +160,7 @@ input[type=checkbox] {
     > *,
     > button {
       margin-left: 8px;
-  
+
       &:first-child {
         margin-left: 0;
       }

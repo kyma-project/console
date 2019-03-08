@@ -1,5 +1,5 @@
 
-<fd-modal class="fd-modal--xlarge" #eventTriggerModal role="dialog">
+<fd-modal #eventTriggerModal role="dialog" [width]="'80%'">
   <fd-modal-header>{{ title }}</fd-modal-header>
   <fd-modal-body>
     <input type="search" class="fd-input" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
