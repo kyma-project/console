@@ -23,7 +23,7 @@
   "homepage": "https://kyma-project.github.io/console/react",
   "dependencies": {
     "file-loader": "^1.1.11",
-    "fundamental-react": "0.2.0-rc.3",
+    "fundamental-react": "0.4.0",
     "polished": "^1.8.1",
     "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"

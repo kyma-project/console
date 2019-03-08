@@ -1,7 +1,14 @@
 import React from "react";
 import { Node } from "../../../types";
 import { makeUnique } from "../utils";
-import { StyledTable, LeftAlignedHeader } from "../styled/styled";
+import {
+  StyledTable,
+  TableHead,
+  TableHeadCell,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "../../styled/styled";
 
 interface Props {
   data: Node;
@@ -17,25 +24,25 @@ const HideableSubTable: React.FunctionComponent<Props> = ({ data }) => {
 
   return (
     <StyledTable>
-      <thead>
-        <tr>
+      <TableHead>
+        <TableRow>
           {filteredHeaders.map((arg: string) => (
-            <LeftAlignedHeader key={arg}>{arg}</LeftAlignedHeader>
+            <TableHeadCell key={arg}>{arg}</TableHeadCell>
           ))}
-        </tr>
-      </thead>
-      <tbody>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {data.children.map((elem: Node, index: number) => (
-          <tr key={index}>
+          <TableRow key={index}>
             {filteredHeaders.map((el: string) => (
-              <td key={el}>
+              <TableCell key={el}>
                 {elem.attributes[el] ||
                   (elem.children[0] && elem.children[0].value)}
-              </td>
+              </TableCell>
             ))}
-          </tr>
+          </TableRow>
         ))}
-      </tbody>
+      </TableBody>
     </StyledTable>
   );
 };
