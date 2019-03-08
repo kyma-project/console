@@ -9,14 +9,14 @@
     <table class="fd-table">
       <thead>
         <tr>
-          <th class="y-fd-table__th--col-4">
+          <th class="y-fd-table--col-4">
             <input [(ngModel)]="envVar.name" type="text" id="input-1" (keyup)="validatesEnvVariableName()" placeholder="VARIABLE_NAME" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
           </th>
-          <th class="y-fd-table__th--col-1 fd-has-text-align-center">→</th>
-          <th class="y-fd-table__th--col-5">
+          <th class="y-fd-table--col-1 fd-has-text-align-center">→</th>
+          <th class="y-fd-table--col-5">
             <input [(ngModel)]="envVar.value" type="text" id="input-2" placeholder="Value" (keyup.enter)="addVariable()" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
           </th>
-          <th class="y-fd-table__th--col-2 fd-has-text-align-right">
+          <th class="y-fd-table--col-2 fd-has-text-align-right">
             <button class="fd-button fd-button--compact fd-button--light" (click)="addVariable()" [disabled]="disableAddVar || !lambdaName || isLambdaNameInvalid">
               + Add Variable
             </button>
@@ -38,7 +38,7 @@
           <td class="y-word-break">{{ env.name }}</td>
           <td class="fd-has-text-align-center">→</td>
           <td *ngIf="editVar!=i" class="y-word-break">{{ env.value }}</td>
-          <td *ngIf="editVar!=i" class="fd-has-text-align-right">
+          <td *ngIf="editVar!=i" class="fd-has-float-right">
             <button fd-button [options]="'light'" [glyph]="'edit'" [compact]="true" (click)="editVariable(i)"></button>
             <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="removeVarariable(i)"></button>
           </td>

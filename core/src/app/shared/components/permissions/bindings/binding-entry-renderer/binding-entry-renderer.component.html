@@ -1,7 +1,7 @@
 <tr [ngClass]="{'y-fd-table__tr--disabled': disabled === true}">
   <td class="fd-has-font-weight-bold">{{ groupName }}</td>
   <td><span class="fd-token y-fd-token y-fd-token--no-button">{{ entry.roleRef.kind === 'ClusterRole' ? 'CR' : 'R' }}</span>{{ entry.roleRef.name }}</td>
-  <td class="fd-has-text-align-center">
+  <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </td>
 </tr>

@@ -1,32 +1,29 @@
-<div class="sf-panel">
-  <div class="sf-panel__head">
-    <div class="sf-toolbar">
-      <div class="sf-toolbar__header">{{ title }}</div>
-      <div class="sf-toolbar__right" [hidden]="!initialized">
-        <div class="sf-toolbar__item">
-          <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+<fd-panel>
+  <fd-panel-header>
+    <fd-panel-head>
+      <fd-panel-title>{{ title }}</fd-panel-title>
+    </fd-panel-head>
+    <fd-panel-actions [hidden]="!initialized || showEmptyPage" class="y-fd-panel__actions">
+      <y-list-search [filterState]="filterState"
             (onFilterChanged)="onFilterChanged($event)">
-          </y-list-search>
-          <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
-            (onFilterChanged)="onFilterChanged($event)">
-          </y-list-filter>
-        </div>
+      </y-list-search>
+      <y-list-filter [filterState]="filterState"
+        (onFilterChanged)="onFilterChanged($event)">
+      </y-list-filter>
+    </fd-panel-actions>
+  </fd-panel-header>
+  <fd-panel-body [bleed]="true">
+    <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
+      [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer">
+      <div empty-list-placeholder *ngIf="showEmptyPage">
+        <h1>{{ title }}</h1>
+        <p>{{ emptyListText }}</p>
       </div>
-    </div>
-  </div>
+    </y-plain-table>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-
-  <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
-    [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer">
-    <div empty-list-placeholder *ngIf="showEmptyPage">
-      <h1>{{ title }}</h1>
-      <p>{{ emptyListText }}</p>
-    </div>
-  </y-plain-table>
-
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-</div>
+    <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+  </fd-panel-body>
+</fd-panel>
 
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>
 <app-information-modal #infoModal></app-information-modal>

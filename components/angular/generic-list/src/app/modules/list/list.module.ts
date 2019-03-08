@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EmptyListComponent } from './empty-list/empty-list.component';
 import { FormsModule } from '@angular/forms';
 import { GenericListComponent } from './generic-list/generic-list.component';
 import { GenericTableComponent } from './generic-table/generic-table.component';
@@ -21,6 +22,7 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
     FundamentalNgxModule,
   ],
   declarations: [
+    EmptyListComponent,
     GenericListComponent,
     GenericTableComponent,
     ListFilterComponent,
@@ -32,6 +34,7 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
     AbstractTableEntryRendererComponent,
   ],
   exports: [
+    EmptyListComponent,
     GenericListComponent,
     GenericTableComponent,
     ListFilterComponent,

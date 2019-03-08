@@ -41,7 +41,9 @@ export class ConfirmationModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.modalService.close(this.confirmationModal);
+    if (this.confirmationModal && this.modalService) {
+      this.modalService.close(this.confirmationModal);
+    }
   }
 
   cancel(event?: Event) {

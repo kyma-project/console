@@ -35,86 +35,60 @@
       </fd-panel-head>
     </fd-panel-header>
     <fd-panel-body [bleed]="true">
-      <fd-panel-grid [col]="6" [nogap]="true">
-        <fd-panel [columnSpan]="2">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Name</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="4">
-          <fd-panel-body>
-            {{ roleDetails.metadata.name }}
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="2">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Namespace</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="4">
-          <fd-panel-body>
-            {{ roleDetails.metadata.namespace }}
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="2">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Creation time</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="4">
-          <fd-panel-body>
-            {{ roleDetails.metadata.creationTimestamp }}
-          </fd-panel-body>
-        </fd-panel>
-      </fd-panel-grid>
+      <table class="fd-table fd-table--no-borders">
+        <tbody>
+          <tr>
+            <td class="y-fd-table--col-2 fd-has-color-text-4">Name</td>
+            <td>{{ roleDetails.metadata.name }}</td>
+          </tr>
+          <tr>
+            <td class="y-fd-table--col-2 fd-has-color-text-4">Namespace</td>
+            <td>{{ roleDetails.metadata.namespace }}</td>
+          </tr>
+          <tr>
+            <td class="y-fd-table--col-2 fd-has-color-text-4">Creation Date</td>
+            <td>{{ roleDetails.metadata.creationTimestamp }}</td>
+          </tr>
+        </tbody>
+      </table>
     </fd-panel-body>
   </fd-panel>
 </section>
 
 <section class="fd-section" *ngIf="roleDetails">
-  <fd-panel>
-    <fd-panel-header>
-      <fd-panel-head>
-        <fd-panel-title>Rules</fd-panel-title>
-      </fd-panel-head>
-    </fd-panel-header>
-    <fd-panel-body [bleed]="true">
-      <fd-panel-grid [col]="6" [nogap]="true" *ngFor="let rule of roleDetails.rules">
-        <fd-panel [columnSpan]="2">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">API Groups</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="4">
-          <fd-panel-body>
-            <div *ngFor="let apiGroup of rule.apiGroups; let last = last">
-              <span>{{ apiGroup !== '' ? apiGroup : coreGroup }}{{ last ? '': ',' }}</span>
-            </div>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="2">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Verbs</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="4">
-          <fd-panel-body>
-            <span *ngFor="let verb of rule.verbs; let last = last">{{ verb }}{{ last ? '': ', ' }}</span>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="2">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Resources</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="4">
-          <fd-panel-body>
-            <div *ngFor="let resource of rule.resources; let last = last">
-              <span>{{ resource }}{{ last ? '': ',' }}</span>
-            </div>
-          </fd-panel-body>
-        </fd-panel>
-      </fd-panel-grid>
-    </fd-panel-body>
-  </fd-panel>
+  <fd-panel-grid [col]="2">
+    <fd-panel *ngFor="let rule of roleDetails.rules">
+      <fd-panel-header>
+        <fd-panel-head>
+          <fd-panel-title>Rule</fd-panel-title>
+        </fd-panel-head>
+      </fd-panel-header>
+      <fd-panel-body [bleed]="true">
+        <table class="fd-table fd-table--no-borders">
+          <tbody>
+            <tr>
+              <td class="y-fd-table--col-4 fd-has-color-text-4 fd-has-background-color-neutral-1">API Groups</td>
+              <td><span *ngFor="let apiGroup of rule.apiGroups; let last = last">{{ apiGroup !== '' ? apiGroup : coreGroup }}{{ last ? '': ',' }}</span></td>
+            </tr>
+            <tr>
+              <td class="fd-has-color-text-4 fd-has-background-color-neutral-1">Verbs</td>
+              <td>
+                <ng-container *ngFor="let verb of rule.verbs; let last = last">
+                  <span>{{ verb }}{{ last ? '': ', ' }}</span>
+                </ng-container>
+              </td>
+            </tr>
+            <tr>
+              <td class="fd-has-color-text-4 fd-has-background-color-neutral-1">Resources</td>
+              <td>
+                <ng-container *ngFor="let resource of rule.resources; let last = last">
+                  <span>{{ resource }}{{ last ? '': ', ' }}</span><br />
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fd-panel-body>
+    </fd-panel>
+  </fd-panel-grid>
 </section>

@@ -1,6 +1,6 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td>
-    <a class="fd-link" (click)="navigateToDetails(entry.metadata.name)">
+    <a (click)="navigateToDetails(entry.metadata.name)">
       {{ entry.metadata.name }}
     </a>
   </td>
@@ -34,7 +34,7 @@
       {{ getStatus(entry) }}
     </app-status-label>
   </td>
-  <td class="fd-has-text-align-center">
+  <td class="fd-has-text-align-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </td>
 </tr>

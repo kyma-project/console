@@ -20,6 +20,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public serviceDetailsLoading = true;
   public serviceDetailsUrl: string;
   public currentEnvironmentSubscription: Subscription;
+  public isSystemNamespace: boolean;
 
   constructor(
     private http: HttpClient,
@@ -59,6 +60,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           );
         });
       });
+    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
   }
 
   public ngOnDestroy() {

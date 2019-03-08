@@ -38,60 +38,42 @@
     </fd-panel-header>
 
     <fd-panel-body [bleed]="true">
-      <fd-panel-grid [col]="6" [nogap]="true">
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Name</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>
-            {{ remoteEnvironment.name }}
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Status</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>
-            <span class="fd-status-label" [ngClass]="determineClass(remoteEnvironment)">{{ prettyStatus }}</span>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Description</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>
-            <ng-container *ngIf="remoteEnvironment.description">
-              {{ remoteEnvironment.description }}
-            </ng-container>
-            <ng-container *ngIf="!remoteEnvironment.description">
-              <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
-            </ng-container>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Labels</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5" >
-          <fd-panel-body>
-            <ng-container *ngIf='transformedLabels.length'>
-              <span class="fd-token y-fd-token y-fd-token--no-button" role="button" *ngFor="let label of transformedLabels">
-                {{ label }}
-              </span>
-            </ng-container>
-            <ng-container *ngIf='!transformedLabels.length'>
-              <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
-            </ng-container>
-          </fd-panel-body>
-        </fd-panel>
-      </fd-panel-grid>
+      <table class="fd-table fd-table--no-borders">
+        <tbody>
+          <tr>
+            <td class="y-fd-table--col-2 fd-has-color-text-4">Name</td>
+            <td>{{ remoteEnvironment.name }}</td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Status</td>
+            <td><span class="fd-status-label" [ngClass]="determineClass(remoteEnvironment)">{{ prettyStatus }}</span></td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Description</td>
+            <td>
+              <ng-container *ngIf="remoteEnvironment.description">
+                {{ remoteEnvironment.description }}
+              </ng-container>
+              <ng-container *ngIf="!remoteEnvironment.description">
+                <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Labels</td>
+            <td>
+              <ng-container *ngIf='transformedLabels.length'>
+                <span class="fd-token y-fd-token y-fd-token--no-button" role="button" *ngFor="let label of transformedLabels">
+                  {{ label }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf='!transformedLabels.length'>
+                <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </fd-panel-body>
   </fd-panel>
 </section>
@@ -114,12 +96,12 @@
         <fd-table *ngIf="boundEnvironments.length > 0">
           <fd-table-header>
             <th>Name</th>
-            <th class="fd-table__th--min">Actions</th>
+            <th class="fd-table__th--min"></th>
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let environment of boundEnvironments">
               <td><span class="fd-has-font-weight-bold">{{ environment }}</span></td>
-              <td>
+              <td class="fd-has-float-right">
                 <y-list-actions [entry]="environment" [entryEventHandler]="entryEventHandler"
                                 [actions]="actions"></y-list-actions>
               </td>

@@ -34,75 +34,54 @@
   <fd-panel *ngIf="serviceDetails">
     <fd-panel-header>
       <fd-panel-head>
-        <fd-panel-title>General information</fd-panel-title>
+        <fd-panel-title>General Information</fd-panel-title>
       </fd-panel-head>
     </fd-panel-header>
 
     <fd-panel-body [bleed]="true">
-      <fd-panel-grid [col]="6" [nogap]="true">
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Name</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>{{ serviceDetails.metadata.name }}</fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Namespace</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>{{ serviceDetails.metadata.namespace }}</fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Cluster IP</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>{{ serviceDetails.spec.clusterIP }}</fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Creation date</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>{{ serviceDetails.metadata.creationTimestamp }}</fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1" *ngIf="serviceDetails.metadata.labels">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Labels</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5" *ngIf="serviceDetails.metadata.labels">
-          <fd-panel-body>
-            <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }} </span>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="1">
-          <fd-panel-body>
-            <label class="fd-has-color-text-4">Internal endpoints</label>
-          </fd-panel-body>
-        </fd-panel>
-        <fd-panel [columnSpan]="5">
-          <fd-panel-body>
-            <span *ngFor="let port of serviceDetails.spec.ports">
-              <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span>
-              <br>
-              <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }} {{ port.protocol }}</span>
-              <br>
-            </span>
-          </fd-panel-body>
-        </fd-panel>
-      </fd-panel-grid>
+      <table class="fd-table fd-table--no-borders">
+        <tbody>
+          <tr>
+            <td class="y-fd-table--col-2 fd-has-color-text-4">Name</td>
+            <td>{{ serviceDetails.metadata.name }}</td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Namespace</td>
+            <td>{{ serviceDetails.metadata.namespace }}</td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Cluster IP</td>
+            <td>{{ serviceDetails.spec.clusterIP }}</td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Creation Date</td>
+            <td>{{ serviceDetails.metadata.creationTimestamp }}</td>
+          </tr>
+          <tr *ngIf="serviceDetails.metadata.labels">
+            <td class="fd-has-color-text-4">Labels</td>
+            <td>
+              <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }} </span>
+            </td>
+          </tr>
+          <tr>
+            <td class="fd-has-color-text-4">Internal Endpoints</td>
+            <td>
+              <ng-container *ngFor="let port of serviceDetails.spec.ports">
+                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span>
+                <br>
+                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }}
+                  {{ port.protocol }}</span>
+                <br>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </fd-panel-body>
   </fd-panel>
 </section>
-  
-<section class="fd-section">
+
+<section class="fd-section" *ngIf="!isSystemNamespace">
   <fd-panel>
     <fd-panel-header>
       <fd-panel-head>

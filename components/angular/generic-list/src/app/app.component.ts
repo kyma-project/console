@@ -18,6 +18,23 @@ export class AppComponent {
   emptyListText = 'Nothing to show on dummy list';
   createNewElementText = 'createNewElementText';
 
+  dummyEmptyListData = {
+    header: {
+      text: 'Dummy empty',
+      actionButton: {
+        text: 'Add Element from header',
+        glyph: 'add',
+      },
+    },
+    body: {
+      text: 'It looks like you don’t have any elements in your dummy list yet.',
+      actionButton: {
+        text: 'Add Element from body',
+        // glyph: 'add'
+      },
+    },
+  };
+
   dummyDataProvider = new ArrayDataProvider([
     { id: '1', name: 'one' },
     {

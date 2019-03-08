@@ -16,16 +16,9 @@ fd-modal .fd-modal-background {
   }
 }
 
-.fd-modal--large {
-  .fd-modal {
-    max-width: 650px;
-  }
-}
-
-.fd-modal--xlarge {
-  .fd-modal {
-    max-width: 80%;
-  }
+//Forms
+.y-fd-form__message--disabled {
+  color: var(--fd-color-status-4) !important;
 }
 
 //Tables
@@ -36,24 +29,28 @@ fd-modal .fd-modal-background {
   }
 }
 
-//Breadcrumbs inside of title
-.fd-action-bar__header {
-  .fd-breadcrumb {
-    font-size: 23px;
+.fd-action-bar {
+  &__actions {
+    flex-shrink: 0; //another bug when search input is expanded
+    .fd-popover {
+      top: 0; /*  There is a bug from Fiori Fundamentals.
+                  When action bar includes popover with `fd-button--primary` class,
+                  then it's not aligned with other buttons in row anymore,
+                  because it has `top: - fd-space(1)` by default.
+                  Until it's fixed in Fundamentals, better to keep these styles to overwrite it.
+              */
+    }
+  }
+  &__header {
+    .fd-breadcrumb {
+      font-size: 23px;
+    }
   }
 }
 
 //Panel
 .fd-panel {
   display: block;
-}
-
-
-//for link-button in tables
-span {
-  &.fd-link {
-    cursor: pointer;
-  }
 }
 
 //helpers
@@ -80,7 +77,7 @@ span {
   .y-fd-token {
     margin-top: fd-space('tiny') / 2;
     margin-bottom: fd-space('tiny') / 2;
-  }  
+  }
 }
 
 .y-fd-token {
@@ -95,20 +92,50 @@ span {
 }
 
 
-$possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+//Tables
 .fd-table {
-  @each $i in $possible-columns {
-    .y-fd-table__th--col-#{$i} {
-      width: calc(100% / 12 * #{$i});
+  &__th--min,
+  &__td--min {
+    width: 8.33333%;
+  }
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  .y-fd-table {
+    margin-bottom: 0;
+
+    $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+    @each $i in $possible-columns {
+      &__th--col-#{$i} {
+        width: calc(100% / 12 * #{$i});
+      }
+      &__td--col-#{$i} {
+        width: calc(100% / 12 * #{$i});
+      }
     }
-  }
 
-  .y-fd-table__tr--no-border-below {
-    border-bottom: 0;
-  }
+    &__tr--no-border-below {
+      border-bottom: 0;
+    }
 
-  .y-fd-table__tr--no-border-below + tr {
-    border-top: 0;
+    &__tr--no-border-below + tr {
+      border-top: 0;
+    }
+
+    tr {
+      cursor: default;
+    }
+
+    td a {
+      cursor: pointer;
+    }
   }
 }
 
@@ -122,6 +149,21 @@ input[type=checkbox] {
   &:checked {
     &:after {
       display: none;
+    }
+  }
+}
+
+.y-fd-panel__actions {
+  .fd-panel__actions {
+    display: flex;
+
+    > *,
+    > button {
+      margin-left: 8px;
+
+      &:first-child {
+        margin-left: 0;
+      }
     }
   }
 }

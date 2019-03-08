@@ -26,8 +26,8 @@
             <div fd-form-set>
               <div fd-form-item>
                 <fd-form-label>{{ isUserGroupMode ? 'User Group' : 'User' }} *</fd-form-label>
-                <input fd-form__control
-                  class="fd-form__control y-fd-form__control"
+                <input fd-form-control
+                  class="y-fd-form__control"
                   type="text"
                   name="userOrGroup"
                   placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}"
@@ -44,9 +44,9 @@
                     [attr.aria-expanded]="ariaExpandedKind"
                     aria-controls="kinds"
                     (click)="toggleDropDown('Kind')">
-                    <input fd-form__control
-                      class="fd-form__control y-fd-form__control"
-                      type="text"
+                    <input fd-form-control
+                      class="y-fd-form__control"
+                      type="text" 
                       name="selectedKind"
                       placeholder="Select Kind"
                       [(ngModel)]="selectedKind"
@@ -76,9 +76,9 @@
                     [attr.aria-expanded]="ariaExpandedRole"
                     aria-controls="roles"
                     (click)="toggleDropDown('Role')">
-                    <input fd-form__control
-                      class="fd-form__control y-fd-form__control"
-                      type="text"
+                    <input fd-form-control
+                      class="y-fd-form__control"
+                      type="text" 
                       name="selectedRole"
                       placeholder="Select Role"
                       [disabled]="!selectedKind"

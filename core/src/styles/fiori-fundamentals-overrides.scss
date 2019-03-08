@@ -6,19 +6,6 @@ fd-modal {
   }
 }
 
-.fd-action-bar {
-  &__actions {
-    .fd-popover{
-      top: 0; /*  There is a bug from Fiori Fundamentals.
-                  When action bar includes popover with `fd-button--primary` class,
-                  then it's not aligned with other buttons in row anymore,
-                  because it has `top: - fd-space(1)` by default.
-                  Until it's fixed in Fundamentals, better to keep these styles to overwrite it.
-              */
-    }
-  }
-}
-
 //Common styles for modals
 .fd-modal__footer {
   .fd-button {
@@ -30,16 +17,9 @@ fd-modal {
   }
 }
 
-.fd-modal--large {
-  .fd-modal {
-    max-width: 650px;
-  }
-}
-
 //Tables
 .fd-table {
-  &__th--min,
-  &__td--min {
+  &--min {
     width: 8.33333%;
   }
 
@@ -51,32 +31,36 @@ fd-modal {
   td {
     vertical-align: top;
   }
+}
 
-  &.y-fd-table {
-    margin-bottom: 0;
+.y-fd-table {
+  margin-bottom: 0;
 
-    $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
-    @each $i in $possible-columns {
-      &__th--col-#{$i} {
-        width: calc(100% / 12 * #{$i});
-      }
+  $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+  @each $i in $possible-columns {
+    &--col-#{$i} {
+      width: calc(100% / 12 * #{$i});
     }
+  }
 
-    &__tr--no-border-below {
-      border-bottom: 0;
-    }
+  &__tr--no-border-below {
+    border-bottom: 0;
+  }
 
-    &__tr--no-border-below + tr {
-      border-top: 0;
-    }
+  &__tr--no-border-below + tr {
+    border-top: 0;
+  }
 
-    tr {
-      cursor: default;
-    }
+  tr {
+    cursor: default;
+  }
 
-    td a {
-      cursor: pointer;
-    }
+  td a {
+    cursor: pointer;
+  }
+
+  .fd-panel & {
+    border: none;
   }
 }
 
@@ -123,13 +107,6 @@ fd-modal {
   }
 }
 
-//for link-button in tables
-span {
-  &.fd-link {
-    cursor: pointer;
-  }
-}
-
 //helpers
 .y-word-wrap {
   word-wrap: break-word;
@@ -166,3 +143,21 @@ span {
   }
 }
 
+.y-fd-panel__actions {
+  .fd-panel__actions {
+    display: flex;
+
+    > * {
+      margin-left: 8px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+//Cursor pointer for all links
+a {
+  cursor: pointer;
+}

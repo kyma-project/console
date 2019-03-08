@@ -189,23 +189,22 @@
 </section>
 
 <section class="fd-section">
-  <fd-panel>
-    <fd-panel-header>
-      <fd-panel-head>
-        <fd-panel-title>
-        Dependencies
-        </fd-panel-title>
-      </fd-panel-head>
-      <fd-panel-actions>
+  <div class="fd-panel">
+    <div class="fd-panel__header">
+      <div class="fd-panel__head">
+        <h1 class="fd-panel__title">
+          Dependencies
+        </h1>
+      </div>
+      <div class="fd-panel__actions">
         <fd-toggle [size]="'xs'" (change)="changeDependencies(hasDependencies)" [(ngModel)]="hasDependencies"></fd-toggle>
-      </fd-panel-actions>
-    </fd-panel-header>
-    <fd-panel-body [hidden]="!hasDependencies">
+      </div>
+    </div>
+    <div class="fd-panel__body" [hidden]="!hasDependencies">
       <ace-editor #dependencyEditor [(text)]="dependency" [mode]="aceDependencyMode" [theme]="theme" (textChanged)="onDependencyChange($event)"></ace-editor>
-    </fd-panel-body>
-  </fd-panel>
+    </div>
+  </div>
 </section>
-
 
 <app-lambda-instance-bindings [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid"
                                 (bindingStateEmitter)="handleBindingStateEmitter($event)"></app-lambda-instance-bindings>
