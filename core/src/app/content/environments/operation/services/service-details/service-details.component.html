@@ -69,7 +69,8 @@
               <ng-container *ngFor="let port of serviceDetails.spec.ports">
                 <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span>
                 <br>
-                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }} {{ port.protocol }}</span>
+                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }}
+                  {{ port.protocol }}</span>
                 <br>
               </ng-container>
             </td>
@@ -79,8 +80,8 @@
     </fd-panel-body>
   </fd-panel>
 </section>
-  
-<section class="fd-section">
+
+<section class="fd-section" *ngIf="!isSystemNamespace">
   <fd-panel>
     <fd-panel-header>
       <fd-panel-head>

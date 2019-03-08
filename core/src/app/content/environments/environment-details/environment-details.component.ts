@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
-import LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-environment-details',
@@ -28,6 +28,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   private services: any;
   public errorMessage: string;
   private id: string;
+  private isSystemNamespace: boolean;
   private currentEnvironmentSubscription: Subscription;
   private actions = [
     {
@@ -49,6 +50,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
     this.currentEnvironmentSubscription = this.currentEnvironmentService
       .getCurrentEnvironmentId()
       .subscribe(envId => {
@@ -58,7 +60,9 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
             if (env) {
               this.environment = env;
             }
-            this.getRemoteEnvs(this.id);
+            if (!this.isSystemNamespace) {
+              this.getRemoteEnvs(this.id);
+            }
             this.getServices(this.id);
           },
           err => {
