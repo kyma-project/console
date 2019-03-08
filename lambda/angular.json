@@ -27,8 +27,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },

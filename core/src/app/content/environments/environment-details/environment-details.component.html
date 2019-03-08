@@ -70,14 +70,14 @@
       <fd-table>
         <fd-table-header>
           <th>Name</th>
-          <th>Actions</th>
+          <th></th>
         </fd-table-header>
         <fd-table-body>
           <tr *ngFor="let env of remoteEnvironments">
             <td>
-              <a class="fd-has-font-weight-semi" (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
+              <a (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
             </td>
-            <td class="y-fd-table__th--col-1 fd-has-text-align-center">
+            <td class="fd-table__td--min fd-has-float-right">
               <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
             </td>
           </tr>

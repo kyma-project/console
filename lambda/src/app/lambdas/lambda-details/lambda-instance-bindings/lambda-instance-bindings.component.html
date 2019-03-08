@@ -19,9 +19,9 @@
       <table class="fd-table">
         <thead>
           <tr>
-            <th class="y-fd-table__th--col-4">Instance</th>
-            <th class="y-fd-table__th--col-7">Environment Variable Name</th>
-            <th class="y-fd-table__th--col-1"></th>
+            <th class="y-fd-table--col-4">Instance</th>
+            <th class="y-fd-table--col-7">Environment Variable Name</th>
+            <th class="y-fd-table--col-1"></th>
           </tr>
         </thead>
         <tbody>
@@ -32,18 +32,18 @@
             <td>
               <table>
                 <tr *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
-                  <td class="y-fd-table__th--col-12 y-word-break" *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
+                  <td class="y-fd-table--col-12 y-word-break" *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
                     {{ instanceBinding.instanceBindingPrefix + envVar }}
                   </td>
                   <ng-template #onlyEnvVar>
-                    <td class="y-fd-table__th--col-12 y-word-break">
+                    <td class="y-fd-table--col-12 y-word-break">
                       {{ envVar }}
                     </td>
                   </ng-template>
                 </tr>
               </table>
             </td>
-            <td class="fd-has-text-align-right">
+            <td class="fd-has-float-right">
               <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="remove(i)" [disabled]="!lambdaName || isLambdaNameInvalid"></button>
             </td>
           </tr>

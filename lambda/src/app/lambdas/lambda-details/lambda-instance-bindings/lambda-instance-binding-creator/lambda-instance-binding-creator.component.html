@@ -13,10 +13,11 @@
       </div>
       <div fd-form-item>
         <fd-form-label class="control-label">Service Instance</fd-form-label>
-        <select fd-form-control id="instanceSelect" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">
+        <select fd-form-control [disabled]="!instances?.length" id="instanceSelect" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">
           <option></option>
           <option *ngFor="let i of instances" [ngValue]="i">{{ i.name }}</option>
         </select>
+        <span *ngIf="!instances?.length" class="fd-form__message y-fd-form__message--disabled">No unbound instances available.</span>
       </div>
 
       <div class="fd-form__item fd-form__item--check">
@@ -28,9 +29,10 @@
 
       <div fd-form-item *ngIf="!createSecrets">
         <fd-form-label class="control-label">Secrets</fd-form-label>
-        <select fd-form-control id="secretSelect" [(ngModel)]="selectedBinding" (ngModelChange)="validateSelection()">
+        <select fd-form-control [disabled]="!relevantServiceBindings.items.length" id="secretSelect" [(ngModel)]="selectedBinding" (ngModelChange)="validateSelection()">
           <option *ngFor="let binding of relevantServiceBindings.items" [ngValue]="binding">{{ binding.spec.secretName }}</option>
         </select>
+        <span *ngIf="!relevantServiceBindings.items.length" class="fd-form__message y-fd-form__message--disabled">No secrets available. Please create a new secret for the binding.</span>
       </div>
     </div>
   </fd-modal-body>
