@@ -1,20 +1,28 @@
 //Overwrite bg color for modals overlay
-fd-modal .fd-modal-background {
-  background-color: rgba(74,80,92,.3) !important;
-  opacity: 1 !important;
-}
+.y-fd-modal {
+  //Common styles for modals
+  .fd-modal__footer {
+    .fd-button {
+      margin-left: 5px;
 
-
-//Common styles for modals
-.fd-modal__footer {
-  .fd-button {
-    margin-left: 5px;
-
-    &:first-child {
-      margin-left: 0;
+      &:first-child {
+        margin-left: 0;
+      }
     }
   }
+
+  &.fd-modal--large {
+    .fd-modal {
+      max-width: 650px;
+    }
+  }
+
+  .fd-modal__close:focus {
+    box-shadow: none;
+  }
 }
+
+
 
 //Forms
 .y-fd-form__message--disabled {
@@ -22,13 +30,42 @@ fd-modal .fd-modal-background {
 }
 
 //Tables
-.fd-table {
-  &__th--min,
-  &__td--min {
-    width: 8.33333%;
+.y-fd-table {
+  margin-bottom: 0;
+
+  $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+  @each $i in $possible-columns {
+    &--col-#{$i} {
+      width: calc(100% / 12 * #{$i});
+    }
+  }
+
+  &__tr--no-border-below {
+    border-bottom: 0;
+  }
+
+  &__tr--no-border-below + tr {
+    border-top: 0;
+  }
+
+  tr {
+    cursor: default;
+  }
+
+  td {
+    vertical-align: top;
+    a {
+      cursor: pointer;
+    }
   }
 }
 
+//Breadcrumbs
+.y-fd-breadcrumb {
+  a {
+    cursor: pointer;
+  }
+}
 .fd-action-bar {
   &__actions {
     flex-shrink: 0; //another bug when search input is expanded
@@ -49,9 +86,59 @@ fd-modal .fd-modal-background {
 }
 
 //Panel
-.fd-panel {
+.y-fd-panel {
+  @extend .fd-panel;
+
   display: block;
+  &--button {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 5px 0 rgba(fd-color('text', 3), 0.4);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .fd-panel__body {
+    &--bleed {
+      .fd-table {
+        td:last-child,
+        th:last-child {
+          padding-right: 24px;
+        }
+
+        td:first-child,
+        th:first-child {
+          padding-left: 24px;
+        }
+      }
+    }
+  }
+
+  &__actions {
+    &.fd-panel__actions {
+      display: flex;
+
+      > * {
+        margin-left: 8px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
 
 //helpers
 .y-word-wrap {
@@ -62,26 +149,10 @@ fd-modal .fd-modal-background {
   word-break: break-all;
 }
 
-// Container
-.y-fd-container--space-bottom {
-  @extend .fd-has-margin-small;
-  @extend .fd-has-padding-small;
-}
-
-.y-fd-container--border-light {
-  border-bottom: 1px solid #cccccc;
-}
-
 //Token
-.fd-panel__filters {
-  .y-fd-token {
-    margin-top: fd-space('tiny') / 2;
-    margin-bottom: fd-space('tiny') / 2;
-  }
-}
-
 .y-fd-token {
-  margin-bottom: fd-space('tiny');
+  margin-top: fd-space('tiny') / 2;
+  margin-bottom: fd-space('tiny') / 2;
   margin-right: fd-space('tiny');
   &.y-fd-token--no-button {
     cursor: default;
@@ -91,11 +162,16 @@ fd-modal .fd-modal-background {
   }
 }
 
-
+.y-fd-menu {
+  .fd-menu__item {
+    input[type='checkbox'] {
+      margin-right: fd-space('tiny') / 2; //fix for too small gap between checkbox and its label in popover menu (Filter list)
+    }
+  }
+}
 //Tables
 .fd-table {
-  &__th--min,
-  &__td--min {
+  &--min {
     width: 8.33333%;
   }
 
@@ -107,63 +183,30 @@ fd-modal .fd-modal-background {
   td {
     vertical-align: top;
   }
-
-  .y-fd-table {
-    margin-bottom: 0;
-
-    $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
-    @each $i in $possible-columns {
-      &__th--col-#{$i} {
-        width: calc(100% / 12 * #{$i});
-      }
-      &__td--col-#{$i} {
-        width: calc(100% / 12 * #{$i});
-      }
-    }
-
-    &__tr--no-border-below {
-      border-bottom: 0;
-    }
-
-    &__tr--no-border-below + tr {
-      border-top: 0;
-    }
-
-    tr {
-      cursor: default;
-    }
-
-    td a {
-      cursor: pointer;
-    }
-  }
+}
+// Container
+.y-fd-container--space-bottom {
+  @extend .fd-has-margin-small;
+  @extend .fd-has-padding-small;
 }
 
+.y-fd-container--border-light {
+  border-bottom: 1px solid #cccccc;
+}
+
+
+//Cursor pointer for all links
+a {
+  cursor: pointer;
+}
 
 //Workaroud before techne is not removed
-input[type=checkbox] {
-
+input[type='checkbox'] {
   border-color: var(--fd-forms-border-color);
   background-color: var(--fd-forms-background-color);
-
   &:checked {
     &:after {
-      display: none;
-    }
-  }
-}
-
-.y-fd-panel__actions {
-  .fd-panel__actions {
-    display: flex;
-
-    > *,
-    > button {
-      margin-left: 8px;
-
-      &:first-child {
-        margin-left: 0;
-      }
+      all: unset;
     }
   }
 }

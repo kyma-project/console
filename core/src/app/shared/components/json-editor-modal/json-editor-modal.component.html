@@ -1,5 +1,6 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal #jsonEditorModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()" [width]="'650px'">
+  <fd-modal #jsonEditorModal class="y-fd-modal" role="dialog" aria-labelledby="confirm" [width]="'650px'"
+    (click)="$event.stopPropagation()">
     <fd-modal-header>
       Edit
     </fd-modal-header>

@@ -1,5 +1,5 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal #editBindingModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+  <fd-modal class="y-fd-modal" #editBindingModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
     <fd-modal-header>Create Namespace Binding</fd-modal-header>
     <fd-modal-body>
       <div class="fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown()" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">

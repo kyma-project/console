@@ -1,5 +1,6 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal #informationModal class="y-word-wrap" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+  <fd-modal class="y-fd-modal y-word-wrap" #informationModal role="dialog" aria-labelledby="confirm"
+    (click)="$event.stopPropagation()">
     <fd-modal-header>
       {{ title }}
     </fd-modal-header>
@@ -7,7 +8,9 @@
       <p>{{ message }}</p>
     </fd-modal-body>
     <fd-modal-footer>
-      <button fd-button [fdType]="'main'" (click)="cancel($event); redirect()">OK</button>
+      <button fd-button [fdType]="'main'" (click)="cancel($event); redirect()">
+        OK
+      </button>
     </fd-modal-footer>
   </fd-modal>
 </div>

@@ -8,13 +8,13 @@
       </y-list-search>
       <y-list-filter [hidden]="showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)">
       </y-list-filter>
-      <button fd-button [options]="'light'" (click)="goToCreate()">
-        + Add Lambda
+      <button fd-button [options]="'light'" [glyph]="'add'" (click)="goToCreate()">
+        Add Lambda
       </button>
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <fd-panel *ngIf="error">
+  <fd-panel class="y-fd-panel" *ngIf="error">
     <fd-panel-body>
       <div class="fd-alert fd-alert--error" role="alert">
         {{ error }}
@@ -28,9 +28,6 @@
     <div empty-list-placeholder *ngIf="showEmptyPage">
       <h1>{{ title }}</h1>
       <p>{{ emptyListText }}</p>
-      <button class="tn-button tn-button--small tn-button--text" (click)="goToCreate()">
-        + {{ createNewElementText }}
-      </button>
     </div>
   </y-plain-table>
   <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>

@@ -1,6 +1,5 @@
-
 <section class="fd-section">
-  <fd-panel>
+  <fd-panel class="y-fd-panel">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>Service Bindings</fd-panel-title>
@@ -14,9 +13,9 @@
     </fd-panel-header>
   </fd-panel>
 
-  <fd-panel *ngIf="instanceBindingInfoList.length > 0">
+  <fd-panel class="y-fd-panel" *ngIf="instanceBindingInfoList.length > 0">
     <fd-panel-body [bleed]="true">
-      <table class="fd-table">
+      <table class="fd-table y-fd-table">
         <thead>
           <tr>
             <th class="y-fd-table--col-4">Instance</th>
@@ -25,14 +24,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let instanceBinding of instanceBindingInfoList; let i = index">
+          <tr *ngFor="
+              let instanceBinding of instanceBindingInfoList;
+              let i = index
+            ">
             <td>
               {{ instanceBinding.instanceName }}
             </td>
             <td>
               <table>
                 <tr *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
-                  <td class="y-fd-table--col-12 y-word-break" *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
+                  <td class="y-fd-table--col-12 y-word-break"
+                    *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
                     {{ instanceBinding.instanceBindingPrefix + envVar }}
                   </td>
                   <ng-template #onlyEnvVar>
@@ -44,7 +47,8 @@
               </table>
             </td>
             <td class="fd-has-float-right">
-              <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="remove(i)" [disabled]="!lambdaName || isLambdaNameInvalid"></button>
+              <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="remove(i)"
+                [disabled]="!lambdaName || isLambdaNameInvalid"></button>
             </td>
           </tr>
         </tbody>
@@ -52,4 +56,5 @@
     </fd-panel-body>
   </fd-panel>
 </section>
-<app-lambda-instance-binding-creator [alreadyAddedInstances]="instanceBindingInfoList" #bindingCreatorModal (selectedServiceBindingEmitter)="addServiceBinding($event)"></app-lambda-instance-binding-creator>
+<app-lambda-instance-binding-creator [alreadyAddedInstances]="instanceBindingInfoList" #bindingCreatorModal
+  (selectedServiceBindingEmitter)="addServiceBinding($event)"></app-lambda-instance-binding-creator>

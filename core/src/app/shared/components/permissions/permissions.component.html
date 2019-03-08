@@ -9,24 +9,26 @@
   <ul class="fd-tabs" role="tablist">
     <li class="fd-tabs__item">
       <a class="fd-tabs__link" aria-controls="bindings" [attr.aria-selected]="bindingsTabExpanded"
-          (click)="changeTab('bindings')" role="tab">{{ bindingsTabTitle }}</a>
+        (click)="changeTab('bindings')" role="tab">{{ bindingsTabTitle }}</a>
     </li>
     <li class="fd-tabs__item" *ngIf="!isGlobalMode">
       <a class="fd-tabs__link" aria-controls="roles" [attr.aria-selected]="rolesTabExpanded"
-          (click)="changeTab('roles')" role="tab">Roles</a>
+        (click)="changeTab('roles')" role="tab">Roles</a>
     </li>
     <li class="fd-tabs__item">
       <a class="fd-tabs__link" aria-controls="clusterRoles" [attr.aria-selected]="clusterRolesTabExpanded"
-          (click)="changeTab('clusterRoles')" role="tab">Cluster Roles</a>
+        (click)="changeTab('clusterRoles')" role="tab">Cluster Roles</a>
     </li>
   </ul>
   <div class="fd-tabs__panel" [attr.aria-expanded]="bindingsTabExpanded" id="bindings" role="tabpanel">
     <app-bindings [mode]="isGlobalMode ? 'clusterRoles' : 'roles'"></app-bindings>
   </div>
-  <div class="fd-tabs__panel" [attr.aria-expanded]="rolesTabExpanded" id="roles" role="tabpanel" *ngIf="!isGlobalMode && rolesTabExpanded">
+  <div class="fd-tabs__panel" [attr.aria-expanded]="rolesTabExpanded" id="roles" role="tabpanel"
+    *ngIf="!isGlobalMode && rolesTabExpanded">
     <app-roles [mode]="'roles'"></app-roles>
   </div>
-  <div class="fd-tabs__panel" [attr.aria-expanded]="clusterRolesTabExpanded" id="clusterRoles" role="tabpanel" *ngIf="clusterRolesTabExpanded">
+  <div class="fd-tabs__panel" [attr.aria-expanded]="clusterRolesTabExpanded" id="clusterRoles" role="tabpanel"
+    *ngIf="clusterRolesTabExpanded">
     <app-roles [mode]="'clusterRoles'"></app-roles>
   </div>
 </section>

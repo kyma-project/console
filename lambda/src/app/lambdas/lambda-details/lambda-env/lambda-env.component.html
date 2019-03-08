@@ -1,31 +1,36 @@
-<fd-panel>
+<fd-panel class="y-fd-panel">
   <fd-panel-header>
     <fd-panel-head>
       <fd-panel-title>Environment Variable</fd-panel-title>
-      <fd-panel-description>Define Environment Variables to be used by your Lambda Function.</fd-panel-description>
+      <fd-panel-description>Define Environment Variables to be used by your Lambda
+        Function.</fd-panel-description>
     </fd-panel-head>
   </fd-panel-header>
   <fd-panel-body [bleed]="true">
-    <table class="fd-table">
+    <table class="fd-table y-fd-table">
       <thead>
         <tr>
           <th class="y-fd-table--col-4">
-            <input [(ngModel)]="envVar.name" type="text" id="input-1" (keyup)="validatesEnvVariableName()" placeholder="VARIABLE_NAME" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
+            <input [(ngModel)]="envVar.name" type="text" id="input-1" (keyup)="validatesEnvVariableName()"
+              placeholder="VARIABLE_NAME" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
           </th>
           <th class="y-fd-table--col-1 fd-has-text-align-center">→</th>
           <th class="y-fd-table--col-5">
-            <input [(ngModel)]="envVar.value" type="text" id="input-2" placeholder="Value" (keyup.enter)="addVariable()" [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
+            <input [(ngModel)]="envVar.value" type="text" id="input-2" placeholder="Value" (keyup.enter)="addVariable()"
+              [attr.disabled]="!lambdaName || isLambdaNameInvalid ? '':null">
           </th>
           <th class="y-fd-table--col-2 fd-has-text-align-right">
-            <button class="fd-button fd-button--compact fd-button--light" (click)="addVariable()" [disabled]="disableAddVar || !lambdaName || isLambdaNameInvalid">
-              + Add Variable
+            <button fd-button [options]="'light'" [glyph]="'add'" (click)="addVariable()" [compact]="true"
+              [state]="(disableAddVar || !lambdaName || isLambdaNameInvalid) ?'disabled':''">
+              Add Variable
             </button>
           </th>
         </tr>
         <tr *ngIf="isEnvVariableNameInvalid || isEnvVariableDuplicate" class="y-fd-table__tr--errors">
           <th colspan="4">
             <fd-form-message [type]="'error'" *ngIf="isEnvVariableNameInvalid">
-              Invalid variable name: must consist of alphanumeric characters or '_' and no spaces (e.g. 'VARIABLE_NAME')
+              Invalid variable name: must consist of alphanumeric characters or
+              '_' and no spaces (e.g. 'VARIABLE_NAME')
             </fd-form-message>
             <fd-form-message [type]="'warning'" *ngIf="isEnvVariableDuplicate">
               Duplicate entry.
@@ -40,12 +45,13 @@
           <td *ngIf="editVar!=i" class="y-word-break">{{ env.value }}</td>
           <td *ngIf="editVar!=i" class="fd-has-float-right">
             <button fd-button [options]="'light'" [glyph]="'edit'" [compact]="true" (click)="editVariable(i)"></button>
-            <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="removeVarariable(i)"></button>
+            <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true"
+              (click)="removeVarariable(i)"></button>
           </td>
-          <td *ngIf="editVar==i">
-            <input [(ngModel)]="env.value" type="text" (keyup.enter)="updateVariable()">
+          <td *ngIf="editVar == i">
+            <input [(ngModel)]="env.value" type="text" (keyup.enter)="updateVariable()" />
           </td>
-          <td *ngIf="editVar==i">
+          <td *ngIf="editVar == i">
             <button fd-button [glyph]="'accept'" [options]="'light'" (click)="updateVariable()"></button>
           </td>
         </tr>

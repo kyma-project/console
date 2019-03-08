@@ -29,7 +29,6 @@ export class JsonEditorModalComponent {
   show() {
     this.isActive = true;
     this.modalResourceData = cloneDeep(this.resourceData);
-    console.log(this.modalResourceData);
 
     this.modalService.open(this.jsonEditorModal).result.finally(() => {
       this.isActive = false;
