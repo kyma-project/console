@@ -117,18 +117,9 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     );
     frame.waitForXPath(`//td[contains(string(), "${config.testEnv}")]`);
     frame.waitForXPath(`//h1[contains(string(), "General Information")]`);
-    await frame.waitForXPath(`//a[contains(string(), "Applications")]`);
-    await Promise.all([
-      kymaConsole.openLinkOnFrame(page, 'a', 'Applications'),
-      frame.waitForNavigation(
-        { waitUntil: ['domcontentloaded', 'networkidle0'] }
-      )]
-    );
-    frame.waitForXPath(
-      `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
-        config.testEnv
-      }")]`
-    );
+
+    frame.waitForSelector('.fd-breadcrumb__link');
+    frame.click('.fd-breadcrumb__link');
   });
 
   testPluggable(REQUIRED_MODULE, 'Delete Application', async () => {
