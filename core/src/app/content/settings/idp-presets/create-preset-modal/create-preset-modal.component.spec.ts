@@ -21,6 +21,14 @@ describe('CreatePresetModalComponent', () => {
   let component: CreatePresetModalComponent;
   let fixture: ComponentFixture<CreatePresetModalComponent>;
   let IdpPresetsServiceMockStub: IdpPresetsService;
+  let mockModalService: ModalService;
+  const modalService = {
+    open: () => ({
+      result: { finally: () => { } }
+    }),
+    close: () => { }
+  };
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,7 +36,7 @@ describe('CreatePresetModalComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/my/app' },
         { provide: IdpPresetsService, useClass: IdpPresetsServiceMock },
-        { provide: ModalService, useValue: { close: () => {} } },
+        { provide: ModalService, useValue: modalService },
         ComponentCommunicationService
       ],
       declarations: [
@@ -46,6 +54,7 @@ describe('CreatePresetModalComponent', () => {
     IdpPresetsServiceMockStub = fixture.debugElement.injector.get(
       IdpPresetsService
     );
+    mockModalService = TestBed.get(ModalService);
     fixture.detectChanges();
   });
 
@@ -172,52 +181,59 @@ describe('CreatePresetModalComponent', () => {
   });
 
   it('should react on Cancel event', done => {
-    // given
-    component.isActive = true;
-    component.presetName = 'preset-name';
-    component.jwks = 'https://jwks';
-    component.issuer = 'preset issuer';
-    component.wrongJwks = false;
-    component.validateJwksRegex();
-    component.validatePresetNameRegex();
+    spyOn(mockModalService, 'close');
+    (component.createIDPPresetModal as any) = 'mock-value';
 
-    // when
-    fixture.detectChanges();
     component.close();
 
     fixture.whenStable().then(() => {
       // then
-      expect(component).toBeTruthy();
-      expect(component.presetName).toBe('');
-      expect(component.jwks).toBe('');
-      expect(component.issuer).toBe('');
-      expect(component.isActive).toBeFalsy();
-      expect(component.wrongJwks).toBeFalsy();
-      expect(component.wrongPresetName).toBeFalsy();
-      expect(component.error).toBe('');
-
+      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
       done();
     });
   });
 
   it('should react on Create event', done => {
+    spyOn(mockModalService, 'close');
+    (component.createIDPPresetModal as any) = 'mock-value';
+    spyOn(
+      IdpPresetsServiceMockStub,
+      'createIdpPreset'
+    ).and.returnValue(of({}));
+
+    component.save();
+
+    fixture.whenStable().then(() => {
+      expect(IdpPresetsServiceMockStub.createIdpPreset).toHaveBeenCalledTimes(
+        1
+      );
+      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
+
+      done();
+    });
+  });
+
+  it('show create idp preset modal', done => {
+    spyOn(mockModalService, 'open').and.returnValue({
+      result: {
+        finally: fn => {
+          fn();
+        }
+      }
+    });
+
     // given
     component.isActive = true;
     component.presetName = 'preset-name';
     component.jwks = 'preset jwks';
     component.issuer = 'preset issuer';
-    component.wrongJwks = false;
-    component.validateJwksRegex();
-    component.validatePresetNameRegex();
-
-    const spyCreate = spyOn(
-      IdpPresetsServiceMockStub,
-      'createIdpPreset'
-    ).and.returnValue(of({}));
+    component.wrongJwks = true;
+    component.error = 'mock-error';
+    component.wrongPresetName = true;
 
     // when
     fixture.detectChanges();
-    component.save();
+    component.show();
 
     fixture.whenStable().then(() => {
       // then
@@ -229,12 +245,8 @@ describe('CreatePresetModalComponent', () => {
       expect(component.wrongJwks).toBeFalsy();
       expect(component.wrongPresetName).toBeFalsy();
       expect(component.error).toBe('');
-      expect(spyCreate.calls.any()).toEqual(true);
-      expect(IdpPresetsServiceMockStub.createIdpPreset).toHaveBeenCalledTimes(
-        1
-      );
-
       done();
     });
   });
+
 });
