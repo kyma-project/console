@@ -22,7 +22,6 @@
     </fd-panel-body>
   </fd-panel>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
   <y-plain-table [source]="data" [headerRenderer]="lambdasHeaderRenderer" [entryRenderer]="lambdasEntryRenderer"
     [entryEventHandler]="lambdasEventHandler">
     <div empty-list-placeholder *ngIf="showEmptyPage">
