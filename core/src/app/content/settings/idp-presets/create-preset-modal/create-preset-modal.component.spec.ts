@@ -9,6 +9,7 @@ import { CreatePresetModalComponent } from './create-preset-modal.component';
 import { IdpPresetsService } from '../idp-presets.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Observable, of } from 'rxjs';
+import { ModalService } from 'fundamental-ngx';
 
 class IdpPresetsServiceMock {
   public createIdpPreset(data) {
@@ -20,8 +21,6 @@ describe('CreatePresetModalComponent', () => {
   let component: CreatePresetModalComponent;
   let fixture: ComponentFixture<CreatePresetModalComponent>;
   let IdpPresetsServiceMockStub: IdpPresetsService;
-  let header: DebugElement;
-  let buttonSaveClasses: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,13 +28,16 @@ describe('CreatePresetModalComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/my/app' },
         { provide: IdpPresetsService, useClass: IdpPresetsServiceMock },
+        { provide: ModalService, useValue: { close: () => {} } },
         ComponentCommunicationService
       ],
       declarations: [
         CreatePresetModalComponent,
         LuigiClientCommunicationDirective
       ]
-    }).compileComponents();
+    })
+      .overrideTemplate(CreatePresetModalComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -59,20 +61,14 @@ describe('CreatePresetModalComponent', () => {
     expect(component.wrongPresetName).toBeFalsy();
   });
 
-  it('should be visible with empty data and disabled Create button', () => {
+  it('should be visible with empty data', () => {
     // given
     component.isActive = true;
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
-    buttonSaveClasses = fixture.debugElement.query(
-      By.css('.tn-modal__button-primary')
-    ).classes;
 
     // then
-    expect(header.nativeElement.innerText).toBe('Create Preset');
-    expect(buttonSaveClasses.disabled).toBeTruthy();
     expect(component).toBeTruthy();
     expect(component.presetName).toBe('');
     expect(component.jwks).toBe('');
@@ -83,7 +79,7 @@ describe('CreatePresetModalComponent', () => {
     expect(component.wrongPresetName).toBeFalsy();
   });
 
-  it('should be visible with half filled data and disabled Create button', () => {
+  it('should be visible with half filled data', () => {
     // given
     component.isActive = true;
     component.presetName = 'preset-name';
@@ -91,14 +87,8 @@ describe('CreatePresetModalComponent', () => {
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
-    buttonSaveClasses = fixture.debugElement.query(
-      By.css('.tn-modal__button-primary')
-    ).classes;
 
     // then
-    expect(header.nativeElement.innerText).toBe('Create Preset');
-    expect(buttonSaveClasses.disabled).toBeTruthy();
     expect(component).toBeTruthy();
     expect(component.presetName).toBe('preset-name');
     expect(component.jwks).toBe('');
@@ -109,7 +99,7 @@ describe('CreatePresetModalComponent', () => {
     expect(component.wrongPresetName).toBeFalsy();
   });
 
-  it('should be visible with wrong presetName format and disabled Create button', () => {
+  it('should be visible with wrong presetName format', () => {
     // given
     component.isActive = true;
     component.presetName = 'preset name';
@@ -121,14 +111,8 @@ describe('CreatePresetModalComponent', () => {
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
-    buttonSaveClasses = fixture.debugElement.query(
-      By.css('.tn-modal__button-primary')
-    ).classes;
 
     // then
-    expect(header.nativeElement.innerText).toBe('Create Preset');
-    expect(buttonSaveClasses.disabled).toBeTruthy();
     expect(component).toBeTruthy();
     expect(component.presetName).toBe('preset name');
     expect(component.jwks).toBe('https://jwks');
@@ -151,14 +135,8 @@ describe('CreatePresetModalComponent', () => {
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
-    buttonSaveClasses = fixture.debugElement.query(
-      By.css('.tn-modal__button-primary')
-    ).classes;
 
     // then
-    expect(header.nativeElement.innerText).toBe('Create Preset');
-    expect(buttonSaveClasses.disabled).toBeTruthy();
     expect(component).toBeTruthy();
     expect(component.presetName).toBe('preset-name');
     expect(component.jwks).toBe('http://wrong-uri');
@@ -181,14 +159,8 @@ describe('CreatePresetModalComponent', () => {
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
-    buttonSaveClasses = fixture.debugElement.query(
-      By.css('.tn-modal__button-primary')
-    ).classes;
 
     // then
-    expect(header.nativeElement.innerText).toBe('Create Preset');
-    expect(buttonSaveClasses.disabled).toBeFalsy();
     expect(component).toBeTruthy();
     expect(component.presetName).toBe('preset-name');
     expect(component.jwks).toBe('https://jwks');
@@ -211,12 +183,10 @@ describe('CreatePresetModalComponent', () => {
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
     component.close();
 
     fixture.whenStable().then(() => {
       // then
-      expect(header.nativeElement.innerText).toBe('Create Preset');
       expect(component).toBeTruthy();
       expect(component.presetName).toBe('');
       expect(component.jwks).toBe('');
@@ -247,12 +217,10 @@ describe('CreatePresetModalComponent', () => {
 
     // when
     fixture.detectChanges();
-    header = fixture.debugElement.query(By.css('h4'));
     component.save();
 
     fixture.whenStable().then(() => {
       // then
-      expect(header.nativeElement.innerText).toBe('Create Preset');
       expect(component).toBeTruthy();
       expect(component.presetName).toBe('');
       expect(component.jwks).toBe('');

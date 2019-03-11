@@ -19,6 +19,7 @@ export class JsonEditorComponent implements OnInit {
       history: true,
       indentation: 2,
       mode: 'code',
+      // theme: 'tomorrow', <-- doesn't work for now
       search: true,
       sortObjectKeys: false,
       modes: ['code', 'tree', 'view', 'form']

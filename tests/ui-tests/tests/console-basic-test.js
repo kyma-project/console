@@ -106,30 +106,26 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   testPluggable(REQUIRED_MODULE, 'Go to details and back', async () => {
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForXPath(
-      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
+      `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
         config.testEnv
       }")]`,
     );
     await kymaConsole.openLinkOnFrame(
       page,
-      'div.remoteenv-name',
+      '[data-e2e-id=remoteenv-name]',
       config.testEnv,
     );
-    frame.waitForXPath(`//div[contains(string(), "${config.testEnv}")]`);
-    frame.waitForXPath(`//h2[contains(string(), "General Information")]`);
-    await frame.waitForXPath(`//a[contains(string(), "Applications")]`);
-    await kymaConsole.openLinkOnFrame(page, 'a', 'Applications');
-    frame.waitForXPath(
-      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
-        config.testEnv
-      }")]`,
-    );
+    frame.waitForXPath(`//td[contains(string(), "${config.testEnv}")]`);
+    frame.waitForXPath(`//h1[contains(string(), "General Information")]`);
+
+    frame.waitForSelector('.fd-breadcrumb__link');
+    frame.click('.fd-breadcrumb__link');
   });
 
   testPluggable(REQUIRED_MODULE, 'Delete Application', async () => {
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForXPath(
-      `//div[contains(@class, 'remoteenv-name') and contains(string(), "${
+      `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
         config.testEnv
       }")]`,
     );

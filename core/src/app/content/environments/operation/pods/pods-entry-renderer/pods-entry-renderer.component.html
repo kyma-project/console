@@ -1,30 +1,35 @@
-<div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="col-1 col-lg-3">
-       <div class="sf-list__body--primary">{{ entry.metadata.name }}</div>
-  </div>
-  <div class="col-1">{{ entry.spec.nodeName }}</div>
-
-  <div class="col-1">{{ getRestartCount(entry.status.containerStatuses) }}</div>
-  <div class="col-2">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
-  <div class="col-2 sf-list__label-column">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.metadata.labels)">
+<tr [ngClass]="{ disabled: disabled === true }">
+  <td class="fd-has-font-weight-bold">{{ entry.metadata.name }}</td>
+  <td>{{ entry.spec.nodeName }}</td>
+  <td>
+    <fd-badge [modifier]="'filled'" [status]="
+        !getRestartCount(entry.status.containerStatuses) ? 'success' : 'warning'
+      ">
+      {{ getRestartCount(entry.status.containerStatuses) }}
+    </fd-badge>
+  </td>
+  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td>
+    <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
     </span>
-  </div>
-  <div class="col-2">
-      <app-status-label
-        [statusType]="getStatusType(entry)">
-        {{ getStatus(entry) }}
-      </app-status-label>
-  </div>
-  <div class="col-1 actions-icon">
+  </td>
+  <td>
+    <app-status-label [statusType]="getStatusType(entry)">
+      {{ getStatus(entry) }}
+    </app-status-label>
+  </td>
+  <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-  </div>
-  <div class="sf-list__warning col-12">
-    <span *ngFor="let containerStatus of entry.status.containerStatuses">
-      <span *ngIf="containerStatus.state[objectKeys(containerStatus.state)[0]] !== 'running'">
-        {{ containerStatus.state[objectKeys(containerStatus.state)[0]].message }}<br>
-      </span>
+  </td>
+</tr>
+<tr *ngIf="hasErrors(entry)">
+  <span *ngFor="let containerStatus of entry.status.containerStatuses">
+    <span *ngIf="
+        containerStatus.state[objectKeys(containerStatus.state)[0]] !==
+        'running'
+      ">
+      {{ containerStatus.state[objectKeys(containerStatus.state)[0]].message }}<br />
     </span>
-  </div>
-</div>
+  </span>
+</tr>

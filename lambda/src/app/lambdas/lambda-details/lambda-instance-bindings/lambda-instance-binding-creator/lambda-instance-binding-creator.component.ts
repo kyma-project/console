@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { ServiceInstance } from '../../../../shared/datamodel/k8s/service-instance';
 import { ServiceInstancesService } from '../../../../service-instances/service-instances.service';
 import { ServiceBindingsService } from '../../../../service-bindings/service-bindings.service';
@@ -6,6 +12,7 @@ import { ServiceBinding } from '../../../../shared/datamodel/k8s/service-binding
 import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-binding-info';
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
+import { ModalService, ModalComponent } from 'fundamental-ngx';
 
 const RUNNING = 'RUNNING';
 
@@ -15,7 +22,9 @@ const RUNNING = 'RUNNING';
   styleUrls: ['../../lambda-details.component.scss'],
 })
 export class LambdaInstanceBindingCreatorComponent {
-  public isActive = false;
+  @ViewChild('instanceBindingCreatorModal')
+  instanceBindingCreatorModal: ModalComponent;
+
   public isValid = false;
   public isSelectedInstanceBindingPrefixInvalid = false;
   public createSecrets = true;
@@ -34,6 +43,7 @@ export class LambdaInstanceBindingCreatorComponent {
   constructor(
     private serviceInstancesService: ServiceInstancesService,
     private serviceBindingsService: ServiceBindingsService,
+    private modalService: ModalService,
   ) {}
 
   @Input() alreadyAddedInstances: InstanceBindingInfo[];
@@ -41,7 +51,6 @@ export class LambdaInstanceBindingCreatorComponent {
   selectedServiceBindingEmitter = new EventEmitter<InstanceBindingInfo>();
 
   public show() {
-    this.isActive = true;
     luigiClient.uxManager().addBackdrop();
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
@@ -79,6 +88,12 @@ export class LambdaInstanceBindingCreatorComponent {
           err => {},
         );
     });
+
+    this.modalService
+      .open(this.instanceBindingCreatorModal)
+      .result.finally(() => {
+        luigiClient.uxManager().removeBackdrop();
+      });
   }
 
   public validatesPrefix() {
@@ -94,11 +109,11 @@ export class LambdaInstanceBindingCreatorComponent {
     }
   }
 
-  public cancel(event: Event) {
-    this.isActive = false;
-    luigiClient.uxManager().removeBackdrop();
-    this.reset();
+  public closeModal(event: Event): void {
     event.stopPropagation();
+    luigiClient.uxManager().removeBackdrop();
+    this.modalService.close(this.instanceBindingCreatorModal);
+    this.reset();
   }
 
   public submit(event: Event) {
@@ -116,11 +131,7 @@ export class LambdaInstanceBindingCreatorComponent {
     };
 
     this.selectedServiceBindingEmitter.emit(ibInfo);
-
-    this.isActive = false;
-    luigiClient.uxManager().removeBackdrop();
-    this.reset();
-    event.stopPropagation();
+    this.closeModal(event);
   }
 
   public validateSelection() {
@@ -151,6 +162,4 @@ export class LambdaInstanceBindingCreatorComponent {
     this.selectedBinding = null;
     this.isValid = false;
   }
-
-  vote(agreed: boolean) {}
 }

@@ -1,32 +1,44 @@
-<div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="col-2 col-lg-2 sf-list__body--primary">{{ entry.name }}</div>
-  <div class="col-1">{{ entry.status.readyReplicas ? entry.status.readyReplicas : 0 }} /{{ entry.status.replicas }}
-  </div>
-  <div class="col-1">{{ entry.creationTimestamp * 1000 | timeAgo }}</div>
-  <div ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
-    <span *ngFor="let image of entry.containers">{{ image.image }}</span>
-  </div>
+<tr [ngClass]="{ disabled: disabled === true }">
+  <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
+  <td>
+    <fd-badge [modifier]="'filled'"
+      [status]="(entry.status.readyReplicas || 0)===entry.status.replicas? 'success' : 'error'">
+      {{ entry.status.readyReplicas || '0' }}/{{ entry.status.replicas }}
+    </fd-badge>
+  </td>
+  <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
+  <td>
+    <span *ngFor="let image of entry.containers">
+      {{ image.image }}
+    </span>
+  </td>
   <ng-container *ngIf="showBoundServices">
-    <div class="col-2" *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
-      <a class="bound-services" *ngFor="let instance of entry.boundServiceInstanceNames"
-        (click)="goToServiceInstanceDetails(instance)">
+    <td *ngIf="
+        entry.boundServiceInstanceNames &&
+        entry.boundServiceInstanceNames.length > 0
+      ">
+      <a *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
         {{ instance }}
       </a>
-    </div>
-    <div class="col-2" *ngIf="(!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0)">
+    </td>
+    <td *ngIf="
+        !entry.boundServiceInstanceNames ||
+        entry.boundServiceInstanceNames.length === 0
+      ">
       <span></span>
-    </div>
+    </td>
   </ng-container>
-  <div class="sf-list__label-column" ngClass="{{showBoundServices ? 'col-2' : 'col-3'}}">
-    <span class="tn-badge tn-badge--pill sf-list__label"
-      *ngFor="let label of getLabels(entry.labels)">{{ label }}</span>
-  </div>
-  <div class="col-1">
+  <td>
+    <span *ngFor="let label of getLabels(entry.labels)" class="fd-token y-fd-token y-fd-token--no-button">
+      {{ label }}
+    </span>
+  </td>
+  <td>
     <app-status-label [statusType]="getStatusType(entry)">
       {{ getStatus(entry) }}
     </app-status-label>
-  </div>
-  <div class="col-1 actions-icon">
+  </td>
+  <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-  </div>
-</div>
+  </td>
+</tr>

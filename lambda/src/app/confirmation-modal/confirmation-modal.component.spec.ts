@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationModalComponent } from './confirmation-modal.component';
+import { ModalService } from 'fundamental-ngx';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -8,9 +9,18 @@ describe('ConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmationModalComponent ]
+      declarations: [ 
+        ConfirmationModalComponent 
+      ],
+      providers: [
+        {
+          provide: ModalService,
+          useValue: { updateModalService: () => {} }
+        }
+      ]
     })
-    .compileComponents();
+      .overrideTemplate(ConfirmationModalComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

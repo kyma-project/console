@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ListModule } from 'app/generic-list/list.module';
 
+import { ListModule } from 'app/generic-list/list.module';
 import { AppComponent } from './app.component';
 import { LambdasComponent } from './lambdas/list/lambdas.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -14,7 +14,7 @@ import { LambdaInstanceBindingCreatorComponent } from './lambdas/lambda-details/
 import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LambdaDetailsService } from './lambdas/lambda-details/lambda-details.service';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { RouterModule, Routes } from '@angular/router';
@@ -33,6 +33,9 @@ import { GraphqlClientService } from './graphql-client/graphql-client.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './lambdas/lambda-details/event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './lambdas/lambda-details/http-trigger/http-trigger.component';
+import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
+
+import { FundamentalNgxModule } from 'fundamental-ngx';
 
 const routes: Routes = [
   { path: '', redirectTo: 'lambdas', pathMatch: 'full' },
@@ -56,6 +59,7 @@ const routes: Routes = [
     LambdaInstanceBindingCreatorComponent,
     EventTriggerChooserComponent,
     HttpTriggerComponent,
+    LabelsInputComponent,
   ],
 
   imports: [
@@ -67,7 +71,9 @@ const routes: Routes = [
     }),
     AceEditorModule,
     FormsModule,
+    ReactiveFormsModule,
     ClickOutsideModule,
+    FundamentalNgxModule,
   ],
   providers: [
     HttpClient,

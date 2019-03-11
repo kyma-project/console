@@ -10,7 +10,6 @@ import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-head
 import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
-  host: { class: '' },
   selector: 'app-roles',
   styles: ['y-list-filter { display: none; }'],
   templateUrl:

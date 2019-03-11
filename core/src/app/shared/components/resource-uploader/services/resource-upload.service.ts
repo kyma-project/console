@@ -81,7 +81,7 @@ export class ResourceUploadService implements OnDestroy {
   }
 
   private read(file: File) {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       const reader = new FileReader();
       reader.onload = () => observer.next(reader.result);
 
@@ -90,9 +90,9 @@ export class ResourceUploadService implements OnDestroy {
   }
 
   public getFileContent(file: File) {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       this.read(file).subscribe(
-        resources => {
+        (resources: string[]) => {
           try {
             const fileContents = this.convertFileContents(file, resources);
             if (resources.length > 0) {

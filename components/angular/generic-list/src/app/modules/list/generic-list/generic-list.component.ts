@@ -100,7 +100,7 @@ export class GenericListComponent implements OnChanges, OnInit {
       };
     }
     if (this.source) {
-      this.data = Observable.create(observer => {
+      this.data = new Observable(observer => {
         this.fetchData(observer, noCache, 2);
       });
       this.setLoaded(false);

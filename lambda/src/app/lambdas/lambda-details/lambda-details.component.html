@@ -1,199 +1,245 @@
-<div class="sf-toolbar">
-  <div class="sf-toolbar__header">{{ title }}</div>
-  <div class="sf-toolbar__right">
-    <div class="sf-toolbar__item">
-      <button class="tn-button tn-button--small tn-button--text cancel" (click)="cancel()">Cancel</button>
-      <button class="tn-button tn-button--small sf-button--primary" (click)="deployLambda()" [disabled]="!lambda.metadata.name || !isLambdaFormValid">{{ mode == 'create'?'Create':'Save' }}</button>
+<section class="fd-section">
+  <fd-breadcrumb class="y-fd-breadcrumb">
+    <fd-breadcrumb-item>
+      <a fd-breadcrumb-link (click)="navigateToList()">
+        Lambdas
+      </a>
+    </fd-breadcrumb-item>
+    <fd-breadcrumb-item *ngIf="mode === 'create'">
+      <span class="fd-breadcrumb__link">
+        Create lambda
+      </span>
+    </fd-breadcrumb-item>
+    <fd-breadcrumb-item *ngIf="mode !== 'create' && lambda?.metadata?.name">
+      <span>
+        {{ lambda?.metadata?.name }}
+      </span>
+    </fd-breadcrumb-item>
+  </fd-breadcrumb>
+
+  <fd-action-bar>
+    <fd-action-bar-header>
+      <fd-action-bar-title>
+        {{ lambda?.metadata?.name }}
+      </fd-action-bar-title>
+    </fd-action-bar-header>
+    <fd-action-bar-actions [hidden]="!loaded">
+      <button fd-button [options]="'light'" (click)="cancel()">Cancel</button>
+      <button fd-button [options]="'emphasized'" (click)="deployLambda()"
+        [disabled]="!lambda.metadata.name || !isLambdaFormValid">
+        {{ mode == 'create' ? 'Create' : 'Save' }}
+      </button>
+    </fd-action-bar-actions>
+  </fd-action-bar>
+
+  <p *ngIf="!loaded">
+    Loading ...
+  </p>
+
+  <ng-container *ngIf="loaded">
+    <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" *ngIf="error">
+      <p>{{ error }}</p>
     </div>
-  </div>
-</div>
 
-<section class="sf-section" *ngIf="loaded | async">
+    <fd-panel class="y-fd-panel">
+      <fd-panel-header>
+        <fd-panel-head>
+          <fd-panel-title>General information</fd-panel-title>
+        </fd-panel-head>
+      </fd-panel-header>
 
-  <div class="sf-panel" *ngIf="error">
-    <div class="sf-alert sf-alert-danger">{{ error }}</div>
-  </div>
-
-  <div class="sf-panel">
-    <div class="sf-panel__head">
-      <h2> General Information </h2>
-    </div>
-    <div class="sf-panel__content">
-      <div class="row">
-        <div class="tn-form__group col-sm-6 col-lg-4">
-          <div class="tn-form__item">
-            <label class="tn-form__label" for="input-1">Function Name *</label>
-            <input class="tn-form__control" type="text" id="input-1" [(ngModel)]="lambda.metadata.name" [attr.disabled]="mode==='create'?null:''"
-                   (keyup)="validatesName()">
-            <div *ngIf="isFunctionNameInvalid">
-              <p class="alert">Invalid name: must consist of lower case alphanumeric characters or '-', start with an alphabetic character, and end with an alphanumeric character (e.g. 'my-name',  or 'abc-123')</p>
-            </div>
-          </div>
-        </div>
-        <div class="tn-form__group col-sm-6 col-lg-4">
-          <div class="tn-form__item">
-            <label class="tn-form__label" for="input-2">Labels</label>
-            <div class="labels-input" id="input-2">
-              <span title="Edit label" class="tn-badge-labels tn-badge tn-badge--pill labels" *ngFor="let label of labels"
-                    (click)="updateLabel(label)">
-                {{ label }}
-                  <div class="tn-icon tn-icon--remove remove-btn labels__remove" (click)="removeLabel(label)"></div>
-              </span>
-              <input #labelsInput type="text" [(ngModel)]="newLabel" (keydown.enter)="addLabel()" (keydown.tab)="addLabel()"
-                     [attr.disabled]="(!lambda.metadata.name || isFunctionNameInvalid) ? '':null" (blur)="addLabel()">
-            </div>
-            <div *ngIf="wrongLabel" class="alert alert-danger">
-            {{ wrongLabelMessage }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="sf-panel" [hidden]="(loaded | async) === false">
-  <div class="tn-form__group ace-editor">
-    <div class="tn-form__item">
-      <div class="sf-panel__head">
-        <div class="sf-panel__headline-wrap">
-          <h2> Code </h2>
-          <div class="sf-toolbar sf-toolbar--box sf-trigger-list">
-            <div class="sf-toolbar__item sf-trigger-list-elements">
-              <div [ngClass]="selectedTriggers.length > 0 ? 'lambda-editor-header-list' : 'lambda-editor-header-list-first-elem'">
-                <button class="tn-button tn-button--small tn-button--text" (click)="toggleTriggerTypeDropdown($event)"
-                        dropdown="triggerType" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">Select Function
-                  Trigger</button>
-                <div (mouseleave)="closeTriggerTypeDropDown()">
-                  <div class="tn-dropdown__menu trigger-menu" [attr.aria-hidden]="!toggleTriggerType">
-                    <ul class="tn-dropdown__menu trigger-menu">
-                      <li>
-                        <a [class.disabled]="lambda.metadata.name.length <=0 || isFunctionNameInvalid" (click)="showEventTrigger()"
-                           class="tn-dropdown__item">Event Trigger</a>
-                      </li>
-
-                      <li>
-                        <a [class.disabled]="lambda.metadata.name.length <= 0 || isFunctionNameInvalid || isHTTPTriggerAdded"
-                           (click)="showHTTPTrigger()" class="tn-dropdown__item">Expose via HTTPS</a>
-                      </li>
-                    </ul>
+      <fd-panel-body [bleed]="true">
+        <fd-panel-grid [col]="6" [nogap]="true">
+          <fd-panel class="y-fd-panel" [columnSpan]="2">
+            <fd-panel-body>
+              <div class="fd-form__group">
+                <div class="fd-form__item">
+                  <label class="fd-form__label" for="">Function Name * </label>
+                  <div class="fd-input-group">
+                    <input type="text" id="input-1" name="function_name" [(ngModel)]="lambda.metadata.name"
+                      [attr.disabled]="mode === 'create' ? null : ''" (keyup)="validatesName()" />
                   </div>
+                  <fd-form-message [type]="'error'" *ngIf="isFunctionNameInvalid">
+                    Invalid name: must consist of lower case alphanumeric
+                    characters or '-', start with an alphabetic character, and
+                    end with an alphanumeric character (e.g. 'my-name', or
+                    'abc-123')
+                  </fd-form-message>
                 </div>
               </div>
-
-              <ng-container *ngIf="selectedTriggers.length > 0">
-                <div class="trigger-event" *ngFor="let trigger of selectedTriggers">
-
-                  <div (mouseover)="onMouseOver(trigger) " (click)="onMouseOver(trigger) " class="selected-trigger__item tn-badge tn-badge--pill tn-badge-trigger labels">
-
-                    <span class="tn-icon tn-icon--remove labels__remove" (click)="unselectEvent(trigger);$event.stopPropagation();">
-                    </span>
-
-                    <span *ngIf="trigger.eventType === 'http' && isHTTPTriggerAuthenticated" class="securedHTTPTrigger"></span>
-
-                    <strong>{{ trigger.eventType }}</strong>
-                    <ng-container *ngIf="trigger.eventType!=='http'">- {{ trigger.version }} </ng-container>
-
-                    <div clickOutsideEvents="click" (clickOutside)="hideHTTPURL()" [exclude]="'.tn-badge--pill'"
-                         excludeBeforeClick="true" class="tn-dropdown__menu trigger-menu" *ngIf="showHTTPURL == trigger">
-                      <div class="trigger-body">
-                        https://{{ httpURL }}/
-                      </div>
-                      <div class="trigger-footer">
-                        <button *ngIf="isHTTPTriggerAuthenticated" class="tn-button tn-button--small tn-button--text"
-                                (click)=showFetchTokenModal()>
-                          Fetch Token
-                        </button>
-                        <button class="tn-button tn-button--small tn-button--text" (click)=copyHTTPURLEndpoint($event)>
-                          Copy to clipboard
-                        </button>
-                      </div>
-                    </div>
+            </fd-panel-body>
+          </fd-panel>
+          <fd-panel class="y-fd-panel" [columnSpan]="3">
+            <fd-panel-body>
+              <form #editLabelsForm="ngForm">
+                <div fd-form-set>
+                  <div fd-form-item>
+                    <fd-form-label>Labels</fd-form-label>
+                    <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)">
+                    </app-labels-input>
                   </div>
                 </div>
+              </form>
+            </fd-panel-body>
+          </fd-panel>
+        </fd-panel-grid>
+      </fd-panel-body>
+    </fd-panel>
+  </ng-container>
+</section>
+
+<ng-container *ngIf="loaded">
+  <section class="fd-section">
+    <fd-panel class="y-fd-panel">
+      <fd-panel-header>
+        <fd-panel-head>
+          <fd-panel-title>Settings &amp; Code</fd-panel-title>
+        </fd-panel-head>
+        <fd-panel-actions>
+          <label class="fd-label">Size:</label>
+          <fd-popover [compact]="true" [alignment]="'right'">
+            <fd-popover-control>
+              <button fd-button [options]="'light'" [glyph]="'slim-arrow-down'" [disabled]="
+                  lambda.metadata.name.length <= 0 || isFunctionNameInvalid
+                ">
+                {{ selectedFunctionSizeName }}
+              </button>
+            </fd-popover-control>
+
+            <fd-popover-body *ngIf="functionSizes?.length">
+              <fd-menu>
+                <fd-menu-list>
+                  <li fd-menu-item *ngFor="let option of functionSizes">
+                    <a (click)="selectSize(option)"><strong>{{ option.name }}</strong><br />{{ option.description }}</a>
+                  </li>
+                </fd-menu-list>
+              </fd-menu>
+            </fd-popover-body>
+          </fd-popover>
+
+          <label class="fd-label">Type:</label>
+          <fd-popover [compact]="true" [alignment]="'right'">
+            <fd-popover-control>
+              <button fd-button [options]="'light'" [glyph]="'slim-arrow-down'" [disabled]="
+                  lambda.metadata.name.length <= 0 || isFunctionNameInvalid
+                ">
+                {{ kind }}
+              </button>
+            </fd-popover-control>
+
+            <fd-popover-body *ngIf="types?.length">
+              <fd-menu>
+                <fd-menu-list>
+                  <li fd-menu-item *ngFor="let option of types">
+                    <a (click)="selectType(option)">{{ option.kind }}</a>
+                  </li>
+                </fd-menu-list>
+              </fd-menu>
+            </fd-popover-body>
+          </fd-popover>
+        </fd-panel-actions>
+      </fd-panel-header>
+
+      <fd-panel-filters>
+        <!-- trigger badges -->
+        <ng-container *ngIf="selectedTriggers.length > 0">
+          <span class="fd-token y-fd-token triggers" *ngFor="let trigger of selectedTriggers">
+            <div class="labels__remove" title="Remove trigger" (mouseover)="hideHTTPURL(); $event.stopPropagation()"
+              (click)="unselectEvent(trigger); $event.stopPropagation()"></div>
+            <span *ngIf="trigger.eventType === 'http' && isHTTPTriggerAuthenticated" class="securedHTTPTrigger"></span>
+            <span (mouseover)="onMouseOver(trigger)" (click)="onMouseOver(trigger)">
+              {{ trigger.eventType }}
+              <ng-container *ngIf="trigger.eventType !== 'http'">- {{ trigger.version }}
               </ng-container>
-            </div>
-            <div class="sf-toolbar__item sf-toolbar__right sf-typeselect">
-              <div class="tn-form__group sf-dropdown__lambda-type">
-                <label class="tn-form__label">Size: </label>
-                <div class="tn-dropdown" (mouseleave)="closeSizeDropDown()">
-                  <button class="tn-dropdown__control" aria-controls="nNJnB2719" aria-expanded="false" aria-haspopup="true"
-                          (click)="toggleSizeDropDown()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">
-                  {{ selectedFunctionSizeName }}
+            </span>
+            <div class="fd-popover y-fd-popover--position" *ngIf="showHTTPURL == trigger" clickOutsideEvents="click"
+              (clickOutside)="hideHTTPURL()" [exclude]="'.fd-token'" excludeBeforeClick="true">
+              <div class="fd-popover__body">
+                <div class="trigger-body">https://{{ httpURL }}/</div>
+                <div class="trigger-footer">
+                  <button *ngIf="isHTTPTriggerAuthenticated" class="fd-button fd-button--light"
+                    (click)="showFetchTokenModal()">
+                    Fetch Token
                   </button>
-                  <div class="tn-dropdown__menu text-left" [attr.aria-hidden]="sizeDropdownHidden">
-                    <div class="tn-dropdown__item" *ngFor="let item of functionSizes" (click)="selectSize(item)">
-                    <div>{{ item.name }}</div><br><div>{{ item.description }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tn-form__group sf-dropdown__lambda-type">
-                <label class="tn-form__label">Type: </label>
-                <div class="tn-dropdown" (mouseleave)="closeTypeDropDown()">
-                  <button class="tn-dropdown__control" aria-controls="nNJnB279" aria-expanded="false" aria-haspopup="true" (click)="toggleTypeDropDown()"
-                          [disabled]="!lambda.metadata.name || isFunctionNameInvalid">
-                  {{ kind }}
+                  <button class="fd-button fd-button--light" (click)="copyHTTPURLEndpoint($event)">
+                    Copy to clipboard
                   </button>
-                  <div class="tn-dropdown__menu text-left" [attr.aria-hidden]="typeDropdownHidden">
-                    <div class="tn-dropdown__item" *ngFor="let type of types" (click)="selectType(type)">
-                    {{ type.kind }}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <ace-editor #editor [(text)]="code" [mode]="aceMode" [theme]="theme" (textChanged)="onCodeChange($event)"></ace-editor>
-    </div>
-  </div>
-</section>
+          </span>
+        </ng-container>
 
-<section class="sf-section" [hidden]="(loaded | async)  === false">
-  <div class="tn-form__group ace-editor">
-    <div class="tn-form__item">
-      <div class="sf-toolbar">
-        <button *ngIf="(hasDependencies | async) === false" class="tn-button tn-button--small tn-button--stroked"
-                (click)="addDependencies()" [disabled]="!lambda.metadata.name || isFunctionNameInvalid">
-          + Add Dependencies
-        </button>
-        <div class="sf-toolbar__item" *ngIf="(hasDependencies | async)">
-          <h4>
-            Dependencies
-          </h4>
-        </div>
-        <div class="sf-toolbar__right">
-          <div class="sf-toolbar__item">
-            <button *ngIf="(hasDependencies | async)" class="tn-button sf-button--danger tn-button--small tn-button--text"
-                    (click)="removeDependencies()">
-              Remove
+        <!-- fd-popoper from ngx is not working, z-index is not adjustable -->
+        <div class="fd-popover">
+          <div class="fd-popover__control" (click)="$event.stopPropagation()">
+            <button fd-button [options]="'light'" [glyph]="'add'" id="functionTriggerSelector"
+              (click)="toggleDropdownState('functionTriggerPopover')" [disabled]="
+                lambda.metadata.name.length <= 0 || isFunctionNameInvalid
+              ">
+              Select Function Trigger
             </button>
           </div>
+          <div class="fd-popover__body" *ngIf="dropDownStates?.functionTriggerPopover" clickOutsideEvents="click"
+            (clickOutside)="toggleDropdownState('functionTriggerPopover')" [exclude]="'#functionTriggerSelector'"
+            excludeBeforeClick="true">
+            <nav class="fd-menu">
+              <ul class="fd-menu__list">
+                <li fd-menu-item>
+                  <a class="fd-menu__item" (click)="
+                      showEventTrigger();
+                      toggleDropdownState('functionTriggerPopover')
+                    ">Event Trigger</a>
+                </li>
+                <li fd-menu-item>
+                  <a class="fd-menu__item" [class.disabled]="isHTTPTriggerAdded" (click)="
+                      showHTTPTrigger();
+                      toggleDropdownState('functionTriggerPopover')
+                    ">Expose via HTTPS</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </fd-panel-filters>
+      <fd-panel-body>
+        <ace-editor #editor [(text)]="code" [mode]="aceMode" [theme]="theme" (textChanged)="onCodeChange($event)">
+        </ace-editor>
+      </fd-panel-body>
+    </fd-panel>
+  </section>
+
+  <section class="fd-section">
+    <div class="y-fd-panel">
+      <div class="fd-panel__header">
+        <div class="fd-panel__head">
+          <h1 class="fd-panel__title">
+            Dependencies
+          </h1>
+        </div>
+        <div class="fd-panel__actions">
+          <fd-toggle [size]="'xs'" (change)="changeDependencies(hasDependencies)" [(ngModel)]="hasDependencies">
+          </fd-toggle>
         </div>
       </div>
-      <div [hidden]="(hasDependencies | async) === false ">
-        <ace-editor #dependencyEditor [(text)]="dependency" [mode]="aceDependencyMode" [theme]="theme" (textChanged)="onDependencyChange($event)"></ace-editor>
+      <div class="fd-panel__body" [hidden]="!hasDependencies">
+        <ace-editor #dependencyEditor [(text)]="dependency" [mode]="aceDependencyMode" [theme]="theme"
+          (textChanged)="onDependencyChange($event)"></ace-editor>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="sf-panel" *ngIf="loaded | async">
-</section>
-
-<section class="sf-panel" *ngIf="loaded | async">
   <app-lambda-instance-bindings [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid"
-                                (bindingStateEmitter)="handleBindingStateEmitter($event)"></app-lambda-instance-bindings>
-</section>
+    (bindingStateEmitter)="handleBindingStateEmitter($event)"></app-lambda-instance-bindings>
 
-<section class="sf-panel" *ngIf="loaded | async">
-  <app-lambda-env-table [envs]="lambda.spec.deployment.spec.template.spec.containers[0].env" [lambdaName]="lambda.metadata.name"
-                        [isLambdaNameInvalid]="isFunctionNameInvalid" (envEmitter)="handleEnvEmitter($event)"></app-lambda-env-table>
+  <section class="fd-section">
+    <app-lambda-env-table [envs]="lambda.spec.deployment.spec.template.spec.containers[0].env"
+      [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid"
+      (envEmitter)="handleEnvEmitter($event)"></app-lambda-env-table>
+  </section>
 
-</section>
-<app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>
-<app-event-trigger-chooser #eventTriggerChooserModal (eventEmitter)="handleEventEmitter($event)"></app-event-trigger-chooser>
-<app-http-trigger #httpTriggerModal (httpEmitter)="handleHttpEmitter($event)"></app-http-trigger>
+  <app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>
+  <app-event-trigger-chooser #eventTriggerChooserModal (eventEmitter)="handleEventEmitter($event)">
+  </app-event-trigger-chooser>
+  <app-http-trigger #httpTriggerModal (httpEmitter)="handleHttpEmitter($event)"></app-http-trigger>
+</ng-container>

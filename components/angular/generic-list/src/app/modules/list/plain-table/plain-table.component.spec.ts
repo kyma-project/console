@@ -9,9 +9,10 @@ describe('PlainTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlainTableComponent ]
+      declarations: [PlainTableComponent],
     })
-    .compileComponents();
+      .overrideTemplate(PlainTableComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

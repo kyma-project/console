@@ -5,7 +5,7 @@ module.exports = {
   getLambdas: async page => {
     try {
       return await page.evaluate(() => {
-        const lambdasArraySelector = '.sf-list__body';
+        const lambdasArraySelector = 'tbody tr';
         return Array.from(document.querySelectorAll(lambdasArraySelector));
       });
     } catch (e) {

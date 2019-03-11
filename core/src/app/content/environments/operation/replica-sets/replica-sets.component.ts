@@ -9,8 +9,7 @@ import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element
 
 @Component({
   selector: 'app-replica-sets',
-  templateUrl: '../kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: '../kubernetes-element-list.component.html'
 })
 export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {

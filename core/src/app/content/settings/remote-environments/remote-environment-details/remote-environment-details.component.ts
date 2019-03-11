@@ -13,8 +13,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-remote-environment-details',
-  templateUrl: './remote-environment-details.component.html',
-  styleUrls: ['./remote-environment-details.component.scss']
+  templateUrl: './remote-environment-details.component.html'
 })
 export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   public currentREnvId = '';

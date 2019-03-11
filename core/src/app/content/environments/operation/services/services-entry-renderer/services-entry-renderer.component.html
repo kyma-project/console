@@ -1,30 +1,40 @@
-<div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="col-2 sf-list__body--primary">
-    <a (click)="navigateToDetails(entry.metadata.name)">{{ entry.metadata.name }}</a>
-  </div>
-  <div class="col-1 col-lg-1">{{ entry.spec.clusterIP }}</div>
-  <div class="col-3">
-    <span *ngIf="entry.spec.ports">
-      <span *ngFor="let port of entry.spec.ports">
-        <span>{{ entry.metadata.name }}.{{ entry.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span> <br>
-        <span>{{ entry.metadata.name }}.{{ entry.metadata.namespace }}:{{ port.nodePort || 0 }} {{ port.protocol }}</span> <br>
-      </span>
-    </span>
+<tr [ngClass]="{ disabled: disabled === true }">
+  <td>
+    <a (click)="navigateToDetails(entry.metadata.name)">
+      {{ entry.metadata.name }}
+    </a>
+  </td>
+  <td>{{ entry.spec.clusterIP }}</td>
+  <td>
+    <ng-container *ngIf="entry.spec.ports">
+      <ng-container *ngFor="let port of entry.spec.ports">
+        <span>
+          {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
+          {{ port.port }}
+          {{ port.protocol }}
+        </span>
+
+        <span>
+          {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
+          {{ port.nodePort || 0 }}
+          {{ port.protocol }}
+        </span>
+      </ng-container>
+    </ng-container>
     <span *ngIf="!entry.spec.ports">-</span>
-  </div>
-  <div class="col-1">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
-  <div class="col-2 sf-list__label-column">
-    <span class="tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.metadata.labels)">
+  </td>
+  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td>
+    <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
     </span>
-  </div>
-  <div class="col-2">
-      <app-status-label
-          [statusType]="getStatusType(entry)">
-           {{ getStatus(entry) }}
-      </app-status-label>
-  </div>
-  <div class="col-1 actions-icon">
+  </td>
+  <td>
+    <app-status-label [statusType]="getStatusType(entry)">
+      {{ getStatus(entry) }}
+    </app-status-label>
+  </td>
+  <td class="fd-has-text-align-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-  </div>
-</div>
+  </td>
+</tr>

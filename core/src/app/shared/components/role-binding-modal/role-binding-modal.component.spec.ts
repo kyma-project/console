@@ -6,6 +6,7 @@ import { ComponentCommunicationService } from '../../services/component-communic
 import { RbacService } from '../../services/rbac.service';
 import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
 import { FormsModule } from '@angular/forms';
+import { ModalService } from 'fundamental-ngx';
 
 const RbacServiceMock = {
   getClusterRoles() {
@@ -46,13 +47,19 @@ describe('RoleBindingModalComponent', () => {
           provide: CurrentEnvironmentService,
           useValue: CurrentEnvironmentServiceMock
         },
+        {
+          provide: ModalService,
+          useValue: { close: () => {} }
+        },
         ComponentCommunicationService
       ],
       declarations: [
         RoleBindingModalComponent,
         LuigiClientCommunicationDirective
       ]
-    }).compileComponents();
+    })
+      .overrideTemplate(RoleBindingModalComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

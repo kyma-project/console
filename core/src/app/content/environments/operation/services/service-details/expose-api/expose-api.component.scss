@@ -1,115 +1,29 @@
-.expose-section {
-  margin-top: 20px;
+.y-fd-dropdown {
+  .y-fd-form__control[type='text'] {
+    border: 0;
+    padding-right: 40px;
 
-  &__details {
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.y-fd-dropdown__control {
+  height: auto;
+  max-height: none;
+
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
     margin: 0;
-
-    .input-group {
-      padding: 0;
-      margin-bottom: 10px;
-
-      label.required::after {
-        content: ' *';
-      }
-
-      &--port {
-        padding: 0;
-        margin-right: 15px;
-        position: absolute;
-        right: 0;
-      }
-    }
-
-    .domain {
-      margin-left: -13px;
-      padding-top: 13px;
-      line-height: 52px;
-      letter-spacing: 2px;
-    }
-  }
-
-  &__secure-all {
-    padding: 0;
-    margin-top: 20px;
-  }
-
-  &__secured-paths {
-    margin-top: 20px;
-
-    .rule {
-      line-height: 52px;
-      padding-left: 0;
-    }
-
-    .new-rule {
-      border-bottom: none;
-
-      .input-group {
-        padding-left: 0;
-        margin-bottom: 10px;
-      }
-
-      .add-btn {
-        padding: 0 0.8em;
-      }
-    }
-
-    .doc-info {
-      color: grey;
-      font-size: 0.8em;
-      font-style: italic;
-      margin-top: 30px;
-
-      &::before {
-        content: '* ';
-      }
-    }
   }
 }
 
-.tn-button {
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-  &:disabled:hover {
-    color: #7f90a4;
-    background: #f9fbfc;
-  }
-}
-
-.filter-input {
-  border: 0;
-  float: left;
-  width: 90%;
-}
-
-.tn-dropdown__menu {
+.y-fd-popover__body {
+  width: 100%;
   overflow: auto;
   max-height: 300px;
-}
-
-.left {
-  padding: 0.8em 2em 0.8em 0;
-}
-
-.security-section > div > div > button {
-  margin-bottom: 12px;
-}
-
-.security-section > div > div > ul {
-  left: 14px;
-  top: 28px;
-  width: fit-content;
-  max-height: 127px;
-  overflow-y: auto;
-}
-
-.security-section h3 {
-  margin-bottom: 4px;
-  margin-top: 2px;
-}
-
-.service-name {
-  padding-left: 5px;
 }

@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ResourceUploadService } from '../services/resource-upload.service';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-uploader',
-  templateUrl: './uploader.component.html',
-  styleUrls: ['./uploader.component.scss']
+  templateUrl: './uploader.component.html'
 })
 export class UploaderComponent {
   public err = false;
@@ -14,23 +12,37 @@ export class UploaderComponent {
   public fileContents: string[] = [];
   public ready = false;
 
+  @ViewChild('fileInput') fileInput: any;
+
   constructor(private resourceUploadService: ResourceUploadService) {}
 
   public upload() {
-    return this.resourceUploadService.uploadWorkaround(this.fileContents);
+    return this.ready
+      ? this.resourceUploadService.uploadWorkaround(this.fileContents)
+      : null;
   }
 
   private isFileReadyToUpload() {
     return this.ready;
   }
 
-  public selectFile(files: any) {
-    if (!_.isUndefined(files.target.files[0])) {
-      this.fileToUpload = files.target.files[0];
+  public reset() {
+    if (this.fileInput) {
+      this.fileInput.clear();
+    }
+    this.fileToUpload = null;
+    this.ready = false;
+    this.fileName = '';
+    this.fileContents = [];
+  }
+
+  public selectFile(files: File[]) {
+    if (files && files[0]) {
+      this.fileToUpload = files[0];
       this.fileName = this.fileToUpload.name;
 
       this.resourceUploadService.getFileContent(this.fileToUpload).subscribe(
-        data => {
+        (data: string[]) => {
           this.fileContents = data;
           this.err = false;
           this.ready = true;

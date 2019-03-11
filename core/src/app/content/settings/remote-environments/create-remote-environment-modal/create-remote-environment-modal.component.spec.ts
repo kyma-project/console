@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError, EMPTY } from 'rxjs';
+import { ModalService } from 'fundamental-ngx';
 
 import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal.component';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
@@ -10,6 +11,17 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   let fixture: ComponentFixture<CreateRemoteEnvironmentModalComponent>;
   let mockRemoteEnvironmentsService: RemoteEnvironmentsService;
   let mockComponentCommunicationService: ComponentCommunicationService;
+
+  const modalServiceMock = {
+    close: () => {},
+    open: () => {
+      return {
+        result: new Promise(res => {
+          res();
+        })
+      };
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,6 +34,10 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
         {
           provide: ComponentCommunicationService,
           useValue: { sendEvent: () => {} }
+        },
+        {
+          provide: ModalService,
+          useValue: modalServiceMock
         }
       ]
     })

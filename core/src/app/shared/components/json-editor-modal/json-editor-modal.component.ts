@@ -1,6 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { JsonEditorComponent } from './json-editor/json-editor.component';
+import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { cloneDeep } from 'lodash';
+
 import { ComponentCommunicationService } from '../../services/component-communication.service';
+import { JsonEditorComponent } from './json-editor/json-editor.component';
 import { K8sResourceEditorService } from './services/k8s-resource-editor.service';
 
 @Component({
@@ -11,22 +14,32 @@ import { K8sResourceEditorService } from './services/k8s-resource-editor.service
 export class JsonEditorModalComponent {
   @Input() resourceData: any;
   @ViewChild('jsoneditor') jsonEditor: JsonEditorComponent;
+  @ViewChild('jsonEditorModal') jsonEditorModal: ModalComponent;
+
   public isActive = false;
   public error: any;
+  public modalResourceData: any;
 
   constructor(
-    protected communicationService: ComponentCommunicationService,
+    private communicationService: ComponentCommunicationService,
+    protected modalService: ModalService,
     private k8sResourceEditorService: K8sResourceEditorService
   ) {}
 
   show() {
     this.isActive = true;
+    this.modalResourceData = cloneDeep(this.resourceData);
+
+    this.modalService.open(this.jsonEditorModal).result.finally(() => {
+      this.isActive = false;
+      this.error = false;
+      event.stopPropagation();
+    });
   }
 
   cancel(event: Event) {
-    this.isActive = false;
-    this.error = false;
-    event.stopPropagation();
+    this.modalService.close(this.jsonEditorModal);
+    this.modalResourceData = null;
   }
 
   update(event: Event) {
@@ -38,6 +51,7 @@ export class JsonEditorModalComponent {
           type: 'updateResource',
           data
         });
+        this.modalService.close(this.jsonEditorModal);
       },
       err => this.displayErrorMessage(err)
     );

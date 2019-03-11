@@ -1,13 +1,11 @@
-<div class="row sf-list__body">
-  
-  <div class="col-3 sf-list__body--primary">{{ entry.getName() }}</div>
-  <div class="col-2">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
-  
-  <div class="col-5">{{ entry.spec.url }}</div>
-   <div class="col-2">
-      <app-status-label 
-        [statusType]="getStatusType(entry)">
-        {{ getStatus(entry) }}
-      </app-status-label>
-  </div>
-</div>
+<tr>
+  <td class="fd-has-font-weight-bold">{{ entry.getName() }}</td>
+  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td>{{ entry.spec.url }}</td>
+  <td>
+    <app-status-label 
+      [statusType]="getStatusType(entry)">
+      {{ getStatus(entry) }}
+    </app-status-label>
+  </td>
+</tr>

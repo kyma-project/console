@@ -30,8 +30,13 @@ export class GraphqlClientService {
       .post(url, { query, variables }, httpOptions)
       .map(res => {
         const response: any = res;
-        const filteredErrors = (response && response.errors && response.errors.filter((e: any) => !e.message.startsWith('MODULE_DISABLED'))
-        ) || [];
+        const filteredErrors =
+          (response &&
+            response.errors &&
+            response.errors.filter(
+              (e: any) => !e.message.startsWith('MODULE_DISABLED'),
+            )) ||
+          [];
         if (filteredErrors.length) {
           throw new Error(filteredErrors[0].message);
         }

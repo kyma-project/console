@@ -1,7 +1,6 @@
 <div class="json-editor">
-  <button class="tn-button tn-button--small tn-button--text" (click)="showJsonEditorModal(modal)">
-    <!-- <span class="tn-icon tn-icon--edit" role="presentation"></span> -->
+  <button fd-button [options]="'light'" (click)="showJsonEditorModal(modal)">
     Edit
   </button>
-   <app-json-editor-modal #modal [resourceData]="resourceData"></app-json-editor-modal>
+  <app-json-editor-modal #modal [resourceData]="resourceData"></app-json-editor-modal>
 </div>

@@ -1,39 +1,24 @@
-<div class="sf-toolbar">
-  <h1 class="sf-toolbar__header resources-toolbar-header">
-      <span>Resources</span>
-  </h1>
-  <div class="sf-toolbar__right">
-    <button class="tn-button tn-button--text tn-button--small sf-toolbar__item" (click)="openUploadResourceModal()">
-        + Deploy new resource to the namespace
-    </button>
-  </div>
-</div>
-<div class="resources-toolbar-hint">
-  <span class="toolbar-hint">Manage your Resources</span>
-</div>
-<div class="row">
-  <div class="col-md-12 col-lg-12">
-    <ul class="tn-tabs" role="tablist">
-      <li class="tn-tabs__item">
-        <a class="tn-tabs__link" aria-controls="limits" [attr.aria-selected]="limitsTabExpanded"
-            (click)="changeTab('limits')" role="tab">Limit Ranges</a>
-      </li>
-      <li class="tn-tabs__item">
-        <a class="tn-tabs__link" aria-controls="quotas" [attr.aria-selected]="quotasTabExpanded"
-            (click)="changeTab('quotas')" role="tab">Resource Quotas</a>
-      </li>
-    </ul>
-    <div class="tn-tabs__panel" [attr.aria-expanded]="limitsTabExpanded" id="limits" role="tabpanel" *ngIf="limitsTabExpanded">
-      <section class="sf-section">
-        <app-limit-ranges></app-limit-ranges>
-      </section>
-    </div>
-    <div class="tn-tabs__panel" [attr.aria-expanded]="quotasTabExpanded" id="quotas" role="tabpanel" *ngIf="quotasTabExpanded">
-      <section class="sf-section">
-        <app-resource-quotas></app-resource-quotas>
-      </section>
-    </div>
-  </div>
-</div>
+<section class="fd-section">
+  <fd-action-bar>
+    <fd-action-bar-header>
+      <fd-action-bar-title>Resources</fd-action-bar-title>
+      <fd-action-bar-description>Manage your Resources</fd-action-bar-description>
+    </fd-action-bar-header>
+    <fd-action-bar-actions>
+      <button (click)="openUploadResourceModal()" fd-button [options]="'light'" [glyph]="'add'">
+        Deploy new resource to the namespace
+      </button>
+    </fd-action-bar-actions>
+  </fd-action-bar>
+
+  <fd-tab-list>
+    <fd-tab [title]="'Limit Ranges'">
+      <app-limit-ranges></app-limit-ranges>
+    </fd-tab>
+    <fd-tab [title]="'Resource Quotas'">
+      <app-resource-quotas></app-resource-quotas>
+    </fd-tab>
+  </fd-tab-list>
+</section>
 
 <app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>

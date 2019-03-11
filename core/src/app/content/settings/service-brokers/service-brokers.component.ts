@@ -16,8 +16,7 @@ import { AbstractKubernetesElementListComponent } from '../../environments/opera
 @Component({
   selector: 'app-service-brokers',
   templateUrl:
-    '../../environments/operation/kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+    '../../environments/operation/kubernetes-element-list.component.html'
 })
 export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
   public title = 'Service Brokers';

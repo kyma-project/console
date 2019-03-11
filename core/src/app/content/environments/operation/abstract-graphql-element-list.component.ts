@@ -16,8 +16,7 @@ import { AppConfig } from 'app/app.config';
 
 @Component({
   selector: 'abstract-graphql-element-list',
-  templateUrl: './kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: './kubernetes-element-list.component.html'
 })
 export class AbstractGraphqlElementListComponent
   extends AbstractKubernetesElementListComponent

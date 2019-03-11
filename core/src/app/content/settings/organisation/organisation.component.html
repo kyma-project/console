@@ -3,7 +3,7 @@
     <h1 class="fd-section__title">Your Organisation</h1>
   </div>
   <fd-panel-grid [col]="1">
-    <fd-panel>
+    <fd-panel class="y-fd-panel">
       <fd-panel-body>
         <fieldset fd-form-set class="fd-col--6">
           <fd-form-group>
@@ -12,18 +12,6 @@
               <input fd-form-control [type]="'text'" placeholder="Function name" value="{{ orgName }}" readonly />
             </div>
           </fd-form-group>
-          <div class="fd-container fd-container--fluid fd-has-padding-tiny ">
-            <fd-form-label>kubeconfig</fd-form-label>
-            <span class="fd-has-type fd-has-color-text-3 fd-has-font-style-italic">
-              kubeconfig is a file used to configure access to a cluster.
-              Download it to access the cluster using command line.
-            </span>
-          </div>
-          <div class="fd-container fd-container--flex fd-has-float-right fd-has-padding-tiny">
-            <button fd-button [glyph]="'download'" (click)="downloadKubeconfig()">
-              Download config
-            </button>
-          </div>
         </fieldset>
         <fieldset fd-form-set class="fd-col--6">
           <fd-form-group>
@@ -33,6 +21,24 @@
             </div>
           </fd-form-group>
         </fieldset>
+      </fd-panel-body>
+    </fd-panel>
+
+    <fd-panel class="y-fd-panel">
+      <fd-panel-header>
+        <fd-panel-head>
+          <fd-panel-title>Kubeconfig</fd-panel-title>
+
+        </fd-panel-head>
+      </fd-panel-header>
+      <fd-panel-body>
+        <p class="fd-has-type fd-has-color-text-3 fd-has-font-style-italic">
+          kubeconfig is a file used to configure access to a cluster.
+          Download it to access the cluster using command line.
+        </p>
+        <button fd-button [glyph]="'download'" (click)="downloadKubeconfig()">
+          Download config
+        </button>
       </fd-panel-body>
     </fd-panel>
   </fd-panel-grid>

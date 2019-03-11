@@ -13,8 +13,7 @@ import { DataConverter } from 'app/generic-list';
 import { IPod, Pod } from 'shared/datamodel/k8s/pod';
 
 @Component({
-  templateUrl: '../kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: '../kubernetes-element-list.component.html'
 })
 export class PodsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {

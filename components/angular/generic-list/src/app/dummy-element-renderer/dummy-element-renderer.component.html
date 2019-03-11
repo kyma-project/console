@@ -1,16 +1,17 @@
-<div class="row sf-list__body">
-  <div class="col-3">
-     <div class="row">
-      <div class="col-1 sf-list__indicator sf-indicator--success">
-      </div>
-      <div class="col-11">
-        <div class="sf-list__body--primary">{{entry.id}}</div>
-      </div>
-    </div>
-  </div>
-  <div class="col-8">{{entry.name}}</div>
-  <div class="col-1">
-    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" (click)="event.stopPropagation();" [actions]="actions"></y-list-actions>
-  </div>
-</div>
-
+<tr class="y-fd-table__tr--no-border-below">
+  <td>{{ entry.id }}</td>
+  <td>{{ entry.name }}</td>
+  <td class="fd-has-text-align-center">
+    <y-list-actions
+      [entry]="entry"
+      [entryEventHandler]="entryEventHandler"
+      (click)="event.stopPropagation()"
+      [actions]="actions"
+    ></y-list-actions>
+  </td>
+</tr>
+<tr *ngIf="entry.error">
+  <td colspan="3">
+    <div class="fd-alert fd-alert--error">{{ entry.error }}</div>
+  </td>
+</tr>

@@ -38,11 +38,11 @@ import * as luigiClient from '@kyma-project/luigi-client';
 export class LambdasComponent extends GenericTableComponent
   implements OnInit, OnDestroy {
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
+  @ViewChild('errorAlert') errorAlert;
 
   title = 'Lambdas';
   emptyListText =
     'It looks like you don’t have any lambdas in your namespace yet.';
-  createNewElementText = 'Add Lambda';
 
   public lambdasEventHandler;
   token: string;
@@ -104,7 +104,7 @@ export class LambdasComponent extends GenericTableComponent
                             .subscribe(
                               () => {},
                               err => {
-                                this.error = err.message;
+                                this.showError(err.message);
                               },
                             );
                         },
@@ -117,7 +117,7 @@ export class LambdasComponent extends GenericTableComponent
                 },
                 err => {
                   this.reload();
-                  this.error = err.message;
+                  this.showError(err.message);
                 },
               );
           });
@@ -151,7 +151,7 @@ export class LambdasComponent extends GenericTableComponent
         forkJoin(deleteSubReqs).subscribe(responses => {
           responses.forEach(resp => {
             if (resp instanceof HttpErrorResponse) {
-              this.error = (resp as HttpErrorResponse).message;
+              this.showError((resp as HttpErrorResponse).message);
             }
           });
         });
@@ -185,7 +185,7 @@ export class LambdasComponent extends GenericTableComponent
         forkJoin(deleteRequests).subscribe(responses => {
           responses.forEach(resp => {
             if (resp instanceof HttpErrorResponse) {
-              this.error = (resp as HttpErrorResponse).message;
+              this.showError((resp as HttpErrorResponse).message);
             }
           });
         });
@@ -200,6 +200,10 @@ export class LambdasComponent extends GenericTableComponent
     if (this.listenerId) {
       luigiClient.removeInitListener(this.listenerId);
     }
+  }
+
+  showError(error: string): void {
+    this.error = error;
   }
 
   listeningForChangingTitle() {

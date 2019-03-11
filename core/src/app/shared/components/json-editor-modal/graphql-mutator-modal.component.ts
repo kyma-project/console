@@ -1,5 +1,6 @@
 import { GraphQLClientService } from './../../services/graphql-client-service';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { ModalService } from 'fundamental-ngx';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { JsonEditorModalComponent } from './json-editor-modal.component';
 import { AppConfig } from 'app/app.config';
@@ -14,9 +15,10 @@ export class GraphqlMutatorModalComponent extends JsonEditorModalComponent {
   constructor(
     communicationService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
+    protected modalService: ModalService,
     k8sResourceEditorService: K8sResourceEditorService
   ) {
-    super(communicationService, k8sResourceEditorService);
+    super(communicationService, modalService, k8sResourceEditorService);
   }
 
   sendUpdateRequest() {

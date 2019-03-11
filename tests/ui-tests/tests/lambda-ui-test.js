@@ -58,10 +58,10 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
     // given (go to create lambda)
     const frame = await kymaConsole.getFrame(page);
-    const lambdasEmptyPage = '.sf-section__empty-teaser';
+    const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
     const currentLambdas = await lambdas.getLambdas(frame);
-    const addLambdaButton = '.tn-button.tn-button--small.tn-button--text';
+    const addLambdaButton = '.fd-button.sap-icon--add';
     await frame.$$eval(addLambdaButton, btn =>
       btn.find(text => text.innerText.includes('Add Lambda')).click(),
     );
@@ -70,12 +70,12 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const input = '#input-1';
     await frame2.waitForSelector(input);
     await frame2.type(input, testLambda);
-    const createLambdaButton = '.tn-button.tn-button--small.sf-button--primary';
+    const createLambdaButton = '.fd-button.fd-button--emphasized';
     await frame2.$eval(createLambdaButton, btn => btn.click());
 
     // then
     const frame3 = await kymaConsole.getFrame(page);
-    const lambdasEntry = '.sf-list__body';
+    const lambdasEntry = 'tbody tr';
     await frame3.waitForSelector(lambdasEntry);
     const expectedLambdas = await lambdas.getLambdas(frame3);
     const previousNumberOfLambdas = currentLambdas.length;
@@ -96,8 +96,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.click(deleteButton);
 
     //when (deleting lambda)
-    const deleteConfirmButton =
-      '.tn-modal__button-primary.sf-button--primary.tn-button--small';
+    const deleteConfirmButton = '[data-e2e-id=confirmation-modal-button-ok]';
     await frame.waitFor(deleteConfirmButton);
     await frame.click(deleteConfirmButton);
     await frame.waitForSelector(deleteConfirmButton, { hidden: true });
@@ -107,7 +106,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
       await page.reload({ waitUntil: 'networkidle0' });
 
       const frame2 = await kymaConsole.getFrame(page);
-      const lambdasEmptyPage = '.sf-section__empty-teaser';
+      const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
       await frame2.waitForSelector(lambdasEmptyPage);
       const expectedLambdas = await lambdas.getLambdas(frame2);
 

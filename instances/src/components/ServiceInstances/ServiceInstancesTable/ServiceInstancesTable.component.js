@@ -213,8 +213,9 @@ export class ServiceInstancesTable extends Component {
         option="light"
         onClick={this.goToServiceCatalog}
         data-e2e-id="add-instance"
+        glyph="add"
       >
-        + Add Instance
+        Add Instance
       </Button>
     );
 

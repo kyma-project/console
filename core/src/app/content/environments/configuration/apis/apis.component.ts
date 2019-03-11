@@ -17,8 +17,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-apis',
-  templateUrl: 'apis.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: 'apis.component.html'
 })
 export class ApisComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {

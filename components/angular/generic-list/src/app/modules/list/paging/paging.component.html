@@ -5,7 +5,7 @@
     pagingState.pageSize &&
     (pagingState.totalCount || 0) > pagingState.pageSize
   "
-  [class]="'fd-pagination'"
+  [class]="'fd-pagination fd-has-margin-tiny'"
   (selected)="goToPage($event)"
   [pagination]="{
     totalItems: pagingState.totalCount || 0,
