@@ -192,5 +192,5 @@ a {
 // Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)
 // It should not provide any visual changes
 .fd-popover__body {
-  transition: all 0.135s, transformZ 0;
+  transition: all 0.135s, transformZ 0s;
 }
