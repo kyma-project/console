@@ -186,7 +186,7 @@ async function createRemoteEnvironment(page, name) {
   await frame.click(createButton);
   await frame.waitForSelector(createEnvModal, { hidden: true });
   return frame.waitForXPath(
-    `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${name}")]`
+    `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${name}")]`,
   );
 }
 
