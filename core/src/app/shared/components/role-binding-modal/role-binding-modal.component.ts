@@ -79,11 +79,20 @@ export class RoleBindingModalComponent implements OnDestroy {
     this.error = '';
   }
 
+  clearData() {
+    this.userOrGroup = '';
+    this.selectedRole = '';
+    this.selectedKind = '';
+    this.error = '';
+  }
+
   setUserGroupMode() {
     this.isUserGroupMode = true;
+    this.clearData();
   }
   setUserMode() {
     this.isUserGroupMode = false;
+    this.clearData();
   }
 
   selectKind(kind) {
