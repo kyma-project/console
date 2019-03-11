@@ -98,25 +98,24 @@ const Card = ({
                   </CardIndicatorGeneral>
                 </Tooltip>
               )}
-              {!isProvisionedOnlyOnce &&
-                numberOfInstances > 0 && (
-                  <Tooltip
-                    content={`${
-                      tooltipDescription.instancesTooltipInfo
-                    } ${numberOfInstances} ${
-                      numberOfInstances > 1
-                        ? tooltipDescription.instancesTooltipPlural
-                        : tooltipDescription.instancesTooltipSingle
-                    }`}
+              {!isProvisionedOnlyOnce && numberOfInstances > 0 && (
+                <Tooltip
+                  content={`${
+                    tooltipDescription.instancesTooltipInfo
+                  } ${numberOfInstances} ${
+                    numberOfInstances > 1
+                      ? tooltipDescription.instancesTooltipPlural
+                      : tooltipDescription.instancesTooltipSingle
+                  }`}
+                >
+                  <CardIndicatorGeneral
+                    data-e2e-id={`instances-provisioned-${itemId}`}
+                    active={numberOfInstances ? 'true' : 'false'}
                   >
-                    <CardIndicatorGeneral
-                      data-e2e-id={`instances-provisioned-${itemId}`}
-                      active={numberOfInstances ? 'true' : 'false'}
-                    >
-                      {numberOfInstances}
-                    </CardIndicatorGeneral>
-                  </Tooltip>
-                )}
+                    {numberOfInstances}
+                  </CardIndicatorGeneral>
+                </Tooltip>
+              )}
             </CardIndicator>
           </CardHeader>
         </CardTop>
@@ -126,23 +125,22 @@ const Card = ({
         <CardFooter>
           {labels &&
             Object.keys(labels).length &&
-            Object.keys(labels).map(
-              label =>
-                (label === 'local' || label === 'showcase' ? (
-                  isStringValueEqualToTrue(labels[label])
-                ) : (
-                  label === 'connected-app' && labels[label]
-                )) ? (
-                  <CardLabelWrapper key={label}>
-                    <Tooltip content={labelsDescription[label]}>
-                      <Label cursorType="help">
-                        {label === 'connected-app'
-                          ? labels['connected-app']
-                          : label}
-                      </Label>
-                    </Tooltip>
-                  </CardLabelWrapper>
-                ) : null,
+            Object.keys(labels).map(label =>
+              (label === 'local' || label === 'showcase' ? (
+                isStringValueEqualToTrue(labels[label])
+              ) : (
+                label === 'connected-app' && labels[label]
+              )) ? (
+                <CardLabelWrapper key={label}>
+                  <Tooltip content={labelsDescription[label]}>
+                    <Label cursorType="help">
+                      {label === 'connected-app'
+                        ? labels['connected-app']
+                        : label}
+                    </Label>
+                  </Tooltip>
+                </CardLabelWrapper>
+              ) : null,
             )}
         </CardFooter>
       </CardContent>

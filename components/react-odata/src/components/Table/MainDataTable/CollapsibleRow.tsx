@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Node } from "../../../types";
-import HideableSubTable from "./HideableSubTable";
-import { CollapseArrow, TableCell, TableRow } from "../../styled/styled";
+import React, { useState } from 'react';
+import { Node } from '../../../types';
+import HideableSubTable from './HideableSubTable';
+import { CollapseArrow, TableCell, TableRow } from '../../styled/styled';
 
 interface Props {
   columnHeaders: string[];
@@ -18,10 +18,10 @@ const CollapsibleRow: React.FunctionComponent<Props> = ({
       <TableRow>
         {columnHeaders.map((row: string, index: number) => (
           <TableCell key={index}>
-            {row === "Annotation" ? (
+            {row === 'Annotation' ? (
               <CollapseArrow open={show} clickHandler={() => setShow(!show)} />
             ) : (
-              data.attributes[row] || data[row.toLowerCase()] || ""
+              data.attributes[row] || data[row.toLowerCase()] || ''
             )}
           </TableCell>
         ))}

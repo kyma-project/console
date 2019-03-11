@@ -10,6 +10,7 @@ install-dependencies:
 	npm ci
 
 validate:
+	npm run lint-check
 	eslint -c .eslinterrc ./ui-tests
 
 build-image:

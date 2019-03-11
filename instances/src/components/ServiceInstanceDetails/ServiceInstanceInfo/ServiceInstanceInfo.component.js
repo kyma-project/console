@@ -110,29 +110,28 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               </Element>
             </Grid.Unit>
           </Grid>
-          {serviceInstance.labels &&
-            serviceInstance.labels.length > 0 && (
-              <Grid>
-                <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                  <Element>Labels</Element>
-                </Grid.Unit>
-                <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                  <Element margin="1px 0 0 0">
-                    {serviceInstance.labels.map((label, index) => (
-                      <LabelWrapper key={`${label}-${index}`}>
-                        <Label
-                          key={label}
-                          cursorType="auto"
-                          data-e2e-id="service-label"
-                        >
-                          {label}
-                        </Label>
-                      </LabelWrapper>
-                    ))}
-                  </Element>
-                </Grid.Unit>
-              </Grid>
-            )}
+          {serviceInstance.labels && serviceInstance.labels.length > 0 && (
+            <Grid>
+              <Grid.Unit size={INFORMATION_KEY_SIZE}>
+                <Element>Labels</Element>
+              </Grid.Unit>
+              <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+                <Element margin="1px 0 0 0">
+                  {serviceInstance.labels.map((label, index) => (
+                    <LabelWrapper key={`${label}-${index}`}>
+                      <Label
+                        key={label}
+                        cursorType="auto"
+                        data-e2e-id="service-label"
+                      >
+                        {label}
+                      </Label>
+                    </LabelWrapper>
+                  ))}
+                </Element>
+              </Grid.Unit>
+            </Grid>
+          )}
           {instanceClass && instanceClass.documentationUrl ? (
             <Grid>
               <Grid.Unit size={INFORMATION_KEY_SIZE}>

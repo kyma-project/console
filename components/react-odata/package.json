@@ -41,8 +41,8 @@
     "build": "tsc",
     "test": "react-scripts test; exit 0",
     "eject": "react-scripts eject",
-    "lint-check": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose && prettier --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
-    "lint-fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-check": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose && prettier --config ../../.prettierrc --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-fix": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --config ../../.prettierrc --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
     "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {
@@ -53,13 +53,12 @@
   "lint-staged": {
     "linters": {
       "**/*.{js,jsx,json,css,html,yaml}": [
-        "prettier --write",
-        "npm run lint-fix",
+        "prettier --config ../../.prettierrc --write",
         "git add"
       ],
       "**/*.{ts,tsx}": [
-        "tslint -c tslint.json --format verbose --fix",
-        "prettier --config .prettierrc --write"
+        "tslint -c tslint.json --project tsconfig.json --format verbose --fix",
+        "prettier --config ../../.prettierrc --write"
       ]
     },
     "ignore": [

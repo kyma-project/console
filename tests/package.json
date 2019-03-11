@@ -8,7 +8,9 @@
     "test:cluster": "jest -i --forceExit --detectOpenHandles",
     "test:cluster-outside": "OUTSIDE_CLUSTER=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) jest -i --forceExit --detectOpenHandles",
     "test:watch": "LOCAL_DEV=true jest --watch",
-    "test:watch:cluster": "jest --watch"
+    "test:watch:cluster": "jest --watch",
+    "lint-fix": "prettier --config ../.prettierrc --write \"./ui-tests/**/*.{js,jsx,ts,tsx,html,css,json}\"",
+    "lint-check": "prettier --config ../.prettierrc --check \"./ui-tests/**/*.{js,jsx,ts,tsx,html,css,json}\""
   },
   "devDependencies": {
     "@kubernetes/client-node": "^0.8.0",
@@ -17,6 +19,7 @@
     "babel-preset-env": "^1.7.0",
     "faker": "^4.1.0",
     "jest": "^23.6.0",
+    "prettier": "^1.16.4",
     "promise-retry": "^1.1.1",
     "puppeteer": "~1.10.0",
     "request": "^2.88.0"

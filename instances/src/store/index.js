@@ -40,19 +40,21 @@ export function createApolloClient() {
 
   const cache = new InMemoryCache();
 
-  const errorLink = onError(({operation, response, graphQLErrors, networkError}) => {
-    if (process.env.REACT_APP_ENV !== 'production') {
-      if (graphQLErrors) {
-        graphQLErrors.map(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
+  const errorLink = onError(
+    ({ operation, response, graphQLErrors, networkError }) => {
+      if (process.env.REACT_APP_ENV !== 'production') {
+        if (graphQLErrors) {
+          graphQLErrors.map(({ message, locations, path }) =>
+            console.log(
+              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+            ),
+          );
+        }
+
+        if (networkError) console.log(`[Network error]: ${networkError}`);
       }
-  
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-    }
-  });
+    },
+  );
 
   const stateLink = withClientState({
     cache,

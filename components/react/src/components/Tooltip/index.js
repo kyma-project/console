@@ -88,25 +88,24 @@ class Tooltip extends React.Component {
         wrapperStyles={wrapperStyles}
       >
         {children}
-        {visibleTooltip &&
-          content && (
-            <TooltipContainer
-              minWidth={minWidth}
-              maxWidth={maxWidth}
-              type={type === undefined ? 'default' : type}
-              show={showTooltip}
-              orientation={orientation}
-            >
-              {title && (
-                <TooltipHeader type={type === undefined ? 'default' : type}>
-                  {title}
-                </TooltipHeader>
-              )}
-              <TooltipContent type={type === undefined ? 'default' : type}>
-                {content}
-              </TooltipContent>
-            </TooltipContainer>
-          )}
+        {visibleTooltip && content && (
+          <TooltipContainer
+            minWidth={minWidth}
+            maxWidth={maxWidth}
+            type={type === undefined ? 'default' : type}
+            show={showTooltip}
+            orientation={orientation}
+          >
+            {title && (
+              <TooltipHeader type={type === undefined ? 'default' : type}>
+                {title}
+              </TooltipHeader>
+            )}
+            <TooltipContent type={type === undefined ? 'default' : type}>
+              {content}
+            </TooltipContent>
+          </TooltipContainer>
+        )}
       </TooltipWrapper>
     );
   }

@@ -5,5 +5,5 @@ module.exports = {
       return JSON.parse(JSON.stringify(getComputedStyle(element)));
     }, elementSelector);
     return styleProperty ? styles[styleProperty] : styles;
-  }
+  },
 };

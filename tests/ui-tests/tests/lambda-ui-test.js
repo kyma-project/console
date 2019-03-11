@@ -8,7 +8,7 @@ import { retry } from '../utils/retry';
 import {
   testPluggable,
   isModuleEnabled,
-  logModuleDisabled
+  logModuleDisabled,
 } from '../setup/test-pluggable';
 
 const REQUIRED_MODULE = 'kubeless';
@@ -52,7 +52,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await page.waitForSelector(contentHeader);
     const navItem = 'a.fd-side-nav__link';
     await page.$$eval(navItem, item =>
-      item.find(text => text.innerText.includes('Lambdas')).click()
+      item.find(text => text.innerText.includes('Lambdas')).click(),
     );
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
@@ -63,7 +63,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const currentLambdas = await lambdas.getLambdas(frame);
     const addLambdaButton = '.fd-button.sap-icon--add';
     await frame.$$eval(addLambdaButton, btn =>
-      btn.find(text => text.innerText.includes('Add Lambda')).click()
+      btn.find(text => text.innerText.includes('Add Lambda')).click(),
     );
     // when (fill the input and save)
     const frame2 = await kymaConsole.getFrame(page);

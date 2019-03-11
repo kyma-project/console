@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
-import CollapsibleAnnotation from "./CollapsibleAnnotation";
-import { makeUnique } from "../utils";
-import { Node } from "../../../types";
+import React, { Fragment, useState } from 'react';
+import CollapsibleAnnotation from './CollapsibleAnnotation';
+import { makeUnique } from '../utils';
+import { Node } from '../../../types';
 import {
   TableHead,
   TableHeadCell,
@@ -10,7 +10,7 @@ import {
   CollapseArrow,
   TableRow,
   TableCell,
-} from "../../styled/styled";
+} from '../../styled/styled';
 interface Props {
   data: Node;
 }
@@ -23,7 +23,7 @@ const CollapsibleTable: React.FunctionComponent<Props> = ({ data }) => {
   const specialData: string[] = data.children
     .map(
       (elem: Node) =>
-        (elem.children && elem.children[0] && elem.children[0].name) || "",
+        (elem.children && elem.children[0] && elem.children[0].name) || '',
     )
     .filter((elem: string) => !!elem)
     .filter(makeUnique);
@@ -42,7 +42,7 @@ const CollapsibleTable: React.FunctionComponent<Props> = ({ data }) => {
       <TableBody>
         {data.children.map((child: Node, index: number) => {
           const specialHeader: Node = child.children[0];
-          if (specialHeader && specialHeader.name === "Collection") {
+          if (specialHeader && specialHeader.name === 'Collection') {
             const [show, setShow] = useState<boolean>(false);
             return (
               <Fragment key={index}>

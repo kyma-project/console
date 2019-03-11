@@ -35,7 +35,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await page.click(dropdownButton);
     await page.waitForSelector(dropdownMenu, { visible: true });
     const environments = await kymaConsole.getEnvironmentsFromContextSwitcher(
-      page
+      page,
     );
     await page.click(dropdownButton);
     console.log('Check if envs exist', environments);
@@ -47,23 +47,23 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await Promise.all([
       page.goto(address.console.getEnvironmentsAddress()),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0']
-      })
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
     ]);
     const environmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
-      page
+      page,
     );
     expect(environmentNames).toContain(config.testEnv);
   });
 
   test('Delete env', async () => {
     const initialEnvironmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
-      page
+      page,
     );
     await kymaConsole.deleteEnvironment(page, config.testEnv);
     const environmentNames = await retry(async () => {
       const environmentNamesAfterDelete = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
-        page
+        page,
       );
       if (initialEnvironmentNames <= environmentNamesAfterDelete) {
         throw new Error(`Namespace ${config.testEnv} not yet deleted`);
@@ -81,11 +81,11 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await Promise.all([
       page.goto(remoteEnvironmentsUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0']
-      })
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
     ]);
     const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
-      page
+      page,
     );
     console.log('Check if application exists', remoteEnvironments);
     expect(remoteEnvironments).not.toContain(config.testEnv);
@@ -98,7 +98,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     });
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
     const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
-      page
+      page,
     );
     expect(remoteEnvironments).toContain(config.testEnv);
   });
@@ -108,7 +108,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await frame.waitForXPath(
       `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
         config.testEnv
-      }")]`
+      }")]`,
     );
     await kymaConsole.openLinkOnFrame(
       page,
@@ -127,15 +127,15 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await frame.waitForXPath(
       `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
         config.testEnv
-      }")]`
+      }")]`,
     );
     const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
-      page
+      page,
     );
     await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
     const remoteEnvironments = await retry(async () => {
       const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
-        page
+        page,
       );
       if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
         throw new Error(`Application ${config.testEnv} was not yet removed`);

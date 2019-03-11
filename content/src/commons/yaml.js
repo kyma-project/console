@@ -28,7 +28,7 @@ export const prepareTopicsList = () => {
         type: type,
       };
     }
-    
+
     Array.isArray(topicsT) ? topics.push(...topicsT) : topics.push(topicsT);
   });
 

@@ -168,7 +168,9 @@ class ServiceClassList extends React.Component {
       if (items) {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
-            <Panel><PanelBody>No Service Classes found</PanelBody></Panel>
+            <Panel>
+              <PanelBody>No Service Classes found</PanelBody>
+            </Panel>
           </EmptyServiceListMessageWrapper>
         ) : (
           <Cards data-e2e-id="cards" items={items} history={history} />

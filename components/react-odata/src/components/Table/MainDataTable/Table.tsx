@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Node } from "../../../types";
-import { makeUnique } from "../utils";
-import CollapsibleRow from "./CollapsibleRow";
-import { PanelActions, PanelHead } from "fundamental-react";
+import React, { useState, useEffect, useRef } from 'react';
+import { Node } from '../../../types';
+import { makeUnique } from '../utils';
+import CollapsibleRow from './CollapsibleRow';
+import { PanelActions, PanelHead } from 'fundamental-react';
 
 import {
   StyledTable,
@@ -15,7 +15,7 @@ import {
   TableHeaderWrapper,
   TablePanel,
   TableBody,
-} from "../../styled/styled";
+} from '../../styled/styled';
 
 interface Props {
   columnData: string[];
@@ -35,9 +35,9 @@ const Table: React.FunctionComponent<Props> = ({
       (elem: Node) =>
         (elem.children &&
           elem.children.length > 0 &&
-          elem.children[0].name !== "Collection" &&
+          elem.children[0].name !== 'Collection' &&
           elem.children[0].name) ||
-        "",
+        '',
     )
     .filter((elem: string) => !!elem);
 
@@ -93,7 +93,7 @@ const Table: React.FunctionComponent<Props> = ({
                   <TableRow key={idx}>
                     {columnHeaders.map((row: string, index: number) => (
                       <TableCell key={index}>
-                        {elem.attributes[row] || elem[row.toLowerCase()] || ""}
+                        {elem.attributes[row] || elem[row.toLowerCase()] || ''}
                       </TableCell>
                     ))}
                   </TableRow>

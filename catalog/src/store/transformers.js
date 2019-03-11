@@ -19,9 +19,7 @@ const ScalarDeserializer = {
   },
 };
 
-const getTransformers = fieldTransformer => ({
-
-});
+const getTransformers = fieldTransformer => ({});
 
 export const getLinkTransformers = () => {
   return getTransformers(ScalarSerializer);

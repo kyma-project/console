@@ -15,8 +15,9 @@ build:
 	npm run build
 
 validate:
+	npm run lint-check
 	eslint -c .eslinterrc ./src
-
+	
 test:
 	CI=true npm run test
 

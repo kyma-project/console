@@ -9,10 +9,7 @@ import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 
 import { ServiceClassTabsContentWrapper } from './styled';
 
-import {
-  sortDocumentsByType,
-  validateContent
-} from '../../../commons/helpers';
+import { sortDocumentsByType, validateContent } from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
@@ -50,27 +47,25 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
       <ServiceClassTabsContentWrapper>
         <Tabs>
           {documentsTypes &&
-            documentsTypes.map(
-              type =>
-                documentsByType &&
-                documentsByType[type] &&
-                validatDocumentsByType(documentsByType[type]) ? (
-                  <Tab key={type} title={type}>
-                    <Markdown>
-                      {documentsByType[type].map(
-                        (item, i) =>
-                          item.source || item.Source ? (
-                            <div
-                              key={i}
-                              dangerouslySetInnerHTML={{
-                                __html: item.source || item.Source,
-                              }}
-                            />
-                          ) : null,
-                      )}
-                    </Markdown>
-                  </Tab>
-                ) : null,
+            documentsTypes.map(type =>
+              documentsByType &&
+              documentsByType[type] &&
+              validatDocumentsByType(documentsByType[type]) ? (
+                <Tab key={type} title={type}>
+                  <Markdown>
+                    {documentsByType[type].map((item, i) =>
+                      item.source || item.Source ? (
+                        <div
+                          key={i}
+                          dangerouslySetInnerHTML={{
+                            __html: item.source || item.Source,
+                          }}
+                        />
+                      ) : null,
+                    )}
+                  </Markdown>
+                </Tab>
+              ) : null,
             )}
 
           {openApiSpec && Object.keys(openApiSpec).length ? (
@@ -84,7 +79,11 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
 
           {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
             <Tab title={'Events'} margin="0" background="inherit">
-              <AsyncApi schema={asyncApiSpec} theme={asyncApiTheme} config={asyncApiConfig} />
+              <AsyncApi
+                schema={asyncApiSpec}
+                theme={asyncApiTheme}
+                config={asyncApiConfig}
+              />
             </Tab>
           ) : null}
 
