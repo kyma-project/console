@@ -33,7 +33,6 @@ export class CreateRemoteEnvironmentModalComponent {
   }
 
   public close(): void {
-    this.isActive = false;
     this.modalService.close(this.createApplicationModal);
   }
 
