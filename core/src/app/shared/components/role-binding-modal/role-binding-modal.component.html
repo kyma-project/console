@@ -32,7 +32,7 @@
                   name="userOrGroup"
                   placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}"
                   [(ngModel)]="userOrGroup"
-                  (ngModelChange)="validateUserGroupInput()"
+                  (ngModelChange)="validateUserOrGroupInput()"
                   autocomplete="off">
                 <fd-form-message [type]="'error'" *ngIf="userGroupError">{{ userGroupError }}</fd-form-message>
               </div>

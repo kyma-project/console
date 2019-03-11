@@ -15,16 +15,34 @@ export class RbacService {
     this.envChangeStateEmitter$ = new EventEmitter();
   }
 
+  processName(name) {
+    const validCharRegex = /[a-zA-Z0-9\.\-\@_]/;
+    const result = [];
+    /* tslint:disable */
+    for (let i = 0; i < name.length; i++) {
+      const c = name[i];
+      switch(true) {
+        case validCharRegex.test(c):
+          result.push(c.toLowerCase());
+          break;
+        default:
+          result.push(c.charCodeAt(0));
+      }
+    }
+    /* tslint:enable */
+    return result.join('');
+  }
+
   prepareMetadata(data) {
     if ('RoleBinding' === data.kind) {
       return {
-        name: `${data.name}-${data.roleName}-binding`,
+        name: `${this.processName(data.name)}-${data.roleName}-binding`,
         namespace: data.namespace
       };
     }
 
     return {
-      name: `${data.name}-${data.roleName}-binding`
+      name: `${this.processName(data.name)}-${data.roleName}-binding`
     };
   }
 
