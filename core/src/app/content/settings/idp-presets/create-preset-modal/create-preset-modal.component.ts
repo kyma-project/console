@@ -28,18 +28,17 @@ export class CreatePresetModalComponent {
     this.isActive = true;
     this.modalService.open(this.createIDPPresetModal).result.finally(() => {
       this.isActive = false;
+      this.presetName = '';
+      this.issuer = '';
+      this.jwks = '';
+      this.error = '';
+      this.wrongJwks = false;
+      this.wrongPresetName = false;
     });
   }
 
   close() {
-    this.isActive = false;
     this.modalService.close(this.createIDPPresetModal);
-    this.presetName = '';
-    this.issuer = '';
-    this.jwks = '';
-    this.error = '';
-    this.wrongJwks = false;
-    this.wrongPresetName = false;
   }
 
   isReadyToCreate() {
