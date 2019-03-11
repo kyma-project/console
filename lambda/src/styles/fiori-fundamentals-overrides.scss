@@ -22,8 +22,6 @@
   }
 }
 
-
-
 //Forms
 .y-fd-form__message--disabled {
   color: var(--fd-color-status-4) !important;
@@ -134,12 +132,6 @@
   }
 }
 
-
-
-
-
-
-
 //helpers
 .y-word-wrap {
   word-wrap: break-word;
@@ -169,12 +161,9 @@
     }
   }
 }
+
 //Tables
 .fd-table {
-  &--min {
-    width: 8.33333%;
-  }
-
   .disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -184,6 +173,7 @@
     vertical-align: top;
   }
 }
+
 // Container
 .y-fd-container--space-bottom {
   @extend .fd-has-margin-small;
@@ -194,19 +184,7 @@
   border-bottom: 1px solid #cccccc;
 }
 
-
 //Cursor pointer for all links
 a {
   cursor: pointer;
-}
-
-//Workaroud before techne is not removed
-input[type='checkbox'] {
-  border-color: var(--fd-forms-border-color);
-  background-color: var(--fd-forms-background-color);
-  &:checked {
-    &:after {
-      all: unset;
-    }
-  }
 }

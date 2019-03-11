@@ -100,7 +100,9 @@
         <fd-table *ngIf="boundEnvironments.length > 0">
           <fd-table-header>
             <th>Name</th>
-            <th class="fd-table--min"></th>
+            <th class="y-fd-table--col-1">
+            </th>
+
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let environment of boundEnvironments">
@@ -127,8 +129,8 @@
         <fd-table>
           <fd-table-header>
             <th>ServiceClass Name</th>
-            <th class="fd-table--min">API</th>
-            <th class="fd-table--min">Events</th>
+            <th class="y-fd-table--col-1">API</th>
+            <th class="y-fd-table--col-1">Events</th>
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let service of remoteEnvironment.services">

@@ -8,14 +8,12 @@ describe('UploaderComponent', () => {
   let component: UploaderComponent;
   let fixture: ComponentFixture<UploaderComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [AppModule],
-        providers: [{ provide: APP_BASE_HREF, useValue: '/my/app' }]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [AppModule],
+      providers: [{ provide: APP_BASE_HREF, useValue: '/my/app' }]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderComponent);

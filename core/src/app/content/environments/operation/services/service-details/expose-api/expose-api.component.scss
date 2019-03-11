@@ -2,7 +2,7 @@
   .y-fd-form__control[type='text'] {
     border: 0;
     padding-right: 40px;
-  
+
     &:focus {
       box-shadow: none;
     }
@@ -26,17 +26,4 @@
   width: 100%;
   overflow: auto;
   max-height: 300px;
-}
-
-//Workaroud before techne is not removed
-input[type=checkbox] {
-
-  border-color: var(--fd-forms-border-color);
-  background-color: var(--fd-forms-background-color);
-
-  &:checked {
-    &:after {
-      display: none;
-    }
-  }
 }

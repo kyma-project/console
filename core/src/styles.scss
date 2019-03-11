@@ -1,11 +1,9 @@
 // Include Fiori Fundamentals
-$fd-icons-path: "~fiori-fundamentals/scss/icons/";
-$fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
-@import "~fiori-fundamentals/scss/all.scss";
+$fd-icons-path: '~fiori-fundamentals/scss/icons/';
+$fd-fonts-path: '~fiori-fundamentals/scss/fonts/';
+@import '~fiori-fundamentals/scss/all.scss';
 @import 'fiori-fundamentals-overrides';
 
-@import '_helper';
-@import '_variables';
 body,
 html {
   font-family: '72', sans-serif;
@@ -13,30 +11,6 @@ html {
   margin: 0;
   padding: 0;
   font-size: 14px;
-}
-
-body {
-  background: $mf-base-color-light-grey;
-}
-
-@import 'overrides';
-@import 'toolbar';
-@import 'section';
-@import 'table';
-@import 'indicator';
-@import 'dropdown';
-@import 'animation';
-@import 'tabs';
-@import 'sku';
-@import 'steps';
-@import 'modal';
-@import 'content';
-@import 'list';
-@import 'panel';
-
-pre {
-  background: #f4f4f4;
-  color: #18467e;
 }
 
 @import '~jsoneditor/dist/jsoneditor.min.css';

@@ -1,24 +1,5 @@
 // Include Fiori Fundamentals
-$fd-icons-path: "~fiori-fundamentals/scss/icons/";
-$fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
-@import "~fiori-fundamentals/scss/all.scss";
+$fd-icons-path: '~fiori-fundamentals/scss/icons/';
+$fd-fonts-path: '~fiori-fundamentals/scss/fonts/';
+@import '~fiori-fundamentals/scss/all.scss';
 @import 'styles/fiori-fundamentals-overrides';
-
-// Legacy UI
-@import 'styles/_variables';
-@import 'styles/overrides';
-@import 'styles/list';
-@import 'styles/panel';
-@import 'styles/alert';
-
-.fd-input-group {
-  input[type='search']:not(:disabled):focus,
-  input[type='search']:not(:disabled):hover {
-    // overwrite for global rules
-    padding-left: 48px !important;
-    padding-right: 60px !important;
-    border-color: var(--fd-color-action-hover) !important;
-    border-width: 1px !important;
-  }
-}
-
