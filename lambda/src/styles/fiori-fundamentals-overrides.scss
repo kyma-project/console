@@ -187,3 +187,7 @@
 a {
   cursor: pointer;
 }
+
+.fd-breadcrumb {
+  margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
+}
