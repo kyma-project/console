@@ -1,5 +1,5 @@
-import XMLParser from "react-xml-parser";
-import { transformer } from "./Transformer";
+import XMLParser from 'react-xml-parser';
+import { transformer } from './Transformer';
 class Parser {
   parseFromString(xmlString: string): any {
     const outXmlString = transformer.transformToV4(xmlString);

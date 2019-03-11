@@ -26,5 +26,5 @@ export default compose(
 )(props => {
   if (props.topics.loading || !props.topics.topics) return null;
 
-  return <MainPage { ...props } topics={props.topics.topics} />
+  return <MainPage {...props} topics={props.topics.topics} />;
 });

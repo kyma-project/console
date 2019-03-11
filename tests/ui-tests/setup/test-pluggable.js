@@ -20,7 +20,7 @@ class BackendModuleFetcher {
     const { body } = await apiClient.listClusterCustomObject(
       'ui.kyma-project.io',
       'v1alpha1',
-      'backendmodules'
+      'backendmodules',
     );
     const items = body.items.map(item => item.metadata.name);
     this.modules = items;
@@ -45,7 +45,7 @@ export const testPluggable = (requiredModule, name, fn) => {
     if (!moduleFetcher.isModuleEnabled(requiredModule)) {
       return () => {
         console.log(
-          `Module ${requiredModule} is disabled. Skipping test ${name}...`
+          `Module ${requiredModule} is disabled. Skipping test ${name}...`,
         );
       };
     }
@@ -61,6 +61,6 @@ export const isModuleEnabled = async requiredModule => {
 
 export const logModuleDisabled = (requiredModule, fnName) => {
   console.log(
-    `Skipping '${fnName}' because of disabled module ${requiredModule}`
+    `Skipping '${fnName}' because of disabled module ${requiredModule}`,
   );
 };

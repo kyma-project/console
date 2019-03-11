@@ -39,12 +39,11 @@ const Filter = ({
 
   return (
     <FilterContainer>
-      {items &&
-        items.length > 0 && (
-          <FilterHeader data-e2e-id={`filter-header-${name}`}>
-            {filterCategoryHeader[name]}
-          </FilterHeader>
-        )}
+      {items && items.length > 0 && (
+        <FilterHeader data-e2e-id={`filter-header-${name}`}>
+          {filterCategoryHeader[name]}
+        </FilterHeader>
+      )}
       <Items data-e2e-id={`filter-items-by-${name}`}>
         {items.map(item => {
           const active =

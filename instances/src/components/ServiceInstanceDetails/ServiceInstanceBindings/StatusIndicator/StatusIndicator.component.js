@@ -35,15 +35,16 @@ const StatusIndicator = ({ data, testId }) => {
           {statusesStats &&
             (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
               <StatusWrapper backgroundColor={statusColor('PENDING')}>
-                <Status data-e2e-id={testId}>{statusesStats.PENDING + statusesStats.UNKNOWN}</Status>
+                <Status data-e2e-id={testId}>
+                  {statusesStats.PENDING + statusesStats.UNKNOWN}
+                </Status>
               </StatusWrapper>
             )}
-          {statusesStats &&
-            statusesStats.FAILED > 0 && (
-              <StatusWrapper backgroundColor={statusColor('FAILED')}>
-                <Status data-e2e-id={testId}>{statusesStats.FAILED}</Status>
-              </StatusWrapper>
-            )}
+          {statusesStats && statusesStats.FAILED > 0 && (
+            <StatusWrapper backgroundColor={statusColor('FAILED')}>
+              <Status data-e2e-id={testId}>{statusesStats.FAILED}</Status>
+            </StatusWrapper>
+          )}
         </StatusesList>
       )}
     </Fragment>

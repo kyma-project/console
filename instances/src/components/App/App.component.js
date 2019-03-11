@@ -1,5 +1,9 @@
 import React from 'react';
-import { Modal, Notification, BackendModuleDisabled } from '@kyma-project/react-components';
+import {
+  Modal,
+  Notification,
+  BackendModuleDisabled,
+} from '@kyma-project/react-components';
 
 import DataProvider from '../DataProvider/DataProvider';
 import RouteWrapper from './RouteWrapper';
@@ -42,7 +46,7 @@ class App extends React.Component {
       <div>
         <Notification {...notification} onClick={this.clearNotification} />
         <div className="ph3 pv1 background-gray">
-          {backendModuleExists("servicecatalog") ? (
+          {backendModuleExists('servicecatalog') ? (
             <DataProvider>{props => <RouteWrapper {...props} />}</DataProvider>
           ) : (
             <BackendModuleDisabled mod="Service Catalog" />

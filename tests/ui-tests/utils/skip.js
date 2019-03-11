@@ -11,5 +11,5 @@ function describeIf(condition, name, _test) {
 }
 
 module.exports = {
-  describeIf
+  describeIf,
 };

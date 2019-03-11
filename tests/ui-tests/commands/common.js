@@ -38,7 +38,7 @@ async function beforeAll(tokenCallback) {
       await client.send('Network.setCacheDisabled', { cacheDisabled: true });
       await client.send(
         'Network.emulateNetworkConditions',
-        config.throttledNetworkConditions
+        config.throttledNetworkConditions,
       );
     });
   }
@@ -51,7 +51,7 @@ async function beforeAll(tokenCallback) {
   console.log(`Opening ${consoleUrl}`);
   await Promise.all([
     page.goto(consoleUrl),
-    page.waitForNavigation({ waitUntil: ['domcontentloaded'] })
+    page.waitForNavigation({ waitUntil: ['domcontentloaded'] }),
   ]);
   process.on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
@@ -66,5 +66,5 @@ async function beforeAll(tokenCallback) {
   return { page, browser };
 }
 module.exports = {
-  beforeAll
+  beforeAll,
 };

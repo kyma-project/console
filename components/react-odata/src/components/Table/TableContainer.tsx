@@ -1,32 +1,32 @@
-import React, { useState } from "react";
-import ServiceDocumentationTable from "./ServiceDocumentationTable/ServiceDocumentationTable";
-import { Node } from "../../types";
-import { makeUnique } from "./utils";
-import Table from "./MainDataTable/Table";
-import { CollapseButton } from "../styled/styled";
+import React, { useState } from 'react';
+import ServiceDocumentationTable from './ServiceDocumentationTable/ServiceDocumentationTable';
+import { Node } from '../../types';
+import { makeUnique } from './utils';
+import Table from './MainDataTable/Table';
+import { CollapseButton } from '../styled/styled';
 
 interface Props {
   arg: Node[];
 }
 
 const CHILDREN_TO_IGNORE: string[] = [
-  "Key",
-  "NavigationProperty",
-  "EntityContainer",
-  "Annotation",
+  'Key',
+  'NavigationProperty',
+  'EntityContainer',
+  'Annotation',
 ];
 
 const TABLES_TO_IGNORE: string[] = [
-  "EntityContainer",
-  "EnumType",
-  "Annotation",
+  'EntityContainer',
+  'EnumType',
+  'Annotation',
 ];
 
 const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
   const Documentation: Node[] = [];
   const Rest: Node[] = [];
   arg.forEach((elem: Node) => {
-    if (elem.name === "Annotations") {
+    if (elem.name === 'Annotations') {
       Documentation.push(elem);
     } else {
       Rest.push(elem);
@@ -38,7 +38,7 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
   return (
     <>
       <CollapseButton open={showAll} onClick={() => setShowAll(!showAll)}>
-        {showAll ? "Collapse" : "Expand"}
+        {showAll ? 'Collapse' : 'Expand'}
       </CollapseButton>
 
       {Documentation && Documentation.length > 0 && (
@@ -62,10 +62,10 @@ const TableContainer: React.FunctionComponent<Props> = ({ arg }) => {
             Object.keys(elem.attributes),
           )
           .filter((elem: string, index: number, self: string[]) =>
-            elem === "Term" ? false : makeUnique(elem, index, self),
+            elem === 'Term' ? false : makeUnique(elem, index, self),
           );
 
-        const title = `${data.name || "Entity"} ${data.attributes.Name ||
+        const title = `${data.name || 'Entity'} ${data.attributes.Name ||
           data.attributes.Term ||
           data.attributes.Target}`;
 

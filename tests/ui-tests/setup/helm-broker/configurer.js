@@ -14,9 +14,9 @@ export class HelmBrokerConfigurer {
     await this.api.createNamespacedConfigMap(helmBrokerConfig.namespace, {
       metadata: {
         name: this.mapName,
-        labels: { 'helm-broker-repo': 'true' }
+        labels: { 'helm-broker-repo': 'true' },
       },
-      data: { URLs: helmBrokerConfig.testBundleUrl }
+      data: { URLs: helmBrokerConfig.testBundleUrl },
     });
   }
 
@@ -24,7 +24,7 @@ export class HelmBrokerConfigurer {
     console.log('Excluding test bundle repository for Helm Broker...');
     await this.api.deleteNamespacedConfigMap(
       this.mapName,
-      helmBrokerConfig.namespace
+      helmBrokerConfig.namespace,
     );
   }
 
@@ -45,7 +45,7 @@ export class HelmBrokerConfigurer {
       },
       (resolve, reject) => err => {
         reject(err);
-      }
+      },
     );
   }
 
@@ -67,7 +67,7 @@ export class HelmBrokerConfigurer {
       (resolve, reject) => err => {
         reject(err);
       },
-      'test bundle'
+      'test bundle',
     );
   }
 
@@ -88,7 +88,7 @@ export class HelmBrokerConfigurer {
         path,
         queryParams,
         callbackFn(resolveFn, reject),
-        doneFn(resolveFn, reject)
+        doneFn(resolveFn, reject),
       );
 
       setTimeout(() => {

@@ -37,13 +37,12 @@ const DocsContent = ({ content, docsTypesLength }) => {
 
               return (
                 <Wrapper key={index}>
-                  {isFirstOfType &&
-                    typeLength && (
-                      <Anchor
-                        id={typeHash}
-                        data-scrollspy-node-type="groupOfDocuments"
-                      />
-                    )}
+                  {isFirstOfType && typeLength && (
+                    <Anchor
+                      id={typeHash}
+                      data-scrollspy-node-type="groupOfDocuments"
+                    />
+                  )}
                   <ContentHeader
                     id={hash}
                     data-scrollspy-node-type={

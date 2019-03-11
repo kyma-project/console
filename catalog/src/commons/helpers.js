@@ -141,6 +141,6 @@ export function isStringValueEqualToTrue(value) {
   return value ? 'true' === value.toLowerCase() : false;
 }
 
-export const backendModuleExists = (name) => {
+export const backendModuleExists = name => {
   return builder.getBackendModules().includes(name);
-}
+};

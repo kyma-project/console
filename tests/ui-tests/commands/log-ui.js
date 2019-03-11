@@ -31,5 +31,5 @@ module.exports = {
       console.log(document.documentElement.innerHTML);
       throw e;
     }
-  }
+  },
 };

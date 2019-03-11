@@ -129,6 +129,6 @@ export const validateContent = content => {
   return numberOfSources > 0;
 };
 
-export const backendModuleExists = (name) => {
+export const backendModuleExists = name => {
   return builder.getBackendModules().includes(name);
-}
+};

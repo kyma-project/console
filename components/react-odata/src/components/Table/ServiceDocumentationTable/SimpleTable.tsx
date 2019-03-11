@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   StyledTable,
@@ -7,7 +7,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from "../../styled/styled";
+} from '../../styled/styled';
 
 interface Props {
   title: string;

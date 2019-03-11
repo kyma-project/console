@@ -1,6 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Modal, Notification, BackendModuleDisabled } from '@kyma-project/react-components';
+import {
+  Modal,
+  Notification,
+  BackendModuleDisabled,
+} from '@kyma-project/react-components';
 import ServiceBrokers from '../ServiceBrokers/ServiceBrokers.container';
 
 import { backendModuleExists } from '../../commons/helpers';
@@ -41,7 +45,7 @@ class App extends React.Component {
       <div>
         <Notification {...notification} onClick={this.clearNotification} />
         <div className="ph3 pv1 background-gray">
-          {backendModuleExists("servicecatalog") ? (
+          {backendModuleExists('servicecatalog') ? (
             <Switch>
               <Route exact path="/" component={ServiceBrokers} />
             </Switch>

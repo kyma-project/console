@@ -1,6 +1,6 @@
-import React from "react";
-import { Node } from "../../../types";
-import { makeUnique } from "../utils";
+import React from 'react';
+import { Node } from '../../../types';
+import { makeUnique } from '../utils';
 import {
   StyledTable,
   TableHead,
@@ -8,7 +8,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "../../styled/styled";
+} from '../../styled/styled';
 
 interface Props {
   data: Node;

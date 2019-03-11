@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { Button, Icon, Panel, PanelHeader, Table } from "fundamental-react";
+import styled from 'styled-components';
+import { Button, Icon, Panel, PanelHeader, Table } from 'fundamental-react';
 
 export const StyledTable = styled.table`
   font-size: 14px;
   line-height: 1.42857;
   color: #32363a;
-  font-family: "72";
+  font-family: '72';
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
@@ -124,13 +124,13 @@ export const CollapseArrow = styled(Icon)`
   }
   &:before {
     transition: 0.3s ease;
-    ${(props: CollapseArrowProps) => props.open && "transform: rotate(90deg);"};
+    ${(props: CollapseArrowProps) => props.open && 'transform: rotate(90deg);'};
   }
 `;
 
 Icon.defaultProps = {
-  size: "l",
-  glyph: "feeder-arrow",
+  size: 'l',
+  glyph: 'feeder-arrow',
 };
 
 export const CollapseButton = styled(Button)`
@@ -142,13 +142,13 @@ export const CollapseButton = styled(Button)`
     margin-right: 0;
     margin-left: 8px;
     transition: 0.3s ease;
-    ${(props: { open?: boolean }) => props.open && "transform: rotate(90deg);"};
+    ${(props: { open?: boolean }) => props.open && 'transform: rotate(90deg);'};
   }
 `;
 
 Button.defaultProps = {
-  option: "emphasized",
-  glyph: "feeder-arrow",
+  option: 'emphasized',
+  glyph: 'feeder-arrow',
 };
 
 export const TablePanel = styled(Panel)`

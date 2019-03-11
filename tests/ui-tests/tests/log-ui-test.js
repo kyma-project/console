@@ -28,7 +28,7 @@ describeIf(dex.isStaticUser(), 'Log UI tests', () => {
     await page.waitForSelector(contentHeader);
     const navItem = 'a.fd-side-nav__link';
     await page.$$eval(navItem, item =>
-      item.find(text => text.innerText.includes('Logs')).click()
+      item.find(text => text.innerText.includes('Logs')).click(),
     );
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
