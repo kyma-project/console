@@ -58,14 +58,7 @@
   }
 }
 
-//Breadcrumbs
-.y-fd-breadcrumb {
-  a {
-    cursor: pointer;
-  }
-}
 .fd-action-bar {
-
   align-items: center; /* There is a bug in Fiori Fundamentals.
                           In Firefox buttons in `fd-action-bar-actions`
                           are shifted to the bottom.
