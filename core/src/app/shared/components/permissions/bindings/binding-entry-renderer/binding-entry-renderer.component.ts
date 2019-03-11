@@ -27,7 +27,7 @@ export class BindingEntryRendererComponent
     if (
       this.entry.subjects &&
       this.entry.subjects.length > 0 &&
-      this.entry.subjects[0].kind === 'Group'
+      (this.entry.subjects[0].kind === 'Group' || this.entry.subjects[0].kind === 'User')
     ) {
       this.groupName = this.entry.subjects[0].name;
     }
