@@ -33,13 +33,13 @@ export class JsonEditorModalComponent {
     this.modalService.open(this.jsonEditorModal).result.finally(() => {
       this.isActive = false;
       this.error = false;
+      this.modalResourceData = null;
       event.stopPropagation();
     });
   }
 
   cancel(event: Event) {
     this.modalService.close(this.jsonEditorModal);
-    this.modalResourceData = null;
   }
 
   update(event: Event) {

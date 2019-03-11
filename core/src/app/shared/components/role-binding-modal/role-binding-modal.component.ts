@@ -46,7 +46,7 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   getClusterRoles() {
     this.rbacService.getClusterRoles().subscribe(
-      res => {
+      res => { 
         const response: any = res;
         if (response && response.items && _.isArray(response.items)) {
           this.roles = response.items.map(entry => entry.metadata.name).sort();
@@ -110,7 +110,6 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   public close() {
-    this.isActive = false;
     this.modalService.close(this.createBindingModal);
     this.userOrGroup = '';
     this.selectedRole = '';

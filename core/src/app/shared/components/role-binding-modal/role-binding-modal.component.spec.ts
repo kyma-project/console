@@ -321,7 +321,6 @@ describe('RoleBindingModalComponent', () => {
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
-      expect(component.isActive).toBeFalsy();
       expect(component.isGlobalPermissionsView).toBeFalsy();
       expect(spyGetRoles.calls.any()).toBeTruthy();
       expect(spyCreateRoleBinding.calls.any()).toBeTruthy();
@@ -374,7 +373,6 @@ describe('RoleBindingModalComponent', () => {
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
-      expect(component.isActive).toBeFalsy();
       expect(component.isGlobalPermissionsView).toBeFalsy();
       expect(spyGetRoles.calls.any()).toBeTruthy();
       expect(spyCreateRoleBinding.calls.any()).toBeTruthy();
@@ -428,7 +426,6 @@ describe('RoleBindingModalComponent', () => {
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
-      expect(component.isActive).toBeFalsy();
       expect(component.isGlobalPermissionsView).toBeTruthy();
       expect(spyGetClusterRoles.calls.any()).toBeTruthy();
       expect(spyCreateClusterRoleBinding.calls.any()).toBeTruthy();
@@ -484,7 +481,6 @@ describe('RoleBindingModalComponent', () => {
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
-      expect(component.isActive).toBeFalsy();
       expect(component.isGlobalPermissionsView).toBeTruthy();
       expect(spyGetClusterRoles.calls.any()).toBeTruthy();
       expect(spyCreateClusterRoleBinding.calls.any()).toBeTruthy();

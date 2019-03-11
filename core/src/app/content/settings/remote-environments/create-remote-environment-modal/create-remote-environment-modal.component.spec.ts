@@ -11,6 +11,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   let fixture: ComponentFixture<CreateRemoteEnvironmentModalComponent>;
   let mockRemoteEnvironmentsService: RemoteEnvironmentsService;
   let mockComponentCommunicationService: ComponentCommunicationService;
+  let mockModalService: ModalService;
 
   const modalServiceMock = {
     close: () => {},
@@ -52,6 +53,8 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
     mockComponentCommunicationService = TestBed.get(
       ComponentCommunicationService
     );
+    mockModalService = TestBed.get(ModalService);
+
     fixture.detectChanges();
   });
 
@@ -75,9 +78,10 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
 
   describe('close()', () => {
     it('deactivates the form', () => {
-      component.isActive = true;
+      spyOn(mockModalService, 'close');
+      (component.createApplicationModal as any) = 'mock-value';
       component.close();
-      expect(component.isActive).toBe(false);
+      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
     });
   });
 
