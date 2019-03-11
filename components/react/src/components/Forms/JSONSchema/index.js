@@ -232,6 +232,16 @@ const StyledForm = styled(Form)`
     margin-top: 16px;
   }
 
+  .panel-danger {
+    display: none;
+  }
+  .field-object .field-string {
+    div > ul.error-detail > li.text-danger {
+      padding-top: 5px;
+      color: #ee0000;
+    }
+  }
+
   .field-object .field-object {
     .row {
       display: flex;
@@ -253,9 +263,7 @@ const StyledForm = styled(Form)`
       margin-bottom: 0;
       padding: 0 0 16px 0px;
     }
-    div.form-group:last-child {
-      padding: 0 0 0 16px;
-    }
+
     div.row div.form-group {
       border-left: none;
       padding: 0;
@@ -267,7 +275,14 @@ const StyledForm = styled(Form)`
 `;
 
 const JsonSchemaForm = props => {
-  return <StyledForm {...props} />;
+  return (
+    <StyledForm
+      additionalMetaSchemas={[
+        require('ajv/lib/refs/json-schema-draft-04.json'),
+      ]}
+      {...props}
+    />
+  );
 };
 
 export default JsonSchemaForm;
