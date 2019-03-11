@@ -113,7 +113,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await kymaConsole.openLinkOnFrame(
       page,
       '[data-e2e-id=remoteenv-name]',
-      config.testEnv
+      config.testEnv,
     );
     frame.waitForXPath(`//td[contains(string(), "${config.testEnv}")]`);
     frame.waitForXPath(`//h1[contains(string(), "General Information")]`);
