@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <fd-breadcrumb *ngIf="routedFromServiceDetails">
+  <fd-breadcrumb class="y-fd-breadcrumb" *ngIf="routedFromServiceDetails">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
     </fd-breadcrumb-item>
@@ -8,18 +8,18 @@
     </fd-breadcrumb-item>
     <fd-breadcrumb-item>
       <span fd-breadcrumb-link>
-        {{ apiDefinition ? (  apiName  )  : ('Create API') }}
+        {{ apiDefinition ? apiName : 'Create API' }}
       </span>
     </fd-breadcrumb-item>
   </fd-breadcrumb>
 
-  <fd-breadcrumb *ngIf="!routedFromServiceDetails">
+  <fd-breadcrumb class="y-fd-breadcrumb" *ngIf="!routedFromServiceDetails">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
     </fd-breadcrumb-item>
     <fd-breadcrumb-item>
       <span fd-breadcrumb-link>
-        {{ apiDefinition ? ( apiName )  : ('Create API' ) }}
+        {{ apiDefinition ? apiName : 'Create API' }}
       </span>
     </fd-breadcrumb-item>
   </fd-breadcrumb>
@@ -27,15 +27,17 @@
   <fd-action-bar>
     <fd-action-bar-header>
       <fd-action-bar-title>
-        {{ apiDefinition ? (  apiName  )  : ('Create API') }}
+        {{ apiDefinition ? apiName : 'Create API' }}
       </fd-action-bar-title>
     </fd-action-bar-header>
     <fd-action-bar-actions>
-      <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()">Save</button>
+      <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()">
+        Save
+      </button>
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <fd-panel>
+  <fd-panel class="y-fd-panel">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>General Information</fd-panel-title>
@@ -43,35 +45,37 @@
     </fd-panel-header>
 
     <fd-panel-body>
-      <div *ngIf='listOfServices' class="fd-container fd-container--fluid">
+      <div *ngIf="listOfServices" class="fd-container fd-container--fluid">
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label>Service *</fd-form-label>
-              <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown()" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+              <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown()"
+                clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
                 <div class="fd-popover fd-has-display-block">
                   <div class="fd-popover__control">
                     <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                      aria-controls="nNJnB279"
-                      [attr.aria-expanded]="ariaServiceExpanded"
-                      aria-haspopup="true"
+                      aria-controls="nNJnB279" [attr.aria-expanded]="ariaServiceExpanded" aria-haspopup="true"
                       (click)="toggleDropDown()">
-                      <input class="fd-form__control y-fd-form__control"
-                        type="text"
-                        name="serviceName"
-                        autocomplete="off"
-                        placeholder="Choose service"
-                        [(ngModel)]="serviceName"
-                        (ngModelChange)="filterServices()"
-                        (keydown)="openDropDown($event)"
-                        (click)="openDropDown($event)">
+                      <input class="fd-form__control y-fd-form__control" type="text" name="serviceName"
+                        autocomplete="off" placeholder="Choose service" [(ngModel)]="serviceName"
+                        (ngModelChange)="filterServices()" (keydown)="openDropDown($event)"
+                        (click)="openDropDown($event)" />
                     </button>
                   </div>
-                  <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body" [attr.aria-hidden]="ariaServiceHidden" id="nNJnB279">
+                  <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
+                    [attr.aria-hidden]="ariaServiceHidden" id="nNJnB279">
                     <nav class="fd-menu">
                       <ul class="fd-menu__list">
-                        <li *ngFor="let svc of filteredServices" (click)="toggleDropDown(); selectService(svc); checkIfServiceCanBeSecured(svc); setApiName()">
-                          <span class="fd-menu__item">{{ svc.metadata.name }}</span>
+                        <li *ngFor="let svc of filteredServices" (click)="
+                            toggleDropDown();
+                            selectService(svc);
+                            checkIfServiceCanBeSecured(svc);
+                            setApiName()
+                          ">
+                          <span class="fd-menu__item">
+                            {{ svc.metadata.name }}
+                          </span>
                         </li>
                       </ul>
                     </nav>
@@ -89,7 +93,9 @@
             <div fd-form-item>
               <fd-form-label [forValue]="'input-2'">Host *</fd-form-label>
               <div class="fd-input-group fd-input-group--after">
-                <input fd-form-control [type]="'text'" id="input-2" placeholder="Field placeholder text" [(ngModel)]="hostname" (ngModelChange)="setApiName(); validateDetails()" (blur)="validateDetails()" [state]="errorHostname ? 'invalid' : undefined">
+                <input fd-form-control [type]="'text'" id="input-2" placeholder="Field placeholder text"
+                  [(ngModel)]="hostname" (ngModelChange)="setApiName(); validateDetails()" (blur)="validateDetails()"
+                  [state]="errorHostname ? 'invalid' : undefined" />
                 <span class="fd-input-group__addon fd-input-group__addon--after">{{ domain }}</span>
               </div>
               <fd-form-message [type]="'error'" *ngIf="errorHostname">
@@ -102,7 +108,9 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="'input-3'">Service Port *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-3" [(ngModel)]="servicePort" (ngModelChange)="validateDetails()" (blur)="validateDetails()" [state]="errorPort ? 'invalid' : undefined">
+              <input fd-form-control [type]="'text'" id="input-3" [(ngModel)]="servicePort"
+                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
+                [state]="errorPort ? 'invalid' : undefined" />
               <fd-form-message [type]="'error'" *ngIf="errorPort">
                 {{ errorPort }}
               </fd-form-message>
@@ -116,7 +124,9 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="'input-1'">Name *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-1" [disabled]="apiDefinition" [(ngModel)]="apiName" (ngModelChange)="validateDetails()" (blur)="validateDetails()" [state]="errorApiName ? 'invalid' : undefined">
+              <input fd-form-control [type]="'text'" id="input-1" [disabled]="apiDefinition" [(ngModel)]="apiName"
+                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
+                [state]="errorApiName ? 'invalid' : undefined" />
               <fd-form-message [type]="'error'" *ngIf="errorApiName">
                 {{ errorApiName }}
               </fd-form-message>
@@ -129,13 +139,16 @@
 </section>
 
 <section *ngIf="canBeSecured" class="fd-section security-section">
-  <fd-panel>
+  <fd-panel class="y-fd-panel">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>Security</fd-panel-title>
       </fd-panel-head>
       <fd-panel-actions>
-        <button *ngIf="secure && canBeSecured && apiDefinition && isDefaultProvider()" fd-button [options]="'light'" (click)="fetchToken()">Fetch token</button>
+        <button *ngIf="secure && canBeSecured && apiDefinition && isDefaultProvider()" fd-button [options]="'light'"
+          (click)="fetchToken()">
+          Fetch token
+        </button>
       </fd-panel-actions>
     </fd-panel-header>
     <fd-panel-body>
@@ -144,7 +157,8 @@
           <fieldset fd-form-set>
             <div fd-form-item [isInline]="true" [isCheck]="true">
               <fd-form-label [forValue]="'Ai4ez611'">
-                <input *ngIf="canBeSecured" fd-form-control [type]="'checkbox'" [checked]="secure" (change)="toggleSecure()" id="Ai4ez611">
+                <input *ngIf="canBeSecured" fd-form-control [type]="'checkbox'" [checked]="secure"
+                  (change)="toggleSecure()" id="Ai4ez611" />
                 Secure API
               </fd-form-label>
             </div>
@@ -158,7 +172,9 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="'input-4'">Issuer *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-4" [(ngModel)]="issuer" (ngModelChange)="validateDetails()" (blur)="validateDetails()" [state]="errorIssuer ? 'invalid' : undefined">
+              <input fd-form-control [type]="'text'" id="input-4" [(ngModel)]="issuer"
+                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
+                [state]="errorIssuer ? 'invalid' : undefined" />
               <fd-form-message [type]="'error'" *ngIf="errorIssuer">
                 {{ errorIssuer }}
               </fd-form-message>
@@ -169,7 +185,9 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="input-5">JWKS URI *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-5" [(ngModel)]="jwksUri" (ngModelChange)="validateDetails()" (blur)="validateDetails()" [state]="errorJWKSUri ? 'invalid' : undefined">
+              <input fd-form-control [type]="'text'" id="input-5" [(ngModel)]="jwksUri"
+                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
+                [state]="errorJWKSUri ? 'invalid' : undefined" />
               <fd-form-message [type]="'error'" *ngIf="errorJWKSUri">
                 {{ errorJWKSUri }}
               </fd-form-message>
@@ -185,7 +203,8 @@
             <fd-popover-body>
               <fd-menu>
                 <fd-menu-list>
-                  <li fd-menu-item *ngFor="let preset of availablePresets" (click)="selectPreset(preset)" id="{{preset.label}}">
+                  <li fd-menu-item *ngFor="let preset of availablePresets" (click)="selectPreset(preset)"
+                    id="{{ preset.label }}">
                     {{ preset.label }}
                   </li>
                 </fd-menu-list>

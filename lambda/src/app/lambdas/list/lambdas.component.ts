@@ -43,7 +43,6 @@ export class LambdasComponent extends GenericTableComponent
   title = 'Lambdas';
   emptyListText =
     'It looks like you don’t have any lambdas in your namespace yet.';
-  createNewElementText = 'Add Lambda';
 
   public lambdasEventHandler;
   token: string;

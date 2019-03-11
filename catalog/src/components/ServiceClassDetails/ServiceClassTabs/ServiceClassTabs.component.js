@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import AsyncApi from '@kyma-project/asyncapi-react';
+import ODataReact from '@kyma-project/odata-react';
 import { Markdown, Tabs, Tab } from '@kyma-project/react-components';
 
 import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
@@ -17,13 +18,15 @@ import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
 const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
   const content = serviceClass.content && serviceClass.content;
-  const apiSpec = serviceClass.apiSpec && serviceClass.apiSpec;
+  const openApiSpec = serviceClass.openApiSpec && serviceClass.openApiSpec;
   const asyncApiSpec = serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
+  const odataSpec = serviceClass.odataSpec && serviceClass.odataSpec;
 
   if (
     (content && Object.keys(content).length && validateContent(content)) ||
-    (apiSpec && Object.keys(apiSpec).length) ||
-    (asyncApiSpec && Object.keys(asyncApiSpec).length)
+    (openApiSpec && Object.keys(openApiSpec).length) ||
+    (asyncApiSpec && Object.keys(asyncApiSpec).length) ||
+    (odataSpec && Object.keys(odataSpec).length)
   ) {
     let documentsByType = [],
       documentsTypes = [];
@@ -70,11 +73,11 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
                 ) : null,
             )}
 
-          {apiSpec && Object.keys(apiSpec).length ? (
+          {openApiSpec && Object.keys(openApiSpec).length ? (
             <Tab title={'Console'}>
               <ApiReference
                 url="http://petstore.swagger.io/v1/swagger.json"
-                schema={apiSpec}
+                schema={openApiSpec}
               />
             </Tab>
           ) : null}
@@ -82,6 +85,12 @@ const ServiceClassTabs = ({ serviceClass, serviceClassLoading }) => {
           {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
             <Tab title={'Events'} margin="0" background="inherit">
               <AsyncApi schema={asyncApiSpec} theme={asyncApiTheme} config={asyncApiConfig} />
+            </Tab>
+          ) : null}
+
+          {odataSpec && Object.keys(odataSpec).length ? (
+            <Tab title={'OData'} margin="0" background="inherit">
+              <ODataReact schema={odataSpec} />
             </Tab>
           ) : null}
         </Tabs>

@@ -61,7 +61,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
     const currentLambdas = await lambdas.getLambdas(frame);
-    const addLambdaButton = '.tn-button.tn-button--small.tn-button--text';
+    const addLambdaButton = '.fd-button.sap-icon--add';
     await frame.$$eval(addLambdaButton, btn =>
       btn.find(text => text.innerText.includes('Add Lambda')).click()
     );
@@ -96,8 +96,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.click(deleteButton);
 
     //when (deleting lambda)
-    const deleteConfirmButton =
-      '.tn-modal__button-primary.sf-button--primary.tn-button--small';
+    const deleteConfirmButton = '[data-e2e-id=confirmation-modal-button-ok]';
     await frame.waitFor(deleteConfirmButton);
     await frame.click(deleteConfirmButton);
     await frame.waitForSelector(deleteConfirmButton, { hidden: true });

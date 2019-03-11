@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <fd-breadcrumb>
+  <fd-breadcrumb class="y-fd-breadcrumb">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList()">
         Permissions
@@ -28,7 +28,7 @@
     {{ errorMessage }}
   </div>
 
-  <fd-panel *ngIf="roleDetails">
+  <fd-panel class="y-fd-panel" *ngIf="roleDetails">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>Details</fd-panel-title>
@@ -56,8 +56,8 @@
 </section>
 
 <section class="fd-section" *ngIf="roleDetails">
-  <fd-panel-grid [col]="2">
-    <fd-panel *ngFor="let rule of roleDetails.rules">
+  <fd-panel-grid [col]="roleDetails.rules && roleDetails.rules.length>1 ? 2 : 1">
+    <fd-panel class="y-fd-panel" *ngFor="let rule of roleDetails.rules">
       <fd-panel-header>
         <fd-panel-head>
           <fd-panel-title>Rule</fd-panel-title>
@@ -68,7 +68,9 @@
           <tbody>
             <tr>
               <td class="y-fd-table--col-4 fd-has-color-text-4 fd-has-background-color-neutral-1">API Groups</td>
-              <td><span *ngFor="let apiGroup of rule.apiGroups; let last = last">{{ apiGroup !== '' ? apiGroup : coreGroup }}{{ last ? '': ',' }}</span></td>
+              <td><span
+                  *ngFor="let apiGroup of rule.apiGroups; let last = last">{{ apiGroup !== '' ? apiGroup : coreGroup }}{{ last ? '': ',' }}</span>
+              </td>
             </tr>
             <tr>
               <td class="fd-has-color-text-4 fd-has-background-color-neutral-1">Verbs</td>

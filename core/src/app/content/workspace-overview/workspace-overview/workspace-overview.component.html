@@ -6,9 +6,12 @@
       </fd-action-bar-title>
     </fd-action-bar-header>
     <fd-action-bar-actions>
-      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-      <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-      <button fd-button [options]="'light'" class="open-create-env-modal" (click)="createModal.show()">+ Create Namespace</button>
+      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+        (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+      <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+        (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+      <button fd-button [options]="'light'" [glyph]="'add'" class="open-create-env-modal"
+        (click)="createModal.show()">Create Namespace</button>
     </fd-action-bar-actions>
   </fd-action-bar>
 

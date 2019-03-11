@@ -2,12 +2,20 @@ import React, { Fragment, useState } from "react";
 import CollapsibleAnnotation from "./CollapsibleAnnotation";
 import { makeUnique } from "../utils";
 import { Node } from "../../../types";
-import { LeftAlignedHeader, StyledTable } from "./../styled/styled";
+import {
+  TableHead,
+  TableHeadCell,
+  TableBody,
+  StyledTable,
+  CollapseArrow,
+  TableRow,
+  TableCell,
+} from "../../styled/styled";
 interface Props {
   data: Node;
 }
 
-const CollapisbleTable: React.FunctionComponent<Props> = ({ data }) => {
+const CollapsibleTable: React.FunctionComponent<Props> = ({ data }) => {
   const attributesColumn: string[] = data.children
     .flatMap((elem: { attributes: any }) => Object.keys(elem.attributes))
     .filter(makeUnique);
@@ -24,59 +32,60 @@ const CollapisbleTable: React.FunctionComponent<Props> = ({ data }) => {
 
   return (
     <StyledTable>
-      <thead>
-        <tr>
+      <TableHead>
+        <TableRow>
           {columnHeaders.map((elem: string, index: number) => (
-            <LeftAlignedHeader key={index}>{elem}</LeftAlignedHeader>
+            <TableHeadCell key={index}>{elem}</TableHeadCell>
           ))}
-        </tr>
-      </thead>
-      <tbody>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {data.children.map((child: Node, index: number) => {
           const specialHeader: Node = child.children[0];
           if (specialHeader && specialHeader.name === "Collection") {
             const [show, setShow] = useState<boolean>(false);
             return (
               <Fragment key={index}>
-                <tr>
+                <TableRow>
                   {columnHeaders.map((el: string, idx: number) => (
-                    <td key={idx}>
+                    <TableCell key={idx}>
                       {child.attributes[el] ||
                         (specialHeader && specialHeader.name === el && (
-                          <button onClick={() => setShow(!show)}>
-                            {show ? "⇧" : "⇩"}
-                          </button>
+                          <CollapseArrow
+                            open={show}
+                            clickHandler={() => setShow(!show)}
+                          />
                         ))}
-                    </td>
+                    </TableCell>
                   ))}
-                </tr>
+                </TableRow>
                 {show && (
-                  <tr>
-                    <td colSpan={columnHeaders.length}>
+                  <TableRow>
+                    <TableCell colSpan={columnHeaders.length}>
                       <CollapsibleAnnotation data={specialHeader} />
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )}
               </Fragment>
             );
           }
 
           return (
-            <tr key={index}>
+            <TableRow key={index}>
               {columnHeaders.map((el: string, idx: number) => (
-                <td key={idx}>
+                <TableCell key={idx}>
                   {child.attributes[el] ||
                     (specialHeader &&
                       specialHeader.name === el &&
                       specialHeader.value)}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           );
         })}
-      </tbody>
+      </TableBody>
     </StyledTable>
   );
 };
 
-export default CollapisbleTable;
+export default CollapsibleTable;

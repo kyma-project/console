@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <fd-breadcrumb>
+  <fd-breadcrumb class="y-fd-breadcrumb">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList()" href="#">
         Applications
@@ -20,12 +20,12 @@
     </fd-action-bar-header>
     <fd-action-bar-actions>
       <button fd-button *ngIf="!isReadOnly" [options]="'light'" (click)="showUrl()">
-          Connect Application
+        Connect Application
       </button>
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <fd-panel *ngIf="remoteEnvironment">
+  <fd-panel class="y-fd-panel" *ngIf="remoteEnvironment">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>General Information</fd-panel-title>
@@ -38,6 +38,7 @@
     </fd-panel-header>
 
     <fd-panel-body [bleed]="true">
+
       <table class="fd-table fd-table--no-borders">
         <tbody>
           <tr>
@@ -46,7 +47,8 @@
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Status</td>
-            <td><span class="fd-status-label" [ngClass]="determineClass(remoteEnvironment)">{{ prettyStatus }}</span></td>
+            <td><span class="fd-status-label" [ngClass]="determineClass(remoteEnvironment)">{{ prettyStatus }}</span>
+            </td>
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Description</td>
@@ -63,7 +65,8 @@
             <td class="fd-has-color-text-4">Labels</td>
             <td>
               <ng-container *ngIf='transformedLabels.length'>
-                <span class="fd-token y-fd-token y-fd-token--no-button" role="button" *ngFor="let label of transformedLabels">
+                <span class="fd-token y-fd-token y-fd-token--no-button" role="button"
+                  *ngFor="let label of transformedLabels">
                   {{ label }}
                 </span>
               </ng-container>
@@ -74,20 +77,21 @@
           </tr>
         </tbody>
       </table>
+
     </fd-panel-body>
   </fd-panel>
 </section>
 
 <ng-container *ngIf="remoteEnvironment">
   <section class="fd-section">
-    <fd-panel>
+    <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
           <fd-panel-title>Namespace Bindings</fd-panel-title>
         </fd-panel-head>
         <fd-panel-actions>
-          <button fd-button [options]="'light'" (click)="openEditBindingsModal()">
-            + Create Binding
+          <button fd-button [options]="'light'" [glyph]="'add'" (click)="openEditBindingsModal()">
+            Create Binding
           </button>
         </fd-panel-actions>
       </fd-panel-header>
@@ -96,14 +100,14 @@
         <fd-table *ngIf="boundEnvironments.length > 0">
           <fd-table-header>
             <th>Name</th>
-            <th class="fd-table__th--min"></th>
+            <th class="fd-table--min"></th>
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let environment of boundEnvironments">
               <td><span class="fd-has-font-weight-bold">{{ environment }}</span></td>
               <td class="fd-has-float-right">
-                <y-list-actions [entry]="environment" [entryEventHandler]="entryEventHandler"
-                                [actions]="actions"></y-list-actions>
+                <y-list-actions [entry]="environment" [entryEventHandler]="entryEventHandler" [actions]="actions">
+                </y-list-actions>
               </td>
             </tr>
           </fd-table-body>
@@ -113,7 +117,7 @@
   </section>
 
   <section class="fd-section" *ngIf="remoteEnvironment.services.length > 0">
-    <fd-panel>
+    <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
           <fd-panel-title>Provided Services & Events</fd-panel-title>
@@ -123,22 +127,30 @@
         <fd-table>
           <fd-table-header>
             <th>ServiceClass Name</th>
-            <th class="fd-table__th--min">API</th>
-            <th class="fd-table__th--min">Events</th>
+            <th class="fd-table--min">API</th>
+            <th class="fd-table--min">Events</th>
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let service of remoteEnvironment.services">
-              <td><span class="fd-has-font-weight-bold">{{ service.displayName }}</span></td>
               <td>
-                <span class="sap-icon--l"
-                      ngClass="{{hasType(service.entries, 'API') ? 'sap-icon--accept fd-has-color-status-1' : 'sap-icon--decline fd-has-color-status-4'}}"
-                      role="presentation">
+                <span class="fd-has-font-weight-bold">
+                  {{ service.displayName }}
                 </span>
               </td>
               <td>
-                <span class="sap-icon--l"
-                      ngClass="{{hasType(service.entries, 'Events') ? 'sap-icon--accept fd-has-color-status-1' : 'sap-icon--decline fd-has-color-status-4'}}"
-                      role="presentation">
+                <span class="sap-icon--l" ngClass="{{
+                    hasType(service.entries, 'API')
+                      ? 'sap-icon--accept fd-has-color-status-1'
+                      : 'sap-icon--decline fd-has-color-status-4'
+                  }}" role="presentation">
+                </span>
+              </td>
+              <td>
+                <span class="sap-icon--l" ngClass="{{
+                    hasType(service.entries, 'Events')
+                      ? 'sap-icon--accept fd-has-color-status-1'
+                      : 'sap-icon--decline fd-has-color-status-4'
+                  }}" role="presentation">
                 </span>
               </td>
             </tr>
@@ -152,10 +164,6 @@
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-edit-bindings-modal #editbindingsmodal></app-edit-bindings-modal>
 <app-information-modal #infoModal></app-information-modal>
-<app-edit-remote-environment-modal #editRemoteEnvModal *ngIf="remoteEnvironment"
-    [name]="remoteEnvironment.name"
-    [initialDescription]="remoteEnvironment.description"
-    [initialLabels]="transformedLabels">
-  </app-edit-remote-environment-modal>
-
-
+<app-edit-remote-environment-modal #editRemoteEnvModal *ngIf="remoteEnvironment" [name]="remoteEnvironment.name"
+  [initialDescription]="remoteEnvironment.description" [initialLabels]="transformedLabels">
+</app-edit-remote-environment-modal>

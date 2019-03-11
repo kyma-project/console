@@ -32,12 +32,12 @@ const getTransformers = fieldTransformer => ({
   ServiceClass: {
     content: fieldTransformer,
     asyncApiSpec: fieldTransformer,
-    apiSpec: fieldTransformer,
+    openApiSpec: fieldTransformer,
   },
   ClusterServiceClass: {
     content: fieldTransformer,
     asyncApiSpec: fieldTransformer,
-    apiSpec: fieldTransformer,
+    openApiSpec: fieldTransformer,
   },
   ServicePlan: {
     instanceCreateParameterSchema: fieldTransformer,

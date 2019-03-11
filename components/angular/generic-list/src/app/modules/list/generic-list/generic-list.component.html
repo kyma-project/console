@@ -1,10 +1,14 @@
 <fd-action-bar>
   <fd-action-bar-header>
-    <fd-action-bar-title *ngIf="!showEmptyPage">{{ title }}</fd-action-bar-title>
+    <fd-action-bar-title *ngIf="!showEmptyPage">
+      {{ title }}
+    </fd-action-bar-title>
   </fd-action-bar-header>
   <fd-action-bar-actions [hidden]="!initialized">
-    <y-list-search [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-    <y-list-filter [filterState]="filterState" [hidden]="!initialized || showEmptyPage" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+    <y-list-search [filterState]="filterState" [hidden]="!initialized || showEmptyPage"
+      (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+    <y-list-filter [filterState]="filterState" [hidden]="!initialized || showEmptyPage"
+      (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
   </fd-action-bar-actions>
 </fd-action-bar>
 
@@ -14,7 +18,7 @@
   <fd-loading-spinner empty-list-placeholder [loading]="loading"></fd-loading-spinner>
 
   <div empty-list-placeholder *ngIf="showEmptyPage" class="fd-container fd-container--centered">
-    <fd-panel class="fd-col--4 fd-col--shift-4">
+    <fd-panel class="y-fd-panel fd-col--4 fd-col--shift-4">
       <fd-panel-header>
         <fd-panel-head>
           <fd-panel-title>{{ title }}</fd-panel-title>
@@ -23,9 +27,10 @@
       </fd-panel-header>
 
       <fd-panel-footer>
-        <button fd-button (click)="createNewElement()" [glyph]="'add'">{{ createNewElementText }}</button>
+        <button fd-button (click)="createNewElement()" [glyph]="'add'">
+          {{ createNewElementText }}
+        </button>
       </fd-panel-footer>
-
     </fd-panel>
   </div>
 </y-plain-list>

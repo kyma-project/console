@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <fd-breadcrumb>
+  <fd-breadcrumb class="y-fd-breadcrumb">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList()" href="#">
         Services
@@ -19,7 +19,7 @@
       </fd-action-bar-title>
     </fd-action-bar-header>
     <fd-action-bar-actions>
-        <app-edit-resource [resourceData]="serviceDetails"></app-edit-resource>
+      <app-edit-resource [resourceData]="serviceDetails"></app-edit-resource>
     </fd-action-bar-actions>
   </fd-action-bar>
 
@@ -27,11 +27,12 @@
     Loading ...
   </p>
 
-  <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="!serviceDetailsLoading && errorMessage">
+  <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert"
+    *ngIf="!serviceDetailsLoading && errorMessage">
     {{ errorMessage }}
   </div>
 
-  <fd-panel *ngIf="serviceDetails">
+  <fd-panel class="y-fd-panel" *ngIf="serviceDetails">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>General Information</fd-panel-title>
@@ -60,14 +61,17 @@
           <tr *ngIf="serviceDetails.metadata.labels">
             <td class="fd-has-color-text-4">Labels</td>
             <td>
-              <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }} </span>
+              <span class="fd-token y-fd-token y-fd-token--no-button"
+                *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }}
+              </span>
             </td>
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Internal Endpoints</td>
             <td>
               <ng-container *ngFor="let port of serviceDetails.spec.ports">
-                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }} {{ port.protocol }}</span>
+                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }}
+                  {{ port.protocol }}</span>
                 <br>
                 <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }}
                   {{ port.protocol }}</span>
@@ -82,14 +86,14 @@
 </section>
 
 <section class="fd-section" *ngIf="!isSystemNamespace">
-  <fd-panel>
+  <fd-panel class="y-fd-panel">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>Exposed APIs</fd-panel-title>
       </fd-panel-head>
       <fd-panel-actions>
-        <button fd-button [options]="'light'" (click)="openExposeApi()">
-          + Expose API
+        <button fd-button [options]="'light'" [glyph]="'add'" (click)="openExposeApi()">
+          Expose API
         </button>
       </fd-panel-actions>
     </fd-panel-header>
