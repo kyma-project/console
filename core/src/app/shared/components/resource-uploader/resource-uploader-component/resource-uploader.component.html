@@ -1,10 +1,11 @@
 <app-uploader #uploader></app-uploader>
 <div class="row">
   <button class="col-6 tn-button tn-button--small tn-button--text upload-button"
-          ngClass="{{uploader.isFileReadyToUpload() ? '' : 'disabled'}}"
-          [disabled]="!uploader.isFileReadyToUpload()"
-          (click)="createNewElement()">
+    ngClass="{{ uploader.isFileReadyToUpload() ? '' : 'disabled' }}" [disabled]="!uploader.isFileReadyToUpload()"
+    (click)="createNewElement()">
     Upload
   </button>
-  <button class="col-6 tn-button tn-button--small tn-button--text cancel-button" (click)="cancel()">Cancel</button>
+  <button class="col-6 tn-button tn-button--small tn-button--text cancel-button" (click)="cancel()">
+    Cancel
+  </button>
 </div>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IdpPresetsService } from '../idp-presets.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ModalComponent, ModalService } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-create-preset-modal',
@@ -8,6 +9,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
   styleUrls: ['./create-preset-modal.component.scss']
 })
 export class CreatePresetModalComponent {
+  @ViewChild('createIDPPresetModal') createIDPPresetModal: ModalComponent;
   public presetName = '';
   public issuer = '';
   public jwks = '';
@@ -18,15 +20,20 @@ export class CreatePresetModalComponent {
 
   constructor(
     private idpPresetsService: IdpPresetsService,
-    private communicationService: ComponentCommunicationService
+    private communicationService: ComponentCommunicationService,
+    private modalService: ModalService
   ) {}
 
   show() {
     this.isActive = true;
+    this.modalService.open(this.createIDPPresetModal).result.finally(() => {
+      this.isActive = false;
+    });
   }
 
   close() {
     this.isActive = false;
+    this.modalService.close(this.createIDPPresetModal);
     this.presetName = '';
     this.issuer = '';
     this.jwks = '';

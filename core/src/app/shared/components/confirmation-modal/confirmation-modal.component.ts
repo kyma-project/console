@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { ModalService, ModalComponent } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-confirmation-modal',
@@ -8,10 +9,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ConfirmationModalComponent implements OnInit {
   @Input() message: string;
   @Input() title: string;
+
+  @ViewChild('confirmationModal') confirmationModal: ModalComponent;
+
   isActive = false;
   private okPromise: any;
   private cancelPromise: any;
-  constructor() {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {}
 
@@ -23,21 +27,33 @@ export class ConfirmationModalComponent implements OnInit {
       this.message = message;
     }
     this.isActive = true;
+
+    this.modalService.open(this.confirmationModal).result.finally(() => {
+      this.cancelPromise(false);
+      this.isActive = false;
+      event.stopPropagation();
+    });
+
     return new Promise((resolve, reject) => {
       this.okPromise = resolve;
       this.cancelPromise = reject;
     });
   }
 
-  cancel(event: Event) {
-    this.cancelPromise(false);
-    this.isActive = false;
-    event.stopPropagation();
+  closeModal() {
+    if (this.confirmationModal && this.modalService) {
+      this.modalService.close(this.confirmationModal);
+    }
+  }
+
+  cancel(event?: Event) {
+    this.closeModal();
   }
 
   ok(event: Event) {
     this.okPromise(true);
     this.isActive = false;
     event.stopPropagation();
+    this.closeModal();
   }
 }

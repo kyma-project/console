@@ -1,18 +1,21 @@
-import React from "react";
+import React from 'react';
 import { graphql, compose } from 'react-apollo';
 
-import DocsContent from "./DocsContent.component";
-import { DocsProcessor } from "./DocsProcessor";
+import DocsContent from './DocsContent.component';
+import { DocsProcessor } from './DocsProcessor';
 
 import { CONTENT_QUERY } from './queries';
 import { SET_DOCS_LOADING_STATUS } from './mutations';
 
-const DocsContentContainer = ({ content: { loading, content }, setDocsLoadingStatus }) => {
+const DocsContentContainer = ({
+  content: { loading, content },
+  setDocsLoadingStatus,
+}) => {
   setDocsLoadingStatus({
     variables: {
       docsLoadingStatus: loading,
-    }
-  })
+    },
+  });
 
   if (loading || !content) {
     return null;
@@ -40,12 +43,7 @@ const DocsContentContainer = ({ content: { loading, content }, setDocsLoadingSta
     return doc;
   });
 
-  return (
-    <DocsContent
-      content={newContent}
-      docsTypesLength={docsTypesLength}
-    />
-  );
+  return <DocsContent content={newContent} docsTypesLength={docsTypesLength} />;
 };
 
 export default compose(

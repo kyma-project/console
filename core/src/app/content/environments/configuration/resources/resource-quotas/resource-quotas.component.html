@@ -1,26 +1,14 @@
-<div class="sf-panel">
-  <div class="sf-panel__head">
-    <div class="sf-toolbar">
-      <div class="sf-toolbar__header">{{ title }}</div>
-    </div>
+<y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+
+<y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
+  [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer">
+  <div empty-list-placeholder *ngIf="showEmptyPage">
+    <h1>{{ title }}</h1>
+    <p>{{ emptyListText }}</p>
   </div>
+</y-plain-table>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-
-  <y-plain-table
-    [source]="data"
-    [headerRenderer]="headerRenderer"
-    [entryRenderer]="entryRenderer"
-    [entryEventHandler]="entryEventHandler"
-    [footerRenderer]="footerRenderer">
-    <div empty-list-placeholder *ngIf="showEmptyPage" class="sf-section__empty-teaser">
-      <h1>{{ title }}</h1>
-      <p>{{ emptyListText }}</p>
-    </div>
-  </y-plain-table>
-
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-</div>
+<y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
 
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>
 <app-information-modal #infoModal></app-information-modal>

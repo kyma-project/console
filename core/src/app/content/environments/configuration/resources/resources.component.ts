@@ -4,12 +4,9 @@ import { ResourceUploaderModalComponent } from '../../../../shared/components/re
 @Component({
   selector: 'app-resources',
   templateUrl: './resources.component.html',
-  styleUrls: ['./resources.component.scss'],
-  host: { class: 'sf-content' }
+  styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-  limitsTabExpanded = true;
-  quotasTabExpanded = false;
   @ViewChild('uploaderModal')
   private uploaderModal: ResourceUploaderModalComponent;
 
@@ -20,9 +17,4 @@ export class ResourcesComponent implements OnInit {
   openUploadResourceModal() {
     this.uploaderModal.show();
   }
-
-  changeTab = tab => {
-    this.limitsTabExpanded = tab === 'limits';
-    this.quotasTabExpanded = !this.limitsTabExpanded;
-  };
 }

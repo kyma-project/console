@@ -7,9 +7,11 @@
     "brokers",
     "content",
     "components/react",
+    "components/react-odata",
     "components/angular/generic-list/dist",
     "lambda",
-    "tests"
+    "tests",
+    "log-ui"
   ],
   "version": "0.0.0",
   "command": {

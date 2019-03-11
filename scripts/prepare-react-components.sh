@@ -32,3 +32,5 @@ cd $CWD
 # copy lib index.js for DOCKERFILE
 mkdir $TEMP_FOLDER
 cp ../${REACT_COMPONENTS_FOLDER}/lib/index.js ./${TEMP_FOLDER}/index.js
+rm -rf ./node_modules/@kyma-project/react-components/lib/index.js
+cp ../${REACT_COMPONENTS_FOLDER}/lib/index.js ./node_modules/@kyma-project/react-components/lib/index.js

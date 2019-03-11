@@ -215,25 +215,24 @@ class ServiceInstanceBindings extends React.Component {
             const parameters = binding && binding.parameters;
             return (
               <ActionsWrapper>
-                {parameters &&
-                  Object.keys(parameters).length > 0 && (
-                    <Tooltip content={'Parameters'} minWidth="90px">
-                      <span
-                        style={{
-                          cursor: 'help',
-                        }}
-                      >
-                        <ParametersDataModal
-                          title={
-                            <Fragment>
-                              Parameters for <Bold>{binding.name}</Bold>
-                            </Fragment>
-                          }
-                          data={parameters}
-                        />
-                      </span>
-                    </Tooltip>
-                  )}
+                {parameters && Object.keys(parameters).length > 0 && (
+                  <Tooltip content={'Parameters'} minWidth="90px">
+                    <span
+                      style={{
+                        cursor: 'help',
+                      }}
+                    >
+                      <ParametersDataModal
+                        title={
+                          <Fragment>
+                            Parameters for <Bold>{binding.name}</Bold>
+                          </Fragment>
+                        }
+                        data={parameters}
+                      />
+                    </span>
+                  </Tooltip>
+                )}
 
                 <DeleteBindingModal
                   deleteBinding={this.props.deleteBinding}
@@ -295,7 +294,9 @@ class ServiceInstanceBindings extends React.Component {
       </>
     );
 
-    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists(
+      'servicecatalogaddons',
+    );
 
     const bindingUsagesHeaders = [
       'Service Binding Usage',

@@ -1,14 +1,7 @@
-import {
-  Component,
-  Injector,
-  OnInit,
-  ViewEncapsulation,
-  OnDestroy
-} from '@angular/core';
+import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { CurrentEnvironmentService } from '../../../../../environments/services/current-environment.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../operation/abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
-import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../../app.config';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -62,10 +55,10 @@ export class FilteredApisEntryRendererComponent
   }
 
   public isSecured(entry) {
-    return _.isArray(entry.authenticationPolicies) &&
+    return (
+      Array.isArray(entry.authenticationPolicies) &&
       entry.authenticationPolicies.length > 0
-      ? true
-      : false;
+    );
   }
 
   public getIDP(entry) {

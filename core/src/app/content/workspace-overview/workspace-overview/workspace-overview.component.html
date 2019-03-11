@@ -1,25 +1,30 @@
-<div class="sf-toolbar">
-  <div class="sf-toolbar__header">Namespaces</div>
-  <div class="sf-toolbar__right">
-    <div class="sf-toolbar__item">
-      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-      <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-      <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="createModal.show()">+ Create Namespace</button>
+<section class="fd-section">
+  <fd-action-bar>
+    <fd-action-bar-header>
+      <fd-action-bar-title>
+        Namespaces
+      </fd-action-bar-title>
+    </fd-action-bar-header>
+    <fd-action-bar-actions>
+      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+        (onFilterChanged)="onFilterChanged($event)"></y-list-search>
+      <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+        (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
+      <button fd-button [options]="'light'" [glyph]="'add'" class="open-create-env-modal"
+        (click)="createModal.show()">Create Namespace</button>
+    </fd-action-bar-actions>
+  </fd-action-bar>
+
+  <app-environment-create (cancelEvent)="onEnvCreateCancelled()" #createModal></app-environment-create>
+  <app-confirmation-modal #confirmationModal></app-confirmation-modal>
+  <app-information-modal #infoModal></app-information-modal>
+
+  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+
+  <y-plain-list [source]="data" [entryRenderer]="entryRenderer" [entryEventHandler]="entryEventHandler">
+    <div empty-list-placeholder *ngIf="showEmptyPage" class="fd-has-text-align-center">
     </div>
-  </div>
-</div>
-<app-environment-create (cancelEvent)="onEnvCreateCancelled()" #createModal></app-environment-create>
-<app-confirmation-modal #confirmationModal></app-confirmation-modal>
-<app-information-modal #infoModal></app-information-modal>
-<div class="row">
-  <div class="col-md-12 col-lg-12">
-    <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+  </y-plain-list>
 
-    <y-plain-list [source]="data" [entryRenderer]="entryRenderer" [entryEventHandler]="entryEventHandler">
-      <div empty-list-placeholder *ngIf="showEmptyPage" class="sf-section__empty-teaser">
-      </div>
-    </y-plain-list>
-
-    <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-  </div>
-</div>
+  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+</section>

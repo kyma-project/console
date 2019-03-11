@@ -5,6 +5,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Routes } from '@angular/router';
 import { LuigiClientCommunicationDirective } from '../../directives/luigi-client-communication/luigi-client-communication.directive';
+import { ModalService } from 'fundamental-ngx';
 
 describe('InformationModalComponent', () => {
   let component: InformationModalComponent;
@@ -18,8 +19,19 @@ describe('InformationModalComponent', () => {
         InformationModalComponent,
         LuigiClientCommunicationDirective
       ],
-      providers: [{ provide: APP_BASE_HREF, useValue: '/my/app' }]
-    }).compileComponents();
+      providers: [
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/my/app'
+        },
+        {
+          provide: ModalService,
+          useValue: {}
+        }
+      ]
+    })
+      .overrideTemplate(InformationModalComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

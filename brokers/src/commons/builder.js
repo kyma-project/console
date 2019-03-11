@@ -15,7 +15,7 @@ class Builder {
         this.currentEnvironmentId = e.environmentId;
         this.token = e.idToken;
         this.backendModules = e.backendModules;
-        
+
         clearTimeout(timeout);
         resolve();
       });

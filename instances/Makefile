@@ -11,17 +11,15 @@ resolve:
 
 build:
 	../scripts/prepare-react-components.sh -d react-components
+	../scripts/prepare-react-odata.sh -d react-odata
 	npm run build
 
 validate:
+	npm run lint-check
 	eslint -c .eslinterrc ./src
 
 test:
 	CI=true npm run test
-
-scan:
-	sed -i -e 's/APIKEY/$(API_KEY)/g; s/USERKEY/$(USER_KEY)/g' /whitesource.config.json && cp /whitesource.config.json ./whitesource.config.json
-	whitesource run
 
 build-image:
 	docker build -t $(IMG_NAME) .

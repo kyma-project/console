@@ -14,5 +14,5 @@ function findInFile(path, value) {
 }
 
 module.exports = {
-  isStaticUser
+  isStaticUser,
 };

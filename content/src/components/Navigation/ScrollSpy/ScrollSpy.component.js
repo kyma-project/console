@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class ScrollSpy extends React.Component {
   static get propTypes() {
@@ -17,9 +17,9 @@ class ScrollSpy extends React.Component {
 
   static get defaultProps() {
     return {
-      rootElement: "scrollspy",
+      rootElement: 'scrollspy',
       nodeTypes: [],
-      componentTag: "ul",
+      componentTag: 'ul',
       offset: 0,
       endOffset: 0,
       onUpdate() {},
@@ -36,7 +36,7 @@ class ScrollSpy extends React.Component {
     activeNodes: (() => {
       let activeNodes = {};
       for (const type of this.props.nodeTypes) {
-        activeNodes[type] = "";
+        activeNodes[type] = '';
       }
       return activeNodes;
     })(),
@@ -48,24 +48,29 @@ class ScrollSpy extends React.Component {
   componentDidMount() {
     this.onResize();
 
-    window.addEventListener("resize", this.onResize);
-    window.addEventListener("orientationchange", this.onResize);
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('orientationchange', this.onResize);
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize);
-    window.removeEventListener("orientationchange", this.onResize);
-    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('orientationchange', this.onResize);
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      props: { nodeTypes, onUpdate, activeContent, docsLoadingStatus: { docsLoadingStatus } },
+      props: {
+        nodeTypes,
+        onUpdate,
+        activeContent,
+        docsLoadingStatus: { docsLoadingStatus },
+      },
       state: { activeNodes },
     } = this;
 
-    if ((prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus)) {
+    if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
       setTimeout(this.onResize, 350);
     }
 
@@ -73,8 +78,8 @@ class ScrollSpy extends React.Component {
       setTimeout(this.onResize, 350);
     }
 
-    if (typeof onUpdate !== "function")  {
-      return
+    if (typeof onUpdate !== 'function') {
+      return;
     }
 
     for (const type of nodeTypes) {
@@ -104,9 +109,9 @@ class ScrollSpy extends React.Component {
 
     const rootNode = document.querySelector(rootElement);
     if (!rootNode) return;
-    
-    const nodesInRootNode = rootNode.querySelectorAll("*[id]");
-    const dataScrollSpyNodeTypeAtr = "scrollspyNodeType";
+
+    const nodesInRootNode = rootNode.querySelectorAll('*[id]');
+    const dataScrollSpyNodeTypeAtr = 'scrollspyNodeType';
 
     for (let node of nodesInRootNode) {
       const nodeType = node.dataset[dataScrollSpyNodeTypeAtr];

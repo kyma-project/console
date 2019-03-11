@@ -1,11 +1,11 @@
 export class DocsProcessor {
   constructor(docs = []) {
     // for rewrite readonly fields
-    this.docs = JSON.parse(JSON.stringify([...docs]))
+    this.docs = JSON.parse(JSON.stringify([...docs]));
   }
 
   replaceImagePaths = ({ type, id, version, versions }) => {
-    const isVersionLatest = version === "latest";
+    const isVersionLatest = version === 'latest';
     const currentVersion = isVersionLatest ? versions.releases[0] : version;
 
     this.docs = this.docs.map(doc => {
@@ -23,7 +23,7 @@ export class DocsProcessor {
   };
 
   sortByOrder = () => {
-    this.docs = this.docs.sort(this.sortFnByProperty("order"));
+    this.docs = this.docs.sort(this.sortFnByProperty('order'));
     return this;
   };
 
@@ -76,26 +76,23 @@ export class DocsProcessor {
     this.docs.map(doc => {
       if (doc.source.search(hrefLinksRegexp) !== -1) {
         try {
-          doc.source = doc.source.replace(
-            hrefLinksRegexp,
-            occurrence => {
-              hrefLinksRegexp.lastIndex = 0;
-              let href = hrefLinksRegexp.exec(occurrence);
-          
-              if (!href || !href[1]) return occurrence;
-              return `href=${href[1]}`
-            }
-          );
-        } catch(e) {
-          console.error(e)
+          doc.source = doc.source.replace(hrefLinksRegexp, occurrence => {
+            hrefLinksRegexp.lastIndex = 0;
+            let href = hrefLinksRegexp.exec(occurrence);
+
+            if (!href || !href[1]) return occurrence;
+            return `href=${href[1]}`;
+          });
+        } catch (e) {
+          console.error(e);
         }
       }
 
       return doc;
-    })
+    });
 
-    return this
-  }
+    return this;
+  };
 
   changeHeadersAtrs = () => {
     const headerIDRegexp = /id=("|')(.*?)("|')/g;
@@ -105,33 +102,29 @@ export class DocsProcessor {
           const docType = doc.type || doc.title;
           const docTitle = doc.title;
 
-          doc.source = doc.source.replace(
-            headerIDRegexp,
-            occurrence => {
-              headerIDRegexp.lastIndex = 0;
-              let id = headerIDRegexp.exec(occurrence);
+          doc.source = doc.source.replace(headerIDRegexp, occurrence => {
+            headerIDRegexp.lastIndex = 0;
+            let id = headerIDRegexp.exec(occurrence);
 
-              if (!id || !id[2]) return occurrence;
-              id = id[2];
+            if (!id || !id[2]) return occurrence;
+            id = id[2];
 
+            const typeLowerCased = docType.toLowerCase().replace(/ /g, '-');
+            const titleLowerCased = docTitle.toLowerCase().replace(/ /g, '-');
+            const typeWithTitle = `${typeLowerCased}-${titleLowerCased}`;
 
-              const typeLowerCased = docType.toLowerCase().replace(/ /g, "-");
-              const titleLowerCased = docTitle.toLowerCase().replace(/ /g, "-");
-              const typeWithTitle = `${typeLowerCased}-${titleLowerCased}`;
-          
-              return `id="${typeWithTitle}-${id}" data-scrollspy-node-type="header"`;
-            }
-          )
-        } catch(e) {
+            return `id="${typeWithTitle}-${id}" data-scrollspy-node-type="header"`;
+          });
+        } catch (e) {
           console.error(e);
         }
       }
 
       return doc;
-    })
+    });
 
     return this;
-  }
+  };
 
   result() {
     return this.docs;

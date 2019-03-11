@@ -12,14 +12,18 @@ import {
   TextOverflowWrapper,
 } from './styled';
 
-import { getResourceDisplayName, statusColor, backendModuleExists } from '../../../commons/helpers';
+import {
+  getResourceDisplayName,
+  statusColor,
+  backendModuleExists,
+} from '../../../commons/helpers';
 
 const deleteButton = <Button compact option="light" glyph="delete" />;
 
 export class ServiceInstancesTable extends Component {
   displayBindingsUsages = (bindings = []) => {
     if (!bindings) return null;
-    
+
     switch (bindings.length) {
       case 0:
         return '-';
@@ -60,7 +64,9 @@ export class ServiceInstancesTable extends Component {
       await deleteServiceInstance(element.name);
     };
 
-    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists(
+      'servicecatalogaddons',
+    );
 
     const createTableData = () => {
       return data.map(instance => {
@@ -207,8 +213,9 @@ export class ServiceInstancesTable extends Component {
         option="light"
         onClick={this.goToServiceCatalog}
         data-e2e-id="add-instance"
+        glyph="add"
       >
-        + Add Instance
+        Add Instance
       </Button>
     );
 
@@ -229,8 +236,8 @@ export class ServiceInstancesTable extends Component {
       tableData.map(row => {
         row.rowData.splice(3, 1);
         return row;
-      })
-    } 
+      });
+    }
 
     return (
       <Table

@@ -1,5 +1,10 @@
 import { RemoteEnvironment } from '../../../shared/datamodel/k8s/kyma-api/remote-environment';
-import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
 import { RemoteEnvironmentsEntryRendererComponent } from './remote-environments-entry-renderer/remote-environments-entry-renderer.component';
@@ -15,11 +20,11 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-remote-environments',
-  templateUrl: './remote-environments.component.html',
-  styleUrls: ['./remote-environments.component.scss'],
-  host: { class: 'sf-content' }
+  templateUrl: './remote-environments.component.html'
 })
-export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListComponent {
+export class RemoteEnvironmentsComponent
+  extends AbstractKubernetesElementListComponent
+  implements OnDestroy {
   title = 'Applications';
   emptyListText = 'It looks like you don’t have any Applications yet.';
   createNewElementText = 'Add Application';
@@ -29,6 +34,8 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
   ariaExpanded = false;
   ariaHidden = true;
   public hideFilter = true;
+  private contextListenerId: string;
+  public isReadOnly = false;
 
   @ViewChild('createModal') createModal: CreateRemoteEnvironmentModalComponent;
 
@@ -60,6 +67,12 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
     this.entryRenderer = RemoteEnvironmentsEntryRendererComponent;
     this.headerRenderer = RemoteEnvironmentsHeaderRendererComponent;
     this.filterState = { filters: [new Filter('name', '', false)] };
+
+    this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
+      if (context.settings) {
+        this.isReadOnly = context.settings.readOnly;
+      }
+    });
   }
 
   getResourceUrl(kind: string, entry: any): string {
@@ -77,5 +90,9 @@ export class RemoteEnvironmentsComponent extends AbstractKubernetesElementListCo
 
   public openModal() {
     this.createModal.show();
+  }
+
+  ngOnDestroy() {
+    LuigiClient.removeContextUpdateListener(this.contextListenerId);
   }
 }

@@ -1,9 +1,16 @@
 import styled from 'styled-components';
-import { Panel, PanelHeader, PanelBody } from '@kyma-project/react-components';
+import {
+  media,
+  Panel,
+  PanelHeader,
+  PanelBody,
+} from '@kyma-project/react-components';
 
 export const ServiceClassDescriptionContentWrapper = styled(Panel)`
   && {
-    margin-bottom: 20px;
+    ${media.phone`
+      grid-column: span 1;
+    `};
   }
 `;
 

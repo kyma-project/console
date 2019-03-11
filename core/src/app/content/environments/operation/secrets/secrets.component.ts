@@ -14,8 +14,7 @@ import { ISecret, Secret } from 'shared/datamodel/k8s/secret';
 
 @Component({
   selector: 'app-secrets',
-  templateUrl: '../kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: '../kubernetes-element-list.component.html'
 })
 export class SecretsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {

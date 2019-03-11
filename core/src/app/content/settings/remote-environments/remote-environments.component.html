@@ -1,32 +1,39 @@
-<div class="sf-toolbar">
-  <div class="sf-toolbar__header">{{ title }}</div>
-  <div class="sf-toolbar__right">
-    <div class="sf-toolbar__item">
-      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)">
+<section class="fd-section">
+  <fd-action-bar>
+    <fd-action-bar-header>
+      <fd-action-bar-title>
+        {{ title }}
+      </fd-action-bar-title>
+    </fd-action-bar-header>
+    <fd-action-bar-actions>
+      <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+        (onFilterChanged)="onFilterChanged($event)">
       </y-list-search>
       <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter" [filterState]="filterState"
         (onFilterChanged)="onFilterChanged($event)">
       </y-list-filter>
-      <button class="tn-button tn-button--small tn-button--text open-create-env-modal" (click)="openModal()">+ Create
-        Application</button>
-    </div>
+      <button *ngIf="!isReadOnly" fd-button [options]="'light'" [glyph]="'add'" class="open-create-env-modal"
+        (click)="openModal()">
+        Create Application
+      </button>
+    </fd-action-bar-actions>
+  </fd-action-bar>
+
+  <div class="fd-panel">
+    <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+
+    <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
+      [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer">
+      <div empty-list-placeholder *ngIf="showEmptyPage" class="fd-section">
+        <h1>{{ title }}</h1>
+        <p>{{ emptyListText }}</p>
+      </div>
+    </y-plain-table>
+
+    <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
   </div>
-</div>
+</section>
 
-<div class="sf-panel">
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-
-  <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer" [entryEventHandler]="entryEventHandler"
-    [footerRenderer]="footerRenderer">
-    <div empty-list-placeholder *ngIf="showEmptyPage" class="sf-section__empty-teaser">
-      <h1>{{ title }}</h1>
-      <p>{{ emptyListText }}</p>
-    </div>
-  </y-plain-table>
-
-
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-</div>
 <app-information-modal #infoModal></app-information-modal>
 <app-create-remote-environment-modal #createModal></app-create-remote-environment-modal>
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>

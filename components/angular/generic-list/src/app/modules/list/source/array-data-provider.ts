@@ -22,7 +22,7 @@ export class ArrayDataProvider implements DataProvider {
     const index = pageSize * (pageNumber - 1);
     const pagedData = filteredData.slice(index, index + pageSize);
 
-    return Observable.create(observer => {
+    return new Observable(observer => {
       observer.next(new DataProviderResult(pagedData, filteredData.length));
       observer.complete();
     });

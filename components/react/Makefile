@@ -9,11 +9,9 @@ build:
 	npm run build
 
 validate:
+	npm run lint-check
 	eslint -c .eslinterrc ./src
 
 test:
 	CI=true npm run test
-
-scan:
-	sed -i -e 's/APIKEY/$(API_KEY)/g; s/USERKEY/$(USER_KEY)/g' /whitesource.config.json && cp /whitesource.config.json ./whitesource.config.json
-	whitesource run
+	

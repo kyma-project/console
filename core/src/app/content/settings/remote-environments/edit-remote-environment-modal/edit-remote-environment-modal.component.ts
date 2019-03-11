@@ -2,6 +2,7 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
+import { ModalService } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-edit-remote-environment-modal',
@@ -14,6 +15,7 @@ export class EditRemoteEnvironmentModalComponent {
   @Input() public name: string;
 
   @ViewChild('editRemoteEnvsForm') editRemoteEnvsForm: NgForm;
+  @ViewChild('editRemoteEnvironmentModal') editRemoteEnvironmentModal: NgForm;
 
   public isActive = false;
   public wrongLabels: boolean;
@@ -23,16 +25,23 @@ export class EditRemoteEnvironmentModalComponent {
 
   public constructor(
     private remoteEnvironmentsService: RemoteEnvironmentsService,
-    private communicationService: ComponentCommunicationService
+    private communicationService: ComponentCommunicationService,
+    private modalService: ModalService
   ) {}
 
   public show(): void {
     this.resetForm();
     this.isActive = true;
+
+    this.modalService
+      .open(this.editRemoteEnvironmentModal)
+      .result.finally(() => {
+        this.isActive = false;
+      });
   }
 
   public close(): void {
-    this.isActive = false;
+    this.modalService.close(this.editRemoteEnvironmentModal);
   }
 
   private resetForm(): void {

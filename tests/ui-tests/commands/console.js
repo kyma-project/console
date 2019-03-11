@@ -14,7 +14,7 @@ async function _loginViaDex(page, config) {
   console.log(`Trying to log in ${config.login} via dex`);
   try {
     await page.reload({
-      waitUntil: ['domcontentloaded', 'networkidle0']
+      waitUntil: ['domcontentloaded', 'networkidle0'],
     });
     await page.waitForSelector('#login');
     await page.type('#login', config.login);
@@ -24,8 +24,8 @@ async function _loginViaDex(page, config) {
     return Promise.all([
       page.click(loginButtonSelector),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0']
-      })
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
     ]);
   } catch (err) {
     throw new Error(`Couldn't log in`, err);
@@ -46,10 +46,10 @@ async function login(page, config) {
   async function obtainLoginErrorMessage() {
     await page.waitForSelector('#login-error');
     const loginError = await page.evaluate(
-      () => document.querySelector('#login-error').textContent
+      () => document.querySelector('#login-error').textContent,
     );
     throw new Error(
-      `Page returned following error message: ${loginError.trim()}`
+      `Page returned following error message: ${loginError.trim()}`,
     );
   }
 }
@@ -65,7 +65,7 @@ async function openLinkOnFrame(page, element, name) {
     (item, name) => {
       item.find(text => text.innerText.includes(name)).click();
     },
-    name
+    name,
   );
 }
 
@@ -76,8 +76,8 @@ async function openLink(page, element, name) {
       (item, name) => {
         item.find(text => text.innerText.includes(name)).click();
       },
-      name
-    )
+      name,
+    ),
   ]);
 }
 
@@ -87,7 +87,7 @@ function clearData(token, env) {
     method: 'DELETE',
     headers: { Authorization: token },
     // TODO: Analyze problem with UNABLE_TO_VERIFY_LEAF_SIGNATURE
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
   };
 
   return new Promise((resolve, reject) => {
@@ -109,18 +109,18 @@ async function getEnvironmentsFromContextSwitcher(page) {
     const menuListContainer = document.querySelector('ul#context_menu_middle');
     const environmentsArraySelector = 'li > a';
     const envs = Array.from(
-      menuListContainer.querySelectorAll(environmentsArraySelector)
+      menuListContainer.querySelectorAll(environmentsArraySelector),
     );
     return envs.map(env => env.textContent);
   });
 }
 
 async function getEnvironmentNamesFromEnvironmentsPage(page) {
-  return await getNamesOnCurrentPage(page, '.tn-card__header');
+  return await getNamesOnCurrentPage(page, '[data-e2e-id=namespace-name]');
 }
 
 async function getRemoteEnvironmentNames(page) {
-  return await getNamesOnCurrentPage(page, '.remoteenv-name');
+  return await getNamesOnCurrentPage(page, '[data-e2e-id=remoteenv-name]');
 }
 
 async function getNamesOnCurrentPage(page, nameSelector) {
@@ -140,9 +140,9 @@ async function getTextContentOnFrameBySelector(frame, selector) {
 
 async function createEnvironment(page, name) {
   const frame = await getFrame(page);
-  const createEnvModal = '.sf-modal.sf-modal--min';
+  const createEnvModal = '[data-e2e-id=create-environment-modal]';
   const createBtn = '.env-create-btn';
-  const envNameInput = 'input[name=environmentName].tn-form__control';
+  const envNameInput = 'input[name=environmentName]';
   const createButtonSelector = '.open-create-env-modal';
 
   await frame.waitForSelector(createButtonSelector);
@@ -156,8 +156,7 @@ async function createEnvironment(page, name) {
 
 async function deleteEnvironment(page, envName) {
   const frame = await getFrame(page);
-  const deleteConfirmButton =
-    '.tn-modal__button-primary.sf-button--primary.tn-button--small';
+  const deleteConfirmButton = `[data-e2e-id=confirmation-modal-button-ok]`;
   const dropDownCard = `button[aria-controls=${envName}]`;
   await frame.click(dropDownCard);
   await frame.click(`#${envName} li > a[name=Delete]`);
@@ -170,11 +169,11 @@ async function createRemoteEnvironment(page, name) {
   const frame = await getFrame(page);
   // consts
   const createEnvBtn = '.open-create-env-modal';
-  const createEnvModal = '.sf-modal.sf-modal--min';
+  const createEnvModal = '.fd-modal';
   const nameInput = 'input[name=remoteEnvName]';
   const descriptionInput = 'input[name=remoteEnvDescription]';
   const labelsInput = 'input[name=labelsInput]';
-  const createButton = '.tn-modal__button-primary';
+  const createButton = '[data-e2e-id=create-button]';
 
   await frame.click(createEnvBtn);
   await frame.waitFor(createEnvModal);
@@ -187,14 +186,14 @@ async function createRemoteEnvironment(page, name) {
   await frame.click(createButton);
   await frame.waitForSelector(createEnvModal, { hidden: true });
   return frame.waitForXPath(
-    `//div[contains(@class, 'remoteenv-name') and contains(string(), "${name}")]`
+    `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${name}")]`,
   );
 }
 
 async function deleteRemoteEnvironment(page, name) {
   const frame = await getFrame(page);
-  const remoteEnvironmentsSelector = '.row.sf-list__body';
-  const modalSelector = '.sf-modal';
+  const remoteEnvironmentsSelector = 'tr';
+  const modalSelector = '[data-e2e-id=confirmation-modal]';
 
   await frame.waitForSelector(remoteEnvironmentsSelector);
   await frame.$$eval(
@@ -203,16 +202,16 @@ async function deleteRemoteEnvironment(page, name) {
       const actionsSelector = `button[aria-controls=${name}]`;
       const deleteActionSelector = `#${name} li > a[name=Delete]`;
       const testRemoteEnvironment = item.find(row =>
-        row.textContent.includes(name)
+        row.textContent.includes(name),
       );
       testRemoteEnvironment.querySelector(actionsSelector).click();
       testRemoteEnvironment.querySelector(deleteActionSelector).click();
     },
-    name
+    name,
   );
   await frame.waitForSelector(modalSelector);
   await frame.evaluate(() => {
-    const deleteButton = `.tn-modal__button-primary.sf-button--primary.tn-button--small`;
+    const deleteButton = `[data-e2e-id=confirmation-modal-button-ok]`;
     document.querySelector(deleteButton).click();
   });
   console.log(`Application ${name} deleted!`);
@@ -232,5 +231,5 @@ module.exports = {
   getEnvironmentNamesFromEnvironmentsPage,
   deleteEnvironment,
   getRemoteEnvironmentNames,
-  getTextContentOnFrameBySelector
+  getTextContentOnFrameBySelector,
 };

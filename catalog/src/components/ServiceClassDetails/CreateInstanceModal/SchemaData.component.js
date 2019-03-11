@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { JsonSchemaForm, ErrorBoundary, Icon } from '@kyma-project/react-components';
-import { Bold } from './styled';
+import {
+  JsonSchemaForm,
+  ErrorBoundary,
+  Icon,
+} from '@kyma-project/react-components';
+import { Bold, Flex } from './styled';
 
 class SchemaData extends React.Component {
   static propTypes = {
@@ -43,9 +47,10 @@ class SchemaData extends React.Component {
     return (
       <ErrorBoundary
         content={
-          <div>
-            <Icon icon={'\uE1EC'} /> Incorrect Instance Create Parameter schema in <Bold>{planName}</Bold> plan
-          </div>
+          <Flex>
+            <Icon glyph="error" style={{ padding: '0 5px 0 0' }} /> Incorrect
+            Instance Create Parameter schema in <Bold>{planName}</Bold> plan
+          </Flex>
         }
       >
         <JsonSchemaForm

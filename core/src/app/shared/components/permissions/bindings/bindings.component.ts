@@ -18,7 +18,6 @@ import { IRoleBinding, RoleBinding } from '../../../datamodel/k8s/role-binding';
 import { RoleBindingModalComponent } from '../../role-binding-modal/role-binding-modal.component';
 
 @Component({
-  host: { class: '' },
   selector: 'app-bindings',
   templateUrl: 'bindings.component.html'
 })

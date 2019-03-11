@@ -12,8 +12,7 @@ import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/
 import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
 
 @Component({
-  templateUrl: '../kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: '../kubernetes-element-list.component.html'
 })
 export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {

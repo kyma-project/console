@@ -8,7 +8,7 @@ module.exports = {
     instanceTitle,
     instanceLabel,
     instanceAdditionalData,
-    instancePlanName
+    instancePlanName,
   ) => {
     try {
       const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
@@ -169,7 +169,9 @@ module.exports = {
     await getElements(page, 'status-service-binding'),
   getBindingsStatus: async page =>
     await getElements(page, 'status-service-binding-usage'),
-  prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`
+  getNumberOfInstancesStatus: async page =>
+    await getElements(page, 'instances-provisioned-testing-bundle'),
+  prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`,
 };
 async function confirmModal(page) {
   try {
@@ -201,12 +203,12 @@ async function getElements(page, e2eIdName) {
           config.catalogTestingAtribute
         }=${e2eIdName}]`;
         const elements = Array.from(
-          document.querySelectorAll(elementArraySelector)
+          document.querySelectorAll(elementArraySelector),
         );
         return elements.map(item => item.textContent);
       },
       config,
-      e2eIdName
+      e2eIdName,
     );
   } catch (e) {
     console.log(document.documentElement.innerHTML);

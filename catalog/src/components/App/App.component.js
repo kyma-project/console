@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
-import { Modal, Notification, BackendModuleDisabled } from '@kyma-project/react-components';
+import {
+  Modal,
+  Notification,
+  BackendModuleDisabled,
+} from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import MainPage from '../Main/Main.container';
@@ -73,7 +77,7 @@ class App extends React.Component {
           />
         )}
         <div className="ph3 pv1 background-gray">
-          {backendModuleExists("servicecatalog") ? (
+          {backendModuleExists('servicecatalog') ? (
             <Switch>
               <Route exact path="/" component={MainPage} />
               <Route exact path="/details/:name" component={InstanceDetails} />

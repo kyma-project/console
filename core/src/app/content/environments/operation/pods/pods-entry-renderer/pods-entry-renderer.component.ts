@@ -112,4 +112,10 @@ export class PodsEntryRendererComponent
       return 'error';
     }
   }
+
+  hasErrors(entry) {
+    return entry.status.containerStatuses.some(
+      status => status.state[Object.keys(status.state)[0]] === 'running'
+    );
+  }
 }

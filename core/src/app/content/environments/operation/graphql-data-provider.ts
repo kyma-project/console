@@ -29,7 +29,7 @@ export class GraphQLDataProvider implements DataProvider {
     facets: string[],
     noCache?: boolean
   ): Observable<DataProviderResult> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       if (noCache || !this.queryCache) {
         this.queryCache = this.graphQLClientService
           .request(this.url, this.query, this.variables)

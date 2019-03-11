@@ -1,41 +1,60 @@
-<div class="sf-panel__head">
-  <div class="sf-panel__headline-wrap">
-    <h2> Service Bindings </h2>
-    <button class="tn-button tn-button--small tn-button--text" (click)="showBindingCreatorModal()" [disabled]="!lambdaName || isLambdaNameInvalid">
-      + Create Service Binding
-    </button>
-  </div>
-</div>
+<section class="fd-section">
+  <fd-panel class="y-fd-panel">
+    <fd-panel-header>
+      <fd-panel-head>
+        <fd-panel-title>Service Bindings</fd-panel-title>
+      </fd-panel-head>
+      <fd-panel-actions>
+        <button fd-button [options]="'light'" [glyph]="'add'" [compact]="true"
+          [disabled]="!lambdaName || isLambdaNameInvalid" (click)="showBindingCreatorModal()">
+          Create Service Binding
+        </button>
+      </fd-panel-actions>
+    </fd-panel-header>
+  </fd-panel>
 
-<div class="sf-list" *ngIf="instanceBindingInfoList.length > 0">
-  <div class="row sf-list__head">
-    <div class="col-3">Instance</div>
-    <div class="col-8">Environment Variable Name</div>
-    <div class="col-1"></div>
-  </div>
-  <div class="row sf-list__body" *ngFor="let instanceBinding of instanceBindingInfoList; let i = index; last as isLast">
-    <div class="col-3">
-      {{ instanceBinding.instanceName }}
-    </div>
-    <div class="col-8">
-      <div *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
-        <div class="col-12 env-var-position" *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
-          {{ instanceBinding.instanceBindingPrefix + envVar }}
-        </div>
-        <ng-template #onlyEnvVar>
-          <div class="col-12 env-var-position">
-            {{ envVar }}
-          </div>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-1">
-      <button class="tn-icon tn-icon--delete tn-button tn-button--small tn-button--icon tn-button--text" (click)="remove(i)" [disabled]="!lambdaName || isLambdaNameInvalid"></button>
-    </div>
-    <div class="col-12" *ngIf="!isLast">
-      <hr>
-    </div>
-  </div>
-</div>
-
-<app-lambda-instance-binding-creator [alreadyAddedInstances]="instanceBindingInfoList" #bindingCreatorModal (selectedServiceBindingEmitter)="addServiceBinding($event)"></app-lambda-instance-binding-creator>
+  <fd-panel class="y-fd-panel" *ngIf="instanceBindingInfoList.length > 0">
+    <fd-panel-body [bleed]="true">
+      <table class="fd-table y-fd-table">
+        <thead>
+          <tr>
+            <th class="y-fd-table--col-4">Instance</th>
+            <th class="y-fd-table--col-7">Environment Variable Name</th>
+            <th class="y-fd-table--col-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="
+              let instanceBinding of instanceBindingInfoList;
+              let i = index
+            ">
+            <td>
+              {{ instanceBinding.instanceName }}
+            </td>
+            <td>
+              <table>
+                <tr *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
+                  <td class="y-fd-table--col-12 y-word-break"
+                    *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
+                    {{ instanceBinding.instanceBindingPrefix + envVar }}
+                  </td>
+                  <ng-template #onlyEnvVar>
+                    <td class="y-fd-table--col-12 y-word-break">
+                      {{ envVar }}
+                    </td>
+                  </ng-template>
+                </tr>
+              </table>
+            </td>
+            <td class="fd-has-float-right">
+              <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="remove(i)"
+                [disabled]="!lambdaName || isLambdaNameInvalid"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </fd-panel-body>
+  </fd-panel>
+</section>
+<app-lambda-instance-binding-creator [alreadyAddedInstances]="instanceBindingInfoList" #bindingCreatorModal
+  (selectedServiceBindingEmitter)="addServiceBinding($event)"></app-lambda-instance-binding-creator>

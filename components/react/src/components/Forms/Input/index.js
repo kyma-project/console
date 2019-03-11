@@ -158,12 +158,11 @@ class Input extends React.Component {
                 handleChange(value);
               }}
             />
-            {!noMessageField &&
-              finalMessage && (
-                <FormMessage type={error || warning || valid}>
-                  {finalMessage}
-                </FormMessage>
-              )}
+            {!noMessageField && finalMessage && (
+              <FormMessage type={error || warning || valid}>
+                {finalMessage}
+              </FormMessage>
+            )}
           </FormItem>
         </FormSet>
       </FormSetWrapper>

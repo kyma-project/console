@@ -1,39 +1,51 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <ng-template [ngIf]="isActive">
-    <div class="sf-modal sf-modal--min" [ngClass]="{'is-active': isActive===true}" role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
-      <div class="tn-modal" role="document">
-        <div class="tn-modal__content">
-          <div class="tn-modal__header">
-            <button class="tn-button tn-button--text tn-button--icon tn-button--small" aria-label="close" (click)="close()">
-              <span class="tn-icon tn-icon--close" role="presentation"></span>
-            </button>
-            <h4 class="tn-modal__title">Create Binding</h4>
-          </div>
-          <div class="tn-modal__body">
-            <div class="tn-form__group">
-              <div class="error-message-placeholder" *ngIf="error">{{ error }}</div>
-
-              <div class="user-group">
-                <label class="tn-form__label">UserGroup</label>
-                <div class="user-group-input">
-                  <input class="filter-input"
-                    type="text" 
-                    name="userGroup"
-                    placeholder="Enter User Group"
-                    [(ngModel)]="userGroup"
-                    (ngModelChange)="validateUserGroupInput()">
+  <fd-modal class="y-fd-modal" #createBindingModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+        <fd-modal-header>Create Binding</fd-modal-header>
+        <fd-modal-body>
+          <div class="fd-form__group">
+            <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">{{ error }}</div>
+            <div class="fd-form__set">
+              <div class="fd-form__group">
+                <div class="fd-form__item fd-form__item--inline fd-form__item--check">
+                  <label class="fd-form__label" for="pDidh767">
+                    <input type="radio" class="fd-form__control" id="pDidh767" name="radio" (click)='setUserMode()'
+                      [checked]="!isUserGroupMode">
+                    User
+                  </label>
                 </div>
-                <div *ngIf="userGroupError" class="alert">{{ userGroupError }}</div>
+                <div class="fd-form__item fd-form__item--inline fd-form__item--check">
+                  <label class="fd-form__label" for="pDidh7618">
+                    <input type="radio" class="fd-form__control" id="pDidh7618" name="radio" (click)='setUserGroupMode()'
+                      [checked]="isUserGroupMode">
+                    User Group
+                  </label>
+                </div>
               </div>
+            </div>
 
-              <div class="tn-dropdown sf-dropdown environment-chooser" *ngIf="!isGlobalPermissionsView">
-                <label class="tn-form__label">Kind</label>
-                <div (clickOutside)="closeDropDown('Kind')" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-                  <button class="tn-dropdown__control"
-                    ngClass="{{!selectedKind ? 'tn-dropdown__control--placeholder' : ''}}"
+            <div fd-form-set>
+              <div fd-form-item>
+                <fd-form-label>{{ isUserGroupMode ? 'User Group' : 'User' }} *</fd-form-label>
+                <input fd-form-control
+                  class="y-fd-form__control"
+                  type="text"
+                  name="userOrGroup"
+                  placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}"
+                  [(ngModel)]="userOrGroup"
+                  (ngModelChange)="validateUserGroupInput()"
+                  autocomplete="off">
+                <fd-form-message [type]="'error'" *ngIf="userGroupError">{{ userGroupError }}</fd-form-message>
+              </div>
+              <div fd-form-item *ngIf="!isGlobalPermissionsView">
+                <fd-form-label>Kind *</fd-form-label>
+                <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown('Kind')" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+                  <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
+                    ngClass="{{!selectedKind ? 'fd-dropdown__control--placeholder' : ''}}"
                     [attr.aria-expanded]="ariaExpandedKind"
+                    aria-controls="kinds"
                     (click)="toggleDropDown('Kind')">
-                    <input class="filter-input"
+                    <input fd-form-control
+                      class="y-fd-form__control"
                       type="text" 
                       name="selectedKind"
                       placeholder="Select Kind"
@@ -41,25 +53,31 @@
                       (ngModelChange)="filterEnvironments('Kind')"
                       (keydown)="openDropDown('Kind', $event)"
                       (click)="openDropDown('Kind', $event)"
-                      >
+                      autocomplete="off">
                   </button>
-                  <ul class="tn-dropdown__menu" [attr.aria-hidden]="!ariaExpandedKind">
-                    <li class="tn-dropdown__item" *ngFor="let kind of filteredKinds" (click)="closeDropDown(); selectKind(kind);">
-                      {{ kind }}
-                    </li>
-                  </ul>
+                  <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body" [attr.aria-hidden]="!ariaExpandedKind" id="kinds">
+                    <div class="fd-menu">
+                      <ul class="fd-menu__list">
+                        <li class="fd-menu__item" *ngFor="let kind of filteredKinds" (click)="closeDropDown(); selectKind(kind);">
+                          {{ kind }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="tn-dropdown sf-dropdown environment-chooser">
-                <label class="tn-form__label">Role</label>
-                <div (clickOutside)="closeDropDown('Role')" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-                  <button class="tn-dropdown__control"
-                    ngClass="{{!selectedRole ? 'tn-dropdown__control--placeholder' : ''}}"
+              <div fd-form-item>
+                <fd-form-label>Role *</fd-form-label>
+                <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown('Role')" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+                  <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
+                    ngClass="{{!selectedRole ? 'fd-dropdown__control--placeholder' : ''}}"
                     [disabled]="!selectedKind"
                     [attr.aria-expanded]="ariaExpandedRole"
+                    aria-controls="roles"
                     (click)="toggleDropDown('Role')">
-                    <input class="filter-input"
+                    <input fd-form-control
+                      class="y-fd-form__control"
                       type="text" 
                       name="selectedRole"
                       placeholder="Select Role"
@@ -67,28 +85,30 @@
                       [(ngModel)]="selectedRole"
                       (ngModelChange)="filterEnvironments('Role')"
                       (keydown)="openDropDown('Role', $event)"
-                      (click)="openDropDown('Role', $event)">
+                      (click)="openDropDown('Role', $event)"
+                      autocomplete="off">
                   </button>
-                  <ul class="tn-dropdown__menu" [attr.aria-hidden]="!ariaExpandedRole">
-                    <li class="tn-dropdown__item" *ngFor="let role of filteredRoles" (click)="closeDropDown(); selectRole(role);">
-                      {{ role }}
-                    </li>
-                  </ul>
+                  <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body" [attr.aria-hidden]="!ariaExpandedRole" id="roles">
+                    <div class="fd-menu">
+                      <ul class="fd-menu__list">
+                        <li class="fd-menu__item" *ngFor="let role of filteredRoles" (click)="closeDropDown(); selectRole(role);">
+                          {{ role }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
-
             </div>
           </div>
-          <footer class="tn-modal__footer-items">
-            <button class="tn-modal__button-primary sf-button--primary tn-button--small"
-                    [disabled]="(!isReadyToCreate() || error)"
-                    ngClass="{{(!isReadyToCreate() || error) ? 'disabled' : ''}}"
-                    (click)="save()">
-              SAVE
-            </button>
-          </footer>
-        </div>
-      </div>
-    </div>
-  </ng-template>
+        </fd-modal-body>
+        <fd-modal-footer>
+          <button fd-button
+            [options]="'main'"
+            [state]="(!isReadyToCreate() || error) ? 'disabled' : ''"
+            (click)="save()">
+            Save
+          </button>
+        </fd-modal-footer>
+  </fd-modal>
 </div>

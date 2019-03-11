@@ -1,17 +1,24 @@
-<div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="sf-list__body--primary col-2 col-lg-3">
-    <a (click)="navigateToDetails(entry.service.name, entry.name)">{{ entry.name }}</a>
-  </div>
-  <div class="col-3">{{ entry.hostname }}</div>
-  <div class="col-1">{{ entry.service.port }}</div>
-  <div *ngIf="isSecured(entry)" class="col-2">
-    <span class="tn-badge tn-badge--pill sf-list__label">Secured</span>
-  </div>
-  <div *ngIf="!isSecured(entry)" class="col-2">
-    <p>-</p>
-  </div>
-  <div class="col-2">{{ isSecured(entry) ? getIDP(entry) : '-' }}</div>
-  <div class="col-1 actions-icon">
+<tr [ngClass]="{ disabled: disabled === true }">
+  <td class='fd-has-font-weight-bold'>
+    <a (click)="navigateToDetails(entry.service.name, entry.name)">
+      {{ entry.name }}
+    </a>
+  </td>
+  <td > {{ entry.hostname }} </td>
+  <td>{{ entry.service.port }}</td>
+  <ng-container *ngIf="isSecured(entry)">
+    <td>
+      <fd-badge [status]="'success'" [modifier]="'filled'">Yes</fd-badge>
+    </td>
+    <td>{{ getIDP(entry) }}</td>
+  </ng-container>
+  <ng-container *ngIf="!isSecured(entry)">
+    <td>
+      <fd-badge [status]="'warning'" [modifier]="'filled'">No</fd-badge>
+    </td>
+    <td>-</td>
+  </ng-container>
+  <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-  </div>
-</div>
+  </td>
+</tr>

@@ -8,11 +8,12 @@
     </button>
   </fd-popover-control>
   <fd-popover-body>
-    <fd-menu>
+    <fd-menu class="y-fd-menu">
       <fd-menu-list>
         <li fd-menu-item *ngFor="let facet of filterState.availableFacets" (click)="toggleFacet(facet.label, $event)">
           <a title="facet.label">
-            <input class="fd-form__control" id="{{facet.label }}" type="checkbox" [checked]="facetSelected(facet.label)">
+            <input class="fd-form__control" id="{{facet.label }}" type="checkbox"
+              [checked]="facetSelected(facet.label)">
             {{ facet.label }} ({{ facet.count }})
           </a>
         </li>

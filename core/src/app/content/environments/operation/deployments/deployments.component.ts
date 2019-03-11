@@ -13,8 +13,7 @@ import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/
 
 @Component({
   selector: 'app-deployments',
-  templateUrl: '../kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: '../kubernetes-element-list.component.html'
 })
 export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {

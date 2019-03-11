@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ModalComponent, ModalService } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-create-remote-environment-modal',
@@ -8,6 +9,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
   styleUrls: ['./create-remote-environment-modal.component.scss']
 })
 export class CreateRemoteEnvironmentModalComponent {
+  @ViewChild('createApplicationModal') createApplicationModal: ModalComponent;
   public isActive = false;
   public name: string;
   public wrongRemoteEnvName: boolean;
@@ -18,16 +20,21 @@ export class CreateRemoteEnvironmentModalComponent {
 
   public constructor(
     private remoteEnvironmentsService: RemoteEnvironmentsService,
-    private communicationService: ComponentCommunicationService
+    private communicationService: ComponentCommunicationService,
+    private modalService: ModalService
   ) {}
 
   public show(): void {
     this.resetForm();
     this.isActive = true;
+    this.modalService.open(this.createApplicationModal).result.finally(() => {
+      this.isActive = false;
+    });
   }
 
   public close(): void {
     this.isActive = false;
+    this.modalService.close(this.createApplicationModal);
   }
 
   private resetForm(): void {

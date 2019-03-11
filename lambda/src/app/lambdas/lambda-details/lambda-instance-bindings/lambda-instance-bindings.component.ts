@@ -18,7 +18,6 @@ import {
 } from '../../../shared/datamodel/k8s/service-binding-usage';
 import { ServiceBindingsService } from '../../../service-bindings/service-bindings.service';
 import { ServiceBindingUsagesService } from '../../../service-binding-usages/service-binding-usages.service';
-import { forEach } from '@angular/router/src/utils/collection';
 import { IServiceBindingList } from '../../../shared/datamodel/k8s/service-binding';
 import { InstanceBindingState } from '../../../shared/datamodel/instance-binding-state';
 import * as luigiClient from '@kyma-project/luigi-client';

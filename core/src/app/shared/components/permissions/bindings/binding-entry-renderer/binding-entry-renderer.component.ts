@@ -4,8 +4,7 @@ import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../services/component-communication.service';
 
 @Component({
-  templateUrl: './binding-entry-renderer.component.html',
-  styleUrls: ['./binding-entry-renderer.component.scss']
+  templateUrl: './binding-entry-renderer.component.html'
 })
 export class BindingEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent

@@ -1,30 +1,26 @@
-<div class="tn-card tn-card--button" (click)="navigateToDetails(entry.getId())" [ngClass]="{'sf-list__disabled': disabled === true}">
-  <div class="tn-card__content">
-    <div class="row">
-      <div class="col">
-        <h2 class="tn-card__header">{{ entry.getLabel() }}</h2>
+<div class="fd-panel y-fd-panel y-fd-panel--button" (click)="navigateToDetails(entry.getId())" [ngClass]="{'y-fd-panel--disabled': disabled === true}">
+  <div class="fd-panel__header">
+    <div class="fd-panel__head">
+      <h2 class="fd-panel__title" data-e2e-id="namespace-name">{{ entry.getLabel() }}</h2>
+    </div>
+    <div class="fd-panel__actions">
+      <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    </div>
+  </div>
+  <div class="fd-panel__body">
+    <div class="fd-container fd-container--fluid">
+      <div class="fd-col--6">
+        <div class="fd-has-type-4 fd-has-font-weight-bold">{{ entry.services && (entry.services | async) !== null ? (entry.services | async) : 0 }}</div>
+        <div class="fd-has-margin-bottom-small">{{ (entry.services | async) === 1 ? "Service" : "Services" }}</div>
       </div>
-      <div class="col text-right">
-        <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+      <div class="fd-col--6">
+        <div class="fd-has-type-4 fd-has-font-weight-bold">{{ entry.remoteEnvs && (entry.remoteEnvs | async) !== null ? (entry.remoteEnvs | async) : 0 }}</div>
+        <div class="fd-has-margin-bottom-small">{{ (entry.remoteEnvs |async) === 1 ? "Bound Application":"Bound Applications" }}</div>
       </div>
     </div>
-    <div class="row">
-      <div class="col">
-        <div class="sf-sku">
-          <span class="sf-sku__value">{{ entry.services && (entry.services | async) !== null ? (entry.services | async) : 0 }}</span>
-          <span class="sf-sku__label">{{ (entry.services | async) === 1 ? "Service" : "Services" }}</span>
-        </div>
-      </div>
-      <div class="col">
-        <div class="sf-sku">
-          <span class="sf-sku__value">{{ entry.remoteEnvs && (entry.remoteEnvs | async) !== null ? (entry.remoteEnvs | async) : 0 }}</span>
-          <span class="sf-sku__label">{{ (entry.remoteEnvs |async) === 1 ? "Bound Application":"Bound Applications" }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col text-right">
-        <span style="font-size: smaller; color: grey;">{{ entry.getUid() }}</span>
+    <div class="fd-container fd-container--fluid">
+      <div class="fd-col">
+        <span class="fd-has-type-minus-1 fd-has-color-text-3">{{ entry.getUid() }}</span>
       </div>
     </div>
   </div>

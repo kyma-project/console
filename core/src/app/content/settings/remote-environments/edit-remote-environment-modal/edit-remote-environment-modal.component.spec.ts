@@ -5,12 +5,20 @@ import { EditRemoteEnvironmentModalComponent } from './edit-remote-environment-m
 import { RemoteEnvironmentsService } from '../services/remote-environments.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { FormsModule } from '@angular/forms';
+import { ModalService } from 'fundamental-ngx';
 
 describe('EditRemoteEnvironmentModalComponent', () => {
   let component: EditRemoteEnvironmentModalComponent;
   let fixture: ComponentFixture<EditRemoteEnvironmentModalComponent>;
   let mockRemoteEnvironmentsService: RemoteEnvironmentsService;
   let mockComponentCommunicationService: ComponentCommunicationService;
+  let mockModalService: ModalService;
+  const modalService = {
+    open: () => ({
+      result: { finally: () => {} }
+    }),
+    close: () => {}
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,6 +32,10 @@ describe('EditRemoteEnvironmentModalComponent', () => {
         {
           provide: ComponentCommunicationService,
           useValue: { sendEvent: () => {} }
+        },
+        {
+          provide: ModalService,
+          useValue: modalService
         }
       ]
     })
@@ -41,6 +53,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
     mockComponentCommunicationService = TestBed.get(
       ComponentCommunicationService
     );
+    mockModalService = TestBed.get(ModalService);
     fixture.detectChanges();
   });
 
@@ -60,13 +73,27 @@ describe('EditRemoteEnvironmentModalComponent', () => {
       component.show();
       expect(component.isActive).toBe(true);
     });
+
+    it('deactivates the form', () => {
+      spyOn(mockModalService, 'open').and.returnValue({
+        result: {
+          finally: fn => {
+            fn();
+          }
+        }
+      });
+      component.isActive = true;
+      component.show();
+      expect(component.isActive).toBe(false);
+    });
   });
 
   describe('close()', () => {
     it('deactivates the form', () => {
-      component.isActive = true;
+      spyOn(mockModalService, 'close');
+      (component.editRemoteEnvironmentModal as any) = 'mock-value';
       component.close();
-      expect(component.isActive).toBe(false);
+      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
     });
   });
 

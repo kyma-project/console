@@ -113,18 +113,17 @@ class BindingsStep extends React.Component {
     return (
       <div>
         <SubSectionTitle margin={checkbox ? '20px 0 10px' : '20px 0'}>
-          {checkbox &&
-            serviceBindingsExist && (
-              <Link
-                data-e2e-id="select-existing-cred"
-                onClick={() => this.handleCheckbox(false)}
-              >
-                {'Select existing credentials'}
-                {showInfo && (
-                  <InfoButton content={bindingVariables.serviceBinding} />
-                )}
-              </Link>
-            )}
+          {checkbox && serviceBindingsExist && (
+            <Link
+              data-e2e-id="select-existing-cred"
+              onClick={() => this.handleCheckbox(false)}
+            >
+              {'Select existing credentials'}
+              {showInfo && (
+                <InfoButton content={bindingVariables.serviceBinding} />
+              )}
+            </Link>
+          )}
           {!checkbox && (
             <Link
               data-e2e-id="create-new-cred"

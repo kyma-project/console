@@ -1,9 +1,11 @@
-<div class="row upload-file">
-  <div class="col-10 upload-file__name" ngClass="{{fileToUpload ? 'upload-file__name--remove-placeholder' : ''}}">
-    {{ fileName }}
+<div class="fd-container fd-container--centered fd-has-margin-tiny">
+  <div class="fd-col--10">
+    <input fd-form-control [type]="'text'" placeholder="Select YAML or JSON file" [(ngModel)]="fileName" readonly />
   </div>
-  <div class="col-2 upload-file__select-button">
-    <button class="col-12 tn-button tn-button--small tn-button--text">Select</button>
-    <input type="file" class="col-12" (change)="selectFile($event)">
-  </div>
+  <fd-file-input class="fd-col--2" (onSelect)="selectFile($event)" #fileInput [multiple]="false"  
+    [accept]="'.yaml,.json'">
+    <button fd-button (click)="fileInput.open()">
+      Select
+    </button>
+  </fd-file-input>
 </div>

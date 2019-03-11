@@ -15,8 +15,7 @@ import { Service, IService } from 'shared/datamodel/k8s/service';
 
 @Component({
   selector: 'app-services',
-  templateUrl: '../kubernetes-element-list.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: '../kubernetes-element-list.component.html'
 })
 export class ServicesComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {

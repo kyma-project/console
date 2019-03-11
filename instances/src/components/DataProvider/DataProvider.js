@@ -17,7 +17,9 @@ import { backendModuleExists } from '../../commons/helpers';
 
 const DataProvider = ({ serviceInstances, children }) => {
   const subscribeToEvents = () => {
-    const serviceCatalogAddonsBackendModuleExists = backendModuleExists("servicecatalogaddons");
+    const serviceCatalogAddonsBackendModuleExists = backendModuleExists(
+      'servicecatalogaddons',
+    );
 
     if (!serviceInstances) {
       return;

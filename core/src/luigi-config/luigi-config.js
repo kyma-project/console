@@ -8,6 +8,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
+  logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
 };
 
@@ -187,25 +188,51 @@ function getNodes(context) {
   ];
   return Promise.all([
     getUiEntities('microfrontends', environment),
-    getUiEntities('clustermicrofrontends', undefined, [
+    getUiEntities('clustermicrofrontends', environment, [
       'environment',
       'namespace'
     ])
   ]).then(function(values) {
     var nodeTree = [...staticNodes];
     values.forEach(function(val) {
-      nodeTree = [].concat.apply(nodeTree, val);
+      if (val === 'systemNamespace') {
+        nodeTree.forEach(item => {
+          if (item.context) {
+            item.context['isSystemNamespace'] = true;
+          } else {
+            item['context'] = {
+              isSystemNamespace: true
+            };
+          }
+        });
+      } else {
+        nodeTree = [].concat.apply(nodeTree, val);
+      }
     });
     return nodeTree;
   });
 }
 
+async function getNamespace(namespaceName) {
+  return fetchFromKyma(`${k8sServerUrl}/api/v1/namespaces/${namespaceName}`);
+}
+
 /**
  * getUiEntities
  * @param {string} entityname microfrontends | clustermicrofrontends
+ * @param {string} environment k8s namespace name
  * @param {array} placements array of strings: namespace | environment | cluster
  */
-function getUiEntities(entityname, environment, placements) {
+async function getUiEntities(entityname, environment, placements) {
+  if (environment) {
+    const currentNamespace = await getNamespace(environment);
+    if (
+      !currentNamespace.metadata.labels ||
+      currentNamespace.metadata.labels.env !== 'true'
+    ) {
+      return 'systemNamespace';
+    }
+  }
   var fetchUrl =
     k8sServerUrl +
     '/apis/ui.kyma-project.io/v1alpha1/' +
@@ -216,6 +243,7 @@ function getUiEntities(entityname, environment, placements) {
   if (!window[cacheName]) {
     window[cacheName] = {};
   }
+
   const cache = window[cacheName];
   const cacheKey = fetchUrl + (placements || '');
   const fromCache = cache[cacheKey];
@@ -240,8 +268,17 @@ function getUiEntities(entityname, environment, placements) {
                   ? spec.viewBaseUrl + node.viewUrl
                   : node.viewUrl,
                 hideFromNav: node.showInNavigation === false || undefined,
-                order: node.order
+                order: node.order,
+                context: {
+                  settings: node.settings
+                    ? { ...node.settings, ...(node.context || {}) }
+                    : {}
+                }
               };
+
+              n.context.requiredBackendModules =
+                node.requiredBackendModules || undefined;
+
               if (node.externalLink) {
                 delete n.viewUrl;
                 delete n.pathSegment;
@@ -250,6 +287,7 @@ function getUiEntities(entityname, environment, placements) {
                   sameWindow: false
                 };
               }
+
               processNodeForLocalDevelopment(n);
               return n;
             }
@@ -291,6 +329,10 @@ function getUiEntities(entityname, environment, placements) {
                   node.viewUrl.substring(
                     'https://lambdas-ui.kyma.local'.length
                   );
+              } else if (node.viewUrl.startsWith('https://log-ui.kyma.local')) {
+                node.viewUrl =
+                  config.logsModuleUrl +
+                  node.viewUrl.substring('https://log-ui.kyma.local'.length);
               }
               return node;
             }
@@ -345,6 +387,7 @@ function getUiEntities(entityname, environment, placements) {
                     node.viewGroup = node.navigationContext;
                     node.keepSelectedForChildren = true;
                   }
+
                   return node;
                 });
             }
@@ -482,14 +525,14 @@ function getSelfSubjectRulesReview() {
   });
 }
 
-function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+function checkRules(nodeToCheckPermissionsFor) {
   let hasPermissions = false;
   if (nodeToCheckPermissionsFor.adminOnly) {
     if (selfSubjectRulesReview.length > 0) {
       selfSubjectRulesReview.forEach(rule => {
         if (
           rule.verbs.includes('*') &&
-          rule.apiGroups.includes('') &&
+          (rule.apiGroups.includes('') || rule.apiGroups.includes('*')) &&
           rule.resources.includes('*')
         ) {
           hasPermissions = true;
@@ -500,6 +543,35 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
     hasPermissions = true;
   }
   return hasPermissions;
+}
+
+function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
+  let hasPermissions = true;
+  if (
+    nodeToCheckPermissionsFor.context &&
+    nodeToCheckPermissionsFor.context.requiredBackendModules &&
+    nodeToCheckPermissionsFor.context.requiredBackendModules.length > 0
+  ) {
+    if (backendModules && backendModules.length > 0) {
+      nodeToCheckPermissionsFor.context.requiredBackendModules.forEach(
+        module => {
+          if (hasPermissions && backendModules.indexOf(module) === -1) {
+            hasPermissions = false;
+          }
+        }
+      );
+    } else {
+      hasPermissions = false;
+    }
+  }
+  return hasPermissions;
+}
+
+function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+  return (
+    checkRules(nodeToCheckPermissionsFor) &&
+    checkRequiredBackendModules(nodeToCheckPermissionsFor)
+  );
 }
 
 function getBackendModules() {
@@ -607,7 +679,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     pathSegment: 'workspace',
                     label: 'Namespaces',
                     viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
                     icon: 'dimension'
                   },
                   {
@@ -700,6 +772,11 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
             {
               label: '+ New Namespace',
               link: '/home/workspace?~showModal=true'
+            },
+            {
+              label: 'Show all namespaces',
+              link: '/home/workspace?~allNamespaces=true',
+              position: 'bottom'
             }
           ]
         }
@@ -725,3 +802,62 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
       }
     });
   });
+
+window.addEventListener('message', e => {
+  if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
+    const env = e.data.env;
+    const data = e.data.data;
+    if (data && data.resourceQuotasStatus) {
+      limitHasBeenExceeded = data.resourceQuotasStatus.exceeded;
+    }
+    if (
+      data &&
+      data.resourceQuotasStatus &&
+      data.resourceQuotasStatus.exceededQuotas &&
+      data.resourceQuotasStatus.exceededQuotas.length > 0
+    ) {
+      limitExceededErrors = setLimitExceededErrorsMessages(
+        data.resourceQuotasStatus.exceededQuotas
+      );
+      const linkdata = {
+        goToResourcesConfig: {
+          text: 'Resources Configuration',
+          url: `/home/namespaces/${env}/resources`
+        }
+      };
+      let errorText = `Error ! The following resource quota limit has been exceeded by the given resource:<br>`;
+      limitExceededErrors.forEach(error => {
+        errorText += `-${error}<br>`;
+      });
+      errorText += `See {goToResourcesConfig} for details.`;
+      const settings = {
+        text: errorText,
+        type: 'error',
+        links: linkdata
+      };
+      window.postMessage(
+        {
+          msg: 'luigi.ux.alert.show',
+          data: { settings }
+        },
+        '*'
+      );
+    }
+  }
+});
+
+function setLimitExceededErrorsMessages(limitExceededErrors) {
+  let limitExceededErrorscomposed = [];
+  limitExceededErrors.forEach(resource => {
+    if (resource.affectedResources && resource.affectedResources.length > 0) {
+      resource.affectedResources.forEach(affectedResource => {
+        limitExceededErrorscomposed.push(
+          `'${resource.resourceName}' by '${affectedResource}' (${
+            resource.quotaName
+          })`
+        );
+      });
+    }
+  });
+  return limitExceededErrorscomposed;
+}

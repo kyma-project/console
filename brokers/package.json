@@ -4,7 +4,7 @@
   "version": "0.5.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/luigi-client": "0.4.4",
+    "@kyma-project/luigi-client": "0.4.9",
     "@kyma-project/react-components": "0.0.43",
     "ajv": "^6.0.0",
     "apollo-cache-inmemory": "^1.3.7",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "mkdirp": "^0.5.1",
+    "prettier": "^1.16.4",
     "react-app-rewired": "^2.0.1",
     "react-scripts": "^2.1.3",
     "safe-buffer": "5.1.2",
@@ -45,7 +46,9 @@
     "test": "react-app-rewired test --passWithNoTests --env=jsdom",
     "eject": "react-app-rewired eject",
     "copy-config": "cp ../config.js public/config/config.js",
-    "analyze": "source-map-explorer build/static/js/main.*"
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "lint-fix": "prettier --config ../.prettierrc --write './src/**/*.{js,jsx,ts,tsx,html,css,json}'",
+    "lint-check": "prettier --config ../.prettierrc --check './src/**/*.{js,jsx,ts,tsx,html,css,json}'"
   },
   "browserslist": [
     ">0.2%",

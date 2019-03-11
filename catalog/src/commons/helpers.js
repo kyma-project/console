@@ -29,8 +29,9 @@ export const getDocumentsTypes = (items, docsSortedByType) => {
   let documentsTypes = [];
   if (items) {
     if (docsSortedByType) documentsTypes = Object.keys(docsSortedByType);
-    if (items.apiSpec) documentsTypes.push('Console');
+    if (items.openApiSpec) documentsTypes.push('Console');
     if (items.asyncApiSpec) documentsTypes.push('Events');
+    if (items.odataSpec) documentsTypes.push('OData');
   }
 
   return documentsTypes;
@@ -140,6 +141,6 @@ export function isStringValueEqualToTrue(value) {
   return value ? 'true' === value.toLowerCase() : false;
 }
 
-export const backendModuleExists = (name) => {
+export const backendModuleExists = name => {
   return builder.getBackendModules().includes(name);
-}
+};

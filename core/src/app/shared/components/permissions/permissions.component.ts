@@ -7,13 +7,11 @@ import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-permissions',
-  templateUrl: './permissions.component.html',
-  styleUrls: ['./permissions.component.scss'],
-  host: { class: 'sf-content' }
+  templateUrl: './permissions.component.html'
 })
 export class PermissionsComponent implements OnInit {
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
-
+  public title = 'Permissions';
   public bindingsTabTitle: string;
 
   public bindingsTabExpanded: boolean;

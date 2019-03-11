@@ -9,9 +9,10 @@ describe('PlainListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlainListComponent ]
+      declarations: [PlainListComponent],
     })
-    .compileComponents();
+      .overrideTemplate(PlainListComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

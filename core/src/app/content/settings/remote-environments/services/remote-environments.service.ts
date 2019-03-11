@@ -106,9 +106,9 @@ export class RemoteEnvironmentsService {
   public determineClass(entry) {
     switch (entry.status) {
       case 'NOT_SERVING':
-        return 'sf-indicator--error';
+        return 'fd-status-label--busy';
       case 'SERVING':
-        return 'sf-indicator--success';
+        return 'fd-status-label--available';
       case 'GATEWAY_NOT_CONFIGURED':
         return '';
       default:

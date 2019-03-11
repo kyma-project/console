@@ -9,6 +9,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { IdpPresetsService } from '../../../../../settings/idp-presets/idp-presets.service';
 import { AppConfig } from '../../../../../../app.config';
+import { ModalService } from 'fundamental-ngx';
 
 describe('ExposeApiComponent', () => {
   let component: ExposeApiComponent;
@@ -80,10 +81,16 @@ describe('ExposeApiComponent', () => {
         HttpHandler,
         { provide: ActivatedRoute, useValue: ActivatedRouteMock },
         { provide: Router, useValue: RouterMock },
-        { provide: IdpPresetsService, useValue: IdpPresetsMockService }
+        { provide: IdpPresetsService, useValue: IdpPresetsMockService },
+        {
+          provide: ModalService,
+          useValue: {}
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    }).compileComponents();
+    })
+      .overrideTemplate(ExposeApiComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

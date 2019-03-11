@@ -15,7 +15,8 @@ const serviceClassQGL = `
   labels
   content
   asyncApiSpec
-  apiSpec
+  openApiSpec
+  odataSpec
 `;
 
 const plansQGL = `
@@ -33,6 +34,10 @@ export const GET_SERVICE_CLASS = gql`
         ${plansQGL}
         relatedClusterServiceClassName
       }
+      instances(namespace: $namespace) {
+        name
+      }
+      activated(namespace: $namespace)
     }
     serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
@@ -42,6 +47,10 @@ export const GET_SERVICE_CLASS = gql`
         namespace
         relatedServiceClassName
       }
+      instances {
+        name
+      }
+      activated
     }
   }
 `;

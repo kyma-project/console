@@ -6,6 +6,7 @@ import { ComponentCommunicationService } from '../../../services/component-commu
 import { RouterTestingModule } from '@angular/router/testing';
 import { Routes } from '@angular/router';
 import { LuigiClientCommunicationDirective } from '../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
+import { ModalService } from 'fundamental-ngx';
 
 describe('ResourceUploaderModalComponent', () => {
   let component: ResourceUploaderModalComponent;
@@ -20,9 +21,18 @@ describe('ResourceUploaderModalComponent', () => {
         UploaderComponent,
         LuigiClientCommunicationDirective
       ],
-      providers: [ComponentCommunicationService],
+      providers: [
+        ComponentCommunicationService,
+        {
+          provide: ModalService
+        }
+      ],
       imports: [RouterTestingModule.withRoutes(routes)]
-    }).compileComponents();
+    })
+      .overrideTemplate(ResourceUploaderModalComponent, '')
+      .overrideTemplate(InformationModalComponent, '')
+      .overrideTemplate(UploaderComponent, '')
+      .compileComponents();
   }));
 
   beforeEach(() => {

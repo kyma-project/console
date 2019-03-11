@@ -36,7 +36,7 @@ module.exports = function(page, callback) {
     console.log(
       `Request ${request._method} ${request._url} failed with message : ${
         request._failureText
-      }`
+      }`,
     );
   });
 

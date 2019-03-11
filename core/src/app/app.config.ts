@@ -29,7 +29,6 @@ const config = {
   k8sApiServerUrl: `${k8sServerUrl}/api/v1/`,
   gateway_kyma_project_io_version,
   k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_project_io_version}/`,
-  k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1beta1/`,
   k8sApiServerUrl_extensions: `${k8sServerUrl}/apis/extensions/v1beta1/`,
   k8sApiServerUrl_remoteenvs: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
@@ -48,6 +47,7 @@ const config = {
   serviceInstancesModuleUrl: `https://instances.${domain}`,
   serviceBrokersModuleUrl: `https://brokers.${domain}`,
   docsModuleUrl: `https://docs.${domain}`,
+  logsModuleUrl: `https://log-ui.${domain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl
 };

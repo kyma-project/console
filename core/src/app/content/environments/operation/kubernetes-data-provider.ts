@@ -32,7 +32,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
     facets: string[],
     noCache?: boolean
   ): Observable<DataProviderResult> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       if (noCache || this.observableDataSource === undefined) {
         this.observableDataSource = this.http
           .get<List<S>>(this.resourceUrl)

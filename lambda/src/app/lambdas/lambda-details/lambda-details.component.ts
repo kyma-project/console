@@ -1,16 +1,17 @@
 /* tslint:disable:no-submodule-imports */
-
-import { catchError } from 'rxjs/operators';
-import { of as observableOf, Observable, forkJoin } from 'rxjs';
 import {
+  ChangeDetectorRef,
   Component,
   ViewChild,
-  AfterViewInit,
-  HostListener,
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, finalize } from 'rxjs/operators';
+import { of as observableOf, Observable, forkJoin } from 'rxjs';
+
 import 'brace';
 import 'brace/ext/language_tools';
 import 'brace/snippets/javascript';
@@ -18,14 +19,24 @@ import 'brace/snippets/json';
 import 'brace/snippets/text';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
-import 'brace/theme/eclipse';
+
+// this is a curated list of themes that fit to fiori
+// tomorrow is the one who looks most similar
+// import 'brace/theme/chrome';
+// import 'brace/theme/sqlserver';
+// import 'brace/theme/textmate';
+import 'brace/theme/tomorrow';
+
+import { sha256 } from 'js-sha256';
+import { Clipboard } from 'ts-clipboard';
+import * as randomatic from 'randomatic';
+import * as luigiClient from '@kyma-project/luigi-client';
+
 import { Lambda } from '../../shared/datamodel/k8s/function';
 import { LambdaDetailsService } from './lambda-details.service';
 import { IMetaData } from '../../shared/datamodel/k8s/generic/meta-data';
-import { sha256 } from 'js-sha256';
 import { ITrigger } from '../../shared/datamodel/trigger';
 import { AppConfig } from '../../app.config';
-import { Clipboard } from 'ts-clipboard';
 import { HTTPEndpoint } from '../../shared/datamodel/http-endpoint';
 import { Event } from '../../shared/datamodel/event';
 import { ApisService } from '../../apis/apis.service';
@@ -34,16 +45,11 @@ import { FetchTokenModalComponent } from '../../fetch-token-modal/fetch-token-mo
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
 import { InstanceBindingState } from '../../shared/datamodel/instance-binding-state';
-import { HttpErrorResponse } from '@angular/common/http';
 import { EventTrigger } from '../../shared/datamodel/event-trigger';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
-import * as randomatic from 'randomatic';
-
-import * as luigiClient from '@kyma-project/luigi-client';
-
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 
@@ -58,9 +64,7 @@ const FUNCTION = 'function';
   templateUrl: './lambda-details.component.html',
   styleUrls: ['./lambda-details.component.scss'],
 })
-@HostListener('sf-content')
-export class LambdaDetailsComponent
-  implements AfterViewInit, OnInit, OnDestroy {
+export class LambdaDetailsComponent implements OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];
   availableEventTriggers: EventTrigger[] = [];
   existingEventTriggers: EventTrigger[] = [];
@@ -79,10 +83,16 @@ export class LambdaDetailsComponent
   ];
 
   theme: string;
+
+  public initialLabels: string[];
+  public updatedLabels: string[];
+
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('eventTriggerChooserModal')
   eventTriggerChooserModal: EventTriggerChooserComponent;
   @ViewChild('httpTriggerModal') httpTriggerModal: HttpTriggerComponent;
+
+  @ViewChild('editLabelsForm') editLabelsForm: NgForm;
 
   code: string;
   dependency: string;
@@ -109,12 +119,12 @@ export class LambdaDetailsComponent
   lambda = new Lambda({
     metadata: this.md,
   });
-  loaded: Observable<boolean> = observableOf(false);
+  loaded = false;
   newLabel;
   wrongLabel = false;
   wrongLabelMessage = '';
-  error: string = null;
-  hasDependencies: Observable<boolean> = observableOf(false);
+  error: string;
+  hasDependencies = false;
   envVarKey = '';
   envVarValue = '';
   isEnvVariableNameInvalid = false;
@@ -125,6 +135,7 @@ export class LambdaDetailsComponent
   bindingState: Map<string, InstanceBindingState>;
   listenerId: string;
   functionSizes = [];
+  dropDownStates = {};
 
   public issuer: string;
   public jwksUri: string;
@@ -133,6 +144,7 @@ export class LambdaDetailsComponent
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
   @ViewChild('labelsInput') labelsInput;
+  @ViewChild('isFunctionNameInvalidAlert') isFunctionNameInvalidAlert;
 
   constructor(
     private apisService: ApisService,
@@ -141,8 +153,8 @@ export class LambdaDetailsComponent
     private serviceBindingUsagesService: ServiceBindingUsagesService,
     private serviceBindingsService: ServiceBindingsService,
     private subscriptionsService: SubscriptionsService,
+    private cdr: ChangeDetectorRef,
     protected route: ActivatedRoute,
-    router: Router,
   ) {
     this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
       s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
@@ -154,7 +166,10 @@ export class LambdaDetailsComponent
     this.selectedFunctionSize = this.functionSizes[0];
     this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
 
-    this.theme = 'eclipse';
+    // this.theme = 'chrome'; // blue, violet, orange
+    // this.theme = 'sqlserver'; // mint, orange
+    // this.theme = 'textmate'; // white blueish
+    this.theme = 'tomorrow'; // blue, violet orange, lighter
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
     this.kind = 'nodejs8';
@@ -208,8 +223,9 @@ export class LambdaDetailsComponent
             this.title = 'Create Lambda Function';
             this.lambda = this.lambdaDetailsService.initializeLambda();
             this.lambda.spec.function = this.code = DEFAULT_CODE;
-            this.loaded = observableOf(true);
 
+            this.setLoaded(true);
+            this.initializeEditor();
             if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
               this.editor.setReadOnly(true);
             }
@@ -242,6 +258,15 @@ export class LambdaDetailsComponent
     if (this.listenerId) {
       luigiClient.removeInitListener(this.listenerId);
     }
+  }
+
+  showError(error: string): void {
+    this.error = error;
+  }
+
+  toggleDropdownState(id: string): void {
+    const isOpened = this.dropDownStates[id] || false;
+    this.dropDownStates[id] = !isOpened;
   }
 
   selectType(selectedType) {
@@ -279,13 +304,22 @@ export class LambdaDetailsComponent
   deployLambda() {
     this.lambdaDetailsService
       .getResourceQuotaStatus(this.namespace, this.token)
+      .pipe(
+        finalize(() => {
+          if (this.mode === 'create') {
+            this.createFunction();
+          } else {
+            this.updateFunction();
+          }
+        }),
+      )
       .subscribe(res => {
-        window.parent.postMessage(res.data, '*');
-        if (this.mode === 'create') {
-          this.createFunction();
-        } else {
-          this.updateFunction();
-        }
+        const msg = {
+          msg: 'console.quotaexceeded',
+          data: res.data,
+          env: this.namespace,
+        };
+        window.parent.postMessage(msg, '*');
       });
   }
 
@@ -303,7 +337,7 @@ export class LambdaDetailsComponent
 
   updateFunction(): void {
     this.warnUnsavedChanges(false);
-    this.lambda.metadata.labels = this.changeLabels();
+    this.lambda.metadata.labels = this.getUpdatedLabels();
     this.lambda.spec.runtime = this.kind;
     this.lambda.spec.topic =
       this.selectedTriggers.length > 0
@@ -321,8 +355,8 @@ export class LambdaDetailsComponent
           this.handleFunctionUpdate();
         },
         err => {
-          console.log(err);
-          this.error = err.message;
+          console.error('deleteHPA Error', err);
+          this.showError(err.message);
         },
       );
     } else {
@@ -349,7 +383,7 @@ export class LambdaDetailsComponent
                 this.lambda = lambda;
               },
               err => {
-                this.error = err.message;
+                this.showError(err.message);
               },
             );
         } else {
@@ -359,7 +393,7 @@ export class LambdaDetailsComponent
         }
       },
       err => {
-        this.error = err.message;
+        this.showError(err.message);
       },
     );
   }
@@ -511,8 +545,8 @@ export class LambdaDetailsComponent
           forkJoin(deleteRequests).subscribe(responses => {
             responses.forEach(resp => {
               if (resp instanceof HttpErrorResponse) {
-                const res = resp as HttpErrorResponse;
-                this.error = res.message;
+                const err = resp as HttpErrorResponse;
+                this.showError(err.message);
               }
             });
             if (createRequests.length > 0) {
@@ -650,7 +684,7 @@ export class LambdaDetailsComponent
           if (errMessage === undefined) {
             this.navigateToList();
           } else {
-            this.error = errMessage;
+            this.showError(errMessage);
           }
         }
       });
@@ -679,7 +713,7 @@ export class LambdaDetailsComponent
       if (errMessage === undefined) {
         this.navigateToList();
       } else {
-        this.error = errMessage;
+        this.showError(errMessage);
       }
     });
   }
@@ -709,7 +743,7 @@ export class LambdaDetailsComponent
           this.navigateToList();
         }
       } else {
-        this.error = errMessage;
+        this.showError(errMessage);
       }
     });
   }
@@ -729,7 +763,7 @@ export class LambdaDetailsComponent
       'function-size': `${this.selectedFunctionSize['name']}`,
     };
 
-    this.lambda.metadata.labels = this.changeLabels();
+    this.lambda.metadata.labels = this.getUpdatedLabels();
 
     this.setFunctionSize();
 
@@ -743,8 +777,8 @@ export class LambdaDetailsComponent
         }
       },
       err => {
-        console.log(err);
-        this.error = err.message;
+        console.error('createLambda Error', err);
+        this.showError(err.message);
       },
     );
   }
@@ -765,27 +799,12 @@ export class LambdaDetailsComponent
     }
   }
 
-  toggleTypeDropDown() {
-    this.typeDropdownHidden = !this.typeDropdownHidden;
+  setLoaded(value: boolean): void {
+    this.loaded = value;
+    this.cdr.detectChanges();
   }
 
-  toggleSizeDropDown() {
-    this.sizeDropdownHidden = !this.sizeDropdownHidden;
-  }
-
-  closeTypeDropDown() {
-    return (this.typeDropdownHidden = true);
-  }
-
-  closeSizeDropDown() {
-    return (this.sizeDropdownHidden = true);
-  }
-
-  closeTriggerTypeDropDown() {
-    return (this.toggleTriggerType = false);
-  }
-
-  ngAfterViewInit() {
+  initializeEditor() {
     const editorOptions = {
       enableBasicAutocompletion: true,
       enableSnippets: true,
@@ -805,17 +824,18 @@ export class LambdaDetailsComponent
         lambda => {
           this.lambda = lambda;
           this.labels = this.getLabels(lambda);
+          this.initialLabels = this.updatedLabels = this.getLabels(lambda);
           this.annotations = this.getAnnotations(lambda);
           this.code = lambda.spec.function;
           this.kind = lambda.spec.runtime;
           this.dependency = lambda.spec.deps;
-          this.hasDependencies = observableOf(
+          this.hasDependencies =
             this.dependency != null &&
-              this.dependency !== undefined &&
-              this.dependency !== '',
-          );
+            this.dependency !== undefined &&
+            this.dependency !== '';
 
-          this.loaded = observableOf(true);
+          this.setLoaded(true);
+          this.initializeEditor();
           this.functionSizes.forEach(s => {
             if (`${s.name}` === lambda.metadata.annotations['function-size']) {
               this.selectedFunctionSize = s;
@@ -875,26 +895,12 @@ export class LambdaDetailsComponent
       .getEventActivations(this.namespace, this.token)
       .subscribe(
         events => {
-          this.loaded = observableOf(true);
+          this.setLoaded(true);
         },
         err => {
-          this.error = err.message;
+          this.showError(err.message);
         },
       );
-  }
-
-  toggleDropdown(event) {
-    const dropdown = event.target.attributes['dropdown'].value;
-    if ('trigger' === dropdown) {
-      return (this.toggleTrigger = !this.toggleTrigger);
-    }
-  }
-
-  toggleTriggerTypeDropdown(event) {
-    const dropdown = event.target.attributes['dropdown'].value;
-    if ('triggerType' === dropdown) {
-      return (this.toggleTriggerType = !this.toggleTriggerType);
-    }
   }
 
   showHTTPTrigger(): void {
@@ -914,17 +920,6 @@ export class LambdaDetailsComponent
     if (event.eventType === 'http') {
       this.isHTTPTriggerAdded = false;
     }
-  }
-
-  changeLabels() {
-    const newLabels = {};
-    if (this.labels.length > 0) {
-      this.labels.forEach(label => {
-        const labelSplitted = label.split('=');
-        newLabels[labelSplitted[0]] = labelSplitted[1];
-      });
-    }
-    return newLabels;
   }
 
   isNewLabelValid(label) {
@@ -998,13 +993,33 @@ export class LambdaDetailsComponent
     this.labels.splice(index, 1);
   }
 
-  addDependencies() {
-    this.hasDependencies = observableOf(true);
+  public updateLabelsData({
+    labels,
+    wrongLabels,
+  }: {
+    labels?: string[];
+    wrongLabels?: boolean;
+  }): void {
+    this.updatedLabels = labels !== undefined ? labels : this.updatedLabels;
+    this.wrongLabel = wrongLabels !== undefined ? wrongLabels : this.wrongLabel;
+    // mark form as dirty when deleting an existing label
+    this.editLabelsForm.form.markAsDirty();
   }
-  removeDependencies() {
-    this.dependency = '';
-    this.lambda.spec.deps = null;
-    this.hasDependencies = observableOf(false);
+
+  getUpdatedLabels() {
+    return (this.updatedLabels || []).reduce((acc, label) => {
+      return { ...acc, [label.split('=')[0]]: label.split('=')[1] };
+    }, {});
+  }
+
+  changeDependencies(status: boolean): void {
+    if (status) {
+      this.hasDependencies = true;
+    } else {
+      this.dependency = '';
+      this.lambda.spec.deps = null;
+      this.hasDependencies = false;
+    }
   }
 
   /** validatesName checks whether a function name is a valid DNS-1035 label */
@@ -1073,7 +1088,7 @@ export class LambdaDetailsComponent
         this.manageServiceBindings();
       },
       err => {
-        this.error = err.message;
+        this.showError(err.message);
         if (this.mode === 'create') {
           this.lambdaDetailsService
             .deleteLambda(this.lambda.metadata.name, this.namespace, this.token)
@@ -1082,7 +1097,7 @@ export class LambdaDetailsComponent
                 // Deleting function which as part of create-flow as creation of api fails
               },
               errCreate => {
-                this.error = errCreate.message;
+                this.showError(errCreate.message);
               },
             );
         }
@@ -1106,7 +1121,7 @@ export class LambdaDetailsComponent
         this.manageServiceBindings();
       },
       err => {
-        this.error = err.message;
+        this.showError(err.message);
       },
     );
   }
@@ -1127,7 +1142,6 @@ export class LambdaDetailsComponent
   }
 
   showEventTrigger(): void {
-    this.closeTriggerTypeDropDown();
     this.eventTriggerChooserModal.show(
       [...this.availableEventTriggers],
       [...this.selectedTriggers],

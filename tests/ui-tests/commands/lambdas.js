@@ -5,7 +5,7 @@ module.exports = {
   getLambdas: async page => {
     try {
       return await page.evaluate(() => {
-        const lambdasArraySelector = '.sf-list__body';
+        const lambdasArraySelector = 'tbody tr';
         return Array.from(document.querySelectorAll(lambdasArraySelector));
       });
     } catch (e) {
@@ -19,7 +19,7 @@ module.exports = {
         config.domain
       }/apis/kubeless.io/v1beta1/namespaces/qa/functions/${config.testLambda}`,
       method: 'DELETE',
-      headers: { Authorization: token }
+      headers: { Authorization: token },
     };
 
     return new Promise((resolve, reject) => {
@@ -30,11 +30,11 @@ module.exports = {
 
         if (response) {
           console.log(
-            '####################\nREMOVE LAMBDA\n####################'
+            '####################\nREMOVE LAMBDA\n####################',
           );
           resolve(response);
         }
       });
     });
-  }
+  },
 };

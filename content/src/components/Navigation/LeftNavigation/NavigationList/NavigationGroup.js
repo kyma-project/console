@@ -70,33 +70,31 @@ function NavigationGroup({
             {item.displayName}
           </NavigationLink>
         </NavigationLinkWrapper>
-        {topics &&
-          topics.sections && (
-            <NavigationSections
-              items={topics.sections}
-              groupType={groupType}
-              rootId={item.id}
-              activeContent={activeContent}
-              activeNav={activeNav}
-              activeNodes={activeNodes}
-              setActiveNav={setActiveNav}
-              chooseActive={chooseActive}
-              isLinkActive={isLinkActive}
-            />
-          )}
+        {topics && topics.sections && (
+          <NavigationSections
+            items={topics.sections}
+            groupType={groupType}
+            rootId={item.id}
+            activeContent={activeContent}
+            activeNav={activeNav}
+            activeNodes={activeNodes}
+            setActiveNav={setActiveNav}
+            chooseActive={chooseActive}
+            isLinkActive={isLinkActive}
+          />
+        )}
       </NavigationItem>
     );
   };
 
   return (
     <NavigationContainer>
-      {title &&
-        icon && (
-          <NavigationHeader>
-            <Icon size="m" glyph={icon} />
-            {title}
-          </NavigationHeader>
-        )}
+      {title && icon && (
+        <NavigationHeader>
+          <Icon size="m" glyph={icon} />
+          {title}
+        </NavigationHeader>
+      )}
       <NavigationItems showAll>
         {items.map(item => renderNavigationItem(item))}
       </NavigationItems>

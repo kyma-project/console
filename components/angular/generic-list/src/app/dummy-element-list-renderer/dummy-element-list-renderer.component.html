@@ -1,2 +1,15 @@
-<li>{{entry.id}} - {{entry.name}}</li>
-
+<div class="fd-panel">
+  <div class="fd-panel__header">
+    <div class="fd-panel__head">
+      <h1 class="fd-panel__title">
+        {{ entry.name }}
+      </h1>
+      <p class="fd-panel__description">
+        {{ entry.id }}
+      </p>
+    </div>
+  </div>
+  <div *ngIf="entry.error" class="fd-panel__footer">
+    <div class="fd-alert fd-alert--error">{{ entry.error }}</div>
+  </div>
+</div>

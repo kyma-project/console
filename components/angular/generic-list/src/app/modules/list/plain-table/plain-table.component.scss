@@ -1,76 +1,29 @@
-@import '../styles/mixins';
-@import '~fiori-fundamentals/scss/components/spinner';
+$possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
 
-$prefix: 'sf-list';
+.fd-table {
+  &.y-fd-table {
+    margin-bottom: 0;
 
-.#{$prefix}{
-  width: 100%;
-  border-collapse: collapse;
-
-  &__head{
-    border-bottom: 2px solid black;
-    font-weight: normal;
-  }
-
-  &__body{
-    border-bottom: 1px solid #D8D8D8;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-
-  &__head,
-  &__body{
-    margin-left: 0;
-    margin-right: 0;
-    padding: 12px 0;
-
-    &:not(:first-child){
-      padding: 12px;
+    @each $i in $possible-columns {
+      &__th--col-#{$i} {
+        width: calc(100% / 12 * #{$i});
+      }
     }
 
-    &--text-right{
-      text-align: right;
+    &__tr--no-border-below {
+      border-bottom: 0;
     }
 
-    &--primary{
-      font-weight: bold;
-    }
-    &--min{
-      width: 1px;
+    &__tr--no-border-below + tr {
+      border-top: 0;
     }
 
-    a:hover{
-        text-decoration: underline;
+    tr {
+      cursor: default;
     }
-  }
 
-  &__indicator{
-    padding: 0;
-  }
-
-  &__info {
-    display: flex;
-    justify-content: center;
-    font-size: 1.5rem;
-  }
-
-  &__warning {
-    color: #e97326;
-    font-weight: 400;
-  }
-
-  &__label {
-    display: inline-block;
-  }
-
-  &__label-column {
-    word-break: break-all;
-  }
-}
-
-.loading-container {
-  padding: 30px 0;
-  .fd-spinner {
-    @include fadeInWithDelay();
+    td a {
+      cursor: pointer;
+    }
   }
 }

@@ -28,6 +28,7 @@ export const ImagePlaceholder = styled(TileMedia)`
     box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
     color: #32363a;
     font-size: 32px;
+    padding: 0;
   }
 `;
 

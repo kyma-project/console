@@ -1,10 +1,13 @@
-<div [hidden]="loading || errorMessage || !data || data.length === 0" class="row">
+<div class="fd-panel-grid" [hidden]="loading || errorMessage || !data || data.length === 0">
   <ng-template #entries></ng-template>
 </div>
-<div *ngIf="loading" aria-hidden="false" aria-label="Loading" class="loading-container">
-  <div class="fd-spinner"><div></div></div>
-</div>
-<p *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
+
+<fd-loading-spinner [loading]="loading"></fd-loading-spinner>
+
+<div [attr.data-e2e]="'empty-list-placeholder'" class="fd-has-text-align-center"
+  *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
   <ng-content select="[empty-list-placeholder]"></ng-content>
+</div>
+<p *ngIf="!loading && errorMessage" class="fd-has-color-status-3">
+  {{ errorMessage }}
 </p>
-<p *ngIf="!loading && errorMessage" style="color:red">{{ errorMessage }}</p>

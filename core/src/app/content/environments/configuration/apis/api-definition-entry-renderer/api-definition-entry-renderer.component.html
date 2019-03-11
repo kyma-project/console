@@ -1,16 +1,21 @@
-<div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-    <div class="sf-list__body--primary col-2">
-      <a (click)="navigateToDetails(entry.metadata.name)">{{ entry.metadata.name }}</a>
-    </div>
-    <div class ="col-2">{{ entry.spec.hostname }}</div>
-    <div class="col-1 col-lg-2">{{ entry.spec.service.name }}</div>
-    <div class="col-2">{{ entry.spec.service.port }}</div>
-    <div class="col-2">
-      <p> {{ isSecured(entry) }}</p>
-    </div>
-    <div class="col-1">{{ entry.metadata.creationTimestamp | timeAgo }}</div>
-    <div class="col-1 actions-icon">
-      <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-    </div>
-  </div>
-
+<tr [ngClass]="{ disabled: disabled === true }">
+  <td>
+    <a (click)="navigateToDetails(entry.metadata.name)">
+      {{ entry.metadata.name }}
+    </a>
+  </td>
+  <td>{{ entry.spec.hostname }}</td>
+  <td>{{ entry.spec.service.name }}</td>
+  <td>{{ entry.spec.service.port }}</td>
+  <td>
+    <p>{{ isSecured(entry) }}</p>
+  </td>
+  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td class="fd-has-float-right">
+    <y-list-actions
+      [entry]="entry"
+      [entryEventHandler]="entryEventHandler"
+      [actions]="actions"
+    ></y-list-actions>
+  </td>
+</tr>

@@ -13,8 +13,7 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'app-idp-presets',
-  templateUrl: './idp-presets.component.html',
-  host: { class: 'sf-content' }
+  templateUrl: './idp-presets.component.html'
 })
 export class IdpPresetsComponent extends GenericTableComponent {
   public title = 'IDP Presets';

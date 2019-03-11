@@ -1,0 +1,190 @@
+//Overwrite bg color for modals overlay
+.y-fd-modal {
+  //Common styles for modals
+  .fd-modal__footer {
+    .fd-button {
+      margin-left: 5px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &.fd-modal--large {
+    .fd-modal {
+      max-width: 650px;
+    }
+  }
+
+  .fd-modal__close:focus {
+    box-shadow: none;
+  }
+}
+
+//Forms
+.y-fd-form__message--disabled {
+  color: var(--fd-color-status-4) !important;
+}
+
+//Tables
+.y-fd-table {
+  margin-bottom: 0;
+
+  $possible-columns: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+  @each $i in $possible-columns {
+    &--col-#{$i} {
+      width: calc(100% / 12 * #{$i});
+    }
+  }
+
+  &__tr--no-border-below {
+    border-bottom: 0;
+  }
+
+  &__tr--no-border-below + tr {
+    border-top: 0;
+  }
+
+  tr {
+    cursor: default;
+  }
+
+  td {
+    vertical-align: top;
+    a {
+      cursor: pointer;
+    }
+  }
+}
+
+//Breadcrumbs
+.y-fd-breadcrumb {
+  a {
+    cursor: pointer;
+  }
+}
+.fd-action-bar {
+  &__actions {
+    flex-shrink: 0; //another bug when search input is expanded
+    .fd-popover {
+      top: 0; /*  There is a bug from Fiori Fundamentals.
+                  When action bar includes popover with `fd-button--primary` class,
+                  then it's not aligned with other buttons in row anymore,
+                  because it has `top: - fd-space(1)` by default.
+                  Until it's fixed in Fundamentals, better to keep these styles to overwrite it.
+              */
+    }
+  }
+  &__header {
+    .fd-breadcrumb {
+      font-size: 23px;
+    }
+  }
+}
+
+//Panel
+.y-fd-panel {
+  @extend .fd-panel;
+
+  display: block;
+  &--button {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 5px 0 rgba(fd-color('text', 3), 0.4);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .fd-panel__body {
+    &--bleed {
+      .fd-table {
+        td:last-child,
+        th:last-child {
+          padding-right: 24px;
+        }
+
+        td:first-child,
+        th:first-child {
+          padding-left: 24px;
+        }
+      }
+    }
+  }
+
+  &__actions {
+    &.fd-panel__actions {
+      display: flex;
+
+      > * {
+        margin-left: 8px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
+//helpers
+.y-word-wrap {
+  word-wrap: break-word;
+}
+
+.y-word-break {
+  word-break: break-all;
+}
+
+//Token
+.y-fd-token {
+  margin-top: fd-space('tiny') / 2;
+  margin-bottom: fd-space('tiny') / 2;
+  margin-right: fd-space('tiny');
+  &.y-fd-token--no-button {
+    cursor: default;
+    &:after {
+      all: unset;
+    }
+  }
+}
+
+.y-fd-menu {
+  .fd-menu__item {
+    input[type='checkbox'] {
+      margin-right: fd-space('tiny') / 2; //fix for too small gap between checkbox and its label in popover menu (Filter list)
+    }
+  }
+}
+
+//Tables
+.fd-table {
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  td {
+    vertical-align: top;
+  }
+}
+
+// Container
+.y-fd-container--space-bottom {
+  @extend .fd-has-margin-small;
+  @extend .fd-has-padding-small;
+}
+
+.y-fd-container--border-light {
+  border-bottom: 1px solid #cccccc;
+}
+
+//Cursor pointer for all links
+a {
+  cursor: pointer;
+}

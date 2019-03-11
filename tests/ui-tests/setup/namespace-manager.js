@@ -9,7 +9,7 @@ export class NamespaceManager {
       console.log(
         `Namespace ${
           this.namespaceName
-        } already exists. Skipping creating it...`
+        } already exists. Skipping creating it...`,
       );
       return;
     }
@@ -21,7 +21,7 @@ export class NamespaceManager {
   async deleteIfExists() {
     if (!(await this.exists())) {
       console.log(
-        `Namespace ${this.namespaceName} not found. Skipping deleting it...`
+        `Namespace ${this.namespaceName} not found. Skipping deleting it...`,
       );
     }
 
@@ -32,8 +32,9 @@ export class NamespaceManager {
   getNamespaceObj() {
     return {
       metadata: {
-        name: this.namespaceName
-      }
+        name: this.namespaceName,
+        labels: { env: 'true' },
+      },
     };
   }
 

@@ -1,10 +1,10 @@
-<div class="row sf-list__body">
-  <div class="col-4">
-    <div class="sf-list__body--primary">{{ entry.name }}</div>
-  </div>
-  <div class="col-3">{{ entry.issuer }}</div>
-  <div class="col-4">{{ entry.jwksUri }}</div>
-  <div class="col-1 actions-icon">
+<tr>
+  <td class="fd-has-font-weight-bold">
+    <div>{{ entry.name }}</div>
+  </td>
+  <td>{{ entry.issuer }}</td>
+  <td>{{ entry.jwksUri }}</td>
+  <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-  </div>
-</div>
+  </td>
+</tr>

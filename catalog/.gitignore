@@ -6,3 +6,4 @@
 .env.production.local
 
 /react-components/index.js
+/react-odata

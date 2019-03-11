@@ -1,24 +1,22 @@
-<div class="row sf-list__body" [ngClass]="{'sf-list__disabled': disabled === true}">
-  
-  <div class="col-3 sf-list__body--primary remoteenv-name" (click)="navigateToDetails(entry.name)">{{ entry.name }}</div>
-  <div class="col-3 sf-list__label-column">
+<tr [ngClass]="{'y-fd-table__tr--disabled': disabled === true}">
+  <td class="fd-has-font-weight-bold" (click)="navigateToDetails(entry.name)">
+    <a [attr.data-e2e-id]="'remoteenv-name'">{{ entry.name }}</a>
+  </td>
+  <td>
     <div *ngIf='getLabels(entry.labels).length'>
-      <span class="tn-badge-labels tn-badge tn-badge--pill sf-list__label" *ngFor="let label of getLabels(entry.labels)">
+      <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let label of getLabels(entry.labels)">
         {{ label }}
       </span>
     </div>
-    <div *ngIf='!getLabels(entry.labels).length' class="no-content">
-      <span></span>
-    </div>
-  </div>
-  <div class="col-3" [ngClass]="{'no-content': !listConnectedEnvs(entry)}">{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : '' }}</div>
-  <div class="col-2">
-      <app-status-label 
-       [statusType]="getStatusType(entry)">
-        {{ getStatus(entry) }}
-      </app-status-label>
-  </div>
-  <div class="col-1 actions-icon">
+  </td>
+  <td>{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : '' }}</td>
+  <td>
+    <app-status-label 
+      [statusType]="getStatusType(entry)">
+      {{ getStatus(entry) }}
+    </app-status-label>
+  </td>
+  <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
-  </div>
-</div>
+  </td>
+</tr>

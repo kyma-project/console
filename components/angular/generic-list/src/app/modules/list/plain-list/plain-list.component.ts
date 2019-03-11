@@ -23,7 +23,7 @@ export class PlainListComponent implements OnChanges {
   @Input() source: Observable<any[]>;
   @Input() entryRenderer: Type<any>;
   @Input() entryEventHandler;
-  @Input() entryTagName;
+  @Input() entryTagName = 'fd-panel';
 
   @ViewChild('entries', { read: ViewContainerRef })
   entriesViewContainer: ViewContainerRef;

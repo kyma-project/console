@@ -59,5 +59,5 @@ class Dex {
 module.exports = {
   console: new Console(),
   api: new API(),
-  dex: new Dex()
+  dex: new Dex(),
 };
