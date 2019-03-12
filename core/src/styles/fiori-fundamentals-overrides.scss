@@ -172,6 +172,21 @@ a {
   display: block !important;
 }
 
+// Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)
+// Transform property causes problem in Safari. Workaround removes `transform` and uses `margin-top` instead
+.fd-popover__body  {
+  margin-top: 0;
+  transform: none;
+}
+
+.fd-popover__body {
+  &[aria-hidden='true'], 
+  &.is-hidden {
+    margin-top: -15px;
+    transform: none;
+  }
+}
+
 .fd-breadcrumb {
   margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
 }
