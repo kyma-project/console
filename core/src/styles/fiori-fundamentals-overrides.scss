@@ -84,13 +84,6 @@
   }
 }
 
-//Breadcrumbs
-.y-fd-breadcrumb {
-  a {
-    cursor: pointer;
-  }
-}
-
 //Panel
 .y-fd-panel {
   @extend .fd-panel;
@@ -177,4 +170,8 @@ a {
 //Display block, missing in latest version
 .fd-has-display-block { 
   display: block !important;
+}
+
+.fd-breadcrumb {
+  margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
 }
