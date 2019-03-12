@@ -18,8 +18,26 @@ export class ServicesEntryRendererComponent
   ) {
     super(injector);
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
-      if (context) {
-        this.isSystemNamespace = context.isSystemNamespace;
+      if (context && context.isSystemNamespace) {
+        this.actions = [
+          {
+            function: 'details',
+            name: 'Details'
+          },
+          ...this.actions
+        ] 
+      } else { 
+        this.actions = [
+          {
+            function: 'exposeApi',
+            name: 'Expose API'
+          },
+          {
+            function: 'details',
+            name: 'Details'
+          },
+          ...this.actions
+        ];
       }
     });
   }
@@ -29,25 +47,6 @@ export class ServicesEntryRendererComponent
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
-      this.actions = this.isSystemNamespace ? 
-      [
-        {
-          function: 'details',
-          name: 'Details'
-        },
-        ...this.actions
-      ] : 
-      [
-        {
-          function: 'exposeApi',
-          name: 'Expose API'
-        },
-        {
-          function: 'details',
-          name: 'Details'
-        },
-        ...this.actions
-      ];
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
