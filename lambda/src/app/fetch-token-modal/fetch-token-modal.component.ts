@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, HostListener } from '@angular/core';
 import { Clipboard } from 'ts-clipboard';
 
 import * as luigiClient from '@kyma-project/luigi-client';
@@ -16,8 +16,14 @@ export class FetchTokenModalComponent {
   public title: string;
   public token: string;
   public isTokenCopied = false;
+  private isActive = false;
 
-  constructor(private modalService: ModalService) {}
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    this.cancel();
+  }
+
+  constructor(private modalService: ModalService) { }
 
   public show() {
     this.title = 'Fetch token';
@@ -30,7 +36,10 @@ export class FetchTokenModalComponent {
     if (this.useLuigiBackdrop !== false) {
       luigiClient.uxManager().addBackdrop();
     }
+
+    this.isActive = true;
     this.modalService.open(this.fetchTokenModal).result.finally(() => {
+      this.isActive = false;
       this.isTokenCopied = false;
       event.stopPropagation();
       if (this.useLuigiBackdrop !== false) {
@@ -39,7 +48,10 @@ export class FetchTokenModalComponent {
     });
   }
 
-  public cancel(event: Event) {
+  public cancel() {
+    if (!this.isActive) {
+      return;
+    }
     this.modalService.close(this.fetchTokenModal);
   }
 
