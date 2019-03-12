@@ -23,13 +23,13 @@ const RUNNING = 'RUNNING';
   styleUrls: ['../../lambda-details.component.scss'],
 })
 export class LambdaInstanceBindingCreatorComponent {
+  constructor(
+    private serviceInstancesService: ServiceInstancesService,
+    private serviceBindingsService: ServiceBindingsService,
+    private modalService: ModalService,
+  ) { }
   @ViewChild('instanceBindingCreatorModal')
   instanceBindingCreatorModal: ModalComponent;
-
-  @HostListener('document:keydown.escape', ['$event'])
-  onKeydownHandler(event: KeyboardEvent) {
-    this.closeModal(event);
-  }
 
   public isValid = false;
   public isSelectedInstanceBindingPrefixInvalid = false;
@@ -46,16 +46,16 @@ export class LambdaInstanceBindingCreatorComponent {
   });
   private token: string;
   private environment: string;
-  private active = false;
-  constructor(
-    private serviceInstancesService: ServiceInstancesService,
-    private serviceBindingsService: ServiceBindingsService,
-    private modalService: ModalService,
-  ) { }
+  private isActive = false;
 
   @Input() alreadyAddedInstances: InstanceBindingInfo[];
   @Output()
   selectedServiceBindingEmitter = new EventEmitter<InstanceBindingInfo>();
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    this.closeModal(event);
+  }
 
   public show() {
     luigiClient.uxManager().addBackdrop();
@@ -84,7 +84,7 @@ export class LambdaInstanceBindingCreatorComponent {
             );
             this.instances = instances.data.serviceInstances;
           },
-          err => {},
+          err => { },
         );
       this.serviceBindingsService
         .getServiceBindings(this.environment, this.token)
@@ -110,7 +110,7 @@ export class LambdaInstanceBindingCreatorComponent {
     const found = this.selectedInstanceBindingPrefix.match(regex);
     this.isSelectedInstanceBindingPrefixInvalid =
       (found && found[0] === this.selectedInstanceBindingPrefix) ||
-      this.selectedInstanceBindingPrefix === ''
+        this.selectedInstanceBindingPrefix === ''
         ? false
         : true;
     if (this.selectedInstanceBindingPrefix.length > 61) {
@@ -119,6 +119,9 @@ export class LambdaInstanceBindingCreatorComponent {
   }
 
   public closeModal(event: Event): void {
+    if (!this.isActive) {
+      return;
+    }
     event.stopPropagation();
     luigiClient.uxManager().removeBackdrop();
     if (this.instanceBindingCreatorModal) {

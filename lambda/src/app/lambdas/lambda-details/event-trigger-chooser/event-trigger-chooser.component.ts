@@ -29,7 +29,7 @@ export class EventTriggerChooserComponent {
   private eventsSelected = 0;
   public enableAdd = false;
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService) { }
 
   initializeView() {
     this.eventSearchQuery = '';
@@ -104,10 +104,11 @@ export class EventTriggerChooserComponent {
   }
 
   closeEventTriggerChooserModal() {
-    if (this.isActive) {
-      this.isActive = false;
-      this.modalService.close(this.eventTriggerModal);
+    if (!this.isActive) {
+      return;
     }
+    this.isActive = false;
+    this.modalService.close(this.eventTriggerModal);
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {
