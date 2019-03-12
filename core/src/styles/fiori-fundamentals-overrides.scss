@@ -173,3 +173,8 @@
 a {
   cursor: pointer;
 }
+
+//Display block, missing in latest version
+.fd-has-display-block { 
+  display: block !important;
+}
