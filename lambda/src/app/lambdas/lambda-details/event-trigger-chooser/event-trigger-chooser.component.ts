@@ -42,8 +42,10 @@ export class EventTriggerChooserComponent {
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {
-    console.log(event);
-    this.closeEventTriggerChooserModal();
+    if (this.isActive) {
+      console.log(event);
+      this.closeEventTriggerChooserModal();
+    }
   }
 
   public show(availableEventTriggers, selectedEventTriggers) {
