@@ -213,8 +213,24 @@ function getNodes(context) {
   });
 }
 
+/**
+ * We're using Promise based caching approach, since we often 
+ * execute getNamespace twice at the same time and we only 
+ * want to do one rest call.
+ * 
+ * @param {string} namespaceName 
+ * @returns {Promise} nsPromise
+ */
 async function getNamespace(namespaceName) {
-  return fetchFromKyma(`${k8sServerUrl}/api/v1/namespaces/${namespaceName}`);
+  const cacheName = '_console_namespace_promise_cache_';
+  if (!window[cacheName]) {
+    window[cacheName] = {};
+  }
+  const cache = window[cacheName];
+  if (!cache[namespaceName]) {
+    cache[namespaceName] = fetchFromKyma(`${k8sServerUrl}/api/v1/namespaces/${namespaceName}`);
+  }
+  return await cache[namespaceName];
 }
 
 /**
