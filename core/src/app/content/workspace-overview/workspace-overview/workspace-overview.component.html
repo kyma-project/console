@@ -19,8 +19,6 @@
   <app-confirmation-modal #confirmationModal></app-confirmation-modal>
   <app-information-modal #infoModal></app-information-modal>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-
   <y-plain-list [source]="data" [entryRenderer]="entryRenderer" [entryEventHandler]="entryEventHandler">
     <div empty-list-placeholder *ngIf="showEmptyPage" class="fd-has-text-align-center">
     </div>

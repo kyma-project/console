@@ -12,7 +12,6 @@
   </fd-action-bar-actions>
 </fd-action-bar>
 
-<y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
 
 <y-plain-list [source]="data" [entryRenderer]="entryRenderer" [entryEventHandler]="entryEventHandler">
   <fd-loading-spinner empty-list-placeholder [loading]="loading"></fd-loading-spinner>

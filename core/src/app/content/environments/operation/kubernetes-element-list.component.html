@@ -13,8 +13,6 @@
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
-
   <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
     [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer">
     <div empty-list-placeholder *ngIf="showEmptyPage">

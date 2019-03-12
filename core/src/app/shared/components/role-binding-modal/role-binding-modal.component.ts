@@ -46,7 +46,7 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   getClusterRoles() {
     this.rbacService.getClusterRoles().subscribe(
-      res => {
+      res => { 
         const response: any = res;
         if (response && response.items && _.isArray(response.items)) {
           this.roles = response.items.map(entry => entry.metadata.name).sort();
@@ -81,9 +81,11 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   setUserGroupMode() {
     this.isUserGroupMode = true;
+    this.validateUserOrGroupInput();
   }
   setUserMode() {
     this.isUserGroupMode = false;
+    this.validateUserOrGroupInput();
   }
 
   selectKind(kind) {
@@ -110,7 +112,6 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   public close() {
-    this.isActive = false;
     this.modalService.close(this.createBindingModal);
     this.userOrGroup = '';
     this.selectedRole = '';
@@ -255,9 +256,10 @@ export class RoleBindingModalComponent implements OnDestroy {
     );
   }
 
-  validateUserGroupInput() {
+  validateUserOrGroupInput() {
     // it must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com')
-    const regex = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/;
+    const regex = this.isUserGroupMode ? /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/ :
+      /^.*$/;
     this.userGroupError = regex.test(this.userOrGroup)
       ? ''
       : `The user group name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name').`;
