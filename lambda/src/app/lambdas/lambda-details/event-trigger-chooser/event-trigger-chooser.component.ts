@@ -105,7 +105,6 @@ export class EventTriggerChooserComponent {
 
   closeEventTriggerChooserModal() {
     if (this.isActive) {
-      this.isActive = false;
       this.modalService.close(this.eventTriggerModal);
     }
   }
