@@ -92,15 +92,15 @@ export class LambdaInstanceBindingCreatorComponent {
           bindings => {
             this.serviceBindings = bindings;
           },
-          err => {},
+          err => { },
         );
     });
 
-    this.active = true;
+    this.isActive = true;
     this.modalService
       .open(this.instanceBindingCreatorModal)
       .result.finally(() => {
-        this.active = false;
+        this.isActive = false;
         luigiClient.uxManager().removeBackdrop();
       });
   }
