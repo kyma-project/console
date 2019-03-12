@@ -42,10 +42,8 @@ export class EventTriggerChooserComponent {
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {
-    if (this.isActive) {
-      console.log(event);
-      this.closeEventTriggerChooserModal();
-    }
+    console.log(event);
+    this.closeEventTriggerChooserModal();
   }
 
   public show(availableEventTriggers, selectedEventTriggers) {
@@ -107,9 +105,8 @@ export class EventTriggerChooserComponent {
   }
 
   closeEventTriggerChooserModal() {
-    this.isActive = false;
-    luigiClient.uxManager().removeBackdrop();
-    if (this.eventTriggerModal) {
+    if (this.isActive) {
+      this.isActive = false;
       this.modalService.close(this.eventTriggerModal);
     }
   }
