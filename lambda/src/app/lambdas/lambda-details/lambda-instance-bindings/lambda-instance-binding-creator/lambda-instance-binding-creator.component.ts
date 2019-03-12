@@ -119,15 +119,12 @@ export class LambdaInstanceBindingCreatorComponent {
   }
 
   public closeModal(event: Event): void {
-    if (!this.isActive) {
-      return;
-    }
-    event.stopPropagation();
-    luigiClient.uxManager().removeBackdrop();
-    if (this.instanceBindingCreatorModal) {
+    if (this.isActive) {
+      event.stopPropagation();
+      luigiClient.uxManager().removeBackdrop();
       this.modalService.close(this.instanceBindingCreatorModal);
+      this.reset();
     }
-    this.reset();
   }
 
   public submit(event: Event) {

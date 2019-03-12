@@ -104,11 +104,10 @@ export class EventTriggerChooserComponent {
   }
 
   closeEventTriggerChooserModal() {
-    if (!this.isActive) {
-      return;
+    if (this.isActive) {
+      this.isActive = false;
+      this.modalService.close(this.eventTriggerModal);
     }
-    this.isActive = false;
-    this.modalService.close(this.eventTriggerModal);
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {

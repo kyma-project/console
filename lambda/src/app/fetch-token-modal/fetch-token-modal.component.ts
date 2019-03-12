@@ -49,11 +49,10 @@ export class FetchTokenModalComponent {
   }
 
   public cancel(event: Event) {
-    if (!this.isActive) {
-      return;
+    if (this.isActive) {
+      event.preventDefault();
+      this.modalService.close(this.fetchTokenModal);
     }
-    event.preventDefault();
-    this.modalService.close(this.fetchTokenModal);
   }
 
   public copyToken() {
