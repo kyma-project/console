@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
+  HostListener
 } from '@angular/core';
 import { ServiceInstance } from '../../../../shared/datamodel/k8s/service-instance';
 import { ServiceInstancesService } from '../../../../service-instances/service-instances.service';
@@ -25,6 +26,11 @@ export class LambdaInstanceBindingCreatorComponent {
   @ViewChild('instanceBindingCreatorModal')
   instanceBindingCreatorModal: ModalComponent;
 
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    this.closeModal(event);
+  }
+
   public isValid = false;
   public isSelectedInstanceBindingPrefixInvalid = false;
   public createSecrets = true;
@@ -40,11 +46,12 @@ export class LambdaInstanceBindingCreatorComponent {
   });
   private token: string;
   private environment: string;
+  private active = false;
   constructor(
     private serviceInstancesService: ServiceInstancesService,
     private serviceBindingsService: ServiceBindingsService,
     private modalService: ModalService,
-  ) {}
+  ) { }
 
   @Input() alreadyAddedInstances: InstanceBindingInfo[];
   @Output()
@@ -89,9 +96,11 @@ export class LambdaInstanceBindingCreatorComponent {
         );
     });
 
+    this.active = true;
     this.modalService
       .open(this.instanceBindingCreatorModal)
       .result.finally(() => {
+        this.active = false;
         luigiClient.uxManager().removeBackdrop();
       });
   }
