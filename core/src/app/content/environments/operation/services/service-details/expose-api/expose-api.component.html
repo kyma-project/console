@@ -1,5 +1,5 @@
 <section class="fd-section">
-  <fd-breadcrumb class="y-fd-breadcrumb" *ngIf="routedFromServiceDetails">
+  <fd-breadcrumb *ngIf="routedFromServiceDetails">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
     </fd-breadcrumb-item>
@@ -13,7 +13,7 @@
     </fd-breadcrumb-item>
   </fd-breadcrumb>
 
-  <fd-breadcrumb class="y-fd-breadcrumb" *ngIf="!routedFromServiceDetails">
+  <fd-breadcrumb *ngIf="!routedFromServiceDetails">
     <fd-breadcrumb-item>
       <a fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
     </fd-breadcrumb-item>

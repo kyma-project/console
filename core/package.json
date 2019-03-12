@@ -32,7 +32,7 @@
     "angular-sortablejs": "^2.6.0",
     "core-js": "^2.5.7",
     "file-saver": "^1.3.8",
-    "fiori-fundamentals": "1.4.2",
+    "fiori-fundamentals": "1.4.3",
     "fundamental-ngx": "0.2.0",
     "js-yaml": "^3.12.0",
     "jsoneditor": "^5.24.3",
