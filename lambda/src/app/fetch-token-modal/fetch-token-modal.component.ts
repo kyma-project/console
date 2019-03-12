@@ -20,7 +20,7 @@ export class FetchTokenModalComponent {
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {
-    this.cancel();
+    this.cancel(event);
   }
 
   constructor(private modalService: ModalService) { }
@@ -48,10 +48,11 @@ export class FetchTokenModalComponent {
     });
   }
 
-  public cancel() {
+  public cancel(event: Event) {
     if (!this.isActive) {
       return;
     }
+    event.preventDefault();
     this.modalService.close(this.fetchTokenModal);
   }
 
