@@ -110,10 +110,12 @@ export class HttpTriggerComponent {
     Clipboard.copy(`${this.httpURL}`);
   }
 
-  pushTrigger(httpTrigger: HTTPEndpoint) {}
+  pushTrigger(httpTrigger: HTTPEndpoint) { }
 
   closeHttpTriggerModal() {
-    this.modalService.close(this.httpTriggerModal);
+    if (this.httpTriggerModal) {
+      this.modalService.close(this.httpTriggerModal);
+    }
   }
 
   public getIDPPresets() {

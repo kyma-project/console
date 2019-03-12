@@ -112,7 +112,9 @@ export class LambdaInstanceBindingCreatorComponent {
   public closeModal(event: Event): void {
     event.stopPropagation();
     luigiClient.uxManager().removeBackdrop();
-    this.modalService.close(this.instanceBindingCreatorModal);
+    if (this.instanceBindingCreatorModal) {
+      this.modalService.close(this.instanceBindingCreatorModal);
+    }
     this.reset();
   }
 

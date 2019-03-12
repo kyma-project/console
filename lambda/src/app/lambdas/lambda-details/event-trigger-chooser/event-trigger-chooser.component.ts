@@ -107,7 +107,9 @@ export class EventTriggerChooserComponent {
   closeEventTriggerChooserModal() {
     this.isActive = false;
     luigiClient.uxManager().removeBackdrop();
-    this.modalService.close(this.eventTriggerModal);
+    if (this.eventTriggerModal) {
+      this.modalService.close(this.eventTriggerModal);
+    }
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {
