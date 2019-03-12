@@ -20,7 +20,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
             ],
             "scripts": []
           },
