@@ -23,13 +23,21 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public resourceKind = 'Api';
   public title = 'APIs';
-  public emptyListText =
-    'It looks like you don’t have any APIs in your namespace yet.';
-  public createNewElementText = 'Add API';
   public baseUrl: string;
   public currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;
   public hideFilter = false;
+  public apisEmptyListData = {
+    header: {
+      text: 'APIs'
+      // ,
+    //   actionButton: { text: 'Create API', glyph: 'add' }
+    },
+    body: {
+      text: 'It looks like you don’t have any APIs in your namespace yet.',
+    }
+  };
+
 
   constructor(
     private http: HttpClient,
