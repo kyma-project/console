@@ -11,6 +11,8 @@ import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-ren
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { DataConverter } from 'app/generic-list';
 import { IPod, Pod } from 'shared/datamodel/k8s/pod';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { GraphQLDataProvider } from '../graphql-data-provider';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -25,11 +27,13 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
   private currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;
   public hideFilter = false;
+  public baseUrl: string;
 
   constructor(
     private http: HttpClient,
     private currentEnvironmentService: CurrentEnvironmentService,
     private commService: ComponentCommunicationService,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentEnvironmentService, changeDetector, http, commService);
@@ -39,16 +43,40 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
       }
     };
 
+    const query = `query Pod($namespace: String!) {
+      pods(namespace: $namespace) {
+        name
+        nodeName
+        namespace
+        restartCount
+        creationTimestamp
+        labels
+        status
+        containerStates {
+          state
+          reason
+          message
+        }
+        json
+      }
+    }`;
+
     this.currentEnvironmentSubscription = this.currentEnvironmentService
       .getCurrentEnvironmentId()
       .subscribe(envId => {
         this.currentEnvironmentId = envId;
-
-        const url = `${AppConfig.k8sApiServerUrl}namespaces/${
+        this.baseUrl = `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentEnvironmentId
         }/pods`;
 
-        this.source = new KubernetesDataProvider(url, converter, this.http);
+        this.source = new GraphQLDataProvider(
+          AppConfig.graphqlApiUrl, 
+          query, 
+          {
+            namespace: this.currentEnvironmentId,
+          },
+          this.graphQLClientService
+          )
 
         this.entryRenderer = PodsEntryRendererComponent;
         this.headerRenderer = PodsHeaderRendererComponent;
@@ -56,9 +84,7 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
   }
 
   public getResourceUrl(kind: string, entry: any): string {
-    return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
-    }/pods/${entry.getId()}`;
+    return `${this.baseUrl}/${entry.name}`;
   }
 
   public createNewElement() {

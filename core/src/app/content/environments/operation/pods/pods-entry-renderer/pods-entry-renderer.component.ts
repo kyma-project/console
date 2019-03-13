@@ -28,7 +28,7 @@ export class PodsEntryRendererComponent
         const event: any = e;
         if (
           'disable' === event.type &&
-          this.entry.metadata.name === event.entry.metadata.name
+          this.entry.name === event.entry.name
         ) {
           this.disabled = event.entry.disabled;
         }
@@ -44,63 +44,32 @@ export class PodsEntryRendererComponent
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  getRestartCount(containerStatuses) {
-    return containerStatuses.reduce(
+  getRestartCount(containerStates) {
+    return containerStates.reduce(
       (prev, curr) => prev + curr.restartCount,
       0
     );
   }
 
-  getStatusesList(entry) {
-    const containerStatuses = [];
-    if (entry.status && entry.status.containerStatuses) {
-      entry.status.containerStatuses.forEach(status => {
-        for (const key in status.state) {
-          if (status.state[key].reason) {
-            containerStatuses.push(
-              this.capitalize(key) + ': ' + status.state[key].reason
-            );
-          } else if (status.state[key].signal) {
-            containerStatuses.push(
-              this.capitalize(key) +
-                ' (Signal: ' +
-                status.state[key].signal +
-                ')'
-            );
-          } else if (status.state[key].exitCode) {
-            containerStatuses.push(
-              this.capitalize(key) +
-                ' (Exit code: ' +
-                status.state[key].exitCode +
-                ')'
-            );
-          } else {
-            containerStatuses.push(this.capitalize(key));
-          }
-        }
-      });
-    }
-    return containerStatuses;
-  }
-
   isPending(entry) {
-    return entry.status.phase === 'Pending';
+    return entry.status === 'PENDING';
   }
 
   isSucceeded(entry) {
     return (
-      entry.status.phase === 'Succeeded' || entry.status.phase === 'Running'
+      entry.status === 'SUCCEEDED' || entry.status === 'RUNNING'
     );
   }
 
   getStatus(entry) {
-    const statuses = this.getStatusesList(entry);
-    for (status of statuses) {
-      if (status !== 'Running') {
-        return status;
+    if (entry.status !== 'RUNNING' && entry.containerStates && entry.containerStates.length > 0) {
+      const isNotInRunningState = (container) => {
+        return container.state !== 'RUNNING'
       }
+      const x = entry.containerStates.find(isNotInRunningState);
+      return x.reason;
     }
-    return entry.status.phase;
+    return entry.status;
   }
 
   getStatusType(entry) {
@@ -114,8 +83,8 @@ export class PodsEntryRendererComponent
   }
 
   hasErrors(entry) {
-    return entry.status.containerStatuses.some(
-      status => status.state[Object.keys(status.state)[0]] === 'running'
+    return entry.containerStates.some(
+      status => status.state === 'RUNNING'
     );
   }
 }
