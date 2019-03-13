@@ -11,7 +11,7 @@ class Console {
     return this.getConsole() + '/home/namespaces/' + environment;
   }
 
-  getRemoteEnvironments() {
+  getApplications() {
     return this.getConsole() + '/home/cmf-apps';
   }
 
