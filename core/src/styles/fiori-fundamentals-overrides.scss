@@ -52,8 +52,12 @@
   td {
     vertical-align: top;
   }
+
+  tr {
+    cursor: default;
+  }
 }
-//Tables
+
 .y-fd-table {
   margin-bottom: 0;
 
@@ -70,17 +74,6 @@
 
   &__tr--no-border-below + tr {
     border-top: 0;
-  }
-
-  tr {
-    cursor: default;
-  }
-
-  td {
-    vertical-align: top;
-    a {
-      cursor: pointer;
-    }
   }
 }
 
@@ -160,11 +153,6 @@
       margin-right: fd-space('tiny') / 2; //fix for too small gap between checkbox and its label in popover menu (Filter list)
     }
   }
-}
-
-//Cursor pointer for all links
-a {
-  cursor: pointer;
 }
 
 // Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)

@@ -1,10 +1,10 @@
 <section class="fd-section">
   <fd-breadcrumb *ngIf="routedFromServiceDetails">
     <fd-breadcrumb-item>
-      <a fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
+      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
     </fd-breadcrumb-item>
     <fd-breadcrumb-item>
-      <a fd-breadcrumb-link class="service-name" (click)="navigateToDetails(serviceName)">{{ serviceName }}</a>
+      <a href="javascript:void(null)" fd-breadcrumb-link class="service-name" (click)="navigateToDetails(serviceName)">{{ serviceName }}</a>
     </fd-breadcrumb-item>
     <fd-breadcrumb-item>
       <span fd-breadcrumb-link>
@@ -15,7 +15,7 @@
 
   <fd-breadcrumb *ngIf="!routedFromServiceDetails">
     <fd-breadcrumb-item>
-      <a fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
+      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
     </fd-breadcrumb-item>
     <fd-breadcrumb-item>
       <span fd-breadcrumb-link>

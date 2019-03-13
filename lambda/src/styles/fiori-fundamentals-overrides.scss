@@ -28,6 +28,21 @@
 }
 
 //Tables
+.fd-table {
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  td {
+    vertical-align: top;
+  }
+  
+  tr {
+    cursor: default;
+  }
+}
+
 .y-fd-table {
   margin-bottom: 0;
 
@@ -44,17 +59,6 @@
 
   &__tr--no-border-below + tr {
     border-top: 0;
-  }
-
-  tr {
-    cursor: default;
-  }
-
-  td {
-    vertical-align: top;
-    a {
-      cursor: pointer;
-    }
   }
 }
 
@@ -161,18 +165,6 @@
   }
 }
 
-//Tables
-.fd-table {
-  .disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  td {
-    vertical-align: top;
-  }
-}
-
 // Container
 .y-fd-container--space-bottom {
   @extend .fd-has-margin-small;
@@ -181,11 +173,6 @@
 
 .y-fd-container--border-light {
   border-bottom: 1px solid #cccccc;
-}
-
-//Cursor pointer for all links
-a {
-  cursor: pointer;
 }
 
 // Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)

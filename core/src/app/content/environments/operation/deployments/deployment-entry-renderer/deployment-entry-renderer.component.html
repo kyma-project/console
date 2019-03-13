@@ -17,7 +17,7 @@
         entry.boundServiceInstanceNames &&
         entry.boundServiceInstanceNames.length > 0
       ">
-      <a *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
+      <a href="javascript:void(null)" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
         {{ instance }}
       </a>
     </td>

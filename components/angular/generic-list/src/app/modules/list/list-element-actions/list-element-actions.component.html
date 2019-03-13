@@ -7,7 +7,7 @@
         <fd-menu>
             <fd-menu-list [id]="entryAsString(entry)">
                 <li fd-menu-item *ngFor="let action of actions">
-                    <a (click)="executeAction(action, $event);" [name]="action.name">{{ action.name }}</a>
+                    <a href="javascript:void(null)" (click)="executeAction(action, $event);" [name]="action.name">{{ action.name }}</a>
                 </li>
             </fd-menu-list>
         </fd-menu>

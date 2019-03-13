@@ -8,15 +8,15 @@
   </fd-action-bar>
   <ul class="fd-tabs" role="tablist">
     <li class="fd-tabs__item">
-      <a class="fd-tabs__link" aria-controls="bindings" [attr.aria-selected]="bindingsTabExpanded"
+      <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="bindings" [attr.aria-selected]="bindingsTabExpanded"
         (click)="changeTab('bindings')" role="tab">{{ bindingsTabTitle }}</a>
     </li>
     <li class="fd-tabs__item" *ngIf="!isGlobalMode">
-      <a class="fd-tabs__link" aria-controls="roles" [attr.aria-selected]="rolesTabExpanded"
+      <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="roles" [attr.aria-selected]="rolesTabExpanded"
         (click)="changeTab('roles')" role="tab">Roles</a>
     </li>
     <li class="fd-tabs__item">
-      <a class="fd-tabs__link" aria-controls="clusterRoles" [attr.aria-selected]="clusterRolesTabExpanded"
+      <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="clusterRoles" [attr.aria-selected]="clusterRolesTabExpanded"
         (click)="changeTab('clusterRoles')" role="tab">Cluster Roles</a>
     </li>
   </ul>

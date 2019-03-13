@@ -76,9 +76,9 @@
         <fd-table-body>
           <tr *ngFor="let env of applications">
             <td>
-              <a (click)="navigateToApplications(env.name)">{{ env.name }}</a>
+              <a href="javascript:void(null)" (click)="navigateToApplications(env.name)">{{ env.name }}</a>
             </td>
-            <td class="fd-table--col-1 fd-has-float-right">
+            <td class="y-fd-table--col-1">
               <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions">
               </y-list-actions>
             </td>
