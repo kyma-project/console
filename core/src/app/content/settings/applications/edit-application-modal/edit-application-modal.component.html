@@ -1,17 +1,17 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #editRemoteEnvironmentModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+  <fd-modal class="y-fd-modal" #editApplicationModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
     <fd-modal-header>
       Edit Application
     </fd-modal-header>
     <fd-modal-body>
-      <form #editRemoteEnvsForm="ngForm">
+      <form #editApplicationsForm="ngForm">
         <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">
           {{ error }}
         </div>
         <div fd-form-set>
           <div fd-form-item>
             <fd-form-label>Description *</fd-form-label>
-            <input fd-form-control autofocus [type]="'text'" name="remoteEnvDescription"
+            <input fd-form-control autofocus [type]="'text'" name="applicationDescription"
                 [(ngModel)]="updatedDescription"
                 placeholder="Specify a description for your Application"
             >

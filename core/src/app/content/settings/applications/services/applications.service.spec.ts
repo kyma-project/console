@@ -2,18 +2,18 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { AppConfig } from '../../../../app.config';
-import { RemoteEnvironmentsService } from './remote-environments.service';
+import { ApplicationsService } from './applications.service';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
-declare interface IRemoteEnvQueryData {
+declare interface IApplicationQueryData {
   name: string;
   description: string;
   labels: {};
 }
 
-describe('RemoteEnvironmentsService', () => {
-  let remoteEnvironmentsService: RemoteEnvironmentsService;
+describe('ApplicationsService', () => {
+  let applicationsService: ApplicationsService;
   let graphQLClientService: GraphQLClientService;
-  const getRemoteEnvQueryData = (): IRemoteEnvQueryData => {
+  const getApplicationQueryData = (): IApplicationQueryData => {
     return {
       name: 'a-name',
       description: 'a-description',
@@ -30,28 +30,28 @@ describe('RemoteEnvironmentsService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        RemoteEnvironmentsService,
+        ApplicationsService,
         { provide: GraphQLClientService, useValue: mockGraphQLClientService }
       ]
     });
-    remoteEnvironmentsService = TestBed.get(RemoteEnvironmentsService);
+    applicationsService = TestBed.get(ApplicationsService);
     graphQLClientService = TestBed.get(GraphQLClientService);
   });
 
   it('should be created', () => {
-    expect(remoteEnvironmentsService).toBeTruthy();
+    expect(applicationsService).toBeTruthy();
   });
 
-  describe('createRemoteEnvironment()', () => {
+  describe('createApplication()', () => {
     it('calls request method with params', () => {
       const mutation = `mutation createApplication($name: String!, $description: String!, $labels: Labels) {
       createApplication(name: $name, description: $description, labels: $labels) {
         name
       }
     }`;
-      const dataInput: IRemoteEnvQueryData = getRemoteEnvQueryData();
-      const dataForRequest: IRemoteEnvQueryData = getRemoteEnvQueryData();
-      remoteEnvironmentsService.createRemoteEnvironment(dataInput);
+      const dataInput: IApplicationQueryData = getApplicationQueryData();
+      const dataForRequest: IApplicationQueryData = getApplicationQueryData();
+      applicationsService.createApplication(dataInput);
       expect(graphQLClientService.request).toHaveBeenCalledWith(
         AppConfig.graphqlApiUrl,
         mutation,
@@ -60,23 +60,23 @@ describe('RemoteEnvironmentsService', () => {
     });
 
     it('returns the call to request method', () => {
-      const data: IRemoteEnvQueryData = getRemoteEnvQueryData();
-      remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(res => {
+      const data: IApplicationQueryData = getApplicationQueryData();
+      applicationsService.createApplication(data).subscribe(res => {
         expect(res).toBe('request-response');
       });
     });
   });
 
-  describe('updateRemoteEnvironment()', () => {
+  describe('updateApplication()', () => {
     it('calls request method with params', () => {
       const mutation = `mutation updateApplication($name: String!, $description: String, $labels: Labels) {
       updateApplication(name: $name, description: $description, labels: $labels) {
         name
       }
     }`;
-      const dataInput: IRemoteEnvQueryData = getRemoteEnvQueryData();
-      const dataForRequest: IRemoteEnvQueryData = getRemoteEnvQueryData();
-      remoteEnvironmentsService.updateRemoteEnvironment(dataInput);
+      const dataInput: IApplicationQueryData = getApplicationQueryData();
+      const dataForRequest: IApplicationQueryData = getApplicationQueryData();
+      applicationsService.updateApplication(dataInput);
       expect(graphQLClientService.request).toHaveBeenCalledWith(
         AppConfig.graphqlApiUrl,
         mutation,
@@ -85,8 +85,8 @@ describe('RemoteEnvironmentsService', () => {
     });
 
     it('returns the call to request method', () => {
-      const data: IRemoteEnvQueryData = getRemoteEnvQueryData();
-      remoteEnvironmentsService.updateRemoteEnvironment(data).subscribe(res => {
+      const data: IApplicationQueryData = getApplicationQueryData();
+      applicationsService.updateApplication(data).subscribe(res => {
         expect(res).toBe('request-response');
       });
     });
@@ -110,7 +110,7 @@ describe('RemoteEnvironmentsService', () => {
           }
         }
       }`;
-      remoteEnvironmentsService.getRemoteEnvironment(name);
+      applicationsService.getApplication(name);
       expect(graphQLClientService.request).toHaveBeenCalledWith(
         AppConfig.graphqlApiUrl,
         query,
@@ -120,7 +120,7 @@ describe('RemoteEnvironmentsService', () => {
 
     it('returns the call to request method', () => {
       const name = 'some-name';
-      remoteEnvironmentsService.getRemoteEnvironment(name).subscribe(res => {
+      applicationsService.getApplication(name).subscribe(res => {
         expect(res).toBe('request-response');
       });
     });

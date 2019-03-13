@@ -3,7 +3,7 @@ import {
   IEnvironment
 } from './../../../shared/datamodel/k8s/environment';
 import { DataConverter } from 'app/generic-list';
-import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
+import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -11,15 +11,15 @@ import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
 export class EnvironmentDataConverter
   implements DataConverter<IEnvironment, Environment> {
   constructor(
-    private remoteEnvBindingService: RemoteEnvironmentBindingService,
+    private applicationBindingService: ApplicationBindingService,
     private http: HttpClient
   ) {}
 
   convert(entry: IEnvironment): Environment {
     const environment = new Environment(entry);
 
-    environment.remoteEnvs = this.remoteEnvBindingService
-      .getBoundRemoteEnvironments(environment.getId())
+    environment.applications = this.applicationBindingService
+      .getBoundApplications(environment.getId())
       .pipe(
         map(boundEnvironments => {
           const envs = boundEnvironments['applications'];

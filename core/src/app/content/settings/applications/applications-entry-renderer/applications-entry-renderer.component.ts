@@ -1,20 +1,20 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../environments/operation/abstract-kubernetes-entry-renderer.component';
-import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-pods-entry-renderer',
-  templateUrl: './remote-environments-entry-renderer.component.html'
+  templateUrl: './applications-entry-renderer.component.html'
 })
-export class RemoteEnvironmentsEntryRendererComponent
+export class ApplicationsEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
-    private remoteEnvironmentsService: RemoteEnvironmentsService,
+    private applicationsService: ApplicationsService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
@@ -56,11 +56,11 @@ export class RemoteEnvironmentsEntryRendererComponent
   }
 
   public determineClass(entry) {
-    return this.remoteEnvironmentsService.determineClass(entry);
+    return this.applicationsService.determineClass(entry);
   }
 
-  public navigateToDetails(renvName) {
-    LuigiClient.linkManager().navigate(`details/${renvName}`);
+  public navigateToDetails(appName) {
+    LuigiClient.linkManager().navigate(`details/${appName}`);
   }
 
   getStatus(entry) {

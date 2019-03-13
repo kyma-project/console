@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError, EMPTY } from 'rxjs';
 
-import { EditRemoteEnvironmentModalComponent } from './edit-remote-environment-modal.component';
-import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { EditApplicationModalComponent } from './edit-application-modal.component';
+import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
 
-describe('EditRemoteEnvironmentModalComponent', () => {
-  let component: EditRemoteEnvironmentModalComponent;
-  let fixture: ComponentFixture<EditRemoteEnvironmentModalComponent>;
-  let mockRemoteEnvironmentsService: RemoteEnvironmentsService;
+describe('EditApplicationModalComponent', () => {
+  let component: EditApplicationModalComponent;
+  let fixture: ComponentFixture<EditApplicationModalComponent>;
+  let mockApplicationsService: ApplicationsService;
   let mockComponentCommunicationService: ComponentCommunicationService;
   let mockModalService: ModalService;
   const modalService = {
@@ -23,11 +23,11 @@ describe('EditRemoteEnvironmentModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
-      declarations: [EditRemoteEnvironmentModalComponent],
+      declarations: [EditApplicationModalComponent],
       providers: [
         {
-          provide: RemoteEnvironmentsService,
-          useValue: { updateRemoteEnvironment: () => {} }
+          provide: ApplicationsService,
+          useValue: { updateApplication: () => {} }
         },
         {
           provide: ComponentCommunicationService,
@@ -40,16 +40,16 @@ describe('EditRemoteEnvironmentModalComponent', () => {
       ]
     })
       .overrideTemplate(
-        EditRemoteEnvironmentModalComponent,
-        '<form #editRemoteEnvsForm="ngForm"></form>'
+        EditApplicationModalComponent,
+        '<form #editApplicationsForm="ngForm"></form>'
       )
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditRemoteEnvironmentModalComponent);
+    fixture = TestBed.createComponent(EditApplicationModalComponent);
     component = fixture.componentInstance;
-    mockRemoteEnvironmentsService = TestBed.get(RemoteEnvironmentsService);
+    mockApplicationsService = TestBed.get(ApplicationsService);
     mockComponentCommunicationService = TestBed.get(
       ComponentCommunicationService
     );
@@ -91,7 +91,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
   describe('close()', () => {
     it('deactivates the form', () => {
       spyOn(mockModalService, 'close');
-      (component.editRemoteEnvironmentModal as any) = 'mock-value';
+      (component.editApplicationModal as any) = 'mock-value';
       component.close();
       expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
     });
@@ -109,7 +109,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
 
   describe('isReadyToSave()', () => {
     beforeEach(() => {
-      component.editRemoteEnvsForm.control.markAsDirty();
+      component.editApplicationsForm.control.markAsDirty();
       component.wrongLabels = false;
       component.updatedDescription = 'a-valid-desc';
     });
@@ -120,7 +120,7 @@ describe('EditRemoteEnvironmentModalComponent', () => {
     });
 
     it('returns false if form is not dirty', () => {
-      component.editRemoteEnvsForm.control.markAsPristine();
+      component.editApplicationsForm.control.markAsPristine();
       const actual: boolean = component.isReadyToSave();
       expect(actual).toBe(false);
     });
@@ -165,10 +165,10 @@ describe('EditRemoteEnvironmentModalComponent', () => {
   });
 
   describe('save()', () => {
-    it('updates new remote env', () => {
+    it('updates new application', () => {
       spyOn(
-        mockRemoteEnvironmentsService,
-        'updateRemoteEnvironment'
+        mockApplicationsService,
+        'updateApplication'
       ).and.returnValue(EMPTY);
       component.name = 're-name';
       component.updatedDescription = 're-desc';
@@ -180,14 +180,14 @@ describe('EditRemoteEnvironmentModalComponent', () => {
       };
       component.save();
       expect(
-        mockRemoteEnvironmentsService.updateRemoteEnvironment
+        mockApplicationsService.updateApplication
       ).toHaveBeenCalledWith(expectedData);
     });
 
-    it('handles success on creating remote env', () => {
+    it('handles success on creating application', () => {
       spyOn(
-        mockRemoteEnvironmentsService,
-        'updateRemoteEnvironment'
+        mockApplicationsService,
+        'updateApplication'
       ).and.returnValue(of('update-success-response'));
       spyOn(mockComponentCommunicationService, 'sendEvent');
       const expectedEventData = {
@@ -203,10 +203,10 @@ describe('EditRemoteEnvironmentModalComponent', () => {
       );
     });
 
-    it('handles error when creating remote env', () => {
+    it('handles error when creating application', () => {
       spyOn(
-        mockRemoteEnvironmentsService,
-        'updateRemoteEnvironment'
+        mockApplicationsService,
+        'updateApplication'
       ).and.returnValue(throwError('re-not-updated'));
       component.error = null;
       component.save();

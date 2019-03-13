@@ -1,9 +1,9 @@
-import { RemoteEnvironmentBindingService } from './../remote-environment-binding-service';
+import { ApplicationBindingService } from '../application-binding-service';
 import { ComponentCommunicationService } from './../../../../../shared/services/component-communication.service';
 import { EnvironmentsService } from '../../../../environments/services/environments.service';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RemoteEnvironmentsService } from './../../services/remote-environments.service';
+import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
 
 import * as _ from 'lodash';
@@ -19,7 +19,7 @@ export class EditBindingsModalComponent {
 
   public environments = [];
   private environmentsService: EnvironmentsService;
-  public remoteEnv: any;
+  public application: any;
   public ariaExpanded = false;
   public ariaHidden = true;
   public isActive = false;
@@ -29,21 +29,21 @@ export class EditBindingsModalComponent {
 
   constructor(
     environmentsService: EnvironmentsService,
-    private remoteEnvironmentService: RemoteEnvironmentsService,
+    private applicationService: ApplicationsService,
     private route: ActivatedRoute,
-    private remoteEnvironmentBindingService: RemoteEnvironmentBindingService,
+    private applicationBindingService: ApplicationBindingService,
     private communication: ComponentCommunicationService,
     private modalService: ModalService
   ) {
     this.environmentsService = environmentsService;
-    this.remoteEnvironmentBindingService = remoteEnvironmentBindingService;
+    this.applicationBindingService = applicationBindingService;
   }
 
   public show() {
     this.route.params.subscribe(params => {
-      const remoteEnvId = params['id'];
+      const applicationId = params['id'];
       const observables = [
-        this.remoteEnvironmentService.getRemoteEnvironment(remoteEnvId) as any,
+        this.applicationService.getApplication(applicationId) as any,
         this.environmentsService.getEnvironments() as any
       ];
 
@@ -51,13 +51,13 @@ export class EditBindingsModalComponent {
         data => {
           const response: any = data;
 
-          this.remoteEnv = response[0].application;
+          this.application = response[0].application;
           this.environments = response[1];
 
           this.environments.forEach(env => {
-            if (this.remoteEnv && this.remoteEnv.enabledInNamespaces) {
+            if (this.application && this.application.enabledInNamespaces) {
               this.getFilteredEnvironments(
-                this.remoteEnv.enabledInNamespaces,
+                this.application.enabledInNamespaces,
                 env
               );
             }
@@ -107,9 +107,9 @@ export class EditBindingsModalComponent {
   }
 
   save() {
-    if (this.remoteEnv && this.remoteEnv.name) {
-      this.remoteEnvironmentBindingService
-        .bind(this.environmentName, this.remoteEnv.name)
+    if (this.application && this.application.name) {
+      this.applicationBindingService
+        .bind(this.environmentName, this.application.name)
         .subscribe(
           res => {
             this.communication.sendEvent({

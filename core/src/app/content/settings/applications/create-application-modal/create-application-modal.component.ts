@@ -1,25 +1,25 @@
 import { Component, ViewChild } from '@angular/core';
-import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { ModalComponent, ModalService } from 'fundamental-ngx';
 
 @Component({
-  selector: 'app-create-remote-environment-modal',
-  templateUrl: './create-remote-environment-modal.component.html',
-  styleUrls: ['./create-remote-environment-modal.component.scss']
+  selector: 'app-create-application-modal',
+  templateUrl: './create-application-modal.component.html',
+  styleUrls: ['./create-application-modal.component.scss']
 })
-export class CreateRemoteEnvironmentModalComponent {
+export class CreateApplicationModalComponent {
   @ViewChild('createApplicationModal') createApplicationModal: ModalComponent;
   public isActive = false;
   public name: string;
-  public wrongRemoteEnvName: boolean;
+  public wrongApplicationName: boolean;
   public wrongLabels: boolean;
   public description: string;
   public labels: string[];
   public error: string;
 
   public constructor(
-    private remoteEnvironmentsService: RemoteEnvironmentsService,
+    private applicationsService: ApplicationsService,
     private communicationService: ComponentCommunicationService,
     private modalService: ModalService
   ) {}
@@ -41,13 +41,13 @@ export class CreateRemoteEnvironmentModalComponent {
     this.description = '';
     this.labels = [];
     this.error = '';
-    this.wrongRemoteEnvName = false;
+    this.wrongApplicationName = false;
     this.wrongLabels = false;
   }
 
-  public validateRemoteEnvNameRegex() {
+  public validateApplicationNameRegex() {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
-    this.wrongRemoteEnvName =
+    this.wrongApplicationName =
       this.name &&
       (!Boolean(regex.test(this.name || '')) || this.name.length > 253);
   }
@@ -56,7 +56,7 @@ export class CreateRemoteEnvironmentModalComponent {
     return Boolean(
       this.name &&
         this.description &&
-        !this.wrongRemoteEnvName &&
+        !this.wrongApplicationName &&
         !this.wrongLabels
     );
   }
@@ -82,7 +82,7 @@ export class CreateRemoteEnvironmentModalComponent {
       }, {})
     };
 
-    this.remoteEnvironmentsService.createRemoteEnvironment(data).subscribe(
+    this.applicationsService.createApplication(data).subscribe(
       response => {
         this.close();
         this.communicationService.sendEvent({

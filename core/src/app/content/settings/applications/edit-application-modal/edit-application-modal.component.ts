@@ -1,21 +1,21 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
-import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
 
 @Component({
-  selector: 'app-edit-remote-environment-modal',
-  templateUrl: './edit-remote-environment-modal.component.html',
-  styleUrls: ['./edit-remote-environment-modal.component.scss']
+  selector: 'app-edit-application-modal',
+  templateUrl: './edit-application-modal.component.html',
+  styleUrls: ['./edit-application-modal.component.scss']
 })
-export class EditRemoteEnvironmentModalComponent {
+export class EditApplicationModalComponent {
   @Input() public initialDescription: string;
   @Input() public initialLabels: string[];
   @Input() public name: string;
 
-  @ViewChild('editRemoteEnvsForm') editRemoteEnvsForm: NgForm;
-  @ViewChild('editRemoteEnvironmentModal') editRemoteEnvironmentModal: NgForm;
+  @ViewChild('editApplicationsForm') editApplicationsForm: NgForm;
+  @ViewChild('editApplicationModal') editApplicationModal: NgForm;
 
   public isActive = false;
   public wrongLabels: boolean;
@@ -24,7 +24,7 @@ export class EditRemoteEnvironmentModalComponent {
   public error: string;
 
   public constructor(
-    private remoteEnvironmentsService: RemoteEnvironmentsService,
+    private applicationsService: ApplicationsService,
     private communicationService: ComponentCommunicationService,
     private modalService: ModalService
   ) {}
@@ -34,14 +34,14 @@ export class EditRemoteEnvironmentModalComponent {
     this.isActive = true;
 
     this.modalService
-      .open(this.editRemoteEnvironmentModal)
+      .open(this.editApplicationModal)
       .result.finally(() => {
         this.isActive = false;
       });
   }
 
   public close(): void {
-    this.modalService.close(this.editRemoteEnvironmentModal);
+    this.modalService.close(this.editApplicationModal);
   }
 
   private resetForm(): void {
@@ -53,8 +53,8 @@ export class EditRemoteEnvironmentModalComponent {
 
   public isReadyToSave(): boolean {
     return Boolean(
-      this.editRemoteEnvsForm &&
-        this.editRemoteEnvsForm.dirty &&
+      this.editApplicationsForm &&
+        this.editApplicationsForm.dirty &&
         this.updatedDescription &&
         !this.wrongLabels
     );
@@ -71,7 +71,7 @@ export class EditRemoteEnvironmentModalComponent {
     this.wrongLabels =
       wrongLabels !== undefined ? wrongLabels : this.wrongLabels;
     // mark form as dirty when deleting an existing label
-    this.editRemoteEnvsForm.form.markAsDirty();
+    this.editApplicationsForm.form.markAsDirty();
   }
 
   public save(): void {
@@ -83,7 +83,7 @@ export class EditRemoteEnvironmentModalComponent {
       }, {})
     };
 
-    this.remoteEnvironmentsService.updateRemoteEnvironment(data).subscribe(
+    this.applicationsService.updateApplication(data).subscribe(
       response => {
         this.close();
         this.communicationService.sendEvent({
