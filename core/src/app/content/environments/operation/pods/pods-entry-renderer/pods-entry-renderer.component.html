@@ -2,9 +2,7 @@
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
   <td>{{ entry.nodeName }}</td>
   <td>
-    <fd-badge [modifier]="'filled'" [status]="
-        !entry.restartCount ? 'success' : 'warning'
-      ">
+    <fd-badge [modifier]="'filled'" [status]="!entry.restartCount ? 'success' : 'warning'">
       {{ entry.restartCount }}
     </fd-badge>
   </td>
@@ -24,12 +22,11 @@
   </td>
 </tr>
 <tr *ngIf="hasErrors(entry)">
-  <span *ngFor="let containerState of entry.containerStates">
-    <span *ngIf="
-        containerState.state !==
-        'RUNNING'
-      ">
-      {{ containerState.message }}<br />
+  <td colspan="7">
+    <span *ngFor="let containerState of entry.containerStates">
+      <fd-form-message [type]="'error'" *ngIf="containerState.state !== 'RUNNING' && containerState.message">
+        {{ containerState.message }}<br />
+      </fd-form-message>
     </span>
-  </span>
+  </td>
 </tr>

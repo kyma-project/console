@@ -44,13 +44,6 @@ export class PodsEntryRendererComponent
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  getRestartCount(containerStates) {
-    return containerStates.reduce(
-      (prev, curr) => prev + curr.restartCount,
-      0
-    );
-  }
-
   isPending(entry) {
     return entry.status === 'PENDING';
   }
@@ -66,8 +59,8 @@ export class PodsEntryRendererComponent
       const isNotInRunningState = (container) => {
         return container.state !== 'RUNNING'
       }
-      const x = entry.containerStates.find(isNotInRunningState);
-      return x.reason;
+      const containerNotRunning = entry.containerStates.find(isNotInRunningState);
+      return containerNotRunning.reason;
     }
     return entry.status;
   }
@@ -84,7 +77,7 @@ export class PodsEntryRendererComponent
 
   hasErrors(entry) {
     return entry.containerStates.some(
-      status => status.state === 'RUNNING'
+      status => status.state !== 'RUNNING'
     );
   }
 }
