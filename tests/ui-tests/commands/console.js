@@ -201,9 +201,7 @@ async function deleteApplication(page, name) {
     (item, name) => {
       const actionsSelector = `button[aria-controls=${name}]`;
       const deleteActionSelector = `#${name} li > a[name=Delete]`;
-      const testApplication = item.find(row =>
-        row.textContent.includes(name),
-      );
+      const testApplication = item.find(row => row.textContent.includes(name));
       testApplication.querySelector(actionsSelector).click();
       testApplication.querySelector(deleteActionSelector).click();
     },

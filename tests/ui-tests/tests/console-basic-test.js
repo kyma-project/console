@@ -84,9 +84,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
-    const applications = await kymaConsole.getApplicationNames(
-      page,
-    );
+    const applications = await kymaConsole.getApplicationNames(page);
     console.log('Check if application exists', applications);
     expect(applications).not.toContain(config.testApp);
   });
@@ -97,9 +95,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
       await kymaConsole.createApplication(page, config.testApp);
     });
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-    const applications = await kymaConsole.getApplicationNames(
-      page,
-    );
+    const applications = await kymaConsole.getApplicationNames(page);
     expect(applications).toContain(config.testApp);
   });
 
@@ -129,9 +125,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
         config.testApp
       }")]`,
     );
-    const initialApplications = await kymaConsole.getApplicationNames(
-      page,
-    );
+    const initialApplications = await kymaConsole.getApplicationNames(page);
     await kymaConsole.deleteApplication(page, config.testApp);
     const applications = await retry(async () => {
       const applicationsAfterRemoval = await kymaConsole.getApplicationNames(
