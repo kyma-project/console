@@ -2,27 +2,27 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
 
-import { RemoteEnvironmentDetailsComponent } from './remote-environment-details.component';
+import { ApplicationDetailsComponent } from './application-details.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { RemoteEnvironmentBindingService } from './remote-environment-binding-service';
+import { ApplicationBindingService } from './application-binding-service';
 
-describe('RemoteEnvironmentDetailsComponent', () => {
-  let component: RemoteEnvironmentDetailsComponent;
-  let fixture: ComponentFixture<RemoteEnvironmentDetailsComponent>;
+describe('ApplicationDetailsComponent', () => {
+  let component: ApplicationDetailsComponent;
+  let fixture: ComponentFixture<ApplicationDetailsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [RemoteEnvironmentDetailsComponent],
+      declarations: [ApplicationDetailsComponent],
       providers: [
         [{ provide: APP_BASE_HREF, useValue: '/my/app' }],
         {
-          provide: RemoteEnvironmentsService,
+          provide: ApplicationsService,
           useValue: {
             getConnectorServiceUrl: () => EMPTY,
-            getRemoteEnvironment: () => EMPTY
+            getApplication: () => EMPTY
           }
         },
         {
@@ -30,17 +30,17 @@ describe('RemoteEnvironmentDetailsComponent', () => {
           useValue: { observable$: EMPTY }
         },
         {
-          provide: RemoteEnvironmentBindingService,
+          provide: ApplicationBindingService,
           useValue: {}
         }
       ]
     })
-      .overrideTemplate(RemoteEnvironmentDetailsComponent, '')
+      .overrideTemplate(ApplicationDetailsComponent, '')
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RemoteEnvironmentDetailsComponent);
+    fixture = TestBed.createComponent(ApplicationDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

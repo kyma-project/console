@@ -13,8 +13,8 @@ import { SecretsComponent } from '../content/environments/operation/secrets/secr
 import { ServiceDetailsComponent } from '../content/environments/operation/services/service-details/service-details.component';
 import { ServicesComponent } from '../content/environments/operation/services/services.component';
 import { OrganisationComponent } from '../content/settings/organisation/organisation.component';
-import { RemoteEnvironmentDetailsComponent } from '../content/settings/remote-environments/remote-environment-details/remote-environment-details.component';
-import { RemoteEnvironmentsComponent } from '../content/settings/remote-environments/remote-environments.component';
+import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
+import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
 import { WorkspaceOverviewComponent } from '../content/workspace-overview/workspace-overview/workspace-overview.component';
 import { ExposeApiComponent } from '../content/environments/operation/services/service-details/expose-api/expose-api.component';
@@ -90,10 +90,10 @@ const appRoutes: Routes = [
         children: [
           { path: 'yVirtual', component: OrganisationComponent },
           { path: 'organisation', component: OrganisationComponent },
-          { path: 'apps', component: RemoteEnvironmentsComponent },
+          { path: 'apps', component: ApplicationsComponent },
           {
             path: 'apps/:id',
-            component: RemoteEnvironmentDetailsComponent
+            component: ApplicationDetailsComponent
           },
           { path: 'idpPresets', component: IdpPresetsComponent },
           { path: 'serviceBrokers', component: ServiceBrokersComponent },

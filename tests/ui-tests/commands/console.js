@@ -119,8 +119,8 @@ async function getEnvironmentNamesFromEnvironmentsPage(page) {
   return await getNamesOnCurrentPage(page, '[data-e2e-id=namespace-name]');
 }
 
-async function getRemoteEnvironmentNames(page) {
-  return await getNamesOnCurrentPage(page, '[data-e2e-id=remoteenv-name]');
+async function getApplicationNames(page) {
+  return await getNamesOnCurrentPage(page, '[data-e2e-id=application-name]');
 }
 
 async function getNamesOnCurrentPage(page, nameSelector) {
@@ -165,13 +165,13 @@ async function deleteEnvironment(page, envName) {
   return frame.waitForSelector(deleteConfirmButton, { hidden: true });
 }
 
-async function createRemoteEnvironment(page, name) {
+async function createApplication(page, name) {
   const frame = await getFrame(page);
   // consts
   const createEnvBtn = '.open-create-env-modal';
   const createEnvModal = '.fd-modal';
-  const nameInput = 'input[name=remoteEnvName]';
-  const descriptionInput = 'input[name=remoteEnvDescription]';
+  const nameInput = 'input[name=applicationName]';
+  const descriptionInput = 'input[name=applicationDescription]';
   const labelsInput = 'input[name=labelsInput]';
   const createButton = '[data-e2e-id=create-button]';
 
@@ -186,26 +186,24 @@ async function createRemoteEnvironment(page, name) {
   await frame.click(createButton);
   await frame.waitForSelector(createEnvModal, { hidden: true });
   return frame.waitForXPath(
-    `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${name}")]`,
+    `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${name}")]`,
   );
 }
 
-async function deleteRemoteEnvironment(page, name) {
+async function deleteApplication(page, name) {
   const frame = await getFrame(page);
-  const remoteEnvironmentsSelector = 'tr';
+  const applicationsSelector = 'tr';
   const modalSelector = '[data-e2e-id=confirmation-modal]';
 
-  await frame.waitForSelector(remoteEnvironmentsSelector);
+  await frame.waitForSelector(applicationsSelector);
   await frame.$$eval(
-    remoteEnvironmentsSelector,
+    applicationsSelector,
     (item, name) => {
       const actionsSelector = `button[aria-controls=${name}]`;
       const deleteActionSelector = `#${name} li > a[name=Delete]`;
-      const testRemoteEnvironment = item.find(row =>
-        row.textContent.includes(name),
-      );
-      testRemoteEnvironment.querySelector(actionsSelector).click();
-      testRemoteEnvironment.querySelector(deleteActionSelector).click();
+      const testApplication = item.find(row => row.textContent.includes(name));
+      testApplication.querySelector(actionsSelector).click();
+      testApplication.querySelector(deleteActionSelector).click();
     },
     name,
   );
@@ -226,10 +224,10 @@ module.exports = {
   clearData,
   getEnvironmentsFromContextSwitcher,
   createEnvironment,
-  createRemoteEnvironment,
-  deleteRemoteEnvironment,
+  createApplication,
+  deleteApplication,
   getEnvironmentNamesFromEnvironmentsPage,
   deleteEnvironment,
-  getRemoteEnvironmentNames,
+  getApplicationNames,
   getTextContentOnFrameBySelector,
 };

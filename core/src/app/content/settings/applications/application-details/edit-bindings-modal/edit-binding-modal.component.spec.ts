@@ -3,10 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditBindingsModalComponent } from './edit-binding-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { RemoteEnvironmentsService } from './../../services/remote-environments.service';
+import { ApplicationsService } from '../../services/applications.service';
 import { EnvironmentsService } from '../../../../environments/services/environments.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { RemoteEnvironmentBindingService } from './../remote-environment-binding-service';
+import { ApplicationBindingService } from '../application-binding-service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
 
@@ -14,8 +14,8 @@ const ActivatedRouteMock = {
   params: of({ id: 'id' })
 };
 
-const RemoteEnvironmentsServiceMock = {
-  getRemoteEnvironment() {
+const ApplicationsServiceMock = {
+  getApplication() {
     return of({});
   }
 };
@@ -26,7 +26,7 @@ const EnvironmentsServiceMock = {
   }
 };
 
-const RemoteEnvironmentBindingServiceMock = {
+const ApplicationBindingServiceMock = {
   bind() {
     return of({});
   }
@@ -35,9 +35,9 @@ const RemoteEnvironmentBindingServiceMock = {
 describe('EditBindingsModalComponent', () => {
   let component: EditBindingsModalComponent;
   let fixture: ComponentFixture<EditBindingsModalComponent>;
-  let RemoteEnvironmentsServiceMockStub: RemoteEnvironmentsService;
+  let ApplicationsServiceMockStub: ApplicationsService;
   let EnvironmentsServiceMockStub: EnvironmentsService;
-  let RemoteEnvironmentBindingServiceMockStub: RemoteEnvironmentBindingService;
+  let ApplicationBindingServiceMockStub: ApplicationBindingService;
   let ComponentCommunicationServiceMockStub: ComponentCommunicationService;
   const modalService = {
     open: () => ({
@@ -54,14 +54,14 @@ describe('EditBindingsModalComponent', () => {
       imports: [FormsModule],
       providers: [
         {
-          provide: RemoteEnvironmentsService,
-          useValue: RemoteEnvironmentsServiceMock
+          provide: ApplicationsService,
+          useValue: ApplicationsServiceMock
         },
         { provide: ActivatedRoute, useValue: ActivatedRouteMock },
         { provide: EnvironmentsService, useValue: EnvironmentsServiceMock },
         {
-          provide: RemoteEnvironmentBindingService,
-          useValue: RemoteEnvironmentBindingServiceMock
+          provide: ApplicationBindingService,
+          useValue: ApplicationBindingServiceMock
         },
         {
           provide: ModalService,
@@ -84,14 +84,14 @@ describe('EditBindingsModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditBindingsModalComponent);
     component = fixture.componentInstance;
-    RemoteEnvironmentsServiceMockStub = fixture.debugElement.injector.get(
-      RemoteEnvironmentsService
+    ApplicationsServiceMockStub = fixture.debugElement.injector.get(
+      ApplicationsService
     );
     EnvironmentsServiceMockStub = fixture.debugElement.injector.get(
       EnvironmentsService
     );
-    RemoteEnvironmentBindingServiceMockStub = fixture.debugElement.injector.get(
-      RemoteEnvironmentBindingService
+    ApplicationBindingServiceMockStub = fixture.debugElement.injector.get(
+      ApplicationBindingService
     );
     ComponentCommunicationServiceMockStub = fixture.debugElement.injector.get(
       ComponentCommunicationService
@@ -106,9 +106,9 @@ describe('EditBindingsModalComponent', () => {
     expect(component.environments).toEqual([]);
   });
 
-  it('should show and set envs and remoteevns', done => {
+  it('should show and set envs and applications', done => {
     // given
-    const remoteEnvs = of({
+    const applications = of({
       application: {
         enabledInNamespaces: ['env1', 'env2']
       }
@@ -123,10 +123,10 @@ describe('EditBindingsModalComponent', () => {
     ]);
     component.checkIfEnvironmentExists();
 
-    const spyGetRemoteEnvironment = spyOn(
-      RemoteEnvironmentsServiceMockStub,
-      'getRemoteEnvironment'
-    ).and.returnValue(remoteEnvs);
+    const spyGetApplication = spyOn(
+      ApplicationsServiceMockStub,
+      'getApplication'
+    ).and.returnValue(applications);
     const spyGetEnvironments = spyOn(
       EnvironmentsServiceMockStub,
       'getEnvironments'
@@ -140,17 +140,17 @@ describe('EditBindingsModalComponent', () => {
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
-      expect(spyGetRemoteEnvironment.calls.any()).toBeTruthy();
+      expect(spyGetApplication.calls.any()).toBeTruthy();
       expect(spyGetEnvironments.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeFalsy();
       expect(
-        RemoteEnvironmentsServiceMockStub.getRemoteEnvironment
+        ApplicationsServiceMockStub.getApplication
       ).toHaveBeenCalledTimes(1);
       expect(EnvironmentsServiceMockStub.getEnvironments).toHaveBeenCalledTimes(
         1
       );
       expect(console.log).not.toHaveBeenCalled();
-      expect(component.remoteEnv).toEqual({
+      expect(component.application).toEqual({
         enabledInNamespaces: ['env1', 'env2']
       });
       expect(component.environments).toEqual([
@@ -170,18 +170,18 @@ describe('EditBindingsModalComponent', () => {
 
   it("should not fail if couldn't get envs", done => {
     // given
-    const remoteEnvs = of({
-      remoteEnvironment: {
+    const applications = of({
+      application: {
         enabledInNamespaces: ['env1', 'env2']
       }
     });
     const envs = throwError('error');
     component.checkIfEnvironmentExists();
 
-    const spyGetRemoteEnvironment = spyOn(
-      RemoteEnvironmentsServiceMockStub,
-      'getRemoteEnvironment'
-    ).and.returnValue(remoteEnvs);
+    const spyGetApplication = spyOn(
+      ApplicationsServiceMockStub,
+      'getApplication'
+    ).and.returnValue(applications);
     const spyGetEnvironments = spyOn(
       EnvironmentsServiceMockStub,
       'getEnvironments'
@@ -194,17 +194,17 @@ describe('EditBindingsModalComponent', () => {
 
     fixture.whenStable().then(() => {
       expect(component).toBeTruthy();
-      expect(spyGetRemoteEnvironment.calls.any()).toBeTruthy();
+      expect(spyGetApplication.calls.any()).toBeTruthy();
       expect(spyGetEnvironments.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeTruthy();
       expect(
-        RemoteEnvironmentsServiceMockStub.getRemoteEnvironment
+        ApplicationsServiceMockStub.getApplication
       ).toHaveBeenCalledTimes(1);
       expect(EnvironmentsServiceMockStub.getEnvironments).toHaveBeenCalledTimes(
         1
       );
       expect(console.log).toHaveBeenCalledTimes(1);
-      expect(component.remoteEnv).toEqual(undefined);
+      expect(component.application).toEqual(undefined);
       expect(component.environments).toEqual([]);
       expect(component.isActive).toBeTruthy();
       expect(component.checkIfEnvironmentExists()).toBeFalsy();
@@ -215,13 +215,13 @@ describe('EditBindingsModalComponent', () => {
 
   it('should react on Save event', async done => {
     // given
-    component.remoteEnv = {
+    component.application = {
       name: 'test'
     };
     component.checkIfEnvironmentExists();
 
     const spyBind = spyOn(
-      RemoteEnvironmentBindingServiceMockStub,
+      ApplicationBindingServiceMockStub,
       'bind'
     ).and.returnValue(of({ data: 'created' }));
 
@@ -237,7 +237,7 @@ describe('EditBindingsModalComponent', () => {
       expect(component).toBeTruthy();
       expect(spyBind.calls.any()).toBeTruthy('spyBind.calls.any');
       expect(
-        RemoteEnvironmentBindingServiceMockStub.bind
+        ApplicationBindingServiceMockStub.bind
       ).toHaveBeenCalledTimes(1);
 
       expect(

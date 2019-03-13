@@ -1,10 +1,10 @@
-import { AppConfig } from './../../../../app.config';
+import { AppConfig } from '../../../../app.config';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 
 @Injectable()
-export class RemoteEnvironmentBindingService {
+export class ApplicationBindingService {
   public envChangeStateEmitter$: EventEmitter<boolean>;
 
   constructor(
@@ -22,16 +22,16 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public bind(namespace, remoteEnvironment) {
-    const query = `mutation($namespace: String!, $remoteEnvironment: String!){
-      enableApplication(namespace: $namespace, application: $remoteEnvironment) {
+  public bind(namespace, application) {
+    const query = `mutation($namespace: String!, $application: String!){
+      enableApplication(namespace: $namespace, application: $application) {
         namespace
         application
       }
     }`;
     const variables = {
       namespace,
-      remoteEnvironment
+      application
     };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
@@ -40,16 +40,16 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public unbind(namespace, remoteEnvironment) {
-    const query = `mutation($namespace: String!, $remoteEnvironment: String!){
-      disableApplication(namespace: $namespace, application: $remoteEnvironment) {
+  public unbind(namespace, application) {
+    const query = `mutation($namespace: String!, $application: String!){
+      disableApplication(namespace: $namespace, application: $application) {
         namespace
         application
       }
     }`;
     const variables = {
       namespace,
-      remoteEnvironment
+      application
     };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
@@ -58,13 +58,13 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public getBoundEnvironments(remoteEnvironment) {
-    const query = `query Environment($remoteEnvironment: String!){
-      namespaces(application: $remoteEnvironment) {
+  public getBoundEnvironments(application) {
+    const query = `query Environment($application: String!){
+      namespaces(application: $application) {
         name
       }
     }`;
-    const variables = { remoteEnvironment };
+    const variables = { application };
     return this.graphQLClientService.request(
       AppConfig.graphqlApiUrl,
       query,
@@ -72,7 +72,7 @@ export class RemoteEnvironmentBindingService {
     );
   }
 
-  public getBoundRemoteEnvironments(namespace) {
+  public getBoundApplications(namespace) {
     const query = `query Application($namespace: String!){
       applications(namespace: $namespace) {
         name

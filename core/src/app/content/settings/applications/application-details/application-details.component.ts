@@ -1,6 +1,6 @@
-import { RemoteEnvironmentBindingService } from './remote-environment-binding-service';
-import { ComponentCommunicationService } from './../../../../shared/services/component-communication.service';
-import { RemoteEnvironmentsService } from './../services/remote-environments.service';
+import { ApplicationBindingService } from './application-binding-service';
+import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ApplicationsService } from '../services/applications.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-modal.component';
@@ -8,19 +8,19 @@ import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-m
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../shared/components/information-modal/information-modal.component';
 import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
-import { EditRemoteEnvironmentModalComponent } from '../edit-remote-environment-modal/edit-remote-environment-modal.component';
+import { EditApplicationModalComponent } from '../edit-application-modal/edit-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
-  selector: 'app-remote-environment-details',
-  templateUrl: './remote-environment-details.component.html'
+  selector: 'app-application-details',
+  templateUrl: './application-details.component.html'
 })
-export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
-  public currentREnvId = '';
+export class ApplicationDetailsComponent implements OnInit, OnDestroy {
+  public currentAppId = '';
   public transformedLabels: string[];
   private sub: any;
   private prettyStatus = '';
-  remoteEnvironment: any;
+  application: any;
 
   private actions = [
     {
@@ -37,22 +37,22 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
-  @ViewChild('editRemoteEnvModal')
-  editRemoteEnvModal: EditRemoteEnvironmentModalComponent;
+  @ViewChild('editApplicationModal')
+  editApplicationModal: EditApplicationModalComponent;
 
   constructor(
     private route: ActivatedRoute,
-    private remoteEnvironmentsService: RemoteEnvironmentsService,
+    private applicationsService: ApplicationsService,
     private communication: ComponentCommunicationService,
-    private remoteEnvironmentBindingService: RemoteEnvironmentBindingService
+    private applicationBindingService: ApplicationBindingService
   ) {
-    this.remoteEnvironmentBindingService = remoteEnvironmentBindingService;
+    this.applicationBindingService = applicationBindingService;
   }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.currentREnvId = params['id'];
-      this.getRemoteEnv();
+      this.currentAppId = params['id'];
+      this.getApplication();
     });
 
     this.communication.observable$.subscribe(data => {
@@ -61,16 +61,16 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
       if (
         response.data &&
         !_.isEmpty(response.data) &&
-        response.data.enableRemoteEnvironment &&
-        response.data.enableRemoteEnvironment.environment
+        response.data.enableApplication &&
+        response.data.enableApplication.environment
       ) {
         this.boundEnvironments.push(
-          response.data.enableRemoteEnvironment.environment
+          response.data.enableApplication.environment
         );
       }
 
       if (response.type === 'updateResource') {
-        this.getRemoteEnv();
+        this.getApplication();
       }
     });
     if (LuigiClient) {
@@ -82,18 +82,18 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getRemoteEnv() {
-    this.remoteEnvironmentsService
-      .getRemoteEnvironment(this.currentREnvId)
+  public getApplication() {
+    this.applicationsService
+      .getApplication(this.currentAppId)
       .subscribe(
         data => {
           if (data && data.application) {
-            this.remoteEnvironment = data.application;
+            this.application = data.application;
             this.transformedLabels = this.getTransformedLabels(
-              this.remoteEnvironment.labels
+              this.application.labels
             );
             this.boundEnvironments = data.application.enabledInNamespaces;
-            this.prettyStatus = this.remoteEnvironmentsService.printPrettyConnectionStatus(
+            this.prettyStatus = this.applicationsService.printPrettyConnectionStatus(
               data.application.status
             );
           } else {
@@ -120,8 +120,8 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   getEntryEventHandler() {
     return {
       unbind: (entry: any) => {
-        this.remoteEnvironmentBindingService
-          .unbind(entry, this.currentREnvId)
+        this.applicationBindingService
+          .unbind(entry, this.currentAppId)
           .subscribe(
             data => {
               const response: any = data;
@@ -139,8 +139,8 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   }
 
   public showUrl() {
-    this.remoteEnvironmentsService
-      .getConnectorServiceUrl(this.currentREnvId)
+    this.applicationsService
+      .getConnectorServiceUrl(this.currentAppId)
       .subscribe(
         res => {
           res
@@ -165,7 +165,7 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
   }
 
   public determineClass(entry) {
-    return this.remoteEnvironmentsService.determineClass(entry);
+    return this.applicationsService.determineClass(entry);
   }
 
   public getTransformedLabels(labels): string[] {
@@ -175,8 +175,8 @@ export class RemoteEnvironmentDetailsComponent implements OnInit, OnDestroy {
     return Object.entries(labels).map(([key, value]) => key + '=' + value);
   }
 
-  public openEditRemoteEnvModal() {
-    this.editRemoteEnvModal.show();
+  public openEditApplicationModal() {
+    this.editApplicationModal.show();
   }
 
   public navigateToList() {

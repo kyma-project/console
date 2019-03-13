@@ -2,14 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError, EMPTY } from 'rxjs';
 import { ModalService } from 'fundamental-ngx';
 
-import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal.component';
-import { RemoteEnvironmentsService } from '../services/remote-environments.service';
+import { CreateApplicationModalComponent } from './create-application-modal.component';
+import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 
-describe('CreateRemoteEnvironmentModalComponent', () => {
-  let component: CreateRemoteEnvironmentModalComponent;
-  let fixture: ComponentFixture<CreateRemoteEnvironmentModalComponent>;
-  let mockRemoteEnvironmentsService: RemoteEnvironmentsService;
+describe('CreateApplicationModalComponent', () => {
+  let component: CreateApplicationModalComponent;
+  let fixture: ComponentFixture<CreateApplicationModalComponent>;
+  let mockApplicationsService: ApplicationsService;
   let mockComponentCommunicationService: ComponentCommunicationService;
   let mockModalService: ModalService;
 
@@ -26,11 +26,11 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateRemoteEnvironmentModalComponent],
+      declarations: [CreateApplicationModalComponent],
       providers: [
         {
-          provide: RemoteEnvironmentsService,
-          useValue: { createRemoteEnvironment: () => {} }
+          provide: ApplicationsService,
+          useValue: { createApplication: () => {} }
         },
         {
           provide: ComponentCommunicationService,
@@ -42,14 +42,14 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
         }
       ]
     })
-      .overrideTemplate(CreateRemoteEnvironmentModalComponent, '')
+      .overrideTemplate(CreateApplicationModalComponent, '')
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateRemoteEnvironmentModalComponent);
+    fixture = TestBed.createComponent(CreateApplicationModalComponent);
     component = fixture.componentInstance;
-    mockRemoteEnvironmentsService = TestBed.get(RemoteEnvironmentsService);
+    mockApplicationsService = TestBed.get(ApplicationsService);
     mockComponentCommunicationService = TestBed.get(
       ComponentCommunicationService
     );
@@ -98,11 +98,11 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
 
     it('resets form validation values', () => {
       component.error = 'any-error';
-      component.wrongRemoteEnvName = true;
+      component.wrongApplicationName = true;
       component.wrongLabels = true;
       component['resetForm']();
       expect(component.error).toBe('');
-      expect(component.wrongRemoteEnvName).toBe(false);
+      expect(component.wrongApplicationName).toBe(false);
       expect(component.wrongLabels).toBe(false);
     });
   });
@@ -110,7 +110,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   describe('isReadyToCreate()', () => {
     beforeEach(() => {
       component.wrongLabels = false;
-      component.wrongRemoteEnvName = false;
+      component.wrongApplicationName = false;
       component.name = 'a-valid-name';
       component.description = 'a-valid-desc';
     });
@@ -133,7 +133,7 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
     });
 
     it('returns false if name is not valid', () => {
-      component.wrongRemoteEnvName = true;
+      component.wrongApplicationName = true;
       const actual: boolean = component.isReadyToCreate();
       expect(actual).toBe(false);
     });
@@ -172,10 +172,10 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
   });
 
   describe('save()', () => {
-    it('creates new remote env', () => {
+    it('creates new application', () => {
       spyOn(
-        mockRemoteEnvironmentsService,
-        'createRemoteEnvironment'
+        mockApplicationsService,
+        'createApplication'
       ).and.returnValue(EMPTY);
       component.name = 're-name';
       component.description = 're-desc';
@@ -187,14 +187,14 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       };
       component.save();
       expect(
-        mockRemoteEnvironmentsService.createRemoteEnvironment
+        mockApplicationsService.createApplication
       ).toHaveBeenCalledWith(expectedData);
     });
 
-    it('handles success on creating remote env', () => {
+    it('handles success on creating application', () => {
       spyOn(
-        mockRemoteEnvironmentsService,
-        'createRemoteEnvironment'
+        mockApplicationsService,
+        'createApplication'
       ).and.returnValue(of('create-success-response'));
       spyOn(mockComponentCommunicationService, 'sendEvent');
       const expectedEventData = {
@@ -210,10 +210,10 @@ describe('CreateRemoteEnvironmentModalComponent', () => {
       );
     });
 
-    it('handles error when creating remote env', () => {
+    it('handles error when creating application', () => {
       spyOn(
-        mockRemoteEnvironmentsService,
-        'createRemoteEnvironment'
+        mockApplicationsService,
+        'createApplication'
       ).and.returnValue(throwError('re-not-created'));
       component.error = null;
       component.save();

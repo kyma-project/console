@@ -42,16 +42,16 @@
         </div>
         <div *ngIf="!isSystemNamespace" class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
           <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
-            {{ boundRemoteEnvironmentsCount | async }}
+            {{ boundApplicationsCount | async }}
           </h3>
           <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
             {{
-            (boundRemoteEnvironmentsCount | async) === 1
+            (boundApplicationsCount | async) === 1
             ? 'Bound Application'
             : 'Bound Applications'
             }}
           </span>
-          <button fd-button [options]="'light'" (click)="navigateToRemoteEnvs()">
+          <button fd-button [options]="'light'" (click)="navigateToApplications()">
             Show All Applications
           </button>
         </div>
@@ -60,7 +60,7 @@
   </fd-panel-grid>
 </section>
 
-<section class='fd-section' *ngIf="remoteEnvironments && remoteEnvironments.length > 0">
+<section class='fd-section' *ngIf="applications && applications.length > 0">
   <fd-panel>
     <fd-panel-header>
       <fd-panel-head>
@@ -74,9 +74,9 @@
           <th></th>
         </fd-table-header>
         <fd-table-body>
-          <tr *ngFor="let env of remoteEnvironments">
+          <tr *ngFor="let env of applications">
             <td>
-              <a (click)="navigateToRemoteEnvs(env.name)">{{ env.name }}</a>
+              <a (click)="navigateToApplications(env.name)">{{ env.name }}</a>
             </td>
             <td class="fd-table--col-1 fd-has-float-right">
               <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions">

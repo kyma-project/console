@@ -1,6 +1,6 @@
 <tr [ngClass]="{'y-fd-table__tr--disabled': disabled === true}">
   <td class="fd-has-font-weight-bold" (click)="navigateToDetails(entry.name)">
-    <a [attr.data-e2e-id]="'remoteenv-name'">{{ entry.name }}</a>
+    <a [attr.data-e2e-id]="'application-name'">{{ entry.name }}</a>
   </td>
   <td>
     <div *ngIf='getLabels(entry.labels).length'>
