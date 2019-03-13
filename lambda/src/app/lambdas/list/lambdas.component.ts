@@ -40,11 +40,9 @@ export class LambdasComponent extends GenericTableComponent
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('errorAlert') errorAlert;
   title = 'Lambdas';
-  public lambdasEmptyListData = {
+  public emptyListData = {
     header: {
       text: 'Bound Lambdas'
-      // ,
-      // actionButton: { text: 'Add Lambda', glyph: 'add' }
     },
     body: {
       text: 'It looks like you don’t have any lambdas in your namespace yet.',

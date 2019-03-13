@@ -27,11 +27,9 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
   public currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;
   public hideFilter = false;
-  public apisEmptyListData = {
+  public emptyListData = {
     header: {
       text: 'APIs'
-      // ,
-    //   actionButton: { text: 'Create API', glyph: 'add' }
     },
     body: {
       text: 'It looks like you don’t have any APIs in your namespace yet.',
