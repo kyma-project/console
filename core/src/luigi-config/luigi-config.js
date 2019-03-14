@@ -599,7 +599,7 @@ function getBackendModules() {
   return fetchFromGraphQL(query);
 }
 
-function getEnvs() {
+function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
   ).then(function(response) {
@@ -783,7 +783,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
           defaultLabel: 'Select Namespace ...',
           parentNodePath: '/home/namespaces', // absolute path
           lazyloadOptions: true, // load options on click instead on page load
-          options: getEnvs,
+          options: getNamespaces,
           actions: [
             {
               label: '+ New Namespace',
