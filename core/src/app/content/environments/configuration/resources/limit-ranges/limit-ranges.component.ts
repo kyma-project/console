@@ -17,9 +17,14 @@ import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer/l
 })
 export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  public title = 'Limit Ranges';
-  public emptyListText =
-    'It looks like you don’t have any limit ranges in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: 'Limit Ranges'
+    },
+    body: {
+      text: 'It looks like you don’t have any limit ranges in your namespace yet.',
+    }
+  };
   public createNewElementText = 'Add Limit Range';
   public resourceKind = 'Limit Range';
   private currentEnvironmentId: string;
