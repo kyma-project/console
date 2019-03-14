@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { lazy, Suspense, Component } from 'react';
 import { ThemeWrapper } from '@kyma-project/react-components';
-
-import DocsContent from '../DocsContent/DocsContent.container';
 import LeftNavigation from '../Navigation/LeftNavigation/LeftNavigation';
 import { ColumnsWrapper, LeftSideWrapper, CenterSideWrapper } from './styled';
 
-import { parseYaml } from '../../commons/yaml.js';
+import { tokenize } from '../../commons/helpers';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
+
+const DocsContent = lazy(() => import("../DocsContent/DocsContent.container"));
 
 class MainPage extends Component {
   constructor(props) {
@@ -24,19 +24,19 @@ class MainPage extends Component {
 
     return {
       activeContent: active,
-      activeNav: {},
-      navigationList: parseYaml(),
+      activeNav: active,
+      docsList: this.getDocUrls(active.type, active.id),
+      docsLoaded: false
     };
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      docsLoadingStatus: { docsLoadingStatus },
-    } = this.props;
+  componentDidUpdate(_, prevState) {
+    const { docsLoaded } = this.state;
+
     const { activeContent } = this.state;
     const hash = activeContent.hash;
 
-    if (prevProps.docsLoadingStatus.docsLoadingStatus && !docsLoadingStatus) {
+    if (prevState.docsLoaded && !docsLoaded) {
       if (hash) {
         goToAnchor(hash);
       }
@@ -49,10 +49,16 @@ class MainPage extends Component {
     }
   }
 
+  getDocUrls = (type, id) => {
+    let docsItems = type === 'root' ? this.props.clusterDocsTopicsRoot || {} : this.props.clusterDocsTopicsComponents || {};
+      if(!docsItems || docsItems.length===0) return {}
+    docsItems = docsItems.filter(item => tokenize(item.displayName) === id);
+    return docsItems[0] || {};
+  };
+
   getRoot = () => {
-    const yaml = parseYaml();
-    if (yaml && yaml.root) {
-      return yaml.root.id;
+    if (this.props.clusterDocsTopicsRoot && this.props.clusterDocsTopicsRoot.length>0) {
+      return this.props.clusterDocsTopicsRoot[0].name;
     }
     return null;
   };
@@ -67,6 +73,7 @@ class MainPage extends Component {
       this.setState({
         activeContent: activeLink,
         activeNav: activeLink,
+        docsList: this.getDocUrls(activeLink.type, activeLink.id)
       });
     } else {
       this.setState({
@@ -109,6 +116,12 @@ class MainPage extends Component {
     });
   };
 
+  setDocsInitialLoadStatus = () => {
+    this.setState({
+      docsLoaded: true,
+    });//
+  };
+
   colapseNav = activeNav => {
     const nav = activeNav.hash
       ? {
@@ -128,25 +141,33 @@ class MainPage extends Component {
   };
 
   render() {
-    const { history, topics } = this.props;
-    const { activeContent, activeNav, navigationList } = this.state;
+    const { history } = this.props;
+    const { activeContent, activeNav } = this.state;
+
+    const itemsComponents = this.props.clusterDocsTopicsComponents || {};
+    const itemsRoot = this.props.clusterDocsTopicsRoot || {};
 
     return (
       <ThemeWrapper>
         <ColumnsWrapper>
           <LeftSideWrapper>
             <LeftNavigation
-              items={navigationList}
-              topics={topics}
+              rootItems={itemsRoot}
+              componentsItems={itemsComponents}
               activeContent={activeContent}
               activeNav={activeNav}
               chooseActive={this.chooseActive}
+              docsLoaded={this.state.docsLoaded}
               setActiveNav={this.setActiveNav}
               history={history}
             />
           </LeftSideWrapper>
           <CenterSideWrapper id={SCROLL_SPY_ROOT_ELEMENT}>
-            <DocsContent contentMetadata={activeContent} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <DocsContent docs={this.state.docsList} 
+                docsLoaded={this.state.docsLoaded}
+                setDocsInitialLoadStatus={this.setDocsInitialLoadStatus}/>
+            </Suspense>
           </CenterSideWrapper>
         </ColumnsWrapper>
       </ThemeWrapper>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ScrollSpy from '../../ScrollSpy/ScrollSpy.container';
+import ScrollSpy from '../../ScrollSpy/ScrollSpy.component';
 import NavigationGroup from './NavigationGroup';
 import { Wrapper } from './styled';
 
@@ -24,17 +24,19 @@ class Navigation extends Component {
     })();
 
     const {
-      items,
-      topics,
       activeNav,
       activeContent,
       chooseActive,
       setActiveNav,
       history,
+      rootItems,
+      componentsItems,
+      docsLoaded
     } = this.props;
     const { activeNodes } = this.state;
 
-    return (
+    return ( docsLoaded &&
+
       <ScrollSpy
         rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}
         nodeTypes={['groupOfDocuments', 'document', 'header']}
@@ -45,14 +47,14 @@ class Navigation extends Component {
         }}
         onUpdate={activeNodes => this.setState({ activeNodes })}
         activeContent={activeContent}
-      >
+        docsLoadingStatus={{docsLoadingStatus:docsLoaded}}
+        >
         <Wrapper>
           <NavigationGroup
             data-e2e-id="navigation-root"
             title="Root"
             icon={'database'}
-            items={[items.root]}
-            topics={topics}
+            items={rootItems}
             groupType="root"
             isLinkActive={isLinkActive}
             activeContent={activeContent}
@@ -61,13 +63,12 @@ class Navigation extends Component {
             setActiveNav={setActiveNav}
             chooseActive={chooseActive}
             history={history}
-          />
+            />
           <NavigationGroup
             data-e2e-id="navigation-components"
             title="Components"
             icon={'Chart-Tree-Map'}
-            items={items.components}
-            topics={topics}
+            items={componentsItems}
             groupType="components"
             isLinkActive={isLinkActive}
             activeContent={activeContent}
@@ -76,7 +77,7 @@ class Navigation extends Component {
             setActiveNav={setActiveNav}
             chooseActive={chooseActive}
             history={history}
-          />
+            />
         </Wrapper>
       </ScrollSpy>
     );

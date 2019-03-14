@@ -14,10 +14,6 @@ To install the dependencies, run the `npm install` command.
 
 This section describes how to build the application, and to build and publish the image.
 
-### Prepare the data for build and start commands
-
-Run the `npm run prepare` command to download or update the list of documentation topics.
-
 ### Build an application
 
 Run the `npm run build` command to build the application for production in the `build` folder.

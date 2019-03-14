@@ -22,8 +22,13 @@ export const TOPICS_QUERY = gql`
   }
 `;
 
-export const DOCS_LOADING_STATUS = gql`
-  query docsLoadingStatus {
-    docsLoadingStatus @client
+export const CLUSTER_DOCS_TOPICS = gql`
+  query clusterDocsTopics($viewContext: String!, $groupName: String!) {
+    clusterDocsTopics(viewContext: $viewContext, groupName: $groupName) @client {
+      name
+      displayName
+      description
+      assets
+    }
   }
 `;

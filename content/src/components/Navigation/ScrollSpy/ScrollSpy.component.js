@@ -65,7 +65,7 @@ class ScrollSpy extends React.Component {
         nodeTypes,
         onUpdate,
         activeContent,
-        docsLoadingStatus: { docsLoadingStatus },
+        docsLoadingStatus,
       },
       state: { activeNodes },
     } = this;
@@ -92,6 +92,7 @@ class ScrollSpy extends React.Component {
 
   onResize = () => {
     this.collectNodes();
+    setTimeout(this.handleScroll, 50);
     this.handleScroll();
   };
 
@@ -101,7 +102,6 @@ class ScrollSpy extends React.Component {
 
   collectNodes = () => {
     const { rootElement, nodeTypes } = this.props;
-
     let nodes = {};
     for (const type of nodeTypes) {
       nodes[type] = [];
@@ -109,8 +109,8 @@ class ScrollSpy extends React.Component {
 
     const rootNode = document.querySelector(rootElement);
     if (!rootNode) return;
-
     const nodesInRootNode = rootNode.querySelectorAll('*[id]');
+
     const dataScrollSpyNodeTypeAtr = 'scrollspyNodeType';
 
     for (let node of nodesInRootNode) {
@@ -130,6 +130,7 @@ class ScrollSpy extends React.Component {
         }
       }
     }
+
     this.setState({ nodes });
   };
 
@@ -152,13 +153,13 @@ class ScrollSpy extends React.Component {
     const doc = document;
 
     if (!nodes || !Object.keys(nodes).length) return;
-
     let newActiveNodes = {};
     for (const type of nodeTypes) {
       const scrollTop =
-        (doc.documentElement.scrollTop ||
-          doc.body.parentNode.scrollTop ||
-          doc.body.scrollTop) + (offset[type] ? offset[type] : 0);
+      (doc.documentElement.scrollTop ||
+        doc.body.parentNode.scrollTop ||
+        doc.body.scrollTop) + (offset[type] ? offset[type] : 0);
+
       const newActiveNode = this.updateActiveNode(nodes[type], scrollTop);
       if (newActiveNode !== activeNodes[type]) {
         newActiveNodes[type] = newActiveNode;

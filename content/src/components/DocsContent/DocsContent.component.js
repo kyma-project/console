@@ -1,5 +1,5 @@
-import React from 'react';
-import Highlight from 'react-highlight/lib/optimized.js';
+import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { Markdown, Toolbar } from '@kyma-project/react-components';
 
 import {
@@ -10,24 +10,39 @@ import {
   Anchor,
   TextWrapper,
 } from './styled';
-
 import { tokenize } from '../../commons/helpers';
 
-const DocsContent = ({ content, docsTypesLength }) => {
-  const { docs = [] } = content;
-  let lastType = '';
+class DocsContent extends Component {
+  componentDidMount() {
+    this.setDocsStatus();
+  }
 
-  return (
-    <>
-      {content && (
-        <DocsWrapper>
-          <Toolbar title={content.displayName} customPadding={'28px 0'} />
+  componentDidUpdate() {
+    this.setDocsStatus();
+  }
 
-          {docs &&
-            docs.map((doc, index) => {
-              const type = doc.type || doc.title;
+  setDocsStatus = () => {
+    const { docsLoaded, setDocsInitialLoadStatus, docs } = this.props;
+    if(!docsLoaded && docs){
+      setDocsInitialLoadStatus();
+    }
+  }
+
+  render() {
+    const { displayName, docs, docsTypesLength } = this.props;  
+
+    let lastType = '';
+
+    return (
+      <>
+        {docs && docs.length>0 && 
+          <DocsWrapper>
+            <Toolbar title={displayName} customPadding={'28px 0'} />
+            
+            {docs.map((doc, index) =>  {
+              const type = doc.metadata.type || doc.metadata.title;
               const tokenizedType = tokenize(type);
-              const hash = `${tokenizedType}-${tokenize(doc.title)}`;
+              const hash = `${tokenizedType}-${tokenize(doc.metadata.title)}`;
               const typeHash = `${tokenizedType}-${tokenizedType}`;
 
               const isFirstOfType = type !== lastType;
@@ -37,39 +52,35 @@ const DocsContent = ({ content, docsTypesLength }) => {
 
               return (
                 <Wrapper key={index}>
-                  {isFirstOfType && typeLength && (
-                    <Anchor
-                      id={typeHash}
-                      data-scrollspy-node-type="groupOfDocuments"
-                    />
-                  )}
-                  <ContentHeader
-                    id={hash}
-                    data-scrollspy-node-type={
-                      typeLength ? 'document' : 'groupOfDocuments'
-                    }
-                  >
-                    {doc.title}
-                  </ContentHeader>
-                  <ContentDescription>
-                    <TextWrapper>
-                      <Markdown>
-                        <Highlight
-                          languages={['javascript', 'go']}
-                          innerHTML={true}
-                        >
-                          {doc.source}
-                        </Highlight>
-                      </Markdown>
-                    </TextWrapper>
-                  </ContentDescription>
-                </Wrapper>
-              );
+                {isFirstOfType && typeLength && (
+                  <Anchor
+                    id={typeHash}
+                    data-scrollspy-node-type="groupOfDocuments"
+                  />
+                )}
+                <ContentHeader
+                  id={hash}
+                  data-scrollspy-node-type={
+                    typeLength ? 'document' : 'groupOfDocuments'
+                  }
+                >
+                  .{doc.metadata.title}
+                </ContentHeader>
+                <ContentDescription>
+                  <TextWrapper>
+                    <Markdown>
+                      <ReactMarkdown source={doc.source} />
+                    </Markdown>
+                  </TextWrapper>
+                </ContentDescription>
+              </Wrapper>
+              )
             })}
-        </DocsWrapper>
-      )}
-    </>
-  );
+          </DocsWrapper>
+        }
+      </>
+    );
+  };
 };
 
 export default DocsContent;

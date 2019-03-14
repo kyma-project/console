@@ -1,66 +1,87 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
 
 import DocsContent from './DocsContent.component';
 import { DocsProcessor } from './DocsProcessor';
 
-import { CONTENT_QUERY } from './queries';
-import { SET_DOCS_LOADING_STATUS } from './mutations';
+import { compareTwoObjects } from '../../commons/helpers';
 
-const DocsContentContainer = ({
-  content: { loading, content },
-  setDocsLoadingStatus,
-}) => {
-  setDocsLoadingStatus({
-    variables: {
-      docsLoadingStatus: loading,
-    },
-  });
-
-  if (loading || !content) {
-    return null;
+export default class DocsContentContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { docs: null }
   }
 
-  const { docs = [] } = content;
-  const newContent = { ...content };
+  async componentDidMount() {
+    const { docs } = this.props;
 
-  newContent.docs = new DocsProcessor(docs)
-    .filterExternal()
-    .improveRelativeLinks()
-    .changeHeadersAtrs()
-    .sortByOrder()
-    .sortByType()
-    .result();
+    if(docs) {
+      this.setState({ 
+        displayName: docs.displayName,
+        docs: await this.getAllUrls(docs.assets[0].files) 
+      })
+    };
+  }
 
-  let docsTypesLength = {};
-  newContent.docs.map(doc => {
-    const type = doc.type || doc.title;
-    if (!(type in docsTypesLength)) {
-      docsTypesLength[type] = 0;
+  async componentDidUpdate(prevProps, _) {
+    const { docs } = this.props;
+
+    if (!compareTwoObjects(this.props.docs, prevProps.docs) && docs ) {
+      this.setState({ 
+        displayName: docs.displayName,
+        docs: await this.getAllUrls(docs.assets[0].files) 
+      })
     }
-    if (doc.title) docsTypesLength[type]++;
+    
+  }  
+  async getAllUrls(docs) {
+    try {
+      var data = await Promise.all(
+        docs.map(
+          doc =>
+          fetch(doc.url).then((response) => response.text()).then((text) => {
+            return {
+              metadata: doc.metadata,
+              url: doc.url,
+              source: text
+            }
+          })
+        )
+      );
+      return (data)
+    } catch (error) {
+      console.log(error)
+      throw (error)
+    }
+  }
 
-    return doc;
-  });
+  render() {
+    const { docs } = this.props;
+    const sources = this.state.docs;
 
-  return <DocsContent content={newContent} docsTypesLength={docsTypesLength} />;
+    if (!docs) {
+      return null;
+    }
+
+    let newDocs = sources;
+    let docsTypesLength = {};
+
+    if(newDocs){
+      newDocs = new DocsProcessor(sources)
+      .replaceImagePaths()
+      .removeMatadata()
+      .result();
+
+      newDocs.map(doc => {
+        const type = doc.metadata.type || doc.metadata.title;
+        if (!(type in docsTypesLength)) {
+          docsTypesLength[type] = 0;
+        }
+        if (doc.metadata.title) docsTypesLength[type]++;
+
+        return doc;
+      });
+    }
+
+    return <DocsContent docs={newDocs} displayName={this.state.displayName} docsTypesLength={docsTypesLength} docsLoaded={this.props.docsLoaded} setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus} />;
+  }
 };
-
-export default compose(
-  graphql(CONTENT_QUERY, {
-    name: 'content',
-    options: props => {
-      return {
-        fetchPolicy: 'cache-and-network',
-        errorPolicy: 'all',
-        variables: {
-          contentType: props.contentMetadata.type,
-          id: props.contentMetadata.id,
-        },
-      };
-    },
-  }),
-  graphql(SET_DOCS_LOADING_STATUS, {
-    name: 'setDocsLoadingStatus',
-  }),
-)(DocsContentContainer);
