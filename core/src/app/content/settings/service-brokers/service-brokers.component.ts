@@ -4,19 +4,19 @@ import {
   ServiceBroker,
   IServiceBroker
 } from '../../../shared/datamodel/k8s/service-broker';
-import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
+import { KubernetesDataProvider } from '../../namespaces/operation/kubernetes-data-provider';
 import { DataConverter } from 'app/generic-list';
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
+import { CurrentEnvironmentService } from '../../namespaces/services/current-namespace.service';
 import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/service-broker-entry-renderer.component';
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
-import { AbstractKubernetesElementListComponent } from '../../environments/operation/abstract-kubernetes-element-list.component';
+import { AbstractKubernetesElementListComponent } from '../../namespaces/operation/abstract-kubernetes-element-list.component';
 
 @Component({
   selector: 'app-service-brokers',
   templateUrl:
-    '../../environments/operation/kubernetes-element-list.component.html'
+    '../../namespaces/operation/kubernetes-element-list.component.html'
 })
 export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
   public title = 'Service Brokers';

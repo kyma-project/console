@@ -7,23 +7,23 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { EnvironmentCardComponent } from './../environment-card/environment-card.component';
+import { NamespaceCardComponent } from '../namespace-card/namespace-card.component';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
-import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
+import { KubernetesDataProvider } from '../../namespaces/operation/kubernetes-data-provider';
 import {
-  Environment,
-  IEnvironment
-} from '../../../shared/datamodel/k8s/environment';
+  Namespace,
+  INamespace
+} from '../../../shared/datamodel/k8s/namespace';
 import LuigiClient from '@kyma-project/luigi-client';
-import { EnvironmentsService } from '../../../content/environments/services/environments.service';
+import { NamespacesService } from '../../namespaces/services/namespaces.service';
 import { DataConverter, Filter, GenericListComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
-import { EnvironmentCreateComponent } from '../../environments/environment-create/environment-create.component';
+import { NamespaceCreateComponent } from '../../namespaces/namespace-create/namespace-create.component';
 
 @Component({
   selector: 'app-workspace-overview',
@@ -31,33 +31,33 @@ import { EnvironmentCreateComponent } from '../../environments/environment-creat
 })
 export class WorkspaceOverviewComponent extends GenericListComponent
   implements OnInit, OnDestroy {
-  environmentsService: EnvironmentsService;
+  environmentsService: NamespacesService;
   entryEventHandler = this.getEntryEventHandler();
   private queryParamsSubscription: any;
   private k8sNamespacesFilter = 'env=true';
 
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
-  @ViewChild('createModal') createModal: EnvironmentCreateComponent;
+  @ViewChild('createModal') createModal: NamespaceCreateComponent;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
     changeDetector: ChangeDetectorRef,
-    @Inject(EnvironmentsService) environmentsService: EnvironmentsService,
+    @Inject(NamespacesService) environmentsService: NamespacesService,
     private communicationService: ComponentCommunicationService,
     private applicationBindingService: ApplicationBindingService
   ) {
     super(changeDetector);
     this.environmentsService = environmentsService;
     const converter: DataConverter<
-      IEnvironment,
-      Environment
+      INamespace,
+      Namespace
     > = new EnvironmentDataConverter(applicationBindingService, http);
     const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector`;
     this.source = new KubernetesDataProvider(url, converter, this.http);
-    this.entryRenderer = EnvironmentCardComponent;
+    this.entryRenderer = NamespaceCardComponent;
     this.filterState = {
       facets: [this.k8sNamespacesFilter],
       filters: [

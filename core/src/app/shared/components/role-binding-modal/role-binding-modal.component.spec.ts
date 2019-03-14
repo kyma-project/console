@@ -4,7 +4,7 @@ import { RoleBindingModalComponent } from './role-binding-modal.component';
 import { Observable, of, throwError } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { RbacService } from '../../services/rbac.service';
-import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
+import { CurrentEnvironmentService } from '../../../content/namespaces/services/current-namespace.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
 

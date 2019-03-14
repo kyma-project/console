@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { AbstractKubernetesEntryRendererComponent } from '../../../environments/operation/abstract-kubernetes-entry-renderer.component';
+import { AbstractKubernetesEntryRendererComponent } from '../../../namespaces/operation/abstract-kubernetes-entry-renderer.component';
 
 @Component({
   selector: 'app-services-entry-renderer',

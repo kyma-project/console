@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AppConfig } from '../../../../app.config';
-import { AbstractKubernetesElementListComponent } from '../../../../content/environments/operation/abstract-kubernetes-element-list.component';
-import { KubernetesDataProvider } from '../../../../content/environments/operation/kubernetes-data-provider';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { AbstractKubernetesElementListComponent } from '../../../../content/namespaces/operation/abstract-kubernetes-element-list.component';
+import { KubernetesDataProvider } from '../../../../content/namespaces/operation/kubernetes-data-provider';
+import { CurrentEnvironmentService } from '../../../../content/namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
@@ -13,7 +13,7 @@ import LuigiClient from '@kyma-project/luigi-client';
   selector: 'app-roles',
   styles: ['y-list-filter { display: none; }'],
   templateUrl:
-    '../../../../content/environments/operation/kubernetes-element-list-compact.component.html'
+    '../../../../content/namespaces/operation/kubernetes-element-list-compact.component.html'
 })
 export class RolesComponent extends AbstractKubernetesElementListComponent
   implements OnInit {

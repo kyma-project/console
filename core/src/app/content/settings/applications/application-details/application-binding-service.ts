@@ -59,7 +59,7 @@ export class ApplicationBindingService {
   }
 
   public getBoundEnvironments(application) {
-    const query = `query Environment($application: String!){
+    const query = `query Namespace($application: String!){
       namespaces(application: $application) {
         name
       }

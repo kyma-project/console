@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
+import { CurrentEnvironmentService } from '../../../content/namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { map } from 'rxjs/operators';

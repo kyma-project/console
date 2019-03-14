@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppConfig } from '../../../../app.config';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { CurrentEnvironmentService } from '../../../../content/namespaces/services/current-namespace.service';
 import { finalize } from 'rxjs/operators';
 import LuigiClient from '@kyma-project/luigi-client';
 

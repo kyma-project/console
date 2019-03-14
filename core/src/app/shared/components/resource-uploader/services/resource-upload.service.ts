@@ -2,7 +2,7 @@ import * as LuigiClient from '@kyma-project/luigi-client';
 import { Injectable, OnDestroy } from '@angular/core';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { CurrentEnvironmentService } from '../../../../content/namespaces/services/current-namespace.service';
 import { AppConfig } from '../../../../app.config';
 
 import * as _ from 'lodash';

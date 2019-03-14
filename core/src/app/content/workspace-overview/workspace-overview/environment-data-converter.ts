@@ -1,7 +1,7 @@
 import {
-  Environment,
-  IEnvironment
-} from './../../../shared/datamodel/k8s/environment';
+  Namespace,
+  INamespace
+} from '../../../shared/datamodel/k8s/namespace';
 import { DataConverter } from 'app/generic-list';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import { AppConfig } from '../../../app.config';
@@ -9,14 +9,14 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
 export class EnvironmentDataConverter
-  implements DataConverter<IEnvironment, Environment> {
+  implements DataConverter<INamespace, Namespace> {
   constructor(
     private applicationBindingService: ApplicationBindingService,
     private http: HttpClient
   ) {}
 
-  convert(entry: IEnvironment): Environment {
-    const environment = new Environment(entry);
+  convert(entry: INamespace): Namespace {
+    const environment = new Namespace(entry);
 
     environment.applications = this.applicationBindingService
       .getBoundApplications(environment.getId())

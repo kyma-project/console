@@ -9,9 +9,9 @@ import {
 import { DataConverter } from 'app/generic-list';
 import { AppConfig } from '../../../../app.config';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
-import { AbstractKubernetesElementListComponent } from '../../../../content/environments/operation/abstract-kubernetes-element-list.component';
-import { KubernetesDataProvider } from '../../../../content/environments/operation/kubernetes-data-provider';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { AbstractKubernetesElementListComponent } from '../../../../content/namespaces/operation/abstract-kubernetes-element-list.component';
+import { KubernetesDataProvider } from '../../../../content/namespaces/operation/kubernetes-data-provider';
+import { CurrentEnvironmentService } from '../../../../content/namespaces/services/current-namespace.service';
 import { BindingEntryRendererComponent } from './binding-entry-renderer/binding-entry-renderer.component';
 import { BindingHeaderRendererComponent } from './binding-header-renderer/binding-header-renderer.component';
 import { IRoleBinding, RoleBinding } from '../../../datamodel/k8s/role-binding';

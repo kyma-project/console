@@ -4,7 +4,7 @@ import { EditBindingsModalComponent } from './edit-binding-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ApplicationsService } from '../../services/applications.service';
-import { EnvironmentsService } from '../../../../environments/services/environments.service';
+import { NamespacesService } from '../../../../namespaces/services/namespaces.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { ApplicationBindingService } from '../application-binding-service';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ describe('EditBindingsModalComponent', () => {
   let component: EditBindingsModalComponent;
   let fixture: ComponentFixture<EditBindingsModalComponent>;
   let ApplicationsServiceMockStub: ApplicationsService;
-  let EnvironmentsServiceMockStub: EnvironmentsService;
+  let EnvironmentsServiceMockStub: NamespacesService;
   let ApplicationBindingServiceMockStub: ApplicationBindingService;
   let ComponentCommunicationServiceMockStub: ComponentCommunicationService;
   const modalService = {
@@ -58,7 +58,7 @@ describe('EditBindingsModalComponent', () => {
           useValue: ApplicationsServiceMock
         },
         { provide: ActivatedRoute, useValue: ActivatedRouteMock },
-        { provide: EnvironmentsService, useValue: EnvironmentsServiceMock },
+        { provide: NamespacesService, useValue: EnvironmentsServiceMock },
         {
           provide: ApplicationBindingService,
           useValue: ApplicationBindingServiceMock
@@ -88,7 +88,7 @@ describe('EditBindingsModalComponent', () => {
       ApplicationsService
     );
     EnvironmentsServiceMockStub = fixture.debugElement.injector.get(
-      EnvironmentsService
+      NamespacesService
     );
     ApplicationBindingServiceMockStub = fixture.debugElement.injector.get(
       ApplicationBindingService

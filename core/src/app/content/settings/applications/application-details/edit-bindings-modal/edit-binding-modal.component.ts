@@ -1,6 +1,6 @@
 import { ApplicationBindingService } from '../application-binding-service';
 import { ComponentCommunicationService } from './../../../../../shared/services/component-communication.service';
-import { EnvironmentsService } from '../../../../environments/services/environments.service';
+import { NamespacesService } from '../../../../namespaces/services/namespaces.service';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
@@ -18,7 +18,7 @@ export class EditBindingsModalComponent {
   @ViewChild('editBindingModal') editBindingModal: ModalComponent;
 
   public environments = [];
-  private environmentsService: EnvironmentsService;
+  private environmentsService: NamespacesService;
   public application: any;
   public ariaExpanded = false;
   public ariaHidden = true;
@@ -28,7 +28,7 @@ export class EditBindingsModalComponent {
   public filteredEnvsNames = [];
 
   constructor(
-    environmentsService: EnvironmentsService,
+    environmentsService: NamespacesService,
     private applicationService: ApplicationsService,
     private route: ActivatedRoute,
     private applicationBindingService: ApplicationBindingService,
