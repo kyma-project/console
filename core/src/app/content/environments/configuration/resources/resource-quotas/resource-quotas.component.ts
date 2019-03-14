@@ -18,9 +18,14 @@ import { ResourceQuotaEntryRendererComponent } from './resource-quota-entry-rend
 export class ResourceQuotasComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  public title = 'Resource Quotas';
-  public emptyListText =
-    'It looks like you don’t have any resource quotas in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: 'Resource Quotas'
+    },
+    body: {
+      text: 'It looks like you don’t have any resource quotas in your namespace yet.'
+    }
+  };
   public createNewElementText = 'Add Resource Quota';
   public resourceKind = 'Resource Quota';
   private currentEnvironmentId: string;
