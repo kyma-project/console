@@ -24,7 +24,11 @@ import { RoleBindingModalComponent } from '../../role-binding-modal/role-binding
 export class BindingsComponent extends AbstractKubernetesElementListComponent
   implements OnInit {
   public title = '';
-  public emptyListText = 'It looks like you don’t have any Role Bindings yet.';
+  public emptyListData = {
+    body: {
+      text: 'It looks like you don’t have any Role Bindings yet.'
+    }
+  };
   public createNewElementText = 'Create Binding';
   public resourceKind = 'RoleBinding';
   private currentEnvironmentId: string;
