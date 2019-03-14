@@ -1,9 +1,7 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { Pod } from '../../../../../shared/datamodel/k8s/pod';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
 
 @Component({
   selector: 'app-pods-entry-renderer',
