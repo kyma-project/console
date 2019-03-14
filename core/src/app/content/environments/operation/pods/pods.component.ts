@@ -11,13 +11,13 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 })
 export class PodsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
-  title = 'Pods';
-  emptyListText =
+  public title = 'Pods';
+  public emptyListText =
     'It looks like you don’t have any pods in your namespace yet.';
-  resourceKind = 'Pod';
+  public resourceKind = 'Pod';
 
-  entryRenderer = PodsEntryRendererComponent;
-  headerRenderer = PodsHeaderRendererComponent;
+  public entryRenderer = PodsEntryRendererComponent;
+  public headerRenderer = PodsHeaderRendererComponent;
 
   constructor(
     currentEnvironmentService: CurrentEnvironmentService,
@@ -38,7 +38,6 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
       pods(namespace: $namespace) {
         name
         nodeName
-        namespace
         restartCount
         creationTimestamp
         labels
@@ -48,7 +47,6 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
           reason
           message
         }
-        json
       }
     }`;
   }
