@@ -8,7 +8,7 @@ import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
-export class EnvironmentDataConverter
+export class NamespaceDataConverter
   implements DataConverter<INamespace, Namespace> {
   constructor(
     private applicationBindingService: ApplicationBindingService,
@@ -16,14 +16,14 @@ export class EnvironmentDataConverter
   ) {}
 
   convert(entry: INamespace): Namespace {
-    const environment = new Namespace(entry);
+    const namespace = new Namespace(entry);
 
-    environment.applications = this.applicationBindingService
-      .getBoundApplications(environment.getId())
+    namespace.applications = this.applicationBindingService
+      .getBoundApplications(namespace.getId())
       .pipe(
-        map(boundEnvironments => {
-          const envs = boundEnvironments['applications'];
-          return envs ? envs.length : 0;
+        map(boundNamespaces => {
+          const namespaces = boundNamespaces['applications'];
+          return namespaces ? namespaces.length : 0;
         }),
         catchError(() => {
           return of(0);
@@ -34,8 +34,8 @@ export class EnvironmentDataConverter
 
     const servicesUrl = `${
       AppConfig.k8sApiServerUrl
-    }namespaces/${environment.getId()}/services`;
-    environment.services = this.http.get<any>(servicesUrl).pipe(
+    }namespaces/${namespace.getId()}/services`;
+    namespace.services = this.http.get<any>(servicesUrl).pipe(
       map(res => {
         return res.items.length;
       }),
@@ -46,6 +46,6 @@ export class EnvironmentDataConverter
       refCount()
     );
 
-    return environment;
+    return namespace;
   }
 }

@@ -1,4 +1,4 @@
-import { EnvironmentDataConverter } from './environment-data-converter';
+import { NamespaceDataConverter } from './namespace-data-converter';
 import {
   ChangeDetectorRef,
   Component,
@@ -31,7 +31,7 @@ import { NamespaceCreateComponent } from '../../namespaces/namespace-create/name
 })
 export class WorkspaceOverviewComponent extends GenericListComponent
   implements OnInit, OnDestroy {
-  environmentsService: NamespacesService;
+  namespacesService: NamespacesService;
   entryEventHandler = this.getEntryEventHandler();
   private queryParamsSubscription: any;
   private k8sNamespacesFilter = 'env=true';
@@ -45,16 +45,16 @@ export class WorkspaceOverviewComponent extends GenericListComponent
     private router: Router,
     private route: ActivatedRoute,
     changeDetector: ChangeDetectorRef,
-    @Inject(NamespacesService) environmentsService: NamespacesService,
+    @Inject(NamespacesService) namespacesService: NamespacesService,
     private communicationService: ComponentCommunicationService,
     private applicationBindingService: ApplicationBindingService
   ) {
     super(changeDetector);
-    this.environmentsService = environmentsService;
+    this.namespacesService = namespacesService;
     const converter: DataConverter<
       INamespace,
       Namespace
-    > = new EnvironmentDataConverter(applicationBindingService, http);
+    > = new NamespaceDataConverter(applicationBindingService, http);
     const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector`;
     this.source = new KubernetesDataProvider(url, converter, this.http);
     this.entryRenderer = NamespaceCardComponent;
@@ -66,7 +66,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
       ]
     };
     this.pagingState = { pageNumber: 1, pageSize: 20 };
-    this.environmentsService.envChangeStateEmitter$.subscribe(() => {
+    this.namespacesService.namespaceChangeStateEmitter$.subscribe(() => {
       this.reload();
     });
   }
@@ -80,7 +80,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   ngOnDestroy() {
     this.queryParamsSubscription.unsubscribe();
   }
-  onEnvCreateCancelled() {
+  onNamespaceCreateCancelled() {
     LuigiClient.linkManager().navigate('/');
   }
   handleQueryParamsChange(queryParams: any) {
@@ -109,8 +109,8 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                 type: 'disable',
                 entry
               });
-              this.environmentsService
-                .deleteEnvironment(entry.getName())
+              this.namespacesService
+                .deleteNamespace(entry.getName())
                 .subscribe(
                   () => {
                     this.communicationService.sendEvent({

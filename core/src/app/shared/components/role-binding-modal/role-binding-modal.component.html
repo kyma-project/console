@@ -40,7 +40,7 @@
                 ngClass="{{!selectedKind ? 'fd-dropdown__control--placeholder' : ''}}"
                 [attr.aria-expanded]="ariaExpandedKind" aria-controls="kinds" (click)="toggleDropDown('Kind')">
                 <input fd-form-control class="y-fd-form__control" type="text" name="selectedKind"
-                  placeholder="Select Kind" [(ngModel)]="selectedKind" (ngModelChange)="filterEnvironments('Kind')"
+                  placeholder="Select Kind" [(ngModel)]="selectedKind" (ngModelChange)="filterNamespaces('Kind')"
                   (keydown)="openDropDown('Kind', $event)" (click)="openDropDown('Kind', $event)" autocomplete="off">
               </button>
               <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
@@ -66,7 +66,7 @@
                 [attr.aria-expanded]="ariaExpandedRole" aria-controls="roles" (click)="toggleDropDown('Role')">
                 <input fd-form-control class="y-fd-form__control" type="text" name="selectedRole"
                   placeholder="Select Role" [disabled]="!selectedKind" [(ngModel)]="selectedRole"
-                  (ngModelChange)="filterEnvironments('Role')" (keydown)="openDropDown('Role', $event)"
+                  (ngModelChange)="filterNamespaces('Role')" (keydown)="openDropDown('Role', $event)"
                   (click)="openDropDown('Role', $event)" autocomplete="off">
               </button>
               <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"

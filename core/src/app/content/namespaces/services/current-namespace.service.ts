@@ -2,18 +2,18 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 
 @Injectable()
-export class CurrentEnvironmentService implements OnDestroy {
-  private currentEnvId = new ReplaySubject<string>(1);
+export class CurrentNamespaceService implements OnDestroy {
+  private currentNamespaceId = new ReplaySubject<string>(1);
 
-  public getCurrentEnvironmentId(): ReplaySubject<string> {
-    return this.currentEnvId;
+  public getCurrentNamespaceId(): ReplaySubject<string> {
+    return this.currentNamespaceId;
   }
 
-  public setCurrentEnvironmentId(newEnvId) {
-    this.currentEnvId.next(newEnvId);
+  public setCurrentNamespaceId(newNamespaceId) {
+    this.currentNamespaceId.next(newNamespaceId);
   }
 
   ngOnDestroy() {
-    this.currentEnvId.complete();
+    this.currentNamespaceId.complete();
   }
 }

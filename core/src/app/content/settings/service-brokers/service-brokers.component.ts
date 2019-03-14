@@ -8,7 +8,7 @@ import { KubernetesDataProvider } from '../../namespaces/operation/kubernetes-da
 import { DataConverter } from 'app/generic-list';
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { CurrentEnvironmentService } from '../../namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from '../../namespaces/services/current-namespace.service';
 import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/service-broker-entry-renderer.component';
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
 import { AbstractKubernetesElementListComponent } from '../../namespaces/operation/abstract-kubernetes-element-list.component';
@@ -28,11 +28,11 @@ export class ServiceBrokersComponent extends AbstractKubernetesElementListCompon
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<IServiceBroker, ServiceBroker> = {
       convert(entry: IServiceBroker) {
         return new ServiceBroker(entry);

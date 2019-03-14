@@ -3,7 +3,7 @@ import { FilteredApisEntryRendererComponent } from './filtered-apis-entry-render
 import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from '../../../operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
-import { CurrentEnvironmentService } from '../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../app.config';
 import { Filter } from 'app/generic-list';
@@ -25,20 +25,20 @@ export class FilteredApisComponent
     'It looks like you don’t have any APIs for this service yet.';
   public createNewElementText = 'Add API';
   public baseUrl: string;
-  public currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  public currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
   private serviceName: string;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
 
     const query = `query API($namespace: String!, $serviceName: String!) {
       apis(namespace: $namespace, serviceName: $serviceName) {
@@ -65,19 +65,19 @@ export class FilteredApisComponent
       }
     );
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
         this.baseUrl = `${
           AppConfig.k8sApiServerUrl_apimanagement
-        }namespaces/${envId}/apis`;
+        }namespaces/${namespaceId}/apis`;
 
         this.source = new GraphQLDataProvider(
           `${AppConfig.graphqlApiUrl}`,
           query,
           {
-            namespace: this.currentEnvironmentId,
+            namespace: this.currentNamespaceId,
             serviceName: this.serviceName
           },
           this.graphQLClientService
@@ -96,6 +96,6 @@ export class FilteredApisComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 }

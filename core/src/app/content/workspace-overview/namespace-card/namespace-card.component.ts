@@ -45,7 +45,7 @@ export class NamespaceCardComponent implements OnInit, OnDestroy {
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  public navigateToDetails(envName) {
-    LuigiClient.linkManager().navigate(`/home/namespaces/${envName}/details`);
+  public navigateToDetails(namespaceName) {
+    LuigiClient.linkManager().navigate(`/home/namespaces/${namespaceName}/details`);
   }
 }

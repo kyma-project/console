@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
-import { CurrentEnvironmentService } from 'namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
@@ -15,22 +15,22 @@ import { LuigiClientService } from 'shared/services/luigi-client.service';
 export class DeploymentEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
-  public currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  public currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public isSystemNamespace: boolean;
 
   constructor(
     protected injector: Injector,
     private componentCommunicationService: ComponentCommunicationService,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private luigiClientService: LuigiClientService
   ) {
     super(injector);
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
       });
   }
   public disabled = false;
@@ -53,7 +53,7 @@ export class DeploymentEntryRendererComponent
 
   ngOnDestroy() {
     this.communicationServiceSubscription.unsubscribe();
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   isStatusOk(entry): boolean {
@@ -71,7 +71,7 @@ export class DeploymentEntryRendererComponent
   goToServiceInstanceDetails(serviceInstanceId: string) {
     LuigiClient.linkManager().navigate(
       `/home/namespaces/${
-        this.currentEnvironmentId
+        this.currentNamespaceId
       }/cmf-instances/details/${serviceInstanceId}`
     );
   }

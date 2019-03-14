@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 
-import { CurrentEnvironmentService } from 'namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
@@ -23,13 +23,13 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   headerRenderer = ReplicaSetsHeaderRendererComponent;
 
   constructor(
-    currentEnvironmentService: CurrentEnvironmentService,
+    currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(
-      currentEnvironmentService,
+      currentNamespaceService,
       commService,
       graphQLClientService,
       changeDetector

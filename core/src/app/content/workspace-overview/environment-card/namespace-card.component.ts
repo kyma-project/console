@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
-  selector: 'environment-card',
+  selector: 'namespace-card',
   templateUrl: './namespace-card.component.html'
 })
-export class EnvironmentCardComponent implements OnInit, OnDestroy {
+export class NamespaceCardComponent implements OnInit, OnDestroy {
   @Input() entry: Namespace;
 
   entryEventHandler;
@@ -45,7 +45,7 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  public navigateToDetails(envName) {
-    LuigiClient.linkManager().navigate(`/home/namespaces/${envName}/details`);
+  public navigateToDetails(namespaceName) {
+    LuigiClient.linkManager().navigate(`/home/namespaces/${namespaceName}/details`);
   }
 }

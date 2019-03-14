@@ -46,7 +46,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
                     ? this.dataConverter.convert(item)
                     : item;
                 })
-                .filter(item => this.selectActiveEnvironments(item));
+                .filter(item => this.selectActiveNamespaces(item));
             }),
             catchError(error => {
               observer.error(error);
@@ -104,7 +104,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
     return result;
   }
 
-  selectActiveEnvironments(item) {
+  selectActiveNamespaces(item) {
     if (item instanceof Namespace) {
       return (
         !item.status || !item.status.phase || item.status.phase === 'Active'

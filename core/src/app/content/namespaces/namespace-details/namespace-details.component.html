@@ -1,10 +1,10 @@
 <div *ngIf="errorMessage">
   <fd-alert type="error">{{ errorMessage }}</fd-alert>
 </div>
-<section class="fd-section" *ngIf="environment.getLabel()">
+<section class="fd-section" *ngIf="namespace.getLabel()">
   <fd-action-bar>
     <fd-action-bar-header>
-      <fd-action-bar-title>{{ environment.getLabel() }}</fd-action-bar-title>
+      <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
     </fd-action-bar-header>
     <fd-action-bar-actions>
       <button fd-button [options]="'light'" [glyph]="'add'" (click)="openUploadResourceModal()"
@@ -19,13 +19,13 @@
         <div fd-form-set>
           <div fd-form-item>
             <fd-form-label>Name</fd-form-label>
-            <input fd-form-control [type]="'text'" value="{{ environment.getLabel() }}" readonly />
+            <input fd-form-control [type]="'text'" value="{{ namespace.getLabel() }}" readonly />
           </div>
         </div>
         <div fd-form-set>
           <div fd-form-item>
             <fd-form-label>Namespace-ID</fd-form-label>
-            <input fd-form-control [type]="'text'" value="{{ environment.getUid() }}" readonly />
+            <input fd-form-control [type]="'text'" value="{{ namespace.getUid() }}" readonly />
           </div>
         </div>
       </fd-panel-body>
@@ -74,12 +74,12 @@
           <th></th>
         </fd-table-header>
         <fd-table-body>
-          <tr *ngFor="let env of applications">
+          <tr *ngFor="let namespace of applications">
             <td>
-              <a (click)="navigateToApplications(env.name)">{{ env.name }}</a>
+              <a (click)="navigateToApplications(namespace.name)">{{ namespace.name }}</a>
             </td>
             <td class="fd-table--col-1 fd-has-float-right">
-              <y-list-actions [entry]="env" [entryEventHandler]="entryEventHandler" [actions]="actions">
+              <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
               </y-list-actions>
             </td>
           </tr>

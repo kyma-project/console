@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppConfig } from '../../../../../app.config';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { CurrentEnvironmentService } from '../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -13,18 +13,18 @@ import LuigiClient from '@kyma-project/luigi-client';
   templateUrl: './service-details.component.html'
 })
 export class ServiceDetailsComponent implements OnInit, OnDestroy {
-  public currentEnvironmentId = '';
+  public currentNamespaceId = '';
   public errorMessage: string;
   public serviceName: string;
   public serviceDetails: any;
   public serviceDetailsLoading = true;
   public serviceDetailsUrl: string;
-  public currentEnvironmentSubscription: Subscription;
+  public currentNamespaceSubscription: Subscription;
   public isSystemNamespace: boolean;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private route: ActivatedRoute,
     private communicationService: ComponentCommunicationService
   ) {
@@ -32,16 +32,16 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
 
         this.route.params.subscribe(params => {
           this.serviceName = params['name'];
 
           this.serviceDetailsUrl = `${AppConfig.k8sApiServerUrl}namespaces/${
-            this.currentEnvironmentId
+            this.currentNamespaceId
           }/services/${this.serviceName}`;
 
           this.fetchData(this.serviceDetailsUrl).subscribe(
@@ -64,7 +64,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   public subscribeToRefreshComponent() {

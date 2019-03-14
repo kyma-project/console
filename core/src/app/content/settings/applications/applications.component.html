@@ -12,7 +12,7 @@
       <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter" [filterState]="filterState"
         (onFilterChanged)="onFilterChanged($event)">
       </y-list-filter>
-      <button *ngIf="!isReadOnly" fd-button [options]="'light'" [glyph]="'add'" class="open-create-env-modal"
+      <button *ngIf="!isReadOnly" fd-button [options]="'light'" [glyph]="'add'" class="open-create-namespace-modal"
         (click)="openModal()">
         Create Application
       </button>

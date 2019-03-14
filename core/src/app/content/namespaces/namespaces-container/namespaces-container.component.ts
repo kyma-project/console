@@ -14,7 +14,7 @@ import {
 } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter, tap, take, map, concatMap } from 'rxjs/operators';
-import { CurrentEnvironmentService } from '../services/current-namespace.service';
+import { CurrentNamespaceService } from '../services/current-namespace.service';
 import { NamespacesService } from '../services/namespaces.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
@@ -44,7 +44,7 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
   public fadeIn = '1';
   public leftNavCollapsed = false;
   public previousUrl = '';
-  public previousEnv = '';
+  public previousNamespace = '';
   public limitHasBeenExceeded = false;
   public limitExceededErrors = [];
   public overview = false;
@@ -54,8 +54,8 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private environmentsService: NamespacesService,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private namespacesService: NamespacesService,
+    private currentNamespaceService: CurrentNamespaceService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
     this.routerSub = this.router.events.subscribe(val => {
@@ -76,10 +76,10 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.route.params.subscribe(params => {
-      const envId = params['environmentId'];
-      if (envId) {
-        this.currentEnvironmentService.setCurrentEnvironmentId(envId);
-        this.environmentsService.getEnvironment(envId).subscribe(
+      const namespaceId = params['namespaceId'];
+      if (namespaceId) {
+        this.currentNamespaceService.setCurrentNamespaceId(namespaceId);
+        this.namespacesService.getNamespace(namespaceId).subscribe(
           () => {
             /* OK */
           },
@@ -87,7 +87,7 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
             if (err.status === 404) {
               this.infoModal.show(
                 'Error',
-                `Namespace ${envId} doesn't exist.`,
+                `Namespace ${namespaceId} doesn't exist.`,
                 '/home/namespaces'
               );
             }
@@ -127,13 +127,13 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
     url: string,
     previousUrl: string
   ): boolean {
-    const envExtUrlPattern = /^\/home\/namespaces\/[^\/]+\/extensions\/.+$/;
+    const namespaceExtUrlPattern = /^\/home\/namespaces\/[^\/]+\/extensions\/.+$/;
     const clusterExtUrlPattern = /^\/home\/settings\/extensions\/.+$/;
     if (previousUrl) {
       if (url === previousUrl) {
         return false;
       }
-      if (url.match(envExtUrlPattern) && previousUrl.match(envExtUrlPattern)) {
+      if (url.match(namespaceExtUrlPattern) && previousUrl.match(namespaceExtUrlPattern)) {
         return true;
       }
       if (
@@ -147,17 +147,17 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
   }
 
   private checkIfResourceLimitExceeded(url) {
-    this.currentEnvironmentService
-      .getCurrentEnvironmentId()
+    this.currentNamespaceService
+      .getCurrentNamespaceId()
       .pipe(
-        tap(env => (this.overview = url.includes(`${env}/details`))),
-        filter(env => url.includes('namespaces/' + env)),
-        filter(env => env !== this.previousEnv || this.overview),
+        tap(namespace => (this.overview = url.includes(`${namespace}/details`))),
+        filter(namespace => url.includes('namespaces/' + namespace)),
+        filter(namespace => namespace !== this.previousNamespace || this.overview),
         take(1),
-        concatMap(env =>
-          this.environmentsService.getResourceQueryStatus(env).pipe(
+        concatMap(namespace =>
+          this.namespacesService.getResourceQueryStatus(namespace).pipe(
             map(res => ({
-              env,
+              namespace,
               quotaExceeded:
                 res && res.resourceQuotasStatus
                   ? res.resourceQuotasStatus.exceeded
@@ -171,10 +171,10 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe(
-        ({ env, quotaExceeded, limitExceededErrors }) => {
+        ({ namespace, quotaExceeded, limitExceededErrors }) => {
           this.limitHasBeenExceeded = quotaExceeded;
-          if (env !== this.previousEnv || this.overview) {
-            this.previousEnv = env;
+          if (namespace !== this.previousNamespace || this.overview) {
+            this.previousNamespace = namespace;
           }
           if (
             quotaExceeded &&
@@ -190,7 +190,7 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
             const msg = {
               msg: 'console.quotaexceeded',
               data,
-              env: this.previousEnv
+              namespace: this.previousNamespace
             };
             window.parent.postMessage(msg, '*');
           }

@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { CurrentEnvironmentService } from '../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abstract-kubernetes-entry-renderer.component';
 import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
@@ -13,12 +13,12 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
-  public currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  public currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
 
   constructor(
     protected injector: Injector,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
@@ -33,10 +33,10 @@ export class ApiDefinitionEntryRendererComponent
       }
     ];
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
       });
   }
   public disabled = false;
@@ -57,7 +57,7 @@ export class ApiDefinitionEntryRendererComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
     this.communicationServiceSubscription.unsubscribe();
   }
 

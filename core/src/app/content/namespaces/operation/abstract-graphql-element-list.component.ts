@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from './abstract-kubernetes-element-list.component';
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
-import { CurrentEnvironmentService } from 'namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { Filter } from 'app/generic-list';
@@ -21,8 +21,8 @@ import { AppConfig } from 'app/app.config';
 export class AbstractGraphqlElementListComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   @ViewChild('mutateResourceModal')
@@ -33,22 +33,22 @@ export class AbstractGraphqlElementListComponent
   };
 
   constructor(
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, null, commService);
+    super(currentNamespaceService, changeDetector, null, commService);
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
           AppConfig.graphqlApiUrl,
           this.getGraphglQueryForList(),
           {
-            namespace: this.currentEnvironmentId
+            namespace: this.currentNamespaceId
           },
           this.graphQLClientService
         );
@@ -56,7 +56,7 @@ export class AbstractGraphqlElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   protected getGraphglQueryForList() {
@@ -68,7 +68,7 @@ export class AbstractGraphqlElementListComponent
     this.graphQLClientService
       .request(AppConfig.graphqlApiUrl, query, {
         name: entry.name,
-        namespace: this.currentEnvironmentId
+        namespace: this.currentNamespaceId
       })
       .subscribe(data => {
         this.mutateResourceModal.resourceData = data.replicaSet.json;
@@ -86,7 +86,7 @@ export class AbstractGraphqlElementListComponent
 
   sendDeleteRequest(entry) {
     const name = entry.name;
-    const namespace = this.currentEnvironmentId;
+    const namespace = this.currentNamespaceId;
     const mutation = this.getDeleteMutation();
 
     return this.graphQLClientService.request(

@@ -2,7 +2,7 @@ import { ConfirmationModalComponent } from '../../../shared/components/confirmat
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { JsonEditorModalComponent } from '../../../shared/components/json-editor-modal/json-editor-modal.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { CurrentEnvironmentService } from '../services/current-namespace.service';
+import { CurrentNamespaceService } from '../services/current-namespace.service';
 import {
   ChangeDetectorRef,
   Injectable,
@@ -42,7 +42,7 @@ export class AbstractKubernetesElementListComponent
   private communicationServiceSubscription: Subscription;
 
   constructor(
-    private currentEnvSrv: CurrentEnvironmentService,
+    private currentNamespaceSrv: CurrentNamespaceService,
     private changeDet: ChangeDetectorRef,
     private httpClient: HttpClient,
     private communicationService: ComponentCommunicationService
@@ -59,8 +59,8 @@ export class AbstractKubernetesElementListComponent
     // to be implemented by sub-class
   }
 
-  getCurrentEnvironmentId() {
-    return this.currentEnvSrv.getCurrentEnvironmentId();
+  getCurrentNamespaceId() {
+    return this.currentNamespaceSrv.getCurrentNamespaceId();
   }
 
   ngOnDestroy() {

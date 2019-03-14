@@ -39,10 +39,10 @@
       "@angular/http/testing",
       "@angular/router/testing",
       "shared",
-      "environments",
+      "namespaces",
       "app"
     ],
-    "no-implicit-dependencies": [true, ["shared", "environments", "app"]],
+    "no-implicit-dependencies": [true, ["shared", "namespaces", "app"]],
     "interface-name": false
   },
   "rulesDirectory": ["node_modules/codelyzer"],

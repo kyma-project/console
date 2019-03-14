@@ -4,7 +4,7 @@ import { RoleBindingModalComponent } from './role-binding-modal.component';
 import { Observable, of, throwError } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { RbacService } from '../../services/rbac.service';
-import { CurrentEnvironmentService } from '../../../content/namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../content/namespaces/services/current-namespace.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
 
@@ -23,8 +23,8 @@ const RbacServiceMock = {
   }
 };
 
-const CurrentEnvironmentServiceMock = {
-  getCurrentEnvironmentId() {
+const CurrentNamespaceServiceMock = {
+  getCurrentNamespaceId() {
     return of('currentId');
   }
 };
@@ -33,7 +33,7 @@ describe('RoleBindingModalComponent', () => {
   let component: RoleBindingModalComponent;
   let fixture: ComponentFixture<RoleBindingModalComponent>;
   let RbacServiceMockStub: RbacService;
-  let CurrentEnvironmentServiceMockStub: CurrentEnvironmentService;
+  let CurrentNamespaceServiceMockStub: CurrentNamespaceService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -44,8 +44,8 @@ describe('RoleBindingModalComponent', () => {
           useValue: RbacServiceMock
         },
         {
-          provide: CurrentEnvironmentService,
-          useValue: CurrentEnvironmentServiceMock
+          provide: CurrentNamespaceService,
+          useValue: CurrentNamespaceServiceMock
         },
         {
           provide: ModalService,
@@ -66,8 +66,8 @@ describe('RoleBindingModalComponent', () => {
     fixture = TestBed.createComponent(RoleBindingModalComponent);
     component = fixture.componentInstance;
     RbacServiceMockStub = fixture.debugElement.injector.get(RbacService);
-    CurrentEnvironmentServiceMockStub = fixture.debugElement.injector.get(
-      CurrentEnvironmentService
+    CurrentNamespaceServiceMockStub = fixture.debugElement.injector.get(
+      CurrentNamespaceService
     );
     fixture.detectChanges();
   });

@@ -32,7 +32,7 @@ const appRoutes: Routes = [
       {
         path: 'namespaces',
         component: NamespacesContainerComponent,
-        data: { navCtx: 'environment' },
+        data: { navCtx: 'namespace' },
         children: [
           { path: 'yVirtual', component: WorkspaceOverviewComponent },
           { path: 'workspace', component: WorkspaceOverviewComponent },
@@ -40,9 +40,9 @@ const appRoutes: Routes = [
         ]
       },
       {
-        path: 'namespaces/:environmentId',
+        path: 'namespaces/:namespaceId',
         component: NamespacesContainerComponent,
-        data: { navCtx: 'environment' },
+        data: { navCtx: 'namespace' },
         children: [
           { path: 'yVirtual', component: NamespaceDetailsComponent },
           { path: 'details', component: NamespaceDetailsComponent },

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CurrentEnvironmentService } from '../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { AppConfig } from '../../../../../app.config';
 import { ActivatedRoute } from '@angular/router';
 import { InformationModalComponent } from '../../../../../shared/components/information-modal/information-modal.component';
@@ -14,18 +14,18 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./secret-detail.component.scss']
 })
 export class SecretDetailComponent implements OnInit, OnDestroy {
-  public currentEnvironmentId = '';
+  public currentNamespaceId = '';
   public secretName: string;
   public secretDetails: any;
   public data: any;
   public annotations: any;
   public loading = true;
   public errorMessage: string;
-  public currentEnvironmentSubscription: Subscription;
+  public currentNamespaceSubscription: Subscription;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private route: ActivatedRoute,
     private communicationService: ComponentCommunicationService
   ) {
@@ -33,10 +33,10 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
         this.route.params.subscribe(params => {
           this.secretName = params['name'];
           const url = this.prepareUrl();
@@ -47,7 +47,7 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
 
   prepareUrl(): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
+      this.currentNamespaceId
     }/secrets/${this.secretName}`;
   }
 
@@ -138,6 +138,6 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 }

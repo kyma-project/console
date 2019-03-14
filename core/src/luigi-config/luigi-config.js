@@ -26,7 +26,7 @@ if (localStorage.getItem('luigi.auth')) {
 }
 
 function getNodes(context) {
-  var environment = context.environmentId;
+  var namespace = context.namespaceId;
   var staticNodes = [
     {
       link: '/home/workspace',
@@ -36,7 +36,7 @@ function getNodes(context) {
     {
       pathSegment: 'details',
       label: 'Overview',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/details',
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/details',
       icon: 'product'
     },
     {
@@ -55,7 +55,7 @@ function getNodes(context) {
       navigationContext: 'permissions',
       label: 'Permissions',
       viewUrl:
-        '/consoleapp.html#/home/namespaces/' + environment + '/permissions',
+        '/consoleapp.html#/home/namespaces/' + namespace + '/permissions',
       keepSelectedForChildren: true,
       children: [
         {
@@ -65,7 +65,7 @@ function getNodes(context) {
               pathSegment: ':name',
               viewUrl:
                 '/consoleapp.html#/home/namespaces/' +
-                environment +
+                namespace +
                 '/permissions/roles/:name'
             }
           ]
@@ -77,7 +77,7 @@ function getNodes(context) {
       pathSegment: 'resources',
       navigationContext: 'resources',
       label: 'Resources',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/resources'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/resources'
     },
     {
       category: 'Configuration',
@@ -85,7 +85,7 @@ function getNodes(context) {
       navigationContext: 'config-maps',
       label: 'Config maps',
       viewUrl:
-        '/consoleapp.html#/home/namespaces/' + environment + '/configmaps'
+        '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
     },
     {
       category: { label: 'Development', icon: 'source-code' },
@@ -98,7 +98,7 @@ function getNodes(context) {
       navigationContext: 'deployments',
       label: 'Deployments',
       viewUrl:
-        '/consoleapp.html#/home/namespaces/' + environment + '/deployments'
+        '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
     },
     {
       category: 'Operation',
@@ -106,21 +106,21 @@ function getNodes(context) {
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
       viewUrl:
-        '/consoleapp.html#/home/namespaces/' + environment + '/replicaSets'
+        '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
     },
     {
       category: 'Operation',
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/pods'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/pods'
     },
     {
       category: 'Operation',
       pathSegment: 'services',
       navigationContext: 'services',
       label: 'Services',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/services',
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/services',
       keepSelectedForChildren: true,
       children: [
         {
@@ -130,7 +130,7 @@ function getNodes(context) {
               pathSegment: ':name',
               viewUrl:
                 '/consoleapp.html#/home/namespaces/' +
-                environment +
+                namespace +
                 '/services/:name',
               children: [
                 {
@@ -140,7 +140,7 @@ function getNodes(context) {
                       pathSegment: 'create',
                       viewUrl:
                         '/consoleapp.html#/home/namespaces/' +
-                        environment +
+                        namespace +
                         '/services/:name/apis/create'
                     },
                     {
@@ -150,7 +150,7 @@ function getNodes(context) {
                           pathSegment: ':apiName',
                           viewUrl:
                             '/consoleapp.html#/home/namespaces/' +
-                            environment +
+                            namespace +
                             '/services/:name/apis/details/:apiName'
                         }
                       ]
@@ -168,7 +168,7 @@ function getNodes(context) {
       pathSegment: 'secrets',
       navigationContext: 'secrets',
       label: 'Secrets',
-      viewUrl: '/consoleapp.html#/home/namespaces/' + environment + '/secrets',
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/secrets',
       keepSelectedForChildren: true,
       children: [
         {
@@ -178,7 +178,7 @@ function getNodes(context) {
               pathSegment: ':name',
               viewUrl:
                 '/consoleapp.html#/home/namespaces/' +
-                environment +
+                namespace +
                 '/secrets/:name'
             }
           ]
@@ -187,9 +187,9 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', environment),
-    getUiEntities('clustermicrofrontends', environment, [
-      'environment',
+    getUiEntities('microfrontends', namespace),
+    getUiEntities('clustermicrofrontends', namespace, [
+      'namespace',
       'namespace'
     ])
   ]).then(function(values) {
@@ -236,15 +236,15 @@ async function getNamespace(namespaceName) {
 /**
  * getUiEntities
  * @param {string} entityname microfrontends | clustermicrofrontends
- * @param {string} environment k8s namespace name
- * @param {array} placements array of strings: namespace | environment | cluster
+ * @param {string} namespace k8s namespace name
+ * @param {array} placements array of strings: namespace | namespace | cluster
  */
-async function getUiEntities(entityname, environment, placements) {
-  if (environment) {
-    const currentNamespace = await getNamespace(environment);
+async function getUiEntities(entityname, namespace, placements) {
+  if (namespace) {
+    const currentNamespace = await getNamespace(namespace);
     if (
       !currentNamespace.metadata.labels ||
-      currentNamespace.metadata.labels.env !== 'true'
+      currentNamespace.metadata.labels.namespace !== 'true'
     ) {
       return 'systemNamespace';
     }
@@ -252,7 +252,7 @@ async function getUiEntities(entityname, environment, placements) {
   var fetchUrl =
     k8sServerUrl +
     '/apis/ui.kyma-project.io/v1alpha1/' +
-    (environment ? 'namespaces/' + environment + '/' : '') +
+    (namespace ? 'namespaces/' + namespace + '/' : '') +
     entityname;
   const segmentPrefix = entityname === 'clustermicrofrontends' ? 'cmf-' : 'mf-';
   const cacheName = '_console_mf_cache_';
@@ -603,19 +603,19 @@ function getEnvs() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
   ).then(function(response) {
-    var envs = [];
-    response.items.map(env => {
-      if (env.status && env.status.phase !== 'Active') {
-        return; //"pretend" that inactive env is already removed
+    var namespaces = [];
+    response.items.map(namespace => {
+      if (namespace.status && namespace.status.phase !== 'Active') {
+        return; //"pretend" that inactive namespace is already removed
       }
-      envName = env.metadata.name;
-      envs.push({
+      namespaceName = namespace.metadata.name;
+      namespaces.push({
         category: 'Namespaces',
-        label: envName,
-        pathValue: envName
+        label: namespaceName,
+        pathValue: namespaceName
       });
     });
-    return envs;
+    return namespaces;
   });
 }
 
@@ -704,9 +704,9 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                     hideFromNav: true,
                     children: [
                       {
-                        pathSegment: ':environmentId',
+                        pathSegment: ':namespaceId',
                         context: {
-                          environmentId: ':environmentId'
+                          namespaceId: ':namespaceId'
                         },
                         children: getNodes,
                         navigationContext: 'namespaces',
@@ -821,7 +821,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
 
 window.addEventListener('message', e => {
   if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
-    const env = e.data.env;
+    const namespace = e.data.namespace;
     const data = e.data.data;
     if (data && data.resourceQuotasStatus) {
       limitHasBeenExceeded = data.resourceQuotasStatus.exceeded;
@@ -838,7 +838,7 @@ window.addEventListener('message', e => {
       const linkdata = {
         goToResourcesConfig: {
           text: 'Resources Configuration',
-          url: `/home/namespaces/${env}/resources`
+          url: `/home/namespaces/${namespace}/resources`
         }
       };
       let errorText = `Error ! The following resource quota limit has been exceeded by the given resource:<br>`;

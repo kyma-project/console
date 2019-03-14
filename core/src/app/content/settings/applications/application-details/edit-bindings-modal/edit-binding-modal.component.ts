@@ -17,25 +17,25 @@ import { forkJoin } from 'rxjs';
 export class EditBindingsModalComponent {
   @ViewChild('editBindingModal') editBindingModal: ModalComponent;
 
-  public environments = [];
-  private environmentsService: NamespacesService;
+  public namespaces = [];
+  private namespacesService: NamespacesService;
   public application: any;
   public ariaExpanded = false;
   public ariaHidden = true;
   public isActive = false;
-  private filteredEnvs = [];
-  public environmentName;
-  public filteredEnvsNames = [];
+  private filteredNamespaces = [];
+  public namespaceName;
+  public filteredNamespacesNames = [];
 
   constructor(
-    environmentsService: NamespacesService,
+    namespacesService: NamespacesService,
     private applicationService: ApplicationsService,
     private route: ActivatedRoute,
     private applicationBindingService: ApplicationBindingService,
     private communication: ComponentCommunicationService,
     private modalService: ModalService
   ) {
-    this.environmentsService = environmentsService;
+    this.namespacesService = namespacesService;
     this.applicationBindingService = applicationBindingService;
   }
 
@@ -44,7 +44,7 @@ export class EditBindingsModalComponent {
       const applicationId = params['id'];
       const observables = [
         this.applicationService.getApplication(applicationId) as any,
-        this.environmentsService.getEnvironments() as any
+        this.namespacesService.getNamespaces() as any
       ];
 
       forkJoin(observables).subscribe(
@@ -52,13 +52,13 @@ export class EditBindingsModalComponent {
           const response: any = data;
 
           this.application = response[0].application;
-          this.environments = response[1];
+          this.namespaces = response[1];
 
-          this.environments.forEach(env => {
+          this.namespaces.forEach(namespace => {
             if (this.application && this.application.enabledInNamespaces) {
-              this.getFilteredEnvironments(
+              this.getFilteredNamespaces(
                 this.application.enabledInNamespaces,
-                env
+                namespace
               );
             }
           });
@@ -70,19 +70,19 @@ export class EditBindingsModalComponent {
       this.isActive = true;
       this.modalService.open(this.editBindingModal).result.finally(() => {
         this.isActive = false;
-        this.environmentName = null;
-        this.filteredEnvs = [];
-        this.filteredEnvsNames = [];
+        this.namespaceName = null;
+        this.filteredNamespaces = [];
+        this.filteredNamespacesNames = [];
       });
     });
   }
 
-  private getFilteredEnvironments(enabledInNamespaces, env) {
-    const exists = _.includes(enabledInNamespaces, env.label);
+  private getFilteredNamespaces(enabledInNamespaces, namespace) {
+    const exists = _.includes(enabledInNamespaces, namespace.label);
 
     if (!exists) {
-      this.filteredEnvs.push(env);
-      this.filteredEnvsNames.push(env);
+      this.filteredNamespaces.push(namespace);
+      this.filteredNamespacesNames.push(namespace);
     }
   }
 
@@ -102,14 +102,14 @@ export class EditBindingsModalComponent {
     this.ariaHidden = true;
   }
 
-  public selectedEnv(env) {
-    this.environmentName = env.label;
+  public selectedNamespace(namespace) {
+    this.namespaceName = namespace.label;
   }
 
   save() {
     if (this.application && this.application.name) {
       this.applicationBindingService
-        .bind(this.environmentName, this.application.name)
+        .bind(this.namespaceName, this.application.name)
         .subscribe(
           res => {
             this.communication.sendEvent({
@@ -130,22 +130,22 @@ export class EditBindingsModalComponent {
     this.modalService.close(this.editBindingModal);
   }
 
-  filterEnvsNames() {
-    this.filteredEnvsNames = [];
-    this.filteredEnvs.forEach(element => {
-      if (element.label.includes(this.environmentName.toLowerCase())) {
-        this.filteredEnvsNames.push(element);
+  filterNamespacesNames() {
+    this.filteredNamespacesNames = [];
+    this.filteredNamespaces.forEach(element => {
+      if (element.label.includes(this.namespaceName.toLowerCase())) {
+        this.filteredNamespacesNames.push(element);
       }
     });
   }
 
-  checkIfEnvironmentExists() {
-    if (this.filteredEnvs.length > 0 && this.environmentName) {
-      return this.filteredEnvs
+  checkIfNamespaceExists() {
+    if (this.filteredNamespaces.length > 0 && this.namespaceName) {
+      return this.filteredNamespaces
         .map(element => {
           return element.label;
         })
-        .includes(this.environmentName);
+        .includes(this.namespaceName);
     } else {
       return false;
     }

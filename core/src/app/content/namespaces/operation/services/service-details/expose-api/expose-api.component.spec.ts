@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExposeApiComponent } from './expose-api.component';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CurrentEnvironmentService } from '../../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../../services/current-namespace.service';
 import { ExposeApiService } from './expose-api.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -75,7 +75,7 @@ describe('ExposeApiComponent', () => {
       declarations: [ExposeApiComponent],
       imports: [FormsModule, RouterModule],
       providers: [
-        CurrentEnvironmentService,
+        CurrentNamespaceService,
         { provide: ExposeApiService, useValue: ExposeApiServiceMock },
         HttpClient,
         HttpHandler,

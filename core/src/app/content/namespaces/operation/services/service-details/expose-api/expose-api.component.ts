@@ -1,7 +1,7 @@
 import { IdpPresetsService } from '../../../../../settings/idp-presets/idp-presets.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CurrentEnvironmentService } from '../../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../../services/current-namespace.service';
 import { ExposeApiService } from './expose-api.service';
 import { AppConfig } from '../../../../../../app.config';
 import { Subscription } from 'rxjs';
@@ -25,8 +25,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public hostname = '';
   public domain: string = '.' + AppConfig.domain;
   public secure = false;
-  private currentEnvironmentId = '';
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId = '';
+  private currentNamespaceSubscription: Subscription;
   public error = '';
   public errorApiName = '';
   public errorHostname = '';
@@ -55,7 +55,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
 
   constructor(
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private exposeApiService: ExposeApiService,
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -166,11 +166,11 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
-        this.apiDefUrl = `namespaces/${this.currentEnvironmentId}/apis/`;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
+        this.apiDefUrl = `namespaces/${this.currentNamespaceId}/apis/`;
       });
 
     this.route.params.subscribe(params => {
@@ -191,7 +191,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   private splitHostname(host) {
@@ -277,7 +277,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
 
   public fetchService() {
     this.exposeApiService
-      .getService(this.currentEnvironmentId, this.serviceName)
+      .getService(this.currentNamespaceId, this.serviceName)
       .subscribe(
         service => {
           this.service = service;
@@ -296,7 +296,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
 
   public fetchListOfServices() {
     this.exposeApiService
-      .getListOfServices(this.currentEnvironmentId)
+      .getListOfServices(this.currentNamespaceId)
       .subscribe(
         services => {
           this.filteredServices = services.items;
@@ -320,7 +320,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
       }
 
       this.exposeApiService
-        .getPodsByLabelSelector(this.currentEnvironmentId, labels)
+        .getPodsByLabelSelector(this.currentNamespaceId, labels)
         .subscribe(pods => {
           this.pods = pods.items;
           this.canBeSecured = this.pods.find(pod => {

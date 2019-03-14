@@ -20,8 +20,8 @@ const ApplicationsServiceMock = {
   }
 };
 
-const EnvironmentsServiceMock = {
-  getEnvironments() {
+const NamespacesServiceMock = {
+  getNamespaces() {
     return of({});
   }
 };
@@ -36,7 +36,7 @@ describe('EditBindingsModalComponent', () => {
   let component: EditBindingsModalComponent;
   let fixture: ComponentFixture<EditBindingsModalComponent>;
   let ApplicationsServiceMockStub: ApplicationsService;
-  let EnvironmentsServiceMockStub: NamespacesService;
+  let NamespacesServiceMockStub: NamespacesService;
   let ApplicationBindingServiceMockStub: ApplicationBindingService;
   let ComponentCommunicationServiceMockStub: ComponentCommunicationService;
   const modalService = {
@@ -58,7 +58,7 @@ describe('EditBindingsModalComponent', () => {
           useValue: ApplicationsServiceMock
         },
         { provide: ActivatedRoute, useValue: ActivatedRouteMock },
-        { provide: NamespacesService, useValue: EnvironmentsServiceMock },
+        { provide: NamespacesService, useValue: NamespacesServiceMock },
         {
           provide: ApplicationBindingService,
           useValue: ApplicationBindingServiceMock
@@ -87,7 +87,7 @@ describe('EditBindingsModalComponent', () => {
     ApplicationsServiceMockStub = fixture.debugElement.injector.get(
       ApplicationsService
     );
-    EnvironmentsServiceMockStub = fixture.debugElement.injector.get(
+    NamespacesServiceMockStub = fixture.debugElement.injector.get(
       NamespacesService
     );
     ApplicationBindingServiceMockStub = fixture.debugElement.injector.get(
@@ -102,35 +102,35 @@ describe('EditBindingsModalComponent', () => {
   it('should create', () => {
     // then
     expect(component).toBeTruthy();
-    expect(component.environments).toEqual([]);
-    expect(component.environments).toEqual([]);
+    expect(component.namespaces).toEqual([]);
+    expect(component.namespaces).toEqual([]);
   });
 
-  it('should show and set envs and applications', done => {
+  it('should show and set namespaces and applications', done => {
     // given
     const applications = of({
       application: {
-        enabledInNamespaces: ['env1', 'env2']
+        enabledInNamespaces: ['namespace1', 'namespace2']
       }
     });
-    const envs = of([
+    const namespaces = of([
       {
-        label: 'env3'
+        label: 'namespace3'
       },
       {
-        label: 'env4'
+        label: 'namespace4'
       }
     ]);
-    component.checkIfEnvironmentExists();
+    component.checkIfNamespaceExists();
 
     const spyGetApplication = spyOn(
       ApplicationsServiceMockStub,
       'getApplication'
     ).and.returnValue(applications);
-    const spyGetEnvironments = spyOn(
-      EnvironmentsServiceMockStub,
-      'getEnvironments'
-    ).and.returnValue(envs);
+    const spyGetNamespaces = spyOn(
+      NamespacesServiceMockStub,
+      'getNamespaces'
+    ).and.returnValue(namespaces);
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
@@ -141,51 +141,51 @@ describe('EditBindingsModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(spyGetApplication.calls.any()).toBeTruthy();
-      expect(spyGetEnvironments.calls.any()).toBeTruthy();
+      expect(spyGetNamespaces.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeFalsy();
       expect(
         ApplicationsServiceMockStub.getApplication
       ).toHaveBeenCalledTimes(1);
-      expect(EnvironmentsServiceMockStub.getEnvironments).toHaveBeenCalledTimes(
+      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(
         1
       );
       expect(console.log).not.toHaveBeenCalled();
       expect(component.application).toEqual({
-        enabledInNamespaces: ['env1', 'env2']
+        enabledInNamespaces: ['namespace1', 'namespace2']
       });
-      expect(component.environments).toEqual([
+      expect(component.namespaces).toEqual([
         {
-          label: 'env3'
+          label: 'namespace3'
         },
         {
-          label: 'env4'
+          label: 'namespace4'
         }
       ]);
       expect(component.isActive).toBeTruthy();
-      expect(component.checkIfEnvironmentExists()).toBeFalsy();
+      expect(component.checkIfNamespaceExists()).toBeFalsy();
 
       done();
     });
   });
 
-  it("should not fail if couldn't get envs", done => {
+  it("should not fail if couldn't get namespaces", done => {
     // given
     const applications = of({
       application: {
-        enabledInNamespaces: ['env1', 'env2']
+        enabledInNamespaces: ['namespace1', 'namespace2']
       }
     });
-    const envs = throwError('error');
-    component.checkIfEnvironmentExists();
+    const namespaces = throwError('error');
+    component.checkIfNamespaceExists();
 
     const spyGetApplication = spyOn(
       ApplicationsServiceMockStub,
       'getApplication'
     ).and.returnValue(applications);
-    const spyGetEnvironments = spyOn(
-      EnvironmentsServiceMockStub,
-      'getEnvironments'
-    ).and.returnValue(envs);
+    const spyGetNamespaces = spyOn(
+      NamespacesServiceMockStub,
+      'getNamespaces'
+    ).and.returnValue(namespaces);
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
@@ -195,19 +195,19 @@ describe('EditBindingsModalComponent', () => {
     fixture.whenStable().then(() => {
       expect(component).toBeTruthy();
       expect(spyGetApplication.calls.any()).toBeTruthy();
-      expect(spyGetEnvironments.calls.any()).toBeTruthy();
+      expect(spyGetNamespaces.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeTruthy();
       expect(
         ApplicationsServiceMockStub.getApplication
       ).toHaveBeenCalledTimes(1);
-      expect(EnvironmentsServiceMockStub.getEnvironments).toHaveBeenCalledTimes(
+      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(
         1
       );
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.application).toEqual(undefined);
-      expect(component.environments).toEqual([]);
+      expect(component.namespaces).toEqual([]);
       expect(component.isActive).toBeTruthy();
-      expect(component.checkIfEnvironmentExists()).toBeFalsy();
+      expect(component.checkIfNamespaceExists()).toBeFalsy();
 
       done();
     });
@@ -218,7 +218,7 @@ describe('EditBindingsModalComponent', () => {
     component.application = {
       name: 'test'
     };
-    component.checkIfEnvironmentExists();
+    component.checkIfNamespaceExists();
 
     const spyBind = spyOn(
       ApplicationBindingServiceMockStub,
@@ -228,7 +228,7 @@ describe('EditBindingsModalComponent', () => {
     spyOn(ComponentCommunicationServiceMockStub, 'sendEvent');
 
     // when
-    component.selectedEnv({ label: 'env3' });
+    component.selectedNamespace({ label: 'namespace3' });
     fixture.detectChanges();
     await component.save();
 

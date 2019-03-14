@@ -5,13 +5,13 @@ import { GraphQLClientService } from '../../../../shared/services/graphql-client
 
 @Injectable()
 export class ApplicationBindingService {
-  public envChangeStateEmitter$: EventEmitter<boolean>;
+  public namespaceChangeStateEmitter$: EventEmitter<boolean>;
 
   constructor(
     private http: HttpClient,
     private graphQLClientService: GraphQLClientService
   ) {
-    this.envChangeStateEmitter$ = new EventEmitter();
+    this.namespaceChangeStateEmitter$ = new EventEmitter();
   }
 
   graphQLClientCall(query, variables) {
@@ -58,7 +58,7 @@ export class ApplicationBindingService {
     );
   }
 
-  public getBoundEnvironments(application) {
+  public getBoundNamespaces(application) {
     const query = `query Namespace($application: String!){
       namespaces(application: $application) {
         name

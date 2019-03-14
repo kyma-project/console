@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { DataConverter } from 'app/generic-list';
 import { AppConfig } from '../../../../app.config';
-import { CurrentEnvironmentService } from '../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../services/current-namespace.service';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
@@ -21,30 +21,30 @@ export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
     'It looks like you don’t have any config maps in your namespace yet.';
   public createNewElementText = 'Add Config Map';
   public resourceKind = 'ConfigMap';
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<IConfigMap, ConfigMap> = {
       convert(entry: IConfigMap) {
         return new ConfigMap(entry);
       }
     };
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
 
         const url = `${AppConfig.k8sApiServerUrl}namespaces/${
-          this.currentEnvironmentId
+          this.currentNamespaceId
         }/configmaps`;
 
         this.source = new KubernetesDataProvider(url, converter, this.http);
@@ -55,7 +55,7 @@ export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
 
   public getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
+      this.currentNamespaceId
     }/configmaps/${entry.getId()}`;
   }
 
@@ -64,6 +64,6 @@ export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 }

@@ -10,16 +10,16 @@ import { GraphQLClientService } from '../../../shared/services/graphql-client-se
 
 @Injectable()
 export class NamespacesService {
-  public envChangeStateEmitter$: EventEmitter<boolean>;
+  public namespaceChangeStateEmitter$: EventEmitter<boolean>;
 
   constructor(
     private http: HttpClient,
     private graphQLClientService: GraphQLClientService
   ) {
-    this.envChangeStateEmitter$ = new EventEmitter();
+    this.namespaceChangeStateEmitter$ = new EventEmitter();
   }
 
-  public getEnvironments(): Observable<NamespaceInfo[]> {
+  public getNamespaces(): Observable<NamespaceInfo[]> {
     return this.http
       .get<any>(AppConfig.k8sApiServerUrl + 'namespaces?labelSelector=env=true')
       .pipe(
@@ -46,7 +46,7 @@ export class NamespacesService {
       );
   }
 
-  public getEnvironment(id: string): Observable<NamespaceInfo> {
+  public getNamespace(id: string): Observable<NamespaceInfo> {
     return this.http
       .get<any>(AppConfig.k8sApiServerUrl + 'namespaces/' + id)
       .pipe(
@@ -62,9 +62,9 @@ export class NamespacesService {
       );
   }
 
-  public createEnvironment(namespaceName: string) {
+  public createNamespace(namespaceName: string) {
     const body = {
-      metadata: { name: namespaceName, labels: { env: 'true' } }
+      metadata: { name: namespaceName, labels: { namespace: 'true' } }
     };
     if (namespaceName) {
       return this.http
@@ -74,7 +74,7 @@ export class NamespacesService {
         .pipe(
           map(response => {
             if (!_.isEmpty(response.metadata)) {
-              this.envChangeStateEmitter$.emit(true);
+              this.namespaceChangeStateEmitter$.emit(true);
               return response;
             }
             return response;
@@ -83,13 +83,13 @@ export class NamespacesService {
     }
   }
 
-  public deleteEnvironment(namespaceName: string) {
+  public deleteNamespace(namespaceName: string) {
     if (namespaceName) {
       return this.http
         .delete(`${AppConfig.k8sApiServerUrl}namespaces/${namespaceName}`)
         .pipe(
           map(response => {
-            this.envChangeStateEmitter$.emit(true);
+            this.namespaceChangeStateEmitter$.emit(true);
             return response;
           })
         );

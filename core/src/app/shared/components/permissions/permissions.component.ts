@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { CurrentEnvironmentService } from '../../../content/namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../content/namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { map } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class PermissionsComponent implements OnInit {
   public isGlobalMode = false;
 
   constructor(
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private communicationService: ComponentCommunicationService,
     private router: Router,
     private route: ActivatedRoute

@@ -40,7 +40,7 @@ const graphlQLClientServiceMock = {
 };
 
 describe('NamespacesService', () => {
-  let environmentsService: NamespacesService;
+  let namespacesService: NamespacesService;
   let httpClientMock: HttpTestingController;
 
   beforeEach(() => {
@@ -52,30 +52,30 @@ describe('NamespacesService', () => {
       ]
     });
 
-    environmentsService = TestBed.get(NamespacesService);
+    namespacesService = TestBed.get(NamespacesService);
     httpClientMock = TestBed.get(HttpTestingController);
   });
 
-  it('should return empty collection of environments', async () => {
+  it('should return empty collection of namespaces', async () => {
     // given
-    const environments = [];
+    const namespaces = [];
 
     // then
-    await environmentsService.getEnvironments().subscribe(users => {
+    await namespacesService.getNamespaces().subscribe(users => {
       expect(users.length).toBe(0);
-      expect(users).toEqual(environments);
+      expect(users).toEqual(namespaces);
     });
 
     // when
     const req = httpClientMock.expectOne(
       `${AppConfig.k8sApiServerUrl}namespaces?labelSelector=env=true`
     );
-    req.flush(environments);
+    req.flush(namespaces);
   });
 
-  it('should return collection of 2 environments', async () => {
+  it('should return collection of 2 namespaces', async () => {
     // then
-    await environmentsService.getEnvironments().subscribe(es => {
+    await namespacesService.getNamespaces().subscribe(es => {
       const first = es[0];
       const second = es[1];
 
@@ -97,7 +97,7 @@ describe('NamespacesService', () => {
             name: 'first',
             uid: 'uidFirst',
             labels: {
-              env: 'true'
+              namespace: 'true'
             }
           },
           status: {
@@ -109,7 +109,7 @@ describe('NamespacesService', () => {
             name: 'second',
             uid: 'uidSecond',
             labels: {
-              env: 'true'
+              namespace: 'true'
             }
           },
           status: {
@@ -121,7 +121,7 @@ describe('NamespacesService', () => {
             name: 'third',
             uid: 'uidThird',
             labels: {
-              env: 'true'
+              namespace: 'true'
             }
           },
           status: {
@@ -134,7 +134,7 @@ describe('NamespacesService', () => {
 
   it('should handle an authorization error', async () => {
     // then
-    await environmentsService.getEnvironments().subscribe(
+    await namespacesService.getNamespaces().subscribe(
       res => {},
       err => {
         expect(err).toBeTruthy();
@@ -155,12 +155,12 @@ describe('NamespacesService', () => {
     );
   });
 
-  it('should return an environment', done => {
+  it('should return an namespace', done => {
     // given
     const id = 'first';
 
     // when
-    const result = environmentsService.getEnvironment(id);
+    const result = namespacesService.getNamespace(id);
 
     // then
     result.subscribe(r => {
@@ -179,7 +179,7 @@ describe('NamespacesService', () => {
         name: 'first',
         uid: 'uidFirst',
         labels: {
-          env: 'true'
+          namespace: 'true'
         }
       },
       status: {
@@ -188,12 +188,12 @@ describe('NamespacesService', () => {
     });
   });
 
-  it(`shouldn't find any environment`, done => {
+  it(`shouldn't find any namespace`, done => {
     // given
     const id = 'noexisting';
 
     // when
-    const result = environmentsService.getEnvironment(id);
+    const result = namespacesService.getNamespace(id);
 
     // then
     result.subscribe(err => {
@@ -223,7 +223,7 @@ describe('NamespacesService', () => {
     const id = 'first';
 
     // when
-    const result = environmentsService.getEnvironment(id);
+    const result = namespacesService.getNamespace(id);
 
     // then
     result.subscribe(
@@ -248,10 +248,10 @@ describe('NamespacesService', () => {
 
   it('should return the status of resource quota with an empty list if everything is ok', done => {
     // given
-    const environment = 'namespace';
+    const namespace = 'namespace';
 
     // when
-    const result = environmentsService.getResourceQueryStatus(environment);
+    const result = namespacesService.getResourceQueryStatus(namespace);
 
     // then
     result.subscribe(
@@ -265,10 +265,10 @@ describe('NamespacesService', () => {
 
   it('should return the status of resource quota with a list of resources that caused that the limit has been exceeded', done => {
     // given
-    const environment = 'environmentWithResourceLimitExceeded';
+    const namespace = 'namespaceWithResourceLimitExceeded';
 
     // when
-    const result = environmentsService.getResourceQueryStatus(environment);
+    const result = namespacesService.getResourceQueryStatus(namespace);
 
     // then
     result.subscribe(

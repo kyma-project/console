@@ -1,4 +1,4 @@
-import { CurrentEnvironmentService } from '../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../services/current-namespace.service';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../../app.config';
@@ -23,29 +23,29 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
     'It looks like you don’t have any secrets in your namespace yet.';
   createNewElementText = 'Add Secret';
   resourceKind = 'Secret';
-  private currentEnvironmentId;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<ISecret, Secret> = {
       convert(entry: ISecret) {
         return new Secret(entry);
       }
     };
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
         const url = `${AppConfig.k8sApiServerUrl}namespaces/${
-          this.currentEnvironmentId
+          this.currentNamespaceId
         }/secrets`;
         this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = SecretsEntryRendererComponent;
@@ -65,11 +65,11 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
 
   getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
+      this.currentNamespaceId
     }/secrets/${entry.getId()}`;
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 }

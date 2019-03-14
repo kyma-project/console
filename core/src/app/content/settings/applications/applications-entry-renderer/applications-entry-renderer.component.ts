@@ -47,7 +47,7 @@ export class ApplicationsEntryRendererComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  public listConnectedEnvs(entry) {
+  public listConnectedNamespaces(entry) {
     let result = '';
     if (entry.enabledInNamespaces) {
       result = entry.enabledInNamespaces.join(', ');

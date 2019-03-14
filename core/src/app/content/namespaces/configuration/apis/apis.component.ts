@@ -7,7 +7,7 @@ import {
 import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from '../../operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
-import { CurrentEnvironmentService } from '../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { AppConfig } from '../../../../app.config';
 import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider';
@@ -27,30 +27,30 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
     'It looks like you don’t have any APIs in your namespace yet.';
   public createNewElementText = 'Add API';
   public baseUrl: string;
-  public currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  public currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<IApiDefinition, ApiDefinition> = {
       convert(entry: IApiDefinition) {
         return new ApiDefinition(entry);
       }
     };
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
         this.baseUrl = `${
           AppConfig.k8sApiServerUrl_apimanagement
-        }namespaces/${envId}/apis`;
+        }namespaces/${namespaceId}/apis`;
 
         this.source = new KubernetesDataProvider(
           this.baseUrl,
@@ -71,7 +71,7 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   public navigateToDetails(entry) {

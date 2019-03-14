@@ -1,6 +1,6 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #createEnvironmentModal role="dialog" aria-labelledby="createEnv"
-    data-e2e-id="create-environment-modal">
+  <fd-modal class="y-fd-modal" #createNamespaceModal role="dialog" aria-labelledby="createNamespace"
+    data-e2e-id="create-namespace-modal">
     <fd-modal-header>
       Create New Namespace
     </fd-modal-header>
@@ -11,7 +11,7 @@
       <div fd-form-set>
         <div fd-form-item>
           <fd-form-label>Namespace Name *</fd-form-label>
-          <input fd-form-control [type]="'text'" placeholder="" name="environmentName" [(ngModel)]="environmentName"
+          <input fd-form-control [type]="'text'" placeholder="" name="namespaceName" [(ngModel)]="namespaceName"
             (ngModelChange)=validateRegex() [state]="wrongName ? 'invalid' : undefined">
           <fd-form-message [type]="'error'" *ngIf="wrongName">The namespace name has the wrong format. The name must
             consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric
@@ -23,8 +23,8 @@
       <button fd-button [options]="'light'" (click)="cancel()">
         Cancel
       </button>
-      <button fd-button class="env-create-btn" [fdType]="'main'" (click)="createEnvironment()"
-        [disabled]="(!environmentName) || wrongName" data-e2e-id="create-environment-button">
+      <button fd-button class="namespace-create-btn" [fdType]="'main'" (click)="createNamespace()"
+        [disabled]="(!namespaceName) || wrongName" data-e2e-id="create-namespace-button">
         Create
       </button>
     </fd-modal-footer>

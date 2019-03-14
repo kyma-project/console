@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NamespaceInfo } from '../namespace-info';
 import { ApplicationsService } from '../../settings/applications/services/applications.service';
-import { CurrentEnvironmentService } from '../services/current-namespace.service';
+import { CurrentNamespaceService } from '../services/current-namespace.service';
 import { NamespacesService } from '../services/namespaces.service';
 import { AppConfig } from '../../../app.config';
 import { ResourceUploaderModalComponent } from '../../../shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
@@ -22,14 +22,14 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   private uploaderModal: ResourceUploaderModalComponent;
   @ViewChild('createmodal') private createmodal: NamespaceCreateComponent;
   private orgName = AppConfig.orgName;
-  public environment: NamespaceInfo = new NamespaceInfo('', '');
+  public namespace: NamespaceInfo = new NamespaceInfo('', '');
   private boundApplicationsCount: Observable<number> = of(0);
   public applications: any;
   private services: any;
   public errorMessage: string;
   private id: string;
   private isSystemNamespace: boolean;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceSubscription: Subscription;
   private actions = [
     {
       function: 'unbind',
@@ -41,8 +41,8 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private applicationsService: ApplicationsService,
-    private environmentsService: NamespacesService,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private namespacesService: NamespacesService,
+    private currentNamespaceService: CurrentNamespaceService,
     private communicationService: ComponentCommunicationService,
     private applicationBindingService: ApplicationBindingService
   ) {
@@ -51,14 +51,14 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.id = envId;
-        this.environmentsService.getEnvironment(this.id).subscribe(
-          env => {
-            if (env) {
-              this.environment = env;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.id = namespaceId;
+        this.namespacesService.getNamespace(this.id).subscribe(
+          namespace => {
+            if (namespace) {
+              this.namespace = namespace;
             }
             if (!this.isSystemNamespace) {
               this.getApplications(this.id);
@@ -67,15 +67,15 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
           },
           err => {
             this.errorMessage = err.message;
-            console.log(`error loading namespace ${envId}`, err);
+            console.log(`error loading namespace ${namespaceId}`, err);
           }
         );
       });
   }
 
   public ngOnDestroy() {
-    if (this.currentEnvironmentSubscription) {
-      this.currentEnvironmentSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
     }
   }
 
@@ -132,9 +132,9 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
-  public navigateToApplications(envName) {
+  public navigateToApplications(namespaceName) {
     LuigiClient.linkManager().navigate(
-      envName ? '/home/cmf-apps/details/' + envName : '/home/cmf-apps'
+      namespaceName ? '/home/cmf-apps/details/' + namespaceName : '/home/cmf-apps'
     );
   }
 }

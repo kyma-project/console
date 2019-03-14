@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { AbstractKubernetesElementListComponent } from '../../../operation/abstract-kubernetes-element-list.component';
-import { CurrentEnvironmentService } from '../../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../app.config';
@@ -22,18 +22,18 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
     'It looks like you don’t have any limit ranges in your namespace yet.';
   public createNewElementText = 'Add Limit Range';
   public resourceKind = 'Limit Range';
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
 
     const query = `query LimitRanges($namespace: String!) {
       limitRanges(namespace: $namespace) {
@@ -56,14 +56,14 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
       }
     }`;
 
-    this.currentEnvironmentSubscription = this.getCurrentEnvironmentId().subscribe(
-      envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.getCurrentNamespaceId().subscribe(
+      namespaceId => {
+        this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
           AppConfig.graphqlApiUrl,
           query,
           {
-            namespace: this.currentEnvironmentId
+            namespace: this.currentNamespaceId
           },
           this.graphQLClientService
         );
@@ -76,12 +76,12 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   public getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
+      this.currentNamespaceId
     }/limitranges/${entry.name}`;
   }
 }

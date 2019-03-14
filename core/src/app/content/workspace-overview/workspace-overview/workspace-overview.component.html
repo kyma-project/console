@@ -10,12 +10,12 @@
         (onFilterChanged)="onFilterChanged($event)"></y-list-search>
       <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
         (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-      <button fd-button [options]="'light'" [glyph]="'add'" class="open-create-env-modal"
+      <button fd-button [options]="'light'" [glyph]="'add'" class="open-create-namespace-modal"
         (click)="createModal.show()">Create Namespace</button>
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <app-namespace-create (cancelEvent)="onEnvCreateCancelled()" #createModal></app-namespace-create>
+  <app-namespace-create (cancelEvent)="onNamespaceCreateCancelled()" #createModal></app-namespace-create>
   <app-confirmation-modal #confirmationModal></app-confirmation-modal>
   <app-information-modal #infoModal></app-information-modal>
 

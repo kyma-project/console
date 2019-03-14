@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 
-import { CurrentEnvironmentService } from 'namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { AppConfig } from '../../../../app.config';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
@@ -22,30 +22,30 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
     'It looks like you don’t have any pods in your namespace yet.';
   public createNewElementText = 'Add Pod';
   public resourceKind = 'Pod';
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<IPod, Pod> = {
       convert(entry: IPod) {
         return new Pod(entry);
       }
     };
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
 
         const url = `${AppConfig.k8sApiServerUrl}namespaces/${
-          this.currentEnvironmentId
+          this.currentNamespaceId
         }/pods`;
 
         this.source = new KubernetesDataProvider(url, converter, this.http);
@@ -57,7 +57,7 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
 
   public getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
+      this.currentNamespaceId
     }/pods/${entry.getId()}`;
   }
 
@@ -66,6 +66,6 @@ export class PodsComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 }

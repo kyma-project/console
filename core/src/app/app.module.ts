@@ -22,7 +22,7 @@ import { WorkspaceOverviewComponent } from './content/workspace-overview/workspa
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ListModule } from 'app/generic-list/list.module';
 import { NamespaceCreateComponent } from './content/namespaces/namespace-create/namespace-create.component';
-import { CurrentEnvironmentService } from './content/namespaces/services/current-namespace.service';
+import { CurrentNamespaceService } from './content/namespaces/services/current-namespace.service';
 import { NamespacesService } from './content/namespaces/services/namespaces.service';
 import { NamespaceCardComponent } from './content/workspace-overview/namespace-card/namespace-card.component';
 
@@ -211,7 +211,7 @@ import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstra
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     NamespacesService,
-    CurrentEnvironmentService,
+    CurrentNamespaceService,
     ApplicationsService,
     EventService,
     K8sResourceEditorService,

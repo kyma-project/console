@@ -38,25 +38,25 @@ export class ExposeApiService {
     );
   }
 
-  getService(environment: string, serviceName: string) {
+  getService(namespace: string, serviceName: string) {
     return this.httpClient.get<any>(
       `${
         AppConfig.k8sApiServerUrl
-      }namespaces/${environment}/services/${serviceName}`
+      }namespaces/${namespace}/services/${serviceName}`
     );
   }
 
-  getListOfServices(environment: string) {
+  getListOfServices(namespace: string) {
     return this.httpClient.get<any>(
-      `${AppConfig.k8sApiServerUrl}namespaces/${environment}/services`
+      `${AppConfig.k8sApiServerUrl}namespaces/${namespace}/services`
     );
   }
 
-  getPodsByLabelSelector(environment: string, labels: string) {
+  getPodsByLabelSelector(namespace: string, labels: string) {
     return this.httpClient.get<any>(
       `${
         AppConfig.k8sApiServerUrl
-      }namespaces/${environment}/pods?labelSelector=${labels}`
+      }namespaces/${namespace}/pods?labelSelector=${labels}`
     );
   }
 

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { AppConfig } from '../../../../app.config';
-import { CurrentEnvironmentService } from '../../services/current-namespace.service';
+import { CurrentNamespaceService } from '../../services/current-namespace.service';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { KubernetesDataProvider } from '../kubernetes-data-provider';
 import { ServicesHeaderRendererComponent } from './services-header-renderer/services-header-renderer.component';
@@ -24,30 +24,30 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
     'It looks like you don’t have any services in your namespace yet.';
   public createNewElementText = 'Add Service';
   public resourceKind = 'Service';
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<IService, Service> = {
       convert(entry: IService) {
         return new Service(entry);
       }
     };
 
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
 
         const url = `${AppConfig.k8sApiServerUrl}namespaces/${
-          this.currentEnvironmentId
+          this.currentNamespaceId
         }/services`;
         this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = ServicesEntryRendererComponent;
@@ -77,11 +77,11 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
 
   public getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentEnvironmentId
+      this.currentNamespaceId
     }/services/${entry.getId()}`;
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 }

@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { CurrentEnvironmentService } from './current-namespace.service';
+import { CurrentNamespaceService } from './current-namespace.service';
 
-describe('CurrentEnvironmentService', () => {
+describe('CurrentNamespaceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CurrentEnvironmentService]
+      providers: [CurrentNamespaceService]
     });
   });
 
-  it('should be created', inject([CurrentEnvironmentService], (service: CurrentEnvironmentService) => {
+  it('should be created', inject([CurrentNamespaceService], (service: CurrentNamespaceService) => {
     expect(service).toBeTruthy();
   }));
 });
