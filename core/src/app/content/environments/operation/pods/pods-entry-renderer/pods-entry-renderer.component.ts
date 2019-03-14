@@ -60,7 +60,7 @@ export class PodsEntryRendererComponent
         return container.state !== 'RUNNING'
       }
       const containerNotRunning = entry.containerStates.find(isNotInRunningState);
-      return containerNotRunning.reason;
+      return `${containerNotRunning.state}: ${containerNotRunning.reason}`;
     }
     return entry.status;
   }
@@ -77,7 +77,7 @@ export class PodsEntryRendererComponent
 
   hasErrors(entry) {
     return entry.containerStates.some(
-      status => status.state !== 'RUNNING'
+      status => status.state !== 'RUNNING' && status.message
     );
   }
 }
