@@ -244,7 +244,7 @@ async function getUiEntities(entityname, namespace, placements) {
     const currentNamespace = await getNamespace(namespace);
     if (
       !currentNamespace.metadata.labels ||
-      currentNamespace.metadata.labels.namespace !== 'true'
+      currentNamespace.metadata.labels.env !== 'true'
     ) {
       return 'systemNamespace';
     }
