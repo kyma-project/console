@@ -1,16 +1,14 @@
 <tr [ngClass]="{ disabled: disabled === true }">
-  <td class="fd-has-font-weight-bold">{{ entry.metadata.name }}</td>
-  <td>{{ entry.spec.nodeName }}</td>
+  <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
+  <td>{{ entry.nodeName }}</td>
   <td>
-    <fd-badge [modifier]="'filled'" [status]="
-        !getRestartCount(entry.status.containerStatuses) ? 'success' : 'warning'
-      ">
-      {{ getRestartCount(entry.status.containerStatuses) }}
+    <fd-badge [modifier]="'filled'" [status]="!entry.restartCount ? 'success' : 'warning'">
+      {{ entry.restartCount }}
     </fd-badge>
   </td>
-  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td>{{ entry.creationTimestamp * 1000| timeAgo }}</td>
   <td>
-    <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
+    <span *ngFor="let label of getLabels(entry.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
     </span>
   </td>
@@ -24,12 +22,11 @@
   </td>
 </tr>
 <tr *ngIf="hasErrors(entry)">
-  <span *ngFor="let containerStatus of entry.status.containerStatuses">
-    <span *ngIf="
-        containerStatus.state[objectKeys(containerStatus.state)[0]] !==
-        'running'
-      ">
-      {{ containerStatus.state[objectKeys(containerStatus.state)[0]].message }}<br />
+  <td colspan="7">
+    <span *ngFor="let containerState of entry.containerStates">
+      <fd-form-message [type]="'error'" *ngIf="containerState.state !== 'RUNNING' && containerState.message">
+        {{ containerState.message }}<br />
+      </fd-form-message>
     </span>
-  </span>
+  </td>
 </tr>
