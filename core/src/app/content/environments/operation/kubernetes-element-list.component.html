@@ -13,7 +13,7 @@
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <y-plain-table [source]="[data]" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
+  <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
     [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer" [emptyListPlaceholderData]="emptyListData">
   </y-plain-table>
   <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
