@@ -10,6 +10,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
 import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -17,7 +18,7 @@ import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
 export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Config Maps';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

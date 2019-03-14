@@ -12,6 +12,7 @@ import { ServicesEntryRendererComponent } from './services-entry-renderer/servic
 import { DataConverter } from 'app/generic-list';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { Service, IService } from 'shared/datamodel/k8s/service';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-services',
@@ -20,7 +21,7 @@ import { Service, IService } from 'shared/datamodel/k8s/service';
 export class ServicesComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Services';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

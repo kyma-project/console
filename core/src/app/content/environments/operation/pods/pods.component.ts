@@ -11,6 +11,7 @@ import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-ren
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { DataConverter } from 'app/generic-list';
 import { IPod, Pod } from 'shared/datamodel/k8s/pod';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -18,7 +19,7 @@ import { IPod, Pod } from 'shared/datamodel/k8s/pod';
 export class PodsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Pods';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

@@ -11,6 +11,7 @@ import { DataConverter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 import { ISecret, Secret } from 'shared/datamodel/k8s/secret';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-secrets',
@@ -19,7 +20,7 @@ import { ISecret, Secret } from 'shared/datamodel/k8s/secret';
 export class SecretsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   title = 'Secrets';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

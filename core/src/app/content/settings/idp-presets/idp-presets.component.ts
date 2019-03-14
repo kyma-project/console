@@ -10,6 +10,7 @@ import { IdpPresetsService } from './idp-presets.service';
 import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-idp-presets',
@@ -17,7 +18,7 @@ import * as _ from 'lodash';
 })
 export class IdpPresetsComponent extends GenericTableComponent {
   public title = 'IDP Presets';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

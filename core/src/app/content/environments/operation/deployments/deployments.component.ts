@@ -10,6 +10,7 @@ import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-e
 import { GraphQLDataProvider } from '../graphql-data-provider';
 import { DeploymentEntryRendererComponent } from './deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/deployment-header-renderer.component';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-deployments',
@@ -18,7 +19,7 @@ import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/
 export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Deployments';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

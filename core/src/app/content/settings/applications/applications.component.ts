@@ -17,6 +17,7 @@ import { GraphQLDataProvider } from '../../environments/operation/graphql-data-p
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-applications',
@@ -26,7 +27,7 @@ export class ApplicationsComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   title = 'Applications';
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: this.title
     },

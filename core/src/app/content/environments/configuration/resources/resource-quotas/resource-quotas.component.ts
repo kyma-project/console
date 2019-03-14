@@ -10,6 +10,7 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
 import { AppConfig } from '../../../../../app.config';
 import { ResourceQuotaHeaderRendererComponent } from './resource-quota-header-renderer/resource-quota-header-renderer.component';
 import { ResourceQuotaEntryRendererComponent } from './resource-quota-entry-renderer/resource-quota-entry-renderer.component';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-resource-quotas',
@@ -18,7 +19,7 @@ import { ResourceQuotaEntryRendererComponent } from './resource-quota-entry-rend
 export class ResourceQuotasComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: 'Resource Quotas'
     },

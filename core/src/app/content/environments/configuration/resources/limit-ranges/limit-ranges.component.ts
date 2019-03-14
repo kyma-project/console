@@ -10,6 +10,7 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
 import { AppConfig } from '../../../../../app.config';
 import { LimitRangeHeaderRendererComponent } from './limit-range-header-renderer/limit-range-header-renderer.component';
 import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer/limit-range-entry-renderer.component';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-limit-ranges',
@@ -17,7 +18,7 @@ import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer/l
 })
 export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: 'Limit Ranges'
     },

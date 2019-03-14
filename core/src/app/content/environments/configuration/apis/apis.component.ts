@@ -14,6 +14,7 @@ import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider
 import { DataConverter, Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-apis',
@@ -27,7 +28,7 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
   public currentEnvironmentId: string;
   private currentEnvironmentSubscription: Subscription;
   public hideFilter = false;
-  public emptyListData = {
+  public emptyListData: IEmptyListData = {
     header: {
       text: 'APIs'
     },
