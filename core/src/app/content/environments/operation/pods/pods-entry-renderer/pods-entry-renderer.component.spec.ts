@@ -21,13 +21,7 @@ describe('PodsEntryRendererComponent', () => {
             useValue: {
               name: 'name',
               status: 'RUNNING',
-              containerStates: [
-                {
-                  state: 'RUNNING',
-                  reason: '',
-                  message: ''
-                }
-              ]
+              containerStates: [{}]
             }
           }
         ],
@@ -48,23 +42,7 @@ describe('PodsEntryRendererComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display pod status if 1 out of 1 container failed', () => {
-    const pod = {
-      status: 'PENDING',
-      containerStates: [
-        {
-          state: 'PENDING',
-          reason: 'ImagePullBackOff',
-          message: 'Image not found'
-        }
-      ]
-    };
-    expect(component.getStatus(pod)).toEqual(
-      'PENDING: ImagePullBackOff'
-    );
-  });
-
-  it('should display pod status if 1 out of 2 containers failed', () => {
+  it('should display pod status any container failed', () => {
     const pod = {
       status: 'PENDING',
       containerStates: [
@@ -86,16 +64,10 @@ describe('PodsEntryRendererComponent', () => {
 
   });
 
-  it('should display pod status if 1 out of 2 containers failed', () => {
+  it('should display pod status if it\'s running', () => {
     const pod = {
       status: 'RUNNING',
-      containerStates: [
-        {
-          state: 'RUNNING',
-          reason: '',
-          message: ''
-        }
-      ]
+      containerStates: [{}]
     };
     expect(component.getStatus(pod)).toEqual(
       'RUNNING'
