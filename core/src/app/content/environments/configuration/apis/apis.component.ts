@@ -32,7 +32,7 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
       text: 'APIs'
     },
     body: {
-      text: 'It looks like you don’t have any APIs in your namespace yet.',
+      text: 'It looks like you don’t have any APIs in your namespace yet.'
     }
   };
 

@@ -45,7 +45,7 @@ export class LambdasComponent extends GenericTableComponent
       text: 'Bound Lambdas'
     },
     body: {
-      text: 'It looks like you don’t have any lambdas in your namespace yet.',
+      text: 'It looks like you don’t have any lambdas in your namespace yet.'
     }
   };
 

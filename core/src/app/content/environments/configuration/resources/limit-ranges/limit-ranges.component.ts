@@ -22,7 +22,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
       text: 'Limit Ranges'
     },
     body: {
-      text: 'It looks like you don’t have any limit ranges in your namespace yet.',
+      text: 'It looks like you don’t have any limit ranges in your namespace yet.'
     }
   };
   public createNewElementText = 'Add Limit Range';
