@@ -14,8 +14,8 @@
         <div class="fd-has-margin-bottom-small">{{ (entry.services | async) === 1 ? "Service" : "Services" }}</div>
       </div>
       <div class="fd-col--6">
-        <div class="fd-has-type-4 fd-has-font-weight-bold">{{ entry.remoteEnvs && (entry.remoteEnvs | async) !== null ? (entry.remoteEnvs | async) : 0 }}</div>
-        <div class="fd-has-margin-bottom-small">{{ (entry.remoteEnvs |async) === 1 ? "Bound Application":"Bound Applications" }}</div>
+        <div class="fd-has-type-4 fd-has-font-weight-bold">{{ entry.applications && (entry.applications | async) !== null ? (entry.applications | async) : 0 }}</div>
+        <div class="fd-has-margin-bottom-small">{{ (entry.applications |async) === 1 ? "Bound Application":"Bound Applications" }}</div>
       </div>
     </div>
     <div class="fd-container fd-container--fluid">

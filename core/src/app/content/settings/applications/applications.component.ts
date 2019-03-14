@@ -1,4 +1,4 @@
-import { RemoteEnvironment } from '../../../shared/datamodel/k8s/kyma-api/remote-environment';
+import { Application } from '../../../shared/datamodel/k8s/kyma-api/application';
 import {
   Component,
   ChangeDetectorRef,
@@ -7,28 +7,28 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
-import { RemoteEnvironmentsEntryRendererComponent } from './remote-environments-entry-renderer/remote-environments-entry-renderer.component';
-import { RemoteEnvironmentsHeaderRendererComponent } from './remote-environments-header-renderer/remote-environments-header-renderer.component';
+import { ApplicationsEntryRendererComponent } from './applications-entry-renderer/applications-entry-renderer.component';
+import { ApplicationsHeaderRendererComponent } from './applications-header-renderer/applications-header-renderer.component';
 import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
 import { AbstractKubernetesElementListComponent } from '../../environments/operation/abstract-kubernetes-element-list.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
-import { CreateRemoteEnvironmentModalComponent } from './create-remote-environment-modal/create-remote-environment-modal.component';
+import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
-  selector: 'app-remote-environments',
-  templateUrl: './remote-environments.component.html'
+  selector: 'app-applications',
+  templateUrl: './applications.component.html'
 })
-export class RemoteEnvironmentsComponent
+export class ApplicationsComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   title = 'Applications';
   emptyListText = 'It looks like you don’t have any Applications yet.';
   createNewElementText = 'Add Application';
-  baseUrl = AppConfig.k8sApiServerUrl_remoteenvs;
+  baseUrl = AppConfig.k8sApiServerUrl_applications;
   resourceKind = 'Application';
   environments = [];
   ariaExpanded = false;
@@ -37,7 +37,7 @@ export class RemoteEnvironmentsComponent
   private contextListenerId: string;
   public isReadOnly = false;
 
-  @ViewChild('createModal') createModal: CreateRemoteEnvironmentModalComponent;
+  @ViewChild('createModal') createModal: CreateApplicationModalComponent;
 
   constructor(
     private http: HttpClient,
@@ -64,8 +64,8 @@ export class RemoteEnvironmentsComponent
       this.graphQLClientService
     );
 
-    this.entryRenderer = RemoteEnvironmentsEntryRendererComponent;
-    this.headerRenderer = RemoteEnvironmentsHeaderRendererComponent;
+    this.entryRenderer = ApplicationsEntryRendererComponent;
+    this.headerRenderer = ApplicationsHeaderRendererComponent;
     this.filterState = { filters: [new Filter('name', '', false)] };
 
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {

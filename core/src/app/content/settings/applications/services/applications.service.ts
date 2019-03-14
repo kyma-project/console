@@ -6,10 +6,10 @@ import { AppConfig } from '../../../../app.config';
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 
 @Injectable()
-export class RemoteEnvironmentsService {
+export class ApplicationsService {
   constructor(private graphQLClientService: GraphQLClientService) {}
 
-  public createRemoteEnvironment({
+  public createApplication({
     name,
     labels,
     description
@@ -32,7 +32,7 @@ export class RemoteEnvironmentsService {
     );
   }
 
-  public updateRemoteEnvironment({
+  public updateApplication({
     name,
     labels,
     description
@@ -55,7 +55,7 @@ export class RemoteEnvironmentsService {
     );
   }
 
-  getRemoteEnvironment(name: string): Observable<any> {
+  getApplication(name: string): Observable<any> {
     const query = `query Application($name: String!) {
         application(name: $name){
           description

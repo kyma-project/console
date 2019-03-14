@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { EnvironmentInfo } from '../../environments/environment-info';
-import { RemoteEnvironmentsService } from '../../settings/remote-environments/services/remote-environments.service';
+import { ApplicationsService } from '../../settings/applications/services/applications.service';
 import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
 import { EnvironmentsService } from '../../environments/services/environments.service';
 import { AppConfig } from '../../../app.config';
@@ -9,7 +9,7 @@ import { EnvironmentCreateComponent } from '../environment-create/environment-cr
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Observable, of, Subscription } from 'rxjs';
-import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
+import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
@@ -23,8 +23,8 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('createmodal') private createmodal: EnvironmentCreateComponent;
   private orgName = AppConfig.orgName;
   public environment: EnvironmentInfo = new EnvironmentInfo('', '');
-  private boundRemoteEnvironmentsCount: Observable<number> = of(0);
-  public remoteEnvironments: any;
+  private boundApplicationsCount: Observable<number> = of(0);
+  public applications: any;
   private services: any;
   public errorMessage: string;
   private id: string;
@@ -40,11 +40,11 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private remoteEnvironmentsService: RemoteEnvironmentsService,
+    private applicationsService: ApplicationsService,
     private environmentsService: EnvironmentsService,
     private currentEnvironmentService: CurrentEnvironmentService,
     private communicationService: ComponentCommunicationService,
-    private remoteEnvBindingService: RemoteEnvironmentBindingService
+    private applicationBindingService: ApplicationBindingService
   ) {
     this.subscribeToRefreshComponent();
   }
@@ -61,7 +61,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
               this.environment = env;
             }
             if (!this.isSystemNamespace) {
-              this.getRemoteEnvs(this.id);
+              this.getApplications(this.id);
             }
             this.getServices(this.id);
           },
@@ -79,12 +79,12 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getRemoteEnvs(id) {
-    this.remoteEnvBindingService.getBoundRemoteEnvironments(id).subscribe(
+  private getApplications(id) {
+    this.applicationBindingService.getBoundApplications(id).subscribe(
       res => {
-        this.remoteEnvironments = res['applications'];
-        this.boundRemoteEnvironmentsCount = of(
-          this.remoteEnvironments ? this.remoteEnvironments.length : 0
+        this.applications = res['applications'];
+        this.boundApplicationsCount = of(
+          this.applications ? this.applications.length : 0
         );
       },
       err => console.log(err)
@@ -107,7 +107,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
       const event: any = e;
 
       if (event.type === 'createResource' || event.type === 'deleteResource') {
-        this.getRemoteEnvs(this.id);
+        this.getApplications(this.id);
         this.getServices(this.id);
       }
     });
@@ -116,9 +116,9 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
   getEntryEventHandler() {
     return {
       unbind: (entry: any) => {
-        this.remoteEnvBindingService.unbind(this.id, entry.name).subscribe(
+        this.applicationBindingService.unbind(this.id, entry.name).subscribe(
           res => {
-            this.getRemoteEnvs(this.id);
+            this.getApplications(this.id);
           },
           err => console.log(err)
         );
@@ -132,7 +132,7 @@ export class EnvironmentDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
-  public navigateToRemoteEnvs(envName) {
+  public navigateToApplications(envName) {
     LuigiClient.linkManager().navigate(
       envName ? '/home/cmf-apps/details/' + envName : '/home/cmf-apps'
     );

@@ -17,22 +17,36 @@ export class ServicesEntryRendererComponent
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
+    this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
+      if (context && context.isSystemNamespace) {
+        this.actions = [
+          {
+            function: 'details',
+            name: 'Details'
+          },
+          ...this.actions
+        ] 
+      } else { 
+        this.actions = [
+          {
+            function: 'exposeApi',
+            name: 'Expose API'
+          },
+          {
+            function: 'details',
+            name: 'Details'
+          },
+          ...this.actions
+        ];
+      }
+    });
   }
+  contextListenerId: number;
+  isSystemNamespace: boolean;
   public disabled = false;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
-    this.actions = [
-      {
-        function: 'exposeApi',
-        name: 'Expose API'
-      },
-      {
-        function: 'details',
-        name: 'Details'
-      },
-      ...this.actions
-    ];
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
@@ -48,6 +62,7 @@ export class ServicesEntryRendererComponent
 
   ngOnDestroy() {
     this.communicationServiceSubscription.unsubscribe();
+    LuigiClient.removeContextUpdateListener(this.contextListenerId);
   }
 
   isStatusOk(entry) {

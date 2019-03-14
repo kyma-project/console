@@ -77,45 +77,41 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   test('Check if Application exist', async () => {
-    const remoteEnvironmentsUrl = address.console.getRemoteEnvironments();
+    const applicationsUrl = address.console.getApplications();
     await Promise.all([
-      page.goto(remoteEnvironmentsUrl),
+      page.goto(applicationsUrl),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
-      page,
-    );
-    console.log('Check if application exists', remoteEnvironments);
-    expect(remoteEnvironments).not.toContain(config.testEnv);
+    const applications = await kymaConsole.getApplicationNames(page);
+    console.log('Check if application exists', applications);
+    expect(applications).not.toContain(config.testApp);
   });
 
   testPluggable(REQUIRED_MODULE, 'Create Application', async () => {
     await retry(async () => {
       await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-      await kymaConsole.createRemoteEnvironment(page, config.testEnv);
+      await kymaConsole.createApplication(page, config.testApp);
     });
     await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-    const remoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
-      page,
-    );
-    expect(remoteEnvironments).toContain(config.testEnv);
+    const applications = await kymaConsole.getApplicationNames(page);
+    expect(applications).toContain(config.testApp);
   });
 
   testPluggable(REQUIRED_MODULE, 'Go to details and back', async () => {
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForXPath(
-      `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
-        config.testEnv
+      `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${
+        config.testApp
       }")]`,
     );
     await kymaConsole.openLinkOnFrame(
       page,
-      '[data-e2e-id=remoteenv-name]',
-      config.testEnv,
+      '[data-e2e-id=application-name]',
+      config.testApp,
     );
-    frame.waitForXPath(`//td[contains(string(), "${config.testEnv}")]`);
+    frame.waitForXPath(`//td[contains(string(), "${config.testApp}")]`);
     frame.waitForXPath(`//h1[contains(string(), "General Information")]`);
 
     frame.waitForSelector('.fd-breadcrumb__link');
@@ -125,23 +121,21 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   testPluggable(REQUIRED_MODULE, 'Delete Application', async () => {
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForXPath(
-      `//a[contains(@data-e2e-id, 'remoteenv-name') and contains(string(), "${
-        config.testEnv
+      `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${
+        config.testApp
       }")]`,
     );
-    const initialRemoteEnvironments = await kymaConsole.getRemoteEnvironmentNames(
-      page,
-    );
-    await kymaConsole.deleteRemoteEnvironment(page, config.testEnv);
-    const remoteEnvironments = await retry(async () => {
-      const remoteEnvironmentsAfterRemoval = await kymaConsole.getRemoteEnvironmentNames(
+    const initialApplications = await kymaConsole.getApplicationNames(page);
+    await kymaConsole.deleteApplication(page, config.testApp);
+    const applications = await retry(async () => {
+      const applicationsAfterRemoval = await kymaConsole.getApplicationNames(
         page,
       );
-      if (initialRemoteEnvironments <= remoteEnvironmentsAfterRemoval) {
-        throw new Error(`Application ${config.testEnv} was not yet removed`);
+      if (initialApplications <= applicationsAfterRemoval) {
+        throw new Error(`Application ${config.testApp} was not yet removed`);
       }
-      return remoteEnvironmentsAfterRemoval;
+      return applicationsAfterRemoval;
     }, 5);
-    expect(remoteEnvironments).not.toContain(config.testEnv);
+    expect(applications).not.toContain(config.testApp);
   });
 });

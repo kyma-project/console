@@ -29,7 +29,7 @@
             <fd-form-label>{{ isUserGroupMode ? 'User Group' : 'User' }} *</fd-form-label>
             <input fd-form-control class="y-fd-form__control" type="text" name="userOrGroup"
               placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}" [(ngModel)]="userOrGroup"
-              (ngModelChange)="validateUserOrGroupInput()" autocomplete="off">
+              (ngModelChange)="validateUserOrGroupInput()">
             <fd-form-message [type]="'error'" *ngIf="userGroupError">{{ userGroupError }}</fd-form-message>
           </div>
           <div fd-form-item *ngIf="!isGlobalPermissionsView">

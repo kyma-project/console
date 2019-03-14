@@ -1,13 +1,13 @@
 <section class="fd-section">
-  <fd-breadcrumb class="y-fd-breadcrumb">
+  <fd-breadcrumb>
     <fd-breadcrumb-item>
-      <a fd-breadcrumb-link (click)="navigateToList()" href="#">
+      <a fd-breadcrumb-link (click)="navigateToList()">
         Applications
       </a>
     </fd-breadcrumb-item>
     <fd-breadcrumb-item>
       <span fd-breadcrumb-link>
-        {{ currentREnvId }}
+        {{ currentAppId }}
       </span>
     </fd-breadcrumb-item>
   </fd-breadcrumb>
@@ -15,7 +15,7 @@
   <fd-action-bar>
     <fd-action-bar-header>
       <fd-action-bar-title>
-        {{ currentREnvId }}
+        {{ currentAppId }}
       </fd-action-bar-title>
     </fd-action-bar-header>
     <fd-action-bar-actions>
@@ -25,13 +25,13 @@
     </fd-action-bar-actions>
   </fd-action-bar>
 
-  <fd-panel class="y-fd-panel" *ngIf="remoteEnvironment">
+  <fd-panel class="y-fd-panel" *ngIf="application">
     <fd-panel-header>
       <fd-panel-head>
         <fd-panel-title>General Information</fd-panel-title>
       </fd-panel-head>
       <fd-panel-actions>
-        <button fd-button [options]="'light'" (click)="openEditRemoteEnvModal()">
+        <button fd-button [options]="'light'" (click)="openEditApplicationModal()">
           Edit
         </button>
       </fd-panel-actions>
@@ -43,20 +43,20 @@
         <tbody>
           <tr>
             <td class="y-fd-table--col-2 fd-has-color-text-4">Name</td>
-            <td>{{ remoteEnvironment.name }}</td>
+            <td>{{ application.name }}</td>
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Status</td>
-            <td><span class="fd-status-label" [ngClass]="determineClass(remoteEnvironment)">{{ prettyStatus }}</span>
+            <td><span class="fd-status-label" [ngClass]="determineClass(application)">{{ prettyStatus }}</span>
             </td>
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Description</td>
             <td>
-              <ng-container *ngIf="remoteEnvironment.description">
-                {{ remoteEnvironment.description }}
+              <ng-container *ngIf="application.description">
+                {{ application.description }}
               </ng-container>
-              <ng-container *ngIf="!remoteEnvironment.description">
+              <ng-container *ngIf="!application.description">
                 <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
               </ng-container>
             </td>
@@ -82,7 +82,7 @@
   </fd-panel>
 </section>
 
-<ng-container *ngIf="remoteEnvironment">
+<ng-container *ngIf="application">
   <section class="fd-section">
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
@@ -118,7 +118,7 @@
     </fd-panel>
   </section>
 
-  <section class="fd-section" *ngIf="remoteEnvironment.services.length > 0">
+  <section class="fd-section" *ngIf="application.services.length > 0">
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
@@ -133,7 +133,7 @@
             <th class="y-fd-table--col-1">Events</th>
           </fd-table-header>
           <fd-table-body>
-            <tr *ngFor="let service of remoteEnvironment.services">
+            <tr *ngFor="let service of application.services">
               <td>
                 <span class="fd-has-font-weight-bold">
                   {{ service.displayName }}
@@ -166,6 +166,6 @@
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-edit-bindings-modal #editbindingsmodal></app-edit-bindings-modal>
 <app-information-modal #infoModal></app-information-modal>
-<app-edit-remote-environment-modal #editRemoteEnvModal *ngIf="remoteEnvironment" [name]="remoteEnvironment.name"
-  [initialDescription]="remoteEnvironment.description" [initialLabels]="transformedLabels">
-</app-edit-remote-environment-modal>
+<app-edit-application-modal #editApplicationModal *ngIf="application" [name]="application.name"
+  [initialDescription]="application.description" [initialLabels]="transformedLabels">
+</app-edit-application-modal>

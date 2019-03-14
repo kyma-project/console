@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 export interface IEnvironment extends IMetaDataOwner {
   disabled?: boolean;
   spec: {};
-  remoteEnvs?: Observable<number>;
+  applications?: Observable<number>;
   services?: Observable<number>;
 
   isStatusOk(): boolean;
@@ -19,13 +19,13 @@ export interface IEnvironment extends IMetaDataOwner {
 export class Environment extends MetaDataOwner implements IEnvironment {
   disabled?: boolean;
   spec: {};
-  remoteEnvs?: Observable<number>;
+  applications?: Observable<number>;
   services?: Observable<number>;
 
   constructor(input: IEnvironment) {
     super(input.metadata, input.status);
     this.spec = input.spec;
-    this.remoteEnvs = input.remoteEnvs;
+    this.applications = input.applications;
     this.services = input.services;
   }
 

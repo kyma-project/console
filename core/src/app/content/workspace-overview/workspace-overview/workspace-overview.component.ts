@@ -21,7 +21,7 @@ import { DataConverter, Filter, GenericListComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { RemoteEnvironmentBindingService } from '../../settings/remote-environments/remote-environment-details/remote-environment-binding-service';
+import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { EnvironmentCreateComponent } from '../../environments/environment-create/environment-create.component';
 
@@ -47,14 +47,14 @@ export class WorkspaceOverviewComponent extends GenericListComponent
     changeDetector: ChangeDetectorRef,
     @Inject(EnvironmentsService) environmentsService: EnvironmentsService,
     private communicationService: ComponentCommunicationService,
-    private remoteEnvBindingService: RemoteEnvironmentBindingService
+    private applicationBindingService: ApplicationBindingService
   ) {
     super(changeDetector);
     this.environmentsService = environmentsService;
     const converter: DataConverter<
       IEnvironment,
       Environment
-    > = new EnvironmentDataConverter(remoteEnvBindingService, http);
+    > = new EnvironmentDataConverter(applicationBindingService, http);
     const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector`;
     this.source = new KubernetesDataProvider(url, converter, this.http);
     this.entryRenderer = EnvironmentCardComponent;
