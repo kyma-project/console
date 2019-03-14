@@ -18,8 +18,14 @@ import { IPod, Pod } from 'shared/datamodel/k8s/pod';
 export class PodsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Pods';
-  public emptyListText =
-    'It looks like you don’t have any pods in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: this.title
+    },
+    body: {
+      text: 'It looks like you don’t have any pods in your namespace yet.'
+    }
+  };
   public createNewElementText = 'Add Pod';
   public resourceKind = 'Pod';
   private currentEnvironmentId: string;

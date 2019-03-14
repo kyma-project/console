@@ -37,7 +37,7 @@ export class AbstractKubernetesElementListComponent
 
   public resourceKind: string;
   public title: string;
-  public emptyListText: string;
+  public emptyListData;
   public createNewElementText: string;
   private communicationServiceSubscription: Subscription;
 

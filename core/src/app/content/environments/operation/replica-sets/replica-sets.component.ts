@@ -14,8 +14,14 @@ import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element
 export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   title = 'Replica Sets';
-  emptyListText =
-    'It looks like you don’t have any replica sets in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: this.title
+    },
+    body: {
+      text: 'It looks like you don’t have any replica sets in your namespace yet.'
+    }
+  };
   createNewElementText = 'Add Replica Set';
   resourceKind = 'ReplicaSet';
 

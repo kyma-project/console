@@ -20,8 +20,14 @@ import { AbstractKubernetesElementListComponent } from '../../environments/opera
 })
 export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
   public title = 'Service Brokers';
-  public emptyListText =
-    'It looks like you don’t have any service brokers yet.';
+  public emptyListData = {
+    header: {
+      text: this.title
+    },
+    body: {
+      text: 'It looks like you don’t have any service brokers yet.'
+    }
+  };
   public createNewElementText = 'Add Service Broker';
   public resourceKind = 'ServiceBroker';
   public hideFilter = true;

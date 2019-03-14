@@ -19,8 +19,14 @@ import { ISecret, Secret } from 'shared/datamodel/k8s/secret';
 export class SecretsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   title = 'Secrets';
-  emptyListText =
-    'It looks like you don’t have any secrets in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: this.title
+    },
+    body: {
+      text: 'It looks like you don’t have any secrets in your namespace yet.'
+    }
+  };
   createNewElementText = 'Add Secret';
   resourceKind = 'Secret';
   private currentEnvironmentId;

@@ -17,8 +17,14 @@ import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
 export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Config Maps';
-  public emptyListText =
-    'It looks like you don’t have any config maps in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: this.title
+    },
+    body: {
+      text: 'It looks like you don’t have any config maps in your namespace yet.'
+    }
+  };
   public createNewElementText = 'Add Config Map';
   public resourceKind = 'ConfigMap';
   private currentEnvironmentId: string;

@@ -18,8 +18,15 @@ import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/
 export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Deployments';
-  public emptyListText =
-    'It looks like you don’t have any deployments in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: this.title
+    },
+    body: {
+      text: 'It looks like you don’t have any deployments in your namespace yet.'
+    }
+  };
+
   public createNewElementText = 'Add Deployment';
   public resourceKind = 'Deployment';
   private currentEnvironmentId: string;

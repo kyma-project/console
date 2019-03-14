@@ -18,7 +18,12 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class RolesComponent extends AbstractKubernetesElementListComponent
   implements OnInit {
   public title = '';
-  public emptyListText = 'It looks like you don’t have any Roles yet.';
+  public emptyListData = {
+    body: {
+      text: 'It looks like you don’t have any Roles yet.'
+    }
+  };
+
   public resourceKind = 'Role';
   public createNewElementText = '';
 
