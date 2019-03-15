@@ -12,7 +12,7 @@ class Builder {
       const timeout = setTimeout(resolve, 1000);
 
       LuigiClient.addInitListener(e => {
-        this.currentEnvironmentId = e.environmentId;
+        this.currentEnvironmentId = e.namespaceId;
         this.token = e.idToken;
         this.backendModules = e.backendModules;
 
