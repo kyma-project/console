@@ -56,7 +56,7 @@ If you want to run only a specific UI, follow the instructions in the appropriat
 
 ### Development with local GraphQL API
 
-By default, the [`core`](./core) and all views are connected to the **GraphQL API** running on the cluster at [this](https://ui-api.kyma.local/graphql) address. If you want to use local **GraphQL API** endpoint, follow the instructions in the **Run a local version** section of [this](https://github.com/kyma-project/kyma/tree/master/components/ui-api-layer#run-a-local-version) document and run the following command:
+By default, the [`core`](./core) and all views are connected to the **GraphQL API** running on the cluster at [this](https://console-backend.kyma.local/graphql) address. If you want to use local **GraphQL API** endpoint, follow the instructions in the **Run a local version** section of [this](https://github.com/kyma-project/kyma/tree/master/components/ui-api-layer#run-a-local-version) document and run the following command:
 ```
 npm run start:api
 ```
