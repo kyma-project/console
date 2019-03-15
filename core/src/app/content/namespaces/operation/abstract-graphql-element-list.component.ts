@@ -71,14 +71,16 @@ export class AbstractGraphqlElementListComponent
         namespace: this.currentNamespaceId
       })
       .subscribe(data => {
-        this.mutateResourceModal.resourceData = data.replicaSet.json;
+        const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+        this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
         this.mutateResourceModal.show();
       });
   }
 
   getResourceJSONQuery() {
-    return `query ${this.resourceKind}($name: String! $namespace: String!) {
-      replicaSet(name: $name, namespace: $namespace) {
+    const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+    return `query ${lowerCaseResourceKind}($name: String! $namespace: String!) {
+      ${lowerCaseResourceKind}(name: $name, namespace: $namespace) {
         json
       }
     }`;
