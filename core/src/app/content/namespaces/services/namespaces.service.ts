@@ -64,7 +64,7 @@ export class NamespacesService {
 
   public createNamespace(namespaceName: string) {
     const body = {
-      metadata: { name: namespaceName, labels: { namespace: 'true' } }
+      metadata: { name: namespaceName, labels: { env: 'true' } }
     };
     if (namespaceName) {
       return this.http
