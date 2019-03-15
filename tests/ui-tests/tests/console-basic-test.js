@@ -34,9 +34,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     const dropdownMenu = 'ul#context_menu_middle > li';
     await page.click(dropdownButton);
     await page.waitForSelector(dropdownMenu, { visible: true });
-    const namespaces = await kymaConsole.getNamespacesFromContextSwitcher(
-      page,
-    );
+    const namespaces = await kymaConsole.getNamespacesFromContextSwitcher(page);
     await page.click(dropdownButton);
     console.log('Check if namespaces exist', namespaces);
     expect(namespaces.length).toBeGreaterThan(1);
