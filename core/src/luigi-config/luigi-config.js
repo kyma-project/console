@@ -192,9 +192,9 @@ function getNodes(context) {
       'namespace',
       'namespace'
     ])
-  ]).then(function(values) {
+  ]).then(function (values) {
     var nodeTree = [...staticNodes];
-    values.forEach(function(val) {
+    values.forEach(function (val) {
       if (val === 'systemNamespace') {
         nodeTree.forEach(item => {
           if (item.context) {
@@ -271,11 +271,11 @@ async function getUiEntities(entityname, namespace, placements) {
           return [];
         }
         return result.items
-          .filter(function(item) {
+          .filter(function (item) {
             // placement only exists in clustermicrofrontends
             return !placements || placements.includes(item.spec.placement);
           })
-          .map(function(item) {
+          .map(function (item) {
             function buildNode(node, spec) {
               var n = {
                 label: node.label,
@@ -366,12 +366,12 @@ async function getUiEntities(entityname, namespace, placements) {
             function getDirectChildren(parentNodeSegments, spec) {
               // process only direct children
               return spec.navigationNodes
-                .filter(function(node) {
+                .filter(function (node) {
                   var currentNodeSegments = node.navigationPath.split('/');
                   var isDirectChild =
                     parentNodeSegments.length ===
-                      currentNodeSegments.length - 1 &&
-                    parentNodeSegments.filter(function(segment) {
+                    currentNodeSegments.length - 1 &&
+                    parentNodeSegments.filter(function (segment) {
                       return currentNodeSegments.includes(segment);
                     }).length > 0;
                   return isDirectChild;
@@ -419,7 +419,7 @@ async function getUiEntities(entityname, namespace, placements) {
         return [];
       })
       .then(result => {
-        cache[cacheKey] = new Promise(function(resolve) {
+        cache[cacheKey] = new Promise(function (resolve) {
           resolve(result);
         });
         return result;
@@ -428,9 +428,9 @@ async function getUiEntities(entityname, namespace, placements) {
 }
 
 function fetchFromKyma(url) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
@@ -449,9 +449,9 @@ function fetchFromKyma(url) {
 }
 
 function fetchFromGraphQL(query, variables) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
@@ -481,9 +481,9 @@ function fetchFromGraphQL(query, variables) {
 }
 
 function postToKyma(url, body) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (
         xmlHttp.readyState == 4 &&
         (xmlHttp.status == 200 || xmlHttp.status == 201)
@@ -525,7 +525,7 @@ function getSelfSubjectRulesReview() {
       namespace: '*'
     }
   };
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     postToKyma(url, body).then(
       res => {
         let resourceRules = [];
@@ -602,7 +602,7 @@ function getBackendModules() {
 function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
-  ).then(function(response) {
+  ).then(function (response) {
     var namespaces = [];
     response.items.map(namespace => {
       if (namespace.status && namespace.status.phase !== 'Active') {
@@ -666,7 +666,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
           onLogout: () => {
             console.log('onLogout');
           },
-          onAuthSuccessful: data => {},
+          onAuthSuccessful: data => { },
           onAuthExpired: () => {
             console.log('onAuthExpired');
           },
@@ -686,10 +686,10 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
               idToken: token,
               backendModules
             },
-            children: function() {
+            children: function () {
               return getUiEntities('clustermicrofrontends', undefined, [
                 'cluster'
-              ]).then(function(cmf) {
+              ]).then(function (cmf) {
                 var staticNodes = [
                   {
                     pathSegment: 'workspace',
@@ -706,6 +706,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
                       {
                         pathSegment: ':namespaceId',
                         context: {
+                          environmentId: ':namespaceId',
                           namespaceId: ':namespaceId'
                         },
                         children: getNodes,
@@ -869,7 +870,7 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
       resource.affectedResources.forEach(affectedResource => {
         limitExceededErrorscomposed.push(
           `'${resource.resourceName}' by '${affectedResource}' (${
-            resource.quotaName
+          resource.quotaName
           })`
         );
       });
