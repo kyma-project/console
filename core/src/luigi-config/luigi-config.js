@@ -9,7 +9,7 @@ var config = {
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
-  graphqlApiUrl: 'https://ui-api.' + k8sDomain + '/graphql'
+  graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql'
 };
 
 if (clusterConfig) {
@@ -214,11 +214,11 @@ function getNodes(context) {
 }
 
 /**
- * We're using Promise based caching approach, since we often 
- * execute getNamespace twice at the same time and we only 
+ * We're using Promise based caching approach, since we often
+ * execute getNamespace twice at the same time and we only
  * want to do one rest call.
- * 
- * @param {string} namespaceName 
+ *
+ * @param {string} namespaceName
  * @returns {Promise} nsPromise
  */
 async function getNamespace(namespaceName) {
@@ -228,7 +228,9 @@ async function getNamespace(namespaceName) {
   }
   const cache = window[cacheName];
   if (!cache[namespaceName]) {
-    cache[namespaceName] = fetchFromKyma(`${k8sServerUrl}/api/v1/namespaces/${namespaceName}`);
+    cache[namespaceName] = fetchFromKyma(
+      `${k8sServerUrl}/api/v1/namespaces/${namespaceName}`
+    );
   }
   return await cache[namespaceName];
 }
