@@ -14,7 +14,7 @@
   </fd-panel-header>
   <fd-panel-body [bleed]="true">
     <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
-      [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer" [emptyListPlaceholderData]="emptyListData">
+      [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer" [emptyListPlaceholderData]="emptyListData" [showEmptyPage]="showEmptyPage">
     </y-plain-table>
 
     <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>

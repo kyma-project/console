@@ -23,7 +23,7 @@
   </fd-panel>
 
   <y-plain-table [source]="data" [headerRenderer]="lambdasHeaderRenderer" [entryRenderer]="lambdasEntryRenderer"
-    [entryEventHandler]="lambdasEventHandler" [emptyListPlaceholderData]="emptyListData">
+    [entryEventHandler]="lambdasEventHandler" [emptyListPlaceholderData]="emptyListData" [showEmptyPage]="showEmptyPage">
   </y-plain-table>
   <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
 </section>

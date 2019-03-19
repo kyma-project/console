@@ -20,6 +20,7 @@ export class PlainTableComponent extends PlainListComponent {
   @Input() headerRenderer: Type<any>;
   @Input() footerRenderer: Type<any>;
   @Input() entryTagName = 'tbody';
+  @Input() showEmptyPage: Boolean;
   @Input()
   emptyListPlaceholderData: {
     header: { text: string; actionButton: { glyph: string; text: string } };
