@@ -18,14 +18,7 @@ import { IEmptyListData } from 'shared/datamodel';
 export class ConfigMapsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Config Maps';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any config maps in your namespace yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   public createNewElementText = 'Add Config Map';
   public resourceKind = 'ConfigMap';
   private currentEnvironmentId: string;

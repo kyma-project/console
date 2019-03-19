@@ -19,15 +19,7 @@ import { IEmptyListData } from 'shared/datamodel';
 export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public title = 'Deployments';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any deployments in your namespace yet.'
-    }
-  };
-
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title);
   public createNewElementText = 'Add Deployment';
   public resourceKind = 'Deployment';
   private currentEnvironmentId: string;

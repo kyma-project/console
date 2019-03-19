@@ -20,14 +20,7 @@ import { IEmptyListData } from 'shared/datamodel';
 export class SecretsComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   title = 'Secrets';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any secrets in your namespace yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   createNewElementText = 'Add Secret';
   resourceKind = 'Secret';
   private currentEnvironmentId;

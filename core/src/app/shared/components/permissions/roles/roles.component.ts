@@ -19,11 +19,7 @@ import { IEmptyListData } from 'shared/datamodel';
 export class RolesComponent extends AbstractKubernetesElementListComponent
   implements OnInit {
   public title = '';
-  public emptyListData: IEmptyListData = {
-    body: {
-      text: 'It looks like you don’t have any Roles yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Roles', { headerTitle: false, namespaceSuffix: true });
 
   public resourceKind = 'Role';
   public createNewElementText = '';

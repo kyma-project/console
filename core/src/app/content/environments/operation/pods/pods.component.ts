@@ -13,14 +13,7 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 export class PodsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   public title = 'Pods';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any pods in your namespace yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   public resourceKind = 'Pod';
 
   public entryRenderer = PodsEntryRendererComponent;

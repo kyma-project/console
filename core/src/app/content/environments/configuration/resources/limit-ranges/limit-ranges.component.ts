@@ -18,14 +18,7 @@ import { IEmptyListData } from 'shared/datamodel';
 })
 export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: 'Limit Ranges'
-    },
-    body: {
-      text: 'It looks like you don’t have any limit ranges in your namespace yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Limit Ranges')
   public createNewElementText = 'Add Limit Range';
   public resourceKind = 'Limit Range';
   private currentEnvironmentId: string;

@@ -21,14 +21,7 @@ import { IEmptyListData } from 'shared/datamodel';
 })
 export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
   public title = 'Service Brokers';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any service brokers yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   public createNewElementText = 'Add Service Broker';
   public resourceKind = 'ServiceBroker';
   public hideFilter = true;

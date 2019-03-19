@@ -27,15 +27,7 @@ export class ApplicationsComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   title = 'Applications';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any Applications yet.'
-    }
-  };
-
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   createNewElementText = 'Add Application';
   baseUrl = AppConfig.k8sApiServerUrl_applications;
   resourceKind = 'Application';

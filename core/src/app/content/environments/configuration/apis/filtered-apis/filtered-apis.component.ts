@@ -21,11 +21,7 @@ export class FilteredApisComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public resourceKind = 'api';
-  public emptyListData: IEmptyListData = {
-    body: {
-      text: 'It looks like you don’t have any APIs for this service yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', { headerTitle: false, namespaceSuffix: false });
   public createNewElementText = 'Add API';
   public baseUrl: string;
   public currentEnvironmentId: string;

@@ -19,14 +19,7 @@ import { IEmptyListData } from 'shared/datamodel';
 export class ResourceQuotasComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: 'Resource Quotas'
-    },
-    body: {
-      text: 'It looks like you don’t have any resource quotas in your namespace yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Resource Quotas')
   public createNewElementText = 'Add Resource Quota';
   public resourceKind = 'Resource Quota';
   private currentEnvironmentId: string;

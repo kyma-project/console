@@ -15,14 +15,7 @@ import { IEmptyListData } from 'shared/datamodel';
 export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   title = 'Replica Sets';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any replica sets in your namespace yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   createNewElementText = 'Add Replica Set';
   resourceKind = 'ReplicaSet';
 
