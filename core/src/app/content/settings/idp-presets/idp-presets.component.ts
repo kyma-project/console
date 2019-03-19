@@ -11,21 +11,17 @@ import { GraphQLDataProvider } from '../../environments/operation/graphql-data-p
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
 import { IEmptyListData } from 'shared/datamodel';
+import { AbstractKubernetesElementListComponent } from 'environments/operation/abstract-kubernetes-element-list.component';
+import { HttpClient } from '@angular/common/http';
+import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
 
 @Component({
   selector: 'app-idp-presets',
   templateUrl: './idp-presets.component.html'
 })
-export class IdpPresetsComponent extends GenericTableComponent {
+export class IdpPresetsComponent extends AbstractKubernetesElementListComponent {
   public title = 'IDP Presets';
-  public emptyListData: IEmptyListData = {
-    header: {
-      text: this.title
-    },
-    body: {
-      text: 'It looks like you don’t have any IDP presets yet.'
-    }
-  };
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   public createNewElementText = 'Add IDP Preset';
   public resourceKind = 'IDPPreset';
   public hideFilter = true;
@@ -36,11 +32,14 @@ export class IdpPresetsComponent extends GenericTableComponent {
 
   constructor(
     private idpPresetsService: IdpPresetsService,
+    private http: HttpClient,
+    private currentEnvironmentService: CurrentEnvironmentService,
+    private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
-    private communicationService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(changeDetector);
+    super(currentEnvironmentService, changeDetector, http, commService);
+
     const query = `query {
       IDPPresets{
         name
@@ -69,19 +68,6 @@ export class IdpPresetsComponent extends GenericTableComponent {
     this.subscribeToRefreshComponent();
   }
 
-  private subscribeToRefreshComponent() {
-    this.communicationService.observable$.subscribe(e => {
-      const event: any = e;
-
-      if (
-        (event.type === 'createResource' && !_.isEmpty(event.data)) ||
-        (event.type === 'deleteResource' && !_.isEmpty(event.data))
-      ) {
-        this.reload();
-      }
-    });
-  }
-
   public openModal() {
     this.createModal.show();
   }
@@ -100,7 +86,7 @@ export class IdpPresetsComponent extends GenericTableComponent {
                 res => {
                   const response: any = res;
 
-                  this.communicationService.sendEvent({
+                  this.commService.sendEvent({
                     type: 'deleteResource',
                     data: response.deleteIDPPreset
                   });
