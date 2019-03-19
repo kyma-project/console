@@ -19,16 +19,9 @@ describe('PodsEntryRendererComponent', () => {
           {
             provide: 'entry',
             useValue: {
-              metadata: {
-                name: 'name'
-              },
-              status: {
-                phase: 'Running',
-                containerStatuses: []
-              },
-              spec: {
-                nodeName: 'name'
-              }
+              name: 'name',
+              status: 'RUNNING',
+              containerStates: [{}]
             }
           }
         ],
@@ -49,79 +42,35 @@ describe('PodsEntryRendererComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display pod status', () => {
-    const waitingStatus = {
-      phase: 'Doing something..',
-      containerStatuses: [
+  it('should display pod status any container failed', () => {
+    const pod = {
+      status: 'PENDING',
+      containerStates: [
         {
-          state: {
-            waiting: {
-              reason: 'Some reason'
-            }
-          }
-        }
-      ]
-    };
-    expect(component.getStatus({ status: waitingStatus })).toEqual(
-      'Waiting: Some reason'
-    );
-    const signalStatus = {
-      phase: 'Doing something..',
-      containerStatuses: [
-        {
-          state: {
-            stopped: {
-              signal: 'Some signal'
-            }
-          }
-        }
-      ]
-    };
-    expect(component.getStatus({ status: signalStatus })).toEqual(
-      'Stopped (Signal: Some signal)'
-    );
-
-    const exitCodeStatus = {
-      phase: 'Doing something..',
-      containerStatuses: [
-        {
-          state: {
-            foo: {
-              exitCode: 'Some exitCode'
-            }
-          }
+          state: 'RUNNING',
+          reason: '',
+          message: ''
         },
         {
-          status: {
-            bar: {
-              exitCode: 'Sample code'
-            }
-          }
+          state: 'PENDING',
+          reason: 'ImagePullBackOff',
+          message: 'Image not found'
         }
       ]
-    };
-    expect(component.getStatus({ status: exitCodeStatus })).toEqual(
-      'Foo (Exit code: Some exitCode)'
+    }
+    expect(component.getStatus(pod)).toEqual(
+      'PENDING: ImagePullBackOff'
     );
 
-    const otherCodeStatus = {
-      phase: 'Doing something..',
-      containerStatuses: [
-        {
-          state: {
-            other: {
-              foo: 'bar'
-            }
-          }
-        }
-      ]
+  });
+
+  it('should display pod status if it\'s running', () => {
+    const pod = {
+      status: 'RUNNING',
+      containerStates: [{}]
     };
-    expect(component.getStatus({ status: otherCodeStatus })).toEqual('Other');
-    const noContainerStatesStatus = {
-      phase: 'Doing something..'
-    };
-    expect(component.getStatus({ status: noContainerStatesStatus })).toEqual(
-      'Doing something..'
+    expect(component.getStatus(pod)).toEqual(
+      'RUNNING'
     );
   });
 
@@ -129,9 +78,7 @@ describe('PodsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      metadata: {
-        name: 'name'
-      },
+      name: 'name',
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
@@ -154,9 +101,7 @@ describe('PodsEntryRendererComponent', () => {
     fixture.detectChanges();
     const subject = new Subject();
     const entry = {
-      metadata: {
-        name: 'name2'
-      },
+      name: 'name2',
       disabled: true
     };
     spyOn(componentCommunicationService, 'observable$').and.returnValue(
