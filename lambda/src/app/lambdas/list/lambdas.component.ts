@@ -42,7 +42,7 @@ export class LambdasComponent extends GenericTableComponent
   title = 'Lambdas';
   public emptyListData = {
     header: {
-      text: 'Bound Lambdas'
+      text: 'Lambdas'
     },
     body: {
       text: 'It looks like you don’t have any lambdas in your namespace yet.'
