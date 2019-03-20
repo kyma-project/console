@@ -76,9 +76,9 @@
         <fd-table-body>
           <tr *ngFor="let namespace of applications">
             <td>
-              <a (click)="navigateToApplications(namespace.name)">{{ namespace.name }}</a>
+              <a href="javascript:void(null)" (click)="navigateToApplications(namespace.name)">{{ namespace.name }}</a>
             </td>
-            <td class="fd-table--col-1 fd-has-float-right">
+            <td class="y-fd-table--col-1">
               <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
               </y-list-actions>
             </td>
