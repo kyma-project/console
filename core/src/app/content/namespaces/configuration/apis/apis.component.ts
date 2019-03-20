@@ -14,6 +14,7 @@ import { KubernetesDataProvider } from '../../operation/kubernetes-data-provider
 import { DataConverter, Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-apis',
@@ -23,13 +24,11 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public resourceKind = 'Api';
   public title = 'APIs';
-  public emptyListText =
-    'It looks like you don’t have any APIs in your namespace yet.';
-  public createNewElementText = 'Add API';
   public baseUrl: string;
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title);
 
   constructor(
     private http: HttpClient,

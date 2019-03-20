@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { ActivatedRoute } from '@angular/router';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-filtered-apis',
@@ -20,9 +21,7 @@ export class FilteredApisComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
   public resourceKind = 'api';
-  public title = 'APIs';
-  public emptyListText =
-    'It looks like you don’t have any APIs for this service yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', { headerTitle: false, namespaceSuffix: false });
   public createNewElementText = 'Add API';
   public baseUrl: string;
   public currentNamespaceId: string;

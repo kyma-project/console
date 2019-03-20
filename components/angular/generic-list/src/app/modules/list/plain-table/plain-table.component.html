@@ -8,7 +8,7 @@
 
 <div [attr.data-e2e]="'empty-list-placeholder'" class="fd-has-text-align-center"
     *ngIf="!loading && !errorMessage && (!data || data.length === 0)">
-  <y-empty-list [emptyListPlaceholderData]="emptyListPlaceholderData" (buttonClicked)="onEmptyListActionButtonClicked()"></y-empty-list>
+  <y-empty-list *ngIf="showEmptyPage" [emptyListPlaceholderData]="emptyListPlaceholderData" (buttonClicked)="onEmptyListActionButtonClicked()"></y-empty-list>
   <ng-content *ngIf="!emptyListPlaceholderData" select="[empty-list-placeholder]"></ng-content>
 </div>
 

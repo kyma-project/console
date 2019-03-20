@@ -8,6 +8,7 @@ import { ComponentCommunicationService } from '../../../services/component-commu
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
 import LuigiClient from '@kyma-project/luigi-client';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-roles',
@@ -18,7 +19,8 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class RolesComponent extends AbstractKubernetesElementListComponent
   implements OnInit {
   public title = '';
-  public emptyListText = 'It looks like you don’t have any Roles yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Roles', { headerTitle: false, namespaceSuffix: true });
+
   public resourceKind = 'Role';
   public createNewElementText = '';
 

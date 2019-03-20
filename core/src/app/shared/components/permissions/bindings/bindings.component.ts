@@ -16,6 +16,7 @@ import { BindingEntryRendererComponent } from './binding-entry-renderer/binding-
 import { BindingHeaderRendererComponent } from './binding-header-renderer/binding-header-renderer.component';
 import { IRoleBinding, RoleBinding } from '../../../datamodel/k8s/role-binding';
 import { RoleBindingModalComponent } from '../../role-binding-modal/role-binding-modal.component';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-bindings',
@@ -24,7 +25,7 @@ import { RoleBindingModalComponent } from '../../role-binding-modal/role-binding
 export class BindingsComponent extends AbstractKubernetesElementListComponent
   implements OnInit {
   public title = '';
-  public emptyListText = 'It looks like you don’t have any Role Bindings yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Role Bindings', { headerTitle: false, namespaceSuffix: true });
   public createNewElementText = 'Create Binding';
   public resourceKind = 'RoleBinding';
   private currentNamespaceId: string;

@@ -13,6 +13,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Filter, GenericTableComponent } from 'app/generic-list';
 import { Subscription, Observable } from 'rxjs';
+import { IEmptyListData, IEmptyListDataBody, IEmptyListDataHeader } from 'shared/datamodel';
 
 @Injectable()
 @Component({
@@ -37,7 +38,7 @@ export class AbstractKubernetesElementListComponent
 
   public resourceKind: string;
   public title: string;
-  public emptyListText: string;
+  public emptyListData: IEmptyListData;
   public createNewElementText: string;
   private communicationServiceSubscription: Subscription;
 
@@ -49,6 +50,17 @@ export class AbstractKubernetesElementListComponent
   ) {
     super(changeDet);
     this.subscribeToRefreshComponent();
+  }
+
+  protected getBasicEmptyListData(resource: string, { headerTitle, namespaceSuffix } = { headerTitle: true, namespaceSuffix: true }): IEmptyListData {
+    const newBodyTextSuffix = namespaceSuffix ? 'in your namespace yet' : 'yet';
+    const body: IEmptyListDataBody = {
+      body: {
+        text: `It looks like you don’t have any ${resource} ${newBodyTextSuffix}.`
+      }
+    };
+    const header: IEmptyListDataHeader = headerTitle ? { header : { text: resource }} : {};
+    return {...body, ...header}
   }
 
   getResourceUrl(kind: string, entry: any): string {

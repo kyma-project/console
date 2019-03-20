@@ -6,6 +6,7 @@ import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-render
 import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-replica-sets',
@@ -14,8 +15,7 @@ import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element
 export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   title = 'Replica Sets';
-  emptyListText =
-    'It looks like you don’t have any replica sets in your namespace yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   createNewElementText = 'Add Replica Set';
   resourceKind = 'ReplicaSet';
 

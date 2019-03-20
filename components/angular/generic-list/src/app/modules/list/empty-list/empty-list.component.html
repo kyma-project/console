@@ -11,11 +11,11 @@
         </button>
     </fd-panel-actions>
     </fd-panel-header>
-    <fd-panel-body *ngIf="emptyListPlaceholderData.body">
-      <p *ngIf="emptyListPlaceholderData.body.text" class="fd-has-margin-top-small">
+    <fd-panel-body *ngIf="emptyListPlaceholderData.body" class="fd-has-margin-top-small fd-has-margin-bottom-small">
+      <p *ngIf="emptyListPlaceholderData.body.text">
         {{ emptyListPlaceholderData.body.text }}
       </p>
-      <p *ngIf="emptyListPlaceholderData.body.actionButton" class="fd-has-margin-top-medium fd-has-margin-bottom-small">
+      <p *ngIf="emptyListPlaceholderData.body.actionButton" class="fd-has-margin-top-medium">
         <button fd-button (click)="onButtonClicked()" [glyph]="emptyListPlaceholderData.body.actionButton.glyph">
           {{ emptyListPlaceholderData.body.actionButton.text }}
         </button>
