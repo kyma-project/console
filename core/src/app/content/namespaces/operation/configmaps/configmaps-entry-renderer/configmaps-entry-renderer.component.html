@@ -1,6 +1,6 @@
 <tr>
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
-  <td>{{ entry.creationTimestamp | timeAgo }}</td>
+  <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
     <span *ngFor="let label of getLabels(entry.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
