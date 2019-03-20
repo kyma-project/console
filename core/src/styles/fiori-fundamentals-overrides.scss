@@ -52,8 +52,12 @@
   td {
     vertical-align: top;
   }
+
+  tr {
+    cursor: default;
+  }
 }
-//Tables
+
 .y-fd-table {
   margin-bottom: 0;
 
@@ -70,17 +74,6 @@
 
   &__tr--no-border-below + tr {
     border-top: 0;
-  }
-
-  tr {
-    cursor: default;
-  }
-
-  td {
-    vertical-align: top;
-    a {
-      cursor: pointer;
-    }
   }
 }
 
@@ -162,9 +155,9 @@
   }
 }
 
-//Cursor pointer for all links
-a {
-  cursor: pointer;
+//Display block, missing in latest version
+.fd-has-display-block {
+  display: block !important;
 }
 
 // Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)
@@ -175,7 +168,7 @@ a {
 }
 
 .fd-popover__body {
-  &[aria-hidden='true'], 
+  &[aria-hidden='true'],
   &.is-hidden {
     margin-top: -15px;
     transform: none;

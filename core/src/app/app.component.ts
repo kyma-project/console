@@ -7,11 +7,11 @@ import LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public environmentId: string;
+  public namespaceId: string;
 
   public constructor() {
     LuigiClient.addContextUpdateListener(updatedContext => {
-      this.environmentId = updatedContext.environmentId;
+      this.namespaceId = updatedContext.namespaceId;
     });
   }
 }

@@ -9,9 +9,9 @@ import {
 import { DataConverter } from 'app/generic-list';
 import { AppConfig } from '../../../../app.config';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
-import { AbstractKubernetesElementListComponent } from '../../../../content/environments/operation/abstract-kubernetes-element-list.component';
-import { KubernetesDataProvider } from '../../../../content/environments/operation/kubernetes-data-provider';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { AbstractKubernetesElementListComponent } from '../../../../content/namespaces/operation/abstract-kubernetes-element-list.component';
+import { KubernetesDataProvider } from '../../../../content/namespaces/operation/kubernetes-data-provider';
+import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
 import { BindingEntryRendererComponent } from './binding-entry-renderer/binding-entry-renderer.component';
 import { BindingHeaderRendererComponent } from './binding-header-renderer/binding-header-renderer.component';
 import { IRoleBinding, RoleBinding } from '../../../datamodel/k8s/role-binding';
@@ -28,7 +28,7 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('Role Bindings', { headerTitle: false, namespaceSuffix: true });
   public createNewElementText = 'Create Binding';
   public resourceKind = 'RoleBinding';
-  private currentEnvironmentId: string;
+  private currentNamespaceId: string;
 
   // tslint:disable-next-line:no-input-rename
   @Input('mode') private mode: string;
@@ -39,11 +39,11 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     this.pagingState = { pageNumber: 1, pageSize: 20 };
     this.entryRenderer = BindingEntryRendererComponent;
     this.headerRenderer = BindingHeaderRendererComponent;
@@ -65,13 +65,13 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
       this.source = new KubernetesDataProvider(url, converter, this.http);
     } else {
       this.title = 'Role Bindings';
-      this.currentEnvironmentService
-        .getCurrentEnvironmentId()
-        .subscribe(envId => {
-          this.currentEnvironmentId = envId;
+      this.currentNamespaceService
+        .getCurrentNamespaceId()
+        .subscribe(namespaceId => {
+          this.currentNamespaceId = namespaceId;
           url = `${
             AppConfig.k8sApiServerUrl_rbac
-          }namespaces/${envId}/rolebindings`;
+          }namespaces/${namespaceId}/rolebindings`;
           this.source = new KubernetesDataProvider(url, converter, this.http);
         });
     }
@@ -86,7 +86,7 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
       }`;
     } else {
       return `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
-        this.currentEnvironmentId
+        this.currentNamespaceId
       }/rolebindings/${entry.metadata.name}`;
     }
   }

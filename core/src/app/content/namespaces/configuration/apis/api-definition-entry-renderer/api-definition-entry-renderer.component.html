@@ -1,0 +1,21 @@
+<tr [ngClass]="{ disabled: disabled === true }">
+  <td>
+    <a href="javascript:void(null)" (click)="navigateToDetails(entry.metadata.name)">
+      {{ entry.metadata.name }}
+    </a>
+  </td>
+  <td>{{ entry.spec.hostname }}</td>
+  <td>{{ entry.spec.service.name }}</td>
+  <td>{{ entry.spec.service.port }}</td>
+  <td>
+    <p>{{ isSecured(entry) }}</p>
+  </td>
+  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td class="fd-has-float-right">
+    <y-list-actions
+      [entry]="entry"
+      [entryEventHandler]="entryEventHandler"
+      [actions]="actions"
+    ></y-list-actions>
+  </td>
+</tr>

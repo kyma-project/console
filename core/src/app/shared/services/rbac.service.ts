@@ -6,13 +6,13 @@ import { GraphQLClientService } from './graphql-client-service';
 
 @Injectable()
 export class RbacService {
-  public envChangeStateEmitter$: EventEmitter<boolean>;
+  public namespaceChangeStateEmitter$: EventEmitter<boolean>;
 
   constructor(
     private http: HttpClient,
     private graphQLClientService: GraphQLClientService
   ) {
-    this.envChangeStateEmitter$ = new EventEmitter();
+    this.namespaceChangeStateEmitter$ = new EventEmitter();
   }
 
   processName(name) {
@@ -65,9 +65,9 @@ export class RbacService {
     };
   }
 
-  public getRoles(environmentId) {
+  public getRoles(namespaceId) {
     return this.http.get(
-      `${AppConfig.k8sApiServerUrl_rbac}namespaces/${environmentId}/roles`
+      `${AppConfig.k8sApiServerUrl_rbac}namespaces/${namespaceId}/roles`
     );
   }
 

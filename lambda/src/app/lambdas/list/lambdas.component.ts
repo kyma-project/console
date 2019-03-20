@@ -237,7 +237,7 @@ export class LambdasComponent extends GenericTableComponent
 
     this.listenerId = luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.environmentId;
+      this.environment = eventData.namespaceId;
       this.token = eventData.idToken;
       this.source = new KubernetesDataProvider(
         `${AppConfig.kubelessApiUrl}/namespaces/${this.environment}/functions`,

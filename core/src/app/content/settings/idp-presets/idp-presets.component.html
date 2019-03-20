@@ -12,7 +12,7 @@
       <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter" [filterState]="filterState"
         (onFilterChanged)="onFilterChanged($event)">
       </y-list-filter>
-      <button class="open-create-env-modal" fd-button [options]="'light'" [glyph]="'add'" (click)="openModal()">
+      <button class="open-create-namespace-modal" fd-button [options]="'light'" [glyph]="'add'" (click)="openModal()">
         Create Preset
       </button>
     </fd-action-bar-actions>

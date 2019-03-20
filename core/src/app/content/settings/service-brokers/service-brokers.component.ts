@@ -4,20 +4,20 @@ import {
   ServiceBroker,
   IServiceBroker
 } from '../../../shared/datamodel/k8s/service-broker';
-import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
+import { KubernetesDataProvider } from '../../namespaces/operation/kubernetes-data-provider';
 import { DataConverter } from 'app/generic-list';
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
+import { CurrentNamespaceService } from '../../namespaces/services/current-namespace.service';
 import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/service-broker-entry-renderer.component';
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
-import { AbstractKubernetesElementListComponent } from '../../environments/operation/abstract-kubernetes-element-list.component';
+import { AbstractKubernetesElementListComponent } from '../../namespaces/operation/abstract-kubernetes-element-list.component';
 import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-service-brokers',
   templateUrl:
-    '../../environments/operation/kubernetes-element-list.component.html'
+    '../../namespaces/operation/kubernetes-element-list.component.html'
 })
 export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
   public title = 'Service Brokers';
@@ -28,11 +28,11 @@ export class ServiceBrokersComponent extends AbstractKubernetesElementListCompon
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
     const converter: DataConverter<IServiceBroker, ServiceBroker> = {
       convert(entry: IServiceBroker) {
         return new ServiceBroker(entry);

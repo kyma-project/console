@@ -9,11 +9,11 @@ import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
 import { ApplicationsEntryRendererComponent } from './applications-entry-renderer/applications-entry-renderer.component';
 import { ApplicationsHeaderRendererComponent } from './applications-header-renderer/applications-header-renderer.component';
-import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
-import { AbstractKubernetesElementListComponent } from '../../environments/operation/abstract-kubernetes-element-list.component';
+import { CurrentNamespaceService } from '../../namespaces/services/current-namespace.service';
+import { AbstractKubernetesElementListComponent } from '../../namespaces/operation/abstract-kubernetes-element-list.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Filter } from 'app/generic-list';
-import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
+import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -31,7 +31,7 @@ export class ApplicationsComponent
   createNewElementText = 'Add Application';
   baseUrl = AppConfig.k8sApiServerUrl_applications;
   resourceKind = 'Application';
-  environments = [];
+  namespaces = [];
   ariaExpanded = false;
   ariaHidden = true;
   public hideFilter = true;
@@ -42,12 +42,12 @@ export class ApplicationsComponent
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
 
     const query = `query {
       applications{
