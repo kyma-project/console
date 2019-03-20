@@ -11,9 +11,9 @@ import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-pro
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
 import { IEmptyListData } from 'shared/datamodel';
-import { AbstractKubernetesElementListComponent } from 'environments/operation/abstract-kubernetes-element-list.component';
+import { AbstractKubernetesElementListComponent } from 'namespaces/operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
-import { CurrentEnvironmentService } from 'environments/services/current-environment.service';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 
 @Component({
   selector: 'app-idp-presets',
@@ -33,12 +33,12 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
   constructor(
     private idpPresetsService: IdpPresetsService,
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
 
     const query = `query {
       IDPPresets{
