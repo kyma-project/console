@@ -37,7 +37,7 @@
   td {
     vertical-align: top;
   }
-  
+
   tr {
     cursor: default;
   }
@@ -175,6 +175,11 @@
   border-bottom: 1px solid #cccccc;
 }
 
+//Display block, missing in latest version
+.fd-has-display-block {
+  display: block !important;
+}
+
 // Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)
 // Transform property causes problem in Safari. Workaround removes `transform` and uses `margin-top` instead
 .fd-popover__body  {
@@ -183,7 +188,7 @@
 }
 
 .fd-popover__body {
-  &[aria-hidden='true'], 
+  &[aria-hidden='true'],
   &.is-hidden {
     margin-top: -15px;
     transform: none;

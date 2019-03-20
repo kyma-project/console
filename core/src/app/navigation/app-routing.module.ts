@@ -1,29 +1,29 @@
 import { AppConfig } from './../app.config';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApisComponent } from '../content/environments/configuration/apis/apis.component';
+import { ApisComponent } from '../content/namespaces/configuration/apis/apis.component';
 
-import { EnvironmentDetailsComponent } from '../content/environments/environment-details/environment-details.component';
-import { EnvironmentsContainerComponent } from '../content/environments/environments-container/environments-container.component';
-import { DeploymentsComponent } from '../content/environments/operation/deployments/deployments.component';
-import { PodsComponent } from '../content/environments/operation/pods/pods.component';
-import { ReplicaSetsComponent } from '../content/environments/operation/replica-sets/replica-sets.component';
-import { SecretDetailComponent } from '../content/environments/operation/secrets/secret-detail/secret-detail.component';
-import { SecretsComponent } from '../content/environments/operation/secrets/secrets.component';
-import { ServiceDetailsComponent } from '../content/environments/operation/services/service-details/service-details.component';
-import { ServicesComponent } from '../content/environments/operation/services/services.component';
+import { NamespaceDetailsComponent } from '../content/namespaces/namespace-details/namespace-details.component';
+import { NamespacesContainerComponent } from '../content/namespaces/namespaces-container/namespaces-container.component';
+import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
+import { PodsComponent } from '../content/namespaces/operation/pods/pods.component';
+import { ReplicaSetsComponent } from '../content/namespaces/operation/replica-sets/replica-sets.component';
+import { SecretDetailComponent } from '../content/namespaces/operation/secrets/secret-detail/secret-detail.component';
+import { SecretsComponent } from '../content/namespaces/operation/secrets/secrets.component';
+import { ServiceDetailsComponent } from '../content/namespaces/operation/services/service-details/service-details.component';
+import { ServicesComponent } from '../content/namespaces/operation/services/services.component';
 import { OrganisationComponent } from '../content/settings/organisation/organisation.component';
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
 import { WorkspaceOverviewComponent } from '../content/workspace-overview/workspace-overview/workspace-overview.component';
-import { ExposeApiComponent } from '../content/environments/operation/services/service-details/expose-api/expose-api.component';
+import { ExposeApiComponent } from '../content/namespaces/operation/services/service-details/expose-api/expose-api.component';
 import { PermissionsComponent } from '../shared/components/permissions/permissions.component';
 import { RoleDetailsComponent } from '../shared/components/permissions/role-details/role-details.component';
 import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets.component';
-import { ResourcesComponent } from '../content/environments/configuration/resources/resources.component';
+import { ResourcesComponent } from '../content/namespaces/configuration/resources/resources.component';
 
-import { ConfigMapsComponent } from '../content/environments/operation/configmaps/configmaps.component';
+import { ConfigMapsComponent } from '../content/namespaces/operation/configmaps/configmaps.component';
 
 const appRoutes: Routes = [
   {
@@ -31,8 +31,8 @@ const appRoutes: Routes = [
     children: [
       {
         path: 'namespaces',
-        component: EnvironmentsContainerComponent,
-        data: { navCtx: 'environment' },
+        component: NamespacesContainerComponent,
+        data: { navCtx: 'namespace' },
         children: [
           { path: 'yVirtual', component: WorkspaceOverviewComponent },
           { path: 'workspace', component: WorkspaceOverviewComponent },
@@ -40,12 +40,12 @@ const appRoutes: Routes = [
         ]
       },
       {
-        path: 'namespaces/:environmentId',
-        component: EnvironmentsContainerComponent,
-        data: { navCtx: 'environment' },
+        path: 'namespaces/:namespaceId',
+        component: NamespacesContainerComponent,
+        data: { navCtx: 'namespace' },
         children: [
-          { path: 'yVirtual', component: EnvironmentDetailsComponent },
-          { path: 'details', component: EnvironmentDetailsComponent },
+          { path: 'yVirtual', component: NamespaceDetailsComponent },
+          { path: 'details', component: NamespaceDetailsComponent },
           { path: 'workspace', component: WorkspaceOverviewComponent },
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
@@ -85,7 +85,7 @@ const appRoutes: Routes = [
       },
       {
         path: 'settings',
-        component: EnvironmentsContainerComponent,
+        component: NamespacesContainerComponent,
         data: { navCtx: 'settings' },
         children: [
           { path: 'yVirtual', component: OrganisationComponent },

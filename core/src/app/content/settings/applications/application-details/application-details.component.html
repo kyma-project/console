@@ -97,7 +97,7 @@
       </fd-panel-header>
 
       <fd-panel-body [bleed]="true">
-        <fd-table *ngIf="boundEnvironments.length > 0">
+        <fd-table *ngIf="boundNamespaces.length > 0">
           <fd-table-header>
             <th>Name</th>
             <th class="y-fd-table--col-1">
@@ -105,10 +105,10 @@
 
           </fd-table-header>
           <fd-table-body>
-            <tr *ngFor="let environment of boundEnvironments">
-              <td><span class="fd-has-font-weight-bold">{{ environment }}</span></td>
+            <tr *ngFor="let namespace of boundNamespaces">
+              <td><span class="fd-has-font-weight-bold">{{ namespace }}</span></td>
               <td class="fd-has-float-right">
-                <y-list-actions [entry]="environment" [entryEventHandler]="entryEventHandler" [actions]="actions">
+                <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
                 </y-list-actions>
               </td>
             </tr>

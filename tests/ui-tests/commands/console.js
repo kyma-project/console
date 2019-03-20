@@ -81,9 +81,9 @@ async function openLink(page, element, name) {
   ]);
 }
 
-function clearData(token, env) {
+function clearData(token, namespace) {
   const req = {
-    url: address.api.getNamespace(env),
+    url: address.api.getNamespace(namespace),
     method: 'DELETE',
     headers: { Authorization: token },
     // TODO: Analyze problem with UNABLE_TO_VERIFY_LEAF_SIGNATURE
@@ -97,25 +97,25 @@ function clearData(token, env) {
       }
 
       if (response) {
-        console.log(`Removing ${env} environment`);
+        console.log(`Removing ${namespace} namespace`);
         resolve(response);
       }
     });
   });
 }
 
-async function getEnvironmentsFromContextSwitcher(page) {
+async function getNamespacesFromContextSwitcher(page) {
   return await page.evaluate(() => {
     const menuListContainer = document.querySelector('ul#context_menu_middle');
-    const environmentsArraySelector = 'li > a';
-    const envs = Array.from(
-      menuListContainer.querySelectorAll(environmentsArraySelector),
+    const namespacesArraySelector = 'li > a';
+    const namespaces = Array.from(
+      menuListContainer.querySelectorAll(namespacesArraySelector),
     );
-    return envs.map(env => env.textContent);
+    return namespaces.map(namespace => namespace.textContent);
   });
 }
 
-async function getEnvironmentNamesFromEnvironmentsPage(page) {
+async function getNamespaceNamesFromNamespacesPage(page) {
   return await getNamesOnCurrentPage(page, '[data-e2e-id=namespace-name]');
 }
 
@@ -126,8 +126,8 @@ async function getApplicationNames(page) {
 async function getNamesOnCurrentPage(page, nameSelector) {
   const frame = await getFrame(page);
   return await frame.$$eval(nameSelector, nameComponents => {
-    const envs = Array.from(nameComponents);
-    return envs.map(env => env.textContent);
+    const namespaces = Array.from(nameComponents);
+    return namespaces.map(namespace => namespace.textContent);
   });
 }
 
@@ -138,28 +138,28 @@ async function getTextContentOnFrameBySelector(frame, selector) {
   return text;
 }
 
-async function createEnvironment(page, name) {
+async function createNamespace(page, name) {
   const frame = await getFrame(page);
-  const createEnvModal = '[data-e2e-id=create-environment-modal]';
-  const createBtn = '.env-create-btn';
-  const envNameInput = 'input[name=environmentName]';
-  const createButtonSelector = '.open-create-env-modal';
+  const createNamespaceModal = '[data-e2e-id=create-namespace-modal]';
+  const createBtn = '.namespace-create-btn';
+  const namespaceNameInput = 'input[name=namespaceName]';
+  const createButtonSelector = '.open-create-namespace-modal';
 
   await frame.waitForSelector(createButtonSelector);
   await frame.click(createButtonSelector);
-  await frame.waitFor(createEnvModal);
-  await frame.focus(envNameInput);
-  await frame.type(envNameInput, name);
+  await frame.waitFor(createNamespaceModal);
+  await frame.focus(namespaceNameInput);
+  await frame.type(namespaceNameInput, name);
   await frame.click(createBtn);
-  return frame.waitForSelector(createEnvModal, { hidden: true });
+  return frame.waitForSelector(createNamespaceModal, { hidden: true });
 }
 
-async function deleteEnvironment(page, envName) {
+async function deleteNamespace(page, namespaceName) {
   const frame = await getFrame(page);
   const deleteConfirmButton = `[data-e2e-id=confirmation-modal-button-ok]`;
-  const dropDownCard = `button[aria-controls=${envName}]`;
+  const dropDownCard = `button[aria-controls=${namespaceName}]`;
   await frame.click(dropDownCard);
-  await frame.click(`#${envName} li > a[name=Delete]`);
+  await frame.click(`#${namespaceName} li > a[name=Delete]`);
   await frame.waitFor(deleteConfirmButton);
   await frame.click(deleteConfirmButton);
   return frame.waitForSelector(deleteConfirmButton, { hidden: true });
@@ -168,15 +168,15 @@ async function deleteEnvironment(page, envName) {
 async function createApplication(page, name) {
   const frame = await getFrame(page);
   // consts
-  const createEnvBtn = '.open-create-env-modal';
-  const createEnvModal = '.fd-modal';
+  const createNamespaceBtn = '.open-create-namespace-modal';
+  const createNamespaceModal = '.fd-modal';
   const nameInput = 'input[name=applicationName]';
   const descriptionInput = 'input[name=applicationDescription]';
   const labelsInput = 'input[name=labelsInput]';
   const createButton = '[data-e2e-id=create-button]';
 
-  await frame.click(createEnvBtn);
-  await frame.waitFor(createEnvModal);
+  await frame.click(createNamespaceBtn);
+  await frame.waitFor(createNamespaceModal);
   await frame.focus(nameInput);
   await frame.type(nameInput, name);
   await frame.focus(descriptionInput);
@@ -184,7 +184,7 @@ async function createApplication(page, name) {
   await frame.focus(labelsInput);
   await frame.type(labelsInput, 'testKey=testValue');
   await frame.click(createButton);
-  await frame.waitForSelector(createEnvModal, { hidden: true });
+  await frame.waitForSelector(createNamespaceModal, { hidden: true });
   return frame.waitForXPath(
     `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${name}")]`,
   );
@@ -222,12 +222,12 @@ module.exports = {
   openLink,
   openLinkOnFrame,
   clearData,
-  getEnvironmentsFromContextSwitcher,
-  createEnvironment,
+  getNamespacesFromContextSwitcher,
+  createNamespace,
   createApplication,
   deleteApplication,
-  getEnvironmentNamesFromEnvironmentsPage,
-  deleteEnvironment,
+  getNamespaceNamesFromNamespacesPage,
+  deleteNamespace,
   getApplicationNames,
   getTextContentOnFrameBySelector,
 };

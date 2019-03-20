@@ -14,7 +14,7 @@
     "baseUrl": "./",
     "paths": {
       "shared/*": ["src/app/shared/*"],
-      "environments/*": ["src/app/content/environments/*"]
+      "namespaces/*": ["src/app/content/namespaces/*"]
     }
   },
   "include": ["**/*", "node_modules/ng2-ace-editor/src/**/*"]

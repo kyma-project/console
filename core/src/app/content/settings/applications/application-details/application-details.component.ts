@@ -28,7 +28,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       name: 'Unbind'
     }
   ];
-  private boundEnvironments = [];
+  private boundNamespaces = [];
   private contextListenerId: string;
 
   public isReadOnly = false;
@@ -62,10 +62,10 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         response.data &&
         !_.isEmpty(response.data) &&
         response.data.enableApplication &&
-        response.data.enableApplication.environment
+        response.data.enableApplication.namespace
       ) {
-        this.boundEnvironments.push(
-          response.data.enableApplication.environment
+        this.boundNamespaces.push(
+          response.data.enableApplication.namespace
         );
       }
 
@@ -92,7 +92,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
             this.transformedLabels = this.getTransformedLabels(
               this.application.labels
             );
-            this.boundEnvironments = data.application.enabledInNamespaces;
+            this.boundNamespaces = data.application.enabledInNamespaces;
             this.prettyStatus = this.applicationsService.printPrettyConnectionStatus(
               data.application.status
             );
@@ -125,8 +125,8 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
           .subscribe(
             data => {
               const response: any = data;
-              this.boundEnvironments = _.without(
-                this.boundEnvironments,
+              this.boundNamespaces = _.without(
+                this.boundNamespaces,
                 response.disableApplication.namespace
               );
             },
