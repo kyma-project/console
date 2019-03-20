@@ -31,7 +31,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
       page = data.page;
     });
 
-    await kymaConsole.createEnvironment(page, TEST_NAMESPACE);
+    await kymaConsole.createNamespace(page, TEST_NAMESPACE);
   });
 
   afterAll(async () => {

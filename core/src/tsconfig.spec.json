@@ -8,7 +8,7 @@
     "types": ["jasmine", "node"],
     "paths": {
       "shared/*": ["app/shared/*"],
-      "environments/*": ["app/content/environments/*"]
+      "namespaces/*": ["app/content/namespaces/*"]
     }
   },
   "files": ["test.ts", "polyfills.ts"],

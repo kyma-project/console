@@ -7,28 +7,28 @@ class Console {
       : 'https://console.' + config.domain;
   }
 
-  getEnvironment(environment) {
-    return this.getConsole() + '/home/namespaces/' + environment;
+  getNamespace(namespace) {
+    return this.getConsole() + '/home/namespaces/' + namespace;
   }
 
   getApplications() {
     return this.getConsole() + '/home/cmf-apps';
   }
 
-  getEnvironmentsAddress() {
+  getNamespacesAddress() {
     return this.getConsole() + '/home/workspace';
   }
 
-  getCatalog(environment) {
-    return this.getEnvironment(environment) + '/cmf-service-catalog';
+  getCatalog(namespace) {
+    return this.getNamespace(namespace) + '/cmf-service-catalog';
   }
 
-  getInstancesList(environment) {
-    return this.getEnvironment(environment) + '/cmf-instances';
+  getInstancesList(namespace) {
+    return this.getNamespace(namespace) + '/cmf-instances';
   }
 
-  getInstance(environment, instanceName) {
-    return this.getInstancesList(environment) + '/details/' + instanceName;
+  getInstance(namespace, instanceName) {
+    return this.getInstancesList(namespace) + '/details/' + instanceName;
   }
 
   getDocs() {
@@ -41,8 +41,8 @@ class API {
     return 'https://apiserver.' + config.domain;
   }
 
-  getNamespace(environment) {
-    return this.getAPI() + '/api/v1/namespaces/' + environment;
+  getNamespace(namespace) {
+    return this.getAPI() + '/api/v1/namespaces/' + namespace;
   }
 }
 

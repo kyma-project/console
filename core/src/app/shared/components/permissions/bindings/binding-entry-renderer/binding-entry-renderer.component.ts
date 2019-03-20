@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { AbstractKubernetesEntryRendererComponent } from '../../../../../content/environments/operation/abstract-kubernetes-entry-renderer.component';
+import { AbstractKubernetesEntryRendererComponent } from '../../../../../content/namespaces/operation/abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../services/component-communication.service';
 

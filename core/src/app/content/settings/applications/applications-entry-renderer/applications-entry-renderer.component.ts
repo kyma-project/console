@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { AbstractKubernetesEntryRendererComponent } from '../../../environments/operation/abstract-kubernetes-entry-renderer.component';
+import { AbstractKubernetesEntryRendererComponent } from '../../../namespaces/operation/abstract-kubernetes-entry-renderer.component';
 import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
@@ -47,7 +47,7 @@ export class ApplicationsEntryRendererComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  public listConnectedEnvs(entry) {
+  public listConnectedNamespaces(entry) {
     let result = '';
     if (entry.enabledInNamespaces) {
       result = entry.enabledInNamespaces.join(', ');

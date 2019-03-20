@@ -54,7 +54,7 @@ export class LambdaInstanceBindingCreatorComponent {
     luigiClient.uxManager().addBackdrop();
     luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.environmentId;
+      this.environment = eventData.namespaceId;
       this.token = eventData.idToken;
       this.serviceInstancesService
         .getServiceInstances(this.environment, this.token, RUNNING)

@@ -2,7 +2,7 @@ import * as LuigiClient from '@kyma-project/luigi-client';
 import { Injectable, OnDestroy } from '@angular/core';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
 import { AppConfig } from '../../../../app.config';
 
 import * as _ from 'lodash';
@@ -10,22 +10,22 @@ import * as YAML from 'js-yaml';
 
 @Injectable()
 export class ResourceUploadService implements OnDestroy {
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
 
   constructor(
     private httpClient: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService
+    private currentNamespaceService: CurrentNamespaceService
   ) {
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
       });
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
   private isYaml(file) {
@@ -71,12 +71,12 @@ export class ResourceUploadService implements OnDestroy {
     switch (fileContent.apiVersion) {
       case 'v1':
         return `${AppConfig.k8sApiServerUrl}namespaces/${
-          this.currentEnvironmentId
+          this.currentNamespaceId
         }/${resource}`;
       default:
         return `${AppConfig.k8sServerUrl}/apis/${
           fileContent.apiVersion
-        }/namespaces/${this.currentEnvironmentId}/${resource}`;
+        }/namespaces/${this.currentNamespaceId}/${resource}`;
     }
   }
 

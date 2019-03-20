@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppConfig } from '../../../../app.config';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
 import { finalize } from 'rxjs/operators';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -14,8 +14,8 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class RoleDetailsComponent implements OnInit, OnDestroy {
   public coreGroup = '/api/v1';
 
-  private currentEnvironmentSubscription: Subscription;
-  private currentEnvironmentId: string;
+  private currentNamespaceSubscription: Subscription;
+  private currentNamespaceId: string;
   public roleName: string;
   public loading = true;
   public errorMessage: string;
@@ -24,7 +24,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -34,15 +34,15 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
       this.isGlobalMode = routeData && routeData.global;
 
       if (!this.isGlobalMode) {
-        this.currentEnvironmentSubscription = this.currentEnvironmentService
-          .getCurrentEnvironmentId()
-          .subscribe(envId => {
-            this.currentEnvironmentId = envId;
+        this.currentNamespaceSubscription = this.currentNamespaceService
+          .getCurrentNamespaceId()
+          .subscribe(namespaceId => {
+            this.currentNamespaceId = namespaceId;
 
             this.route.params.subscribe(params => {
               this.roleName = params['name'];
               const url = `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
-                this.currentEnvironmentId
+                this.currentNamespaceId
               }/roles/${this.roleName}`;
               this.fetchDetails(url);
             });
@@ -74,8 +74,8 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    if (this.currentEnvironmentSubscription) {
-      this.currentEnvironmentSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
     }
   }
 
