@@ -38,6 +38,7 @@
       "@angular/router/src/utils/collection",
       "@angular/http/testing",
       "@angular/router/testing",
+      "brace/theme/tomorrow",
       "shared",
       "environments",
       "app"
