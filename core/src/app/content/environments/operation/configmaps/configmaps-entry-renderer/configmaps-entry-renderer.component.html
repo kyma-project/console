@@ -1,8 +1,8 @@
 <tr>
-  <td class="fd-has-font-weight-bold">{{ entry.metadata.name }}</td>
-  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
+  <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
+  <td>{{ entry.creationTimestamp | timeAgo }}</td>
   <td>
-    <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
+    <span *ngFor="let label of getLabels(entry.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
     </span>
   </td>
