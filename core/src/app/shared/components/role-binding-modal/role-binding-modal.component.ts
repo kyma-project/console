@@ -107,16 +107,22 @@ export class RoleBindingModalComponent implements OnDestroy {
     }
     this.modalService.open(this.createBindingModal).result.finally(() => {
       this.isActive = false;
+      this.clearData();
     });
     this.isUserGroupMode = true;
   }
 
   public close() {
+    this.clearData();
     this.modalService.close(this.createBindingModal);
+  }
+
+  public clearData() {
     this.userOrGroup = '';
     this.selectedRole = '';
     this.selectedKind = '';
     this.error = '';
+    this.userGroupError = '';
   }
 
   prepareData() {
