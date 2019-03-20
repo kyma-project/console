@@ -7,7 +7,7 @@ import { Filter, GenericTableComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { CreatePresetModalComponent } from './create-preset-modal/create-preset-modal.component';
 import { IdpPresetsService } from './idp-presets.service';
-import { GraphQLDataProvider } from '../../environments/operation/graphql-data-provider';
+import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-provider';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
 

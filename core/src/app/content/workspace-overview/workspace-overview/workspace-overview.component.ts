@@ -1,4 +1,4 @@
-import { EnvironmentDataConverter } from './environment-data-converter';
+import { NamespaceDataConverter } from './namespace-data-converter';
 import {
   ChangeDetectorRef,
   Component,
@@ -7,23 +7,23 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { EnvironmentCardComponent } from './../environment-card/environment-card.component';
+import { NamespaceCardComponent } from '../namespace-card/namespace-card.component';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../app.config';
-import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
+import { KubernetesDataProvider } from '../../namespaces/operation/kubernetes-data-provider';
 import {
-  Environment,
-  IEnvironment
-} from '../../../shared/datamodel/k8s/environment';
+  Namespace,
+  INamespace
+} from '../../../shared/datamodel/k8s/namespace';
 import LuigiClient from '@kyma-project/luigi-client';
-import { EnvironmentsService } from '../../../content/environments/services/environments.service';
+import { NamespacesService } from '../../namespaces/services/namespaces.service';
 import { DataConverter, Filter, GenericListComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
-import { EnvironmentCreateComponent } from '../../environments/environment-create/environment-create.component';
+import { NamespaceCreateComponent } from '../../namespaces/namespace-create/namespace-create.component';
 
 @Component({
   selector: 'app-workspace-overview',
@@ -31,33 +31,33 @@ import { EnvironmentCreateComponent } from '../../environments/environment-creat
 })
 export class WorkspaceOverviewComponent extends GenericListComponent
   implements OnInit, OnDestroy {
-  environmentsService: EnvironmentsService;
+  namespacesService: NamespacesService;
   entryEventHandler = this.getEntryEventHandler();
   private queryParamsSubscription: any;
   private k8sNamespacesFilter = 'env=true';
 
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
-  @ViewChild('createModal') createModal: EnvironmentCreateComponent;
+  @ViewChild('createModal') createModal: NamespaceCreateComponent;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
     changeDetector: ChangeDetectorRef,
-    @Inject(EnvironmentsService) environmentsService: EnvironmentsService,
+    @Inject(NamespacesService) namespacesService: NamespacesService,
     private communicationService: ComponentCommunicationService,
     private applicationBindingService: ApplicationBindingService
   ) {
     super(changeDetector);
-    this.environmentsService = environmentsService;
+    this.namespacesService = namespacesService;
     const converter: DataConverter<
-      IEnvironment,
-      Environment
-    > = new EnvironmentDataConverter(applicationBindingService, http);
+      INamespace,
+      Namespace
+    > = new NamespaceDataConverter(applicationBindingService, http);
     const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector`;
     this.source = new KubernetesDataProvider(url, converter, this.http);
-    this.entryRenderer = EnvironmentCardComponent;
+    this.entryRenderer = NamespaceCardComponent;
     this.filterState = {
       facets: [this.k8sNamespacesFilter],
       filters: [
@@ -66,7 +66,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
       ]
     };
     this.pagingState = { pageNumber: 1, pageSize: 20 };
-    this.environmentsService.envChangeStateEmitter$.subscribe(() => {
+    this.namespacesService.namespaceChangeStateEmitter$.subscribe(() => {
       this.reload();
     });
   }
@@ -80,7 +80,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   ngOnDestroy() {
     this.queryParamsSubscription.unsubscribe();
   }
-  onEnvCreateCancelled() {
+  onNamespaceCreateCancelled() {
     LuigiClient.linkManager().navigate('/');
   }
   handleQueryParamsChange(queryParams: any) {
@@ -109,8 +109,8 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                 type: 'disable',
                 entry
               });
-              this.environmentsService
-                .deleteEnvironment(entry.getName())
+              this.namespacesService
+                .deleteNamespace(entry.getName())
                 .subscribe(
                   () => {
                     this.communicationService.sendEvent({

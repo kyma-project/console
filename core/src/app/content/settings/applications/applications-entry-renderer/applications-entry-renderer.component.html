@@ -1,6 +1,6 @@
 <tr [ngClass]="{'y-fd-table__tr--disabled': disabled === true}">
   <td class="fd-has-font-weight-bold" (click)="navigateToDetails(entry.name)">
-    <a [attr.data-e2e-id]="'application-name'">{{ entry.name }}</a>
+    <a href="javascript:void(null)" [attr.data-e2e-id]="'application-name'">{{ entry.name }}</a>
   </td>
   <td>
     <div *ngIf='getLabels(entry.labels).length'>
@@ -9,7 +9,7 @@
       </span>
     </div>
   </td>
-  <td>{{ listConnectedEnvs(entry)? listConnectedEnvs(entry) : '' }}</td>
+  <td>{{ listConnectedNamespaces(entry)? listConnectedNamespaces(entry) : '' }}</td>
   <td>
     <app-status-label 
       [statusType]="getStatusType(entry)">

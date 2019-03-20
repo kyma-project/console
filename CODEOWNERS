@@ -9,7 +9,7 @@
 /components/react/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu
 /core/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @parostatkiem @johannesdoberer @marynakhromova
 /tests/ @akucharska @michal-hudy @pkosiec @mjasinski5 @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @johannesdoberer @marynakhromova
-/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r
+/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @parostatkiem @johannesdoberer @marynakhromova
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj

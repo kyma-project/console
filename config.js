@@ -2,10 +2,10 @@ var domain = 'kyma.local';
 var localDomain = 'console-dev.kyma.local';
 
 window.clusterConfig = {
-  graphqlApiUrl: 'https://ui-api.' + domain + '/graphql',
+  graphqlApiUrl: 'https://console-backend.' + domain + '/graphql',
   graphqlApiUrlLocal: 'http://' + localDomain + ':3000/graphql',
 
-  subscriptionsApiUrl: 'wss://ui-api.' + domain + '/graphql',
+  subscriptionsApiUrl: 'wss://console-backend.' + domain + '/graphql',
   subscriptionsApiUrlLocal: 'ws://' + localDomain + ':3000/graphql',
 
   authRedirectUri: 'http://' + localDomain + ':4200',

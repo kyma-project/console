@@ -37,7 +37,7 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
-  getRemoteEvents(envId?: string): Observable<any[]> {
+  getRemoteEvents(namespaceId?: string): Observable<any[]> {
     return of(this.fallback);
   }
 }

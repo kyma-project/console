@@ -23,57 +23,55 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   afterAll(async () => {
-    await kymaConsole.clearData(token, config.testEnv);
+    await kymaConsole.clearData(token, config.testNamespace);
     if (browser) {
       await browser.close();
     }
   });
 
-  test('Check if envs exist', async () => {
+  test('Check if namespaces exist', async () => {
     const dropdownButton = '.fd-button--shell';
     const dropdownMenu = 'ul#context_menu_middle > li';
     await page.click(dropdownButton);
     await page.waitForSelector(dropdownMenu, { visible: true });
-    const environments = await kymaConsole.getEnvironmentsFromContextSwitcher(
-      page,
-    );
+    const namespaces = await kymaConsole.getNamespacesFromContextSwitcher(page);
     await page.click(dropdownButton);
-    console.log('Check if envs exist', environments);
-    expect(environments.length).toBeGreaterThan(1);
+    console.log('Check if namespaces exist', namespaces);
+    expect(namespaces.length).toBeGreaterThan(1);
   });
 
-  test('Create env', async () => {
-    await kymaConsole.createEnvironment(page, config.testEnv);
+  test('Create namespace', async () => {
+    await kymaConsole.createNamespace(page, config.testNamespace);
     await Promise.all([
-      page.goto(address.console.getEnvironmentsAddress()),
+      page.goto(address.console.getNamespacesAddress()),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
-    const environmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
+    const namespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
       page,
     );
-    expect(environmentNames).toContain(config.testEnv);
+    expect(namespaceNames).toContain(config.testNamespace);
   });
 
-  test('Delete env', async () => {
-    const initialEnvironmentNames = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
+  test('Delete namespace', async () => {
+    const initialNamespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
       page,
     );
-    await kymaConsole.deleteEnvironment(page, config.testEnv);
-    const environmentNames = await retry(async () => {
-      const environmentNamesAfterDelete = await kymaConsole.getEnvironmentNamesFromEnvironmentsPage(
+    await kymaConsole.deleteNamespace(page, config.testNamespace);
+    const namespaceNames = await retry(async () => {
+      const namespaceNamesAfterDelete = await kymaConsole.getNamespaceNamesFromNamespacesPage(
         page,
       );
-      if (initialEnvironmentNames <= environmentNamesAfterDelete) {
-        throw new Error(`Namespace ${config.testEnv} not yet deleted`);
+      if (initialNamespaceNames <= namespaceNamesAfterDelete) {
+        throw new Error(`Namespace ${config.testNamespace} not yet deleted`);
       }
-      return environmentNamesAfterDelete;
+      return namespaceNamesAfterDelete;
     });
 
     //assert
-    expect(initialEnvironmentNames).toContain(config.testEnv);
-    expect(environmentNames).not.toContain(config.testEnv);
+    expect(initialNamespaceNames).toContain(config.testNamespace);
+    expect(namespaceNames).not.toContain(config.testNamespace);
   });
 
   test('Check if Application exist', async () => {

@@ -180,7 +180,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
-          this.namespace = eventData.environmentId;
+          this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';

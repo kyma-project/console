@@ -29,7 +29,7 @@ export class EventTriggerChooserComponent {
   private eventsSelected = 0;
   public enableAdd = false;
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService) { }
 
   initializeView() {
     this.eventSearchQuery = '';
@@ -41,8 +41,7 @@ export class EventTriggerChooserComponent {
   }
 
   @HostListener('document:keydown.escape', ['$event'])
-  onKeydownHandler(event: KeyboardEvent) {
-    console.log(event);
+  onKeydownHandler() {
     this.closeEventTriggerChooserModal();
   }
 
@@ -105,9 +104,9 @@ export class EventTriggerChooserComponent {
   }
 
   closeEventTriggerChooserModal() {
-    this.isActive = false;
-    luigiClient.uxManager().removeBackdrop();
-    this.modalService.close(this.eventTriggerModal);
+    if (this.isActive) {
+      this.modalService.close(this.eventTriggerModal);
+    }
   }
 
   areEventTriggersEqual(sourceET: EventTrigger, destET: EventTrigger): boolean {

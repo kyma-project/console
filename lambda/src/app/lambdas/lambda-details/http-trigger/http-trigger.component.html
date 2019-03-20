@@ -39,7 +39,7 @@
             <fd-menu>
               <fd-menu-list [id]="'httpLoadPreset'">
                 <li fd-menu-item  *ngFor="let preset of availablePresets">
-                  <a (click)="selectPreset(preset)">{{ preset.label }}</a>
+                  <a href="javascript:void(null)" (click)="selectPreset(preset)">{{ preset.label }}</a>
                 </li>
               </fd-menu-list>
             </fd-menu>
@@ -71,7 +71,7 @@
       </div>
     </div>
     <div *ngIf="isDefaultProvider()" class="fd-container fd-container--flex">  
-      <a (click)="fetchTokenModal.show()">Fetch token</a>
+      <a href="javascript:void(null)" (click)="fetchTokenModal.show()">Fetch token</a>
     </div>
     </ng-container>
   </fd-modal-body>
