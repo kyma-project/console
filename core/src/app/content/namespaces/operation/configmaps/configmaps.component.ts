@@ -1,28 +1,22 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { AppConfig } from '../../../../app.config';
-import { CurrentNamespaceService } from '../../services/current-namespace.service';
-import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
-import { KubernetesDataProvider } from '../kubernetes-data-provider';
-import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
-import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
-import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
-import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
 })
-export class ConfigMapsComponent extends AbstractGraphqlElementListComponent implements OnDestroy {
+export class ConfigMapsComponent extends AbstractGraphqlElementListComponent {
   public title = 'Config Maps';
   public emptyListText =
     'It looks like you don’t have any config maps in your namespace yet.';
-  public createNewElementText = 'Add Config Map';
   public resourceKind = 'ConfigMap';
-  public hideFilter = false;
 
-  public headerRenderer = ConfigMapsEntryRendererComponent;
-  public entryRenderer = ConfigMapsHeaderRendererComponent;
+  public entryRenderer = ConfigMapsEntryRendererComponent;
+  public headerRenderer = ConfigMapsHeaderRendererComponent;
 
   constructor(
     currentEnvironmentService: CurrentNamespaceService,
@@ -44,7 +38,6 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent imp
         name
         labels
         creationTimestamp
-        data
       }
     }`;
   }

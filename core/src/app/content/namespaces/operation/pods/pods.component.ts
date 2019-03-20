@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
@@ -9,8 +9,7 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
 })
-export class PodsComponent extends AbstractGraphqlElementListComponent
-  implements OnDestroy {
+export class PodsComponent extends AbstractGraphqlElementListComponent {
   public title = 'Pods';
   public emptyListText =
     'It looks like you don’t have any pods in your namespace yet.';
