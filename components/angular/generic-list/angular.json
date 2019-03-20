@@ -18,8 +18,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets", "src/favicon.ico"],
             "styles": [
-              "src/styles.scss",
-              "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
+              "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
