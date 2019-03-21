@@ -233,7 +233,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               this.editor.setReadOnly(true);
             }
             if (this.lambda.metadata.name === '') {
-              //this.isFunctionNameEmpty = true;
               this.functionName.nativeElement.focus()
             }
 
