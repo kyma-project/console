@@ -45,7 +45,6 @@ export class ServiceBrokersComponent extends AbstractGraphqlElementListComponent
           message
         }
         creationTimestamp
-        labels
         url
       }
     }`;
