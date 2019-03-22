@@ -25,7 +25,7 @@ export class ServicesEntryRendererComponent
             name: 'Details'
           },
           ...this.actions
-        ]
+        ];
       } else {
         this.actions = [
           {
