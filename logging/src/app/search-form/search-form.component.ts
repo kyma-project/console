@@ -19,6 +19,7 @@ import {
 } from 'rxjs/operators';
 import { Observable, of as observableOf } from 'rxjs';
 import { observe } from 'rxjs-observe';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-form',
@@ -26,6 +27,7 @@ import { observe } from 'rxjs-observe';
   styleUrls: ['./search-form.component.scss'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
+  title = 'Logs';
   fromValues = ['5m', '15m', '1h', '12h', '1d', '3d', '7d'];
   toValues = ['now'];
   directions = ['backward', 'forward'];
@@ -52,9 +54,13 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   model = new SearchFormData('', 1000, '5m', 'now', '', 'backward');
 
   selectedLabels = new Map();
+  mandatoryLabels = new Map();
   public loaded: Observable<boolean> = observableOf(false);
 
-  constructor(private searchService: SearchService) {
+  constructor(private route: ActivatedRoute, private searchService: SearchService) {
+    this.route.queryParams.subscribe(params => {
+      this.processParams(params);
+    });
     const { observables, proxy } = observe<SearchFormComponent>(this);
     observables.ngOnInit
       .pipe(
@@ -65,6 +71,28 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(value => this.loadLabels());
     return proxy;
+  }
+
+  processParams(params) {
+    if (!params || params.length === 0) {
+      return;
+    }
+
+    if (params.function) {
+      this.addLabel('function=' + params.function, true);
+      this.title = `Logs for function "${params.function}"`;
+    }
+    if (params.pod) {
+      this.addLabel('instance=' + params.pod, true);
+      this.title = `Logs for pod "${params.pod}"`;
+    }
+    if (params.namespace) {
+      this.addLabel('namespace=' + params.namespace, true);
+    }
+
+    if (this.selectedLabels.size > 0) {
+      this.onSubmit();
+    }
   }
 
   ngOnInit(): void {}
@@ -165,19 +193,41 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   removeLabel(label: string) {
-    this.selectedLabels.delete(label.split('=')[0]);
+    const l = label.split('=')[0];
+    if (!this.isMandatoryLabel(l)) {
+      this.selectedLabels.delete(l);
+      this.updateQuery();
+    }
+  }
+
+  isMandatoryLabel(label) {
+    return this.mandatoryLabels.get(label) !== undefined;
+  }
+
+  isSelectedLabel(label) {
+    const selectedValue = this.selectedLabels.get(this.getLabelKey(label));
+    return selectedValue && selectedValue === this.getLabelValue(label);
+  }
+
+  addLabel(label: string, mandatory = false) {
+    const key = this.getLabelKey(label);
+    const value = this.getLabelValue(label);
+    this.selectedLabels.set(key, value);
+    if (mandatory) {
+      this.mandatoryLabels.set(key, value);
+    }
     this.updateQuery();
   }
 
-  addLabel(label: string) {
-    this.selectedLabels.set(
-      label.split('=')[0].replace(/^["]{1}/gms, ''),
-      label
-        .split('=')[1]
-        .replace(/["]{1}$/gms, '')
-        .replace(/^["]{1}/gms, ''),
-    );
-    this.updateQuery();
+  getLabelKey(label: string) {
+    return label.split('=')[0].trim().replace(/^["]{1}/gms, '');
+  }
+
+  getLabelValue(label: string) {
+    return label
+      .split('=')[1].trim()
+      .replace(/["]{1}$/gms, '')
+      .replace(/^["]{1}/gms, '');
   }
 
   updateQuery() {

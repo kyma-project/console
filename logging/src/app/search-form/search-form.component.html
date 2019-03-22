@@ -3,7 +3,7 @@
   <div class="fd-panel__header">
     <div class="fd-panel__head">
         <h1 class="fd-panel__title">
-            Logs
+            {{title}}
         </h1>
     </div>
   </div>
@@ -14,8 +14,7 @@
     </div>
     <form #searchData="ngForm" (ngSubmit)="onSubmit()">
 
-
-      <fieldset fd-form-set>
+      <fieldset fd-form-set *ngIf="!mandatoryLabels.size">
         <div fd-form-item [isInline]="true">
           <fd-form-label [forValue]="'label'">
             Log Labels
@@ -78,7 +77,7 @@
 
       </fieldset>
       <fieldset fd-form-set>
-        <div fd-form-item>
+        <div fd-form-item [hidden]="mandatoryLabels.size">
           <fd-form-label [forValue]="'query'" [isRequired]="true">Required Input</fd-form-label>
           <input fd-form-control [type]="'text'" id="query" placeholder="Enter query" required [(ngModel)]="model.query"
                  name="query">
@@ -86,8 +85,8 @@
 
         <div fd-form-item [isInline]="true">
           <button fd-button type="submit" [glyph]="'search'" [disabled]="!searchData.form.valid" >Search</button>
-          <span class="fd-has-margin-left-s">Query Examples</span>
-          <span class="fd-inline-help fd-has-margin-left-xxs">
+          <span *ngIf="!mandatoryLabels.size" class="fd-has-margin-left-s">Query Examples</span>
+          <span *ngIf="!mandatoryLabels.size" class="fd-inline-help fd-has-margin-left-xxs">
               <span class="fd-inline-help__content fd-inline-help__content--bottom-center">
                   Searching keyword 'error' for a service with name my-service use '{{'{'}}app="my-service"} error'.
               </span>
@@ -97,7 +96,7 @@
       </fieldset>
       <div fd-form-item>
         Selected Labels:
-        <span class="fd-token y-fd-token" role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">{{label.key}}={{label.value}}</span>
+        <span class="fd-token y-fd-token" [ngClass]="isMandatoryLabel(label.key) ? 'y-fd-token--no-close-button y-fd-token--no-link' : ''" role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">{{label.key}}="{{label.value}}"</span>
       </div>
 
     </form>
@@ -109,7 +108,9 @@
   <div class="fd-panel">
   <div class="fd-panel__filters" >
     Available labels for stream:
-    <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button" *ngFor="let label of stream.availableLabels" (click)="addLabel($event.target.outerText)">{{label}}</div>
+    <ng-container *ngFor="let label of stream.availableLabels">
+      <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button" *ngIf="!isSelectedLabel(label)" (click)="addLabel($event.target.outerText)">{{label}}</div>
+    </ng-container>
   </div>
   <div class="fd-panel__body">
     <fd-table>

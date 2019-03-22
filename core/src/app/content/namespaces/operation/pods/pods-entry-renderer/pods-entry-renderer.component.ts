@@ -15,6 +15,10 @@ export class PodsEntryRendererComponent
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
+    this.actions.push({
+      function: 'showLogs',
+      name: 'Show Logs'
+    });
   }
   public disabled = false;
   public objectKeys = Object.keys;

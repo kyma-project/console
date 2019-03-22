@@ -7,13 +7,15 @@ import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element
 import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-renderer.component';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 
+import * as luigiClient from '@kyma-project/luigi-client';
+
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
 })
 export class PodsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   public title = 'Pods';
-  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title);
   public resourceKind = 'Pod';
 
   public entryRenderer = PodsEntryRendererComponent;
@@ -49,6 +51,14 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
         }
       }
     }`;
+  }
+
+  getEntryEventHandler(): any {
+    const handler = super.getEntryEventHandler();
+    handler.showLogs = (entry: any) => {
+      luigiClient.linkManager().withParams({pod: entry.name, namespace: this.currentNamespaceId}).navigate('/home/cmf-logs');
+    };
+    return handler;
   }
 
 }

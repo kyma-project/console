@@ -20,6 +20,10 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
       function: 'delete',
       name: 'Delete',
     },
+    {
+      function: 'showLogs',
+      name: 'Show Logs',
+    },
   ];
 
   constructor(private appRef: ApplicationRef, protected injector: Injector) {
