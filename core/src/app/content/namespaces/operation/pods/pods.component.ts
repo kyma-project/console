@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
+import { IEmptyListData } from 'shared/datamodel';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-renderer.component';
@@ -11,8 +12,7 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 })
 export class PodsComponent extends AbstractGraphqlElementListComponent {
   public title = 'Pods';
-  public emptyListText =
-    'It looks like you don’t have any pods in your namespace yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   public resourceKind = 'Pod';
 
   public entryRenderer = PodsEntryRendererComponent;
@@ -25,9 +25,9 @@ export class PodsComponent extends AbstractGraphqlElementListComponent {
     changeDetector: ChangeDetectorRef
   ) {
     super(
-      currentNamespaceService, 
-      commService, 
-      graphQLClientService, 
+      currentNamespaceService,
+      commService,
+      graphQLClientService,
       changeDetector
     );
   }
@@ -49,5 +49,5 @@ export class PodsComponent extends AbstractGraphqlElementListComponent {
       }
     }`;
   }
-  
+
 }

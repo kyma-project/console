@@ -5,14 +5,16 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
+import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
 })
 export class ConfigMapsComponent extends AbstractGraphqlElementListComponent {
   public title = 'Config Maps';
-  public emptyListText =
-    'It looks like you don’t have any config maps in your namespace yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
+  public createNewElementText = 'Add Config Map';
   public resourceKind = 'ConfigMap';
 
   public entryRenderer = ConfigMapsEntryRendererComponent;

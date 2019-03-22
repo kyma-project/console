@@ -12,6 +12,7 @@ import { CurrentNamespaceService } from '../../namespaces/services/current-names
 import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/service-broker-entry-renderer.component';
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
 import { AbstractKubernetesElementListComponent } from '../../namespaces/operation/abstract-kubernetes-element-list.component';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-service-brokers',
@@ -20,8 +21,7 @@ import { AbstractKubernetesElementListComponent } from '../../namespaces/operati
 })
 export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
   public title = 'Service Brokers';
-  public emptyListText =
-    'It looks like you don’t have any service brokers yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   public createNewElementText = 'Add Service Broker';
   public resourceKind = 'ServiceBroker';
   public hideFilter = true;

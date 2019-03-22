@@ -39,10 +39,15 @@ export class LambdasComponent extends GenericTableComponent
   implements OnInit, OnDestroy {
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('errorAlert') errorAlert;
-
   title = 'Lambdas';
-  emptyListText =
-    'It looks like you don’t have any lambdas in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: 'Lambdas'
+    },
+    body: {
+      text: 'It looks like you don’t have any lambdas in your namespace yet.'
+    }
+  };
 
   public lambdasEventHandler;
   token: string;
