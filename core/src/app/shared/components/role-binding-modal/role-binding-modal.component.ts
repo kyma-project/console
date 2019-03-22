@@ -113,7 +113,6 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   public close() {
-    this.clearData();
     this.modalService.close(this.createBindingModal);
   }
 
