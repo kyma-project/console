@@ -25,8 +25,8 @@ export class ServicesEntryRendererComponent
             name: 'Details'
           },
           ...this.actions
-        ] 
-      } else { 
+        ]
+      } else {
         this.actions = [
           {
             function: 'exposeApi',
@@ -41,7 +41,7 @@ export class ServicesEntryRendererComponent
       }
     });
   }
-  contextListenerId: number;
+  contextListenerId: string;
   isSystemNamespace: boolean;
   public disabled = false;
   private communicationServiceSubscription: Subscription;
