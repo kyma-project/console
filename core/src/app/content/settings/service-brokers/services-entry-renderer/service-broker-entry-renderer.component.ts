@@ -11,13 +11,10 @@ export class ServiceBrokerEntryRendererComponent extends AbstractKubernetesEntry
   }
 
   getStatus(entry) {
-    return entry.isStatusOk() ? 'Running' : 'Error';
-  }
-
-  getStatusType(entry) {
-    if (this.getStatus(entry) === 'Running') {
-      return 'ok';
-    }
-    return 'error';
+    return (entry.status && entry.status.ready) 
+      ? 'RUNNING' 
+      : (entry.status && entry.status.reason) 
+        ? entry.status.reason.toUpperCase()
+        : 'ERROR';
   }
 }
