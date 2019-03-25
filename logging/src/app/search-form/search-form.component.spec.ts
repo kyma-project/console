@@ -6,9 +6,15 @@ import {
   FormModule,
   FundamentalNgxModule,
 } from 'fundamental-ngx';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { SearchService } from './service/search-service';
 import { LuigiContextService } from './service/luigi-context.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { of } from 'rxjs';
+
+const ActivatedRouteMock = {
+  queryParams: of({ })
+};
 
 describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
@@ -22,9 +28,12 @@ describe('SearchFormComponent', () => {
         BadgeLabelModule,
         FormModule,
         FormsModule,
+        RouterModule
       ],
       declarations: [SearchFormComponent],
-      providers: [SearchService, LuigiContextService],
+      providers: [SearchService, LuigiContextService,
+        { provide: ActivatedRoute, useValue: ActivatedRouteMock }
+        ],
     }).compileComponents();
   }));
 

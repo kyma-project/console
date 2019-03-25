@@ -12,6 +12,9 @@ $fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
        all: unset;
     }
   }
+  &.y-fd-token--no-link {
+    cursor: default;
+  }
 }
 
 .word-break {

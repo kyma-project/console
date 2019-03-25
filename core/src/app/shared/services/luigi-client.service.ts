@@ -3,7 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 @Injectable()
 export class LuigiClientService {
-  private luigiClient: LuigiClient;
+  private luigiClient;
 
   constructor() {
     this.luigiClient = LuigiClient;

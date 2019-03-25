@@ -21,6 +21,7 @@ import { AppConfig } from 'app/app.config';
 export class AbstractGraphqlElementListComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
+    
   public source: GraphQLDataProvider;
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;

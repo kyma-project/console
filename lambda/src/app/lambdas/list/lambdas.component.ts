@@ -127,6 +127,9 @@ export class LambdasComponent extends GenericTableComponent
               );
           });
       },
+      showLogs: (entry: any) => {
+        luigiClient.linkManager().withParams({function: entry.metadata.name, namespace: this.environment}).navigate('/home/cmf-logs');
+      }
     };
   }
 
