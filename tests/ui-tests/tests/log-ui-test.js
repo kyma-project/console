@@ -11,10 +11,9 @@ let token = '';
 
 describeIf(dex.isStaticUser(), 'Log UI tests', () => {
   beforeAll(async () => {
-    const data = await common.beforeAll();
+    const data = await common.beforeAll(t => (token = t));
     browser = data.browser;
     page = data.page;
-    logOnEvents(page, t => (token = t));
   });
 
   afterAll(async () => {
