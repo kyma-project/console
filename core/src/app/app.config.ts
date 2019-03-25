@@ -1,6 +1,7 @@
 import { environment } from '../environments/environment';
 
 let domain = 'kyma.local';
+let localDomain = 'console-dev.kyma.local';
 let gateway_kyma_project_io_version = 'v1alpha2';
 let idpLogoutUrl = null;
 
@@ -8,6 +9,9 @@ const clusterConfig: object = window['clusterConfig'];
 if (clusterConfig) {
   if (clusterConfig['domain']) {
     domain = clusterConfig['domain'];
+  }
+  if (clusterConfig['localDomain']) {
+    localDomain = clusterConfig['localDomain'];
   }
   if (clusterConfig['gateway_kyma_project_io_version']) {
     gateway_kyma_project_io_version =
@@ -35,7 +39,7 @@ const config = {
   k8sApiServerUrl_ui: `${k8sServerUrl}/apis/ui.kyma-project.io/v1alpha1/`,
   k8sApiServerUrl_rbac: `${k8sServerUrl}/apis/rbac.authorization.k8s.io/v1/`,
   k8sServerUrl,
-  lambdasModuleUrl: `https://lambdas-ui.${domain}`,
+  lambdasModuleUrl: `https://lambdas-ui.${localDomain}`,
   orgId: 'my-org-123',
   orgName: 'My Organization',
   headerTitle: '',
@@ -43,11 +47,11 @@ const config = {
   faviconUrl: 'favicon.ico',
   scope:
     'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-  serviceCatalogModuleUrl: `https://catalog.${domain}`,
-  serviceInstancesModuleUrl: `https://instances.${domain}`,
-  serviceBrokersModuleUrl: `https://brokers.${domain}`,
-  docsModuleUrl: `https://docs.${domain}`,
-  logsModuleUrl: `https://log-ui.${domain}`,
+  serviceCatalogModuleUrl: `https://catalog.${localDomain}`,
+  serviceInstancesModuleUrl: `https://instances.${localDomain}`,
+  serviceBrokersModuleUrl: `https://brokers.${localDomain}`,
+  docsModuleUrl: `https://docs.${localDomain}`,
+  logsModuleUrl: `https://log-ui.${localDomain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl
 };

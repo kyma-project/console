@@ -3,6 +3,8 @@ var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
+  domain: 'kyma.local',
+  localDomain: 'console-dev.kyma.local',
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
   serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
@@ -84,8 +86,7 @@ function getNodes(context) {
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config maps',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
     },
     {
       category: { label: 'Development', icon: 'source-code' },
@@ -97,16 +98,14 @@ function getNodes(context) {
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
     },
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
     },
     {
       category: 'Operation',
@@ -192,9 +191,9 @@ function getNodes(context) {
       'namespace',
       'namespace'
     ])
-  ]).then(function (values) {
+  ]).then(function(values) {
     var nodeTree = [...staticNodes];
-    values.forEach(function (val) {
+    values.forEach(function(val) {
       if (val === 'systemNamespace') {
         nodeTree.forEach(item => {
           if (item.context) {
@@ -273,11 +272,11 @@ async function getUiEntities(entityname, namespace, placements) {
           return [];
         }
         return result.items
-          .filter(function (item) {
+          .filter(function(item) {
             // placement only exists in clustermicrofrontends
             return !placements || placements.includes(item.spec.placement);
           })
-          .map(function (item) {
+          .map(function(item) {
             function buildNode(node, spec) {
               var n = {
                 label: node.label,
@@ -311,46 +310,48 @@ async function getUiEntities(entityname, namespace, placements) {
             }
 
             function processNodeForLocalDevelopment(node) {
+              const { domain, localDomain } = config;
               const isLocalDev = window.location.href.startsWith(
-                'http://console-dev.kyma.local:4200'
+                `http://${localDomain}:4200`
               );
+
               if (!isLocalDev || !node.viewUrl) {
                 return;
               }
-              if (node.viewUrl.startsWith('https://console.kyma.local')) {
-                node.viewUrl =
-                  'http://console-dev.kyma.local:4200' +
-                  node.viewUrl.substring('https://console.kyma.local'.length);
+              if (node.viewUrl.startsWith(`https://console.${domain}`)) {
+                node.viewUrl = node.viewUrl.replace(
+                  'console.' + domain,
+                  localDomain + ':4200'
+                );
+              } else if (node.viewUrl.startsWith(`https://catalog.${domain}`)) {
+                node.viewUrl = node.viewUrl.replace(
+                  `https://catalog.${domain}`,
+                  config.serviceCatalogModuleUrl
+                );
               } else if (
-                node.viewUrl.startsWith('https://catalog.kyma.local')
+                node.viewUrl.startsWith(`https://instances.${domain}`)
               ) {
-                node.viewUrl =
-                  config.serviceCatalogModuleUrl +
-                  node.viewUrl.substring('https://catalog.kyma.local'.length);
+                node.viewUrl = node.viewUrl.replace(
+                  `https://instances.${domain}`,
+                  config.serviceInstancesModuleUrl
+                );
+              } else if (node.viewUrl.startsWith(`https://brokers.${domain}`)) {
+                node.viewUrl = node.viewUrl.replace(
+                  `https://brokers.${domain}`,
+                  config.serviceBrokersModuleUrl
+                );
               } else if (
-                node.viewUrl.startsWith('https://instances.kyma.local')
+                node.viewUrl.startsWith(`https://lambdas-ui.${domain}`)
               ) {
-                node.viewUrl =
-                  config.serviceInstancesModuleUrl +
-                  node.viewUrl.substring('https://instances.kyma.local'.length);
-              } else if (
-                node.viewUrl.startsWith('https://brokers.kyma.local')
-              ) {
-                node.viewUrl =
-                  config.serviceBrokersModuleUrl +
-                  node.viewUrl.substring('https://brokers.kyma.local'.length);
-              } else if (
-                node.viewUrl.startsWith('https://lambdas-ui.kyma.local')
-              ) {
-                node.viewUrl =
-                  config.lambdasModuleUrl +
-                  node.viewUrl.substring(
-                    'https://lambdas-ui.kyma.local'.length
-                  );
-              } else if (node.viewUrl.startsWith('https://log-ui.kyma.local')) {
-                node.viewUrl =
-                  config.logsModuleUrl +
-                  node.viewUrl.substring('https://log-ui.kyma.local'.length);
+                node.viewUrl = node.viewUrl.replace(
+                  `https://lambdas-ui.${domain}`,
+                  config.lambdasModuleUrl
+                );
+              } else if (node.viewUrl.startsWith(`https://log-ui.${domain}`)) {
+                node.viewUrl = node.viewUrl.replace(
+                  `https://log-ui.${domain}`,
+                  config.logsModuleUrl
+                );
               }
               return node;
             }
@@ -368,12 +369,12 @@ async function getUiEntities(entityname, namespace, placements) {
             function getDirectChildren(parentNodeSegments, spec) {
               // process only direct children
               return spec.navigationNodes
-                .filter(function (node) {
+                .filter(function(node) {
                   var currentNodeSegments = node.navigationPath.split('/');
                   var isDirectChild =
                     parentNodeSegments.length ===
-                    currentNodeSegments.length - 1 &&
-                    parentNodeSegments.filter(function (segment) {
+                      currentNodeSegments.length - 1 &&
+                    parentNodeSegments.filter(function(segment) {
                       return currentNodeSegments.includes(segment);
                     }).length > 0;
                   return isDirectChild;
@@ -421,7 +422,7 @@ async function getUiEntities(entityname, namespace, placements) {
         return [];
       })
       .then(result => {
-        cache[cacheKey] = new Promise(function (resolve) {
+        cache[cacheKey] = new Promise(function(resolve) {
           resolve(result);
         });
         return result;
@@ -430,9 +431,9 @@ async function getUiEntities(entityname, namespace, placements) {
 }
 
 function fetchFromKyma(url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
@@ -451,9 +452,9 @@ function fetchFromKyma(url) {
 }
 
 function fetchFromGraphQL(query, variables) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
@@ -483,9 +484,9 @@ function fetchFromGraphQL(query, variables) {
 }
 
 function postToKyma(url, body) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (
         xmlHttp.readyState == 4 &&
         (xmlHttp.status == 200 || xmlHttp.status == 201)
@@ -527,7 +528,7 @@ function getSelfSubjectRulesReview() {
       namespace: '*'
     }
   };
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     postToKyma(url, body).then(
       res => {
         let resourceRules = [];
@@ -604,7 +605,7 @@ function getBackendModules() {
 function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
-  ).then(function (response) {
+  ).then(function(response) {
     var namespaces = [];
     response.items.map(namespace => {
       if (namespace.status && namespace.status.phase !== 'Active') {
@@ -668,7 +669,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
           onLogout: () => {
             console.log('onLogout');
           },
-          onAuthSuccessful: data => { },
+          onAuthSuccessful: data => {},
           onAuthExpired: () => {
             console.log('onAuthExpired');
           },
@@ -688,10 +689,10 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
               idToken: token,
               backendModules
             },
-            children: function () {
+            children: function() {
               return getUiEntities('clustermicrofrontends', undefined, [
                 'cluster'
-              ]).then(function (cmf) {
+              ]).then(function(cmf) {
                 var staticNodes = [
                   {
                     pathSegment: 'workspace',
@@ -872,7 +873,7 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
       resource.affectedResources.forEach(affectedResource => {
         limitExceededErrorscomposed.push(
           `'${resource.resourceName}' by '${affectedResource}' (${
-          resource.quotaName
+            resource.quotaName
           })`
         );
       });
