@@ -3,7 +3,7 @@
   <div class="fd-panel__header">
     <div class="fd-panel__head">
       <h1 class="fd-panel__title" data-e2e-id="search-form-title">
-          {{title}}
+        {{title}}
       </h1>
     </div>
   </div>
@@ -37,7 +37,6 @@
       </fieldset>
 
       <fieldset fd-form-set>
-
         <div fd-form-item [isInline]="true">
           <fd-form-label [forValue]="'limit'">
             Query Result Limit
@@ -65,7 +64,6 @@
         </div>
 
         <div fd-form-item [isInline]="true">
-
           <fd-form-label [forValue]="'to'">
             To
           </fd-form-label>
@@ -73,9 +71,8 @@
             <option *ngFor="let to of toValues" [value]="to">{{to}}</option>
           </select>
         </div>
-
-
       </fieldset>
+
       <fieldset fd-form-set>
         <div fd-form-item [hidden]="mandatoryLabels.size">
           <fd-form-label [forValue]="'query'" [isRequired]="true">Required Input</fd-form-label>
@@ -92,13 +89,12 @@
               </span>
           </span>
         </div>
-
       </fieldset>
+
       <div fd-form-item>
         Selected Labels:
         <span class="fd-token y-fd-token" [ngClass]="isMandatoryLabel(label.key) ? 'y-fd-token--no-close-button y-fd-token--no-link' : ''" role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">{{label.key}}="{{label.value}}"</span>
       </div>
-
     </form>
   </div>
 </div>

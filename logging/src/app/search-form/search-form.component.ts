@@ -1,14 +1,11 @@
 import {
   Component,
-  CUSTOM_ELEMENTS_SCHEMA,
   Input,
-  NgModule,
-  OnDestroy,
   OnInit,
+  OnDestroy
 } from '@angular/core';
-import { SearchFormData } from './data/search-form-data';
 import { SearchService } from './service/search-service';
-import { PlainLogQuery } from './data/plain-log-query';
+import { IPlainLogQuery, ISearchFormData } from './data';
 
 import {
   debounceTime,
@@ -27,6 +24,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./search-form.component.scss'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
+  @Input() labels = { values: [] };
   title = 'Logs';
   fromValues = ['5m', '15m', '1h', '12h', '1d', '3d', '7d'];
   toValues = ['now'];
@@ -37,21 +35,23 @@ export class SearchFormComponent implements OnInit, OnDestroy {
         availableLabels: [],
         labels: '',
         entries: [
-          {
-            ts: '',
-            line: '',
-          },
-        ],
-      },
-    ],
+          { ts: '', line: ''}
+        ]
+      }
+    ]
   };
-
   searchResult = this.emptySearchResult;
-
-  @Input() labels = { values: [] };
   labelValues = { values: [] };
   error: string = null;
-  model = new SearchFormData('', 1000, '5m', 'now', '', 'backward');
+
+  model: ISearchFormData = {
+    from: '5m',
+    to: 'now',
+    query: '',
+    limit: 1000,
+    direction: 'backward',
+    label: ''
+  };
 
   selectedLabels = new Map();
   mandatoryLabels = new Map();
@@ -117,16 +117,16 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       from.setDate(-1 * +this.model.from.substr(0, this.model.from.length - 1));
     }
 
-    const searchQuery = new PlainLogQuery();
-
     const labelExpPos = this.model.query.indexOf('}');
 
-    searchQuery.regexp = this.model.query.substr(labelExpPos + 1);
-    searchQuery.from = from.getTime();
-    searchQuery.to = new Date().getTime();
-    searchQuery.query = this.model.query.substring(0, labelExpPos + 1);
-    searchQuery.limit = this.model.limit;
-    searchQuery.direction = this.model.direction;
+    const searchQuery: IPlainLogQuery = {
+      regexp: this.model.query.substr(labelExpPos + 1),
+      from: from.getTime(),
+      to: new Date().getTime(),
+      query: this.model.query.substring(0, labelExpPos + 1),
+      limit: this.model.limit,
+      direction: this.model.direction
+    };
 
     this.searchService
       .search(searchQuery)
@@ -162,8 +162,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       err => {
         console.error(err);
         this.error = err.error;
-      },
-      () => {},
+      }
     );
   }
 
@@ -182,8 +181,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
         err => {
           console.error(err);
           this.error = err.error;
-        },
-        () => {},
+        }
       );
   }
 
@@ -200,11 +198,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  isMandatoryLabel(label) {
+  isMandatoryLabel(label: string) {
     return this.mandatoryLabels.get(label) !== undefined;
   }
 
-  isSelectedLabel(label) {
+  isSelectedLabel(label: string) {
     const selectedValue = this.selectedLabels.get(this.getLabelKey(label));
     return selectedValue && selectedValue === this.getLabelValue(label);
   }
