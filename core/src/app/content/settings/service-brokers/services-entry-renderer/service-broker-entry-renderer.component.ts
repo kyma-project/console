@@ -17,11 +17,4 @@ export class ServiceBrokerEntryRendererComponent extends AbstractKubernetesEntry
         ? entry.status.reason.toUpperCase()
         : 'ERROR';
   }
-
-  getStatusType(entry) {
-    if (entry.status && entry.status.ready) {
-      return 'ok';
-    }
-    return 'error';
-  }
 }

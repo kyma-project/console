@@ -33,7 +33,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
     );
   }
 
-  getGraphglQueryForList() {
+  getGraphqlQueryForList() {
     return `query Pod($namespace: String!) {
       pods(namespace: $namespace) {
         name
