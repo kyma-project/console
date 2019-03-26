@@ -626,9 +626,15 @@ function relogin() {
   location.reload();
 }
 
+function getFreshKeys() {
+  // manually re-fetching keys, since this is a major pain point
+  // until dex has possibility of no-cache
+  return fetch('https://dex.' + k8sDomain + '/keys', { cache: "no-cache" })
+}
+
 let backendModules = [];
 let selfSubjectRulesReview = [];
-Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
+Promise.all([getFreshKeys(), getBackendModules(), getSelfSubjectRulesReview()])
   .then(
     res => {
       const modules = res[0];
