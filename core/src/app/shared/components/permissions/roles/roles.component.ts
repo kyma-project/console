@@ -1,28 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AppConfig } from '../../../../app.config';
-import { AbstractKubernetesElementListComponent } from '../../../../content/environments/operation/abstract-kubernetes-element-list.component';
-import { KubernetesDataProvider } from '../../../../content/environments/operation/kubernetes-data-provider';
-import { CurrentEnvironmentService } from '../../../../content/environments/services/current-environment.service';
+import { AbstractKubernetesElementListComponent } from '../../../../content/namespaces/operation/abstract-kubernetes-element-list.component';
+import { KubernetesDataProvider } from '../../../../content/namespaces/operation/kubernetes-data-provider';
+import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../services/component-communication.service';
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
 import LuigiClient from '@kyma-project/luigi-client';
+import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
   selector: 'app-roles',
   styles: ['y-list-filter { display: none; }'],
   templateUrl:
-    '../../../../content/environments/operation/kubernetes-element-list-compact.component.html'
+    '../../../../content/namespaces/operation/kubernetes-element-list-compact.component.html'
 })
 export class RolesComponent extends AbstractKubernetesElementListComponent
   implements OnInit {
   public title = '';
-  public emptyListText = 'It looks like you don’t have any Roles yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Roles', { headerTitle: false, namespaceSuffix: true });
+
   public resourceKind = 'Role';
   public createNewElementText = '';
 
-  private currentEnvironmentId: string;
+  private currentNamespaceId: string;
   private activeTab: string;
 
   // tslint:disable-next-line:no-input-rename
@@ -30,11 +32,11 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
 
   constructor(
     private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
+    super(currentNamespaceService, changeDetector, http, commService);
 
     this.pagingState = { pageNumber: 1, pageSize: 20 };
     this.entryRenderer = RolesEntryRendererComponent;
@@ -50,12 +52,12 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
     switch (this.mode) {
       case 'roles':
         this.title = 'Roles';
-        this.currentEnvironmentService
-          .getCurrentEnvironmentId()
-          .subscribe(envId => {
-            this.currentEnvironmentId = envId;
+        this.currentNamespaceService
+          .getCurrentNamespaceId()
+          .subscribe(namespaceId => {
+            this.currentNamespaceId = namespaceId;
             const rolesUrl = `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
-              this.currentEnvironmentId
+              this.currentNamespaceId
             }/roles`;
             this.source = new KubernetesDataProvider(
               rolesUrl,
@@ -81,7 +83,7 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
   public getResourceUrl(entry: any): string {
     if (this.activeTab === 'roles') {
       return `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
-        this.currentEnvironmentId
+        this.currentNamespaceId
       }/roles/${entry.metadata.name}`;
     } else {
       return `${AppConfig.k8sApiServerUrl_rbac}clusterroles/${

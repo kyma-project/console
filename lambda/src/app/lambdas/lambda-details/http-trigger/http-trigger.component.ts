@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { isEmpty } from 'lodash';
@@ -47,11 +47,16 @@ export class HttpTriggerComponent {
 
   public availablePresets = [];
 
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    this.closeHttpTriggerModal();
+  }
+
   constructor(
     private graphQLClientService: GraphqlClientService,
     private httpClient: HttpClient,
     private modalService: ModalService,
-  ) {}
+  ) { }
 
   public show(lambda, environment, selectedHTTPTriggers) {
     this.lambda = lambda;
@@ -60,7 +65,7 @@ export class HttpTriggerComponent {
     this.selectedHTTPTriggers = selectedHTTPTriggers;
     this.httpURL = `https://${this.lambda.metadata.name}-${this.environment}.${
       AppConfig.domain
-    }/`.toLowerCase();
+      }/`.toLowerCase();
 
     this.fetchAuthIssuer();
 
@@ -110,10 +115,12 @@ export class HttpTriggerComponent {
     Clipboard.copy(`${this.httpURL}`);
   }
 
-  pushTrigger(httpTrigger: HTTPEndpoint) {}
+  pushTrigger(httpTrigger: HTTPEndpoint) { }
 
   closeHttpTriggerModal() {
-    this.modalService.close(this.httpTriggerModal);
+    if (this.isActive) {
+      this.modalService.close(this.httpTriggerModal);
+    }
   }
 
   public getIDPPresets() {

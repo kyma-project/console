@@ -5,6 +5,7 @@ import {
   ViewChild,
   OnInit,
   OnDestroy,
+  ElementRef,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -87,6 +88,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   public initialLabels: string[];
   public updatedLabels: string[];
 
+  @ViewChild('functionName') functionName: ElementRef;
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('eventTriggerChooserModal')
   eventTriggerChooserModal: EventTriggerChooserComponent;
@@ -129,6 +131,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   envVarValue = '';
   isEnvVariableNameInvalid = false;
   isFunctionNameInvalid = false;
+  isFunctionNameEmpty = false;
   isHTTPTriggerAdded = false;
   isHTTPTriggerAuthenticated = true;
   existingHTTPEndpoint: Api;
@@ -180,7 +183,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
           const eventData = luigiClient.getEventData();
-          this.namespace = eventData.environmentId;
+          this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
           if (params['name']) {
             this.mode = 'update';
@@ -229,6 +232,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
               this.editor.setReadOnly(true);
             }
+            if (this.lambda.metadata.name === '') {
+              this.functionName.nativeElement.focus()
+            }
+
           }
 
           this.eventActivationsService
@@ -1029,6 +1036,13 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
     const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
+    this.isFunctionNameEmpty =
+      this.lambda.metadata.name === ''
+        ? true
+        : false;
+    if (this.isFunctionNameEmpty) {
+      this.isLambdaFormValid = false
+    }
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
       this.lambda.metadata.name === ''

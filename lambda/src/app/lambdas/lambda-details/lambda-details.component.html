@@ -1,7 +1,7 @@
 <section class="fd-section">
   <fd-breadcrumb>
     <fd-breadcrumb-item>
-      <a fd-breadcrumb-link (click)="navigateToList()">
+      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
         Lambdas
       </a>
     </fd-breadcrumb-item>
@@ -56,9 +56,13 @@
                 <div class="fd-form__item">
                   <label class="fd-form__label" for="">Function Name * </label>
                   <div class="fd-input-group">
-                    <input type="text" id="input-1" name="function_name" [(ngModel)]="lambda.metadata.name"
-                      [attr.disabled]="mode === 'create' ? null : ''" (keyup)="validatesName()" />
+                    <input type="text" id="input-1" #functionName name="function_name" [(ngModel)]="lambda.metadata.name"
+                      [ngClass]="{'is-invalid': isFunctionNameInvalid, 'is-warning': isFunctionNameEmpty}"
+                      [attr.disabled]="mode === 'create' ? null : ''" (keyup)="validatesName()" (focusout)="validatesName()" />
                   </div>
+                  <fd-form-message [type]="'warning'" *ngIf="isFunctionNameEmpty">
+                    a function name must be specified
+                  </fd-form-message>
                   <fd-form-message [type]="'error'" *ngIf="isFunctionNameInvalid">
                     Invalid name: must consist of lower case alphanumeric
                     characters or '-', start with an alphabetic character, and
@@ -110,7 +114,7 @@
               <fd-menu>
                 <fd-menu-list>
                   <li fd-menu-item *ngFor="let option of functionSizes">
-                    <a (click)="selectSize(option)"><strong>{{ option.name }}</strong><br />{{ option.description }}</a>
+                    <a href="javascript:void(null)" (click)="selectSize(option)"><strong>{{ option.name }}</strong><br />{{ option.description }}</a>
                   </li>
                 </fd-menu-list>
               </fd-menu>
@@ -131,7 +135,7 @@
               <fd-menu>
                 <fd-menu-list>
                   <li fd-menu-item *ngFor="let option of types">
-                    <a (click)="selectType(option)">{{ option.kind }}</a>
+                    <a href="javascript:void(null)" (click)="selectType(option)">{{ option.kind }}</a>
                   </li>
                 </fd-menu-list>
               </fd-menu>
@@ -186,13 +190,13 @@
             <nav class="fd-menu">
               <ul class="fd-menu__list">
                 <li fd-menu-item>
-                  <a class="fd-menu__item" (click)="
+                  <a href="javascript:void(null)" class="fd-menu__item" (click)="
                       showEventTrigger();
                       toggleDropdownState('functionTriggerPopover')
                     ">Event Trigger</a>
                 </li>
                 <li fd-menu-item>
-                  <a class="fd-menu__item" [class.disabled]="isHTTPTriggerAdded" (click)="
+                  <a href="javascript:void(null)" class="fd-menu__item" [class.disabled]="isHTTPTriggerAdded" (click)="
                       showHTTPTrigger();
                       toggleDropdownState('functionTriggerPopover')
                     ">Expose via HTTPS</a>

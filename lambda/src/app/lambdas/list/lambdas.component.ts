@@ -39,10 +39,15 @@ export class LambdasComponent extends GenericTableComponent
   implements OnInit, OnDestroy {
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('errorAlert') errorAlert;
-
   title = 'Lambdas';
-  emptyListText =
-    'It looks like you don’t have any lambdas in your namespace yet.';
+  public emptyListData = {
+    header: {
+      text: 'Lambdas'
+    },
+    body: {
+      text: 'It looks like you don’t have any lambdas in your namespace yet.'
+    }
+  };
 
   public lambdasEventHandler;
   token: string;
@@ -122,6 +127,9 @@ export class LambdasComponent extends GenericTableComponent
               );
           });
       },
+      showLogs: (entry: any) => {
+        luigiClient.linkManager().withParams({function: entry.metadata.name, namespace: this.environment}).navigate('/home/cmf-logs');
+      }
     };
   }
 
@@ -232,7 +240,7 @@ export class LambdasComponent extends GenericTableComponent
 
     this.listenerId = luigiClient.addInitListener(() => {
       const eventData = luigiClient.getEventData();
-      this.environment = eventData.environmentId;
+      this.environment = eventData.namespaceId;
       this.token = eventData.idToken;
       this.source = new KubernetesDataProvider(
         `${AppConfig.kubelessApiUrl}/namespaces/${this.environment}/functions`,

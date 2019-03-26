@@ -1,59 +1,52 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AppConfig } from '../../../app.config';
-import {
-  ServiceBroker,
-  IServiceBroker
-} from '../../../shared/datamodel/k8s/service-broker';
-import { KubernetesDataProvider } from '../../environments/operation/kubernetes-data-provider';
-import { DataConverter } from 'app/generic-list';
-import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { CurrentEnvironmentService } from '../../environments/services/current-environment.service';
+import { CurrentNamespaceService } from '../../namespaces/services/current-namespace.service';
 import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/service-broker-entry-renderer.component';
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
-import { AbstractKubernetesElementListComponent } from '../../environments/operation/abstract-kubernetes-element-list.component';
+import { IEmptyListData } from 'shared/datamodel';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
 
 @Component({
-  selector: 'app-service-brokers',
   templateUrl:
-    '../../environments/operation/kubernetes-element-list.component.html'
+    '../../namespaces/operation/kubernetes-element-list.component.html'
 })
-export class ServiceBrokersComponent extends AbstractKubernetesElementListComponent {
+export class ServiceBrokersComponent extends AbstractGraphqlElementListComponent {
   public title = 'Service Brokers';
-  public emptyListText =
-    'It looks like you don’t have any service brokers yet.';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   public createNewElementText = 'Add Service Broker';
   public resourceKind = 'ServiceBroker';
   public hideFilter = true;
 
+  public entryRenderer = ServiceBrokerEntryRendererComponent;
+  public headerRenderer = ServiceBrokerHeaderRendererComponent;
+
   constructor(
-    private http: HttpClient,
-    private currentEnvironmentService: CurrentEnvironmentService,
-    private commService: ComponentCommunicationService,
+    currentNamespaceService: CurrentNamespaceService,
+    commService: ComponentCommunicationService,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentEnvironmentService, changeDetector, http, commService);
-    const converter: DataConverter<IServiceBroker, ServiceBroker> = {
-      convert(entry: IServiceBroker) {
-        return new ServiceBroker(entry);
+    super(
+      currentNamespaceService,
+      commService,
+      graphQLClientService,
+      changeDetector
+    );
+  }
+
+  getGraphqlQueryForList() {
+    return `query clusterServiceBrokers() {
+      clusterServiceBrokers() {
+        name
+        status {
+          ready
+          reason
+          message
+        }
+        creationTimestamp
+        url
       }
-    };
-
-    const url = `${
-      AppConfig.k8sApiServerUrl_servicecatalog
-    }clusterservicebrokers`;
-    this.source = new KubernetesDataProvider(url, converter, this.http);
-    this.entryRenderer = ServiceBrokerEntryRendererComponent;
-    this.headerRenderer = ServiceBrokerHeaderRendererComponent;
-  }
-
-  public createNewElement() {
-    // TODO
-  }
-
-  public getResourceUrl(kind: string, entry: any): string {
-    return `${
-      AppConfig.k8sApiServerUrl_servicecatalog
-    }clusterservicebrokers/${entry.getId()}`;
+    }`;
   }
 }

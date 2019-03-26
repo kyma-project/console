@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { AbstractKubernetesEntryRendererComponent } from '../../../environments/operation/abstract-kubernetes-entry-renderer.component';
+import { AbstractKubernetesEntryRendererComponent } from '../../../namespaces/operation/abstract-kubernetes-entry-renderer.component';
 
 @Component({
   selector: 'app-services-entry-renderer',
@@ -11,13 +11,10 @@ export class ServiceBrokerEntryRendererComponent extends AbstractKubernetesEntry
   }
 
   getStatus(entry) {
-    return entry.isStatusOk() ? 'Running' : 'Error';
-  }
-
-  getStatusType(entry) {
-    if (this.getStatus(entry) === 'Running') {
-      return 'ok';
-    }
-    return 'error';
+    return (entry.status && entry.status.ready) 
+      ? 'RUNNING' 
+      : (entry.status && entry.status.reason) 
+        ? entry.status.reason.toUpperCase()
+        : 'ERROR';
   }
 }

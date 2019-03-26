@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { RbacService } from '../../services/rbac.service';
 import * as _ from 'lodash';
-import { CurrentEnvironmentService } from '../../../content/environments/services/current-environment.service';
+import { CurrentNamespaceService } from '../../../content/namespaces/services/current-namespace.service';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { ModalComponent, ModalService } from 'fundamental-ngx';
@@ -18,8 +18,8 @@ export class RoleBindingModalComponent implements OnDestroy {
   public userOrGroup = '';
   public selectedRole = '';
   public selectedKind = '';
-  private currentEnvironmentId: string;
-  private currentEnvironmentSubscription: Subscription;
+  private currentNamespaceId: string;
+  private currentNamespaceSubscription: Subscription;
   public ariaExpandedRole = false;
   private ariaExpandedKind = false;
   public error = '';
@@ -33,14 +33,14 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   constructor(
     private rbacService: RbacService,
-    private currentEnvironmentService: CurrentEnvironmentService,
+    private currentNamespaceService: CurrentNamespaceService,
     private communicationService: ComponentCommunicationService,
     private modalService: ModalService
   ) {
-    this.currentEnvironmentSubscription = this.currentEnvironmentService
-      .getCurrentEnvironmentId()
-      .subscribe(envId => {
-        this.currentEnvironmentId = envId;
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
       });
   }
 
@@ -60,7 +60,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   getRoles() {
-    this.rbacService.getRoles(this.currentEnvironmentId).subscribe(
+    this.rbacService.getRoles(this.currentNamespaceId).subscribe(
       res => {
         const response: any = res;
         if (response && response.items && _.isArray(response.items)) {
@@ -107,16 +107,21 @@ export class RoleBindingModalComponent implements OnDestroy {
     }
     this.modalService.open(this.createBindingModal).result.finally(() => {
       this.isActive = false;
+      this.clearData();
     });
     this.isUserGroupMode = true;
   }
 
   public close() {
     this.modalService.close(this.createBindingModal);
+  }
+
+  public clearData() {
     this.userOrGroup = '';
     this.selectedRole = '';
     this.selectedKind = '';
     this.error = '';
+    this.userGroupError = '';
   }
 
   prepareData() {
@@ -129,7 +134,7 @@ export class RoleBindingModalComponent implements OnDestroy {
     if (this.isGlobalPermissionsView) {
       data['kind'] = 'ClusterRoleBinding';
     } else {
-      data['namespace'] = this.currentEnvironmentId;
+      data['namespace'] = this.currentNamespaceId;
       data['kind'] = 'RoleBinding';
     }
     data['isUserGroupMode'] = this.isUserGroupMode;
@@ -203,10 +208,10 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentEnvironmentSubscription.unsubscribe();
+    this.currentNamespaceSubscription.unsubscribe();
   }
 
-  filterEnvironments(field) {
+  filterNamespaces(field) {
     this.error = '';
     switch (field) {
       case 'Kind':
@@ -223,13 +228,13 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   filter(array, name) {
-    const envs = [];
+    const namespaces = [];
     array.forEach(element => {
       if (element.toLowerCase().includes(name.toLowerCase())) {
-        envs.push(element);
+        namespaces.push(element);
       }
     });
-    return envs;
+    return namespaces;
   }
 
   isReadyToCreate() {

@@ -9,11 +9,11 @@
             [attr.aria-expanded]="ariaExpanded" aria-haspopup="true" (click)="toggleDropDown()">
               <input class="fd-form__control y-fd-form__control"
               type="text"
-              name="environmentName"
+              name="namespaceName"
               autocomplete="off"
               placeholder="Choose namespace"
-              [(ngModel)]="environmentName"
-              (ngModelChange)="filterEnvsNames()"
+              [(ngModel)]="namespaceName"
+              (ngModelChange)="filterNamespacesNames()"
               (keydown)="openDropDown($event)"
               (click)="openDropDown($event)">
             </button>
@@ -21,8 +21,8 @@
           <div class="fd-popover__body y-fd-popover__body fd-popover__body--no-arrow"  [attr.aria-hidden]="ariaHidden" id="nNJnB279">
             <nav class="fd-menu">
               <ul class="fd-menu__list">
-                <li *ngFor="let env of filteredEnvsNames" (click)="toggleDropDown(); selectedEnv(env);">
-                  <span class="fd-menu__item">{{ env.label }}</span>
+                <li *ngFor="let namespace of filteredNamespacesNames" (click)="toggleDropDown(); selectedNamespace(namespace);">
+                  <span class="fd-menu__item">{{ namespace.label }}</span>
                 </li>
               </ul>
             </nav>
@@ -32,7 +32,7 @@
     </fd-modal-body>
     <fd-modal-footer>
       <button fd-button [fdType]="'main'"
-          [disabled]="!checkIfEnvironmentExists()"
+          [disabled]="!checkIfNamespaceExists()"
           (click)="save()">OK</button>
     </fd-modal-footer>
   </fd-modal>

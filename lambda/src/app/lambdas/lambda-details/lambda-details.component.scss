@@ -15,10 +15,6 @@ $hover: #008ac6;
   padding: 0;
 }
 
-.fd-breadcrumb__item a {
-  cursor: pointer;
-}
-
 .lambda-name {
   pointer-events: none;
 }
@@ -97,6 +93,10 @@ div[hidden] { display: none; }
     bottom: -5px;
     left: 0;
   }
+}
+
+input[type=text]:focus{
+  box-shadow: 0 0 0 0px var(--fd-color-action-focus);
 }
 
 

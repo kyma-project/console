@@ -10,7 +10,7 @@ export interface IApplicationSpec {
   description: string;
   clusterKey: string;
   type: string;
-  environment: string;
+  namespace: string;
 }
 
 export class Application extends MetaDataOwner implements IApplication {
