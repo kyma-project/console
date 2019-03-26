@@ -70,14 +70,22 @@ function getUrlParameter(name) {
 };
 
 var reason = getUrlParameter('reason');
+var error = getUrlParameter('error');
 
-if (reason == 'tokenExpired') {
-  document.getElementById('headline').innerText = 'Your session has expired.';
+if (error) {
+  document.getElementById('message').innerText = error;
 }
 
-if (reason == 'loginError') {
-  document.getElementById('headline').innerText = 'There was an error while logging in.';
-  document.getElementById('message').innerText = 'Please try to log in again.';
+switch (reason) {
+  case 'tokenExpired':
+    document.getElementById('headline').innerText = 'Your session has expired.';
+    break;
+  case 'loginError':
+    document.getElementById('headline').innerText = 'There was an error while logging in.';
+    document.getElementById('message').innerText = 'Please try to log in again.';
+    break;
+  default:
+    break;
 }
 </script>
 </body>
