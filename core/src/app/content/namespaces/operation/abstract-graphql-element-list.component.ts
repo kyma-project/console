@@ -21,9 +21,7 @@ import { AppConfig } from 'app/app.config';
 export class AbstractGraphqlElementListComponent
   extends AbstractKubernetesElementListComponent
   implements OnDestroy {
-    
-  public source: GraphQLDataProvider;
-  private currentNamespaceId: string;
+  public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
 
@@ -48,7 +46,7 @@ export class AbstractGraphqlElementListComponent
         this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
           AppConfig.graphqlApiUrl,
-          this.getGraphglQueryForList(),
+          this.getGraphqlQueryForList(),
           {
             namespace: this.currentNamespaceId
           },
@@ -61,7 +59,7 @@ export class AbstractGraphqlElementListComponent
     this.currentNamespaceSubscription.unsubscribe();
   }
 
-  protected getGraphglQueryForList() {
+  protected getGraphqlQueryForList() {
     return null; // override this
   }
 

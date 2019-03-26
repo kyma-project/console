@@ -34,7 +34,7 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent {
     );
   }
 
-  getGraphglQueryForList() {
+  getGraphqlQueryForList() {
     return `query ConfigMaps($namespace: String!) {
       configMaps(namespace: $namespace) {
         name
