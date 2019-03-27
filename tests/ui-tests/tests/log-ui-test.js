@@ -4,7 +4,7 @@ import common from '../commands/common';
 import logOnEvents from '../utils/logging';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
-import logsCommands from '../commands/log-ui';
+import logsCommands from '../commands/logging';
 
 let browser, page;
 let token = '';

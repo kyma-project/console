@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "log-ui": {
+    "logging": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -55,18 +55,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "log-ui:build"
+            "browserTarget": "logging:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "log-ui:build:production"
+              "browserTarget": "logging:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "log-ui:build"
+            "browserTarget": "logging:build"
           }
         },
         "test": {
@@ -90,7 +90,7 @@
         }
       }
     },
-    "log-ui-e2e": {
+    "logging-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -99,11 +99,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "log-ui:serve"
+            "devServerTarget": "logging:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "log-ui:serve:production"
+              "devServerTarget": "logging:serve:production"
             }
           }
         },
@@ -117,5 +117,5 @@
       }
     }
   },
-  "defaultProject": "log-ui"
+  "defaultProject": "logging"
 }
