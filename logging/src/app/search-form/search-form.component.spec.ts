@@ -47,6 +47,7 @@ describe('SearchFormComponent', () => {
     function getModel(override?: object): ISearchFormData {
       const baseModel: ISearchFormData = {
         query: 'bla}blu',
+        extraQuery: '-mockExtra',
         direction: 'mock-direction',
         limit: 123456,
         from: '1m',
@@ -60,7 +61,7 @@ describe('SearchFormComponent', () => {
       component.model = getModel();
       const expected = {
         query: 'bla}',
-        regexp: 'blu',
+        regexp: 'blu-mockExtra',
         limit: 123456,
         direction: 'mock-direction'
       };
