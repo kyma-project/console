@@ -436,10 +436,9 @@ function fetchFromKyma(url) {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        //   relogin();
-        // }
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
         reject(xmlHttp.response);
       }
     };
