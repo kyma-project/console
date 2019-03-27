@@ -100,33 +100,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   onSubmit() {
-    const from = new Date();
-    if (this.model.from.endsWith('m')) {
-      from.setMinutes(
-        -1 * +this.model.from.substr(0, this.model.from.length - 1),
-      );
-    }
-
-    if (this.model.from.endsWith('h')) {
-      from.setHours(
-        -1 * +this.model.from.substr(0, this.model.from.length - 1),
-      );
-    }
-
-    if (this.model.from.endsWith('d')) {
-      from.setDate(-1 * +this.model.from.substr(0, this.model.from.length - 1));
-    }
-
-    const labelExpPos = this.model.query.indexOf('}');
-
-    const searchQuery: IPlainLogQuery = {
-      regexp: this.model.query.substr(labelExpPos + 1),
-      from: from.getTime(),
-      to: new Date().getTime(),
-      query: this.model.query.substring(0, labelExpPos + 1),
-      limit: this.model.limit,
-      direction: this.model.direction
-    };
+    const searchQuery: IPlainLogQuery = this.getSearchQuery();
 
     this.searchService
       .search(searchQuery)
@@ -149,9 +123,36 @@ export class SearchFormComponent implements OnInit, OnDestroy {
         err => {
           console.error(err);
           this.error = err.error;
-        },
-        () => {},
+        }
       );
+  }
+
+  private getSearchQuery() {
+    const from: Date = new Date();
+    const value: number = -1 * +this.model.from.substr(0, this.model.from.length - 1);
+
+    if (this.model.from.endsWith('m')) {
+      from.setMinutes(value);
+    }
+
+    if (this.model.from.endsWith('h')) {
+      from.setHours(value);
+    }
+
+    if (this.model.from.endsWith('d')) {
+      from.setDate(value);
+    }
+
+    const labelExpPos: number = this.model.query.indexOf('}');
+
+    return {
+      regexp: this.model.query.substr(labelExpPos + 1),
+      from: from.getTime(),
+      to: new Date().getTime(),
+      query: this.model.query.substring(0, labelExpPos + 1),
+      limit: this.model.limit,
+      direction: this.model.direction
+    };
   }
 
   loadLabels() {
@@ -173,7 +174,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
     this.searchService
       .getLabelValues(selectedLabel)
-      .pipe()
       .subscribe(
         data => {
           this.labelValues = JSON.parse(data);
@@ -230,12 +230,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   updateQuery() {
     if (this.selectedLabels.size > 0) {
-      const regexp = /[,]{1}\s$/gms;
-      let query = '{';
-      this.selectedLabels.forEach((value, key) => {
-        query = query + key + '="' + value + '", ';
-      });
-      this.model.query = query.replace(regexp, '}');
+      const selectedLabelsFormatted = Array.from(this.selectedLabels).map(([key, value]) => `${key}="${value}"`);
+      this.model.query = '{' + selectedLabelsFormatted.join(', ') +  '}';
     } else {
       this.model.query = '';
     }
