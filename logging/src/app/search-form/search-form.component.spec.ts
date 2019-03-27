@@ -53,7 +53,7 @@ describe('SearchFormComponent', () => {
         to: 'whatever',
         label: 'whatever'
       };
-      return Object.assign({}, baseModel, override);
+      return {...baseModel, ...override};
     }
 
     it('sets non-date params', () => {
