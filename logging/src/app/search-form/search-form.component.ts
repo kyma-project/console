@@ -51,7 +51,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   @Input() labels = { values: [] };
   labelValues = { values: [] };
   error: string = null;
-  model = new SearchFormData('', 1000, '5m', 'now', '', 'backward');
+  model = new SearchFormData('', '', 1000, '5m', 'now', '', 'backward');
 
   selectedLabels = new Map();
   mandatoryLabels = new Map();
@@ -121,7 +121,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     const labelExpPos = this.model.query.indexOf('}');
 
-    searchQuery.regexp = this.model.query.substr(labelExpPos + 1);
+    searchQuery.regexp = this.model.query.substr(labelExpPos + 1) + this.model.extraQuery;
     searchQuery.from = from.getTime();
     searchQuery.to = new Date().getTime();
     searchQuery.query = this.model.query.substring(0, labelExpPos + 1);
