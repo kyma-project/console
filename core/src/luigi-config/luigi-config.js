@@ -1,3 +1,5 @@
+import LuigiClient from '@kyma-project/luigi-client';
+
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
@@ -210,6 +212,17 @@ function getNodes(context) {
       }
     });
     return nodeTree;
+  })
+  .catch((err) => {
+    const errParsed = JSON.parse(err);
+    console.error('Error', errParsed);
+    const settings = {
+      text: `Namespace ${errParsed.details.name} not found.`,
+      type: 'error'
+     }
+     LuigiClient
+      .uxManager()
+      .showAlert(settings)
   });
 }
 
