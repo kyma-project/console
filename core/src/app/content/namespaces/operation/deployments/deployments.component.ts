@@ -86,7 +86,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   }
 
   public getResourceUrl(kind: string, entry: any): string {
-    return `${AppConfig.k8sApiServerUrl_extensions}namespaces/${
+    return `${AppConfig.k8sApiServerUrl_apps}namespaces/${
       this.currentNamespaceId
     }/deployments/${entry.name}`;
   }

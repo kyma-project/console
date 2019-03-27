@@ -7,7 +7,7 @@
     "start:api": "lerna exec --ignore ui-tests --ignore @kyma-project/* --parallel -- npm run start:kyma:api",
     "build:components:react": "cd components/react && npm run build",
     "build:components:odata": "cd components/react-odata && npm run build",
-    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js brokers/public/config/config.js content/public/config/config.js",
+    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js brokers/public/config/config.js content/public/config/config.js logging/src/assets/config/config.js",
     "append-host": "grep -qF '127.0.0.1 console-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 console-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 console-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)"
   },
   "devDependencies": {

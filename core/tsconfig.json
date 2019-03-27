@@ -15,7 +15,8 @@
     "paths": {
       "shared/*": ["src/app/shared/*"],
       "namespaces/*": ["src/app/content/namespaces/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": ["**/*", "node_modules/ng2-ace-editor/src/**/*"]
 }

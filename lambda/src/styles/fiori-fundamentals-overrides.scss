@@ -35,6 +35,7 @@
   }
 
   td {
+    word-break: break-all;
     vertical-align: top;
   }
 
@@ -182,7 +183,7 @@
 
 // Fix for popover could not be opened on Safari (also causing some infinite operations eating all resources)
 // Transform property causes problem in Safari. Workaround removes `transform` and uses `margin-top` instead
-.fd-popover__body  {
+.fd-popover__body {
   margin-top: 0;
   transform: none;
 }

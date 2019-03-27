@@ -48,6 +48,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     from: '5m',
     to: 'now',
     query: '',
+    extraQuery: '',
     limit: 1000,
     direction: 'backward',
     label: ''
@@ -146,7 +147,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     const labelExpPos: number = this.model.query.indexOf('}');
 
     return {
-      regexp: this.model.query.substr(labelExpPos + 1),
+      regexp: this.model.query.substr(labelExpPos + 1) + this.model.extraQuery,
       from: from.getTime(),
       to: new Date().getTime(),
       query: this.model.query.substring(0, labelExpPos + 1),

@@ -80,6 +80,12 @@
                  name="query">
         </div>
 
+        <div fd-form-item [hidden]="!mandatoryLabels.size">
+          <fd-form-label [forValue]="'extra-query'" [isRequired]="false">Query</fd-form-label>
+          <input fd-form-control [type]="'text'" id="extraQuery" placeholder="Enter query" [(ngModel)]="model.extraQuery"
+                 name="extra-query">
+        </div>
+
         <div fd-form-item [isInline]="true">
           <button fd-button type="submit" [glyph]="'search'" [disabled]="!searchData.form.valid" >Search</button>
           <span *ngIf="!mandatoryLabels.size" class="fd-has-margin-left-s">Query Examples</span>

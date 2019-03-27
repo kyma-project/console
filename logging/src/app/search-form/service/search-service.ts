@@ -4,6 +4,7 @@ import { IPlainLogQuery } from '../data';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../../app.config';
 import { LuigiContextService } from './luigi-context.service';
+import { CustomHttpParameterCodec } from './custom-http-parameter-codec';
 
 @Injectable()
 export class SearchService {
@@ -13,7 +14,9 @@ export class SearchService {
   ) {}
 
   search(query: IPlainLogQuery): Observable<any> {
-    let reqParams = new HttpParams()
+    let reqParams = new HttpParams({
+      encoder: new CustomHttpParameterCodec()
+    })
       .set('query', query.query)
       .set('start', query.from + '000000')
       .set('end', query.to + '000000')
