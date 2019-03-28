@@ -66,7 +66,7 @@ function getUrlParameter(name) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  return results && decodeURIComponent(results[1].replace(/\+/g, ' ')) || '';
 };
 
 var reason = getUrlParameter('reason');
@@ -81,7 +81,7 @@ switch (reason) {
     document.getElementById('headline').innerText = 'Your session has expired.';
     break;
   case 'loginError':
-    document.getElementById('headline').innerText = 'There was an error while logging in.';
+    document.getElementById('headline').innerText = 'Ooops, something went wrong.';
     document.getElementById('message').innerText = 'Please try to log in again.';
     break;
   default:
