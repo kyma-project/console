@@ -25,9 +25,21 @@ export default compose(
     },
   }),
 )(props => {
-  if (props.clusterDocsTopicsRoot.loading || props.clusterDocsTopicsComponents.loading || !props.clusterDocsTopicsRoot.clusterDocsTopics || !props.clusterDocsTopicsComponents.clusterDocsTopics) return null;
+  if (
+    props.clusterDocsTopicsRoot.loading ||
+    props.clusterDocsTopicsComponents.loading ||
+    !props.clusterDocsTopicsRoot.clusterDocsTopics ||
+    !props.clusterDocsTopicsComponents.clusterDocsTopics
+  )
+    return null;
 
-  return <MainPage {...props} clusterDocsTopicsRoot={props.clusterDocsTopicsRoot.clusterDocsTopics} clusterDocsTopicsComponents={props.clusterDocsTopicsComponents.clusterDocsTopics} 
-  
-  />
+  return (
+    <MainPage
+      {...props}
+      clusterDocsTopicsRoot={props.clusterDocsTopicsRoot.clusterDocsTopics}
+      clusterDocsTopicsComponents={
+        props.clusterDocsTopicsComponents.clusterDocsTopics
+      }
+    />
+  );
 });

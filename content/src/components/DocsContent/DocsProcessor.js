@@ -8,7 +8,7 @@ export class DocsProcessor {
     const assetsRegexp = /\.\/assets/g;
     let docsUrl = null;
     this.docs.map(doc => {
-      docsUrl = doc.url.substring(0, doc.url.lastIndexOf("/"));
+      docsUrl = doc.url.substring(0, doc.url.lastIndexOf('/'));
       if (doc.source.search(assetsRegexp) !== -1) {
         doc.source = doc.source.replace(assetsRegexp, `${docsUrl}/assets`);
       }
@@ -21,16 +21,15 @@ export class DocsProcessor {
   removeMatadata = () => {
     const metadataRegexp = '---';
     let docsBeginingIndex = null;
-    
+
     this.docs.map(doc => {
-      docsBeginingIndex = doc.source.indexOf(metadataRegexp,3)+3;
+      docsBeginingIndex = doc.source.indexOf(metadataRegexp, 3) + 3;
       doc.source = doc.source.substring(docsBeginingIndex, doc.source.length);
       return doc;
     });
 
     return this;
   };
-
 
   result() {
     return this.docs;

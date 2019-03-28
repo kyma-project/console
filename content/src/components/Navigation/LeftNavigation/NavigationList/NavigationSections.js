@@ -24,8 +24,8 @@ function NavigationSections({
   ...otherProps
 }) {
   const hashing = (item, type) => {
-    if(!(item && item.metadata)) return;
-    
+    if (!(item && item.metadata)) return;
+
     const topicType = item.metadata.type
       ? tokenize(item.metadata.type)
       : tokenize(item.metadata.title);
@@ -47,19 +47,25 @@ function NavigationSections({
     />
   );
 
-  const renderNavigationItem = (item,type) => {
+  const renderNavigationItem = (item, type) => {
     const categoryHash = tokenize(type);
-    const isTopicTheType = item && item.length===1 && item[0].metadata && item[0].metadata.type && item[0].metadata.title!==item[0].metadata.type;
+    const isTopicTheType =
+      item &&
+      item.length === 1 &&
+      item[0].metadata &&
+      item[0].metadata.type &&
+      item[0].metadata.title !== item[0].metadata.type;
     const hasSubElements = item && (item.length > 1 || isTopicTheType);
 
     let isActiveNavArrow = false;
     let isActive = false;
-    
+
     if (activeContent.id === rootId) {
       isActive =
-          activeNodes &&
-          (activeNodes.groupOfDocuments &&
-            activeNodes.groupOfDocuments.id === `${categoryHash}-${categoryHash}`);
+        activeNodes &&
+        (activeNodes.groupOfDocuments &&
+          activeNodes.groupOfDocuments.id ===
+            `${categoryHash}-${categoryHash}`);
 
       if (
         activeNodes &&
@@ -70,9 +76,10 @@ function NavigationSections({
       }
     }
 
-    let isClickedNav = activeNav.id === rootId &&
+    let isClickedNav =
+      activeNav.id === rootId &&
       activeNav.hash &&
-      activeNav.hash.startsWith(categoryHash)
+      activeNav.hash.startsWith(categoryHash);
 
     if (!isActiveNavArrow) {
       isActiveNavArrow =
@@ -85,7 +92,13 @@ function NavigationSections({
     return (
       <NavigationItem key={`${type}`}>
         <NavigationLinkWrapper>
-          { hasSubElements && renderArrow(tokenize(type), categoryHash, isActive, isActiveNavArrow)}
+          {hasSubElements &&
+            renderArrow(
+              tokenize(type),
+              categoryHash,
+              isActive,
+              isActiveNavArrow,
+            )}
           <NavigationLink
             active={isActive}
             noArrow={!hasSubElements}
@@ -96,19 +109,23 @@ function NavigationSections({
                 hash: `${categoryHash}-${categoryHash}`,
               });
             }}
-            data-e2e-id={`navigation-link-${groupType}-${rootId}-${
-              categoryHash
-            }`}
+            data-e2e-id={`navigation-link-${groupType}-${rootId}-${categoryHash}`}
           >
             {type}
           </NavigationLink>
         </NavigationLinkWrapper>
-        {hasSubElements && renderNavigationSubItems(item, type, isActive, isClickedNav)}
+        {hasSubElements &&
+          renderNavigationSubItems(item, type, isActive, isClickedNav)}
       </NavigationItem>
     );
   };
-  
-  const renderNavigationSubItems = (item,type, isParentActive, isParentClicked) => {
+
+  const renderNavigationSubItems = (
+    item,
+    type,
+    isParentActive,
+    isParentClicked,
+  ) => {
     return (
       <NavigationItems
         marginTop
@@ -116,37 +133,39 @@ function NavigationSections({
         show={isParentActive || isParentClicked}
         data-e2e-id={`${e2eId}-${tokenize(type)}`}
       >
-        {item && item.map((subItem,index) => {
-          const hash = hashing(subItem,type);
-          const isActive = activeNodes && (activeNodes.document && activeNodes.document.id === hash);
-          
-          return (
-          <NavigationItem key={index}>
-            <NavigationLinkWrapper>
-              <NavigationLink
-                active={isActive}
-                noArrow={true}
-                onClick={() => {
-                  chooseActive({
-                    id: rootId,
-                    type: groupType,
-                    hash: hash,
-                  });
-                }}
-                data-e2e-id={`navigation-link-${groupType}-${rootId}-${
-                  tokenize(subItem.metadata.title)
-                }`}
-              >
-                {subItem.metadata.title}
-              </NavigationLink>
-            </NavigationLinkWrapper>
-          </NavigationItem>
-        )})}
+        {item &&
+          item.map((subItem, index) => {
+            const hash = hashing(subItem, type);
+            const isActive =
+              activeNodes &&
+              (activeNodes.document && activeNodes.document.id === hash);
 
+            return (
+              <NavigationItem key={index}>
+                <NavigationLinkWrapper>
+                  <NavigationLink
+                    active={isActive}
+                    noArrow={true}
+                    onClick={() => {
+                      chooseActive({
+                        id: rootId,
+                        type: groupType,
+                        hash: hash,
+                      });
+                    }}
+                    data-e2e-id={`navigation-link-${groupType}-${rootId}-${tokenize(
+                      subItem.metadata.title,
+                    )}`}
+                  >
+                    {subItem.metadata.title}
+                  </NavigationLink>
+                </NavigationLinkWrapper>
+              </NavigationItem>
+            );
+          })}
       </NavigationItems>
     );
   };
-  
 
   let isActiveNav = false;
   if (
@@ -175,10 +194,10 @@ function NavigationSections({
       show={isActiveNav || isClickedNav}
       data-e2e-id={e2eId}
     >
-      {items && Object.keys(items).map((type, index) => {
-        return (renderNavigationItem(items[type],type))
-      })}
-      
+      {items &&
+        Object.keys(items).map((type, index) => {
+          return renderNavigationItem(items[type], type);
+        })}
     </NavigationItems>
   );
 }

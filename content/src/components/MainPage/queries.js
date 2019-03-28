@@ -24,7 +24,8 @@ export const TOPICS_QUERY = gql`
 
 export const CLUSTER_DOCS_TOPICS = gql`
   query clusterDocsTopics($viewContext: String!, $groupName: String!) {
-    clusterDocsTopics(viewContext: $viewContext, groupName: $groupName) @client {
+    clusterDocsTopics(viewContext: $viewContext, groupName: $groupName)
+      @client {
       name
       displayName
       description

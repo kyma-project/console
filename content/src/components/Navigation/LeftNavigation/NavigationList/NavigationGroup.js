@@ -27,7 +27,6 @@ function NavigationGroup({
   history,
   ...otherProps
 }) {
-
   const renderArrow = item => (
     <NavigationSectionArrow
       onClick={() => {
@@ -37,7 +36,10 @@ function NavigationGroup({
           hash: '',
         });
       }}
-      activeArrow={tokenize(item.name) === activeNav.id || tokenize(item.name) === activeContent.id}
+      activeArrow={
+        tokenize(item.name) === activeNav.id ||
+        tokenize(item.name) === activeContent.id
+      }
       active={isLinkActive({
         id: tokenize(item.name),
         type: groupType,
@@ -49,13 +51,12 @@ function NavigationGroup({
   const renderNavigationItem = item => {
     let filesByTypes = {};
     // there will be only one asset with markdowns
-    if(item.assets && item.assets.length>0){
+    if (item.assets && item.assets.length > 0) {
       item.assets.map(asset => {
         asset.files.map(file => {
           let type = file.metadata.type || file.metadata.title;
           if (!filesByTypes[type]) {
-            
-            filesByTypes[type]=[]
+            filesByTypes[type] = [];
           }
           filesByTypes[type].push(file);
           return file;
@@ -63,11 +64,11 @@ function NavigationGroup({
         return asset;
       });
     }
-    
+
     return (
       <NavigationItem key={tokenize(item.name)}>
         <NavigationLinkWrapper>
-          {item.assets && item.assets.length>0 && renderArrow(item)}
+          {item.assets && item.assets.length > 0 && renderArrow(item)}
           <NavigationLink
             active={isLinkActive({
               id: tokenize(item.name),
@@ -84,7 +85,7 @@ function NavigationGroup({
             {item.displayName}
           </NavigationLink>
         </NavigationLinkWrapper>
-        <NavigationSections 
+        <NavigationSections
           items={filesByTypes}
           groupType={groupType}
           rootId={tokenize(item.displayName)}

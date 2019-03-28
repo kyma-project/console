@@ -7,7 +7,7 @@ import { tokenize } from '../../commons/helpers';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
 
-const DocsContent = lazy(() => import("../DocsContent/DocsContent.container"));
+const DocsContent = lazy(() => import('../DocsContent/DocsContent.container'));
 
 class MainPage extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class MainPage extends Component {
       activeContent: active,
       activeNav: active,
       docsList: this.getDocUrls(active.type, active.id),
-      docsLoaded: false
+      docsLoaded: false,
     };
   };
 
@@ -50,14 +50,20 @@ class MainPage extends Component {
   }
 
   getDocUrls = (type, id) => {
-    let docsItems = type === 'root' ? this.props.clusterDocsTopicsRoot || {} : this.props.clusterDocsTopicsComponents || {};
-      if(!docsItems || docsItems.length===0) return {}
+    let docsItems =
+      type === 'root'
+        ? this.props.clusterDocsTopicsRoot || {}
+        : this.props.clusterDocsTopicsComponents || {};
+    if (!docsItems || docsItems.length === 0) return {};
     docsItems = docsItems.filter(item => tokenize(item.displayName) === id);
     return docsItems[0] || {};
   };
 
   getRoot = () => {
-    if (this.props.clusterDocsTopicsRoot && this.props.clusterDocsTopicsRoot.length>0) {
+    if (
+      this.props.clusterDocsTopicsRoot &&
+      this.props.clusterDocsTopicsRoot.length > 0
+    ) {
       return this.props.clusterDocsTopicsRoot[0].name;
     }
     return null;
@@ -73,7 +79,7 @@ class MainPage extends Component {
       this.setState({
         activeContent: activeLink,
         activeNav: activeLink,
-        docsList: this.getDocUrls(activeLink.type, activeLink.id)
+        docsList: this.getDocUrls(activeLink.type, activeLink.id),
       });
     } else {
       this.setState({
@@ -119,7 +125,7 @@ class MainPage extends Component {
   setDocsInitialLoadStatus = () => {
     this.setState({
       docsLoaded: true,
-    });//
+    }); //
   };
 
   colapseNav = activeNav => {
@@ -164,9 +170,11 @@ class MainPage extends Component {
           </LeftSideWrapper>
           <CenterSideWrapper id={SCROLL_SPY_ROOT_ELEMENT}>
             <Suspense fallback={<div>Loading...</div>}>
-              <DocsContent docs={this.state.docsList} 
+              <DocsContent
+                docs={this.state.docsList}
                 docsLoaded={this.state.docsLoaded}
-                setDocsInitialLoadStatus={this.setDocsInitialLoadStatus}/>
+                setDocsInitialLoadStatus={this.setDocsInitialLoadStatus}
+              />
             </Suspense>
           </CenterSideWrapper>
         </ColumnsWrapper>
