@@ -4,15 +4,15 @@
             <fd-action-bar-title>{{ title }}</fd-action-bar-title>
         </fd-action-bar-header>
         <fd-action-bar-actions>
-            <button fd-button (click)="navigateToCreate()" [options]="'light'" [glyph]="'add'">
-                Create API
-            </button>
             <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
             </y-list-search>
             <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter" [filterState]="filterState"
                 (onFilterChanged)="onFilterChanged($event)">
             </y-list-filter>
+            <button fd-button (click)="navigateToCreate()" [options]="'light'" [glyph]="'add'">
+                Create API
+            </button>
         </fd-action-bar-actions>
     </fd-action-bar>
 
