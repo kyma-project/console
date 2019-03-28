@@ -52,14 +52,7 @@
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Description</td>
-            <td>
-              <ng-container *ngIf="application.description">
-                {{ application.description }}
-              </ng-container>
-              <ng-container *ngIf="!application.description">
-                <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
-              </ng-container>
-            </td>
+            <td>{{ application.description }}</td>
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Labels</td>
@@ -71,7 +64,7 @@
                 </span>
               </ng-container>
               <ng-container *ngIf='!transformedLabels.length'>
-                <span class="fd-has-font-style-italic fd-has-color-text-4">none</span>
+                <span>-</span>
               </ng-container>
             </td>
           </tr>

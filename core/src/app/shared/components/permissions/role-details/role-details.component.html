@@ -43,7 +43,14 @@
           </tr>
           <tr>
             <td class="y-fd-table--col-2 fd-has-color-text-4">Namespace</td>
-            <td>{{ roleDetails.metadata.namespace }}</td>
+            <td>
+              <ng-container *ngIf="roleDetails.metadata.namespace">
+                {{ roleDetails.metadata.namespace }}
+              </ng-container>
+              <ng-container *ngIf="!roleDetails.metadata.namespace">
+                <span>-</span>
+              </ng-container>
+            </td>
           </tr>
           <tr>
             <td class="y-fd-table--col-2 fd-has-color-text-4">Creation Date</td>
