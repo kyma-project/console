@@ -7,6 +7,7 @@ import { AppConfig } from '../../../../app.config';
 import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
 import { finalize } from 'rxjs/operators';
 import LuigiClient from '@kyma-project/luigi-client';
+import { EMPTY_TEXT} from 'shared/constants/constants';
 
 @Component({
   templateUrl: './role-details.component.html'
@@ -16,6 +17,8 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
 
   private currentNamespaceSubscription: Subscription;
   private currentNamespaceId: string;
+  private emptyText = EMPTY_TEXT;
+  
   public roleName: string;
   public loading = true;
   public errorMessage: string;

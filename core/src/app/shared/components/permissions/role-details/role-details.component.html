@@ -48,7 +48,7 @@
                 {{ roleDetails.metadata.namespace }}
               </ng-container>
               <ng-container *ngIf="!roleDetails.metadata.namespace">
-                <span>-</span>
+                <span>{{ emptyText }}</span>
               </ng-container>
             </td>
           </tr>
