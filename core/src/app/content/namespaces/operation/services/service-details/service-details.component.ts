@@ -22,7 +22,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public serviceDetailsUrl: string;
   public currentNamespaceSubscription: Subscription;
   public isSystemNamespace: boolean;
-  private emptyText = EMPTY_TEXT;
+  public emptyText = EMPTY_TEXT;
 
   constructor(
     private http: HttpClient,

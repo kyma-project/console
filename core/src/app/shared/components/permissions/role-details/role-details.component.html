@@ -44,12 +44,7 @@
           <tr>
             <td class="y-fd-table--col-2 fd-has-color-text-4">Namespace</td>
             <td>
-              <ng-container *ngIf="roleDetails.metadata.namespace">
-                {{ roleDetails.metadata.namespace }}
-              </ng-container>
-              <ng-container *ngIf="!roleDetails.metadata.namespace">
-                <span>{{ emptyText }}</span>
-              </ng-container>
+              {{ roleDetails.metadata.namespace || emptyText }}
             </td>
           </tr>
           <tr>

@@ -2,6 +2,7 @@ import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { EMPTY_TEXT} from 'shared/constants/constants';
 
 @Component({
   selector: 'app-replica-sets-entry-renderer',
@@ -18,6 +19,7 @@ export class ReplicaSetsEntryRendererComponent
     super(injector);
   }
   public disabled = false;
+  public emptyText = EMPTY_TEXT;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {

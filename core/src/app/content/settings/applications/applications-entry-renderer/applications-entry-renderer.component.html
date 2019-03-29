@@ -8,8 +8,11 @@
         {{ label }}
       </span>
     </div>
+    <ng-container *ngIf="!getLabels(entry.labels).length">
+      {{ emptyText }}
+    </ng-container>
   </td>
-  <td>{{ listConnectedNamespaces(entry)? listConnectedNamespaces(entry) : '' }}</td>
+  <td>{{ listConnectedNamespaces(entry)? listConnectedNamespaces(entry) : emptyText }}</td>
   <td>
     <app-status-label 
       [statusType]="getStatusType(entry)">

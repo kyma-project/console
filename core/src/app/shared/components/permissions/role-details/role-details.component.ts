@@ -17,13 +17,13 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
 
   private currentNamespaceSubscription: Subscription;
   private currentNamespaceId: string;
-  private emptyText = EMPTY_TEXT;
-  
+
   public roleName: string;
   public loading = true;
   public errorMessage: string;
   public roleDetails: object;
   public isGlobalMode: boolean;
+  public emptyText = EMPTY_TEXT;
 
   constructor(
     private http: HttpClient,

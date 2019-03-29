@@ -19,9 +19,9 @@ import { EMPTY_TEXT} from 'shared/constants/constants';
 export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   public currentAppId = '';
   public transformedLabels: string[];
+  public emptyText = EMPTY_TEXT;
   private sub: any;
   private prettyStatus = '';
-  private emptyText = EMPTY_TEXT;
   application: any;
 
   private actions = [

@@ -62,8 +62,8 @@
             <td class="fd-has-color-text-4">Labels</td>
             <td>
               <ng-container *ngIf='serviceDetails.metadata.labels'>
-                <span class="fd-token y-fd-token y-fd-token--no-button"
-                  *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">{{ key }}={{ serviceDetails.metadata.labels[key] }}
+                <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let key of objectKeys(serviceDetails.metadata.labels)">
+                  {{ key }}={{ serviceDetails.metadata.labels[key] }}
                 </span>
               </ng-container>
               <ng-container *ngIf='!serviceDetails.metadata.labels'>

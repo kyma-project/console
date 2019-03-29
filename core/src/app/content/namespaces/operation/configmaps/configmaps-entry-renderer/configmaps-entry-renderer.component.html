@@ -2,9 +2,14 @@
   <td class="fd-has-font-weight-bold">{{ entry.metadata.name }}</td>
   <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
   <td>
-    <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
-      {{ label }}
-    </span>
+    <ng-container *ngIf="getLabels(entry.metadata.labels).length">
+      <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
+        {{ label }}
+      </span>
+    </ng-container>
+    <ng-container *ngIf="!getLabels(entry.metadata.labels).length">
+      {{ emptyText }}
+    </ng-container>
   </td>
   <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>

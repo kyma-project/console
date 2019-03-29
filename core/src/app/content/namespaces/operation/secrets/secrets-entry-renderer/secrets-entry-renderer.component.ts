@@ -3,6 +3,8 @@ import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kuberne
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import LuigiClient from '@kyma-project/luigi-client';
+import { EMPTY_TEXT} from 'shared/constants/constants';
+
 @Component({
   selector: 'app-secrets-entry-renderer',
   templateUrl: './secrets-entry-renderer.component.html'
@@ -17,6 +19,7 @@ export class SecretsEntryRendererComponent
     super(injector);
   }
   public disabled = false;
+  public emptyText = EMPTY_TEXT;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {

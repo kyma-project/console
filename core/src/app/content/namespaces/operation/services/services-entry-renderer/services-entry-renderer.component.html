@@ -28,6 +28,9 @@
     <span *ngFor="let label of getLabels(entry.metadata.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
     </span>
+    <ng-container *ngIf="!getLabels(entry.metadata.labels).length">
+      {{ emptyText }}
+    </ng-container>
   </td>
   <td>
     <app-status-label [statusType]="getStatusType(entry)">
