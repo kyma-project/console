@@ -1,11 +1,9 @@
-export class SearchFormData {
-  constructor(
-    public query: string,
-    public extraQuery: string,
-    public limit: number,
-    public from: string,
-    public to: string,
-    public label: string,
-    public direction: string,
-  ) {}
+export interface ISearchFormData {
+  from: string;
+  to: string;
+  query: string;
+  extraQuery: string;
+  limit: number;
+  direction: string;
+  label: string;
 }

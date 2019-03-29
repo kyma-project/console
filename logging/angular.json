@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "log-ui": {
+    "logging": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -55,23 +56,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "log-ui:build"
+            "browserTarget": "logging:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "log-ui:build:production"
+              "browserTarget": "logging:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "log-ui:build"
+            "browserTarget": "logging:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "preserveSymlinks": true,
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
@@ -84,38 +86,16 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": ["src/tsconfig.spec.json"],
           }
         }
       }
     },
     "log-ui-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "log-ui:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "log-ui:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
-          }
-        }
-      }
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application"
     }
   },
-  "defaultProject": "log-ui"
+  "defaultProject": "logging"
 }

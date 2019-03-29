@@ -1,8 +1,8 @@
-export class PlainLogQuery {
-  public from: number;
-  public to: number;
-  public query: string;
-  public regexp: string;
-  public limit: number;
-  public direction: string;
+export interface IPlainLogQuery {
+  from: number;
+  to: number;
+  query: string;
+  limit: number;
+  direction: string;
+  regexp: string;
 }

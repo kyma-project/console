@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { PlainLogQuery } from '../data/plain-log-query';
+import { IPlainLogQuery } from '../data';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../../app.config';
 import { LuigiContextService } from './luigi-context.service';
@@ -13,7 +13,7 @@ export class SearchService {
     private luigiContextService: LuigiContextService,
   ) {}
 
-  search(query: PlainLogQuery): Observable<any> {
+  search(query: IPlainLogQuery): Observable<any> {
     let reqParams = new HttpParams({
       encoder: new CustomHttpParameterCodec()
     })
@@ -26,37 +26,33 @@ export class SearchService {
     if (query.regexp.trim() !== '') {
       reqParams = reqParams.set('regexp', query.regexp);
     }
-    const httpHeaders = new HttpHeaders().set(
-      'Authorization',
-      'Bearer ' + this.extractToken(),
-    );
+
     return this.http.get(AppConfig.queryEndpoint, {
-      headers: httpHeaders,
+      headers: this.getBaseHttpHeaders(),
       params: reqParams,
       responseType: 'text',
     });
   }
 
   getLabelValues(label: string) {
-    const httpHeaders = new HttpHeaders().set(
-      'Authorization',
-      'Bearer ' + this.extractToken(),
-    );
     return this.http.get(AppConfig.labelEndpoint + '/' + label + '/values', {
-      headers: httpHeaders,
+      headers: this.getBaseHttpHeaders(),
       responseType: 'text',
     });
   }
 
   getLabels(): Observable<any> {
-    const httpHeaders = new HttpHeaders().set(
+    return this.http.get(AppConfig.labelEndpoint, {
+      headers: this.getBaseHttpHeaders(),
+      responseType: 'text',
+    });
+  }
+
+  getBaseHttpHeaders() {
+    return new HttpHeaders().set(
       'Authorization',
       'Bearer ' + this.extractToken(),
     );
-    return this.http.get(AppConfig.labelEndpoint, {
-      headers: httpHeaders,
-      responseType: 'text',
-    });
   }
 
   extractToken(): string {
