@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { IEmptyListData } from 'shared/datamodel';
@@ -12,8 +12,7 @@ import * as luigiClient from '@kyma-project/luigi-client';
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
 })
-export class PodsComponent extends AbstractGraphqlElementListComponent
-  implements OnDestroy {
+export class PodsComponent extends AbstractGraphqlElementListComponent {
   public title = 'Pods';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title);
   public resourceKind = 'Pod';
@@ -35,7 +34,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
     );
   }
 
-  getGraphglQueryForList() {
+  getGraphqlQueryForList() {
     return `query Pod($namespace: String!) {
       pods(namespace: $namespace) {
         name

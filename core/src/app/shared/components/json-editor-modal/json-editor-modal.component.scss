@@ -3,5 +3,5 @@ $modal-footer-height: 72px; //40px height + 2*16px padding
 
 .json-editor {
   height: calc(70vh - #{$modal-header-hight} - #{$modal-footer-height});
-  min-height: 400px;
+  min-height: 200px;
 }

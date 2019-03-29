@@ -77,8 +77,8 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.route.params.subscribe(params => {
       const namespaceId = params['namespaceId'];
+      this.currentNamespaceService.setCurrentNamespaceId(namespaceId);
       if (namespaceId) {
-        this.currentNamespaceService.setCurrentNamespaceId(namespaceId);
         this.namespacesService.getNamespace(namespaceId).subscribe(
           () => {
             /* OK */
