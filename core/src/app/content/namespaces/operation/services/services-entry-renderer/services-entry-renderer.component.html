@@ -6,22 +6,19 @@
   </td>
   <td>{{ entry.spec.clusterIP }}</td>
   <td>
-    <ng-container *ngIf="entry.spec.ports">
-      <ng-container *ngFor="let port of entry.spec.ports">
-        <span>
-          {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
-          {{ port.port }}
-          {{ port.protocol }}
-        </span>
+    <ng-container *ngFor="let port of entry.spec.ports">
+      <span>
+        {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
+        {{ port.port }}
+        {{ port.protocol }}
+      </span>
 
-        <span>
-          {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
-          {{ port.nodePort || 0 }}
-          {{ port.protocol }}
-        </span>
-      </ng-container>
+      <span>
+        {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
+        {{ port.nodePort || 0 }}
+        {{ port.protocol }}
+      </span>
     </ng-container>
-    <span *ngIf="!entry.spec.ports">-</span>
   </td>
   <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
   <td>
