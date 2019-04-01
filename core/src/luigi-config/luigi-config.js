@@ -623,7 +623,7 @@ function getNamespaces() {
       if (namespace.status && namespace.status.phase !== 'Active') {
         return; //"pretend" that inactive namespace is already removed
       }
-      namespaceName = namespace.metadata.name;
+      const namespaceName = namespace.metadata.name;
       namespaces.push({
         category: 'Namespaces',
         label: namespaceName,
