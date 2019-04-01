@@ -17,6 +17,7 @@ export class CreatePresetModalComponent {
   public wrongJwks = false;
   public wrongPresetName = false;
   public error = '';
+  public urlPrefix = 'https://';
 
   constructor(
     private idpPresetsService: IdpPresetsService,
@@ -67,7 +68,7 @@ export class CreatePresetModalComponent {
     const data = {
       name: this.presetName,
       issuer: this.issuer,
-      jwksUri: this.jwks
+      jwksUri: this.urlPrefix + this.jwks
     };
 
     return this.idpPresetsService.createIdpPreset(data).subscribe(
