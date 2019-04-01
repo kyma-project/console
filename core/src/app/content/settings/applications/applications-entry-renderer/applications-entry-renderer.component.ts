@@ -4,7 +4,7 @@ import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
-import { EMPTY_TEXT} from 'shared/constants/constants';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-pods-entry-renderer',

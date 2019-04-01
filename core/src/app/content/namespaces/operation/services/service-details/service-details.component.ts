@@ -6,7 +6,7 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
 import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
-import { EMPTY_TEXT} from 'shared/constants/constants';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-service-details',

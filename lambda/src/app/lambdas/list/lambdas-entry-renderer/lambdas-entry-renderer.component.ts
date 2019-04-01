@@ -4,7 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { AbstractTableEntryRendererComponent } from 'app/generic-list';
 import { AppConfig } from '../../../app.config';
 import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
-import { EMPTY_TEXT} from '../../../shared/constants/constants';
+import { EMPTY_TEXT } from '../../../shared/constants/constants';
 
 @Component({
   selector: 'app-lambdas-entry-renderer',

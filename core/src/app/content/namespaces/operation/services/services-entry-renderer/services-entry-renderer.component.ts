@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { StatusLabelComponent } from '../../../../../shared/components/status-label/status-label.component';
 import LuigiClient from '@kyma-project/luigi-client';
-import { EMPTY_TEXT} from 'shared/constants/constants';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-services-entry-renderer',

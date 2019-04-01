@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
-import { EMPTY_TEXT} from 'shared/constants/constants';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-configmaps-entry-renderer',
