@@ -1,9 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TabLink, TabTooltip, TabWrapper } from './components';
+import { TabLink, TabWrapper } from './components';
 
-const Tab = ({ aditionalStatus, title, onClick, tabIndex, id, isActive }) => {
+const Tab = ({
+  aditionalStatus,
+  title,
+  onClick,
+  tabIndex,
+  id,
+  isActive,
+  smallPadding,
+}) => {
   return (
     <TabWrapper key={tabIndex}>
       <TabLink
@@ -13,6 +21,7 @@ const Tab = ({ aditionalStatus, title, onClick, tabIndex, id, isActive }) => {
         }}
         active={isActive}
         data-e2e-id={id}
+        smallPadding={smallPadding}
       >
         {title}
         {!isActive && aditionalStatus}
