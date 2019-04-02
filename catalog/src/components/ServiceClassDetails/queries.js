@@ -38,6 +38,25 @@ export const GET_SERVICE_CLASS = gql`
         name
       }
       activated(namespace: $namespace)
+      clusterDocsTopic {
+        name
+        groupName
+        displayName
+        description
+        assets {
+          name
+          type
+          files {
+            url
+            metadata
+          }
+          status {
+            phase
+            reason
+            message
+          }
+        }
+      }
     }
     serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
@@ -51,6 +70,15 @@ export const GET_SERVICE_CLASS = gql`
         name
       }
       activated
+      docsTopic{
+        name
+        groupName
+        assets {
+          name
+          type
+          
+        }
+      }
     }
   }
 `;
