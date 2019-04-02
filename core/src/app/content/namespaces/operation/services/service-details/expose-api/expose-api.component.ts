@@ -231,7 +231,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.idpPresetsService.getDefaultIdpPreset().subscribe(config => {
       this.defaultAuthConfig = config;
       let hasDex = false;
-      let jwksUri = config.jwks_uri;
+      let jwksUri = AppConfig.dexFQDNUri;
       let issuer = config.issuer;
       this.idpPresetsService
         .getIDPPresets()
@@ -244,7 +244,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
             if (!hasDex) {
               this.availablePresets.push({
                 label: 'Dex',
-                jwksUri: config.jwks_uri,
+                jwksUri,
                 issuer: config.issuer
               });
             }
