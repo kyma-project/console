@@ -7,16 +7,10 @@ import {
 import { SearchService } from './service/search-service';
 import { IPlainLogQuery, ISearchFormData } from './data';
 
-import {
-  debounceTime,
-  delay,
-  distinctUntilChanged,
-  switchMapTo,
-  takeUntil,
-} from 'rxjs/operators';
 import { Observable, of as observableOf } from 'rxjs';
-import { observe } from 'rxjs-observe';
 import { ActivatedRoute } from '@angular/router';
+
+import { LuigiContextService } from './service/luigi-context.service';
 
 @Component({
   selector: 'app-search-form',
@@ -58,20 +52,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   mandatoryLabels = new Map();
   public loaded: Observable<boolean> = observableOf(false);
 
-  constructor(private route: ActivatedRoute, private searchService: SearchService) {
-    this.route.queryParams.subscribe(params => {
-      this.processParams(params);
+  constructor(private route: ActivatedRoute, private luigiContextService: LuigiContextService, private searchService: SearchService) {
+    this.luigiContextService.getContext().subscribe(data => {
+      this.route.queryParams.subscribe(params => {
+        this.processParams(params);
+        if (this.mandatoryLabels.size === 0) {
+          this.loadLabels();
+        }
+      });
     });
-    const { observables, proxy } = observe<SearchFormComponent>(this);
-    observables.ngOnInit
-      .pipe(
-        switchMapTo(observables.loaded),
-        debounceTime(400),
-        distinctUntilChanged(),
-        takeUntil(observables.ngOnDestroy),
-      )
-      .subscribe(value => this.loadLabels());
-    return proxy;
   }
 
   processParams(params) {
@@ -105,7 +94,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     this.searchService
       .search(searchQuery)
-      .pipe(delay(500))
       .subscribe(
         data => {
           const result = JSON.parse(data);
