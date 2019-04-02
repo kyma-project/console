@@ -151,6 +151,12 @@ export const Markdown = styled.div`
     padding-left: 32px;
   }
 
+  ul:last-child,
+  ol:last-child,
+  p:last-child {
+    margin-bottom: 12px;
+  }
+
   ul {
     list-style-type: disc;
     list-style-position: outside;
@@ -159,6 +165,11 @@ export const Markdown = styled.div`
   ol {
     list-style-type: decimal;
     list-style-position: outside;
+  }
+
+  div[tabs] ul {
+    padding: 0;
+    list-style-type: none;
   }
 
   ul ul,
