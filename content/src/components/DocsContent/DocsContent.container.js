@@ -1,24 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import DocsContent from './DocsContent.component';
 import { DocsProcessor } from './DocsProcessor';
 
 import { compareTwoObjects } from '../../commons/helpers';
 
-export default class DocsContentContainer extends React.Component {
+export default class DocsContentContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = { docs: null };
+    this.state = { docs: null, error: null };
   }
 
   async componentDidMount() {
     const { docs } = this.props;
 
     if (docs) {
-      this.setState({
-        displayName: docs.displayName,
-        docs: await this.getAllUrls(docs.assets[0].files),
-      });
+      await this.setDocs(docs);
     }
   }
 
@@ -26,32 +23,42 @@ export default class DocsContentContainer extends React.Component {
     const { docs } = this.props;
 
     if (!compareTwoObjects(this.props.docs, prevProps.docs) && docs) {
-      this.setState({
-        displayName: docs.displayName,
-        docs: await this.getAllUrls(docs.assets[0].files),
-      });
+      await this.setDocs(docs);
     }
   }
+
+  async setDocs(docs) {
+    this.setState({
+      displayName: docs.displayName,
+      docs: await this.getAllUrls(docs.assets[0].files),
+    });
+  }
+
   async getAllUrls(docs) {
-    try {
-      var data = await Promise.all(
-        docs.map(doc =>
-          fetch(doc.url)
-            .then(response => response.text())
-            .then(text => {
-              return {
-                metadata: doc.metadata,
-                url: doc.url,
-                source: text,
-              };
-            }),
-        ),
-      );
-      return data;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+    var data = await Promise.all(
+      docs.map(doc =>
+        fetch(doc.url)
+          .then(response => {
+            if (response.ok) {
+              return response.text();
+            } else {
+              throw Error(`${response.status}: ${response.statusText}`);
+            }
+          })
+          .then(text => {
+            return {
+              metadata: doc.metadata,
+              url: doc.url,
+              source: text,
+            };
+          }),
+      ),
+    ).catch(err => {
+      this.setState({
+        error: err,
+      });
+    });
+    return data;
   }
 
   render() {
@@ -85,6 +92,7 @@ export default class DocsContentContainer extends React.Component {
     return (
       <DocsContent
         docs={newDocs}
+        error={this.state.error}
         displayName={this.state.displayName}
         docsTypesLength={docsTypesLength}
         docsLoaded={this.props.docsLoaded}

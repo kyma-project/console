@@ -47,15 +47,15 @@ function NavigationSections({
     />
   );
 
-  const renderNavigationItem = (item, type) => {
+  const renderNavigationItem = (items, type) => {
     const categoryHash = tokenize(type);
     const isTopicTheType =
-      item &&
-      item.length === 1 &&
-      item[0].metadata &&
-      item[0].metadata.type &&
-      item[0].metadata.title !== item[0].metadata.type;
-    const hasSubElements = item && (item.length > 1 || isTopicTheType);
+      items &&
+      items.length === 1 &&
+      items[0].metadata &&
+      items[0].metadata.type &&
+      items[0].metadata.title !== items[0].metadata.type;
+    const hasSubElements = items && (items.length > 1 || isTopicTheType);
 
     let isActiveNavArrow = false;
     let isActive = false;
@@ -115,7 +115,7 @@ function NavigationSections({
           </NavigationLink>
         </NavigationLinkWrapper>
         {hasSubElements &&
-          renderNavigationSubItems(item, type, isActive, isClickedNav)}
+          renderNavigationSubItems(items, type, isActive, isClickedNav)}
       </NavigationItem>
     );
   };

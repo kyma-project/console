@@ -125,7 +125,7 @@ class MainPage extends Component {
   setDocsInitialLoadStatus = () => {
     this.setState({
       docsLoaded: true,
-    }); //
+    });
   };
 
   colapseNav = activeNav => {

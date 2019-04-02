@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Markdown, Toolbar } from '@kyma-project/react-components';
+import {
+  NotificationMessage,
+  ReactMarkdown,
+  Toolbar,
+} from '@kyma-project/react-components';
 
 import {
   DocsWrapper,
@@ -22,17 +25,29 @@ class DocsContent extends Component {
   }
 
   setDocsStatus = () => {
-    const { docsLoaded, setDocsInitialLoadStatus, docs } = this.props;
+    const { docsLoaded, setDocsInitialLoadStatus, docs, error } = this.props;
     if (!docsLoaded && docs) {
+      setDocsInitialLoadStatus();
+    }
+    if (!docsLoaded && error) {
       setDocsInitialLoadStatus();
     }
   };
 
   render() {
-    const { displayName, docs, docsTypesLength } = this.props;
+    const { displayName, docs, docsTypesLength, error } = this.props;
 
     let lastType = '';
 
+    if (error) {
+      return (
+        <NotificationMessage
+          type="error"
+          title="Error"
+          message={error.message}
+        />
+      );
+    }
     return (
       <>
         {docs && docs.length > 0 && (
@@ -64,13 +79,13 @@ class DocsContent extends Component {
                       typeLength ? 'document' : 'groupOfDocuments'
                     }
                   >
-                    .{doc.metadata.title}
+                    {doc.metadata.title}
                   </ContentHeader>
                   <ContentDescription>
                     <TextWrapper>
-                      <Markdown>
+                      {doc && doc.source && (
                         <ReactMarkdown source={doc.source} />
-                      </Markdown>
+                      )}
                     </TextWrapper>
                   </ContentDescription>
                 </Wrapper>

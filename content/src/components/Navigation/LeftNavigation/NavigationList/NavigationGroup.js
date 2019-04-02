@@ -50,18 +50,14 @@ function NavigationGroup({
 
   const renderNavigationItem = item => {
     let filesByTypes = {};
-    // there will be only one asset with markdowns
     if (item.assets && item.assets.length > 0) {
-      item.assets.map(asset => {
-        asset.files.map(file => {
-          let type = file.metadata.type || file.metadata.title;
-          if (!filesByTypes[type]) {
-            filesByTypes[type] = [];
-          }
-          filesByTypes[type].push(file);
-          return file;
-        });
-        return asset;
+      item.assets[0].files.map(file => {
+        let type = file.metadata.type || file.metadata.title;
+        if (!filesByTypes[type]) {
+          filesByTypes[type] = [];
+        }
+        filesByTypes[type].push(file);
+        return file;
       });
     }
 
