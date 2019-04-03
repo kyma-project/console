@@ -6,8 +6,5 @@ const isValidNode = node => node.type !== 'script';
 
 export default htmlParser({
   isValidNode,
-  processingInstructions: [
-    // Tabs processing
-    tabs,
-  ],
+  processingInstructions: [tabs],
 });
