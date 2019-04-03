@@ -31,9 +31,6 @@
               <span class="fd-input-group__addon fd-input-group__addon--before">{{ urlPrefix }}</span>
               <input type="text" name="jwks" placeholder="Specify JSON Web Key Set URI" [(ngModel)]="jwks">
             </div>
-            <fd-form-message [type]="'error'" *ngIf="wrongJwks">
-              The JWKS URI has the wrong format. It must start with https:// (e.g. 'https://uri.com').
-            </fd-form-message>
           </div>
         </div>
       </div>
