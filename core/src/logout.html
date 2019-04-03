@@ -46,8 +46,8 @@
       <section class="fd-section">
           <p class="fd-has-text-align-center">
               <img src="assets/signout.svg" />
-              <div class="info" id="logout-headline">You have successfully logged out.</div>
-              <div class="hint">Sign in again to continue working on awesome things!</div>
+              <div class="info" id="headline">You have successfully logged out.</div>
+              <div class="hint" id="message">Sign in again to continue working on awesome things!</div>
           </p>
           <p class="fd-has-text-align-center">
             <button class="fd-button--emphasized " onclick="login()">Re-Login</button>
@@ -62,8 +62,30 @@ function login() {
   window.location.href = window.location.origin;
 }
 
-if (window.location.href.includes('tokenExpired')) {
-  document.getElementById('logout-headline').innerText = 'Your session has expired.';
+function getUrlParameter(name) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results && decodeURIComponent(results[1].replace(/\+/g, ' ')) || '';
+};
+
+var reason = getUrlParameter('reason');
+var error = getUrlParameter('error');
+
+if (error) {
+  document.getElementById('message').innerText = error;
+}
+
+switch (reason) {
+  case 'tokenExpired':
+    document.getElementById('headline').innerText = 'Your session has expired.';
+    break;
+  case 'loginError':
+    document.getElementById('headline').innerText = 'Ooops, something went wrong.';
+    document.getElementById('message').innerText = 'Please try to log in again.';
+    break;
+  default:
+    break;
 }
 </script>
 </body>

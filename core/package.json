@@ -12,8 +12,8 @@
     "test:single": "ng test --watch=false",
     "lint": "ng lint --tslint-config tslint.json",
     "copy-config": "cp ../config.js src/assets/config/config.js",
-    "buildConfig": "webpack --config webpack-generateConfig.config",
-    "buildConfig:watch": "webpack --config webpack-generateConfig.config --watch"
+    "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
+    "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch"
   },
   "private": true,
   "dependencies": {

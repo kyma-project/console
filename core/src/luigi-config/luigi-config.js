@@ -449,10 +449,9 @@ function fetchFromKyma(url) {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        //   relogin();
-        // }
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
         reject(xmlHttp.response);
       }
     };
@@ -463,7 +462,7 @@ function fetchFromKyma(url) {
   });
 }
 
-function fetchFromGraphQL(query, variables) {
+function fetchFromGraphQL(query, variables, gracefully) {
   return new Promise(function (resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
@@ -484,7 +483,11 @@ function fetchFromGraphQL(query, variables) {
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
-        reject(xmlHttp.response);
+        if (!gracefully) {
+          reject(xmlHttp.response);
+        } else {
+          resolve(null);
+        }
       }
     };
 
@@ -518,7 +521,7 @@ function postToKyma(url, body) {
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
-        console.log(xmlHttp);
+        // console.log(xmlHttp);
         reject(xmlHttp.response);
       }
     };
@@ -611,13 +614,14 @@ function getBackendModules() {
       name
     }
   }`;
-  return fetchFromGraphQL(query);
+  const gracefully = true;
+  return fetchFromGraphQL(query, undefined, gracefully);
 }
 
 function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
-  ).then(function (response) {
+  ).then(function getNamespacesFromApi(response) {
     var namespaces = [];
     response.items.map(namespace => {
       if (namespace.status && namespace.status.phase !== 'Active') {
@@ -631,7 +635,10 @@ function getNamespaces() {
       });
     });
     return namespaces;
-  });
+  })
+    .catch(function catchNamespaces(err) {
+      console.error('get namespace: error', err);
+    });
 }
 
 function relogin() {
@@ -639,9 +646,15 @@ function relogin() {
   location.reload();
 }
 
+function getFreshKeys() {
+  // manually re-fetching keys, since this is a major pain point
+  // until dex has possibility of no-cache
+  return fetch('https://dex.' + k8sDomain + '/keys', { cache: "no-cache" })
+}
+
 let backendModules = [];
 let selfSubjectRulesReview = [];
-Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
+Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
   .then(
     res => {
       const modules = res[0];
@@ -660,7 +673,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
       }
     },
     err => {
-      console.error(err);
+      // console.error(err);
     }
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
@@ -833,6 +846,9 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
         }
       }
     });
+  })
+  .catch((err) => {
+    console.error('Config Init Error', err);
   });
 
 window.addEventListener('message', e => {
