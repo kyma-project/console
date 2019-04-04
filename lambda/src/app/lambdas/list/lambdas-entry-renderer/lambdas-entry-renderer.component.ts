@@ -4,6 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { AbstractTableEntryRendererComponent } from 'app/generic-list';
 import { AppConfig } from '../../../app.config';
 import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
+import { EMPTY_TEXT } from '../../../shared/constants/constants';
 
 @Component({
   selector: 'app-lambdas-entry-renderer',
@@ -14,6 +15,7 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
   public statusText: string;
   public status: boolean;
   public functionMetrics: string;
+  public emptyText = EMPTY_TEXT;
 
   actions = [
     {

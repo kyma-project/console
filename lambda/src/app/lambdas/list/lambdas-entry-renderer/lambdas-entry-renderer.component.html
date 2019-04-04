@@ -10,13 +10,13 @@
     </fd-badge>
   </td>
   <td>
-    <ng-container *ngIf="entry.getLabels()">
+    <ng-container *ngIf="entry.getLabels().length">
       <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let label of entry.getLabels()">
         {{ label }}
       </span>
     </ng-container>
-    <ng-container *ngIf="!entry.getLabels()">
-      <span>None</span>
+    <ng-container *ngIf="!entry.getLabels().length">
+      {{ emptyText }}
     </ng-container>
   </td>
   <td>

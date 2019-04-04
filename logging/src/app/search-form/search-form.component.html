@@ -87,7 +87,7 @@
         </div>
 
         <div fd-form-item [isInline]="true">
-          <button fd-button type="submit" [glyph]="'search'" [disabled]="!searchData.form.valid" >Search</button>
+          <button fd-button type="submit" [glyph]="'search'" [options]="'light'" [disabled]="!searchData.form.valid"></button>
           <span *ngIf="!mandatoryLabels.size" class="fd-has-margin-left-s">Query Examples</span>
           <span *ngIf="!mandatoryLabels.size" class="fd-inline-help fd-has-margin-left-xxs">
               <span class="fd-inline-help__content fd-inline-help__content--bottom-center">

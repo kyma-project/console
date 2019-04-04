@@ -2,6 +2,7 @@ import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -22,6 +23,7 @@ export class PodsEntryRendererComponent
   }
   public disabled = false;
   public objectKeys = Object.keys;
+  public emptyText = EMPTY_TEXT;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {

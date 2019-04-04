@@ -1,17 +1,14 @@
 <tr [ngClass]="{'disabled': disabled === true}">
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
-  <td *ngIf="entry.limits.length > 0">
-    {{ listMaxMemoryLimits() }}
+  <td>
+    {{ entry.limits.length ? listMaxMemoryLimits() : emptyText }}
   </td>
-  <td *ngIf="entry.limits.length === 0">-</td>
-  <td *ngIf="containerLimits">
-    {{ containerLimits.default.memory }}
+  <td>
+    {{ containerLimits ? containerLimits.default.memory : emptyText }}
   </td>
-  <td *ngIf="!containerLimits">-</td>
-  <td *ngIf="containerLimits">
-    {{ containerLimits.defaultRequest.memory }}
+  <td>
+    {{ containerLimits ? containerLimits.defaultRequest.memory : emptyText }}
   </td>
-  <td *ngIf="!containerLimits">-</td>
   <td class="fd-has-float-right">
     <y-list-actions
       [entry]="entry"
