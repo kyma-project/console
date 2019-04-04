@@ -5,7 +5,7 @@ import MainPage from './MainPage.component';
 
 import { CLUSTER_DOCS_TOPICS } from './queries';
 
-const filterExtensions = ["md"];
+const filterExtensions = ['md'];
 
 export default compose(
   graphql(CLUSTER_DOCS_TOPICS, {

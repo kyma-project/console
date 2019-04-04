@@ -80,7 +80,7 @@ export default class DocsContentContainer extends Component {
 
       newDocs.map(doc => {
         if (!doc.metadata) return doc;
-        
+
         const type = doc.metadata.type || doc.metadata.title;
         if (!(type in docsTypesLength)) {
           docsTypesLength[type] = 0;
