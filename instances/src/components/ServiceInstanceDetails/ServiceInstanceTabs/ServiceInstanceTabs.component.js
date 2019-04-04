@@ -15,7 +15,6 @@ import ApiConsole from '../SwaggerApi/SwaggerApiConsole.component';
 import { ServiceInstanceTabsContentWrapper } from './styled';
 
 import {
-  sortDocumentsByType,
   validateContent,
   compareTwoObjects,
   processDocFilename,

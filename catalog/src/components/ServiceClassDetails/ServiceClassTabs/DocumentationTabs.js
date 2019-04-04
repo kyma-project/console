@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tab, ReactMarkdown } from '@kyma-project/react-components';
 
-export const DocumentationTabs = ({ docs }) => {
+export const DocumentationTabs = () => {
   // if (!docs) {
   //   return null;
   // }
@@ -13,10 +13,5 @@ export const DocumentationTabs = ({ docs }) => {
   //     {type.source}
   //   </Tab>
   // ));
-  return (
-    <>
-      <Tab title="asd">asdasda</Tab>
-      <Tab title="asssss">asdasdaasdasd</Tab>
-    </>
-  );
+  return <Tab title="asd">asdasda</Tab>;
 };

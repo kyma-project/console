@@ -23,6 +23,7 @@ import {
 } from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
+
 const validatDocumentsByType = type => {
   let numberOfSources = 0;
   for (let item = 0; item < type.length; item++) {
@@ -30,6 +31,7 @@ const validatDocumentsByType = type => {
   }
   return numberOfSources > 0;
 };
+
 class ServiceClassTabs extends Component {
   state = {
     data: null,
@@ -47,7 +49,7 @@ class ServiceClassTabs extends Component {
   async componentDidUpdate(prevProps, _) {
     const { docs } = this.props;
 
-    if (!compareTwoObjects(this.props.docs, prevProps.docs) && docs) {
+    if (docs && !compareTwoObjects(docs, prevProps.docs)) {
       await this.setDocs(docs);
     }
   }
@@ -151,7 +153,8 @@ class ServiceClassTabs extends Component {
       return (
         <ServiceClassTabsContentWrapper>
           <Tabs>
-            <Tab title="asd">asdasda</Tab>
+            <DocumentationTabs />
+            <Tab title="first">asdasda</Tab>
             <Tab title="asssss">asdasdaasdasd</Tab>
             {data && data.length ? docsFromNewApi : deprecatedDocs}
             {openApiSpec && Object.keys(openApiSpec).length ? (
