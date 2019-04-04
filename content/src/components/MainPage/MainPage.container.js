@@ -5,6 +5,8 @@ import MainPage from './MainPage.component';
 
 import { CLUSTER_DOCS_TOPICS } from './queries';
 
+const filterExtensions = ["md"];
+
 export default compose(
   graphql(CLUSTER_DOCS_TOPICS, {
     name: 'clusterDocsTopicsComponents',
@@ -12,6 +14,7 @@ export default compose(
       variables: {
         viewContext: 'docs-ui',
         groupName: 'components',
+        filterExtensions: filterExtensions,
       },
     },
   }),
@@ -21,6 +24,7 @@ export default compose(
       variables: {
         viewContext: 'docs-ui',
         groupName: 'root',
+        filterExtensions: filterExtensions,
       },
     },
   }),
@@ -30,8 +34,9 @@ export default compose(
     props.clusterDocsTopicsComponents.loading ||
     !props.clusterDocsTopicsRoot.clusterDocsTopics ||
     !props.clusterDocsTopicsComponents.clusterDocsTopics
-  )
+  ) {
     return null;
+  }
 
   return (
     <MainPage
