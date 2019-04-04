@@ -855,6 +855,8 @@ window.addEventListener('message', e => {
   if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
     const namespace = e.data.namespace;
     const data = e.data.data;
+    let limitHasBeenExceeded;
+    let limitExceededErrors;
     if (data && data.resourceQuotasStatus) {
       limitHasBeenExceeded = data.resourceQuotasStatus.exceeded;
     }

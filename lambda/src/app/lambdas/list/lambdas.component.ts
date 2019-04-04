@@ -53,7 +53,7 @@ export class LambdasComponent extends GenericTableComponent
   token: string;
   environment: string;
   error: string;
-  listenerId: string;
+  listenerId: number;
 
   filterState = { filters: [new Filter('metadata.name', '', false)] };
   pagingState = { pageNumber: 1, pageSize: 10 };
@@ -128,7 +128,7 @@ export class LambdasComponent extends GenericTableComponent
           });
       },
       showLogs: (entry: any) => {
-        luigiClient.linkManager().withParams({function: entry.metadata.name, namespace: this.environment}).navigate('/home/cmf-logs');
+        luigiClient.linkManager().withParams({function: entry.metadata.name, namespace: this.environment}).openAsModal('/home/cmf-logs');
       }
     };
   }

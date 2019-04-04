@@ -136,13 +136,15 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   isHTTPTriggerAuthenticated = true;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
-  listenerId: string;
+  listenerId: number;
   functionSizes = [];
   dropDownStates = {};
 
   public issuer: string;
   public jwksUri: string;
   public authType: string;
+
+  public canShowLogs = false;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -182,6 +184,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
+          this.initCanShowLogs();
           const eventData = luigiClient.getEventData();
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
@@ -886,6 +889,16 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   cancel() {
     this.navigateToList();
+  }
+
+  initCanShowLogs() {
+    luigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
+      this.canShowLogs = exists;
+    });
+  }
+
+  showLogs() {
+    luigiClient.linkManager().withParams({function: this.lambda.metadata.name, namespace: this.namespace}).openAsModal('/home/cmf-logs');
   }
 
   navigateToList() {
