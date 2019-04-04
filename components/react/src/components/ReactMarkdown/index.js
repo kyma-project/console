@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import Code from './components/Code';
+import BlockQuote from './components/Blockquote';
+import Code from './components/Code/';
 import { Markdown } from './styled';
 import parseHtml from './parseHTML';
 import { removeBlankLinesFromTabsBlock } from './helpers';
@@ -12,7 +13,7 @@ export default ({ source, escapeHtml = false }) => {
       <ReactMarkdown
         source={processedSource}
         escapeHtml={escapeHtml}
-        renderers={{ code: Code }}
+        renderers={{ code: Code, blockquote: BlockQuote }}
         astPlugins={[parseHtml]}
       />
     </Markdown>
