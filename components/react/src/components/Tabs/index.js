@@ -88,10 +88,7 @@ class Tabs extends React.Component {
           </TabsHeaderAdditionalContent>
         </TabsHeader>
         <Separator />
-        <TabsContent
-          noMargin={props.noMargin}
-          background={props.background ? props.background : ''}
-        >
+        <TabsContent noMargin={props && props.noMargin}>
           {this.renderActiveTab(children)}
         </TabsContent>
       </TabsWrapper>

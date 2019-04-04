@@ -9,8 +9,7 @@ import {
   Tabs,
   Tab,
 } from '@kyma-project/react-components';
-import { DocumentationTabs } from './DocumentationTabs';
-import { DeprecatedDocs } from './DeprecatedDocs';
+
 import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 
 import { ServiceClassTabsContentWrapper } from './styled';
@@ -137,25 +136,19 @@ class ServiceClassTabs extends Component {
         );
 
       const docsFromNewApi = data
-        ? data.map(type => {
-            const capitalizedFilename = processDocFilename(type.url);
-            return (
-              <Tab
-                title={type.metadata.title || capitalizedFilename}
-                key={type.url}
-              >
-                <ReactMarkdown source={type.source} />
-              </Tab>
-            );
-          })
+        ? data.map(type => (
+            <Tab
+              title={type.metadata.title || processDocFilename(type.url)}
+              key={type.url}
+            >
+              <ReactMarkdown source={type.source} />
+            </Tab>
+          ))
         : null;
 
       return (
         <ServiceClassTabsContentWrapper>
           <Tabs>
-            <DocumentationTabs />
-            <Tab title="first">asdasda</Tab>
-            <Tab title="asssss">asdasdaasdasd</Tab>
             {data && data.length ? docsFromNewApi : deprecatedDocs}
             {openApiSpec && Object.keys(openApiSpec).length ? (
               <Tab title={'Console'}>

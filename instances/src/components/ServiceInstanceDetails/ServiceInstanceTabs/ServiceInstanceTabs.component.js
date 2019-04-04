@@ -142,10 +142,7 @@ class ServiceInstanceTabs extends Component {
       return (
         <ServiceInstanceTabsContentWrapper>
           <Tabs>
-            <Tab title="asd">asdasda</Tab>
-            <Tab title="asssss">asdasdaasdasd</Tab>
             {data && data.length ? docsFromNewApi : deprecatedDocs}
-
             {openApiSpec && Object.keys(openApiSpec).length ? (
               <Tab title={'Console'}>
                 <ApiConsole

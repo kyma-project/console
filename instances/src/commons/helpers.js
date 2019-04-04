@@ -134,9 +134,6 @@ export const backendModuleExists = name => {
 };
 
 export const processDocFilename = arg => {
-  const value = arg
-    .match(/(?<=[0-9]+-[0-9]+-).*(?=\.md)/)[0]
-    .replace(/-/g, ' ')
-    .replace(/kyma/g, 'Kyma');
-  return value[0].toUpperCase() + value.slice(1);
+  const value = arg.split('/');
+  return value[value.length - 1].replace('.md', '');
 };
