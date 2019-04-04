@@ -5,7 +5,7 @@ import {
   Spinner,
   ThemeWrapper,
 } from '@kyma-project/react-components';
-
+import { Mock } from './mock';
 import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
 import ServiceInstanceInfo from './ServiceInstanceInfo/ServiceInstanceInfo.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
@@ -65,7 +65,7 @@ class ServiceInstanceDetails extends React.Component {
             serviceInstance={instance}
           />
           {serviceClass && backendModuleExists('content') ? (
-            <ServiceInstanceTabs serviceClass={serviceClass} />
+            <ServiceInstanceTabs serviceClass={serviceClass} docs={Mock} />
           ) : null}
         </ServiceInstanceWrapper>
       </ThemeWrapper>

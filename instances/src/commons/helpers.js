@@ -132,3 +132,11 @@ export const validateContent = content => {
 export const backendModuleExists = name => {
   return builder.getBackendModules().includes(name);
 };
+
+export const processDocFilename = arg => {
+  const value = arg
+    .match(/(?<=[0-9]+-[0-9]+-).*(?=\.md)/)[0]
+    .replace(/-/g, ' ')
+    .replace(/kyma/g, 'Kyma');
+  return value[0].toUpperCase() + value.slice(1);
+};
