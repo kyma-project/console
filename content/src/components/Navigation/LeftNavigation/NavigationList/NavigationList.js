@@ -35,7 +35,7 @@ class Navigation extends Component {
     } = this.props;
     const { activeNodes } = this.state;
 
-    if(!docsLoaded){
+    if (!docsLoaded) {
       return null;
     }
 

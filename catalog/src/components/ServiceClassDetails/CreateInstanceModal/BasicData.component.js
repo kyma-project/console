@@ -84,7 +84,7 @@ class BasicData extends React.Component {
       instanceWithNameAlreadyExists,
       enableCheckNameExists,
     } = this.state;
-    
+
     if (equal(this.state, prevState)) return;
 
     const stepFilled =

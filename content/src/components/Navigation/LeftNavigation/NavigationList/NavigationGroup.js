@@ -51,10 +51,10 @@ function NavigationGroup({
   const renderNavigationItem = item => {
     let filesByTypes = {};
 
-    if(!item || !item.assets || !item.assets.length) {
+    if (!item || !item.assets || !item.assets.length) {
       return null;
     }
-    
+
     item.assets[0].files.forEach(file => {
       let type = file.metadata.type || file.metadata.title;
       if (!filesByTypes[type]) {

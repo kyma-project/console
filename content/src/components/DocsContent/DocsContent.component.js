@@ -3,7 +3,7 @@ import {
   NotificationMessage,
   ReactMarkdown,
   Toolbar,
-  Spinner
+  Spinner,
 } from '@kyma-project/react-components';
 
 import {
@@ -27,23 +27,22 @@ class DocsContent extends Component {
 
   setDocsStatusIfShould = () => {
     const { docsLoaded, setDocsInitialLoadStatus, docs, error } = this.props;
-    
+
     if (docsLoaded || !(docs || error)) {
       return null;
     }
     setDocsInitialLoadStatus();
-    
   };
 
   render() {
     let { displayName, docs, docsLoaded, docsTypesLength, error } = this.props;
     let lastType = '';
 
-    if(!docsLoaded){
-      return (<Spinner />)
+    if (!docsLoaded) {
+      return <Spinner />;
     }
-    
-    if(!error && (!docs || !docs.length || docs.length===0)){
+
+    if (!error && (!docs || !docs.length || docs.length === 0)) {
       return (
         <NotificationMessage
           type="error"
@@ -97,9 +96,7 @@ class DocsContent extends Component {
                 </ContentHeader>
                 <ContentDescription>
                   <TextWrapper>
-                    {doc && doc.source && (
-                      <ReactMarkdown source={doc.source} />
-                    )}
+                    {doc && doc.source && <ReactMarkdown source={doc.source} />}
                   </TextWrapper>
                 </ContentDescription>
               </Wrapper>

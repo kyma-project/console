@@ -36,7 +36,7 @@ class MainPage extends Component {
     const { activeContent } = this.state;
     const hash = activeContent.hash;
 
-    if(!hash){
+    if (!hash) {
       return null;
     }
 
@@ -62,7 +62,7 @@ class MainPage extends Component {
   getRoot = () => {
     if (
       !this.props.clusterDocsTopicsRoot &&
-      (!this.props.clusterDocsTopicsRoot.length)
+      !this.props.clusterDocsTopicsRoot.length
     ) {
       return null;
     }

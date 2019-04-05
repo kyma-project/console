@@ -47,8 +47,8 @@ export default class DocsContentContainer extends Component {
             };
           })
           .catch(err => {
-            throw err
-          })
+            throw err;
+          }),
       ),
     ).catch(err => {
       this.setState({
