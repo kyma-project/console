@@ -6,12 +6,14 @@ import parseHtml from './parseHTML';
 import { removeBlankLinesFromTabsBlock, processDoc } from './helpers';
 
 export default ({ source, escapeHtml = false }) => {
-  const sourceWithoutBlanks = removeBlankLinesFromTabsBlock(source);
-  const processedSource = processDoc(sourceWithoutBlanks);
+  const processedSource = processDoc(source);
+  const sourceWithoutBlanks = removeBlankLinesFromTabsBlock(
+    processedSource.source,
+  );
   return (
     <Markdown>
       <ReactMarkdown
-        source={processedSource}
+        source={sourceWithoutBlanks}
         escapeHtml={escapeHtml}
         renderers={{ code: Code }}
         astPlugins={[parseHtml]}

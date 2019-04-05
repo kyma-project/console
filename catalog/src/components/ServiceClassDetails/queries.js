@@ -31,18 +31,10 @@ const docsTopic = `
       groupName
       displayName
       description
-      assets {
-          name
-          type
-          files {
-            url
-            metadata
-          }
-      }
 `;
 
 export const GET_SERVICE_CLASS = gql`
-  query getServiceClass($name: String!, $namespace: String!) {
+  query getServiceClass($name: String!, $namespace: String!,$filterExtensions: [String!]) {
     clusterServiceClass(name: $name) {
       ${serviceClassQGL}
       plans {
@@ -55,6 +47,14 @@ export const GET_SERVICE_CLASS = gql`
       activated(namespace: $namespace)
       clusterDocsTopic {
         ${docsTopic}
+          assets {
+             name
+             type
+             files(filterExtensions: $filterExtensions){
+              url
+              metadata
+          }
+        } 
       }
      
     }
@@ -71,10 +71,26 @@ export const GET_SERVICE_CLASS = gql`
       }
       activated
       docsTopic{
-        ${docsTopic}
+         ${docsTopic}
+          assets {
+             name
+             type
+             files(filterExtensions: $filterExtensions){
+              url
+              metadata
+          }
+        } 
       }
       clusterDocsTopic{
         ${docsTopic}
+          assets {
+             name
+             type
+             files(filterExtensions: $filterExtensions){
+              url
+              metadata
+          }
+        } 
       }
  
     }

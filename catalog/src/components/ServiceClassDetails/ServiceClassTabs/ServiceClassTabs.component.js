@@ -273,7 +273,7 @@ class ServiceClassTabs extends Component {
               }
               key={type.url}
             >
-              <ReactMarkdown source={type.source} />
+              <ReactMarkdown source={type} />
             </Tab>
           ))
         : null;
