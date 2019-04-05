@@ -233,11 +233,13 @@ class ServiceClassTabs extends Component {
       let documentsByType = [],
         documentsTypes = [];
 
-      if (!serviceClassLoading) {
-        if (deprecatedContent && Object.keys(deprecatedContent).length) {
-          documentsByType = sortDocumentsByType(deprecatedContent);
-          documentsTypes = Object.keys(documentsByType);
-        }
+      if (
+        !serviceClassLoading &&
+        deprecatedContent &&
+        Object.keys(deprecatedContent).length
+      ) {
+        documentsByType = sortDocumentsByType(deprecatedContent);
+        documentsTypes = Object.keys(documentsByType);
       }
 
       const deprecatedDocs =

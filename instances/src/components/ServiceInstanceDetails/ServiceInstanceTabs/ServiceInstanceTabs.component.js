@@ -42,7 +42,6 @@ class ServiceInstanceTabs extends Component {
 
   async componentDidMount() {
     const { serviceClass } = this.props;
-
     if (serviceClass) {
       Promise.all([
         await this.setDocs(serviceClass),
@@ -202,9 +201,7 @@ class ServiceInstanceTabs extends Component {
 
   render() {
     const { serviceClass } = this.props;
-    console.groupCollapsed();
-    console.log(serviceClass);
-    console.groupEnd();
+
     //data from new api
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
@@ -286,10 +283,9 @@ class ServiceInstanceTabs extends Component {
               }
               key={type.url}
             >
-              <ReactMarkdown source={type.source} />
+              {type && type.source && <ReactMarkdown source={type.source} />}
             </Tab>
           ));
-
       return (
         <ServiceInstanceTabsContentWrapper>
           <Tabs>
@@ -320,7 +316,7 @@ class ServiceInstanceTabs extends Component {
             {(odata && odata.source) ||
             (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length) ? (
               <Tab title={'OData'} margin="0" background="inherit">
-                <ODataReact schema={deprecatedOdataSpec} />
+                <ODataReact schema={odata.source || deprecatedOdataSpec} />
               </Tab>
             ) : null}
           </Tabs>
