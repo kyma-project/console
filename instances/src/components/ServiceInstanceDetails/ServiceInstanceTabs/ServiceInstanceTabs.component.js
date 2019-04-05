@@ -207,7 +207,9 @@ class ServiceInstanceTabs extends Component {
 
   render() {
     const { serviceClass } = this.props;
+    console.groupCollapsed();
     console.log(serviceClass);
+    console.groupEnd();
     //data from new api
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 

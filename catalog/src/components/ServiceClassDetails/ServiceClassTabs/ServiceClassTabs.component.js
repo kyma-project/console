@@ -284,7 +284,7 @@ class ServiceClassTabs extends Component {
             </Tab>
           ))
         : null;
-      console.log(odata);
+
       return (
         <ServiceClassTabsContentWrapper>
           <Tabs>
