@@ -5,12 +5,6 @@ export default {
   },
   styles: [
     {
-      types: ['string'],
-      style: {
-        color: 'rgb(80, 161, 79)',
-      },
-    },
-    {
       types: ['comment', 'prolog', 'doctype', 'cdata', 'punctuation'],
       style: {
         color: 'rgb(115, 129, 145)',
@@ -41,7 +35,7 @@ export default {
       },
     },
     {
-      types: ['boolean'],
+      types: ['boolean', 'string'],
       style: {
         color: 'rgb(11, 116, 222)',
       },

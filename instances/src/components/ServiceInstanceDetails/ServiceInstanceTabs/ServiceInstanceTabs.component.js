@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import deepEqual from 'deep-equal';
 import AsyncApi from '@kyma-project/asyncapi-react';
 import ODataReact from '@kyma-project/odata-react';
 import {
@@ -16,9 +16,9 @@ import { ServiceInstanceTabsContentWrapper } from './styled';
 
 import {
   validateContent,
-  compareTwoObjects,
   processDocFilename,
   sortDocumentsByType,
+  DocsProcessor,
 } from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
@@ -53,10 +53,7 @@ class ServiceInstanceTabs extends Component {
 
   async componentDidUpdate(prevProps, _) {
     const { serviceClass } = this.props;
-    if (
-      serviceClass &&
-      !compareTwoObjects(serviceClass, prevProps.serviceClass)
-    ) {
+    if (serviceClass && !deepEqual(serviceClass, prevProps.serviceClass)) {
       await this.setDocs(serviceClass);
       await this.setOpenApiSpec(serviceClass);
       await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
@@ -130,13 +127,7 @@ class ServiceInstanceTabs extends Component {
     const data =
       link &&
       fetch(link)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw Error(`${response.status}: ${response.statusText}`);
-          }
-        })
+        .then(response => response.json())
         .then(text => {
           return {
             metadata: link.metadata,
@@ -156,13 +147,7 @@ class ServiceInstanceTabs extends Component {
     const data =
       link &&
       fetch(link)
-        .then(response => {
-          if (response.ok) {
-            return response.text();
-          } else {
-            throw Error(`${response.status}: ${response.statusText}`);
-          }
-        })
+        .then(response => response.text())
         .then(text => {
           return {
             metadata: link.metadata,
@@ -179,15 +164,11 @@ class ServiceInstanceTabs extends Component {
   }
 
   async getAllUrls(docs) {
-    const data = await Promise.all(
+    var data = await Promise.all(
       docs.map(doc =>
-        fetch(doc.url)
+        fetch(doc.url.slice(2))
           .then(response => {
-            if (response.ok) {
-              return response.text();
-            } else {
-              throw Error(`${response.status}: ${response.statusText}`);
-            }
+            return response.text();
           })
           .then(text => {
             return {
@@ -195,6 +176,9 @@ class ServiceInstanceTabs extends Component {
               url: doc.url,
               source: text,
             };
+          })
+          .catch(err => {
+            throw err;
           }),
       ),
     ).catch(err => {
@@ -214,7 +198,8 @@ class ServiceInstanceTabs extends Component {
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
     if (error) {
-      return <div>{error}</div>;
+      console.error(error);
+      return <div>{`${error.name}: ${error.message}`}</div>;
     }
 
     //data ffrom deprecated api
@@ -241,11 +226,13 @@ class ServiceInstanceTabs extends Component {
       let documentsByType = [],
         documentsTypes = [];
 
-      if (!serviceClass.loading) {
-        if (deprecatedContent && Object.keys(deprecatedContent).length) {
-          documentsByType = sortDocumentsByType(deprecatedContent);
-          documentsTypes = Object.keys(documentsByType);
-        }
+      if (
+        !serviceClass.loading &&
+        deprecatedContent &&
+        Object.keys(deprecatedContent).length
+      ) {
+        documentsByType = sortDocumentsByType(deprecatedContent);
+        documentsTypes = Object.keys(documentsByType);
       }
 
       const deprecatedDocs =
@@ -253,26 +240,34 @@ class ServiceInstanceTabs extends Component {
         documentsTypes.map(type =>
           documentsByType &&
           documentsByType[type] &&
-          validatDocumentsByType(documentsByType[type]) ? (
+          !validatDocumentsByType(documentsByType[type]) ? null : (
             <Tab key={type} title={type}>
               <Markdown>
                 {documentsByType[type].map((item, i) => {
-                  return item.source || item.Source ? (
+                  return !(item.source || item.Source) ? null : (
                     <div
                       key={i}
                       dangerouslySetInnerHTML={{
                         __html: item.source || item.Source,
                       }}
                     />
-                  ) : null;
+                  );
                 })}
               </Markdown>
             </Tab>
-          ) : null,
+          ),
         );
 
-      const docsFromNewApi = docsData
-        ? docsData.map(type => (
+      const newDocs = docsData
+        ? new DocsProcessor(docsData)
+            .removeMatadata()
+            .replaceImagePaths()
+            .result()
+        : null;
+
+      const docsFromNewApi = !newDocs
+        ? null
+        : newDocs.map(type => (
             <Tab
               title={
                 (type.metadata && type.metadata.title) ||
@@ -280,10 +275,10 @@ class ServiceInstanceTabs extends Component {
               }
               key={type.url}
             >
-              <ReactMarkdown source={type} />
+              <ReactMarkdown source={type.source} />
             </Tab>
-          ))
-        : null;
+          ));
+
       return (
         <ServiceInstanceTabsContentWrapper>
           <Tabs>

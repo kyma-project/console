@@ -1,4 +1,3 @@
-import { DocProcessor } from './DocsProcessor';
 const tabsBlockRegex = /<div tabs>(.|\n)*?<\/div>/gm;
 
 const blankLinesRegex = /^\s*$(?:\r\n?|\n)/gm;
@@ -12,9 +11,3 @@ export const removeBlankLinesFromTabsBlock = source =>
 
     return result;
   });
-
-export const processDoc = data =>
-  new DocProcessor(data)
-    .replaceImagePaths()
-    .removeMatadata()
-    .result();

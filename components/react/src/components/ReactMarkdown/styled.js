@@ -87,44 +87,6 @@ export const Markdown = styled.div`
   img {
     max-width: 100%;
   }
-  blockquote {
-    margin: 24px 0;
-    border-radius: 4px;
-    position: relative;
-    border-left: solid 6px #0b74de;
-    background-color: #ffffff;
-    font-family: '72';
-    font-size: 13px;
-    -webkit-margin-start: 0;
-    -webkit-margin-end: 0;
-  }
-  blockquote:before {
-    content: '\uE01F';
-    display: block;
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    padding: 0;
-    z-index: 10;
-    color: #0b74de;
-    font-family: 'SAP-icons';
-    font-size: 13px;
-  }
-  blockquote p {
-    font-weight: normal;
-    border: solid 1px rgba(151, 151, 151, 0.26);
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    padding: 0 20px 11px;
-    line-height: 1.31;
-  }
-  blockquote p strong:first-child {
-    display: block;
-    margin: 0 -20px 12px;
-    padding: 11px 20px;
-    border-bottom: solid 1px rgba(151, 151, 151, 0.26);
-    font-weight: bold;
-  }
   ul,
   ol {
     padding-left: 32px;
@@ -133,6 +95,9 @@ export const Markdown = styled.div`
   ol:last-child,
   p:last-child {
     margin-bottom: 12px;
+  }
+  blockquote p:last-child {
+    margin-bottom: 0;
   }
   ul {
     list-style-type: disc;
@@ -156,49 +121,7 @@ export const Markdown = styled.div`
     list-style-type: lower-latin;
     list-style-position: outside;
   }
-  code {
-    border-radius: 3px;
-    background-color: #f9fafa;
-    color: #0b74de;
-    padding: 3px 4px;
-  }
-  pre code {
-    display: block;
-    width: 100%;
-    position: relative;
-    box-sizing: border-box;
-    overflow-x: auto;
-    background-color: #ffffff;
-    border: solid 1px rgba(151, 151, 151, 0.26);
-    padding: 48px 13px 13px;
-  }
-  pre code:before {
-    display: block;
-    position: absolute;
-    content: 'Code';
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    padding: 12px 20px;
-    color: #32363a;
-    font-family: '72';
-    font-size: 13px;
-    line-height: 1.19;
-    font-weight: bold;
-    border-bottom: solid 1px rgba(151, 151, 151, 0.26);
-  }
-  pre code:after {
-    content: '\uE03C';
-    display: block;
-    position: absolute;
-    top: 9px;
-    right: 11px;
-    padding: 0;
-    z-index: 10;
-    color: #0b74de;
-    font-family: 'SAP-icons';
-    font-size: 13px;
+  pre {
+    margin: 0;
   }
 `;

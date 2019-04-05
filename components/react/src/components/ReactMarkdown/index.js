@@ -1,23 +1,23 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import Code from './components/Code';
+import RM from 'react-markdown';
+import BlockQuote from './components/Blockquote';
+import Code from './components/Code/';
 import { Markdown } from './styled';
 import parseHtml from './parseHTML';
-import { removeBlankLinesFromTabsBlock, processDoc } from './helpers';
+import { removeBlankLinesFromTabsBlock } from './helpers';
 
-export default ({ source, escapeHtml = false }) => {
-  const processedSource = processDoc(source);
-  const sourceWithoutBlanks = removeBlankLinesFromTabsBlock(
-    processedSource.source,
-  );
+const ReactMarkdown = ({ source, escapeHtml = false }) => {
+  const processedSource = removeBlankLinesFromTabsBlock(source);
   return (
     <Markdown>
-      <ReactMarkdown
-        source={sourceWithoutBlanks}
+      <RM
+        source={processedSource}
         escapeHtml={escapeHtml}
-        renderers={{ code: Code }}
+        renderers={{ code: Code, blockquote: BlockQuote }}
         astPlugins={[parseHtml]}
       />
     </Markdown>
   );
 };
+
+export default ReactMarkdown;

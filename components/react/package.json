@@ -28,6 +28,7 @@
     "fundamental-react": "0.4.0",
     "polished": "^1.8.1",
     "prism-react-renderer": "^0.1.6",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-markdown": "^4.0.6",
     "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"

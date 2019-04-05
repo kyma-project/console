@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import deepEqual from 'deep-equal';
 import AsyncApi from '@kyma-project/asyncapi-react';
 import ODataReact from '@kyma-project/odata-react';
 import {
@@ -17,8 +17,8 @@ import { ServiceClassTabsContentWrapper } from './styled';
 import {
   sortDocumentsByType,
   validateContent,
-  compareTwoObjects,
   processDocFilename,
+  DocsProcessor,
 } from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
@@ -53,10 +53,7 @@ class ServiceClassTabs extends Component {
 
   async componentDidUpdate(prevProps, _) {
     const { serviceClass } = this.props;
-    if (
-      serviceClass &&
-      !compareTwoObjects(serviceClass, prevProps.serviceClass)
-    ) {
+    if (serviceClass && !deepEqual(serviceClass, prevProps.serviceClass)) {
       await this.setDocs(serviceClass);
       await this.setOpenApiSpec(serviceClass);
       await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
@@ -102,7 +99,7 @@ class ServiceClassTabs extends Component {
     ) {
       return null;
     }
-
+    console.log(data, spec, urlToSpecFile);
     this.setState({
       [spec]: await this.getAsyncApiOrOdataSpec(urlToSpecFile),
     });
@@ -130,13 +127,7 @@ class ServiceClassTabs extends Component {
     const data =
       link &&
       fetch(link)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw Error(`${response.status}: ${response.statusText}`);
-          }
-        })
+        .then(response => response.json())
         .then(text => {
           return {
             metadata: link.metadata,
@@ -156,13 +147,7 @@ class ServiceClassTabs extends Component {
     const data =
       link &&
       fetch(link)
-        .then(response => {
-          if (response.ok) {
-            return response.text();
-          } else {
-            throw Error(`${response.status}: ${response.statusText}`);
-          }
-        })
+        .then(response => response.text())
         .then(text => {
           return {
             metadata: link.metadata,
@@ -179,15 +164,11 @@ class ServiceClassTabs extends Component {
   }
 
   async getAllUrls(docs) {
-    const data = await Promise.all(
+    var data = await Promise.all(
       docs.map(doc =>
         fetch(doc.url)
           .then(response => {
-            if (response.ok) {
-              return response.text();
-            } else {
-              throw Error(`${response.status}: ${response.statusText}`);
-            }
+            return response.text();
           })
           .then(text => {
             return {
@@ -195,6 +176,9 @@ class ServiceClassTabs extends Component {
               url: doc.url,
               source: text,
             };
+          })
+          .catch(err => {
+            throw err;
           }),
       ),
     ).catch(err => {
@@ -214,10 +198,10 @@ class ServiceClassTabs extends Component {
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
     if (error) {
-      return <div>{error}</div>;
+      return <div>{error.message}</div>;
     }
 
-    //data ffrom deprecated api
+    //data from deprecated api
     const deprecatedContent = serviceClass.content && serviceClass.content;
     const deprecatedOpenApiSpec =
       serviceClass.openApiSpec && serviceClass.openApiSpec;
@@ -253,26 +237,34 @@ class ServiceClassTabs extends Component {
         documentsTypes.map(type =>
           documentsByType &&
           documentsByType[type] &&
-          validatDocumentsByType(documentsByType[type]) ? (
+          !validatDocumentsByType(documentsByType[type]) ? null : (
             <Tab key={type} title={type}>
               <Markdown>
                 {documentsByType[type].map((item, i) => {
-                  return item.source || item.Source ? (
+                  return !(item.source || item.Source) ? null : (
                     <div
                       key={i}
                       dangerouslySetInnerHTML={{
                         __html: item.source || item.Source,
                       }}
                     />
-                  ) : null;
+                  );
                 })}
               </Markdown>
             </Tab>
-          ) : null,
+          ),
         );
 
-      const docsFromNewApi = docsData
-        ? docsData.map(type => (
+      const newDocs = docsData
+        ? new DocsProcessor(docsData)
+            .removeMatadata()
+            .replaceImagePaths()
+            .result()
+        : null;
+
+      const docsFromNewApi = !newDocs
+        ? null
+        : newDocs.map(type => (
             <Tab
               title={
                 (type.metadata && type.metadata.title) ||
@@ -280,10 +272,9 @@ class ServiceClassTabs extends Component {
               }
               key={type.url}
             >
-              <ReactMarkdown source={type} />
+              {type && type.source && <ReactMarkdown source={type.source} />}
             </Tab>
-          ))
-        : null;
+          ));
 
       return (
         <ServiceClassTabsContentWrapper>
