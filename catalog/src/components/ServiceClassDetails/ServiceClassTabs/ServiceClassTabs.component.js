@@ -85,8 +85,8 @@ class ServiceClassTabs extends Component {
       data &&
       data.clusterDocsTopic &&
       data.clusterDocsTopic.assets &&
-      Array.isArray(data.clusterDocsTopic.assets);
-    data.clusterDocsTopic.assets.filter(elem => elem.type === 'asyncapi');
+      Array.isArray(data.clusterDocsTopic.assets) &&
+      data.clusterDocsTopic.assets.filter(elem => elem.type === 'asyncapi');
     if (
       specFile &&
       specFile[0] &&
