@@ -95,7 +95,7 @@ class ServiceClassTabs extends Component {
       specFile[0].files[0].url;
     if (
       (spec === 'odata' && urlToSpecFile && !urlToSpecFile.endsWith('.xml')) ||
-      (spec === 'asyncapi' && urlToSpecFile && !urlToSpecFile.endsWith('.yml'))
+      (spec === 'asyncapi' && urlToSpecFile)
     ) {
       return null;
     }
