@@ -35,7 +35,8 @@ class ServiceClassTabs extends Component {
   state = {
     docsData: null,
     openApiSpec: null,
-    asyncApiSpec: null,
+    asyncapi: null,
+    odata: null,
     error: null,
   };
 
@@ -45,7 +46,8 @@ class ServiceClassTabs extends Component {
     if (serviceClass) {
       await this.setDocs(serviceClass);
       await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiSpec(serviceClass);
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
     }
   }
 
@@ -57,7 +59,8 @@ class ServiceClassTabs extends Component {
     ) {
       await this.setDocs(serviceClass);
       await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiSpec(serviceClass);
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
     }
   }
 
@@ -80,13 +83,13 @@ class ServiceClassTabs extends Component {
     }
   }
 
-  async setAsyncApiSpec(data) {
+  async setAsyncApiOrOdataSpec(data, spec) {
     const specFile =
       data &&
       data.clusterDocsTopic &&
       data.clusterDocsTopic.assets &&
       Array.isArray(data.clusterDocsTopic.assets) &&
-      data.clusterDocsTopic.assets.filter(elem => elem.type === 'asyncapi');
+      data.clusterDocsTopic.assets.filter(elem => elem.type === spec);
     if (
       specFile &&
       specFile[0] &&
@@ -94,9 +97,8 @@ class ServiceClassTabs extends Component {
       specFile[0].files[0] &&
       specFile[0].files[0].url
     ) {
-      console.log(specFile[0].files[0].url);
       this.setState({
-        asyncApiSpec: await this.getAsyncApiSpec(specFile[0].files[0].url),
+        [spec]: await this.getAsyncApiOrOdataSpec(specFile[0].files[0].url),
       });
     }
   }
@@ -145,7 +147,7 @@ class ServiceClassTabs extends Component {
     return data;
   }
 
-  async getAsyncApiSpec(link) {
+  async getAsyncApiOrOdataSpec(link) {
     const data =
       link &&
       fetch(link)
@@ -202,7 +204,7 @@ class ServiceClassTabs extends Component {
     const { serviceClass, serviceClassLoading } = this.props;
     console.log(serviceClass);
     //data from new api
-    const { docsData, openApiSpec, asyncApiSpec, error } = this.state;
+    const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
     if (error) {
       return <div>{error}</div>;
@@ -220,7 +222,8 @@ class ServiceClassTabs extends Component {
     if (
       (docsData && docsData.length) ||
       (openApiSpec && openApiSpec.source) ||
-      (asyncApiSpec && asyncApiSpec.source) ||
+      (odata && odata.source) ||
+      (asyncapi && asyncapi.source) ||
       (deprecatedContent &&
         Object.keys(deprecatedContent).length &&
         validateContent(deprecatedContent)) ||
@@ -289,23 +292,23 @@ class ServiceClassTabs extends Component {
                 />
               </Tab>
             ) : null}
-            {(asyncApiSpec && asyncApiSpec.source) ||
+            {(asyncapi && asyncapi.source) ||
             (deprecatedAsyncApiSpec &&
               Object.keys(deprecatedAsyncApiSpec).length) ? (
               <Tab title={'Events'} margin="0" background="inherit">
                 <AsyncApi
                   schema={
-                    (asyncApiSpec && asyncApiSpec.source) ||
-                    deprecatedAsyncApiSpec
+                    (asyncapi && asyncapi.source) || deprecatedAsyncApiSpec
                   }
                   theme={asyncApiTheme}
                   config={asyncApiConfig}
                 />
               </Tab>
             ) : null}
-            {deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length ? (
+            {(odata && odata.source) ||
+            (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length) ? (
               <Tab title={'OData'} margin="0" background="inherit">
-                <ODataReact schema={deprecatedOdataSpec} />
+                <ODataReact schema={odata.source || deprecatedOdataSpec} />
               </Tab>
             ) : null}
           </Tabs>
