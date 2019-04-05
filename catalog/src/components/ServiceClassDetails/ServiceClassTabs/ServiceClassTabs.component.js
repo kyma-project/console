@@ -62,11 +62,12 @@ class ServiceClassTabs extends Component {
   }
 
   async setDocs(docs) {
+    const properDocsTopic = docs && (docs.docsTopic || docs.clusterDocsTopic);
+
     const markdownFiles =
-      docs &&
-      docs.clusterDocsTopic &&
-      docs.clusterDocsTopic.assets &&
-      docs.clusterDocsTopic.assets.filter(elem => elem.type === 'markdown');
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      properDocsTopic.assets.filter(elem => elem.type === 'markdown');
     const data =
       markdownFiles &&
       markdownFiles.length &&
@@ -81,12 +82,13 @@ class ServiceClassTabs extends Component {
   }
 
   async setAsyncApiOrOdataSpec(data, spec) {
+    const properDocsTopic = data && (data.docsTopic || data.clusterDocsTopic);
+
     const specFile =
-      data &&
-      data.clusterDocsTopic &&
-      data.clusterDocsTopic.assets &&
-      Array.isArray(data.clusterDocsTopic.assets) &&
-      data.clusterDocsTopic.assets.filter(elem => elem.type === spec);
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      Array.isArray(properDocsTopic.assets) &&
+      properDocsTopic.assets.filter(elem => elem.type === spec);
     const urlToSpecFile =
       specFile &&
       specFile[0] &&
@@ -99,17 +101,19 @@ class ServiceClassTabs extends Component {
     ) {
       return null;
     }
-    console.log(data, spec, urlToSpecFile);
+
     this.setState({
       [spec]: await this.getAsyncApiOrOdataSpec(urlToSpecFile),
     });
   }
 
   async setOpenApiSpec(data) {
+    const properDocsTopic = data && (data.docsTopic || data.clusterDocsTopic);
     const specFile =
-      data &&
-      data.clusterDocsTopic &&
-      data.clusterDocsTopic.assets.filter(elem => elem.type === 'openapi');
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      Array.isArray(properDocsTopic.assets) &&
+      properDocsTopic.assets.filter(elem => elem.type === 'openapi');
     if (
       specFile &&
       specFile[0] &&
@@ -198,7 +202,8 @@ class ServiceClassTabs extends Component {
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
     if (error) {
-      return <div>{error.message}</div>;
+      console.error(error);
+      return <div>{`${error.name}: ${error.message}`}</div>;
     }
 
     //data from deprecated api

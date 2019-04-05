@@ -102,6 +102,9 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
         docsTopic{
           ${docsTopic}
         }
+        clusterDocsTopic {
+          ${docsTopic}
+        }
       }
       clusterServiceClass {
         ${serviceClassGql}
