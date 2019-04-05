@@ -5,7 +5,6 @@ export class DocProcessor {
   }
 
   replaceImagePaths = () => {
-    console.log(this.doc);
     const assetsRegexp = /\.\/assets/g;
     const docsUrl = this.doc.url.substring(0, this.doc.url.lastIndexOf('/'));
     if (this.doc.source.search(assetsRegexp) !== -1) {

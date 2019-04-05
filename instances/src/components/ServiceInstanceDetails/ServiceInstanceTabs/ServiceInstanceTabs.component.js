@@ -35,7 +35,8 @@ class ServiceInstanceTabs extends Component {
   state = {
     docsData: null,
     openApiSpec: null,
-    asyncApiSpec: null,
+    asyncapi: null,
+    odata: null,
     error: null,
   };
 
@@ -45,7 +46,8 @@ class ServiceInstanceTabs extends Component {
     if (serviceClass) {
       await this.setDocs(serviceClass);
       await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiSpec(serviceClass);
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
     }
   }
 
@@ -57,7 +59,8 @@ class ServiceInstanceTabs extends Component {
     ) {
       await this.setDocs(serviceClass);
       await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiSpec(serviceClass);
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
+      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
     }
   }
 
@@ -80,22 +83,29 @@ class ServiceInstanceTabs extends Component {
     }
   }
 
-  async setAsyncApiSpec(data) {
+  async setAsyncApiOrOdataSpec(data, spec) {
     const specFile =
       data &&
       data.clusterDocsTopic &&
-      data.clusterDocsTopic.assets.filter(elem => elem.type === 'asyncapi');
-    if (
+      data.clusterDocsTopic.assets &&
+      Array.isArray(data.clusterDocsTopic.assets) &&
+      data.clusterDocsTopic.assets.filter(elem => elem.type === spec);
+    const urlToSpecFile =
       specFile &&
       specFile[0] &&
       specFile[0].files &&
       specFile[0].files[0] &&
-      specFile[0].files[0].url
+      specFile[0].files[0].url;
+    if (
+      (spec === 'odata' && urlToSpecFile && !urlToSpecFile.endsWith('.xml')) ||
+      (spec === 'asyncapi' && urlToSpecFile && !urlToSpecFile.endsWith('.yml'))
     ) {
-      this.setState({
-        asyncApiSpec: await this.getAsyncApiSpec(specFile[0].files[0].url),
-      });
+      return null;
     }
+
+    this.setState({
+      [spec]: await this.getAsyncApiOrOdataSpec(urlToSpecFile),
+    });
   }
 
   async setOpenApiSpec(data) {
@@ -142,7 +152,7 @@ class ServiceInstanceTabs extends Component {
     return data;
   }
 
-  async getAsyncApiSpec(link) {
+  async getAsyncApiOrOdataSpec(link) {
     const data =
       link &&
       fetch(link)
@@ -199,7 +209,7 @@ class ServiceInstanceTabs extends Component {
     const { serviceClass } = this.props;
     console.log(serviceClass);
     //data from new api
-    const { docsData, openApiSpec, asyncApiSpec, error } = this.state;
+    const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
     if (error) {
       return <div>{error}</div>;
@@ -217,7 +227,8 @@ class ServiceInstanceTabs extends Component {
     if (
       (docsData && docsData.length) ||
       (openApiSpec && openApiSpec.source) ||
-      (asyncApiSpec && asyncApiSpec.source) ||
+      (odata && odata.source) ||
+      (asyncapi && asyncapi.source) ||
       (deprecatedContent &&
         Object.keys(deprecatedContent).length &&
         validateContent(deprecatedContent)) ||
@@ -285,21 +296,21 @@ class ServiceInstanceTabs extends Component {
                 />
               </Tab>
             ) : null}
-            {(asyncApiSpec && asyncApiSpec.source) ||
+            {(asyncapi && asyncapi.source) ||
             (deprecatedAsyncApiSpec &&
               Object.keys(deprecatedAsyncApiSpec).length) ? (
               <Tab title={'Events'} margin="0" background="inherit">
                 <AsyncApi
                   schema={
-                    (asyncApiSpec && asyncApiSpec.source) ||
-                    deprecatedAsyncApiSpec
+                    (asyncapi && asyncapi.source) || deprecatedAsyncApiSpec
                   }
                   theme={asyncApiTheme}
                   config={asyncApiConfig}
                 />
               </Tab>
             ) : null}
-            {deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length ? (
+            {(odata && odata.source) ||
+            (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length) ? (
               <Tab title={'OData'} margin="0" background="inherit">
                 <ODataReact schema={deprecatedOdataSpec} />
               </Tab>

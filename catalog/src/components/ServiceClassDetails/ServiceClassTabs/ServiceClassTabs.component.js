@@ -90,17 +90,22 @@ class ServiceClassTabs extends Component {
       data.clusterDocsTopic.assets &&
       Array.isArray(data.clusterDocsTopic.assets) &&
       data.clusterDocsTopic.assets.filter(elem => elem.type === spec);
-    if (
+    const urlToSpecFile =
       specFile &&
       specFile[0] &&
       specFile[0].files &&
       specFile[0].files[0] &&
-      specFile[0].files[0].url
+      specFile[0].files[0].url;
+    if (
+      (spec === 'odata' && urlToSpecFile && !urlToSpecFile.endsWith('.xml')) ||
+      (spec === 'asyncapi' && urlToSpecFile && !urlToSpecFile.endsWith('.yml'))
     ) {
-      this.setState({
-        [spec]: await this.getAsyncApiOrOdataSpec(specFile[0].files[0].url),
-      });
+      return null;
     }
+
+    this.setState({
+      [spec]: await this.getAsyncApiOrOdataSpec(urlToSpecFile),
+    });
   }
 
   async setOpenApiSpec(data) {
@@ -202,7 +207,9 @@ class ServiceClassTabs extends Component {
 
   render() {
     const { serviceClass, serviceClassLoading } = this.props;
+    console.groupCollapsed();
     console.log(serviceClass);
+    console.groupEnd();
     //data from new api
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
@@ -277,7 +284,7 @@ class ServiceClassTabs extends Component {
             </Tab>
           ))
         : null;
-
+      console.log(odata);
       return (
         <ServiceClassTabsContentWrapper>
           <Tabs>
