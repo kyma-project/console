@@ -73,6 +73,9 @@ export const GET_SERVICE_CLASS = gql`
       docsTopic{
         ${docsTopic}
       }
+      clusterDocsTopic{
+        ${docsTopic}
+      }
  
     }
   }

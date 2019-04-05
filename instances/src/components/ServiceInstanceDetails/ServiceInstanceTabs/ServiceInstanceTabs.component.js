@@ -92,7 +92,6 @@ class ServiceInstanceTabs extends Component {
       specFile[0].files[0] &&
       specFile[0].files[0].url
     ) {
-      console.log(specFile[0].files[0].url);
       this.setState({
         asyncApiSpec: await this.getAsyncApiSpec(specFile[0].files[0].url),
       });
