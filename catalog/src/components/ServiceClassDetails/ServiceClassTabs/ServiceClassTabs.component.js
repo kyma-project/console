@@ -42,7 +42,6 @@ class ServiceClassTabs extends Component {
 
   async componentDidMount() {
     const { serviceClass } = this.props;
-
     if (serviceClass) {
       Promise.all([
         await this.setDocs(serviceClass),
@@ -102,9 +101,7 @@ class ServiceClassTabs extends Component {
       specFile[0].files[0].url;
     if (
       !(
-        (spec === 'odata' &&
-          urlToSpecFile &&
-          !urlToSpecFile.endsWith('.xml')) ||
+        (spec === 'odata' && urlToSpecFile && urlToSpecFile.endsWith('.xml')) ||
         (spec === 'asyncapi' && urlToSpecFile)
       )
     ) {
