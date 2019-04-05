@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Mock } from './mock';
+
 import {
   Button,
   Spinner,
@@ -133,7 +133,6 @@ class ServiceClassDetails extends React.Component {
                 </ServiceGridWrapper>
                 {backendModuleExists('content') ? (
                   <ServiceClassTabs
-                    docs={Mock}
                     serviceClass={serviceClass}
                     serviceClassLoading={this.props.serviceClass.loading}
                   />

@@ -6,7 +6,7 @@ import { mocks } from './ODataFiles/index';
 import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 ReactDOM.render(
   <PageWrapper>
-    <ODataReact schema={mocks.SAPodata} />
+    <ODataReact schema={mocks.ODataProductV4} />
   </PageWrapper>,
   document.getElementById('root'),
 );

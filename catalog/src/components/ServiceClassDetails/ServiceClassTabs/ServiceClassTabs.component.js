@@ -33,34 +33,146 @@ const validatDocumentsByType = type => {
 
 class ServiceClassTabs extends Component {
   state = {
-    data: null,
+    docsData: null,
+    openApiSpec: null,
+    asyncApiSpec: null,
     error: null,
   };
 
   async componentDidMount() {
-    const { docs } = this.props;
+    const { serviceClass } = this.props;
 
-    if (docs) {
-      await this.setDocs(docs);
+    if (serviceClass) {
+      await this.setDocs(serviceClass);
+      await this.setOpenApiSpec(serviceClass);
+      await this.setAsyncApiSpec(serviceClass);
     }
   }
 
   async componentDidUpdate(prevProps, _) {
-    const { docs } = this.props;
-
-    if (docs && !compareTwoObjects(docs, prevProps.docs)) {
-      await this.setDocs(docs);
+    const { serviceClass } = this.props;
+    if (
+      serviceClass &&
+      !compareTwoObjects(serviceClass, prevProps.serviceClass)
+    ) {
+      await this.setDocs(serviceClass);
+      await this.setOpenApiSpec(serviceClass);
+      await this.setAsyncApiSpec(serviceClass);
     }
   }
 
   async setDocs(docs) {
-    this.setState({
-      data: await this.getAllUrls(docs.assets[0].files),
-    });
+    const markdownFiles =
+      docs &&
+      docs.clusterDocsTopic &&
+      docs.clusterDocsTopic.assets &&
+      docs.clusterDocsTopic.assets.filter(elem => elem.type === 'markdown');
+    const data =
+      markdownFiles &&
+      markdownFiles.length &&
+      markdownFiles[0] &&
+      markdownFiles[0].files.filter(el => el.url.endsWith('.md'));
+
+    if (data) {
+      this.setState({
+        docsData: await this.getAllUrls(data),
+      });
+    }
+  }
+
+  async setAsyncApiSpec(data) {
+    const specFile =
+      data &&
+      data.clusterDocsTopic &&
+      data.clusterDocsTopic.assets &&
+      Array.isArray(data.clusterDocsTopic.assets);
+    data.clusterDocsTopic.assets.filter(elem => elem.type === 'asyncapi');
+    if (
+      specFile &&
+      specFile[0] &&
+      specFile[0].files &&
+      specFile[0].files[0] &&
+      specFile[0].files[0].url
+    ) {
+      console.log(specFile[0].files[0].url);
+      this.setState({
+        asyncApiSpec: await this.getAsyncApiSpec(specFile[0].files[0].url),
+      });
+    }
+  }
+
+  async setOpenApiSpec(data) {
+    const specFile =
+      data &&
+      data.clusterDocsTopic &&
+      data.clusterDocsTopic.assets.filter(elem => elem.type === 'openapi');
+    if (
+      specFile &&
+      specFile[0] &&
+      specFile[0].files &&
+      specFile[0].files[0] &&
+      specFile[0].files[0].url
+    ) {
+      this.setState({
+        openApiSpec: await this.getOpenApiSpec(specFile[0].files[0].url),
+      });
+    }
+  }
+
+  async getOpenApiSpec(link) {
+    const data =
+      link &&
+      fetch(link)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw Error(`${response.status}: ${response.statusText}`);
+          }
+        })
+        .then(text => {
+          return {
+            metadata: link.metadata,
+            url: link.url,
+            source: text,
+          };
+        })
+        .catch(err => {
+          this.setState({
+            error: err,
+          });
+        });
+    return data;
+  }
+
+  async getAsyncApiSpec(link) {
+    const data =
+      link &&
+      fetch(link)
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw Error(`${response.status}: ${response.statusText}`);
+          }
+        })
+        .then(text => {
+          return {
+            metadata: link.metadata,
+            url: link.url,
+            source: text,
+          };
+        })
+        .catch(err => {
+          this.setState({
+            error: err,
+          });
+        });
+    return data;
   }
 
   async getAllUrls(docs) {
-    var data = await Promise.all(
+    const data = await Promise.all(
       docs.map(doc =>
         fetch(doc.url)
           .then(response => {
@@ -88,26 +200,40 @@ class ServiceClassTabs extends Component {
 
   render() {
     const { serviceClass, serviceClassLoading } = this.props;
-    const { data } = this.state;
+    console.log(serviceClass);
+    //data from new api
+    const { docsData, openApiSpec, asyncApiSpec, error } = this.state;
 
-    const content = serviceClass.content && serviceClass.content;
-    const openApiSpec = serviceClass.openApiSpec && serviceClass.openApiSpec;
-    const asyncApiSpec = serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
-    const odataSpec = serviceClass.odataSpec && serviceClass.odataSpec;
+    if (error) {
+      return <div>{error}</div>;
+    }
+
+    //data ffrom deprecated api
+    const deprecatedContent = serviceClass.content && serviceClass.content;
+    const deprecatedOpenApiSpec =
+      serviceClass.openApiSpec && serviceClass.openApiSpec;
+    const deprecatedAsyncApiSpec =
+      serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
+    const deprecatedOdataSpec =
+      serviceClass.odataSpec && serviceClass.odataSpec;
 
     if (
-      (data && data.length) ||
-      (content && Object.keys(content).length && validateContent(content)) ||
-      (openApiSpec && Object.keys(openApiSpec).length) ||
-      (asyncApiSpec && Object.keys(asyncApiSpec).length) ||
-      (odataSpec && Object.keys(odataSpec).length)
+      (docsData && docsData.length) ||
+      (openApiSpec && openApiSpec.source) ||
+      (asyncApiSpec && asyncApiSpec.source) ||
+      (deprecatedContent &&
+        Object.keys(deprecatedContent).length &&
+        validateContent(deprecatedContent)) ||
+      (deprecatedOpenApiSpec && Object.keys(deprecatedOpenApiSpec).length) ||
+      (deprecatedAsyncApiSpec && Object.keys(deprecatedAsyncApiSpec).length) ||
+      (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length)
     ) {
       let documentsByType = [],
         documentsTypes = [];
 
       if (!serviceClassLoading) {
-        if (content && Object.keys(content).length) {
-          documentsByType = sortDocumentsByType(content);
+        if (deprecatedContent && Object.keys(deprecatedContent).length) {
+          documentsByType = sortDocumentsByType(deprecatedContent);
           documentsTypes = Object.keys(documentsByType);
         }
       }
@@ -135,10 +261,13 @@ class ServiceClassTabs extends Component {
           ) : null,
         );
 
-      const docsFromNewApi = data
-        ? data.map(type => (
+      const docsFromNewApi = docsData
+        ? docsData.map(type => (
             <Tab
-              title={type.metadata.title || processDocFilename(type.url)}
+              title={
+                (type.metadata && type.metadata.title) ||
+                processDocFilename(type.url)
+              }
               key={type.url}
             >
               <ReactMarkdown source={type.source} />
@@ -149,27 +278,34 @@ class ServiceClassTabs extends Component {
       return (
         <ServiceClassTabsContentWrapper>
           <Tabs>
-            {data && data.length ? docsFromNewApi : deprecatedDocs}
-            {openApiSpec && Object.keys(openApiSpec).length ? (
+            {docsData && docsData.length ? docsFromNewApi : deprecatedDocs}
+            {(openApiSpec && openApiSpec.source) ||
+            (deprecatedOpenApiSpec &&
+              Object.keys(deprecatedOpenApiSpec).length) ? (
               <Tab title={'Console'}>
                 <ApiReference
                   url="http://petstore.swagger.io/v1/swagger.json"
-                  schema={openApiSpec}
+                  schema={openApiSpec.source || deprecatedOpenApiSpec}
                 />
               </Tab>
             ) : null}
-            {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
+            {(asyncApiSpec && asyncApiSpec.source) ||
+            (deprecatedAsyncApiSpec &&
+              Object.keys(deprecatedAsyncApiSpec).length) ? (
               <Tab title={'Events'} margin="0" background="inherit">
                 <AsyncApi
-                  schema={asyncApiSpec}
+                  schema={
+                    (asyncApiSpec && asyncApiSpec.source) ||
+                    deprecatedAsyncApiSpec
+                  }
                   theme={asyncApiTheme}
                   config={asyncApiConfig}
                 />
               </Tab>
             ) : null}
-            {odataSpec && Object.keys(odataSpec).length ? (
+            {deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length ? (
               <Tab title={'OData'} margin="0" background="inherit">
-                <ODataReact schema={odataSpec} />
+                <ODataReact schema={deprecatedOdataSpec} />
               </Tab>
             ) : null}
           </Tabs>

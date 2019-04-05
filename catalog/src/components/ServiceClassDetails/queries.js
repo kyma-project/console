@@ -26,6 +26,21 @@ const plansQGL = `
   externalName
 `;
 
+const docsTopic = `
+      name
+      groupName
+      displayName
+      description
+      assets {
+          name
+          type
+          files {
+            url
+            metadata
+          }
+      }
+`;
+
 export const GET_SERVICE_CLASS = gql`
   query getServiceClass($name: String!, $namespace: String!) {
     clusterServiceClass(name: $name) {
@@ -38,25 +53,10 @@ export const GET_SERVICE_CLASS = gql`
         name
       }
       activated(namespace: $namespace)
-      # clusterDocsTopic {
-      #   name
-      #   groupName
-      #   displayName
-      #   description
-      #   assets {
-      #     name
-      #     type
-      #     files {
-      #       url
-      #       metadata
-      #     }
-      #     status {
-      #       phase
-      #       reason
-      #       message
-      #     }
-      #   }
-      # }
+      clusterDocsTopic {
+        ${docsTopic}
+      }
+     
     }
     serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
@@ -70,15 +70,10 @@ export const GET_SERVICE_CLASS = gql`
         name
       }
       activated
-      # docsTopic{
-      #   name
-      #   groupName
-      #   assets {
-      #     name
-      #     type
-          
-      #   }
-      # }
+      docsTopic{
+        ${docsTopic}
+      }
+ 
     }
   }
 `;
