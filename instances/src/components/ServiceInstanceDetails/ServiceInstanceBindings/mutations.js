@@ -18,9 +18,11 @@ export const BINDING_CREATE_MUTATION = gql`
 
 export const BINDING_USAGE_CREATE_MUTATION = gql`
   mutation CreateServiceBindingUsage(
+    $namespace: String!
     $createServiceBindingUsageInput: CreateServiceBindingUsageInput
   ) {
     createServiceBindingUsage(
+      namespace: $namespace
       createServiceBindingUsageInput: $createServiceBindingUsageInput
     ) {
       name

@@ -12,9 +12,9 @@ export const CREATE_SERVICE_INSTANCE = gql`
     $planClusterWide: Boolean!
   ) {
     createServiceInstance(
+      namespace: $namespace
       params: {
         name: $name
-        namespace: $namespace
         classRef: {
           externalName: $externalServiceClassName
           clusterWide: $classClusterWide
