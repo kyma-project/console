@@ -44,20 +44,24 @@ class ServiceClassTabs extends Component {
     const { serviceClass } = this.props;
 
     if (serviceClass) {
-      await this.setDocs(serviceClass);
-      await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
+      Promise.all([
+        await this.setDocs(serviceClass),
+        await this.setOpenApiSpec(serviceClass),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi'),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'odata'),
+      ]);
     }
   }
 
   async componentDidUpdate(prevProps, _) {
     const { serviceClass } = this.props;
     if (serviceClass && !deepEqual(serviceClass, prevProps.serviceClass)) {
-      await this.setDocs(serviceClass);
-      await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
+      Promise.all([
+        await this.setDocs(serviceClass),
+        await this.setOpenApiSpec(serviceClass),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi'),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'odata'),
+      ]);
     }
   }
 
@@ -89,6 +93,7 @@ class ServiceClassTabs extends Component {
       properDocsTopic.assets &&
       Array.isArray(properDocsTopic.assets) &&
       properDocsTopic.assets.filter(elem => elem.type === spec);
+
     const urlToSpecFile =
       specFile &&
       specFile[0] &&
@@ -96,8 +101,12 @@ class ServiceClassTabs extends Component {
       specFile[0].files[0] &&
       specFile[0].files[0].url;
     if (
-      (spec === 'odata' && urlToSpecFile && !urlToSpecFile.endsWith('.xml')) ||
-      (spec === 'asyncapi' && urlToSpecFile)
+      !(
+        (spec === 'odata' &&
+          urlToSpecFile &&
+          !urlToSpecFile.endsWith('.xml')) ||
+        (spec === 'asyncapi' && urlToSpecFile)
+      )
     ) {
       return null;
     }
@@ -168,7 +177,7 @@ class ServiceClassTabs extends Component {
   }
 
   async getAllUrls(docs) {
-    var data = await Promise.all(
+    const data = await Promise.all(
       docs.map(doc =>
         fetch(doc.url)
           .then(response => {
@@ -195,9 +204,6 @@ class ServiceClassTabs extends Component {
 
   render() {
     const { serviceClass, serviceClassLoading } = this.props;
-    console.groupCollapsed();
-    console.log(serviceClass);
-    console.groupEnd();
     //data from new api
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 

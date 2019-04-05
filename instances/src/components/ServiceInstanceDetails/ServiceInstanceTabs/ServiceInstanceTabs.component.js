@@ -44,29 +44,34 @@ class ServiceInstanceTabs extends Component {
     const { serviceClass } = this.props;
 
     if (serviceClass) {
-      await this.setDocs(serviceClass);
-      await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
+      Promise.all([
+        await this.setDocs(serviceClass),
+        await this.setOpenApiSpec(serviceClass),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi'),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'odata'),
+      ]);
     }
   }
 
   async componentDidUpdate(prevProps, _) {
     const { serviceClass } = this.props;
     if (serviceClass && !deepEqual(serviceClass, prevProps.serviceClass)) {
-      await this.setDocs(serviceClass);
-      await this.setOpenApiSpec(serviceClass);
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi');
-      await this.setAsyncApiOrOdataSpec(serviceClass, 'odata');
+      Promise.all([
+        await this.setDocs(serviceClass),
+        await this.setOpenApiSpec(serviceClass),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi'),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'odata'),
+      ]);
     }
   }
 
   async setDocs(docs) {
+    const properDocsTopic = docs && (docs.docsTopic || docs.clusterDocsTopic);
+
     const markdownFiles =
-      docs &&
-      docs.clusterDocsTopic &&
-      docs.clusterDocsTopic.assets &&
-      docs.clusterDocsTopic.assets.filter(elem => elem.type === 'markdown');
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      properDocsTopic.assets.filter(elem => elem.type === 'markdown');
     const data =
       markdownFiles &&
       markdownFiles.length &&
@@ -81,12 +86,14 @@ class ServiceInstanceTabs extends Component {
   }
 
   async setAsyncApiOrOdataSpec(data, spec) {
+    const properDocsTopic = data && (data.docsTopic || data.clusterDocsTopic);
+
     const specFile =
-      data &&
-      data.clusterDocsTopic &&
-      data.clusterDocsTopic.assets &&
-      Array.isArray(data.clusterDocsTopic.assets) &&
-      data.clusterDocsTopic.assets.filter(elem => elem.type === spec);
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      Array.isArray(properDocsTopic.assets) &&
+      properDocsTopic.assets.filter(elem => elem.type === spec);
+
     const urlToSpecFile =
       specFile &&
       specFile[0] &&
@@ -94,8 +101,12 @@ class ServiceInstanceTabs extends Component {
       specFile[0].files[0] &&
       specFile[0].files[0].url;
     if (
-      (spec === 'odata' && urlToSpecFile && !urlToSpecFile.endsWith('.xml')) ||
-      (spec === 'asyncapi' && urlToSpecFile && !urlToSpecFile.endsWith('.yml'))
+      !(
+        (spec === 'odata' &&
+          urlToSpecFile &&
+          !urlToSpecFile.endsWith('.xml')) ||
+        (spec === 'asyncapi' && urlToSpecFile)
+      )
     ) {
       return null;
     }
@@ -106,10 +117,12 @@ class ServiceInstanceTabs extends Component {
   }
 
   async setOpenApiSpec(data) {
+    const properDocsTopic = data && (data.docsTopic || data.clusterDocsTopic);
     const specFile =
-      data &&
-      data.clusterDocsTopic &&
-      data.clusterDocsTopic.assets.filter(elem => elem.type === 'openapi');
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      Array.isArray(properDocsTopic.assets) &&
+      properDocsTopic.assets.filter(elem => elem.type === 'openapi');
     if (
       specFile &&
       specFile[0] &&

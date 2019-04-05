@@ -70,7 +70,7 @@ export const GET_SERVICE_CLASS = gql`
         name
       }
       activated
-      docsTopic{
+      docsTopic {
          ${docsTopic}
           assets {
              name
