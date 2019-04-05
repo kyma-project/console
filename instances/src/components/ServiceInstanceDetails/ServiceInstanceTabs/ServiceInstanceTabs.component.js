@@ -164,9 +164,9 @@ class ServiceInstanceTabs extends Component {
   }
 
   async getAllUrls(docs) {
-    var data = await Promise.all(
+    const data = await Promise.all(
       docs.map(doc =>
-        fetch(doc.url.slice(2))
+        fetch(doc.url)
           .then(response => {
             return response.text();
           })
