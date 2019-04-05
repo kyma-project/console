@@ -20,15 +20,17 @@ export const tabs = {
       if (child.type === 'tag' && child.name === 'details' && child.children) {
         return child.children.map(childDetails => {
           if (
-            !(childDetails.type === 'tag' &&
-            childDetails.name === 'summary' &&
-            childDetails.children.length === 1 &&
-            childDetails.children[0].type === 'text' &&
-            childDetails.next.data)
-          ) { 
+            !(
+              childDetails.type === 'tag' &&
+              childDetails.name === 'summary' &&
+              childDetails.children.length === 1 &&
+              childDetails.children[0].type === 'text' &&
+              childDetails.next.data
+            )
+          ) {
             return null;
           }
-          
+
           const summary = childDetails.children[0].data;
           const tabData = childDetails.next.data
             .replace(blockquoteRegex, blockquote => `${blockquote}\n`)

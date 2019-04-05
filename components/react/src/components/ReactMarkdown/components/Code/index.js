@@ -70,11 +70,14 @@ const Code = ({ language, value, children }) => {
                   <div {...getLineProps({ line, key: i })}>
                     {line.map((token, key) => {
                       const tokenProps = getTokenProps({ token, key });
-                      if (tokenProps.className.includes('plain') && !tokenProps.children) {
+                      if (
+                        tokenProps.className.includes('plain') &&
+                        !tokenProps.children
+                      ) {
                         return null;
                       }
-                      
-                      return <span {...getTokenProps({ token, key })} />
+
+                      return <span {...getTokenProps({ token, key })} />;
                     })}
                   </div>
                 ))}
@@ -85,6 +88,6 @@ const Code = ({ language, value, children }) => {
       </HighlightWrapper>
     </CodeWrapper>
   );
-}
+};
 
 export default Code;
