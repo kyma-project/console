@@ -36,16 +36,16 @@ class MainPage extends Component {
     const { activeContent } = this.state;
     const hash = activeContent.hash;
 
+    if(!hash){
+      return null;
+    }
+
     if (prevState.docsLoaded && !docsLoaded) {
-      if (hash) {
-        goToAnchor(hash);
-      }
+      goToAnchor(hash);
     }
 
     if (activeContent && prevState.activeContent.id !== activeContent.id) {
-      if (hash) {
-        goToAnchor(hash);
-      }
+      goToAnchor(hash);
     }
   }
 
@@ -54,19 +54,19 @@ class MainPage extends Component {
       type === 'root'
         ? this.props.clusterDocsTopicsRoot || {}
         : this.props.clusterDocsTopicsComponents || {};
-    if (!docsItems || docsItems.length === 0) return {};
+    if (!docsItems || !docsItems.length) return {};
     docsItems = docsItems.filter(item => tokenize(item.displayName) === id);
     return docsItems[0] || {};
   };
 
   getRoot = () => {
     if (
-      this.props.clusterDocsTopicsRoot &&
-      this.props.clusterDocsTopicsRoot.length > 0
+      !this.props.clusterDocsTopicsRoot &&
+      (!this.props.clusterDocsTopicsRoot.length)
     ) {
-      return this.props.clusterDocsTopicsRoot[0].name;
+      return null;
     }
-    return null;
+    return this.props.clusterDocsTopicsRoot[0].name;
   };
 
   chooseActive = activeLink => {

@@ -20,27 +20,29 @@ export const tabs = {
       if (child.type === 'tag' && child.name === 'details' && child.children) {
         return child.children.map(childDetails => {
           if (
-            childDetails.type === 'tag' &&
+            !(childDetails.type === 'tag' &&
             childDetails.name === 'summary' &&
             childDetails.children.length === 1 &&
             childDetails.children[0].type === 'text' &&
-            childDetails.next.data
-          ) {
-            const summary = childDetails.children[0].data;
-            const tabData = childDetails.next.data
-              .replace(blockquoteRegex, blockquote => `${blockquote}\n`)
-              .replace(orderedListRegex, listElement => `\n${listElement}\n`);
-
-            return (
-              <Tab
-                key={summary.toLowerCase().replace(' ', '-')}
-                title={summary}
-                smallPadding={true}
-              >
-                <ReactMarkdown source={tabData} />
-              </Tab>
-            );
+            childDetails.next.data)
+          ) { 
+            return null;
           }
+          
+          const summary = childDetails.children[0].data;
+          const tabData = childDetails.next.data
+            .replace(blockquoteRegex, blockquote => `${blockquote}\n`)
+            .replace(orderedListRegex, listElement => `\n${listElement}\n`);
+
+          return (
+            <Tab
+              key={summary.toLowerCase().replace(' ', '-')}
+              title={summary}
+              smallPadding={true}
+            >
+              <ReactMarkdown source={tabData} />
+            </Tab>
+          );
         });
       }
     });

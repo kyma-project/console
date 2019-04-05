@@ -1,16 +1,16 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import RM from 'react-markdown';
 import BlockQuote from './components/Blockquote';
 import Code from './components/Code/';
 import { Markdown } from './styled';
 import parseHtml from './parseHTML';
 import { removeBlankLinesFromTabsBlock } from './helpers';
 
-export default ({ source, escapeHtml = false }) => {
+const ReactMarkdown = ({ source, escapeHtml = false }) => {
   const processedSource = removeBlankLinesFromTabsBlock(source);
   return (
     <Markdown>
-      <ReactMarkdown
+      <RM
         source={processedSource}
         escapeHtml={escapeHtml}
         renderers={{ code: Code, blockquote: BlockQuote }}
@@ -19,3 +19,5 @@ export default ({ source, escapeHtml = false }) => {
     </Markdown>
   );
 };
+
+export default ReactMarkdown;

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import DocsContent from './DocsContent.component';
 import { DocsProcessor } from './DocsProcessor';
-
-import { compareTwoObjects } from '../../commons/helpers';
+import equal from 'deep-equal';
 
 export default class DocsContentContainer extends Component {
   constructor(props) {
@@ -21,8 +20,7 @@ export default class DocsContentContainer extends Component {
 
   async componentDidUpdate(prevProps, _) {
     const { docs } = this.props;
-
-    if (!compareTwoObjects(this.props.docs, prevProps.docs) && docs) {
+    if (!equal(this.props.docs, prevProps.docs) && docs) {
       await this.setDocs(docs);
     }
   }
@@ -39,11 +37,7 @@ export default class DocsContentContainer extends Component {
       docs.map(doc =>
         fetch(doc.url)
           .then(response => {
-            if (response.ok) {
-              return response.text();
-            } else {
-              throw Error(`${response.status}: ${response.statusText}`);
-            }
+            return response.text();
           })
           .then(text => {
             return {
@@ -51,7 +45,10 @@ export default class DocsContentContainer extends Component {
               url: doc.url,
               source: text,
             };
-          }),
+          })
+          .catch(err => {
+            throw err
+          })
       ),
     ).catch(err => {
       this.setState({
@@ -78,14 +75,16 @@ export default class DocsContentContainer extends Component {
         .removeMatadata()
         .result();
 
-      newDocs.map(doc => {
+      newDocs.forEach(doc => {
         if (!doc.metadata) return doc;
 
         const type = doc.metadata.type || doc.metadata.title;
         if (!(type in docsTypesLength)) {
           docsTypesLength[type] = 0;
         }
-        if (doc.metadata.title) docsTypesLength[type]++;
+        if (doc.metadata.title) {
+          docsTypesLength[type]++;
+        }
 
         return doc;
       });

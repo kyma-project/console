@@ -19,6 +19,7 @@
     "apollo-link-state": "^0.4.2",
     "apollo-utilities": "^1.0.24",
     "deep-copy": "^1.4.2",
+    "deep-equal": "^1.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "graphql": "^14.0.2",

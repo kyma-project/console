@@ -50,7 +50,7 @@ const StyledCopyButton = styled(CopyButton)`
   right: -10px;
 `;
 
-function Code({ language, value, children }) {
+const Code = ({ language, value, children }) => {
   const code = children ? children : value;
 
   return (
@@ -70,13 +70,11 @@ function Code({ language, value, children }) {
                   <div {...getLineProps({ line, key: i })}>
                     {line.map((token, key) => {
                       const tokenProps = getTokenProps({ token, key });
-
-                      return !(
-                        tokenProps.className.includes('plain') &&
-                        !tokenProps.children
-                      ) ? (
-                        <span {...getTokenProps({ token, key })} />
-                      ) : null;
+                      if (tokenProps.className.includes('plain') && !tokenProps.children) {
+                        return null;
+                      }
+                      
+                      return <span {...getTokenProps({ token, key })} />
                     })}
                   </div>
                 ))}
