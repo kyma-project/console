@@ -1,29 +1,23 @@
 import gql from 'graphql-tag';
 
-export const TOPICS_QUERY = gql`
-  query Topics($input: [InputTopic!]!) {
-    topics(input: $input) {
-      id
-      contentType
-      sections {
+export const CLUSTER_DOCS_TOPICS = gql`
+  query clusterDocsTopics(
+    $viewContext: String!
+    $groupName: String!
+    $filterExtensions: [String!]
+  ) {
+    clusterDocsTopics(viewContext: $viewContext, groupName: $groupName) {
+      name
+      displayName
+      description
+      assets {
         name
-        anchor
-        topicType
-        titles {
-          name
-          anchor
-          titles {
-            name
-            anchor
-          }
+        type
+        files(filterExtensions: $filterExtensions) {
+          url
+          metadata
         }
       }
     }
-  }
-`;
-
-export const DOCS_LOADING_STATUS = gql`
-  query docsLoadingStatus {
-    docsLoadingStatus @client
   }
 `;

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'styled-components-grid';
 import equal from 'deep-equal';
+
 import { Input, Select } from '@kyma-project/react-components';
 
 import {

@@ -21,6 +21,7 @@ const StyledIcon = styled(Icon)`
   background-color: #fff;
   color: #c9c9c9;
   transition: color 0.2s ease-in-out;
+
   &:hover {
     color: #0073e6;
   }

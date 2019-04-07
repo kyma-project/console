@@ -22,17 +22,21 @@ const HighlightWrapper = styled.div`
   white-space: nowrap;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+
   ${customScrollBar({
     thumbBorderRadius: '0 0 4px 4px',
     trackBorderRadius: '0 0 4px 4px',
   })}
+
   > pre {
     padding: 16px 16px 0 16px;
     margin-bottom: 0 !important;
+
     > code {
       word-break: normal;
       white-space: pre;
       overflow-wrap: normal;
+
       > div span:last-child {
         padding-right: 16px;
       }
