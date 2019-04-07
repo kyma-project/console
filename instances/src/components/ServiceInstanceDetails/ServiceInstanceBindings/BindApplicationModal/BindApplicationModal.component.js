@@ -17,7 +17,6 @@ import InfoButton from '../InfoButton/InfoButton.component';
 
 import { SubSectionTitle } from './styled';
 
-import builder from '../../../../commons/builder';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -74,7 +73,6 @@ class BindApplicationModal extends React.Component {
     const parsedSelectedResource = JSON.parse(selectedResource);
 
     return {
-      namespace: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
         name: checkbox ? createdBindingName : selectedExistingBinding,
       },

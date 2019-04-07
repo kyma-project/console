@@ -7,8 +7,6 @@ import SecondStep from './SecondStep.component';
 
 import { CreateBindingButton } from './styled';
 
-import builder from '../../../../commons/builder';
-
 class CreateBindingModal extends React.Component {
   constructor(props) {
     super(props);
@@ -66,7 +64,6 @@ class CreateBindingModal extends React.Component {
 
     return {
       name: nameServiceBindingUsage,
-      namespace: builder.getCurrentEnvironmentId(),
       serviceBindingRef: {
         name: checkbox ? nameServiceBinding : selectedExistingBinding,
       },

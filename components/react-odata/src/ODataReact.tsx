@@ -10,7 +10,14 @@ interface Props {
 }
 
 const ODataReact: React.FunctionComponent<Props> = ({ schema }) => {
+  if (!schema) {
+    return <ErrorComponent />;
+  }
   const data = parse.parseFromString(schema);
+  if (!data) {
+    return <ErrorComponent />;
+  }
+
   const dataSchema = data.getElementsByTagName('Schema');
 
   if (dataSchema.length < 1) {

@@ -3,6 +3,8 @@ import equal from 'deep-equal';
 
 import { Input, Select, Spinner } from '@kyma-project/react-components';
 
+import deepEqual from 'deep-equal';
+
 import { bindingVariables } from '../InfoButton/variables';
 import InfoButton from '../InfoButton/InfoButton.component';
 
@@ -46,7 +48,7 @@ class Resources extends React.Component {
   componentDidUpdate(nextProps, nextState) {
     const { selectedResource, prefixEnvironmentValue } = this.state;
 
-    if (!equal(this.state, nextState)) {
+    if (!deepEqual(this.state, nextState)) {
       const resourcesFilled = selectedResource !== '';
 
       this.setState({ resourcesFilled: resourcesFilled });

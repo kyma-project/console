@@ -29,6 +29,7 @@ export default compose(
       createBindingUsage: createServiceBindingUsageInput =>
         mutate({
           variables: {
+            namespace: builder.getCurrentEnvironmentId(),
             createServiceBindingUsageInput,
           },
         }),

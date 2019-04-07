@@ -22,6 +22,21 @@ export const servicePlanGql = `
   bindingCreateParameterSchema
 `;
 
+const docsTopic = `
+      name
+      groupName
+      displayName
+      description
+      assets {
+          name
+          type
+          files {
+            url
+            metadata
+          }
+      }
+`;
+
 export const SERVICE_BINDING_DETAILS_FRAGMENT = gql`
   fragment serviceBindingDetails on ServiceBinding {
     name
@@ -84,9 +99,18 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
       serviceClass {
         ${serviceClassGql}
         namespace
+        docsTopic{
+          ${docsTopic}
+        }
+        clusterDocsTopic {
+          ${docsTopic}
+        }
       }
       clusterServiceClass {
         ${serviceClassGql}
+        clusterDocsTopic {
+          ${docsTopic}
+        }
       }
       servicePlan {
         ${servicePlanGql}

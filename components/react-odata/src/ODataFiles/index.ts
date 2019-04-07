@@ -2,7 +2,6 @@ import ODataProductV2 from './ODataProductV2'; // does not work, properties cut 
 import ODataNext from './ODataNext'; // library cuts off many fields, not working
 import ODataFile1 from './ODataFile'; // works
 import ODataFile2 from './ODataFile2'; // works
-import SAPodata from './SAPodata'; // works
 import ODataTripV4 from './ODataTripV4'; // works
 import ODataFavourite3 from './ODataFavourite3'; // works - no annotations
 import ODataFav5 from './ODataFav5'; // works
@@ -19,7 +18,6 @@ const mocks = {
   ODataNext,
   ODataFile1,
   ODataFile2,
-  SAPodata,
   ODataTripV4,
   ODataFavourite3,
   ODataFav5,

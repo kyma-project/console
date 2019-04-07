@@ -6,7 +6,7 @@ import { CREATE_SERVICE_INSTANCE } from './mutations';
 import ServiceClassDetails from './ServiceClassDetails.component';
 
 import builder from '../../commons/builder';
-
+const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
 export default compose(
   graphql(GET_SERVICE_CLASS, {
     options: props => {
@@ -16,6 +16,7 @@ export default compose(
         variables: {
           name: props.match.params.name,
           namespace: builder.getCurrentEnvironmentId(),
+          fileExtensions: filterExtensions,
         },
       };
     },

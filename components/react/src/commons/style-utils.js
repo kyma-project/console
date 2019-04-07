@@ -50,12 +50,10 @@ export const customScrollBar = ({
     width: ${scrollbarWidth};
     height: ${scrollbarHeight};
   }
-
   &::-webkit-scrollbar-thumb {
     background: ${thumbColor};
     border-radius: ${thumbBorderRadius};
   }
-
   &::-webkit-scrollbar-track {
     background: ${trackColor};
     border-radius: ${trackBorderRadius};

@@ -44,7 +44,7 @@ export const TabsWrapper = styled.div`
   font-family: '72';
   font-weight: normal;
   ${props =>
-    props.border
+    props.border === true
       ? `
     border: solid 1px rgba(151,151,151,0.26);
     border-radius: 3px;

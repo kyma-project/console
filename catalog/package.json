@@ -28,6 +28,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.8.4",
     "react-apollo": "^2.2.4",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.4",
     "react-jsonschema-form": "^1.3.0",
     "react-modal": "^3.4.1",
