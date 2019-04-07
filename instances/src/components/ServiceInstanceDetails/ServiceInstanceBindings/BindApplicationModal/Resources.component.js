@@ -1,5 +1,4 @@
 import React from 'react';
-import equal from 'deep-equal';
 
 import { Input, Select, Spinner } from '@kyma-project/react-components';
 
