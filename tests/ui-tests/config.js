@@ -26,4 +26,5 @@ module.exports = {
     ? process.env.OUTSIDE_CLUSTER
     : false,
   kubeConfigPath: process.env.KUBECONFIG ? process.env.KUBECONFIG : undefined,
+  loggingEnabled: process.env.LOGGING_ENABLED || false,
 };
