@@ -132,7 +132,7 @@ class Modal extends Component {
 
     return (
       <Fragment>
-        <div onClick={this.onOpen}>{modalOpeningComponent}</div>
+        <div style={{ display: "inline-block" }} onClick={this.onOpen}>{modalOpeningComponent}</div>
         <FdModal
           width={width}
           type={type}

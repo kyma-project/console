@@ -10,6 +10,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
+  addOnsModuleUrl: 'https://add-ons.' + k8sDomain,
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql'
 };
@@ -364,6 +365,10 @@ async function getUiEntities(entityname, namespace, placements) {
                 node.viewUrl =
                   config.logsModuleUrl +
                   node.viewUrl.substring('https://log-ui.kyma.local'.length);
+              } else if(node.viewUrl.startsWith('https://add-ons.kyma.local')) {
+                node.viewUrl =
+                  config.addOnsModuleUrl +
+                  node.viewUrl.substring('https://add-ons.kyma.local'.length);
               }
               return node;
             }

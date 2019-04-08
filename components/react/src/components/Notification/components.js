@@ -9,7 +9,8 @@ export const NotificationWrapper = styled.div`
   max-width: 450px;
   background: #fff;
   position: fixed;
-  top: 25px;
+  ${props => props.orientation === "top" ? "top: 25px;" : ""};
+  ${props => props.orientation === "bottom" ? "bottom: 25px;" : ""};
   right: ${props => (props.visible ? '30' : '-1000')}px;
   transition: all ease-in-out 0.4s;
   z-index: 1000;

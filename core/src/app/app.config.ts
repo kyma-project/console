@@ -46,6 +46,7 @@ const config = {
   serviceInstancesModuleUrl: `https://instances.${domain}`,
   serviceBrokersModuleUrl: `https://brokers.${domain}`,
   docsModuleUrl: `https://docs.${domain}`,
+  addOnsConfigurationModuleUrl: `https://add-ons.${domain}`,
   logsModuleUrl: `https://log-ui.${domain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl,
