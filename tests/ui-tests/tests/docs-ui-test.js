@@ -23,6 +23,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       return;
     }
 
+    jest.setTimeout(240 * 1000);
     await retry(async () => {
       const data = await common.beforeAll();
       browser = data.browser;
@@ -64,6 +65,8 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     REQUIRED_MODULE,
     'Check if documentation is shown',
     async () => {
+      jest.setTimeout(300 * 1000);
+
       // Hardcodes for specific page
       const articleExpectedHeader = 'Kyma';
       const articleExpectedServiceCatalogHeader = 'Service Catalog';
@@ -89,8 +92,15 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       // consts
       const articleHeaderSelector = catalog.prepareSelector('toolbar-header');
 
-      const frame = await kymaConsole.getFrame(page);
-      await frame.waitForSelector(articleHeaderSelector);
+      let frame;
+      await retry(async () => {
+        await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+        frame = await kymaConsole.getFrame(page);
+        await frame.waitForSelector(articleHeaderSelector, {
+          timeout: 50000,
+        });
+      });
+
       await frame.$$eval(
         articleHeaderSelector,
         (item, articleExpectedHeader) => {
