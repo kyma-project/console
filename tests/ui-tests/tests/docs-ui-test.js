@@ -9,7 +9,7 @@ import { retry } from '../utils/retry';
 import {
   testPluggable,
   isModuleEnabled,
-  logModuleDisabled,
+  logModuleDisabled
 } from '../setup/test-pluggable';
 
 let page, browser;
@@ -47,15 +47,15 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     await Promise.all([
       page.goto(docsUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0'],
-      }),
+        waitUntil: ['domcontentloaded', 'networkidle0']
+      })
     ]);
 
     const frame = await kymaConsole.getFrame(page);
     await frame.waitForSelector(docsHeaderSelector);
     const docsHeader = await frame.$eval(
       docsHeaderSelector,
-      item => item.innerHTML,
+      item => item.innerHTML
     );
     expect(docsHeader).toContain(docsExpectedHeader);
   });
@@ -75,14 +75,14 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       const kymaChildID = 'details';
       const kymaItems = catalog.prepareSelector(`${navItems}-${kymaID}`);
       const kymaDetailsItems = catalog.prepareSelector(
-        `${navItems}-${kymaID}-${kymaChildID}`,
+        `${navItems}-${kymaID}-${kymaChildID}`
       );
 
       const kymaDetailsArrow = catalog.prepareSelector(
-        `${navArrow}-${kymaID}-${kymaChildID}`,
+        `${navArrow}-${kymaID}-${kymaChildID}`
       );
       const serviceCatalogLink = catalog.prepareSelector(
-        `${navLink}-${serviceCatalogID}`,
+        `${navLink}-${serviceCatalogID}`
       );
       const expectedCollapsedHeight = '0px';
 
@@ -90,27 +90,31 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       const articleHeaderSelector = catalog.prepareSelector('toolbar-header');
 
       const frame = await kymaConsole.getFrame(page);
-      await frame.waitForSelector(articleHeaderSelector);
+
+      await retry(async () => {
+        await frame.waitForSelector(articleHeaderSelector);
+      });
+
       await frame.$$eval(
         articleHeaderSelector,
         (item, articleExpectedHeader) => {
           item.find(text => text.innerText.includes(articleExpectedHeader));
         },
-        articleExpectedHeader,
+        articleExpectedHeader
       );
 
       await frame.waitForSelector(kymaItems);
       const kymaItemsStyles = await docs.getStyles(
         frame,
         kymaItems,
-        'maxHeight',
+        'maxHeight'
       );
       expect(kymaItemsStyles).not.toEqual(expectedCollapsedHeight);
       await frame.waitForSelector(kymaDetailsItems);
       const kymaDetailsItemsStyles = await docs.getStyles(
         frame,
         kymaDetailsItems,
-        'maxHeight',
+        'maxHeight'
       );
       expect(kymaDetailsItemsStyles).toEqual(expectedCollapsedHeight);
 
@@ -120,10 +124,10 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       const kymaDetailsItemsStylesAfterClick = await docs.getStyles(
         frame,
         kymaDetailsItems,
-        'maxHeight',
+        'maxHeight'
       );
       expect(kymaDetailsItemsStylesAfterClick).not.toEqual(
-        expectedCollapsedHeight,
+        expectedCollapsedHeight
       );
 
       await frame.click(kymaDetailsArrow);
@@ -132,27 +136,27 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
       const kymaDetailsItemsStylesAfterSecondClick = await docs.getStyles(
         frame,
         kymaDetailsItems,
-        'maxHeight',
+        'maxHeight'
       );
       expect(kymaDetailsItemsStylesAfterSecondClick).toEqual(
-        expectedCollapsedHeight,
+        expectedCollapsedHeight
       );
 
       await Promise.all([
         frame.click(serviceCatalogLink),
         frame.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0'],
-        }),
+          waitUntil: ['domcontentloaded', 'networkidle0']
+        })
       ]);
       await frame.$$eval(
         articleHeaderSelector,
         (item, articleExpectedServiceCatalogHeader) => {
           item.find(text =>
-            text.innerText.includes(articleExpectedServiceCatalogHeader),
+            text.innerText.includes(articleExpectedServiceCatalogHeader)
           );
         },
-        articleExpectedServiceCatalogHeader,
+        articleExpectedServiceCatalogHeader
       );
-    },
+    }
   );
 });
