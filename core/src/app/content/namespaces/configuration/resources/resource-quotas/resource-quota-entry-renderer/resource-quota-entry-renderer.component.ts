@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../operation/abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-resource-quota-entry-renderer',
@@ -17,6 +18,7 @@ export class ResourceQuotaEntryRendererComponent
     super(injector);
   }
   public disabled = false;
+  public emptyText = EMPTY_TEXT;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {

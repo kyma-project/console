@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../../app.config';
 import LuigiClient from '@kyma-project/luigi-client';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',
@@ -14,6 +15,7 @@ export class FilteredApisEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public currentNamespaceId: string;
+  public emptyText = EMPTY_TEXT;
   private currentNamespaceSubscription: Subscription;
 
   constructor(

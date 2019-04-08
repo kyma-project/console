@@ -4,6 +4,7 @@ import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -12,6 +13,9 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class ApplicationsEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
+
+  public emptyText = EMPTY_TEXT;
+
   constructor(
     protected injector: Injector,
     private applicationsService: ApplicationsService,

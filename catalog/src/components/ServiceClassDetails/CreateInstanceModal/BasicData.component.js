@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'styled-components-grid';
+import equal from 'deep-equal';
 
 import { Input, Select } from '@kyma-project/react-components';
 
 import {
   getResourceDisplayName,
-  compareTwoObjects,
   randomNameGenerator,
 } from '../../../commons/helpers';
 
@@ -73,7 +73,8 @@ class BasicData extends React.Component {
     const stepFilled =
       formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
     this.props.callback({
-      stepFilled,
+      stepFilled: stepFilled,
+      firstStepFilled: stepFilled,
     });
   }
 
@@ -85,7 +86,7 @@ class BasicData extends React.Component {
       enableCheckNameExists,
     } = this.state;
 
-    if (compareTwoObjects(this.state, prevState)) return;
+    if (equal(this.state, prevState)) return;
 
     const stepFilled =
       formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
@@ -105,6 +106,7 @@ class BasicData extends React.Component {
       formData,
       tooltipData,
       firstStepFilled: stepFilled,
+      stepFilled,
     });
 
     clearTimeout(this.timer);

@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Select } from '@kyma-project/react-components';
 
-import { compareTwoObjects } from '../../../../commons/helpers';
+import deepEqual from 'deep-equal';
+
 import { Link, SubSectionTitle } from './styled';
 
 import { bindingVariables } from '../InfoButton/variables';
@@ -45,7 +46,7 @@ class BindingsStep extends React.Component {
   componentDidUpdate(_, nextState) {
     const { checkbox, selectedExistingBinding } = this.state;
 
-    if (!compareTwoObjects(this.state, nextState)) {
+    if (!deepEqual(this.state, nextState)) {
       const bindingsStepFilled =
         (!checkbox && selectedExistingBinding !== '') ||
         (checkbox && selectedExistingBinding === '');

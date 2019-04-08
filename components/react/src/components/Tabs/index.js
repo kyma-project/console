@@ -15,6 +15,7 @@ class Tabs extends React.Component {
     children: PropTypes.any.isRequired,
     defaultActiveTabIndex: PropTypes.number,
     callback: PropTypes.func,
+    border: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -79,7 +80,7 @@ class Tabs extends React.Component {
 
     const props = this.getPropsFromActiveTab(children);
     return (
-      <TabsWrapper>
+      <TabsWrapper border={this.props.border}>
         <TabsHeader>
           {this.renderHeader(children)}
           <TabsHeaderAdditionalContent>
@@ -87,10 +88,7 @@ class Tabs extends React.Component {
           </TabsHeaderAdditionalContent>
         </TabsHeader>
         <Separator />
-        <TabsContent
-          noMargin={props.noMargin}
-          background={props.background ? props.background : ''}
-        >
+        <TabsContent noMargin={props && props.noMargin}>
           {this.renderActiveTab(children)}
         </TabsContent>
       </TabsWrapper>

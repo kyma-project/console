@@ -10,6 +10,7 @@ import { InformationModalComponent } from '../../../../shared/components/informa
 import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { EditApplicationModalComponent } from '../edit-application-modal/edit-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-application-details',
@@ -18,6 +19,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   public currentAppId = '';
   public transformedLabels: string[];
+  public emptyText = EMPTY_TEXT;
   private sub: any;
   private prettyStatus = '';
   application: any;

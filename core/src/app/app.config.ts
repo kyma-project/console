@@ -49,7 +49,7 @@ const config = {
   logsModuleUrl: `https://log-ui.${domain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl,
-  dexFQDNUri : 'http://dex-service.kyma-system.svc.cluster.local:5556'
+  dexFQDNUri : 'http://dex-service.kyma-system.svc.cluster.local:5556/keys'
 };
 
 // Overwriting values from injected configuration (k8s configMap -> assets/config/config.js)

@@ -13,25 +13,24 @@
     </span>
   </td>
   <ng-container *ngIf="showBoundServices">
-    <td *ngIf="
-        entry.boundServiceInstanceNames &&
-        entry.boundServiceInstanceNames.length > 0
-      ">
-      <a href="javascript:void(null)" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
-        {{ instance }}
-      </a>
-    </td>
-    <td *ngIf="
-        !entry.boundServiceInstanceNames ||
-        entry.boundServiceInstanceNames.length === 0
-      ">
-      <span></span>
+    <td> 
+      <ng-container *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
+        <a href="javascript:void(null)" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
+          {{ instance }}
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0">
+        {{ emptyText }}
+      </ng-container>
     </td>
   </ng-container>
   <td>
     <span *ngFor="let label of getLabels(entry.labels)" class="fd-token y-fd-token y-fd-token--no-button">
       {{ label }}
     </span>
+    <ng-container *ngIf="!getLabels(entry.labels).length">
+      {{ emptyText }}
+    </ng-container>
   </td>
   <td>
     <app-status-label [statusType]="getStatusType(entry)">

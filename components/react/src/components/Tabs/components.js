@@ -43,7 +43,15 @@ export const TabsWrapper = styled.div`
   margin: 0;
   font-family: '72';
   font-weight: normal;
-  box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
+  ${props =>
+    props.border === true
+      ? `
+    border: solid 1px rgba(151,151,151,0.26);
+    border-radius: 3px;
+  `
+      : `
+    box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
+  `}
 
   .fd-panel {
     box-shadow: none;

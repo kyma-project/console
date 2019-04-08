@@ -4,4 +4,7 @@ export default {
   Mutation: {
     ...DocsContent.Mutation,
   },
+  Query: {
+    ...DocsContent.Query,
+  },
 };

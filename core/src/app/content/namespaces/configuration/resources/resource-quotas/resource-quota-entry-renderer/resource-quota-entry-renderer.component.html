@@ -1,16 +1,10 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
-  <td *ngIf="entry.pods">{{ entry.pods }}</td>
-  <td *ngIf="!entry.pods"></td>
-
-  <td *ngIf="entry.limits.cpu">{{ entry.limits.cpu }}</td>
-  <td *ngIf="!entry.limits.cpu"></td>
-  <td *ngIf="entry.requests.cpu">{{ entry.requests.cpu }}</td>
-  <td *ngIf="!entry.requests.cpu"></td>
-  <td *ngIf="entry.limits.memory">{{ entry.limits.memory }}</td>
-  <td *ngIf="!entry.limits.memory"></td>
-  <td *ngIf="entry.requests.memory">{{ entry.requests.memory }}</td>
-  <td *ngIf="!entry.requests.memory"></td>
+  <td>{{ entry.pods || emptyText }}</td>
+  <td>{{ entry.limits.cpu || emptyText }}</td>
+  <td>{{ entry.requests.cpu || emptyText }}</td>
+  <td>{{ entry.limits.memory || emptyText }}</td>
+  <td>{{ entry.requests.memory || emptyText }}</td>
 
   <td class="fd-has-float-right">
     <y-list-actions

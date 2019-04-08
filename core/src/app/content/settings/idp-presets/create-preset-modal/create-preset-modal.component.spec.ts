@@ -66,7 +66,6 @@ describe('CreatePresetModalComponent', () => {
     expect(component.issuer).toBe('');
     expect(component.isActive).toBeFalsy();
     expect(component.error).toBe('');
-    expect(component.wrongJwks).toBeFalsy();
     expect(component.wrongPresetName).toBeFalsy();
   });
 
@@ -84,7 +83,6 @@ describe('CreatePresetModalComponent', () => {
     expect(component.issuer).toBe('');
     expect(component.isActive).toBeTruthy();
     expect(component.error).toBe('');
-    expect(component.wrongJwks).toBeFalsy();
     expect(component.wrongPresetName).toBeFalsy();
   });
 
@@ -104,7 +102,6 @@ describe('CreatePresetModalComponent', () => {
     expect(component.issuer).toBe('');
     expect(component.isActive).toBeTruthy();
     expect(component.error).toBe('');
-    expect(component.wrongJwks).toBeFalsy();
     expect(component.wrongPresetName).toBeFalsy();
   });
 
@@ -114,8 +111,6 @@ describe('CreatePresetModalComponent', () => {
     component.presetName = 'preset name';
     component.jwks = 'https://jwks';
     component.issuer = 'preset issuer';
-    component.wrongJwks = false;
-    component.validateJwksRegex();
     component.validatePresetNameRegex();
 
     // when
@@ -126,7 +121,6 @@ describe('CreatePresetModalComponent', () => {
     expect(component.presetName).toBe('preset name');
     expect(component.jwks).toBe('https://jwks');
     expect(component.issuer).toBe('preset issuer');
-    expect(component.wrongJwks).toBeFalsy();
     expect(component.wrongPresetName).toBeTruthy();
     expect(component.isActive).toBeTruthy();
     expect(component.error).toBe('');
@@ -138,8 +132,6 @@ describe('CreatePresetModalComponent', () => {
     component.presetName = 'preset-name';
     component.jwks = 'http://wrong-uri';
     component.issuer = 'preset issuer';
-    component.wrongJwks = false;
-    component.validateJwksRegex();
     component.validatePresetNameRegex();
 
     // when
@@ -150,7 +142,6 @@ describe('CreatePresetModalComponent', () => {
     expect(component.presetName).toBe('preset-name');
     expect(component.jwks).toBe('http://wrong-uri');
     expect(component.issuer).toBe('preset issuer');
-    expect(component.wrongJwks).toBeTruthy();
     expect(component.wrongPresetName).toBeFalsy();
     expect(component.isActive).toBeTruthy();
     expect(component.error).toBe('');
@@ -162,8 +153,6 @@ describe('CreatePresetModalComponent', () => {
     component.presetName = 'preset-name';
     component.jwks = 'https://jwks';
     component.issuer = 'preset issuer';
-    component.wrongJwks = false;
-    component.validateJwksRegex();
     component.validatePresetNameRegex();
 
     // when
@@ -175,7 +164,6 @@ describe('CreatePresetModalComponent', () => {
     expect(component.jwks).toBe('https://jwks');
     expect(component.issuer).toBe('preset issuer');
     expect(component.isActive).toBeTruthy();
-    expect(component.wrongJwks).toBeFalsy();
     expect(component.wrongPresetName).toBeFalsy();
     expect(component.error).toBe('');
   });
@@ -227,7 +215,6 @@ describe('CreatePresetModalComponent', () => {
     component.presetName = 'preset-name';
     component.jwks = 'preset jwks';
     component.issuer = 'preset issuer';
-    component.wrongJwks = true;
     component.error = 'mock-error';
     component.wrongPresetName = true;
 
@@ -242,7 +229,6 @@ describe('CreatePresetModalComponent', () => {
       expect(component.jwks).toBe('');
       expect(component.issuer).toBe('');
       expect(component.isActive).toBeFalsy();
-      expect(component.wrongJwks).toBeFalsy();
       expect(component.wrongPresetName).toBeFalsy();
       expect(component.error).toBe('');
       done();

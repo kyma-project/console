@@ -53,6 +53,7 @@ import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
+import { Authentication } from '../../shared/datamodel/authentication';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
@@ -136,13 +137,15 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   isHTTPTriggerAuthenticated = true;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
-  listenerId: string;
+  listenerId: number;
   functionSizes = [];
   dropDownStates = {};
 
   public issuer: string;
   public jwksUri: string;
   public authType: string;
+
+  public canShowLogs = false;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -182,6 +185,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
+          this.initCanShowLogs();
           const eventData = luigiClient.getEventData();
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
@@ -202,6 +206,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                   this.selectedTriggers.push(httpEndPoint);
                   this.isHTTPTriggerAdded = true;
                   this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
+                  this.jwksUri = httpEndPoint.authentication.jwt.jwksUri;
+                  this.authType = httpEndPoint.authentication.type;
                 },
                 err => {
                   // Can be a valid 404 error when api is not found of a function
@@ -888,6 +894,16 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.navigateToList();
   }
 
+  initCanShowLogs() {
+    luigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
+      this.canShowLogs = exists;
+    });
+  }
+
+  showLogs() {
+    luigiClient.linkManager().withParams({function: this.lambda.metadata.name, namespace: this.namespace}).openAsModal('/home/cmf-logs');
+  }
+
   navigateToList() {
     setTimeout(() => {
       luigiClient
@@ -1174,6 +1190,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     if (api.spec.authentication !== undefined) {
       httpEndPoint.isAuthEnabled =
         api.spec.authentication.length !== 0 ? true : false;
+        if (httpEndPoint.isAuthEnabled) {
+          httpEndPoint.authentication = api.spec.authentication[0]
+        }
     }
 
     return httpEndPoint;
