@@ -72,7 +72,9 @@ class BasicData extends React.Component {
     } = this.state;
     const stepFilled =
       formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
+
     this.props.callback({
+      formData,
       stepFilled: stepFilled,
       firstStepFilled: stepFilled,
     });
