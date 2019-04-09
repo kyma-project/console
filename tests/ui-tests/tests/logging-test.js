@@ -9,7 +9,7 @@ import logsCommands from '../commands/logging';
 let browser, page;
 let token = '';
 
-describeIf(dex.isStaticUser(), 'Log UI tests', () => {
+describeIf(dex.isStaticUser() && config.loggingEnabled, 'Log UI tests', () => {
   beforeAll(async () => {
     const data = await common.beforeAll(t => (token = t));
     browser = data.browser;
