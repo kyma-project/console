@@ -199,3 +199,23 @@
 .fd-breadcrumb {
   margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
 }
+
+//Responsive improvments
+@media (max-width: map-get($fd-breakpoints, m)) {
+
+  //Panel grid
+  .fd-panel-grid {
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: fd-space('small');
+  }
+
+  //Action bar
+  .fd-action-bar {
+    display: block;
+    margin-bottom: fd-space('small');
+
+    &__title {
+      margin-bottom: fd-space('tiny');
+    }
+  }
+}
