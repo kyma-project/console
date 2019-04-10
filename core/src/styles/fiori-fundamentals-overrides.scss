@@ -179,8 +179,8 @@
   margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
 }
 
-//Responsive improvments
-@media (max-width: map-get($fd-breakpoints, m)) {
+//Responsive improvements
+@media (max-width: map-get($fd-breakpoints, m)) { // 'm' = 600px
 
   //Panel grid
   .fd-panel-grid {
@@ -190,24 +190,31 @@
 
   //Action bar
   .fd-action-bar {
-    display: block;
+    flex-direction: column;
     margin-bottom: fd-space('small');
 
-    &__title {
-      margin-bottom: fd-space('tiny');
+    &__header {
+      padding-bottom: 0;
+    }
+
+    &__actions {
+      width: 100%;
+      justify-content: flex-end;
     }
 
     .fd-popover {
-      &__body--right {
-        left: -3px;
-        right: auto;
+      &__body {
+        width: 175px;
+        white-space: normal;
+        z-index: 5;
+      }
 
-        &:before,
-        &:after {
-          left: 10px;
-          right: auto;
-        }
+      .fd-menu {
+        white-space: normal;
       }
     }
+  }
+  [class^='fd-col'] {
+    margin-bottom: 12px;
   }
 }
