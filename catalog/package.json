@@ -6,7 +6,7 @@
   "dependencies": {
     "@kyma-project/asyncapi-react": "0.2.0",
     "@kyma-project/luigi-client": "0.4.9",
-    "@kyma-project/odata-react": "0.1.1",
+    "@kyma-project/odata-react": "0.1.2",
     "@kyma-project/react-components": "0.0.43",
     "ajv": "^6.0.0",
     "apollo-cache-inmemory": "^1.3.7",
