@@ -1,5 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-configmaps-entry-renderer',
@@ -9,4 +10,6 @@ export class ConfigMapsEntryRendererComponent extends AbstractKubernetesEntryRen
   constructor(protected injector: Injector) {
     super(injector);
   }
+
+  public emptyText = EMPTY_TEXT;
 }

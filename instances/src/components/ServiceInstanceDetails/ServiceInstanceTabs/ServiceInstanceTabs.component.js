@@ -1,104 +1,332 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import deepEqual from 'deep-equal';
 import AsyncApi from '@kyma-project/asyncapi-react';
 import ODataReact from '@kyma-project/odata-react';
-import { Markdown, Tabs, Tab } from '@kyma-project/react-components';
+import {
+  Markdown,
+  ReactMarkdown,
+  Tabs,
+  Tab,
+} from '@kyma-project/react-components';
 
 import ApiConsole from '../SwaggerApi/SwaggerApiConsole.component';
 
 import { ServiceInstanceTabsContentWrapper } from './styled';
 
-import { sortDocumentsByType, validateContent } from '../../../commons/helpers';
+import {
+  validateContent,
+  processDocFilename,
+  sortDocumentsByType,
+  DocsProcessor,
+} from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
-const ServiceInstanceTabs = ({ serviceClass }) => {
-  const content = serviceClass.content && serviceClass.content;
-  const openApiSpec = serviceClass.openApiSpec && serviceClass.openApiSpec;
-  const asyncApiSpec = serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
-  const odataSpec = serviceClass.odataSpec && serviceClass.odataSpec;
+const validatDocumentsByType = type => {
+  let numberOfSources = 0;
+  for (let item = 0; item < type.length; item++) {
+    if (type[item].source || type[item].Source) numberOfSources++;
+  }
+  return numberOfSources > 0;
+};
 
-  if (
-    (content && Object.keys(content).length && validateContent(content)) ||
-    (openApiSpec && Object.keys(openApiSpec).length) ||
-    (asyncApiSpec && Object.keys(asyncApiSpec).length) ||
-    (odataSpec && Object.keys(odataSpec).length)
-  ) {
-    let documentsByType = [],
-      documentsTypes = [];
+class ServiceInstanceTabs extends Component {
+  state = {
+    docsData: null,
+    openApiSpec: null,
+    asyncapi: null,
+    odata: null,
+    error: null,
+  };
 
-    if (!serviceClass.loading) {
-      if (content && Object.keys(content).length) {
-        documentsByType = sortDocumentsByType(content);
-        documentsTypes = Object.keys(documentsByType);
-      }
+  async componentDidMount() {
+    const { serviceClass } = this.props;
+    if (serviceClass) {
+      Promise.all([
+        await this.setDocs(serviceClass),
+        await this.setOpenApiSpec(serviceClass),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi'),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'odata'),
+      ]);
     }
-
-    const validatDocumentsByType = type => {
-      let numberOfSources = 0;
-      for (let item = 0; item < type.length; item++) {
-        if (type[item].source || type[item].Source) numberOfSources++;
-      }
-      return numberOfSources > 0;
-    };
-
-    return (
-      <ServiceInstanceTabsContentWrapper>
-        <Tabs>
-          {documentsTypes &&
-            documentsTypes.map(type =>
-              documentsByType &&
-              documentsByType[type] &&
-              validatDocumentsByType(documentsByType[type]) ? (
-                <Tab key={type} title={type}>
-                  <Markdown>
-                    {documentsByType[type].map((item, i) =>
-                      item.source || item.Source ? (
-                        <div
-                          key={i}
-                          dangerouslySetInnerHTML={{
-                            __html: item.source || item.Source,
-                          }}
-                        />
-                      ) : null,
-                    )}
-                  </Markdown>
-                </Tab>
-              ) : null,
-            )}
-
-          {openApiSpec && Object.keys(openApiSpec).length ? (
-            <Tab title={'Console'}>
-              <ApiConsole
-                url="http://petstore.swagger.io/v1/swagger.json"
-                schema={openApiSpec}
-              />
-            </Tab>
-          ) : null}
-
-          {asyncApiSpec && Object.keys(asyncApiSpec).length ? (
-            <Tab title={'Events'} margin="0" background="inherit">
-              <AsyncApi
-                schema={asyncApiSpec}
-                theme={asyncApiTheme}
-                config={asyncApiConfig}
-              />
-            </Tab>
-          ) : null}
-
-          {odataSpec && Object.keys(odataSpec).length ? (
-            <Tab title={'OData'} margin="0" background="inherit">
-              <ODataReact schema={odataSpec} />
-            </Tab>
-          ) : null}
-        </Tabs>
-      </ServiceInstanceTabsContentWrapper>
-    );
   }
 
-  return null;
-};
+  async componentDidUpdate(prevProps, _) {
+    const { serviceClass } = this.props;
+    if (serviceClass && !deepEqual(serviceClass, prevProps.serviceClass)) {
+      Promise.all([
+        await this.setDocs(serviceClass),
+        await this.setOpenApiSpec(serviceClass),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'asyncapi'),
+        await this.setAsyncApiOrOdataSpec(serviceClass, 'odata'),
+      ]);
+    }
+  }
+
+  async setDocs(docs) {
+    const properDocsTopic = docs && (docs.docsTopic || docs.clusterDocsTopic);
+
+    const markdownFiles =
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      properDocsTopic.assets.filter(elem => elem.type === 'markdown');
+    const data =
+      markdownFiles &&
+      markdownFiles.length &&
+      markdownFiles[0] &&
+      markdownFiles[0].files.filter(el => el.url.endsWith('.md'));
+
+    if (data) {
+      this.setState({
+        docsData: await this.getAllUrls(data),
+      });
+    }
+  }
+
+  async setAsyncApiOrOdataSpec(data, spec) {
+    const properDocsTopic = data && (data.docsTopic || data.clusterDocsTopic);
+
+    const specFile =
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      Array.isArray(properDocsTopic.assets) &&
+      properDocsTopic.assets.filter(elem => elem.type === spec);
+
+    const urlToSpecFile =
+      specFile &&
+      specFile[0] &&
+      specFile[0].files &&
+      specFile[0].files[0] &&
+      specFile[0].files[0].url;
+    if (
+      !(
+        (spec === 'odata' && urlToSpecFile && urlToSpecFile.endsWith('.xml')) ||
+        (spec === 'asyncapi' && urlToSpecFile)
+      )
+    ) {
+      return null;
+    }
+
+    this.setState({
+      [spec]: await this.getAsyncApiOrOdataSpec(urlToSpecFile),
+    });
+  }
+
+  async setOpenApiSpec(data) {
+    const properDocsTopic = data && (data.docsTopic || data.clusterDocsTopic);
+    const specFile =
+      properDocsTopic &&
+      properDocsTopic.assets &&
+      Array.isArray(properDocsTopic.assets) &&
+      properDocsTopic.assets.filter(elem => elem.type === 'openapi');
+    if (
+      specFile &&
+      specFile[0] &&
+      specFile[0].files &&
+      specFile[0].files[0] &&
+      specFile[0].files[0].url
+    ) {
+      this.setState({
+        openApiSpec: await this.getOpenApiSpec(specFile[0].files[0].url),
+      });
+    }
+  }
+
+  async getOpenApiSpec(link) {
+    const data =
+      link &&
+      fetch(link)
+        .then(response => response.json())
+        .then(text => {
+          return {
+            metadata: link.metadata,
+            url: link.url,
+            source: text,
+          };
+        })
+        .catch(err => {
+          this.setState({
+            error: err,
+          });
+        });
+    return data;
+  }
+
+  async getAsyncApiOrOdataSpec(link) {
+    const data =
+      link &&
+      fetch(link)
+        .then(response => response.text())
+        .then(text => {
+          return {
+            metadata: link.metadata,
+            url: link.url,
+            source: text,
+          };
+        })
+        .catch(err => {
+          this.setState({
+            error: err,
+          });
+        });
+    return data;
+  }
+
+  async getAllUrls(docs) {
+    const data = await Promise.all(
+      docs.map(doc =>
+        fetch(doc.url)
+          .then(response => {
+            return response.text();
+          })
+          .then(text => {
+            return {
+              metadata: doc.metadata,
+              url: doc.url,
+              source: text,
+            };
+          })
+          .catch(err => {
+            throw err;
+          }),
+      ),
+    ).catch(err => {
+      this.setState({
+        error: err,
+      });
+    });
+    return data;
+  }
+
+  render() {
+    const { serviceClass } = this.props;
+
+    //data from new api
+    const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
+
+    if (error) {
+      console.error(error);
+      return <div>{`${error.name}: ${error.message}`}</div>;
+    }
+
+    //data ffrom deprecated api
+    const deprecatedContent = serviceClass.content && serviceClass.content;
+    const deprecatedOpenApiSpec =
+      serviceClass.openApiSpec && serviceClass.openApiSpec;
+    const deprecatedAsyncApiSpec =
+      serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
+    const deprecatedOdataSpec =
+      serviceClass.odataSpec && serviceClass.odataSpec;
+
+    if (
+      (docsData && docsData.length) ||
+      (openApiSpec && openApiSpec.source) ||
+      (odata && odata.source) ||
+      (asyncapi && asyncapi.source) ||
+      (deprecatedContent &&
+        Object.keys(deprecatedContent).length &&
+        validateContent(deprecatedContent)) ||
+      (deprecatedOpenApiSpec && Object.keys(deprecatedOpenApiSpec).length) ||
+      (deprecatedAsyncApiSpec && Object.keys(deprecatedAsyncApiSpec).length) ||
+      (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length)
+    ) {
+      let documentsByType = [],
+        documentsTypes = [];
+
+      if (
+        !serviceClass.loading &&
+        deprecatedContent &&
+        Object.keys(deprecatedContent).length
+      ) {
+        documentsByType = sortDocumentsByType(deprecatedContent);
+        documentsTypes = Object.keys(documentsByType);
+      }
+
+      const deprecatedDocs =
+        documentsTypes &&
+        documentsTypes.map(type =>
+          documentsByType &&
+          documentsByType[type] &&
+          !validatDocumentsByType(documentsByType[type]) ? null : (
+            <Tab key={type} title={type}>
+              <Markdown>
+                {documentsByType[type].map((item, i) => {
+                  return !(item.source || item.Source) ? null : (
+                    <div
+                      key={i}
+                      dangerouslySetInnerHTML={{
+                        __html: item.source || item.Source,
+                      }}
+                    />
+                  );
+                })}
+              </Markdown>
+            </Tab>
+          ),
+        );
+
+      const newDocs = docsData
+        ? new DocsProcessor(docsData)
+            .removeMatadata()
+            .replaceImagePaths()
+            .result()
+        : null;
+
+      const docsFromNewApi = !newDocs
+        ? null
+        : newDocs.map(type => (
+            <Tab
+              title={
+                (type.metadata && type.metadata.title) ||
+                processDocFilename(type.url)
+              }
+              key={type.url}
+            >
+              {type && type.source && <ReactMarkdown source={type.source} />}
+            </Tab>
+          ));
+      return (
+        <ServiceInstanceTabsContentWrapper>
+          <Tabs>
+            {docsData && docsData.length ? docsFromNewApi : deprecatedDocs}
+            {(openApiSpec && openApiSpec.source) ||
+            (deprecatedOpenApiSpec &&
+              Object.keys(deprecatedOpenApiSpec).length) ? (
+              <Tab title={'Console'}>
+                <ApiConsole
+                  url="http://petstore.swagger.io/v1/swagger.json"
+                  schema={openApiSpec.source || deprecatedOpenApiSpec}
+                />
+              </Tab>
+            ) : null}
+            {(asyncapi && asyncapi.source) ||
+            (deprecatedAsyncApiSpec &&
+              Object.keys(deprecatedAsyncApiSpec).length) ? (
+              <Tab title={'Events'} margin="0" background="inherit">
+                <AsyncApi
+                  schema={
+                    (asyncapi && asyncapi.source) || deprecatedAsyncApiSpec
+                  }
+                  theme={asyncApiTheme}
+                  config={asyncApiConfig}
+                />
+              </Tab>
+            ) : null}
+            {(odata && odata.source) ||
+            (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length) ? (
+              <Tab title={'OData'} margin="0" background="inherit">
+                <ODataReact schema={odata.source || deprecatedOdataSpec} />
+              </Tab>
+            ) : null}
+          </Tabs>
+        </ServiceInstanceTabsContentWrapper>
+      );
+    }
+
+    return null;
+  }
+}
 
 ServiceInstanceTabs.propTypes = {
   serviceClass: PropTypes.object.isRequired,

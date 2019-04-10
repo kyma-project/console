@@ -1,11 +1,10 @@
 <tr>
-  <td class="fd-has-font-weight-bold">{{ entry.getName() }}</td>
-  <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>
-  <td>{{ entry.spec.url }}</td>
+  <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
+  <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
+  <td>{{ entry.url }}</td>
   <td>
-    <app-status-label 
-      [statusType]="getStatusType(entry)">
+    <app-status-label>
       {{ getStatus(entry) }}
-    </app-status-label>
-  </td>
+    </app-status-label>    
+</td>
 </tr>

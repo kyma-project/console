@@ -14,9 +14,9 @@ export class CreatePresetModalComponent {
   public issuer = '';
   public jwks = '';
   public isActive = false;
-  public wrongJwks = false;
   public wrongPresetName = false;
   public error = '';
+  public urlPrefix = 'https://';
 
   constructor(
     private idpPresetsService: IdpPresetsService,
@@ -32,7 +32,6 @@ export class CreatePresetModalComponent {
       this.issuer = '';
       this.jwks = '';
       this.error = '';
-      this.wrongJwks = false;
       this.wrongPresetName = false;
     });
   }
@@ -46,14 +45,8 @@ export class CreatePresetModalComponent {
       this.presetName &&
       this.issuer &&
       this.jwks &&
-      !this.wrongJwks &&
       !this.wrongPresetName
     );
-  }
-
-  validateJwksRegex() {
-    const regex = /^https:\/\/.+$/;
-    this.wrongJwks = this.jwks ? !regex.test(this.jwks) : false;
   }
 
   validatePresetNameRegex() {
@@ -67,7 +60,7 @@ export class CreatePresetModalComponent {
     const data = {
       name: this.presetName,
       issuer: this.issuer,
-      jwksUri: this.jwks
+      jwksUri: this.urlPrefix + this.jwks
     };
 
     return this.idpPresetsService.createIdpPreset(data).subscribe(

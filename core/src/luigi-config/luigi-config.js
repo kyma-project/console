@@ -1,3 +1,5 @@
+import LuigiClient from '@kyma-project/luigi-client';
+
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
@@ -191,25 +193,35 @@ function getNodes(context) {
       'namespace',
       'namespace'
     ])
-  ]).then(function(values) {
-    var nodeTree = [...staticNodes];
-    values.forEach(function(val) {
-      if (val === 'systemNamespace') {
-        nodeTree.forEach(item => {
-          if (item.context) {
-            item.context['isSystemNamespace'] = true;
-          } else {
-            item['context'] = {
-              isSystemNamespace: true
-            };
-          }
-        });
-      } else {
-        nodeTree = [].concat.apply(nodeTree, val);
-      }
+  ])
+    .then(function(values) {
+      var nodeTree = [...staticNodes];
+      values.forEach(function(val) {
+        if (val === 'systemNamespace') {
+          nodeTree.forEach(item => {
+            if (item.context) {
+              item.context['isSystemNamespace'] = true;
+            } else {
+              item['context'] = {
+                isSystemNamespace: true
+              };
+            }
+          });
+        } else {
+          nodeTree = [].concat.apply(nodeTree, val);
+        }
+      });
+      return nodeTree;
+    })
+    .catch(err => {
+      const errParsed = JSON.parse(err);
+      console.error('Error', errParsed);
+      const settings = {
+        text: `Namespace ${errParsed.details.name} not found.`,
+        type: 'error'
+      };
+      LuigiClient.uxManager().showAlert(settings);
     });
-    return nodeTree;
-  });
 }
 
 /**
@@ -437,10 +449,9 @@ function fetchFromKyma(url) {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        //   relogin();
-        // }
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
         reject(xmlHttp.response);
       }
     };
@@ -451,7 +462,7 @@ function fetchFromKyma(url) {
   });
 }
 
-function fetchFromGraphQL(query, variables) {
+function fetchFromGraphQL(query, variables, gracefully) {
   return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
@@ -472,7 +483,11 @@ function fetchFromGraphQL(query, variables) {
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
-        reject(xmlHttp.response);
+        if (!gracefully) {
+          reject(xmlHttp.response);
+        } else {
+          resolve(null);
+        }
       }
     };
 
@@ -506,7 +521,7 @@ function postToKyma(url, body) {
         // if (xmlHttp.status === 401) {
         // relogin();
         // }
-        console.log(xmlHttp);
+        // console.log(xmlHttp);
         reject(xmlHttp.response);
       }
     };
@@ -599,27 +614,32 @@ function getBackendModules() {
       name
     }
   }`;
-  return fetchFromGraphQL(query);
+  const gracefully = true;
+  return fetchFromGraphQL(query, undefined, gracefully);
 }
 
 function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
-  ).then(function(response) {
-    var namespaces = [];
-    response.items.map(namespace => {
-      if (namespace.status && namespace.status.phase !== 'Active') {
-        return; //"pretend" that inactive namespace is already removed
-      }
-      namespaceName = namespace.metadata.name;
-      namespaces.push({
-        category: 'Namespaces',
-        label: namespaceName,
-        pathValue: namespaceName
+  )
+    .then(function getNamespacesFromApi(response) {
+      var namespaces = [];
+      response.items.map(namespace => {
+        if (namespace.status && namespace.status.phase !== 'Active') {
+          return; //"pretend" that inactive namespace is already removed
+        }
+        const namespaceName = namespace.metadata.name;
+        namespaces.push({
+          category: 'Namespaces',
+          label: namespaceName,
+          pathValue: namespaceName
+        });
       });
+      return namespaces;
+    })
+    .catch(function catchNamespaces(err) {
+      console.error('get namespace: error', err);
     });
-    return namespaces;
-  });
 }
 
 function relogin() {
@@ -627,9 +647,15 @@ function relogin() {
   location.reload();
 }
 
+function getFreshKeys() {
+  // manually re-fetching keys, since this is a major pain point
+  // until dex has possibility of no-cache
+  return fetch('https://dex.' + k8sDomain + '/keys', { cache: 'no-cache' });
+}
+
 let backendModules = [];
 let selfSubjectRulesReview = [];
-Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
+Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
   .then(
     res => {
       const modules = res[0];
@@ -648,7 +674,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
       }
     },
     err => {
-      console.error(err);
+      // console.error(err);
     }
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
@@ -821,12 +847,17 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview()])
         }
       }
     });
+  })
+  .catch(err => {
+    console.error('Config Init Error', err);
   });
 
 window.addEventListener('message', e => {
   if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
     const namespace = e.data.namespace;
     const data = e.data.data;
+    let limitHasBeenExceeded;
+    let limitExceededErrors;
     if (data && data.resourceQuotasStatus) {
       limitHasBeenExceeded = data.resourceQuotasStatus.exceeded;
     }

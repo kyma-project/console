@@ -43,7 +43,9 @@
           </tr>
           <tr>
             <td class="y-fd-table--col-2 fd-has-color-text-4">Namespace</td>
-            <td>{{ roleDetails.metadata.namespace }}</td>
+            <td>
+              {{ roleDetails.metadata.namespace || emptyText }}
+            </td>
           </tr>
           <tr>
             <td class="y-fd-table--col-2 fd-has-color-text-4">Creation Date</td>

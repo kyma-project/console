@@ -2,6 +2,9 @@ import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
+import { EMPTY_TEXT } from 'shared/constants/constants';
+
+import * as luigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -15,16 +18,23 @@ export class PodsEntryRendererComponent
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
-    this.actions.push({
-      function: 'showLogs',
-      name: 'Show Logs'
-    });
   }
   public disabled = false;
   public objectKeys = Object.keys;
+  public emptyText = EMPTY_TEXT;
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
+    luigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
+      if (exists) {
+        {
+          this.actions.push({
+            function: 'showLogs',
+            name: 'Show Logs'
+          });
+        }
+      }
+    });
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from '@kyma-project/react-components';
+import { tokenize } from '../../../../commons/helpers';
 
 import NavigationSections from './NavigationSections';
 import {
@@ -30,59 +31,70 @@ function NavigationGroup({
     <NavigationSectionArrow
       onClick={() => {
         setActiveNav({
-          id: item.id,
+          id: tokenize(item.name),
           type: groupType,
           hash: '',
         });
       }}
-      activeArrow={item.id === activeNav.id || item.id === activeContent.id}
+      activeArrow={
+        tokenize(item.name) === activeNav.id ||
+        tokenize(item.name) === activeContent.id
+      }
       active={isLinkActive({
-        id: item.id,
+        id: tokenize(item.name),
         type: groupType,
       })}
-      data-e2e-id={`navigation-arrow-${groupType}-${item.id}`}
+      data-e2e-id={`navigation-arrow-${groupType}-${tokenize(item.name)}`}
     />
   );
 
   const renderNavigationItem = item => {
-    let topics = null;
-    if (otherProps.topics) {
-      topics = otherProps.topics.find(obj => obj.id === item.id);
+    let filesByTypes = {};
+
+    if (!item || !item.assets || !item.assets.length) {
+      return null;
     }
 
+    item.assets[0].files.forEach(file => {
+      let type = file.metadata.type || file.metadata.title;
+      if (!filesByTypes[type]) {
+        filesByTypes[type] = [];
+      }
+      filesByTypes[type].push(file);
+      return file;
+    });
+
     return (
-      <NavigationItem key={item.id}>
+      <NavigationItem key={tokenize(item.name)}>
         <NavigationLinkWrapper>
-          {topics && topics.sections && renderArrow(item)}
+          {item.assets && item.assets.length > 0 && renderArrow(item)}
           <NavigationLink
             active={isLinkActive({
-              id: item.id,
+              id: tokenize(item.name),
               type: groupType,
             })}
             onClick={() => {
               chooseActive({
-                id: item.id,
+                id: tokenize(item.name),
                 type: groupType,
               });
             }}
-            data-e2e-id={`navigation-link-${groupType}-${item.id}`}
+            data-e2e-id={`navigation-link-${groupType}-${tokenize(item.name)}`}
           >
             {item.displayName}
           </NavigationLink>
         </NavigationLinkWrapper>
-        {topics && topics.sections && (
-          <NavigationSections
-            items={topics.sections}
-            groupType={groupType}
-            rootId={item.id}
-            activeContent={activeContent}
-            activeNav={activeNav}
-            activeNodes={activeNodes}
-            setActiveNav={setActiveNav}
-            chooseActive={chooseActive}
-            isLinkActive={isLinkActive}
-          />
-        )}
+        <NavigationSections
+          items={filesByTypes}
+          groupType={groupType}
+          rootId={tokenize(item.displayName)}
+          activeContent={activeContent}
+          activeNav={activeNav}
+          activeNodes={activeNodes}
+          setActiveNav={setActiveNav}
+          chooseActive={chooseActive}
+          isLinkActive={isLinkActive}
+        />
       </NavigationItem>
     );
   };
@@ -95,6 +107,7 @@ function NavigationGroup({
           {title}
         </NavigationHeader>
       )}
+
       <NavigationItems showAll>
         {items.map(item => renderNavigationItem(item))}
       </NavigationItems>

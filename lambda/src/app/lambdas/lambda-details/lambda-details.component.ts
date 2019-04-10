@@ -5,6 +5,7 @@ import {
   ViewChild,
   OnInit,
   OnDestroy,
+  ElementRef,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -52,6 +53,7 @@ import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
+import { Authentication } from '../../shared/datamodel/authentication';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
@@ -87,6 +89,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   public initialLabels: string[];
   public updatedLabels: string[];
 
+  @ViewChild('functionName') functionName: ElementRef;
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('eventTriggerChooserModal')
   eventTriggerChooserModal: EventTriggerChooserComponent;
@@ -129,17 +132,20 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   envVarValue = '';
   isEnvVariableNameInvalid = false;
   isFunctionNameInvalid = false;
+  isFunctionNameEmpty = false;
   isHTTPTriggerAdded = false;
   isHTTPTriggerAuthenticated = true;
   existingHTTPEndpoint: Api;
   bindingState: Map<string, InstanceBindingState>;
-  listenerId: string;
+  listenerId: number;
   functionSizes = [];
   dropDownStates = {};
 
   public issuer: string;
   public jwksUri: string;
   public authType: string;
+
+  public canShowLogs = false;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -179,6 +185,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
+          this.initCanShowLogs();
           const eventData = luigiClient.getEventData();
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
@@ -199,6 +206,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                   this.selectedTriggers.push(httpEndPoint);
                   this.isHTTPTriggerAdded = true;
                   this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
+                  this.jwksUri = httpEndPoint.authentication.jwt.jwksUri;
+                  this.authType = httpEndPoint.authentication.type;
                 },
                 err => {
                   // Can be a valid 404 error when api is not found of a function
@@ -229,6 +238,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             if (!this.lambda.metadata.name || this.isFunctionNameInvalid) {
               this.editor.setReadOnly(true);
             }
+            if (this.lambda.metadata.name === '') {
+              this.functionName.nativeElement.focus()
+            }
+
           }
 
           this.eventActivationsService
@@ -881,6 +894,16 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.navigateToList();
   }
 
+  initCanShowLogs() {
+    luigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
+      this.canShowLogs = exists;
+    });
+  }
+
+  showLogs() {
+    luigiClient.linkManager().withParams({function: this.lambda.metadata.name, namespace: this.namespace}).openAsModal('/home/cmf-logs');
+  }
+
   navigateToList() {
     setTimeout(() => {
       luigiClient
@@ -1029,6 +1052,13 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
     const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
+    this.isFunctionNameEmpty =
+      this.lambda.metadata.name === ''
+        ? true
+        : false;
+    if (this.isFunctionNameEmpty) {
+      this.isLambdaFormValid = false
+    }
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
       this.lambda.metadata.name === ''
@@ -1160,6 +1190,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     if (api.spec.authentication !== undefined) {
       httpEndPoint.isAuthEnabled =
         api.spec.authentication.length !== 0 ? true : false;
+        if (httpEndPoint.isAuthEnabled) {
+          httpEndPoint.authentication = api.spec.authentication[0]
+        }
     }
 
     return httpEndPoint;

@@ -6,6 +6,7 @@ import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kuberne
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
+import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-deployment-entry-renderer',
@@ -18,6 +19,7 @@ export class DeploymentEntryRendererComponent
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
   public isSystemNamespace: boolean;
+  public emptyText = EMPTY_TEXT;
 
   constructor(
     protected injector: Injector,

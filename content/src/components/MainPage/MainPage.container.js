@@ -3,28 +3,48 @@ import { graphql, compose } from 'react-apollo';
 
 import MainPage from './MainPage.component';
 
-import { TOPICS_QUERY, DOCS_LOADING_STATUS } from './queries';
+import { CLUSTER_DOCS_TOPICS } from './queries';
 
-import { prepareTopicsList } from '../../commons/yaml.js';
+const filterExtensions = ['md'];
 
 export default compose(
-  graphql(TOPICS_QUERY, {
-    name: 'topics',
-    options: props => {
-      return {
-        fetchPolicy: 'cache-and-network',
-        errorPolicy: 'all',
-        variables: {
-          input: prepareTopicsList(),
-        },
-      };
+  graphql(CLUSTER_DOCS_TOPICS, {
+    name: 'clusterDocsTopicsComponents',
+    options: {
+      variables: {
+        viewContext: 'docs-ui',
+        groupName: 'components',
+        filterExtensions: filterExtensions,
+      },
     },
   }),
-  graphql(DOCS_LOADING_STATUS, {
-    name: 'docsLoadingStatus',
+  graphql(CLUSTER_DOCS_TOPICS, {
+    name: 'clusterDocsTopicsRoot',
+    options: {
+      variables: {
+        viewContext: 'docs-ui',
+        groupName: 'root',
+        filterExtensions: filterExtensions,
+      },
+    },
   }),
 )(props => {
-  if (props.topics.loading || !props.topics.topics) return null;
+  if (
+    props.clusterDocsTopicsRoot.loading ||
+    props.clusterDocsTopicsComponents.loading ||
+    !props.clusterDocsTopicsRoot.clusterDocsTopics ||
+    !props.clusterDocsTopicsComponents.clusterDocsTopics
+  ) {
+    return null;
+  }
 
-  return <MainPage {...props} topics={props.topics.topics} />;
+  return (
+    <MainPage
+      {...props}
+      clusterDocsTopicsRoot={props.clusterDocsTopicsRoot.clusterDocsTopics}
+      clusterDocsTopicsComponents={
+        props.clusterDocsTopicsComponents.clusterDocsTopics
+      }
+    />
+  );
 });
