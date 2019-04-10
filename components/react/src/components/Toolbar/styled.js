@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import {
-  ActionBar as AB,
-  ActionBarBack as ABBack,
-  ActionBarHeader as ABHeader,
-  ActionBarActions as ABActions,
-} from 'fundamental-react';
+import { ActionBar as AB } from 'fundamental-react/lib/ActionBar';
 
+const ABBack = AB.Back;
+const ABHeader = AB.Header;
+const ABActions = AB.Actions;
 export const ActionBar = styled(AB)`
   && {
     padding: 30px 30px 0 30px;
