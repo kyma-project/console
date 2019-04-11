@@ -94,7 +94,7 @@ class BasicData extends React.Component {
       formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
 
     this.setState({
-      stepFilled,
+      stepFilled: stepFilled,
     });
 
     const tooltipData = !stepFilled
