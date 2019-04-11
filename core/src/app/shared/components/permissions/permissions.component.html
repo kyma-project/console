@@ -1,25 +1,30 @@
+<header class="fd-page__header fd-has-background-color-background-2">
+  <section class="fd-section">
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>
+          {{ title }}
+        </fd-action-bar-title>
+      </fd-action-bar-header>
+    </fd-action-bar>
+    <ul class="fd-tabs" role="tablist">
+      <li class="fd-tabs__item">
+        <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="bindings" [attr.aria-selected]="bindingsTabExpanded"
+          (click)="changeTab('bindings')" role="tab">{{ bindingsTabTitle }}</a>
+      </li>
+      <li class="fd-tabs__item" *ngIf="!isGlobalMode">
+        <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="roles" [attr.aria-selected]="rolesTabExpanded"
+          (click)="changeTab('roles')" role="tab">Roles</a>
+      </li>
+      <li class="fd-tabs__item">
+        <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="clusterRoles" [attr.aria-selected]="clusterRolesTabExpanded"
+          (click)="changeTab('clusterRoles')" role="tab">Cluster Roles</a>
+      </li>
+    </ul>
+  </section>
+</header>
+
 <section class="fd-section">
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>
-        {{ title }}
-      </fd-action-bar-title>
-    </fd-action-bar-header>
-  </fd-action-bar>
-  <ul class="fd-tabs" role="tablist">
-    <li class="fd-tabs__item">
-      <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="bindings" [attr.aria-selected]="bindingsTabExpanded"
-        (click)="changeTab('bindings')" role="tab">{{ bindingsTabTitle }}</a>
-    </li>
-    <li class="fd-tabs__item" *ngIf="!isGlobalMode">
-      <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="roles" [attr.aria-selected]="rolesTabExpanded"
-        (click)="changeTab('roles')" role="tab">Roles</a>
-    </li>
-    <li class="fd-tabs__item">
-      <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="clusterRoles" [attr.aria-selected]="clusterRolesTabExpanded"
-        (click)="changeTab('clusterRoles')" role="tab">Cluster Roles</a>
-    </li>
-  </ul>
   <div class="fd-tabs__panel" [attr.aria-expanded]="bindingsTabExpanded" id="bindings" role="tabpanel">
     <app-bindings [mode]="isGlobalMode ? 'clusterRoles' : 'roles'"></app-bindings>
   </div>
