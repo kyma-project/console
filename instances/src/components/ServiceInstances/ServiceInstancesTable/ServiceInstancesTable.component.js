@@ -111,6 +111,7 @@ export class ServiceInstancesTable extends Component {
               }
 
               const planDisplayName = getResourceDisplayName(plan);
+
               if (
                 instance.planSpec &&
                 instance.planSpec !== null &&
