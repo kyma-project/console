@@ -352,7 +352,10 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       const filteredInstances = await catalog.getInstances(frame3);
       expect(filteredInstances.length).toEqual(1);
 
+      await frame3.waitForSelector(servicePlanButton);
       await frame3.click(servicePlanButton);
+
+      await frame3.waitForSelector(servicePlanContentSelector);
       const servicePlanContent = await frame3.$eval(
         servicePlanContentSelector,
         item => item.innerHTML,
