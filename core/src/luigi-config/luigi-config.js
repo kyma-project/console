@@ -560,24 +560,62 @@ function getSelfSubjectRulesReview() {
 }
 
 function checkRules(nodeToCheckPermissionsFor) {
-  let hasPermissions = false;
-  if (nodeToCheckPermissionsFor.adminOnly) {
-    if (selfSubjectRulesReview.length > 0) {
-      selfSubjectRulesReview.forEach(rule => {
-        if (
-          rule.verbs.includes('*') &&
-          (rule.apiGroups.includes('') || rule.apiGroups.includes('*')) &&
-          rule.resources.includes('*')
-        ) {
-          hasPermissions = true;
-        }
-      });
-    }
-  } else {
+  let hasPermissions = true;
+  // if (nodeToCheckPermissionsFor.adminOnly) {
+  //   if (selfSubjectRulesReview.length > 0) {
+  //     selfSubjectRulesReview.forEach(rule => {
+  //       if (
+  //         rule.verbs.includes('*') &&
+  //         (rule.apiGroups.includes('') || rule.apiGroups.includes('*')) &&
+  //         rule.resources.includes('*')
+  //       ) {
+  //         hasPermissions = true;
+  //       }
+  //     });
+  //   }
+  if (nodeToCheckPermissionsFor.requiredPermissions === null || nodeToCheckPermissionsFor.requiredPermissions === undefined || nodeToCheckPermissionsFor.requiredPermissions.length === 0) {
     hasPermissions = true;
+  } else {
+    debugger;
+    nodeToCheckPermissionsFor.requiredPermissions.forEach(requiredPermission => {
+      if(!matchingRuleFound(selfSubjectRulesReview, requiredPermission)){
+        hasPermissions = false;
+      }
+    });
   }
   return hasPermissions;
 }
+
+function arrayContainStringOrJoker(array, stringToFind, jokerString) {
+    if(array === null || array === undefined) {
+      return false;
+    }
+    let contains = false
+    array.forEach(element => {
+        if (element === stringToFind || element === jokerString) {
+          contains = true;
+        }
+    });
+    return contains;
+}
+
+function matchingRuleFound(allrules, requiredRule) {
+  if(allrules === null || allrules === undefined) {
+    return false;
+  }
+  let matchFound = false
+  allrules.forEach(rule => {
+      if (arrayContainStringOrJoker(rule.apiGroups, requiredRule.apiGroup, '*') &&
+      arrayContainStringOrJoker(rule.resources, requiredRule.resource, '*') &&
+      arrayContainStringOrJoker(rule.verbs, requiredRule.verb, '*')) {
+        matchFound = true;
+        console.log("Matching Rule : ", rule)
+      }
+  });
+  return matchFound;
+}
+
+
 
 function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
   let hasPermissions = true;
@@ -775,7 +813,12 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
                         ]
                       }
                     ],
-                    adminOnly: true
+                    // adminOnly: true,
+                    requiredPermissions : [{
+                      apiGroup : "rbac.authorization.k8s.io",
+                      resource : "clusterrolebindings1",
+                      verb : "create"
+                    }]
                   },
                   {
                     category: {
