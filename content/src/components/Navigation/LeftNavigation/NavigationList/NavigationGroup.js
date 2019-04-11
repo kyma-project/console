@@ -50,6 +50,7 @@ function NavigationGroup({
 
   const renderNavigationItem = item => {
     let filesByTypes = {};
+
     if (!item || !item.assets || !item.assets.length) {
       return null;
     }

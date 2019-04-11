@@ -20,6 +20,7 @@ class App extends React.Component {
 
   scheduleClearNotification() {
     const { clearNotification } = this.props;
+
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       if (typeof clearNotification === 'function') {
