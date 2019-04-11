@@ -110,6 +110,10 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
 import { FundamentalNgxModule } from 'fundamental-ngx';
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { AppConfig } from './app.config'
 
 @NgModule({
   declarations: [
@@ -206,10 +210,24 @@ import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstra
     ListModule,
     ClipboardModule,
     ClickOutsideModule,
-    FundamentalNgxModule
+    FundamentalNgxModule,
+    ApolloModule,
+    HttpLinkModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: AppConfig.graphqlApiUrl
+          })
+        }
+      },
+      deps: [HttpLink]
+    },
     NamespacesService,
     CurrentNamespaceService,
     ApplicationsService,

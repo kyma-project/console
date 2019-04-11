@@ -3,10 +3,10 @@ import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-renderer/replica-sets-header-renderer.component';
-import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { IEmptyListData } from 'shared/datamodel';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   selector: 'app-replica-sets',
@@ -25,13 +25,13 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    graphQLClientService: GraphQLClientService,
+    apollo: Apollo,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentNamespaceService,
       commService,
-      graphQLClientService,
+      apollo,
       changeDetector
     );
   }

@@ -14,10 +14,10 @@ import { AbstractKubernetesElementListComponent } from '../../namespaces/operati
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-provider';
-import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   selector: 'app-applications',
@@ -44,12 +44,12 @@ export class ApplicationsComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private graphQLClientService: GraphQLClientService,
+    private apollo: Apollo,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
 
-    const query = `query {
+    const query = `query Applications{
       applications{
         name
         status
@@ -62,7 +62,7 @@ export class ApplicationsComponent
       AppConfig.graphqlApiUrl,
       query,
       undefined,
-      this.graphQLClientService
+      this.apollo
     );
 
     this.entryRenderer = ApplicationsEntryRendererComponent;

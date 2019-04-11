@@ -8,10 +8,10 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
 import { AppConfig } from '../../../../../app.config';
 import { Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
-import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { ActivatedRoute } from '@angular/router';
 import { IEmptyListData } from 'shared/datamodel';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   selector: 'app-filtered-apis',
@@ -33,7 +33,7 @@ export class FilteredApisComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private graphQLClientService: GraphQLClientService,
+    private apollo: Apollo,
     changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {
@@ -79,7 +79,7 @@ export class FilteredApisComponent
             namespace: this.currentNamespaceId,
             serviceName: this.serviceName
           },
-          this.graphQLClientService
+          this.apollo
         );
         this.entryRenderer = FilteredApisEntryRendererComponent;
         this.headerRenderer = FilteredApisHeaderRendererComponent;

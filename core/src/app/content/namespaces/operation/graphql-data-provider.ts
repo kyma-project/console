@@ -6,20 +6,21 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { Observable } from 'rxjs';
-import { delay, publishReplay, refCount } from 'rxjs/operators';
+import { publishReplay, refCount } from 'rxjs/operators';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
   facetMatcher = new SimpleFacetMatcher();
-  queryCache: Observable<any>;
+  queryCache: any; 
 
   constructor(
     private url: string,
     private query: string,
     private variables: object,
-    private graphQLClientService: GraphQLClientService
+    private apollo: Apollo
   ) {}
 
   getData(
@@ -31,16 +32,16 @@ export class GraphQLDataProvider implements DataProvider {
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
       if (noCache || !this.queryCache) {
-        this.queryCache = this.graphQLClientService
-          .request(this.url, this.query, this.variables)
+        this.queryCache = this.apollo
+          .query({query: gql`${this.query}`, variables: this.variables})
           .pipe(
             publishReplay(1),
             refCount()
           );
       }
-
       this.queryCache.subscribe(
         res => {
+          res = res.data;
           const elementsKey = Object.keys(res)[0];
           const elements = res[elementsKey];
 

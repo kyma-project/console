@@ -8,11 +8,12 @@ import { AbstractKubernetesElementListComponent } from './abstract-kubernetes-el
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
-import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import { GraphQLDataProvider } from './graphql-data-provider';
 import { AppConfig } from 'app/app.config';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'abstract-graphql-element-list',
@@ -35,7 +36,7 @@ export class AbstractGraphqlElementListComponent
   constructor(
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private graphQLClientService: GraphQLClientService,
+    private apollo: Apollo,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, null, commService);
@@ -50,7 +51,7 @@ export class AbstractGraphqlElementListComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.graphQLClientService
+          this.apollo
         );
       });
   }
@@ -65,11 +66,11 @@ export class AbstractGraphqlElementListComponent
 
   editEntryEventCallback(entry) {
     const query = this.getResourceJSONQuery();
-    this.graphQLClientService
-      .request(AppConfig.graphqlApiUrl, query, {
+    this.apollo
+      .query({query: gql`${query}`, variables: {
         name: entry.name,
         namespace: this.currentNamespaceId
-      })
+      }})
       .subscribe(data => {
         const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
         this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
@@ -91,10 +92,11 @@ export class AbstractGraphqlElementListComponent
     const namespace = this.currentNamespaceId;
     const mutation = this.getDeleteMutation();
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      mutation,
-      { name, namespace }
+    return this.apollo.mutate(
+      {
+        mutation: gql`${mutation}`,
+        variables: { name, namespace }
+      }
     );
   }
 

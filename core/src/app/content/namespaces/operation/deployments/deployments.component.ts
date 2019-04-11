@@ -4,13 +4,13 @@ import { Subscription } from 'rxjs';
 import { Filter } from 'app/generic-list';
 import { AppConfig } from '../../../../app.config';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 import { CurrentNamespaceService } from '../../services/current-namespace.service';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { GraphQLDataProvider } from '../graphql-data-provider';
 import { DeploymentEntryRendererComponent } from './deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/deployment-header-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   selector: 'app-deployments',
@@ -30,7 +30,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private graphQLClientService: GraphQLClientService,
+    private apollo: Apollo,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
@@ -71,7 +71,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.graphQLClientService
+          this.apollo
         );
 
         this.entryRenderer = DeploymentEntryRendererComponent;

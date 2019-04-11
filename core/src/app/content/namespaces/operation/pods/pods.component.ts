@@ -2,12 +2,12 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { IEmptyListData } from 'shared/datamodel';
-import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-renderer.component';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 
 import * as luigiClient from '@kyma-project/luigi-client';
+import { Apollo } from 'apollo-angular';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -23,13 +23,13 @@ export class PodsComponent extends AbstractGraphqlElementListComponent {
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    graphQLClientService: GraphQLClientService,
+    apollo: Apollo,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentNamespaceService,
       commService,
-      graphQLClientService,
+      apollo,
       changeDetector
     );
   }
