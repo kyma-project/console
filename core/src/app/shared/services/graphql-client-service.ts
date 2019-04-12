@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class GraphQLClientService {
@@ -9,13 +10,13 @@ export class GraphQLClientService {
     private apollo: Apollo
   ) {}
 
-  gqlQuery (query, variables = {}) {
+  gqlQuery (query, variables = {}): Observable<any> {
     return this.apollo
     .watchQuery({query: gql`${query}`, variables}).valueChanges
     .pipe(map(res => res.data));
   }
 
-  gqlMutation (query, variables = {}) {
+  gqlMutation (query, variables = {}): Observable<any> {
     return this.apollo
     .mutate({mutation: gql`${query}`, variables})
     .pipe(map(res => res.data));
