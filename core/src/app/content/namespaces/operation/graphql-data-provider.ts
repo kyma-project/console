@@ -6,7 +6,7 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { publishReplay, refCount } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -33,13 +33,14 @@ export class GraphQLDataProvider implements DataProvider {
     return new Observable(observer => {
       if (noCache || !this.queryCache) {
         this.queryCache = this.apollo
-          .query({query: gql`${this.query}`, variables: this.variables})
-          .pipe(
-            publishReplay(1),
-            refCount()
-          );
-      }
-      this.queryCache.subscribe(
+          .watchQuery({query: gql`${this.query}`, variables: this.variables});
+      } 
+      this.queryCache.valueChanges
+        .pipe(
+          publishReplay(1),
+          refCount()
+        )
+        .subscribe(
         res => {
           res = res.data;
           const elementsKey = Object.keys(res)[0];
