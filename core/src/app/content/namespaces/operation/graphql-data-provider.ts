@@ -32,9 +32,15 @@ export class GraphQLDataProvider implements DataProvider {
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
       if (noCache || !this.queryCache) {
-        this.queryCache = this.apollo
-          .watchQuery({query: gql`${this.query}`, variables: this.variables});
-      } 
+        if(!this.queryCache){
+          this.queryCache = this.apollo
+          .watchQuery({query: gql`${this.query}`, variables: this.variables})
+        } else {
+          this.queryCache.resetLastResults();
+          this.queryCache.refetch();
+        }
+      };
+        
       this.queryCache.valueChanges
         .pipe(
           publishReplay(1),
