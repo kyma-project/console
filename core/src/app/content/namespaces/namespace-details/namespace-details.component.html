@@ -1,64 +1,71 @@
 <div *ngIf="errorMessage">
   <fd-alert type="error">{{ errorMessage }}</fd-alert>
 </div>
-<section class="fd-section" *ngIf="namespace.getLabel()">
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
-    </fd-action-bar-header>
-    <fd-action-bar-actions>
-      <button fd-button [options]="'light'" [glyph]="'add'" (click)="openUploadResourceModal()"
-        *ngIf="!showSelectFileButton">
-        Deploy new resource to the namespace
-      </button>
-    </fd-action-bar-actions>
-  </fd-action-bar>
-  <fd-panel-grid [col]="2">
-    <fd-panel>
-      <fd-panel-body>
-        <div fd-form-set>
-          <div fd-form-item>
-            <fd-form-label>Name</fd-form-label>
-            <input fd-form-control [type]="'text'" value="{{ namespace.getLabel() }}" readonly />
-          </div>
-        </div>
-        <div fd-form-set>
-          <div fd-form-item>
-            <fd-form-label>Namespace-ID</fd-form-label>
-            <input fd-form-control [type]="'text'" value="{{ namespace.getUid() }}" readonly />
-          </div>
-        </div>
-      </fd-panel-body>
-    </fd-panel>
-    <fd-panel>
-      <fd-panel-body class="fd-container fd-container--fluid">
-        <div [ngClass]="isSystemNamespace?'fd-col--12 fd-has-text-align-center':'fd-col--6 fd-has-text-align-center'">
-          <h3 class="fd-has-type-6 fd-has-font-weight-bold">
-            {{ services ? services.length : 0 }}
-          </h3>
-          <button fd-button [options]="'light'" (click)="navigateToServices()">
-            {{ services && services.length === 1 ? 'Service' : 'Services' }}
+
+<ng-container *ngIf="namespace.getLabel()">
+  <header class="fd-page__header fd-has-background-color-background-2">
+    <section class="fd-section">
+      <fd-action-bar>
+        <fd-action-bar-header>
+          <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
+        </fd-action-bar-header>
+        <fd-action-bar-actions>
+          <button fd-button [glyph]="'add'" (click)="openUploadResourceModal()"
+            *ngIf="!showSelectFileButton">
+            Deploy new resource to the namespace
           </button>
-        </div>
-        <div *ngIf="!isSystemNamespace" class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
-          <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
-            {{ boundApplicationsCount | async }}
-          </h3>
-          <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
-            {{
-            (boundApplicationsCount | async) === 1
-            ? 'Bound Application'
-            : 'Bound Applications'
-            }}
-          </span>
-          <button fd-button [options]="'light'" (click)="navigateToApplications()">
-            Show All Applications
-          </button>
-        </div>
-      </fd-panel-body>
-    </fd-panel>
-  </fd-panel-grid>
-</section>
+        </fd-action-bar-actions>
+      </fd-action-bar>
+    </section>
+  </header>
+  <section class="fd-section">
+    <fd-panel-grid [col]="2">
+      <fd-panel>
+        <fd-panel-body>
+          <div fd-form-set>
+            <div fd-form-item>
+              <fd-form-label>Name</fd-form-label>
+              <input fd-form-control [type]="'text'" value="{{ namespace.getLabel() }}" readonly />
+            </div>
+          </div>
+          <div fd-form-set>
+            <div fd-form-item>
+              <fd-form-label>Namespace-ID</fd-form-label>
+              <input fd-form-control [type]="'text'" value="{{ namespace.getUid() }}" readonly />
+            </div>
+          </div>
+        </fd-panel-body>
+      </fd-panel>
+      <fd-panel>
+        <fd-panel-body class="fd-container fd-container--fluid">
+          <div [ngClass]="isSystemNamespace?'fd-col--12 fd-has-text-align-center':'fd-col--6 fd-has-text-align-center'">
+            <h3 class="fd-has-type-6 fd-has-font-weight-bold">
+              {{ services ? services.length : 0 }}
+            </h3>
+            <button fd-button [options]="'light'" (click)="navigateToServices()">
+              {{ services && services.length === 1 ? 'Service' : 'Services' }}
+            </button>
+          </div>
+          <div *ngIf="!isSystemNamespace" class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
+            <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
+              {{ boundApplicationsCount | async }}
+            </h3>
+            <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
+              {{
+              (boundApplicationsCount | async) === 1
+              ? 'Bound Application'
+              : 'Bound Applications'
+              }}
+            </span>
+            <button fd-button [options]="'light'" (click)="navigateToApplications()">
+              Show All Applications
+            </button>
+          </div>
+        </fd-panel-body>
+      </fd-panel>
+    </fd-panel-grid>
+  </section>
+</ng-container>
 
 <section class='fd-section' *ngIf="applications && applications.length > 0">
   <fd-panel>
@@ -76,7 +83,7 @@
         <fd-table-body>
           <tr *ngFor="let namespace of applications">
             <td>
-              <a href="javascript:void(null)" (click)="navigateToApplications(namespace.name)">{{ namespace.name }}</a>
+              <a href="javascript:void(null)" (click)="navigateToApplications(namespace.name)" class="fd-has-font-weight-bold">{{ namespace.name }}</a>
             </td>
             <td class="y-fd-table--col-1">
               <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">

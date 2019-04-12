@@ -11,7 +11,7 @@
           (onFilterChanged)="onFilterChanged($event)"></y-list-search>
         <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
           (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-        <button fd-button [options]="'light'" [glyph]="'add'" class="open-create-namespace-modal"
+        <button fd-button [glyph]="'add'" class="open-create-namespace-modal"
           (click)="createModal.show()">Create Namespace</button>
       </fd-action-bar-actions>
     </fd-action-bar>

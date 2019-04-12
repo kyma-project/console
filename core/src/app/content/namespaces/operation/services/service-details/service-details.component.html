@@ -1,28 +1,32 @@
+<header class="fd-page__header fd-has-background-color-background-2">  
+  <section class="fd-section">
+    <fd-breadcrumb>
+      <fd-breadcrumb-item>
+        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+          Services
+        </a>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item>
+        <span fd-breadcrumb-link>
+          {{ serviceName }}
+        </span>
+      </fd-breadcrumb-item>
+    </fd-breadcrumb>
+
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>
+          {{ serviceName }}
+        </fd-action-bar-title>
+      </fd-action-bar-header>
+      <fd-action-bar-actions>
+        <app-edit-resource [resourceData]="serviceDetails"></app-edit-resource>
+      </fd-action-bar-actions>
+    </fd-action-bar>
+  </section>
+</header>
+
 <section class="fd-section">
-  <fd-breadcrumb>
-    <fd-breadcrumb-item>
-      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
-        Services
-      </a>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item>
-      <span fd-breadcrumb-link>
-        {{ serviceName }}
-      </span>
-    </fd-breadcrumb-item>
-  </fd-breadcrumb>
-
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>
-        {{ serviceName }}
-      </fd-action-bar-title>
-    </fd-action-bar-header>
-    <fd-action-bar-actions>
-      <app-edit-resource [resourceData]="serviceDetails"></app-edit-resource>
-    </fd-action-bar-actions>
-  </fd-action-bar>
-
   <p *ngIf="serviceDetailsLoading">
     Loading ...
   </p>

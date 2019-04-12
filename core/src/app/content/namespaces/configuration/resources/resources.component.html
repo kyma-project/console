@@ -1,24 +1,36 @@
-<section class="fd-section">
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>Resources</fd-action-bar-title>
-      <fd-action-bar-description>Manage your Resources</fd-action-bar-description>
-    </fd-action-bar-header>
-    <fd-action-bar-actions>
-      <button (click)="openUploadResourceModal()" fd-button [options]="'light'" [glyph]="'add'">
-        Deploy new resource to the namespace
-      </button>
-    </fd-action-bar-actions>
-  </fd-action-bar>
+<header class="fd-page__header fd-has-background-color-background-2">
+  <section class="fd-section">
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>Resources</fd-action-bar-title>
+        <fd-action-bar-description>Manage your Resources</fd-action-bar-description>
+      </fd-action-bar-header>
+      <fd-action-bar-actions>
+        <button (click)="openUploadResourceModal()" fd-button [glyph]="'add'">
+          Deploy new resource to the namespace
+        </button>
+      </fd-action-bar-actions>
+    </fd-action-bar>
+    <ul class="fd-tabs" role="tablist">
+      <li class="fd-tabs__item">
+        <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="limitRanges" [attr.aria-selected]="limitRangesTabExpanded"
+          (click)="changeTab('limitRanges')" role="tab">Limit Ranges</a>
+      </li>
+      <li class="fd-tabs__item">
+        <a href="javascript:void(null)" class="fd-tabs__link" aria-controls="resourceQuotas" [attr.aria-selected]="resourceQuotasTabExpanded"
+          (click)="changeTab('resourceQuotas')" role="tab">Resource Quotas</a>
+      </li>
+    </ul>
+  </section>
+</header>
 
-  <fd-tab-list>
-    <fd-tab [title]="'Limit Ranges'">
-      <app-limit-ranges></app-limit-ranges>
-    </fd-tab>
-    <fd-tab [title]="'Resource Quotas'">
-      <app-resource-quotas></app-resource-quotas>
-    </fd-tab>
-  </fd-tab-list>
+<section class="fd-section">
+  <div class="fd-tabs__panel" [attr.aria-expanded]="limitRangesTabExpanded" id="limitRanges" role="tabpanel">
+    <app-limit-ranges></app-limit-ranges>
+  </div>
+  <div class="fd-tabs__panel" [attr.aria-expanded]="resourceQuotasTabExpanded" id="resourceQuotas" role="tabpanel">
+    <app-resource-quotas></app-resource-quotas>
+  </div>
 </section>
 
 <app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>
