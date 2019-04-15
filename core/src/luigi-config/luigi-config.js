@@ -590,7 +590,7 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
     nodeToCheckPermissionsFor.requiredPermissions.length === 0;
 
   return (
-    noRulesApplied || rbacRulesMatched(nodeToCheckPermissionsFor.requiredPermissions, selfSubjectRulesReview) &&
+    (noRulesApplied || rbacRulesMatched(nodeToCheckPermissionsFor.requiredPermissions, selfSubjectRulesReview)) &&
     checkRequiredBackendModules(nodeToCheckPermissionsFor)
   );
 }
