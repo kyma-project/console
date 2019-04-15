@@ -305,7 +305,8 @@ async function getUiEntities(entityname, namespace, placements) {
                   settings: node.settings
                     ? { ...node.settings, ...(node.context || {}) }
                     : {}
-                }
+                },
+                requiredPermissions: node.requiredPermissions || undefined
               };
 
               n.context.requiredBackendModules =
@@ -762,7 +763,6 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
                         ]
                       }
                     ],
-                    // adminOnly: true,
                     requiredPermissions : [{
                       apiGroup : "rbac.authorization.k8s.io",
                       resource : "clusterrolebindings",
@@ -778,11 +778,6 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
                     hideFromNav: true
                   }
                 ];
-                if (cmf.length > 0) {
-                  cmf.forEach(clusterMF => {
-                    clusterMF[0].adminOnly = true;
-                  });
-                }
                 var fetchedNodes = [].concat.apply([], cmf);
                 return [].concat.apply(staticNodes, fetchedNodes);
               });
