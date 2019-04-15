@@ -40,7 +40,7 @@
       <button fd-button 
         [options]="'main'"
         [state]="!isReadyToCreate() ? 'disabled' : ''"
-        (click)="save()">
+        (click)="isReadyToCreate() && save()">
         Create
       </button>
     </fd-modal-footer>
