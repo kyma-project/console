@@ -70,7 +70,6 @@ export default {
           }
         `,
       }).activeServiceClassFilters;
-
       let newActive = filters;
       if (Array.isArray(newActive[args.key])) {
         let newArray = newActive[args.key];
@@ -85,7 +84,6 @@ export default {
       } else {
         newActive[args.key] = args.value;
       }
-
       cache.writeData({
         data: {
           activeServiceClassFilters: newActive,
@@ -100,6 +98,7 @@ export default {
         isMore
         offset
       `;
+
       const filters = cache.readQuery({
         query: gql`
           query activeTagsFilters {
@@ -141,6 +140,7 @@ export default {
               basic
               provider
               tag
+              local
               connectedApplication
               search
             }
@@ -205,14 +205,20 @@ export default {
           ? [...classes.clusterServiceClasses, ...classes.serviceClasses]
           : [];
 
-      let filteredClasses = filterServiceClasses(classes, activeFilters, cache);
+      const filteredClassesAndCounts = filterServiceClasses(
+        classes,
+        activeFilters,
+        cache,
+      );
+      let filteredClasses = filteredClassesAndCounts.filteredClasses;
+      let counts = filteredClassesAndCounts.counts;
+
       const filteredFilters = populateServiceClassFilters(
         classes,
         filteredClasses,
         activeTagsFilters,
       );
       filteredClasses = filteredClasses.map(filteredClass => {
-        // delete filteredClass.labels;
         return filteredClass;
       });
 
@@ -220,6 +226,7 @@ export default {
         data: {
           serviceClassFilters: filteredFilters,
           filteredServiceClasses: filteredClasses,
+          filteredClassesCounts: counts,
         },
       });
 
@@ -250,9 +257,6 @@ const populateServiceClassFilters = (
       const labels = item.labels || {};
       if (labels['connected-app']) {
         connectedApplications.push(labels['connected-app']);
-      }
-      if (isStringValueEqualToTrue(labels.local)) {
-        basic.push('local');
       }
       if (isStringValueEqualToTrue(labels.showcase)) {
         basic.push('showcase');
@@ -421,12 +425,24 @@ const searchInFilters = (filters, search) => {
 };
 
 const filterServiceClasses = (classes, activeFilters) => {
+  let counts = {
+    local: 0,
+    notLocal: 0,
+    __typename: 'FilteredClassesCounts',
+  };
   const filteredClasses = classes.filter(item => {
+    let localMatch = true;
     let basicMatch = true;
     let providerMatch = true;
     let tagMatch = true;
     let connectedApplicationMatch = true;
     let searchMatch = true;
+
+    if (typeof activeFilters.local === 'boolean') {
+      localMatch = activeFilters.local
+        ? item.labels && item.labels.local
+        : item.labels && !item.labels.local;
+    }
 
     if (activeFilters.basic && activeFilters.basic.length > 0) {
       basicMatch = activeFilters.basic.some(
@@ -489,14 +505,25 @@ const filterServiceClasses = (classes, activeFilters) => {
         tags.filter(tag => tag.indexOf(searchValue) !== -1).length ||
         labels.filter(label => label.indexOf(searchValue) !== -1).length;
     }
-    return (
+    const match =
       basicMatch &&
       providerMatch &&
       tagMatch &&
       connectedApplicationMatch &&
-      searchMatch
-    );
+      searchMatch;
+
+    const isLocal =
+      (activeFilters.local && localMatch) ||
+      !(activeFilters.local || localMatch);
+
+    if (match && isLocal) {
+      counts.local++;
+    } else if (match && !isLocal) {
+      counts.notLocal++;
+    }
+
+    return localMatch && match;
   });
 
-  return filteredClasses;
+  return { counts, filteredClasses };
 };

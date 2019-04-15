@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+import equal from 'deep-equal';
 
 import {
   NotificationMessage,
@@ -14,6 +15,7 @@ import {
   PanelBody,
 } from '@kyma-project/react-components';
 
+import { serviceClassVariables } from './variables';
 import FilterList from './FilterList/FilterList.component';
 import ActiveFiltersList from './ActiveFiltersList/ActiveFiltersList.component';
 import Cards from './Cards/Cards.component';
@@ -23,6 +25,9 @@ import {
   ServiceClassListWrapper,
   CardsWrapper,
   EmptyServiceListMessageWrapper,
+  ServiceClassDescription,
+  StatusWrapper,
+  Status,
 } from './styled';
 
 class ServiceClassList extends React.Component {
@@ -51,8 +56,32 @@ class ServiceClassList extends React.Component {
     };
   }
 
+  setTabFilter = () => {
+    const selectedTab = LuigiClient.getNodeParams().selectedTab;
+
+    switch (selectedTab) {
+      case 'addons':
+        this.props.setServiceClassesFilter('local', true);
+        break;
+      case 'services':
+        this.props.setServiceClassesFilter('local', false);
+        break;
+      default:
+        this.props.setServiceClassesFilter('local', true);
+        break;
+    }
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setTabFilter();
+    }, 100);
+  }
+
   componentWillReceiveProps(newProps) {
     const { classFiltersLoaded } = this.state;
+
+    if (equal(this.props, newProps)) return;
 
     if (
       newProps.serviceClasses &&
@@ -89,6 +118,14 @@ class ServiceClassList extends React.Component {
     });
   };
 
+  status = (data, id) => {
+    return (
+      <StatusWrapper key={id}>
+        <Status data-e2e-id={id}>{data}</Status>
+      </StatusWrapper>
+    );
+  };
+
   render() {
     const {
       classList,
@@ -103,11 +140,14 @@ class ServiceClassList extends React.Component {
       filterTagsAndSetActiveFilters,
       errorMessage,
     } = this.props;
+    const filteredClassesCounts =
+      this.props.filteredClassesCounts.filteredClassesCounts || {};
     const { filtersExists } = this.state;
 
     const determineSelectedTab = () => {
       const selectedTab = LuigiClient.getNodeParams().selectedTab;
       let selectedTabIndex = null;
+
       switch (selectedTab) {
         case 'addons':
           selectedTabIndex = 0;
@@ -207,7 +247,7 @@ class ServiceClassList extends React.Component {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
             <Panel>
-              <PanelBody>No Service Classes found</PanelBody>
+              <PanelBody>{serviceClassVariables.emptyListMessage}</PanelBody>
             </Panel>
           </EmptyServiceListMessageWrapper>
         ) : (
@@ -219,10 +259,7 @@ class ServiceClassList extends React.Component {
 
     return (
       <>
-        <Toolbar
-          title="Service Catalog"
-          description="Enrich your experience with additional services"
-        >
+        <Toolbar title={serviceClassVariables.title} background="#fff">
           <SearchWrapper>
             <Search
               noSearchBtn
@@ -247,42 +284,67 @@ class ServiceClassList extends React.Component {
           )}
         </Toolbar>
 
-        {renderFilters()}
         <Tabs
           defaultActiveTabIndex={determineSelectedTab()}
           callback={handleTabChange}
+          noBorder
+          addonsView
         >
           <Tab
+            noMargin
+            key="catalog-addons-tab"
+            aditionalStatus={this.status(
+              filteredClassesCounts.local,
+              'addons-status',
+            )}
             title={
               <Tooltip
-                content="PITUPITU"
-                minWidth="140px"
+                content={serviceClassVariables.addonsTooltipDescription}
+                minWidth="100px"
                 showTooltipTimeout={750}
                 key="catalog-addons-tab-tooltip"
               >
-                Add-Ons
+                {serviceClassVariables.addons}
               </Tooltip>
             }
           >
-            <ServiceClassListWrapper>
-              <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
-            </ServiceClassListWrapper>
+            <>
+              <ServiceClassDescription>
+                {serviceClassVariables.addonsDescription}
+                {renderFilters()}
+              </ServiceClassDescription>
+              <ServiceClassListWrapper>
+                <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+              </ServiceClassListWrapper>
+            </>
           </Tab>
           <Tab
+            noMargin
+            key="catalog-services-tab"
+            aditionalStatus={this.status(
+              filteredClassesCounts.notLocal,
+              'services-status',
+            )}
             title={
               <Tooltip
-                content="PITUPITU2"
+                content={serviceClassVariables.servicesTooltipDescription}
                 minWidth="140px"
                 showTooltipTimeout={750}
                 key="catalog-services-tab-tooltip"
               >
-                Services
+                {serviceClassVariables.services}
               </Tooltip>
             }
           >
-            <ServiceClassListWrapper>
-              <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
-            </ServiceClassListWrapper>
+            <>
+              <ServiceClassDescription>
+                {serviceClassVariables.servicesDescription}
+                {renderFilters()}
+              </ServiceClassDescription>
+              <ServiceClassListWrapper>
+                <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+              </ServiceClassListWrapper>
+            </>
           </Tab>
         </Tabs>
       </>

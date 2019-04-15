@@ -22,6 +22,7 @@ const ServiceInstanceContainer = props => {
     <ServiceInstances
       {...props}
       filterClassesAndSetActiveFilters={(key, value) => {
+        console.log('filterClassesAndSetActiveFilters', key, value )
         props.setActiveFilters({ variables: { key, value } });
         props.filterItems();
       }}

@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const ActiveFiltersListWrapper = styled.div`
   text-align: left;
-  margin: 20px 0 10px 0;
-  padding: 0 34px;
+  margin: 20px 0 0 0;
 `;
 
 export const ActiveFilterWrapper = styled.div`

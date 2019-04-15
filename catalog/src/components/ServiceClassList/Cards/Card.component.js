@@ -39,8 +39,6 @@ const Card = ({
   const labelsDescription = {
     'connected-app':
       'This Service Class is connected to a given application by Application Connector.',
-    local:
-      'This Service Class provisions physical resources inside the cluster.',
     showcase:
       'This Service Class demonstrates a specific functionality. Do not use it on the production.',
   };
@@ -121,16 +119,22 @@ const Card = ({
         </CardTop>
 
         <CardDescription>{description}</CardDescription>
-
         <CardFooter>
           {labels &&
             Object.keys(labels).length &&
-            Object.keys(labels).map(label =>
-              (label === 'local' || label === 'showcase' ? (
-                isStringValueEqualToTrue(labels[label])
-              ) : (
-                label === 'connected-app' && labels[label]
-              )) ? (
+            Object.keys(labels).map(label => {
+              if (label === 'local' || label === 'provisionOnlyOnce') {
+                return null;
+              }
+              if (
+                (label === 'showcase' &&
+                  !isStringValueEqualToTrue(labels[label])) ||
+                (label === 'connected-app' && !labels[label])
+              ) {
+                return null;
+              }
+
+              return (
                 <CardLabelWrapper key={label}>
                   <Tooltip content={labelsDescription[label]}>
                     <Label cursorType="help">
@@ -140,8 +144,8 @@ const Card = ({
                     </Label>
                   </Tooltip>
                 </CardLabelWrapper>
-              ) : null,
-            )}
+              );
+            })}
         </CardFooter>
       </CardContent>
     </CardWrapper>
