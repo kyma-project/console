@@ -18,7 +18,7 @@ export class WebSocketLink extends ApolloLink {
     }
   }
 
-  request(operation: Operation): FetchResult {
+  request(operation: Operation) {
     return this.subscriptionClient.request(operation);
   }
 }
