@@ -34,7 +34,7 @@
     </fd-modal-body>
     <fd-modal-footer>
       <button fd-button [options]="'light'" (click)="close()">Cancel</button>
-      <button fd-button [options]="'main'" [state]="!isReadyToCreate() ? 'disabled' : ''" (click)="isReadyToCreate() && save()"
+      <button fd-button [options]="'main'" [disabled]="!isReadyToCreate()" [state]="!isReadyToCreate() ? 'disabled' : ''" (click)="save()"
         [attr.data-e2e-id]="'create-button'">
         Create
       </button>
