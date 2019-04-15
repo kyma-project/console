@@ -8,7 +8,7 @@
     "start:kyma": "npm run copy-config && concurrently \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
     "start:kyma:api": "npm run copy-config && concurrently \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
     "build": "npm run buildConfig && ng build --prod",
-    "test": "jest",
+    "test": "jest && ng test",
     "test:single": "jest && ng test --watch=false",
     "lint": "ng lint --tslint-config tslint.json",
     "copy-config": "cp ../config.js src/assets/config/config.js",

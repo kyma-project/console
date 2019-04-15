@@ -1,73 +1,74 @@
-function nodeAllowed(nodeToCheckPermissionsFor, selfSubjectRulesReview) {
-  if (nodeToCheckPermissionsFor === null || nodeToCheckPermissionsFor === undefined || nodeToCheckPermissionsFor.requiredPermissions === null || nodeToCheckPermissionsFor.requiredPermissions === undefined || nodeToCheckPermissionsFor.requiredPermissions.length === 0
-    || selfSubjectRulesReview === null || selfSubjectRulesReview === undefined || selfSubjectRulesReview.length === 0) {
+function rbacRulesMatched(requiredPermissions, selfSubjectRulesReview) {
+
+  if (
+    !isNonEmptyArray(requiredPermissions) ||
+    !isNonEmptyArray(selfSubjectRulesReview)
+  ) {
     return true;
-  } else {
-    for(var i = 0, len = nodeToCheckPermissionsFor.requiredPermissions.length; i < len; i++){
-      let requiredPermission = nodeToCheckPermissionsFor.requiredPermissions[i];
-      for(var j = 0, vlen = requiredPermission.verbs.length; j < vlen; j++){
-        let atomicVerb = requiredPermission.verbs[j];
-          let atomicVerbPermission = {
-          apiGroup : requiredPermission.apiGroup,
-          resource : requiredPermission.resource,
-          verbs : [atomicVerb]
-        }
-        if(!matchingRuleFound(selfSubjectRulesReview, atomicVerbPermission)){
-          return false;
-        }
-      }
-    }
-  return true;
   }
-}
-
-function arrayContainStringOrJoker(array, stringToFind, jokerString) {
-    if(array === null || array === undefined) {
-      return false;
-    }
-    let contains = false
-    let element;
-    for (var i = 0, len = array.length; i < len; i++) {
-      element = array[i];
-      if (element === stringToFind || element === jokerString) {
-        contains = true;
-        break;
+  for (var i = 0, len = requiredPermissions.length; i < len; i++) {
+    let requiredPermission = requiredPermissions[i];
+    for (var j = 0, vlen = requiredPermission.verbs.length; j < vlen; j++) {
+      let atomicVerb = requiredPermission.verbs[j];
+      let atomicVerbPermission = {
+        apiGroup: requiredPermission.apiGroup,
+        resource: requiredPermission.resource,
+        verbs: [atomicVerb],
+      };
+      if (
+        !matchingVerbRuleFound(selfSubjectRulesReview, atomicVerbPermission)
+      ) {
+        return false;
       }
     }
-    return contains;
+  }
+  return true;
 }
 
-function matchingRuleFound(allrules, requiredRule) {
-  if(allrules === null || allrules === undefined) {
+const isNonEmptyArray = array => {
+  return (
+    array !== null &&
+    typeof array !== 'undefined' &&
+    array.length !== null &&
+    array.length > 0
+  );
+};
+
+const arrayContainsStringOrJoker = (array, stringToFind, jokerString) => {
+  if (!isNonEmptyArray(array)) {
     return false;
   }
-  let matchFound = false
-  for (var i = 0, len = allrules.length; i < len; i++) {
-  let rule = allrules[i];
-      if (arrayContainStringOrJoker(rule.apiGroups, requiredRule.apiGroup, '*') &&
-      arrayContainStringOrJoker(rule.resources, requiredRule.resource, '*') &&
-      arrayContainsAllStringsOrJoker(rule.verbs, requiredRule.verbs, '*')){
-        matchFound = true;
-        break;
-      }
-  }
-  return matchFound;
-}
-
-function arrayContainsAllStringsOrJoker (array, arrayOfStringsToFind, jokerString) {
   for (var i = 0, len = array.length; i < len; i++) {
-    if(array[i] === jokerString){
+    if (array[i] === stringToFind || array[i] === jokerString) {
       return true;
     }
   }
+  return false;
+};
 
-  for (var i = 0, len = arrayOfStringsToFind.length; i < len; i++) {
-    let stringToFind = arrayOfStringsToFind[i];
-    if(!array.includes(stringToFind)) {
-      return false;
+const matchingVerbRuleFound = (allrules, requiredVerbRule) => {
+  if (!isNonEmptyArray(allrules)) {
+    return false;
+  }
+  for (var i = 0, len = allrules.length; i < len; i++) {
+    let rule = allrules[i];
+    if (
+      arrayContainsStringOrJoker(
+        rule.apiGroups,
+        requiredVerbRule.apiGroup,
+        '*',
+      ) &&
+      arrayContainsStringOrJoker(
+        rule.resources,
+        requiredVerbRule.resource,
+        '*',
+      ) &&
+      arrayContainsStringOrJoker(rule.verbs, requiredVerbRule.verbs[0], '*')
+    ) {
+      return true;
     }
   }
-  return true;
-}
+  return false;
+};
 
-module.exports = nodeAllowed;
+module.exports = rbacRulesMatched;

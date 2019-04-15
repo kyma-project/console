@@ -1,5 +1,5 @@
 import LuigiClient from '@kyma-project/luigi-client';
-import nodeAllowed from './rbac-rules-matcher';
+import rbacRulesMatched from './rbac-rules-matcher';
 
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -583,8 +583,14 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
 }
 
 function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+
+  const noRulesApplied =
+    nodeToCheckPermissionsFor.requiredPermissions === null ||
+    nodeToCheckPermissionsFor.requiredPermissions === undefined ||
+    nodeToCheckPermissionsFor.requiredPermissions.length === 0;
+
   return (
-    nodeAllowed(nodeToCheckPermissionsFor, selfSubjectRulesReview) &&
+    noRulesApplied || rbacRulesMatched(nodeToCheckPermissionsFor.requiredPermissions, selfSubjectRulesReview) &&
     checkRequiredBackendModules(nodeToCheckPermissionsFor)
   );
 }
