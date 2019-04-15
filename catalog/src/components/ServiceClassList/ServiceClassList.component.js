@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   NotificationMessage,
   Search,
   Spinner,
+  Tab,
+  Tabs,
   Toolbar,
+  Tooltip,
   Panel,
   PanelBody,
 } from '@kyma-project/react-components';
@@ -100,6 +104,33 @@ class ServiceClassList extends React.Component {
       errorMessage,
     } = this.props;
     const { filtersExists } = this.state;
+
+    const determineSelectedTab = () => {
+      const selectedTab = LuigiClient.getNodeParams().selectedTab;
+      let selectedTabIndex = 0;
+      switch (selectedTab) {
+        case 'addons':
+          selectedTabIndex = 0;
+          break;
+        case 'services':
+          selectedTabIndex = 1;
+          break;
+      }
+      return selectedTabIndex;
+    };
+
+    const handleTabChange = ({defaultActiveTabIndex}) => {
+      let tabName = 'addons';
+      switch (defaultActiveTabIndex) {
+        case 0:
+          tabName = 'addons';
+          break;
+        case 1:
+          tabName = 'services';
+          break;
+      }
+      LuigiClient.linkManager().withParams({selectedTab: tabName}).navigate('');
+    };
 
     const filterFn = e => {
       filterTagsAndSetActiveFilters('search', e.target.value);
@@ -210,10 +241,36 @@ class ServiceClassList extends React.Component {
         </Toolbar>
 
         {renderFilters()}
-
-        <ServiceClassListWrapper>
-          <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
-        </ServiceClassListWrapper>
+        <Tabs defaultActiveTabIndex={determineSelectedTab()} callback={handleTabChange}>
+          <Tab title={
+            <Tooltip
+              content="PITUPITU"
+              minWidth="140px"
+              showTooltipTimeout={750}
+              key="catalog-addons-tab-tooltip"
+            >
+              Add-Ons
+            </Tooltip>
+          }>
+            <ServiceClassListWrapper>
+              <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+            </ServiceClassListWrapper>
+          </Tab>
+          <Tab title={
+            <Tooltip
+              content="PITUPITU2"
+              minWidth="140px"
+              showTooltipTimeout={750}
+              key="catalog-services-tab-tooltip"
+            >
+              Services
+            </Tooltip>
+          }>
+            <ServiceClassListWrapper>
+              <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+            </ServiceClassListWrapper>
+          </Tab>
+        </Tabs>
       </>
     );
   }
