@@ -86,7 +86,7 @@ class ServiceInstances extends React.Component {
       return selectedTabIndex;
     };
 
-    const handleTabChange = ({defaultActiveTabIndex}) => {
+    const handleTabChange = ({ defaultActiveTabIndex }) => {
       let tabName = '';
       switch (defaultActiveTabIndex) {
         case 0:
@@ -98,7 +98,9 @@ class ServiceInstances extends React.Component {
         default:
           tabName = 'addons';
       }
-      LuigiClient.linkManager().withParams({selectedTab: tabName}).navigate('');
+      LuigiClient.linkManager()
+        .withParams({ selectedTab: tabName })
+        .navigate('');
     };
 
     return (
@@ -116,7 +118,10 @@ class ServiceInstances extends React.Component {
         />
 
         <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-          <Tabs defaultActiveTabIndex={determineSelectedTab()} callback={handleTabChange}>
+          <Tabs
+            defaultActiveTabIndex={determineSelectedTab()}
+            callback={handleTabChange}
+          >
             <Tab
               title={
                 <Tooltip
