@@ -76,7 +76,8 @@ export class AbstractGraphqlElementListComponent
         name: entry.name,
         namespace: this.currentNamespaceId
       }})
-      .subscribe(data => {
+      .subscribe(res => {
+        const data = res.data;
         const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
         this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
         this.mutateResourceModal.show();
