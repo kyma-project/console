@@ -36,7 +36,7 @@ export class GraphQLDataProvider implements DataProvider {
         if (noCache || !this.queryCache) {
           if(!this.queryCache){
             this.queryCache = this.apollo
-            .watchQuery({query: gql`${this.query}`, variables: this.variables})
+            .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'network-only'})
           } else {
             this.queryCache.resetLastResults();
             this.queryCache.refetch();

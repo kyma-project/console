@@ -49,6 +49,7 @@ export class PodsEntryRendererComponent
   }
 
   ngOnDestroy() {
+    if(!this.communicationServiceSubscription) { return };
     this.communicationServiceSubscription.unsubscribe();
   }
 

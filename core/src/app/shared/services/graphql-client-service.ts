@@ -12,7 +12,7 @@ export class GraphQLClientService {
 
   gqlQuery (query, variables = {}): Observable<any> {
     return this.apollo
-    .query({query: gql`${query}`, variables})
+    .query({query: gql`${query}`, variables, fetchPolicy: 'network-only'})
     .pipe(map(res => res.data));
   }
 
