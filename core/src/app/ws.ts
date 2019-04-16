@@ -1,4 +1,4 @@
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, Operation } from 'apollo-link';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -20,5 +20,9 @@ export class WebSocketLink extends ApolloLink {
         protocols
       );
     }
+    
+  }
+  request(operation: Operation) {
+    return this.subscriptionClient.request(operation);
   }
 }

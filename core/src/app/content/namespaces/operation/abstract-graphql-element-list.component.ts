@@ -51,7 +51,8 @@ export class AbstractGraphqlElementListComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.apollo
+          this.apollo,
+          this.getGraphqlSubscriptionsForList()
         );
       });
   }
@@ -61,6 +62,10 @@ export class AbstractGraphqlElementListComponent
   }
 
   protected getGraphqlQueryForList() {
+    return null; // override this
+  }
+
+  protected getGraphqlSubscriptionsForList() {
     return null; // override this
   }
 

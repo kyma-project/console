@@ -52,6 +52,27 @@ export class PodsComponent extends AbstractGraphqlElementListComponent {
     }`;
   }
 
+  getGraphqlSubscriptionsForList() {
+    return `subscription Pod($namespace: String!) {
+      podEvent(namespace: $namespace) {
+        pod {
+          name
+          nodeName
+          restartCount
+          creationTimestamp
+          labels
+          status
+          containerStates {
+            state
+            reason
+            message
+          }
+        }
+        type
+      }
+    }`;
+  }
+
   getEntryEventHandler(): any {
     const handler = super.getEntryEventHandler();
     handler.showLogs = (entry: any) => {

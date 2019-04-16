@@ -20,7 +20,8 @@ export class GraphQLDataProvider implements DataProvider {
     private url: string,
     private query: string,
     private variables: object,
-    private apollo: Apollo
+    private apollo: Apollo,
+    private subscriptions?: string,
   ) {}
 
   getData(
@@ -31,22 +32,52 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-      if (noCache || !this.queryCache) {
-        if(!this.queryCache){
-          this.queryCache = this.apollo
-          .watchQuery({query: gql`${this.query}`, variables: this.variables})
-        } else {
-          this.queryCache.resetLastResults();
-          this.queryCache.refetch();
-        }
-      };
-        
+      if(!this.subscriptions){
+        if (noCache || !this.queryCache) {
+          if(!this.queryCache){
+            this.queryCache = this.apollo
+            .watchQuery({query: gql`${this.query}`, variables: this.variables})
+          } else {
+            this.queryCache.resetLastResults();
+            this.queryCache.refetch();
+          }
+        };
+      } else {
+        this.queryCache = this.apollo
+        .watchQuery({query: gql`${this.query}`, variables: this.variables});
+        this.queryCache.subscribeToMore({
+          document: gql`${this.subscriptions}`,
+          variables: this.variables,
+          updateQuery: (prev, {subscriptionData}) => {
+            if (!subscriptionData || !subscriptionData.data) {
+              return prev;
+            };
+            const currentItems = prev.pods;
+            let result;
+            const item = subscriptionData.data.podEvent.pod;
+            const type = subscriptionData.data.podEvent.type;
+            if (type === 'DELETE') {
+              result = currentItems.filter(i => i.name !== item.name);
+            } else if (type === 'UPDATE') {
+              const idx = currentItems.findIndex(i => i.name === item.name);
+                currentItems[idx] = item;
+                result = currentItems;
+            } else if (type === 'ADD') {
+              const idx = currentItems.findIndex(i => i.name === item.name);
+              if(idx === -1) {
+                result = [...currentItems, item];
+              } else {
+                currentItems[idx] = item;
+                result = currentItems;
+              }
+            } 
+            return {...prev, pods: result};
+          }
+        });
+      }
+
       this.queryCache.valueChanges
-        .pipe(
-          publishReplay(1),
-          refCount()
-        )
-        .subscribe(
+      .subscribe(
         res => {
           res = res.data;
           const elementsKey = Object.keys(res)[0];
@@ -72,7 +103,7 @@ export class GraphQLDataProvider implements DataProvider {
           );
           const index = pageSize * (pageNumber - 1);
           const pagedData = facetedData.slice(index, index + pageSize);
-
+          
           observer.next(
             new DataProviderResult(
               pagedData,
