@@ -178,3 +178,44 @@
 .fd-breadcrumb {
   margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
 }
+
+//Responsive improvements
+@media (max-width: map-get($fd-breakpoints, m)) { // 'm' = 600px
+
+  //Panel grid
+  .fd-panel-grid {
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: fd-space('small');
+  }
+
+  //Action bar
+  .fd-action-bar {
+    flex-direction: column;
+    margin-bottom: fd-space('small');
+
+    &__header {
+      padding-bottom: 0;
+    }
+
+    &__actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .fd-popover {
+      &__body {
+        width: 175px;
+        white-space: normal;
+        z-index: 5;
+      }
+
+      .fd-menu {
+        white-space: normal;
+      }
+    }
+  }
+  
+  [class^='fd-col'] {
+    margin-bottom: 12px;
+  }
+}

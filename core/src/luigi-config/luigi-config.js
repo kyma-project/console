@@ -788,7 +788,9 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
                 ];
                 if (cmf.length > 0) {
                   cmf.forEach(clusterMF => {
-                    clusterMF[0].adminOnly = true;
+                    if (clusterMF[0]) {
+                      clusterMF[0].adminOnly = true;
+                    }
                   });
                 }
                 var fetchedNodes = [].concat.apply([], cmf);
@@ -831,6 +833,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
       },
       settings: {
+        responsiveNavigation: 'simpleMobileOnly',
         header: () => {
           const logo =
             clusterConfig && clusterConfig.headerLogoUrl
