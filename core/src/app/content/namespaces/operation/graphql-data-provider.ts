@@ -6,15 +6,14 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { Observable, pipe } from 'rxjs';
-import { publishReplay, refCount } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
   facetMatcher = new SimpleFacetMatcher();
-  queryCache: any; 
+  resourceQuery: any; 
 
   constructor(
     private query: string,
@@ -32,20 +31,17 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-      if(!this.subscriptions || ! this.resourceKind) {
-        if (noCache || !this.queryCache) {
-          if(!this.queryCache){
-            this.queryCache = this.apollo
-            .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'network-only'})
-          } else {
-            this.queryCache.resetLastResults();
-            this.queryCache.refetch();
-          }
+      if(!this.subscriptions || ! this.resourceKind || !this.resourceQuery) {
+        if(!this.resourceQuery){
+          this.resourceQuery = this.apollo
+          .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'network-only'})
+        } else {
+          this.resourceQuery.refetch();
         };
       } else {
-        this.queryCache = this.apollo
+        this.resourceQuery = this.apollo
         .watchQuery({query: gql`${this.query}`, variables: this.variables});
-        this.queryCache.subscribeToMore({
+        this.resourceQuery.subscribeToMore({
           document: gql`${this.subscriptions}`,
           variables: this.variables,
           updateQuery: (prev, {subscriptionData}) => {
@@ -77,7 +73,7 @@ export class GraphQLDataProvider implements DataProvider {
         });
       }
 
-      this.queryCache.valueChanges
+      this.resourceQuery.valueChanges
       .subscribe(
         res => {
           res = res.data;
