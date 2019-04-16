@@ -21,6 +21,7 @@ export class GraphQLDataProvider implements DataProvider {
     private variables: object,
     private apollo: Apollo,
     private subscriptions?: string,
+    private resourceKind?: string
   ) {}
 
   getData(
@@ -31,7 +32,7 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-      if(!this.subscriptions){
+      if(!this.subscriptions || ! this.resourceKind) {
         if (noCache || !this.queryCache) {
           if(!this.queryCache){
             this.queryCache = this.apollo
@@ -51,10 +52,11 @@ export class GraphQLDataProvider implements DataProvider {
             if (!subscriptionData || !subscriptionData.data) {
               return prev;
             };
-            const currentItems = prev.pods;
+            const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+            const currentItems = prev[`${lowerCaseResourceKind}s`];
             let result;
-            const item = subscriptionData.data.podEvent.pod;
-            const type = subscriptionData.data.podEvent.type;
+            const item = subscriptionData.data[`${lowerCaseResourceKind}Event`][lowerCaseResourceKind];
+            const type = subscriptionData.data[`${lowerCaseResourceKind}Event`].type;
             if (type === 'DELETE') {
               result = currentItems.filter(i => i.name !== item.name);
             } else if (type === 'UPDATE') {
@@ -69,8 +71,8 @@ export class GraphQLDataProvider implements DataProvider {
                 currentItems[idx] = item;
                 result = currentItems;
               }
-            } 
-            return {...prev, pods: result};
+            }
+            return prev[`${lowerCaseResourceKind}s`] = result;
           }
         });
       }

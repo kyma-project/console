@@ -5,69 +5,48 @@ import {
   ViewChild,
   OnDestroy
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '../../../app.config';
 import { ApplicationsEntryRendererComponent } from './applications-entry-renderer/applications-entry-renderer.component';
 import { ApplicationsHeaderRendererComponent } from './applications-header-renderer/applications-header-renderer.component';
 import { CurrentNamespaceService } from '../../namespaces/services/current-namespace.service';
-import { AbstractKubernetesElementListComponent } from '../../namespaces/operation/abstract-kubernetes-element-list.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import { Filter } from 'app/generic-list';
-import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-provider';
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
 import { Apollo } from 'apollo-angular';
+import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
 
 @Component({
   selector: 'app-applications',
   templateUrl: './applications.component.html'
 })
-export class ApplicationsComponent
-  extends AbstractKubernetesElementListComponent
+export class ApplicationsComponent extends AbstractGraphqlElementListComponent 
   implements OnDestroy {
   title = 'Applications';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   createNewElementText = 'Add Application';
-  baseUrl = AppConfig.k8sApiServerUrl_applications;
   resourceKind = 'Application';
-  namespaces = [];
-  ariaExpanded = false;
-  ariaHidden = true;
   public hideFilter = true;
   private contextListenerId: string;
   public isReadOnly = false;
 
+
+  public entryRenderer = ApplicationsEntryRendererComponent;
+  public headerRenderer = ApplicationsHeaderRendererComponent;
+
   @ViewChild('createModal') createModal: CreateApplicationModalComponent;
 
   constructor(
-    private http: HttpClient,
-    private currentNamespaceService: CurrentNamespaceService,
-    private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    currentNamespaceService: CurrentNamespaceService,
+    commService: ComponentCommunicationService,
+    apollo: Apollo,
     changeDetector: ChangeDetectorRef
   ) {
-    super(currentNamespaceService, changeDetector, http, commService);
-
-    const query = `query Applications{
-      applications{
-        name
-        status
-        enabledInNamespaces,
-        labels
-      }
-    }`;
-
-    this.source = new GraphQLDataProvider(
-      AppConfig.graphqlApiUrl,
-      query,
-      undefined,
-      this.apollo
+    super(
+      currentNamespaceService,
+      commService,
+      apollo,
+      changeDetector
     );
-
-    this.entryRenderer = ApplicationsEntryRendererComponent;
-    this.headerRenderer = ApplicationsHeaderRendererComponent;
-    this.filterState = { filters: [new Filter('name', '', false)] };
 
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
       if (context.settings) {
@@ -76,17 +55,33 @@ export class ApplicationsComponent
     });
   }
 
-  getResourceUrl(kind: string, entry: any): string {
-    return `${this.baseUrl}${entry.name}`;
+  getGraphqlQueryForList() {
+    return `query Applications{
+      applications {
+        name
+        status
+        enabledInNamespaces,
+        labels
+      }
+    }`
+  }
+  
+  getGraphqlSubscriptionsForList() {
+    return `subscription Application {
+      applicationEvent {
+        application {
+          name
+          status
+          enabledInNamespaces,
+          labels
+        }
+        type
+      }
+    }`
   }
 
   navigateToDetails(entry) {
     LuigiClient.linkManager().navigate(`details/${entry.name}`);
-  }
-
-  toggleDropDown() {
-    this.ariaExpanded = !this.ariaExpanded;
-    this.ariaHidden = !this.ariaHidden;
   }
 
   public openModal() {

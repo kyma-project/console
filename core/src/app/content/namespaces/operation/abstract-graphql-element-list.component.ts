@@ -40,7 +40,6 @@ export class AbstractGraphqlElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, null, commService);
-
     this.currentNamespaceSubscription = this.currentNamespaceService
       .getCurrentNamespaceId()
       .subscribe(namespaceId => {
@@ -51,7 +50,8 @@ export class AbstractGraphqlElementListComponent
             namespace: this.currentNamespaceId
           },
           this.apollo,
-          this.getGraphqlSubscriptionsForList()
+          this.getGraphqlSubscriptionsForList(),
+          this.resourceKind
         );
       });
   }
@@ -85,8 +85,14 @@ export class AbstractGraphqlElementListComponent
 
   getResourceJSONQuery() {
     const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
-    return `query ${lowerCaseResourceKind}($name: String! $namespace: String!) {
-      ${lowerCaseResourceKind}(name: $name, namespace: $namespace) {
+    let var1 = `$name: String!`;
+    let var2 = `name: $name`;
+    if (this.currentNamespaceId) {
+      var1 = `$name: String!, $namespace: String!`;
+      var2 = `name: $name, namespace: $namespace`;
+    }
+    return `query ${lowerCaseResourceKind}(${var1}) {
+      ${lowerCaseResourceKind}(${var2}) {
         json
       }
     }`;
@@ -106,10 +112,14 @@ export class AbstractGraphqlElementListComponent
   }
 
   getDeleteMutation() {
-    return `mutation delete${
-      this.resourceKind
-    }($name: String!, $namespace: String!) {
-      delete${this.resourceKind}(name: $name, namespace: $namespace) {
+    let var1 = `$name: String!`;
+    let var2 = `name: $name`;
+    if (this.currentNamespaceId) {
+      var1 = `$name: String!, $namespace: String!`;
+      var2 = `name: $name, namespace: $namespace`;
+    }
+    return `mutation delete${this.resourceKind}(${var1}) {
+      delete${this.resourceKind}(${var2}) {
         name
       }
     }`;
