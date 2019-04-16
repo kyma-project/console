@@ -1,7 +1,11 @@
 import React from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   NotificationMessage,
+  Tab,
+  Tabs,
+  Tooltip,
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
@@ -66,6 +70,37 @@ class ServiceInstances extends React.Component {
       );
     }
 
+    const determineSelectedTab = () => {
+      const selectedTab = LuigiClient.getNodeParams().selectedTab;
+      let selectedTabIndex = null;
+      switch (selectedTab) {
+        case 'addons':
+          selectedTabIndex = 0;
+          break;
+        case 'services':
+          selectedTabIndex = 1;
+          break;
+        default:
+          selectedTabIndex = 0;
+      }
+      return selectedTabIndex;
+    };
+
+    const handleTabChange = ({defaultActiveTabIndex}) => {
+      let tabName = '';
+      switch (defaultActiveTabIndex) {
+        case 0:
+          tabName = 'addons';
+          break;
+        case 1:
+          tabName = 'services';
+          break;
+        default:
+          tabName = 'addons';
+      }
+      LuigiClient.linkManager().withParams({selectedTab: tabName}).navigate('');
+    };
+
     return (
       <ThemeWrapper>
         <ServiceInstancesToolbar
@@ -81,10 +116,42 @@ class ServiceInstances extends React.Component {
         />
 
         <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-          <ServiceInstancesTable
-            data={items}
-            deleteServiceInstance={deleteServiceInstance}
-          />
+          <Tabs defaultActiveTabIndex={determineSelectedTab()} callback={handleTabChange}>
+            <Tab
+              title={
+                <Tooltip
+                  content="PITUPITU"
+                  minWidth="140px"
+                  showTooltipTimeout={750}
+                  key="instances-addons-tab-tooltip"
+                >
+                  Add-Ons
+                </Tooltip>
+              }
+            >
+              <ServiceInstancesTable
+                data={items}
+                deleteServiceInstance={deleteServiceInstance}
+              />
+            </Tab>
+            <Tab
+              title={
+                <Tooltip
+                  content="PITUPITU"
+                  minWidth="140px"
+                  showTooltipTimeout={750}
+                  key="instances-services-tab-tooltip"
+                >
+                  Services
+                </Tooltip>
+              }
+            >
+              <ServiceInstancesTable
+                data={items}
+                deleteServiceInstance={deleteServiceInstance}
+              />
+            </Tab>
+          </Tabs>
         </ServiceInstancesWrapper>
       </ThemeWrapper>
     );

@@ -107,7 +107,7 @@ class ServiceClassList extends React.Component {
 
     const determineSelectedTab = () => {
       const selectedTab = LuigiClient.getNodeParams().selectedTab;
-      let selectedTabIndex = 0;
+      let selectedTabIndex = null;
       switch (selectedTab) {
         case 'addons':
           selectedTabIndex = 0;
@@ -115,12 +115,14 @@ class ServiceClassList extends React.Component {
         case 'services':
           selectedTabIndex = 1;
           break;
+        default:
+          selectedTabIndex = 0;
       }
       return selectedTabIndex;
     };
 
     const handleTabChange = ({defaultActiveTabIndex}) => {
-      let tabName = 'addons';
+      let tabName = '';
       switch (defaultActiveTabIndex) {
         case 0:
           tabName = 'addons';
@@ -128,6 +130,8 @@ class ServiceClassList extends React.Component {
         case 1:
           tabName = 'services';
           break;
+        default:
+          tabName = 'addons';
       }
       LuigiClient.linkManager().withParams({selectedTab: tabName}).navigate('');
     };
