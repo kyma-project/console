@@ -49,7 +49,6 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
     }`;
 
     this.source = new GraphQLDataProvider(
-      AppConfig.graphqlApiUrl,
       query,
       undefined,
       this.apollo

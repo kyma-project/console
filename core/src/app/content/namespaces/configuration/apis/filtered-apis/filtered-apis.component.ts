@@ -73,7 +73,6 @@ export class FilteredApisComponent
         }namespaces/${namespaceId}/apis`;
 
         this.source = new GraphQLDataProvider(
-          `${AppConfig.graphqlApiUrl}`,
           query,
           {
             namespace: this.currentNamespaceId,

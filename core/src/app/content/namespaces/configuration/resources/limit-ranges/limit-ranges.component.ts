@@ -59,7 +59,6 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
       namespaceId => {
         this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
-          AppConfig.graphqlApiUrl,
           query,
           {
             namespace: this.currentNamespaceId

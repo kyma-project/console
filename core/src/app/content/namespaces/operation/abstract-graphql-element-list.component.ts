@@ -46,7 +46,6 @@ export class AbstractGraphqlElementListComponent
       .subscribe(namespaceId => {
         this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
-          AppConfig.graphqlApiUrl,
           this.getGraphqlQueryForList(),
           {
             namespace: this.currentNamespaceId

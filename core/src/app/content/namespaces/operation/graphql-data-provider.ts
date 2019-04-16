@@ -17,7 +17,6 @@ export class GraphQLDataProvider implements DataProvider {
   queryCache: any; 
 
   constructor(
-    private url: string,
     private query: string,
     private variables: object,
     private apollo: Apollo,

@@ -36,8 +36,8 @@ export class ServiceBrokersComponent extends AbstractGraphqlElementListComponent
   }
 
   getGraphqlQueryForList() {
-    return `query clusterServiceBrokers() {
-      clusterServiceBrokers() {
+    return `query clusterServiceBrokers {
+      clusterServiceBrokers {
         name
         status {
           ready
