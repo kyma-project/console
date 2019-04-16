@@ -833,6 +833,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
       },
       settings: {
+        responsiveNavigation: 'simpleMobileOnly',
         header: () => {
           const logo =
             clusterConfig && clusterConfig.headerLogoUrl
