@@ -49,7 +49,7 @@ export class ApplicationBindingService {
     }`;
     const variables = { application };
     
-    return this.graphQLClientService.gqlQuery(query, variables)
+    return this.graphQLClientService.gqlQuery(query, variables);
   }
 
   public getBoundApplications(namespace) {

@@ -12,7 +12,7 @@ export class GraphQLClientService {
 
   gqlQuery (query, variables = {}): Observable<any> {
     return this.apollo
-    .watchQuery({query: gql`${query}`, variables}).valueChanges
+    .query({query: gql`${query}`, variables})
     .pipe(map(res => res.data));
   }
 
