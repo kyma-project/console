@@ -10,7 +10,7 @@ import { GraphQLDataProvider } from '../graphql-data-provider';
 import { DeploymentEntryRendererComponent } from './deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/deployment-header-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-deployments',
@@ -30,7 +30,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
@@ -70,7 +70,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.apollo
+          this.graphQLClientService
         );
 
         this.entryRenderer = DeploymentEntryRendererComponent;

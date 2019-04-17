@@ -6,7 +6,7 @@ import { ReplicaSetsHeaderRendererComponent } from './replica-sets-header-render
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-replica-sets',
@@ -25,13 +25,13 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    apollo: Apollo,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentNamespaceService,
       commService,
-      apollo,
+      graphQLClientService,
       changeDetector
     );
   }

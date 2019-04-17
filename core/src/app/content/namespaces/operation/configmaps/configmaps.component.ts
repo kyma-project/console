@@ -5,7 +5,7 @@ import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -22,13 +22,13 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent {
   constructor(
     currentEnvironmentService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    apollo: Apollo,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentEnvironmentService,
       commService,
-      apollo,
+      graphQLClientService,
       changeDetector
     );
   }

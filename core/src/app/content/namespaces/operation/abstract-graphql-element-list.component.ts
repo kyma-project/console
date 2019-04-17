@@ -11,9 +11,7 @@ import { ComponentCommunicationService } from 'shared/services/component-communi
 import { Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import { GraphQLDataProvider } from './graphql-data-provider';
-import { AppConfig } from 'app/app.config';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'abstract-graphql-element-list',
@@ -36,7 +34,7 @@ export class AbstractGraphqlElementListComponent
   constructor(
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, null, commService);
@@ -49,7 +47,7 @@ export class AbstractGraphqlElementListComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.apollo,
+          this.graphQLClientService,
           this.getGraphqlSubscriptionsForList(),
           this.resourceKind
         );
@@ -70,13 +68,12 @@ export class AbstractGraphqlElementListComponent
 
   editEntryEventCallback(entry) {
     const query = this.getResourceJSONQuery();
-    this.apollo
-      .query({query: gql`${query}`, variables: {
+    this.graphQLClientService
+      .gqlQuery(query, {
         name: entry.name,
         namespace: this.currentNamespaceId
-      }})
-      .subscribe(res => {
-        const data = res.data;
+      })
+      .subscribe(data => {
         const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
         this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
         this.mutateResourceModal.show();
@@ -103,12 +100,7 @@ export class AbstractGraphqlElementListComponent
     const namespace = this.currentNamespaceId;
     const mutation = this.getDeleteMutation();
 
-    return this.apollo.mutate(
-      {
-        mutation: gql`${mutation}`,
-        variables: { name, namespace }
-      }
-    );
+    return this.graphQLClientService.gqlMutation(mutation, { name, namespace });
   }
 
   getDeleteMutation() {

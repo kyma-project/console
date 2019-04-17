@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { ActivatedRoute } from '@angular/router';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-filtered-apis',
@@ -33,7 +33,7 @@ export class FilteredApisComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {
@@ -78,7 +78,7 @@ export class FilteredApisComponent
             namespace: this.currentNamespaceId,
             serviceName: this.serviceName
           },
-          this.apollo
+          this.graphQLClientService
         );
         this.entryRenderer = FilteredApisEntryRendererComponent;
         this.headerRenderer = FilteredApisHeaderRendererComponent;

@@ -6,10 +6,10 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { Observable, throwError } from 'rxjs';
-import { Apollo } from 'apollo-angular';
+import { Observable } from 'rxjs';
 import gql from 'graphql-tag';
 import { catchError, map } from 'rxjs/operators';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
@@ -19,7 +19,7 @@ export class GraphQLDataProvider implements DataProvider {
   constructor(
     private query: string,
     private variables: object,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     private subscriptions?: string,
     private resourceKind?: string
   ) {}
@@ -34,15 +34,13 @@ export class GraphQLDataProvider implements DataProvider {
     return new Observable(observer => {
       if(!this.subscriptions || ! this.resourceKind || !this.resourceQuery) {
         if(!this.resourceQuery){
-          this.resourceQuery = this.apollo
-          .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'no-cache'})
+          this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
         } else {
           this.resourceQuery.resetLastResults();
           this.resourceQuery.refetch();
         };
       } else {
-        this.resourceQuery = this.apollo
-        .watchQuery({query: gql`${this.query}`, variables: this.variables});
+        this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
         this.resourceQuery.subscribeToMore({
           document: gql`${this.subscriptions}`,
           variables: this.variables,
@@ -75,10 +73,10 @@ export class GraphQLDataProvider implements DataProvider {
       this.resourceQuery.valueChanges
       .pipe(
         map(res => {
-          return this.processResponse(res);
+          return this.graphQLClientService.processResponse(res);
         }),
         catchError(err => {
-          return this.processError(err);
+          return this.graphQLClientService.processError(err);
         })
       )
       .subscribe(
@@ -146,30 +144,4 @@ export class GraphQLDataProvider implements DataProvider {
     return result;
   }
 
-  processResponse(res) {
-    const response: any = res;
-    const filteredErrors =
-      (response &&
-        response.errors &&
-        response.errors.filter(
-          (e: any) => !e.message.startsWith('MODULE_DISABLED')
-        )) ||
-      [];
-    if (filteredErrors.length) {
-      return throwError(filteredErrors[0].message);
-    } else if (response && response.data) {
-      return response.data;
-    }
-  }
-
-  processError(err) {
-    let error;
-    if (err.error && err.error.errors) {
-      error = err.error.errors[0].message;
-    } else if (err.error && err.error.message) {
-      error = err.error.message;
-    }
-    error = error || err.message || err;
-    return throwError(error);
-  }
 }

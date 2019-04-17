@@ -13,7 +13,7 @@ import { IEmptyListData } from 'shared/datamodel';
 import { AbstractKubernetesElementListComponent } from 'namespaces/operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-idp-presets',
@@ -35,7 +35,7 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
@@ -51,7 +51,7 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
     this.source = new GraphQLDataProvider(
       query,
       undefined,
-      this.apollo
+      this.graphQLClientService
     );
 
     this.entryRenderer = IdpPresetsEntryRendererComponent;

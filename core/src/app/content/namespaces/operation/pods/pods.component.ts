@@ -7,7 +7,7 @@ import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-ren
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 
 import * as luigiClient from '@kyma-project/luigi-client';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -23,13 +23,13 @@ export class PodsComponent extends AbstractGraphqlElementListComponent {
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    apollo: Apollo,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentNamespaceService,
       commService,
-      apollo,
+      graphQLClientService,
       changeDetector
     );
   }

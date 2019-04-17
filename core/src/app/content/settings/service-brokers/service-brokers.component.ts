@@ -5,7 +5,7 @@ import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/s
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl:
@@ -24,13 +24,13 @@ export class ServiceBrokersComponent extends AbstractGraphqlElementListComponent
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    apollo: Apollo,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentNamespaceService,
       commService,
-      apollo,
+      graphQLClientService,
       changeDetector
     );
   }

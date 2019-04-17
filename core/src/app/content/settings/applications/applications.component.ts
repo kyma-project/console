@@ -12,9 +12,9 @@ import { ComponentCommunicationService } from '../../../shared/services/componen
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';	
 import { AppConfig } from '../../../app.config';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-applications',
@@ -43,13 +43,13 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
-    apollo: Apollo,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(
       currentNamespaceService,
       commService,
-      apollo,
+      graphQLClientService,
       changeDetector
     );
 

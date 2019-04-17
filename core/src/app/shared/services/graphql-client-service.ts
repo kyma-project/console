@@ -36,6 +36,11 @@ export class GraphQLClientService {
     );
   }
 
+  gqlWatchQuery (query, variables = {}, cache?): any{
+    return this.apollo
+    .watchQuery({query: gql`${query}`, variables, fetchPolicy: cache? 'cache-first' : 'no-cache'});
+  }
+
   processResponse(res) {
     const response: any = res;
     const filteredErrors =

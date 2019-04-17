@@ -10,7 +10,7 @@ import { AppConfig } from '../../../../../app.config';
 import { ResourceQuotaHeaderRendererComponent } from './resource-quota-header-renderer/resource-quota-header-renderer.component';
 import { ResourceQuotaEntryRendererComponent } from './resource-quota-entry-renderer/resource-quota-entry-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-resource-quotas',
@@ -30,7 +30,7 @@ export class ResourceQuotasComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
@@ -58,7 +58,7 @@ export class ResourceQuotasComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.apollo
+          this.graphQLClientService
         );
 
         this.entryRenderer = ResourceQuotaEntryRendererComponent;

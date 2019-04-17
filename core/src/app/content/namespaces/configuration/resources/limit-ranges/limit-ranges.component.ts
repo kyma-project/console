@@ -10,7 +10,7 @@ import { AppConfig } from '../../../../../app.config';
 import { LimitRangeHeaderRendererComponent } from './limit-range-header-renderer/limit-range-header-renderer.component';
 import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer/limit-range-entry-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { Apollo } from 'apollo-angular';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-limit-ranges',
@@ -29,7 +29,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    private apollo: Apollo,
+    private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
@@ -63,7 +63,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
           {
             namespace: this.currentNamespaceId
           },
-          this.apollo
+          this.graphQLClientService
         );
 
         this.entryRenderer = LimitRangeEntryRendererComponent;
