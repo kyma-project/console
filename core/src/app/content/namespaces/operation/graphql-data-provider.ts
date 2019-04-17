@@ -36,6 +36,7 @@ export class GraphQLDataProvider implements DataProvider {
           this.resourceQuery = this.apollo
           .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'network-only'})
         } else {
+          this.resourceQuery.resetLastResults();
           this.resourceQuery.refetch();
         };
       } else {
@@ -50,16 +51,13 @@ export class GraphQLDataProvider implements DataProvider {
             };
             const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
             const currentItems = prev[`${lowerCaseResourceKind}s`];
-            let result;
             const item = subscriptionData.data[`${lowerCaseResourceKind}Event`][lowerCaseResourceKind];
             const type = subscriptionData.data[`${lowerCaseResourceKind}Event`].type;
+            let result;
             if (type === 'DELETE') {
               result = currentItems.filter(i => i.name !== item.name);
-            } else if (type === 'UPDATE') {
-              const idx = currentItems.findIndex(i => i.name === item.name);
-                currentItems[idx] = item;
-                result = currentItems;
-            } else if (type === 'ADD') {
+            } else if (type === 'UPDATE' || type === 'ADD') {
+              // Sometimes the 'ADD' event is not received
               const idx = currentItems.findIndex(i => i.name === item.name);
               if(idx === -1) {
                 result = [...currentItems, item];

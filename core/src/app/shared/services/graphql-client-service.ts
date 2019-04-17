@@ -14,7 +14,7 @@ export class GraphQLClientService {
     return this.apollo
     .query({query: gql`${query}`, variables, fetchPolicy: 'network-only'})
     .pipe(
-      concatMap(res => {
+      map(res => {
         return this.processResponse(res);
       }),
       catchError(err => {
@@ -27,7 +27,7 @@ export class GraphQLClientService {
     return this.apollo
     .mutate({mutation: gql`${query}`, variables})
     .pipe(
-      concatMap(res => {
+      map(res => {
         return this.processResponse(res);
       }),
       catchError(err => {
@@ -48,7 +48,7 @@ export class GraphQLClientService {
     if (filteredErrors.length) {
       return throwError(filteredErrors[0].message);
     } else if (response && response.data) {
-      return of(response.data);
+      return response.data;
     }
   }
 
