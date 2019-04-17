@@ -42,6 +42,12 @@
   tr {
     cursor: default;
   }
+
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .y-fd-table {
@@ -198,6 +204,18 @@
 
 .fd-breadcrumb {
   margin-bottom: 0px; // fix value of -12px which prevents proper clicking of breadcrumb link on Firefox
+}
+
+//Page header
+.fd-page {
+  &__header {
+
+    margin-bottom: fd-space('large') / 2;
+
+    .fd-section {
+      padding-bottom: fd-space('small');
+    }
+  }
 }
 
 //Responsive improvements

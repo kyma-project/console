@@ -1,42 +1,46 @@
+<header class="fd-page__header fd-has-background-color-background-2">  
+  <section class="fd-section">
+    <fd-breadcrumb *ngIf="routedFromServiceDetails">
+      <fd-breadcrumb-item>
+        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item>
+        <a href="javascript:void(null)" fd-breadcrumb-link class="service-name" (click)="navigateToDetails(serviceName)">{{ serviceName }}</a>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item>
+        <span fd-breadcrumb-link>
+          {{ apiDefinition ? apiName : 'Create API' }}
+        </span>
+      </fd-breadcrumb-item>
+    </fd-breadcrumb>
+
+    <fd-breadcrumb *ngIf="!routedFromServiceDetails">
+      <fd-breadcrumb-item>
+        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item>
+        <span fd-breadcrumb-link>
+          {{ apiDefinition ? apiName : 'Create API' }}
+        </span>
+      </fd-breadcrumb-item>
+    </fd-breadcrumb>
+
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>
+          {{ apiDefinition ? apiName : 'Create API' }}
+        </fd-action-bar-title>
+      </fd-action-bar-header>
+      <fd-action-bar-actions>
+        <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()">
+          Save
+        </button>
+      </fd-action-bar-actions>
+    </fd-action-bar>
+  </section>
+</header>
+
 <section class="fd-section">
-  <fd-breadcrumb *ngIf="routedFromServiceDetails">
-    <fd-breadcrumb-item>
-      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item>
-      <a href="javascript:void(null)" fd-breadcrumb-link class="service-name" (click)="navigateToDetails(serviceName)">{{ serviceName }}</a>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item>
-      <span fd-breadcrumb-link>
-        {{ apiDefinition ? apiName : 'Create API' }}
-      </span>
-    </fd-breadcrumb-item>
-  </fd-breadcrumb>
-
-  <fd-breadcrumb *ngIf="!routedFromServiceDetails">
-    <fd-breadcrumb-item>
-      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item>
-      <span fd-breadcrumb-link>
-        {{ apiDefinition ? apiName : 'Create API' }}
-      </span>
-    </fd-breadcrumb-item>
-  </fd-breadcrumb>
-
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>
-        {{ apiDefinition ? apiName : 'Create API' }}
-      </fd-action-bar-title>
-    </fd-action-bar-header>
-    <fd-action-bar-actions>
-      <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()">
-        Save
-      </button>
-    </fd-action-bar-actions>
-  </fd-action-bar>
-
   <fd-panel class="y-fd-panel">
     <fd-panel-header>
       <fd-panel-head>

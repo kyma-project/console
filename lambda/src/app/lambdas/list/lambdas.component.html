@@ -1,19 +1,23 @@
-<section class="fd-section">
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>{{ title }}</fd-action-bar-title>
-    </fd-action-bar-header>
-    <fd-action-bar-actions>
-      <y-list-search [hidden]="showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)">
-      </y-list-search>
-      <y-list-filter [hidden]="showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)">
-      </y-list-filter>
-      <button fd-button [options]="'light'" [glyph]="'add'" (click)="goToCreate()">
-        Add Lambda
-      </button>
-    </fd-action-bar-actions>
-  </fd-action-bar>
+<header class="fd-page__header fd-has-background-color-background-2">
+  <section class="fd-section">
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>{{ title }}</fd-action-bar-title>
+      </fd-action-bar-header>
+      <fd-action-bar-actions>
+        <y-list-search [hidden]="showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)">
+        </y-list-search>
+        <y-list-filter [hidden]="showEmptyPage" [filterState]="filterState" (onFilterChanged)="onFilterChanged($event)">
+        </y-list-filter>
+        <button fd-button [glyph]="'add'" (click)="goToCreate()">
+          Add Lambda
+        </button>
+      </fd-action-bar-actions>
+    </fd-action-bar>
+  </section>
+</header>
 
+<section class="fd-section">
   <fd-panel class="y-fd-panel" *ngIf="error">
     <fd-panel-body>
       <div class="fd-alert fd-alert--error" role="alert">
