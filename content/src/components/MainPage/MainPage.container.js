@@ -8,26 +8,6 @@ import { CLUSTER_DOCS_TOPICS } from './queries';
 const filterExtensions = ['md'];
 
 export default compose(
-  // graphql(CLUSTER_DOCS_TOPICS, {
-  //   name: 'clusterDocsTopicsComponents',
-  //   options: {
-  //     variables: {
-  //       viewContext: 'docs-ui',
-  //       groupName: 'components',
-  //       filterExtensions: filterExtensions,
-  //     },
-  //   },
-  // }),
-  // graphql(CLUSTER_DOCS_TOPICS, {
-  //   name: 'clusterDocsTopicsRoot',
-  //   options: {
-  //     variables: {
-  //       viewContext: 'docs-ui',
-  //       groupName: 'root',
-  //       filterExtensions: filterExtensions,
-  //     },
-  //   },
-  // }),
   graphql(CLUSTER_DOCS_TOPICS, {
     options: {
       variables: {
@@ -38,22 +18,29 @@ export default compose(
 )(props => {
   const {
     data: { loading, clusterDocsTopics },
+    ...rest
   } = props;
 
   if (loading || !clusterDocsTopics) {
     return null;
   }
 
-  // return <section>{JSON.stringify(props)}</section>;
+  const rootClusterDocsTopic = [];
+  const otherClusterDocsTopic = [];
+
+  clusterDocsTopics.forEach(docs => {
+    if (docs.name === 'kyma') {
+      rootClusterDocsTopic.push(docs);
+    } else {
+      otherClusterDocsTopic.push(docs);
+    }
+  });
+
   return (
     <MainPage
-      {...props}
-      clusterDocsTopicsRoot={clusterDocsTopics.find(
-        elem => elem.name === 'kyma',
-      )}
-      clusterDocsTopicsComponents={clusterDocsTopics.filter(
-        elem => elem.name !== 'kyma',
-      )}
+      {...rest}
+      clusterDocsTopicsRoot={rootClusterDocsTopic}
+      clusterDocsTopicsComponents={otherClusterDocsTopic}
     />
   );
 });
