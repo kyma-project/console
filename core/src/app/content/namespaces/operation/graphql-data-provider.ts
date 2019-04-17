@@ -6,9 +6,10 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { catchError, map } from 'rxjs/operators';
 
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
@@ -34,7 +35,7 @@ export class GraphQLDataProvider implements DataProvider {
       if(!this.subscriptions || ! this.resourceKind || !this.resourceQuery) {
         if(!this.resourceQuery){
           this.resourceQuery = this.apollo
-          .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'network-only'})
+          .watchQuery({query: gql`${this.query}`, variables: this.variables, fetchPolicy: 'no-cache'})
         } else {
           this.resourceQuery.resetLastResults();
           this.resourceQuery.refetch();
@@ -72,9 +73,16 @@ export class GraphQLDataProvider implements DataProvider {
       }
 
       this.resourceQuery.valueChanges
+      .pipe(
+        map(res => {
+          return this.processResponse(res);
+        }),
+        catchError(err => {
+          return this.processError(err);
+        })
+      )
       .subscribe(
         res => {
-          res = res.data;
           const elementsKey = Object.keys(res)[0];
           const elements = res[elementsKey];
 
@@ -136,5 +144,32 @@ export class GraphQLDataProvider implements DataProvider {
       result.push(new Facet(key, facetMap[key]));
     });
     return result;
+  }
+
+  processResponse(res) {
+    const response: any = res;
+    const filteredErrors =
+      (response &&
+        response.errors &&
+        response.errors.filter(
+          (e: any) => !e.message.startsWith('MODULE_DISABLED')
+        )) ||
+      [];
+    if (filteredErrors.length) {
+      return throwError(filteredErrors[0].message);
+    } else if (response && response.data) {
+      return response.data;
+    }
+  }
+
+  processError(err) {
+    let error;
+    if (err.error && err.error.errors) {
+      error = err.error.errors[0].message;
+    } else if (err.error && err.error.message) {
+      error = err.error.message;
+    }
+    error = error || err.message || err;
+    return throwError(error);
   }
 }

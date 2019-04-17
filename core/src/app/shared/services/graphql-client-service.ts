@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { map, concatMap, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class GraphQLClientService {
@@ -12,7 +12,7 @@ export class GraphQLClientService {
 
   gqlQuery (query, variables = {}): Observable<any> {
     return this.apollo
-    .query({query: gql`${query}`, variables, fetchPolicy: 'network-only'})
+    .query({query: gql`${query}`, variables, fetchPolicy: 'no-cache'})
     .pipe(
       map(res => {
         return this.processResponse(res);
