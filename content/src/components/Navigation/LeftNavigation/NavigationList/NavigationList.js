@@ -75,7 +75,8 @@ class Navigation extends Component {
             const dataForSection = externalItems.filter(
               elem => elem.groupName === sectionName,
             );
-
+            console.log(sectionName);
+            console.log(dataForSection);
             const capitalizedName =
               sectionName[0].toUpperCase() + sectionName.slice(1);
 
