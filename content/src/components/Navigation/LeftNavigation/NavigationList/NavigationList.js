@@ -42,9 +42,6 @@ class Navigation extends Component {
     const externalNavigationSections = externalItems
       .map(item => item.groupName)
       .filter(makeUnique);
-    // const externalSectionData=externalNavigationSections.m
-
-    // const externalItemsSth = externalItems.map(item=>({name:item.}))
 
     return (
       <ScrollSpy
@@ -100,20 +97,6 @@ class Navigation extends Component {
               />
             );
           })}
-          {/* <NavigationGroup
-            data-e2e-id="navigation-components"
-            title="Components"
-            icon={'Chart-Tree-Map'}
-            items={externalItems}
-            groupType="components"
-            isLinkActive={isLinkActive}
-            activeContent={activeContent}
-            activeNav={activeNav}
-            activeNodes={activeNodes}
-            setActiveNav={setActiveNav}
-            chooseActive={chooseActive}
-            history={history}
-          /> */}
         </Wrapper>
       </ScrollSpy>
     );
