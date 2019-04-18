@@ -105,37 +105,5 @@ export default class DocsContentContainer extends Component {
         })}
       </>
     );
-
-    // if (newDocs) {
-    //   newDocs = new DocsProcessor(sources)
-    //     .replaceImagePaths()
-    //     .removeMatadata()
-    //     .result();
-
-    //   newDocs.forEach(doc => {
-    //     if (!doc.metadata) return doc;
-
-    //     const type = doc.metadata.type || doc.metadata.title;
-    //     if (!(type in docsTypesLength)) {
-    //       docsTypesLength[type] = 0;
-    //     }
-    //     if (doc.metadata.title) {
-    //       docsTypesLength[type]++;
-    //     }
-
-    //     return doc;
-    //   });
-    // }
-
-    // return (
-    //   <DocsContent
-    //     docs={newDocs}
-    //     error={this.state.error}
-    //     displayName={this.state.displayName}
-    //     docsTypesLength={docsTypesLength}
-    //     docsLoaded={this.props.docsLoaded}
-    //     setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
-    //   />
-    // );
   }
 }
