@@ -65,7 +65,9 @@ class DocsContent extends Component {
     return (
       <>
         <DocsWrapper>
-          <Toolbar title={displayName} customPadding={'28px 0'} />
+          {displayName && (
+            <Toolbar title={displayName} customPadding={'28px 0'} />
+          )}
 
           {docs.map((doc, index) => {
             const type = doc.metadata.type || doc.metadata.title;

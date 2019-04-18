@@ -5,7 +5,7 @@ import NavigationGroup from './NavigationGroup';
 import { Wrapper } from './styled';
 
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../../../commons/variables';
-import { tokenize } from '../../../../commons/helpers';
+import { tokenize, makeUnique } from '../../../../commons/helpers';
 
 class Navigation extends Component {
   state = {
@@ -30,7 +30,7 @@ class Navigation extends Component {
       setActiveNav,
       history,
       rootItems,
-      componentsItems,
+      externalItems,
       docsLoaded,
     } = this.props;
     const { activeNodes } = this.state;
@@ -38,6 +38,13 @@ class Navigation extends Component {
     if (!docsLoaded) {
       return null;
     }
+
+    const externalNavigationSections = externalItems
+      .map(item => item.groupName)
+      .filter(makeUnique);
+    // const externalSectionData=externalNavigationSections.m
+
+    // const externalItemsSth = externalItems.map(item=>({name:item.}))
 
     return (
       <ScrollSpy
@@ -67,11 +74,37 @@ class Navigation extends Component {
             chooseActive={chooseActive}
             history={history}
           />
-          <NavigationGroup
+          {externalNavigationSections.map(sectionName => {
+            const dataForSection = externalItems.filter(
+              elem => elem.groupName === sectionName,
+            );
+
+            const capitalizedName =
+              sectionName[0].toUpperCase() + sectionName.slice(1);
+
+            return (
+              <NavigationGroup
+                key={sectionName}
+                data-e2e-id={`navigation-${sectionName}`}
+                title={capitalizedName}
+                icon={'Chart-Tree-Map'}
+                items={dataForSection}
+                groupType={sectionName}
+                isLinkActive={isLinkActive}
+                activeContent={activeContent}
+                activeNav={activeNav}
+                activeNodes={activeNodes}
+                setActiveNav={setActiveNav}
+                chooseActive={chooseActive}
+                history={history}
+              />
+            );
+          })}
+          {/* <NavigationGroup
             data-e2e-id="navigation-components"
             title="Components"
             icon={'Chart-Tree-Map'}
-            items={componentsItems}
+            items={externalItems}
             groupType="components"
             isLinkActive={isLinkActive}
             activeContent={activeContent}
@@ -80,7 +113,7 @@ class Navigation extends Component {
             setActiveNav={setActiveNav}
             chooseActive={chooseActive}
             history={history}
-          />
+          /> */}
         </Wrapper>
       </ScrollSpy>
     );

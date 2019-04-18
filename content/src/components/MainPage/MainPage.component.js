@@ -55,7 +55,9 @@ class MainPage extends Component {
         ? this.props.clusterDocsTopicsRoot || {}
         : this.props.clusterDocsTopicsComponents || {};
     if (!docsItems || !docsItems.length) return {};
-    docsItems = docsItems.filter(item => tokenize(item.displayName) === id);
+
+    docsItems = docsItems.filter(item => item.name === id);
+
     return docsItems[0] || {};
   };
 
@@ -148,7 +150,7 @@ class MainPage extends Component {
 
   render() {
     const { history } = this.props;
-    const { activeContent, activeNav } = this.state;
+    const { activeContent, activeNav, docsList, docsLoaded } = this.state;
 
     const itemsComponents = this.props.clusterDocsTopicsComponents || {};
     const itemsRoot = this.props.clusterDocsTopicsRoot || {};
@@ -159,11 +161,11 @@ class MainPage extends Component {
           <LeftSideWrapper>
             <LeftNavigation
               rootItems={itemsRoot}
-              componentsItems={itemsComponents}
+              externalItems={itemsComponents}
               activeContent={activeContent}
               activeNav={activeNav}
               chooseActive={this.chooseActive}
-              docsLoaded={this.state.docsLoaded}
+              docsLoaded={docsLoaded}
               setActiveNav={this.setActiveNav}
               history={history}
             />
@@ -171,8 +173,8 @@ class MainPage extends Component {
           <CenterSideWrapper id={SCROLL_SPY_ROOT_ELEMENT}>
             <Suspense fallback={<div>Loading...</div>}>
               <DocsContent
-                docs={this.state.docsList}
-                docsLoaded={this.state.docsLoaded}
+                docs={docsList}
+                docsLoaded={docsLoaded}
                 setDocsInitialLoadStatus={this.setDocsInitialLoadStatus}
               />
             </Suspense>
