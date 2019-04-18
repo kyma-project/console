@@ -122,20 +122,22 @@ class ServiceClassList extends React.Component {
     };
 
     const handleTabChange = ({ defaultActiveTabIndex }) => {
-      let tabName = '';
-      switch (defaultActiveTabIndex) {
-        case 0:
-          tabName = 'addons';
-          break;
-        case 1:
-          tabName = 'services';
-          break;
-        default:
-          tabName = 'addons';
-      }
-      LuigiClient.linkManager()
-        .withParams({ selectedTab: tabName })
-        .navigate('');
+      // TODO: uncomment after https://github.com/kyma-project/luigi/issues/491 is done
+      // let tabName = '';
+      // switch (defaultActiveTabIndex) {
+      //   case 0:
+      //     tabName = 'addons';
+      //     break;
+      //   case 1:
+      //     tabName = 'services';
+      //     break;
+      //   default:
+      //     tabName = 'addons';
+      // }
+
+      // LuigiClient.linkManager()
+      //   .withParams({ selectedTab: tabName })
+      //   .navigate('');
     };
 
     const filterFn = e => {
