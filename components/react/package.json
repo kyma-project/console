@@ -25,7 +25,7 @@
   "homepage": "https://kyma-project.github.io/console/react",
   "dependencies": {
     "file-loader": "^1.1.11",
-    "fundamental-react": "0.4.0",
+    "fundamental-react": "^0.5.0",
     "polished": "^1.8.1",
     "prism-react-renderer": "^0.1.6",
     "react-copy-to-clipboard": "^5.0.1",
@@ -48,7 +48,7 @@
     "css-loader": "^0.28.10",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
-    "fiori-fundamentals": "1.4.1",
+    "fiori-fundamentals": "^1.5.3",
     "fontfaceobserver": "^2.0.13",
     "jest": "^21.2.1",
     "jest-styled-components": "^4.11.0-1",
