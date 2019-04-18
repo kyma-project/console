@@ -7,15 +7,13 @@ import { CLUSTER_DOCS_TOPICS } from './queries';
 
 const filterExtensions = ['md'];
 
-export default compose(
-  graphql(CLUSTER_DOCS_TOPICS, {
-    options: {
-      variables: {
-        filterExtensions: filterExtensions,
-      },
+export default graphql(CLUSTER_DOCS_TOPICS, {
+  options: {
+    variables: {
+      filterExtensions: filterExtensions,
     },
-  }),
-)(props => {
+  },
+})(props => {
   const {
     data: { loading, clusterDocsTopics },
     ...rest
