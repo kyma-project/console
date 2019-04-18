@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import DocsContent from './DocsContent.component';
 import { DocsProcessor } from './DocsProcessor';
-import equal from 'deep-equal';
+import deepEqual from 'deep-equal';
 
 export default class DocsContentContainer extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class DocsContentContainer extends Component {
 
   async componentDidUpdate(prevProps, _) {
     const { docs } = this.props;
-    if (!equal(this.props.docs, prevProps.docs) && docs) {
+    if (!deepEqual(docs, prevProps.docs) && docs) {
       await this.setDocs(docs);
     }
   }
@@ -28,12 +28,15 @@ export default class DocsContentContainer extends Component {
   async setDocs(docs) {
     this.setState({
       displayName: docs.displayName,
-      docs: await this.getAllUrls(docs.assets[0].files),
+
+      docss: await Promise.all(
+        docs.assets.map(elem => this.getAllUrls(elem.files)),
+      ),
     });
   }
 
   async getAllUrls(docs) {
-    var data = await Promise.all(
+    const data = await Promise.all(
       docs.map(doc =>
         fetch(doc.url)
           .then(response => {
@@ -60,45 +63,82 @@ export default class DocsContentContainer extends Component {
 
   render() {
     const { docs } = this.props;
-    const sources = this.state.docs;
-
-    if (!docs) {
+    const { docs: sources } = this.state;
+    if (!docs || !sources) {
       return null;
     }
 
-    let newDocs = sources;
-    let docsTypesLength = {};
-
-    if (newDocs) {
-      newDocs = new DocsProcessor(sources)
-        .replaceImagePaths()
-        .removeMatadata()
-        .result();
-
-      newDocs.forEach(doc => {
-        if (!doc.metadata) return doc;
-
-        const type = doc.metadata.type || doc.metadata.title;
-        if (!(type in docsTypesLength)) {
-          docsTypesLength[type] = 0;
-        }
-        if (doc.metadata.title) {
-          docsTypesLength[type]++;
-        }
-
-        return doc;
-      });
-    }
-
     return (
-      <DocsContent
-        docs={newDocs}
-        error={this.state.error}
-        displayName={this.state.displayName}
-        docsTypesLength={docsTypesLength}
-        docsLoaded={this.props.docsLoaded}
-        setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
-      />
+      <>
+        {sources.flatMap((component, index) => {
+          let newDocs = component;
+          let docsTypesLength = {};
+          if (newDocs) {
+            newDocs = new DocsProcessor(component)
+              .replaceImagePaths()
+              .removeMatadata()
+              .result();
+
+            newDocs.forEach(doc => {
+              if (!doc.metadata) return doc;
+
+              const type = doc.metadata.type || doc.metadata.title;
+              if (!(type in docsTypesLength)) {
+                docsTypesLength[type] = 0;
+              }
+              if (doc.metadata.title) {
+                docsTypesLength[type]++;
+              }
+
+              return doc;
+            });
+          }
+
+          return (
+            <DocsContent
+              key={index}
+              docs={newDocs}
+              error={this.state.error}
+              displayName={index === 0 ? this.state.displayName : null}
+              docsTypesLength={docsTypesLength}
+              docsLoaded={this.props.docsLoaded}
+              setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
+            />
+          );
+        })}
+      </>
     );
+
+    // if (newDocs) {
+    //   newDocs = new DocsProcessor(sources)
+    //     .replaceImagePaths()
+    //     .removeMatadata()
+    //     .result();
+
+    //   newDocs.forEach(doc => {
+    //     if (!doc.metadata) return doc;
+
+    //     const type = doc.metadata.type || doc.metadata.title;
+    //     if (!(type in docsTypesLength)) {
+    //       docsTypesLength[type] = 0;
+    //     }
+    //     if (doc.metadata.title) {
+    //       docsTypesLength[type]++;
+    //     }
+
+    //     return doc;
+    //   });
+    // }
+
+    // return (
+    //   <DocsContent
+    //     docs={newDocs}
+    //     error={this.state.error}
+    //     displayName={this.state.displayName}
+    //     docsTypesLength={docsTypesLength}
+    //     docsLoaded={this.props.docsLoaded}
+    //     setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
+    //   />
+    // );
   }
 }

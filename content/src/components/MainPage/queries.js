@@ -10,6 +10,7 @@ export const CLUSTER_DOCS_TOPICS = gql`
       name
       displayName
       description
+      groupName
       assets {
         name
         type
