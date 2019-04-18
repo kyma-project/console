@@ -12,7 +12,6 @@ export default class DocsContentContainer extends Component {
 
   async componentDidMount() {
     const { docs } = this.props;
-
     if (docs) {
       await this.setDocs(docs);
     }
@@ -20,7 +19,7 @@ export default class DocsContentContainer extends Component {
 
   async componentDidUpdate(prevProps, _) {
     const { docs } = this.props;
-    if (!deepEqual(docs, prevProps.docs) && docs) {
+    if (docs && !deepEqual(docs, prevProps.docs)) {
       await this.setDocs(docs);
     }
   }
@@ -28,8 +27,7 @@ export default class DocsContentContainer extends Component {
   async setDocs(docs) {
     this.setState({
       displayName: docs.displayName,
-
-      docss: await Promise.all(
+      docs: await Promise.all(
         docs.assets.map(elem => this.getAllUrls(elem.files)),
       ),
     });
@@ -64,6 +62,7 @@ export default class DocsContentContainer extends Component {
   render() {
     const { docs } = this.props;
     const { docs: sources } = this.state;
+
     if (!docs || !sources) {
       return null;
     }
@@ -80,7 +79,7 @@ export default class DocsContentContainer extends Component {
               .result();
 
             newDocs.forEach(doc => {
-              if (!doc.metadata) return doc;
+              if (!doc.metadata) return;
 
               const type = doc.metadata.type || doc.metadata.title;
               if (!(type in docsTypesLength)) {
@@ -89,8 +88,6 @@ export default class DocsContentContainer extends Component {
               if (doc.metadata.title) {
                 docsTypesLength[type]++;
               }
-
-              return doc;
             });
           }
 
