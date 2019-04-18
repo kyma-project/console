@@ -160,6 +160,7 @@ export class GenericListComponent implements OnChanges, OnInit {
           }
 
           observer.next(result.data);
+          observer.complete();
           this.setLoaded(true);
           this.setLoading(false);
         },

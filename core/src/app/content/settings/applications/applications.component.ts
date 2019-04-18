@@ -26,10 +26,7 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   createNewElementText = 'Add Application';
   resourceKind = 'Application';
-  baseUrl = AppConfig.k8sApiServerUrl_applications;
-  namespaces = [];	
-  ariaExpanded = false;	
-  ariaHidden = true;
+  namespaces = [];
   public hideFilter = true;
   private contextListenerId: string;
   public isReadOnly = false;
@@ -87,11 +84,6 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
 
   navigateToDetails(entry) {
     LuigiClient.linkManager().navigate(`details/${entry.name}`);
-  }
-
-  toggleDropDown() {	
-    this.ariaExpanded = !this.ariaExpanded;	
-    this.ariaHidden = !this.ariaHidden;	
   }
 
   public openModal() {

@@ -68,11 +68,12 @@ export class AbstractGraphqlElementListComponent
 
   editEntryEventCallback(entry) {
     const query = this.getResourceJSONQuery();
+    const variables = {
+      name: entry.name,
+      namespace: this.currentNamespaceId
+    };
     this.graphQLClientService
-      .gqlQuery(query, {
-        name: entry.name,
-        namespace: this.currentNamespaceId
-      })
+      .gqlQuery(query, variables)
       .subscribe(data => {
         const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
         this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
@@ -82,36 +83,37 @@ export class AbstractGraphqlElementListComponent
 
   getResourceJSONQuery() {
     const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
-    let var1 = `$name: String!`;
-    let var2 = `name: $name`;
+    let variablesDefinitionsString = `$name: String!`;
+    let variablesString = `name: $name`;
     if (this.currentNamespaceId) {
-      var1 = `$name: String!, $namespace: String!`;
-      var2 = `name: $name, namespace: $namespace`;
+      variablesDefinitionsString = `$name: String!, $namespace: String!`;
+      variablesString = `name: $name, namespace: $namespace`;
     }
-    return `query ${lowerCaseResourceKind}(${var1}) {
-      ${lowerCaseResourceKind}(${var2}) {
+    return `query ${lowerCaseResourceKind}(${variablesDefinitionsString}) {
+      ${lowerCaseResourceKind}(${variablesString}) {
         json
       }
     }`;
   }
 
   sendDeleteRequest(entry) {
-    const name = entry.name;
-    const namespace = this.currentNamespaceId;
     const mutation = this.getDeleteMutation();
-
-    return this.graphQLClientService.gqlMutation(mutation, { name, namespace });
+    const variables = {
+      name: entry.name,
+      namespace: this.currentNamespaceId
+    };
+    return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
   getDeleteMutation() {
-    let var1 = `$name: String!`;
-    let var2 = `name: $name`;
+    let variablesDefinitionsString = `$name: String!`;
+    let variablesString = `name: $name`;
     if (this.currentNamespaceId) {
-      var1 = `$name: String!, $namespace: String!`;
-      var2 = `name: $name, namespace: $namespace`;
+      variablesDefinitionsString = `$name: String!, $namespace: String!`;
+      variablesString = `name: $name, namespace: $namespace`;
     }
-    return `mutation delete${this.resourceKind}(${var1}) {
-      delete${this.resourceKind}(${var2}) {
+    return `mutation delete${this.resourceKind}(${variablesDefinitionsString}) {
+      delete${this.resourceKind}(${variablesString}) {
         name
       }
     }`;
