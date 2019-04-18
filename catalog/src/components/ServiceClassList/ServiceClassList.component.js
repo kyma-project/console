@@ -134,7 +134,6 @@ class ServiceClassList extends React.Component {
       //   default:
       //     tabName = 'addons';
       // }
-
       // LuigiClient.linkManager()
       //   .withParams({ selectedTab: tabName })
       //   .navigate('');
