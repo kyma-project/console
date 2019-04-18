@@ -3,7 +3,6 @@ import { ThemeWrapper } from '@kyma-project/react-components';
 import LeftNavigation from '../Navigation/LeftNavigation/LeftNavigation';
 import { ColumnsWrapper, LeftSideWrapper, CenterSideWrapper } from './styled';
 
-import { tokenize } from '../../commons/helpers';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
 
