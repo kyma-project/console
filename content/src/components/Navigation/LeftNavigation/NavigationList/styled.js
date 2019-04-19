@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ACTIVE_COLOR } from '../../../../commons/variables';
-
+import { Icon } from '@kyma-project/react-components';
 export const Wrapper = styled.div``;
 
 export const NavigationContainer = styled.div`
@@ -96,5 +96,20 @@ export const NavigationLink = styled.a`
   :hover {
     color: ${ACTIVE_COLOR};
     cursor: pointer;
+  }
+`;
+
+Icon.defaultProps = { glyph: 'feeder-arrow', size: 's' };
+export const CollapseArrow = styled(Icon)`
+  && {
+    margin-left: 5px;
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    cursor: pointer;
+  }
+  &:before {
+    transition: 0.3s ease;
+    ${props => props.open && 'transform: rotate(90deg);'};
   }
 `;
