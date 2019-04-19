@@ -481,10 +481,9 @@ function fetchFromGraphQL(query, variables, gracefully) {
           reject(xmlHttp.response);
         }
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        // relogin();
-        // }
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
         if (!gracefully) {
           reject(xmlHttp.response);
         } else {
@@ -535,32 +534,6 @@ function postToKyma(url, body) {
   });
 }
 
-function getSelfSubjectRulesReview() {
-  const url =
-    k8sServerUrl + '/apis/authorization.k8s.io/v1/selfsubjectrulesreviews ';
-  const body = {
-    kind: 'SelfSubjectRulesReview',
-    apiVersion: 'authorization.k8s.io/v1',
-    spec: {
-      namespace: '*'
-    }
-  };
-  return new Promise(function (resolve, reject) {
-    postToKyma(url, body).then(
-      res => {
-        let resourceRules = [];
-        if (res.status) {
-          resourceRules = res.status.resourceRules;
-        }
-        resolve(resourceRules);
-      },
-      err => {
-        reject(err);
-      }
-    );
-  });
-}
-
 function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
   let hasPermissions = true;
   if (
@@ -596,8 +569,15 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
   );
 }
 
-function getBackendModules() {
+function getConsoleInitData() {
   const query = `query {
+    selfSubjectRules {
+			resourceRules{
+				verbs
+				resources
+				apiGroups
+			}
+		}
     backendModules{
       name
     }
@@ -642,22 +622,29 @@ function getFreshKeys() {
 
 let backendModules = [];
 let selfSubjectRulesReview = [];
-Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
+var initPromises = [getFreshKeys()];
+
+if(token){
+  initPromises.push(getConsoleInitData())
+}
+
+Promise.all(initPromises)
   .then(
     res => {
-      const modules = res[0];
-      const subjectRules = res[1];
-      if (
-        modules &&
-        modules.backendModules &&
-        modules.backendModules.length > 0
-      ) {
-        modules.backendModules.forEach(backendModule => {
-          backendModules.push(backendModule.name);
-        });
-      }
-      if (subjectRules && subjectRules.length > 0) {
-        selfSubjectRulesReview = subjectRules;
+      if(token){
+        const modules = res[1].backendModules;
+        const subjectRules = res[1].selfSubjectRules.resourceRules;
+        if (
+          modules &&
+          modules.length > 0
+        ) {
+          modules.forEach(backendModule => {
+            backendModules.push(backendModule.name);
+          });
+        }
+        if (subjectRules && subjectRules.length > 0) {
+          selfSubjectRulesReview = subjectRules;
+        }
       }
     },
     err => {
