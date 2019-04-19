@@ -10,7 +10,7 @@ export const NavigationContainer = styled.div`
   text-align: left;
 `;
 
-export const NavigationHeader = styled.div`
+export const NavigationHeader = styled.section`
   position: relative;
   border-top: 1px solid #eeeeef;
   background: #fafafa;

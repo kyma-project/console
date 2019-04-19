@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@kyma-project/react-components';
 import { tokenize } from '../../../../commons/helpers';
 
@@ -99,18 +99,20 @@ function NavigationGroup({
       </NavigationItem>
     );
   };
-
+  const [show, setShow] = useState(true);
   return (
     <NavigationContainer>
       {title && icon && (
-        <NavigationHeader>
+        <NavigationHeader onClick={() => setShow(!show)}>
           <Icon size="m" glyph={icon} />
           {title}
         </NavigationHeader>
       )}
-      <NavigationItems showAll>
-        {items.map(item => renderNavigationItem(item))}
-      </NavigationItems>
+      {show && (
+        <NavigationItems showAll>
+          {items.map(item => renderNavigationItem(item))}
+        </NavigationItems>
+      )}
     </NavigationContainer>
   );
 }
