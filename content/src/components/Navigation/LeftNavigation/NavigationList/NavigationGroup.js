@@ -54,21 +54,17 @@ function NavigationGroup({
     if (!item || !item.assets || !item.assets.length) {
       return null;
     }
-    console.log(item);
-    item.assets[0].files.forEach(file => {
-      let type = file.metadata.type || file.metadata.title;
-      if (!filesByTypes[type]) {
-        filesByTypes[type] = [];
-      }
-      filesByTypes[type].push(file);
-      return file;
-    });
-    // if (item.displayName === 'Istio') {
-    console.groupCollapsed();
-    console.log(item);
-    console.log(activeContent, activeNav, activeNodes);
-    console.groupEnd();
-    // }
+
+    item.assets.forEach(asset =>
+      asset.files.forEach(file => {
+        let type = file.metadata.type || file.metadata.title;
+        if (!filesByTypes[type]) {
+          filesByTypes[type] = [];
+        }
+        filesByTypes[type].push(file);
+      }),
+    );
+
     return (
       <NavigationItem key={tokenize(item.name)}>
         <NavigationLinkWrapper>

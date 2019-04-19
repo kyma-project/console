@@ -195,7 +195,7 @@ function NavigationSections({
       data-e2e-id={e2eId}
     >
       {items &&
-        Object.keys(items).map((type, index) => {
+        Object.keys(items).map(type => {
           return renderNavigationItem(items[type], type);
         })}
     </NavigationItems>
