@@ -47,7 +47,7 @@ const useFilters = () => {
 
   const [activeFilters, dispatchActiveFilters] = useReducer(
     activeFiltersReducer,
-      // @ts-ignore
+    // @ts-ignore
     initialActiveFilters,
   );
 

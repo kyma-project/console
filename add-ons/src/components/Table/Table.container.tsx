@@ -20,7 +20,10 @@ const TableContainer: React.FunctionComponent = () => {
   const { configurationsExist, filteredConfigs } = useContext(
     ConfigurationsService.Context,
   );
-  const { setFilterLabel, activeFilters: { search } } = useContext(FiltersService.Context);
+  const {
+    setFilterLabel,
+    activeFilters: { search },
+  } = useContext(FiltersService.Context);
 
   const content = () => {
     if (loading) {
