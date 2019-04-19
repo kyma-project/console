@@ -11,6 +11,7 @@ import {
   NavigationSectionArrow,
   NavigationLinkWrapper,
   NavigationLink,
+  CollapseArrow,
 } from './styled';
 
 function NavigationGroup({
@@ -106,6 +107,7 @@ function NavigationGroup({
         <NavigationHeader onClick={() => setShow(!show)}>
           <Icon size="m" glyph={icon} />
           {title}
+          <CollapseArrow open={show} />
         </NavigationHeader>
       )}
       {show && (
