@@ -6,7 +6,7 @@ FROM node:10.11.0-alpine as ui-generator
 WORKDIR /app
 
 # Install app dependencies
-COPY package.json yarn.lock /app/
+COPY package.json /app/
 RUN npm install --no-optional
 
 # Copy sources
