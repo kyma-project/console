@@ -41,8 +41,16 @@ class Navigation extends Component {
 
     const externalNavigationSections = externalItems
       .map(item => item.groupName)
-      .filter(makeUnique);
+      .filter(makeUnique)
+      .sort((a, b) => (a === 'components' ? -1 : b === 'components' ? -1 : 0));
 
+    if (activeNodes && activeNodes.document) {
+      // console.log(
+      //   activeNodes.document.id,
+      //   activeNodes.groupOfDocuments.id,
+      //   activeContent,
+      // );
+    }
     return (
       <ScrollSpy
         rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}
@@ -71,33 +79,32 @@ class Navigation extends Component {
             chooseActive={chooseActive}
             history={history}
           />
-          {externalNavigationSections.map(sectionName => {
-            const dataForSection = externalItems.filter(
-              elem => elem.groupName === sectionName,
-            );
-            console.log(sectionName);
-            console.log(dataForSection);
-            const capitalizedName =
-              sectionName[0].toUpperCase() + sectionName.slice(1);
+          {externalNavigationSections &&
+            externalNavigationSections.map(sectionName => {
+              const dataForSection = externalItems.filter(
+                elem => elem.groupName === sectionName,
+              );
+              const capitalizedName =
+                sectionName[0].toUpperCase() + sectionName.slice(1);
 
-            return (
-              <NavigationGroup
-                key={sectionName}
-                data-e2e-id={`navigation-${sectionName}`}
-                title={capitalizedName}
-                icon={'Chart-Tree-Map'}
-                items={dataForSection}
-                groupType={sectionName}
-                isLinkActive={isLinkActive}
-                activeContent={activeContent}
-                activeNav={activeNav}
-                activeNodes={activeNodes}
-                setActiveNav={setActiveNav}
-                chooseActive={chooseActive}
-                history={history}
-              />
-            );
-          })}
+              return (
+                <NavigationGroup
+                  key={sectionName}
+                  data-e2e-id={`navigation-${sectionName}`}
+                  title={capitalizedName}
+                  icon={'Chart-Tree-Map'}
+                  items={dataForSection}
+                  groupType={sectionName}
+                  isLinkActive={isLinkActive}
+                  activeContent={activeContent}
+                  activeNav={activeNav}
+                  activeNodes={activeNodes}
+                  setActiveNav={setActiveNav}
+                  chooseActive={chooseActive}
+                  history={history}
+                />
+              );
+            })}
         </Wrapper>
       </ScrollSpy>
     );
