@@ -3,6 +3,7 @@ import { ThemeWrapper } from '@kyma-project/react-components';
 import LeftNavigation from '../Navigation/LeftNavigation/LeftNavigation';
 import { ColumnsWrapper, LeftSideWrapper, CenterSideWrapper } from './styled';
 
+import { tokenize } from '../../commons/helpers';
 import { goToAnchor, goToTop } from 'react-scrollable-anchor';
 import { SCROLL_SPY_ROOT_ELEMENT } from '../../commons/variables';
 
@@ -54,9 +55,9 @@ class MainPage extends Component {
         ? this.props.clusterDocsTopicsRoot || {}
         : this.props.clusterDocsTopicsComponents || {};
     if (!docsItems || !docsItems.length) return {};
-
-    docsItems = docsItems.filter(item => item.name === id);
-
+    docsItems = docsItems.filter(
+      item => tokenize(item.displayName) === id || item.name === id,
+    );
     return docsItems[0] || {};
   };
 
