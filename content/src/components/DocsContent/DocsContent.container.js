@@ -96,7 +96,7 @@ export default class DocsContentContainer extends Component {
               key={index}
               docs={newDocs}
               error={this.state.error}
-              displayName={index === 0 ? this.state.displayName : null}
+              displayName={this.state.displayName}
               docsTypesLength={docsTypesLength}
               docsLoaded={this.props.docsLoaded}
               setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
