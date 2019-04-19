@@ -32,7 +32,7 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-      if(!this.subscriptions || ! this.resourceKind || !this.resourceQuery) {
+      if(!this.subscriptions || ! this.resourceKind) {
         if(!this.resourceQuery){
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
         } else {
