@@ -84,7 +84,7 @@ class ScrollSpy extends React.Component {
       }
     }
   }
-  handleChangeHeight = (elm: any, callback: () => any) => {
+  handleChangeHeight = (elm, callback) => {
     let lastHeight = elm.clientHeight;
     (function changeHeight() {
       const newHeight = elm.clientHeight;
