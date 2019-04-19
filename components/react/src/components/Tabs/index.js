@@ -81,7 +81,10 @@ class Tabs extends React.Component {
 
     const props = this.getPropsFromActiveTab(children);
     return (
-      <TabsWrapper border={this.props.border} addonsView={this.props.addonsView}>
+      <TabsWrapper
+        border={this.props.border}
+        addonsView={this.props.addonsView}
+      >
         <TabsHeader addonsView={this.props.addonsView}>
           {this.renderHeader(children)}
           <TabsHeaderAdditionalContent>

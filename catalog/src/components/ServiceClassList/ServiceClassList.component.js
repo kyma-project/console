@@ -56,31 +56,18 @@ class ServiceClassList extends React.Component {
     };
   }
 
-  setTabFilter = () => {
-    const selectedTab = LuigiClient.getNodeParams().selectedTab;
-
-    switch (selectedTab) {
-      case 'addons':
-        this.props.setServiceClassesFilter('local', true);
-        break;
-      case 'services':
-        this.props.setServiceClassesFilter('local', false);
-        break;
-      default:
-        this.props.setServiceClassesFilter('local', true);
-        break;
-    }
+  setTabFilter = filterValue => {
+    this.props.setServiceClassesFilter('local', filterValue);
   };
 
   componentDidMount() {
     setTimeout(() => {
-      this.setTabFilter();
+      this.setTabFilter(true);
     }, 100);
   }
 
   componentWillReceiveProps(newProps) {
     const { classFiltersLoaded } = this.state;
-
     if (equal(this.props, newProps)) return;
 
     if (
@@ -90,6 +77,7 @@ class ServiceClassList extends React.Component {
     ) {
       newProps.filterServiceClasses();
     }
+
     if (
       !classFiltersLoaded &&
       newProps.classFilters &&
@@ -162,6 +150,9 @@ class ServiceClassList extends React.Component {
     };
 
     const handleTabChange = ({ defaultActiveTabIndex }) => {
+      defaultActiveTabIndex
+        ? this.setTabFilter(false)
+        : this.setTabFilter(true);
       // TODO: uncomment after https://github.com/kyma-project/luigi/issues/491 is done
       // let tabName = '';
       // switch (defaultActiveTabIndex) {

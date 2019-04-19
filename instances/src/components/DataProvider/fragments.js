@@ -7,6 +7,7 @@ export const serviceClassGql = `
   description
   documentationUrl
   supportUrl
+  labels
   content
   asyncApiSpec
   openApiSpec

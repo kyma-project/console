@@ -505,6 +505,7 @@ const filterServiceClasses = (classes, activeFilters) => {
         tags.filter(tag => tag.indexOf(searchValue) !== -1).length ||
         labels.filter(label => label.indexOf(searchValue) !== -1).length;
     }
+
     const match =
       basicMatch &&
       providerMatch &&

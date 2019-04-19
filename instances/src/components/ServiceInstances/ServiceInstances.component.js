@@ -9,17 +9,25 @@ import {
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
+import { serviceInstanceVariables } from './variables';
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
 
-import { ServiceInstancesWrapper } from './styled';
+import { ServiceInstancesWrapper, StatusWrapper, Status } from './styled';
 import { transformDataScalarStringsToObjects } from '../../store/transformers';
 
 class ServiceInstances extends React.Component {
+  setTabFilter = filterValue => {
+    this.props.filterClassesAndSetActiveFilters('local', filterValue);
+  };
+
   componentDidMount() {
     if (typeof this.props.filterItems === 'function') {
       this.props.filterItems();
     }
+    setTimeout(() => {
+      this.setTabFilter(true);
+    }, 100);
   }
 
   componentWillReceiveProps(newProps) {
@@ -36,6 +44,14 @@ class ServiceInstances extends React.Component {
     }
   }
 
+  status = (data, id) => {
+    return (
+      <StatusWrapper key={id}>
+        <Status data-e2e-id={id}>{data}</Status>
+      </StatusWrapper>
+    );
+  };
+
   render() {
     const {
       filterClassesAndSetActiveFilters,
@@ -45,6 +61,8 @@ class ServiceInstances extends React.Component {
       activeFilters = {},
       allItems = {},
     } = this.props;
+    const filteredInstancesCounts =
+      this.props.filteredInstancesCounts.filteredInstancesCounts || {};
 
     if (allItems.loading || filteredItems.loading) {
       return null;
@@ -59,7 +77,11 @@ class ServiceInstances extends React.Component {
     const labelFilter = filters.find(val => val.name === 'labels');
 
     let items;
-    if (!allActiveFilters.search && allActiveFilters.labels.length === 0) {
+    if (
+      !allActiveFilters.search &&
+      typeof allActiveFilters.local !== 'boolean' &&
+      allActiveFilters.labels.length === 0
+    ) {
       items = allInstances;
     } else {
       const filteredInstances = filteredItems.filteredItems || [];
@@ -87,20 +109,24 @@ class ServiceInstances extends React.Component {
     };
 
     const handleTabChange = ({ defaultActiveTabIndex }) => {
-      let tabName = '';
-      switch (defaultActiveTabIndex) {
-        case 0:
-          tabName = 'addons';
-          break;
-        case 1:
-          tabName = 'services';
-          break;
-        default:
-          tabName = 'addons';
-      }
-      LuigiClient.linkManager()
-        .withParams({ selectedTab: tabName })
-        .navigate('');
+      defaultActiveTabIndex
+        ? this.setTabFilter(false)
+        : this.setTabFilter(true);
+      // TODO: uncomment after https://github.com/kyma-project/luigi/issues/491 is done
+      // let tabName = '';
+      // switch (defaultActiveTabIndex) {
+      //   case 0:
+      //     tabName = 'addons';
+      //     break;
+      //   case 1:
+      //     tabName = 'services';
+      //     break;
+      //   default:
+      //     tabName = 'addons';
+      // }
+      // LuigiClient.linkManager()
+      //   .withParams({ selectedTab: tabName })
+      //   .navigate('');
     };
 
     return (
@@ -117,47 +143,61 @@ class ServiceInstances extends React.Component {
           message={filteredItems.error && filteredItems.error.message}
         />
 
-        <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-          <Tabs
-            defaultActiveTabIndex={determineSelectedTab()}
-            callback={handleTabChange}
+        <Tabs
+          defaultActiveTabIndex={determineSelectedTab()}
+          callback={handleTabChange}
+          noBorder
+          addonsView
+        >
+          <Tab
+            noMargin
+            aditionalStatus={this.status(
+              filteredInstancesCounts.local,
+              'addons-status',
+            )}
+            title={
+              <Tooltip
+                content={serviceInstanceVariables.addonsTooltipDescription}
+                minWidth="100px"
+                showTooltipTimeout={750}
+                key="instances-addons-tab-tooltip"
+              >
+                {serviceInstanceVariables.addons}
+              </Tooltip>
+            }
           >
-            <Tab
-              title={
-                <Tooltip
-                  content="PITUPITU"
-                  minWidth="140px"
-                  showTooltipTimeout={750}
-                  key="instances-addons-tab-tooltip"
-                >
-                  Add-Ons
-                </Tooltip>
-              }
-            >
+            <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
               <ServiceInstancesTable
                 data={items}
                 deleteServiceInstance={deleteServiceInstance}
               />
-            </Tab>
-            <Tab
-              title={
-                <Tooltip
-                  content="PITUPITU"
-                  minWidth="140px"
-                  showTooltipTimeout={750}
-                  key="instances-services-tab-tooltip"
-                >
-                  Services
-                </Tooltip>
-              }
-            >
+            </ServiceInstancesWrapper>
+          </Tab>
+          <Tab
+            noMargin
+            aditionalStatus={this.status(
+              filteredInstancesCounts.notLocal,
+              'services-status',
+            )}
+            title={
+              <Tooltip
+                content={serviceInstanceVariables.servicesTooltipDescription}
+                minWidth="140px"
+                showTooltipTimeout={750}
+                key="instances-services-tab-tooltip"
+              >
+                {serviceInstanceVariables.services}
+              </Tooltip>
+            }
+          >
+            <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
               <ServiceInstancesTable
                 data={items}
                 deleteServiceInstance={deleteServiceInstance}
               />
-            </Tab>
-          </Tabs>
-        </ServiceInstancesWrapper>
+            </ServiceInstancesWrapper>
+          </Tab>
+        </Tabs>
       </ThemeWrapper>
     );
   }
