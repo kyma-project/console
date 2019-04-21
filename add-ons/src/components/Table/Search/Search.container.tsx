@@ -2,19 +2,16 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import useClickOutside from 'click-outside-hook';
 
 import { useInput } from '../../../services/Forms';
-import ConfigurationsService from '../../../services/Configurations.service';
-import FiltersService from '../../../services/Filters.service';
+import { ConfigurationsService, FiltersService } from '../../../services';
 
-import Search from './component';
+import Search from './Search.component';
 
-interface Props {}
-
-const Container: React.FunctionComponent<Props> = () => {
-  const { configurationsExist } = useContext(ConfigurationsService.Context);
+const SearchContainer: React.FunctionComponent = () => {
+  const { configurationsExist } = useContext(ConfigurationsService);
   const {
     setSearchFilter,
     activeFilters: { search },
-  } = useContext(FiltersService.Context);
+  } = useContext(FiltersService);
 
   const searchField = useInput('');
   const [showSearchIcon, setShowSearchIcon] = useState<boolean>(true);
@@ -40,4 +37,4 @@ const Container: React.FunctionComponent<Props> = () => {
   );
 };
 
-export default Container;
+export default SearchContainer;

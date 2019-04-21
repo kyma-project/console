@@ -1,19 +1,15 @@
 import React, { useContext } from 'react';
 
 import ActiveFiltersComponent from './ActiveFilters.component';
-import FiltersService from '../../services/Filters.service';
+import { FiltersService } from '../../services';
 
-interface ActiveFiltersProps {}
-
-export const ActiveFiltersContainer: React.FunctionComponent<
-  ActiveFiltersProps
-> = () => {
+const ActiveFiltersContainer: React.FunctionComponent = () => {
   const {
     activeFilters,
     removeFilterLabel,
     removeAllFiltersLabels,
     hasActiveLabel,
-  } = useContext(FiltersService.Context);
+  } = useContext(FiltersService);
 
   return (
     <ActiveFiltersComponent

@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import createContainer from 'constate';
 
-import ConfigurationsService from './Configurations.service';
+import { ConfigurationsService } from './index';
 
 import { Configuration, ConfigurationLabels, FilterLabels } from '../types';
+import { ERRORS, LABEL_VARIABLE, KEY_VARIABLE, VALUE_VARIABLE } from '../constants';
+const LABEL_ERRORS = ERRORS.LABEL;
 
 const useLabels = () => {
-  const { originalConfigs } = useContext(ConfigurationsService.Context);
+  const { originalConfigs } = useContext(ConfigurationsService);
 
   const [uniqueLabels, setUniqueLabels] = useState<FilterLabels>({});
 
@@ -47,7 +49,7 @@ const useLabels = () => {
     }
 
     if (!(label.split('=').length === 2)) {
-      return `Invalid label ${label}! A key and value should be separated by a '='`;
+      return LABEL_ERRORS.INVALID_LABEL.replace(LABEL_VARIABLE, label);
     }
 
     const key: string = label.split('=')[0];
@@ -61,7 +63,7 @@ const useLabels = () => {
       (foundVal && foundVal[0] === value) || value !== '',
     );
     if (!isKeyValid || !isValueValid) {
-      return `Invalid label ${key}=${value}! In a valid label, a key and value cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+      return LABEL_ERRORS.KEY_OR_VALUE_INVALID.replace(KEY_VARIABLE, key).replace(VALUE_VARIABLE, value);
     }
 
     const duplicateKeyExists: boolean = Boolean(
@@ -70,7 +72,7 @@ const useLabels = () => {
         .find((keyFromList: string) => keyFromList === key),
     );
     if (duplicateKeyExists) {
-      return `Invalid label ${key}=${value}! Keys cannot be reused!`;
+      return LABEL_ERRORS.DUPLICATE_KEYS_EXISTS.replace(KEY_VARIABLE, key).replace(VALUE_VARIABLE, value);
     }
 
     return '';
@@ -89,4 +91,5 @@ const useLabels = () => {
   };
 };
 
-export default createContainer(useLabels);
+const { Provider, Context } = createContainer(useLabels);
+export { Provider as LabelsProvider, Context as LabelsService };

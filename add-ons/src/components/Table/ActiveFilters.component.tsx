@@ -4,13 +4,14 @@ import { Panel, Button } from 'fundamental-react';
 import { Filters, RemoveFiltersInterface } from '../../types';
 
 import { StyledTokensWrapper, StyledToken } from './styled';
+import { FILTERS } from '../../constants';
 
 interface Props {
   activeFilters: Filters;
   hasActiveLabel: (key: string, value: string) => boolean;
 }
 
-export const ActiveFiltersComponent: React.FunctionComponent<
+const ActiveFiltersComponent: React.FunctionComponent<
   Props & RemoveFiltersInterface
 > = ({ activeFilters, removeFilterLabel, removeAllFiltersLabels }) => {
   return (
@@ -30,7 +31,7 @@ export const ActiveFiltersComponent: React.FunctionComponent<
               )),
             )}
             <Button onClick={removeAllFiltersLabels} compact option="light">
-              Clear All
+              {FILTERS.CLEAR_ALL_FILTERS}
             </Button>
           </Panel.Filters>
         </StyledTokensWrapper>

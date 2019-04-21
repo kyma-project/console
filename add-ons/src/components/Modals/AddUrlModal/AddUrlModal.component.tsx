@@ -14,7 +14,7 @@ import { Modal } from '@kyma-project/react-components';
 
 import InlineHelp from '../../Atoms/InlineHelp';
 
-import { HELP, PLACEHOLDERS, TOOLTIP_DATA_ERROR } from '../../../constants';
+import { MODAL, FORMS, HELP, PLACEHOLDERS, TOOLTIP_DATA_ERROR } from '../../../constants';
 
 import { AddedUrl } from './styled';
 
@@ -32,7 +32,7 @@ interface Props {
   onHideModal: () => void;
 }
 
-export const Component: React.FunctionComponent<Props> = ({
+const AddUrlModalComponent: React.FunctionComponent<Props> = ({
   configurationName = '',
   configurations,
   configurationNameField,
@@ -47,7 +47,7 @@ export const Component: React.FunctionComponent<Props> = ({
 }) => {
   const modalOpeningComponent = (
     <Button glyph="add" option="light" compact>
-      Add URL
+      {MODAL.ADD_URL_BUTTON_TITLE}
     </Button>
   );
 
@@ -67,10 +67,10 @@ export const Component: React.FunctionComponent<Props> = ({
   return (
     <Modal
       width="681px"
-      title="Add URL"
+      title={MODAL.ADD_URL_MODAL_TITLE}
       type="emphasized"
-      confirmText="Add"
-      cancelText="Cancel"
+      confirmText={MODAL.CONFIRM_TEXT}
+      cancelText={MODAL.CANCEL_TEXT}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={onSubmit}
       disabledConfirm={disabledConfirm}
@@ -81,7 +81,7 @@ export const Component: React.FunctionComponent<Props> = ({
       <FormSet>
         <FormItem key="configurationName">
           <FormLabel htmlFor="configurationName" required>
-            Configuration
+            {FORMS.SELECT_CONFIGURATION_LABEL}
           </FormLabel>
           <FormSelect
             id="configurationName"
@@ -97,7 +97,7 @@ export const Component: React.FunctionComponent<Props> = ({
         </FormItem>
         <FormItem key="url">
           <FormLabel htmlFor="url" required>
-            Url
+            {FORMS.URL_LABEL}
             <InlineHelp text={HELP.URL_FIELD} />
           </FormLabel>
           {addedUrls()}
@@ -121,10 +121,10 @@ export const Component: React.FunctionComponent<Props> = ({
         compact
         disabled={Boolean(urlField.error || !urlField.value)}
       >
-        Add URL
+        {FORMS.ADD_URL_BUTTON}
       </Button>
     </Modal>
   );
 };
 
-export default Component;
+export default AddUrlModalComponent;

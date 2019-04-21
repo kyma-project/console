@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import createContainer from 'constate';
 
-import QueriesService from './Queries.service';
-import FiltersService from './Filters.service';
+import { QueriesService, FiltersService } from './index';
 
 import { randomNameGenerator } from '../helpers/random-names-generator';
 import { Configuration } from '../types';
@@ -14,8 +13,8 @@ import {
 const NAME_ERRORS = ERRORS.NAME;
 
 const useConfigurations = () => {
-  const { addonsConfigurations } = useContext(QueriesService.Context);
-  const { activeFilters } = useContext(FiltersService.Context);
+  const { addonsConfigurations } = useContext(QueriesService);
+  const { activeFilters } = useContext(FiltersService);
 
   // Configs
   const [originalConfigs, setOriginalConfigs] = useState<Configuration[]>(
@@ -147,4 +146,5 @@ const useConfigurations = () => {
   };
 };
 
-export default createContainer(useConfigurations);
+const { Provider, Context } = createContainer(useConfigurations);
+export { Provider as ConfigurationsProvider, Context as ConfigurationsService };

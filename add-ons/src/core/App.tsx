@@ -1,7 +1,7 @@
 import React from 'react';
 import { BackendModuleDisabled } from '@kyma-project/react-components';
 
-import Notification from '../components/Notification/container';
+import Notification from '../components/Notification/Notification.container';
 import Toolbar from '../components/Toolbar/Toolbar.component';
 import Table from '../components/Table/Table.container';
 

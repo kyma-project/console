@@ -63,4 +63,5 @@ const useNotifications = () => {
   };
 };
 
-export default createContainer(useNotifications);
+const { Provider, Context } = createContainer(useNotifications);
+export { Provider as NotificationsProvider, Context as NotificationsService };

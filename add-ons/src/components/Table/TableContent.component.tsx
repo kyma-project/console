@@ -19,7 +19,7 @@ interface TableContentProps {
   setFilterLabel: (key: string, value: string) => void;
 }
 
-const TableContent: React.FunctionComponent<TableContentProps> = ({
+const TableContentComponent: React.FunctionComponent<TableContentProps> = ({
   headers,
   configs,
   setFilterLabel,
@@ -100,4 +100,4 @@ const TableContent: React.FunctionComponent<TableContentProps> = ({
   );
 };
 
-export default TableContent;
+export default TableContentComponent;

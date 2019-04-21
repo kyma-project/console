@@ -1,5 +1,4 @@
-# This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
-# If you want to build image without local changes of react components, delete 16 line of code.
+# This Dockerfile must be executed with higher context, because firstly we have to create react components lib with local changes.
 
 FROM node:10.11.0-alpine as ui-generator
 

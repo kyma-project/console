@@ -2,29 +2,24 @@ import React, { useState, useEffect, useContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { useInput } from '../../../services/Forms';
-import MutationsService from '../../../services/Mutations.service';
-import ConfigurationsService from '../../../services/Configurations.service';
-import LabelsService from '../../../services/Labels.service';
-import UrlsService from '../../../services/Urls.service';
+import { MutationsService, ConfigurationsService, LabelsService, UrlsService } from '../../../services';
 
 import Component from './AddNewConfigurationModal.component';
 
 import { ConfigurationLabels } from '../../../types';
 import { CONFIGURATION_NAME_PREFIX, ERRORS } from '../../../constants';
 
-interface Props {}
-
-export const Container: React.FunctionComponent<Props> = () => {
+const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   // Services
-  const { createAddonsConfiguration } = useContext(MutationsService.Context);
+  const { createAddonsConfiguration } = useContext(MutationsService);
   const {
     configurationsExist,
     originalConfigs,
     validateName,
     configNameGenerator,
-  } = useContext(ConfigurationsService.Context);
-  const { validateLabel } = useContext(LabelsService.Context);
-  const { validateUrl } = useContext(UrlsService.Context);
+  } = useContext(ConfigurationsService);
+  const { validateLabel } = useContext(LabelsService);
+  const { validateUrl } = useContext(UrlsService);
 
   // Name
   const validateNameField = (name: string): string => {
@@ -162,4 +157,4 @@ export const Container: React.FunctionComponent<Props> = () => {
   );
 };
 
-export default Container;
+export default AddNewConfigurationModalContainer;

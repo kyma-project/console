@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 
-import NotificationsService from '../../services/Notifications.service';
+import { NotificationsService } from '../../services';
 
-import Notification from './component';
+import Notification from './Notification.component';
 
-interface Props {}
-
-export const Container: React.FunctionComponent<Props> = () => {
+const NotificationContainer: React.FunctionComponent = () => {
   const { notification, showNotification, hideNotification } = useContext(
-    NotificationsService.Context,
+    NotificationsService,
   );
 
   return (
@@ -20,4 +18,4 @@ export const Container: React.FunctionComponent<Props> = () => {
   );
 };
 
-export default Container;
+export default NotificationContainer;

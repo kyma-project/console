@@ -4,9 +4,7 @@ import { Spinner } from '@kyma-project/react-components';
 import TableComponent from './Table.component';
 import TableContentComponent from './TableContent.component';
 
-import QueriesService from '../../services/Queries.service';
-import ConfigurationsService from '../../services/Configurations.service';
-import FiltersService from '../../services/Filters.service';
+import { QueriesService, ConfigurationsService, FiltersService } from '../../services';
 
 import { ErrorWrapper } from './styled';
 
@@ -15,15 +13,15 @@ import { CONTENT_HEADERS, ERRORS } from '../../constants';
 
 const TableContainer: React.FunctionComponent = () => {
   const { addonsConfigurations, error, loading = true } = useContext(
-    QueriesService.Context,
+    QueriesService,
   );
   const { configurationsExist, filteredConfigs } = useContext(
-    ConfigurationsService.Context,
+    ConfigurationsService,
   );
   const {
     setFilterLabel,
     activeFilters: { search },
-  } = useContext(FiltersService.Context);
+  } = useContext(FiltersService);
 
   const content = () => {
     if (loading) {

@@ -3,18 +3,14 @@ import React, { useContext } from 'react';
 import FilterPopoverComponent from './FilterPopover.component';
 import FilterPopoverBody from './FilterPopoverBody.component';
 
-import ConfigurationsService from '../../../services/Configurations.service';
-import FiltersService from '../../../services/Filters.service';
-import LabelsService from '../../../services/Labels.service';
+import { ConfigurationsService, FiltersService, LabelsService } from '../../../services';
 
-interface Props {}
-
-export const FilterPopoverContainer: React.FunctionComponent<Props> = () => {
-  const { configurationsExist } = useContext(ConfigurationsService.Context);
+const FilterPopoverContainer: React.FunctionComponent = () => {
+  const { configurationsExist } = useContext(ConfigurationsService);
   const { activeFilters, setFilterLabel, hasActiveLabel } = useContext(
-    FiltersService.Context,
+    FiltersService,
   );
-  const { uniqueLabels } = useContext(LabelsService.Context);
+  const { uniqueLabels } = useContext(LabelsService);
 
   const filterPopoverBody = (
     <FilterPopoverBody

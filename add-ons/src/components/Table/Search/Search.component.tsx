@@ -13,7 +13,7 @@ interface Props {
   reference: any;
 }
 
-const Component: React.FunctionComponent<Props> = ({
+const SearchComponent: React.FunctionComponent<Props> = ({
   searchField,
   configurationsExist,
   showSearchIcon,
@@ -48,4 +48,4 @@ const Component: React.FunctionComponent<Props> = ({
   </SearchWrapper>
 );
 
-export default Component;
+export default SearchComponent;

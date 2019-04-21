@@ -9,7 +9,7 @@ interface Props {
   configurationsExist: boolean;
 }
 
-export const FilterPopover: React.FunctionComponent<Props> = ({
+const FilterPopoverComponent: React.FunctionComponent<Props> = ({
   body,
   activeFiltersLength,
   configurationsExist,
@@ -37,4 +37,4 @@ export const FilterPopover: React.FunctionComponent<Props> = ({
   );
 };
 
-export default FilterPopover;
+export default FilterPopoverComponent;

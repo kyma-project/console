@@ -12,7 +12,7 @@ import { Modal } from '@kyma-project/react-components';
 
 import InlineHelp from '../../Atoms/InlineHelp';
 
-import { HELP, PLACEHOLDERS, TOOLTIP_DATA_ERROR } from '../../../constants';
+import { MODAL, FORMS, HELP, PLACEHOLDERS, TOOLTIP_DATA_ERROR } from '../../../constants';
 
 import { AddedUrl, StyledToken, AddLabelButtonWrapper } from './styled';
 
@@ -34,7 +34,7 @@ interface Props {
   configurationsExist: boolean;
 }
 
-export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
+const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
   nameField,
   labelsField,
   urlField,
@@ -53,7 +53,7 @@ export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
 }) => {
   const modalOpeningComponent = (
     <Button glyph="add" disabled={!configurationsExist}>
-      Add New Configuration
+      {MODAL.ADD_NEW_CONFIGURATION_BUTTON_TITLE}
     </Button>
   );
 
@@ -88,10 +88,10 @@ export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
   return (
     <Modal
       width="681px"
-      title="New Configuration"
+      title={MODAL.ADD_NEW_CONFIGURATION_MODAL_TITLE}
       type="emphasized"
-      confirmText="Add"
-      cancelText="Cancel"
+      confirmText={MODAL.CONFIRM_TEXT}
+      cancelText={MODAL.CANCEL_TEXT}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={onSubmit}
       disabledConfirm={disabledConfirm}
@@ -102,7 +102,7 @@ export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
       <FormSet>
         <FormItem key="name">
           <FormLabel htmlFor="name" required>
-            Name
+            {FORMS.NAME_LABEL}
             <InlineHelp text={HELP.NAME_FIELD} />
           </FormLabel>
           <FormInput
@@ -118,7 +118,7 @@ export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
         </FormItem>
         <FormItem key="labels">
           <FormLabel htmlFor="labels">
-            Labels
+            {FORMS.LABELS_LABEL}
             <InlineHelp text={HELP.LABELS_FIELD} />
           </FormLabel>
           <FormInput
@@ -142,12 +142,12 @@ export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
             compact
             disabled={Boolean(labelsField.error || !labelsField.value)}
           >
-            Add Label
+            {FORMS.ADD_LABEL_BUTTON}
           </Button>
         </AddLabelButtonWrapper>
         <FormItem key="url">
           <FormLabel htmlFor="url" required>
-            Url
+            {FORMS.URL_LABEL}
             <InlineHelp text={HELP.URL_FIELD} />
           </FormLabel>
           {addedUrls()}
@@ -170,11 +170,11 @@ export const AddNewConfigurationModal: React.FunctionComponent<Props> = ({
           compact
           disabled={Boolean(urlField.error || !urlField.value)}
         >
-          Add URL
+          {FORMS.ADD_URL_BUTTON}
         </Button>
       </FormSet>
     </Modal>
   );
 };
 
-export default AddNewConfigurationModal;
+export default AddNewConfigurationModalComponent;

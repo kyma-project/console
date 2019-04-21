@@ -2,9 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { useInput } from '../../../services/Forms';
-import MutationsService from '../../../services/Mutations.service';
-import ConfigurationsService from '../../../services/Configurations.service';
-import UrlsService from '../../../services/Urls.service';
+import { MutationsService, ConfigurationsService, UrlsService } from '../../../services';
 
 import Component from './AddUrlModal.component';
 import { DEFAULT_CONFIGURATION, ERRORS } from '../../../constants';
@@ -13,13 +11,13 @@ interface Props {
   configurationName?: string;
 }
 
-export const Container: React.FunctionComponent<Props> = ({
+const AddUrlModalContainer: React.FunctionComponent<Props> = ({
   configurationName,
 }) => {
-  const { addAddonsConfigurationUrls } = useContext(MutationsService.Context);
-  const { configurationNames } = useContext(ConfigurationsService.Context);
+  const { addAddonsConfigurationUrls } = useContext(MutationsService);
+  const { configurationNames } = useContext(ConfigurationsService);
   const { getUrlsFromConfigByName, validateUrl } = useContext(
-    UrlsService.Context,
+    UrlsService,
   );
 
   const getConfigName = (): string => {
@@ -109,4 +107,4 @@ export const Container: React.FunctionComponent<Props> = ({
   );
 };
 
-export default Container;
+export default AddUrlModalContainer;

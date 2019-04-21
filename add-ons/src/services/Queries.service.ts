@@ -22,4 +22,6 @@ const useQueries = () => {
   };
 };
 
-export default createContainer(useQueries);
+const { Provider, Context } = createContainer(useQueries);
+export { Provider as QueriesProvider, Context as QueriesService };
+

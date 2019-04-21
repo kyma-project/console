@@ -9,7 +9,7 @@ interface Props {
   hideNotification: () => void;
 }
 
-export const Component: React.FunctionComponent<Props> = ({
+const NotificationComponent: React.FunctionComponent<Props> = ({
   notification,
   showNotification,
   hideNotification,
@@ -24,4 +24,4 @@ export const Component: React.FunctionComponent<Props> = ({
   );
 };
 
-export default Component;
+export default NotificationComponent;

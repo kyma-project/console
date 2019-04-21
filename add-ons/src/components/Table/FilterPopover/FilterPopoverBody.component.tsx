@@ -9,6 +9,7 @@ import {
 } from 'fundamental-react';
 
 import { FiltersLabelsInterface, Filters } from '../../../types';
+import { FILTERS } from '../../../constants';
 
 import { FormFieldsetWrapper, StyledGroup } from './styled';
 
@@ -16,14 +17,16 @@ interface Props {
   activeFilters: Filters;
 }
 
-export const FilterPopoverBody: React.FunctionComponent<
+const FilterPopoverBody: React.FunctionComponent<
   Props & FiltersLabelsInterface
 > = ({ activeFilters, uniqueLabels, setFilterLabel, hasActiveLabel }) => {
   return (
     <FormFieldsetWrapper>
       <FormFieldset>
         <StyledGroup>
-          <FormLegend>Labels</FormLegend>
+          <FormLegend>
+            {FILTERS.LABELS_LEGEND}
+          </FormLegend>
           {Object.keys(uniqueLabels).map(key => {
             return uniqueLabels[key].map((value, idx) => (
               <FormItem isCheck key={idx}>

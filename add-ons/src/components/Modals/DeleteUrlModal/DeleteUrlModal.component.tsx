@@ -2,13 +2,15 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Modal, Button } from '@kyma-project/react-components';
 
+import { MODAL, FORMS, CONFIGURATION_VARIABLE } from '../../../constants';
+
 interface Props {
   configurationName: string;
   url: string;
   handleDelete: () => void;
 }
 
-export const DeleteUrlModal: React.FunctionComponent<Props> = ({
+const DeleteUrlModalComponent: React.FunctionComponent<Props> = ({
   configurationName,
   url,
   handleDelete,
@@ -19,17 +21,17 @@ export const DeleteUrlModal: React.FunctionComponent<Props> = ({
 
   return (
     <Modal
-      title="Delete"
-      confirmText="Delete"
+    title={MODAL.DELETE_MODAL_TITLE}
+    confirmText={MODAL.DELETE_TEXT}
       onConfirm={handleDelete}
       modalOpeningComponent={openingComponentModal}
       type="negative"
       onShow={() => LuigiClient.uxManager().addBackdrop()}
       onHide={() => LuigiClient.uxManager().removeBackdrop()}
     >
-      {`Are you sure you want to delete url of configuration "${configurationName}"?`}
+      {FORMS.DELETE_URL_CONFIRM_TEXT.replace(CONFIGURATION_VARIABLE, configurationName)}
     </Modal>
   );
 };
 
-export default DeleteUrlModal;
+export default DeleteUrlModalComponent;

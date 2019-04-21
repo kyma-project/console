@@ -3,8 +3,7 @@ import gql from 'graphql-tag';
 import createContainer from 'constate';
 import { useSubscription } from 'react-apollo-hooks';
 
-import NotificationsService from './Notifications.service';
-import ConfigurationsService from './Configurations.service';
+import { NotificationsService, ConfigurationsService } from './index';
 
 import appInitializer from '../core//app-initializer';
 import { Configuration, Notification } from '../types';
@@ -31,10 +30,10 @@ export const ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION = gql`
 
 const useSubscriptions = () => {
   const { successNotification, errorNotification } = useContext(
-    NotificationsService.Context,
+    NotificationsService,
   );
   const { configurationsExist, setOriginalConfigs } = useContext(
-    ConfigurationsService.Context,
+    ConfigurationsService,
   );
 
   const onAdd = (config: Configuration) => {
@@ -109,4 +108,5 @@ const useSubscriptions = () => {
   });
 };
 
-export default createContainer(useSubscriptions);
+const { Provider, Context } = createContainer(useSubscriptions);
+export { Provider as SubscriptionsProvider, Context as SubscriptionsService };

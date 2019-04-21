@@ -103,4 +103,5 @@ const useFilters = () => {
   };
 };
 
-export default createContainer(useFilters);
+const { Provider, Context } = createContainer(useFilters);
+export { Provider as FiltersProvider, Context as FiltersService };
