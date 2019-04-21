@@ -16,7 +16,7 @@ const useNotifications = () => {
     if (!Object.keys(notification).length) return;
 
     setShowNotification(true);
-    let timer = setTimeout(
+    timer = setTimeout(
       () => setShowNotification(false),
       NOTIFICATION_SHOW_TIME,
     );
@@ -35,8 +35,8 @@ const useNotifications = () => {
     content: string | React.ReactNode,
   ) => {
     setNotification({
-      title: title,
-      content: content,
+      title,
+      content,
       color: '#359c46',
       icon: 'accept',
     });
@@ -47,8 +47,8 @@ const useNotifications = () => {
     content: string | React.ReactNode,
   ) => {
     setNotification({
-      title: title,
-      content: content,
+      title,
+      content,
       color: '#359c46',
       icon: 'accept',
     });

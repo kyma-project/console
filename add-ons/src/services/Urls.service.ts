@@ -8,10 +8,9 @@ const URL_ERRORS = ERRORS.URL;
 
 const useUrls = () => {
   const { originalConfigs } = useContext(ConfigurationsService);
-  let timer: number = 0;
 
   const getUrlsFromConfigByName = (configName: string): string[] => {
-    const config = originalConfigs.find(config => config.name === configName);
+    const config = originalConfigs.find(c => c.name === configName);
     return config ? config.urls : [];
   };
 

@@ -7,9 +7,9 @@ interface Props {
   configurationName: string;
 }
 
-const DeleteConfigurationModalContainer: React.FunctionComponent<
-  Props
-> = ({ configurationName }) => {
+const DeleteConfigurationModalContainer: React.FunctionComponent<Props> = ({
+  configurationName,
+}) => {
   const { deleteAddonsConfiguration } = useContext(MutationsService);
 
   const handleDelete = () => {

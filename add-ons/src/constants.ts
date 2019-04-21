@@ -1,4 +1,4 @@
-import { extractIsDevelopmentModeFlag } from "./helpers";
+import { extractIsDevelopmentModeFlag } from './helpers';
 
 export const DEFAULT_CONFIGURATION =
   (window as any)['clusterConfig'].DEFAULT_CONFIGURATION_NAME ||
@@ -20,7 +20,7 @@ export const BACKEND_MODULE_SERVICE_CATALOG_DISPLAY_NAME =
 
 export const CONFIGURATION_VARIABLE = '{CONFIGURATION}';
 export const KEY_VARIABLE = '{KEY}';
-export const VALUE_VARIABLE  = '{VALUE}';
+export const VALUE_VARIABLE = '{VALUE}';
 export const LABEL_VARIABLE = '{LABEL}';
 
 export const CONTENT_HEADERS: string[] = ['Name / URL', 'Labels', ''];
@@ -41,43 +41,49 @@ export const NOTIFICATION = {
 };
 
 export const FORMS = {
-  NAME_LABEL: "Name",
-  LABELS_LABEL: "Labels",
-  URL_LABEL: "Url",
-  SELECT_CONFIGURATION_LABEL: "Configuration",
-  ADD_URL_BUTTON: "Add URL",
-  ADD_LABEL_BUTTON: "Add Label",
+  NAME_LABEL: 'Name',
+  LABELS_LABEL: 'Labels',
+  URL_LABEL: 'Url',
+  SELECT_CONFIGURATION_LABEL: 'Configuration',
+  ADD_URL_BUTTON: 'Add URL',
+  ADD_LABEL_BUTTON: 'Add Label',
   DELETE_CONFIGURATION_CONFIRM_TEXT: `Are you sure you want to delete the "${CONFIGURATION_VARIABLE}" configuration?`,
   DELETE_URL_CONFIRM_TEXT: `Are you sure you want to delete URL of the "${CONFIGURATION_VARIABLE}" configuration?`,
-}
+};
 
 export const CORE = {
-  PANEL_TITLE: "Repository URLs",
-  ADD_ONS_CONFIGURATION: "Add-Ons Configuration",
-}
+  PANEL_TITLE: 'Repository URLs',
+  ADD_ONS_CONFIGURATION: 'Add-Ons Configuration',
+};
 
 export const FILTERS = {
-  LABELS_LEGEND: "Labels",
-  CLEAR_ALL_FILTERS: "Clear All",
-}
+  LABELS_LEGEND: 'Labels',
+  CLEAR_ALL_FILTERS: 'Clear All',
+};
 
 export const MODAL = {
-  CONFIRM_TEXT: "Add",
-  CANCEL_TEXT: "Cancel",
-  DELETE_TEXT: "Delete",
-  ADD_URL_BUTTON_TITLE: "Add URL",
-  ADD_URL_MODAL_TITLE: "Add URL",
-  ADD_NEW_CONFIGURATION_BUTTON_TITLE: "Add New Configuration",
-  ADD_NEW_CONFIGURATION_MODAL_TITLE: "New Configuration",
-  DELETE_MODAL_TITLE: "Delete",
-}
+  CONFIRM_TEXT: 'Add',
+  CANCEL_TEXT: 'Cancel',
+  DELETE_TEXT: 'Delete',
+  ADD_URL_BUTTON_TITLE: 'Add URL',
+  ADD_URL_MODAL_TITLE: 'Add URL',
+  ADD_NEW_CONFIGURATION_BUTTON_TITLE: 'Add New Configuration',
+  ADD_NEW_CONFIGURATION_MODAL_TITLE: 'New Configuration',
+  DELETE_MODAL_TITLE: 'Delete',
+};
 
-const HELP_URL_FIELD_DEVELOPMENT_MODE = "The URL must be unique for a given configuration and start with the http(s) protocol.";
-const HELP_URL_FIELD_NOT_DEVELOPMENT_MODE = "The URL must be unique for a given configuration and start with the https protocol.";
+const HELP_URL_FIELD_DEVELOPMENT_MODE =
+  'The URL must be unique for a given configuration and start with the http(s) protocol.';
+const HELP_URL_FIELD_NOT_DEVELOPMENT_MODE =
+  'The URL must be unique for a given configuration and start with the https protocol.';
 export const HELP = {
-  URL_FIELD: HELM_BROKER_IS_DEVELOPMENT_MODE ? HELP_URL_FIELD_DEVELOPMENT_MODE : HELP_URL_FIELD_NOT_DEVELOPMENT_MODE,
-  NAME_FIELD: "The name must be unique, start and end with a lowercase letter, and contain only lowercase letters, numbers, dashes, periods, and underscores.",
-  LABELS_FIELD: "The label must be a unique key=value pair for a given configuration, start and end with an alphanumeric character, and contain only alphanumeric characters, dashes, periods, and underscores.",
+  URL_FIELD: HELM_BROKER_IS_DEVELOPMENT_MODE
+    ? HELP_URL_FIELD_DEVELOPMENT_MODE
+    : HELP_URL_FIELD_NOT_DEVELOPMENT_MODE,
+  NAME_FIELD:
+    'The name must be unique, start and end with a lowercase letter, and contain only lowercase letters, numbers, dashes, periods, and underscores.',
+  LABELS_FIELD:
+    'The label must be a unique key=value pair for a given configuration, start and end with an alphanumeric character, and contain only alphanumeric characters, dashes, periods, and underscores.',
 };
 
 export const PLACEHOLDERS = {
@@ -94,7 +100,7 @@ export const ERRORS = {
   NAME: {
     ALREADY_EXISTS: 'This name already exists.',
     REGEX:
-      "The name must consist of 4-63 characters, start and end with an alphanumeric character, and contain only alphanumeric characters, dashes, periods, and underscores.",
+      'The name must consist of 4-63 characters, start and end with an alphanumeric character, and contain only alphanumeric characters, dashes, periods, and underscores.',
     SHORT: 'Name must contain more than 3 characters.',
     LONG_NAME: 'Name must contain less than 64 characters.',
   },
@@ -105,16 +111,16 @@ export const ERRORS = {
       NOT_DEVELOPMENT_MODE: 'URL must start with the https protocol.',
     },
     YAML_EXTENSION: 'URL must have .yaml or .yml extension.',
-    RESOURCE_NOT_EXISTS: 'URL doesn\'t exist.',
+    RESOURCE_NOT_EXISTS: "URL doesn't exist.",
   },
   LABEL: {
     INVALID_LABEL: `Invalid label ${LABEL_VARIABLE}! A key and value should be separated by a '='`,
     KEY_OR_VALUE_INVALID: `Invalid label ${KEY_VARIABLE}=${VALUE_VARIABLE}! In a valid label, a key and value cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`,
     DUPLICATE_KEYS_EXISTS: `Invalid label ${KEY_VARIABLE}=${VALUE_VARIABLE}! Keys cannot be reused!`,
-  }
+  },
 };
 
 export const TOOLTIP_DATA_ERROR = {
   type: 'error',
-  content: 'Fill out all mandatory fields.'
+  content: 'Fill out all mandatory fields.',
 };

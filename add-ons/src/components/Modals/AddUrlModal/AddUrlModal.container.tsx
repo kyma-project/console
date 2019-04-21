@@ -2,9 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { useInput } from '../../../services/Forms';
-import { MutationsService, ConfigurationsService, UrlsService } from '../../../services';
+import {
+  MutationsService,
+  ConfigurationsService,
+  UrlsService,
+} from '../../../services';
 
-import Component from './AddUrlModal.component';
+import AddUrlModal from './AddUrlModal.component';
 import { DEFAULT_CONFIGURATION, ERRORS } from '../../../constants';
 
 interface Props {
@@ -16,9 +20,7 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
 }) => {
   const { addAddonsConfigurationUrls } = useContext(MutationsService);
   const { configurationNames } = useContext(ConfigurationsService);
-  const { getUrlsFromConfigByName, validateUrl } = useContext(
-    UrlsService,
-  );
+  const { getUrlsFromConfigByName, validateUrl } = useContext(UrlsService);
 
   const getConfigName = (): string => {
     let name: string;
@@ -36,13 +38,13 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
   const [urls, setUrls] = useState<string[]>([]);
   const addUrl = () => {
     if (urlField.value) {
-      setUrls(urls => [...urls, urlField.value]);
+      setUrls(oldUrls => [...oldUrls, urlField.value]);
       urlField.cleanUpField();
     }
   };
   const removeUrl = (url: string) => {
     if (url) {
-      setUrls(urls => urls.filter(u => u !== url));
+      setUrls(oldUrls => oldUrls.filter(u => u !== url));
     }
   };
   const setEmptyUrls = () => {
@@ -65,7 +67,7 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
   const urlField = useInput('', validateUrlField);
 
   const onSubmit = () => {
-    let urlsToCreated: string[] = [...urls];
+    const urlsToCreated: string[] = [...urls];
     addAddonsConfigurationUrls({
       variables: {
         name: getConfigName(),
@@ -91,7 +93,7 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
   const configs = configurationName ? [configurationName] : configurationNames;
 
   return (
-    <Component
+    <AddUrlModal
       configurationName={configurationName}
       configurations={configs}
       configurationNameField={configurationNameField}

@@ -12,7 +12,13 @@ import { Modal } from '@kyma-project/react-components';
 
 import InlineHelp from '../../Atoms/InlineHelp';
 
-import { MODAL, FORMS, HELP, PLACEHOLDERS, TOOLTIP_DATA_ERROR } from '../../../constants';
+import {
+  MODAL,
+  FORMS,
+  HELP,
+  PLACEHOLDERS,
+  TOOLTIP_DATA_ERROR,
+} from '../../../constants';
 
 import { AddedUrl, StyledToken, AddLabelButtonWrapper } from './styled';
 

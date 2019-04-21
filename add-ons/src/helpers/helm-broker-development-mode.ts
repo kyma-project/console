@@ -1,6 +1,8 @@
-export const extractIsDevelopmentModeFlag = (value: string | boolean): boolean | null => {
+export const extractIsDevelopmentModeFlag = (
+  value: string | boolean,
+): boolean | null => {
   if (value) {
-    return  null;
+    return null;
   }
 
   if (typeof value === 'boolean') {

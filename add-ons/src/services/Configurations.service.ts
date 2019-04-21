@@ -116,8 +116,10 @@ const useConfigurations = () => {
       return;
     }
 
-    let newFilteredConfigs = originalConfigs.filter(config => {
+    const newFilteredConfigs = originalConfigs.filter(config => {
       for (const labelKey in config.labels) {
+        if (!config.labels[labelKey]) continue;
+
         for (const activeFilterKey in activeFilters.labels) {
           if (
             activeFilters.labels[activeFilterKey].includes(

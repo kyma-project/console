@@ -14,9 +14,7 @@ const DeleteUrlModalContainer: React.FunctionComponent<Props> = ({
   configurationName,
   url,
 }) => {
-  const { removeAddonsConfigurationUrls } = useContext(
-    MutationsService,
-  );
+  const { removeAddonsConfigurationUrls } = useContext(MutationsService);
 
   const handleDelete = () => {
     removeAddonsConfigurationUrls({

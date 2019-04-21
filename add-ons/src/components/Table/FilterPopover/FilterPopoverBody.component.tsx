@@ -24,9 +24,7 @@ const FilterPopoverBody: React.FunctionComponent<
     <FormFieldsetWrapper>
       <FormFieldset>
         <StyledGroup>
-          <FormLegend>
-            {FILTERS.LABELS_LEGEND}
-          </FormLegend>
+          <FormLegend>{FILTERS.LABELS_LEGEND}</FormLegend>
           {Object.keys(uniqueLabels).map(key => {
             return uniqueLabels[key].map((value, idx) => (
               <FormItem isCheck key={idx}>

@@ -52,19 +52,19 @@ export const REMOVE_ADDONS_CONFIGURATION_URLS_MUTATION = gql`
 `;
 
 interface CreateAddonsConfigurationVariables {
-  name: string; 
-  urls: string[]; 
+  name: string;
+  urls: string[];
   labels: ConfigurationLabels;
 }
 
 interface UpdateAddonsConfigurationVariables {
-  name: string; 
-  urls: string[]; 
+  name: string;
+  urls: string[];
   labels: ConfigurationLabels;
 }
 
 interface DeleteAddonsConfigurationVariables {
-  name: string; 
+  name: string;
 }
 
 interface AddAddonsConfigurationUrlsVariables {
@@ -78,11 +78,26 @@ interface RemoveAddonsConfigurationUrlsVariables {
 }
 
 const useMutations = () => {
-  const createAddonsConfiguration = useMutation<{}, CreateAddonsConfigurationVariables>(CREATE_ADDONS_CONFIGURATION_MUTATION);
-  const updateAddonsConfiguration = useMutation<{}, UpdateAddonsConfigurationVariables>(UPDATE_ADDONS_CONFIGURATION_MUTATION);
-  const deleteAddonsConfiguration = useMutation<{}, DeleteAddonsConfigurationVariables>(DELETE_ADDONS_CONFIGURATION_MUTATION);
-  const addAddonsConfigurationUrls = useMutation<{}, AddAddonsConfigurationUrlsVariables>(ADD_ADDONS_CONFIGURATION_URLS_MUTATION);
-  const removeAddonsConfigurationUrls = useMutation<{}, RemoveAddonsConfigurationUrlsVariables>(REMOVE_ADDONS_CONFIGURATION_URLS_MUTATION);
+  const createAddonsConfiguration = useMutation<
+    {},
+    CreateAddonsConfigurationVariables
+  >(CREATE_ADDONS_CONFIGURATION_MUTATION);
+  const updateAddonsConfiguration = useMutation<
+    {},
+    UpdateAddonsConfigurationVariables
+  >(UPDATE_ADDONS_CONFIGURATION_MUTATION);
+  const deleteAddonsConfiguration = useMutation<
+    {},
+    DeleteAddonsConfigurationVariables
+  >(DELETE_ADDONS_CONFIGURATION_MUTATION);
+  const addAddonsConfigurationUrls = useMutation<
+    {},
+    AddAddonsConfigurationUrlsVariables
+  >(ADD_ADDONS_CONFIGURATION_URLS_MUTATION);
+  const removeAddonsConfigurationUrls = useMutation<
+    {},
+    RemoveAddonsConfigurationUrlsVariables
+  >(REMOVE_ADDONS_CONFIGURATION_URLS_MUTATION);
 
   return {
     createAddonsConfiguration,

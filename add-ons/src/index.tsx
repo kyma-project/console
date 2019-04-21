@@ -6,7 +6,7 @@ import App from './core/App';
 import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 
 import nestServices from './services/nest';
-import { 
+import {
   NotificationsProvider,
   QueriesProvider,
   MutationsProvider,

@@ -4,7 +4,11 @@ import { Spinner } from '@kyma-project/react-components';
 import TableComponent from './Table.component';
 import TableContentComponent from './TableContent.component';
 
-import { QueriesService, ConfigurationsService, FiltersService } from '../../services';
+import {
+  QueriesService,
+  ConfigurationsService,
+  FiltersService,
+} from '../../services';
 
 import { ErrorWrapper } from './styled';
 

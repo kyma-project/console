@@ -4,7 +4,12 @@ import createContainer from 'constate';
 import { ConfigurationsService } from './index';
 
 import { Configuration, ConfigurationLabels, FilterLabels } from '../types';
-import { ERRORS, LABEL_VARIABLE, KEY_VARIABLE, VALUE_VARIABLE } from '../constants';
+import {
+  ERRORS,
+  LABEL_VARIABLE,
+  KEY_VARIABLE,
+  VALUE_VARIABLE,
+} from '../constants';
 const LABEL_ERRORS = ERRORS.LABEL;
 
 const useLabels = () => {
@@ -13,7 +18,7 @@ const useLabels = () => {
   const [uniqueLabels, setUniqueLabels] = useState<FilterLabels>({});
 
   const getFiltersLabels = (configs: Configuration[]): FilterLabels => {
-    let labels: FilterLabels = {};
+    const labels: FilterLabels = {};
     configs.forEach(config => {
       Object.keys(config.labels).forEach(key => {
         const label = config.labels[key];
@@ -63,7 +68,10 @@ const useLabels = () => {
       (foundVal && foundVal[0] === value) || value !== '',
     );
     if (!isKeyValid || !isValueValid) {
-      return LABEL_ERRORS.KEY_OR_VALUE_INVALID.replace(KEY_VARIABLE, key).replace(VALUE_VARIABLE, value);
+      return LABEL_ERRORS.KEY_OR_VALUE_INVALID.replace(
+        KEY_VARIABLE,
+        key,
+      ).replace(VALUE_VARIABLE, value);
     }
 
     const duplicateKeyExists: boolean = Boolean(
@@ -72,7 +80,10 @@ const useLabels = () => {
         .find((keyFromList: string) => keyFromList === key),
     );
     if (duplicateKeyExists) {
-      return LABEL_ERRORS.DUPLICATE_KEYS_EXISTS.replace(KEY_VARIABLE, key).replace(VALUE_VARIABLE, value);
+      return LABEL_ERRORS.DUPLICATE_KEYS_EXISTS.replace(
+        KEY_VARIABLE,
+        key,
+      ).replace(VALUE_VARIABLE, value);
     }
 
     return '';

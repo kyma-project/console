@@ -11,7 +11,7 @@ import { WebSocketLink } from './apollo-client-ws';
 import appInitializer from './app-initializer';
 
 function getGraphQLEndpoint(endpoint: string): string {
-  let config = {
+  const config = {
     graphqlApiUrlLocal: 'http://localhost:3000/graphql',
     subscriptionsApiUrlLocal: 'ws://localhost:3000/graphql',
   };
@@ -54,13 +54,15 @@ export function createApolloClient() {
       if (process.env.REACT_APP_ENV !== 'production') {
         if (graphQLErrors) {
           graphQLErrors.map(({ message, locations, path }) =>
-            console.log(
+            // tslint:disable-next-line
+            console.error(
               `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
             ),
           );
         }
 
-        if (networkError) console.log(`[Network error]: ${networkError}`);
+        // tslint:disable-next-line
+        if (networkError) console.error(`[Network error]: ${networkError}`);
       }
     },
   );
@@ -75,7 +77,7 @@ export function createApolloClient() {
 
   const client = new ApolloClient({
     link: ApolloLink.from([errorLink, link]),
-    cache: cache,
+    cache,
     connectToDevTools: true,
   });
 

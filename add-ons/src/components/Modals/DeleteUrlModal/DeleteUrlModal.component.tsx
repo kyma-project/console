@@ -21,15 +21,18 @@ const DeleteUrlModalComponent: React.FunctionComponent<Props> = ({
 
   return (
     <Modal
-    title={MODAL.DELETE_MODAL_TITLE}
-    confirmText={MODAL.DELETE_TEXT}
+      title={MODAL.DELETE_MODAL_TITLE}
+      confirmText={MODAL.DELETE_TEXT}
       onConfirm={handleDelete}
       modalOpeningComponent={openingComponentModal}
       type="negative"
       onShow={() => LuigiClient.uxManager().addBackdrop()}
       onHide={() => LuigiClient.uxManager().removeBackdrop()}
     >
-      {FORMS.DELETE_URL_CONFIRM_TEXT.replace(CONFIGURATION_VARIABLE, configurationName)}
+      {FORMS.DELETE_URL_CONFIRM_TEXT.replace(
+        CONFIGURATION_VARIABLE,
+        configurationName,
+      )}
     </Modal>
   );
 };

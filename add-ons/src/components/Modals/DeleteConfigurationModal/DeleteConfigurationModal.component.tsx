@@ -27,7 +27,10 @@ const DeleteConfigurationModalComponent: React.FunctionComponent<Props> = ({
       onShow={() => LuigiClient.uxManager().addBackdrop()}
       onHide={() => LuigiClient.uxManager().removeBackdrop()}
     >
-      {FORMS.DELETE_CONFIGURATION_CONFIRM_TEXT.replace(CONFIGURATION_VARIABLE, configurationName)}
+      {FORMS.DELETE_CONFIGURATION_CONFIRM_TEXT.replace(
+        CONFIGURATION_VARIABLE,
+        configurationName,
+      )}
     </Modal>
   );
 };

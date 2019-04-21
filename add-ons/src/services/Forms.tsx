@@ -45,9 +45,9 @@ export const useInput = (
     bind: {
       value,
       onChange: (event: any) => {
-        const value: string = event.target.value;
-        setValue(value);
-        validate && setError(validate(value));
+        const v: string = event.target.value;
+        setValue(v);
+        validate && setError(validate(v));
       },
     },
   };

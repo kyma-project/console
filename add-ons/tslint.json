@@ -6,7 +6,7 @@
   },
   "rules": {
     "eofline": false,
-    "quotemark": [true, "single"],
+    "quotemark": [false, "single"],
     "trailing-comma": false,
     "member-access": false,
     "indent": false,
@@ -31,8 +31,12 @@
     "one-line": [false],
     "one-variable-per-declaration": [false],
     "no-return-await": true,
-    "match-default-export-name": true,
-    "prefer-readonly": true
+    "prefer-readonly": true,
+    "no-string-literal": false,
+    "interface-over-type-literal": false,
+    "no-trailing-whitespace": false,
+    "no-shadowed-variable": false,
+    "semicolon": false
   },
   "rulesDirectory": []
 }

@@ -2,7 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { useInput } from '../../../services/Forms';
-import { MutationsService, ConfigurationsService, LabelsService, UrlsService } from '../../../services';
+import {
+  MutationsService,
+  ConfigurationsService,
+  LabelsService,
+  UrlsService,
+} from '../../../services';
 
 import Component from './AddNewConfigurationModal.component';
 
@@ -31,12 +36,12 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const addUrl = () => {
     if (urlField.value) {
-      setUrls(urls => [...urls, urlField.value]);
+      setUrls(oldUrls => [...oldUrls, urlField.value]);
       urlField.cleanUpField();
     }
   };
   const removeUrl = (url: string) => {
-    setUrls(urls => urls.filter(u => u !== url));
+    setUrls(oldUrls => oldUrls.filter(u => u !== url));
   };
   const setEmptyUrls = () => {
     setUrls([]);
@@ -61,12 +66,12 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   const [labels, setLabel] = useState<string[]>([]);
   const addLabel = () => {
     if (labelsField.value) {
-      setLabel(labels => [...labels, labelsField.value.trim()]);
+      setLabel(oldLabels => [...oldLabels, labelsField.value.trim()]);
       labelsField.cleanUpField();
     }
   };
   const removeLabel = (label: string) => {
-    setLabel(labels => labels.filter(l => l !== label));
+    setLabel(oldLabels => oldLabels.filter(l => l !== label));
   };
   const setEmptyLabels = () => {
     setLabel([]);
@@ -104,7 +109,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
 
   // Form
   const onSubmit = () => {
-    let urlsToCreated: string[] = [...urls];
+    const urlsToCreated: string[] = [...urls];
     const extractedLabels = extractLabels();
 
     createAddonsConfiguration({
