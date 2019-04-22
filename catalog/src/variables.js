@@ -1,4 +1,4 @@
-export const serviceClassVariables = {
+export const serviceClassConstants = {
   title: 'Service Catalog',
   emptyListMessage: 'No Service Classes found',
   addons: 'Add-Ons',

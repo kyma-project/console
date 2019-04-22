@@ -517,10 +517,8 @@ const filterServiceClasses = (classes, activeFilters) => {
       (activeFilters.local && localMatch) ||
       !(activeFilters.local || localMatch);
 
-    if (match && isLocal) {
-      counts.local++;
-    } else if (match && !isLocal) {
-      counts.notLocal++;
+    if (match) {
+      isLocal ? (counts.local++) : (counts.notLocal++);
     }
 
     return localMatch && match;

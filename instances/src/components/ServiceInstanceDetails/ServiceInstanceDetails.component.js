@@ -19,7 +19,6 @@ class ServiceInstanceDetails extends React.Component {
   state = { defaultActiveTabIndex: 0 };
 
   callback = data => {
-    console.log(data);
     this.setState({ ...data });
   };
 

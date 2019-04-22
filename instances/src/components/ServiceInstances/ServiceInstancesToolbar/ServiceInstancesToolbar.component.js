@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { serviceInstanceVariables } from '../variables';
+import { serviceInstanceConstants } from '../../../variables';
 import { Toolbar } from '@kyma-project/react-components';
 
 import SearchDropdown from './SearchDropdown.component';
@@ -12,7 +12,7 @@ const ServiceInstancesToolbar = ({
   serviceInstancesExists,
 }) => {
   return (
-    <Toolbar background="#fff" title={serviceInstanceVariables.title}>
+    <Toolbar background="#fff" title={serviceInstanceConstants.title}>
       {serviceInstancesExists ? (
         <>
           <SearchDropdown

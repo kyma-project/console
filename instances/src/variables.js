@@ -1,4 +1,4 @@
-export const serviceInstanceVariables = {
+export const serviceInstanceConstants = {
   title: 'Service Instances',
   addons: 'Add-Ons',
   addonsTooltipDescription: 'Enrich your experience with additional add-ons',

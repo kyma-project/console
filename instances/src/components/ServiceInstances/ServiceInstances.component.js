@@ -9,7 +9,7 @@ import {
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
-import { serviceInstanceVariables } from './variables';
+import { serviceInstanceConstants } from '../../variables';
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
 
@@ -157,12 +157,12 @@ class ServiceInstances extends React.Component {
             )}
             title={
               <Tooltip
-                content={serviceInstanceVariables.addonsTooltipDescription}
+                content={serviceInstanceConstants.addonsTooltipDescription}
                 minWidth="100px"
                 showTooltipTimeout={750}
                 key="instances-addons-tab-tooltip"
               >
-                {serviceInstanceVariables.addons}
+                {serviceInstanceConstants.addons}
               </Tooltip>
             }
           >
@@ -181,12 +181,12 @@ class ServiceInstances extends React.Component {
             )}
             title={
               <Tooltip
-                content={serviceInstanceVariables.servicesTooltipDescription}
+                content={serviceInstanceConstants.servicesTooltipDescription}
                 minWidth="140px"
                 showTooltipTimeout={750}
                 key="instances-services-tab-tooltip"
               >
-                {serviceInstanceVariables.services}
+                {serviceInstanceConstants.services}
               </Tooltip>
             }
           >

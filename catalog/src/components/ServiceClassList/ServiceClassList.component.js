@@ -15,7 +15,7 @@ import {
   PanelBody,
 } from '@kyma-project/react-components';
 
-import { serviceClassVariables } from './variables';
+import { serviceClassConstants } from '../../variables';
 import FilterList from './FilterList/FilterList.component';
 import ActiveFiltersList from './ActiveFiltersList/ActiveFiltersList.component';
 import Cards from './Cards/Cards.component';
@@ -238,7 +238,7 @@ class ServiceClassList extends React.Component {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
             <Panel>
-              <PanelBody>{serviceClassVariables.emptyListMessage}</PanelBody>
+              <PanelBody>{serviceClassConstants.emptyListMessage}</PanelBody>
             </Panel>
           </EmptyServiceListMessageWrapper>
         ) : (
@@ -250,7 +250,7 @@ class ServiceClassList extends React.Component {
 
     return (
       <>
-        <Toolbar title={serviceClassVariables.title} background="#fff">
+        <Toolbar title={serviceClassConstants.title} background="#fff">
           <SearchWrapper>
             <Search
               noSearchBtn
@@ -290,18 +290,18 @@ class ServiceClassList extends React.Component {
             )}
             title={
               <Tooltip
-                content={serviceClassVariables.addonsTooltipDescription}
+                content={serviceClassConstants.addonsTooltipDescription}
                 minWidth="100px"
                 showTooltipTimeout={750}
                 key="catalog-addons-tab-tooltip"
               >
-                {serviceClassVariables.addons}
+                {serviceClassConstants.addons}
               </Tooltip>
             }
           >
             <>
               <ServiceClassDescription>
-                {serviceClassVariables.addonsDescription}
+                {serviceClassConstants.addonsDescription}
                 {renderFilters()}
               </ServiceClassDescription>
               <ServiceClassListWrapper>
@@ -318,18 +318,18 @@ class ServiceClassList extends React.Component {
             )}
             title={
               <Tooltip
-                content={serviceClassVariables.servicesTooltipDescription}
+                content={serviceClassConstants.servicesTooltipDescription}
                 minWidth="140px"
                 showTooltipTimeout={750}
                 key="catalog-services-tab-tooltip"
               >
-                {serviceClassVariables.services}
+                {serviceClassConstants.services}
               </Tooltip>
             }
           >
             <>
               <ServiceClassDescription>
-                {serviceClassVariables.servicesDescription}
+                {serviceClassConstants.servicesDescription}
                 {renderFilters()}
               </ServiceClassDescription>
               <ServiceClassListWrapper>
