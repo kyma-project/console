@@ -6,6 +6,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { of } from 'rxjs';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 const idpPresetCreationSuccess = {
   createIDPPreset: {
@@ -54,8 +55,14 @@ const idpPresetsQuery = {
   ]
 };
 
+const mockLuigiClient = {
+  getEventData: () => { return {
+    idToken: 'token'
+  }}
+}
+
 const graphlQLClientServiceMock = {
-  request: (url = '', query, variables) => {
+  gqlMutation: (query, variables) => {
     switch (variables.name) {
       case 'test':
         return of(idpPresetCreationSuccess);
@@ -68,26 +75,26 @@ const graphlQLClientServiceMock = {
       default:
         return of(idpPresetsQuery);
     }
+  },
+  gqlQuery: (query, variables) => {
+    return of(idpPresetsQuery);
   }
 };
 
 describe('IdpPresetsService', () => {
   let idpService: IdpPresetsService;
-  let httpClientMock: HttpTestingController;
-  let graphQLClientService: GraphQLClientService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         IdpPresetsService,
-        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock }
+        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock },
+        { provide: LuigiClient, useValue: mockLuigiClient }
       ]
     });
 
     idpService = TestBed.get(IdpPresetsService);
-    graphQLClientService = TestBed.get(GraphQLClientService);
-    httpClientMock = TestBed.get(HttpTestingController);
   });
 
   it('should create new IDP Preset', async () => {

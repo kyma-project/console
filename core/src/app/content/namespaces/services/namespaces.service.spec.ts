@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http/testing';
 import { AppConfig } from '../../../app.config';
 import { of } from 'rxjs';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 const resourceQuotaLimitOK = {
   resourceQuotaStatus: {
@@ -29,7 +30,7 @@ const resourceQuotaLimitExceeded = {
 };
 
 const graphlQLClientServiceMock = {
-  request: (url = '', query, variables) => {
+  gqlQuery: (query, variables) => {
     switch (variables.namespace) {
       case 'namespace':
         return of(resourceQuotaLimitOK);
@@ -38,6 +39,12 @@ const graphlQLClientServiceMock = {
     }
   }
 };
+
+const mockLuigiClient = {
+  getEventData: () => { return {
+    idToken: 'token'
+  }}
+}
 
 describe('NamespacesService', () => {
   let namespacesService: NamespacesService;
@@ -48,7 +55,8 @@ describe('NamespacesService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         NamespacesService,
-        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock }
+        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock },
+        { provide: LuigiClient, useValue: mockLuigiClient }
       ]
     });
 

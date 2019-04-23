@@ -1,6 +1,6 @@
 import { ApolloLink, Operation, Observable, FetchResult } from 'apollo-link';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
 export class WebSocketLink extends ApolloLink {
   subscriptionClient: SubscriptionClient;
