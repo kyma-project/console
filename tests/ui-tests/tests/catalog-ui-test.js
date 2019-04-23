@@ -92,8 +92,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         'clear-all-filters',
       );
 
-      const localButton = catalog.prepareSelector('filter-item-basic-local');
-      const localButtonName = 'local';
+      const showcaseButton = catalog.prepareSelector('filter-item-basic-showcase');
+      const showcaseButtonName = 'showcase';
       const exampleServiceClassTitleAndProvider = catalog.prepareSelector(
         'service-title-and-provider',
       );
@@ -122,13 +122,13 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       const currentServices = await catalog.getServices(frame);
       expect(currentServices).toContain(exampleServiceClassNameAndProvider);
 
-      // Check if `Testing bundle` is on the list after applying basic `local` filter and make sure information about what filters are applied are visible
+      // Check if `Testing bundle` is on the list after applying basic `showcase` filter and make sure information about what filters are applied are visible
       await frame.click(filterDropdownButton);
 
-      await frame.click(localButton);
+      await frame.click(showcaseButton);
       await frame.waitFor(activeFiltersWrapper);
       const currectActiveFilters = await catalog.getActiveFilters(frame);
-      expect(currectActiveFilters).toContain(localButtonName);
+      expect(currectActiveFilters).toContain(showcaseButtonName);
       expect(currectActiveFilters.length).toEqual(1);
 
       const searchedLocalServices = await catalog.getServices(frame);
@@ -160,7 +160,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       expect(titleAndProvider.toString()).not.toBeNull();
       expect(description.toString()).not.toBeNull();
       expect(lastUpdate.toString()).not.toBeNull();
-      expect(labels).toContain(localButtonName);
+      expect(labels).toContain(showcaseButtonName);
     },
   );
 
