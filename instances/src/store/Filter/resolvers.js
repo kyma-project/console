@@ -162,13 +162,13 @@ const filterItems = (items = [], activeFilters, cache) => {
   const filteredItems = items.filter(item => {
     let searchMatch = true;
     let labelsMatch = true;
-    let localMatch = true;
+    let isLocalConditionPresent = true;
 
     const serviceClass = item.serviceClass || item.clusterServiceClass;
     if (typeof activeFilters.local === 'boolean') {
       const serviceClassLabels = serviceClass ? serviceClass.labels : {};
 
-      localMatch = activeFilters.local
+      isLocalConditionPresent = activeFilters.local
         ? serviceClassLabels && serviceClassLabels.local
         : serviceClassLabels && !serviceClassLabels.local;
     }
@@ -205,14 +205,14 @@ const filterItems = (items = [], activeFilters, cache) => {
     const match = labelsMatch && searchMatch;
 
     const isLocal =
-      (activeFilters.local && localMatch) ||
-      !(activeFilters.local || localMatch);
+      (activeFilters.local && isLocalConditionPresent) ||
+      !(activeFilters.local || isLocalConditionPresent);
 
     if (match) {
       isLocal ? counts.local++ : counts.notLocal++;
     }
 
-    return localMatch && match;
+    return isLocalConditionPresent && match;
   });
 
   return { counts, filteredItems };

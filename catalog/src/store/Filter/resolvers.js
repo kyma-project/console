@@ -431,7 +431,7 @@ const filterServiceClasses = (classes, activeFilters) => {
     __typename: 'FilteredClassesCounts',
   };
   const filteredClasses = classes.filter(item => {
-    let localMatch = true;
+    let isLocalConditionPresent = true;
     let basicMatch = true;
     let providerMatch = true;
     let tagMatch = true;
@@ -439,7 +439,7 @@ const filterServiceClasses = (classes, activeFilters) => {
     let searchMatch = true;
 
     if (typeof activeFilters.local === 'boolean') {
-      localMatch = activeFilters.local
+      isLocalConditionPresent = activeFilters.local
         ? item.labels && item.labels.local
         : item.labels && !item.labels.local;
     }
@@ -514,14 +514,14 @@ const filterServiceClasses = (classes, activeFilters) => {
       searchMatch;
 
     const isLocal =
-      (activeFilters.local && localMatch) ||
-      !(activeFilters.local || localMatch);
+      (activeFilters.local && isLocalConditionPresent) ||
+      !(activeFilters.local || isLocalConditionPresent);
 
     if (match) {
       isLocal ? counts.local++ : counts.notLocal++;
     }
 
-    return localMatch && match;
+    return isLocalConditionPresent && match;
   });
 
   return { counts, filteredClasses };
