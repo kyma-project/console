@@ -1,4 +1,4 @@
-import { randomNamesGenerator } from "@kyma-project/react-components";
+import { randomNamesGenerator } from '@kyma-project/react-components';
 import builder from './builder';
 
 export const sortDocumentsByType = documents => {
