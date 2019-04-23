@@ -95,7 +95,7 @@ export const PLACEHOLDERS = {
 };
 
 export const ERRORS = {
-  SERVER: 'Server error. Please contact the admin of the cluster',
+  SERVER: 'Server error. Please contact the admin of the cluster.',
   RESOURCES_NOT_FOUND: 'Resources not found.',
   NOT_MATCHING_FILTERS: "Couldn't find resources with matching filters.",
   NAME: {
@@ -115,9 +115,9 @@ export const ERRORS = {
     RESOURCE_NOT_EXISTS: "URL doesn't exist.",
   },
   LABEL: {
-    INVALID_LABEL: `Invalid label ${LABEL_VARIABLE}! A key and value should be separated by a '='`,
-    KEY_OR_VALUE_INVALID: `Invalid label ${KEY_VARIABLE}=${VALUE_VARIABLE}! In a valid label, a key and value cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`,
-    DUPLICATE_KEYS_EXISTS: `Invalid label ${KEY_VARIABLE}=${VALUE_VARIABLE}! Keys cannot be reused!`,
+    INVALID_LABEL: `Invalid ${LABEL_VARIABLE} label. Key and value should be separated by the equality sign.`,
+    KEY_OR_VALUE_INVALID: `Invalid ${KEY_VARIABLE}=${VALUE_VARIABLE} label. In a valid label, key and value cannot be empty, must start and end with an alphanumeric character, and contain only alphanumeric characters, dashes, periods, and underscores.`,
+    DUPLICATE_KEYS_EXISTS: `Invalid ${KEY_VARIABLE}=${VALUE_VARIABLE} label. Keys cannot be reused.`,
   },
 };
 
