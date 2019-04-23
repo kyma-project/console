@@ -10,9 +10,9 @@ export const TabsContent = styled.div`
 export const TabsHeader = styled.ul`
   list-style: none;
   padding: 0;
-  margin: ${props => (props.addonsView ? '0' : '0 5px')};
+  margin: ${props => (props.noMargin ? '0' : '0 5px')};
   ${props =>
-    props.addonsView &&
+    props.customStyles &&
     `
     background-color: #fff;
     padding: 0 15px;
@@ -55,7 +55,7 @@ export const TabsWrapper = styled.div`
       border: solid 1px rgba(151,151,151,0.26);
       border-radius: 3px;
     `) ||
-    (!props.addonsView &&
+    (!props.noBorder &&
       `
       box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
     `)}

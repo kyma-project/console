@@ -279,7 +279,10 @@ class ServiceClassList extends React.Component {
           defaultActiveTabIndex={determineSelectedTab()}
           callback={handleTabChange}
           noBorder
-          addonsView
+          noMargin
+          customStyles={`background-color: #fff;
+          padding: 0 15px;`}
+          hideSeparator
         >
           <Tab
             noMargin
