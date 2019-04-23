@@ -106,12 +106,8 @@ export class AbstractGraphqlElementListComponent
   }
 
   getDeleteMutation() {
-    let variablesDefinitionsString = `$name: String!`;
-    let variablesString = `name: $name`;
-    if (this.currentNamespaceId) {
-      variablesDefinitionsString = `$name: String!, $namespace: String!`;
-      variablesString = `name: $name, namespace: $namespace`;
-    }
+    const variablesDefinitionsString = this.currentNamespaceId ? `$name: String!, $namespace: String!` :`$name: String!`;
+    const variablesString = this.currentNamespaceId ? `name: $name, namespace: $namespace` : `name: $name`;
     return `mutation delete${this.resourceKind}(${variablesDefinitionsString}) {
       delete${this.resourceKind}(${variablesString}) {
         name
