@@ -83,12 +83,8 @@ export class AbstractGraphqlElementListComponent
 
   getResourceJSONQuery() {
     const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
-    let variablesDefinitionsString = `$name: String!`;
-    let variablesString = `name: $name`;
-    if (this.currentNamespaceId) {
-      variablesDefinitionsString = `$name: String!, $namespace: String!`;
-      variablesString = `name: $name, namespace: $namespace`;
-    }
+    const variablesDefinitionsString = this.currentNamespaceId ? `$name: String!, $namespace: String!` :`$name: String!`;
+    const variablesString = this.currentNamespaceId ? `name: $name, namespace: $namespace` : `name: $name`;
     return `query ${lowerCaseResourceKind}(${variablesDefinitionsString}) {
       ${lowerCaseResourceKind}(${variablesString}) {
         json
