@@ -3,7 +3,7 @@ import { extractIsDevelopmentModeFlag } from './helpers';
 export const DEFAULT_CONFIGURATION =
   (window as any)['clusterConfig'].DEFAULT_CONFIGURATION_NAME ||
   'helm-repos-urls';
-export const DEFAULT_CONFIGURATION_DESCRIPTION = '';
+export const DEFAULT_CONFIGURATION_DESCRIPTION = 'This is the default Helm Broker ConfigMap. Do not edit or delete it.';
 export const HELM_BROKER_IS_DEVELOPMENT_MODE =
   extractIsDevelopmentModeFlag(
     (window as any)['clusterConfig'].HELM_BROKER_IS_DEVELOPMENT_MODE,
