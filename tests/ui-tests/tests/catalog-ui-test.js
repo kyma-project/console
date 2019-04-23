@@ -92,7 +92,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         'clear-all-filters',
       );
 
-      const showcaseButton = catalog.prepareSelector('filter-item-basic-showcase');
+      const showcaseButton = catalog.prepareSelector(
+        'filter-item-basic-showcase',
+      );
       const showcaseButtonName = 'showcase';
       const exampleServiceClassTitleAndProvider = catalog.prepareSelector(
         'service-title-and-provider',
