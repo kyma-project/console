@@ -24,11 +24,11 @@ const Services = nestServices(
   NotificationsProvider,
   QueriesProvider,
   MutationsProvider,
-  SubscriptionsProvider,
   FiltersProvider,
   ConfigurationsProvider,
   LabelsProvider,
   UrlsProvider,
+  SubscriptionsProvider,
 );
 
 (async () => {

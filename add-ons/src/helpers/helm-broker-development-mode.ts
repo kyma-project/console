@@ -1,7 +1,7 @@
 export const extractIsDevelopmentModeFlag = (
   value: string | boolean,
 ): boolean | null => {
-  if (value) {
+  if (!value) {
     return null;
   }
 
