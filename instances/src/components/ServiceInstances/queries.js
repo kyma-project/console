@@ -6,6 +6,7 @@ export const ACTIVE_FILTERS_QUERY = gql`
     activeFilters @client {
       search
       labels
+      local
     }
   }
 `;
@@ -19,6 +20,15 @@ export const ALL_FILTERS_QUERY = gql`
         value
         count
       }
+    }
+  }
+`;
+
+export const FILTERED_INSTANCES_COUNTS_QUERY = gql`
+  query filteredInstancesCounts {
+    filteredInstancesCounts @client {
+      local
+      notLocal
     }
   }
 `;

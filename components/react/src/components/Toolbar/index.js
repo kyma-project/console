@@ -6,8 +6,8 @@ import {
   ActionBarActions,
 } from './styled';
 
-export default ({ goBack, title, description, children }) => (
-  <ActionBar data-e2e-id="toolbar">
+export default ({ goBack, title, description, background, children }) => (
+  <ActionBar data-e2e-id="toolbar" background={background}>
     {typeof goBack === 'function' && (
       <ActionBarBack onClick={goBack} data-e2e-id="toolbar-back" />
     )}

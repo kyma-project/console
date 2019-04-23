@@ -6,6 +6,7 @@ import {
   CLASS_ACTIVE_FILTERS_QUERY,
   CLASS_ACTIVE_TAGS_FILTERS_QUERY,
   CLASS_FILTERS_QUERY,
+  FILTERED_CLASSES_COUNTS_QUERY,
 } from './queries';
 
 import {
@@ -31,6 +32,12 @@ export default compose(
   }),
   graphql(CLASS_ACTIVE_FILTERS_QUERY, {
     name: 'activeClassFilters',
+    options: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }),
+  graphql(FILTERED_CLASSES_COUNTS_QUERY, {
+    name: 'filteredClassesCounts',
     options: {
       fetchPolicy: 'cache-and-network',
     },
