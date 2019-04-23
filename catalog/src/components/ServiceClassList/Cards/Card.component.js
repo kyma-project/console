@@ -40,7 +40,7 @@ const Card = ({
     'connected-app':
       'This Service Class is connected to a given application by Application Connector.',
     showcase:
-      'This Service Class demonstrates a specific functionality. Do not use it on the production.',
+      'This Service Class presents a specific functionality. Do not use it on the production cluster.',
   };
 
   const tooltipDescription = {
