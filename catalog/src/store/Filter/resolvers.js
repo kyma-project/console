@@ -441,7 +441,7 @@ const filterServiceClasses = (classes, activeFilters) => {
     if (typeof activeFilters.local === 'boolean') {
       isLocalConditionPresent = activeFilters.local
         ? item.labels && item.labels.local
-        : item.labels && !item.labels.local;
+        : !item.labels || (item.labels && !item.labels.local);
     }
 
     if (activeFilters.basic && activeFilters.basic.length > 0) {
