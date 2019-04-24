@@ -8,7 +8,7 @@ export const DEFAULT_CONFIGURATION_DESCRIPTION =
 export const HELM_BROKER_IS_DEVELOPMENT_MODE =
   extractIsDevelopmentModeFlag(
     (window as any)['clusterConfig'].HELM_BROKER_IS_DEVELOPMENT_MODE,
-  ) || true;
+  );
 
 export const CONFIGURATION_NAME_PREFIX = 'addons-configuration';
 export const KYMA_SYSTEM_ENV = 'kyma-system';
