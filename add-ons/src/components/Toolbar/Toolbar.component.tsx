@@ -10,7 +10,10 @@ import { StyledActionBar } from './styled';
 const Toolbar: React.FunctionComponent = () => {
   return (
     <StyledActionBar>
-      <ActionBar.Header title={CORE.ADD_ONS_CONFIGURATION} />
+      <ActionBar.Header
+        title={CORE.ADD_ONS_CONFIGURATION_TITLE}
+        description={CORE.ADD_ONS_CONFIGURATION_DESCRIPTION}
+      />
       <ActionBar.Actions>
         <AddNewConfigurationModal />
       </ActionBar.Actions>

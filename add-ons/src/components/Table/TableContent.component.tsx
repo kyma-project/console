@@ -45,7 +45,11 @@ const TableContentComponent: React.FunctionComponent<TableContentProps> = ({
                           : ''
                       }
                     >
-                      {config.name}
+                      {`${config.name}${
+                        config.name === DEFAULT_CONFIGURATION
+                          ? ' (default)'
+                          : ''
+                      }`}
                     </span>
                     {config.name === DEFAULT_CONFIGURATION ? (
                       <InlineHelp
