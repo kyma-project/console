@@ -166,11 +166,12 @@ const filterItems = (items = [], activeFilters, cache) => {
 
     const serviceClass = item.serviceClass || item.clusterServiceClass;
     if (typeof activeFilters.local === 'boolean') {
-      const serviceClassLabels = serviceClass ? serviceClass.labels : {};
+      const serviceClassLabels = serviceClass ? serviceClass.labels : null;
 
       isLocalConditionPresent = activeFilters.local
         ? serviceClassLabels && serviceClassLabels.local
-        : serviceClassLabels && !serviceClassLabels.local;
+        : !serviceClassLabels ||
+          (serviceClassLabels && !serviceClassLabels.local);
     }
 
     if (activeFilters.labels && activeFilters.labels.length > 0) {
