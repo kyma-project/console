@@ -10,7 +10,13 @@ export const TabsContent = styled.div`
 export const TabsHeader = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 0 5px;
+  margin: ${props => (props.noMargin ? '0' : '0 5px')};
+  ${props =>
+    props.customStyles &&
+    `
+    background-color: #fff;
+    padding: 0 15px;
+  `}
   display: flex;
   justify-items: flex-start;
   flex-flow: row nowrap;
@@ -44,14 +50,15 @@ export const TabsWrapper = styled.div`
   font-family: '72';
   font-weight: normal;
   ${props =>
-    props.border === true
-      ? `
-    border: solid 1px rgba(151,151,151,0.26);
-    border-radius: 3px;
-  `
-      : `
-    box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
-  `}
+    (props.border === true &&
+      `
+      border: solid 1px rgba(151,151,151,0.26);
+      border-radius: 3px;
+    `) ||
+    (!props.noBorder &&
+      `
+      box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
+    `)}
 
   .fd-panel {
     box-shadow: none;

@@ -1,7 +1,16 @@
 import styled from 'styled-components';
-import { Button } from '@kyma-project/react-components';
+import { Button, sizes } from '@kyma-project/react-components';
 
 export const FiltersDropdown = styled.div`
+  .fd-button--emphasized {
+    padding-left: 30px;
+    padding-right: 30px;
+
+    @media (min-width: ${sizes.tablet}px) {
+      margin-left: 87px;
+    }
+  }
+
   .fd-popover__body--right {
     &:after {
       right: 22px;

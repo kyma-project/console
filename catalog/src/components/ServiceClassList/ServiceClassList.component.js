@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
+import equal from 'deep-equal';
 
 import {
   NotificationMessage,
   Search,
   Spinner,
+  Tab,
+  Tabs,
   Toolbar,
+  Tooltip,
   Panel,
   PanelBody,
 } from '@kyma-project/react-components';
 
+import { serviceClassConstants } from '../../variables';
 import FilterList from './FilterList/FilterList.component';
 import ActiveFiltersList from './ActiveFiltersList/ActiveFiltersList.component';
 import Cards from './Cards/Cards.component';
@@ -19,6 +25,9 @@ import {
   ServiceClassListWrapper,
   CardsWrapper,
   EmptyServiceListMessageWrapper,
+  ServiceClassDescription,
+  StatusWrapper,
+  Status,
 } from './styled';
 
 class ServiceClassList extends React.Component {
@@ -47,8 +56,19 @@ class ServiceClassList extends React.Component {
     };
   }
 
+  setTabFilter = filterValue => {
+    this.props.setServiceClassesFilter('local', filterValue);
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setTabFilter(true);
+    }, 100);
+  }
+
   componentWillReceiveProps(newProps) {
     const { classFiltersLoaded } = this.state;
+    if (equal(this.props, newProps)) return;
 
     if (
       newProps.serviceClasses &&
@@ -57,6 +77,7 @@ class ServiceClassList extends React.Component {
     ) {
       newProps.filterServiceClasses();
     }
+
     if (
       !classFiltersLoaded &&
       newProps.classFilters &&
@@ -85,6 +106,14 @@ class ServiceClassList extends React.Component {
     });
   };
 
+  status = (data, id) => {
+    return (
+      <StatusWrapper key={id}>
+        <Status data-e2e-id={id}>{data}</Status>
+      </StatusWrapper>
+    );
+  };
+
   render() {
     const {
       classList,
@@ -99,7 +128,47 @@ class ServiceClassList extends React.Component {
       filterTagsAndSetActiveFilters,
       errorMessage,
     } = this.props;
+    const filteredClassesCounts =
+      this.props.filteredClassesCounts.filteredClassesCounts || {};
     const { filtersExists } = this.state;
+
+    const determineSelectedTab = () => {
+      const selectedTab = LuigiClient.getNodeParams().selectedTab;
+      let selectedTabIndex = null;
+
+      switch (selectedTab) {
+        case 'addons':
+          selectedTabIndex = 0;
+          break;
+        case 'services':
+          selectedTabIndex = 1;
+          break;
+        default:
+          selectedTabIndex = 0;
+      }
+      return selectedTabIndex;
+    };
+
+    const handleTabChange = ({ defaultActiveTabIndex }) => {
+      defaultActiveTabIndex
+        ? this.setTabFilter(false)
+        : this.setTabFilter(true);
+      // TODO: uncomment after https://github.com/kyma-project/luigi/issues/491 is done
+      // let tabName = '';
+      // switch (defaultActiveTabIndex) {
+      //   case 0:
+      //     tabName = 'addons';
+      //     break;
+      //   case 1:
+      //     tabName = 'services';
+      //     break;
+      //   default:
+      //     tabName = 'addons';
+      // }
+      // LuigiClient.linkManager()
+      //   .withParams({ selectedTab: tabName })
+      //   .navigate('');
+    };
 
     const filterFn = e => {
       filterTagsAndSetActiveFilters('search', e.target.value);
@@ -169,7 +238,7 @@ class ServiceClassList extends React.Component {
         return items.length === 0 ? (
           <EmptyServiceListMessageWrapper>
             <Panel>
-              <PanelBody>No Service Classes found</PanelBody>
+              <PanelBody>{serviceClassConstants.emptyListMessage}</PanelBody>
             </Panel>
           </EmptyServiceListMessageWrapper>
         ) : (
@@ -181,10 +250,7 @@ class ServiceClassList extends React.Component {
 
     return (
       <>
-        <Toolbar
-          title="Service Catalog"
-          description="Enrich your experience with additional services"
-        >
+        <Toolbar title={serviceClassConstants.title} background="#fff">
           <SearchWrapper>
             <Search
               noSearchBtn
@@ -209,11 +275,72 @@ class ServiceClassList extends React.Component {
           )}
         </Toolbar>
 
-        {renderFilters()}
-
-        <ServiceClassListWrapper>
-          <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
-        </ServiceClassListWrapper>
+        <Tabs
+          defaultActiveTabIndex={determineSelectedTab()}
+          callback={handleTabChange}
+          noBorder
+          noMargin
+          customStyles={`background-color: #fff;
+          padding: 0 15px;`}
+          hideSeparator
+        >
+          <Tab
+            noMargin
+            key="catalog-addons-tab"
+            aditionalStatus={this.status(
+              filteredClassesCounts.local,
+              'addons-status',
+            )}
+            title={
+              <Tooltip
+                content={serviceClassConstants.addonsTooltipDescription}
+                minWidth="100px"
+                showTooltipTimeout={750}
+                key="catalog-addons-tab-tooltip"
+              >
+                {serviceClassConstants.addons}
+              </Tooltip>
+            }
+          >
+            <>
+              <ServiceClassDescription>
+                {serviceClassConstants.addonsDescription}
+                {renderFilters()}
+              </ServiceClassDescription>
+              <ServiceClassListWrapper>
+                <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+              </ServiceClassListWrapper>
+            </>
+          </Tab>
+          <Tab
+            noMargin
+            key="catalog-services-tab"
+            aditionalStatus={this.status(
+              filteredClassesCounts.notLocal,
+              'services-status',
+            )}
+            title={
+              <Tooltip
+                content={serviceClassConstants.servicesTooltipDescription}
+                minWidth="140px"
+                showTooltipTimeout={750}
+                key="catalog-services-tab-tooltip"
+              >
+                {serviceClassConstants.services}
+              </Tooltip>
+            }
+          >
+            <>
+              <ServiceClassDescription>
+                {serviceClassConstants.servicesDescription}
+                {renderFilters()}
+              </ServiceClassDescription>
+              <ServiceClassListWrapper>
+                <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
+              </ServiceClassListWrapper>
+            </>
+          </Tab>
+        </Tabs>
       </>
     );
   }

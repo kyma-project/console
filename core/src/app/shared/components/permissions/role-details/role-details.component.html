@@ -1,25 +1,29 @@
+<header class="fd-page__header fd-has-background-color-background-2">
+  <section class="fd-section">
+    <fd-breadcrumb>
+      <fd-breadcrumb-item>
+        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+          Permissions
+        </a>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item>
+        <span fd-breadcrumb-link>
+          {{ roleName }}
+        </span>
+      </fd-breadcrumb-item>
+    </fd-breadcrumb>
+
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>
+          {{ roleName }}
+        </fd-action-bar-title>
+      </fd-action-bar-header>
+    </fd-action-bar>
+  </section>
+</header>
+
 <section class="fd-section">
-  <fd-breadcrumb>
-    <fd-breadcrumb-item>
-      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
-        Permissions
-      </a>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item>
-      <span fd-breadcrumb-link>
-        {{ roleName }}
-      </span>
-    </fd-breadcrumb-item>
-  </fd-breadcrumb>
-
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>
-        {{ roleName }}
-      </fd-action-bar-title>
-    </fd-action-bar-header>
-  </fd-action-bar>
-
   <p *ngIf="loading">
     Loading ...
   </p>

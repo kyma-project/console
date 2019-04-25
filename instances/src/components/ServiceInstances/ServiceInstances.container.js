@@ -6,6 +6,7 @@ import {
   ALL_FILTERS_QUERY,
   FILTERED_ITEMS_QUERY,
   ALL_ITEMS_QUERY,
+  FILTERED_INSTANCES_COUNTS_QUERY,
 } from './queries';
 import {
   FILTER_INSTANCES_MUTATION,
@@ -43,6 +44,12 @@ export default compose(
   }),
   graphql(FILTER_INSTANCES_MUTATION, {
     name: 'filterItems',
+  }),
+  graphql(FILTERED_INSTANCES_COUNTS_QUERY, {
+    name: 'filteredInstancesCounts',
+    options: {
+      fetchPolicy: 'cache-and-network',
+    },
   }),
   graphql(SET_ACTIVE_FILTERS_MUTATION, {
     name: 'setActiveFilters',

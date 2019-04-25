@@ -28,7 +28,6 @@ import {
   PanelHead,
   PanelActions,
   PanelFilters,
-  PanelContent,
   PanelFooter,
 } from './Panel';
 import Paragraph from './Paragraph';
@@ -86,7 +85,6 @@ module.exports = {
   PanelHead,
   PanelActions,
   PanelFilters,
-  PanelContent,
   PanelFooter,
   Paragraph,
   ReactMarkdown,

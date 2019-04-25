@@ -43,8 +43,8 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      category: { label: 'Service Catalog', icon: 'add-coursebook' },
-      pathSegment: '_service_catalog_category_placeholder_',
+      category: { label: 'Service Management', icon: 'add-coursebook' },
+      pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
@@ -803,6 +803,7 @@ Promise.all(initPromises)
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
       },
       settings: {
+        responsiveNavigation: 'simpleMobileOnly',
         header: () => {
           const logo =
             clusterConfig && clusterConfig.headerLogoUrl

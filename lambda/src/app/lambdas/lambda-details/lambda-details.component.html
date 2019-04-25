@@ -1,38 +1,42 @@
+<header class="fd-page__header fd-has-background-color-background-2">
+  <section class="fd-section">
+    <fd-breadcrumb>
+      <fd-breadcrumb-item>
+        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+          Lambdas
+        </a>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item *ngIf="mode === 'create'">
+        <span class="fd-breadcrumb__link">
+          Create lambda
+        </span>
+      </fd-breadcrumb-item>
+      <fd-breadcrumb-item *ngIf="mode !== 'create' && lambda?.metadata?.name">
+        <span>
+          {{ lambda?.metadata?.name }}
+        </span>
+      </fd-breadcrumb-item>
+    </fd-breadcrumb>
+
+    <fd-action-bar>
+      <fd-action-bar-header>
+        <fd-action-bar-title>
+          {{ lambda?.metadata?.name }}
+        </fd-action-bar-title>
+      </fd-action-bar-header>
+      <fd-action-bar-actions [hidden]="!loaded">
+        <button fd-button [options]="'light'" (click)="showLogs()" *ngIf="mode !== 'create' && canShowLogs">Show Logs</button>
+        <button fd-button [options]="'light'" (click)="cancel()">Cancel</button>
+        <button fd-button [options]="'emphasized'" (click)="deployLambda()"
+          [disabled]="!lambda.metadata.name || !isLambdaFormValid">
+          {{ mode == 'create' ? 'Create' : 'Save' }}
+        </button>
+      </fd-action-bar-actions>
+    </fd-action-bar>
+  </section>
+</header>
+
 <section class="fd-section">
-  <fd-breadcrumb>
-    <fd-breadcrumb-item>
-      <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
-        Lambdas
-      </a>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item *ngIf="mode === 'create'">
-      <span class="fd-breadcrumb__link">
-        Create lambda
-      </span>
-    </fd-breadcrumb-item>
-    <fd-breadcrumb-item *ngIf="mode !== 'create' && lambda?.metadata?.name">
-      <span>
-        {{ lambda?.metadata?.name }}
-      </span>
-    </fd-breadcrumb-item>
-  </fd-breadcrumb>
-
-  <fd-action-bar>
-    <fd-action-bar-header>
-      <fd-action-bar-title>
-        {{ lambda?.metadata?.name }}
-      </fd-action-bar-title>
-    </fd-action-bar-header>
-    <fd-action-bar-actions [hidden]="!loaded">
-      <button fd-button [options]="'light'" (click)="showLogs()" *ngIf="mode !== 'create' && canShowLogs">Show Logs</button>
-      <button fd-button [options]="'light'" (click)="cancel()">Cancel</button>
-      <button fd-button [options]="'emphasized'" (click)="deployLambda()"
-        [disabled]="!lambda.metadata.name || !isLambdaFormValid">
-        {{ mode == 'create' ? 'Create' : 'Save' }}
-      </button>
-    </fd-action-bar-actions>
-  </fd-action-bar>
-
   <p *ngIf="!loaded">
     Loading ...
   </p>

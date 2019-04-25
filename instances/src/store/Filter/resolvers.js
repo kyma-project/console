@@ -11,6 +11,7 @@ const getActiveFilters = cache => {
           activeFilters @client {
             search
             labels
+            local
           }
         }
       `,
@@ -79,13 +80,16 @@ export default {
       }).serviceInstances;
       items = transformDataScalarObjectsToStrings(items);
 
-      const filteredItems = filterItems(items, activeFilters, cache);
+      const filteredItemsAndCounts = filterItems(items, activeFilters, cache);
+      let filteredItems = filteredItemsAndCounts.filteredItems;
+      let counts = filteredItemsAndCounts.counts;
       const allFilters = populateFilters(items, filteredItems);
 
       cache.writeData({
         data: {
           allFilters,
           filteredItems,
+          filteredInstancesCounts: counts,
         },
       });
 
@@ -149,9 +153,26 @@ const getFilterValues = (values, filteredValues = []) => {
 };
 
 const filterItems = (items = [], activeFilters, cache) => {
-  return items.filter(item => {
+  let counts = {
+    local: 0,
+    notLocal: 0,
+    __typename: 'FilteredInstancesCounts',
+  };
+
+  const filteredItems = items.filter(item => {
     let searchMatch = true;
     let labelsMatch = true;
+    let isLocalConditionPresent = true;
+
+    const serviceClass = item.serviceClass || item.clusterServiceClass;
+    if (typeof activeFilters.local === 'boolean') {
+      const serviceClassLabels = serviceClass ? serviceClass.labels : null;
+
+      isLocalConditionPresent = activeFilters.local
+        ? serviceClassLabels && serviceClassLabels.local
+        : !serviceClassLabels ||
+          (serviceClassLabels && !serviceClassLabels.local);
+    }
 
     if (activeFilters.labels && activeFilters.labels.length > 0) {
       activeFilters.labels.forEach(label => {
@@ -168,7 +189,6 @@ const filterItems = (items = [], activeFilters, cache) => {
       const searchValue = activeFilters.search.toLowerCase();
       const name = item.name.toLowerCase();
 
-      const serviceClass = item.serviceClass || item.clusterServiceClass;
       const servicePlan = item.servicePlan || item.clusterServicePlan;
       const serviceClassName = serviceClass
         ? serviceClass.displayName.toLowerCase()
@@ -183,6 +203,18 @@ const filterItems = (items = [], activeFilters, cache) => {
         statusType.indexOf(searchValue) !== -1;
     }
 
-    return labelsMatch && searchMatch;
+    const match = labelsMatch && searchMatch;
+
+    const isLocal =
+      (activeFilters.local && isLocalConditionPresent) ||
+      !(activeFilters.local || isLocalConditionPresent);
+
+    if (match) {
+      isLocal ? counts.local++ : counts.notLocal++;
+    }
+
+    return isLocalConditionPresent && match;
   });
+
+  return { counts, filteredItems };
 };

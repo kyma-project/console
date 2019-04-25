@@ -16,6 +16,15 @@ export const FILTERED_CLASSES_QUERY = gql`
   }
 `;
 
+export const FILTERED_CLASSES_COUNTS_QUERY = gql`
+  query filteredServiceClassesCounts {
+    filteredClassesCounts @client {
+      local
+      notLocal
+    }
+  }
+`;
+
 export const CLASS_FILTERS_QUERY = gql`
   query serviceClassFilters {
     serviceClassFilters @client {

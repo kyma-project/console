@@ -3,9 +3,15 @@ const defaults = {
     basic: [],
     provider: [],
     tag: [],
+    local: true,
     connectedApplication: [],
     search: '',
     __typename: 'ActiveServiceClassFilters',
+  },
+  filteredClassesCounts: {
+    local: 0,
+    notLocal: 0,
+    __typename: 'FilteredClassesCounts',
   },
   activeTagsFilters: {
     basic: {
