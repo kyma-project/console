@@ -54,10 +54,12 @@ class MainPage extends Component {
       type === 'root'
         ? this.props.clusterDocsTopicsRoot || {}
         : this.props.clusterDocsTopicsExternal || {};
+
     if (!docsItems || !docsItems.length) return {};
     docsItems = docsItems.filter(
       item => tokenize(item.displayName) === id || item.name === id,
     );
+    
     return docsItems[0] || {};
   };
 
