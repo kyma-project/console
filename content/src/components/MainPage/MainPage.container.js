@@ -38,7 +38,7 @@ export default graphql(CLUSTER_DOCS_TOPICS, {
     <MainPage
       {...rest}
       clusterDocsTopicsRoot={rootClusterDocsTopic}
-      clusterDocsTopicsComponents={otherClusterDocsTopic}
+      clusterDocsTopicsExternal={otherClusterDocsTopic}
     />
   );
 });

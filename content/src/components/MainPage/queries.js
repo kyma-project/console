@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const CLUSTER_DOCS_TOPICS = gql`
-  query clusterDocsTopicss(
+  query clusterDocsTopics(
     $viewContext: String
     $groupName: String
     $filterExtensions: [String!]
