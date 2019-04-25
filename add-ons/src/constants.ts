@@ -54,7 +54,8 @@ export const FORMS = {
 export const CORE = {
   PANEL_TITLE: 'Repository URLs',
   ADD_ONS_CONFIGURATION_TITLE: 'Add-Ons Configuration',
-  ADD_ONS_CONFIGURATION_DESCRIPTION: 'Create and manage add-ons configurations, which allows you to extend the Service Catalog with additional services.',
+  ADD_ONS_CONFIGURATION_DESCRIPTION:
+    'Create and manage add-ons configurations, which allows you to extend the Service Catalog with additional services.',
 };
 
 export const FILTERS = {
