@@ -4,12 +4,10 @@ export const DEFAULT_CONFIGURATION =
   (window as any)['clusterConfig'].DEFAULT_CONFIGURATION_NAME ||
   'helm-repos-urls';
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
-  'This is the default Helm Broker ConfigMap. Do not edit or delete it.';
+  'This is the default add-ons configuration. Do not edit or delete it.';
 export const HELM_BROKER_IS_DEVELOPMENT_MODE = extractIsDevelopmentModeFlag(
   (window as any)['clusterConfig'].HELM_BROKER_IS_DEVELOPMENT_MODE,
 );
-
-export const TOOLBAR_DESCRIPTION = '';
 
 export const CONFIGURATION_NAME_PREFIX = 'addons-configuration';
 export const KYMA_SYSTEM_ENV = 'kyma-system';
@@ -56,7 +54,7 @@ export const FORMS = {
 export const CORE = {
   PANEL_TITLE: 'Repository URLs',
   ADD_ONS_CONFIGURATION_TITLE: 'Add-Ons Configuration',
-  ADD_ONS_CONFIGURATION_DESCRIPTION: 'Dupa',
+  ADD_ONS_CONFIGURATION_DESCRIPTION: 'Here you can manage and create add-ons configurations which allow you to extend Service Catalog to provision additional services inside the cluster.',
 };
 
 export const FILTERS = {
