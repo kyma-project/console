@@ -572,11 +572,9 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
 function getConsoleInitData() {
   const query = `query {
     selfSubjectRules {
-			resourceRules{
-				verbs
-				resources
-				apiGroups
-			}
+      verbs
+      resources
+      apiGroups
 		}
     backendModules{
       name
@@ -633,7 +631,7 @@ Promise.all(initPromises)
     res => {
       if(token){
         const modules = res[1].backendModules;
-        const subjectRules = res[1].selfSubjectRules.resourceRules;
+        const subjectRules = res[1].selfSubjectRules;
         if (
           modules &&
           modules.length > 0
