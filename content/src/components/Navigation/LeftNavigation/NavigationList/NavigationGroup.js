@@ -89,7 +89,7 @@ function NavigationGroup({
         <NavigationSections
           items={filesByTypes}
           groupType={groupType}
-          rootId={tokenize(item.displayName)}
+          rootId={tokenize(item.name)}
           activeContent={activeContent}
           activeNav={activeNav}
           activeNodes={activeNodes}

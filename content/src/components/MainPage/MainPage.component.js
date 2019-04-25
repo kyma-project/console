@@ -53,7 +53,7 @@ class MainPage extends Component {
     let docsItems =
       type === 'root'
         ? this.props.clusterDocsTopicsRoot || {}
-        : this.props.clusterDocsTopicsComponents || {};
+        : this.props.clusterDocsTopicsExternal || {};
     if (!docsItems || !docsItems.length) return {};
     docsItems = docsItems.filter(
       item => tokenize(item.displayName) === id || item.name === id,
@@ -152,7 +152,7 @@ class MainPage extends Component {
     const { history } = this.props;
     const { activeContent, activeNav, docsList, docsLoaded } = this.state;
 
-    const itemsComponents = this.props.clusterDocsTopicsComponents || {};
+    const itemsExternal = this.props.clusterDocsTopicsExternal || {};
     const itemsRoot = this.props.clusterDocsTopicsRoot || {};
 
     return (
@@ -161,7 +161,7 @@ class MainPage extends Component {
           <LeftSideWrapper>
             <LeftNavigation
               rootItems={itemsRoot}
-              externalItems={itemsComponents}
+              externalItems={itemsExternal}
               activeContent={activeContent}
               activeNav={activeNav}
               chooseActive={this.chooseActive}

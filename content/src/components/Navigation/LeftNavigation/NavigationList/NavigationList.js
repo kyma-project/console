@@ -42,15 +42,8 @@ class Navigation extends Component {
     const externalNavigationSections = externalItems
       .map(item => item.groupName)
       .filter(makeUnique)
-      .sort((a, b) => (a === 'components' ? -1 : b === 'components' ? -1 : 0));
+      .sort();
 
-    if (activeNodes && activeNodes.document) {
-      // console.log(
-      //   activeNodes.document.id,
-      //   activeNodes.groupOfDocuments.id,
-      //   activeContent,
-      // );
-    }
     return (
       <ScrollSpy
         rootElement={`#${SCROLL_SPY_ROOT_ELEMENT}`}
