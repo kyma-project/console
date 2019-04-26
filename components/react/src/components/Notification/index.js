@@ -11,8 +11,21 @@ import {
   NotificationBody,
 } from './components';
 
-const Notification = ({ title, color, icon, onClick, content, visible }) => (
-  <NotificationWrapper color={color} onClick={onClick} visible={visible}>
+const Notification = ({
+  title,
+  color,
+  icon,
+  onClick,
+  content,
+  visible,
+  orientation = 'top',
+}) => (
+  <NotificationWrapper
+    color={color}
+    onClick={onClick}
+    visible={visible}
+    orientation={orientation}
+  >
     <NotificationHeader>
       <NotificationTitleWrapper>{title}</NotificationTitleWrapper>
       <NotificationIconWrapper>

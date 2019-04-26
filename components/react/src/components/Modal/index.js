@@ -2,9 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
-import { FdModal } from './styled';
+import { FdModal, ModalWrapper } from './styled';
 import Spinner from '../Spinner';
 import Tooltip from '../Tooltip';
+
 class Modal extends Component {
   state = {
     show: false,
@@ -132,7 +133,9 @@ class Modal extends Component {
 
     return (
       <Fragment>
-        <div onClick={this.onOpen}>{modalOpeningComponent}</div>
+        <ModalWrapper onClick={this.onOpen}>
+          {modalOpeningComponent}
+        </ModalWrapper>
         <FdModal
           width={width}
           type={type}
