@@ -11,6 +11,7 @@ export default graphql(CLUSTER_DOCS_TOPICS, {
   options: {
     variables: {
       filterExtensions: filterExtensions,
+      viewContext: 'docs-ui',
     },
   },
 })(props => {
