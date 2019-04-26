@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import {
   NotificationMessage,
   ReactMarkdown,
-  Toolbar,
   Spinner,
 } from '@kyma-project/react-components';
 
 import {
-  DocsWrapper,
   Wrapper,
   ContentHeader,
   ContentDescription,
