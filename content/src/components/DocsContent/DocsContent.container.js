@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 import DocsContent from './DocsContent.component';
 import { DocsProcessor } from './DocsProcessor';
-import equal from 'deep-equal';
+import deepEqual from 'deep-equal';
 
+import { DocsWrapper } from './styled';
+import { Toolbar } from '@kyma-project/react-components';
 export default class DocsContentContainer extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,6 @@ export default class DocsContentContainer extends Component {
 
   async componentDidMount() {
     const { docs } = this.props;
-
     if (docs) {
       await this.setDocs(docs);
     }
@@ -20,7 +21,7 @@ export default class DocsContentContainer extends Component {
 
   async componentDidUpdate(prevProps, _) {
     const { docs } = this.props;
-    if (!equal(this.props.docs, prevProps.docs) && docs) {
+    if (docs && !deepEqual(docs, prevProps.docs)) {
       await this.setDocs(docs);
     }
   }
@@ -28,12 +29,14 @@ export default class DocsContentContainer extends Component {
   async setDocs(docs) {
     this.setState({
       displayName: docs.displayName,
-      docs: await this.getAllUrls(docs.assets[0].files),
+      docs: await Promise.all(
+        docs.assets.map(elem => this.getAllUrls(elem.files)),
+      ),
     });
   }
 
   async getAllUrls(docs) {
-    var data = await Promise.all(
+    const data = await Promise.all(
       docs.map(doc =>
         fetch(doc.url)
           .then(response => {
@@ -60,45 +63,54 @@ export default class DocsContentContainer extends Component {
 
   render() {
     const { docs } = this.props;
-    const sources = this.state.docs;
+    const { docs: sources, displayName } = this.state;
 
-    if (!docs) {
+    if (!docs || !sources) {
       return null;
     }
 
-    let newDocs = sources;
-    let docsTypesLength = {};
-
-    if (newDocs) {
-      newDocs = new DocsProcessor(sources)
-        .replaceImagePaths()
-        .removeMatadata()
-        .result();
-
-      newDocs.forEach(doc => {
-        if (!doc.metadata) return doc;
-
-        const type = doc.metadata.type || doc.metadata.title;
-        if (!(type in docsTypesLength)) {
-          docsTypesLength[type] = 0;
-        }
-        if (doc.metadata.title) {
-          docsTypesLength[type]++;
-        }
-
-        return doc;
-      });
-    }
-
     return (
-      <DocsContent
-        docs={newDocs}
-        error={this.state.error}
-        displayName={this.state.displayName}
-        docsTypesLength={docsTypesLength}
-        docsLoaded={this.props.docsLoaded}
-        setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
-      />
+      <>
+        <DocsWrapper>
+          {displayName && (
+            <Toolbar title={displayName} customPadding={'28px 0'} />
+          )}
+          {sources.flatMap((component, index) => {
+            let newDocs = component;
+            let docsTypesLength = {};
+            if (newDocs) {
+              newDocs = new DocsProcessor(component)
+                .replaceImagePaths()
+                .removeMatadata()
+                .result();
+
+              newDocs.forEach(doc => {
+                if (!doc.metadata) return;
+
+                const type = doc.metadata.type || doc.metadata.title;
+                if (!(type in docsTypesLength)) {
+                  docsTypesLength[type] = 0;
+                }
+                if (doc.metadata.title) {
+                  docsTypesLength[type]++;
+                }
+              });
+            }
+
+            return (
+              <DocsContent
+                key={index}
+                docs={newDocs}
+                error={this.state.error}
+                displayName={this.state.displayName}
+                docsTypesLength={docsTypesLength}
+                docsLoaded={this.props.docsLoaded}
+                setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
+              />
+            );
+          })}
+        </DocsWrapper>
+      </>
     );
   }
 }

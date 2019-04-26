@@ -12,3 +12,5 @@ export const tokenize = str => {
 export const backendModuleExists = name => {
   return builder.getBackendModules().includes(name);
 };
+
+export const makeUnique = (value, index, self) => self.indexOf(value) === index;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@kyma-project/react-components';
 import { tokenize } from '../../../../commons/helpers';
 
@@ -6,11 +6,13 @@ import NavigationSections from './NavigationSections';
 import {
   NavigationContainer,
   NavigationHeader,
+  NavigationArrow,
   NavigationItems,
   NavigationItem,
   NavigationSectionArrow,
   NavigationLinkWrapper,
   NavigationLink,
+  CollapseArrow,
 } from './styled';
 
 function NavigationGroup({
@@ -55,14 +57,15 @@ function NavigationGroup({
       return null;
     }
 
-    item.assets[0].files.forEach(file => {
-      let type = file.metadata.type || file.metadata.title;
-      if (!filesByTypes[type]) {
-        filesByTypes[type] = [];
-      }
-      filesByTypes[type].push(file);
-      return file;
-    });
+    item.assets.forEach(asset =>
+      asset.files.forEach(file => {
+        let type = file.metadata.type || file.metadata.title;
+        if (!filesByTypes[type]) {
+          filesByTypes[type] = [];
+        }
+        filesByTypes[type].push(file);
+      }),
+    );
 
     return (
       <NavigationItem key={tokenize(item.name)}>
@@ -87,7 +90,7 @@ function NavigationGroup({
         <NavigationSections
           items={filesByTypes}
           groupType={groupType}
-          rootId={tokenize(item.displayName)}
+          rootId={tokenize(item.name)}
           activeContent={activeContent}
           activeNav={activeNav}
           activeNodes={activeNodes}
@@ -98,19 +101,23 @@ function NavigationGroup({
       </NavigationItem>
     );
   };
-
+  const [show, setShow] = useState(true);
   return (
     <NavigationContainer>
       {title && icon && (
-        <NavigationHeader>
+        <NavigationHeader onClick={() => setShow(!show)}>
           <Icon size="m" glyph={icon} />
           {title}
+          <NavigationArrow>
+            <CollapseArrow open={show} />
+          </NavigationArrow>
         </NavigationHeader>
       )}
-
-      <NavigationItems showAll>
-        {items.map(item => renderNavigationItem(item))}
-      </NavigationItems>
+      {show && (
+        <NavigationItems showAll>
+          {items.map(item => renderNavigationItem(item))}
+        </NavigationItems>
+      )}
     </NavigationContainer>
   );
 }

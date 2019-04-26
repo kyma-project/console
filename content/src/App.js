@@ -11,7 +11,7 @@ function App() {
   return (
     <div>
       <div className="ph3 pv1 background-gray">
-        {backendModuleExists('content') ? (
+        {backendModuleExists('cms') && backendModuleExists('assetstore') ? (
           <Switch>
             <Route exact path="/" component={MainPage} />
             <Route exact path="/:type/:id" component={MainPage} />
