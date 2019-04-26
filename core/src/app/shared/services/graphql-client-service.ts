@@ -14,9 +14,7 @@ export class GraphQLClientService {
     return this.apollo
     .query({query: gql`${query}`, variables, fetchPolicy: 'no-cache'})
     .pipe(
-      map(res => {
-        return this.processResponse(res);
-      }),
+      map(res => this.processResponse(res)),
       catchError(err => {
         return this.processError(err);
       })
@@ -27,9 +25,7 @@ export class GraphQLClientService {
     return this.apollo
     .mutate({mutation: gql`${query}`, variables})
     .pipe(
-      map(res => {
-        return this.processResponse(res);
-      }),
+      map(res => this.processResponse(res)),
       catchError(err => {
         return this.processError(err);
       })
@@ -48,8 +44,7 @@ export class GraphQLClientService {
         response.errors &&
         response.errors.filter(
           (e: any) => !e.message.startsWith('MODULE_DISABLED')
-        )) ||
-      [];
+        )) || [];
     if (filteredErrors.length) {
       return throwError(filteredErrors[0].message);
     } else if (response && response.data) {

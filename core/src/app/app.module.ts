@@ -271,7 +271,7 @@ import { WebSocketLink } from './ws';
 export class AppModule {
   constructor(
     private apollo: Apollo,
-    httpLink: HttpLink
+    private httpLink: HttpLink
     ) {
 
     // Create an http link:

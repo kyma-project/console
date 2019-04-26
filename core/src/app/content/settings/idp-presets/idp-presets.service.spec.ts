@@ -6,7 +6,6 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { of } from 'rxjs';
-import * as LuigiClient from '@kyma-project/luigi-client';
 
 const idpPresetCreationSuccess = {
   createIDPPreset: {
@@ -55,12 +54,6 @@ const idpPresetsQuery = {
   ]
 };
 
-const mockLuigiClient = {
-  getEventData: () => { return {
-    idToken: 'token'
-  }}
-}
-
 const graphlQLClientServiceMock = {
   gqlMutation: (query, variables) => {
     switch (variables.name) {
@@ -89,8 +82,7 @@ describe('IdpPresetsService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         IdpPresetsService,
-        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock },
-        { provide: LuigiClient, useValue: mockLuigiClient }
+        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock }
       ]
     });
 

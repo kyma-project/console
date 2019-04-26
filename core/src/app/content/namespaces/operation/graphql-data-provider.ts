@@ -56,7 +56,7 @@ export class GraphQLDataProvider implements DataProvider {
             if (type === 'DELETE') {
               result = currentItems.filter(i => i.name !== item.name);
             } else if (type === 'UPDATE' || type === 'ADD') {
-              // Sometimes the 'ADD' event is not received
+              // Sometimes we receive the 'UPDATE' event instead of 'ADD'
               const idx = currentItems.findIndex(i => i.name === item.name);
               if(idx === -1) {
                 result = [...currentItems, item];

@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http/testing';
 import { AppConfig } from '../../../app.config';
 import { of } from 'rxjs';
-import * as LuigiClient from '@kyma-project/luigi-client';
 
 const resourceQuotaLimitOK = {
   resourceQuotaStatus: {
@@ -40,12 +39,6 @@ const graphlQLClientServiceMock = {
   }
 };
 
-const mockLuigiClient = {
-  getEventData: () => { return {
-    idToken: 'token'
-  }}
-}
-
 describe('NamespacesService', () => {
   let namespacesService: NamespacesService;
   let httpClientMock: HttpTestingController;
@@ -56,7 +49,6 @@ describe('NamespacesService', () => {
       providers: [
         NamespacesService,
         { provide: GraphQLClientService, useValue: graphlQLClientServiceMock },
-        { provide: LuigiClient, useValue: mockLuigiClient }
       ]
     });
 

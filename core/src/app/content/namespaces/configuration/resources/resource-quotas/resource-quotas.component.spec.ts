@@ -6,7 +6,6 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
-import { Apollo } from 'apollo-angular';
 
 describe('ResourceQuotasComponent', () => {
   let component: ResourceQuotasComponent;
@@ -21,8 +20,7 @@ describe('ResourceQuotasComponent', () => {
         HttpHandler,
         CurrentNamespaceService,
         ComponentCommunicationService,
-        GraphQLClientService,
-        Apollo
+        {provide: GraphQLClientService, useValue: {}}
       ]
     }).compileComponents();
   }));
