@@ -6,6 +6,7 @@ import NavigationSections from './NavigationSections';
 import {
   NavigationContainer,
   NavigationHeader,
+  NavigationArrow,
   NavigationItems,
   NavigationItem,
   NavigationSectionArrow,
@@ -107,7 +108,9 @@ function NavigationGroup({
         <NavigationHeader onClick={() => setShow(!show)}>
           <Icon size="m" glyph={icon} />
           {title}
-          <CollapseArrow open={show} />
+          <NavigationArrow>
+            <CollapseArrow open={show} />
+          </NavigationArrow>
         </NavigationHeader>
       )}
       {show && (

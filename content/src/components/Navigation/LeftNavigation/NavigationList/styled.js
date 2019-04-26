@@ -10,6 +10,12 @@ export const NavigationContainer = styled.div`
   text-align: left;
 `;
 
+export const NavigationArrow = styled.div`
+  flex: 1;
+  text-align: right;
+  padding-right: 16px;
+`;
+
 export const NavigationHeader = styled.section`
   position: relative;
   border-top: 1px solid #eeeeef;
@@ -21,6 +27,8 @@ export const NavigationHeader = styled.section`
   font-size: 14px;
   line-height: 20px;
   text-transform: inherit;
+  display: flex;
+  justify-content: flex-start;
 
   [class^='sap-icon--'] {
     display: inline-block;

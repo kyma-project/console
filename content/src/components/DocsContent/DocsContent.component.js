@@ -35,7 +35,7 @@ class DocsContent extends Component {
   };
 
   render() {
-    let { displayName, docs, docsLoaded, docsTypesLength, error } = this.props;
+    let { docs, docsLoaded, docsTypesLength, error } = this.props;
     let lastType = '';
 
     if (!docsLoaded) {
@@ -64,47 +64,41 @@ class DocsContent extends Component {
 
     return (
       <>
-        <DocsWrapper>
-          {displayName && (
-            <Toolbar title={displayName} customPadding={'28px 0'} />
-          )}
+        {docs.map((doc, index) => {
+          const type = doc.metadata.type || doc.metadata.title;
+          const tokenizedType = tokenize(type);
+          const hash = `${tokenizedType}-${tokenize(doc.metadata.title)}`;
+          const typeHash = `${tokenizedType}-${tokenizedType}`;
 
-          {docs.map((doc, index) => {
-            const type = doc.metadata.type || doc.metadata.title;
-            const tokenizedType = tokenize(type);
-            const hash = `${tokenizedType}-${tokenize(doc.metadata.title)}`;
-            const typeHash = `${tokenizedType}-${tokenizedType}`;
+          const isFirstOfType = type !== lastType;
+          lastType = type;
 
-            const isFirstOfType = type !== lastType;
-            lastType = type;
+          const typeLength = docsTypesLength[type];
 
-            const typeLength = docsTypesLength[type];
-
-            return (
-              <Wrapper key={index}>
-                {isFirstOfType && typeLength && (
-                  <Anchor
-                    id={typeHash}
-                    data-scrollspy-node-type="groupOfDocuments"
-                  />
-                )}
-                <ContentHeader
-                  id={hash}
-                  data-scrollspy-node-type={
-                    typeLength ? 'document' : 'groupOfDocuments'
-                  }
-                >
-                  {doc.metadata.title}
-                </ContentHeader>
-                <ContentDescription>
-                  <TextWrapper>
-                    {doc && doc.source && <ReactMarkdown source={doc.source} />}
-                  </TextWrapper>
-                </ContentDescription>
-              </Wrapper>
-            );
-          })}
-        </DocsWrapper>
+          return (
+            <Wrapper key={index}>
+              {isFirstOfType && typeLength && (
+                <Anchor
+                  id={typeHash}
+                  data-scrollspy-node-type="groupOfDocuments"
+                />
+              )}
+              <ContentHeader
+                id={hash}
+                data-scrollspy-node-type={
+                  typeLength ? 'document' : 'groupOfDocuments'
+                }
+              >
+                {doc.metadata.title}
+              </ContentHeader>
+              <ContentDescription>
+                <TextWrapper>
+                  {doc && doc.source && <ReactMarkdown source={doc.source} />}
+                </TextWrapper>
+              </ContentDescription>
+            </Wrapper>
+          );
+        })}
       </>
     );
   }
