@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable, throwError } from 'rxjs';
 
@@ -15,9 +15,7 @@ export class GraphQLClientService {
     .query({query: gql`${query}`, variables, fetchPolicy: 'no-cache'})
     .pipe(
       map(res => this.processResponse(res)),
-      catchError(err => {
-        return this.processError(err);
-      })
+      catchError(err =>  this.processError(err))
     );
   }
 
@@ -26,13 +24,11 @@ export class GraphQLClientService {
     .mutate({mutation: gql`${query}`, variables})
     .pipe(
       map(res => this.processResponse(res)),
-      catchError(err => {
-        return this.processError(err);
-      })
+      catchError(err =>  this.processError(err))
     );
   }
 
-  gqlWatchQuery (query, variables = {}, cache?): any{
+  gqlWatchQuery (query, variables = {}, cache?): QueryRef<any> {
     return this.apollo
     .watchQuery({query: gql`${query}`, variables, fetchPolicy: cache ? 'cache-first' : 'network-only'});
   }

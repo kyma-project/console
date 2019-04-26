@@ -32,8 +32,9 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
+
       if(!this.subscriptions || ! this.resourceKind) {
-        if(!this.resourceQuery){
+        if(!this.resourceQuery) {
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
         } else {
           this.resourceQuery.resetLastResults();
@@ -45,27 +46,7 @@ export class GraphQLDataProvider implements DataProvider {
           document: gql`${this.subscriptions}`,
           variables: this.variables,
           updateQuery: (prev, {subscriptionData}) => {
-            if (!subscriptionData || !subscriptionData.data) {
-              return prev;
-            };
-            const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
-            const currentItems = prev[`${lowerCaseResourceKind}s`];
-            const item = subscriptionData.data[`${lowerCaseResourceKind}Event`][lowerCaseResourceKind];
-            const type = subscriptionData.data[`${lowerCaseResourceKind}Event`].type;
-            let result;
-            if (type === 'DELETE') {
-              result = currentItems.filter(i => i.name !== item.name);
-            } else if (type === 'UPDATE' || type === 'ADD') {
-              // Sometimes we receive the 'UPDATE' event instead of 'ADD'
-              const idx = currentItems.findIndex(i => i.name === item.name);
-              if(idx === -1) {
-                result = [...currentItems, item];
-              } else {
-                currentItems[idx] = item;
-                result = currentItems;
-              }
-            }
-            return prev[`${lowerCaseResourceKind}s`] = result;
+            this.updateSubscriptions(prev, subscriptionData);
           }
         });
       }
@@ -142,6 +123,35 @@ export class GraphQLDataProvider implements DataProvider {
       result.push(new Facet(key, facetMap[key]));
     });
     return result;
+  }
+
+  updateSubscriptions(prev, subscriptionData) {
+    if (!subscriptionData || !subscriptionData.data) {
+      return prev;
+    };
+    
+    const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+    const currentItems = prev[`${lowerCaseResourceKind}s`];
+    const item = subscriptionData.data[`${lowerCaseResourceKind}Event`][lowerCaseResourceKind];
+    const type = subscriptionData.data[`${lowerCaseResourceKind}Event`].type;
+    let result;
+
+    if (type === 'DELETE') {
+      result = currentItems.filter(i => i.name !== item.name);
+    } else if (type === 'UPDATE' || type === 'ADD') {
+      // Sometimes we receive the 'UPDATE' event instead of 'ADD'
+      const index = currentItems.findIndex(i => i.name === item.name);
+      if(index === -1) {
+        result = [...currentItems, item];
+      } else {
+        currentItems[index] = item;
+        result = currentItems;
+      }
+    } else {
+      result = currentItems;
+    }
+
+    return prev[`${lowerCaseResourceKind}s`] = result;
   }
 
 }
