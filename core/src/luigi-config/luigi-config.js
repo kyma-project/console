@@ -25,6 +25,19 @@ if (clusterConfig) {
   }
 }
 
+var localDevDomainBindings=[
+  //all non-cluster microfrontends
+  { startsWith: "console", replaceWith: config.localDomain }, 
+
+  //cluster microfrontends
+  { startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl },
+  { startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl },
+  { startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl },
+  { startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl },
+  { startsWith: "add-ons", replaceWith: config.addOnsModuleUrl },
+  { startsWith: "log-ui", replaceWith: config.logsModuleUrl }
+];
+
 var token;
 if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
@@ -331,46 +344,16 @@ async function getUiEntities(entityname, namespace, placements) {
               if (!isLocalDev || !node.viewUrl) {
                 return;
               }
-              if (node.viewUrl.startsWith(`https://console.${domain}`)) {
-                node.viewUrl = node.viewUrl.replace(
-                  'console.' + domain,
-                  localDomain + ':4200'
-                );
-              } else if (node.viewUrl.startsWith(`https://catalog.${domain}`)) {
-                node.viewUrl = node.viewUrl.replace(
-                  `https://catalog.${domain}`,
-                  config.serviceCatalogModuleUrl
-                );
-              } else if (
-                node.viewUrl.startsWith(`https://instances.${domain}`)
-              ) {
-                node.viewUrl = node.viewUrl.replace(
-                  `https://instances.${domain}`,
-                  config.serviceInstancesModuleUrl
-                );
-              } else if (node.viewUrl.startsWith(`https://brokers.${domain}`)) {
-                node.viewUrl = node.viewUrl.replace(
-                  `https://brokers.${domain}`,
-                  config.serviceBrokersModuleUrl
-                );
-              } else if (
-                node.viewUrl.startsWith(`https://lambdas-ui.${domain}`)
-              ) {
-                node.viewUrl = node.viewUrl.replace(
-                  `https://lambdas-ui.${domain}`,
-                  config.lambdasModuleUrl
-                );
-              } else if (node.viewUrl.startsWith(`https://log-ui.${domain}`)) {
-                node.viewUrl = node.viewUrl.replace(
-                  `https://log-ui.${domain}`,
-                  config.logsModuleUrl
-                );
-              } else if(node.viewUrl.startsWith(`https://add-ons.${domain}`)) {   
-                node.viewUrl = node.viewUrl.replace(
-                  `https://add-ons.${domain}`,
-                  config.logsModuleUrl
-                );
-              }
+              
+              localDevDomainBindings.forEach(binding=>{
+                if (node.viewUrl.startsWith(`https://${binding.startsWith}.${domain}`)) {
+                  node.viewUrl = node.viewUrl.replace(
+                    `https://${binding.startsWith}.${domain}`,
+                    binding.replaceWith
+                  );
+                }
+              });
+
               return node;
             }
 
