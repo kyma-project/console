@@ -69,7 +69,9 @@ export class ResourceQuotasComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   public getResourceUrl(kind: string, entry: any): string {

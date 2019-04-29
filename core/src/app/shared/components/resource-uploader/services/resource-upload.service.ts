@@ -25,7 +25,9 @@ export class ResourceUploadService implements OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   private isYaml(file) {

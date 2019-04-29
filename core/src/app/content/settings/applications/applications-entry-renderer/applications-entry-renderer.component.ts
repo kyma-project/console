@@ -48,8 +48,9 @@ export class ApplicationsEntryRendererComponent
   }
 
   ngOnDestroy() {
-    if (!this.communicationServiceSubscription) { return };
-    this.communicationServiceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
   }
 
   public listConnectedNamespaces(entry) {

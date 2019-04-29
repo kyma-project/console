@@ -81,7 +81,9 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   public getResourceUrl(kind: string, entry: any): string {
