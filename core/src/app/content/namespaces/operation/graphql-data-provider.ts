@@ -34,7 +34,7 @@ export class GraphQLDataProvider implements DataProvider {
     return new Observable(observer => {
 
       if(!this.subscriptions || ! this.resourceKind) {
-        if(!this.resourceQuery) {
+        if(noCache || !this.resourceQuery) {
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
         } else {
           this.resourceQuery.resetLastResults();
