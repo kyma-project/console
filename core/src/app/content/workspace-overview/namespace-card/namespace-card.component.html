@@ -1,7 +1,10 @@
 <div class="fd-panel y-fd-panel y-fd-panel--button" (click)="navigateToDetails(entry.getId())" [ngClass]="{'y-fd-panel--disabled': disabled === true}">
   <div class="fd-panel__header">
     <div class="fd-panel__head">
-      <h2 class="fd-panel__title" data-e2e-id="namespace-name">{{ entry.getLabel() }}</h2>
+      <h2 class="fd-panel__title" data-e2e-id="namespace-name">
+        {{ entry.getLabel() }}
+        <span *ngIf="!(entry.metadata.labels && entry.metadata.labels.env)" class="fd-badge fd-has-margin-left-tiny">System</span>
+      </h2>
     </div>
     <div class="fd-panel__actions">
       <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
