@@ -6,12 +6,13 @@
     "instances",
     "brokers",
     "content",
+    "add-ons",
     "components/react",
     "components/react-odata",
     "components/angular/generic-list/dist",
     "lambda",
-    "tests",
-    "logging"
+    "logging",
+    "tests"
   ],
   "version": "0.0.0",
   "command": {

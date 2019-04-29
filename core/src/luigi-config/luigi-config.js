@@ -12,6 +12,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
+  addOnsModuleUrl: 'https://add-ons.' + k8sDomain,
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql'
 };
@@ -44,8 +45,8 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      category: { label: 'Service Catalog', icon: 'add-coursebook' },
-      pathSegment: '_service_catalog_category_placeholder_',
+      category: { label: 'Service Management', icon: 'add-coursebook' },
+      pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
@@ -362,6 +363,11 @@ async function getUiEntities(entityname, namespace, placements) {
               } else if (node.viewUrl.startsWith(`https://log-ui.${domain}`)) {
                 node.viewUrl = node.viewUrl.replace(
                   `https://log-ui.${domain}`,
+                  config.logsModuleUrl
+                );
+              } else if(node.viewUrl.startsWith(`https://add-ons.${domain}`)) {   
+                node.viewUrl = node.viewUrl.replace(
+                  `https://add-ons.${domain}`,
                   config.logsModuleUrl
                 );
               }
@@ -789,7 +795,9 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
                 ];
                 if (cmf.length > 0) {
                   cmf.forEach(clusterMF => {
-                    clusterMF[0].adminOnly = true;
+                    if (clusterMF[0]) {
+                      clusterMF[0].adminOnly = true;
+                    }
                   });
                 }
                 var fetchedNodes = [].concat.apply([], cmf);
@@ -832,6 +840,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
       },
       settings: {
+        responsiveNavigation: 'simpleMobileOnly',
         header: () => {
           const logo =
             clusterConfig && clusterConfig.headerLogoUrl

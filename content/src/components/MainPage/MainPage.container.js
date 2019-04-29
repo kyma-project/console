@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 
 import MainPage from './MainPage.component';
 
@@ -7,44 +7,39 @@ import { CLUSTER_DOCS_TOPICS } from './queries';
 
 const filterExtensions = ['md'];
 
-export default compose(
-  graphql(CLUSTER_DOCS_TOPICS, {
-    name: 'clusterDocsTopicsComponents',
-    options: {
-      variables: {
-        viewContext: 'docs-ui',
-        groupName: 'components',
-        filterExtensions: filterExtensions,
-      },
+export default graphql(CLUSTER_DOCS_TOPICS, {
+  options: {
+    variables: {
+      filterExtensions: filterExtensions,
+      viewContext: 'docs-ui',
     },
-  }),
-  graphql(CLUSTER_DOCS_TOPICS, {
-    name: 'clusterDocsTopicsRoot',
-    options: {
-      variables: {
-        viewContext: 'docs-ui',
-        groupName: 'root',
-        filterExtensions: filterExtensions,
-      },
-    },
-  }),
-)(props => {
-  if (
-    props.clusterDocsTopicsRoot.loading ||
-    props.clusterDocsTopicsComponents.loading ||
-    !props.clusterDocsTopicsRoot.clusterDocsTopics ||
-    !props.clusterDocsTopicsComponents.clusterDocsTopics
-  ) {
+  },
+})(props => {
+  const {
+    data: { loading, clusterDocsTopics },
+    ...rest
+  } = props;
+
+  if (loading || !clusterDocsTopics) {
     return null;
   }
 
+  const rootClusterDocsTopic = [];
+  const otherClusterDocsTopic = [];
+
+  clusterDocsTopics.forEach(docs => {
+    if (docs.name === 'kyma') {
+      rootClusterDocsTopic.push(docs);
+    } else {
+      otherClusterDocsTopic.push(docs);
+    }
+  });
+
   return (
     <MainPage
-      {...props}
-      clusterDocsTopicsRoot={props.clusterDocsTopicsRoot.clusterDocsTopics}
-      clusterDocsTopicsComponents={
-        props.clusterDocsTopicsComponents.clusterDocsTopics
-      }
+      {...rest}
+      clusterDocsTopicsRoot={rootClusterDocsTopic}
+      clusterDocsTopicsExternal={otherClusterDocsTopic}
     />
   );
 });

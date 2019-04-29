@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { Modal } from 'fundamental-react';
 
+export const ModalWrapper = styled.div`
+  display: inline-block;
+`;
+
 export const FdModal = styled(Modal)`
   && {
     .fd-modal {

@@ -53,9 +53,11 @@ class MainPage extends Component {
     let docsItems =
       type === 'root'
         ? this.props.clusterDocsTopicsRoot || {}
-        : this.props.clusterDocsTopicsComponents || {};
+        : this.props.clusterDocsTopicsExternal || {};
     if (!docsItems || !docsItems.length) return {};
-    docsItems = docsItems.filter(item => tokenize(item.displayName) === id);
+    docsItems = docsItems.filter(
+      item => tokenize(item.displayName) === id || item.name === id,
+    );
     return docsItems[0] || {};
   };
 
@@ -148,9 +150,9 @@ class MainPage extends Component {
 
   render() {
     const { history } = this.props;
-    const { activeContent, activeNav } = this.state;
+    const { activeContent, activeNav, docsList, docsLoaded } = this.state;
 
-    const itemsComponents = this.props.clusterDocsTopicsComponents || {};
+    const itemsExternal = this.props.clusterDocsTopicsExternal || {};
     const itemsRoot = this.props.clusterDocsTopicsRoot || {};
 
     return (
@@ -159,11 +161,11 @@ class MainPage extends Component {
           <LeftSideWrapper>
             <LeftNavigation
               rootItems={itemsRoot}
-              componentsItems={itemsComponents}
+              externalItems={itemsExternal}
               activeContent={activeContent}
               activeNav={activeNav}
               chooseActive={this.chooseActive}
-              docsLoaded={this.state.docsLoaded}
+              docsLoaded={docsLoaded}
               setActiveNav={this.setActiveNav}
               history={history}
             />
@@ -171,8 +173,8 @@ class MainPage extends Component {
           <CenterSideWrapper id={SCROLL_SPY_ROOT_ELEMENT}>
             <Suspense fallback={<div>Loading...</div>}>
               <DocsContent
-                docs={this.state.docsList}
-                docsLoaded={this.state.docsLoaded}
+                docs={docsList}
+                docsLoaded={docsLoaded}
                 setDocsInitialLoadStatus={this.setDocsInitialLoadStatus}
               />
             </Suspense>

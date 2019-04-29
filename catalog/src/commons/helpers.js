@@ -1,5 +1,5 @@
+import { randomNamesGenerator } from '@kyma-project/react-components';
 import builder from './builder';
-import { adjectives, nouns } from './random-names-data';
 
 export const sortDocumentsByType = documents => {
   if (!documents) return null;
@@ -95,15 +95,7 @@ export function clearEmptyPropertiesInObject(object) {
 }
 
 export function randomNameGenerator() {
-  function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-  return (
-    adjectives[getRandomInt(0, adjectives.length + 1)] +
-    '-' +
-    nouns[getRandomInt(0, nouns.length + 1)]
-  ).toLowerCase();
+  return randomNamesGenerator();
 }
 
 export function isStringValueEqualToTrue(value) {
