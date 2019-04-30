@@ -34,18 +34,11 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-
       if(!this.resourceQuery || noCache) {
+        if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
         if(!this.subscriptions || !this.resourceKind) {
-          if(!this.resourceQuery) {
-            if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
-            this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
-          } else {
-            this.resourceQuery.resetLastResults();
-            this.resourceQuery.refetch();
-          };
+          this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
         } else {
-          if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
           this.resourceQuery.subscribeToMore({
             document: gql`${this.subscriptions}`,
@@ -54,7 +47,7 @@ export class GraphQLDataProvider implements DataProvider {
               this.updateSubscriptions(prev, subscriptionData);
             }
           });
-        }
+        } 
       }
 
       this.resourceQuerySubs = this.resourceQuery.valueChanges
@@ -63,7 +56,7 @@ export class GraphQLDataProvider implements DataProvider {
         catchError(err => this.graphQLClientService.processError(err))
       )
       .subscribe(
-        res => {
+        res => {          
           const elementsKey = Object.keys(res)[0];
           const elements = res[elementsKey];
 
