@@ -35,16 +35,16 @@ export class GraphQLDataProvider implements DataProvider {
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
 
-      if(!this.subscriptions || ! this.resourceKind) {
-        if(noCache || !this.resourceQuery) {
-          if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
-          this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
+      if(!this.resourceQuery || noCache) {
+        if(!this.subscriptions || !this.resourceKind) {
+          if(!this.resourceQuery) {
+            if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
+            this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
+          } else {
+            this.resourceQuery.resetLastResults();
+            this.resourceQuery.refetch();
+          };
         } else {
-          this.resourceQuery.resetLastResults();
-          this.resourceQuery.refetch();
-        };
-      } else {
-        if(noCache || !this.resourceQuery) {
           if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
           this.resourceQuery.subscribeToMore({
