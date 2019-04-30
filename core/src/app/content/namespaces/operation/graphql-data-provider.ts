@@ -6,7 +6,7 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import gql from 'graphql-tag';
 import { catchError, map } from 'rxjs/operators';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
@@ -15,8 +15,7 @@ import { QueryRef } from 'apollo-angular';
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
   facetMatcher = new SimpleFacetMatcher();
-  resourceQuery: QueryRef<any>; 
-  resourceQuerySubs: Subscription;
+  resourceQuery: QueryRef<any>;
 
   constructor(
     private query: string,
@@ -34,29 +33,28 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-      if(!this.resourceQuery || noCache) {
-        if(this.resourceQuerySubs) { this.resourceQuerySubs.unsubscribe() };
-        if(!this.subscriptions || !this.resourceKind) {
+      if(!this.subscriptions || !this.resourceKind) {
+        if(noCache || !this.resourceQuery) {
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
-        } else {
-          this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
-          this.resourceQuery.subscribeToMore({
-            document: gql`${this.subscriptions}`,
-            variables: this.variables,
-            updateQuery: (prev, {subscriptionData}) => {
-              this.updateSubscriptions(prev, subscriptionData);
-            }
-          });
-        } 
+        }
+      } else {
+        this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
+        this.resourceQuery.subscribeToMore({
+          document: gql`${this.subscriptions}`,
+          variables: this.variables,
+          updateQuery: (prev, {subscriptionData}) => {
+            this.updateSubscriptions(prev, subscriptionData);
+          }
+        });
       }
 
-      this.resourceQuerySubs = this.resourceQuery.valueChanges
+      this.resourceQuery.valueChanges
       .pipe(
         map(res => this.graphQLClientService.processResponse(res)),
         catchError(err => this.graphQLClientService.processError(err))
       )
       .subscribe(
-        res => {          
+        res => {
           const elementsKey = Object.keys(res)[0];
           const elements = res[elementsKey];
 
