@@ -26,17 +26,15 @@ if (clusterConfig) {
 }
 
 var localDevDomainBindings=[
-  //all non-cluster microfrontends
-  { startsWith: "console", replaceWith: config.localDomain }, 
+   { startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl },
+   { startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl },
+   { startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl },
+   { startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl },
+   { startsWith: "add-ons", replaceWith: config.addOnsModuleUrl },
+   { startsWith: "log-ui", replaceWith: config.logsModuleUrl }
+ ];
 
-  //cluster microfrontends
-  { startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl },
-  { startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl },
-  { startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl },
-  { startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl },
-  { startsWith: "add-ons", replaceWith: config.addOnsModuleUrl },
-  { startsWith: "log-ui", replaceWith: config.logsModuleUrl }
-];
+
 
 var token;
 if (localStorage.getItem('luigi.auth')) {
@@ -335,16 +333,25 @@ async function getUiEntities(entityname, namespace, placements) {
               return n;
             }
 
-            function processNodeForLocalDevelopment(node) {
+            function processNodeForLocalDevelopment(node) {           
               const { domain, localDomain } = config;
               const isLocalDev = window.location.href.startsWith(
                 `http://${localDomain}:4200`
               );
-
+          
               if (!isLocalDev || !node.viewUrl) {
                 return;
               }
-              
+
+              //all non-cluster microfrontends
+              if (node.viewUrl.startsWith(`https://console.${domain}`)) {
+                node.viewUrl = node.viewUrl.replace(
+                  `https://console.${domain}`,
+                  `http://${localDomain}:4200`
+                );
+              }
+
+              //cluster microfrontends
               localDevDomainBindings.forEach(binding=>{
                 if (node.viewUrl.startsWith(`https://${binding.startsWith}.${domain}`)) {
                   node.viewUrl = node.viewUrl.replace(
