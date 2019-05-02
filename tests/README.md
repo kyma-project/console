@@ -8,6 +8,8 @@ This project contains UI acceptance tests for Kyma.
 
 If you do not have the dependencies installed through Lerna, use the `npm install` command to install them.
 
+> **NOTE:** You need a valid **kubeconfig** for the cluster with admin access. While for local Kyma installation it is automatically set during Minikube setup, for other cases you need to obtain **kubeconfig** on your own.
+
 To run all acceptance tests inside container in the cluster, use the following command:
 
 ```
