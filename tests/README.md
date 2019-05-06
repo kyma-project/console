@@ -22,7 +22,7 @@ To run all acceptance tests outside the cluster, use the following command:
 npm run test:cluster-outside
 ```
 
-To run all acceptance tests during development agains `http://console-dev.kyma.local:4200`, use the following command:
+To run all acceptance tests during development against `http://console-dev.kyma.local:4200`, use the following command:
 
 ```
 npm run test
