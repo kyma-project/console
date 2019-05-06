@@ -6,9 +6,9 @@ function rbacRulesMatched(requiredPermissions, selfSubjectRulesReview) {
   ) {
     return true;
   }
-  for (var i = 0, len = requiredPermissions.length; i < len; i++) {
+  for (let i = 0, len = requiredPermissions.length; i < len; i++) {
     let requiredPermission = requiredPermissions[i];
-    for (var j = 0, vlen = requiredPermission.verbs.length; j < vlen; j++) {
+    for (let j = 0, vlen = requiredPermission.verbs.length; j < vlen; j++) {
       let atomicVerb = requiredPermission.verbs[j];
       let atomicVerbPermission = {
         apiGroup: requiredPermission.apiGroup,
@@ -38,7 +38,7 @@ const arrayContainsStringOrJoker = (array, stringToFind, jokerString) => {
   if (!isNonEmptyArray(array)) {
     return false;
   }
-  for (var i = 0, len = array.length; i < len; i++) {
+  for (let i = 0, len = array.length; i < len; i++) {
     if (array[i] === stringToFind || array[i] === jokerString) {
       return true;
     }
@@ -50,7 +50,7 @@ const matchingVerbRuleFound = (allrules, requiredVerbRule) => {
   if (!isNonEmptyArray(allrules)) {
     return false;
   }
-  for (var i = 0, len = allrules.length; i < len; i++) {
+  for (let i = 0, len = allrules.length; i < len; i++) {
     let rule = allrules[i];
     if (
       arrayContainsStringOrJoker(
