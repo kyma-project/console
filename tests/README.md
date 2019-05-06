@@ -8,21 +8,21 @@ This project contains UI acceptance tests for Kyma.
 
 If you do not have the dependencies installed through Lerna, use the `npm install` command to install them.
 
-> **NOTE:** You need a valid **kubeconfig** for the cluster with admin access. While for local Kyma installation it is automatically set during Minikube setup, for other cases you need to obtain **kubeconfig** on your own.
+> **NOTE:** You need a valid `kubeconfig` issued for a user with admin rights for the cluster. On local deployments, the appropriate `kubeconfig` file is set automatically during Minikube setup. For cluster deployments, you must obtain the `kubeconfig` file manually.
 
-To run all acceptance tests inside container in the cluster, use the following command:
+To run all acceptance tests inside a container in the cluster, use this command:
 
 ```
 npm run test:cluster
 ```
 
-To run all acceptance tests outside the cluster, use the following command:
+To run all acceptance tests outside the cluster, use this command:
 
 ```
 npm run test:cluster-outside
 ```
 
-To run all acceptance tests during development against `http://console-dev.kyma.local:4200`, use the following command:
+To run all acceptance tests during development against `http://console-dev.kyma.local:4200`, use this command:
 
 ```
 npm run test
