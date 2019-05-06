@@ -142,6 +142,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         frame,
       );
       expect(currectActiveFiltersAfterClear.length).toEqual(0);
+      // Collapse filter is it never hovers over the cards in further tests
+      await frame.click(filterDropdownButton);
 
       // See details of the class and confirm all necessary fields  are there
       const testingBundle = await frame.$(exampleServiceClassButton);
@@ -316,6 +318,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
           planName,
         );
       });
+      //Reload the page after creation to delay navigation to instances list that sometimes causes failing test
+      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
       console.log('Navigate manually to instances list');
       await Promise.all([
