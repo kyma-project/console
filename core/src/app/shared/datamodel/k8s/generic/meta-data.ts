@@ -4,6 +4,6 @@ export interface IMetaData {
   selfLink?: string;
   uid?: string;
   creationTimestamp?: string;
-  labels?: object;
+  labels?: { [key: string]: string };
   annotations?: object;
 }
