@@ -9,7 +9,7 @@ const Dropdown = ({ disabled = false, children, control, noArrow }) => (
     <Popover
       disabled={disabled}
       noArrow={noArrow}
-      alignment="right"
+      placement="bottom-end"
       control={control}
       body={children}
     />
