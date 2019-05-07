@@ -13,15 +13,13 @@ const NotificationComponent: React.FunctionComponent<Props> = ({
   notification,
   showNotification,
   hideNotification,
-}) => {
-  return (
-    <Notification
-      {...notification}
-      orientation="bottom"
-      visible={showNotification}
-      onClick={hideNotification}
-    />
-  );
-};
+}) => (
+  <Notification
+    {...notification}
+    orientation="bottom"
+    visible={showNotification}
+    onClick={hideNotification}
+  />
+);
 
 export default NotificationComponent;

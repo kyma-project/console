@@ -7,18 +7,16 @@ import { CORE } from '../../constants';
 
 import { StyledActionBar } from './styled';
 
-const Toolbar: React.FunctionComponent = () => {
-  return (
-    <StyledActionBar>
-      <ActionBar.Header
-        title={CORE.ADD_ONS_CONFIGURATION_TITLE}
-        description={CORE.ADD_ONS_CONFIGURATION_DESCRIPTION}
-      />
-      <ActionBar.Actions>
-        <AddNewConfigurationModal />
-      </ActionBar.Actions>
-    </StyledActionBar>
-  );
-};
+const Toolbar: React.FunctionComponent = () => (
+  <StyledActionBar>
+    <ActionBar.Header
+      title={CORE.ADD_ONS_CONFIGURATION_TITLE}
+      description={CORE.ADD_ONS_CONFIGURATION_DESCRIPTION}
+    />
+    <ActionBar.Actions>
+      <AddNewConfigurationModal />
+    </ActionBar.Actions>
+  </StyledActionBar>
+);
 
 export default Toolbar;

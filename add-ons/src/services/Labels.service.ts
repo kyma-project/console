@@ -90,10 +90,11 @@ const useLabels = () => {
   };
 
   useEffect(() => {
-    originalConfigs &&
+    if (originalConfigs) {
       setUniqueLabels(
         sortLabels(getUniqueLabels(getFiltersLabels(originalConfigs))),
       );
+    }
   }, [originalConfigs]);
 
   return {

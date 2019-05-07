@@ -1,12 +1,11 @@
 import { extractIsDevelopmentModeFlag } from './helpers';
 
 export const DEFAULT_CONFIGURATION =
-  (window as any)['clusterConfig'].DEFAULT_CONFIGURATION_NAME ||
-  'helm-repos-urls';
+  (window as any).clusterConfig.DEFAULT_CONFIGURATION_NAME || 'helm-repos-urls';
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
   'This is the default add-ons configuration. Do not edit or delete it.';
 export const HELM_BROKER_IS_DEVELOPMENT_MODE = extractIsDevelopmentModeFlag(
-  (window as any)['clusterConfig'].HELM_BROKER_IS_DEVELOPMENT_MODE,
+  (window as any).clusterConfig.HELM_BROKER_IS_DEVELOPMENT_MODE,
 );
 
 export const CONFIGURATION_NAME_PREFIX = 'addons-configuration';

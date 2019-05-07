@@ -27,9 +27,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   const { validateUrl } = useContext(UrlsService);
 
   // Name
-  const validateNameField = (name: string): string => {
-    return validateName(name);
-  };
+  const validateNameField = (name: string): string => validateName(name);
   const nameField = useInput('', validateNameField);
 
   // Urls
@@ -97,7 +95,9 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   };
   const extractLabels = (): ConfigurationLabels => {
     const extractedLabels: ConfigurationLabels = {};
-    if (!labels.length) return extractedLabels;
+    if (!labels.length) {
+      return extractedLabels;
+    }
 
     labels.map(label => {
       const splitedLabel = label.split('=');

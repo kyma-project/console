@@ -12,8 +12,12 @@ const useNotifications = () => {
   let timer: number = 0;
 
   useEffect(() => {
-    if (!notification) return;
-    if (!Object.keys(notification).length) return;
+    if (!notification) {
+      return;
+    }
+    if (!Object.keys(notification).length) {
+      return;
+    }
 
     setShowNotification(true);
     timer = setTimeout(

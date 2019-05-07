@@ -52,13 +52,13 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
   onHideModal,
 }) => {
   const modalOpeningComponent = (
-    <Button glyph="add" option="light" compact>
+    <Button glyph="add" option="light" compact={true}>
       {MODAL.ADD_URL_BUTTON_TITLE}
     </Button>
   );
 
-  const addedUrls = () => {
-    return urls.length
+  const addedUrls = () =>
+    urls.length
       ? urls.map(url => (
           <AddedUrl onClick={() => removeUrl(url)} key={url}>
             {url}
@@ -66,7 +66,6 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
           </AddedUrl>
         ))
       : null;
-  };
 
   const disabledConfirm = !urls.length || urlField.error;
 
@@ -86,7 +85,7 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
     >
       <FormSet>
         <FormItem key="configurationName">
-          <FormLabel htmlFor="configurationName" required>
+          <FormLabel htmlFor="configurationName" required={true}>
             {FORMS.SELECT_CONFIGURATION_LABEL}
           </FormLabel>
           <FormSelect
@@ -102,7 +101,7 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
           </FormSelect>
         </FormItem>
         <FormItem key="url">
-          <FormLabel htmlFor="url" required>
+          <FormLabel htmlFor="url" required={true}>
             {FORMS.URL_LABEL}
             <InlineHelp text={HELP.URL_FIELD} />
           </FormLabel>
@@ -124,7 +123,7 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
         glyph="add"
         onClick={addUrl}
         option="light"
-        compact
+        compact={true}
         disabled={Boolean(urlField.error || !urlField.value)}
       >
         {FORMS.ADD_URL_BUTTON}

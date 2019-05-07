@@ -18,11 +18,11 @@ const FilterPopoverComponent: React.FunctionComponent<Props> = ({
     <Button
       glyph="filter"
       option="light"
-      compact
+      compact={true}
       disabled={!configurationsExist}
     >
       {activeFiltersLength > 0 && (
-        <Counter notification>{activeFiltersLength}</Counter>
+        <Counter notification={true}>{activeFiltersLength}</Counter>
       )}
     </Button>
   );

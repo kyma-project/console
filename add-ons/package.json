@@ -50,8 +50,8 @@
     "test": "react-app-rewired test --passWithNoTests --env=jsdom",
     "eject": "react-app-rewired eject",
     "copy-config": "cp ../config.js public/config/config.js",
-    "lint-check": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose && prettier --config ../.prettierrc --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
-    "lint-fix": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --config ../.prettierrc --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-check": "tslint -c tslint.json --project tsconfig.json --format verbose && prettier --config ../.prettierrc --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-fix": "tslint -c tslint.json --project tsconfig.json --format verbose --fix && prettier --config ../.prettierrc --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
     "conflict-check": "tslint-config-prettier-check ./tslint.json"
   },
   "husky": {

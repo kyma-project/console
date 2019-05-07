@@ -14,6 +14,7 @@ build:
 	npm run build
 
 validate:
+	npm run conflict-check
 	npm run lint-check
 	
 test:
