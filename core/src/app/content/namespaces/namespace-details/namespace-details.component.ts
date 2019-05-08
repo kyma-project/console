@@ -30,6 +30,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   private id: string;
   private isSystemNamespace: boolean;
   private currentNamespaceSubscription: Subscription;
+  private refreshComponentSubscription: Subscription;
   private actions = [
     {
       function: 'unbind',
@@ -77,6 +78,9 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
     }
+    if (this.refreshComponentSubscription) {
+      this.refreshComponentSubscription.unsubscribe();
+    }
   }
 
   private getApplications(id) {
@@ -103,7 +107,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToRefreshComponent() {
-    this.communicationService.observable$.subscribe(e => {
+    this.refreshComponentSubscription = this.communicationService.observable$.subscribe(e => {
       const event: any = e;
 
       if (event.type === 'createResource' || event.type === 'deleteResource') {

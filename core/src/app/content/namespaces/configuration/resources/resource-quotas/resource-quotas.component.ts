@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
@@ -18,7 +18,7 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
 })
 export class ResourceQuotasComponent
   extends AbstractKubernetesElementListComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('Resource Quotas')
   public createNewElementText = 'Add Resource Quota';
   public resourceKind = 'Resource Quota';
@@ -68,11 +68,17 @@ export class ResourceQuotasComponent
     );
   }
 
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
     }
-  }
+    super.ngOnDestroy();
+ }
 
   public getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${

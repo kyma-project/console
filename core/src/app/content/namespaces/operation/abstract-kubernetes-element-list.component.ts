@@ -49,7 +49,6 @@ export class AbstractKubernetesElementListComponent
     private communicationService: ComponentCommunicationService
   ) {
     super(changeDet);
-    this.subscribeToRefreshComponent();
   }
 
   protected getBasicEmptyListData(resource: string, { headerTitle, namespaceSuffix } = { headerTitle: true, namespaceSuffix: true }): IEmptyListData {
@@ -76,7 +75,9 @@ export class AbstractKubernetesElementListComponent
   }
 
   ngOnDestroy() {
-    this.communicationServiceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
   }
 
   getEntryEventHandler(): any {

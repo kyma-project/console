@@ -92,5 +92,6 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
 
   ngOnDestroy() {
     LuigiClient.removeContextUpdateListener(this.contextListenerId);
+    super.ngOnDestroy();
   }
 }

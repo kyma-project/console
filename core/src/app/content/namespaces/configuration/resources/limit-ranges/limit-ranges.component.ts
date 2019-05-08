@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
@@ -17,7 +17,7 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
   templateUrl: 'limit-ranges.component.html'
 })
 export class LimitRangesComponent extends AbstractKubernetesElementListComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('Limit Ranges')
   public createNewElementText = 'Add Limit Range';
   public resourceKind = 'Limit Range';
@@ -73,10 +73,16 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
     );
   }
 
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
     }
+    super.ngOnDestroy();
   }
 
   public getResourceUrl(kind: string, entry: any): string {

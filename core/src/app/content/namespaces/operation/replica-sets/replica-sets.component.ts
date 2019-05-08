@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ReplicaSetsEntryRendererComponent } from './replica-sets-entry-renderer/replica-sets-entry-renderer.component';
@@ -13,7 +13,7 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
   templateUrl: '../kubernetes-element-list.component.html'
 })
 export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
   title = 'Replica Sets';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   createNewElementText = 'Add Replica Set';
@@ -34,6 +34,15 @@ export class ReplicaSetsComponent extends AbstractGraphqlElementListComponent
       graphQLClientService,
       changeDetector
     );
+  }
+
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
+  public ngOnDestroy() {
+    super.ngOnDestroy();
   }
 
   getGraphqlQueryForList() {

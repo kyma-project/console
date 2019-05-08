@@ -4,7 +4,7 @@ import {
   IApiDefinition,
   ApiDefinition
 } from 'shared/datamodel/k8s/kyma-api/api-definition';
-import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from '../../operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from '../../services/current-namespace.service';
@@ -21,7 +21,7 @@ import { IEmptyListData } from 'shared/datamodel';
   templateUrl: 'apis.component.html'
 })
 export class ApisComponent extends AbstractKubernetesElementListComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
   public resourceKind = 'Api';
   public title = 'APIs';
   public baseUrl: string;
@@ -65,6 +65,11 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
       });
   }
 
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
   public getResourceUrl(kind: string, entry: any): string {
     return `${this.baseUrl}/${entry.metadata.name}`;
   }
@@ -73,6 +78,7 @@ export class ApisComponent extends AbstractKubernetesElementListComponent
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
     }
+    super.ngOnDestroy();
   }
 
   public navigateToDetails(entry) {
