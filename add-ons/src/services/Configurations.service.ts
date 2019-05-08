@@ -27,13 +27,13 @@ const useConfigurations = () => {
       return NAME_ERRORS.ALREADY_EXISTS;
     }
 
-    const validateFormat = (name: string) => {
+    const validateFormat = (data: string) => {
       const format =
-        /^[a-z0-9-_.]+$/.test(name) &&
-        /[a-z0-9]/.test(name[0]) &&
-        /[a-z0-9]/.test(name[name.length - 1]);
+        /^[a-z0-9-_.]+$/.test(data) &&
+        /[a-z0-9]/.test(data[0]) &&
+        /[a-z0-9]/.test(data[data.length - 1]);
 
-      const checkLength = name.length > 63 || !name.length;
+      const checkLength = data.length > 63 || !data.length;
 
       return !format || checkLength;
     };
@@ -56,8 +56,8 @@ const useConfigurations = () => {
 
   const configNameGenerator = (): string => {
     let name: string = '';
-    const condition = (name: string) =>
-      originalConfigs.some(config => config.name === name);
+    const condition = (data: string) =>
+      originalConfigs.some(config => config.name === data);
     do {
       name = `${CONFIGURATION_NAME_PREFIX}-${randomNameGenerator()}`;
     } while (condition(name));
@@ -65,20 +65,22 @@ const useConfigurations = () => {
     return name;
   };
 
-  const sortConfigByName = (configs: Configuration[]): Configuration[] => {
-    return configs.sort((a, b) => {
+  const sortConfigByName = (configs: Configuration[]): Configuration[] =>
+    configs.sort((a, b) => {
       const nameA = a.name.toLowerCase();
       const nameB = b.name.toLowerCase();
 
-      if (nameA === DEFAULT_CONFIGURATION) return -1;
-      if (nameB === DEFAULT_CONFIGURATION) return 1;
+      if (nameA === DEFAULT_CONFIGURATION) {
+        return -1;
+      }
+      if (nameB === DEFAULT_CONFIGURATION) {
+        return 1;
+      }
       return nameA.localeCompare(nameB);
     });
-  };
 
-  const getConfigurationsName = (configs: Configuration[]): string[] => {
-    return configs.map(config => config.name);
-  };
+  const getConfigurationsName = (configs: Configuration[]): string[] =>
+    configs.map(config => config.name);
 
   const configurationsExist = (): boolean => {
     const length = originalConfigs && originalConfigs.length;
@@ -95,7 +97,9 @@ const useConfigurations = () => {
   };
 
   useEffect(() => {
-    if (!addonsConfigurations) return;
+    if (!addonsConfigurations) {
+      return;
+    }
 
     setOriginalConfigs(sortConfigByName(addonsConfigurations));
     setConfigurationNames(getConfigurationsName(addonsConfigurations));
@@ -104,7 +108,9 @@ const useConfigurations = () => {
   // Filtered Configs
   const [filteredConfigs, setFilteredConfigs] = useState(originalConfigs);
   useEffect(() => {
-    if (!originalConfigs) return;
+    if (!originalConfigs) {
+      return;
+    }
 
     if (
       !Object.keys(activeFilters.labels).length ||
@@ -118,7 +124,9 @@ const useConfigurations = () => {
 
     const newFilteredConfigs = originalConfigs.filter(config => {
       for (const labelKey in config.labels) {
-        if (!config.labels[labelKey]) continue;
+        if (!config.labels[labelKey]) {
+          continue;
+        }
 
         for (const activeFilterKey in activeFilters.labels) {
           if (

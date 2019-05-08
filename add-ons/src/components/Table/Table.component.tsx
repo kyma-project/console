@@ -18,22 +18,20 @@ interface TableComponentProps {
 const TableComponent: React.FunctionComponent<TableComponentProps> = ({
   configurationsExist,
   children,
-}) => {
-  return (
-    <PanelWrapper>
-      <Panel>
-        <Panel.Header>
-          <Panel.Head title={CORE.PANEL_TITLE} />
-          <Panel.Actions>
-            <Search />
-            <FilterPopover />
-          </Panel.Actions>
-        </Panel.Header>
-        <ActiveFilters />
-        <Panel.Body>{children}</Panel.Body>
-      </Panel>
-    </PanelWrapper>
-  );
-};
+}) => (
+  <PanelWrapper>
+    <Panel>
+      <Panel.Header>
+        <Panel.Head title={CORE.PANEL_TITLE} />
+        <Panel.Actions>
+          <Search />
+          <FilterPopover />
+        </Panel.Actions>
+      </Panel.Header>
+      <ActiveFilters />
+      <Panel.Body>{children}</Panel.Body>
+    </Panel>
+  </PanelWrapper>
+);
 
 export default TableComponent;

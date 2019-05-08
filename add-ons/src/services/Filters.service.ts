@@ -87,11 +87,8 @@ const useFilters = () => {
     });
   };
 
-  const hasActiveLabel = (key: string, value: string): boolean => {
-    return (
-      activeFilters.labels[key] && activeFilters.labels[key].includes(value)
-    );
-  };
+  const hasActiveLabel = (key: string, value: string): boolean =>
+    activeFilters.labels[key] && activeFilters.labels[key].includes(value);
 
   return {
     activeFilters,

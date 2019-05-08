@@ -1,6 +1,6 @@
 import { Filters, ConfigurationLabels, Configuration } from '../types';
 
-export interface IFiltersService {
+export interface FiltersService {
   activeFilters: Filters;
   setFilterLabel: (label: string) => void;
   removeFilterLabel: (label: string) => void;
@@ -8,11 +8,11 @@ export interface IFiltersService {
   hasActiveLabel: (key: string, value: string) => boolean;
 }
 
-export interface ILabelsService {
+export interface LabelsService {
   getUniqLabels: ConfigurationLabels;
 }
 
-export interface IConfigurationsService {
+export interface ConfigurationsService {
   originalConfigs: Configuration[];
   filteredConfigs: Configuration[];
 }

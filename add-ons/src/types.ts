@@ -8,10 +8,14 @@ export interface Configuration {
   urls: ConfigurationURL[];
 }
 
-export type ConfigurationLabels = { [key: string]: string };
+export interface ConfigurationLabels {
+  [key: string]: string;
+}
 export type ConfigurationURL = string;
 
-export type FilterLabels = { [key: string]: string[] };
+export interface FilterLabels {
+  [key: string]: string[];
+}
 
 export interface Filters {
   search: string;

@@ -20,14 +20,22 @@ export const useInput = (
   };
 
   const checkState = (): string => {
-    if (error) return 'invalid';
-    if (valid) return 'valid';
+    if (error) {
+      return 'invalid';
+    }
+    if (valid) {
+      return 'valid';
+    }
     return 'normal';
   };
 
   useEffect(() => {
-    if (error) setValid(false);
-    if (value && !error) setValid(true);
+    if (error) {
+      setValid(false);
+    }
+    if (value && !error) {
+      setValid(true);
+    }
   }, [error, value]);
 
   return {

@@ -16,7 +16,7 @@ function getGraphQLEndpoint(endpoint: string): string {
     subscriptionsApiUrlLocal: 'ws://localhost:3000/graphql',
   };
 
-  const clusterConfig = (window as any)['clusterConfig'];
+  const clusterConfig = (window as any).clusterConfig;
   return { ...clusterConfig, ...config }[endpoint];
 }
 
@@ -26,14 +26,12 @@ export function createApolloClient() {
   );
 
   const httpLink = createHttpLink({ uri: graphqlApiUrl });
-  const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: appInitializer.getBearerToken() || null,
-      },
-    };
-  });
+  const authLink = setContext((_, { headers }) => ({
+    headers: {
+      ...headers,
+      authorization: appInitializer.getBearerToken() || null,
+    },
+  }));
 
   const subscriptionsApiUrl = getGraphQLEndpoint(
     process.env.REACT_APP_LOCAL_API
