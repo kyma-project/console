@@ -1,6 +1,7 @@
 import React from 'react';
 import RM from 'react-markdown';
 import BlockQuote from './components/Blockquote';
+import { Strong } from './components/Strong';
 import Code from './components/Code/';
 import { Markdown } from './styled';
 import parseHtml from './parseHTML';
@@ -22,7 +23,7 @@ const ReactMarkdown = ({ source, escapeHtml = false }) => {
       <RM
         source={processedSource}
         escapeHtml={escapeHtml}
-        renderers={{ code: Code, blockquote: BlockQuote }}
+        renderers={{ code: Code, blockquote: BlockQuote, strong: Strong }}
         astPlugins={[parseHtml]}
       />
     </Markdown>
