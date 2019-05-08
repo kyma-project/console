@@ -4,10 +4,19 @@ import BlockQuote from './components/Blockquote';
 import Code from './components/Code/';
 import { Markdown } from './styled';
 import parseHtml from './parseHTML';
-import { removeBlankLinesFromTabsBlock } from './helpers';
+import {
+  removeBlankLinesFromTabsBlock,
+  putNewlineSpaceBeforeList,
+} from './helpers';
 
 const ReactMarkdown = ({ source, escapeHtml = false }) => {
-  const processedSource = removeBlankLinesFromTabsBlock(source);
+  if (!source) {
+    return null;
+  }
+  const processedSource = putNewlineSpaceBeforeList(
+    removeBlankLinesFromTabsBlock(source),
+  );
+
   return (
     <Markdown>
       <RM
