@@ -42,8 +42,7 @@ export class GraphqlMutatorModalComponent extends JsonEditorModalComponent {
       }
     }`;
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlMutation(
       mutation,
       parameters
     );

@@ -29,7 +29,7 @@ const resourceQuotaLimitExceeded = {
 };
 
 const graphlQLClientServiceMock = {
-  request: (url = '', query, variables) => {
+  gqlQuery: (query, variables) => {
     switch (variables.namespace) {
       case 'namespace':
         return of(resourceQuotaLimitOK);
@@ -48,7 +48,7 @@ describe('NamespacesService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         NamespacesService,
-        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock }
+        { provide: GraphQLClientService, useValue: graphlQLClientServiceMock },
       ]
     });
 

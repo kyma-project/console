@@ -1,5 +1,5 @@
 import { AppConfig } from '../../../app.config';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { IdpPresetsHeaderRendererComponent } from './idp-presets-header-renderer/idp-presets-header-renderer.component';
 import { IdpPresetsEntryRendererComponent } from './idp-presets-entry-renderer/idp-presets-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
@@ -8,18 +8,18 @@ import { ConfirmationModalComponent } from '../../../shared/components/confirmat
 import { CreatePresetModalComponent } from './create-preset-modal/create-preset-modal.component';
 import { IdpPresetsService } from './idp-presets.service';
 import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-provider';
-import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
 import { IEmptyListData } from 'shared/datamodel';
 import { AbstractKubernetesElementListComponent } from 'namespaces/operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-idp-presets',
   templateUrl: './idp-presets.component.html'
 })
-export class IdpPresetsComponent extends AbstractKubernetesElementListComponent {
+export class IdpPresetsComponent extends AbstractKubernetesElementListComponent implements OnInit, OnDestroy {
   public title = 'IDP Presets';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
   public createNewElementText = 'Add IDP Preset';
@@ -40,7 +40,7 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
 
-    const query = `query {
+    const query = `query IDPPresets {
       IDPPresets{
         name
         issuer
@@ -49,7 +49,6 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
     }`;
 
     this.source = new GraphQLDataProvider(
-      AppConfig.graphqlApiUrl,
       query,
       undefined,
       this.graphQLClientService
@@ -66,6 +65,15 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
     });
 
     this.subscribeToRefreshComponent();
+  }
+
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
+  public ngOnDestroy() {
+    super.ngOnDestroy();
   }
 
   public openModal() {

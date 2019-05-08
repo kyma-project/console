@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -19,7 +19,7 @@ import { IEmptyListData } from 'shared/datamodel';
   templateUrl: '../kubernetes-element-list.component.html'
 })
 export class ServicesComponent extends AbstractKubernetesElementListComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
   public title = 'Services';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   public createNewElementText = 'Add Service';
@@ -55,6 +55,11 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
       });
   }
 
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
   getEntryEventHandler() {
     const handler = super.getEntryEventHandler();
     handler.exposeApi = (entry: any) => {
@@ -82,6 +87,9 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
+    super.ngOnDestroy();
   }
 }

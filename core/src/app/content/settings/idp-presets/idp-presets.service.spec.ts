@@ -55,7 +55,7 @@ const idpPresetsQuery = {
 };
 
 const graphlQLClientServiceMock = {
-  request: (url = '', query, variables) => {
+  gqlMutation: (query, variables) => {
     switch (variables.name) {
       case 'test':
         return of(idpPresetCreationSuccess);
@@ -68,13 +68,14 @@ const graphlQLClientServiceMock = {
       default:
         return of(idpPresetsQuery);
     }
+  },
+  gqlQuery: (query, variables) => {
+    return of(idpPresetsQuery);
   }
 };
 
 describe('IdpPresetsService', () => {
   let idpService: IdpPresetsService;
-  let httpClientMock: HttpTestingController;
-  let graphQLClientService: GraphQLClientService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -86,8 +87,6 @@ describe('IdpPresetsService', () => {
     });
 
     idpService = TestBed.get(IdpPresetsService);
-    graphQLClientService = TestBed.get(GraphQLClientService);
-    httpClientMock = TestBed.get(HttpTestingController);
   });
 
   it('should create new IDP Preset', async () => {

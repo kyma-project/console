@@ -49,7 +49,9 @@ export class PodsEntryRendererComponent
   }
 
   ngOnDestroy() {
-    this.communicationServiceSubscription.unsubscribe();
+    if(this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
   }
 
   capitalize(string) {

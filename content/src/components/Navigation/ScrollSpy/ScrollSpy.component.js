@@ -47,7 +47,7 @@ class ScrollSpy extends React.Component {
 
   componentDidMount() {
     this.onResize();
-
+    this.handleChangeHeight(document.body, this.onResize);
     window.addEventListener('resize', this.onResize);
     window.addEventListener('orientationchange', this.onResize);
     window.addEventListener('scroll', this.onScroll);
@@ -84,6 +84,22 @@ class ScrollSpy extends React.Component {
       }
     }
   }
+  handleChangeHeight = (elm, callback) => {
+    let lastHeight = elm.clientHeight;
+    (function changeHeight() {
+      const newHeight = elm.clientHeight;
+      if (lastHeight !== newHeight) {
+        callback();
+      }
+      lastHeight = newHeight;
+
+      if (elm.onElementHeightChangeTimer) {
+        clearTimeout(elm.onElementHeightChangeTimer);
+      }
+
+      elm.onElementHeightChangeTimer = setTimeout(changeHeight, 200);
+    })();
+  };
 
   onResize = () => {
     this.collectNodes();

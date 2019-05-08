@@ -4,6 +4,7 @@ import {
   Component,
   Input,
   OnInit,
+  OnDestroy,
   ViewChild
 } from '@angular/core';
 import { DataConverter } from 'app/generic-list';
@@ -23,7 +24,7 @@ import { IEmptyListData } from 'shared/datamodel';
   templateUrl: 'bindings.component.html'
 })
 export class BindingsComponent extends AbstractKubernetesElementListComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
   public title = '';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('Role Bindings', { headerTitle: false, namespaceSuffix: true });
   public createNewElementText = 'Create Binding';
@@ -75,8 +76,12 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
           this.source = new KubernetesDataProvider(url, converter, this.http);
         });
     }
-
+    this.subscribeToRefreshComponent();
     super.ngOnInit();
+  }
+
+  public ngOnDestroy() {
+    super.ngOnDestroy();
   }
 
   public getResourceUrl(kind: string, entry: any): string {

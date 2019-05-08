@@ -1,5 +1,5 @@
 import { CurrentNamespaceService } from '../../services/current-namespace.service';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../../../app.config';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
@@ -18,7 +18,7 @@ import { IEmptyListData } from 'shared/datamodel';
   templateUrl: '../kubernetes-element-list.component.html'
 })
 export class SecretsComponent extends AbstractKubernetesElementListComponent
-  implements OnDestroy {
+  implements OnInit, OnDestroy {
   title = 'Secrets';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   createNewElementText = 'Add Secret';
@@ -53,6 +53,11 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
       });
   }
 
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
   public navigateToDetails(entry) {
     LuigiClient.linkManager()
       .fromContext('secrets')
@@ -70,6 +75,9 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
+    super.ngOnDestroy();
   }
 }

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { AppConfig } from '../../../../app.config';
-import { AbstractKubernetesElementListComponent } from '../../../../content/namespaces/operation/abstract-kubernetes-element-list.component';
-import { KubernetesDataProvider } from '../../../../content/namespaces/operation/kubernetes-data-provider';
-import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
-import { ComponentCommunicationService } from '../../../services/component-communication.service';
+import { AbstractKubernetesElementListComponent } from 'namespaces/operation/abstract-kubernetes-element-list.component';
+import { KubernetesDataProvider } from 'namespaces/operation/kubernetes-data-provider';
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -17,7 +17,7 @@ import { IEmptyListData } from 'shared/datamodel';
     '../../../../content/namespaces/operation/kubernetes-element-list-compact.component.html'
 })
 export class RolesComponent extends AbstractKubernetesElementListComponent
-  implements OnInit {
+  implements OnInit, OnDestroy {
   public title = '';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('Roles', { headerTitle: false, namespaceSuffix: true });
 
@@ -76,8 +76,12 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
         );
         break;
     }
-
+    this.subscribeToRefreshComponent();
     super.ngOnInit();
+  }
+
+  public ngOnDestroy() {
+    super.ngOnDestroy();
   }
 
   public getResourceUrl(entry: any): string {

@@ -25,8 +25,7 @@ export class ApplicationsService {
       }
     }`;
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlMutation(
       mutation,
       data
     );
@@ -48,8 +47,7 @@ export class ApplicationsService {
       }
     }`;
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlMutation(
       mutation,
       data
     );
@@ -74,8 +72,7 @@ export class ApplicationsService {
 
     const variables = { name };
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlQuery(
       query,
       variables
     );
@@ -92,8 +89,7 @@ export class ApplicationsService {
       application: name
     };
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlQuery(
       query,
       variables
     );

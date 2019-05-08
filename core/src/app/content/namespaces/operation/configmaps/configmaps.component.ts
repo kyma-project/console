@@ -1,17 +1,16 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
-import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { ConfigMapsEntryRendererComponent } from './configmaps-entry-renderer/configmaps-entry-renderer.component';
 import { ConfigMapsHeaderRendererComponent } from './configmaps-header-renderer/configmaps-header-renderer.component';
-import { ConfigMap, IConfigMap } from 'shared/datamodel/k8s/configmap';
 import { IEmptyListData } from 'shared/datamodel';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
 })
-export class ConfigMapsComponent extends AbstractGraphqlElementListComponent {
+export class ConfigMapsComponent extends AbstractGraphqlElementListComponent implements OnInit, OnDestroy {
   public title = 'Config Maps';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title)
   public createNewElementText = 'Add Config Map';
@@ -32,6 +31,15 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent {
       graphQLClientService,
       changeDetector
     );
+  }
+
+  public ngOnInit() {
+    super.ngOnInit();
+    this.subscribeToRefreshComponent();
+  }
+
+  public ngOnDestroy() {
+    super.ngOnDestroy();
   }
 
   getGraphqlQueryForList() {
