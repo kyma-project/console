@@ -5,12 +5,12 @@ import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { AbstractKubernetesElementListComponent } from '../../../operation/abstract-kubernetes-element-list.component';
 import { CurrentNamespaceService } from '../../../services/current-namespace.service';
-import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../app.config';
 import { ResourceQuotaHeaderRendererComponent } from './resource-quota-header-renderer/resource-quota-header-renderer.component';
 import { ResourceQuotaEntryRendererComponent } from './resource-quota-entry-renderer/resource-quota-entry-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-resource-quotas',
@@ -54,7 +54,6 @@ export class ResourceQuotasComponent
       namespaceId => {
         this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
-          AppConfig.graphqlApiUrl,
           query,
           {
             namespace: this.currentNamespaceId
@@ -70,7 +69,9 @@ export class ResourceQuotasComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   public getResourceUrl(kind: string, entry: any): string {

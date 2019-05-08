@@ -4,13 +4,13 @@ import { Subscription } from 'rxjs';
 import { Filter } from 'app/generic-list';
 import { AppConfig } from '../../../../app.config';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
 import { CurrentNamespaceService } from '../../services/current-namespace.service';
 import { AbstractKubernetesElementListComponent } from '../abstract-kubernetes-element-list.component';
 import { GraphQLDataProvider } from '../graphql-data-provider';
 import { DeploymentEntryRendererComponent } from './deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './deployment-header-renderer/deployment-header-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-deployments',
@@ -66,7 +66,6 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
       namespaceId => {
         this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
-          AppConfig.graphqlApiUrl,
           query,
           {
             namespace: this.currentNamespaceId
@@ -82,7 +81,9 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   public getResourceUrl(kind: string, entry: any): string {

@@ -26,8 +26,7 @@ export class IdpPresetsService {
       jwksUri: data.jwksUri
     };
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlMutation(
       mutation,
       variables
     );
@@ -43,8 +42,7 @@ export class IdpPresetsService {
       name
     };
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlMutation(
       mutation,
       variables
     );
@@ -66,8 +64,7 @@ export class IdpPresetsService {
       }
     }`;
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
+    return this.graphQLClientService.gqlQuery(
       query,
       {}
     );

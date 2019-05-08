@@ -26,6 +26,7 @@ const config = {
   consoleClientId: 'console',
   domain,
   graphqlApiUrl: `https://console-backend.${domain}/graphql`,
+  subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
   k8sApiServerUrl: `${k8sServerUrl}/api/v1/`,
   gateway_kyma_project_io_version,
   k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_project_io_version}/`,

@@ -2,12 +2,12 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { IEmptyListData } from 'shared/datamodel';
-import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element-list.component';
 import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-renderer.component';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 
 import * as luigiClient from '@kyma-project/luigi-client';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -48,6 +48,27 @@ export class PodsComponent extends AbstractGraphqlElementListComponent {
           reason
           message
         }
+      }
+    }`;
+  }
+
+  getGraphqlSubscriptionsForList() {
+    return `subscription Pod($namespace: String!) {
+      podEvent(namespace: $namespace) {
+        pod {
+          name
+          nodeName
+          restartCount
+          creationTimestamp
+          labels
+          status
+          containerStates {
+            state
+            reason
+            message
+          }
+        }
+        type
       }
     }`;
   }

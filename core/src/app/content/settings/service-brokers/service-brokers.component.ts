@@ -4,8 +4,8 @@ import { CurrentNamespaceService } from '../../namespaces/services/current-names
 import { ServiceBrokerEntryRendererComponent } from './services-entry-renderer/service-broker-entry-renderer.component';
 import { ServiceBrokerHeaderRendererComponent } from './services-header-renderer/service-broker-header-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   templateUrl:
@@ -36,8 +36,8 @@ export class ServiceBrokersComponent extends AbstractGraphqlElementListComponent
   }
 
   getGraphqlQueryForList() {
-    return `query clusterServiceBrokers() {
-      clusterServiceBrokers() {
+    return `query clusterServiceBrokers {
+      clusterServiceBrokers {
         name
         status {
           ready

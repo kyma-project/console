@@ -208,7 +208,9 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   filterNamespaces(field) {

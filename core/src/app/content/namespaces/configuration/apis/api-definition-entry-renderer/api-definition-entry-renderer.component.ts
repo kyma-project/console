@@ -57,7 +57,9 @@ export class ApiDefinitionEntryRendererComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
     this.communicationServiceSubscription.unsubscribe();
   }
 

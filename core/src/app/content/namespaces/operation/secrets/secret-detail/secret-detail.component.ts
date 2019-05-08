@@ -138,6 +138,8 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 }

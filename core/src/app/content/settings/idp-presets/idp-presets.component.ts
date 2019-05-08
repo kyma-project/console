@@ -8,12 +8,12 @@ import { ConfirmationModalComponent } from '../../../shared/components/confirmat
 import { CreatePresetModalComponent } from './create-preset-modal/create-preset-modal.component';
 import { IdpPresetsService } from './idp-presets.service';
 import { GraphQLDataProvider } from '../../namespaces/operation/graphql-data-provider';
-import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import * as _ from 'lodash';
 import { IEmptyListData } from 'shared/datamodel';
 import { AbstractKubernetesElementListComponent } from 'namespaces/operation/abstract-kubernetes-element-list.component';
 import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-idp-presets',
@@ -40,7 +40,7 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
 
-    const query = `query {
+    const query = `query IDPPresets {
       IDPPresets{
         name
         issuer
@@ -49,7 +49,6 @@ export class IdpPresetsComponent extends AbstractKubernetesElementListComponent 
     }`;
 
     this.source = new GraphQLDataProvider(
-      AppConfig.graphqlApiUrl,
       query,
       undefined,
       this.graphQLClientService

@@ -23,9 +23,12 @@ describe('ApplicationsService', () => {
 
   beforeEach(() => {
     const mockGraphQLClientService = {
-      request: jasmine
-        .createSpy('GraphQL-request')
-        .and.returnValue(of('request-response'))
+      gqlMutation: jasmine
+      .createSpy('GraphQL-mutation')
+      .and.returnValue(of('request-response')),
+      gqlQuery: jasmine
+      .createSpy('GraphQL-query')
+      .and.returnValue(of('request-response'))
     };
 
     TestBed.configureTestingModule({
@@ -52,8 +55,7 @@ describe('ApplicationsService', () => {
       const dataInput: IApplicationQueryData = getApplicationQueryData();
       const dataForRequest: IApplicationQueryData = getApplicationQueryData();
       applicationsService.createApplication(dataInput);
-      expect(graphQLClientService.request).toHaveBeenCalledWith(
-        AppConfig.graphqlApiUrl,
+      expect(graphQLClientService.gqlMutation).toHaveBeenCalledWith(
         mutation,
         dataForRequest
       );
@@ -77,8 +79,7 @@ describe('ApplicationsService', () => {
       const dataInput: IApplicationQueryData = getApplicationQueryData();
       const dataForRequest: IApplicationQueryData = getApplicationQueryData();
       applicationsService.updateApplication(dataInput);
-      expect(graphQLClientService.request).toHaveBeenCalledWith(
-        AppConfig.graphqlApiUrl,
+      expect(graphQLClientService.gqlMutation).toHaveBeenCalledWith(
         mutation,
         dataForRequest
       );
@@ -111,8 +112,7 @@ describe('ApplicationsService', () => {
         }
       }`;
       applicationsService.getApplication(name);
-      expect(graphQLClientService.request).toHaveBeenCalledWith(
-        AppConfig.graphqlApiUrl,
+      expect(graphQLClientService.gqlQuery).toHaveBeenCalledWith(
         query,
         { name }
       );

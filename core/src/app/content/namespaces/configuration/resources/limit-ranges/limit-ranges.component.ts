@@ -5,12 +5,12 @@ import { Filter } from 'app/generic-list';
 import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
 import { AbstractKubernetesElementListComponent } from '../../../operation/abstract-kubernetes-element-list.component';
 import { CurrentNamespaceService } from '../../../services/current-namespace.service';
-import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../app.config';
 import { LimitRangeHeaderRendererComponent } from './limit-range-header-renderer/limit-range-header-renderer.component';
 import { LimitRangeEntryRendererComponent } from './limit-range-entry-renderer/limit-range-entry-renderer.component';
 import { IEmptyListData } from 'shared/datamodel';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
   selector: 'app-limit-ranges',
@@ -59,7 +59,6 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
       namespaceId => {
         this.currentNamespaceId = namespaceId;
         this.source = new GraphQLDataProvider(
-          AppConfig.graphqlApiUrl,
           query,
           {
             namespace: this.currentNamespaceId
@@ -75,7 +74,9 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   }
 
   public ngOnDestroy() {
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   public getResourceUrl(kind: string, entry: any): string {

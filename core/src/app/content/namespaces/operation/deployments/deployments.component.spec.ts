@@ -11,7 +11,9 @@ describe('DeploymentsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [AppModule, ListModule],
-      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
+      providers: [
+        { provide: APP_BASE_HREF, useValue: '/my/app' }
+      ]
     }).compileComponents();
   }));
 

@@ -7,6 +7,7 @@ import { CurrentNamespaceService } from '../../../services/current-namespace.ser
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { GraphQLClientService } from '../../../../../shared/services/graphql-client-service';
 
+
 describe('LimitRangesComponent', () => {
   let component: LimitRangesComponent;
   let fixture: ComponentFixture<LimitRangesComponent>;
@@ -20,7 +21,7 @@ describe('LimitRangesComponent', () => {
         HttpHandler,
         CurrentNamespaceService,
         ComponentCommunicationService,
-        GraphQLClientService
+        {provide: GraphQLClientService, useValue: {}}
       ]
     }).compileComponents();
   }));

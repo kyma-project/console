@@ -1,25 +1,14 @@
-import { AppConfig } from '../../../../app.config';
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { GraphQLClientService } from '../../../../shared/services/graphql-client-service';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Injectable()
 export class ApplicationBindingService {
   public namespaceChangeStateEmitter$: EventEmitter<boolean>;
 
   constructor(
-    private http: HttpClient,
     private graphQLClientService: GraphQLClientService
   ) {
     this.namespaceChangeStateEmitter$ = new EventEmitter();
-  }
-
-  graphQLClientCall(query, variables) {
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      query,
-      variables
-    );
   }
 
   public bind(namespace, application) {
@@ -33,11 +22,8 @@ export class ApplicationBindingService {
       namespace,
       application
     };
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      query,
-      variables
-    );
+
+    return this.graphQLClientService.gqlMutation(query, variables);
   }
 
   public unbind(namespace, application) {
@@ -51,11 +37,8 @@ export class ApplicationBindingService {
       namespace,
       application
     };
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      query,
-      variables
-    );
+
+    return this.graphQLClientService.gqlMutation(query, variables);
   }
 
   public getBoundNamespaces(application) {
@@ -65,11 +48,8 @@ export class ApplicationBindingService {
       }
     }`;
     const variables = { application };
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      query,
-      variables
-    );
+    
+    return this.graphQLClientService.gqlQuery(query, variables);
   }
 
   public getBoundApplications(namespace) {
@@ -79,10 +59,7 @@ export class ApplicationBindingService {
       }
     }`;
     const variables = { namespace };
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      query,
-      variables
-    );
+
+    return this.graphQLClientService.gqlQuery(query, variables);
   }
 }
