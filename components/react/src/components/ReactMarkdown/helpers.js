@@ -11,5 +11,5 @@ export const removeBlankLinesFromTabsBlock = source =>
   });
 
 export const putNewlineSpaceBeforeList = source => {
-  return source && source.replace(/^1\.\s/gm, '\n1. ');
+  return source && source.replace(/^\d\.\s/gm, arg => `\n${arg}`);
 };
