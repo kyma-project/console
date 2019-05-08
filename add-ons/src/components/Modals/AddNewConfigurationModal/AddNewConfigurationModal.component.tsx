@@ -37,7 +37,7 @@ interface Props {
   handleEnterDownOnUrlField: (e: any) => void;
   onShowModal: () => void;
   onHideModal: () => void;
-  configurationsExist: boolean;
+  error: boolean;
 }
 
 const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
@@ -55,10 +55,10 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
   handleEnterDownOnUrlField,
   onShowModal,
   onHideModal,
-  configurationsExist,
+  error,
 }) => {
   const modalOpeningComponent = (
-    <Button glyph="add" disabled={!configurationsExist}>
+    <Button glyph="add" disabled={error}>
       {MODAL.ADD_NEW_CONFIGURATION_BUTTON_TITLE}
     </Button>
   );

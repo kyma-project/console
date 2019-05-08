@@ -3,6 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { useInput } from '../../../services/Forms';
 import {
+  QueriesService,
   MutationsService,
   ConfigurationsService,
   LabelsService,
@@ -16,6 +17,7 @@ import { CONFIGURATION_NAME_PREFIX, ERRORS } from '../../../constants';
 
 const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   // Services
+  const { error } = useContext(QueriesService);
   const { createAddonsConfiguration } = useContext(MutationsService);
   const {
     configurationsExist,
@@ -157,7 +159,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
       handleEnterDownOnUrlField={handleEnterDownOnUrlField}
       onShowModal={onShowModal}
       onHideModal={onHideModal}
-      configurationsExist={configurationsExist()}
+      error={Boolean(error)}
     />
   );
 };
