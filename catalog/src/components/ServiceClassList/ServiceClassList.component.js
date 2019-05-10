@@ -280,8 +280,7 @@ class ServiceClassList extends React.Component {
           callback={handleTabChange}
           noBorder
           noMargin
-          customStyles={`background-color: #fff;
-          padding: 0 15px;`}
+          customStyles
           hideSeparator
         >
           <Tab
