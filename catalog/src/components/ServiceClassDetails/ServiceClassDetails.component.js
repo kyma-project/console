@@ -131,10 +131,9 @@ class ServiceClassDetails extends React.Component {
                   )}
                   {isProvisionedOnlyOnce && <ProvisionOnlyOnceInfo />}
                 </ServiceGridWrapper>
-                {backendModuleExists('cms') && backendModuleExists('assetstore') ? (
-                  <ServiceClassTabs
-                    serviceClass={serviceClass}
-                  />
+                {backendModuleExists('cms') &&
+                backendModuleExists('assetstore') ? (
+                  <ServiceClassTabs serviceClass={serviceClass} />
                 ) : null}
               </CenterSideWrapper>
             </ServiceClassDetailsWrapper>

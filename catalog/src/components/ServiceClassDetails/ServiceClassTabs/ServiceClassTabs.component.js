@@ -3,20 +3,13 @@ import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import AsyncApi from '@kyma-project/asyncapi-react';
 import ODataReact from '@kyma-project/odata-react';
-import {
-  ReactMarkdown,
-  Tabs,
-  Tab,
-} from '@kyma-project/react-components';
+import { ReactMarkdown, Tabs, Tab } from '@kyma-project/react-components';
 
 import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 
 import { ServiceClassTabsContentWrapper } from './styled';
 
-import {
-  processDocFilename,
-  DocsProcessor,
-} from '../../../commons/helpers';
+import { processDocFilename, DocsProcessor } from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
@@ -227,7 +220,7 @@ class ServiceClassTabs extends Component {
         <ServiceClassTabsContentWrapper>
           <Tabs>
             {docsData && docsData.length && docsFromNewApi}
-            {(openApiSpec && openApiSpec.source) ? (
+            {openApiSpec && openApiSpec.source ? (
               <Tab title={'Console'}>
                 <ApiReference
                   url="http://petstore.swagger.io/v1/swagger.json"
@@ -235,16 +228,16 @@ class ServiceClassTabs extends Component {
                 />
               </Tab>
             ) : null}
-            {(asyncapi && asyncapi.source) ? (
+            {asyncapi && asyncapi.source ? (
               <Tab title={'Events'} margin="0" background="inherit">
                 <AsyncApi
-                  schema={(asyncapi && asyncapi.source)}
+                  schema={asyncapi && asyncapi.source}
                   theme={asyncApiTheme}
                   config={asyncApiConfig}
                 />
               </Tab>
             ) : null}
-            {(odata && odata.source) ? (
+            {odata && odata.source ? (
               <Tab title={'OData'} margin="0" background="inherit">
                 <ODataReact schema={odata.source} />
               </Tab>
