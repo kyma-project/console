@@ -143,8 +143,9 @@ export class GraphQLDataProvider implements DataProvider {
     } else {
       result = currentItems;
     }
-
-    return prev[`${lowerCaseResourceKind}s`] = result;
+    
+    const resultObject = {};
+    return resultObject[`${lowerCaseResourceKind}s`] = result;
   }
 
 }
