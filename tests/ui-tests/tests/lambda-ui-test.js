@@ -104,7 +104,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     //then
     await retry(async () => {
       await page.reload({
-         waitUntil: ['domcontentloaded', 'networkidle0'] 
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       });
       const frame2 = await kymaConsole.getFrame(page);
       const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
