@@ -8,10 +8,6 @@ export const serviceClassGql = `
   documentationUrl
   supportUrl
   labels
-  content
-  asyncApiSpec
-  openApiSpec
-  odataSpec
 `;
 
 export const servicePlanGql = `

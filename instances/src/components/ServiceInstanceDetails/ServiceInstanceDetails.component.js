@@ -64,7 +64,7 @@ class ServiceInstanceDetails extends React.Component {
             callback={this.callback}
             serviceInstance={instance}
           />
-          {serviceClass && backendModuleExists('content') ? (
+          {serviceClass && backendModuleExists('cms') && backendModuleExists('assetstore') ? (
             <ServiceInstanceTabs serviceClass={serviceClass} />
           ) : null}
         </ServiceInstanceWrapper>

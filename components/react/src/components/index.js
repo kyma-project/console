@@ -17,7 +17,6 @@ import H4 from './Header/H4';
 import Label from './Label';
 import Image from './Image';
 import Icon from './Icon';
-import Markdown from './Markdown';
 import Notification from './Notification';
 import NotificationMessage from './NotificationMessage';
 import {
@@ -75,7 +74,6 @@ module.exports = {
   Label,
   Image,
   Icon,
-  Markdown,
   Notification,
   NotificationMessage,
   Panel,

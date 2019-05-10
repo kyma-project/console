@@ -13,10 +13,6 @@ const serviceClassQGL = `
   providerDisplayName
   tags
   labels
-  content
-  asyncApiSpec
-  openApiSpec
-  odataSpec
 `;
 
 const plansQGL = `
