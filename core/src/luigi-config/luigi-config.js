@@ -258,7 +258,6 @@ async function getNamespace(namespaceName) {
  * @param {array} placements array of strings: namespace | namespace | cluster
  */
 async function getUiEntities(entityname, namespace, placements) {
-  console.log(`getting ${entityname} entities for namespace ${namespace}. placement ${placements}`)
   if (namespace) {
     const currentNamespace = await getNamespace(namespace);
     if (
