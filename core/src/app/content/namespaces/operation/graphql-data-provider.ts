@@ -43,7 +43,7 @@ export class GraphQLDataProvider implements DataProvider {
           document: gql`${this.subscriptions}`,
           variables: this.variables,
           updateQuery: (prev, {subscriptionData}) => {
-            this.updateSubscriptions(prev, subscriptionData);
+            return this.updateSubscriptions(prev, subscriptionData);
           }
         });
       }
@@ -143,8 +143,11 @@ export class GraphQLDataProvider implements DataProvider {
     } else {
       result = currentItems;
     }
-
-    return prev[`${lowerCaseResourceKind}s`] = result;
+    
+    return {
+      ...prev,
+      [`${lowerCaseResourceKind}s`]: result
+    }
   }
 
 }
