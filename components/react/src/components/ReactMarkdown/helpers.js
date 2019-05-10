@@ -11,5 +11,6 @@ export const removeBlankLinesFromTabsBlock = source =>
   });
 
 export const putNewlineSpaceBeforeList = source => {
-  return source && source.replace(/^\d+\.\s\w/gm, arg => `\n${arg}`);
+  //match any sequence in form (number, dot, space, character) NOT preceded by newline
+  return source && source.replace(/(?<!(^\n))\d+\.\s\w/gm, arg => `\n${arg}`);
 };

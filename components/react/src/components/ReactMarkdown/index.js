@@ -15,8 +15,8 @@ const ReactMarkdown = ({ source, escapeHtml = false }) => {
   if (!source) {
     return null;
   }
-  const processedSource = putNewlineSpaceBeforeList(
-    removeBlankLinesFromTabsBlock(source),
+  const processedSource = removeBlankLinesFromTabsBlock(
+    putNewlineSpaceBeforeList(source),
   );
 
   return (
