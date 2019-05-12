@@ -46,8 +46,12 @@ module.exports = {
       if (instanceAdditionalData) {
         const classData = await frame.$(additionalData);
 
+        expect(await frame.$('.is-disabled')).toBeTruthy();
+
         await classData.focus();
         await classData.type(instanceAdditionalData);
+
+        expect(await frame.$('.is-disabled')).toBeNull();
       }
       if (instancePlanName) {
         const classPlanName = await frame.$(planName);

@@ -26,11 +26,12 @@ class SchemaData extends React.Component {
     };
   }
 
-  onChangeSchemaForm = ({ formData }) => {
+  onChangeSchemaForm = ({ formData, errors }) => {
     this.setState({
       instanceCreateParameters: formData,
     });
     this.props.callback({
+      errors,
       instanceCreateParameters: formData,
     });
   };
