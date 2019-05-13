@@ -21,6 +21,7 @@ module.exports = {
       const modalCreate = `[${
         config.catalogTestingAtribute
       }="modal-confirmation-button"]`;
+      const disabledButton = '.is-disabled';
 
       const frame = await kymaConsole.getFrame(page);
       await frame.click(addToEnvButton);
@@ -46,12 +47,12 @@ module.exports = {
       if (instanceAdditionalData) {
         const classData = await frame.$(additionalData);
 
-        expect(await frame.$('.is-disabled')).toBeTruthy();
+        expect(await frame.$(disabledButton)).toBeTruthy();
 
         await classData.focus();
         await classData.type(instanceAdditionalData);
 
-        expect(await frame.$('.is-disabled')).toBeNull();
+        expect(await frame.$(disabledButton)).toBeNull();
       }
       if (instancePlanName) {
         const classPlanName = await frame.$(planName);
