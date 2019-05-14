@@ -9,6 +9,8 @@ module.exports = {
     instanceLabel,
     instanceAdditionalData,
     instancePlanName,
+    instanceRegExpData,
+    faultyRegExpData,
   ) => {
     try {
       const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
@@ -18,6 +20,7 @@ module.exports = {
       const plan = `[name="selectedKind"]`;
       const additionalData = '#root_additionalData';
       const planName = '#root_planName';
+      const regExpData = '#root_onlyNumbersString';
       const modalCreate = `[${
         config.catalogTestingAtribute
       }="modal-confirmation-button"]`;
@@ -52,6 +55,18 @@ module.exports = {
         await classData.focus();
         await classData.type(instanceAdditionalData);
 
+        expect(await frame.$(disabledButton)).toBeNull();
+      }
+      if (instanceRegExpData && faultyRegExpData) {
+        const classRegExpData = await frame.$(regExpData);
+        await classRegExpData.focus();
+        await classRegExpData.type(faultyRegExpData);
+        expect(await frame.$(disabledButton)).toBeTruthy();
+        await frame.evaluate(selector => {
+          document.querySelector(selector).value = '';
+        }, regExpData);
+        await classRegExpData.focus();
+        await classRegExpData.type(instanceRegExpData);
         expect(await frame.$(disabledButton)).toBeNull();
       }
       if (instancePlanName) {

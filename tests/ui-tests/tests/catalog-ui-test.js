@@ -15,6 +15,8 @@ import {
   configBindingAdditionalData,
   configCatalogExpectedHeader,
   configInstancesExpectedHeader,
+  configRegExpData,
+  configUncorrectRegExpData,
 } from '../utils/catalogConfig';
 import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
@@ -314,6 +316,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
           instanceLabel,
           additionalData,
           planName,
+          configRegExpData,
+          configUncorrectRegExpData,
         );
       });
       //Reload the page after creation to delay navigation to instances list that sometimes causes failing test
