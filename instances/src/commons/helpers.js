@@ -121,7 +121,6 @@ export class DocsProcessor {
       if (doc.source.search(assetsRegexp) !== -1) {
         doc.source = doc.source.replace(assetsRegexp, `](${docsUrl}/assets`);
       }
-      console.log(doc);
       return doc;
     });
 
