@@ -75,7 +75,23 @@ class ServiceInstanceTabs extends Component {
       markdownFiles &&
       markdownFiles.length &&
       markdownFiles[0] &&
-      markdownFiles[0].files.filter(el => el.url.endsWith('.md'));
+      markdownFiles[0].files
+        .filter(el => el.url.endsWith('.md'))
+        .sort((first, sec) => {
+          const firstData = (
+            first.metadata.title || first.metadata.type
+          ).toLowerCase();
+
+          const secondData = (
+            sec.metadata.title || sec.metadata.type
+          ).toLowerCase();
+
+          return firstData === 'overview'
+            ? -1
+            : secondData === 'overview'
+            ? 1
+            : 0;
+        });
 
     if (data) {
       this.setState({
