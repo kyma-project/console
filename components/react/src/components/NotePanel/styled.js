@@ -25,7 +25,7 @@ export const NotePanelContent = styled.div`
   > p {
     margin-bottom: 5px;
   }
-  &&&& ul {
+  &&& ul {
     margin-bottom: 0;
   }
   & li {
