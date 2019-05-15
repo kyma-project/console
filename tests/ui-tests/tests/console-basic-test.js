@@ -165,7 +165,11 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     expect(exposedApiCellTexts.idp).toEqual('-');
 
     console.log('Exposed API should retrieve 200 (not secured)');
-    await retryInterval(() => callExposedAPI({ expectedStatusCode: 200 }), 1000, 60);
+    await retryInterval(
+      () => callExposedAPI({ expectedStatusCode: 200 }),
+      1000,
+      60,
+    );
 
     // Expose API (secured)
     await kymaConsole.openLinkOnFrame(
@@ -183,7 +187,9 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     expect(exposedApiCellTexts.idp).toEqual('DEX');
 
     console.log('Exposed API should retrieve 401 (secured)');
-    await retryInterval(() => callExposedAPI({ expectedStatusCode: 401 }, 1000, 60));
+    await retryInterval(() =>
+      callExposedAPI({ expectedStatusCode: 401 }, 1000, 60),
+    );
   });
 
   test('Check if Application exist', async () => {
