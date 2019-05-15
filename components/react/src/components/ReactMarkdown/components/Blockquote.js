@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import NotePanel from '../../NotePanel';
 
-function BlockQuote({ children }) {
+const BlockQuote = ({ children }) => {
   const getPanelType = child => {
     const type =
       child &&
@@ -16,13 +16,30 @@ function BlockQuote({ children }) {
   };
 
   const createPanels = elem =>
-    elem.map((child, index) => (
-      <NotePanel type={getPanelType(child)} key={index}>
-        {child}
-      </NotePanel>
-    ));
+    !elem
+      ? null
+      : elem.map((element, index) => (
+          <NotePanel type={getPanelType(element[0])} key={index}>
+            {element}
+          </NotePanel>
+        ));
 
-  return children ? <Fragment>{createPanels(children)}</Fragment> : null;
-}
+  const isOneOfTypes = arg => !!arg && ['note', 'caution', 'tip'].includes(arg);
 
+  const modifiedChildren =
+    Array.isArray(children) &&
+    children.reduce((accumulator, curr) => {
+      const currType = getPanelType(curr);
+      if (isOneOfTypes(currType)) {
+        return [...accumulator, [curr]];
+      }
+      const len = accumulator.length - 1;
+      const newLastElement = [...accumulator[len], curr];
+      return [...accumulator.slice(0, len), newLastElement];
+    }, []);
+
+  return modifiedChildren ? (
+    <Fragment>{createPanels(modifiedChildren)}</Fragment>
+  ) : null;
+};
 export default BlockQuote;
