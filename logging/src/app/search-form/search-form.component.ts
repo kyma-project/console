@@ -79,6 +79,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (params.namespace) {
       this.addLabel('namespace=' + params.namespace, true);
     }
+    if (params.container_name) {
+      this.addLabel('container_name=' + params.container_name, true);
+    }
 
     if (this.selectedLabels.size > 0) {
       this.onSubmit();
