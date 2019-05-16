@@ -109,7 +109,7 @@ function getDirectChildren(parentNodeSegments, spec, config) {
     });
 }
 
-function convertToNavigationTree(name, spec, config, segmentPrefix) {
+function convertToNavigationTree(name, spec, config, navigation, consoleViewGroupName, segmentPrefix) {
   return spec.navigationNodes
     .filter(function getTopLevelNodes(node) {
       var segments = node.navigationPath.split('/');
@@ -128,6 +128,19 @@ function convertToNavigationTree(name, spec, config, segmentPrefix) {
         }
         node.navigationContext = spec.appName ? spec.appName : name;
         node.viewGroup = node.navigationContext;
+
+        node.navigationContext = spec.appName ? spec.appName : name;
+        if (node.viewUrl && node.viewUrl.indexOf(window.location.origin + '/') === 0) {
+          node.viewGroup = consoleViewGroupName;
+        } else {
+          node.viewGroup = node.navigationContext;
+          if (spec.preloadUrl) {
+            navigation.viewGroupSettings[node.viewGroup] = {
+              preloadUrl: spec.preloadUrl
+            };
+          }
+        }
+
         node.keepSelectedForChildren = true;
       }
 

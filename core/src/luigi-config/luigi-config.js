@@ -30,6 +30,34 @@ if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
 }
 
+var consoleViewGroupName = '_console_';
+
+let navigation = {
+  viewGroupSettings: {
+    _console_ : {
+      preloadUrl: '/consoleapp.html#/home/preload'
+    }
+  },
+  nodeAccessibilityResolver: navigationPermissionChecker,
+  contextSwitcher: {
+    defaultLabel: 'Select Namespace ...',
+    parentNodePath: '/home/namespaces', // absolute path
+    lazyloadOptions: true, // load options on click instead on page load
+    options: getNamespaces,
+    actions: [
+      {
+        label: '+ New Namespace',
+        link: '/home/workspace?~showModal=true'
+      },
+      {
+        label: 'Show all namespaces',
+        link: '/home/workspace?~allNamespaces=true',
+        position: 'bottom'
+      }
+    ]
+  }
+};
+
 function getNodes(context) {
   var namespace = context.namespaceId;
   var staticNodes = [
@@ -192,7 +220,7 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', namespace),
+    getUiEntities('microfrontends', namespace, []),
     getUiEntities('clustermicrofrontends', namespace, [
       'namespace',
       'namespace'
@@ -222,7 +250,7 @@ function getNodes(context) {
     const settings = {
       text: `Namespace ${errParsed.details.name} not found.`,
       type: 'error'
-     }
+     };
      LuigiClient
       .uxManager()
       .showAlert(settings)
@@ -295,7 +323,7 @@ async function getUiEntities(entityname, namespace, placements) {
           })
           .map(function (item) {
             if (item.spec.navigationNodes) {
-              var tree = convertToNavigationTree(item.metadata.name, item.spec, config, segmentPrefix);
+              var tree = convertToNavigationTree(item.metadata.name, item.spec, config, navigation, consoleViewGroupName, segmentPrefix);
               return tree;
             }
             return [];
@@ -535,7 +563,7 @@ Promise.all(initPromises)
               .filter(cmf => cmf.placement === 'cluster')
               .map(cmf => {
                 if (cmf.navigationNodes) {
-                  var tree = convertToNavigationTree(cmf.name, cmf, config, 'cmf-');
+                  var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
                   return tree;
                 }
                 return [];
@@ -549,6 +577,104 @@ Promise.all(initPromises)
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
   .then(() => {
+    navigation.nodes = () => [
+      {
+        pathSegment: 'home',
+        hideFromNav: true,
+        context: {
+          idToken: token,
+          backendModules
+        },
+        viewGroup: consoleViewGroupName,
+        children: function () {
+          var staticNodes = [
+            {
+              pathSegment: 'workspace',
+              label: 'Namespaces',
+              viewUrl:
+                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
+              icon: 'dimension'
+            },
+            {
+              pathSegment: 'namespaces',
+              viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+              hideFromNav: true,
+              children: [
+                {
+                  pathSegment: ':namespaceId',
+                  context: {
+                    environmentId: ':namespaceId',
+                    namespaceId: ':namespaceId'
+                  },
+                  children: getNodes,
+                  navigationContext: 'namespaces',
+                  defaultChildNode: 'details'
+                }
+              ]
+            },
+            {
+              category: { label: 'Integration', icon: 'overview-chart' },
+              pathSegment: '_integration_category_placeholder_',
+              hideFromNav: true
+            },
+            {
+              pathSegment: 'settings',
+              navigationContext: 'settings',
+              label: 'General Settings',
+              category: { label: 'Settings', icon: 'settings' },
+              viewUrl: '/consoleapp.html#/home/settings/organisation'
+            },
+            {
+              pathSegment: 'global-permissions',
+              navigationContext: 'global-permissions',
+              label: 'Global Permissions',
+              category: 'Settings',
+              viewUrl:
+                '/consoleapp.html#/home/settings/globalPermissions',
+              keepSelectedForChildren: true,
+              children: [
+                {
+                  pathSegment: 'roles',
+                  children: [
+                    {
+                      pathSegment: ':name',
+                      viewUrl:
+                        '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                    }
+                  ]
+                }
+              ],
+              requiredPermissions : [{
+                apiGroup : "rbac.authorization.k8s.io",
+                resource : "clusterrolebindings",
+                verbs : ["create"]
+              }]
+            },
+            {
+              category: {
+                label: 'Diagnostics',
+                icon: 'electrocardiogram'
+              },
+              pathSegment: '_integration_category_placeholder_',
+              hideFromNav: true
+            }
+          ];
+          var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
+          return [].concat.apply(staticNodes, fetchedNodes);
+        }
+      },
+      {
+        pathSegment: 'docs',
+        viewUrl: config.docsModuleUrl,
+        label: 'Docs',
+        hideSideNav: true,
+        context: {
+          idToken: token,
+          backendModules
+        },
+        icon: 'sys-help'
+      }
+    ],
     Luigi.setConfig({
       auth: {
         use: 'openIdConnect',
@@ -575,123 +701,7 @@ Promise.all(initPromises)
           }
         }
       },
-      navigation: {
-        nodeAccessibilityResolver: navigationPermissionChecker,
-        nodes: () => [
-          {
-            pathSegment: 'home',
-            hideFromNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            children: function () {
-                var staticNodes = [
-                  {
-                    pathSegment: 'workspace',
-                    label: 'Namespaces',
-                    viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
-                    icon: 'dimension'
-                  },
-                  {
-                    pathSegment: 'namespaces',
-                    viewUrl: '/consoleapp.html#/home/namespaces/workspace',
-                    hideFromNav: true,
-                    children: [
-                      {
-                        pathSegment: ':namespaceId',
-                        context: {
-                          environmentId: ':namespaceId',
-                          namespaceId: ':namespaceId'
-                        },
-                        children: getNodes,
-                        navigationContext: 'namespaces',
-                        defaultChildNode: 'details'
-                      }
-                    ]
-                  },
-                  {
-                    category: { label: 'Integration', icon: 'overview-chart' },
-                    pathSegment: '_integration_category_placeholder_',
-                    hideFromNav: true
-                  },
-                  {
-                    pathSegment: 'settings',
-                    navigationContext: 'settings',
-                    label: 'General Settings',
-                    category: { label: 'Settings', icon: 'settings' },
-                    viewUrl: '/consoleapp.html#/home/settings/organisation'
-                  },
-                  {
-                    pathSegment: 'global-permissions',
-                    navigationContext: 'global-permissions',
-                    label: 'Global Permissions',
-                    category: 'Settings',
-                    viewUrl:
-                      '/consoleapp.html#/home/settings/globalPermissions',
-                    keepSelectedForChildren: true,
-                    children: [
-                      {
-                        pathSegment: 'roles',
-                        children: [
-                          {
-                            pathSegment: ':name',
-                            viewUrl:
-                              '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
-                          }
-                        ]
-                      }
-                    ],
-                    requiredPermissions : [{
-                      apiGroup : "rbac.authorization.k8s.io",
-                      resource : "clusterrolebindings",
-                      verbs : ["create"]
-                    }]
-                  },
-                  {
-                    category: {
-                      label: 'Diagnostics',
-                      icon: 'electrocardiogram'
-                    },
-                    pathSegment: '_integration_category_placeholder_',
-                    hideFromNav: true
-                  }
-                ];
-                var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
-                return [].concat.apply(staticNodes, fetchedNodes);
-            }
-          },
-          {
-            pathSegment: 'docs',
-            viewUrl: config.docsModuleUrl,
-            label: 'Docs',
-            hideSideNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            icon: 'sys-help'
-          }
-        ],
-        contextSwitcher: {
-          defaultLabel: 'Select Namespace ...',
-          parentNodePath: '/home/namespaces', // absolute path
-          lazyloadOptions: true, // load options on click instead on page load
-          options: getNamespaces,
-          actions: [
-            {
-              label: '+ New Namespace',
-              link: '/home/workspace?~showModal=true'
-            },
-            {
-              label: 'Show all namespaces',
-              link: '/home/workspace?~allNamespaces=true',
-              position: 'bottom'
-            }
-          ]
-        }
-      },
+      navigation,
       routing: {
         nodeParamPrefix: '~',
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
