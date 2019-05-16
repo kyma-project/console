@@ -1,3 +1,5 @@
+
+
 function buildNode(node, spec, config) {
   var n = {
     label: node.label,
@@ -33,6 +35,14 @@ function buildNode(node, spec, config) {
 
 function processNodeForLocalDevelopment(node, config) {
   const {domain, localDomain} = config;
+  const localDevDomainBindings = [
+    {startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl},
+    {startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl},
+    {startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl},
+    {startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl},
+    {startsWith: "add-ons", replaceWith: config.addOnsModuleUrl},
+    {startsWith: "log-ui", replaceWith: config.logsModuleUrl}
+  ];
   const isLocalDev = window.location.href.startsWith(
     `http://${localDomain}:4200`
   );

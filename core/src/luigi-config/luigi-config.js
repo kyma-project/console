@@ -27,16 +27,6 @@ if (clusterConfig) {
   }
 }
 
-var localDevDomainBindings = [
-  {startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl},
-  {startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl},
-  {startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl},
-  {startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl},
-  {startsWith: "add-ons", replaceWith: config.addOnsModuleUrl},
-  {startsWith: "log-ui", replaceWith: config.logsModuleUrl}
-];
-
-
 var token;
 if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
