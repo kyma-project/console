@@ -112,10 +112,6 @@ export class NamespacesService {
       namespace
     };
 
-    return this.graphQLClientService.request(
-      AppConfig.graphqlApiUrl,
-      query,
-      variables
-    );
+    return this.graphQLClientService.gqlQuery(query, variables);
   }
 }

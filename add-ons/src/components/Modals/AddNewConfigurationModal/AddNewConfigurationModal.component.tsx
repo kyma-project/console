@@ -37,7 +37,7 @@ interface Props {
   handleEnterDownOnUrlField: (e: any) => void;
   onShowModal: () => void;
   onHideModal: () => void;
-  configurationsExist: boolean;
+  error: boolean;
 }
 
 const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
@@ -55,26 +55,25 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
   handleEnterDownOnUrlField,
   onShowModal,
   onHideModal,
-  configurationsExist,
+  error,
 }) => {
   const modalOpeningComponent = (
-    <Button glyph="add" disabled={!configurationsExist}>
+    <Button glyph="add" disabled={error}>
       {MODAL.ADD_NEW_CONFIGURATION_BUTTON_TITLE}
     </Button>
   );
 
-  const addedLabels = () => {
-    return labels.length
+  const addedLabels = () =>
+    labels.length
       ? labels.map(label => (
           <StyledToken onClick={() => removeLabel(label)} key={label}>
             {label}
           </StyledToken>
         ))
       : null;
-  };
 
-  const addedUrls = () => {
-    return urls.length
+  const addedUrls = () =>
+    urls.length
       ? urls.map(url => (
           <AddedUrl onClick={() => removeUrl(url)} key={url}>
             {url}
@@ -82,7 +81,6 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
           </AddedUrl>
         ))
       : null;
-  };
 
   const disabledConfirm =
     !urls.length ||
@@ -107,7 +105,7 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
     >
       <FormSet>
         <FormItem key="name">
-          <FormLabel htmlFor="name" required>
+          <FormLabel htmlFor="name" required={true}>
             {FORMS.NAME_LABEL}
             <InlineHelp text={HELP.NAME_FIELD} />
           </FormLabel>
@@ -145,14 +143,14 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
             glyph="add"
             onClick={addLabel}
             option="light"
-            compact
+            compact={true}
             disabled={Boolean(labelsField.error || !labelsField.value)}
           >
             {FORMS.ADD_LABEL_BUTTON}
           </Button>
         </AddLabelButtonWrapper>
         <FormItem key="url">
-          <FormLabel htmlFor="url" required>
+          <FormLabel htmlFor="url" required={true}>
             {FORMS.URL_LABEL}
             <InlineHelp text={HELP.URL_FIELD} />
           </FormLabel>
@@ -173,7 +171,7 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
           glyph="add"
           onClick={addUrl}
           option="light"
-          compact
+          compact={true}
           disabled={Boolean(urlField.error || !urlField.value)}
         >
           {FORMS.ADD_URL_BUTTON}

@@ -114,12 +114,12 @@ export class DocsProcessor {
   }
 
   replaceImagePaths = () => {
-    const assetsRegexp = /\.\/assets/g;
+    const assetsRegexp = /(?=]\()]\(\s*(\.\/)?assets/g;
     let docsUrl = null;
     this.docs.map(doc => {
       docsUrl = doc.url.substring(0, doc.url.lastIndexOf('/'));
       if (doc.source.search(assetsRegexp) !== -1) {
-        doc.source = doc.source.replace(assetsRegexp, `${docsUrl}/assets`);
+        doc.source = doc.source.replace(assetsRegexp, `](${docsUrl}/assets`);
       }
       return doc;
     });

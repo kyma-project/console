@@ -54,8 +54,12 @@ export class DeploymentEntryRendererComponent
   }
 
   ngOnDestroy() {
-    this.communicationServiceSubscription.unsubscribe();
-    this.currentNamespaceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
+    if (this.currentNamespaceSubscription) {
+      this.currentNamespaceSubscription.unsubscribe();
+    }
   }
 
   isStatusOk(entry): boolean {

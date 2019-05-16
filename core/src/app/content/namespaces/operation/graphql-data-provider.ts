@@ -6,20 +6,23 @@ import {
   Facet,
   Filter
 } from 'app/generic-list';
-import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
 import { Observable } from 'rxjs';
-import { delay, publishReplay, refCount } from 'rxjs/operators';
+import gql from 'graphql-tag';
+import { catchError, map } from 'rxjs/operators';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { QueryRef } from 'apollo-angular';
 
 export class GraphQLDataProvider implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
   facetMatcher = new SimpleFacetMatcher();
-  queryCache: Observable<any>;
+  resourceQuery: QueryRef<any>;
 
   constructor(
-    private url: string,
     private query: string,
     private variables: object,
-    private graphQLClientService: GraphQLClientService
+    private graphQLClientService: GraphQLClientService,
+    private subscriptions?: string,
+    private resourceKind?: string
   ) {}
 
   getData(
@@ -30,16 +33,27 @@ export class GraphQLDataProvider implements DataProvider {
     noCache?: boolean
   ): Observable<DataProviderResult> {
     return new Observable(observer => {
-      if (noCache || !this.queryCache) {
-        this.queryCache = this.graphQLClientService
-          .request(this.url, this.query, this.variables)
-          .pipe(
-            publishReplay(1),
-            refCount()
-          );
+      if(!this.subscriptions || !this.resourceKind) {
+        if(noCache || !this.resourceQuery) {
+          this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
+        }
+      } else {
+        this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
+        this.resourceQuery.subscribeToMore({
+          document: gql`${this.subscriptions}`,
+          variables: this.variables,
+          updateQuery: (prev, {subscriptionData}) => {
+            return this.updateSubscriptions(prev, subscriptionData);
+          }
+        });
       }
 
-      this.queryCache.subscribe(
+      this.resourceQuery.valueChanges
+      .pipe(
+        map(res => this.graphQLClientService.processResponse(res)),
+        catchError(err => this.graphQLClientService.processError(err))
+      )
+      .subscribe(
         res => {
           const elementsKey = Object.keys(res)[0];
           const elements = res[elementsKey];
@@ -64,7 +78,7 @@ export class GraphQLDataProvider implements DataProvider {
           );
           const index = pageSize * (pageNumber - 1);
           const pagedData = facetedData.slice(index, index + pageSize);
-
+          
           observer.next(
             new DataProviderResult(
               pagedData,
@@ -103,4 +117,37 @@ export class GraphQLDataProvider implements DataProvider {
     });
     return result;
   }
+
+  updateSubscriptions(prev, subscriptionData) {
+    if (!subscriptionData || !subscriptionData.data) {
+      return prev;
+    };
+    
+    const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+    const currentItems = prev[`${lowerCaseResourceKind}s`];
+    const item = subscriptionData.data[`${lowerCaseResourceKind}Event`][lowerCaseResourceKind];
+    const type = subscriptionData.data[`${lowerCaseResourceKind}Event`].type;
+    let result;
+
+    if (type === 'DELETE') {
+      result = currentItems.filter(i => i.name !== item.name);
+    } else if (type === 'UPDATE' || type === 'ADD') {
+      // Sometimes we receive the 'UPDATE' event instead of 'ADD'
+      const index = currentItems.findIndex(i => i.name === item.name);
+      if(index === -1) {
+        result = [...currentItems, item];
+      } else {
+        currentItems[index] = item;
+        result = currentItems;
+      }
+    } else {
+      result = currentItems;
+    }
+    
+    return {
+      ...prev,
+      [`${lowerCaseResourceKind}s`]: result
+    }
+  }
+
 }

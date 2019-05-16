@@ -110,6 +110,13 @@ import { LuigiClientCommunicationDirective } from './shared/directives/luigi-cli
 import { FundamentalNgxModule } from 'fundamental-ngx';
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
+import { ApolloModule, Apollo } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { getMainDefinition } from 'apollo-utilities';
+import { split } from 'apollo-link';
+import { AppConfig } from './app.config'
+import { WebSocketLink } from './ws';
 
 @NgModule({
   declarations: [
@@ -206,7 +213,9 @@ import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstra
     ListModule,
     ClipboardModule,
     ClickOutsideModule,
-    FundamentalNgxModule
+    FundamentalNgxModule,
+    ApolloModule,
+    HttpLinkModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
@@ -259,4 +268,38 @@ import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstra
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private apollo: Apollo,
+    private httpLink: HttpLink
+    ) {
+
+    // Create an http link:
+    const http = httpLink.create({
+      uri: AppConfig.graphqlApiUrl
+    });
+
+    // Create a WebSocket link:
+    const ws = new WebSocketLink({
+      uri: AppConfig.subscriptionsApiUrl,
+      options: {
+        reconnect: true
+      }
+    });
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query);
+        return kind === 'OperationDefinition' && operation === 'subscription';
+      },
+      ws,
+      http,
+    );
+
+    apollo.create({
+      link,
+      cache: new InMemoryCache()
+    });
+  }
+}

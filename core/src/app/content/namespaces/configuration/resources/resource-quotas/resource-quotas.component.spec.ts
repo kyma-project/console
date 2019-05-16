@@ -20,7 +20,7 @@ describe('ResourceQuotasComponent', () => {
         HttpHandler,
         CurrentNamespaceService,
         ComponentCommunicationService,
-        GraphQLClientService
+        {provide: GraphQLClientService, useValue: {}}
       ]
     }).compileComponents();
   }));

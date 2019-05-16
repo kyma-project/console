@@ -8,7 +8,12 @@
     "paths": {
       "shared/*": ["app/shared/*"],
       "namespaces/*": ["app/content/namespaces/*"]
-    }
+    },
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext.asynciterable"
+    ]
   },
   "include": ["**/*.ts"],
   "exclude": ["test.ts", "**/*.spec.ts"]

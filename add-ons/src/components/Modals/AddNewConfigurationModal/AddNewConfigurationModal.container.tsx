@@ -3,6 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { useInput } from '../../../services/Forms';
 import {
+  QueriesService,
   MutationsService,
   ConfigurationsService,
   LabelsService,
@@ -16,6 +17,7 @@ import { CONFIGURATION_NAME_PREFIX, ERRORS } from '../../../constants';
 
 const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   // Services
+  const { error } = useContext(QueriesService);
   const { createAddonsConfiguration } = useContext(MutationsService);
   const {
     configurationsExist,
@@ -27,9 +29,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   const { validateUrl } = useContext(UrlsService);
 
   // Name
-  const validateNameField = (name: string): string => {
-    return validateName(name);
-  };
+  const validateNameField = (name: string): string => validateName(name);
   const nameField = useInput('', validateNameField);
 
   // Urls
@@ -97,7 +97,9 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   };
   const extractLabels = (): ConfigurationLabels => {
     const extractedLabels: ConfigurationLabels = {};
-    if (!labels.length) return extractedLabels;
+    if (!labels.length) {
+      return extractedLabels;
+    }
 
     labels.map(label => {
       const splitedLabel = label.split('=');
@@ -157,7 +159,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
       handleEnterDownOnUrlField={handleEnterDownOnUrlField}
       onShowModal={onShowModal}
       onHideModal={onHideModal}
-      configurationsExist={configurationsExist()}
+      error={Boolean(error)}
     />
   );
 };

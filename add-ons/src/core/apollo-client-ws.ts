@@ -28,7 +28,7 @@ export class WebSocketLink extends ApolloLink {
 
 function getWrappedWebsocket() {
   const w = window as any;
-  const NativeWebSocket = w['WebSocket'] || w['MozWebSocket'];
+  const NativeWebSocket = w.WebSocket || w.MozWebSocket;
   const customWs: any = (url: string) => {
     const bearerToken = appInitializer.getBearerToken();
     const token = bearerToken ? bearerToken.split(' ')[1] : null;

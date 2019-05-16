@@ -1,19 +1,35 @@
 import React from 'react';
 import RM from 'react-markdown';
 import BlockQuote from './components/Blockquote';
+import { Strong } from './components/Strong';
+import { Link } from './components/Link';
 import Code from './components/Code/';
 import { Markdown } from './styled';
 import parseHtml from './parseHTML';
-import { removeBlankLinesFromTabsBlock } from './helpers';
+import {
+  removeBlankLinesFromTabsBlock,
+  putNewlineSpaceBeforeList,
+} from './helpers';
 
 const ReactMarkdown = ({ source, escapeHtml = false }) => {
-  const processedSource = removeBlankLinesFromTabsBlock(source);
+  if (!source) {
+    return null;
+  }
+  const processedSource = removeBlankLinesFromTabsBlock(
+    putNewlineSpaceBeforeList(source),
+  );
+
   return (
     <Markdown>
       <RM
         source={processedSource}
         escapeHtml={escapeHtml}
-        renderers={{ code: Code, blockquote: BlockQuote }}
+        renderers={{
+          code: Code,
+          blockquote: BlockQuote,
+          strong: Strong,
+          link: Link,
+        }}
         astPlugins={[parseHtml]}
       />
     </Markdown>

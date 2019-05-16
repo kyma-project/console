@@ -13,31 +13,33 @@ interface Props {
 
 const ActiveFiltersComponent: React.FunctionComponent<
   Props & RemoveFiltersInterface
-> = ({ activeFilters, removeFilterLabel, removeAllFiltersLabels }) => {
-  return (
-    <>
-      {Object.keys(activeFilters.labels).length &&
-      Object.keys(activeFilters.labels).some(key =>
-        Boolean(activeFilters.labels[key].length),
-      ) ? (
-        <StyledTokensWrapper>
-          <Panel.Filters>
-            {Object.keys(activeFilters.labels).map(key =>
-              activeFilters.labels[key].map(value => (
-                <StyledToken
-                  key={key}
-                  onClick={() => removeFilterLabel(key, value)}
-                >{`${key}=${value}`}</StyledToken>
-              )),
-            )}
-            <Button onClick={removeAllFiltersLabels} compact option="light">
-              {FILTERS.CLEAR_ALL_FILTERS}
-            </Button>
-          </Panel.Filters>
-        </StyledTokensWrapper>
-      ) : null}
-    </>
-  );
-};
+> = ({ activeFilters, removeFilterLabel, removeAllFiltersLabels }) => (
+  <>
+    {Object.keys(activeFilters.labels).length &&
+    Object.keys(activeFilters.labels).some(key =>
+      Boolean(activeFilters.labels[key].length),
+    ) ? (
+      <StyledTokensWrapper>
+        <Panel.Filters>
+          {Object.keys(activeFilters.labels).map(key =>
+            activeFilters.labels[key].map(value => (
+              <StyledToken
+                key={key}
+                onClick={() => removeFilterLabel(key, value)}
+              >{`${key}=${value}`}</StyledToken>
+            )),
+          )}
+          <Button
+            onClick={removeAllFiltersLabels}
+            compact={true}
+            option="light"
+          >
+            {FILTERS.CLEAR_ALL_FILTERS}
+          </Button>
+        </Panel.Filters>
+      </StyledTokensWrapper>
+    ) : null}
+  </>
+);
 
 export default ActiveFiltersComponent;

@@ -1,4 +1,6 @@
 import LuigiClient from '@kyma-project/luigi-client';
+import rbacRulesMatched from './rbac-rules-matcher';
+import convertToNavigationTree from './microfrontend-converter';
 
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -25,21 +27,48 @@ if (clusterConfig) {
   }
 }
 
-var localDevDomainBindings=[
-   { startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl },
-   { startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl },
-   { startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl },
-   { startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl },
-   { startsWith: "add-ons", replaceWith: config.addOnsModuleUrl },
-   { startsWith: "log-ui", replaceWith: config.logsModuleUrl }
- ];
-
+var localDevDomainBindings = [
+  {startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl},
+  {startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl},
+  {startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl},
+  {startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl},
+  {startsWith: "add-ons", replaceWith: config.addOnsModuleUrl},
+  {startsWith: "log-ui", replaceWith: config.logsModuleUrl}
+];
 
 
 var token;
 if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
 }
+
+var consoleViewGroupName = '_console_';
+
+let navigation = {
+  viewGroupSettings: {
+    _console_: {
+      preloadUrl: '/consoleapp.html#/home/preload'
+    }
+  },
+  nodeAccessibilityResolver: navigationPermissionChecker,
+  contextSwitcher: {
+    defaultLabel: 'Select Namespace ...',
+    parentNodePath: '/home/namespaces', // absolute path
+    lazyloadOptions: true, // load options on click instead on page load
+    options: getNamespaces,
+    actions: [
+      {
+        label: '+ New Namespace',
+        link: '/home/workspace?~showModal=true'
+      },
+      {
+        label: 'Show all namespaces',
+        link: '/home/workspace?~allNamespaces=true',
+        position: 'bottom'
+      }
+    ]
+  }
+};
 
 function getNodes(context) {
   var namespace = context.namespaceId;
@@ -56,12 +85,12 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      category: { label: 'Service Management', icon: 'add-coursebook' },
+      category: {label: 'Service Management', icon: 'add-coursebook'},
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Configuration', icon: 'key-user-settings' },
+      category: {label: 'Configuration', icon: 'key-user-settings'},
       pathSegment: '_configuration_category_placeholder_',
       hideFromNav: true
     },
@@ -103,12 +132,12 @@ function getNodes(context) {
       viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
     },
     {
-      category: { label: 'Development', icon: 'source-code' },
+      category: {label: 'Development', icon: 'source-code'},
       pathSegment: '_development_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Operation', icon: 'instance' },
+      category: {label: 'Operation', icon: 'instance'},
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
@@ -200,15 +229,15 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', namespace),
+    getUiEntities('microfrontends', namespace, []),
     getUiEntities('clustermicrofrontends', namespace, [
       'namespace',
       'namespace'
     ])
   ])
-    .then(function(values) {
+    .then(function (values) {
       var nodeTree = [...staticNodes];
-      values.forEach(function(val) {
+      values.forEach(function (val) {
         if (val === 'systemNamespace') {
           nodeTree.forEach(item => {
             if (item.context) {
@@ -225,14 +254,16 @@ function getNodes(context) {
       });
       return nodeTree;
     })
-    .catch(err => {
+    .catch((err) => {
       const errParsed = JSON.parse(err);
       console.error('Error', errParsed);
       const settings = {
         text: `Namespace ${errParsed.details.name} not found.`,
         type: 'error'
       };
-      LuigiClient.uxManager().showAlert(settings);
+      LuigiClient
+        .uxManager()
+        .showAlert(settings)
     });
 }
 
@@ -300,126 +331,10 @@ async function getUiEntities(entityname, namespace, placements) {
             // placement only exists in clustermicrofrontends
             return !placements || placements.includes(item.spec.placement);
           })
-          .map(function(item) {
-            function buildNode(node, spec) {
-              var n = {
-                label: node.label,
-                pathSegment: node.navigationPath.split('/').pop(),
-                viewUrl: spec.viewBaseUrl
-                  ? spec.viewBaseUrl + node.viewUrl
-                  : node.viewUrl,
-                hideFromNav: node.showInNavigation === false || undefined,
-                order: node.order,
-                context: {
-                  settings: node.settings
-                    ? { ...node.settings, ...(node.context || {}) }
-                    : {}
-                }
-              };
+          .map(function (item) {
 
-              n.context.requiredBackendModules =
-                node.requiredBackendModules || undefined;
-
-              if (node.externalLink) {
-                delete n.viewUrl;
-                delete n.pathSegment;
-                n.externalLink = {
-                  url: node.externalLink,
-                  sameWindow: false
-                };
-              }
-
-              processNodeForLocalDevelopment(n);
-              return n;
-            }
-
-            function processNodeForLocalDevelopment(node) {           
-              const { domain, localDomain } = config;
-              const isLocalDev = window.location.href.startsWith(
-                `http://${localDomain}:4200`
-              );
-          
-              if (!isLocalDev || !node.viewUrl) {
-                return;
-              }
-
-              //all non-cluster microfrontends
-              if (node.viewUrl.startsWith(`https://console.${domain}`)) {
-                node.viewUrl = node.viewUrl.replace(
-                  `https://console.${domain}`,
-                  `http://${localDomain}:4200`
-                );
-              }
-
-              //cluster microfrontends
-              localDevDomainBindings.forEach(binding=>{
-                if (node.viewUrl.startsWith(`https://${binding.startsWith}.${domain}`)) {
-                  node.viewUrl = node.viewUrl.replace(
-                    `https://${binding.startsWith}.${domain}`,
-                    binding.replaceWith
-                  );
-                }
-              });
-
-              return node;
-            }
-
-            function buildNodeWithChildren(specNode, spec) {
-              var parentNodeSegments = specNode.navigationPath.split('/');
-              var children = getDirectChildren(parentNodeSegments, spec);
-              var node = buildNode(specNode, spec);
-              if (children.length) {
-                node.children = children;
-              }
-              return node;
-            }
-
-            function getDirectChildren(parentNodeSegments, spec) {
-              // process only direct children
-              return spec.navigationNodes
-                .filter(function(node) {
-                  var currentNodeSegments = node.navigationPath.split('/');
-                  var isDirectChild =
-                    parentNodeSegments.length ===
-                      currentNodeSegments.length - 1 &&
-                    parentNodeSegments.filter(function(segment) {
-                      return currentNodeSegments.includes(segment);
-                    }).length > 0;
-                  return isDirectChild;
-                })
-                .map(function mapSecondLevelNodes(node) {
-                  // map direct children
-                  return buildNodeWithChildren(node, spec);
-                });
-            }
-
-            function buildTree(name, spec) {
-              return spec.navigationNodes
-                .filter(function getTopLevelNodes(node) {
-                  var segments = node.navigationPath.split('/');
-                  return segments.length === 1;
-                })
-                .map(function processTopLevelNodes(node) {
-                  return buildNodeWithChildren(node, spec, name);
-                })
-                .map(function addSettingsForTopLevelNodes(node) {
-                  if (spec.category) {
-                    node.category = spec.category;
-                  }
-                  if (!node.externalLink) {
-                    if (!node.pathSegment.startsWith(segmentPrefix)) {
-                      node.pathSegment = segmentPrefix + node.pathSegment;
-                    }
-                    node.navigationContext = spec.appName ? spec.appName : name;
-                    node.viewGroup = node.navigationContext;
-                    node.keepSelectedForChildren = true;
-                  }
-
-                  return node;
-                });
-            }
             if (item.spec.navigationNodes) {
-              var tree = buildTree(item.metadata.name, item.spec);
+              var tree = convertToNavigationTree(item.metadata.name, item.spec, config, navigation, consoleViewGroupName, segmentPrefix);
               return tree;
             }
             return [];
@@ -475,10 +390,9 @@ function fetchFromGraphQL(query, variables, gracefully) {
           reject(xmlHttp.response);
         }
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        // relogin();
-        // }
+        if (xmlHttp.status === 401) {
+          relogin();
+        }
         if (!gracefully) {
           reject(xmlHttp.response);
         } else {
@@ -490,7 +404,7 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.open('POST', config.graphqlApiUrl, true);
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify({ query, variables }));
+    xmlHttp.send(JSON.stringify({query, variables}));
   });
 }
 
@@ -529,52 +443,6 @@ function postToKyma(url, body) {
   });
 }
 
-function getSelfSubjectRulesReview() {
-  const url =
-    k8sServerUrl + '/apis/authorization.k8s.io/v1/selfsubjectrulesreviews ';
-  const body = {
-    kind: 'SelfSubjectRulesReview',
-    apiVersion: 'authorization.k8s.io/v1',
-    spec: {
-      namespace: '*'
-    }
-  };
-  return new Promise(function(resolve, reject) {
-    postToKyma(url, body).then(
-      res => {
-        let resourceRules = [];
-        if (res.status) {
-          resourceRules = res.status.resourceRules;
-        }
-        resolve(resourceRules);
-      },
-      err => {
-        reject(err);
-      }
-    );
-  });
-}
-
-function checkRules(nodeToCheckPermissionsFor) {
-  let hasPermissions = false;
-  if (nodeToCheckPermissionsFor.adminOnly) {
-    if (selfSubjectRulesReview.length > 0) {
-      selfSubjectRulesReview.forEach(rule => {
-        if (
-          rule.verbs.includes('*') &&
-          (rule.apiGroups.includes('') || rule.apiGroups.includes('*')) &&
-          rule.resources.includes('*')
-        ) {
-          hasPermissions = true;
-        }
-      });
-    }
-  } else {
-    hasPermissions = true;
-  }
-  return hasPermissions;
-}
-
 function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
   let hasPermissions = true;
   if (
@@ -598,16 +466,41 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
 }
 
 function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+
+  const noRulesApplied =
+    nodeToCheckPermissionsFor.requiredPermissions === null ||
+    nodeToCheckPermissionsFor.requiredPermissions === undefined ||
+    nodeToCheckPermissionsFor.requiredPermissions.length === 0;
+
   return (
-    checkRules(nodeToCheckPermissionsFor) &&
+    (noRulesApplied || rbacRulesMatched(nodeToCheckPermissionsFor.requiredPermissions, selfSubjectRulesReview)) &&
     checkRequiredBackendModules(nodeToCheckPermissionsFor)
   );
 }
 
-function getBackendModules() {
+function getConsoleInitData() {
   const query = `query {
+    selfSubjectRules {
+      verbs
+      resources
+      apiGroups
+		}
     backendModules{
       name
+    }
+    clusterMicrofrontends{
+      name
+      category
+      viewBaseUrl
+      placement
+      navigationNodes{
+        label
+        navigationPath
+        viewUrl
+        showInNavigation
+        order
+        settings
+      }
     }
   }`;
   const gracefully = true;
@@ -651,22 +544,43 @@ function getFreshKeys() {
 
 let backendModules = [];
 let selfSubjectRulesReview = [];
-Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
+let clusterMicrofrontendNodes = [];
+var initPromises = [getFreshKeys()];
+
+if(token){
+  initPromises.push(getConsoleInitData())
+}
+
+Promise.all(initPromises)
   .then(
     res => {
-      const modules = res[0];
-      const subjectRules = res[1];
-      if (
-        modules &&
-        modules.backendModules &&
-        modules.backendModules.length > 0
-      ) {
-        modules.backendModules.forEach(backendModule => {
-          backendModules.push(backendModule.name);
-        });
-      }
-      if (subjectRules && subjectRules.length > 0) {
-        selfSubjectRulesReview = subjectRules;
+      if(token){
+        const modules = res[1].backendModules;
+        const subjectRules = res[1].selfSubjectRules;
+        const cmfs = res[1].clusterMicrofrontends;
+        if (
+          modules &&
+          modules.length > 0
+        ) {
+          modules.forEach(backendModule => {
+            backendModules.push(backendModule.name);
+          });
+        }
+        if (subjectRules && subjectRules.length > 0) {
+          selfSubjectRulesReview = subjectRules;
+        }
+        if (cmfs && cmfs.length > 0) {
+          clusterMicrofrontendNodes =
+            cmfs
+              .filter(cmf => cmf.placement === 'cluster')
+              .map(cmf => {
+                if (cmf.navigationNodes) {
+                  var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
+                  return tree;
+                }
+                return [];
+              });
+        }
       }
     },
     err => {
@@ -675,6 +589,104 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
   .then(() => {
+    navigation.nodes = () => [
+      {
+        pathSegment: 'home',
+        hideFromNav: true,
+        context: {
+          idToken: token,
+          backendModules
+        },
+        viewGroup: consoleViewGroupName,
+        children: function () {
+          var staticNodes = [
+            {
+              pathSegment: 'workspace',
+              label: 'Namespaces',
+              viewUrl:
+                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
+              icon: 'dimension'
+            },
+            {
+              pathSegment: 'namespaces',
+              viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+              hideFromNav: true,
+              children: [
+                {
+                  pathSegment: ':namespaceId',
+                  context: {
+                    environmentId: ':namespaceId',
+                    namespaceId: ':namespaceId'
+                  },
+                  children: getNodes,
+                  navigationContext: 'namespaces',
+                  defaultChildNode: 'details'
+                }
+              ]
+            },
+            {
+              category: { label: 'Integration', icon: 'overview-chart' },
+              pathSegment: '_integration_category_placeholder_',
+              hideFromNav: true
+            },
+            {
+              pathSegment: 'settings',
+              navigationContext: 'settings',
+              label: 'General Settings',
+              category: { label: 'Settings', icon: 'settings' },
+              viewUrl: '/consoleapp.html#/home/settings/organisation'
+            },
+            {
+              pathSegment: 'global-permissions',
+              navigationContext: 'global-permissions',
+              label: 'Global Permissions',
+              category: 'Settings',
+              viewUrl:
+                '/consoleapp.html#/home/settings/globalPermissions',
+              keepSelectedForChildren: true,
+              children: [
+                {
+                  pathSegment: 'roles',
+                  children: [
+                    {
+                      pathSegment: ':name',
+                      viewUrl:
+                        '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                    }
+                  ]
+                }
+              ],
+              requiredPermissions : [{
+                apiGroup : "rbac.authorization.k8s.io",
+                resource : "clusterrolebindings",
+                verbs : ["create"]
+              }]
+            },
+            {
+              category: {
+                label: 'Diagnostics',
+                icon: 'electrocardiogram'
+              },
+              pathSegment: '_integration_category_placeholder_',
+              hideFromNav: true
+            }
+          ];
+          var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
+          return [].concat.apply(staticNodes, fetchedNodes);
+        }
+      },
+      {
+        pathSegment: 'docs',
+        viewUrl: config.docsModuleUrl,
+        label: 'Docs',
+        hideSideNav: true,
+        context: {
+          idToken: token,
+          backendModules
+        },
+        icon: 'sys-help'
+      }
+    ],
     Luigi.setConfig({
       auth: {
         use: 'openIdConnect',
@@ -691,7 +703,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
           onLogout: () => {
             console.log('onLogout');
           },
-          onAuthSuccessful: data => {},
+          onAuthSuccessful: data => { },
           onAuthExpired: () => {
             console.log('onAuthExpired');
           },
@@ -701,130 +713,7 @@ Promise.all([getBackendModules(), getSelfSubjectRulesReview(), getFreshKeys()])
           }
         }
       },
-      navigation: {
-        nodeAccessibilityResolver: navigationPermissionChecker,
-        nodes: () => [
-          {
-            pathSegment: 'home',
-            hideFromNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            children: function() {
-              return getUiEntities('clustermicrofrontends', undefined, [
-                'cluster'
-              ]).then(function(cmf) {
-                var staticNodes = [
-                  {
-                    pathSegment: 'workspace',
-                    label: 'Namespaces',
-                    viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
-                    icon: 'dimension'
-                  },
-                  {
-                    pathSegment: 'namespaces',
-                    viewUrl: '/consoleapp.html#/home/namespaces/workspace',
-                    hideFromNav: true,
-                    children: [
-                      {
-                        pathSegment: ':namespaceId',
-                        context: {
-                          environmentId: ':namespaceId',
-                          namespaceId: ':namespaceId'
-                        },
-                        children: getNodes,
-                        navigationContext: 'namespaces',
-                        defaultChildNode: 'details'
-                      }
-                    ]
-                  },
-                  {
-                    category: { label: 'Integration', icon: 'overview-chart' },
-                    pathSegment: '_integration_category_placeholder_',
-                    hideFromNav: true
-                  },
-                  {
-                    pathSegment: 'settings',
-                    navigationContext: 'settings',
-                    label: 'General Settings',
-                    category: { label: 'Settings', icon: 'settings' },
-                    viewUrl: '/consoleapp.html#/home/settings/organisation'
-                  },
-                  {
-                    pathSegment: 'global-permissions',
-                    navigationContext: 'global-permissions',
-                    label: 'Global Permissions',
-                    category: 'Settings',
-                    viewUrl:
-                      '/consoleapp.html#/home/settings/globalPermissions',
-                    keepSelectedForChildren: true,
-                    children: [
-                      {
-                        pathSegment: 'roles',
-                        children: [
-                          {
-                            pathSegment: ':name',
-                            viewUrl:
-                              '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
-                          }
-                        ]
-                      }
-                    ],
-                    adminOnly: true
-                  },
-                  {
-                    category: {
-                      label: 'Diagnostics',
-                      icon: 'electrocardiogram'
-                    },
-                    pathSegment: '_integration_category_placeholder_',
-                    hideFromNav: true
-                  }
-                ];
-                if (cmf.length > 0) {
-                  cmf.forEach(clusterMF => {
-                    if (clusterMF[0]) {
-                      clusterMF[0].adminOnly = true;
-                    }
-                  });
-                }
-                var fetchedNodes = [].concat.apply([], cmf);
-                return [].concat.apply(staticNodes, fetchedNodes);
-              });
-            }
-          },
-          {
-            pathSegment: 'docs',
-            viewUrl: config.docsModuleUrl,
-            label: 'Docs',
-            hideSideNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            icon: 'sys-help'
-          }
-        ],
-        contextSwitcher: {
-          defaultLabel: 'Select Namespace ...',
-          parentNodePath: '/home/namespaces', // absolute path
-          lazyloadOptions: true, // load options on click instead on page load
-          options: getNamespaces,
-          actions: [
-            {
-              label: '+ New Namespace',
-              link: '/home/workspace?~showModal=true'
-            },
-            {
-              label: 'Show all namespaces',
-              link: '/home/workspace?~allNamespaces=true',
-              position: 'bottom'
-            }
-          ]
-        }
-      },
+      navigation,
       routing: {
         nodeParamPrefix: '~',
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
@@ -888,7 +777,7 @@ window.addEventListener('message', e => {
       window.postMessage(
         {
           msg: 'luigi.ux.alert.show',
-          data: { settings }
+          data: {settings}
         },
         '*'
       );
@@ -904,10 +793,11 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
         limitExceededErrorscomposed.push(
           `'${resource.resourceName}' by '${affectedResource}' (${
             resource.quotaName
-          })`
+            })`
         );
       });
     }
   });
   return limitExceededErrorscomposed;
 }
+

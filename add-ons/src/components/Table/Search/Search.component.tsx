@@ -27,7 +27,7 @@ const SearchComponent: React.FunctionComponent<Props> = ({
           glyph="search"
           option="light"
           disabled={!configurationsExist}
-          compact
+          compact={true}
           onClick={() => {
             setShowSearchIcon(false);
           }}
@@ -36,7 +36,7 @@ const SearchComponent: React.FunctionComponent<Props> = ({
         <FormGroup>
           <FormItem>
             <InputGroup
-              compact
+              compact={true}
               inputPlaceholder={PLACEHOLDERS.SEARCH_FIELD}
               inputType="search"
               {...searchField.bind}

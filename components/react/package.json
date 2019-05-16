@@ -12,7 +12,7 @@
     "start:kyma": "npm run build:watch",
     "start:kyma:api": "npm run build:watch",
     "build": "webpack --config webpack.config.prod.js",
-    "build:watch": "webpack -w --config webpack.config.prod.js",
+    "build:watch": "webpack -w --config webpack.config.dev.js",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "test": "jest src/**; exit 0",

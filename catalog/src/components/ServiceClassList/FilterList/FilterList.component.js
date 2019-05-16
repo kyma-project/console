@@ -33,6 +33,7 @@ const FilterList = ({
     <FiltersDropdown>
       <Dropdown
         disabled={disabled}
+        placement="top-end"
         control={
           <Button
             option="emphasized"

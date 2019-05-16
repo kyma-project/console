@@ -24,11 +24,16 @@ import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets
 import { ResourcesComponent } from '../content/namespaces/configuration/resources/resources.component';
 
 import { ConfigMapsComponent } from '../content/namespaces/operation/configmaps/configmaps.component';
+import { StatusLabelComponent } from 'shared/components/status-label/status-label.component';
 
 const appRoutes: Routes = [
   {
     path: 'home',
     children: [
+      {
+        path: 'preload',
+        component: StatusLabelComponent
+      },
       {
         path: 'namespaces',
         component: NamespacesContainerComponent,
