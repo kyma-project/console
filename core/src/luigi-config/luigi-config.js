@@ -489,6 +489,12 @@ function getConsoleInitData() {
         showInNavigation
         order
         settings
+        externalLink
+        requiredPermissions{
+          verbs
+          resource
+          apiGroup
+        }
       }
     }
   }`;
