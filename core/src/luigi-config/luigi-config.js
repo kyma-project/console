@@ -477,7 +477,7 @@ function getConsoleInitData() {
     backendModules{
       name
     }
-    clusterMicrofrontends{
+    clusterMicroFrontends{
       name
       category
       viewBaseUrl
