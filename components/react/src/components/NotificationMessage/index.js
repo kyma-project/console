@@ -20,6 +20,7 @@ import {
 class NotificationMessage extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
+    customMargin: PropTypes.string,
     type: PropTypes.string.isRequired,
     message: PropTypes.string,
   };
@@ -40,7 +41,7 @@ class NotificationMessage extends React.Component {
   };
 
   render() {
-    const { type, title, message } = this.props;
+    const { type, title, message, customMargin } = this.props;
     const { show } = this.state;
 
     if (!type || !title || !message) {
@@ -51,7 +52,7 @@ class NotificationMessage extends React.Component {
         {show ? (
           <GridWrapper>
             <Grid.Unit>
-              <CenterSideWrapper>
+              <CenterSideWrapper customMargin={customMargin}>
                 <ContentWrapper>
                   <ContentHeader>
                     <Grid>

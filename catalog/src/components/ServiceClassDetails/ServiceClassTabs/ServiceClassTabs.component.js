@@ -3,14 +3,25 @@ import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import AsyncApi from '@kyma-project/asyncapi-react';
 import ODataReact from '@kyma-project/odata-react';
-import { ReactMarkdown, Tabs, Tab } from '@kyma-project/react-components';
+import {
+  NotificationMessage,
+  ReactMarkdown,
+  Status,
+  StatusWrapper,
+  Tabs,
+  Tab,
+} from '@kyma-project/react-components';
 
 import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
+import { ServiceClassInstancesTable } from '../ServiceClassInstancesTable/ServiceClassInstancesTable.component';
 
-import { ServiceClassTabsContentWrapper } from './styled';
+import {
+  ServiceClassTabsContentWrapper,
+  TabErrorMessageWrapper,
+} from './styled';
 
+import { serviceClassConstants } from '../../../variables';
 import { processDocFilename, DocsProcessor } from '../../../commons/helpers';
-
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
 
 class ServiceClassTabs extends Component {
@@ -19,7 +30,7 @@ class ServiceClassTabs extends Component {
     openApiSpec: null,
     asyncapi: null,
     odata: null,
-    error: null,
+    fetchError: null,
   };
 
   async componentDidMount() {
@@ -145,7 +156,7 @@ class ServiceClassTabs extends Component {
         })
         .catch(err => {
           this.setState({
-            error: err,
+            fetchError: err,
           });
         });
     return data;
@@ -165,7 +176,7 @@ class ServiceClassTabs extends Component {
         })
         .catch(err => {
           this.setState({
-            error: err,
+            fetchError: err,
           });
         });
     return data;
@@ -191,19 +202,22 @@ class ServiceClassTabs extends Component {
       ),
     ).catch(err => {
       this.setState({
-        error: err,
+        fetchError: err,
       });
     });
     return data;
   }
 
-  render() {
-    const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
+  getTabElementsIndicator(instancesCount) {
+    return (
+      <StatusWrapper key="instances-no">
+        <Status>{instancesCount}</Status>
+      </StatusWrapper>
+    );
+  }
 
-    if (error) {
-      console.error(error);
-      return <div>{`${error.name}: ${error.message}`}</div>;
-    }
+  render() {
+    const { docsData, openApiSpec, asyncapi, odata, fetchError } = this.state;
 
     if (
       (docsData && docsData.length) ||
@@ -233,33 +247,56 @@ class ServiceClassTabs extends Component {
           ));
 
       return (
-        <ServiceClassTabsContentWrapper>
-          <Tabs>
-            {docsData && docsData.length && docsFromNewApi}
-            {openApiSpec && openApiSpec.source ? (
-              <Tab title={'Console'}>
-                <ApiReference
-                  url="http://petstore.swagger.io/v1/swagger.json"
-                  schema={openApiSpec.source}
+        <>
+          {fetchError && (
+            <TabErrorMessageWrapper>
+              <NotificationMessage
+                customMargin={'0'}
+                type="error"
+                title={fetchError.name}
+                message={fetchError.message}
+              />
+            </TabErrorMessageWrapper>
+          )}
+
+          <ServiceClassTabsContentWrapper>
+            <Tabs>
+              {!fetchError && docsData && docsData.length && docsFromNewApi}
+              {!fetchError && openApiSpec && openApiSpec.source ? (
+                <Tab title={'Console'}>
+                  <ApiReference
+                    url="http://petstore.swagger.io/v1/swagger.json"
+                    schema={openApiSpec.source}
+                  />
+                </Tab>
+              ) : null}
+              {!fetchError && asyncapi && asyncapi.source ? (
+                <Tab title={'Events'} margin="0" background="inherit">
+                  <AsyncApi
+                    schema={asyncapi && asyncapi.source}
+                    theme={asyncApiTheme}
+                    config={asyncApiConfig}
+                  />
+                </Tab>
+              ) : null}
+              {!fetchError && odata && odata.source ? (
+                <Tab title={'OData'} margin="0" background="inherit">
+                  <ODataReact schema={odata.source} />
+                </Tab>
+              ) : null}
+              <Tab
+                aditionalStatus={this.getTabElementsIndicator(
+                  this.props.serviceClass.instances.length,
+                )}
+                title={serviceClassConstants.instancesTabText}
+              >
+                <ServiceClassInstancesTable
+                  tableData={this.props.serviceClass.instances}
                 />
               </Tab>
-            ) : null}
-            {asyncapi && asyncapi.source ? (
-              <Tab title={'Events'} margin="0" background="inherit">
-                <AsyncApi
-                  schema={asyncapi && asyncapi.source}
-                  theme={asyncApiTheme}
-                  config={asyncApiConfig}
-                />
-              </Tab>
-            ) : null}
-            {odata && odata.source ? (
-              <Tab title={'OData'} margin="0" background="inherit">
-                <ODataReact schema={odata.source} />
-              </Tab>
-            ) : null}
-          </Tabs>
-        </ServiceClassTabsContentWrapper>
+            </Tabs>
+          </ServiceClassTabsContentWrapper>
+        </>
       );
     }
     return null;

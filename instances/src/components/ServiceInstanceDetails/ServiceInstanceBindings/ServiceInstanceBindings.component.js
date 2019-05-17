@@ -1,6 +1,12 @@
 import React, { Fragment } from 'react';
 
-import { Table, Tabs, Tab, Tooltip } from '@kyma-project/react-components';
+import {
+  instanceStatusColor,
+  Table,
+  Tabs,
+  Tab,
+  Tooltip,
+} from '@kyma-project/react-components';
 
 import BindApplicationModal from './BindApplicationModal/BindApplicationModal.container';
 import CreateCredentialsModal from './CreateCredentialsModal/CreateCredentialsModal.container';
@@ -18,7 +24,6 @@ import {
 
 import { TextOverflowWrapper } from '../../ServiceInstances/ServiceInstancesTable/styled';
 
-import { statusColor } from '../../../commons/helpers';
 import { backendModuleExists } from '../../../commons/helpers';
 
 class ServiceInstanceBindings extends React.Component {
@@ -141,7 +146,7 @@ class ServiceInstanceBindings extends React.Component {
           >
             <span
               style={{
-                color: statusColor(bindingUsage.status.type),
+                color: instanceStatusColor(bindingUsage.status.type),
                 cursor: `${bindingUsage.status.message ? 'help' : 'default'}`,
               }}
               title={bindingUsage.status.type}
@@ -203,7 +208,7 @@ class ServiceInstanceBindings extends React.Component {
           >
             <span
               style={{
-                color: statusColor(binding.status.type),
+                color: instanceStatusColor(binding.status.type),
                 cursor: `${binding.status.message ? 'help' : 'default'}`,
               }}
               title={binding.status.type}

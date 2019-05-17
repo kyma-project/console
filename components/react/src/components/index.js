@@ -16,6 +16,7 @@ import H3 from './Header/H3';
 import H4 from './Header/H4';
 import Label from './Label';
 import Image from './Image';
+import InstanceStatus from './InstanceStatus';
 import Icon from './Icon';
 import Notification from './Notification';
 import NotificationMessage from './NotificationMessage';
@@ -34,6 +35,8 @@ import ReactMarkdown from './ReactMarkdown';
 import Search from './Search';
 import Separator from './Separator';
 import Spinner from './Spinner';
+import Status from './Status';
+import StatusWrapper from './Status/StatusWrapper';
 import Tabs from './Tabs';
 import Tab from './Tabs/Tab';
 import Table from './Table';
@@ -73,6 +76,7 @@ module.exports = {
   H4,
   Label,
   Image,
+  InstanceStatus,
   Icon,
   Notification,
   NotificationMessage,
@@ -89,6 +93,8 @@ module.exports = {
   Search,
   Separator,
   Spinner,
+  Status,
+  StatusWrapper,
   Tabs,
   Tab,
   Table,
