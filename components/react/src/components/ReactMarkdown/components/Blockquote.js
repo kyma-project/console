@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import NotePanel from '../../NotePanel';
 
 const BlockQuote = ({ children }) => {
