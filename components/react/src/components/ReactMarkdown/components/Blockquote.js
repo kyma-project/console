@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import NotePanel from '../../NotePanel';
 
 const BlockQuote = ({ children }) => {
@@ -15,16 +15,19 @@ const BlockQuote = ({ children }) => {
     return type && type.replace(':', '').toLowerCase();
   };
 
-  const createPanels = elem =>
-    !elem
-      ? null
-      : elem.map((element, index) => (
-          <NotePanel type={getPanelType(element[0])} key={index}>
-            {element}
-          </NotePanel>
-        ));
+  const createPanels = elem => {
+    if (!elem) {
+      return null;
+    }
+    return elem.map((element, index) => (
+      <NotePanel type={getPanelType(element[0])} key={index}>
+        {element}
+      </NotePanel>
+    ));
+  };
 
-  const isOneOfTypes = arg => !!arg && ['note', 'caution', 'tip'].includes(arg);
+  const panelTypes = ['note', 'caution', 'tip'];
+  const isOneOfTypes = arg => !!arg && panelTypes.includes(arg);
 
   const modifiedChildren =
     Array.isArray(children) &&

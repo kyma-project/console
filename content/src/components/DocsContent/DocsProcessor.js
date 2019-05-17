@@ -25,10 +25,6 @@ export class DocsProcessor {
     this.docs.map(doc => {
       docsBeginingIndex = doc.source.indexOf(metadataRegexp, 3) + 3;
       doc.source = doc.source.substring(docsBeginingIndex, doc.source.length);
-      doc.source += `
->**TIP:** To learn more about how to use overrides in Kyma, see the following documents: 
->* [Helm overrides for Kyma installation](/root/kyma/#configuration-helm-overrides-for-kyma-installation)
->* [Sub-charts overrides](/root/kyma/#configuration-helm-overrides-for-kyma-installation-sub-chart-overrides)`;
       return doc;
     });
 

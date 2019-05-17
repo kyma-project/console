@@ -121,11 +121,6 @@ export class DocsProcessor {
       if (doc.source.search(assetsRegexp) !== -1) {
         doc.source = doc.source.replace(assetsRegexp, `](${docsUrl}/assets`);
       }
-
-      doc.source += `
->**TIP:** To learn more about how to use overrides in Kyma, see the following documents: 
->* [Helm overrides for Kyma installation](/root/kyma/#configuration-helm-overrides-for-kyma-installation)
->* [Sub-charts overrides](/root/kyma/#configuration-helm-overrides-for-kyma-installation-sub-chart-overrides)`;
       return doc;
     });
 
