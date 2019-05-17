@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const getColorFromType = props => {
   switch (props.type) {
@@ -22,4 +22,14 @@ export const NotePanelWrapper = styled.blockquote`
 
 export const NotePanelContent = styled.div`
   display: inline-block;
+  > p {
+    margin-bottom: 5px;
+  }
+  &&& ul {
+    margin-bottom: 0;
+    padding-left: 26px;
+  }
+  & li {
+    margin-bottom: 4px;
+  }
 `;
