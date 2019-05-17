@@ -27,8 +27,9 @@ export const NotePanelContent = styled.div`
   }
   &&& ul {
     margin-bottom: 0;
+    padding-left: 26px;
   }
   & li {
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
 `;
