@@ -9,8 +9,8 @@ module.exports = {
     instanceLabel,
     instanceAdditionalData,
     instancePlanName,
-    instanceRegExpData,
-    faultyRegExpData,
+    configRegExpData,
+    configUncorrectRegExpData,
   ) => {
     try {
       const addToEnvButton = `[${config.catalogTestingAtribute}="add-to-env"]`;
@@ -20,11 +20,11 @@ module.exports = {
       const plan = `[name="selectedKind"]`;
       const additionalData = '#root_additionalData';
       const planName = '#root_planName';
-      const regExpData = '#root_onlyNumbersString';
+      const regExpDataId = '#root_onlyNumbersString';
       const modalCreate = `[${
         config.catalogTestingAtribute
       }="modal-confirmation-button"]`;
-      const disabledButton = '.is-disabled';
+      const disabledButtonClass = '.is-disabled';
 
       const frame = await kymaConsole.getFrame(page);
       await frame.click(addToEnvButton);
@@ -50,24 +50,24 @@ module.exports = {
       if (instanceAdditionalData) {
         const classData = await frame.$(additionalData);
 
-        expect(await frame.$(disabledButton)).toBeTruthy();
+        expect(await frame.$(disabledButtonClass)).toBeTruthy();
 
         await classData.focus();
         await classData.type(instanceAdditionalData);
 
-        expect(await frame.$(disabledButton)).toBeNull();
+        expect(await frame.$(disabledButtonClass)).toBeNull();
       }
-      if (instanceRegExpData && faultyRegExpData) {
-        const classRegExpData = await frame.$(regExpData);
+      if (configRegExpData && configUncorrectRegExpData) {
+        const classRegExpData = await frame.$(regExpDataId);
         await classRegExpData.focus();
-        await classRegExpData.type(faultyRegExpData);
-        expect(await frame.$(disabledButton)).toBeTruthy();
+        await classRegExpData.type(configUncorrectRegExpData);
+        expect(await frame.$(disabledButtonClass)).toBeTruthy();
         await frame.evaluate(selector => {
           document.querySelector(selector).value = '';
-        }, regExpData);
+        }, regExpDataId);
         await classRegExpData.focus();
-        await classRegExpData.type(instanceRegExpData);
-        expect(await frame.$(disabledButton)).toBeNull();
+        await classRegExpData.type(configRegExpData);
+        expect(await frame.$(disabledButtonClass)).toBeNull();
       }
       if (instancePlanName) {
         const classPlanName = await frame.$(planName);
