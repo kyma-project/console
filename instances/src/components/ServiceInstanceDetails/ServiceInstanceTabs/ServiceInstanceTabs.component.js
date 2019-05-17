@@ -3,33 +3,15 @@ import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import AsyncApi from '@kyma-project/asyncapi-react';
 import ODataReact from '@kyma-project/odata-react';
-import {
-  Markdown,
-  ReactMarkdown,
-  Tabs,
-  Tab,
-} from '@kyma-project/react-components';
+import { ReactMarkdown, Tabs, Tab } from '@kyma-project/react-components';
 
 import ApiConsole from '../SwaggerApi/SwaggerApiConsole.component';
 
 import { ServiceInstanceTabsContentWrapper } from './styled';
 
-import {
-  validateContent,
-  processDocFilename,
-  sortDocumentsByType,
-  DocsProcessor,
-} from '../../../commons/helpers';
+import { processDocFilename, DocsProcessor } from '../../../commons/helpers';
 
 import { asyncApiConfig, asyncApiTheme } from '../../../commons/asyncapi';
-
-const validatDocumentsByType = type => {
-  let numberOfSources = 0;
-  for (let item = 0; item < type.length; item++) {
-    if (type[item].source || type[item].Source) numberOfSources++;
-  }
-  return numberOfSources > 0;
-};
 
 class ServiceInstanceTabs extends Component {
   state = {
@@ -216,9 +198,6 @@ class ServiceInstanceTabs extends Component {
   }
 
   render() {
-    const { serviceClass } = this.props;
-
-    //data from new api
     const { docsData, openApiSpec, asyncapi, odata, error } = this.state;
 
     if (error) {
@@ -226,62 +205,12 @@ class ServiceInstanceTabs extends Component {
       return <div>{`${error.name}: ${error.message}`}</div>;
     }
 
-    //data ffrom deprecated api
-    const deprecatedContent = serviceClass.content && serviceClass.content;
-    const deprecatedOpenApiSpec =
-      serviceClass.openApiSpec && serviceClass.openApiSpec;
-    const deprecatedAsyncApiSpec =
-      serviceClass.asyncApiSpec && serviceClass.asyncApiSpec;
-    const deprecatedOdataSpec =
-      serviceClass.odataSpec && serviceClass.odataSpec;
-
     if (
       (docsData && docsData.length) ||
       (openApiSpec && openApiSpec.source) ||
       (odata && odata.source) ||
-      (asyncapi && asyncapi.source) ||
-      (deprecatedContent &&
-        Object.keys(deprecatedContent).length &&
-        validateContent(deprecatedContent)) ||
-      (deprecatedOpenApiSpec && Object.keys(deprecatedOpenApiSpec).length) ||
-      (deprecatedAsyncApiSpec && Object.keys(deprecatedAsyncApiSpec).length) ||
-      (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length)
+      (asyncapi && asyncapi.source)
     ) {
-      let documentsByType = [],
-        documentsTypes = [];
-
-      if (
-        !serviceClass.loading &&
-        deprecatedContent &&
-        Object.keys(deprecatedContent).length
-      ) {
-        documentsByType = sortDocumentsByType(deprecatedContent);
-        documentsTypes = Object.keys(documentsByType);
-      }
-
-      const deprecatedDocs =
-        documentsTypes &&
-        documentsTypes.map(type =>
-          documentsByType &&
-          documentsByType[type] &&
-          !validatDocumentsByType(documentsByType[type]) ? null : (
-            <Tab key={type} title={type}>
-              <Markdown>
-                {documentsByType[type].map((item, i) => {
-                  return !(item.source || item.Source) ? null : (
-                    <div
-                      key={i}
-                      dangerouslySetInnerHTML={{
-                        __html: item.source || item.Source,
-                      }}
-                    />
-                  );
-                })}
-              </Markdown>
-            </Tab>
-          ),
-        );
-
       const newDocs = docsData
         ? new DocsProcessor(docsData)
             .removeMatadata()
@@ -305,34 +234,27 @@ class ServiceInstanceTabs extends Component {
       return (
         <ServiceInstanceTabsContentWrapper>
           <Tabs>
-            {docsData && docsData.length ? docsFromNewApi : deprecatedDocs}
-            {(openApiSpec && openApiSpec.source) ||
-            (deprecatedOpenApiSpec &&
-              Object.keys(deprecatedOpenApiSpec).length) ? (
+            {docsData && docsData.length && docsFromNewApi}
+            {openApiSpec && openApiSpec.source ? (
               <Tab title={'Console'}>
                 <ApiConsole
                   url="http://petstore.swagger.io/v1/swagger.json"
-                  schema={openApiSpec.source || deprecatedOpenApiSpec}
+                  schema={openApiSpec.source}
                 />
               </Tab>
             ) : null}
-            {(asyncapi && asyncapi.source) ||
-            (deprecatedAsyncApiSpec &&
-              Object.keys(deprecatedAsyncApiSpec).length) ? (
+            {asyncapi && asyncapi.source ? (
               <Tab title={'Events'} margin="0" background="inherit">
                 <AsyncApi
-                  schema={
-                    (asyncapi && asyncapi.source) || deprecatedAsyncApiSpec
-                  }
+                  schema={asyncapi && asyncapi.source}
                   theme={asyncApiTheme}
                   config={asyncApiConfig}
                 />
               </Tab>
             ) : null}
-            {(odata && odata.source) ||
-            (deprecatedOdataSpec && Object.keys(deprecatedOdataSpec).length) ? (
+            {odata && odata.source ? (
               <Tab title={'OData'} margin="0" background="inherit">
-                <ODataReact schema={odata.source || deprecatedOdataSpec} />
+                <ODataReact schema={odata.source} />
               </Tab>
             ) : null}
           </Tabs>

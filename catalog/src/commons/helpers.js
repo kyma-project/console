@@ -1,30 +1,6 @@
 import { randomNamesGenerator } from '@kyma-project/react-components';
 import builder from './builder';
 
-export const sortDocumentsByType = documents => {
-  if (!documents) return null;
-
-  const docs = documents.docs || documents.Docs || null;
-
-  if (documents && docs) {
-    return docs.reduce((object, document) => {
-      const key = document.type ? 'type' : 'Type';
-      const val = document[key];
-
-      if (!val) return {};
-
-      if (!object[val]) {
-        object[val] = [];
-      }
-
-      object[val].push(document);
-      return object;
-    }, {});
-  }
-
-  return null;
-};
-
 export const getDocumentsTypes = (items, docsSortedByType) => {
   let documentsTypes = [];
   if (items) {
@@ -51,29 +27,6 @@ export const getDescription = resource => {
   }
 
   return resource.longDescription || resource.description;
-};
-
-export const validateContent = content => {
-  if (!content) return false;
-
-  let documentsByType = [],
-    documentsTypes = [];
-
-  if (content && Object.keys(content).length) {
-    documentsByType = sortDocumentsByType(content);
-    if (!documentsByType) return false;
-    documentsTypes = Object.keys(documentsByType);
-    if (!documentsTypes) return false;
-  }
-
-  let numberOfSources = 0;
-  documentsTypes.forEach(type => {
-    const docsType = documentsByType[type];
-    for (let item = 0; item < docsType.length; item++) {
-      if (docsType[item].source || docsType[item].Source) numberOfSources++;
-    }
-  });
-  return numberOfSources > 0;
 };
 
 export function clearEmptyPropertiesInObject(object) {
