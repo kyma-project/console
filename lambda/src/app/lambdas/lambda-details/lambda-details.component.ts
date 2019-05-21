@@ -901,7 +901,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   showLogs() {
-    luigiClient.linkManager().withParams({function: this.lambda.metadata.name, namespace: this.namespace}).openAsModal('/home/cmf-logs');
+    luigiClient.linkManager().withParams({
+      function: this.lambda.metadata.name,
+      namespace: this.namespace,
+      container_name: this.lambda.metadata.name
+    }).openAsModal('/home/cmf-logs');
   }
 
   navigateToList() {
