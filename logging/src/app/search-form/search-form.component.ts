@@ -210,14 +210,14 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   getLabelKey(label: string) {
-    return label.split('=')[0].trim().replace(/^["]{1}/gms, '');
+    return label.split('=')[0].trim().replace(/^["]{1}/gm, '');
   }
 
   getLabelValue(label: string) {
     return label
       .split('=')[1].trim()
-      .replace(/["]{1}$/gms, '')
-      .replace(/^["]{1}/gms, '');
+      .replace(/["]{1}$/gm, '')
+      .replace(/^["]{1}/gm, '');
   }
 
   updateQuery() {
