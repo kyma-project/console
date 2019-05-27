@@ -59,22 +59,6 @@ export function clearEmptyPropertiesInObject(object) {
   }
 }
 
-export const statusColor = statusType => {
-  switch (statusType) {
-    case 'PROVISIONING':
-    case 'DEPROVISIONING':
-    case 'PENDING':
-      return '#ffb600';
-    case 'FAILED':
-      return '#ee0000';
-    case 'RUNNING':
-    case 'READY':
-      return '#3db350';
-    default:
-      return '#ffb600';
-  }
-};
-
 export const validateContent = content => {
   if (!content) return false;
 

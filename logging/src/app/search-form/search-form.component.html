@@ -100,7 +100,7 @@
       <div fd-form-item>
         Selected Labels:
         <span class="fd-token y-fd-token" [ngClass]="isMandatoryLabel(label.key) ? 'y-fd-token--no-close-button y-fd-token--no-link' : ''"
-            role="button" (click)="removeLabel($event.target.outerText)" *ngFor="let label of selectedLabels | keyvalue">
+            role="button" (click)="removeLabel($event.target.innerText)" *ngFor="let label of selectedLabels | keyvalue">
           {{ label.key }}="{{ label.value }}"
         </span>
       </div>

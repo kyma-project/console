@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import Grid from 'styled-components-grid';
-
 export const CenterSideWrapper = styled.div`
   box-sizing: border-box;
-  margin: 30px 0 0;
+  margin: ${props => (props.customMargin ? props.customMargin : '30px 0 0')};
   text-align: left;
   flex: 0 1 auto;
   display: flex;

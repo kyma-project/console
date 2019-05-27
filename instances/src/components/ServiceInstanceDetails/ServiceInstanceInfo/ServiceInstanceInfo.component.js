@@ -5,6 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import {
   Label,
   Icon,
+  instanceStatusColor,
   Modal,
   PanelActions,
 } from '@kyma-project/react-components';
@@ -22,7 +23,7 @@ import {
   JSONCode,
 } from './styled';
 
-import { getResourceDisplayName, statusColor } from '../../../commons/helpers';
+import { getResourceDisplayName } from '../../../commons/helpers';
 
 const INFORMATION_KEY_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.3 };
 const INFORMATION_VALUE_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.7 };
@@ -186,14 +187,16 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
       </CenterSideWrapper>
       <CenterSideWrapper
         colSpan={1}
-        color={statusColor(serviceInstance.status.type)}
+        color={instanceStatusColor(serviceInstance.status.type)}
       >
         <ContentHeader>
           Status
           <PanelActions>
             <Icon
               glyph={statusIcon(serviceInstance.status.type)}
-              style={{ color: statusColor(serviceInstance.status.type) }}
+              style={{
+                color: instanceStatusColor(serviceInstance.status.type),
+              }}
             />
           </PanelActions>
         </ContentHeader>

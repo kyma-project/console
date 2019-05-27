@@ -478,7 +478,7 @@ function getConsoleInitData() {
     backendModules{
       name
     }
-    clusterMicrofrontends{
+    clusterMicroFrontends{
       name
       category
       viewBaseUrl
@@ -490,6 +490,12 @@ function getConsoleInitData() {
         showInNavigation
         order
         settings
+        externalLink
+        requiredPermissions{
+          verbs
+          resource
+          apiGroup
+        }
       }
     }
   }`;
@@ -547,7 +553,7 @@ Promise.all(initPromises)
       if(token){
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
-        const cmfs = res[1].clusterMicrofrontends;
+        const cmfs = res[1].clusterMicroFrontends;
         if (
           modules &&
           modules.length > 0

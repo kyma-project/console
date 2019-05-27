@@ -7,13 +7,15 @@ import {
   Tabs,
   Tooltip,
   ThemeWrapper,
+  Status,
+  StatusWrapper,
 } from '@kyma-project/react-components';
 
 import { serviceInstanceConstants } from '../../variables';
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
 
-import { ServiceInstancesWrapper, StatusWrapper, Status } from './styled';
+import { ServiceInstancesWrapper } from './styled';
 import { transformDataScalarStringsToObjects } from '../../store/transformers';
 
 class ServiceInstances extends React.Component {
