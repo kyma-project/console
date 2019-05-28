@@ -112,7 +112,11 @@
         <div class="fd-col--4">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-3'">Service Port *</fd-form-label>
+              <fd-form-label [forValue]="'input-3'">Service Port *
+                <fd-inline-help [position]="'bottom-left'">
+                  {{ API_PORT_DESCRIPTION }}
+                </fd-inline-help>
+              </fd-form-label>
               <input fd-form-control [type]="'text'" id="input-3" [(ngModel)]="servicePort"
                 (ngModelChange)="validateDetails()" (blur)="validateDetails()"
                 [state]="errorPort ? 'invalid' : undefined" />

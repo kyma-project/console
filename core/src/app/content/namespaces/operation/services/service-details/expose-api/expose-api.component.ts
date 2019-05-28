@@ -11,6 +11,7 @@ import { InformationModalComponent } from 'shared/components/information-modal/i
 import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
 import * as LuigiClient from '@kyma-project/luigi-client';
+import { API_PORT_DESCRIPTION } from '../../../../../../shared/constants/constants';
 
 @Component({
   selector: 'app-expose-api',
@@ -51,6 +52,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public ariaServiceHidden = true;
 
   public availablePresets = [];
+
+  readonly API_PORT_DESCRIPTION = API_PORT_DESCRIPTION;
 
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
 
