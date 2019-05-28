@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NamespacesService } from '../services/namespaces.service';
 import LuigiClient from '@kyma-project/luigi-client';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { InformationModalComponent } from 'shared/components/information-modal/information-modal.component';
 
 @Component({
   selector: 'app-namespace-create',
@@ -56,7 +57,13 @@ export class NamespaceCreateComponent {
         this.navigateToDetails(this.namespaceName);
       }, 
       err => {
-        this.err = err.error.message || err.message;
+        if (err.error && err.error.message) {
+          this.err = err.error.message;
+        } else if (err.message) {
+          this.err = err.message;
+        } else {
+          this.err = err;
+        }
       }
     );
   }

@@ -24,7 +24,7 @@ export class GraphQLClientService {
     .mutate({mutation: gql`${query}`, variables})
     .pipe(
       map(res => this.processResponse(res)),
-      catchError(err =>  this.processError(err))
+      catchError(err => this.processError(err))
     );
   }
 
