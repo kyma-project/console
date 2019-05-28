@@ -10,21 +10,26 @@
   </td>
   <td>
     <a
+      class="display-inline"
       title="Open link in a new tab"
-      [href]="entry.spec.hostname"
+      [href]="getHostnameURL(entry.spec.hostname)"
       target="_blank"
     >
       {{ entry.spec.hostname }}
       <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
     </a>
     <fd-icon
+      ngxClipboard
+      [cbContent]="getHostnameURL(entry.spec.hostname)"
       class="fd-has-margin-left-tiny clickable align-middle"
       [glyph]="'copy'"
       [size]="'m'"
     ></fd-icon>
   </td>
   <td>{{ entry.spec.service.name }}</td>
-  <td>{{ entry.spec.service.port }}</td>
+  <td>
+    {{ entry.spec.service.port }}
+  </td>
   <td>
     <p>{{ isSecured(entry) }}</p>
   </td>

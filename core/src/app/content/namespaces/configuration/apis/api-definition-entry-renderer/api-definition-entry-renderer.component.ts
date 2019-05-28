@@ -75,4 +75,8 @@ export class ApiDefinitionEntryRendererComponent
       .fromContext('apismicrofrontend')
       .navigate(`details/${apiName}`);
   }
+
+  public getHostnameURL(hostname: string): string {
+    return `https://${hostname}`;
+  }
 }
