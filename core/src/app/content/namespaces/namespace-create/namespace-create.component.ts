@@ -5,7 +5,8 @@ import { ModalService, ModalComponent } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-namespace-create',
-  templateUrl: './namespace-create.component.html'
+  templateUrl: './namespace-create.component.html',
+  styleUrls: ['./namespace-create.component.scss']
 })
 export class NamespaceCreateComponent {
   @Output() cancelEvent: EventEmitter<any> = new EventEmitter();
@@ -16,12 +17,23 @@ export class NamespaceCreateComponent {
   public namespaceName: string;
   public isActive: boolean;
   public err: string;
-  public wrongName = false;
+  public labels = ['istio-injection=true'];
+
+  // checkboxes
   public istioInjectionEnabled = true;
   public resourceQuotasExpanded = false;
   public limitRangesExpanded = false;
-  public labels = ['istio-injection=true'];
+
+  // input errors
+  public wrongName = false;
   public wrongLabels = false;
+  public memoryLimitsError = false;
+  public memoryRequestsError = false;
+  public maxError = false;
+  public defaultError = false;
+  public defaultRequestError = false;
+
+  public regexErrorMessage = 'Regex error arrrrrrrr. Regex error arrrrrrrr.';
 
   constructor(
     private namespacesService: NamespacesService,
@@ -67,6 +79,11 @@ export class NamespaceCreateComponent {
       ? (this.wrongName = !regex.test(this.namespaceName))
       : (this.wrongName = false);
   }
+  public validateLimitsRegex(change, name) {
+    console.log(change, name)
+    const regex = /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/;
+    change ? (this[name] = !regex.test(change)) : (this[name] = false)
+  }
 
   private refreshContextSwitcher() {
     window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
@@ -85,6 +102,8 @@ export class NamespaceCreateComponent {
     wrongLabels?: boolean;
   }): void {
     if (labels) {
+
+      // disable 'istio injection' button if label has been removed.
       const istioLabel = labels.find(this.findIstioLabel);
       if (istioLabel) {
         const value = istioLabel.split('=')[1];
@@ -113,3 +132,7 @@ export class NamespaceCreateComponent {
     return key === 'istio-injection'
   }
 }
+
+
+// TODO : write regex
+// clear data

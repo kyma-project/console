@@ -1,0 +1,17 @@
+.y-fd-form-label {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.fd-form__item {
+  grid-column: 1;
+}
+
+.limits-inputs {
+  grid-column: 2;
+  margin-left: 5px;
+}
+
+.full-width {
+  grid-column: 1 / 3;
+}
