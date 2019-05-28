@@ -14,29 +14,29 @@ export class NamespaceCreateComponent {
   @ViewChild('createNamespaceModal') createNamespaceModal: ModalComponent;
 
   // default values
-  public isActive = true;
-  public namespaceName = '';
-  public labels = ['istio-injection=true'];
-  public memoryLimits = '3Gi';
-  public memoryRequests = '3006477108';
-  public max = '1Gi';
-  public default = '512Mi';
-  public defaultRequest = '32Mi';
+  public isActive: boolean;
+  public namespaceName: string;
+  public labels: string[];
+  public memoryLimits: string;
+  public memoryRequests: number;
+  public max: string;
+  public default: string;
+  public defaultRequest: string;
 
   // checkboxes
-  public istioInjectionEnabled = true;
-  public resourceQuotasExpanded = false;
-  public limitRangesExpanded = false;
+  public istioInjectionEnabled: boolean;
+  public resourceQuotasExpanded: boolean;
+  public limitRangesExpanded: boolean;
 
   // input errors
-  public err = undefined;
-  public wrongName = false;
-  public wrongLabels = false;
-  public memoryLimitsError = false;
-  public memoryRequestsError = false;
-  public maxError = false;
-  public defaultError = false;
-  public defaultRequestError = false;
+  public err: string;
+  public wrongName: boolean;
+  public wrongLabels: boolean;
+  public memoryLimitsError: boolean;
+  public memoryRequestsError: boolean;
+  public maxError: boolean;
+  public defaultError: boolean;
+  public defaultRequestError: boolean;
 
   public regexErrorMessage = 'Regex error arrrrrrrr. Regex error arrrrrrrr.';
 
@@ -139,7 +139,7 @@ export class NamespaceCreateComponent {
     this.namespaceName = '';
     this.labels = ['istio-injection=true'];
     this.memoryLimits = '3Gi';
-    this.memoryRequests = '3006477108';
+    this.memoryRequests = 3006477108;
     this.max = '1Gi';
     this.default = '512Mi';
     this.defaultRequest = '32Mi';
