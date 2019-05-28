@@ -1,10 +1,28 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td>
-    <a href="javascript:void(null)" (click)="navigateToDetails(entry.metadata.name)" class="fd-has-font-weight-bold">
+    <a
+      href="javascript:void(null)"
+      (click)="navigateToDetails(entry.metadata.name)"
+      class="fd-has-font-weight-bold"
+    >
       {{ entry.metadata.name }}
     </a>
   </td>
-  <td>{{ entry.spec.hostname }}</td>
+  <td>
+    <a
+      title="Open link in a new tab"
+      [href]="entry.spec.hostname"
+      target="_blank"
+    >
+      {{ entry.spec.hostname }}
+      <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
+    </a>
+    <fd-icon
+      class="fd-has-margin-left-tiny clickable align-middle"
+      [glyph]="'copy'"
+      [size]="'m'"
+    ></fd-icon>
+  </td>
   <td>{{ entry.spec.service.name }}</td>
   <td>{{ entry.spec.service.port }}</td>
   <td>
