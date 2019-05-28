@@ -62,25 +62,20 @@ export class NamespacesService {
       );
   }
 
-  public createNamespace(namespaceName: string) {
-    const body = {
-      metadata: { name: namespaceName, labels: { env: 'true' } }
+  public createNamespace(name: string, labels: object) {
+    const mutation = `mutation CreateNamespace($name: String!, $labels: Labels) {
+      createNamespace(name: $name, labels: $labels){
+        name
+        labels
+      } 
+    }`;
+
+    const variables = {
+      name,
+      labels
     };
-    if (namespaceName) {
-      return this.http
-        .post<any>(`${AppConfig.k8sApiServerUrl}namespaces`, body, {
-          headers: new HttpHeaders().set('Content-Type', 'application/json')
-        })
-        .pipe(
-          map(response => {
-            if (!_.isEmpty(response.metadata)) {
-              this.namespaceChangeStateEmitter$.emit(true);
-              return response;
-            }
-            return response;
-          })
-        );
-    }
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
   public deleteNamespace(namespaceName: string) {

@@ -46,12 +46,15 @@ export class NamespaceCreateComponent {
   ) {}
 
   public createNamespace() {
-    this.namespacesService.createNamespace(this.namespaceName).subscribe(
+    this.namespacesService.createNamespace(
+      this.namespaceName, 
+      this.labelsArrayToObject()
+    ).subscribe(
       () => {
         this.isActive = false;
         this.refreshContextSwitcher();
         this.navigateToDetails(this.namespaceName);
-      },
+      }, 
       err => {
         this.err = err.error.message || err.message;
       }
@@ -59,7 +62,9 @@ export class NamespaceCreateComponent {
   }
 
   public cancel() {
-    this.modalService.close(this.createNamespaceModal);
+    if(this.modalService) {
+      this.modalService.close(this.createNamespaceModal);
+    }
   }
 
   public show() {
@@ -131,6 +136,18 @@ export class NamespaceCreateComponent {
   public findIstioLabel(label) {
     const key = label.split('=')[0];
     return key === 'istio-injection'
+  }
+
+  public labelsArrayToObject() {
+    const labelsObject = {};
+    if (this.labels && this.labels.length > 0) {
+      this.labels.forEach((label) => {
+        const key = label.split('=')[0];
+        const value = label.split('=')[1];
+        labelsObject[key] = value;
+      })
+    }
+    return labelsObject;
   }
 
   public setDefaultValues() {
