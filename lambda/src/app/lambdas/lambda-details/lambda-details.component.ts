@@ -1374,7 +1374,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${this.token}`,
           })
-        : {},
+        : new Headers({
+          'Content-Type': 'application/json',
+        }),
     })
       .then(async res => {
         const responseText = await res.text();
