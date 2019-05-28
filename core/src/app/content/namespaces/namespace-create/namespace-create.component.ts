@@ -17,6 +17,11 @@ export class NamespaceCreateComponent {
   public isActive: boolean;
   public err: string;
   public wrongName = false;
+  public istioInjectionEnabled = true;
+  public resourceQuotasExpanded = false;
+  public limitRangesExpanded = false;
+  public labels = ['istio-injection=true'];
+  public wrongLabels = false;
 
   constructor(
     private namespacesService: NamespacesService,
@@ -65,5 +70,46 @@ export class NamespaceCreateComponent {
 
   private refreshContextSwitcher() {
     window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
+  }
+
+  public showResourceQuotas(bla) {
+    console.log(bla)
+    return bla
+  }
+
+  public updateLabels({
+    labels,
+    wrongLabels
+  }: {
+    labels?: string[];
+    wrongLabels?: boolean;
+  }): void {
+    if (labels) {
+      const istioLabel = labels.find(this.findIstioLabel);
+      if (istioLabel) {
+        const value = istioLabel.split('=')[1];
+        this.istioInjectionEnabled = value === 'true';
+      } else {
+        this.istioInjectionEnabled = false;
+      }
+    }
+    this.labels = labels !== undefined ? labels : this.labels;
+    this.wrongLabels = wrongLabels !== undefined ? wrongLabels : this.wrongLabels;
+  }
+
+  public toggleIstioCheck(checked: boolean) {
+    if (this.labels && this.labels.length > 0) {
+      const istioLabel = this.labels.find(this.findIstioLabel);
+      if (istioLabel) {
+        this.labels.splice(this.labels.indexOf(istioLabel), 1)
+      }
+    }
+    const istioLabelArray = ['istio-injection', checked.toString()]
+    this.labels.push(istioLabelArray.join('='))
+  }
+
+  private findIstioLabel(label) {
+    const key = label.split('=')[0];
+    return key === 'istio-injection'
   }
 }
