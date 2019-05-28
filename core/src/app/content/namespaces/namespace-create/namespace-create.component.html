@@ -53,7 +53,7 @@
 
             <div class="limits-inputs" [hidden]="!resourceQuotasExpanded">
               <label fd-form-label for="memory-limits-input">
-                Memory Limits
+                Memory Limits *
                 <input fd-form-control type="text"
                   id="memory-limits-input"
                   name="memory-limits-input"
@@ -64,13 +64,13 @@
               </label>
 
               <label fd-form-label for="memory-requests-input">
-                Memory Requests
+                Memory Requests *
                 <input fd-form-control type="text"
                   id="memory-requests-input"
                   name="memory-requests-input"
                   [(ngModel)]="memoryRequests"
                   [state]="memoryRequestsError ? 'invalid' : undefined"
-                  (ngModelChange)="validateLimitsRegex($event, 'memoryRequestsError')">
+                  (ngModelChange)="validateMemoryRequests($event)">
                   <fd-form-message [type]="'error'" *ngIf="memoryRequestsError">{{regexErrorMessage}}</fd-form-message>
               </label>
             </div>
@@ -83,42 +83,42 @@
                   [(ngModel)]="limitRangesExpanded">
                 Apply Limits for Pods
                 <fd-inline-help>
-                    Apply limits for all Pods in the Namespace.
+                  Apply limits for all Pods in the Namespace.
                 </fd-inline-help>
               </label>
             </div>
 
             <div class="limits-inputs" [hidden]="!limitRangesExpanded">
               <label fd-form-label for="max-input">
-                Max
-              <input fd-form-control type="text"
-                id="max-input"
-                name="max-input"
-                [(ngModel)]="max"
-                [state]="maxError ? 'invalid' : undefined"
-                (ngModelChange)="validateLimitsRegex($event, 'maxError')">
+                Max *
+                <input fd-form-control type="text"
+                  id="max-input"
+                  name="max-input"
+                  [(ngModel)]="max"
+                  [state]="maxError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'maxError')">
                 <fd-form-message [type]="'error'" *ngIf="maxError">{{regexErrorMessage}}</fd-form-message>
               </label>
 
               <label fd-form-label for="default-input">
-                Default
-              <input fd-form-control type="text"
-                id="default-input"
-                name="default-input"
-                [(ngModel)]="default"
-                [state]="defaultError ? 'invalid' : undefined"
-                (ngModelChange)="validateLimitsRegex($event, 'defaultError')">
+                Default *
+                <input fd-form-control type="text"
+                  id="default-input"
+                  name="default-input"
+                  [(ngModel)]="default"
+                  [state]="defaultError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'defaultError')">
                 <fd-form-message [type]="'error'" *ngIf="defaultError">{{regexErrorMessage}}</fd-form-message>
               </label>
 
               <label fd-form-label for="default-request-input">
-                Default Request
-              <input fd-form-control type="text"
-                id="default-request-input"
-                name="default-request-input"
-                [(ngModel)]="defaultRequest"
-                [state]="defaultRequestError ? 'invalid' : undefined"
-                (ngModelChange)="validateLimitsRegex($event, 'defaultRequestError')">
+                Default Request *
+                <input fd-form-control type="text"
+                  id="default-request-input"
+                  name="default-request-input"
+                  [(ngModel)]="defaultRequest"
+                  [state]="defaultRequestError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'defaultRequestError')">
                 <fd-form-message [type]="'error'" *ngIf="defaultRequestError">{{regexErrorMessage}}</fd-form-message>
               </label>
             </div>

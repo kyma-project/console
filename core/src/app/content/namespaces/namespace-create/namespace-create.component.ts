@@ -13,11 +13,15 @@ export class NamespaceCreateComponent {
 
   @ViewChild('createNamespaceModal') createNamespaceModal: ModalComponent;
 
-  public namespaces = [];
-  public namespaceName: string;
-  public isActive: boolean;
-  public err: string;
+  // default values
+  public isActive = true;
+  public namespaceName = '';
   public labels = ['istio-injection=true'];
+  public memoryLimits = '3Gi';
+  public memoryRequests = '3006477108';
+  public max = '1Gi';
+  public default = '512Mi';
+  public defaultRequest = '32Mi';
 
   // checkboxes
   public istioInjectionEnabled = true;
@@ -25,6 +29,7 @@ export class NamespaceCreateComponent {
   public limitRangesExpanded = false;
 
   // input errors
+  public err = undefined;
   public wrongName = false;
   public wrongLabels = false;
   public memoryLimitsError = false;
@@ -58,10 +63,7 @@ export class NamespaceCreateComponent {
   }
 
   public show() {
-    this.namespaceName = '';
-    this.err = undefined;
-    this.isActive = true;
-
+    this.setDefaultValues();
     this.modalService.open(this.createNamespaceModal).result.finally(() => {
       this.isActive = false;
       this.wrongName = false;
@@ -79,19 +81,18 @@ export class NamespaceCreateComponent {
       ? (this.wrongName = !regex.test(this.namespaceName))
       : (this.wrongName = false);
   }
+
   public validateLimitsRegex(change, name) {
-    console.log(change, name)
     const regex = /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/;
     change ? (this[name] = !regex.test(change)) : (this[name] = false)
   }
 
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
+  public validateMemoryRequests(change) {
+    this.memoryRequestsError = isNaN(change);
   }
 
-  public showResourceQuotas(bla) {
-    console.log(bla)
-    return bla
+  private refreshContextSwitcher() {
+    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 
   public updateLabels({
@@ -127,12 +128,37 @@ export class NamespaceCreateComponent {
     this.labels.push(istioLabelArray.join('='))
   }
 
-  private findIstioLabel(label) {
+  public findIstioLabel(label) {
     const key = label.split('=')[0];
     return key === 'istio-injection'
   }
+
+  public setDefaultValues() {
+    // default values
+    this.isActive = true;
+    this.namespaceName = '';
+    this.labels = ['istio-injection=true'];
+    this.memoryLimits = '3Gi';
+    this.memoryRequests = '3006477108';
+    this.max = '1Gi';
+    this.default = '512Mi';
+    this.defaultRequest = '32Mi';
+
+    // checkboxes
+    this.istioInjectionEnabled = true;
+    this.resourceQuotasExpanded = false;
+    this.limitRangesExpanded = false;
+  
+    // input errors
+    this.err = undefined;
+    this.wrongName = false;
+    this.wrongLabels = false;
+    this.memoryLimitsError = false;
+    this.memoryRequestsError = false;
+    this.maxError = false;
+    this.defaultError = false;
+    this.defaultRequestError = false;
+  }
 }
 
-
 // TODO : write regex
-// clear data
