@@ -6,6 +6,7 @@ import { ComponentCommunicationService } from '../../../../../../shared/services
 import { AppConfig } from '../../../../../../app.config';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
+import { API_PORT_DESCRIPTION } from '../../../../../../shared/constants/constants';
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',
@@ -17,6 +18,7 @@ export class FilteredApisEntryRendererComponent
   public currentNamespaceId: string;
   public emptyText = EMPTY_TEXT;
   private currentNamespaceSubscription: Subscription;
+  readonly API_PORT_DESCRIPTION = API_PORT_DESCRIPTION;
 
   constructor(
     protected injector: Injector,

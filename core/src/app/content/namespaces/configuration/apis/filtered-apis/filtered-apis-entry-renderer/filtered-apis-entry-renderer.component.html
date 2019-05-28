@@ -6,7 +6,6 @@
     </a>
   </td>
   <td > {{ entry.hostname }} </td>
-  <td>{{ entry.service.port }}</td>
   <ng-container *ngIf="isSecured(entry)">
     <td>
       <fd-badge [status]="'success'" [modifier]="'filled'" data-e2e-id="exposed-api-secured">Yes</fd-badge>
@@ -19,6 +18,7 @@
     </td>
     <td data-e2e-id="exposed-api-idp">{{ emptyText }}</td>
   </ng-container>
+  <td [title]="API_PORT_DESCRIPTION" class="cursor-help">{{ entry.service.port }}</td>
   <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
   </td>
