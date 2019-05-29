@@ -81,6 +81,8 @@ export class NamespaceCreateComponent {
             this.refreshContextSwitcher();
             this.err = `Namespace has been created, but there was an error while creating Limit Range: ${err}`;
           });
+        } else {
+          handleSuccess();
         }
 
       }, 
@@ -116,6 +118,19 @@ export class NamespaceCreateComponent {
       this.defaultRequest,
       this.max
     );
+  }
+
+  public namespaceCanBeCreated() {
+    const hasErrors = (this.err || this.wrongName || this.wrongLabels || this.memoryLimitsError || this.memoryRequestsError || this.maxError || this.defaultError || this.defaultRequestError);
+    let rqFields = true;
+    let lrFields = true;
+    if (this.resourceQuotasExpanded) {
+      rqFields = !!(this.memoryLimits && this.memoryRequests)
+    }
+    if (this.limitRangesExpanded) {
+      lrFields = !!(this.default && this.defaultRequest && this.max)
+    }
+    return (this.namespaceName && rqFields && lrFields && !hasErrors)
   }
 
   public cancel() {
@@ -157,22 +172,16 @@ export class NamespaceCreateComponent {
     window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 
-  public updateLabels({
-    labels,
-    wrongLabels
-  }: {
-    labels?: string[];
-    wrongLabels?: boolean;
-  }): void {
+  public updateLabels({ labels, wrongLabels }: { labels?: string[], wrongLabels?: boolean }): void {
     if (labels) {
 
-      // disable 'istio injection' button if label has been removed.
+      // enable 'istio injection' button if label has been removed (by default istio is injected if label is not in place).
       const istioLabel = labels.find(this.findIstioLabel);
       if (istioLabel) {
         const value = istioLabel.split('=')[1];
         this.istioInjectionEnabled = value === 'true';
       } else {
-        this.istioInjectionEnabled = false;
+        this.istioInjectionEnabled = true;
       }
     }
     this.labels = labels !== undefined ? labels : this.labels;
@@ -232,6 +241,10 @@ export class NamespaceCreateComponent {
     this.maxError = false;
     this.defaultError = false;
     this.defaultRequestError = false;
+  }
+
+  public removeError() {
+    this.err = undefined;
   }
 }
 

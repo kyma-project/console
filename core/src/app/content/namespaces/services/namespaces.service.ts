@@ -66,7 +66,6 @@ export class NamespacesService {
     const mutation = `mutation CreateNamespace($name: String!, $labels: Labels) {
       createNamespace(name: $name, labels: $labels){
         name
-        labels
       } 
     }`;
 
@@ -116,27 +115,9 @@ export class NamespacesService {
     ) {
       createResourceQuota(namespace: $namespace, name: $rqName, resourceQuota: $resourceQuota){
         name
-        limits {
-          memory
-        }
-        requests {
-          memory
-        }
       } 
-    
       createLimitRange(namespace: $namespace, name: $lrName, limits: $limits){
         name
-        limits {
-          max {
-            memory
-          }
-          default {
-            memory
-          }
-          defaultRequest {
-            memory
-          }
-        } 
       }
     }`;
 
@@ -163,12 +144,6 @@ export class NamespacesService {
     const mutation = `mutation CreateResourceQuota($namespace: String!, $name: String!, $resourceQuota: ResourceQuotaInput!) {
       createResourceQuota(namespace: $namespace, name: $name, resourceQuota: $resourceQuota){
         name
-        limits {
-          memory
-        }
-        requests {
-          memory
-        }
       } 
     }`;
 
@@ -197,17 +172,6 @@ export class NamespacesService {
     const mutation = `mutation CreateLimitRange($namespace: String!, $name: String!, $limits: LimitRangeInput!) {
       createLimitRange(namespace: $namespace, name: $name, limits: $limits){
         name
-        limits {
-          max {
-            memory
-          }
-          default {
-            memory
-          }
-          defaultRequest {
-            memory
-          }
-        }
       } 
     }`;
 
