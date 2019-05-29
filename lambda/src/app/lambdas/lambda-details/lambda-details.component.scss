@@ -1,4 +1,4 @@
-$primary: #167EE6;
+$primary: #167ee6;
 $hover-border-input: #009cdf;
 $dark-grey: #808080;
 $middle-dark-grey: #9e9a9a;
@@ -67,7 +67,9 @@ a.disabled {
   width: 10px;
 }
 
-div[hidden] { display: none; }
+div[hidden] {
+  display: none;
+}
 
 // fiorification additions
 .ace_editor {
@@ -95,10 +97,9 @@ div[hidden] { display: none; }
   }
 }
 
-input[type=text]:focus{
+input[type='text']:focus {
   box-shadow: 0 0 0 0px var(--fd-color-action-focus);
 }
-
 
 .labels {
   position: relative;
@@ -118,4 +119,29 @@ input[type=text]:focus{
   &:after {
     z-index: 1;
   }
+}
+
+.fd-page__header .fd-tabs {
+  margin-bottom: -16px;
+  &__link {
+    display: inline-block;
+  }
+}
+
+#test-payload-editor {
+  height: 24em;
+}
+
+#test-result {
+  height: 16em;
+}
+
+.fd-panel__footer {
+  .fd-button {
+    display: block;
+  }
+}
+
+.flex-right{
+  justify-content: flex-end;
 }

@@ -42,11 +42,11 @@ export class LambdasComponent extends GenericTableComponent
   title = 'Lambdas';
   public emptyListData = {
     header: {
-      text: 'Lambdas'
+      text: 'Lambdas',
     },
     body: {
-      text: 'It looks like you don’t have any lambdas in your namespace yet.'
-    }
+      text: 'It looks like you don’t have any lambdas in your namespace yet.',
+    },
   };
 
   public lambdasEventHandler;
@@ -128,8 +128,14 @@ export class LambdasComponent extends GenericTableComponent
           });
       },
       showLogs: (entry: any) => {
-        luigiClient.linkManager().withParams({function: entry.metadata.name, namespace: this.environment}).openAsModal('/home/cmf-logs');
-      }
+        luigiClient
+          .linkManager()
+          .withParams({
+            function: entry.metadata.name,
+            namespace: this.environment,
+          })
+          .openAsModal('/home/cmf-logs');
+      },
     };
   }
 

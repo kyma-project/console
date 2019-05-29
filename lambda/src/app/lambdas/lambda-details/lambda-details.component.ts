@@ -9,7 +9,11 @@ import {
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpClient,
+} from '@angular/common/http';
 import { catchError, finalize } from 'rxjs/operators';
 import { of as observableOf, Observable, forkJoin } from 'rxjs';
 
@@ -53,13 +57,19 @@ import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
-import { Authentication } from '../../shared/datamodel/authentication';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
 
 const FUNCTION = 'function';
+
+interface INotificationData {
+  type: 'info' | 'success' | 'error';
+  message: string;
+  description?: string;
+}
 
 @Component({
   selector: 'app-lambda-details',
@@ -140,12 +150,22 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   listenerId: number;
   functionSizes = [];
   dropDownStates = {};
+  testPayload = {};
+  responseEditorMode: 'json' | 'text' = 'json';
+  notificationTimeout: NodeJS.Timeout;
 
   public issuer: string;
   public jwksUri: string;
   public authType: string;
 
   public canShowLogs = false;
+  public currentTab = 'config';
+  public testPayloadText = JSON.stringify(this.testPayload, null, 2);
+  public currentNotification: INotificationData = {
+    type: 'info',
+    message: '',
+  };
+  public testingResponse = '';
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -161,6 +181,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     private subscriptionsService: SubscriptionsService,
     private cdr: ChangeDetectorRef,
     protected route: ActivatedRoute,
+    private http: HttpClient,
   ) {
     this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
       s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
@@ -239,9 +260,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               this.editor.setReadOnly(true);
             }
             if (this.lambda.metadata.name === '') {
-              this.functionName.nativeElement.focus()
+              this.functionName.nativeElement.focus();
             }
-
           }
 
           this.eventActivationsService
@@ -895,17 +915,23 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   initCanShowLogs() {
-    luigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
-      this.canShowLogs = exists;
-    });
+    luigiClient
+      .linkManager()
+      .pathExists('/home/cmf-logs')
+      .then(exists => {
+        this.canShowLogs = exists;
+      });
   }
 
   showLogs() {
-    luigiClient.linkManager().withParams({
-      function: this.lambda.metadata.name,
-      namespace: this.namespace,
-      container_name: this.lambda.metadata.name
-    }).openAsModal('/home/cmf-logs');
+    luigiClient
+      .linkManager()
+      .withParams({
+        function: this.lambda.metadata.name,
+        namespace: this.namespace,
+        container_name: this.lambda.metadata.name,
+      })
+      .openAsModal('/home/cmf-logs');
   }
 
   navigateToList() {
@@ -1056,12 +1082,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
     const regex = /[a-z]([-a-z0-9]*[a-z0-9])?/;
     const found = this.lambda.metadata.name.match(regex);
-    this.isFunctionNameEmpty =
-      this.lambda.metadata.name === ''
-        ? true
-        : false;
+    this.isFunctionNameEmpty = this.lambda.metadata.name === '' ? true : false;
     if (this.isFunctionNameEmpty) {
-      this.isLambdaFormValid = false
+      this.isLambdaFormValid = false;
     }
     this.isFunctionNameInvalid =
       (found && found[0] === this.lambda.metadata.name) ||
@@ -1194,9 +1217,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     if (api.spec.authentication !== undefined) {
       httpEndPoint.isAuthEnabled =
         api.spec.authentication.length !== 0 ? true : false;
-        if (httpEndPoint.isAuthEnabled) {
-          httpEndPoint.authentication = api.spec.authentication[0]
-        }
+      if (httpEndPoint.isAuthEnabled) {
+        httpEndPoint.authentication = api.spec.authentication[0];
+      }
     }
 
     return httpEndPoint;
@@ -1296,5 +1319,109 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       });
       return functionSizeChanged;
     }
+  }
+
+  changeTab(name: string) {
+    this.currentTab = name;
+  }
+
+  showNotification(notificationData: INotificationData, timeout?: number) {
+    this.currentNotification = { message: '', type: 'info' }; // "pretend" there's no error to force notification re-render
+
+    if (this.notificationTimeout) {
+      clearTimeout(this.notificationTimeout);
+    }
+
+    setTimeout(() => {
+      this.currentNotification = notificationData;
+    });
+
+    if (timeout) {
+      this.notificationTimeout = setTimeout(() => {
+        this.currentNotification = { message: '', type: 'info' };
+      }, timeout);
+    }
+  }
+
+  handleTestButtonClick() {
+    this.testingResponse = '';
+    if (!this.existingHTTPEndpoint) {
+      throw new Error('It looks like the Lambda is not deployed yet');
+    }
+
+    try {
+      this.testPayload = JSON.parse(this.testPayloadText);
+    } catch (ex) {
+      this.showNotification(
+        {
+          type: `error`,
+          message: `Couldn't parse the payload JSON`,
+          description: null,
+        },
+        5000,
+      );
+      return;
+    }
+
+    const lambdaEndpoint: HTTPEndpoint = this.getHTTPEndPointFromApi(
+      this.existingHTTPEndpoint,
+    );
+
+    luigiClient.uxManager().showLoadingIndicator();
+
+    fetch(lambdaEndpoint.url, {
+      method: 'POST',
+      body: this.testPayloadText,
+      headers: lambdaEndpoint.isAuthEnabled
+        ? new Headers({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.token}`,
+          })
+        : new Headers({
+          'Content-Type': 'application/json',
+        }),
+    })
+      .then(async res => {
+        const responseText = await res.text();
+        if (!res.ok) {
+          throw new Error(responseText);
+        }
+
+        this.showNotification(
+          {
+            type: `success`,
+            message: `The Lambda received your payload.`,
+            description: `You can now browse its logs.`,
+          },
+          5000,
+        );
+
+        try {
+          // the result can be parsed to JSON => pretty print it
+          this.testingResponse = JSON.stringify(
+            JSON.parse(responseText),
+            null,
+            2,
+          );
+          this.responseEditorMode = 'json';
+        } catch {
+          // just display it as it is
+          this.testingResponse = responseText;
+          this.responseEditorMode = 'text';
+        }
+      })
+      .finally(() => {
+        luigiClient.uxManager().hideLoadingIndicator();
+      })
+      .catch(async error => {
+        this.showNotification(
+          {
+            type: `error`,
+            message: error.message,
+            description: null,
+          },
+          5000,
+        );
+      });
   }
 }
