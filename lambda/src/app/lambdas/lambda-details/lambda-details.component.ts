@@ -1352,11 +1352,14 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     try {
       this.testPayload = JSON.parse(this.testPayloadText);
     } catch (ex) {
-      this.currentNotification = {
-        type: `error`,
-        message: `Couldn't parse the payload JSON`,
-        description: null,
-      };
+      this.showNotification(
+        {
+          type: `error`,
+          message: `Couldn't parse the payload JSON`,
+          description: null,
+        },
+        5000,
+      );
       return;
     }
 
