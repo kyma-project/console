@@ -78,6 +78,36 @@ export class NamespacesService {
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
+  public createResourceQuota(namespace: string, memoryLimits: string, memoryRequests: string) {
+    const resourceQuota = {
+      limits: {
+        memory: memoryLimits
+      }, 
+      requests: {
+        memory: memoryRequests
+      }
+    }
+    const mutation = `mutation CreateResourceQuota($namespace: String!, $name: String!, $resourceQuota: ResourceQuotaInput!) {
+      createResourceQuota(namespace: $namespace, name: $name, resourceQuota: $resourceQuota){
+        name
+        limits {
+          memory
+        }
+        requests {
+          memory
+        }
+      } 
+    }`;
+
+    const variables = {
+      namespace,
+      name: `${namespace}-resource-quota`,
+      resourceQuota
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
   public deleteNamespace(namespaceName: string) {
     if (namespaceName) {
       return this.http

@@ -19,7 +19,7 @@ export class NamespaceCreateComponent {
   public namespaceName: string;
   public labels: string[];
   public memoryLimits: string;
-  public memoryRequests: number;
+  public memoryRequests: string;
   public max: string;
   public default: string;
   public defaultRequest: string;
@@ -52,18 +52,22 @@ export class NamespaceCreateComponent {
       this.labelsArrayToObject()
     ).subscribe(
       () => {
-        this.isActive = false;
-        this.refreshContextSwitcher();
-        this.navigateToDetails(this.namespaceName);
+        this.namespacesService.createResourceQuota(
+          this.namespaceName,
+          this.memoryLimits, 
+          this.memoryRequests
+        ).subscribe(
+          () => {
+            this.isActive = false;
+            this.refreshContextSwitcher();
+            this.navigateToDetails(this.namespaceName);
+          }, err => {
+            this.err = `Namespace has been created, but without Resource Quota and Limit Ranges due to: ${err}`
+          }
+        )
       }, 
       err => {
-        if (err.error && err.error.message) {
-          this.err = err.error.message;
-        } else if (err.message) {
-          this.err = err.message;
-        } else {
-          this.err = err;
-        }
+        this.err = err;
       }
     );
   }
@@ -163,7 +167,7 @@ export class NamespaceCreateComponent {
     this.namespaceName = '';
     this.labels = ['istio-injection=true'];
     this.memoryLimits = '3Gi';
-    this.memoryRequests = 3006477108;
+    this.memoryRequests = '3006477108';
     this.max = '1Gi';
     this.default = '512Mi';
     this.defaultRequest = '32Mi';
