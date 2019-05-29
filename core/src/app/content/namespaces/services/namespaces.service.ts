@@ -108,6 +108,45 @@ export class NamespacesService {
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
+  public createLimitRange(namespace: string, memoryDefault: string, memoryDefaultRequest: string, memoryMax: string) {
+    const limits = {
+      default: {
+        memory: memoryDefault
+      },
+      defaultRequest: {
+        memory: memoryDefaultRequest
+      },
+      max: {
+        memory: memoryMax
+      },
+      type: 'Container'
+    }
+    const mutation = `mutation CreateLimitRange($namespace: String!, $name: String!, $limits: LimitRangeInput!) {
+      createLimitRange(namespace: $namespace, name: $name, limits: $limits){
+        name
+        limits {
+          max {
+            memory
+          }
+          default {
+            memory
+          }
+          defaultRequest {
+            memory
+          }
+        }
+      } 
+    }`;
+
+    const variables = {
+      namespace,
+      name: `${namespace}-limit-range`,
+      limits
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
   public deleteNamespace(namespaceName: string) {
     if (namespaceName) {
       return this.http

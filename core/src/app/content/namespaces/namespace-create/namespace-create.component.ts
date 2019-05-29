@@ -58,11 +58,22 @@ export class NamespaceCreateComponent {
           this.memoryRequests
         ).subscribe(
           () => {
-            this.isActive = false;
-            this.refreshContextSwitcher();
-            this.navigateToDetails(this.namespaceName);
+            this.namespacesService.createLimitRange(
+              this.namespaceName,
+              this.default,
+              this.defaultRequest,
+              this.max
+            ).subscribe(
+              (res) => {
+                this.isActive = false;
+                this.refreshContextSwitcher();
+                this.navigateToDetails(this.namespaceName);
+              }, err => {
+                this.err = `Namespace and Resource Quota have been created, but without Limit Range due to: ${err}`
+              }
+            )
           }, err => {
-            this.err = `Namespace has been created, but without Resource Quota and Limit Ranges due to: ${err}`
+            this.err = `Namespace has been created, but without Resource Quota and Limit Range due to: ${err}`
           }
         )
       }, 
