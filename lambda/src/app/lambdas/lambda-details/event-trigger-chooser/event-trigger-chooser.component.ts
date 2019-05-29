@@ -56,6 +56,8 @@ export class EventTriggerChooserComponent {
           return;
         }
       });
+      console.log('event.schema',event.schema)
+      event.schema = JSON.stringify(event.schema);
       if (!isSelected) {
         this.filteredTriggers.push(event);
       }

@@ -50,7 +50,7 @@ import { FetchTokenModalComponent } from '../../fetch-token-modal/fetch-token-mo
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
 import { InstanceBindingState } from '../../shared/datamodel/instance-binding-state';
-import { EventTrigger } from '../../shared/datamodel/event-trigger';
+import { EventTrigger, EventTriggerWithSchema } from '../../shared/datamodel/event-trigger';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
@@ -58,7 +58,7 @@ import { SubscriptionsService } from '../../subscriptions/subscriptions.service'
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
-
+var OpenAPISampler = require('openapi-sampler');
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
@@ -78,7 +78,10 @@ interface INotificationData {
 })
 export class LambdaDetailsComponent implements OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];
+  selectedEventTrigger: ITrigger[] = [];
   availableEventTriggers: EventTrigger[] = [];
+  allEventTriggers: EventTriggerWithSchema[] = [];
+  filteredTriggers: EventTriggerWithSchema[] = [];
   existingEventTriggers: EventTrigger[] = [];
 
   namespace: string;
@@ -106,6 +109,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   @ViewChild('editLabelsForm') editLabelsForm: NgForm;
 
+  trigger: string;
   code: string;
   dependency: string;
   aceMode: string;
@@ -118,6 +122,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   showSample = false;
   toggleTrigger = false;
   toggleTriggerType = false;
+  trigerDropdownHidden = true;
+  public triggerAriaExpanded = false;
+  public triggerAriaHidden = true;
   typeDropdownHidden = true;
   sizeDropdownHidden = true;
   isLambdaFormValid = true;
@@ -274,12 +281,25 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                     eventType: ev.eventType,
                     sourceId: ea.sourceId,
                     description: ev.description,
+                    version: ev.version
+                  };
+                  const eventTriggerWithSchema: EventTriggerWithSchema = {
+                    eventType: ev.eventType,
+                    sourceId: ea.sourceId,
+                    description: ev.description,
                     version: ev.version,
+                    schema: ev.schema
                   };
                   this.availableEventTriggers.push(eventTrigger);
+                  this.allEventTriggers.push(eventTriggerWithSchema);
                 });
               });
+              if(this.allEventTriggers.length>0){
+                this.filteredTriggers = this.allEventTriggers;
+                this.selectTrigger(this.allEventTriggers[0]);
+              }
             });
+
         });
       },
       err => {
@@ -1430,5 +1450,36 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           5000,
         );
       });
+  }
+
+  filterTriggerEvents() {
+    this.filteredTriggers = [];
+    this.allEventTriggers.forEach(element => {
+      if (element.eventType.toLowerCase().indexOf(this.trigger.toLowerCase())!==-1) {
+        this.filteredTriggers.push(element);
+      }
+    });
+  }
+
+  public toggleDropDown() {
+    this.triggerAriaExpanded = !this.triggerAriaExpanded;
+    this.triggerAriaHidden = !this.triggerAriaHidden;
+  }
+
+  public openDropDown($event: Event) {
+    this.triggerAriaExpanded = true;
+    this.triggerAriaHidden = false;
+  }
+
+  public closeDropDown() {
+    this.triggerAriaExpanded = false;
+    this.triggerAriaHidden = true;
+  }
+
+  public selectTrigger(trigger) {
+    this.trigger = trigger.eventType;
+    this.selectedEventTrigger = trigger;
+    this.testPayload = trigger.schema;
+    this.testPayloadText = JSON.stringify(OpenAPISampler.sample(this.testPayload), null, 2);
   }
 }

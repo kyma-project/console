@@ -145,3 +145,31 @@ input[type='text']:focus {
 .flex-right{
   justify-content: flex-end;
 }
+
+.y-fd-form__control[type='text'] {
+  border: 0;
+  padding-right: 40px;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.y-fd-dropdown__control {
+  height: auto;
+  max-height: none;
+
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    margin: 0;
+  }
+}
+
+.y-fd-popover__body {
+  width: calc(100% - (var(--fd-modal-padding-x)*2));
+  overflow: auto;
+  max-height: 300px;
+}
