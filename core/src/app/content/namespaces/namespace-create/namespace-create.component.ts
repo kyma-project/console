@@ -38,7 +38,7 @@ export class NamespaceCreateComponent {
   public defaultError: boolean;
   public defaultRequestError: boolean;
 
-  public regexErrorMessage = 'Regex error arrrrrrrr. Regex error arrrrrrrr.';
+  public regexErrorMessage = `Memory values can be expressed as a plain integer, as a fixed-point integer using one of these suffixes: E, P, T, G, M, K or the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki.`;
 
   constructor(
     private namespacesService: NamespacesService,
