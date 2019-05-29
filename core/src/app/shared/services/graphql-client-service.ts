@@ -15,7 +15,7 @@ export class GraphQLClientService {
     .query({query: gql`${query}`, variables, fetchPolicy: 'no-cache'})
     .pipe(
       map(res => this.processResponse(res)),
-      catchError(err =>  this.processError(err))
+      catchError(err => this.processError(err))
     );
   }
 

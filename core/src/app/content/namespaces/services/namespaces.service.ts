@@ -78,6 +78,79 @@ export class NamespacesService {
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
+  public createResourceQuotaAndLimitRange(
+    namespace: string, 
+    memoryLimits: string, 
+    memoryRequests: string, 
+    memoryDefault: string, 
+    memoryDefaultRequest: string, 
+    memoryMax: string
+  ) {
+    const resourceQuota = {
+      limits: {
+        memory: memoryLimits
+      }, 
+      requests: {
+        memory: memoryRequests
+      }
+    }
+    const limits = {
+      default: {
+        memory: memoryDefault
+      },
+      defaultRequest: {
+        memory: memoryDefaultRequest
+      },
+      max: {
+        memory: memoryMax
+      },
+      type: 'Container'
+    }
+
+    const mutation = `mutation createResourceQuotaAndLimitRange(
+      $namespace: String!,
+      $rqName: String!,
+      $lrName: String!,
+      $resourceQuota: ResourceQuotaInput!,
+      $limits: LimitRangeInput!
+    ) {
+      createResourceQuota(namespace: $namespace, name: $rqName, resourceQuota: $resourceQuota){
+        name
+        limits {
+          memory
+        }
+        requests {
+          memory
+        }
+      } 
+    
+      createLimitRange(namespace: $namespace, name: $lrName, limits: $limits){
+        name
+        limits {
+          max {
+            memory
+          }
+          default {
+            memory
+          }
+          defaultRequest {
+            memory
+          }
+        } 
+      }
+    }`;
+
+    const variables = {
+      namespace,
+      lrName: `${namespace}-limit-range`,
+      rqName: `${namespace}-resource-quota`,
+      resourceQuota,
+      limits
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
   public createResourceQuota(namespace: string, memoryLimits: string, memoryRequests: string) {
     const resourceQuota = {
       limits: {

@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NamespacesService } from '../services/namespaces.service';
 import LuigiClient from '@kyma-project/luigi-client';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
-import { InformationModalComponent } from 'shared/components/information-modal/information-modal.component';
 
 @Component({
   selector: 'app-namespace-create',
@@ -52,34 +51,70 @@ export class NamespaceCreateComponent {
       this.labelsArrayToObject()
     ).subscribe(
       () => {
-        this.namespacesService.createResourceQuota(
-          this.namespaceName,
-          this.memoryLimits, 
-          this.memoryRequests
-        ).subscribe(
-          () => {
-            this.namespacesService.createLimitRange(
-              this.namespaceName,
-              this.default,
-              this.defaultRequest,
-              this.max
-            ).subscribe(
-              (res) => {
-                this.isActive = false;
-                this.refreshContextSwitcher();
-                this.navigateToDetails(this.namespaceName);
-              }, err => {
-                this.err = `Namespace and Resource Quota have been created, but without Limit Range due to: ${err}`
-              }
-            )
+
+        const handleSuccess = () => {
+          this.isActive = false;
+          this.refreshContextSwitcher();
+          this.navigateToDetails(this.namespaceName);
+        }
+
+        if (this.resourceQuotasExpanded && this.limitRangesExpanded) {
+          this.createResourceQuotaAndLimitRange().subscribe(() => {
+            handleSuccess();
           }, err => {
-            this.err = `Namespace has been created, but without Resource Quota and Limit Range due to: ${err}`
-          }
-        )
+            this.refreshContextSwitcher();
+            this.err = `Namespace has been created, but there was an error while creating Limits: ${err}`;
+          });
+        } else if (this.resourceQuotasExpanded && !this.limitRangesExpanded) {
+          this.createResourceQuota()
+          .subscribe(() => {
+            handleSuccess();
+          }, err => {
+            this.refreshContextSwitcher();
+            this.err = `Namespace has been created, but there was an error while creating Resource Quota: ${err}`;
+          });
+        } else if (this.limitRangesExpanded && !this.resourceQuotasExpanded) {
+          this.createLimitRange()
+          .subscribe(() => {
+            handleSuccess();
+          }, err => {
+            this.refreshContextSwitcher();
+            this.err = `Namespace has been created, but there was an error while creating Limit Range: ${err}`;
+          });
+        }
+
       }, 
       err => {
         this.err = err;
       }
+    );
+  }
+
+  public createResourceQuotaAndLimitRange() {
+    return this.namespacesService.createResourceQuotaAndLimitRange(
+      this.namespaceName,
+      this.memoryLimits, 
+      this.memoryRequests,
+      this.default,
+      this.defaultRequest,
+      this.max
+    );
+  }
+
+  public createResourceQuota() {
+    return this.namespacesService.createResourceQuota(
+      this.namespaceName,
+      this.memoryLimits, 
+      this.memoryRequests
+    );
+  }
+
+  public createLimitRange() {
+    return this.namespacesService.createLimitRange(
+      this.namespaceName,
+      this.default,
+      this.defaultRequest,
+      this.max
     );
   }
 
