@@ -1,14 +1,16 @@
 {
   "scripts": {
     "precommit": "lint-staged",
-    "bootstrap": "lerna bootstrap && npm run build:components:react && npm run build:components:odata && npm run git-ignore-config && sudo npm run append-host",
+    "bootstrap": "lerna bootstrap && npm run build:components:react && npm run build:components:odata && npm run git-ignore-config && sudo npm run append-hosts",
     "clean": "lerna clean",
     "start": "./scripts/pre-start-warning.sh && lerna exec --ignore ui-tests --ignore @kyma-project/* --parallel -- npm run start:kyma",
     "start:api": "lerna exec --ignore ui-tests --ignore @kyma-project/* --parallel -- npm run start:kyma:api",
     "build:components:react": "cd components/react && npm run build",
     "build:components:odata": "cd components/react-odata && npm run build",
     "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js catalog/public/config/config.js instances/public/config/config.js brokers/public/config/config.js content/public/config/config.js logging/src/assets/config/config.js add-ons/public/config/config.js",
-    "append-host": "grep -qF '127.0.0.1 console-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 console-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 console-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)"
+    "append-host": "grep -qF '127.0.0.1 console-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 console-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 console-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)",
+    "append-host-ui-test": "sudo sed -i '' \"/ui-test-exposed-api.kyma.local/d\" '/etc/hosts' && (echo 'append: $(minikube ip) ui-test-exposed-api.kyma.local >> /etc/hosts' && echo $(minikube ip) ui-test-exposed-api.kyma.local | sudo tee -a /etc/hosts > /dev/null)",
+    "append-hosts": "npm run append-host && npm run append-host-ui-test"
   },
   "devDependencies": {
     "husky": "^0.14.0",

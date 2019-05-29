@@ -103,16 +103,12 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
     //then
     await retry(async () => {
-      await page.reload({ waitUntil: 'networkidle0' });
-
+      await page.reload({
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      });
       const frame2 = await kymaConsole.getFrame(page);
       const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
       await frame2.waitForSelector(lambdasEmptyPage);
-      const expectedLambdas = await lambdas.getLambdas(frame2);
-
-      const expectedNumberOfLambdas = expectedLambdas.length;
-
-      expect(expectedNumberOfLambdas).toBe(0);
     });
   });
 });

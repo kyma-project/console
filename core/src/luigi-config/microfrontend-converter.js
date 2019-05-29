@@ -1,3 +1,5 @@
+
+
 function buildNode(node, spec, config) {
   var n = {
     label: node.label,
@@ -9,7 +11,7 @@ function buildNode(node, spec, config) {
     order: node.order,
     context: {
       settings: node.settings
-        ? { ...node.settings, ...(node.context || {}) }
+        ? {...node.settings, ...(node.context || {})}
         : {}
     },
     requiredPermissions: node.requiredPermissions || undefined
@@ -32,51 +34,41 @@ function buildNode(node, spec, config) {
 }
 
 function processNodeForLocalDevelopment(node, config) {
+  const {domain, localDomain} = config;
+  const localDevDomainBindings = [
+    {startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl},
+    {startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl},
+    {startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl},
+    {startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl},
+    {startsWith: "add-ons", replaceWith: config.addOnsModuleUrl},
+    {startsWith: "log-ui", replaceWith: config.logsModuleUrl}
+  ];
   const isLocalDev = window.location.href.startsWith(
-    'http://console-dev.kyma.local:4200'
+    `http://${localDomain}:4200`
   );
+
   if (!isLocalDev || !node.viewUrl) {
     return;
   }
-  if (node.viewUrl.startsWith('https://console.kyma.local')) {
-    node.viewUrl =
-      'http://console-dev.kyma.local:4200' +
-      node.viewUrl.substring('https://console.kyma.local'.length);
-  } else if (
-    node.viewUrl.startsWith('https://catalog.kyma.local')
-  ) {
-    node.viewUrl =
-      config.serviceCatalogModuleUrl +
-      node.viewUrl.substring('https://catalog.kyma.local'.length);
-  } else if (
-    node.viewUrl.startsWith('https://instances.kyma.local')
-  ) {
-    node.viewUrl =
-      config.serviceInstancesModuleUrl +
-      node.viewUrl.substring('https://instances.kyma.local'.length);
-  } else if (
-    node.viewUrl.startsWith('https://brokers.kyma.local')
-  ) {
-    node.viewUrl =
-      config.serviceBrokersModuleUrl +
-      node.viewUrl.substring('https://brokers.kyma.local'.length);
-  } else if (
-    node.viewUrl.startsWith('https://lambdas-ui.kyma.local')
-  ) {
-    node.viewUrl =
-      config.lambdasModuleUrl +
-      node.viewUrl.substring(
-        'https://lambdas-ui.kyma.local'.length
-      );
-  } else if (node.viewUrl.startsWith('https://log-ui.kyma.local')) {
-    node.viewUrl =
-      config.logsModuleUrl +
-      node.viewUrl.substring('https://log-ui.kyma.local'.length);
-  } else if(node.viewUrl.startsWith('https://add-ons.kyma.local')) {
-    node.viewUrl =
-      config.addOnsModuleUrl +
-      node.viewUrl.substring('https://add-ons.kyma.local'.length);
+
+  //all non-cluster microfrontends
+  if (node.viewUrl.startsWith(`https://console.${domain}`)) {
+    node.viewUrl = node.viewUrl.replace(
+      `https://console.${domain}`,
+      `http://${localDomain}:4200`
+    );
   }
+
+  //cluster microfrontends
+  localDevDomainBindings.forEach(binding=>{
+    if (node.viewUrl.startsWith(`https://${binding.startsWith}.${domain}`)) {
+      node.viewUrl = node.viewUrl.replace(
+        `https://${binding.startsWith}.${domain}`,
+        binding.replaceWith
+      );
+    }
+  });
+
   return node;
 }
 
@@ -109,7 +101,7 @@ function getDirectChildren(parentNodeSegments, spec, config) {
     });
 }
 
-function convertToNavigationTree(name, spec, config, segmentPrefix) {
+function convertToNavigationTree(name, spec, config, navigation, consoleViewGroupName, segmentPrefix) {
   return spec.navigationNodes
     .filter(function getTopLevelNodes(node) {
       var segments = node.navigationPath.split('/');
@@ -128,6 +120,19 @@ function convertToNavigationTree(name, spec, config, segmentPrefix) {
         }
         node.navigationContext = spec.appName ? spec.appName : name;
         node.viewGroup = node.navigationContext;
+
+        node.navigationContext = spec.appName ? spec.appName : name;
+        if (node.viewUrl && node.viewUrl.indexOf(window.location.origin + '/') === 0) {
+          node.viewGroup = consoleViewGroupName;
+        } else {
+          node.viewGroup = node.navigationContext;
+          if (spec.preloadUrl) {
+            navigation.viewGroupSettings[node.viewGroup] = {
+              preloadUrl: spec.preloadUrl
+            };
+          }
+        }
+
         node.keepSelectedForChildren = true;
       }
 

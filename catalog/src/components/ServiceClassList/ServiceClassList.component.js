@@ -7,6 +7,8 @@ import {
   NotificationMessage,
   Search,
   Spinner,
+  Status,
+  StatusWrapper,
   Tab,
   Tabs,
   Toolbar,
@@ -26,8 +28,6 @@ import {
   CardsWrapper,
   EmptyServiceListMessageWrapper,
   ServiceClassDescription,
-  StatusWrapper,
-  Status,
 } from './styled';
 
 class ServiceClassList extends React.Component {

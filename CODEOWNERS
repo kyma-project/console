@@ -1,21 +1,21 @@
 # Default owners of the repository
-* @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @johannesdoberer @marynakhromova
+* @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @johannesdoberer @marynakhromova
 
-/catalog/ @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/instances/ @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/brokers/ @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu @aszecowka @PK85 @mszostok @piotrmiskiewicz @polskikiel @jasiu001 @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/content/ @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu
-/components/angular/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @johannesdoberer @marynakhromova @akucharska
-/components/react/ @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/core/ @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @parostatkiem @johannesdoberer @marynakhromova @akucharska
-/tests/ @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @johannesdoberer @marynakhromova
-/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @parostatkiem @johannesdoberer @marynakhromova @akucharska
+/catalog/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
+/instances/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
+/brokers/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @aszecowka @PK85 @mszostok @piotrmiskiewicz @polskikiel @jasiu001 @kwiatekus @dariadomagala @y-kkamil @parostatkiem
+/content/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu
+/components/angular/ @kwiatekus @dariadomagala @y-kkamil @akucharska @parostatkiem
+/components/react/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
+/core/ @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska
+/tests/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil
+/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj
 
 # Owners of config file for MILV - milv.config.yaml
-milv.config.yaml @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu
+milv.config.yaml @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu
 
 # Owners of governance file
-governance.Jenkinsfile @suleymanakbas91 @clebs @a-thaler @lilitgh @akucharska @michal-hudy @pkosiec @aerfio @magicmatatjahu
+governance.Jenkinsfile @suleymanakbas91 @clebs @a-thaler @lilitgh @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu

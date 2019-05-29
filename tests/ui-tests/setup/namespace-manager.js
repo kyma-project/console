@@ -1,6 +1,9 @@
+import { kubeConfig } from './kubeconfig';
+import * as k8s from '@kubernetes/client-node';
+
 export class NamespaceManager {
-  constructor(apiClient, namespace) {
-    this.api = apiClient;
+  constructor(namespace) {
+    this.api = kubeConfig.makeApiClient(k8s.Core_v1Api);
     this.namespaceName = namespace;
   }
 

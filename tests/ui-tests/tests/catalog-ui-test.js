@@ -22,8 +22,8 @@ import common from '../commands/common';
 import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+import { NamespaceManager } from '../setup/namespace-manager';
 
-import { TestBundleInstaller } from '../setup/test-bundle-installer';
 import { retry } from '../utils/retry';
 import {
   testPluggable,
@@ -35,7 +35,7 @@ const TEST_NAMESPACE = 'service-catalog-ui-test';
 const REQUIRED_MODULE = 'servicecatalog';
 const REQUIRED_BINDING_MODULE = 'servicecatalogaddons';
 
-const testBundleInstaller = new TestBundleInstaller(TEST_NAMESPACE);
+const namespaceInstaller = new NamespaceManager(TEST_NAMESPACE);
 
 let page, browser;
 
@@ -48,12 +48,11 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     jest.setTimeout(240 * 1000);
     try {
-      await testBundleInstaller.install();
+      await namespaceInstaller.createIfDoesntExist();
     } catch (err) {
-      await testBundleInstaller.cleanup();
-      throw new Error('Failed to install test bundle:', err);
+      await namespaceInstaller.deleteIfExists();
+      throw new Error('Failed to create a namespace:', err);
     }
-
     await retry(async () => {
       const data = await common.beforeAll();
       browser = data.browser;
@@ -66,8 +65,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       logModuleDisabled(REQUIRED_MODULE, 'afterAll');
       return;
     }
-
-    await testBundleInstaller.cleanup();
+    await namespaceInstaller.deleteIfExists();
     if (browser) {
       await browser.close();
     }

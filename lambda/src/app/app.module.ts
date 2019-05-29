@@ -36,12 +36,15 @@ import { HttpTriggerComponent } from './lambdas/lambda-details/http-trigger/http
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 
 import { FundamentalNgxModule } from 'fundamental-ngx';
+import { EmptyComponent } from './shared/components/empty/empty.component';
+import { NotificationComponent } from './shared/components/notification/notification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'lambdas', pathMatch: 'full' },
   { path: 'lambdas', component: LambdasComponent },
   { path: 'lambdas/:name', component: LambdaDetailsComponent },
   { path: 'create', component: LambdaDetailsComponent },
+  { path: 'preload', component: EmptyComponent },
 ];
 
 @NgModule({
@@ -60,6 +63,8 @@ const routes: Routes = [
     EventTriggerChooserComponent,
     HttpTriggerComponent,
     LabelsInputComponent,
+    EmptyComponent,
+    NotificationComponent,
   ],
 
   imports: [

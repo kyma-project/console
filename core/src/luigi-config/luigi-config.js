@@ -7,6 +7,8 @@ var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
+  domain: 'kyma.local',
+  localDomain: 'console-dev.kyma.local',
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
   serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
@@ -30,6 +32,34 @@ if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
 }
 
+var consoleViewGroupName = '_console_';
+
+let navigation = {
+  viewGroupSettings: {
+    _console_: {
+      preloadUrl: '/consoleapp.html#/home/preload'
+    }
+  },
+  nodeAccessibilityResolver: navigationPermissionChecker,
+  contextSwitcher: {
+    defaultLabel: 'Select Namespace ...',
+    parentNodePath: '/home/namespaces', // absolute path
+    lazyloadOptions: true, // load options on click instead on page load
+    options: getNamespaces,
+    actions: [
+      {
+        label: '+ New Namespace',
+        link: '/home/workspace?~showModal=true'
+      },
+      {
+        label: 'Show all namespaces',
+        link: '/home/workspace?~allNamespaces=true',
+        position: 'bottom'
+      }
+    ]
+  }
+};
+
 function getNodes(context) {
   var namespace = context.namespaceId;
   var staticNodes = [
@@ -45,12 +75,12 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      category: { label: 'Service Management', icon: 'add-coursebook' },
+      category: {label: 'Service Management', icon: 'add-coursebook'},
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Configuration', icon: 'key-user-settings' },
+      category: {label: 'Configuration', icon: 'key-user-settings'},
       pathSegment: '_configuration_category_placeholder_',
       hideFromNav: true
     },
@@ -89,29 +119,26 @@ function getNodes(context) {
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config maps',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
     },
     {
-      category: { label: 'Development', icon: 'source-code' },
+      category: {label: 'Development', icon: 'source-code'},
       pathSegment: '_development_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Operation', icon: 'instance' },
+      category: {label: 'Operation', icon: 'instance'},
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
     },
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
     },
     {
       category: 'Operation',
@@ -192,41 +219,42 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', namespace),
+    getUiEntities('microfrontends', namespace, []),
     getUiEntities('clustermicrofrontends', namespace, [
       'namespace',
       'namespace'
     ])
-  ]).then(function (values) {
-    var nodeTree = [...staticNodes];
-    values.forEach(function (val) {
-      if (val === 'systemNamespace') {
-        nodeTree.forEach(item => {
-          if (item.context) {
-            item.context['isSystemNamespace'] = true;
-          } else {
-            item['context'] = {
-              isSystemNamespace: true
-            };
-          }
-        });
-      } else {
-        nodeTree = [].concat.apply(nodeTree, val);
-      }
+  ])
+    .then(function (values) {
+      var nodeTree = [...staticNodes];
+      values.forEach(function (val) {
+        if (val === 'systemNamespace') {
+          nodeTree.forEach(item => {
+            if (item.context) {
+              item.context['isSystemNamespace'] = true;
+            } else {
+              item['context'] = {
+                isSystemNamespace: true
+              };
+            }
+          });
+        } else {
+          nodeTree = [].concat.apply(nodeTree, val);
+        }
+      });
+      return nodeTree;
+    })
+    .catch((err) => {
+      const errParsed = JSON.parse(err);
+      console.error('Error', errParsed);
+      const settings = {
+        text: `Namespace ${errParsed.details.name} not found.`,
+        type: 'error'
+      };
+      LuigiClient
+        .uxManager()
+        .showAlert(settings)
     });
-    return nodeTree;
-  })
-  .catch((err) => {
-    const errParsed = JSON.parse(err);
-    console.error('Error', errParsed);
-    const settings = {
-      text: `Namespace ${errParsed.details.name} not found.`,
-      type: 'error'
-     }
-     LuigiClient
-      .uxManager()
-      .showAlert(settings)
-  });
 }
 
 /**
@@ -289,13 +317,14 @@ async function getUiEntities(entityname, namespace, placements) {
           return [];
         }
         return result.items
-          .filter(function (item) {
+          .filter(function(item) {
             // placement only exists in clustermicrofrontends
             return !placements || placements.includes(item.spec.placement);
           })
           .map(function (item) {
+
             if (item.spec.navigationNodes) {
-              var tree = convertToNavigationTree(item.metadata.name, item.spec, config, segmentPrefix);
+              var tree = convertToNavigationTree(item.metadata.name, item.spec, config, navigation, consoleViewGroupName, segmentPrefix);
               return tree;
             }
             return [];
@@ -306,7 +335,7 @@ async function getUiEntities(entityname, namespace, placements) {
         return [];
       })
       .then(result => {
-        cache[cacheKey] = new Promise(function (resolve) {
+        cache[cacheKey] = new Promise(function(resolve) {
           resolve(result);
         });
         return result;
@@ -315,9 +344,9 @@ async function getUiEntities(entityname, namespace, placements) {
 }
 
 function fetchFromKyma(url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
@@ -335,9 +364,9 @@ function fetchFromKyma(url) {
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
@@ -365,14 +394,14 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.open('POST', config.graphqlApiUrl, true);
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify({ query, variables }));
+    xmlHttp.send(JSON.stringify({query, variables}));
   });
 }
 
 function postToKyma(url, body) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (
         xmlHttp.readyState == 4 &&
         (xmlHttp.status == 200 || xmlHttp.status == 201)
@@ -449,7 +478,7 @@ function getConsoleInitData() {
     backendModules{
       name
     }
-    clusterMicrofrontends{
+    clusterMicroFrontends{
       name
       category
       viewBaseUrl
@@ -461,6 +490,12 @@ function getConsoleInitData() {
         showInNavigation
         order
         settings
+        externalLink
+        requiredPermissions{
+          verbs
+          resource
+          apiGroup
+        }
       }
     }
   }`;
@@ -471,21 +506,22 @@ function getConsoleInitData() {
 function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
-  ).then(function getNamespacesFromApi(response) {
-    var namespaces = [];
-    response.items.map(namespace => {
-      if (namespace.status && namespace.status.phase !== 'Active') {
-        return; //"pretend" that inactive namespace is already removed
-      }
-      const namespaceName = namespace.metadata.name;
-      namespaces.push({
-        category: 'Namespaces',
-        label: namespaceName,
-        pathValue: namespaceName
+  )
+    .then(function getNamespacesFromApi(response) {
+      var namespaces = [];
+      response.items.map(namespace => {
+        if (namespace.status && namespace.status.phase !== 'Active') {
+          return; //"pretend" that inactive namespace is already removed
+        }
+        const namespaceName = namespace.metadata.name;
+        namespaces.push({
+          category: 'Namespaces',
+          label: namespaceName,
+          pathValue: namespaceName
+        });
       });
-    });
-    return namespaces;
-  })
+      return namespaces;
+    })
     .catch(function catchNamespaces(err) {
       console.error('get namespace: error', err);
     });
@@ -499,7 +535,7 @@ function relogin() {
 function getFreshKeys() {
   // manually re-fetching keys, since this is a major pain point
   // until dex has possibility of no-cache
-  return fetch('https://dex.' + k8sDomain + '/keys', { cache: "no-cache" })
+  return fetch('https://dex.' + k8sDomain + '/keys', { cache: 'no-cache' });
 }
 
 let backendModules = [];
@@ -517,7 +553,7 @@ Promise.all(initPromises)
       if(token){
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
-        const cmfs = res[1].clusterMicrofrontends;
+        const cmfs = res[1].clusterMicroFrontends;
         if (
           modules &&
           modules.length > 0
@@ -535,7 +571,7 @@ Promise.all(initPromises)
               .filter(cmf => cmf.placement === 'cluster')
               .map(cmf => {
                 if (cmf.navigationNodes) {
-                  var tree = convertToNavigationTree(cmf.name, cmf, config, 'cmf-');
+                  var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
                   return tree;
                 }
                 return [];
@@ -549,6 +585,104 @@ Promise.all(initPromises)
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
   .then(() => {
+    navigation.nodes = () => [
+      {
+        pathSegment: 'home',
+        hideFromNav: true,
+        context: {
+          idToken: token,
+          backendModules
+        },
+        viewGroup: consoleViewGroupName,
+        children: function () {
+          var staticNodes = [
+            {
+              pathSegment: 'workspace',
+              label: 'Namespaces',
+              viewUrl:
+                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
+              icon: 'dimension'
+            },
+            {
+              pathSegment: 'namespaces',
+              viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+              hideFromNav: true,
+              children: [
+                {
+                  pathSegment: ':namespaceId',
+                  context: {
+                    environmentId: ':namespaceId',
+                    namespaceId: ':namespaceId'
+                  },
+                  children: getNodes,
+                  navigationContext: 'namespaces',
+                  defaultChildNode: 'details'
+                }
+              ]
+            },
+            {
+              category: { label: 'Integration', icon: 'overview-chart' },
+              pathSegment: '_integration_category_placeholder_',
+              hideFromNav: true
+            },
+            {
+              pathSegment: 'settings',
+              navigationContext: 'settings',
+              label: 'General Settings',
+              category: { label: 'Settings', icon: 'settings' },
+              viewUrl: '/consoleapp.html#/home/settings/organisation'
+            },
+            {
+              pathSegment: 'global-permissions',
+              navigationContext: 'global-permissions',
+              label: 'Global Permissions',
+              category: 'Settings',
+              viewUrl:
+                '/consoleapp.html#/home/settings/globalPermissions',
+              keepSelectedForChildren: true,
+              children: [
+                {
+                  pathSegment: 'roles',
+                  children: [
+                    {
+                      pathSegment: ':name',
+                      viewUrl:
+                        '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+                    }
+                  ]
+                }
+              ],
+              requiredPermissions : [{
+                apiGroup : "rbac.authorization.k8s.io",
+                resource : "clusterrolebindings",
+                verbs : ["create"]
+              }]
+            },
+            {
+              category: {
+                label: 'Diagnostics',
+                icon: 'electrocardiogram'
+              },
+              pathSegment: '_integration_category_placeholder_',
+              hideFromNav: true
+            }
+          ];
+          var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
+          return [].concat.apply(staticNodes, fetchedNodes);
+        }
+      },
+      {
+        pathSegment: 'docs',
+        viewUrl: config.docsModuleUrl,
+        label: 'Docs',
+        hideSideNav: true,
+        context: {
+          idToken: token,
+          backendModules
+        },
+        icon: 'sys-help'
+      }
+    ],
     Luigi.setConfig({
       auth: {
         use: 'openIdConnect',
@@ -575,123 +709,7 @@ Promise.all(initPromises)
           }
         }
       },
-      navigation: {
-        nodeAccessibilityResolver: navigationPermissionChecker,
-        nodes: () => [
-          {
-            pathSegment: 'home',
-            hideFromNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            children: function () {
-                var staticNodes = [
-                  {
-                    pathSegment: 'workspace',
-                    label: 'Namespaces',
-                    viewUrl:
-                      '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
-                    icon: 'dimension'
-                  },
-                  {
-                    pathSegment: 'namespaces',
-                    viewUrl: '/consoleapp.html#/home/namespaces/workspace',
-                    hideFromNav: true,
-                    children: [
-                      {
-                        pathSegment: ':namespaceId',
-                        context: {
-                          environmentId: ':namespaceId',
-                          namespaceId: ':namespaceId'
-                        },
-                        children: getNodes,
-                        navigationContext: 'namespaces',
-                        defaultChildNode: 'details'
-                      }
-                    ]
-                  },
-                  {
-                    category: { label: 'Integration', icon: 'overview-chart' },
-                    pathSegment: '_integration_category_placeholder_',
-                    hideFromNav: true
-                  },
-                  {
-                    pathSegment: 'settings',
-                    navigationContext: 'settings',
-                    label: 'General Settings',
-                    category: { label: 'Settings', icon: 'settings' },
-                    viewUrl: '/consoleapp.html#/home/settings/organisation'
-                  },
-                  {
-                    pathSegment: 'global-permissions',
-                    navigationContext: 'global-permissions',
-                    label: 'Global Permissions',
-                    category: 'Settings',
-                    viewUrl:
-                      '/consoleapp.html#/home/settings/globalPermissions',
-                    keepSelectedForChildren: true,
-                    children: [
-                      {
-                        pathSegment: 'roles',
-                        children: [
-                          {
-                            pathSegment: ':name',
-                            viewUrl:
-                              '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
-                          }
-                        ]
-                      }
-                    ],
-                    requiredPermissions : [{
-                      apiGroup : "rbac.authorization.k8s.io",
-                      resource : "clusterrolebindings",
-                      verbs : ["create"]
-                    }]
-                  },
-                  {
-                    category: {
-                      label: 'Diagnostics',
-                      icon: 'electrocardiogram'
-                    },
-                    pathSegment: '_integration_category_placeholder_',
-                    hideFromNav: true
-                  }
-                ];
-                var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
-                return [].concat.apply(staticNodes, fetchedNodes);
-            }
-          },
-          {
-            pathSegment: 'docs',
-            viewUrl: config.docsModuleUrl,
-            label: 'Docs',
-            hideSideNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            icon: 'sys-help'
-          }
-        ],
-        contextSwitcher: {
-          defaultLabel: 'Select Namespace ...',
-          parentNodePath: '/home/namespaces', // absolute path
-          lazyloadOptions: true, // load options on click instead on page load
-          options: getNamespaces,
-          actions: [
-            {
-              label: '+ New Namespace',
-              link: '/home/workspace?~showModal=true'
-            },
-            {
-              label: 'Show all namespaces',
-              link: '/home/workspace?~allNamespaces=true',
-              position: 'bottom'
-            }
-          ]
-        }
-      },
+      navigation,
       routing: {
         nodeParamPrefix: '~',
         skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
@@ -714,7 +732,7 @@ Promise.all(initPromises)
       }
     });
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('Config Init Error', err);
   });
 
@@ -755,7 +773,7 @@ window.addEventListener('message', e => {
       window.postMessage(
         {
           msg: 'luigi.ux.alert.show',
-          data: { settings }
+          data: {settings}
         },
         '*'
       );
@@ -770,8 +788,8 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
       resource.affectedResources.forEach(affectedResource => {
         limitExceededErrorscomposed.push(
           `'${resource.resourceName}' by '${affectedResource}' (${
-          resource.quotaName
-          })`
+            resource.quotaName
+            })`
         );
       });
     }

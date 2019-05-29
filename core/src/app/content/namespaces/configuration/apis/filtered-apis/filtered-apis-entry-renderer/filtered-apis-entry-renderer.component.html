@@ -1,6 +1,7 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td class='fd-has-font-weight-bold'>
-    <a href="javascript:void(null)" (click)="navigateToDetails(entry.service.name, entry.name)">
+    <a href="javascript:void(null)" (click)="navigateToDetails(entry.service.name, entry.name)"
+        data-e2e-id="exposed-api-name">
       {{ entry.name }}
     </a>
   </td>
@@ -8,15 +9,15 @@
   <td>{{ entry.service.port }}</td>
   <ng-container *ngIf="isSecured(entry)">
     <td>
-      <fd-badge [status]="'success'" [modifier]="'filled'">Yes</fd-badge>
+      <fd-badge [status]="'success'" [modifier]="'filled'" data-e2e-id="exposed-api-secured">Yes</fd-badge>
     </td>
-    <td>{{ getIDP(entry) }}</td>
+    <td data-e2e-id="exposed-api-idp">{{ getIDP(entry) }}</td>
   </ng-container>
   <ng-container *ngIf="!isSecured(entry)">
     <td>
-      <fd-badge [status]="'warning'" [modifier]="'filled'">No</fd-badge>
+      <fd-badge [status]="'warning'" [modifier]="'filled'" data-e2e-id="exposed-api-secured">No</fd-badge>
     </td>
-    <td>{{ emptyText }}</td>
+    <td data-e2e-id="exposed-api-idp">{{ emptyText }}</td>
   </ng-container>
   <td class="fd-has-float-right">
     <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
+import { instanceStatusColor } from '@kyma-project/react-components';
 
-import { statusColor } from '../../../../commons/helpers';
 import { StatusesList, StatusWrapper, Status } from './styled';
 
 const StatusIndicator = ({ data, testId }) => {
@@ -34,14 +34,14 @@ const StatusIndicator = ({ data, testId }) => {
           )}
           {statusesStats &&
             (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
-              <StatusWrapper backgroundColor={statusColor('PENDING')}>
+              <StatusWrapper backgroundColor={instanceStatusColor('PENDING')}>
                 <Status data-e2e-id={testId}>
                   {statusesStats.PENDING + statusesStats.UNKNOWN}
                 </Status>
               </StatusWrapper>
             )}
           {statusesStats && statusesStats.FAILED > 0 && (
-            <StatusWrapper backgroundColor={statusColor('FAILED')}>
+            <StatusWrapper backgroundColor={instanceStatusColor('FAILED')}>
               <Status data-e2e-id={testId}>{statusesStats.FAILED}</Status>
             </StatusWrapper>
           )}

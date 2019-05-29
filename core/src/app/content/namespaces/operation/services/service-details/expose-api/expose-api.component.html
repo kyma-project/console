@@ -32,7 +32,8 @@
         </fd-action-bar-title>
       </fd-action-bar-header>
       <fd-action-bar-actions>
-        <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()">
+        <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()"
+            data-e2e-id="save-expose-api">
           Save
         </button>
       </fd-action-bar-actions>
@@ -95,9 +96,9 @@
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-2'">Host *</fd-form-label>
+              <fd-form-label [forValue]="'host-input'">Host *</fd-form-label>
               <div class="fd-input-group fd-input-group--after">
-                <input fd-form-control [type]="'text'" id="input-2" placeholder="Field placeholder text"
+                <input fd-form-control [type]="'text'" id="host-input" placeholder="Field placeholder text"
                   [(ngModel)]="hostname" (ngModelChange)="setApiName(); validateDetails()" (blur)="validateDetails()"
                   [state]="errorHostname ? 'invalid' : undefined" />
                 <span class="fd-input-group__addon fd-input-group__addon--after">{{ domain }}</span>
@@ -162,7 +163,7 @@
             <div fd-form-item [isInline]="true" [isCheck]="true">
               <fd-form-label [forValue]="'Ai4ez611'">
                 <input *ngIf="canBeSecured" fd-form-control [type]="'checkbox'" [checked]="secure"
-                  (change)="toggleSecure()" id="Ai4ez611" />
+                  (change)="toggleSecure()" id="Ai4ez611" data-e2e-id="secure-api-checkbox" />
                 Secure API
               </fd-form-label>
             </div>

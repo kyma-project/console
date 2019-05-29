@@ -13,10 +13,6 @@ const serviceClassQGL = `
   providerDisplayName
   tags
   labels
-  content
-  asyncApiSpec
-  openApiSpec
-  odataSpec
 `;
 
 const plansQGL = `
@@ -43,6 +39,9 @@ export const GET_SERVICE_CLASS = gql`
       }
       instances(namespace: $namespace) {
         name
+        status {
+          type
+        }
       }
       activated(namespace: $namespace)
       clusterDocsTopic {
@@ -68,6 +67,9 @@ export const GET_SERVICE_CLASS = gql`
       }
       instances {
         name
+        status {
+          type
+        }
       }
       activated
       docsTopic {

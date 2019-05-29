@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Button, Table, Tooltip, Modal } from '@kyma-project/react-components';
+import {
+  Button,
+  InstanceStatus,
+  Modal,
+  Table,
+  Tooltip,
+} from '@kyma-project/react-components';
 
 import {
   LinkButton,
@@ -14,7 +20,6 @@ import {
 
 import {
   getResourceDisplayName,
-  statusColor,
   backendModuleExists,
 } from '../../../commons/helpers';
 
@@ -177,14 +182,7 @@ export class ServiceInstancesTable extends Component {
                   content={instance.status.message}
                   minWidth="250px"
                 >
-                  <span
-                    style={{
-                      color: statusColor(instance.status.type),
-                      cursor: 'help',
-                    }}
-                  >
-                    {instance.status.type}
-                  </span>
+                  <InstanceStatus status={instance.status.type} />
                 </Tooltip>
               );
             })(),

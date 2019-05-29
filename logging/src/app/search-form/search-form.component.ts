@@ -79,6 +79,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (params.namespace) {
       this.addLabel('namespace=' + params.namespace, true);
     }
+    if (params.container_name) {
+      this.addLabel('container_name=' + params.container_name, true);
+    }
 
     if (this.selectedLabels.size > 0) {
       this.onSubmit();
@@ -207,14 +210,14 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   getLabelKey(label: string) {
-    return label.split('=')[0].trim().replace(/^["]{1}/gms, '');
+    return label.split('=')[0].trim().replace(/^["]{1}/gm, '');
   }
 
   getLabelValue(label: string) {
     return label
       .split('=')[1].trim()
-      .replace(/["]{1}$/gms, '')
-      .replace(/^["]{1}/gms, '');
+      .replace(/["]{1}$/gm, '')
+      .replace(/^["]{1}/gm, '');
   }
 
   updateQuery() {

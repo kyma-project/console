@@ -116,26 +116,25 @@ async function getNamespacesFromContextSwitcher(page) {
 }
 
 async function getNamespaceNamesFromNamespacesPage(page) {
-  return await getNamesOnCurrentPage(page, '[data-e2e-id=namespace-name]');
+  return await getTextContentOnPageBySelector(
+    page,
+    '[data-e2e-id=namespace-name]',
+  );
 }
 
 async function getApplicationNames(page) {
-  return await getNamesOnCurrentPage(page, '[data-e2e-id=application-name]');
+  return await getTextContentOnPageBySelector(
+    page,
+    '[data-e2e-id=application-name]',
+  );
 }
 
-async function getNamesOnCurrentPage(page, nameSelector) {
+async function getTextContentOnPageBySelector(page, nameSelector) {
   const frame = await getFrame(page);
   return await frame.$$eval(nameSelector, nameComponents => {
     const namespaces = Array.from(nameComponents);
     return namespaces.map(namespace => namespace.textContent);
   });
-}
-
-async function getTextContentOnFrameBySelector(frame, selector) {
-  const text = await frame.$eval(selector, component => {
-    return component.textContent;
-  });
-  return text;
 }
 
 async function createNamespace(page, name) {
@@ -229,5 +228,5 @@ module.exports = {
   getNamespaceNamesFromNamespacesPage,
   deleteNamespace,
   getApplicationNames,
-  getTextContentOnFrameBySelector,
+  getTextContentOnPageBySelector,
 };
