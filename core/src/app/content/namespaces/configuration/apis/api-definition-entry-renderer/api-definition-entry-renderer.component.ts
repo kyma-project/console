@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
-import { API_PORT_DESCRIPTION } from '../../../../../shared/constants/constants';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
@@ -16,7 +15,6 @@ export class ApiDefinitionEntryRendererComponent
   implements OnDestroy, OnInit {
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
-  readonly API_PORT_DESCRIPTION = API_PORT_DESCRIPTION;
 
   constructor(
     protected injector: Injector,

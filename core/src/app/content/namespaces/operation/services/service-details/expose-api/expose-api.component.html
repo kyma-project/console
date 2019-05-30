@@ -1,4 +1,4 @@
-<header class="fd-page__header fd-has-background-color-background-2">  
+<header class="fd-page__header fd-has-background-color-background-2">
   <section class="fd-section">
     <fd-breadcrumb *ngIf="routedFromServiceDetails">
       <fd-breadcrumb-item>
@@ -109,31 +109,39 @@
             </div>
           </div>
         </div>
-        <div class="fd-col--4">
-          <div fd-form-set>
-            <div fd-form-item>
-              <fd-form-label [forValue]="'input-3'">Service Port *
-                <fd-inline-help [position]="'bottom-left'">
-                  {{ API_PORT_DESCRIPTION }}
-                </fd-inline-help>
-              </fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-3" [(ngModel)]="servicePort"
-                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
-                [state]="errorPort ? 'invalid' : undefined" />
-              <fd-form-message [type]="'error'" *ngIf="errorPort">
-                {{ errorPort }}
-              </fd-form-message>
+      </div>
+      <div class="fd-container fd-container--fluid">
+        <div class="fd-col--4" *ngIf="apiDefinition" >
+            <div fd-form-set>
+              <div fd-form-item>
+                <fd-form-label [forValue]="'input-3'">Target Service</fd-form-label>
+                <a href="javascript:void(null)" (click)="navigateToDetails(serviceName)" class="fd-has-font-weight-bold">
+                    {{serviceName}}
+                </a>
+              </div>
+            </div>
+        </div>
+        <div class="fd-col--4" *ngIf="apiDefinition" >
+            <div fd-form-set>
+              <div fd-form-item>
+                <fd-form-label [forValue]="'input-3'">Target Service Port *</fd-form-label>
+                <input fd-form-control [type]="'text'" id="input-3" [(ngModel)]="servicePort"
+                  (ngModelChange)="validateDetails()" (blur)="validateDetails()"
+                  [state]="errorPort ? 'invalid' : undefined" />
+                <fd-form-message [type]="'error'" *ngIf="errorPort">
+                  {{ errorPort }}
+                </fd-form-message>
+              </div>
             </div>
           </div>
-        </div>
       </div>
 
-      <div class="fd-container fd-container--fluid">
+      <div class="fd-container fd-container--fluid" *ngIf="!apiDefinition" >
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="'input-1'">Name *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-1" [disabled]="apiDefinition" [(ngModel)]="apiName"
+              <input fd-form-control [type]="'text'" id="input-1"  [(ngModel)]="apiName"
                 (ngModelChange)="validateDetails()" (blur)="validateDetails()"
                 [state]="errorApiName ? 'invalid' : undefined" />
               <fd-form-message [type]="'error'" *ngIf="errorApiName">
@@ -146,6 +154,7 @@
     </fd-panel-body>
   </fd-panel>
 </section>
+
 
 <section *ngIf="canBeSecured" class="fd-section security-section">
   <fd-panel class="y-fd-panel">
