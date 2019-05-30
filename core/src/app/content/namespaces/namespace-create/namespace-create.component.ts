@@ -25,8 +25,8 @@ export class NamespaceCreateComponent {
 
   // checkboxes
   public istioInjectionEnabled: boolean;
-  public resourceQuotasExpanded: boolean;
-  public limitRangesExpanded: boolean;
+  public resourceQuotaChecked: boolean;
+  public limitRangeChecked: boolean;
 
   // input errors
   public err: string;
@@ -58,14 +58,14 @@ export class NamespaceCreateComponent {
           this.navigateToDetails(this.namespaceName);
         }
 
-        if (this.resourceQuotasExpanded && this.limitRangesExpanded) {
+        if (this.resourceQuotaChecked && this.limitRangeChecked) {
           this.createResourceQuotaAndLimitRange().subscribe(() => {
             handleSuccess();
           }, err => {
             this.refreshContextSwitcher();
             this.err = `Namespace has been created, but there was an error while creating Limits: ${err}`;
           });
-        } else if (this.resourceQuotasExpanded && !this.limitRangesExpanded) {
+        } else if (this.resourceQuotaChecked && !this.limitRangeChecked) {
           this.createResourceQuota()
           .subscribe(() => {
             handleSuccess();
@@ -73,7 +73,7 @@ export class NamespaceCreateComponent {
             this.refreshContextSwitcher();
             this.err = `Namespace has been created, but there was an error while creating Resource Quota: ${err}`;
           });
-        } else if (this.limitRangesExpanded && !this.resourceQuotasExpanded) {
+        } else if (this.limitRangeChecked && !this.resourceQuotaChecked) {
           this.createLimitRange()
           .subscribe(() => {
             handleSuccess();
@@ -124,10 +124,10 @@ export class NamespaceCreateComponent {
     const hasErrors = (this.err || this.wrongName || this.wrongLabels || this.memoryLimitsError || this.memoryRequestsError || this.maxError || this.defaultError || this.defaultRequestError);
     let rqFields = true;
     let lrFields = true;
-    if (this.resourceQuotasExpanded) {
+    if (this.resourceQuotaChecked) {
       rqFields = !!(this.memoryLimits && this.memoryRequests)
     }
-    if (this.limitRangesExpanded) {
+    if (this.limitRangeChecked) {
       lrFields = !!(this.default && this.defaultRequest && this.max)
     }
     return (this.namespaceName && rqFields && lrFields && !hasErrors)
@@ -225,8 +225,8 @@ export class NamespaceCreateComponent {
 
     // checkboxes
     this.istioInjectionEnabled = true;
-    this.resourceQuotasExpanded = false;
-    this.limitRangesExpanded = false;
+    this.resourceQuotaChecked = false;
+    this.limitRangeChecked = false;
   
     // input errors
     this.err = undefined;

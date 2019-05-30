@@ -39,25 +39,25 @@
                   checked>
                 Istio Injection enabled
                 <fd-inline-help>
-                  Inject Istio Sidecar do the Namespace.
+                  Inject Istio Sidecar to the Namespace.
                 </fd-inline-help>
               </label>
             </div>
 
             <div fd-form-item>
-              <label fd-form-label for="resource-quotas-check">
+              <label fd-form-label for="resource-quota-check">
                 <input fd-form-control type="checkbox"
-                  id="resource-quotas-check"
-                  name="resource-quotas-check"
-                  [(ngModel)]="resourceQuotasExpanded">
+                  id="resource-quota-check"
+                  name="resource-quota-check"
+                  [(ngModel)]="resourceQuotaChecked">
                 Apply Limits for Namespace
                 <fd-inline-help>
-                  Apply limits for all resouces in the Namespace.
+                  Define constraints that limit aggregate memory consumption per namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi
                 </fd-inline-help>
               </label>
             </div>
 
-            <div class="limits-inputs" [hidden]="!resourceQuotasExpanded">
+            <div class="limits-inputs" [hidden]="!resourceQuotaChecked">
               <label fd-form-label for="memory-limits-input">
                 Memory Limits *
                 <input fd-form-control type="text"
@@ -82,19 +82,19 @@
             </div>
 
             <div fd-form-item>
-              <label fd-form-label for="limit-ranges-check">
+              <label fd-form-label for="limit-range-check">
                 <input fd-form-control type="checkbox"
-                  id="limit-ranges-check"
-                  name="limit-ranges-check"
-                  [(ngModel)]="limitRangesExpanded">
+                  id="limit-range-check"
+                  name="limit-range-check"
+                  [(ngModel)]="limitRangeChecked">
                 Apply Limits for Container
                 <fd-inline-help>
-                  Apply limits for all Containers in the Namespace.
+                  Define memory constraints for individual containers in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi"
                 </fd-inline-help>
               </label>
             </div>
 
-            <div class="limits-inputs" [hidden]="!limitRangesExpanded">
+            <div class="limits-inputs" [hidden]="!limitRangeChecked">
               <label fd-form-label for="max-input">
                 Max *
                 <input fd-form-control type="text"
