@@ -17,6 +17,12 @@
     }
   }
 
+  &.fd-modal--extra-large {
+    .fd-modal {
+      max-width: 75% !important; // override inline styles wrongly injected by Fundamental
+    }
+  }
+
   .fd-modal__close:focus {
     box-shadow: none;
   }
