@@ -21,7 +21,7 @@
               autofocus>
             <fd-form-message [type]="'error'" *ngIf="wrongName">The namespace name has the wrong format. The name must	
               consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric	
-              character. (e.g. 'my-name1')</fd-form-message>
+              character (e.g. 'my-name1').</fd-form-message>
           </div>
 
           <div fd-form-item>
@@ -39,7 +39,7 @@
                   checked>
                 Istio Injection enabled
                 <fd-inline-help>
-                  Inject Istio Sidecar to the Namespace.
+                    Select this option to enable istio to mediate all communication between the pods in your namespace.
                 </fd-inline-help>
               </label>
             </div>
@@ -52,7 +52,7 @@
                   [(ngModel)]="resourceQuotaChecked">
                 Apply Limits for Namespace
                 <fd-inline-help>
-                  Define constraints that limit aggregate memory consumption per namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi
+                  Define constraints that limit aggregate memory consumption per namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
                 </fd-inline-help>
               </label>
             </div>
@@ -89,7 +89,7 @@
                   [(ngModel)]="limitRangeChecked">
                 Apply Limits for Container
                 <fd-inline-help>
-                  Define memory constraints for individual containers in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi"
+                  Define memory constraints for individual containers in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
                 </fd-inline-help>
               </label>
             </div>
