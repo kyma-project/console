@@ -50,7 +50,8 @@ import { FetchTokenModalComponent } from '../../fetch-token-modal/fetch-token-mo
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
 import { InstanceBindingState } from '../../shared/datamodel/instance-binding-state';
-import { EventTrigger, EventTriggerWithSchema } from '../../shared/datamodel/event-trigger';
+import { EventTrigger } from '../../shared/datamodel/event-trigger';
+import { EventTriggerWithSchema } from '../../shared/datamodel/event-trigger-with-schema';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
@@ -58,13 +59,12 @@ import { SubscriptionsService } from '../../subscriptions/subscriptions.service'
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
-var OpenAPISampler = require('openapi-sampler');
+
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
 
 const FUNCTION = 'function';
-
 interface INotificationData {
   type: 'info' | 'success' | 'error';
   message: string;
@@ -206,6 +206,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
     this.kind = 'nodejs8';
+
   }
 
   ngOnInit() {
@@ -213,6 +214,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
           this.initCanShowLogs();
+
           const eventData = luigiClient.getEventData();
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
@@ -1476,10 +1478,18 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.triggerAriaHidden = true;
   }
 
+  private generateExample(schema: JSON) {
+    try {
+      return require('openapi-sampler').sample(schema)
+    } catch(e) {
+      return;
+    }
+  }
+
   public selectTrigger(trigger) {
     this.trigger = trigger.eventType;
     this.selectedEventTrigger = trigger;
     this.testPayload = trigger.schema;
-    this.testPayloadText = JSON.stringify(OpenAPISampler.sample(this.testPayload), null, 2);
+    this.testPayloadText = JSON.stringify(this.generateExample(trigger.schema), null, 2);
   }
 }
