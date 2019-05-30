@@ -76,8 +76,8 @@
                   name="memory-requests-input"
                   [(ngModel)]="memoryRequests"
                   [state]="memoryRequestsError ? 'invalid' : undefined"
-                  (ngModelChange)="validateMemoryRequests($event)">
-                  <fd-form-message [type]="'error'" *ngIf="memoryRequestsError">The Memory Requests value must be a number.</fd-form-message>
+                  (ngModelChange)="validateLimitsRegex($event, 'memoryRequestsError')">
+                  <fd-form-message [type]="'error'" *ngIf="memoryRequestsError">{{regexErrorMessage}}</fd-form-message>
               </label>
             </div>
 

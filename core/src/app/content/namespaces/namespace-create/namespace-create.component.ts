@@ -160,12 +160,8 @@ export class NamespaceCreateComponent {
   }
 
   public validateLimitsRegex(change, name) {
-    const regex = /^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$/;
+    const regex = /^[-+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([KMGTPE]i?))?$/;
     change ? (this[name] = !regex.test(change)) : (this[name] = false)
-  }
-
-  public validateMemoryRequests(change) {
-    this.memoryRequestsError = isNaN(change);
   }
 
   private refreshContextSwitcher() {
@@ -247,5 +243,3 @@ export class NamespaceCreateComponent {
     this.err = undefined;
   }
 }
-
-// TODO : write regex
