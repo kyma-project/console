@@ -96,8 +96,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   theme: string;
 
-  public initialLabels: string[];
-  public updatedLabels: string[];
+  public updatedLabels: string[] = [];
 
   @ViewChild('functionName') functionName: ElementRef;
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
@@ -263,6 +262,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               this.functionName.nativeElement.focus();
             }
           }
+
+          this.updatedLabels.unshift('app=');
 
           this.eventActivationsService
             .getEventActivations(this.namespace, this.token)
@@ -857,7 +858,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         lambda => {
           this.lambda = lambda;
           this.labels = this.getLabels(lambda);
-          this.initialLabels = this.updatedLabels = this.getLabels(lambda);
+          this.updatedLabels = this.getLabels(lambda);
           this.annotations = this.getAnnotations(lambda);
           this.code = lambda.spec.function;
           this.kind = lambda.spec.runtime;
@@ -1341,6 +1342,12 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         this.currentNotification = { message: '', type: 'info' };
       }, timeout);
     }
+  }
+
+  addAppLabel() {
+    this.updatedLabels = this.updatedLabels.map(label => {
+      return label.startsWith('app=') ? `app=${this.lambda.metadata.name}` : label;
+    });
   }
 
   handleTestButtonClick() {

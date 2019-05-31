@@ -85,7 +85,7 @@
                     <label class="fd-form__label" for="">Function Name * </label>
                     <div class="fd-input-group">
                       <input type="text" id="input-1" #functionName name="function_name"
-                        [(ngModel)]="lambda.metadata.name"
+                        [(ngModel)]="lambda.metadata.name" (ngModelChange)="addAppLabel()"
                         [ngClass]="{'is-invalid': isFunctionNameInvalid, 'is-warning': isFunctionNameEmpty}"
                         [attr.disabled]="mode === 'create' ? null : ''" (keyup)="validatesName()"
                         (focusout)="validatesName()" />
@@ -301,15 +301,15 @@
         <button fd-button class="fd-has-margin-right-tiny" [options]="'light'" (click)="showLogs()" *ngIf="mode !== 'create' && canShowLogs">
           Show Logs
         </button>
-        
+
         <button fd-button [options]="'emphasized'" [glyph]="'journey-depart'" (click)="handleTestButtonClick()">
           Make a test call
-        </button> 
-        
-        <app-notification id="M4SK0P4T0L" *ngIf="currentNotification.type && currentNotification.message" 
+        </button>
+
+        <app-notification id="M4SK0P4T0L" *ngIf="currentNotification.type && currentNotification.message"
         [header]="currentNotification.message" [type]="currentNotification.type"
         [description]="currentNotification.description">
-        </app-notification>      
+        </app-notification>
       </fd-panel-footer>
     </fd-panel>
 
@@ -319,12 +319,12 @@
             <fd-panel-title>Response</fd-panel-title>
           </fd-panel-head>
         </fd-panel-header>
-  
-        <fd-panel-body>      
+
+        <fd-panel-body>
           <ace-editor [readOnly]="true" id="test-result" [(text)]="testingResponse" [theme]="theme"
             [mode]="responseEditorMode">
           </ace-editor>
-        </fd-panel-body>    
+        </fd-panel-body>
       </fd-panel>
   </section>
 </div>
