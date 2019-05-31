@@ -78,4 +78,7 @@ export class FilteredApisEntryRendererComponent
       .fromContext('services')
       .navigate(`details/${serviceName}/apis/details/${apiName}`);
   }
+  public getHostnameURL(hostname: string): string {
+    return `https://${hostname}`;
+  }
 }
