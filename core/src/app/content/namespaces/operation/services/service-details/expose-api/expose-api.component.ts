@@ -16,7 +16,8 @@ import GenericHelpersService from '../../../../../../shared/services/generic-hel
 @Component({
   selector: 'app-expose-api',
   templateUrl: './expose-api.component.html',
-  styleUrls: ['./expose-api.component.scss']
+  styleUrls: ['./expose-api.component.scss'],
+  providers: [GenericHelpersService]
 })
 export class ExposeApiComponent implements OnInit, OnDestroy {
   @ViewChild('infoModal') private infoModal: InformationModalComponent;

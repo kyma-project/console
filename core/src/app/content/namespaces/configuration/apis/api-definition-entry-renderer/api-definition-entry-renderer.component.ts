@@ -9,7 +9,8 @@ import GenericHelpersService from '../../../../../shared/services/generic-helper
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
-  templateUrl: './api-definition-entry-renderer.component.html'
+  templateUrl: './api-definition-entry-renderer.component.html',
+  providers: [GenericHelpersService]
 })
 export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent

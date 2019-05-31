@@ -10,7 +10,8 @@ import GenericHelpersService from '../../../../../../shared/services/generic-hel
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',
-  templateUrl: './filtered-apis-entry-renderer.component.html'
+  templateUrl: './filtered-apis-entry-renderer.component.html',
+  providers: [GenericHelpersService]
 })
 export class FilteredApisEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
