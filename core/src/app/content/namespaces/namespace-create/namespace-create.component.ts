@@ -133,12 +133,6 @@ export class NamespaceCreateComponent {
     return (this.namespaceName && rqFields && lrFields && !hasErrors)
   }
 
-  public cancel() {
-    if(this.modalService) {
-      this.modalService.close(this.createNamespaceModal);
-    }
-  }
-
   public show() {
     this.setDefaultValues();
     this.modalService.open(this.createNamespaceModal).result.finally(() => {
@@ -146,72 +140,6 @@ export class NamespaceCreateComponent {
       this.nameError = false;
       this.cancelEvent.emit();
     });
-  }
-
-  public navigateToDetails(namespaceName) {
-    LuigiClient.linkManager().navigate(`/home/namespaces/${namespaceName}/details`);
-  }
-
-  public validateRegex() {
-    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
-    this.namespaceName
-      ? (this.nameError = !regex.test(this.namespaceName))
-      : (this.nameError = false);
-  }
-
-  public validateLimitsRegex(change, name) {
-    
-    //  plain integer or plain integer + k | Ki | M | Mi | G | Gi | T | Ti | P | Pi | E | Ei | m 
-    const regex = /^[-+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$/;
-    change ? (this[name] = !regex.test(change)) : (this[name] = false)
-  }
-
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
-  }
-
-  public updateLabels({ labels, labelsError }: { labels?: string[], labelsError?: boolean }): void {
-    if (labels) {
-
-      // enable 'istio injection' button if label has been removed (by default istio is injected if label is not in place).
-      const istioLabel = labels.find(this.findIstioLabel);
-      if (istioLabel) {
-        const value = istioLabel.split('=')[1];
-        this.istioInjectionEnabled = value === 'true';
-      } else {
-        this.istioInjectionEnabled = true;
-      }
-    }
-    this.labels = labels !== undefined ? labels : this.labels;
-    this.labelsError = labelsError !== undefined ? labelsError : this.labelsError;
-  }
-
-  public toggleIstioCheck(checked: boolean) {
-    if (this.labels && this.labels.length > 0) {
-      const istioLabel = this.labels.find(this.findIstioLabel);
-      if (istioLabel) {
-        this.labels.splice(this.labels.indexOf(istioLabel), 1)
-      }
-    }
-    const istioLabelArray = ['istio-injection', checked.toString()]
-    this.labels.push(istioLabelArray.join('='))
-  }
-
-  public findIstioLabel(label) {
-    const key = label.split('=')[0];
-    return key === 'istio-injection'
-  }
-
-  public labelsArrayToObject() {
-    const labelsObject = {};
-    if (this.labels && this.labels.length > 0) {
-      this.labels.forEach((label) => {
-        const key = label.split('=')[0];
-        const value = label.split('=')[1];
-        labelsObject[key] = value;
-      })
-    }
-    return labelsObject;
   }
 
   public setDefaultValues() {
@@ -241,7 +169,66 @@ export class NamespaceCreateComponent {
     this.defaultRequestError = false;
   }
 
+  public cancel() {
+    if(this.modalService) {
+      this.modalService.close(this.createNamespaceModal);
+    }
+  }
+
   public removeError() {
     this.err = undefined;
+  }
+
+  public navigateToDetails(namespaceName) {
+    LuigiClient.linkManager().navigate(`/home/namespaces/${namespaceName}/details`);
+  }
+
+  private refreshContextSwitcher() {
+    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
+  }
+
+  public validateRegex() {
+    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
+    this.namespaceName
+      ? (this.nameError = !regex.test(this.namespaceName))
+      : (this.nameError = false);
+  }
+
+  public validateLimitsRegex(change, name) {
+    //  plain integer or plain integer + k | Ki | M | Mi | G | Gi | T | Ti | P | Pi | E | Ei | m 
+    const regex = /^[-+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$/;
+    change ? (this[name] = !regex.test(change)) : (this[name] = false)
+  }
+
+  public updateLabels({ labels, labelsError }: { labels?: string[], labelsError?: boolean }): void {
+    if (labels) {
+      // enable 'istio injection' button if label has been removed (by default istio is injected if label is not in place).
+      const istioLabel = labels.find(this.findIstioLabel);
+      if (istioLabel) {
+        const value = istioLabel.split('=')[1];
+        this.istioInjectionEnabled = value === 'true';
+      } else {
+        this.istioInjectionEnabled = true;
+      }
+    }
+    this.labels = labels !== undefined ? labels : this.labels;
+    this.labelsError = labelsError !== undefined ? labelsError : this.labelsError;
+  }
+
+  public findIstioLabel(label) {
+    const key = label.split('=')[0];
+    return key === 'istio-injection'
+  }
+
+  public labelsArrayToObject() {
+    const labelsObject = {};
+    if (this.labels && this.labels.length > 0) {
+      this.labels.forEach((label) => {
+        const key = label.split('=')[0];
+        const value = label.split('=')[1];
+        labelsObject[key] = value;
+      })
+    }
+    return labelsObject;
   }
 }
