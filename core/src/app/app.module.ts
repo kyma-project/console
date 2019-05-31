@@ -115,8 +115,9 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { getMainDefinition } from 'apollo-utilities';
 import { split } from 'apollo-link';
-import { AppConfig } from './app.config'
+import { AppConfig } from './app.config';
 import { WebSocketLink } from './ws';
+import GenericHelpersService from './shared/services/generic-helpers.service';
 
 @NgModule({
   declarations: [
@@ -231,7 +232,8 @@ import { WebSocketLink } from './ws';
     RbacService,
     GraphQLClientService,
     IdpPresetsService,
-    LuigiClientService
+    LuigiClientService,
+    GenericHelpersService
   ],
   entryComponents: [
     NamespaceCardComponent,
@@ -269,11 +271,7 @@ import { WebSocketLink } from './ws';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(
-    private apollo: Apollo,
-    private httpLink: HttpLink
-    ) {
-
+  constructor(private apollo: Apollo, private httpLink: HttpLink) {
     // Create an http link:
     const http = httpLink.create({
       uri: AppConfig.graphqlApiUrl
@@ -294,7 +292,7 @@ export class AppModule {
         return kind === 'OperationDefinition' && operation === 'subscription';
       },
       ws,
-      http,
+      http
     );
 
     apollo.create({

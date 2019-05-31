@@ -6,7 +6,7 @@ import { ComponentCommunicationService } from '../../../../../../shared/services
 import { AppConfig } from '../../../../../../app.config';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
-
+import GenericHelpersService from '../../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',
@@ -18,11 +18,13 @@ export class FilteredApisEntryRendererComponent
   public currentNamespaceId: string;
   public emptyText = EMPTY_TEXT;
   private currentNamespaceSubscription: Subscription;
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   constructor(
     protected injector: Injector,
     private currentNamespaceService: CurrentNamespaceService,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private genericHelpers: GenericHelpersService
   ) {
     super(injector);
     this.actions = [
@@ -77,8 +79,5 @@ export class FilteredApisEntryRendererComponent
     LuigiClient.linkManager()
       .fromContext('services')
       .navigate(`details/${serviceName}/apis/details/${apiName}`);
-  }
-  public getHostnameURL(hostname: string): string {
-    return `https://${hostname}`;
   }
 }

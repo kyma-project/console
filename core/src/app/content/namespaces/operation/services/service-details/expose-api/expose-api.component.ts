@@ -11,6 +11,7 @@ import { InformationModalComponent } from 'shared/components/information-modal/i
 import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
 import * as LuigiClient from '@kyma-project/luigi-client';
+import GenericHelpersService from '../../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-expose-api',
@@ -51,7 +52,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public ariaServiceHidden = true;
 
   public availablePresets = [];
-
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
 
@@ -60,7 +61,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     private exposeApiService: ExposeApiService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private idpPresetsService: IdpPresetsService
+    private idpPresetsService: IdpPresetsService,
+    private genericHelpers: GenericHelpersService
   ) {}
 
   public validateDetails() {
@@ -297,16 +299,14 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   public fetchListOfServices() {
-    this.exposeApiService
-      .getListOfServices(this.currentNamespaceId)
-      .subscribe(
-        services => {
-          this.filteredServices = services.items;
-          this.listOfServices = services.items;
-          this.fetchAuthIssuer();
-        },
-        err => console.log(err)
-      );
+    this.exposeApiService.getListOfServices(this.currentNamespaceId).subscribe(
+      services => {
+        this.filteredServices = services.items;
+        this.listOfServices = services.items;
+        this.fetchAuthIssuer();
+      },
+      err => console.log(err)
+    );
   }
 
   public checkIfServiceCanBeSecured(service) {

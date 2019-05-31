@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
+import GenericHelpersService from '../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
@@ -15,11 +16,13 @@ export class ApiDefinitionEntryRendererComponent
   implements OnDestroy, OnInit {
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   constructor(
     protected injector: Injector,
     private currentNamespaceService: CurrentNamespaceService,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private genericHelpers: GenericHelpersService
   ) {
     super(injector);
     this.actions = [
@@ -74,9 +77,5 @@ export class ApiDefinitionEntryRendererComponent
     LuigiClient.linkManager()
       .fromContext('apismicrofrontend')
       .navigate(`details/${apiName}`);
-  }
-
-  public getHostnameURL(hostname: string): string {
-    return `https://${hostname}`;
   }
 }
