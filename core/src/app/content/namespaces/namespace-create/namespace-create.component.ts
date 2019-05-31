@@ -30,8 +30,8 @@ export class NamespaceCreateComponent {
 
   // input errors
   public err: string;
-  public wrongName: boolean;
-  public wrongLabels: boolean;
+  public nameError: boolean;
+  public labelsError: boolean;
   public memoryLimitsError: boolean;
   public memoryRequestsError: boolean;
   public maxError: boolean;
@@ -121,7 +121,7 @@ export class NamespaceCreateComponent {
   }
 
   public namespaceCanBeCreated() {
-    const hasErrors = (this.err || this.wrongName || this.wrongLabels || this.memoryLimitsError || this.memoryRequestsError || this.maxError || this.defaultError || this.defaultRequestError);
+    const hasErrors = (this.err || this.nameError || this.labelsError || this.memoryLimitsError || this.memoryRequestsError || this.maxError || this.defaultError || this.defaultRequestError);
     let rqFields = true;
     let lrFields = true;
     if (this.resourceQuotaChecked) {
@@ -143,7 +143,7 @@ export class NamespaceCreateComponent {
     this.setDefaultValues();
     this.modalService.open(this.createNamespaceModal).result.finally(() => {
       this.isActive = false;
-      this.wrongName = false;
+      this.nameError = false;
       this.cancelEvent.emit();
     });
   }
@@ -155,12 +155,14 @@ export class NamespaceCreateComponent {
   public validateRegex() {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
     this.namespaceName
-      ? (this.wrongName = !regex.test(this.namespaceName))
-      : (this.wrongName = false);
+      ? (this.nameError = !regex.test(this.namespaceName))
+      : (this.nameError = false);
   }
 
   public validateLimitsRegex(change, name) {
-    const regex = /^[-+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([KMGTPE]i?))?$/;
+    
+    //  plain integer or plain integer + k | Ki | M | Mi | G | Gi | T | Ti | P | Pi | E | Ei | m 
+    const regex = /^[-+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$/;
     change ? (this[name] = !regex.test(change)) : (this[name] = false)
   }
 
@@ -168,7 +170,7 @@ export class NamespaceCreateComponent {
     window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 
-  public updateLabels({ labels, wrongLabels }: { labels?: string[], wrongLabels?: boolean }): void {
+  public updateLabels({ labels, labelsError }: { labels?: string[], labelsError?: boolean }): void {
     if (labels) {
 
       // enable 'istio injection' button if label has been removed (by default istio is injected if label is not in place).
@@ -181,7 +183,7 @@ export class NamespaceCreateComponent {
       }
     }
     this.labels = labels !== undefined ? labels : this.labels;
-    this.wrongLabels = wrongLabels !== undefined ? wrongLabels : this.wrongLabels;
+    this.labelsError = labelsError !== undefined ? labelsError : this.labelsError;
   }
 
   public toggleIstioCheck(checked: boolean) {
@@ -230,8 +232,8 @@ export class NamespaceCreateComponent {
   
     // input errors
     this.err = undefined;
-    this.wrongName = false;
-    this.wrongLabels = false;
+    this.nameError = false;
+    this.labelsError = false;
     this.memoryLimitsError = false;
     this.memoryRequestsError = false;
     this.maxError = false;
