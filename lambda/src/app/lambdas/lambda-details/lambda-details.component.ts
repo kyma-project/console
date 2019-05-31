@@ -298,7 +298,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               });
               if(this.allEventTriggers.length>0){
                 this.filteredTriggers = this.allEventTriggers;
-                this.selectTrigger(this.allEventTriggers[0]);
               }
             });
 
