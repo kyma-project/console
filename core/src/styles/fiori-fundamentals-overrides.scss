@@ -19,7 +19,7 @@
 
   &.fd-modal--extra-large {
     .fd-modal {
-      max-width: 75% !important; // override inline styles wrongly injected by Fundamental
+      max-width: 50% !important; // override inline styles wrongly injected by Fundamental
     }
   }
 
