@@ -1,10 +1,6 @@
 import { ITrigger } from './trigger';
+import { EventTrigger } from './event-trigger';
 
-export class EventTriggerWithSchema implements ITrigger {
-  eventType: string;
-  sourceId: string;
-  selected?: boolean;
-  description?: string;
-  version: string;
+export class EventTriggerWithSchema extends EventTrigger implements ITrigger {
   schema: JSON;
 }

@@ -78,7 +78,6 @@ interface INotificationData {
 })
 export class LambdaDetailsComponent implements OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];
-  selectedEventTrigger: ITrigger[] = [];
   availableEventTriggers: EventTrigger[] = [];
   allEventTriggers: EventTriggerWithSchema[] = [];
   filteredTriggers: EventTriggerWithSchema[] = [];
@@ -122,9 +121,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   showSample = false;
   toggleTrigger = false;
   toggleTriggerType = false;
-  trigerDropdownHidden = true;
-  public triggerAriaExpanded = false;
-  public triggerAriaHidden = true;
+  public isTriggerDropdownExpanded = false;
   typeDropdownHidden = true;
   sizeDropdownHidden = true;
   isLambdaFormValid = true;
@@ -1462,19 +1459,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public toggleDropDown() {
-    this.triggerAriaExpanded = !this.triggerAriaExpanded;
-    this.triggerAriaHidden = !this.triggerAriaHidden;
-  }
 
-  public openDropDown($event: Event) {
-    this.triggerAriaExpanded = true;
-    this.triggerAriaHidden = false;
-  }
-
-  public closeDropDown() {
-    this.triggerAriaExpanded = false;
-    this.triggerAriaHidden = true;
+  public toggleDropDown(forceState?:boolean) {
+    this.isTriggerDropdownExpanded = forceState===undefined ? !this.isTriggerDropdownExpanded : forceState;
   }
 
   private generateExample(schema: JSON) {
@@ -1487,7 +1474,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   public selectTrigger(trigger) {
     this.trigger = trigger.eventType;
-    this.selectedEventTrigger = trigger;
     this.testPayload = trigger.schema;
     this.testPayloadText = JSON.stringify(this.generateExample(trigger.schema), null, 2);
   }

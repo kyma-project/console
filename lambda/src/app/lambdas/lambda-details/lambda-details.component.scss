@@ -169,7 +169,11 @@ input[type='text']:focus {
 }
 
 .y-fd-popover__body {
-  width: calc(100% - (var(--fd-modal-padding-x)*2));
+  min-width: 100%;
   overflow: auto;
   max-height: 300px;
+}
+
+.y-fd-popover__body--right {
+  right: 0;
 }
