@@ -17,7 +17,9 @@
     justify-content: space-between;
     padding-bottom: 5px;
     align-items: baseline;
-    color:var(--fd-color-text-4);
+    color: var(--fd-color-text-4);
+    flex-wrap: wrap;
+    max-width: 29em;
 
     .fd-form__control {
       display: inline-block;

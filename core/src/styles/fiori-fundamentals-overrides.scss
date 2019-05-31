@@ -19,7 +19,7 @@
 
   &.fd-modal--extra-large {
     .fd-modal {
-      max-width: 50% !important; // override inline styles wrongly injected by Fundamental
+      max-width: 65% !important; // override inline styles wrongly injected by Fundamental
     }
   }
 
@@ -194,7 +194,6 @@
 //Page header
 .fd-page {
   &__header {
-
     margin-bottom: fd-space('large') / 2;
 
     .fd-section {
@@ -214,7 +213,8 @@
 }
 
 //Responsive improvements
-@media (max-width: map-get($fd-breakpoints, m)) { // 'm' = 600px
+@media (max-width: map-get($fd-breakpoints, m)) {
+  // 'm' = 600px
 
   //Panel grid
   .fd-panel-grid {
@@ -248,7 +248,7 @@
       }
     }
   }
-  
+
   [class^='fd-col'] {
     margin-bottom: 12px;
   }
