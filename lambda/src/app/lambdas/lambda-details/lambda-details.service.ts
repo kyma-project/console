@@ -9,7 +9,6 @@ import {
 } from './../../shared/datamodel/k8s/pod-template';
 import { IMetaData } from './../../shared/datamodel/k8s/generic/meta-data';
 import {
-  IFunction,
   IFunctionSpec,
 } from './../../shared/datamodel/k8s/function';
 import { Injectable } from '@angular/core';
@@ -19,7 +18,6 @@ import { Lambda } from '../../shared/datamodel/k8s/function';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AppConfig } from '../../app.config';
 import {
-  IDeployment,
   IDeploymentSpec,
   Deployment,
 } from '../../shared/datamodel/k8s/deployment';
@@ -30,6 +28,7 @@ import {
   IMetricResource,
   IMetricSpec,
 } from '../../shared/datamodel/k8s/autoscaler';
+import { cloneDeep } from 'lodash';
 
 @Injectable()
 export class LambdaDetailsService {
@@ -201,6 +200,15 @@ export class LambdaDetailsService {
       spec: funcSpec,
     });
     lambda.spec['function-content-type'] = 'text';
+    return lambda;
+  }
+
+  initializeMissingLambdaContainers(lambda: Lambda): Lambda {
+    if (!lambda.spec.deployment.spec.template.spec.containers) {
+      let newLambda = cloneDeep(lambda);
+      newLambda.spec.deployment.spec.template.spec.containers = [{}];
+      return newLambda;
+    }
     return lambda;
   }
 

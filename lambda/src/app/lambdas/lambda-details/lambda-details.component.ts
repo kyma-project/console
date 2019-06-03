@@ -1233,6 +1233,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   handleEnvEmitter($event): void {
+    this.lambda = this.lambdaDetailsService.initializeMissingLambdaContainers(this.lambda);
+
     this.lambda.spec.deployment.spec.template.spec.containers[0].env = $event;
     this.warnUnsavedChanges(true);
   }
@@ -1326,9 +1328,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   getEnvs(){
     const depl = this.lambda.spec.deployment;
     const cont = depl && depl.spec && depl.spec.template && depl.spec.template.spec && depl.spec.template.spec.containers
-     ? depl.spec.template.spec.containers 
+     ? depl.spec.template.spec.containers
      : null;
-    return cont && cont.length && cont[0] ? cont[0].env : null; 
+    return cont && cont.length && cont[0] ? cont[0].env : null;
   }
 
   changeTab(name: string) {
