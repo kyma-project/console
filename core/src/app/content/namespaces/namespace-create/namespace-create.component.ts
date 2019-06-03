@@ -215,6 +215,17 @@ export class NamespaceCreateComponent {
     this.labelsError = labelsError !== undefined ? labelsError : this.labelsError;
   }
 
+  public toggleIstioCheck(checked: boolean) {	
+    if (this.labels && this.labels.length > 0) {	
+      const istioLabel = this.labels.find(this.findIstioLabel);	
+      if (istioLabel) {	
+        this.labels.splice(this.labels.indexOf(istioLabel), 1)	
+      }	
+    }	
+    const istioLabelArray = ['istio-injection', checked.toString()]	
+    this.labels.push(istioLabelArray.join('='))	
+  }
+  
   public findIstioLabel(label) {
     const key = label.split('=')[0];
     return key === 'istio-injection'
