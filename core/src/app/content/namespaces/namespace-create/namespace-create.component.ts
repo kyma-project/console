@@ -120,7 +120,7 @@ export class NamespaceCreateComponent {
     );
   }
 
-  public namespaceCanBeCreated() {
+  public namespaceCanBeCreated(): boolean {
     const hasErrors = (this.err || this.nameError || this.labelsError || this.memoryLimitsError || this.memoryRequestsError || this.maxError || this.defaultError || this.defaultRequestError);
     let rqFields = true;
     let lrFields = true;
@@ -179,7 +179,7 @@ export class NamespaceCreateComponent {
     this.err = undefined;
   }
 
-  public navigateToDetails(namespaceName) {
+  public navigateToDetails(namespaceName: string) {
     LuigiClient.linkManager().navigate(`/home/namespaces/${namespaceName}/details`);
   }
 
@@ -194,16 +194,16 @@ export class NamespaceCreateComponent {
       : (this.nameError = false);
   }
 
-  public validateLimitsRegex(change, name) {
+  public validateLimitsRegex(change: string, name: string) {
     //  plain integer or plain integer + k | Ki | M | Mi | G | Gi | T | Ti | P | Pi | E | Ei | m 
-    const regex = /^[-+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$/;
+    const regex = /^[+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$/;
     change ? (this[name] = !regex.test(change)) : (this[name] = false)
   }
 
-  public updateLabels({ labels, labelsError }: { labels?: string[], labelsError?: boolean }): void {
+  public updateLabels({ labels, wrongLabels }: { labels?: string[], wrongLabels?: boolean }): void {
     if (labels) {
       // enable 'istio injection' button if label has been removed (by default istio is injected if label is not in place).
-      const istioLabel = labels.find(this.findIstioLabel);
+      const istioLabel = labels.find(this.isIstioLabel);
       if (istioLabel) {
         const value = istioLabel.split('=')[1];
         this.istioInjectionEnabled = value === 'true';
@@ -212,12 +212,12 @@ export class NamespaceCreateComponent {
       }
     }
     this.labels = labels !== undefined ? labels : this.labels;
-    this.labelsError = labelsError !== undefined ? labelsError : this.labelsError;
+    this.labelsError = wrongLabels !== undefined ? wrongLabels : this.labelsError;
   }
 
   public toggleIstioCheck(checked: boolean) {	
     if (this.labels && this.labels.length > 0) {	
-      const istioLabel = this.labels.find(this.findIstioLabel);	
+      const istioLabel = this.labels.find(this.isIstioLabel);	
       if (istioLabel) {	
         this.labels.splice(this.labels.indexOf(istioLabel), 1)	
       }	
@@ -226,17 +226,16 @@ export class NamespaceCreateComponent {
     this.labels.push(istioLabelArray.join('='))	
   }
   
-  public findIstioLabel(label) {
+  public isIstioLabel(label: string): boolean {
     const key = label.split('=')[0];
     return key === 'istio-injection'
   }
 
-  public labelsArrayToObject() {
+  public labelsArrayToObject(): object {
     const labelsObject = {};
     if (this.labels && this.labels.length > 0) {
       this.labels.forEach((label) => {
-        const key = label.split('=')[0];
-        const value = label.split('=')[1];
+        const [key, value] = label.split('=');
         labelsObject[key] = value;
       })
     }
