@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import GenericHelpersService from './generic-helpers.service';
+import { GenericHelpersService } from './generic-helpers.service';
 
 describe('GenericHelpersService', () => {
   let genericHelpers: GenericHelpersService;

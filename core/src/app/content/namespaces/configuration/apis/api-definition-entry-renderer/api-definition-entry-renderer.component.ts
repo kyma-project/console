@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
-import GenericHelpersService from '../../../../../shared/services/generic-helpers.service';
+import { GenericHelpersService } from '../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',

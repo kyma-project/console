@@ -6,7 +6,7 @@ import { ComponentCommunicationService } from '../../../../../../shared/services
 import { AppConfig } from '../../../../../../app.config';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
-import GenericHelpersService from '../../../../../../shared/services/generic-helpers.service';
+import { GenericHelpersService } from '../../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',

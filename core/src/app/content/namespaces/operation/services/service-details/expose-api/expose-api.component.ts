@@ -11,7 +11,7 @@ import { InformationModalComponent } from 'shared/components/information-modal/i
 import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
 import * as LuigiClient from '@kyma-project/luigi-client';
-import GenericHelpersService from '../../../../../../shared/services/generic-helpers.service';
+import { GenericHelpersService } from '../../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-expose-api',

@@ -117,7 +117,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import { split } from 'apollo-link';
 import { AppConfig } from './app.config';
 import { WebSocketLink } from './ws';
-import GenericHelpersService from './shared/services/generic-helpers.service';
+import { GenericHelpersService } from './shared/services/generic-helpers.service';
 
 @NgModule({
   declarations: [
