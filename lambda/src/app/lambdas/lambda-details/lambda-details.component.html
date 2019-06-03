@@ -335,10 +335,10 @@
         </button>
 
         <button fd-button [options]="'emphasized'" [glyph]="'journey-depart'" (click)="handleTestButtonClick()">
-          Make a test call
-        </button>
-
-        <app-notification id="M4SK0P4T0L" *ngIf="currentNotification.type && currentNotification.message"
+          Send event
+        </button> 
+        
+        <app-notification id="M4SK0P4T0L" *ngIf="currentNotification.type && currentNotification.message" 
         [header]="currentNotification.message" [type]="currentNotification.type"
         [description]="currentNotification.description">
         </app-notification>

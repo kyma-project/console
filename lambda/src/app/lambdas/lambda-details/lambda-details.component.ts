@@ -1415,7 +1415,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         this.showNotification(
           {
             type: `success`,
-            message: `The Lambda received your payload.`,
+            message: `Test Event Sent. Check Lambda Logs.`,
             description: `You can now browse its logs.`,
           },
           5000,
