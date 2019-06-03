@@ -205,7 +205,7 @@ export class LambdaDetailsService {
 
   initializeMissingLambdaContainers(lambda: Lambda): Lambda {
     if (!lambda.spec.deployment.spec.template.spec.containers) {
-      let newLambda = cloneDeep(lambda);
+      const newLambda = cloneDeep(lambda);
       newLambda.spec.deployment.spec.template.spec.containers = [{}];
       return newLambda;
     }
