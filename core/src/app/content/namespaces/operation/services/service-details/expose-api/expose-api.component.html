@@ -48,7 +48,7 @@
         </fd-action-bar-title>
         <fd-action-bar-description class="header-columns">
           <div class="fd-container fd-container--fluid">
-            <div class="fd-col--4">
+            <div *ngIf="apiDefinition" class="fd-col--4">
               Hostname
               <span class="header-columns__value">
                 <a
