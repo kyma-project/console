@@ -93,7 +93,7 @@ export class NamespacesService {
         memory: memoryRequests
       }
     }
-    const limits = {
+    const limitRange = {
       default: {
         memory: memoryDefault
       },
@@ -111,12 +111,12 @@ export class NamespacesService {
       $rqName: String!,
       $lrName: String!,
       $resourceQuota: ResourceQuotaInput!,
-      $limits: LimitRangeInput!
+      $limitRange: LimitRangeInput!
     ) {
       createResourceQuota(namespace: $namespace, name: $rqName, resourceQuota: $resourceQuota){
         name
       } 
-      createLimitRange(namespace: $namespace, name: $lrName, limits: $limits){
+      createLimitRange(namespace: $namespace, name: $lrName, limitRange: $limitRange){
         name
       }
     }`;
@@ -126,7 +126,7 @@ export class NamespacesService {
       lrName: `${namespace}-limit-range`,
       rqName: `${namespace}-resource-quota`,
       resourceQuota,
-      limits
+      limitRange
     };
 
     return this.graphQLClientService.gqlMutation(mutation, variables);
@@ -157,7 +157,7 @@ export class NamespacesService {
   }
 
   public createLimitRange(namespace: string, memoryDefault: string, memoryDefaultRequest: string, memoryMax: string) {
-    const limits = {
+    const limitRange = {
       default: {
         memory: memoryDefault
       },
@@ -169,8 +169,8 @@ export class NamespacesService {
       },
       type: 'Container'
     }
-    const mutation = `mutation CreateLimitRange($namespace: String!, $name: String!, $limits: LimitRangeInput!) {
-      createLimitRange(namespace: $namespace, name: $name, limits: $limits){
+    const mutation = `mutation CreateLimitRange($namespace: String!, $name: String!, $limitRange: LimitRangeInput!) {
+      createLimitRange(namespace: $namespace, name: $name, limitRange: $limitRange){
         name
       } 
     }`;
@@ -178,9 +178,9 @@ export class NamespacesService {
     const variables = {
       namespace,
       name: `${namespace}-limit-range`,
-      limits
+      limitRange
     };
-
+    
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
