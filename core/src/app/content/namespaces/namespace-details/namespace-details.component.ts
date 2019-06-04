@@ -28,7 +28,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   private services: any;
   public errorMessage: string;
   private id: string;
-  private isSystemNamespace: boolean;
   private currentNamespaceSubscription: Subscription;
   private refreshComponentSubscription: Subscription;
   private actions = [
@@ -51,7 +50,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
     this.currentNamespaceSubscription = this.currentNamespaceService
       .getCurrentNamespaceId()
       .subscribe(namespaceId => {
@@ -60,9 +58,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
           namespace => {
             if (namespace) {
               this.namespace = namespace;
-            }
-            if (!this.isSystemNamespace) {
-              this.getApplications(this.id);
             }
             this.getServices(this.id);
           },

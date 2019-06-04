@@ -48,11 +48,6 @@ let navigation = {
       {
         label: '+ New Namespace',
         link: '/home/workspace?~showModal=true'
-      },
-      {
-        label: 'Show all namespaces',
-        link: '/home/workspace?~allNamespaces=true',
-        position: 'bottom'
       }
     ]
   }
@@ -228,19 +223,7 @@ function getNodes(context) {
   ]).then(function (values) {
     var nodeTree = [...staticNodes];
     values.forEach(function (val) {
-      if (val === 'systemNamespace') {
-        nodeTree.forEach(item => {
-          if (item.context) {
-            item.context['isSystemNamespace'] = true;
-          } else {
-            item['context'] = {
-              isSystemNamespace: true
-            };
-          }
-        });
-      } else {
-        nodeTree = [].concat.apply(nodeTree, val);
-      }
+      nodeTree = [].concat.apply(nodeTree, val);
     });
     return nodeTree;
   })
@@ -288,12 +271,6 @@ async function getNamespace(namespaceName) {
 async function getUiEntities(entityname, namespace, placements) {
   if (namespace) {
     const currentNamespace = await getNamespace(namespace);
-    if (
-      !currentNamespace.metadata.labels ||
-      currentNamespace.metadata.labels.env !== 'true'
-    ) {
-      return 'systemNamespace';
-    }
   }
   var fetchUrl =
     k8sServerUrl +
@@ -504,7 +481,7 @@ function getConsoleInitData() {
 
 function getNamespaces() {
   return fetchFromKyma(
-    k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
+    k8sServerUrl + '/api/v1/namespaces'
   ).then(function getNamespacesFromApi(response) {
     var namespaces = [];
     response.items.map(namespace => {
@@ -598,7 +575,7 @@ Promise.all(initPromises)
               pathSegment: 'workspace',
               label: 'Namespaces',
               viewUrl:
-                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}&allNamespaces={nodeParams.allNamespaces}',
+                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
               icon: 'dimension'
             },
             {

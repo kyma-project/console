@@ -68,7 +68,7 @@ describe('NamespacesService', () => {
 
     // when
     const req = httpClientMock.expectOne(
-      `${AppConfig.k8sApiServerUrl}namespaces?labelSelector=env=true`
+      `${AppConfig.k8sApiServerUrl}namespaces`
     );
     req.flush(namespaces);
   });
@@ -87,7 +87,7 @@ describe('NamespacesService', () => {
 
     // when
     const req = httpClientMock.expectOne(
-      AppConfig.k8sApiServerUrl + 'namespaces?labelSelector=env=true'
+      AppConfig.k8sApiServerUrl + 'namespaces'
     );
     req.flush({
       kind: 'NamespaceList',
@@ -144,7 +144,7 @@ describe('NamespacesService', () => {
 
     // when
     const req = httpClientMock.expectOne(
-      AppConfig.k8sApiServerUrl + 'namespaces?labelSelector=env=true'
+      AppConfig.k8sApiServerUrl + 'namespaces'
     );
     req.flush(
       {},

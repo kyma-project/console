@@ -21,7 +21,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public serviceDetailsLoading = true;
   public serviceDetailsUrl: string;
   public currentNamespaceSubscription: Subscription;
-  public isSystemNamespace: boolean;
   public emptyText = EMPTY_TEXT;
 
   constructor(
@@ -62,7 +61,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           );
         });
       });
-    this.isSystemNamespace = LuigiClient.getEventData().isSystemNamespace;
   }
 
   public ngOnDestroy() {
