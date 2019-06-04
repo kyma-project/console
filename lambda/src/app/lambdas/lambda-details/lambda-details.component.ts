@@ -51,6 +51,7 @@ import { ServiceBindingUsagesService } from '../../service-binding-usages/servic
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
 import { InstanceBindingState } from '../../shared/datamodel/instance-binding-state';
 import { EventTrigger } from '../../shared/datamodel/event-trigger';
+import { EventTriggerWithSchema } from '../../shared/datamodel/event-trigger-with-schema';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
@@ -64,7 +65,6 @@ const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 } }`;
 
 const FUNCTION = 'function';
-
 interface INotificationData {
   type: 'info' | 'success' | 'error';
   message: string;
@@ -79,6 +79,8 @@ interface INotificationData {
 export class LambdaDetailsComponent implements OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];
   availableEventTriggers: EventTrigger[] = [];
+  allEventTriggers: EventTriggerWithSchema[] = [];
+  filteredTriggers: EventTriggerWithSchema[] = [];
   existingEventTriggers: EventTrigger[] = [];
 
   namespace: string;
@@ -106,6 +108,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   @ViewChild('editLabelsForm') editLabelsForm: NgForm;
 
+  trigger: string;
   code: string;
   dependency: string;
   aceMode: string;
@@ -118,6 +121,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   showSample = false;
   toggleTrigger = false;
   toggleTriggerType = false;
+  public isTriggerDropdownExpanded = false;
   typeDropdownHidden = true;
   sizeDropdownHidden = true;
   isLambdaFormValid = true;
@@ -199,6 +203,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
     this.kind = 'nodejs8';
+
   }
 
   ngOnInit() {
@@ -206,6 +211,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
           this.initCanShowLogs();
+
           const eventData = luigiClient.getEventData();
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
@@ -274,12 +280,24 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                     eventType: ev.eventType,
                     sourceId: ea.sourceId,
                     description: ev.description,
+                    version: ev.version
+                  };
+                  const eventTriggerWithSchema: EventTriggerWithSchema = {
+                    eventType: ev.eventType,
+                    sourceId: ea.sourceId,
+                    description: ev.description,
                     version: ev.version,
+                    schema: ev.schema
                   };
                   this.availableEventTriggers.push(eventTrigger);
+                  this.allEventTriggers.push(eventTriggerWithSchema);
                 });
               });
+              if(this.allEventTriggers.length>0){
+                this.filteredTriggers = this.allEventTriggers;
+              }
             });
+
         });
       },
       err => {
@@ -1397,8 +1415,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         this.showNotification(
           {
             type: `success`,
-            message: `The Lambda received your payload.`,
-            description: `You can now browse its logs.`,
+            message: `Test Event Sent.`,
+            description: `Check Lambda Logs.`,
           },
           5000,
         );
@@ -1430,5 +1448,33 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           5000,
         );
       });
+  }
+
+  filterTriggerEvents() {
+    this.filteredTriggers = [];
+    this.allEventTriggers.forEach(element => {
+      if (element.eventType.toLowerCase().indexOf(this.trigger.toLowerCase())!==-1) {
+        this.filteredTriggers.push(element);
+      }
+    });
+  }
+
+
+  public toggleDropDown(forceState?:boolean) {
+    this.isTriggerDropdownExpanded = forceState===undefined ? !this.isTriggerDropdownExpanded : forceState;
+  }
+
+  private generateExample(schema: JSON) {
+    try {
+      return require('openapi-sampler').sample(schema)
+    } catch(e) {
+      return;
+    }
+  }
+
+  public selectTrigger(trigger) {
+    this.trigger = trigger.eventType;
+    this.testPayload = trigger.schema;
+    this.testPayloadText = JSON.stringify(this.generateExample(trigger.schema), null, 2);
   }
 }
