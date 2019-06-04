@@ -148,7 +148,7 @@ export class NamespaceCreateComponent {
     this.namespaceName = '';
     this.labels = ['istio-injection=true'];
     this.memoryLimits = '3Gi';
-    this.memoryRequests = '3006477108';
+    this.memoryRequests = '2.8Gi';
     this.max = '1Gi';
     this.default = '512Mi';
     this.defaultRequest = '32Mi';

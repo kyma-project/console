@@ -38,7 +38,7 @@
                   [(ngModel)]="istioInjectionEnabled"
                   (ngModelChange)="toggleIstioCheck(istioInjectionEnabled)"
                   checked>
-                Istio Injection enabled
+                Enable Istio
                 <fd-inline-help [position]="'right'">
                     Select this option to enable istio to mediate all communication between the pods in your namespace.
                 </fd-inline-help>
@@ -51,9 +51,9 @@
                   id="resource-quota-check"
                   name="resource-quota-check"
                   [(ngModel)]="resourceQuotaChecked">
-                Apply Limits for Namespace
+                Apply Total Memory Quotas
                 <fd-inline-help [position]="'right'">
-                  Define constraints that limit aggregate memory consumption per namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
+                  Define constraints that limit total memory consumption in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
                 </fd-inline-help>
               </label>
             </div>
@@ -88,9 +88,9 @@
                   id="limit-range-check"
                   name="limit-range-check"
                   [(ngModel)]="limitRangeChecked">
-                Apply Limits for Container
+                Apply Limits per Container
                 <fd-inline-help [position]="'right'">
-                  Define memory constraints for individual containers in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
+                  Define constraints that limit total memory consumption in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi
                 </fd-inline-help>
               </label>
             </div>
