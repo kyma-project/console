@@ -11,11 +11,13 @@ import { InformationModalComponent } from 'shared/components/information-modal/i
 import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
 import * as LuigiClient from '@kyma-project/luigi-client';
+import { GenericHelpersService } from '../../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-expose-api',
   templateUrl: './expose-api.component.html',
-  styleUrls: ['./expose-api.component.scss']
+  styleUrls: ['./expose-api.component.scss'],
+  providers: [GenericHelpersService]
 })
 export class ExposeApiComponent implements OnInit, OnDestroy {
   @ViewChild('infoModal') private infoModal: InformationModalComponent;
@@ -51,6 +53,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public ariaServiceHidden = true;
 
   public availablePresets = [];
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
 
@@ -59,7 +62,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     private exposeApiService: ExposeApiService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private idpPresetsService: IdpPresetsService
+    private idpPresetsService: IdpPresetsService,
+    private genericHelpers: GenericHelpersService
   ) {}
 
   public validateDetails() {
@@ -67,7 +71,6 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
 
     this.errorApiName = this.validateApiName();
     this.errorHostname = this.validateHostname();
-    this.errorPort = this.validatePort();
     this.errorJWKSUri = this.validateJWKSUri();
     this.errorIssuer = this.validateIssuer();
   }
@@ -297,16 +300,14 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   }
 
   public fetchListOfServices() {
-    this.exposeApiService
-      .getListOfServices(this.currentNamespaceId)
-      .subscribe(
-        services => {
-          this.filteredServices = services.items;
-          this.listOfServices = services.items;
-          this.fetchAuthIssuer();
-        },
-        err => console.log(err)
-      );
+    this.exposeApiService.getListOfServices(this.currentNamespaceId).subscribe(
+      services => {
+        this.filteredServices = services.items;
+        this.listOfServices = services.items;
+        this.fetchAuthIssuer();
+      },
+      err => console.log(err)
+    );
   }
 
   public checkIfServiceCanBeSecured(service) {
@@ -475,18 +476,6 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     if (_.isEmpty(this.issuer)) {
       return 'Issuer is required.';
     }
-    return '';
-  }
-
-  private validatePort() {
-    if (_.isEmpty(_.toString(this.servicePort))) {
-      return 'Service Port is required.';
-    }
-
-    if (!_.isInteger(Number(this.servicePort))) {
-      return 'Service Port should be a number.';
-    }
-
     return '';
   }
 

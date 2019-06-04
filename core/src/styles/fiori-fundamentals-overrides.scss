@@ -188,7 +188,6 @@
 //Page header
 .fd-page {
   &__header {
-
     margin-bottom: fd-space('large') / 2;
 
     .fd-section {
@@ -208,7 +207,8 @@
 }
 
 //Responsive improvements
-@media (max-width: map-get($fd-breakpoints, m)) { // 'm' = 600px
+@media (max-width: map-get($fd-breakpoints, m)) {
+  // 'm' = 600px
 
   //Panel grid
   .fd-panel-grid {
@@ -242,8 +242,21 @@
       }
     }
   }
-  
+
   [class^='fd-col'] {
     margin-bottom: 12px;
+  }
+}
+
+.header-columns {
+  .fd-action-bar__description {
+    width: 100%;
+    margin-top: 8px;
+  }
+  &__value{
+    display: block;
+  }
+  a, fd-icon {
+    display: inline;
   }
 }
