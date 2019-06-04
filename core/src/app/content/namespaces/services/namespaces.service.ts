@@ -21,7 +21,7 @@ export class NamespacesService {
 
   public getNamespaces(): Observable<NamespaceInfo[]> {
     return this.http
-      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces?labelSelector=env=true')
+      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces')
       .pipe(
         map(
           response => {
@@ -66,7 +66,7 @@ export class NamespacesService {
     const mutation = `mutation CreateNamespace($name: String!, $labels: Labels) {
       createNamespace(name: $name, labels: $labels){
         name
-      } 
+      }
     }`;
 
     const variables = {
@@ -78,17 +78,17 @@ export class NamespacesService {
   }
 
   public createResourceQuotaAndLimitRange(
-    namespace: string, 
-    memoryLimits: string, 
-    memoryRequests: string, 
-    memoryDefault: string, 
-    memoryDefaultRequest: string, 
+    namespace: string,
+    memoryLimits: string,
+    memoryRequests: string,
+    memoryDefault: string,
+    memoryDefaultRequest: string,
     memoryMax: string
   ) {
     const resourceQuota = {
       limits: {
         memory: memoryLimits
-      }, 
+      },
       requests: {
         memory: memoryRequests
       }
@@ -115,7 +115,7 @@ export class NamespacesService {
     ) {
       createResourceQuota(namespace: $namespace, name: $rqName, resourceQuota: $resourceQuota){
         name
-      } 
+      }
       createLimitRange(namespace: $namespace, name: $lrName, limitRange: $limitRange){
         name
       }
@@ -136,7 +136,7 @@ export class NamespacesService {
     const resourceQuota = {
       limits: {
         memory: memoryLimits
-      }, 
+      },
       requests: {
         memory: memoryRequests
       }
@@ -144,7 +144,7 @@ export class NamespacesService {
     const mutation = `mutation CreateResourceQuota($namespace: String!, $name: String!, $resourceQuota: ResourceQuotaInput!) {
       createResourceQuota(namespace: $namespace, name: $name, resourceQuota: $resourceQuota){
         name
-      } 
+      }
     }`;
 
     const variables = {
@@ -172,7 +172,7 @@ export class NamespacesService {
     const mutation = `mutation CreateLimitRange($namespace: String!, $name: String!, $limitRange: LimitRangeInput!) {
       createLimitRange(namespace: $namespace, name: $name, limitRange: $limitRange){
         name
-      } 
+      }
     }`;
 
     const variables = {
@@ -180,7 +180,7 @@ export class NamespacesService {
       name: `${namespace}-limit-range`,
       limitRange
     };
-    
+
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
@@ -206,7 +206,7 @@ export class NamespacesService {
           resourceName
           affectedResources
         }
-      } 
+      }
     }`;
 
     const variables = {
