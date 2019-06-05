@@ -1,25 +1,60 @@
 <tr [ngClass]="{ disabled: disabled === true }">
-  <td class='fd-has-font-weight-bold'>
-    <a href="javascript:void(null)" (click)="navigateToDetails(entry.service.name, entry.name)"
-        data-e2e-id="exposed-api-name">
+  <td class="fd-has-font-weight-bold">
+    <a
+      href="javascript:void(null)"
+      (click)="navigateToDetails(entry.service.name, entry.name)"
+      data-e2e-id="exposed-api-name"
+    >
       {{ entry.name }}
     </a>
   </td>
-  <td > {{ entry.hostname }} </td>
-  <td>{{ entry.service.port }}</td>
+  <td>
+    <a
+      class="display-inline"
+      title="Open link in a new tab"
+      [href]="getHostnameURL(entry.hostname)"
+      target="_blank"
+    >
+      {{ entry.hostname }}
+      <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
+    </a>
+    <fd-icon
+      ngxClipboard
+      [cbContent]="getHostnameURL(entry.hostname)"
+      class="fd-has-margin-left-tiny clickable align-middle"
+      [glyph]="'copy'"
+      [size]="'m'"
+      title="Copy to clipboard"
+    >
+    </fd-icon>
+  </td>
   <ng-container *ngIf="isSecured(entry)">
     <td>
-      <fd-badge [status]="'success'" [modifier]="'filled'" data-e2e-id="exposed-api-secured">Yes</fd-badge>
+      <fd-badge
+        [status]="'success'"
+        [modifier]="'filled'"
+        data-e2e-id="exposed-api-secured"
+        >Yes</fd-badge
+      >
     </td>
     <td data-e2e-id="exposed-api-idp">{{ getIDP(entry) }}</td>
   </ng-container>
   <ng-container *ngIf="!isSecured(entry)">
     <td>
-      <fd-badge [status]="'warning'" [modifier]="'filled'" data-e2e-id="exposed-api-secured">No</fd-badge>
+      <fd-badge
+        [status]="'warning'"
+        [modifier]="'filled'"
+        data-e2e-id="exposed-api-secured"
+        >No</fd-badge
+      >
     </td>
     <td data-e2e-id="exposed-api-idp">{{ emptyText }}</td>
   </ng-container>
   <td class="fd-has-float-right">
-    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    <y-list-actions
+      [entry]="entry"
+      [entryEventHandler]="entryEventHandler"
+      [actions]="actions"
+    ></y-list-actions>
   </td>
 </tr>

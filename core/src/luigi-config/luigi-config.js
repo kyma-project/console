@@ -7,6 +7,8 @@ var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
+  domain: 'kyma.local',
+  localDomain: 'console-dev.kyma.local',
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
   serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
@@ -34,7 +36,7 @@ var consoleViewGroupName = '_console_';
 
 let navigation = {
   viewGroupSettings: {
-    _console_ : {
+    _console_: {
       preloadUrl: '/consoleapp.html#/home/preload'
     }
   },
@@ -73,12 +75,12 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      category: { label: 'Service Management', icon: 'add-coursebook' },
+      category: {label: 'Service Management', icon: 'add-coursebook'},
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Configuration', icon: 'key-user-settings' },
+      category: {label: 'Configuration', icon: 'key-user-settings'},
       pathSegment: '_configuration_category_placeholder_',
       hideFromNav: true
     },
@@ -117,29 +119,26 @@ function getNodes(context) {
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config maps',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
     },
     {
-      category: { label: 'Development', icon: 'source-code' },
+      category: {label: 'Development', icon: 'source-code'},
       pathSegment: '_development_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Operation', icon: 'instance' },
+      category: {label: 'Operation', icon: 'instance'},
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/deployments'
     },
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
+      viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/replicaSets'
     },
     {
       category: 'Operation',
@@ -225,36 +224,37 @@ function getNodes(context) {
       'namespace',
       'namespace'
     ])
-  ]).then(function (values) {
-    var nodeTree = [...staticNodes];
-    values.forEach(function (val) {
-      if (val === 'systemNamespace') {
-        nodeTree.forEach(item => {
-          if (item.context) {
-            item.context['isSystemNamespace'] = true;
-          } else {
-            item['context'] = {
-              isSystemNamespace: true
-            };
-          }
-        });
-      } else {
-        nodeTree = [].concat.apply(nodeTree, val);
-      }
+  ])
+    .then(function (values) {
+      var nodeTree = [...staticNodes];
+      values.forEach(function (val) {
+        if (val === 'systemNamespace') {
+          nodeTree.forEach(item => {
+            if (item.context) {
+              item.context['isSystemNamespace'] = true;
+            } else {
+              item['context'] = {
+                isSystemNamespace: true
+              };
+            }
+          });
+        } else {
+          nodeTree = [].concat.apply(nodeTree, val);
+        }
+      });
+      return nodeTree;
+    })
+    .catch((err) => {
+      const errParsed = JSON.parse(err);
+      console.error('Error', errParsed);
+      const settings = {
+        text: `Namespace ${errParsed.details.name} not found.`,
+        type: 'error'
+      };
+      LuigiClient
+        .uxManager()
+        .showAlert(settings)
     });
-    return nodeTree;
-  })
-  .catch((err) => {
-    const errParsed = JSON.parse(err);
-    console.error('Error', errParsed);
-    const settings = {
-      text: `Namespace ${errParsed.details.name} not found.`,
-      type: 'error'
-     };
-     LuigiClient
-      .uxManager()
-      .showAlert(settings)
-  });
 }
 
 /**
@@ -317,11 +317,12 @@ async function getUiEntities(entityname, namespace, placements) {
           return [];
         }
         return result.items
-          .filter(function (item) {
+          .filter(function(item) {
             // placement only exists in clustermicrofrontends
             return !placements || placements.includes(item.spec.placement);
           })
           .map(function (item) {
+
             if (item.spec.navigationNodes) {
               var tree = convertToNavigationTree(item.metadata.name, item.spec, config, navigation, consoleViewGroupName, segmentPrefix);
               return tree;
@@ -334,7 +335,7 @@ async function getUiEntities(entityname, namespace, placements) {
         return [];
       })
       .then(result => {
-        cache[cacheKey] = new Promise(function (resolve) {
+        cache[cacheKey] = new Promise(function(resolve) {
           resolve(result);
         });
         return result;
@@ -343,9 +344,9 @@ async function getUiEntities(entityname, namespace, placements) {
 }
 
 function fetchFromKyma(url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
@@ -363,9 +364,9 @@ function fetchFromKyma(url) {
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
@@ -393,14 +394,14 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.open('POST', config.graphqlApiUrl, true);
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify({ query, variables }));
+    xmlHttp.send(JSON.stringify({query, variables}));
   });
 }
 
 function postToKyma(url, body) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (
         xmlHttp.readyState == 4 &&
         (xmlHttp.status == 200 || xmlHttp.status == 201)
@@ -505,21 +506,22 @@ function getConsoleInitData() {
 function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces?labelSelector=env=true'
-  ).then(function getNamespacesFromApi(response) {
-    var namespaces = [];
-    response.items.map(namespace => {
-      if (namespace.status && namespace.status.phase !== 'Active') {
-        return; //"pretend" that inactive namespace is already removed
-      }
-      const namespaceName = namespace.metadata.name;
-      namespaces.push({
-        category: 'Namespaces',
-        label: namespaceName,
-        pathValue: namespaceName
+  )
+    .then(function getNamespacesFromApi(response) {
+      var namespaces = [];
+      response.items.map(namespace => {
+        if (namespace.status && namespace.status.phase !== 'Active') {
+          return; //"pretend" that inactive namespace is already removed
+        }
+        const namespaceName = namespace.metadata.name;
+        namespaces.push({
+          category: 'Namespaces',
+          label: namespaceName,
+          pathValue: namespaceName
+        });
       });
-    });
-    return namespaces;
-  })
+      return namespaces;
+    })
     .catch(function catchNamespaces(err) {
       console.error('get namespace: error', err);
     });
@@ -533,7 +535,7 @@ function relogin() {
 function getFreshKeys() {
   // manually re-fetching keys, since this is a major pain point
   // until dex has possibility of no-cache
-  return fetch('https://dex.' + k8sDomain + '/keys', { cache: "no-cache" })
+  return fetch('https://dex.' + k8sDomain + '/keys', { cache: 'no-cache' });
 }
 
 let backendModules = [];
@@ -730,7 +732,7 @@ Promise.all(initPromises)
       }
     });
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('Config Init Error', err);
   });
 
@@ -771,7 +773,7 @@ window.addEventListener('message', e => {
       window.postMessage(
         {
           msg: 'luigi.ux.alert.show',
-          data: { settings }
+          data: {settings}
         },
         '*'
       );
@@ -786,8 +788,8 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
       resource.affectedResources.forEach(affectedResource => {
         limitExceededErrorscomposed.push(
           `'${resource.resourceName}' by '${affectedResource}' (${
-          resource.quotaName
-          })`
+            resource.quotaName
+            })`
         );
       });
     }

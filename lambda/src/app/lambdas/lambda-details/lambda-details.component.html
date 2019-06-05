@@ -85,7 +85,7 @@
                     <label class="fd-form__label" for="">Function Name * </label>
                     <div class="fd-input-group">
                       <input type="text" id="input-1" #functionName name="function_name"
-                        [(ngModel)]="lambda.metadata.name"
+                        [(ngModel)]="lambda.metadata.name" (ngModelChange)="addAppLabel()"
                         [ngClass]="{'is-invalid': isFunctionNameInvalid, 'is-warning': isFunctionNameEmpty}"
                         [attr.disabled]="mode === 'create' ? null : ''" (keyup)="validatesName()"
                         (focusout)="validatesName()" />
@@ -290,6 +290,38 @@
         <fd-panel-head>
           <fd-panel-title>Payload</fd-panel-title>
         </fd-panel-head>
+        <fd-panel-actions>
+
+          <ng-container *ngIf="allEventTriggers.length > 0">
+            <div class="fd-dropdown fd-has-display-block" (clickOutside)="toggleDropDown(false)" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+              <div class="fd-popover fd-has-display-block fd-popover--right">
+                <div class="fd-popover__control">
+                  <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none" aria-controls="nNJnB279"
+                  [attr.aria-expanded]="isTriggerDropdownExpanded" aria-haspopup="true" (click)="toggleDropDown()">
+                    <input class="fd-form__control y-fd-form__control"
+                      type="text"
+                      name="trigger"
+                      autocomplete="off"
+                      placeholder="Choose sample event"
+                      [(ngModel)]="trigger"
+                      (ngModelChange)="filterTriggerEvents()"
+                      (keydown)="toggleDropDown(true)"
+                      (click)="toggleDropDown(true)">
+                  </button>
+                </div>
+                <div class="fd-popover__body y-fd-popover__body fd-popover__body--no-arrow fd-popover__body--right"  [attr.aria-hidden]="!isTriggerDropdownExpanded" id="nNJnB279">
+                  <nav class="fd-menu">
+                    <ul class="fd-menu__list">
+                      <li *ngFor="let trigger of filteredTriggers" (click)="toggleDropDown(); selectTrigger(trigger);">
+                        <span class="fd-menu__item">{{ trigger.eventType }}</span>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </fd-panel-actions>
       </fd-panel-header>
 
       <fd-panel-body>

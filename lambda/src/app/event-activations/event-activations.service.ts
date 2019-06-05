@@ -27,6 +27,7 @@ export class EventActivationsService {
           eventType
           version
           description
+          schema
         }
       }
     }`;
