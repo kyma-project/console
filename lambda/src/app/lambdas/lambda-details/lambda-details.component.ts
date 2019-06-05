@@ -59,6 +59,8 @@ import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trig
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
+import {has as _has, get as _get, set as _set} from 'lodash';
+
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
@@ -867,6 +869,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             this.dependency !== undefined &&
             this.dependency !== '';
 
+          if (!_has(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env')) {
+            _set(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env', []);
+          }
+
           this.setLoaded(true);
           this.initializeEditor();
           if(lambda.metadata && lambda.metadata.annotations){
@@ -1233,8 +1239,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   handleEnvEmitter($event): void {
-    this.lambda = this.lambdaDetailsService.initializeMissingLambdaContainers(this.lambda);
-
     this.lambda.spec.deployment.spec.template.spec.containers[0].env = $event;
     this.warnUnsavedChanges(true);
   }
@@ -1326,11 +1330,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   getEnvs(){
-    const depl = this.lambda.spec.deployment;
-    const cont = depl && depl.spec && depl.spec.template && depl.spec.template.spec && depl.spec.template.spec.containers
-     ? depl.spec.template.spec.containers
-     : null;
-    return cont && cont.length && cont[0] ? cont[0].env : null;
+    return _get(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env');
   }
 
   changeTab(name: string) {

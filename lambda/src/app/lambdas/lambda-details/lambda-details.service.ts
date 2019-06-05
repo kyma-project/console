@@ -28,7 +28,6 @@ import {
   IMetricResource,
   IMetricSpec,
 } from '../../shared/datamodel/k8s/autoscaler';
-import { cloneDeep } from 'lodash';
 
 @Injectable()
 export class LambdaDetailsService {
@@ -200,15 +199,6 @@ export class LambdaDetailsService {
       spec: funcSpec,
     });
     lambda.spec['function-content-type'] = 'text';
-    return lambda;
-  }
-
-  initializeMissingLambdaContainers(lambda: Lambda): Lambda {
-    if (!lambda.spec.deployment.spec.template.spec.containers) {
-      const newLambda = cloneDeep(lambda);
-      newLambda.spec.deployment.spec.template.spec.containers = [{}];
-      return newLambda;
-    }
     return lambda;
   }
 
