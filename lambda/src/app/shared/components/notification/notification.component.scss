@@ -1,0 +1,67 @@
+@mixin hasThemeColor($color) {
+  border-left: 6px solid $color;
+  fd-icon {
+    color: $color;
+  }
+}
+
+.notification {
+  box-shadow: 0 0 4px 0 #00000026, 0 12px 20px 0 #00000019;
+  border: 0;
+  width: auto;
+  max-width: 450px;
+  background: #fff;
+  position: fixed;
+  top: 2em;
+  right: 1.2em;
+  transition: all ease-in-out 0.4s;
+  z-index: 1000;
+  border-radius: 3px;
+  color: var(--fd-color-text-1);
+  min-width: 20em;
+
+  animation: slideIn 0.4s ease-out;
+
+  &.notification--success {
+    @include hasThemeColor(var(--fd-color-status-1));
+  }
+
+  &.notification--error {
+    @include hasThemeColor(var(--fd-color-status-3));
+  }
+
+  &__header {
+    font-family: '72';
+    font-size: 13px;
+    line-height: 1.31;
+    font-weight: bold;
+    text-align: left;
+    position: relative;
+    padding: 12px 12px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+  }
+
+  &__description {
+    font-family: '72';
+    font-size: 13px;
+    line-height: 1.31;
+    font-weight: normal;
+    text-align: left;
+    position: relative;
+    padding: 12px 12px;
+    box-sizing: border-box;
+    border-top: 1px solid var(--fd-color-neutral-3);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    right: calc(-450px - 1.2em);
+  }
+  100% {
+    right: 1.2em;
+  }
+}

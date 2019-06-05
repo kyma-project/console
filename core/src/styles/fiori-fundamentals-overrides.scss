@@ -253,3 +253,16 @@
     margin-bottom: 12px;
   }
 }
+
+.header-columns {
+  .fd-action-bar__description {
+    width: 100%;
+    margin-top: 8px;
+  }
+  &__value{
+    display: block;
+  }
+  a, fd-icon {
+    display: inline;
+  }
+}

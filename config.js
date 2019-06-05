@@ -10,6 +10,7 @@ window.clusterConfig = {
 
   authRedirectUri: 'http://' + localDomain + ':4200',
   domain: domain,
+  localDomain: localDomain,
   consoleClientId: 'console',
   orgId: 'my-org-123',
   orgName: 'My Organization',
