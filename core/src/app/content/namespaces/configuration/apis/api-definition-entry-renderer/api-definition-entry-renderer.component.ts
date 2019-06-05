@@ -1,7 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abstract-kubernetes-entry-renderer.component';
-import * as _ from 'lodash';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -14,11 +12,9 @@ export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public currentNamespaceId: string;
-  private currentNamespaceSubscription: Subscription;
 
   constructor(
     protected injector: Injector,
-    private currentNamespaceService: CurrentNamespaceService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
@@ -32,12 +28,6 @@ export class ApiDefinitionEntryRendererComponent
         name: 'Delete'
       }
     ];
-
-    this.currentNamespaceSubscription = this.currentNamespaceService
-      .getCurrentNamespaceId()
-      .subscribe(namespaceId => {
-        this.currentNamespaceId = namespaceId;
-      });
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;
@@ -46,10 +36,7 @@ export class ApiDefinitionEntryRendererComponent
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
-        if (
-          'disable' === event.type &&
-          this.entry.metadata.name === event.entry.metadata.name
-        ) {
+        if ('disable' === event.type && this.entry.name === event.entry.name) {
           this.disabled = event.entry.disabled;
         }
       }
@@ -57,20 +44,19 @@ export class ApiDefinitionEntryRendererComponent
   }
 
   public ngOnDestroy() {
-    if (this.currentNamespaceSubscription) {
-      this.currentNamespaceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
     }
-    this.communicationServiceSubscription.unsubscribe();
   }
 
-  public isSecured = entry => {
-    return (
-      _.isArray(entry.spec.authentication) &&
-      entry.spec.authentication.length > 0
-    );
+  public isSecured = (entry): 'Yes' | 'No' => {
+    return Array.isArray(entry.authenticationPolicies) &&
+      entry.authenticationPolicies.length
+      ? 'Yes'
+      : 'No';
   };
 
-  public navigateToDetails(apiName) {
+  public navigateToDetails(apiName: String) {
     LuigiClient.linkManager()
       .fromContext('apismicrofrontend')
       .navigate(`details/${apiName}`);
