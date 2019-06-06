@@ -21,7 +21,7 @@ export class NamespacesService {
 
   public getNamespaces(): Observable<NamespaceInfo[]> {
     return this.http
-      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces?labelSelector=env=true')
+      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces')
       .pipe(
         map(
           response => {
@@ -62,25 +62,126 @@ export class NamespacesService {
       );
   }
 
-  public createNamespace(namespaceName: string) {
-    const body = {
-      metadata: { name: namespaceName, labels: { env: 'true' } }
+  public createNamespace(name: string, labels: object) {
+    const mutation = `mutation CreateNamespace($name: String!, $labels: Labels) {
+      createNamespace(name: $name, labels: $labels){
+        name
+      }
+    }`;
+
+    const variables = {
+      name,
+      labels
     };
-    if (namespaceName) {
-      return this.http
-        .post<any>(`${AppConfig.k8sApiServerUrl}namespaces`, body, {
-          headers: new HttpHeaders().set('Content-Type', 'application/json')
-        })
-        .pipe(
-          map(response => {
-            if (!_.isEmpty(response.metadata)) {
-              this.namespaceChangeStateEmitter$.emit(true);
-              return response;
-            }
-            return response;
-          })
-        );
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
+  public createResourceQuotaAndLimitRange(
+    namespace: string,
+    memoryLimits: string,
+    memoryRequests: string,
+    memoryDefault: string,
+    memoryDefaultRequest: string,
+    memoryMax: string
+  ) {
+    const resourceQuota = {
+      limits: {
+        memory: memoryLimits
+      },
+      requests: {
+        memory: memoryRequests
+      }
     }
+    const limitRange = {
+      default: {
+        memory: memoryDefault
+      },
+      defaultRequest: {
+        memory: memoryDefaultRequest
+      },
+      max: {
+        memory: memoryMax
+      },
+      type: 'Container'
+    }
+
+    const mutation = `mutation createResourceQuotaAndLimitRange(
+      $namespace: String!,
+      $rqName: String!,
+      $lrName: String!,
+      $resourceQuota: ResourceQuotaInput!,
+      $limitRange: LimitRangeInput!
+    ) {
+      createResourceQuota(namespace: $namespace, name: $rqName, resourceQuota: $resourceQuota){
+        name
+      }
+      createLimitRange(namespace: $namespace, name: $lrName, limitRange: $limitRange){
+        name
+      }
+    }`;
+
+    const variables = {
+      namespace,
+      lrName: `${namespace}-limit-range`,
+      rqName: `${namespace}-resource-quota`,
+      resourceQuota,
+      limitRange
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
+  public createResourceQuota(namespace: string, memoryLimits: string, memoryRequests: string) {
+    const resourceQuota = {
+      limits: {
+        memory: memoryLimits
+      },
+      requests: {
+        memory: memoryRequests
+      }
+    }
+    const mutation = `mutation CreateResourceQuota($namespace: String!, $name: String!, $resourceQuota: ResourceQuotaInput!) {
+      createResourceQuota(namespace: $namespace, name: $name, resourceQuota: $resourceQuota){
+        name
+      }
+    }`;
+
+    const variables = {
+      namespace,
+      name: `${namespace}-resource-quota`,
+      resourceQuota
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
+  public createLimitRange(namespace: string, memoryDefault: string, memoryDefaultRequest: string, memoryMax: string) {
+    const limitRange = {
+      default: {
+        memory: memoryDefault
+      },
+      defaultRequest: {
+        memory: memoryDefaultRequest
+      },
+      max: {
+        memory: memoryMax
+      },
+      type: 'Container'
+    }
+    const mutation = `mutation CreateLimitRange($namespace: String!, $name: String!, $limitRange: LimitRangeInput!) {
+      createLimitRange(namespace: $namespace, name: $name, limitRange: $limitRange){
+        name
+      }
+    }`;
+
+    const variables = {
+      namespace,
+      name: `${namespace}-limit-range`,
+      limitRange
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
   public deleteNamespace(namespaceName: string) {
@@ -105,7 +206,7 @@ export class NamespacesService {
           resourceName
           affectedResources
         }
-      } 
+      }
     }`;
 
     const variables = {

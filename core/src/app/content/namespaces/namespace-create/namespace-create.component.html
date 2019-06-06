@@ -1,30 +1,145 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #createNamespaceModal role="dialog" aria-labelledby="createNamespace"
+  <fd-modal class="y-fd-modal fd-modal--extra-large " #createNamespaceModal role="dialog" aria-labelledby="createNamespace" 
     data-e2e-id="create-namespace-modal">
     <fd-modal-header>
       Create New Namespace
     </fd-modal-header>
     <fd-modal-body>
-      <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="err">
-        {{ err }}
-      </div>
-      <div fd-form-set>
-        <div fd-form-item>
-          <fd-form-label>Namespace Name *</fd-form-label>
-          <input fd-form-control [type]="'text'" placeholder="" name="namespaceName" [(ngModel)]="namespaceName"
-            (ngModelChange)=validateRegex() [state]="wrongName ? 'invalid' : undefined">
-          <fd-form-message [type]="'error'" *ngIf="wrongName">The namespace name has the wrong format. The name must
-            consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric
-            character. (e.g. 'my-name1')</fd-form-message>
+      <form>
+        <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="err">
+          {{ err }}
         </div>
-      </div>
+        <div fd-form-set>
+
+          <div fd-form-item>
+            <fd-form-label>Namespace Name *</fd-form-label>
+            <input fd-form-control [type]="'text'" 
+              name="namespaceName" 
+              [(ngModel)]="namespaceName"
+              (ngModelChange)="validateRegex(); removeError()" 
+              [state]="nameError ? 'invalid' : undefined"
+              autofocus>
+            <fd-form-message [type]="'error'" *ngIf="nameError">The namespace name has the wrong format. The name must	
+              consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric	
+              character (e.g. 'my-name1').</fd-form-message>
+          </div>
+
+          <div fd-form-item>
+            <fd-form-label>Labels</fd-form-label>
+            <app-labels-input [labels]="labels" (labelsChangeEmitter$)="updateLabels($event)"></app-labels-input>
+          </div>
+          <div class="y-fd-form-label">
+
+            <div fd-form-item class="full-width">
+              <label fd-form-label for="istio-check">
+                <input fd-form-control type="checkbox" 
+                  id="istio-check" 
+                  name="istio-check"
+                  [(ngModel)]="istioInjectionEnabled"
+                  (ngModelChange)="toggleIstioCheck(istioInjectionEnabled)"
+                  checked>
+                Enable Istio
+                <fd-inline-help [position]="'right'">
+                    Select this option to enable istio to mediate all communication between the pods in your namespace.
+                </fd-inline-help>
+              </label>
+            </div>
+
+            <div fd-form-item>
+              <label fd-form-label for="resource-quota-check">
+                <input fd-form-control type="checkbox"
+                  id="resource-quota-check"
+                  name="resource-quota-check"
+                  [(ngModel)]="resourceQuotaChecked">
+                Apply Total Memory Quotas
+                <fd-inline-help [position]="'right'">
+                  Define constraints that limit total memory consumption in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
+                </fd-inline-help>
+              </label>
+            </div>
+
+            <div class="limits-inputs" [hidden]="!resourceQuotaChecked">
+              <label fd-form-label for="memory-limits-input">
+                Memory Limits *
+                <input fd-form-control type="text"
+                  id="memory-limits-input"
+                  name="memory-limits-input"
+                  [(ngModel)]="memoryLimits"
+                  [state]="memoryLimitsError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'memoryLimitsError')">
+                  <fd-form-message [type]="'error'" *ngIf="memoryLimitsError">{{ regexErrorMessage }}</fd-form-message>
+              </label>
+
+              <label fd-form-label for="memory-requests-input">
+                Memory Requests *
+                <input fd-form-control type="text"
+                  id="memory-requests-input"
+                  name="memory-requests-input"
+                  [(ngModel)]="memoryRequests"
+                  [state]="memoryRequestsError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'memoryRequestsError')">
+                  <fd-form-message [type]="'error'" *ngIf="memoryRequestsError">{{ regexErrorMessage }}</fd-form-message>
+              </label>
+            </div>
+
+            <div fd-form-item>
+              <label fd-form-label for="limit-range-check">
+                <input fd-form-control type="checkbox"
+                  id="limit-range-check"
+                  name="limit-range-check"
+                  [(ngModel)]="limitRangeChecked">
+                Apply Limits per Container
+                <fd-inline-help [position]="'right'">
+                  Define memory constraints for individual containers in your namespace. Use plain value in bytes, or suffix equivalents. For example: 128974848, 129e6, 129M, 123Mi.
+                </fd-inline-help>
+              </label>
+            </div>
+
+            <div class="limits-inputs" [hidden]="!limitRangeChecked">
+              <label fd-form-label for="max-input">
+                Max *
+                <input fd-form-control type="text"
+                  id="max-input"
+                  name="max-input"
+                  [(ngModel)]="max"
+                  [state]="maxError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'maxError')">
+                <fd-form-message [type]="'error'" *ngIf="maxError">{{ regexErrorMessage }}</fd-form-message>
+              </label>
+
+              <label fd-form-label for="default-input">
+                Default *
+                <input fd-form-control type="text"
+                  id="default-input"
+                  name="default-input"
+                  [(ngModel)]="default"
+                  [state]="defaultError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'defaultError')">
+                <fd-form-message [type]="'error'" *ngIf="defaultError">{{ regexErrorMessage }}</fd-form-message>
+              </label>
+
+              <label fd-form-label for="default-request-input">
+                Default Request *
+                <input fd-form-control type="text"
+                  id="default-request-input"
+                  name="default-request-input"
+                  [(ngModel)]="defaultRequest"
+                  [state]="defaultRequestError ? 'invalid' : undefined"
+                  (ngModelChange)="validateLimitsRegex($event, 'defaultRequestError')">
+                <fd-form-message [type]="'error'" *ngIf="defaultRequestError">{{ regexErrorMessage }}</fd-form-message>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </form>
     </fd-modal-body>
     <fd-modal-footer>
       <button fd-button [options]="'light'" (click)="cancel()">
         Cancel
       </button>
       <button fd-button class="namespace-create-btn" [fdType]="'main'" (click)="createNamespace()"
-        [disabled]="(!namespaceName) || wrongName" data-e2e-id="create-namespace-button">
+        [disabled]="!namespaceCanBeCreated()" data-e2e-id="create-namespace-button">
         Create
       </button>
     </fd-modal-footer>

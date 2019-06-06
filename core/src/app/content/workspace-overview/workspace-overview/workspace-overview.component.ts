@@ -34,7 +34,6 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   namespacesService: NamespacesService;
   entryEventHandler = this.getEntryEventHandler();
   private queryParamsSubscription: any;
-  private k8sNamespacesFilter = 'env=true';
 
   @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
@@ -59,7 +58,6 @@ export class WorkspaceOverviewComponent extends GenericListComponent
     this.source = new KubernetesDataProvider(url, converter, this.http);
     this.entryRenderer = NamespaceCardComponent;
     this.filterState = {
-      facets: [this.k8sNamespacesFilter],
       filters: [
         new Filter('metadata.name', '', false),
         new Filter('metadata.uid', '', false)
@@ -86,12 +84,6 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   handleQueryParamsChange(queryParams: any) {
     if (queryParams && queryParams.showModal === 'true') {
       this.createModal.show();
-    }
-    if (queryParams && queryParams.allNamespaces === 'true') {
-      this.filterState.facets = this.filterState.facets.filter(
-        elem => elem !== this.k8sNamespacesFilter
-      );
-      this.reload();
     }
   }
   getEntryEventHandler() {
