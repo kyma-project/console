@@ -1,11 +1,22 @@
-<header class="fd-page__header fd-has-background-color-background-2">  
+<header class="fd-page__header fd-has-background-color-background-2">
   <section class="fd-section">
     <fd-breadcrumb *ngIf="routedFromServiceDetails">
       <fd-breadcrumb-item>
-        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('services')">Services</a>
+        <a
+          href="javascript:void(null)"
+          fd-breadcrumb-link
+          (click)="navigateToList('services')"
+          >Services</a
+        >
       </fd-breadcrumb-item>
       <fd-breadcrumb-item>
-        <a href="javascript:void(null)" fd-breadcrumb-link class="service-name" (click)="navigateToDetails(serviceName)">{{ serviceName }}</a>
+        <a
+          href="javascript:void(null)"
+          fd-breadcrumb-link
+          class="service-name"
+          (click)="navigateToDetails(serviceName)"
+          >{{ serviceName }}</a
+        >
       </fd-breadcrumb-item>
       <fd-breadcrumb-item>
         <span fd-breadcrumb-link>
@@ -16,7 +27,12 @@
 
     <fd-breadcrumb *ngIf="!routedFromServiceDetails">
       <fd-breadcrumb-item>
-        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList('cmf-apis')">APIs</a>
+        <a
+          href="javascript:void(null)"
+          fd-breadcrumb-link
+          (click)="navigateToList('cmf-apis')"
+          >APIs</a
+        >
       </fd-breadcrumb-item>
       <fd-breadcrumb-item>
         <span fd-breadcrumb-link>
@@ -30,10 +46,42 @@
         <fd-action-bar-title>
           {{ apiDefinition ? apiName : 'Create API' }}
         </fd-action-bar-title>
+        <fd-action-bar-description class="header-columns">
+          <div class="fd-container fd-container--fluid">
+            <div *ngIf="apiDefinition" class="fd-col--4">
+              Hostname
+              <span class="header-columns__value">
+                <a
+                  class="display-inline"
+                  title="Open link in a new tab"
+                  [href]="getHostnameURL(hostname, domain)"
+                  target="_blank"
+                >
+                  {{ hostname }}{{ domain }}
+                  <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
+                </a>
+                <fd-icon
+                  ngxClipboard
+                  [cbContent]="getHostnameURL(hostname, domain)"
+                  class="fd-has-margin-left-tiny clickable align-middle"
+                  [glyph]="'copy'"
+                  [size]="'m'"
+                  title="Copy to clipboard"
+                >
+                </fd-icon>
+              </span>
+            </div>
+          </div>
+        </fd-action-bar-description>
       </fd-action-bar-header>
       <fd-action-bar-actions>
-        <button fd-button [options]="'emphasized'" [disabled]="!isAbleToMakeRequest()" (click)="save()"
-            data-e2e-id="save-expose-api">
+        <button
+          fd-button
+          [options]="'emphasized'"
+          [disabled]="!isAbleToMakeRequest()"
+          (click)="save()"
+          data-e2e-id="save-expose-api"
+        >
           Save
         </button>
       </fd-action-bar-actions>
@@ -55,29 +103,50 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label>Service *</fd-form-label>
-              <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown()"
-                clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
+              <div
+                class="fd-dropdown y-fd-dropdown fd-has-display-block"
+                (clickOutside)="closeDropDown()"
+                clickOutsideEvents="click,mousedown"
+                excludeBeforeClick="true"
+              >
                 <div class="fd-popover fd-has-display-block">
                   <div class="fd-popover__control">
-                    <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                      aria-controls="nNJnB279" [attr.aria-expanded]="ariaServiceExpanded" aria-haspopup="true"
-                      (click)="toggleDropDown()">
-                      <input class="fd-form__control y-fd-form__control" type="text" name="serviceName"
-                        autocomplete="off" placeholder="Choose service" [(ngModel)]="serviceName"
-                        (ngModelChange)="filterServices()" (keydown)="openDropDown($event)"
-                        (click)="openDropDown($event)" />
+                    <button
+                      class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
+                      aria-controls="nNJnB279"
+                      [attr.aria-expanded]="ariaServiceExpanded"
+                      aria-haspopup="true"
+                      (click)="toggleDropDown()"
+                    >
+                      <input
+                        class="fd-form__control y-fd-form__control"
+                        type="text"
+                        name="serviceName"
+                        autocomplete="off"
+                        placeholder="Choose service"
+                        [(ngModel)]="serviceName"
+                        (ngModelChange)="filterServices()"
+                        (keydown)="openDropDown($event)"
+                        (click)="openDropDown($event)"
+                      />
                     </button>
                   </div>
-                  <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
-                    [attr.aria-hidden]="ariaServiceHidden" id="nNJnB279">
+                  <div
+                    class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
+                    [attr.aria-hidden]="ariaServiceHidden"
+                    id="nNJnB279"
+                  >
                     <nav class="fd-menu">
                       <ul class="fd-menu__list">
-                        <li *ngFor="let svc of filteredServices" (click)="
+                        <li
+                          *ngFor="let svc of filteredServices"
+                          (click)="
                             toggleDropDown();
                             selectService(svc);
                             checkIfServiceCanBeSecured(svc);
                             setApiName()
-                          ">
+                          "
+                        >
                           <span class="fd-menu__item">
                             {{ svc.metadata.name }}
                           </span>
@@ -98,10 +167,20 @@
             <div fd-form-item>
               <fd-form-label [forValue]="'host-input'">Host *</fd-form-label>
               <div class="fd-input-group fd-input-group--after">
-                <input fd-form-control [type]="'text'" id="host-input" placeholder="Field placeholder text"
-                  [(ngModel)]="hostname" (ngModelChange)="setApiName(); validateDetails()" (blur)="validateDetails()"
-                  [state]="errorHostname ? 'invalid' : undefined" />
-                <span class="fd-input-group__addon fd-input-group__addon--after">{{ domain }}</span>
+                <input
+                  fd-form-control
+                  [type]="'text'"
+                  id="host-input"
+                  placeholder="Field placeholder text"
+                  [(ngModel)]="hostname"
+                  (ngModelChange)="setApiName(); validateDetails()"
+                  (blur)="validateDetails()"
+                  [state]="errorHostname ? 'invalid' : undefined"
+                />
+                <span
+                  class="fd-input-group__addon fd-input-group__addon--after"
+                  >{{ domain }}</span
+                >
               </div>
               <fd-form-message [type]="'error'" *ngIf="errorHostname">
                 {{ errorHostname }}
@@ -109,13 +188,39 @@
             </div>
           </div>
         </div>
-        <div class="fd-col--4">
+      </div>
+      <div class="fd-container fd-container--fluid">
+        <div class="fd-col--4" *ngIf="apiDefinition">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-3'">Service Port *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-3" [(ngModel)]="servicePort"
-                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
-                [state]="errorPort ? 'invalid' : undefined" />
+              <fd-form-label [forValue]="'input-3'"
+                >Target Service</fd-form-label
+              >
+              <a
+                href="javascript:void(null)"
+                (click)="navigateToDetails(serviceName)"
+                class="fd-has-font-weight-bold"
+              >
+                {{ serviceName }}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="fd-col--4" *ngIf="apiDefinition">
+          <div fd-form-set>
+            <div fd-form-item>
+              <fd-form-label [forValue]="'input-3'"
+                >Target Service Port *</fd-form-label
+              >
+              <input
+                fd-form-control
+                [type]="'text'"
+                id="input-3"
+                [(ngModel)]="servicePort"
+                (ngModelChange)="validateDetails()"
+                (blur)="validateDetails()"
+                [state]="errorPort ? 'invalid' : undefined"
+              />
               <fd-form-message [type]="'error'" *ngIf="errorPort">
                 {{ errorPort }}
               </fd-form-message>
@@ -124,14 +229,20 @@
         </div>
       </div>
 
-      <div class="fd-container fd-container--fluid">
+      <div class="fd-container fd-container--fluid" *ngIf="!apiDefinition">
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="'input-1'">Name *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-1" [disabled]="apiDefinition" [(ngModel)]="apiName"
-                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
-                [state]="errorApiName ? 'invalid' : undefined" />
+              <input
+                fd-form-control
+                [type]="'text'"
+                id="input-1"
+                [(ngModel)]="apiName"
+                (ngModelChange)="validateDetails()"
+                (blur)="validateDetails()"
+                [state]="errorApiName ? 'invalid' : undefined"
+              />
               <fd-form-message [type]="'error'" *ngIf="errorApiName">
                 {{ errorApiName }}
               </fd-form-message>
@@ -150,8 +261,12 @@
         <fd-panel-title>Security</fd-panel-title>
       </fd-panel-head>
       <fd-panel-actions>
-        <button *ngIf="secure && canBeSecured && apiDefinition && isDefaultProvider()" fd-button [options]="'light'"
-          (click)="fetchToken()">
+        <button
+          *ngIf="secure && canBeSecured && apiDefinition && isDefaultProvider()"
+          fd-button
+          [options]="'light'"
+          (click)="fetchToken()"
+        >
           Fetch token
         </button>
       </fd-panel-actions>
@@ -162,8 +277,15 @@
           <fieldset fd-form-set>
             <div fd-form-item [isInline]="true" [isCheck]="true">
               <fd-form-label [forValue]="'Ai4ez611'">
-                <input *ngIf="canBeSecured" fd-form-control [type]="'checkbox'" [checked]="secure"
-                  (change)="toggleSecure()" id="Ai4ez611" data-e2e-id="secure-api-checkbox" />
+                <input
+                  *ngIf="canBeSecured"
+                  fd-form-control
+                  [type]="'checkbox'"
+                  [checked]="secure"
+                  (change)="toggleSecure()"
+                  id="Ai4ez611"
+                  data-e2e-id="secure-api-checkbox"
+                />
                 Secure API
               </fd-form-label>
             </div>
@@ -177,9 +299,15 @@
           <div fd-form-set>
             <div fd-form-item>
               <fd-form-label [forValue]="'input-4'">Issuer *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-4" [(ngModel)]="issuer"
-                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
-                [state]="errorIssuer ? 'invalid' : undefined" />
+              <input
+                fd-form-control
+                [type]="'text'"
+                id="input-4"
+                [(ngModel)]="issuer"
+                (ngModelChange)="validateDetails()"
+                (blur)="validateDetails()"
+                [state]="errorIssuer ? 'invalid' : undefined"
+              />
               <fd-form-message [type]="'error'" *ngIf="errorIssuer">
                 {{ errorIssuer }}
               </fd-form-message>
@@ -189,10 +317,16 @@
         <div class="fd-col--6">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="input-5">JWKS URI *</fd-form-label>
-              <input fd-form-control [type]="'text'" id="input-5" [(ngModel)]="jwksUri"
-                (ngModelChange)="validateDetails()" (blur)="validateDetails()"
-                [state]="errorJWKSUri ? 'invalid' : undefined" />
+              <fd-form-label [forValue]="input - 5">JWKS URI *</fd-form-label>
+              <input
+                fd-form-control
+                [type]="'text'"
+                id="input-5"
+                [(ngModel)]="jwksUri"
+                (ngModelChange)="validateDetails()"
+                (blur)="validateDetails()"
+                [state]="errorJWKSUri ? 'invalid' : undefined"
+              />
               <fd-form-message [type]="'error'" *ngIf="errorJWKSUri">
                 {{ errorJWKSUri }}
               </fd-form-message>
@@ -201,15 +335,22 @@
         </div>
       </div>
 
-      <div *ngIf="canBeSecured && secure" class="fd-container fd-container--fluid">
+      <div
+        *ngIf="canBeSecured && secure"
+        class="fd-container fd-container--fluid"
+      >
         <div class="fd-col--12">
           <fd-popover [isDropdown]="true">
             Load Preset
             <fd-popover-body>
               <fd-menu>
                 <fd-menu-list>
-                  <li fd-menu-item *ngFor="let preset of availablePresets" (click)="selectPreset(preset)"
-                    id="{{ preset.label }}">
+                  <li
+                    fd-menu-item
+                    *ngFor="let preset of availablePresets"
+                    (click)="selectPreset(preset)"
+                    id="{{ preset.label }}"
+                  >
                     {{ preset.label }}
                   </li>
                 </fd-menu-list>

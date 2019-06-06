@@ -3,19 +3,22 @@ import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abs
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
+import { GenericHelpersService } from '../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
-  templateUrl: './api-definition-entry-renderer.component.html'
+  templateUrl: './api-definition-entry-renderer.component.html',
+  providers: [GenericHelpersService]
 })
 export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
-  public currentNamespaceId: string;
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   constructor(
     protected injector: Injector,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private genericHelpers: GenericHelpersService
   ) {
     super(injector);
     this.actions = [
@@ -49,7 +52,9 @@ export class ApiDefinitionEntryRendererComponent
     }
   }
 
-  public isSecured = (entry): 'Yes' | 'No' => {
+  public isSecured = (entry: {
+    authenticationPolicies?: Array<object>;
+  }): 'Yes' | 'No' => {
     return Array.isArray(entry.authenticationPolicies) &&
       entry.authenticationPolicies.length
       ? 'Yes'

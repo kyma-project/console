@@ -1,24 +1,27 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { CurrentNamespaceService } from '../../../../services/current-namespace.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../operation/abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../../shared/services/component-communication.service';
 import { AppConfig } from '../../../../../../app.config';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
+import { GenericHelpersService } from '../../../../../../shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-filtered-apis-entry-renderer',
-  templateUrl: './filtered-apis-entry-renderer.component.html'
+  templateUrl: './filtered-apis-entry-renderer.component.html',
+  providers: [GenericHelpersService]
 })
 export class FilteredApisEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public emptyText = EMPTY_TEXT;
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   constructor(
     protected injector: Injector,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private genericHelpers: GenericHelpersService
   ) {
     super(injector);
     this.actions = [
@@ -46,12 +49,14 @@ export class FilteredApisEntryRendererComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  public isSecured(entry) {
-    return (
-      Array.isArray(entry.authenticationPolicies) &&
-      entry.authenticationPolicies.length > 0
-    );
-  }
+  public isSecured = (entry: {
+    authenticationPolicies?: Array<object>;
+  }): 'Yes' | 'No' => {
+    return Array.isArray(entry.authenticationPolicies) &&
+      entry.authenticationPolicies.length
+      ? 'Yes'
+      : 'No';
+  };
 
   public getIDP(entry) {
     return entry.authenticationPolicies[0].issuer === AppConfig.authIssuer &&

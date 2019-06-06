@@ -14,3 +14,18 @@ html {
 }
 
 @import '~jsoneditor/dist/jsoneditor.min.css';
+
+fd-icon.clickable {
+  cursor: pointer;
+  &:hover {
+    color: var(--fd-color-action-1);
+  }
+}
+
+.align-middle {
+  vertical-align: middle;
+}
+
+.display-inline {
+  display: inline;
+}

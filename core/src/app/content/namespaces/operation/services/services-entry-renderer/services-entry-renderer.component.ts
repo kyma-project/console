@@ -19,31 +19,20 @@ export class ServicesEntryRendererComponent
   ) {
     super(injector);
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
-      if (context && context.isSystemNamespace) {
-        this.actions = [
-          {
-            function: 'details',
-            name: 'Details'
-          },
-          ...this.actions
-        ];
-      } else {
-        this.actions = [
-          {
-            function: 'exposeApi',
-            name: 'Expose API'
-          },
-          {
-            function: 'details',
-            name: 'Details'
-          },
-          ...this.actions
-        ];
-      }
+      this.actions = [
+        {
+          function: 'exposeApi',
+          name: 'Expose API'
+        },
+        {
+          function: 'details',
+          name: 'Details'
+        },
+        ...this.actions
+      ];
     });
   }
   contextListenerId: string;
-  isSystemNamespace: boolean;
   public disabled = false;
   public emptyText = EMPTY_TEXT;
   private communicationServiceSubscription: Subscription;

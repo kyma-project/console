@@ -1,0 +1,39 @@
+.y-fd-form-label {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: auto max-content;
+}
+
+.fd-form__item {
+  grid-column: 1;
+}
+
+.limits-inputs {
+  grid-column: 2;
+  margin-left: 5px;
+
+  label {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    align-items: baseline;
+    color: var(--fd-color-text-4);
+    flex-wrap: wrap;
+    max-width: 29em;
+
+    .fd-form__control {
+      display: inline-block;
+      width: auto;
+      margin-left: 8px;
+    }
+  }
+
+  fd-form-message {
+    max-width: 20em;
+    margin-left: 4px;
+  }
+}
+
+.full-width {
+  grid-column: 1 / 3;
+}

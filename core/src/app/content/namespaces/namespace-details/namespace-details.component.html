@@ -38,7 +38,7 @@
       </fd-panel>
       <fd-panel>
         <fd-panel-body class="fd-container fd-container--fluid">
-          <div [ngClass]="isSystemNamespace?'fd-col--12 fd-has-text-align-center':'fd-col--6 fd-has-text-align-center'">
+          <div class="fd-col--6 fd-has-text-align-center">
             <h3 class="fd-has-type-6 fd-has-font-weight-bold">
               {{ services ? services.length : 0 }}
             </h3>
@@ -46,7 +46,7 @@
               {{ services && services.length === 1 ? 'Service' : 'Services' }}
             </button>
           </div>
-          <div *ngIf="!isSystemNamespace" class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
+          <div class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
             <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
               {{ boundApplicationsCount | async }}
             </h3>

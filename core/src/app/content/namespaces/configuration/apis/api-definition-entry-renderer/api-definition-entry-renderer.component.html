@@ -8,9 +8,26 @@
       {{ entry.name }}
     </a>
   </td>
-  <td>{{ entry.hostname }}</td>
+  <td>
+    <a
+      class="display-inline"
+      title="Open link in a new tab"
+      [href]="getHostnameURL(entry.hostname)"
+      target="_blank"
+    >
+      {{ entry.hostname }}
+      <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
+    </a>
+    <fd-icon
+      ngxClipboard
+      [cbContent]="getHostnameURL(entry.hostname)"
+      class="fd-has-margin-left-tiny clickable align-middle"
+      [glyph]="'copy'"
+      [size]="'m'"
+      title="Copy to clipboard"
+    ></fd-icon>
+  </td>
   <td>{{ entry.service.name }}</td>
-  <td>{{ entry.service.port }}</td>
   <td>
     <p>{{ isSecured(entry) }}</p>
   </td>
