@@ -50,6 +50,7 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
         authenticationPolicies {
           type
         }
+        creationTimestamp
       }
     }`;
   }
@@ -67,6 +68,7 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
           authenticationPolicies {
             type
           }
+          creationTimestamp
         }
       }
     }`;

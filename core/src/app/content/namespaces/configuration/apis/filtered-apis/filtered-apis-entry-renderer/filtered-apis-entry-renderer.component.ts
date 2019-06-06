@@ -14,13 +14,10 @@ import { EMPTY_TEXT } from 'shared/constants/constants';
 export class FilteredApisEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
-  public currentNamespaceId: string;
   public emptyText = EMPTY_TEXT;
-  private currentNamespaceSubscription: Subscription;
 
   constructor(
     protected injector: Injector,
-    private currentNamespaceService: CurrentNamespaceService,
     private componentCommunicationService: ComponentCommunicationService
   ) {
     super(injector);
@@ -30,12 +27,6 @@ export class FilteredApisEntryRendererComponent
         name: 'Delete'
       }
     ];
-
-    this.currentNamespaceSubscription = this.currentNamespaceService
-      .getCurrentNamespaceId()
-      .subscribe(namespaceId => {
-        this.currentNamespaceId = namespaceId;
-      });
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;
@@ -52,9 +43,6 @@ export class FilteredApisEntryRendererComponent
   }
 
   public ngOnDestroy() {
-    if (this.currentNamespaceSubscription) {
-      this.currentNamespaceSubscription.unsubscribe();
-    }
     this.communicationServiceSubscription.unsubscribe();
   }
 
