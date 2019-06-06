@@ -56,7 +56,7 @@ export class ApiDefinitionEntryRendererComponent
       : 'No';
   };
 
-  public navigateToDetails(apiName: String) {
+  public navigateToDetails(apiName: string) {
     LuigiClient.linkManager()
       .fromContext('apismicrofrontend')
       .navigate(`details/${apiName}`);

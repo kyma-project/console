@@ -14,7 +14,7 @@
   <td>
     <p>{{ isSecured(entry) }}</p>
   </td>
-  <td>Wczoraj</td>
+  <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td class="fd-has-float-right">
     <y-list-actions
       [entry]="entry"

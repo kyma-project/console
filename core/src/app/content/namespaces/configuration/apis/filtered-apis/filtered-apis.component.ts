@@ -1,6 +1,6 @@
 import { FilteredApisHeaderRendererComponent } from './filtered-apis-header-renderer/filtered-apis-header-renderer.component';
 import { FilteredApisEntryRendererComponent } from './filtered-apis-entry-renderer/filtered-apis-entry-renderer.component';
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
