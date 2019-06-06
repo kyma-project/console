@@ -146,7 +146,7 @@ export class NamespaceCreateComponent {
     // default values
     this.isActive = true;
     this.namespaceName = '';
-    this.labels = ['istio-injection=true'];
+    this.labels = ['istio-injection=enabled'];
     this.memoryLimits = '3Gi';
     this.memoryRequests = '2.8Gi';
     this.max = '1Gi';
@@ -206,7 +206,7 @@ export class NamespaceCreateComponent {
       const istioLabel = labels.find(this.isIstioLabel);
       if (istioLabel) {
         const value = istioLabel.split('=')[1];
-        this.istioInjectionEnabled = value === 'true';
+        this.istioInjectionEnabled = value === 'enabled';
       } else {
         this.istioInjectionEnabled = true;
       }
@@ -222,7 +222,7 @@ export class NamespaceCreateComponent {
         this.labels.splice(this.labels.indexOf(istioLabel), 1)	
       }	
     }	
-    const istioLabelArray = ['istio-injection', checked.toString()]	
+    const istioLabelArray = ['istio-injection', checked ? 'enabled' : 'disabled']	
     this.labels.push(istioLabelArray.join('='))	
   }
   
