@@ -50,13 +50,11 @@ export class FilteredApisEntryRendererComponent
     this.communicationServiceSubscription.unsubscribe();
   }
 
-  public isSecured = (entry: {
-    authenticationPolicies?: object[];
-  }): 'Yes' | 'No' =>
-    Array.isArray(entry.authenticationPolicies) &&
-    entry.authenticationPolicies.length
-      ? 'Yes'
-      : 'No';
+  public isSecured = (entry: { authenticationPolicies?: object[] }): boolean =>
+    !!(
+      Array.isArray(entry.authenticationPolicies) &&
+      entry.authenticationPolicies.length
+    );
 
   public getIDP(entry) {
     return entry.authenticationPolicies[0].issuer === AppConfig.authIssuer &&

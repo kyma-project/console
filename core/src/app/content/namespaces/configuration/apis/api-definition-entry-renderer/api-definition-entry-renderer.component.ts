@@ -52,13 +52,11 @@ export class ApiDefinitionEntryRendererComponent
     }
   }
 
-  public isSecured = (entry: {
-    authenticationPolicies?: object[];
-  }): 'Yes' | 'No' =>
-    Array.isArray(entry.authenticationPolicies) &&
-    entry.authenticationPolicies.length
-      ? 'Yes'
-      : 'No';
+  public isSecured = (entry: { authenticationPolicies?: object[] }): boolean =>
+    !!(
+      Array.isArray(entry.authenticationPolicies) &&
+      entry.authenticationPolicies.length
+    );
 
   public navigateToDetails(apiName: string) {
     LuigiClient.linkManager()

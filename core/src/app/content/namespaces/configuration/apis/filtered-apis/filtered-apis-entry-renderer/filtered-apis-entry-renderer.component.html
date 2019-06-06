@@ -30,14 +30,14 @@
   </td>
   <td>
     <fd-badge
-      [status]="isSecured(entry) === 'Yes' ? 'success' : 'warning'"
+      [status]="isSecured(entry) ? 'success' : 'warning'"
       [modifier]="'filled'"
       data-e2e-id="exposed-api-secured"
-      >{{ isSecured(entry) }}</fd-badge
+      >{{ isSecured(entry) ? 'Yes' : 'No' }}</fd-badge
     >
   </td>
   <td data-e2e-id="exposed-api-idp">
-    {{ isSecured(entry) === 'Yes' ? getIDP(entry) : emptyText }}
+    {{ isSecured(entry) ? getIDP(entry) : emptyText }}
   </td>
   <td class="fd-has-float-right">
     <y-list-actions
