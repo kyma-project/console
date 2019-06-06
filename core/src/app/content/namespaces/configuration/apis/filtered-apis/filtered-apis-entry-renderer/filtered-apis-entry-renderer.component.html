@@ -28,28 +28,17 @@
     >
     </fd-icon>
   </td>
-  <ng-container *ngIf="isSecured(entry)">
-    <td>
-      <fd-badge
-        [status]="'success'"
-        [modifier]="'filled'"
-        data-e2e-id="exposed-api-secured"
-        >Yes</fd-badge
-      >
-    </td>
-    <td data-e2e-id="exposed-api-idp">{{ getIDP(entry) }}</td>
-  </ng-container>
-  <ng-container *ngIf="!isSecured(entry)">
-    <td>
-      <fd-badge
-        [status]="'warning'"
-        [modifier]="'filled'"
-        data-e2e-id="exposed-api-secured"
-        >No</fd-badge
-      >
-    </td>
-    <td data-e2e-id="exposed-api-idp">{{ emptyText }}</td>
-  </ng-container>
+  <td>
+    <fd-badge
+      [status]="isSecured(entry) === 'Yes' ? 'success' : 'warning'"
+      [modifier]="'filled'"
+      data-e2e-id="exposed-api-secured"
+      >{{ isSecured(entry) }}</fd-badge
+    >
+  </td>
+  <td data-e2e-id="exposed-api-idp">
+    {{ isSecured(entry) === 'Yes' ? getIDP(entry) : emptyText }}
+  </td>
   <td class="fd-has-float-right">
     <y-list-actions
       [entry]="entry"

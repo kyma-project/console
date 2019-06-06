@@ -17,6 +17,9 @@ export class FilteredApisEntryRendererComponent
   implements OnDestroy, OnInit {
   public emptyText = EMPTY_TEXT;
   public getHostnameURL = this.genericHelpers.getHostnameURL;
+  public disabled = false;
+
+  private communicationServiceSubscription: Subscription;
 
   constructor(
     protected injector: Injector,
@@ -31,8 +34,6 @@ export class FilteredApisEntryRendererComponent
       }
     ];
   }
-  public disabled = false;
-  private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
@@ -50,13 +51,12 @@ export class FilteredApisEntryRendererComponent
   }
 
   public isSecured = (entry: {
-    authenticationPolicies?: Array<object>;
-  }): 'Yes' | 'No' => {
-    return Array.isArray(entry.authenticationPolicies) &&
-      entry.authenticationPolicies.length
+    authenticationPolicies?: object[];
+  }): 'Yes' | 'No' =>
+    Array.isArray(entry.authenticationPolicies) &&
+    entry.authenticationPolicies.length
       ? 'Yes'
       : 'No';
-  };
 
   public getIDP(entry) {
     return entry.authenticationPolicies[0].issuer === AppConfig.authIssuer &&

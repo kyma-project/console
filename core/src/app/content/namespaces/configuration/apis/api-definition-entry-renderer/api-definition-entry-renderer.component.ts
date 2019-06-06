@@ -14,6 +14,8 @@ export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public getHostnameURL = this.genericHelpers.getHostnameURL;
+  public disabled = false;
+  private communicationServiceSubscription: Subscription;
 
   constructor(
     protected injector: Injector,
@@ -32,8 +34,6 @@ export class ApiDefinitionEntryRendererComponent
       }
     ];
   }
-  public disabled = false;
-  private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
@@ -53,13 +53,12 @@ export class ApiDefinitionEntryRendererComponent
   }
 
   public isSecured = (entry: {
-    authenticationPolicies?: Array<object>;
-  }): 'Yes' | 'No' => {
-    return Array.isArray(entry.authenticationPolicies) &&
-      entry.authenticationPolicies.length
+    authenticationPolicies?: object[];
+  }): 'Yes' | 'No' =>
+    Array.isArray(entry.authenticationPolicies) &&
+    entry.authenticationPolicies.length
       ? 'Yes'
       : 'No';
-  };
 
   public navigateToDetails(apiName: string) {
     LuigiClient.linkManager()
