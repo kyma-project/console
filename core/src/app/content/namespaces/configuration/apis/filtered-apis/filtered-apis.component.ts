@@ -17,7 +17,7 @@ import { AbstractGraphqlElementListComponent } from '../../../operation/abstract
 })
 export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
-  public resourceKind = 'API';
+  public resourceKind = 'Api';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', {
     headerTitle: false,
     namespaceSuffix: false
@@ -32,7 +32,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   public headerRenderer = FilteredApisHeaderRendererComponent;
 
   constructor(
-    private http: HttpClient,
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
@@ -67,7 +66,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
         authenticationPolicies {
           type
         }
-        
       }
     }`;
   }
@@ -85,7 +83,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
           authenticationPolicies {
             type
           }
-          
         }
       }
     }`;
