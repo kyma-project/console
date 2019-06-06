@@ -18,6 +18,7 @@ import { AbstractGraphqlElementListComponent } from '../../../operation/abstract
 export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   public resourceKind = 'Api';
+  public mutationResourceKind = 'API';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', {
     headerTitle: false,
     namespaceSuffix: false

@@ -23,6 +23,7 @@ export class AbstractGraphqlElementListComponent
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
+  protected mutationResourceKind?: string = null; // "special" resource kind for mutations - needs to be capitalized in most of the cases. If not provided, resourceKind will be used instead
 
   @ViewChild('mutateResourceModal')
   mutateResourceModal: GraphqlMutatorModalComponent;
@@ -75,19 +76,23 @@ export class AbstractGraphqlElementListComponent
       name: entry.name,
       namespace: this.currentNamespaceId
     };
-    this.graphQLClientService
-      .gqlQuery(query, variables)
-      .subscribe(data => {
-        const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
-        this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
-        this.mutateResourceModal.show();
-      });
+    this.graphQLClientService.gqlQuery(query, variables).subscribe(data => {
+      const lowerCaseResourceKind =
+        this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+      this.mutateResourceModal.resourceData = data[lowerCaseResourceKind].json;
+      this.mutateResourceModal.show();
+    });
   }
 
   getResourceJSONQuery() {
-    const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
-    const variablesDefinitionsString = this.currentNamespaceId ? `$name: String!, $namespace: String!` :`$name: String!`;
-    const variablesString = this.currentNamespaceId ? `name: $name, namespace: $namespace` : `name: $name`;
+    const lowerCaseResourceKind =
+      this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
+    const variablesDefinitionsString = this.currentNamespaceId
+      ? `$name: String!, $namespace: String!`
+      : `$name: String!`;
+    const variablesString = this.currentNamespaceId
+      ? `name: $name, namespace: $namespace`
+      : `name: $name`;
     return `query ${lowerCaseResourceKind}(${variablesDefinitionsString}) {
       ${lowerCaseResourceKind}(${variablesString}) {
         json
@@ -105,10 +110,16 @@ export class AbstractGraphqlElementListComponent
   }
 
   getDeleteMutation() {
-    const variablesDefinitionsString = this.currentNamespaceId ? `$name: String!, $namespace: String!` :`$name: String!`;
-    const variablesString = this.currentNamespaceId ? `name: $name, namespace: $namespace` : `name: $name`;
-    return `mutation delete${this.resourceKind}(${variablesDefinitionsString}) {
-      delete${this.resourceKind}(${variablesString}) {
+    const variablesDefinitionsString = this.currentNamespaceId
+      ? `$name: String!, $namespace: String!`
+      : `$name: String!`;
+    const variablesString = this.currentNamespaceId
+      ? `name: $name, namespace: $namespace`
+      : `name: $name`;
+    return `mutation delete${this.mutationResourceKind ||
+      this.resourceKind}(${variablesDefinitionsString}) {
+      delete${this.mutationResourceKind ||
+        this.resourceKind}(${variablesString}) {
         name
       }
     }`;

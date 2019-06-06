@@ -17,6 +17,7 @@ import { CurrentNamespaceService } from 'namespaces/services/current-namespace.s
 export class ApisComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy {
   public resourceKind = 'Api';
+  public mutationResourceKind = 'API';
   public title = 'APIs';
   public baseUrl: string;
   public hideFilter = false;
