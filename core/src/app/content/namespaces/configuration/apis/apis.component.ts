@@ -82,7 +82,7 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
     super.ngOnDestroy();
   }
 
-  public navigateToDetails(entry) {
+  public navigateToDetails(entry: { name: string }) {
     LuigiClient.linkManager()
       .fromContext('apismicrofrontend')
       .navigate(`details/${entry.name}`);

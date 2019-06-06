@@ -65,6 +65,7 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
           }
         authenticationPolicies {
           type
+          issuer
         }
       }
     }`;
@@ -82,6 +83,7 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
             }
           authenticationPolicies {
             type
+            issuer
           }
         }
       }
