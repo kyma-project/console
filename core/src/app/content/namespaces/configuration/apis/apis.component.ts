@@ -71,6 +71,7 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
           }
           creationTimestamp
         }
+        type
       }
     }`;
   }
