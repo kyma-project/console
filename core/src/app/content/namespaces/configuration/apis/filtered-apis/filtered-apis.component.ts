@@ -87,6 +87,7 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
             issuer
           }
         }
+        type
       }
     }`;
   }
