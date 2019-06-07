@@ -14,3 +14,9 @@ export const serviceClassConstants = {
   servicesTooltipDescription: 'Enrich your experience with additional services',
   title: 'Service Catalog',
 };
+
+export const serviceClassTabs = {
+  openApi: 'Console',
+  asyncApi: 'Events',
+  odata: 'OData',
+};
