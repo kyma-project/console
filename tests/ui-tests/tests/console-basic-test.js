@@ -56,7 +56,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     ]);
 
     await kymaConsole.applyTextSearchFilter(page, config.testNamespace);
-    
+
     const namespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
       page,
     );

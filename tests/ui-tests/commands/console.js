@@ -138,12 +138,11 @@ async function getTextContentOnPageBySelector(page, nameSelector) {
 }
 
 async function applyTextSearchFilter(page, searchText) {
-  const searchIconSelector = '.sap-icon--search'
+  const searchIconSelector = '.sap-icon--search';
   const frame = await getFrame(page);
   await frame.click(searchIconSelector);
   return frame.type('input[type=search]', searchText);
 }
-
 
 async function createNamespace(page, name) {
   const frame = await getFrame(page);
