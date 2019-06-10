@@ -270,11 +270,11 @@
     <app-lambda-instance-bindings [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid"
       (bindingStateEmitter)="handleBindingStateEmitter($event)"></app-lambda-instance-bindings>
 
-    <section class="fd-section">
-      <app-lambda-env-table [envs]="lambda.spec.deployment.spec.template.spec.containers[0].env"
-        [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid"
-        (envEmitter)="handleEnvEmitter($event)"></app-lambda-env-table>
-    </section>
+      <section class="fd-section">
+        <app-lambda-env-table [envs]="getEnvs()"
+          [lambdaName]="lambda.metadata.name" [isLambdaNameInvalid]="isFunctionNameInvalid"
+          (envEmitter)="handleEnvEmitter($event)"></app-lambda-env-table>
+      </section>
 
     <app-fetch-token-modal #fetchTokenModal></app-fetch-token-modal>
     <app-event-trigger-chooser #eventTriggerChooserModal (eventEmitter)="handleEventEmitter($event)">
@@ -335,10 +335,10 @@
         </button>
 
         <button fd-button [options]="'emphasized'" [glyph]="'journey-depart'" (click)="handleTestButtonClick()">
-          Send event
-        </button> 
-        
-        <app-notification id="M4SK0P4T0L" *ngIf="currentNotification.type && currentNotification.message" 
+          Make a test call
+        </button>
+
+        <app-notification id="M4SK0P4T0L" *ngIf="currentNotification.type && currentNotification.message"
         [header]="currentNotification.message" [type]="currentNotification.type"
         [description]="currentNotification.description">
         </app-notification>

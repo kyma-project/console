@@ -5,3 +5,9 @@ export const serviceInstanceConstants = {
   services: 'Services',
   servicesTooltipDescription: 'Enrich your experience with additional services',
 };
+
+export const serviceInstanceTabs = {
+  openApi: 'Console',
+  asyncApi: 'Events',
+  odata: 'OData',
+};

@@ -99,12 +99,22 @@ export class DocsProcessor {
 
   replaceImagePaths = () => {
     const assetsRegexp = /(?=]\()]\(\s*(\.\/)?assets/g;
+    const assetRegexSrc = /src=("|')assets\/(.*?)("|')/g;
     let docsUrl = null;
     this.docs.map(doc => {
       docsUrl = doc.url.substring(0, doc.url.lastIndexOf('/'));
+      // for markdown links
       if (doc.source.search(assetsRegexp) !== -1) {
         doc.source = doc.source.replace(assetsRegexp, `](${docsUrl}/assets`);
       }
+      // for html links
+      doc.source = doc.source.replace(assetRegexSrc, occurrence => {
+        assetRegexSrc.lastIndex = 0;
+        let href = assetRegexSrc.exec(occurrence);
+
+        if (!href || !href[2]) return occurrence;
+        return `src="${docsUrl}/assets/${href[2]}"`;
+      });
       return doc;
     });
 
