@@ -6,9 +6,7 @@ import { NamespaceDetailsComponent } from './namespace-details.component';
 
 const mockLuigiClient = {
   getEventData: () => {
-    return {
-      isSystemNamespace: true
-    };
+    return {};
   }
 };
 describe('NamespaceDetailsComponent', () => {

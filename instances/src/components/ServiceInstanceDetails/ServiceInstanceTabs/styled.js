@@ -11,3 +11,10 @@ export const ServiceInstanceTabsContentWrapper = styled.div`
   width: 100%;
   font-weight: normal;
 `;
+
+export const TabErrorMessageWrapper = styled.div`
+  text-align: center;
+  font-size: 18px;
+  padding-bottom: 20px;
+  margin: 0 auto;
+`;

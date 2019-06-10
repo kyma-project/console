@@ -18,7 +18,6 @@ export class DeploymentEntryRendererComponent
   implements OnInit, OnDestroy {
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
-  public isSystemNamespace: boolean;
   public emptyText = EMPTY_TEXT;
 
   constructor(
@@ -49,8 +48,7 @@ export class DeploymentEntryRendererComponent
       }
     );
     this.showBoundServices =
-      this.luigiClientService.hasBackendModule('servicecatalogaddons') &&
-      !LuigiClient.getEventData().isSystemNamespace;
+      this.luigiClientService.hasBackendModule('servicecatalogaddons')
   }
 
   ngOnDestroy() {

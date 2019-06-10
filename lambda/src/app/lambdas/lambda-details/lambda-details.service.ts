@@ -9,7 +9,6 @@ import {
 } from './../../shared/datamodel/k8s/pod-template';
 import { IMetaData } from './../../shared/datamodel/k8s/generic/meta-data';
 import {
-  IFunction,
   IFunctionSpec,
 } from './../../shared/datamodel/k8s/function';
 import { Injectable } from '@angular/core';
@@ -19,7 +18,6 @@ import { Lambda } from '../../shared/datamodel/k8s/function';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AppConfig } from '../../app.config';
 import {
-  IDeployment,
   IDeploymentSpec,
   Deployment,
 } from '../../shared/datamodel/k8s/deployment';

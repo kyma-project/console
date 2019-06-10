@@ -6,7 +6,7 @@ import {
   ViewChild,
   ViewContainerRef,
   Output,
-  EventEmitter,
+  EventEmitter
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IEnvVar } from '../../../shared/datamodel/k8s/container';
@@ -55,7 +55,7 @@ export class LambdaEnvComponent {
   validatesEnvVariableName(): void {
     const regex = /^[a-zA-Z][a-zA-Z0-9_]*/;
     const found = this.envVar.name.match(regex);
-    if (this.envs === undefined) {
+    if (!this.envs) {
       this.envs = [];
     }
     const duplicate = this.envs.find(env => {

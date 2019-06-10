@@ -41,6 +41,7 @@ describe('EventActivationsService', () => {
           eventType
           version
           description
+          schema
         }
       }
     }`;
