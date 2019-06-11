@@ -243,7 +243,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     return JSON.stringify(this.model);
   }
 
-  handleOutdatedLogsStateChange(event: Event) {
+  handleOutdatedLogsStateChange(event: {currentTarget: {checked: boolean}}) {
     if(event.currentTarget.checked){
       this.removeLabel(this.switchablePodFilterLabel,true)
     }else{
