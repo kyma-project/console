@@ -137,6 +137,13 @@ async function getTextContentOnPageBySelector(page, nameSelector) {
   });
 }
 
+async function applyTextSearchFilter(page, searchText) {
+  const searchIconSelector = '.sap-icon--search';
+  const frame = await getFrame(page);
+  await frame.click(searchIconSelector);
+  return frame.type('input[type=search]', searchText);
+}
+
 async function createNamespace(page, name) {
   const frame = await getFrame(page);
   const createNamespaceModal = '[data-e2e-id=create-namespace-modal]';
@@ -229,4 +236,5 @@ module.exports = {
   deleteNamespace,
   getApplicationNames,
   getTextContentOnPageBySelector,
+  applyTextSearchFilter,
 };

@@ -35,50 +35,53 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     }
   });
 
-  // test('Check if namespaces exist', async () => {
-  //   const dropdownButton = '.fd-button--shell';
-  //   const dropdownMenu = 'ul#context_menu_middle > li';
-  //   await page.click(dropdownButton);
-  //   await page.waitForSelector(dropdownMenu, { visible: true });
-  //   const namespaces = await kymaConsole.getNamespacesFromContextSwitcher(page);
-  //   await page.click(dropdownButton);
-  //   console.log('Check if namespaces exist', namespaces);
-  //   expect(namespaces.length).toBeGreaterThan(1);
-  // });
+  test('Check if namespaces exist', async () => {
+    const dropdownButton = '.fd-button--shell';
+    const dropdownMenu = 'ul#context_menu_middle > li';
+    await page.click(dropdownButton);
+    await page.waitForSelector(dropdownMenu, { visible: true });
+    const namespaces = await kymaConsole.getNamespacesFromContextSwitcher(page);
+    await page.click(dropdownButton);
+    console.log('Check if namespaces exist', namespaces);
+    expect(namespaces.length).toBeGreaterThan(1);
+  });
 
-  // test('Create namespace', async () => {
-  //   await kymaConsole.createNamespace(page, config.testNamespace);
-  //   await Promise.all([
-  //     page.goto(address.console.getNamespacesAddress()),
-  //     page.waitForNavigation({
-  //       waitUntil: ['domcontentloaded', 'networkidle0'],
-  //     }),
-  //   ]);
-  //   const namespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
-  //     page,
-  //   );
-  //   expect(namespaceNames).toContain(config.testNamespace);
-  // });
+  test('Create namespace', async () => {
+    await kymaConsole.createNamespace(page, config.testNamespace);
+    await Promise.all([
+      page.goto(address.console.getNamespacesAddress()),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
+    ]);
 
-  // test('Delete namespace', async () => {
-  //   const initialNamespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
-  //     page,
-  //   );
-  //   await kymaConsole.deleteNamespace(page, config.testNamespace);
-  //   const namespaceNames = await retry(async () => {
-  //     const namespaceNamesAfterDelete = await kymaConsole.getNamespaceNamesFromNamespacesPage(
-  //       page,
-  //     );
-  //     if (initialNamespaceNames <= namespaceNamesAfterDelete) {
-  //       throw new Error(`Namespace ${config.testNamespace} not yet deleted`);
-  //     }
-  //     return namespaceNamesAfterDelete;
-  //   });
+    await kymaConsole.applyTextSearchFilter(page, config.testNamespace);
 
-  //   //assert
-  //   expect(initialNamespaceNames).toContain(config.testNamespace);
-  //   expect(namespaceNames).not.toContain(config.testNamespace);
-  // });
+    const namespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
+      page,
+    );
+    expect(namespaceNames).toContain(config.testNamespace);
+  });
+
+  test('Delete namespace', async () => {
+    const initialNamespaceNames = await kymaConsole.getNamespaceNamesFromNamespacesPage(
+      page,
+    );
+    await kymaConsole.deleteNamespace(page, config.testNamespace);
+    const namespaceNames = await retry(async () => {
+      const namespaceNamesAfterDelete = await kymaConsole.getNamespaceNamesFromNamespacesPage(
+        page,
+      );
+      if (initialNamespaceNames <= namespaceNamesAfterDelete) {
+        throw new Error(`Namespace ${config.testNamespace} not yet deleted`);
+      }
+      return namespaceNamesAfterDelete;
+    });
+
+    //assert
+    expect(initialNamespaceNames).toContain(config.testNamespace);
+    expect(namespaceNames).not.toContain(config.testNamespace);
+  });
 
   test('Expose API for Service', async () => {
     const apiName = 'ui-test-exposed-api';
