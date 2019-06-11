@@ -8,10 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 import { LuigiContextService } from './service/luigi-context.service';
 
 import {
-  ContainerInstancesService,
-  IContainerInstancesResponse,
-  ITimestampComparablePod,
-} from './service/container-instances/container-instances.service';
+  GetPodsQuery,
+  GetPodsSubscription,
+} from './service/pods-subscription/pods-subscription.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-form',
@@ -63,7 +63,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private luigiContextService: LuigiContextService,
     private searchService: SearchService,
-    private containerInstancesService: ContainerInstancesService,
+    private getPodsQuery: GetPodsQuery,
+    private getPodsSubscription: GetPodsSubscription,
   ) {
     this.luigiContextService.getContext().subscribe(data => {
       this.token = data.context.idToken;
@@ -286,29 +287,42 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (!lambdaName || !this.namespace) {
       return;
     }
-    this.podListSubscription = this.containerInstancesService
-      .getContainerInstances(this.namespace, this.token)
-      .subscribe((resp: IContainerInstancesResponse) => {
-        if (!resp.data.pods || !resp.data.pods.length) {
-          // this.currentLambdaPods = null;
-          return; // somehow, there are no pods at all
-        }
-        const pods = resp.data.pods
-          .filter(
-            (pod: ITimestampComparablePod) =>
-              pod.labels.function === lambdaName,
-          )
-          .map((pod: ITimestampComparablePod) => pod.name);
-        if (!pods || !pods.length) {
-          // this.currentPodName = null;
-          return; // somehow, there are no pods assigned to this lambda
-        }
+    // this.podListSubscription = this.containerInstancesService
+    //   .getContainerInstances(this.namespace, this.token)
+    //   .subscribe((resp: IContainerInstancesResponse) => {
+    //     if (!resp.data.pods || !resp.data.pods.length) {
+    //       // this.currentLambdaPods = null;
+    //       return; // somehow, there are no pods at all
+    //     }
+    //     const pods = resp.data.pods
+    //       .filter(
+    //         (pod: ITimestampComparablePod) =>
+    //           pod.labels.function === lambdaName,
+    //       )
+    //       .map((pod: ITimestampComparablePod) => pod.name);
+    //     if (!pods || !pods.length) {
+    //       // this.currentPodName = null;
+    //       return; // somehow, there are no pods assigned to this lambda
+    //     }
 
-        this.extraInstanceLabels = pods;
+    //     this.extraInstanceLabels = pods;
 
-        //TODO: use subscription - update all labels containing "instance="
-        this.updateQuery();
-        this.onSubmit();
+    //     //TODO: use subscription - update all labels containing "instance="
+    //     this.updateQuery();
+    //     this.onSubmit();
+    //   });
+    const a = this.getPodsQuery
+      .watch({
+        namespace: this.namespace,
+      })
+      .valueChanges.subscribe(a => {
+        // console.log(a);
+      });
+
+    this.getPodsSubscription
+      .subscribe({ namespace: this.namespace })
+      .subscribe(a => {
+        console.log(a);
       });
   }
 }
