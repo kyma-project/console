@@ -164,6 +164,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   testPayload = {};
   responseEditorMode: 'json' | 'text' = 'json';
   notificationTimeout: NodeJS.Timeout;
+  private currentPodName: string | null = null;
 
   public issuer: string;
   public jwksUri: string;
@@ -177,8 +178,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     message: '',
   };
   public testingResponse = '';
-
-  public currentPodName: string | null = null;
 
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
@@ -978,6 +977,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         function: this.lambda.metadata.name,
         namespace: this.namespace,
         container_name: this.lambda.metadata.name,
+        pod: this.currentPodName,
       })
       .openAsModal('/home/cmf-logs');
   }
