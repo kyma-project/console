@@ -83,6 +83,7 @@ interface INotificationData {
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
   styleUrls: ['./lambda-details.component.scss'],
+  providers: [ContainerInstancesService],
 })
 export class LambdaDetailsComponent implements OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];

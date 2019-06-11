@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { EventActivationsService } from './event-activations.service';
+import { ContainerInstancesService } from './container-instances.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -8,45 +8,38 @@ import {
 import { AppConfig } from '../app.config';
 import { GraphqlClientService } from '../graphql-client/graphql-client.service';
 
-describe('EventActivationsService', () => {
-  let eventActivationsService: EventActivationsService;
+describe('ContainerInstancesService', () => {
+  let containerInstancesService: ContainerInstancesService;
   let httpClientMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EventActivationsService, GraphqlClientService],
+      providers: [ContainerInstancesService, GraphqlClientService],
     });
-    eventActivationsService = TestBed.get(EventActivationsService);
+    containerInstancesService = TestBed.get(ContainerInstancesService);
     httpClientMock = TestBed.get(HttpTestingController);
   });
 
   it('should be created', inject(
-    [EventActivationsService],
-    (service: EventActivationsService) => {
+    [ContainerInstancesService],
+    (service: ContainerInstancesService) => {
       expect(service).toBeTruthy();
     },
   ));
 
-  it('should get eventActivations', done => {
-    const name = 'fakeApiName';
+  it('should get Pod list', done => {
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
-    const expectedQuery = `query EventActivations($namespace: String!) {
-      eventActivations(namespace: $namespace) {
+    const expectedQuery = `query Pod($namespace: String!) {
+      pods(namespace: $namespace) {
         name
-        displayName
-        sourceId
-        events {
-          eventType
-          version
-          description
-          schema
-        }
+        creationTimestamp
+        labels
       }
     }`;
-    eventActivationsService
-      .getEventActivations(namespace, token)
+    containerInstancesService
+      .getContainerInstances(namespace, token)
       .subscribe(res => {
         done();
       });
@@ -63,18 +56,17 @@ describe('EventActivationsService', () => {
     httpClientMock.verify();
   });
 
-  it('should handle empty eventActivations list', done => {
-    const name = 'fakeApiName';
+  it('should handle empty Pod list', done => {
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
-    eventActivationsService
-      .getEventActivations(namespace, token)
+    containerInstancesService
+      .getContainerInstances(namespace, token)
       .subscribe(res => {
         done();
-        expect(res.data.eventActivations.length).toEqual(0);
+        expect(res.data.pods.length).toEqual(0);
       });
     const httpMock = httpClientMock.expectOne(`${AppConfig.graphqlApiUrl}`);
-    httpMock.flush({ data: { eventActivations: [] } });
+    httpMock.flush({ data: { pods: [] } });
     expect(httpMock.request.method).toEqual('POST');
   });
 });
