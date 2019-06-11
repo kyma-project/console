@@ -63,7 +63,7 @@ import { NotificationComponent } from '../../shared/components/notification/noti
 import {
   ContainerInstancesService,
   IContainerInstancesResponse,
-  ITimestampComparable,
+  ITimestampComparablePod,
 } from '../../container-instances/container-instances.service';
 
 import { has as _has, get as _get, set as _set } from 'lodash';
@@ -228,6 +228,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           if (params['name']) {
             this.mode = 'update';
             const lambdaName = params['name'];
+            this.subscribeToCurrentPodName(lambdaName);
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
@@ -307,8 +308,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                 this.filteredTriggers = this.allEventTriggers;
               }
             });
-
-          this.subscribeToCurrentPodName();
         });
       },
       err => {
@@ -1524,18 +1523,28 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private subscribeToCurrentPodName() {
+  private subscribeToCurrentPodName(lambdaName: string) {
     this.containerInstancesService
       .getContainerInstances(this.namespace, this.token)
       .subscribe((resp: IContainerInstancesResponse) => {
         if (!resp.data.pods || !resp.data.pods.length) {
           this.currentPodName = null;
-          return;
+          return; // somehow, there are no pods at all
         }
-        //newest Pod
+
+        const currentLambdaPods = resp.data.pods.filter(
+          (pod: ITimestampComparablePod) => pod.labels.function === lambdaName,
+        );
+
+        if (!currentLambdaPods || !currentLambdaPods.length) {
+          this.currentPodName = null;
+          return; // somehow, there are no pods assigned to this lambda
+        }
+
+        // assign most recent Pod name
         this.currentPodName =
-          resp.data.pods.reduce(
-            (prev: ITimestampComparable, current: ITimestampComparable) =>
+          currentLambdaPods.reduce(
+            (prev: ITimestampComparablePod, current: ITimestampComparablePod) =>
               prev.creationTimestamp > current.creationTimestamp
                 ? prev
                 : current,

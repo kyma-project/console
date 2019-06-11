@@ -1,30 +1,23 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GraphqlClientService } from '../graphql-client/graphql-client.service';
 import { AppConfig } from '../app.config';
-import { EventActivation } from '../shared/datamodel/k8s/event-activation';
 import { Observable } from 'rxjs';
-import { Event } from '../shared/datamodel/event';
-import { EventActivationResponse } from '../shared/datamodel/k8s/event-activation-response';
-import { Pod } from '../shared/datamodel/k8s/pod';
 
-export interface ITimestampComparable {
+export interface ITimestampComparablePod {
   name: string;
   creationTimestamp: number;
+  labels: { function: string };
 }
 
 export interface IContainerInstancesResponse {
   data: {
-    pods: ITimestampComparable[];
+    pods: ITimestampComparablePod[];
   };
 }
 
 @Injectable()
 export class ContainerInstancesService {
-  constructor(
-    private http: HttpClient,
-    private graphQLClientService: GraphqlClientService,
-  ) {}
+  constructor(private graphQLClientService: GraphqlClientService) {}
 
   getContainerInstances(
     namespace: string,
@@ -34,6 +27,7 @@ export class ContainerInstancesService {
       pods(namespace: $namespace) {
         name
         creationTimestamp
+        labels
       }
     }`;
     const variables = { namespace };
