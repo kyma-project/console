@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 export interface ITimestampComparablePod {
   name: string;
-  creationTimestamp: number;
+  status: string;
   labels: { function: string };
 }
 
@@ -26,7 +26,7 @@ export class ContainerInstancesService {
     const query = `query Pod($namespace: String!) {
       pods(namespace: $namespace) {
         name
-        creationTimestamp
+        status
         labels
       }
     }`;

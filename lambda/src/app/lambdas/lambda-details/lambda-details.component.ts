@@ -165,7 +165,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   testPayload = {};
   responseEditorMode: 'json' | 'text' = 'json';
   notificationTimeout: NodeJS.Timeout;
-  private currentPodName: string | null = null;
+  private currentLambdaPods: string[] | null = null;
 
   public issuer: string;
   public jwksUri: string;
@@ -195,7 +195,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     protected route: ActivatedRoute,
     private http: HttpClient,
-    private containerInstancesService: ContainerInstancesService,
+  
   ) {
     this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
       s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
@@ -228,7 +228,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           if (params['name']) {
             this.mode = 'update';
             const lambdaName = params['name'];
-            this.subscribeToCurrentPodName(lambdaName);
+            
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
@@ -978,7 +978,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         function: this.lambda.metadata.name,
         namespace: this.namespace,
         container_name: this.lambda.metadata.name,
-        pod: this.currentPodName,
+       // pod: this.currentLambdaPods.join('|'),
       })
       .openAsModal('/home/cmf-logs');
   }
@@ -1524,32 +1524,5 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private subscribeToCurrentPodName(lambdaName: string) {
-    this.containerInstancesService
-      .getContainerInstances(this.namespace, this.token)
-      .subscribe((resp: IContainerInstancesResponse) => {
-        if (!resp.data.pods || !resp.data.pods.length) {
-          this.currentPodName = null;
-          return; // somehow, there are no pods at all
-        }
-
-        const currentLambdaPods = resp.data.pods.filter(
-          (pod: ITimestampComparablePod) => pod.labels.function === lambdaName,
-        );
-
-        if (!currentLambdaPods || !currentLambdaPods.length) {
-          this.currentPodName = null;
-          return; // somehow, there are no pods assigned to this lambda
-        }
-
-        // assign most recent Pod name
-        this.currentPodName =
-          currentLambdaPods.reduce(
-            (prev: ITimestampComparablePod, current: ITimestampComparablePod) =>
-              prev.creationTimestamp > current.creationTimestamp
-                ? prev
-                : current,
-          ).name || null;
-      });
-  }
+ 
 }

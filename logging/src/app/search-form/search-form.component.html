@@ -113,6 +113,10 @@
             role="button" (click)="removeLabel($event.target.innerText)" *ngFor="let label of selectedLabels | keyvalue">
           {{ label.key }}="{{ label.value }}"
         </span>
+         <span class="fd-token y-fd-token y-fd-token--no-close-button y-fd-token--no-link"
+            role="button" *ngFor="let label of extraInstanceLabels">
+          instance={{ label }}
+        </span>
       </div>
     </form>
   </div>

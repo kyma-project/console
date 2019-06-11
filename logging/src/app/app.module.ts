@@ -13,6 +13,8 @@ import { SearchFormComponent } from './search-form/search-form.component';
 import { SearchService } from './search-form/service/search-service';
 import { LuigiContextService } from './search-form/service/luigi-context.service';
 import { FormsModule } from '@angular/forms';
+import { GraphqlClientService } from './search-form/service/graphql-client/graphql-client.service';
+import { ContainerInstancesService } from './search-form/service/container-instances/container-instances.service';
 
 @NgModule({
   declarations: [AppComponent, SearchFormComponent],
@@ -25,7 +27,12 @@ import { FormsModule } from '@angular/forms';
     FormModule,
     FormsModule,
   ],
-  providers: [SearchService, LuigiContextService],
+  providers: [
+    SearchService,
+    LuigiContextService,
+    ContainerInstancesService,
+    GraphqlClientService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

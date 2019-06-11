@@ -2,10 +2,16 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { SearchService } from './service/search-service';
 import { IPlainLogQuery, ISearchFormData } from './data';
 
-import { Observable, of as observableOf } from 'rxjs';
+import { Observable, of as observableOf, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 import { LuigiContextService } from './service/luigi-context.service';
+
+import {
+  ContainerInstancesService,
+  IContainerInstancesResponse,
+  ITimestampComparablePod,
+} from './service/container-instances/container-instances.service';
 
 @Component({
   selector: 'app-search-form',
@@ -41,20 +47,26 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     label: '',
   };
 
-  selectedLabels = new Map();
-  mandatoryLabels = new Map();
+  selectedLabels: Map<string, string | string[]> = new Map();
+  mandatoryLabels: Map<string, string> = new Map();
+  private token: string;
+  private namespace: string;
+
   public loaded: Observable<boolean> = observableOf(false);
 
   private switchablePodFilterLabel: string | null = null;
   public isHistoricalDataEnabled = false;
-
+  private podListSubscription: Subscription;
+  public extraInstanceLabels: string[];
 
   constructor(
     private route: ActivatedRoute,
     private luigiContextService: LuigiContextService,
     private searchService: SearchService,
+    private containerInstancesService: ContainerInstancesService,
   ) {
     this.luigiContextService.getContext().subscribe(data => {
+      this.token = data.context.idToken;
       this.route.queryParams.subscribe(params => {
         this.processParams(params);
         if (this.mandatoryLabels.size === 0) {
@@ -69,26 +81,31 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (params.namespace) {
+      this.addLabel('namespace=' + params.namespace, true);
+      this.namespace = params.namespace;
+    }
+
     if (params.function) {
       this.addLabel('function=' + params.function, true);
       this.title = `Logs for function "${params.function}"`;
+      this.subscribeToCurrentPodName(params.function);
     }
     if (params.pod) {
-      this.addLabel('instance=' + params.pod, true); 
+      this.addLabel('instance=' + params.pod, true);
       this.title = `Logs for pod "${params.pod}"`;
     }
 
     if (params.pod && params.function) {
-      this.isHistoricalDataEnabled=true;
+      this.isHistoricalDataEnabled = true;
       this.switchablePodFilterLabel = `instance="${params.pod}"`;
     }
 
-    if (params.namespace) {
-      this.addLabel('namespace=' + params.namespace, true);
-    }
     if (params.container_name) {
       this.addLabel('container_name=' + params.container_name, true);
     }
+
+    // this.subscribeToCurrentPodName()
 
     if (this.selectedLabels.size > 0) {
       this.onSubmit();
@@ -97,7 +114,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.podListSubscription) {
+      this.podListSubscription.unsubscribe();
+    }
+  }
 
   onSubmit() {
     const searchQuery: IPlainLogQuery = this.getSearchQuery();
@@ -186,7 +207,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.updateQuery();
   }
 
-  removeLabel(label: string,force = false) {
+  removeLabel(label: string, force = false) {
     const l = label.split('=')[0];
     if (!this.isMandatoryLabel(l) || force) {
       this.selectedLabels.delete(l);
@@ -233,6 +254,12 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       const selectedLabelsFormatted = Array.from(this.selectedLabels).map(
         ([key, value]) => `${key}="${value}"`,
       );
+
+      if (this.extraInstanceLabels) {
+        selectedLabelsFormatted.concat(
+          this.extraInstanceLabels.map(i => `instance=${i}`),
+        );
+      }
       this.model.query = '{' + selectedLabelsFormatted.join(', ') + '}';
     } else {
       this.model.query = '';
@@ -243,13 +270,45 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     return JSON.stringify(this.model);
   }
 
-  handleOutdatedLogsStateChange(event: {currentTarget: {checked: boolean}}) {
-    if(event.currentTarget.checked){
-      this.removeLabel(this.switchablePodFilterLabel,true)
-    }else{
+  handleOutdatedLogsStateChange(event: {
+    currentTarget: { checked: boolean };
+  }) {
+    if (event.currentTarget.checked) {
+      this.removeLabel(this.switchablePodFilterLabel, true);
+    } else {
       this.addLabel(this.switchablePodFilterLabel);
     }
 
     this.onSubmit();
+  }
+
+  private subscribeToCurrentPodName(lambdaName: string) {
+    if (!lambdaName || !this.namespace) {
+      return;
+    }
+    this.podListSubscription = this.containerInstancesService
+      .getContainerInstances(this.namespace, this.token)
+      .subscribe((resp: IContainerInstancesResponse) => {
+        if (!resp.data.pods || !resp.data.pods.length) {
+          // this.currentLambdaPods = null;
+          return; // somehow, there are no pods at all
+        }
+        const pods = resp.data.pods
+          .filter(
+            (pod: ITimestampComparablePod) =>
+              pod.labels.function === lambdaName,
+          )
+          .map((pod: ITimestampComparablePod) => pod.name);
+        if (!pods || !pods.length) {
+          // this.currentPodName = null;
+          return; // somehow, there are no pods assigned to this lambda
+        }
+
+        this.extraInstanceLabels = pods;
+
+        //TODO: use subscription - update all labels containing "instance="
+        this.updateQuery();
+        this.onSubmit();
+      });
   }
 }
