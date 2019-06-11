@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { SearchService } from './service/search-service';
 import { IPlainLogQuery, ISearchFormData } from './data';
 
@@ -28,11 +23,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       {
         availableLabels: [],
         labels: '',
-        entries: [
-          { ts: '', line: ''}
-        ]
-      }
-    ]
+        entries: [{ ts: '', line: '' }],
+      },
+    ],
   };
   searchResult = this.emptySearchResult;
   labelValues = { values: [] };
@@ -45,14 +38,18 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     extraQuery: '',
     limit: 1000,
     direction: 'backward',
-    label: ''
+    label: '',
   };
 
   selectedLabels = new Map();
   mandatoryLabels = new Map();
   public loaded: Observable<boolean> = observableOf(false);
 
-  constructor(private route: ActivatedRoute, private luigiContextService: LuigiContextService, private searchService: SearchService) {
+  constructor(
+    private route: ActivatedRoute,
+    private luigiContextService: LuigiContextService,
+    private searchService: SearchService,
+  ) {
     this.luigiContextService.getContext().subscribe(data => {
       this.route.queryParams.subscribe(params => {
         this.processParams(params);
@@ -76,6 +73,13 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.addLabel('instance=' + params.pod, true);
       this.title = `Logs for pod "${params.pod}"`;
     }
+
+    if (params.pod && params.function) {
+      this.title = `Logs for the most recent pod of function "${
+        params.function
+      }"`;
+    }
+
     if (params.namespace) {
       this.addLabel('namespace=' + params.namespace, true);
     }
@@ -95,33 +99,32 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     const searchQuery: IPlainLogQuery = this.getSearchQuery();
 
-    this.searchService
-      .search(searchQuery)
-      .subscribe(
-        data => {
-          const result = JSON.parse(data);
-          if ('streams' in result) {
-            this.searchResult = result;
-            this.searchResult.streams.forEach(stream => {
-              stream.availableLabels = stream.labels
-                .replace('{', '')
-                .replace('}', '')
-                .split(',');
-            });
-          } else {
-            this.searchResult = this.emptySearchResult;
-          }
-        },
-        err => {
-          console.error(err);
-          this.error = err.error;
+    this.searchService.search(searchQuery).subscribe(
+      data => {
+        const result = JSON.parse(data);
+        if ('streams' in result) {
+          this.searchResult = result;
+          this.searchResult.streams.forEach(stream => {
+            stream.availableLabels = stream.labels
+              .replace('{', '')
+              .replace('}', '')
+              .split(',');
+          });
+        } else {
+          this.searchResult = this.emptySearchResult;
         }
-      );
+      },
+      err => {
+        console.error(err);
+        this.error = err.error;
+      },
+    );
   }
 
   private getSearchQuery() {
     const from: Date = new Date();
-    const value: number = -1 * +this.model.from.substr(0, this.model.from.length - 1);
+    const value: number =
+      -1 * +this.model.from.substr(0, this.model.from.length - 1);
 
     if (this.model.from.endsWith('m')) {
       from.setMinutes(value);
@@ -143,7 +146,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       to: new Date().getTime(),
       query: this.model.query.substring(0, labelExpPos + 1),
       limit: this.model.limit,
-      direction: this.model.direction
+      direction: this.model.direction,
     };
   }
 
@@ -155,7 +158,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       err => {
         console.error(err);
         this.error = err.error;
-      }
+      },
     );
   }
 
@@ -164,17 +167,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (!this.model.label) {
       return;
     }
-    this.searchService
-      .getLabelValues(selectedLabel)
-      .subscribe(
-        data => {
-          this.labelValues = JSON.parse(data);
-        },
-        err => {
-          console.error(err);
-          this.error = err.error;
-        }
-      );
+    this.searchService.getLabelValues(selectedLabel).subscribe(
+      data => {
+        this.labelValues = JSON.parse(data);
+      },
+      err => {
+        console.error(err);
+        this.error = err.error;
+      },
+    );
   }
 
   selectLabelValue(labelValue: string) {
@@ -210,20 +211,26 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   getLabelKey(label: string) {
-    return label.split('=')[0].trim().replace(/^["]{1}/gm, '');
+    return label
+      .split('=')[0]
+      .trim()
+      .replace(/^["]{1}/gm, '');
   }
 
   getLabelValue(label: string) {
     return label
-      .split('=')[1].trim()
+      .split('=')[1]
+      .trim()
       .replace(/["]{1}$/gm, '')
       .replace(/^["]{1}/gm, '');
   }
 
   updateQuery() {
     if (this.selectedLabels.size > 0) {
-      const selectedLabelsFormatted = Array.from(this.selectedLabels).map(([key, value]) => `${key}="${value}"`);
-      this.model.query = '{' + selectedLabelsFormatted.join(', ') +  '}';
+      const selectedLabelsFormatted = Array.from(this.selectedLabels).map(
+        ([key, value]) => `${key}="${value}"`,
+      );
+      this.model.query = '{' + selectedLabelsFormatted.join(', ') + '}';
     } else {
       this.model.query = '';
     }
