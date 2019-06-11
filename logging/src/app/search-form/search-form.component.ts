@@ -8,8 +8,9 @@ import { ActivatedRoute } from '@angular/router';
 import { LuigiContextService } from './service/luigi-context.service';
 
 import {
-  GetPodsQuery,
-  GetPodsSubscription,
+  PodsSubscriptonService,
+  IPod,
+  IPodQueryResponse,
 } from './service/pods-subscription/pods-subscription.service';
 import { map } from 'rxjs/operators';
 
@@ -17,6 +18,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
+  providers: [PodsSubscriptonService],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
   @Input() labels = { values: [] };
@@ -54,17 +56,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   public loaded: Observable<boolean> = observableOf(false);
 
-  private switchablePodFilterLabel: string | null = null;
   public isHistoricalDataEnabled = false;
-  private podListSubscription: Subscription;
   public extraInstanceLabels: string[];
+  private podsForFunction: IPod[];
 
   constructor(
     private route: ActivatedRoute,
     private luigiContextService: LuigiContextService,
     private searchService: SearchService,
-    private getPodsQuery: GetPodsQuery,
-    private getPodsSubscription: GetPodsSubscription,
+    private podsSubscribtionService: PodsSubscriptonService,
   ) {
     this.luigiContextService.getContext().subscribe(data => {
       this.token = data.context.idToken;
@@ -115,11 +115,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  ngOnDestroy(): void {
-    if (this.podListSubscription) {
-      this.podListSubscription.unsubscribe();
-    }
-  }
+  ngOnDestroy(): void {}
 
   onSubmit() {
     const searchQuery: IPlainLogQuery = this.getSearchQuery();
@@ -275,9 +271,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     currentTarget: { checked: boolean };
   }) {
     if (event.currentTarget.checked) {
-      this.removeLabel(this.switchablePodFilterLabel, true);
+      // this.removeLabel(this.switchablePodFilterLabel, true);
     } else {
-      this.addLabel(this.switchablePodFilterLabel);
+      // this.addLabel(this.switchablePodFilterLabel);
     }
 
     this.onSubmit();
@@ -287,42 +283,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (!lambdaName || !this.namespace) {
       return;
     }
-    // this.podListSubscription = this.containerInstancesService
-    //   .getContainerInstances(this.namespace, this.token)
-    //   .subscribe((resp: IContainerInstancesResponse) => {
-    //     if (!resp.data.pods || !resp.data.pods.length) {
-    //       // this.currentLambdaPods = null;
-    //       return; // somehow, there are no pods at all
-    //     }
-    //     const pods = resp.data.pods
-    //       .filter(
-    //         (pod: ITimestampComparablePod) =>
-    //           pod.labels.function === lambdaName,
-    //       )
-    //       .map((pod: ITimestampComparablePod) => pod.name);
-    //     if (!pods || !pods.length) {
-    //       // this.currentPodName = null;
-    //       return; // somehow, there are no pods assigned to this lambda
-    //     }
 
-    //     this.extraInstanceLabels = pods;
-
-    //     //TODO: use subscription - update all labels containing "instance="
-    //     this.updateQuery();
-    //     this.onSubmit();
-    //   });
-    const a = this.getPodsQuery
-      .watch({
-        namespace: this.namespace,
-      })
-      .valueChanges.subscribe(a => {
-        // console.log(a);
-      });
-
-    this.getPodsSubscription
-      .subscribe({ namespace: this.namespace })
-      .subscribe(a => {
-        console.log(a);
+    this.podsSubscribtionService
+      .getAllPods(this.namespace)
+      .valueChanges.subscribe((response: IPodQueryResponse) => {
+        this.podsForFunction = response.data.pods;
       });
   }
 }
