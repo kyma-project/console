@@ -71,6 +71,16 @@
             <option *ngFor="let to of toValues" [value]="to">{{ to }}</option>
           </select>
         </div>
+
+        <div *ngIf="isHistoricalDataEnabled" fd-form-item [isInline]="true">
+          <fd-form-label [forValue]="'to'">
+            Historical data
+          </fd-form-label>
+          <label fd-form-label for="outdatedLogsToggle">
+            <input fd-form-control type="checkbox" id="outdatedLogsToggle" (change)="handleOutdatedLogsStateChange($event)">
+            Show logs for outdated pods
+          </label>
+        </div>
       </fieldset>
 
       <fieldset fd-form-set>

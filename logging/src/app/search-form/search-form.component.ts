@@ -45,6 +45,10 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   mandatoryLabels = new Map();
   public loaded: Observable<boolean> = observableOf(false);
 
+  private switchablePodFilterLabel: string | null = null;
+  public isHistoricalDataEnabled = false;
+
+
   constructor(
     private route: ActivatedRoute,
     private luigiContextService: LuigiContextService,
@@ -70,14 +74,13 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.title = `Logs for function "${params.function}"`;
     }
     if (params.pod) {
-      this.addLabel('instance=' + params.pod, true);
+      this.addLabel('instance=' + params.pod, true); 
       this.title = `Logs for pod "${params.pod}"`;
     }
 
     if (params.pod && params.function) {
-      this.title = `Logs for the most recent pod of function "${
-        params.function
-      }"`;
+      this.isHistoricalDataEnabled=true;
+      this.switchablePodFilterLabel = `instance="${params.pod}"`;
     }
 
     if (params.namespace) {
@@ -183,9 +186,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.updateQuery();
   }
 
-  removeLabel(label: string) {
+  removeLabel(label: string,force = false) {
     const l = label.split('=')[0];
-    if (!this.isMandatoryLabel(l)) {
+    if (!this.isMandatoryLabel(l) || force) {
       this.selectedLabels.delete(l);
       this.updateQuery();
     }
@@ -195,7 +198,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     return this.mandatoryLabels.get(label) !== undefined;
   }
 
-  isSelectedLabel(label: string) {
+  isSelectedLabel(label: string): boolean {
     const selectedValue = this.selectedLabels.get(this.getLabelKey(label));
     return selectedValue && selectedValue === this.getLabelValue(label);
   }
@@ -238,5 +241,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   get diagnostic() {
     return JSON.stringify(this.model);
+  }
+
+  handleOutdatedLogsStateChange(event: Event) {
+    if(event.currentTarget.checked){
+      this.removeLabel(this.switchablePodFilterLabel,true)
+    }else{
+      this.addLabel(this.switchablePodFilterLabel);
+    }
+
+    this.onSubmit();
   }
 }
