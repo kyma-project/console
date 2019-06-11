@@ -60,7 +60,13 @@ import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trig
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
-import {has as _has, get as _get, set as _set} from 'lodash';
+import {
+  ContainerInstancesService,
+  IContainerInstancesResponse,
+  ITimestampComparable,
+} from '../../container-instances/container-instances.service';
+
+import { has as _has, get as _get, set as _set } from 'lodash';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
@@ -172,6 +178,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   };
   public testingResponse = '';
 
+  public currentPodName: string | null = null;
+
   @ViewChild('dependencyEditor') dependencyEditor;
   @ViewChild('editor') editor;
   @ViewChild('labelsInput') labelsInput;
@@ -187,6 +195,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     protected route: ActivatedRoute,
     private http: HttpClient,
+    private containerInstancesService: ContainerInstancesService,
   ) {
     this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
       s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
@@ -205,7 +214,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
     this.kind = 'nodejs8';
-
   }
 
   ngOnInit() {
@@ -282,24 +290,25 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                     eventType: ev.eventType,
                     sourceId: ea.sourceId,
                     description: ev.description,
-                    version: ev.version
+                    version: ev.version,
                   };
                   const eventTriggerWithSchema: EventTriggerWithSchema = {
                     eventType: ev.eventType,
                     sourceId: ea.sourceId,
                     description: ev.description,
                     version: ev.version,
-                    schema: ev.schema
+                    schema: ev.schema,
                   };
                   this.availableEventTriggers.push(eventTrigger);
                   this.allEventTriggers.push(eventTriggerWithSchema);
                 });
               });
-              if(this.allEventTriggers.length>0){
+              if (this.allEventTriggers.length > 0) {
                 this.filteredTriggers = this.allEventTriggers;
               }
             });
 
+          this.subscribeToCurrentPodName();
         });
       },
       err => {
@@ -888,18 +897,31 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             this.dependency !== undefined &&
             this.dependency !== '';
 
-          if (!_has(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env')) {
-            _set(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env', []);
+          if (
+            !_has(
+              this,
+              'lambda.spec.deployment.spec.template.spec.containers[0].env',
+            )
+          ) {
+            _set(
+              this,
+              'lambda.spec.deployment.spec.template.spec.containers[0].env',
+              [],
+            );
           }
 
           this.setLoaded(true);
           this.initializeEditor();
-          if(lambda.metadata && lambda.metadata.annotations){
+          if (lambda.metadata && lambda.metadata.annotations) {
             this.functionSizes.forEach(s => {
-            if (`${s.name}` === lambda.metadata.annotations['function-size']) {
-              this.selectedFunctionSize = s;
-              this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
-            }
+              if (
+                `${s.name}` === lambda.metadata.annotations['function-size']
+              ) {
+                this.selectedFunctionSize = s;
+                this.selectedFunctionSizeName = this.selectedFunctionSize[
+                  'name'
+                ];
+              }
             });
           }
         },
@@ -1348,8 +1370,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  getEnvs(){
-    return _get(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env');
+  getEnvs() {
+    return _get(
+      this,
+      'lambda.spec.deployment.spec.template.spec.containers[0].env',
+    );
   }
 
   changeTab(name: string) {
@@ -1376,7 +1401,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   addAppLabel() {
     this.updatedLabels = this.updatedLabels.map(label => {
-      return label.startsWith('app=') ? `app=${this.lambda.metadata.name}` : label;
+      return label.startsWith('app=')
+        ? `app=${this.lambda.metadata.name}`
+        : label;
     });
   }
 
@@ -1415,8 +1442,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             Authorization: `Bearer ${this.token}`,
           })
         : new Headers({
-          'Content-Type': 'application/json',
-        }),
+            'Content-Type': 'application/json',
+          }),
     })
       .then(async res => {
         const responseText = await res.text();
@@ -1465,21 +1492,24 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   filterTriggerEvents() {
     this.filteredTriggers = [];
     this.allEventTriggers.forEach(element => {
-      if (element.eventType.toLowerCase().indexOf(this.trigger.toLowerCase())!==-1) {
+      if (
+        element.eventType.toLowerCase().indexOf(this.trigger.toLowerCase()) !==
+        -1
+      ) {
         this.filteredTriggers.push(element);
       }
     });
   }
 
-
-  public toggleDropDown(forceState?:boolean) {
-    this.isTriggerDropdownExpanded = forceState===undefined ? !this.isTriggerDropdownExpanded : forceState;
+  public toggleDropDown(forceState?: boolean) {
+    this.isTriggerDropdownExpanded =
+      forceState === undefined ? !this.isTriggerDropdownExpanded : forceState;
   }
 
   private generateExample(schema: JSON) {
     try {
-      return require('openapi-sampler').sample(schema)
-    } catch(e) {
+      return require('openapi-sampler').sample(schema);
+    } catch (e) {
       return;
     }
   }
@@ -1487,6 +1517,29 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   public selectTrigger(trigger) {
     this.trigger = trigger.eventType;
     this.testPayload = trigger.schema;
-    this.testPayloadText = JSON.stringify(this.generateExample(trigger.schema), null, 2);
+    this.testPayloadText = JSON.stringify(
+      this.generateExample(trigger.schema),
+      null,
+      2,
+    );
+  }
+
+  private subscribeToCurrentPodName() {
+    this.containerInstancesService
+      .getContainerInstances(this.namespace, this.token)
+      .subscribe((resp: IContainerInstancesResponse) => {
+        if (!resp.data.pods || !resp.data.pods.length) {
+          this.currentPodName = null;
+          return;
+        }
+        //newest Pod
+        this.currentPodName =
+          resp.data.pods.reduce(
+            (prev: ITimestampComparable, current: ITimestampComparable) =>
+              prev.creationTimestamp > current.creationTimestamp
+                ? prev
+                : current,
+          ).name || null;
+      });
   }
 }
