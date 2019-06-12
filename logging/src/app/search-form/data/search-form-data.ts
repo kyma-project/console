@@ -6,4 +6,5 @@ export interface ISearchFormData {
   limit: number;
   direction: string;
   label: string;
+  showOutdatedLogs: boolean;
 }

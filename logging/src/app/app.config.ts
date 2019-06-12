@@ -11,6 +11,7 @@ const config = {
   labelEndpoint: `https://loki.${domain}/api/prom/label`,
   graphqlApiUrl: `https://console-backend.${domain}/graphql`,
   subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
+  authIssuer: `https://dex.${domain}`,
 };
 
 export const AppConfig = { ...config };

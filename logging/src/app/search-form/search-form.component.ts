@@ -14,6 +14,12 @@ import {
 } from './service/pods-subscription/pods-subscription.service';
 import { map } from 'rxjs/operators';
 
+interface ILogStream {
+  availableLabels: string[];
+  entries: any[];
+  labels: string;
+}
+
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
@@ -47,17 +53,18 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     limit: 1000,
     direction: 'backward',
     label: '',
+    showOutdatedLogs: false,
   };
 
   selectedLabels: Map<string, string | string[]> = new Map();
   mandatoryLabels: Map<string, string> = new Map();
-  private token: string;
+
   private namespace: string;
 
   public loaded: Observable<boolean> = observableOf(false);
 
-  public isHistoricalDataEnabled = false;
-  public extraInstanceLabels: string[];
+  public isHistoricalDataSwitchVisible = false;
+
   private podsForFunction: IPod[];
 
   constructor(
@@ -91,15 +98,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.addLabel('function=' + params.function, true);
       this.title = `Logs for function "${params.function}"`;
       this.subscribeToCurrentPodName(params.function);
+      this.isHistoricalDataSwitchVisible = true;
     }
     if (params.pod) {
       this.addLabel('instance=' + params.pod, true);
       this.title = `Logs for pod "${params.pod}"`;
-    }
-
-    if (params.pod && params.function) {
-      this.isHistoricalDataEnabled = true;
-      this.switchablePodFilterLabel = `instance="${params.pod}"`;
     }
 
     if (params.container_name) {
@@ -131,6 +134,16 @@ export class SearchFormComponent implements OnInit, OnDestroy {
               .replace('}', '')
               .split(',');
           });
+
+          if (
+            this.isHistoricalDataSwitchVisible &&
+            !this.model.showOutdatedLogs
+          ) {
+            this.searchResult.streams = this.searchResult.streams.filter(
+              (s: ILogStream) =>
+                this.fiterStreamByInstance(s, this.getLabelValue),
+            );
+          }
         } else {
           this.searchResult = this.emptySearchResult;
         }
@@ -140,6 +153,24 @@ export class SearchFormComponent implements OnInit, OnDestroy {
         this.error = err.error;
       },
     );
+  }
+
+  private fiterStreamByInstance(
+    stream: ILogStream,
+    getLabelValueFn: (label: string) => string,
+  ): boolean {
+    const instanceLabel = stream.availableLabels.find((label: string) =>
+      label.includes('instance'),
+    );
+    if (!instanceLabel || !this.podsForFunction) {
+      return true; // this stream doesn't have an 'instance' label
+    } else {
+      const instanceValue = getLabelValueFn(instanceLabel);
+
+      return this.podsForFunction.some(
+        (pod: IPod) => pod.name === instanceValue,
+      );
+    }
   }
 
   private getSearchQuery() {
@@ -248,15 +279,10 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   updateQuery() {
     if (this.selectedLabels.size > 0) {
-      const selectedLabelsFormatted = Array.from(this.selectedLabels).map(
+      let selectedLabelsFormatted = Array.from(this.selectedLabels).map(
         ([key, value]) => `${key}="${value}"`,
       );
 
-      if (this.extraInstanceLabels) {
-        selectedLabelsFormatted.concat(
-          this.extraInstanceLabels.map(i => `instance=${i}`),
-        );
-      }
       this.model.query = '{' + selectedLabelsFormatted.join(', ') + '}';
     } else {
       this.model.query = '';
@@ -271,9 +297,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     currentTarget: { checked: boolean };
   }) {
     if (event.currentTarget.checked) {
-      // this.removeLabel(this.switchablePodFilterLabel, true);
+      this.updateQuery();
     } else {
-      // this.addLabel(this.switchablePodFilterLabel);
+      this.updateQuery();
     }
 
     this.onSubmit();
@@ -288,6 +314,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       .getAllPods(this.namespace)
       .valueChanges.subscribe((response: IPodQueryResponse) => {
         this.podsForFunction = response.data.pods;
+        this.onSubmit();
       });
   }
 }
