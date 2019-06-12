@@ -14,31 +14,21 @@
             *ngIf="!showSelectFileButton">
             Deploy new resource to the namespace
           </button>
+          <button fd-button [options]="'light'" [fdType]="'negative'" (click)="deleteNamespace()">
+            Delete
+          </button>
         </fd-action-bar-actions>
       </fd-action-bar>
-    </section>
-  </header>
-  <section class="fd-section">
-    <fd-panel-grid [col]="2">
-      <fd-panel>
-        <fd-panel-body>
-          <div fd-form-set>
-            <div fd-form-item>
-              <fd-form-label>Name</fd-form-label>
-              <input fd-form-control [type]="'text'" value="{{ namespace.getLabel() }}" readonly />
-            </div>
+        <div class="fd-container fd-container--fluid">
+          <div class="fd-col--6">
+            <span class="fd-has-type fd-has-font-weight-light">
+              Namespace-ID
+            </span>
+            <span class="header-description">
+              {{ namespace.getUid() }}
+            </span>
           </div>
-          <div fd-form-set>
-            <div fd-form-item>
-              <fd-form-label>Namespace-ID</fd-form-label>
-              <input fd-form-control [type]="'text'" value="{{ namespace.getUid() }}" readonly />
-            </div>
-          </div>
-        </fd-panel-body>
-      </fd-panel>
-      <fd-panel>
-        <fd-panel-body class="fd-container fd-container--fluid">
-          <div class="fd-col--6 fd-has-text-align-center">
+          <div class="fd-col--3 fd-has-text-align-center">
             <h3 class="fd-has-type-6 fd-has-font-weight-bold">
               {{ services ? services.length : 0 }}
             </h3>
@@ -46,7 +36,7 @@
               {{ services && services.length === 1 ? 'Service' : 'Services' }}
             </button>
           </div>
-          <div class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
+          <div class="fd-col--3 fd-has-text-align-center fd-container fd-container--fluid">
             <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
               {{ boundApplicationsCount | async }}
             </h3>
@@ -61,10 +51,9 @@
               Show All Applications
             </button>
           </div>
-        </fd-panel-body>
-      </fd-panel>
-    </fd-panel-grid>
-  </section>
+        </div>
+    </section>
+  </header>
 </ng-container>
 
 <section class='fd-section' *ngIf="applications && applications.length > 0">
@@ -97,3 +86,5 @@
 </section>
 
 <app-resource-uploader-modal #uploaderModal></app-resource-uploader-modal>
+<app-information-modal #infoModal></app-information-modal>
+<app-confirmation-modal #confirmationModal></app-confirmation-modal>

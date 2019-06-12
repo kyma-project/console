@@ -184,17 +184,23 @@ export class NamespacesService {
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
-  public deleteNamespace(namespaceName: string) {
-    if (namespaceName) {
-      return this.http
-        .delete(`${AppConfig.k8sApiServerUrl}namespaces/${namespaceName}`)
-        .pipe(
-          map(response => {
-            this.namespaceChangeStateEmitter$.emit(true);
-            return response;
-          })
-        );
-    }
+  public deleteNamespace(name: string) {
+    const mutation = `mutation DeleteNamespace($name: String!) {
+      deleteNamespace(name: $name){
+        name
+      }
+    }`;
+
+    const variables = {
+      name
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables).pipe(
+      map(response => {
+        this.namespaceChangeStateEmitter$.emit(true);
+        return response;
+      })
+    );
   }
 
   public getResourceQueryStatus(namespace: string) {
