@@ -74,7 +74,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     private podsSubscribtionService: PodsSubscriptonService,
   ) {
     this.luigiContextService.getContext().subscribe(data => {
-      this.token = data.context.idToken;
       this.route.queryParams.subscribe(params => {
         this.processParams(params);
         if (this.mandatoryLabels.size === 0) {
@@ -134,7 +133,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
               .replace('}', '')
               .split(',');
           });
-
           if (
             this.isHistoricalDataSwitchVisible &&
             !this.model.showOutdatedLogs
@@ -313,7 +311,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.podsSubscribtionService
       .getAllPods(this.namespace)
       .valueChanges.subscribe((response: IPodQueryResponse) => {
-        this.podsForFunction = response.data.pods;
+        this.podsForFunction = response.data.pods.filter(
+          (p: IPod) => p.labels.function === lambdaName,
+        );
         this.onSubmit();
       });
   }
