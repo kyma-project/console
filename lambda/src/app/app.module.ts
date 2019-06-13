@@ -39,8 +39,6 @@ import { FundamentalNgxModule } from 'fundamental-ngx';
 import { EmptyComponent } from './shared/components/empty/empty.component';
 import { NotificationComponent } from './shared/components/notification/notification.component';
 
-import { ContainerInstancesService } from './container-instances/container-instances.service';
-
 const routes: Routes = [
   { path: '', redirectTo: 'lambdas', pathMatch: 'full' },
   { path: 'lambdas', component: LambdasComponent },
@@ -94,7 +92,6 @@ const routes: Routes = [
     EventActivationsService,
     GraphqlClientService,
     SubscriptionsService,
-    ContainerInstancesService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

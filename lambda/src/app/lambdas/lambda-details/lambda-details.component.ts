@@ -60,12 +60,6 @@ import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trig
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
-import {
-  ContainerInstancesService,
-  IContainerInstancesResponse,
-  ITimestampComparablePod,
-} from '../../container-instances/container-instances.service';
-
 import { has as _has, get as _get, set as _set } from 'lodash';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
@@ -83,7 +77,6 @@ interface INotificationData {
   selector: 'app-lambda-details',
   templateUrl: './lambda-details.component.html',
   styleUrls: ['./lambda-details.component.scss'],
-  providers: [ContainerInstancesService],
 })
 export class LambdaDetailsComponent implements OnInit, OnDestroy {
   selectedTriggers: ITrigger[] = [];
@@ -195,7 +188,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     protected route: ActivatedRoute,
     private http: HttpClient,
-  
   ) {
     this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
       s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
@@ -228,7 +220,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           if (params['name']) {
             this.mode = 'update';
             const lambdaName = params['name'];
-            
+
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
@@ -978,7 +970,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         function: this.lambda.metadata.name,
         namespace: this.namespace,
         container_name: this.lambda.metadata.name,
-       // pod: this.currentLambdaPods.join('|'),
+        // pod: this.currentLambdaPods.join('|'),
       })
       .openAsModal('/home/cmf-logs');
   }
@@ -1523,6 +1515,4 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       2,
     );
   }
-
- 
 }
