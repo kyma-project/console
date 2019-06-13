@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'apollo-angular';
-
-import { Query } from 'apollo-angular';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 

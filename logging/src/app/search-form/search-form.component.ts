@@ -277,7 +277,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   updateQuery() {
     if (this.selectedLabels.size > 0) {
-      let selectedLabelsFormatted = Array.from(this.selectedLabels).map(
+      const selectedLabelsFormatted = Array.from(this.selectedLabels).map(
         ([key, value]) => `${key}="${value}"`,
       );
 
