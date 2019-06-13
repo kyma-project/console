@@ -99,6 +99,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.subscribeToCurrentPodName(params.function);
       this.isHistoricalDataSwitchVisible = true;
     }
+
     if (params.pod) {
       this.addLabel('instance=' + params.pod, true);
       this.title = `Logs for pod "${params.pod}"`;
@@ -107,8 +108,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (params.container_name) {
       this.addLabel('container_name=' + params.container_name, true);
     }
-
-    // this.subscribeToCurrentPodName()
 
     if (this.selectedLabels.size > 0) {
       this.onSubmit();
@@ -138,8 +137,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
             !this.model.showOutdatedLogs
           ) {
             this.searchResult.streams = this.searchResult.streams.filter(
-              (s: ILogStream) =>
-                this.fiterStreamByInstance(s, this.getLabelValue),
+              (ls: ILogStream) =>
+                this.fiterStreamByInstance(ls, this.getLabelValue),
             );
           }
         } else {
@@ -157,6 +156,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     stream: ILogStream,
     getLabelValueFn: (label: string) => string,
   ): boolean {
+    // if a stream has instance="xyz" label, check if "xyz" is in podsForFunction list.
     const instanceLabel = stream.availableLabels.find((label: string) =>
       label.includes('instance'),
     );
@@ -167,7 +167,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
       return this.podsForFunction.some(
         (pod: IPod) => pod.name === instanceValue,
-      );
+      ); // this stream does have an 'instance' label. Return true if the instance name is in podsForFunction list.
     }
   }
 
