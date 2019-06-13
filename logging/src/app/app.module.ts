@@ -41,6 +41,7 @@ import { TokenInterceptor } from './auth/token.interceptor';
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     SearchService,
     LuigiContextService,
+    Apollo,
   ],
   bootstrap: [AppComponent],
 })

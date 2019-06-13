@@ -11,6 +11,7 @@ import {
 } from 'fundamental-ngx';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Apollo } from 'apollo-angular';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -24,7 +25,7 @@ describe('AppComponent', () => {
         HttpClientModule,
       ],
       declarations: [AppComponent, SearchFormComponent],
-      providers: [SearchService, LuigiContextService, HttpClientModule],
+      providers: [SearchService, LuigiContextService, HttpClientModule, Apollo],
     }).compileComponents();
   }));
 

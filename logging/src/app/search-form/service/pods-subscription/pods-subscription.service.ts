@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { ObservableQuery } from 'apollo-client';
 
 export interface IPod {
   name: string;
@@ -69,6 +70,10 @@ export class PodsSubscriptonService {
   }
 
   public getAllPods(namespace: string): QueryRef<any> {
+    if (!this.apollo.getClient()) {
+      console.warn(`Apollo client has not been initialized yet`);
+      return null;
+    }
     this.resourceQuery = this.apollo.watchQuery({
       query: this.podQuery,
       variables: { namespace },

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { SearchService } from './service/search-service';
 import { IPlainLogQuery, ISearchFormData } from './data';
 
-import { Observable, of as observableOf, Subscription } from 'rxjs';
+import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 import { LuigiContextService } from './service/luigi-context.service';
@@ -12,7 +12,6 @@ import {
   IPod,
   IPodQueryResponse,
 } from './service/pods-subscription/pods-subscription.service';
-import { map } from 'rxjs/operators';
 
 interface ILogStream {
   availableLabels: string[];
@@ -308,13 +307,19 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.podsSubscribtionService
-      .getAllPods(this.namespace)
-      .valueChanges.subscribe((response: IPodQueryResponse) => {
-        this.podsForFunction = response.data.pods.filter(
-          (p: IPod) => p.labels.function === lambdaName,
-        );
-        this.onSubmit();
-      });
+    const allPodsQuery = this.podsSubscribtionService.getAllPods(
+      this.namespace,
+    );
+
+    if (!allPodsQuery) {
+      return;
+    }
+
+    allPodsQuery.valueChanges.subscribe((response: IPodQueryResponse) => {
+      this.podsForFunction = response.data.pods.filter(
+        (p: IPod) => p.labels.function === lambdaName,
+      );
+      this.onSubmit();
+    });
   }
 }
