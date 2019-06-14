@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   ActionBar,
+  ActionBarActions,
   ActionBarBack,
   ActionBarHeader,
-  ActionBarActions,
 } from './styled';
 
 export default ({ goBack, title, description, background, children }) => (

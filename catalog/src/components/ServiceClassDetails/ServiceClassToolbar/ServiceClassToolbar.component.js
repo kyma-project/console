@@ -8,6 +8,7 @@ const ServiceClassToolbar = ({
   history,
   serviceClassDisplayName,
   children,
+  providerDisplayName,
 }) => {
   const goToServiceInstanceList = () => {
     LuigiClient.linkManager()
@@ -16,7 +17,12 @@ const ServiceClassToolbar = ({
   };
 
   return (
-    <Toolbar goBack={goToServiceInstanceList} title={serviceClassDisplayName}>
+    <Toolbar
+      goBack={goToServiceInstanceList}
+      title={serviceClassDisplayName}
+      description={providerDisplayName}
+      background="#fff"
+    >
       {children}
     </Toolbar>
   );
@@ -26,8 +32,8 @@ ServiceClassToolbar.propTypes = {
   arrayOfJsx: PropTypes.any,
   renObjData: PropTypes.any,
   serviceClassDisplayName: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
-  history: PropTypes.object.isRequired,
+  providerDisplayName: PropTypes.string,
+  // history: PropTypes.object.isRequired,
 };
 
 export default ServiceClassToolbar;

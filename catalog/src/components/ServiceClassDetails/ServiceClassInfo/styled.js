@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 import {
-  Tile,
   TileMedia,
   TileContent,
+  TileGrid,
   Image as Img,
 } from '@kyma-project/react-components';
 
-export const ServiceClassInfoContentWrapper = styled(Tile)`
-  && {
-    background-color: #edeef0;
-  }
+export const ServiceClassInfoContentWrapper = styled.div`
+  background-color: #fff
 `;
 
 export const ImagePlaceholder = styled(TileMedia)`
@@ -34,14 +32,13 @@ export const ImagePlaceholder = styled(TileMedia)`
 
 export const Image = styled(Img)`
   && {
-    max-width: 40px;
-    max-height: 40px;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    align-self: center  
+  }
+`;
+
+export const ServiceClassHeaderTileGrid = styled(TileGrid)`
+  > div {
+    border: none;
   }
 `;
 
@@ -87,7 +84,7 @@ export const ExternalLink = styled.a`
 `;
 
 export const LabelsWrapper = styled.div`
-  margin-top: 32px;
+  margin-top: 12px;
   width: 100%;
   height: auto;
 `;

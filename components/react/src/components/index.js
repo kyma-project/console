@@ -42,7 +42,7 @@ import Tab from './Tabs/Tab';
 import Table from './Table';
 import Text from './Text';
 import ThemeWrapper from './ThemeWrapper';
-import { Tile, TileMedia, TileContent } from './Tile';
+import { Tile, TileMedia, TileContent, TileGrid } from './Tile';
 import Token from './Token';
 import Toolbar from './Toolbar';
 import Tooltip from './Tooltip';
@@ -103,6 +103,7 @@ module.exports = {
   Tile,
   TileMedia,
   TileContent,
+  TileGrid,
   Token,
   Toolbar,
   Tooltip,
