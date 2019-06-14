@@ -146,27 +146,26 @@ const ServiceClassInfo = ({
             <p>{description}</p>
           </TileContent>
         </Tile>
-        {modifiedTags &&
-          modifiedTags.length > 0 && (
-            <Tile columnSpan={computeNumberOfColumns()}>
-              <TileContent title={tileTitles.tags}>
-                <LabelsWrapper data-e2e-id="service-labels">
-                  {modifiedTags.sort(sortTags).map(tag => (
-                    <LabelWrapper key={`${tag.type}-${tag.name}`}>
-                      <Tooltip
-                        content={tagsDescription[tag.type]}
-                        minWidth={tooltipWidth[tag.type]}
-                      >
-                        <Label cursorType="help" data-e2e-id="service-label">
-                          {tag.name}
-                        </Label>
-                      </Tooltip>
-                    </LabelWrapper>
-                  ))}
-                </LabelsWrapper>
-              </TileContent>
-            </Tile>
-          )}
+        {modifiedTags && modifiedTags.length > 0 && (
+          <Tile columnSpan={computeNumberOfColumns()}>
+            <TileContent title={tileTitles.tags}>
+              <LabelsWrapper data-e2e-id="service-labels">
+                {modifiedTags.sort(sortTags).map(tag => (
+                  <LabelWrapper key={`${tag.type}-${tag.name}`}>
+                    <Tooltip
+                      content={tagsDescription[tag.type]}
+                      minWidth={tooltipWidth[tag.type]}
+                    >
+                      <Label cursorType="help" data-e2e-id="service-label">
+                        {tag.name}
+                      </Label>
+                    </Tooltip>
+                  </LabelWrapper>
+                ))}
+              </LabelsWrapper>
+            </TileContent>
+          </Tile>
+        )}
       </ServiceClassHeaderTileGrid>
     </ServiceClassInfoContentWrapper>
   );
