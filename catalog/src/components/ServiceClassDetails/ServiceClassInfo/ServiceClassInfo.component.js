@@ -34,14 +34,13 @@ const ServiceClassInfo = ({
   isProvisionedOnlyOnce,
   providerDisplayName,
 }) => {
-
   const tileTitles = {
     creator: 'Creator',
     lastUpdate: 'Last Update',
     documentation: 'Documentation',
     support: 'Support',
     description: 'Description',
-    tags: 'Tags'
+    tags: 'Tags',
   };
 
   function sortTags(tag1, tag2) {

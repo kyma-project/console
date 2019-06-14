@@ -7,7 +7,7 @@ import {
 } from '@kyma-project/react-components';
 
 export const ServiceClassInfoContentWrapper = styled.div`
-  background-color: #fff
+  background-color: #fff;
 `;
 
 export const ImagePlaceholder = styled(TileMedia)`
@@ -32,7 +32,7 @@ export const ImagePlaceholder = styled(TileMedia)`
 
 export const Image = styled(Img)`
   && {
-    align-self: center  
+    align-self: center;
   }
 `;
 
