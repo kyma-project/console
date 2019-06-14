@@ -5,17 +5,17 @@ import ServiceClassToolbar from '../ServiceClassToolbar/ServiceClassToolbar.comp
 import ServiceClassInfo from '../ServiceClassInfo/ServiceClassInfo.component';
 
 const ServiceClassDetailsHeader = ({
-  serviceClassDisplayName,
-  providerDisplayName,
-  children,
   creationTimestamp,
-  documentationUrl,
-  supportUrl,
-  imageUrl,
-  labels,
-  tags,
   description,
+  documentationUrl,
+  imageUrl,
   isProvisionedOnlyOnce,
+  labels,
+  providerDisplayName,
+  serviceClassDisplayName,
+  supportUrl,
+  tags,
+  children,
 }) => {
   return (
     <div>
@@ -26,29 +26,32 @@ const ServiceClassDetailsHeader = ({
         {children}
       </ServiceClassToolbar>
       <ServiceClassInfo
-        className="fd-has-padding-top-small"
-        providerDisplayName={providerDisplayName}
+        className="none"
         creationTimestamp={creationTimestamp}
-        tags={tags}
-        labels={labels}
-        supportUrl={supportUrl}
-        imageUrl={imageUrl}
-        documentationUrl={documentationUrl}
         description={description}
+        documentationUrl={documentationUrl}
+        imageUrl={imageUrl}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+        labels={labels}
+        providerDisplayName={providerDisplayName}
+        supportUrl={supportUrl}
+        tags={tags}
       />
     </div>
   );
 };
 
 ServiceClassDetailsHeader.propTypes = {
-  arrayOfJsx: PropTypes.any,
-  renObjData: PropTypes.any,
+  creationTimestamp: PropTypes.number.isRequired,
+  description: PropTypes.string,
   serviceClassDisplayName: PropTypes.string.isRequired,
   providerDisplayName: PropTypes.string,
   children: PropTypes.element,
+  labels: PropTypes.array,
   tags: PropTypes.array,
-  // history: PropTypes.object.isRequired,
+  documentationUrl: PropTypes.string,
+  imageUrl: PropTypes.string,
+  supportUrl: PropTypes.string,
 };
 
 export default ServiceClassDetailsHeader;

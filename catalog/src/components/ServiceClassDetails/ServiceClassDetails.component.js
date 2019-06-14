@@ -34,7 +34,7 @@ class ServiceClassDetails extends React.Component {
   };
 
   render() {
-    const { history, createServiceInstance } = this.props;
+    const { createServiceInstance } = this.props;
     const serviceClass =
       this.props.serviceClass.clusterServiceClass ||
       this.props.serviceClass.serviceClass;

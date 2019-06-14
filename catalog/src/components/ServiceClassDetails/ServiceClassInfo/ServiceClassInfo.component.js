@@ -91,7 +91,7 @@ const ServiceClassInfo = ({
   };
 
   return (
-    <ServiceClassInfoContentWrapper className="fd-has-padding-top-small">
+    <ServiceClassInfoContentWrapper className="fd-has-padding-top-none">
       <ServiceClassHeaderTileGrid col={computeNumberOfColumns()}>
         <Tile>
           <TileMedia className="fd-has-display-flex">
@@ -135,10 +135,8 @@ const ServiceClassInfo = ({
           </TileContent>
         </Tile>
         {isProvisionedOnlyOnce && (
-          <Tile rowSpan={2}>
-            <TileContent className="fd-has-padding-left-none">
-              <ProvisionOnlyOnceInfo />
-            </TileContent>
+          <Tile rowSpan={2} className="fd-has-padding-left-none">
+            <ProvisionOnlyOnceInfo />
           </Tile>
         )}
         <Tile columnSpan={4}>

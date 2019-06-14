@@ -1,33 +1,8 @@
 import styled from 'styled-components';
-import {
-  TileMedia,
-  TileContent,
-  TileGrid,
-  Image as Img,
-} from '@kyma-project/react-components';
+import { TileGrid, Image as Img } from '@kyma-project/react-components';
 
 export const ServiceClassInfoContentWrapper = styled.div`
   background-color: #fff;
-`;
-
-export const ImagePlaceholder = styled(TileMedia)`
-  && {
-    position: relative;
-    width: 90px;
-    height: 90px;
-    min-width: 90px;
-    min-height: 90px;
-    margin-right: 20px;
-    line-height: 90px;
-    text-align: center;
-    border-radius: 4px;
-    background-color: #fff;
-    border: solid 1px rgba(63, 80, 96, 0.15);
-    box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
-    color: #32363a;
-    font-size: 32px;
-    padding: 0;
-  }
 `;
 
 export const Image = styled(Img)`
@@ -40,35 +15,6 @@ export const ServiceClassHeaderTileGrid = styled(TileGrid)`
   > div {
     border: none;
   }
-`;
-
-export const ServiceClassInfoContent = styled(TileContent)`
-  && {
-    align-self: flex-start;
-    padding: 0;
-
-    > h2 {
-      color: rgb(50, 54, 58);
-      font-size: 16px;
-      font-weight: normal;
-    }
-  }
-`;
-
-export const ServiceTitle = styled.h3`
-  font-family: '72';
-  font-size: 16px;
-  font-weight: normal;
-  color: #32363a;
-  margin: 0;
-`;
-
-export const ServiceProvider = styled.p`
-  font-family: '72';
-  font-size: 14px;
-  font-weight: 300;
-  color: #b2b9bf;
-  margin: 5px 0;
 `;
 
 export const ExternalLink = styled.a`

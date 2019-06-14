@@ -5,10 +5,9 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { Toolbar } from '@kyma-project/react-components';
 
 const ServiceClassToolbar = ({
-  history,
   serviceClassDisplayName,
-  children,
   providerDisplayName,
+  children,
 }) => {
   const goToServiceInstanceList = () => {
     LuigiClient.linkManager()
@@ -29,11 +28,8 @@ const ServiceClassToolbar = ({
 };
 
 ServiceClassToolbar.propTypes = {
-  arrayOfJsx: PropTypes.any,
-  renObjData: PropTypes.any,
   serviceClassDisplayName: PropTypes.string.isRequired,
   providerDisplayName: PropTypes.string,
-  // history: PropTypes.object.isRequired,
 };
 
 export default ServiceClassToolbar;
