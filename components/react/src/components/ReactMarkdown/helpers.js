@@ -1,4 +1,4 @@
-const tabsBlockRegex = /<div tabs>(.|\n)*?<\/div>/gm;
+const tabsBlockRegex = /<div\s+tabs\s*?(name=('|").+('|"))?\s*?>(.|\n)*?<\/div>/gm;
 
 const blankLinesRegex = /^\s*$(?:\r\n?|\n)/gm;
 

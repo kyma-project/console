@@ -37,6 +37,7 @@ class CreateInstanceModal extends Component {
       creatingInstance: false,
       instanceCreateParameters: {},
       tooltipData: {},
+      errors: [],
     };
   };
 
@@ -193,6 +194,7 @@ class CreateInstanceModal extends Component {
       creatingInstance,
       tooltipData,
       instanceCreateParameters,
+      errors,
     } = this.state;
 
     const externalName = (serviceClass && serviceClass.externalName) || '';
@@ -210,7 +212,7 @@ class CreateInstanceModal extends Component {
       (instanceCreateParameterSchema.$ref ||
         instanceCreateParameterSchema.properties);
 
-    const disabled = !firstStepFilled;
+    const disabled = !firstStepFilled || errors.length > 0;
 
     const firstStepData = {
       formData: formData,
