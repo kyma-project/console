@@ -11,16 +11,39 @@ export class ApplicationBindingService {
     this.namespaceChangeStateEmitter$ = new EventEmitter();
   }
 
-  public bind(namespace, application) {
-    const query = `mutation($namespace: String!, $application: String!){
-      enableApplication(namespace: $namespace, application: $application) {
+  public bind(namespace, application, allServices, services) {
+    const query = `mutation($namespace: String!, $application: String!, $allServices: Boolean, $services: [ApplicationMappingService]){
+      enableApplication(namespace: $namespace, application: $application, allServices: $allServices, services: $services) {
         namespace
         application
+        allServices
+        services
       }
     }`;
     const variables = {
       namespace,
-      application
+      application,
+      allServices,
+      services
+    };
+
+    return this.graphQLClientService.gqlMutation(query, variables);
+  }
+
+  public update(namespace, application, allServices, services) {
+    const query = `mutation($namespace: String!, $application: String!, $allServices: Boolean, $services: [ApplicationMappingService]){
+      overloadApplication(namespace: $namespace, application: $application, allServices: $allServices, services: $services) {
+        namespace
+        application
+        allServices
+        services
+      }
+    }`;
+    const variables = {
+      namespace,
+      application,
+      allServices,
+      services
     };
 
     return this.graphQLClientService.gqlMutation(query, variables);
@@ -31,6 +54,8 @@ export class ApplicationBindingService {
       disableApplication(namespace: $namespace, application: $application) {
         namespace
         application
+        allServices
+        services
       }
     }`;
     const variables = {
@@ -42,6 +67,7 @@ export class ApplicationBindingService {
   }
 
   public getBoundNamespaces(application) {
+    console.log('getBoundNamespaces query')
     const query = `query Namespace($application: String!){
       namespaces(application: $application) {
         name

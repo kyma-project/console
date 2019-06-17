@@ -1,5 +1,5 @@
 import { ApplicationBindingService } from '../application-binding-service';
-import { ComponentCommunicationService } from './../../../../../shared/services/component-communication.service';
+import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { NamespacesService } from '../../../../namespaces/services/namespaces.service';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -10,19 +10,18 @@ import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-bindings-modal',
-  templateUrl: './edit-binding-modal.component.html',
-  styleUrls: ['./edit-binding-modal.component.scss']
+  selector: 'app-create-bindings-modal',
+  templateUrl: './create-binding-modal.component.html',
+  styleUrls: ['./create-binding-modal.component.scss']
 })
-export class EditBindingsModalComponent {
-  @ViewChild('editBindingModal') editBindingModal: ModalComponent;
+export class CreateBindingsModalComponent {
+
+  @ViewChild('createBindingModal') createBindingModal: ModalComponent;
 
   public namespaces = [];
   private selectedApplicationsState = [];
   private namespacesService: NamespacesService;
   public application: any;
-  public initialNamespaceName: string;
-  public initialNamespace: any;
   public ariaExpanded = false;
   public ariaHidden = true;
   public isActive = false;
@@ -43,12 +42,12 @@ export class EditBindingsModalComponent {
     this.applicationBindingService = applicationBindingService;
   }
 
-  public show(initialNamespace) {
-    this.namespaceName = initialNamespace;
+  public show() {
     this.route.params.subscribe(params => {
       const applicationId = params['id'];
       const observables = [
         this.applicationService.getApplication(applicationId) as any,
+        this.namespacesService.getNamespaces() as any
       ];
 
       forkJoin(observables).subscribe(
@@ -56,21 +55,24 @@ export class EditBindingsModalComponent {
           const response: any = data;
 
           this.application = response[0].application;
-          console.log('initialNamespace',initialNamespace,'this.application', this.application);
+          console.log('this.application', this.application)
+          this.namespaces = response[1];
 
-          if (this.application && this.application.enabledMappingServices) {
-            this.setInitialValues(
-              this.application.enabledMappingServices,
-              initialNamespace
-            );
-          }
+          this.namespaces.forEach(namespace => {
+            if (this.application && this.application.enabledMappingServices) {
+              this.getFilteredNamespaces(
+                this.application.enabledMappingServices,
+                namespace
+              );
+            }
+          });
         },
         err => {
           console.log(err);
         }
       );
       this.isActive = true;
-      this.modalService.open(this.editBindingModal).result.finally(() => {
+      this.modalService.open(this.createBindingModal).result.finally(() => {
         this.isActive = false;
         this.namespaceName = null;
         this.allServices = true;
@@ -80,41 +82,41 @@ export class EditBindingsModalComponent {
     });
   }
 
-  private getInitialNamespace(usedNamespaces, initialNamespaceName) {
-    const initialNamespaceArray = usedNamespaces.filter(
-      usedNamespace => usedNamespace.namespace == initialNamespaceName
+  private getFilteredNamespaces(usedNamespaces, namespace) {
+    const exists = usedNamespaces.some(
+      usedNamespace => usedNamespace.namespace == namespace.label
     );
-    if(!initialNamespaceArray || !initialNamespaceArray.length){
-      return;
-    }
-    return initialNamespaceArray[0];
-  };
 
-  private setInitialValues(usedNamespaces, initialNamespaceName) {
-    const initialNamespace = this.getInitialNamespace(usedNamespaces, initialNamespaceName);
-    if(!initialNamespace) {
-      return;
+    if (!exists) {
+      this.filteredNamespaces.push(namespace);
+      this.filteredNamespacesNames.push(namespace);
     }
-    this.initialNamespaceName = initialNamespaceName;
-    this.allServices = initialNamespace.allServices;
-    this.selectedApplicationsState = [];
+  }
 
-    initialNamespace.services.forEach(item => {
-      if (item && item.id) {
-        this.selectedApplicationsState.push({ id: item.id });
-      }
-    });
+  public toggleDropDown() {
+    this.ariaExpanded = !this.ariaExpanded;
+    this.ariaHidden = !this.ariaHidden;
+  }
+
+  public openDropDown(event: Event) {
+    event.stopPropagation();
+    this.ariaExpanded = true;
+    this.ariaHidden = false;
+  }
+
+  public closeDropDown() {
+    this.ariaExpanded = false;
+    this.ariaHidden = true;
+  }
+
+  public selectedNamespace(namespace) {
+    this.namespaceName = namespace.label;
   }
 
   save() {
     if (this.application && this.application.name) {
       this.applicationBindingService
-        .update(
-          this.namespaceName,
-          this.application.name,
-          this.allServices,
-          this.selectedApplicationsState
-        ) // TODO unmock
+        .bind(this.namespaceName, this.application.name, this.allServices, this.selectedApplicationsState) // TODO unmock
         .subscribe(
           res => {
             this.communication.sendEvent({
@@ -133,14 +135,39 @@ export class EditBindingsModalComponent {
 
   public close() {
     this.allServices = true;
-    this.selectedApplicationsState = [];
-    this.modalService.close(this.editBindingModal);
+    this.selectedApplicationsState=[];
+    this.modalService.close(this.createBindingModal);
   }
+
+  filterNamespacesNames() {
+    this.filteredNamespacesNames = [];
+    this.filteredNamespaces.forEach(element => {
+      if (element.label.includes(this.namespaceName.toLowerCase())) {
+        this.filteredNamespacesNames.push(element);
+      }
+    });
+  }
+
+  checkIfNamespaceExists() {
+    if (this.filteredNamespaces.length > 0 && this.namespaceName) {
+      return this.filteredNamespaces
+        .map(element => {
+          return element.label;
+        })
+        .includes(this.namespaceName);
+    } else {
+      return false;
+    }
+  }
+
+  // filterChange() {
+  //   this.onFilterChanged.emit(this.filterState);
+  // }
 
   applicationSelected(id) {
     return (
       this.selectedApplicationsState &&
-      _.some(this.selectedApplicationsState, { id })
+      _.some(this.selectedApplicationsState, {id})
     );
   }
 
@@ -148,17 +175,16 @@ export class EditBindingsModalComponent {
     event.stopPropagation();
     if (this.applicationSelected(applicationId)) {
       const index = this.selectedApplicationsState.indexOf(applicationId);
-      console.log('index', index);
+      console.log('index',index)
       this.selectedApplicationsState = this.selectedApplicationsState.filter(
         item => item.id != applicationId
       );
     } else {
-      this.selectedApplicationsState.push({ id: applicationId });
+      this.selectedApplicationsState.push({id: applicationId});
     }
-    console.log(
-      'this.selectedApplicationsState',
-      this.selectedApplicationsState
-    );
+    console.log('this.selectedApplicationsState',this.selectedApplicationsState)
+    // this.selectedApplicationsState = this.selectedApplicationsState;
+    // this.filterChange();
   }
 
   hasType(entries, type) {

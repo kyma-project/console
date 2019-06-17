@@ -60,8 +60,18 @@ export class ApplicationsService {
           labels
           name
           enabledInNamespaces
+          enabledMappingServices {
+            namespace
+            allServices
+            services {
+              id
+              displayName
+              exist
+            }
+          }
           status
           services {
+            id
             displayName
             entries {
               type

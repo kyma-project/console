@@ -55,8 +55,13 @@ export class ApplicationsEntryRendererComponent
 
   public listConnectedNamespaces(entry) {
     let result = '';
-    if (entry.enabledInNamespaces) {
-      result = entry.enabledInNamespaces.join(', ');
+    let namespaces = [];
+
+    if (entry.enabledMappingServices) {
+      entry.enabledMappingServices.forEach(item => {
+        namespaces.push(item.namespace);
+      });
+      result = namespaces.join(', ');
     }
     return result;
   }

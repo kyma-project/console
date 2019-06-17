@@ -87,7 +87,7 @@
           <fd-panel-title>Namespace Bindings</fd-panel-title>
         </fd-panel-head>
         <fd-panel-actions>
-          <button fd-button [options]="'light'" [glyph]="'add'" (click)="openEditBindingsModal()">
+          <button fd-button [options]="'light'" [glyph]="'add'" (click)="openCreateBindingsModal()">
             Create Binding
           </button>
         </fd-panel-actions>
@@ -103,9 +103,10 @@
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let namespace of boundNamespaces">
-              <td><span class="fd-has-font-weight-bold">{{ namespace }}</span></td>
+              <td><span class="fd-has-font-weight-bold">{{ namespace.namespace }}</span></td>
               <td class="fd-has-float-right">
-                <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
+                  {{ namespace.allServices && application.services.length || namespace.services.length }}/{{application.services.length}}
+                <y-list-actions [entry]="namespace.namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
                 </y-list-actions>
               </td>
             </tr>
@@ -162,6 +163,7 @@
 
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-edit-bindings-modal #editbindingsmodal></app-edit-bindings-modal>
+<app-create-bindings-modal #createbindingsmodal></app-create-bindings-modal>
 <app-information-modal #infoModal></app-information-modal>
 <app-edit-application-modal #editApplicationModal *ngIf="application" [name]="application.name"
   [initialDescription]="application.description" [initialLabels]="transformedLabels">
