@@ -67,7 +67,6 @@ export class ApplicationBindingService {
   }
 
   public getBoundNamespaces(application) {
-    console.log('getBoundNamespaces query')
     const query = `query Namespace($application: String!){
       namespaces(application: $application) {
         name

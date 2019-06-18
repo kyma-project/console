@@ -55,7 +55,6 @@ export class CreateBindingsModalComponent {
           const response: any = data;
 
           this.application = response[0].application;
-          console.log('this.application', this.application)
           this.namespaces = response[1];
 
           this.namespaces.forEach(namespace => {
@@ -175,14 +174,12 @@ export class CreateBindingsModalComponent {
     event.stopPropagation();
     if (this.applicationSelected(applicationId)) {
       const index = this.selectedApplicationsState.indexOf(applicationId);
-      console.log('index',index)
       this.selectedApplicationsState = this.selectedApplicationsState.filter(
         item => item.id != applicationId
       );
     } else {
       this.selectedApplicationsState.push({id: applicationId});
     }
-    console.log('this.selectedApplicationsState',this.selectedApplicationsState)
     // this.selectedApplicationsState = this.selectedApplicationsState;
     // this.filterChange();
   }

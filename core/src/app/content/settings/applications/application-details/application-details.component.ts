@@ -63,7 +63,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       this.currentAppId = params['id'];
       this.getApplication();
     });
-    console.log('1');
     this.communication.observable$.subscribe(data => {
       const response: any = data;
 
@@ -73,7 +72,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         response.data.enableApplication &&
         response.data.enableApplication.namespace
       ) {
-        console.log('communication response', response);
         this.boundNamespaces.push({
           allServices: response.data.enableApplication.allServices,
           namespace: response.data.enableApplication.namespace,
@@ -81,7 +79,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         });
       }
 
-      console.log('2');
       if (response.type === 'updateResource') {
         this.getApplication();
       }
@@ -99,7 +96,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     this.applicationsService.getApplication(this.currentAppId).subscribe(
       data => {
         if (data && data.application) {
-          console.log('getApplication', data);
           this.application = data.application;
           this.transformedLabels = this.getTransformedLabels(
             this.application.labels
@@ -133,7 +129,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   getEntryEventHandler() {
     return {
       unbind: (entry: any) => {
-        console.log('unbind',entry)
         this.applicationBindingService
           .unbind(entry, this.currentAppId)
           .subscribe(
@@ -150,7 +145,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
           );
       },
       openEditBindingsModal: (entry: any) => {
-        console.log('ss')
         this.editbindingsmodal.show(entry);
       }
     };
