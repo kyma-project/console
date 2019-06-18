@@ -75,18 +75,24 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
     // then
     const frame3 = await kymaConsole.getFrame(page);
-    const lambdasEntry = 'tbody tr';
-    await frame3.waitForSelector(lambdasEntry);
-    const expectedLambdas = await lambdas.getLambdas(frame3);
-    const previousNumberOfLambdas = currentLambdas.length;
-    const expectedNumberOfLambdas = expectedLambdas.length;
+    const disabledLambdaNameInput = 'input[name=function_name][disabled]';
 
-    expect(expectedNumberOfLambdas).toBe(previousNumberOfLambdas + 1);
+    await frame3.waitForSelector(disabledLambdaNameInput);
   });
 
   testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
-    const frame = await kymaConsole.getFrame(page);
+
+    let frame = await kymaConsole.getFrame(page);
+
+    const lambdasListBreadcrumbLink = 'a[fd-breadcrumb-link]';
+    await frame.click(lambdasListBreadcrumbLink);
+
+    const unsavedModalOkButton = 'button[data-cy=luigi-modal-confirm]';
+    await page.waitForSelector(unsavedModalOkButton);
+    await page.click(unsavedModalOkButton);
+
+    frame = await kymaConsole.getFrame(page);
     const dropdownButton = `button[aria-controls=${testLambda}]`;
     await frame.click(dropdownButton);
 
