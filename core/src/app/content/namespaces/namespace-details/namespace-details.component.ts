@@ -137,9 +137,9 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
-  public navigateToApplications(namespaceName) {
+  public navigateToApplications(applicationName = null) {
     LuigiClient.linkManager().navigate(
-      namespaceName ? '/home/cmf-apps/details/' + namespaceName : '/home/cmf-apps'
+      applicationName ? '/home/cmf-apps/details/' + applicationName : '/home/cmf-apps'
     );
   }
 
