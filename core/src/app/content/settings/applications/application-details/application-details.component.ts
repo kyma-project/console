@@ -4,6 +4,7 @@ import { ApplicationsService } from '../services/applications.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-modal.component';
+import { BindingsDetailsModalComponent } from './bindings-details-modal/bindings-details-modal.component';
 import { CreateBindingsModalComponent } from './create-bindings-modal/create-binding-modal.component';
 
 import * as _ from 'lodash';
@@ -43,6 +44,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   entryEventHandler = this.getEntryEventHandler();
   @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
+  @ViewChild('bindingsdetailsmodal') bindingsdetailsmodal: BindingsDetailsModalComponent;
   @ViewChild('createbindingsmodal') createbindingsmodal: CreateBindingsModalComponent;
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
@@ -126,6 +128,10 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     this.createbindingsmodal.show();
   }
 
+  openBindingsDetailsModal(entry: any) {
+    this.bindingsdetailsmodal.show(entry);
+  }
+
   getEntryEventHandler() {
     return {
       unbind: (entry: any) => {
@@ -136,7 +142,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
               const response: any = data;
 
               this.boundNamespaces = this.boundNamespaces.filter(
-                item => item.namespace != response.disableApplication.namespace
+                item => item.namespace !== response.disableApplication.namespace
               );
             },
             err => {

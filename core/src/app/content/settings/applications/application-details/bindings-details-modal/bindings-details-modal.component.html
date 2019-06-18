@@ -1,0 +1,76 @@
+<div luigiClientCommunication [isActive]="isActive">
+  <fd-modal
+    class="y-fd-modal"
+    #bindingsDetailsModal
+    role="dialog"
+    aria-labelledby="confirm"
+    (click)="$event.stopPropagation()"
+  >
+    <fd-modal-header
+      >Bound Service Classes in '{{ namespaceName }}'</fd-modal-header
+    >
+    <fd-modal-body>
+      <div
+        *ngIf="
+          application && application.services && application.services.length > 0
+        "
+        fd-form-item
+      >
+        <fd-list class="y-fd-list--no-hover y-fd-list--no-padding">
+          <li
+            class="fd-form__item"
+            fd-list-item
+            *ngFor="let service of application.services"
+            (click)="toggleApplication(service.id, $event)"
+          >
+            <span *ngIf="applicationSelected(service.id)">
+              {{ service.displayName }}
+            </span>
+            <fd-list-action
+              *ngIf="applicationSelected(service.id)"
+              class="fd-list-group__action--no-top fd-list-group__action--no-right"
+            >
+              <fd-inline-help
+                class="y-fd-inline-help__small"
+                [position]="'left'"
+              >
+                <p>
+                  API:
+                  <span
+                    class="sap-icon--l"
+                    ngClass="{{
+                      hasType(service.entries, 'API')
+                        ? 'sap-icon--accept fd-has-color-status-1'
+                        : 'sap-icon--decline fd-has-color-status-4'
+                    }}"
+                    role="presentation"
+                  >
+                  </span>
+                </p>
+
+                <p>
+                  Events:
+                  <span
+                    class="sap-icon--l"
+                    ngClass="{{
+                      hasType(service.entries, 'Events')
+                        ? 'sap-icon--accept fd-has-color-status-1'
+                        : 'sap-icon--decline fd-has-color-status-4'
+                    }}"
+                    role="presentation"
+                  >
+                  </span>
+                </p>
+              </fd-inline-help>
+            </fd-list-action>
+          </li>
+        </fd-list>
+      </div>
+    </fd-modal-body>
+    <fd-modal-footer>
+      <button fd-button [fdType]="'main'" (click)="close()">
+        OK
+      </button>
+    </fd-modal-footer>
+  </fd-modal>
+</div>

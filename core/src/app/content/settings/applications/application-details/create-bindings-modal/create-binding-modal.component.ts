@@ -15,7 +15,6 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./create-binding-modal.component.scss']
 })
 export class CreateBindingsModalComponent {
-
   @ViewChild('createBindingModal') createBindingModal: ModalComponent;
 
   public namespaces = [];
@@ -27,7 +26,7 @@ export class CreateBindingsModalComponent {
   public isActive = false;
   private filteredNamespaces = [];
   public namespaceName;
-  public allServices: boolean = true;
+  public allServices = true;
   public filteredNamespacesNames = [];
 
   constructor(
@@ -83,7 +82,7 @@ export class CreateBindingsModalComponent {
 
   private getFilteredNamespaces(usedNamespaces, namespace) {
     const exists = usedNamespaces.some(
-      usedNamespace => usedNamespace.namespace == namespace.label
+      usedNamespace => usedNamespace.namespace === namespace.label
     );
 
     if (!exists) {
@@ -115,7 +114,12 @@ export class CreateBindingsModalComponent {
   save() {
     if (this.application && this.application.name) {
       this.applicationBindingService
-        .bind(this.namespaceName, this.application.name, this.allServices, this.selectedApplicationsState) // TODO unmock
+        .bind(
+          this.namespaceName,
+          this.application.name,
+          this.allServices,
+          this.selectedApplicationsState
+        ) // TODO unmock
         .subscribe(
           res => {
             this.communication.sendEvent({
@@ -134,7 +138,7 @@ export class CreateBindingsModalComponent {
 
   public close() {
     this.allServices = true;
-    this.selectedApplicationsState=[];
+    this.selectedApplicationsState = [];
     this.modalService.close(this.createBindingModal);
   }
 
@@ -166,7 +170,7 @@ export class CreateBindingsModalComponent {
   applicationSelected(id) {
     return (
       this.selectedApplicationsState &&
-      _.some(this.selectedApplicationsState, {id})
+      _.some(this.selectedApplicationsState, { id })
     );
   }
 
@@ -175,10 +179,10 @@ export class CreateBindingsModalComponent {
     if (this.applicationSelected(applicationId)) {
       const index = this.selectedApplicationsState.indexOf(applicationId);
       this.selectedApplicationsState = this.selectedApplicationsState.filter(
-        item => item.id != applicationId
+        item => item.id !== applicationId
       );
     } else {
-      this.selectedApplicationsState.push({id: applicationId});
+      this.selectedApplicationsState.push({ id: applicationId });
     }
     // this.selectedApplicationsState = this.selectedApplicationsState;
     // this.filterChange();

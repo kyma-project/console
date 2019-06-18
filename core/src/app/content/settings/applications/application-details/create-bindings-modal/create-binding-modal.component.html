@@ -78,9 +78,9 @@
             *ngFor="let service of application.services"
             (click)="toggleApplication(service.id, $event)"
           >
-            <fd-list-checkbox [checked]="applicationSelected(service.id)">{{
-              service.displayName
-            }}</fd-list-checkbox>
+            <fd-list-checkbox [checked]="applicationSelected(service.id)">
+              {{ service.displayName }}
+            </fd-list-checkbox>
             <fd-list-action
               class="fd-list-group__action--no-top fd-list-group__action--no-right"
             >

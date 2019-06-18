@@ -125,10 +125,8 @@
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let namespace of boundNamespaces">
-              <td>
-                <span class="fd-has-font-weight-bold">{{
-                  namespace.namespace
-                }}</span>
+              <td class="fd-has-font-weight-bold" (click)="openBindingsDetailsModal(namespace.namespace)">
+                <a href="javascript:void(null)" [attr.data-e2e-id]="'application-name'">{{ namespace.namespace }}</a>
               </td>
               <td class="fd-has-float-right">
                 {{
@@ -203,6 +201,7 @@
 
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-edit-bindings-modal #editbindingsmodal></app-edit-bindings-modal>
+<app-bindings-details-modal #bindingsdetailsmodal></app-bindings-details-modal>
 <app-create-bindings-modal #createbindingsmodal></app-create-bindings-modal>
 <app-information-modal #infoModal></app-information-modal>
 <app-edit-application-modal
