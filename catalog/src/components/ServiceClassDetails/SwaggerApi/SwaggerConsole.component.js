@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { StyledSwagger } from './CustomSwaggerStyles';
 class SwaggerConsole extends React.Component {
   static propTypes = {
     plugins: PropTypes.array,
@@ -46,8 +46,24 @@ class SwaggerConsole extends React.Component {
   };
 
   render() {
-    return <div id="swagger" />;
+    return <StyledSwagger id="swagger" />;
   }
 }
 
 export default SwaggerConsole;
+const OperationsLayoutPlugin = () => {
+  return {
+    components: {
+      OperationsLayout: OperationsLayout,
+    },
+  };
+};
+class OperationsLayout extends React.Component {
+  render() {
+    const { getComponent } = this.props;
+
+    const Operations = getComponent('operations', true);
+
+    return <Operations />;
+  }
+}
