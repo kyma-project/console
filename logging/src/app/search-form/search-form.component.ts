@@ -307,7 +307,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const allPodsQuery = this.podsSubscribtionService.getAllPods(
+    const allPodsQuery = this.podsSubscriptionService.getAllPods(
       this.namespace,
     );
 
