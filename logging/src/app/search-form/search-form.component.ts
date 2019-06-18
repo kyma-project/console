@@ -70,7 +70,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private luigiContextService: LuigiContextService,
     private searchService: SearchService,
-    private podsSubscribtionService: PodsSubscriptonService,
+    private podsSubscriptionService: PodsSubscriptonService,
   ) {
     this.luigiContextService.getContext().subscribe(data => {
       this.route.queryParams.subscribe(params => {
