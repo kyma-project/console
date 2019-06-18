@@ -262,10 +262,29 @@
     width: 100%;
     margin-top: 8px;
   }
-  &__value{
+  &__value {
     display: block;
   }
-  a, fd-icon {
+  a,
+  fd-icon {
     display: inline;
+  }
+}
+
+.y-fd-list--no-hover {
+  .fd-list-group__item:hover {
+    background-color: transparent;
+  }
+}
+
+.y-fd-list--no-padding {
+  .fd-list-group__item {
+    padding: 0;
+  }
+}
+
+.y-fd-inline-help__small {
+  .fd-inline-help__content {
+    min-width: 150px;
   }
 }
