@@ -27,11 +27,10 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('confirmationModal')
   private confirmationModal: ConfirmationModalComponent;
 
-  private orgName = AppConfig.orgName;
   public namespace: NamespaceInfo = new NamespaceInfo('', '');
-  private boundApplicationsCount: Observable<number> = of(0);
+  public boundApplicationsCount: Observable<number> = of(0);
   public applications: any;
-  private services: any;
+  public services: any;
   public errorMessage: string;
   private id: string;
   private currentNamespaceSubscription: Subscription;
