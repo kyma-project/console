@@ -59,7 +59,6 @@ export class ApplicationsService {
           description
           labels
           name
-          enabledInNamespaces
           enabledMappingServices {
             namespace
             allServices

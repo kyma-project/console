@@ -112,6 +112,7 @@ describe('ApplicationsService', () => {
           }
           status
           services {
+            id
             displayName
             entries {
               type
