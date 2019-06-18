@@ -53,6 +53,7 @@ import { ServicesHeaderRendererComponent } from './content/namespaces/operation/
 import { ServicesComponent } from './content/namespaces/operation/services/services.component';
 import { OrganisationComponent } from './content/settings/organisation/organisation.component';
 import { EditBindingsModalComponent } from './content/settings/applications/application-details/edit-bindings-modal/edit-binding-modal.component';
+import { BindingsDetailsModalComponent } from './content/settings/applications/application-details/bindings-details-modal/bindings-details-modal.component';
 import { CreateBindingsModalComponent } from './content/settings/applications/application-details/create-bindings-modal/create-binding-modal.component';
 import { ApplicationDetailsComponent } from './content/settings/applications/application-details/application-details.component';
 import { ApplicationsEntryRendererComponent } from './content/settings/applications/applications-entry-renderer/applications-entry-renderer.component';
@@ -155,6 +156,7 @@ import { GenericHelpersService } from './shared/services/generic-helpers.service
     ServicesHeaderRendererComponent,
     ServicesEntryRendererComponent,
     EditBindingsModalComponent,
+    BindingsDetailsModalComponent,
     CreateBindingsModalComponent,
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
