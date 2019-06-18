@@ -1,6 +1,5 @@
 import { ApplicationBindingService } from '../application-binding-service';
 import { ComponentCommunicationService } from './../../../../../shared/services/component-communication.service';
-import { NamespacesService } from '../../../../namespaces/services/namespaces.service';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
@@ -19,27 +18,22 @@ export class EditBindingsModalComponent {
 
   public namespaces = [];
   private selectedApplicationsState = [];
-  private namespacesService: NamespacesService;
   public application: any;
   public initialNamespaceName: string;
   public initialNamespace: any;
   public ariaExpanded = false;
   public ariaHidden = true;
   public isActive = false;
-  private filteredNamespaces = [];
   public namespaceName;
   public allServices = true;
-  public filteredNamespacesNames = [];
 
   constructor(
-    namespacesService: NamespacesService,
     private applicationService: ApplicationsService,
     private route: ActivatedRoute,
     private applicationBindingService: ApplicationBindingService,
     private communication: ComponentCommunicationService,
     private modalService: ModalService
   ) {
-    this.namespacesService = namespacesService;
     this.applicationBindingService = applicationBindingService;
   }
 
@@ -73,8 +67,6 @@ export class EditBindingsModalComponent {
         this.isActive = false;
         this.namespaceName = null;
         this.allServices = true;
-        this.filteredNamespaces = [];
-        this.filteredNamespacesNames = [];
       });
     });
   }

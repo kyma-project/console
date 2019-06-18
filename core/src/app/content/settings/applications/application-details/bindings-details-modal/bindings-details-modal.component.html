@@ -17,53 +17,52 @@
         fd-form-item
       >
         <fd-list class="y-fd-list--no-hover y-fd-list--no-padding">
-          <li
-            class="fd-form__item"
-            fd-list-item
-            *ngFor="let service of application.services"
-            (click)="toggleApplication(service.id, $event)"
-          >
-            <span *ngIf="applicationSelected(service.id)">
-              {{ service.displayName }}
-            </span>
-            <fd-list-action
+          <ng-container *ngFor="let service of application.services">
+            <li
+              class="fd-form__item"
+              fd-list-item
               *ngIf="applicationSelected(service.id)"
-              class="fd-list-group__action--no-top fd-list-group__action--no-right"
+              (click)="toggleApplication(service.id, $event)"
             >
-              <fd-inline-help
-                class="y-fd-inline-help__small"
-                [position]="'left'"
+              <span>{{ service.displayName }}</span>
+              <fd-list-action
+                class="fd-list-group__action--no-top fd-list-group__action--no-right"
               >
-                <p>
-                  API:
-                  <span
-                    class="sap-icon--l"
-                    ngClass="{{
-                      hasType(service.entries, 'API')
-                        ? 'sap-icon--accept fd-has-color-status-1'
-                        : 'sap-icon--decline fd-has-color-status-4'
-                    }}"
-                    role="presentation"
-                  >
-                  </span>
-                </p>
+                <fd-inline-help
+                  class="y-fd-inline-help__small"
+                  [position]="'left'"
+                >
+                  <p>
+                    API:
+                    <span
+                      class="sap-icon--l"
+                      ngClass="{{
+                        hasType(service.entries, 'API')
+                          ? 'sap-icon--accept fd-has-color-status-1'
+                          : 'sap-icon--decline fd-has-color-status-4'
+                      }}"
+                      role="presentation"
+                    >
+                    </span>
+                  </p>
 
-                <p>
-                  Events:
-                  <span
-                    class="sap-icon--l"
-                    ngClass="{{
-                      hasType(service.entries, 'Events')
-                        ? 'sap-icon--accept fd-has-color-status-1'
-                        : 'sap-icon--decline fd-has-color-status-4'
-                    }}"
-                    role="presentation"
-                  >
-                  </span>
-                </p>
-              </fd-inline-help>
-            </fd-list-action>
-          </li>
+                  <p>
+                    Events:
+                    <span
+                      class="sap-icon--l"
+                      ngClass="{{
+                        hasType(service.entries, 'Events')
+                          ? 'sap-icon--accept fd-has-color-status-1'
+                          : 'sap-icon--decline fd-has-color-status-4'
+                      }}"
+                      role="presentation"
+                    >
+                    </span>
+                  </p>
+                </fd-inline-help>
+              </fd-list-action>
+            </li>
+          </ng-container>
         </fd-list>
       </div>
     </fd-modal-body>
