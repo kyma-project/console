@@ -28,7 +28,7 @@ export class EditBindingsModalComponent {
   public isActive = false;
   private filteredNamespaces = [];
   public namespaceName;
-  public allServices: boolean = true;
+  public allServices = true;
   public filteredNamespacesNames = [];
 
   constructor(
@@ -48,7 +48,7 @@ export class EditBindingsModalComponent {
     this.route.params.subscribe(params => {
       const applicationId = params['id'];
       const observables = [
-        this.applicationService.getApplication(applicationId) as any,
+        this.applicationService.getApplication(applicationId) as any
       ];
 
       forkJoin(observables).subscribe(
@@ -81,17 +81,20 @@ export class EditBindingsModalComponent {
 
   private getInitialNamespace(usedNamespaces, initialNamespaceName) {
     const initialNamespaceArray = usedNamespaces.filter(
-      usedNamespace => usedNamespace.namespace == initialNamespaceName
+      usedNamespace => usedNamespace.namespace === initialNamespaceName
     );
-    if(!initialNamespaceArray || !initialNamespaceArray.length){
+    if (!initialNamespaceArray || !initialNamespaceArray.length) {
       return;
     }
     return initialNamespaceArray[0];
-  };
+  }
 
   private setInitialValues(usedNamespaces, initialNamespaceName) {
-    const initialNamespace = this.getInitialNamespace(usedNamespaces, initialNamespaceName);
-    if(!initialNamespace) {
+    const initialNamespace = this.getInitialNamespace(
+      usedNamespaces,
+      initialNamespaceName
+    );
+    if (!initialNamespace) {
       return;
     }
     this.initialNamespaceName = initialNamespaceName;
@@ -148,7 +151,7 @@ export class EditBindingsModalComponent {
     if (this.applicationSelected(applicationId)) {
       const index = this.selectedApplicationsState.indexOf(applicationId);
       this.selectedApplicationsState = this.selectedApplicationsState.filter(
-        item => item.id != applicationId
+        item => item.id !== applicationId
       );
     } else {
       this.selectedApplicationsState.push({ id: applicationId });

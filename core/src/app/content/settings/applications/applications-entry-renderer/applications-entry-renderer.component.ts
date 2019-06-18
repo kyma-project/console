@@ -13,7 +13,6 @@ import { EMPTY_TEXT } from 'shared/constants/constants';
 export class ApplicationsEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
-
   public emptyText = EMPTY_TEXT;
 
   constructor(
@@ -55,7 +54,7 @@ export class ApplicationsEntryRendererComponent
 
   public listConnectedNamespaces(entry) {
     let result = '';
-    let namespaces = [];
+    const namespaces = [];
 
     if (entry.enabledMappingServices) {
       entry.enabledMappingServices.forEach(item => {
