@@ -60,7 +60,7 @@ function getNodes(context) {
   var staticNodes = [
     {
       link: '/home/workspace',
-      label: 'Back to Home',
+      label: 'Back to Namespaces',
       icon: 'nav-back'
     },
     {

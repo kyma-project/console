@@ -27,11 +27,12 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('confirmationModal')
   private confirmationModal: ConfirmationModalComponent;
 
-  public namespace: NamespaceInfo = new NamespaceInfo('', '');
+  public namespace: NamespaceInfo = new NamespaceInfo({uid:'', name:''});
   public boundApplicationsCount: Observable<number> = of(0);
   public applications: any;
   public services: any;
   public errorMessage: string;
+  public labelKeys: string[];
   private id: string;
   private currentNamespaceSubscription: Subscription;
   private refreshComponentSubscription: Subscription;
@@ -64,6 +65,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
             if (namespace) {
               this.namespace = namespace;
             }
+            this.labelKeys = Object.keys(this.namespace.getLabels());
             this.getServices(this.id);
             this.getApplications(this.id);
           },
@@ -140,12 +142,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   public navigateToApplications(applicationName = null) {
     LuigiClient.linkManager().navigate(
       applicationName ? '/home/cmf-apps/details/' + applicationName : '/home/cmf-apps'
-    );
-  }
-
-  public navigateToList() {
-    LuigiClient.linkManager().navigate(
-     '/home/workspace'
     );
   }
 

@@ -5,18 +5,6 @@
 <ng-container *ngIf="namespace.getLabel()">
   <header class="fd-page__header fd-has-background-color-background-2">
     <section class="fd-section">
-    <fd-breadcrumb>
-        <fd-breadcrumb-item>
-          <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
-            Namespaces
-          </a>
-        </fd-breadcrumb-item>
-        <fd-breadcrumb-item>
-          <span fd-breadcrumb-link>
-            {{ namespace.getLabel() }}
-          </span>
-        </fd-breadcrumb-item>
-      </fd-breadcrumb>
       <fd-action-bar>
         <fd-action-bar-header>
           <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
@@ -47,6 +35,21 @@
 
 <section class="fd-section">
   <fd-panel-grid [col]="2">
+      <fd-panel>
+          <fd-panel-header>
+            <fd-panel-head>
+              <fd-panel-title>General Information</fd-panel-title>
+            </fd-panel-head>
+          </fd-panel-header>
+          <fd-panel-body>
+            <div fd-form-set>
+              <div fd-form-item>
+                <fd-form-label>Labels</fd-form-label>
+                  <span class="fd-badge fd-has-margin-tiny" *ngFor="let labelkey of labelKeys">{{ labelkey }} : {{ namespace.getLabels()[labelkey] }}</span>
+                </div>
+            </div>
+          </fd-panel-body>
+        </fd-panel>
     <fd-panel>
       <fd-panel-body class="fd-container fd-container--fluid">
         <div class="fd-col--6 fd-has-text-align-center">

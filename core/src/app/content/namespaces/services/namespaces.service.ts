@@ -32,8 +32,7 @@ export class NamespacesService {
                 if (namespace.status.phase === 'Active') {
                   namespaces.push(
                     new NamespaceInfo(
-                      namespace.metadata.uid,
-                      namespace.metadata.name
+                      namespace.metadata
                     )
                   );
                 }
@@ -53,8 +52,7 @@ export class NamespacesService {
         map(response => {
           if (!_.isEmpty(response.metadata)) {
             return new NamespaceInfo(
-              response.metadata.uid,
-              response.metadata.name
+              response.metadata
             );
           }
           return response;

@@ -2,11 +2,13 @@ export class NamespaceInfo {
   private id: string;
   private label: string;
   private uid: string;
+  private labels: Record<string, string>;
 
-  constructor(uid: string, name: string) {
-    this.id = name;
-    this.label = name;
-    this.uid = uid;
+  constructor(metadata: any) {
+    this.id = metadata.name;
+    this.label = metadata.name;
+    this.uid = metadata.uid;
+    this.labels = metadata.labels;
   }
 
   public getId() {
@@ -19,5 +21,9 @@ export class NamespaceInfo {
 
   public getLabel() {
     return this.label;
+  }
+
+  public getLabels() {
+    return this.labels;
   }
 }
