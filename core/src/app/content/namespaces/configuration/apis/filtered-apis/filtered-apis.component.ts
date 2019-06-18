@@ -1,6 +1,6 @@
 import { FilteredApisHeaderRendererComponent } from './filtered-apis-header-renderer/filtered-apis-header-renderer.component';
 import { FilteredApisEntryRendererComponent } from './filtered-apis-entry-renderer/filtered-apis-entry-renderer.component';
-import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
@@ -10,13 +10,15 @@ import { ActivatedRoute } from '@angular/router';
 import { IEmptyListData } from 'shared/datamodel';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../../../operation/abstract-graphql-element-list.component';
+import { Observable } from 'apollo-link';
+import { Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-filtered-apis',
   templateUrl: 'filtered-apis.component.html'
 })
 export class FilteredApisComponent extends AbstractGraphqlElementListComponent
-  implements OnDestroy {
+  implements OnDestroy, OnInit {
   public resourceKind = 'Api';
   public mutationResourceKind = 'API';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', {
@@ -27,7 +29,10 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   public baseUrl: string;
 
   public hideFilter = false;
-  private serviceName: string;
+  private serviceName?: string = null;
+  public gqlVariables$ = new Observable(subscriber => {
+    subscriber.complete();
+  });
 
   public entryRenderer = FilteredApisEntryRendererComponent;
   public headerRenderer = FilteredApisHeaderRendererComponent;
@@ -48,7 +53,14 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
 
     this.route.params.subscribe(
       params => {
+        console.log(params);
         this.serviceName = params['name'];
+        this.gqlVariables$ = new Observable(subscriber => {
+          subscriber.next({ serviceName: this.serviceName });
+          // subscriber.complete();
+        });
+
+        //this.gqlVariables$.serviceName = this.serviceName;
       },
       err => {
         console.log(err);
@@ -98,5 +110,9 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
 
   public ngOnDestroy() {
     super.ngOnDestroy();
+  }
+  public ngOnInit() {
+    super.ngOnInit();
+    console.log('filtered apis INIT');
   }
 }

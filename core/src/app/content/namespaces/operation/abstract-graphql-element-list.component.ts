@@ -8,10 +8,11 @@ import { AbstractKubernetesElementListComponent } from './abstract-kubernetes-el
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
-import { Filter } from 'app/generic-list';
+import { Filter, DataProviderResult } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import { GraphQLDataProvider } from './graphql-data-provider';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { Observable } from 'apollo-link';
 
 @Component({
   selector: 'abstract-graphql-element-list',
@@ -24,6 +25,7 @@ export class AbstractGraphqlElementListComponent
   private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
   protected mutationResourceKind?: string = null; // "special" resource kind for mutations - needs to be capitalized in most of the cases. If not provided, resourceKind will be used instead
+  protected gqlVariables$?: Observable<{ [key: string]: any }> = null;
 
   @ViewChild('mutateResourceModal')
   mutateResourceModal: GraphqlMutatorModalComponent;
@@ -39,10 +41,15 @@ export class AbstractGraphqlElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, null, commService);
+
     this.currentNamespaceSubscription = this.currentNamespaceService
       .getCurrentNamespaceId()
       .subscribe(namespaceId => {
         this.currentNamespaceId = namespaceId;
+        if (this.gqlVariables$) {
+          this.initGraphQLWithVariables();
+          return;
+        }
         this.source = new GraphQLDataProvider(
           this.getGraphqlQueryForList(),
           {
@@ -53,6 +60,21 @@ export class AbstractGraphqlElementListComponent
           this.resourceKind
         );
       });
+  }
+  private initGraphQLWithVariables() {
+    this.gqlVariables$.subscribe(variables => {
+      this.source = new GraphQLDataProvider(
+        this.getGraphqlQueryForList(),
+        {
+          namespace: this.currentNamespaceId,
+          ...variables
+        },
+        this.graphQLClientService,
+        this.getGraphqlSubscriptionsForList(),
+        this.resourceKind
+      );
+      this.reload();
+    });
   }
 
   public ngOnDestroy() {
