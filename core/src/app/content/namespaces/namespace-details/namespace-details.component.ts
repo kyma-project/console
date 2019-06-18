@@ -24,7 +24,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   private uploaderModal: ResourceUploaderModalComponent;
   @ViewChild('infoModal')
   private infoModal: InformationModalComponent;
-  @ViewChild('confirmationModal') 
+  @ViewChild('confirmationModal')
   private confirmationModal: ConfirmationModalComponent;
 
   private orgName = AppConfig.orgName;
@@ -141,6 +141,12 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   public navigateToApplications(namespaceName) {
     LuigiClient.linkManager().navigate(
       namespaceName ? '/home/cmf-apps/details/' + namespaceName : '/home/cmf-apps'
+    );
+  }
+
+  public navigateToList() {
+    LuigiClient.linkManager().navigate(
+     '/home/workspace'
     );
   }
 

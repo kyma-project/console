@@ -5,6 +5,18 @@
 <ng-container *ngIf="namespace.getLabel()">
   <header class="fd-page__header fd-has-background-color-background-2">
     <section class="fd-section">
+    <fd-breadcrumb>
+        <fd-breadcrumb-item>
+          <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+            Namespaces
+          </a>
+        </fd-breadcrumb-item>
+        <fd-breadcrumb-item>
+          <span fd-breadcrumb-link>
+            {{ namespace.getLabel() }}
+          </span>
+        </fd-breadcrumb-item>
+      </fd-breadcrumb>
       <fd-action-bar>
         <fd-action-bar-header>
           <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
@@ -12,7 +24,7 @@
         <fd-action-bar-actions>
           <button fd-button [glyph]="'add'" (click)="openUploadResourceModal()"
             *ngIf="!showSelectFileButton">
-            Deploy new resource to the namespace
+            Deploy new resource
           </button>
           <button fd-button [options]="'light'" [fdType]="'negative'" (click)="deleteNamespace()">
             Delete
@@ -28,33 +40,42 @@
               {{ namespace.getUid() }}
             </span>
           </div>
-          <div class="fd-col--3 fd-has-text-align-center">
-            <h3 class="fd-has-type-6 fd-has-font-weight-bold">
-              {{ services ? services.length : 0 }}
-            </h3>
-            <button fd-button [options]="'light'" (click)="navigateToServices()">
-              {{ services && services.length === 1 ? 'Service' : 'Services' }}
-            </button>
-          </div>
-          <div class="fd-col--3 fd-has-text-align-center fd-container fd-container--fluid">
-            <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
-              {{ boundApplicationsCount | async }}
-            </h3>
-            <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
-              {{
-              (boundApplicationsCount | async) === 1
-              ? 'Bound Application'
-              : 'Bound Applications'
-              }}
-            </span>
-            <button fd-button [options]="'light'" (click)="navigateToApplications()">
-              Show All Applications
-            </button>
-          </div>
         </div>
     </section>
   </header>
 </ng-container>
+
+<section class="fd-section">
+  <fd-panel-grid [col]="2">
+    <fd-panel>
+      <fd-panel-body class="fd-container fd-container--fluid">
+        <div class="fd-col--6 fd-has-text-align-center">
+          <h3 class="fd-has-type-6 fd-has-font-weight-bold">
+            {{ services ? services.length : 0 }}
+          </h3>
+          <button fd-button [options]="'light'" (click)="navigateToServices()">
+            {{ services && services.length === 1 ? 'Service' : 'Services' }}
+          </button>
+        </div>
+        <div class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
+          <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
+            {{ boundApplicationsCount | async }}
+          </h3>
+          <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
+            {{
+            (boundApplicationsCount | async) === 1
+            ? 'Bound Application'
+            : 'Bound Applications'
+            }}
+          </span>
+          <button fd-button [options]="'light'" (click)="navigateToApplications()">
+            Show All Applications
+          </button>
+        </div>
+      </fd-panel-body>
+    </fd-panel>
+  </fd-panel-grid>
+</section>
 
 <section class='fd-section' *ngIf="applications && applications.length > 0">
   <fd-panel>
