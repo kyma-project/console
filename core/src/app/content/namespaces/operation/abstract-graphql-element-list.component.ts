@@ -9,7 +9,7 @@ import { AbstractKubernetesElementListComponent } from './abstract-kubernetes-el
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
-import { Filter, DataProviderResult } from 'app/generic-list';
+import { Filter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
 import { GraphQLDataProvider } from './graphql-data-provider';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';

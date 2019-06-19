@@ -27,7 +27,7 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   public baseUrl: string;
 
   public hideFilter = false;
-  private serviceName?: string = null;
+
   public gqlVariables$ = new Observable(subscriber => {
     subscriber.complete();
   });
@@ -51,9 +51,8 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
 
     this.route.params.subscribe(
       params => {
-        this.serviceName = params['name'];
         this.gqlVariables$ = new Observable(subscriber => {
-          subscriber.next({ serviceName: this.serviceName });
+          subscriber.next({ serviceName: params['name'] });
         });
       },
       err => {
@@ -68,7 +67,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
         hostname
         service {
             name
-            port
           }
         authenticationPolicies {
           type
@@ -86,7 +84,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
           hostname
           service {
               name
-              port
             }
           authenticationPolicies {
             type
@@ -96,10 +93,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
         type
       }
     }`;
-  }
-
-  public getResourceUrl(kind: string, entry: any): string {
-    return `${this.baseUrl}/${entry.name}`;
   }
 
   public ngOnDestroy() {

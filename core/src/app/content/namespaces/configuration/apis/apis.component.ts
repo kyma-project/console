@@ -76,10 +76,6 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
     }`;
   }
 
-  public getResourceUrl(kind: string, entry: any): string {
-    return `${this.baseUrl}/${entry.name}`;
-  }
-
   public ngOnDestroy() {
     super.ngOnDestroy();
   }
