@@ -16,7 +16,7 @@ import { forkJoin } from 'rxjs';
 export class BindingsDetailsModalComponent {
   @ViewChild('bindingsDetailsModal') bindingsDetailsModal: ModalComponent;
 
-  public namespaces: NamespaceInfo[] = [];
+  public namespaces = [];
   private selectedApplicationsState = [];
   public application: any;
   public initialNamespaceName: string;

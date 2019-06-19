@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
 export class EditBindingsModalComponent {
   @ViewChild('editBindingModal') editBindingModal: ModalComponent;
 
-  public namespaces: NamespaceInfo[] = [];
+  public namespaces = [];
   private selectedApplicationsState = [];
   public application: any;
   public initialNamespaceName: string;

@@ -18,7 +18,7 @@ import { forkJoin } from 'rxjs';
 export class CreateBindingsModalComponent {
   @ViewChild('createBindingModal') createBindingModal: ModalComponent;
 
-  public namespaces: NamespaceInfo[] = [];
+  public namespaces = [];
   private selectedApplicationsState = [];
   private namespacesService: NamespacesService;
   public application: any;
@@ -81,7 +81,6 @@ export class CreateBindingsModalComponent {
   }
 
   private getFilteredNamespaces(usedNamespaces: EnabledMappingServices[], namespace: NamespaceInfo) {
-    console.log('namespace',namespace)
     const exists = usedNamespaces.some(
       usedNamespace => usedNamespace.namespace === namespace.getLabel()
     );

@@ -54,7 +54,7 @@ export class ApplicationsEntryRendererComponent
 
   public listConnectedNamespaces(entry) {
     let result = '';
-    const namespaces = [];
+    let namespaces = [];
 
     if (entry.enabledMappingServices) {
       namespaces=[...namespaces, ...entry.enabledMappingServices.map(e=>e.namespace)]

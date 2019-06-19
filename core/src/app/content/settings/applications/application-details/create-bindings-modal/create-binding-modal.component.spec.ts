@@ -32,7 +32,7 @@ const ApplicationBindingServiceMock = {
   }
 };
 
-describe('CreateBindingsModalComponent', () => {
+fdescribe('CreateBindingsModalComponent', () => {
   let component: CreateBindingsModalComponent;
   let fixture: ComponentFixture<CreateBindingsModalComponent>;
   let ApplicationsServiceMockStub: ApplicationsService;
