@@ -2,7 +2,8 @@ import {
   Component,
   OnDestroy,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnInit
 } from '@angular/core';
 import { AbstractKubernetesElementListComponent } from './abstract-kubernetes-element-list.component';
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
@@ -20,11 +21,11 @@ import { Observable } from 'apollo-link';
 })
 export class AbstractGraphqlElementListComponent
   extends AbstractKubernetesElementListComponent
-  implements OnDestroy {
+  implements OnDestroy, OnInit {
   public currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
   public hideFilter = false;
-  protected mutationResourceKind?: string = null; // "special" resource kind for mutations - needs to be capitalized in most of the cases. If not provided, resourceKind will be used instead
+  protected deleteMutationName?: string = null; // "special" resource kind for delete mutations - needs to be capitalized in most of the cases. If not provided, resourceKind will be used instead
   protected gqlVariables$?: Observable<{ [key: string]: any }> = null;
 
   @ViewChild('mutateResourceModal')
@@ -41,25 +42,6 @@ export class AbstractGraphqlElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, null, commService);
-
-    this.currentNamespaceSubscription = this.currentNamespaceService
-      .getCurrentNamespaceId()
-      .subscribe(namespaceId => {
-        this.currentNamespaceId = namespaceId;
-        if (this.gqlVariables$) {
-          this.initGraphQLWithVariables();
-          return;
-        }
-        this.source = new GraphQLDataProvider(
-          this.getGraphqlQueryForList(),
-          {
-            namespace: this.currentNamespaceId
-          },
-          this.graphQLClientService,
-          this.getGraphqlSubscriptionsForList(),
-          this.resourceKind
-        );
-      });
   }
   private initGraphQLWithVariables() {
     this.gqlVariables$.subscribe(variables => {
@@ -82,6 +64,27 @@ export class AbstractGraphqlElementListComponent
       this.currentNamespaceSubscription.unsubscribe();
     }
     super.ngOnDestroy();
+  }
+  public ngOnInit() {
+    super.ngOnInit();
+    this.currentNamespaceSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespaceId => {
+        this.currentNamespaceId = namespaceId;
+        if (this.gqlVariables$) {
+          this.initGraphQLWithVariables();
+          return;
+        }
+        this.source = new GraphQLDataProvider(
+          this.getGraphqlQueryForList(),
+          {
+            namespace: this.currentNamespaceId
+          },
+          this.graphQLClientService,
+          this.getGraphqlSubscriptionsForList(),
+          this.resourceKind
+        );
+      });
   }
 
   protected getGraphqlQueryForList() {
@@ -138,9 +141,9 @@ export class AbstractGraphqlElementListComponent
     const variablesString = this.currentNamespaceId
       ? `name: $name, namespace: $namespace`
       : `name: $name`;
-    return `mutation delete${this.mutationResourceKind ||
+    return `mutation delete${this.deleteMutationName ||
       this.resourceKind}(${variablesDefinitionsString}) {
-      delete${this.mutationResourceKind ||
+      delete${this.deleteMutationName ||
         this.resourceKind}(${variablesString}) {
         name
       }
