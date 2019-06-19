@@ -1,6 +1,7 @@
 import LuigiClient from '@kyma-project/luigi-client';
 import rbacRulesMatched from './rbac-rules-matcher';
 import convertToNavigationTree from './microfrontend-converter';
+import { hideDisabledNodes } from './navigation-helpers';
 
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -225,7 +226,7 @@ function getNodes(context) {
       nodeTree = [].concat.apply(nodeTree, val);
     })
     
-    hideDisabledNodes(nodeTree, true);
+    hideDisabledNodes(config.disabledNavigationNodes, nodeTree, true);
     return nodeTree;
   })
     .catch((err) => {
@@ -648,7 +649,7 @@ Promise.all(initPromises)
           var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
           const nodeTree = [].concat.apply(staticNodes, fetchedNodes);
 
-          hideDisabledNodes(nodeTree, false)
+          hideDisabledNodes(config.disabledNavigationNodes, nodeTree, false)
           return nodeTree;
         }
       },
@@ -777,33 +778,3 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
   });
   return limitExceededErrorscomposed;
 }
-
-const hideDisabledNodes = (nodes, namespace) => {
-  if (config.disabledNavigationNodes && config.disabledNavigationNodes.length > 0) {
-    nodes.forEach(node => {
-
-      const nodeCategory = node.category
-        ? node.category.label 
-          ? node.category.label.split(' ').join('').toLowerCase()
-          : node.category.split(' ').join('').toLowerCase()
-        : '';
-      const categoryId = namespace 
-        ? nodeCategory 
-          ? `namespace.${nodeCategory}` 
-          : 'namespace'
-        : nodeCategory;
-      
-      const nodeLabel = node.label 
-        ? node.label.split(' ').join('').toLowerCase()
-        : '';
-      const nodeId = `${categoryId}${nodeLabel && categoryId ? '.': ''}${nodeLabel}`;
-      
-      const shouldBeDisabled = (element) => {
-        return (element === categoryId || element === nodeId)
-      }
-      node.hideFromNav = config.disabledNavigationNodes.some(shouldBeDisabled);
-
-    });
-  }
-}
-
