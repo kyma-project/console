@@ -20,7 +20,7 @@ import { Subscriber } from 'rxjs';
 export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy, OnInit {
   public resourceKind = 'Api';
-  public mutationResourceKind = 'API';
+  public deleteMutationName = 'API';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', {
     headerTitle: false,
     namespaceSuffix: false
