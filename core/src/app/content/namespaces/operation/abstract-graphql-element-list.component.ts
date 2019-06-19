@@ -69,6 +69,7 @@ export class AbstractGraphqlElementListComponent
           this.getGraphqlSubscriptionsForList(),
           this.resourceKind
         );
+        this.reload();
       });
   }
 
