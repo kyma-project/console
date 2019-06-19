@@ -46,7 +46,7 @@
               <div fd-form-item>
                 <fd-form-label>Labels</fd-form-label>
                   <ng-container *ngIf="labelKeys.length > 0">
-                      <span class="fd-badge fd-has-margin-tiny" *ngFor="let labelkey of labelKeys">{{ labelkey }} : {{ namespace.getLabels()[labelkey] }}</span>
+                      <span class="fd-token y-fd-token y-fd-token--no-button " *ngFor="let labelkey of labelKeys">{{ labelkey }} : {{ namespace.getLabels()[labelkey] }}</span>
                   </ng-container>
                   <ng-container *ngIf="labelKeys.length == 0">
                       -
