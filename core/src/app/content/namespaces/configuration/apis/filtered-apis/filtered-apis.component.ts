@@ -2,7 +2,6 @@ import { FilteredApisHeaderRendererComponent } from './filtered-apis-header-rend
 import { FilteredApisEntryRendererComponent } from './filtered-apis-entry-renderer/filtered-apis-entry-renderer.component';
 import { Component, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 
@@ -11,7 +10,6 @@ import { IEmptyListData } from 'shared/datamodel';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { AbstractGraphqlElementListComponent } from '../../../operation/abstract-graphql-element-list.component';
 import { Observable } from 'apollo-link';
-import { Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-filtered-apis',
@@ -57,10 +55,7 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
         this.serviceName = params['name'];
         this.gqlVariables$ = new Observable(subscriber => {
           subscriber.next({ serviceName: this.serviceName });
-          // subscriber.complete();
         });
-
-        //this.gqlVariables$.serviceName = this.serviceName;
       },
       err => {
         console.log(err);
