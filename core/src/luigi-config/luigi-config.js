@@ -224,6 +224,8 @@ function getNodes(context) {
     values.forEach(function (val) {
       nodeTree = [].concat.apply(nodeTree, val);
     })
+    
+    hideDisabledNodes(nodeTree, true);
     return nodeTree;
   })
     .catch((err) => {
@@ -644,7 +646,10 @@ Promise.all(initPromises)
             }
           ];
           var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
-          return [].concat.apply(staticNodes, fetchedNodes);
+          const nodeTree = [].concat.apply(staticNodes, fetchedNodes);
+
+          hideDisabledNodes(nodeTree, false)
+          return nodeTree;
         }
       },
       {
@@ -771,5 +776,34 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
     }
   });
   return limitExceededErrorscomposed;
+}
+
+const hideDisabledNodes = (nodes, namespace) => {
+  if (config.disabledNavigationNodes && config.disabledNavigationNodes.length > 0) {
+    nodes.forEach(node => {
+
+      const nodeCategory = node.category
+        ? node.category.label 
+          ? node.category.label.split(' ').join('').toLowerCase()
+          : node.category.split(' ').join('').toLowerCase()
+        : '';
+      const categoryId = namespace 
+        ? nodeCategory 
+          ? `namespace.${nodeCategory}` 
+          : 'namespace'
+        : nodeCategory;
+      
+      const nodeLabel = node.label 
+        ? node.label.split(' ').join('').toLowerCase()
+        : '';
+      const nodeId = `${categoryId}${nodeLabel && categoryId ? '.': ''}${nodeLabel}`;
+      
+      const shouldBeDisabled = (element) => {
+        return (element === categoryId || element === nodeId)
+      }
+      node.hideFromNav = config.disabledNavigationNodes.some(shouldBeDisabled);
+
+    });
+  }
 }
 
