@@ -32,8 +32,7 @@ export class NamespacesService {
                 if (namespace.status.phase === 'Active') {
                   namespaces.push(
                     new NamespaceInfo(
-                      namespace.metadata.uid,
-                      namespace.metadata.name
+                      namespace.metadata
                     )
                   );
                 }
@@ -53,8 +52,7 @@ export class NamespacesService {
         map(response => {
           if (!_.isEmpty(response.metadata)) {
             return new NamespaceInfo(
-              response.metadata.uid,
-              response.metadata.name
+              response.metadata
             );
           }
           return response;
@@ -184,17 +182,23 @@ export class NamespacesService {
     return this.graphQLClientService.gqlMutation(mutation, variables);
   }
 
-  public deleteNamespace(namespaceName: string) {
-    if (namespaceName) {
-      return this.http
-        .delete(`${AppConfig.k8sApiServerUrl}namespaces/${namespaceName}`)
-        .pipe(
-          map(response => {
-            this.namespaceChangeStateEmitter$.emit(true);
-            return response;
-          })
-        );
-    }
+  public deleteNamespace(name: string) {
+    const mutation = `mutation DeleteNamespace($name: String!) {
+      deleteNamespace(name: $name){
+        name
+      }
+    }`;
+
+    const variables = {
+      name
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables).pipe(
+      map(response => {
+        this.namespaceChangeStateEmitter$.emit(true);
+        return response;
+      })
+    );
   }
 
   public getResourceQueryStatus(namespace: string) {
