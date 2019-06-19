@@ -29,7 +29,11 @@
   </td>
   <td>{{ entry.service.name }}</td>
   <td>
-    <p>{{ isSecured(entry) ? 'Yes' : 'No' }}</p>
+    <fd-badge
+      [status]="isSecured(entry) ? 'success' : 'warning'"
+      [modifier]="'filled'"
+      >{{ isSecured(entry) ? 'Yes' : 'No' }}</fd-badge
+    >
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td class="fd-has-float-right">
