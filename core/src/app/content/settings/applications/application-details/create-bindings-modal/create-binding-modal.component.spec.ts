@@ -101,6 +101,7 @@ describe('CreateBindingsModalComponent', () => {
 
   it('should create', () => {
     // then
+
     expect(component).toBeTruthy();
     expect(component.namespaces).toEqual([]);
     expect(component.namespaces).toEqual([]);
@@ -110,9 +111,18 @@ describe('CreateBindingsModalComponent', () => {
     // given
     const applications = of({
       application: {
-        enabledInNamespaces: ['namespace1', 'namespace2']
+        enabledMappingServices: [{
+          namespace: 'namespace1',
+          allServices: true,
+          services: []
+        },{
+          namespace: 'namespace2',
+          allServices: true,
+          services: []
+        }]
       }
     });
+
     const namespaces = of([
       {
         label: 'namespace3'
@@ -127,31 +137,38 @@ describe('CreateBindingsModalComponent', () => {
       ApplicationsServiceMockStub,
       'getApplication'
     ).and.returnValue(applications);
+    
     const spyGetNamespaces = spyOn(
       NamespacesServiceMockStub,
       'getNamespaces'
     ).and.returnValue(namespaces);
-    const spyConsoleLog = spyOn(console, 'log');
 
+    const spyConsoleLog = spyOn(console, 'log');
+    
     // when
     fixture.detectChanges();
     component.show();
-
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
       expect(spyGetApplication.calls.any()).toBeTruthy();
       expect(spyGetNamespaces.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeFalsy();
-      expect(
-        ApplicationsServiceMockStub.getApplication
-      ).toHaveBeenCalledTimes(1);
-      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(
+      expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
+      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.application).toEqual({
-        enabledInNamespaces: ['namespace1', 'namespace2']
+        enabledMappingServices: [{
+          namespace: 'namespace1',
+          allServices: true,
+          services: []
+        },{
+          namespace: 'namespace2',
+          allServices: true,
+          services: []
+        }]
       });
       expect(component.namespaces).toEqual([
         {
@@ -197,12 +214,10 @@ describe('CreateBindingsModalComponent', () => {
       expect(spyGetApplication.calls.any()).toBeTruthy();
       expect(spyGetNamespaces.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeTruthy();
-      expect(
-        ApplicationsServiceMockStub.getApplication
-      ).toHaveBeenCalledTimes(1);
-      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(
+      expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
+      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.application).toEqual(undefined);
       expect(component.namespaces).toEqual([]);
@@ -236,9 +251,7 @@ describe('CreateBindingsModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(spyBind.calls.any()).toBeTruthy('spyBind.calls.any');
-      expect(
-        ApplicationBindingServiceMockStub.bind
-      ).toHaveBeenCalledTimes(1);
+      expect(ApplicationBindingServiceMockStub.bind).toHaveBeenCalledTimes(1);
 
       expect(
         ComponentCommunicationServiceMockStub.sendEvent

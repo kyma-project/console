@@ -55,7 +55,6 @@ export class CreateBindingsModalComponent {
 
           this.application = response[0].application;
           this.namespaces = response[1];
-
           this.namespaces.forEach(namespace => {
             if (this.application && this.application.enabledMappingServices) {
               this.getFilteredNamespaces(
@@ -163,10 +162,6 @@ export class CreateBindingsModalComponent {
     }
   }
 
-  // filterChange() {
-  //   this.onFilterChanged.emit(this.filterState);
-  // }
-
   applicationSelected(id) {
     return (
       this.selectedApplicationsState &&
@@ -184,8 +179,6 @@ export class CreateBindingsModalComponent {
     } else {
       this.selectedApplicationsState.push({ id: applicationId });
     }
-    // this.selectedApplicationsState = this.selectedApplicationsState;
-    // this.filterChange();
   }
 
   hasType(entries, type) {
