@@ -1,6 +1,6 @@
 import { ApiDefinitionHeaderRendererComponent } from './api-definition-header-renderer/api-definition-header-renderer.component';
 import { ApiDefinitionEntryRendererComponent } from './api-definition-entry-renderer/api-definition-entry-renderer.component';
-import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 import { AbstractGraphqlElementListComponent } from '../../operation/abstract-graphql-element-list.component';
 
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
@@ -15,7 +15,7 @@ import { CurrentNamespaceService } from 'namespaces/services/current-namespace.s
   templateUrl: 'apis.component.html'
 })
 export class ApisComponent extends AbstractGraphqlElementListComponent
-  implements OnDestroy {
+  implements OnDestroy, OnInit {
   public resourceKind = 'Api';
   public deleteMutationName = 'API';
   public title = 'APIs';
@@ -82,6 +82,10 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
 
   public ngOnDestroy() {
     super.ngOnDestroy();
+  }
+
+  public ngOnInit() {
+    super.ngOnInit();
   }
 
   public navigateToDetails(entry: { name: string }) {
