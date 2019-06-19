@@ -277,9 +277,15 @@
   }
 }
 
-.y-fd-list--no-padding {
+.y-fd-list-group__item--no-padding {
   .fd-list-group__item {
     padding: 0;
+  }
+}
+
+.y-fd-list--bottom-margin {
+  .fd-list-group {
+    margin-bottom: 40px;
   }
 }
 

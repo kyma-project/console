@@ -57,9 +57,7 @@ export class ApplicationsEntryRendererComponent
     const namespaces = [];
 
     if (entry.enabledMappingServices) {
-      entry.enabledMappingServices.forEach(item => {
-        namespaces.push(item.namespace);
-      });
+      namespaces=[...namespaces, ...entry.enabledMappingServices.map(e=>e.namespace)]
       result = namespaces.join(', ');
     }
     return result;

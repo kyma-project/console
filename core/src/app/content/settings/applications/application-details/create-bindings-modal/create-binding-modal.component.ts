@@ -5,7 +5,8 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
-
+import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info';
+import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
 
@@ -17,7 +18,7 @@ import { forkJoin } from 'rxjs';
 export class CreateBindingsModalComponent {
   @ViewChild('createBindingModal') createBindingModal: ModalComponent;
 
-  public namespaces = [];
+  public namespaces: NamespaceInfo[] = [];
   private selectedApplicationsState = [];
   private namespacesService: NamespacesService;
   public application: any;
@@ -79,9 +80,10 @@ export class CreateBindingsModalComponent {
     });
   }
 
-  private getFilteredNamespaces(usedNamespaces, namespace) {
+  private getFilteredNamespaces(usedNamespaces: EnabledMappingServices[], namespace: NamespaceInfo) {
+    console.log('namespace',namespace)
     const exists = usedNamespaces.some(
-      usedNamespace => usedNamespace.namespace === namespace.label
+      usedNamespace => usedNamespace.namespace === namespace.getLabel()
     );
 
     if (!exists) {

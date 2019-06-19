@@ -12,9 +12,7 @@
     <fd-modal-body>
       <div fd-form-item>
         <fd-form-label>Services & Events *</fd-form-label>
-        <fd-toggle [size]="'s'" [(ngModel)]="allServices"
-          >All {{ allServices }}</fd-toggle
-        >
+        <fd-toggle [size]="'s'" [(ngModel)]="allServices">Select all</fd-toggle>
       </div>
       <div
         *ngIf="
@@ -25,7 +23,9 @@
         "
         fd-form-item
       >
-        <fd-list class="y-fd-list--no-hover y-fd-list--no-padding">
+        <fd-list
+          class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin"
+        >
           <li
             fd-list-item
             *ngFor="let service of application.services"

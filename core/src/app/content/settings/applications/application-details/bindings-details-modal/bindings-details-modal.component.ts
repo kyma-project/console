@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info';
+import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 
 import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
@@ -14,7 +16,7 @@ import { forkJoin } from 'rxjs';
 export class BindingsDetailsModalComponent {
   @ViewChild('bindingsDetailsModal') bindingsDetailsModal: ModalComponent;
 
-  public namespaces = [];
+  public namespaces: NamespaceInfo[] = [];
   private selectedApplicationsState = [];
   public application: any;
   public initialNamespaceName: string;
@@ -64,9 +66,9 @@ export class BindingsDetailsModalComponent {
     });
   }
 
-  private getInitialNamespace(usedNamespaces, initialNamespaceName) {
-    const initialNamespaceArray = usedNamespaces.filter(
-      usedNamespace => usedNamespace.namespace === initialNamespaceName
+  private getInitialNamespace(enabledServices: EnabledMappingServices[] , initialNamespaceName: string) {
+    const initialNamespaceArray = enabledServices.filter(
+      enabledService => enabledService.namespace === initialNamespaceName
     );
     if(!initialNamespaceArray || !initialNamespaceArray.length){
       return;

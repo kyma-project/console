@@ -121,18 +121,28 @@
         <fd-table *ngIf="boundNamespaces.length > 0">
           <fd-table-header>
             <th>Name</th>
-            <th class="y-fd-table--col-3"></th>
+            <th class="y-fd-table--col-3 fd-has-text-align-right">Service & event bindings</th>
+            <th class="y-fd-table--col-1"></th>
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let namespace of boundNamespaces">
-              <td class="fd-has-font-weight-bold" (click)="openBindingsDetailsModal(namespace.namespace)">
-                <a href="javascript:void(null)" [attr.data-e2e-id]="'application-name'">{{ namespace.namespace }}</a>
+              <td
+                class="fd-has-font-weight-bold"
+                (click)="openBindingsDetailsModal(namespace.namespace)"
+              >
+                <a
+                  href="javascript:void(null)"
+                  [attr.data-e2e-id]="'application-name'"
+                  >{{ namespace.namespace }}</a
+                >
               </td>
-              <td class="fd-has-float-right">
+              <td class="fd-has-text-align-right">
                 {{
                   (namespace.allServices && application.services.length) ||
                     namespace.services.length
                 }}/{{ application.services.length }}
+              </td>
+              <td class="fd-has-float-right">
                 <y-list-actions
                   [entry]="namespace.namespace"
                   [entryEventHandler]="entryEventHandler"

@@ -4,7 +4,8 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
-
+import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info';
+import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
 
@@ -16,7 +17,7 @@ import { forkJoin } from 'rxjs';
 export class EditBindingsModalComponent {
   @ViewChild('editBindingModal') editBindingModal: ModalComponent;
 
-  public namespaces = [];
+  public namespaces: NamespaceInfo[] = [];
   private selectedApplicationsState = [];
   public application: any;
   public initialNamespaceName: string;
@@ -71,7 +72,7 @@ export class EditBindingsModalComponent {
     });
   }
 
-  private getInitialNamespace(usedNamespaces, initialNamespaceName) {
+  private getInitialNamespace(usedNamespaces: EnabledMappingServices[], initialNamespaceName: string) {
     const initialNamespaceArray = usedNamespaces.filter(
       usedNamespace => usedNamespace.namespace === initialNamespaceName
     );
@@ -108,7 +109,7 @@ export class EditBindingsModalComponent {
           this.application.name,
           this.allServices,
           this.selectedApplicationsState
-        ) // TODO unmock
+        )
         .subscribe(
           res => {
             this.communication.sendEvent({
