@@ -51,7 +51,6 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
 
     this.route.params.subscribe(
       params => {
-        console.log(params);
         this.serviceName = params['name'];
         this.gqlVariables$ = new Observable(subscriber => {
           subscriber.next({ serviceName: this.serviceName });
@@ -108,6 +107,5 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   }
   public ngOnInit() {
     super.ngOnInit();
-    console.log('filtered apis INIT');
   }
 }

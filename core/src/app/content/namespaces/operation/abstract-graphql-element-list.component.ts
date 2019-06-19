@@ -43,21 +43,6 @@ export class AbstractGraphqlElementListComponent
   ) {
     super(currentNamespaceService, changeDetector, null, commService);
   }
-  private initGraphQLWithVariables() {
-    this.gqlVariables$.subscribe(variables => {
-      this.source = new GraphQLDataProvider(
-        this.getGraphqlQueryForList(),
-        {
-          namespace: this.currentNamespaceId,
-          ...variables
-        },
-        this.graphQLClientService,
-        this.getGraphqlSubscriptionsForList(),
-        this.resourceKind
-      );
-      this.reload();
-    });
-  }
 
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
@@ -148,5 +133,21 @@ export class AbstractGraphqlElementListComponent
         name
       }
     }`;
+  }
+
+  private initGraphQLWithVariables() {
+    this.gqlVariables$.subscribe(variables => {
+      this.source = new GraphQLDataProvider(
+        this.getGraphqlQueryForList(),
+        {
+          namespace: this.currentNamespaceId,
+          ...variables
+        },
+        this.graphQLClientService,
+        this.getGraphqlSubscriptionsForList(),
+        this.resourceKind
+      );
+      this.reload();
+    });
   }
 }
