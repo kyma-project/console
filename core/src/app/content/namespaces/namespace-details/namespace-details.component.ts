@@ -32,7 +32,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   public applications: any;
   public services: any;
   public errorMessage: string;
-  public labelKeys: string[];
+  public labelKeys: string[] = [];
   private id: string;
   private currentNamespaceSubscription: Subscription;
   private refreshComponentSubscription: Subscription;
@@ -65,7 +65,10 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
             if (namespace) {
               this.namespace = namespace;
             }
-            this.labelKeys = Object.keys(this.namespace.getLabels());
+            if(this.namespace.getLabels() !== null &&  this.namespace.getLabels() !== undefined){
+              this.labelKeys = Object.keys(this.namespace.getLabels());
+            }
+
             this.getServices(this.id);
             this.getApplications(this.id);
           },
