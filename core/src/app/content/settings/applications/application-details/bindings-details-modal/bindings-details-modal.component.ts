@@ -1,5 +1,3 @@
-import { ApplicationBindingService } from '../application-binding-service';
-import { ComponentCommunicationService } from './../../../../../shared/services/component-communication.service';
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
@@ -30,12 +28,8 @@ export class BindingsDetailsModalComponent {
   constructor(
     private applicationService: ApplicationsService,
     private route: ActivatedRoute,
-    private applicationBindingService: ApplicationBindingService,
-    private communication: ComponentCommunicationService,
     private modalService: ModalService
-  ) {
-    this.applicationBindingService = applicationBindingService;
-  }
+  ) {}
 
   public show(initialNamespace) {
     this.namespaceName = initialNamespace;
@@ -90,31 +84,6 @@ export class BindingsDetailsModalComponent {
     this.selectedApplicationsState = initialNamespace.allServices ? application.services : initialNamespace.services;
   }
 
-  save() {
-    if (this.application && this.application.name) {
-      this.applicationBindingService
-        .update(
-          this.namespaceName,
-          this.application.name,
-          this.allServices,
-          this.selectedApplicationsState
-        ) // TODO unmock
-        .subscribe(
-          res => {
-            this.communication.sendEvent({
-              type: 'updateResource',
-              data: res
-            });
-          },
-          err => {
-            console.log(err);
-          }
-        );
-
-      this.close();
-    }
-  }
-
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
@@ -126,18 +95,6 @@ export class BindingsDetailsModalComponent {
       this.selectedApplicationsState &&
       _.some(this.selectedApplicationsState, { id })
     );
-  }
-
-  toggleApplication(applicationId, event) {
-    event.stopPropagation();
-    if (this.applicationSelected(applicationId)) {
-      const index = this.selectedApplicationsState.indexOf(applicationId);
-      this.selectedApplicationsState = this.selectedApplicationsState.filter(
-        item => item.id !== applicationId
-      );
-    } else {
-      this.selectedApplicationsState.push({ id: applicationId });
-    }
   }
 
   hasType(entries, type) {
