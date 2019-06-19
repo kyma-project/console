@@ -45,9 +45,8 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
         name
         hostname
         service {
-            name
-            port
-          }
+          name
+        }
         authenticationPolicies {
           type
         }
@@ -63,9 +62,8 @@ export class ApisComponent extends AbstractGraphqlElementListComponent
           name
           hostname
           service {
-              name
-              port
-            }
+            name
+          }
           authenticationPolicies {
             type
           }

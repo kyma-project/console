@@ -66,8 +66,8 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
         name
         hostname
         service {
-            name
-          }
+          name
+        }
         authenticationPolicies {
           type
           issuer
@@ -83,8 +83,8 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
           name
           hostname
           service {
-              name
-            }
+            name
+          }
           authenticationPolicies {
             type
             issuer
