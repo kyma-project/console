@@ -47,7 +47,9 @@ export class FilteredApisEntryRendererComponent
   }
 
   public ngOnDestroy() {
-    this.communicationServiceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
   }
 
   public isSecured = (entry: { authenticationPolicies?: object[] }): boolean =>
