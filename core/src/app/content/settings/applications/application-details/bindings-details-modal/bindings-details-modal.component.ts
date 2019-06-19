@@ -50,7 +50,6 @@ export class BindingsDetailsModalComponent {
           const response: any = data;
 
           this.application = response[0].application;
-          console.log('this.application',this.application);
           if (this.application && this.application.enabledMappingServices) {
             this.setInitialValues(
               this.application,
@@ -89,13 +88,6 @@ export class BindingsDetailsModalComponent {
     this.initialNamespaceName = initialNamespaceName;
     this.allServices = initialNamespace.allServices;
     this.selectedApplicationsState = initialNamespace.allServices ? application.services : initialNamespace.services;
-
-    // initialNamespace.services.forEach(item => {
-    //   if (item && item.id) {
-    //     this.selectedApplicationsState.push(item);
-    //   }
-    // });
-    console.log('initialNamespace',initialNamespace,'allServices',this.allServices,'selectedApplicationsState',this.selectedApplicationsState)
   }
 
   save() {
