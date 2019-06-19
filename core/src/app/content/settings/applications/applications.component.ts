@@ -3,7 +3,8 @@ import {
   Component,
   ChangeDetectorRef,
   ViewChild,
-  OnDestroy
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 import { ApplicationsEntryRendererComponent } from './applications-entry-renderer/applications-entry-renderer.component';
 import { ApplicationsHeaderRendererComponent } from './applications-header-renderer/applications-header-renderer.component';
@@ -12,7 +13,7 @@ import { ComponentCommunicationService } from '../../../shared/services/componen
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
-import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';	
+import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
 import { AppConfig } from '../../../app.config';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
@@ -20,17 +21,19 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
   selector: 'app-applications',
   templateUrl: './applications.component.html'
 })
-export class ApplicationsComponent extends AbstractGraphqlElementListComponent 
-  implements OnDestroy {
+export class ApplicationsComponent extends AbstractGraphqlElementListComponent
+  implements OnDestroy, OnInit {
   title = 'Applications';
-  public emptyListData: IEmptyListData = this.getBasicEmptyListData(this.title, { headerTitle: true, namespaceSuffix: false });
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(
+    this.title,
+    { headerTitle: true, namespaceSuffix: false }
+  );
   createNewElementText = 'Add Application';
   resourceKind = 'Application';
   namespaces = [];
   public hideFilter = true;
   private contextListenerId: string;
   public isReadOnly = false;
-
 
   public entryRenderer = ApplicationsEntryRendererComponent;
   public headerRenderer = ApplicationsHeaderRendererComponent;
@@ -65,9 +68,9 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
         enabledInNamespaces,
         labels
       }
-    }`
+    }`;
   }
-  
+
   getGraphqlSubscriptionsForList() {
     return `subscription Application {
       applicationEvent {
@@ -79,7 +82,7 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
         }
         type
       }
-    }`
+    }`;
   }
 
   navigateToDetails(entry) {
@@ -93,5 +96,8 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
   ngOnDestroy() {
     LuigiClient.removeContextUpdateListener(this.contextListenerId);
     super.ngOnDestroy();
+  }
+  public ngOnInit() {
+    super.ngOnInit();
   }
 }

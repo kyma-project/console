@@ -1,107 +1,104 @@
 import { FilteredApisHeaderRendererComponent } from './filtered-apis-header-renderer/filtered-apis-header-renderer.component';
 import { FilteredApisEntryRendererComponent } from './filtered-apis-entry-renderer/filtered-apis-entry-renderer.component';
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { AbstractKubernetesElementListComponent } from '../../../operation/abstract-kubernetes-element-list.component';
-import { HttpClient } from '@angular/common/http';
-import { CurrentNamespaceService } from '../../../services/current-namespace.service';
+import { Component, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
+
+import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
-import { AppConfig } from '../../../../../app.config';
-import { Filter } from 'app/generic-list';
-import { Subscription } from 'rxjs';
-import { GraphQLDataProvider } from '../../../operation/graphql-data-provider';
+
 import { ActivatedRoute } from '@angular/router';
 import { IEmptyListData } from 'shared/datamodel';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { AbstractGraphqlElementListComponent } from '../../../operation/abstract-graphql-element-list.component';
+import { Observable } from 'apollo-link';
 
 @Component({
   selector: 'app-filtered-apis',
   templateUrl: 'filtered-apis.component.html'
 })
-export class FilteredApisComponent
-  extends AbstractKubernetesElementListComponent
-  implements OnInit, OnDestroy {
-  public resourceKind = 'api';
-  public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', { headerTitle: false, namespaceSuffix: false });
+export class FilteredApisComponent extends AbstractGraphqlElementListComponent
+  implements OnDestroy, OnInit {
+  public resourceKind = 'Api';
+  public deleteMutationName = 'API';
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', {
+    headerTitle: false,
+    namespaceSuffix: false
+  });
   public createNewElementText = 'Add API';
   public baseUrl: string;
-  public currentNamespaceId: string;
-  private currentNamespaceSubscription: Subscription;
+
   public hideFilter = false;
-  private serviceName: string;
+
+  public gqlVariables$ = new Observable(subscriber => {
+    subscriber.complete();
+  });
+
+  public entryRenderer = FilteredApisEntryRendererComponent;
+  public headerRenderer = FilteredApisHeaderRendererComponent;
 
   constructor(
-    private http: HttpClient,
-    private currentNamespaceService: CurrentNamespaceService,
-    private commService: ComponentCommunicationService,
-    private graphQLClientService: GraphQLClientService,
+    currentNamespaceService: CurrentNamespaceService,
+    commService: ComponentCommunicationService,
+    graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {
-    super(currentNamespaceService, changeDetector, http, commService);
-
-    const query = `query API($namespace: String!, $serviceName: String!) {
-      apis(namespace: $namespace, serviceName: $serviceName) {
-        name
-        hostname
-        service {
-          name
-          port
-        }
-        authenticationPolicies {
-          type
-          issuer
-          jwksURI
-        }
-      }
-    }`;
+    super(
+      currentNamespaceService,
+      commService,
+      graphQLClientService,
+      changeDetector
+    );
 
     this.route.params.subscribe(
       params => {
-        this.serviceName = params['name'];
+        this.gqlVariables$ = new Observable(subscriber => {
+          subscriber.next({ serviceName: params['name'] });
+        });
       },
       err => {
         console.log(err);
       }
     );
-
-    this.currentNamespaceSubscription = this.currentNamespaceService
-      .getCurrentNamespaceId()
-      .subscribe(namespaceId => {
-        this.currentNamespaceId = namespaceId;
-        this.baseUrl = `${
-          AppConfig.k8sApiServerUrl_apimanagement
-        }namespaces/${namespaceId}/apis`;
-
-        this.source = new GraphQLDataProvider(
-          query,
-          {
-            namespace: this.currentNamespaceId,
-            serviceName: this.serviceName
-          },
-          this.graphQLClientService
-        );
-        this.entryRenderer = FilteredApisEntryRendererComponent;
-        this.headerRenderer = FilteredApisHeaderRendererComponent;
-
-        this.filterState = {
-          filters: [new Filter('name', '', false)]
-        };
-      });
+  }
+  getGraphqlQueryForList() {
+    return `query Api($namespace: String!, $serviceName: String) {
+      apis(namespace: $namespace, serviceName: $serviceName) {
+        name
+        hostname
+        service {
+          name
+        }
+        authenticationPolicies {
+          type
+          issuer
+        }
+      }
+    }`;
   }
 
-  public ngOnInit() {
-    super.ngOnInit();
-    this.subscribeToRefreshComponent();
-  }
-
-  public getResourceUrl(kind: string, entry: any): string {
-    return `${this.baseUrl}/${entry.name}`;
+  getGraphqlSubscriptionsForList() {
+    return `subscription Api($namespace: String!, $serviceName: String) {
+      apiEvent(namespace: $namespace, serviceName: $serviceName) {
+        api {
+          name
+          hostname
+          service {
+            name
+          }
+          authenticationPolicies {
+            type
+            issuer
+          }
+        }
+        type
+      }
+    }`;
   }
 
   public ngOnDestroy() {
-    if (this.currentNamespaceSubscription) {
-      this.currentNamespaceSubscription.unsubscribe();
-    }
     super.ngOnDestroy();
+  }
+  public ngOnInit() {
+    super.ngOnInit();
   }
 }

@@ -5,11 +5,17 @@
         <fd-action-bar-title>{{ title }}</fd-action-bar-title>
       </fd-action-bar-header>
       <fd-action-bar-actions>
-        <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
-          (onFilterChanged)="onFilterChanged($event)">
+        <y-list-search
+          [hidden]="!initialized || showEmptyPage"
+          [filterState]="filterState"
+          (onFilterChanged)="onFilterChanged($event)"
+        >
         </y-list-search>
-        <y-list-filter [hidden]="!initialized || showEmptyPage || hideFilter" [filterState]="filterState"
-          (onFilterChanged)="onFilterChanged($event)">
+        <y-list-filter
+          [hidden]="!initialized || showEmptyPage || hideFilter"
+          [filterState]="filterState"
+          (onFilterChanged)="onFilterChanged($event)"
+        >
         </y-list-filter>
         <button fd-button (click)="navigateToCreate()" [glyph]="'add'">
           Create API
@@ -20,12 +26,21 @@
 </header>
 
 <section class="fd-section">
-  <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
-    [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer"
-    [emptyListPlaceholderData]="emptyListData" [showEmptyPage]="showEmptyPage">
+  <y-plain-table
+    [source]="data"
+    [headerRenderer]="headerRenderer"
+    [entryRenderer]="entryRenderer"
+    [entryEventHandler]="entryEventHandler"
+    [footerRenderer]="footerRenderer"
+    [emptyListPlaceholderData]="emptyListData"
+    [showEmptyPage]="showEmptyPage"
+  >
   </y-plain-table>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)"></y-list-paging>
+  <y-list-paging
+    [pagingState]="pagingState"
+    (onPageChanged)="onPageChanged($event)"
+  ></y-list-paging>
 </section>
 
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>
