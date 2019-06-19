@@ -1,17 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { ObservableQuery } from 'apollo-client';
-
-export interface IPod {
-  name: string;
-  labels: any;
-}
-export interface IPodQueryResponse {
-  data: {
-    pods: IPod[];
-  };
-}
 
 @Injectable()
 export class PodsSubscriptonService {

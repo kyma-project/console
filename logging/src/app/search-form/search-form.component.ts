@@ -6,18 +6,10 @@ import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 import { LuigiContextService } from './service/luigi-context.service';
+import { ILogStream } from './data/log-stream';
+import { IPod, IPodQueryResponse } from './data/pod-query';
 
-import {
-  PodsSubscriptonService,
-  IPod,
-  IPodQueryResponse,
-} from './service/pods-subscription/pods-subscription.service';
-
-interface ILogStream {
-  availableLabels: string[];
-  entries: any[];
-  labels: string;
-}
+import { PodsSubscriptonService } from './service/pods-subscription/pods-subscription.service';
 
 @Component({
   selector: 'app-search-form',
