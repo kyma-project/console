@@ -71,6 +71,16 @@
             <option *ngFor="let to of toValues" [value]="to">{{ to }}</option>
           </select>
         </div>
+
+        <div *ngIf="isHistoricalDataSwitchVisible" fd-form-item [isInline]="true">
+          <fd-form-label >
+            Historical data
+          </fd-form-label>
+          <label fd-form-label for="outdatedLogsToggle">
+            <input fd-form-control type="checkbox"  [(ngModel)]="model.showOutdatedLogs"  name="showOutdatedLogs" (change)="onSubmit()" id="outdatedLogsToggle" >
+            Show logs for outdated pods
+          </label>
+        </div>
       </fieldset>
 
       <fieldset fd-form-set>
@@ -103,6 +113,7 @@
             role="button" (click)="removeLabel($event.target.innerText)" *ngFor="let label of selectedLabels | keyvalue">
           {{ label.key }}="{{ label.value }}"
         </span>
+
       </div>
     </form>
   </div>
