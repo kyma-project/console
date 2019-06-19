@@ -152,7 +152,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       label.includes('instance'),
     );
     if (!instanceLabel || !this.podsForFunction) {
-      return true; // this stream doesn't have an 'instance' label
+      return false; // this stream doesn't have an 'instance' label or there are no pods to compare
     } else {
       const instanceValue = getLabelValueFn(instanceLabel);
 
