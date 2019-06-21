@@ -11,7 +11,7 @@ import {
   putNewlineSpaceBeforeList,
 } from './helpers';
 
-const ReactMarkdown = ({ source, escapeHtml = false }) => {
+const ReactMarkdown = ({ source, escapeHtml = true }) => {
   if (!source) {
     return null;
   }
