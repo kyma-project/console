@@ -23,7 +23,8 @@ const ReactMarkdown = ({ source, escapeHtml = true }) => {
     <Markdown>
       <RM
         source={processedSource}
-        escapeHtml={escapeHtml}
+        // escapeHtml={true}
+        skipHtml={true}
         renderers={{
           code: Code,
           blockquote: BlockQuote,
