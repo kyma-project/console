@@ -20,6 +20,7 @@ import {
   ServiceClassHeaderTileGrid,
 } from './styled';
 
+import { serviceClassTileTitles } from '../../../variables';
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
 import ProvisionOnlyOnceInfo from '../ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 
@@ -34,15 +35,6 @@ const ServiceClassInfo = ({
   isProvisionedOnlyOnce,
   providerDisplayName,
 }) => {
-  const tileTitles = {
-    creator: 'Creator',
-    lastUpdate: 'Last Update',
-    documentation: 'Documentation',
-    support: 'Support',
-    description: 'Description',
-    tags: 'Tags',
-  };
-
   function sortTags(tag1, tag2) {
     return tag1.length > 8 && tag2.length < 15;
   }
@@ -101,38 +93,31 @@ const ServiceClassInfo = ({
               <Icon glyph="crm-service-manager" style={{ color: '#515559' }} />
             )}
           </TileMedia>
-          <TileContent title={tileTitles.creator}>
+          <TileContent title={serviceClassTileTitles.creator}>
             <p>{providerDisplayName}</p>
           </TileContent>
         </Tile>
         <Tile>
-          <TileContent title={tileTitles.lastUpdate}>
+          <TileContent title={serviceClassTileTitles.lastUpdate}>
             <Moment unix format="MMM DD, YYYY">
               {creationTimestamp}
             </Moment>
           </TileContent>
         </Tile>
         <Tile>
-          <TileContent title={tileTitles.documentation}>
-            {documentationUrl ? (
+          {documentationUrl && (<TileContent title={serviceClassTileTitles.documentation}>
               <ExternalLink href={documentationUrl} target="_blank">
                 Link
               </ExternalLink>
-            ) : (
-              '<none>'
-            )}
-          </TileContent>
+          </TileContent>)}
         </Tile>
         <Tile>
-          <TileContent title={tileTitles.support}>
-            {supportUrl ? (
+          {supportUrl && (
+          <TileContent title={serviceClassTileTitles.support}>
               <ExternalLink href={supportUrl} target="_blank">
                 Link
               </ExternalLink>
-            ) : (
-              '<none>'
-            )}
-          </TileContent>
+          </TileContent>)}
         </Tile>
         {isProvisionedOnlyOnce && (
           <Tile rowSpan={2} className="fd-has-padding-left-none">
@@ -140,13 +125,13 @@ const ServiceClassInfo = ({
           </Tile>
         )}
         <Tile columnSpan={4}>
-          <TileContent title={tileTitles.description}>
+          <TileContent title={serviceClassTileTitles.description}>
             <p>{description}</p>
           </TileContent>
         </Tile>
         {modifiedTags && modifiedTags.length > 0 && (
           <Tile columnSpan={computeNumberOfColumns()}>
-            <TileContent title={tileTitles.tags}>
+            <TileContent title={serviceClassTileTitles.tags}>
               <LabelsWrapper data-e2e-id="service-labels">
                 {modifiedTags.sort(sortTags).map(tag => (
                   <LabelWrapper key={`${tag.type}-${tag.name}`}>

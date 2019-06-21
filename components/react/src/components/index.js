@@ -3,6 +3,7 @@
 
 import BackendModuleDisabled from './BackendModuleDisabled';
 import Button from './Button';
+import { Breadcrumb, BreadcrumbItem } from './Breadcrumb';
 import Dropdown from './Dropdown';
 import ErrorBoundary from './ErrorBoundary';
 import Input from './Forms/Input';
@@ -63,6 +64,8 @@ import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 module.exports = {
   BackendModuleDisabled,
   Button,
+  Breadcrumb,
+  BreadcrumbItem,
   Dropdown,
   ErrorBoundary,
   Input,
