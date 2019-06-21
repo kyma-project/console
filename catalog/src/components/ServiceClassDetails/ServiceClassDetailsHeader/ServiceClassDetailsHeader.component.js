@@ -23,7 +23,6 @@ const ServiceClassDetailsHeader = ({
   tags,
   children,
 }) => {
-
   const goToServiceInstanceList = () => {
     LuigiClient.linkManager()
       .fromClosestContext()
@@ -33,18 +32,22 @@ const ServiceClassDetailsHeader = ({
   return (
     <div>
       <BreadcrumbWrapper>
-      <Breadcrumb>
-        <BreadcrumbItem name={serviceClassConstants.title} url="#" onClick={goToServiceInstanceList}/>
-        <BreadcrumbItem name={serviceClassDisplayName} url="#"/>
-      </Breadcrumb>
+        <Breadcrumb>
+          <BreadcrumbItem
+            name={serviceClassConstants.title}
+            url="#"
+            onClick={goToServiceInstanceList}
+          />
+          <BreadcrumbItem name={serviceClassDisplayName} url="#" />
+        </Breadcrumb>
       </BreadcrumbWrapper>
       <ServiceClassToolbarWrapper>
-      <ServiceClassToolbar
-        serviceClassDisplayName={serviceClassDisplayName}
-        providerDisplayName={providerDisplayName}
-      >
-        {children}
-      </ServiceClassToolbar>
+        <ServiceClassToolbar
+          serviceClassDisplayName={serviceClassDisplayName}
+          providerDisplayName={providerDisplayName}
+        >
+          {children}
+        </ServiceClassToolbar>
       </ServiceClassToolbarWrapper>
       <ServiceClassInfo
         className="none"

@@ -105,19 +105,22 @@ const ServiceClassInfo = ({
           </TileContent>
         </Tile>
         <Tile>
-          {documentationUrl && (<TileContent title={serviceClassTileTitles.documentation}>
+          {documentationUrl && (
+            <TileContent title={serviceClassTileTitles.documentation}>
               <ExternalLink href={documentationUrl} target="_blank">
                 Link
               </ExternalLink>
-          </TileContent>)}
+            </TileContent>
+          )}
         </Tile>
         <Tile>
           {supportUrl && (
-          <TileContent title={serviceClassTileTitles.support}>
+            <TileContent title={serviceClassTileTitles.support}>
               <ExternalLink href={supportUrl} target="_blank">
                 Link
               </ExternalLink>
-          </TileContent>)}
+            </TileContent>
+          )}
         </Tile>
         {isProvisionedOnlyOnce && (
           <Tile rowSpan={2} className="fd-has-padding-left-none">
