@@ -1,22 +1,6 @@
 # AWS Service Broker - Amazon Athena. Documentation
 
-<img  align="left" src="https://s3.amazonaws.com/awsservicebroker/icons/aws-service-broker.png" width="120"><img align="right" src="https://s3.amazonaws.com/awsservicebroker/icons/AmazonAthena_LARGE.png" width="108"> <p align="center">Amazon Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
-https://aws.amazon.com/documentation/athena/</p>
-
-Table of contents
-=================
-
-* [Parameters](#parameters)
-  * [default](#param-default)
-* [Bind Credentials](#bind-credentials)
-* [Examples](#kubernetes-openshift-examples)
-  * [default](#example-default)
-
-<a id="parameters" />
-
 ## Parameters
-
-<a id="param-default" />
 
 ### default
 
@@ -49,8 +33,6 @@ target_account_id|AWS Account ID to provision into (optional)||
 target_role_name|IAM Role name to provision with (optional), must be used in combination with target_account_id||
 region|AWS Region to create RDS instance in.|us-west-2|ap-northeast-1, ap-northeast-2, ap-south-1, ap-southeast-1, ap-southeast-2, ca-central-1, eu-central-1, eu-west-1, eu-west-2, sa-east-1, us-east-1, us-east-2, us-west-1, us-west-2
 
-<a id="bind-credentials" />
-
 ## Bind Credentials
 
 These are the environment variables that are available to an application on bind.
@@ -58,14 +40,10 @@ These are the environment variables that are available to an application on bind
 Name           | Description
 -------------- | ---------------
 
-<a id="kubernetes-openshift-examples" />
-
 ## Kubernetes/Openshift Examples
 
 ***Note:*** Examples do not include generic parameters, if you have not setup defaults for these you will need to add
 them as additional parameters
-
-<a id="example-default" />
 
 ### default
 
