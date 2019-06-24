@@ -49,6 +49,10 @@ export class WorkspaceOverviewComponent extends GenericListComponent
     private applicationBindingService: ApplicationBindingService
   ) {
     super(changeDetector);
+
+    this.allowStoringFilters = true;
+    this.localStorageKey = 'workspace/namespaceFilters';
+
     this.namespacesService = namespacesService;
     const converter: DataConverter<
       INamespace,
