@@ -17,3 +17,5 @@ export const configBindingPrefix = 'TEST_';
 export const configBindingAdditionalData = 'Test additional data';
 export const configCatalogExpectedHeader = 'Service Catalog';
 export const configInstancesExpectedHeader = 'Service Instances';
+export const configRegExpData = '123456';
+export const configUncorrectRegExpData = 'Test string containing letters';

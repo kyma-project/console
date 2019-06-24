@@ -20,6 +20,9 @@
   &.fd-modal--extra-large {
     .fd-modal {
       max-width: 55% !important; // override inline styles wrongly injected by Fundamental
+      .fd-modal__body {
+        height: 360px;
+      }
     }
   }
 

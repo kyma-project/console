@@ -146,32 +146,21 @@ export class HttpTriggerComponent {
     this.getDefaultIdpPreset().subscribe(config => {
       this.defaultAuthConfig = config;
       let hasDex = false;
-      const isLocal = AppConfig.domain === 'kyma.local' ? true : false;
-      const localJwksUri =
+      const dexFQDNJwksUri =
         'http://dex-service.kyma-system.svc.cluster.local:5556/keys';
-      const localIssuer = `https://dex.${AppConfig.domain}`;
       let jwksUri = config.jwks_uri;
       let issuer = config.issuer;
       this.getIDPPresets()
         .pipe(
           finalize(() => {
             if (!this.jwksUri) {
-              this.jwksUri = jwksUri;
+              this.jwksUri = dexFQDNJwksUri;
               this.issuer = issuer;
-            }
-            if (isLocal) {
-              this.jwksUri = localJwksUri;
-              this.issuer = localIssuer;
-              this.availablePresets.push({
-                label: 'Local',
-                jwksUri: localJwksUri,
-                issuer: localIssuer,
-              });
             }
             if (!hasDex) {
               this.availablePresets.push({
                 label: 'Dex',
-                jwksUri: config.jwks_uri,
+                jwksUri: dexFQDNJwksUri,
                 issuer: config.issuer,
               });
             }

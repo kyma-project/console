@@ -21,7 +21,7 @@
     "jest": "^23.6.0",
     "prettier": "^1.16.4",
     "promise-retry": "^1.1.1",
-    "puppeteer": "~1.10.0",
+    "puppeteer": "^1.17.0",
     "request": "^2.88.0"
   },
   "jest": {

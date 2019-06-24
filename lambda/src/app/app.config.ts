@@ -13,6 +13,16 @@ const defaultFunctionSizesConf = {
   functionSizes: [
     {
       size: {
+        name: 'XS',
+        memory: '128Mi',
+        cpu: '100m',
+        minReplicas: 1,
+        maxReplicas: 1,
+        description: '',
+      },
+    },
+    {
+      size: {
         name: 'S',
         memory: '128Mi',
         cpu: '100m',

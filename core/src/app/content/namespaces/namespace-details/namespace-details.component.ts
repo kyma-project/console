@@ -5,12 +5,13 @@ import { CurrentNamespaceService } from '../services/current-namespace.service';
 import { NamespacesService } from '../services/namespaces.service';
 import { AppConfig } from '../../../app.config';
 import { ResourceUploaderModalComponent } from '../../../shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
-import { NamespaceCreateComponent } from '../namespace-create/namespace-create.component';
+import { InformationModalComponent } from 'shared/components/information-modal/information-modal.component';
 import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import * as LuigiClient from '@kyma-project/luigi-client';
+import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-namespace-details',
@@ -18,15 +19,20 @@ import * as LuigiClient from '@kyma-project/luigi-client';
   styleUrls: ['./namespace-details.component.scss']
 })
 export class NamespaceDetailsComponent implements OnInit, OnDestroy {
+
   @ViewChild('uploaderModal')
   private uploaderModal: ResourceUploaderModalComponent;
-  @ViewChild('createmodal') private createmodal: NamespaceCreateComponent;
-  private orgName = AppConfig.orgName;
-  public namespace: NamespaceInfo = new NamespaceInfo('', '');
-  private boundApplicationsCount: Observable<number> = of(0);
+  @ViewChild('infoModal')
+  private infoModal: InformationModalComponent;
+  @ViewChild('confirmationModal')
+  private confirmationModal: ConfirmationModalComponent;
+
+  public namespace: NamespaceInfo = new NamespaceInfo({uid:'', name:''});
+  public boundApplicationsCount: Observable<number> = of(0);
   public applications: any;
-  private services: any;
+  public services: any;
   public errorMessage: string;
+  public labelKeys: string[] = [];
   private id: string;
   private currentNamespaceSubscription: Subscription;
   private refreshComponentSubscription: Subscription;
@@ -59,6 +65,10 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
             if (namespace) {
               this.namespace = namespace;
             }
+            if(this.namespace.getLabels() !== null &&  this.namespace.getLabels() !== undefined){
+              this.labelKeys = Object.keys(this.namespace.getLabels());
+            }
+
             this.getServices(this.id);
             this.getApplications(this.id);
           },
@@ -132,9 +142,23 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
-  public navigateToApplications(namespaceName) {
+  public navigateToApplications(applicationName = null) {
     LuigiClient.linkManager().navigate(
-      namespaceName ? '/home/cmf-apps/details/' + namespaceName : '/home/cmf-apps'
+      applicationName ? '/home/cmf-apps/details/' + applicationName : '/home/cmf-apps'
     );
   }
+
+  public deleteNamespace() {
+    this.confirmationModal.show('Delete', `Do you want to delete namespace ${this.namespace.getLabel()}?`)
+    .then(() => {
+      this.namespacesService.deleteNamespace(this.namespace.getLabel())
+      .subscribe(() => {
+          LuigiClient.linkManager().navigate('/home');
+      }, err => {
+        this.infoModal.show('Error', `There was an error while deleting namespace ${this.namespace.getLabel()}: ${err}`)
+      });
+    })
+    .catch(() => {});
+  }
+
 }

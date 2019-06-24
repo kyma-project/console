@@ -60,13 +60,14 @@ import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trig
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
-import {has as _has, get as _get, set as _set} from 'lodash';
+import { has as _has, get as _get, set as _set } from 'lodash';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
 
 const FUNCTION = 'function';
+
 interface INotificationData {
   type: 'info' | 'success' | 'error';
   message: string;
@@ -205,10 +206,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.aceMode = 'javascript';
     this.aceDependencyMode = 'json';
     this.kind = 'nodejs8';
-
   }
 
   ngOnInit() {
+    this.initializeTriggers();
+
     this.route.params.subscribe(
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
@@ -218,8 +220,14 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
           if (params['name']) {
+            if (sessionStorage.displayLambdaSavedNotification) {
+              this.showSuccessNotification();
+              delete sessionStorage.displayLambdaSavedNotification;
+            }
+
             this.mode = 'update';
             const lambdaName = params['name'];
+
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
@@ -282,24 +290,23 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                     eventType: ev.eventType,
                     sourceId: ea.sourceId,
                     description: ev.description,
-                    version: ev.version
+                    version: ev.version,
                   };
                   const eventTriggerWithSchema: EventTriggerWithSchema = {
                     eventType: ev.eventType,
                     sourceId: ea.sourceId,
                     description: ev.description,
                     version: ev.version,
-                    schema: ev.schema
+                    schema: ev.schema,
                   };
                   this.availableEventTriggers.push(eventTrigger);
                   this.allEventTriggers.push(eventTriggerWithSchema);
                 });
               });
-              if(this.allEventTriggers.length>0){
+              if (this.allEventTriggers.length > 0) {
                 this.filteredTriggers = this.allEventTriggers;
               }
             });
-
         });
       },
       err => {
@@ -459,7 +466,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       if (this.isEventTriggerPresent()) {
         this.manageEventTriggers();
       } else {
-        this.navigateToList();
+        this.reloadLambdaSpec();
       }
     } else {
       // Changes in binding state
@@ -501,7 +508,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         if (this.isEventTriggerPresent) {
           this.manageEventTriggers();
         } else {
-          this.navigateToList();
+          this.reloadLambdaSpec();
         }
       }
     }
@@ -609,7 +616,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               if (this.isEventTriggerSelected) {
                 this.manageEventTriggers();
               } else {
-                this.navigateToList();
+                this.reloadLambdaSpec();
               }
             }
           });
@@ -736,7 +743,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           this.executeDeleteSubscriptionRequests(deleteSubReqs);
         } else {
           if (errMessage === undefined) {
-            this.navigateToList();
+            this.reloadLambdaSpec();
           } else {
             this.showError(errMessage);
           }
@@ -746,7 +753,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       if (deleteSubReqs.length > 0) {
         this.executeDeleteSubscriptionRequests(deleteSubReqs);
       } else {
-        this.navigateToList();
+        this.reloadLambdaSpec();
       }
     }
   }
@@ -765,7 +772,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         }
       });
       if (errMessage === undefined) {
-        this.navigateToList();
+        this.reloadLambdaSpec();
       } else {
         this.showError(errMessage);
       }
@@ -794,7 +801,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         if (this.isEventTriggerSelected) {
           this.manageEventTriggers();
         } else {
-          this.navigateToList();
+          this.reloadLambdaSpec();
         }
       } else {
         this.showError(errMessage);
@@ -888,18 +895,31 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             this.dependency !== undefined &&
             this.dependency !== '';
 
-          if (!_has(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env')) {
-            _set(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env', []);
+          if (
+            !_has(
+              this,
+              'lambda.spec.deployment.spec.template.spec.containers[0].env',
+            )
+          ) {
+            _set(
+              this,
+              'lambda.spec.deployment.spec.template.spec.containers[0].env',
+              [],
+            );
           }
 
           this.setLoaded(true);
           this.initializeEditor();
-          if(lambda.metadata && lambda.metadata.annotations){
+          if (lambda.metadata && lambda.metadata.annotations) {
             this.functionSizes.forEach(s => {
-            if (`${s.name}` === lambda.metadata.annotations['function-size']) {
-              this.selectedFunctionSize = s;
-              this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
-            }
+              if (
+                `${s.name}` === lambda.metadata.annotations['function-size']
+              ) {
+                this.selectedFunctionSize = s;
+                this.selectedFunctionSizeName = this.selectedFunctionSize[
+                  'name'
+                ];
+              }
             });
           }
         },
@@ -1190,24 +1210,36 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateApi(): void {
-    const api: Api = this.apisService.initializeApi(
-      this.lambda,
-      this.namespace,
-      this.existingHTTPEndpoint,
-      this.isHTTPTriggerAuthenticated,
-      this.httpURL,
-      this.authType,
-      this.jwksUri,
-      this.issuer,
-    );
-    this.apisService.updateApi(api, this.namespace, this.token).subscribe(
-      () => {
-        this.manageServiceBindings();
-      },
-      err => {
-        this.showError(err.message);
-      },
-    );
+    this.apisService
+      .getApi(this.lambda.metadata.name, this.namespace, this.token)
+      .subscribe(updatedApi => {
+        if (
+          updatedApi.metadata.resourceVersion !==
+          this.existingHTTPEndpoint.metadata.resourceVersion
+        ) {
+          this.existingHTTPEndpoint.metadata.resourceVersion =
+            updatedApi.metadata.resourceVersion;
+        }
+
+        const api: Api = this.apisService.initializeApi(
+          this.lambda,
+          this.namespace,
+          this.existingHTTPEndpoint,
+          this.isHTTPTriggerAuthenticated,
+          this.httpURL,
+          this.authType,
+          this.jwksUri,
+          this.issuer,
+        );
+        this.apisService.updateApi(api, this.namespace, this.token).subscribe(
+          () => {
+            this.manageServiceBindings();
+          },
+          err => {
+            this.showError(err.message);
+          },
+        );
+      });
   }
 
   isEventTriggerSelected(
@@ -1348,8 +1380,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  getEnvs(){
-    return _get(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env');
+  getEnvs() {
+    return _get(
+      this,
+      'lambda.spec.deployment.spec.template.spec.containers[0].env',
+    );
   }
 
   changeTab(name: string) {
@@ -1376,7 +1411,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   addAppLabel() {
     this.updatedLabels = this.updatedLabels.map(label => {
-      return label.startsWith('app=') ? `app=${this.lambda.metadata.name}` : label;
+      return label.startsWith('app=')
+        ? `app=${this.lambda.metadata.name}`
+        : label;
     });
   }
 
@@ -1415,8 +1452,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             Authorization: `Bearer ${this.token}`,
           })
         : new Headers({
-          'Content-Type': 'application/json',
-        }),
+            'Content-Type': 'application/json',
+          }),
     })
       .then(async res => {
         const responseText = await res.text();
@@ -1462,24 +1499,69 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  initializeTriggers() {
+    this.existingEventTriggers = [];
+
+    this.existingHTTPEndpoint = null;
+    this.httpURL = '';
+    this.selectedTriggers = [];
+    this.isHTTPTriggerAdded = false;
+    this.isHTTPTriggerAuthenticated = false;
+    this.jwksUri = '';
+    this.authType = '';
+  }
+
+  reloadLambdaSpec() {
+    luigiClient.uxManager().showLoadingIndicator();
+    this.eventTriggerChooserModal.initializeView();
+
+    // temporary workaround for 'reappearing' triggers
+    setTimeout(() => {
+      if (this.mode === 'create') {
+        sessionStorage.displayLambdaSavedNotification = true;
+        luigiClient
+          .linkManager()
+          .fromClosestContext()
+          .navigate(`/details/${this.lambda.metadata.name}`);
+      } else {
+        this.showSuccessNotification();
+        this.ngOnInit();
+        luigiClient.uxManager().hideLoadingIndicator();
+      }
+    }, 3000);
+  }
+
+  private showSuccessNotification() {
+    this.showNotification(
+      {
+        type: 'success',
+        message: 'Lambda saved successfully',
+      },
+      4000,
+    );
+  }
+
   filterTriggerEvents() {
     this.filteredTriggers = [];
     this.allEventTriggers.forEach(element => {
-      if (element.eventType.toLowerCase().indexOf(this.trigger.toLowerCase())!==-1) {
+      if (
+        element.eventType.toLowerCase().indexOf(this.trigger.toLowerCase()) !==
+        -1
+      ) {
         this.filteredTriggers.push(element);
       }
     });
   }
 
-
-  public toggleDropDown(forceState?:boolean) {
-    this.isTriggerDropdownExpanded = forceState===undefined ? !this.isTriggerDropdownExpanded : forceState;
+  public toggleDropDown(forceState?: boolean) {
+    this.isTriggerDropdownExpanded =
+      forceState === undefined ? !this.isTriggerDropdownExpanded : forceState;
   }
 
   private generateExample(schema: JSON) {
     try {
-      return require('openapi-sampler').sample(schema)
-    } catch(e) {
+      return require('openapi-sampler').sample(schema);
+    } catch (e) {
       return;
     }
   }
@@ -1487,6 +1569,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   public selectTrigger(trigger) {
     this.trigger = trigger.eventType;
     this.testPayload = trigger.schema;
-    this.testPayloadText = JSON.stringify(this.generateExample(trigger.schema), null, 2);
+    this.testPayloadText = JSON.stringify(
+      this.generateExample(trigger.schema),
+      null,
+      2,
+    );
   }
 }
