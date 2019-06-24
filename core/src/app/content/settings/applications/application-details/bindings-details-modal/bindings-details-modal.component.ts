@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
-import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info';
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 
 import * as _ from 'lodash';
@@ -38,19 +37,14 @@ export class BindingsDetailsModalComponent {
     this.route.params.subscribe(params => {
       const applicationId = params['id'];
       const observables = [
-        this.applicationService.getApplication(applicationId) as any,
+        this.applicationService.getApplication(applicationId) as any
       ];
 
       forkJoin(observables).subscribe(
-        data => {
-          const response: any = data;
-
+        (response: any) => {
           this.application = response[0].application;
           if (this.application && this.application.enabledMappingServices) {
-            this.setInitialValues(
-              this.application,
-              initialNamespace
-            );
+            this.setInitialValues(this.application, initialNamespace);
           }
         },
         err => {
@@ -66,24 +60,32 @@ export class BindingsDetailsModalComponent {
     });
   }
 
-  private getInitialNamespace(enabledServices: EnabledMappingServices[] , initialNamespaceName: string) {
+  private getInitialNamespace(
+    enabledServices: EnabledMappingServices[],
+    initialNamespaceName: string
+  ) {
     const initialNamespaceArray = enabledServices.filter(
       enabledService => enabledService.namespace === initialNamespaceName
     );
-    if(!initialNamespaceArray || !initialNamespaceArray.length){
+    if (!initialNamespaceArray || !initialNamespaceArray.length) {
       return;
     }
     return initialNamespaceArray[0];
-  };
+  }
 
   private setInitialValues(application, initialNamespaceName) {
-    const initialNamespace = this.getInitialNamespace(application.enabledMappingServices, initialNamespaceName);
-    if(!initialNamespace) {
+    const initialNamespace = this.getInitialNamespace(
+      application.enabledMappingServices,
+      initialNamespaceName
+    );
+    if (!initialNamespace) {
       return;
     }
     this.initialNamespaceName = initialNamespaceName;
     this.allServices = initialNamespace.allServices;
-    this.selectedApplicationsState = initialNamespace.allServices ? application.services : initialNamespace.services;
+    this.selectedApplicationsState = initialNamespace.allServices
+      ? application.services
+      : initialNamespace.services;
   }
 
   public close() {
