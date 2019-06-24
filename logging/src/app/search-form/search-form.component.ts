@@ -58,6 +58,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   public loaded: Observable<boolean> = observableOf(false);
   private pollingSubscription: Subscription;
   private autoRefreshEnabled = true;
+  public canSetAutoRefresh = true;
+
+  get isQueryEmpty(): boolean {
+    return !this.getSearchQuery().query;
+  }
 
   public isHistoricalDataSwitchVisible = false;
 
@@ -111,14 +116,23 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.autoRefreshEnabled) {
-      this.runPollingSubscription();
-    }
+    this.setupAutoRefresh();
   }
 
   ngOnDestroy(): void {
     if (this.autoRefreshEnabled) {
       this.stopPollingSubscription();
+    }
+  }
+
+  setupAutoRefresh() {
+    if (this.model.to === 'now') {
+      if (this.autoRefreshEnabled) {
+        this.runPollingSubscription();
+      }
+    }
+    else {
+      this.canSetAutoRefresh = false;
     }
   }
 
@@ -331,10 +345,26 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.onSubmit();
     });
   }
+
+  onToTimeChanged(event: { target: { value: string; }; }) {
+    if (event.target.value === 'now') {
+      this.canSetAutoRefresh = true;
+      if (this.autoRefreshEnabled) {
+        this.runPollingSubscription();
+      }
+    }
+    else {
+      this.canSetAutoRefresh = false;
+      if (this.pollingSubscription && !this.pollingSubscription.closed) {
+        this.stopPollingSubscription();
+      }
+    }
+  }
+
   toggleAutoRefresh(e) {
     this.autoRefreshEnabled = e.target.checked;
     if (this.autoRefreshEnabled) {
-      this.refreshResults(); // refresh so that user immediately can see new logs
+      this.tryRefreshResults(); // refresh so that user immediately can see new logs
       this.runPollingSubscription();
     }
     else {
@@ -343,11 +373,17 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   private runPollingSubscription() {
-    this.pollingSubscription = interval(REFRESH_INTERVAL).subscribe(() => this.refreshResults());
+    this.pollingSubscription = interval(REFRESH_INTERVAL).subscribe(() => this.tryRefreshResults());
   }
 
   private stopPollingSubscription() {
-    this.pollingSubscription.unsubscribe();
+    this.pollingSubscription.unsubscribe(); 
+  }
+
+  private tryRefreshResults() {
+    if (!this.isQueryEmpty) {
+      this.refreshResults();
+    }
   }
 
 }
