@@ -4,7 +4,7 @@ import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 
-import * as _ from 'lodash';
+import { some as _some } from 'lodash/some';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -97,11 +97,11 @@ export class BindingsDetailsModalComponent {
   applicationSelected(id) {
     return (
       this.selectedApplicationsState &&
-      _.some(this.selectedApplicationsState, { id })
+      _some(this.selectedApplicationsState, { id })
     );
   }
 
   hasType(entries, type) {
-    return _.some(entries, { type });
+    return _some(entries, { type });
   }
 }
