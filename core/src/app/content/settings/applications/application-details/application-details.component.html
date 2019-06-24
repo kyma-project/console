@@ -121,7 +121,9 @@
         <fd-table *ngIf="boundNamespaces.length > 0">
           <fd-table-header>
             <th>Name</th>
-            <th class="y-fd-table--col-3 fd-has-text-align-right">Service & event bindings</th>
+            <th class="y-fd-table--col-3">
+              Service & event bindings
+            </th>
             <th class="y-fd-table--col-1"></th>
           </fd-table-header>
           <fd-table-body>
@@ -136,7 +138,7 @@
                   >{{ namespace.namespace }}</a
                 >
               </td>
-              <td class="fd-has-text-align-right">
+              <td>
                 {{
                   (namespace.allServices && application.services.length) ||
                     namespace.services.length

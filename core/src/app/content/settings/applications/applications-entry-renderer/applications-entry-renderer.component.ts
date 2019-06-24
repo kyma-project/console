@@ -5,6 +5,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
+import { EnabledMappingServices } from 'shared/datamodel/enabled-mapping-services';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -57,7 +58,12 @@ export class ApplicationsEntryRendererComponent
     let namespaces = [];
 
     if (entry.enabledMappingServices) {
-      namespaces=[...namespaces, ...entry.enabledMappingServices.map(e=>e.namespace)]
+      namespaces = [
+        ...namespaces,
+        ...entry.enabledMappingServices.map(
+          (e: EnabledMappingServices) => e.namespace
+        )
+      ];
       result = namespaces.join(', ');
     }
     return result;
