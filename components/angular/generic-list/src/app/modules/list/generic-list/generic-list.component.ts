@@ -27,7 +27,6 @@ export class GenericListComponent implements OnChanges, OnInit {
   @Input() emptyListText;
   @Input() createNewElementText;
   @Input() localStorageKey: string;
-  
 
   data: Observable<any[]>;
   showEmptyPage = false;
@@ -103,6 +102,7 @@ export class GenericListComponent implements OnChanges, OnInit {
         facets: [],
       };
     }
+
     if (this.source) {
       this.data = new Observable(observer => {
         this.fetchData(observer, noCache, 2);
