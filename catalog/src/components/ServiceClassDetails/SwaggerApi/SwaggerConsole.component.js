@@ -51,19 +51,3 @@ class SwaggerConsole extends React.Component {
 }
 
 export default SwaggerConsole;
-const OperationsLayoutPlugin = () => {
-  return {
-    components: {
-      OperationsLayout: OperationsLayout,
-    },
-  };
-};
-class OperationsLayout extends React.Component {
-  render() {
-    const { getComponent } = this.props;
-
-    const Operations = getComponent('operations', true);
-
-    return <Operations />;
-  }
-}

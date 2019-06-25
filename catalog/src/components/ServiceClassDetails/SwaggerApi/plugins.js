@@ -26,10 +26,11 @@ const SchemesWrapper = styled.section`
       height: 36px;
       > label[for='schemes'] {
         margin: 0;
-        > select {
+        & > select {
           width: 70px;
           height: 28px;
           ${buttonStyle}
+          box-shadow: none;
         }
       }
     }
@@ -96,7 +97,6 @@ export const ApiReferencePlugin = function(system) {
         return <Orig {...props} />;
       },
       OperationSummary: (Orig, system) => props => {
-        console.log(props);
         return <Orig {...props} />;
       },
     },
@@ -113,7 +113,6 @@ export const ApiConsolePlugin = function(system) {
         return null;
       },
       Col: (Orig, system) => props => {
-        console.log(props);
         return <Orig {...props} />;
       },
     },
