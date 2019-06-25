@@ -75,7 +75,7 @@ const ServiceClassInfo = ({
     tag: '50px',
   };
 
-  const computeNumberOfColumns = (isProvisionedOnlyOnce) => {
+  const computeNumberOfColumns = isProvisionedOnlyOnce => {
     const defaultNumberOfColumns = 4;
     return isProvisionedOnlyOnce
       ? defaultNumberOfColumns + 1
@@ -84,13 +84,15 @@ const ServiceClassInfo = ({
 
   return (
     <ServiceClassInfoContentWrapper className="fd-has-padding-top-none">
-      <ServiceClassHeaderTileGrid col={computeNumberOfColumns(isProvisionedOnlyOnce)}>
+      <ServiceClassHeaderTileGrid
+        col={computeNumberOfColumns(isProvisionedOnlyOnce)}
+      >
         <Tile>
           <TileMedia className="fd-has-display-flex">
             {imageUrl ? (
               <Image size="l" photo={imageUrl} />
             ) : (
-              <Icon glyph="crm-service-manager"/>
+              <Icon glyph="crm-service-manager" />
             )}
           </TileMedia>
           <TileContent title={serviceClassTileTitles.creator}>

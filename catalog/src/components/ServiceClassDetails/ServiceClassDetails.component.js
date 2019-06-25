@@ -87,7 +87,15 @@ class ServiceClassDetails extends React.Component {
       );
     }
 
-    const {providerDisplayName, creationTimestamp, documentationUrl, supportUrl, imageUrl, tags, labels} = (serviceClass ? serviceClass : {});
+    const {
+      providerDisplayName,
+      creationTimestamp,
+      documentationUrl,
+      supportUrl,
+      imageUrl,
+      tags,
+      labels,
+    } = serviceClass ? serviceClass : {};
 
     return (
       <div>
