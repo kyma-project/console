@@ -65,7 +65,15 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
       applications {
         name
         status
-        enabledInNamespaces,
+        enabledMappingServices {
+          namespace
+          allServices
+          services {
+            id
+            displayName
+            exist
+          }
+        }
         labels
       }
     }`;
@@ -77,7 +85,6 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
         application {
           name
           status
-          enabledInNamespaces,
           labels
         }
         type

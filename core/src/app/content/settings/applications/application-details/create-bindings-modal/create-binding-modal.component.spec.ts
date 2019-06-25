@@ -1,6 +1,6 @@
-import { LuigiClientCommunicationDirective } from './../../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
+import { LuigiClientCommunicationDirective } from '../../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditBindingsModalComponent } from './edit-binding-modal.component';
+import { CreateBindingsModalComponent } from './create-binding-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ApplicationsService } from '../../services/applications.service';
@@ -32,9 +32,9 @@ const ApplicationBindingServiceMock = {
   }
 };
 
-describe('EditBindingsModalComponent', () => {
-  let component: EditBindingsModalComponent;
-  let fixture: ComponentFixture<EditBindingsModalComponent>;
+fdescribe('CreateBindingsModalComponent', () => {
+  let component: CreateBindingsModalComponent;
+  let fixture: ComponentFixture<CreateBindingsModalComponent>;
   let ApplicationsServiceMockStub: ApplicationsService;
   let NamespacesServiceMockStub: NamespacesService;
   let ApplicationBindingServiceMockStub: ApplicationBindingService;
@@ -73,16 +73,16 @@ describe('EditBindingsModalComponent', () => {
         }
       ],
       declarations: [
-        EditBindingsModalComponent,
+        CreateBindingsModalComponent,
         LuigiClientCommunicationDirective
       ]
     })
-      .overrideTemplate(EditBindingsModalComponent, '')
+      .overrideTemplate(CreateBindingsModalComponent, '')
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditBindingsModalComponent);
+    fixture = TestBed.createComponent(CreateBindingsModalComponent);
     component = fixture.componentInstance;
     ApplicationsServiceMockStub = fixture.debugElement.injector.get(
       ApplicationsService
@@ -101,6 +101,7 @@ describe('EditBindingsModalComponent', () => {
 
   it('should create', () => {
     // then
+
     expect(component).toBeTruthy();
     expect(component.namespaces).toEqual([]);
     expect(component.namespaces).toEqual([]);
@@ -110,9 +111,18 @@ describe('EditBindingsModalComponent', () => {
     // given
     const applications = of({
       application: {
-        enabledInNamespaces: ['namespace1', 'namespace2']
+        enabledMappingServices: [{
+          namespace: 'namespace1',
+          allServices: true,
+          services: []
+        },{
+          namespace: 'namespace2',
+          allServices: true,
+          services: []
+        }]
       }
     });
+
     const namespaces = of([
       {
         label: 'namespace3'
@@ -127,31 +137,38 @@ describe('EditBindingsModalComponent', () => {
       ApplicationsServiceMockStub,
       'getApplication'
     ).and.returnValue(applications);
+    
     const spyGetNamespaces = spyOn(
       NamespacesServiceMockStub,
       'getNamespaces'
     ).and.returnValue(namespaces);
-    const spyConsoleLog = spyOn(console, 'log');
 
+    const spyConsoleLog = spyOn(console, 'log');
+    
     // when
     fixture.detectChanges();
     component.show();
-
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy();
       expect(spyGetApplication.calls.any()).toBeTruthy();
       expect(spyGetNamespaces.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeFalsy();
-      expect(
-        ApplicationsServiceMockStub.getApplication
-      ).toHaveBeenCalledTimes(1);
-      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(
+      expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
+      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.application).toEqual({
-        enabledInNamespaces: ['namespace1', 'namespace2']
+        enabledMappingServices: [{
+          namespace: 'namespace1',
+          allServices: true,
+          services: []
+        },{
+          namespace: 'namespace2',
+          allServices: true,
+          services: []
+        }]
       });
       expect(component.namespaces).toEqual([
         {
@@ -197,12 +214,10 @@ describe('EditBindingsModalComponent', () => {
       expect(spyGetApplication.calls.any()).toBeTruthy();
       expect(spyGetNamespaces.calls.any()).toBeTruthy();
       expect(spyConsoleLog.calls.any()).toBeTruthy();
-      expect(
-        ApplicationsServiceMockStub.getApplication
-      ).toHaveBeenCalledTimes(1);
-      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(
+      expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
+      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.application).toEqual(undefined);
       expect(component.namespaces).toEqual([]);
@@ -236,9 +251,7 @@ describe('EditBindingsModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(spyBind.calls.any()).toBeTruthy('spyBind.calls.any');
-      expect(
-        ApplicationBindingServiceMockStub.bind
-      ).toHaveBeenCalledTimes(1);
+      expect(ApplicationBindingServiceMockStub.bind).toHaveBeenCalledTimes(1);
 
       expect(
         ComponentCommunicationServiceMockStub.sendEvent
