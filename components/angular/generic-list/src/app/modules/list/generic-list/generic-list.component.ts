@@ -26,6 +26,8 @@ export class GenericListComponent implements OnChanges, OnInit {
   @Input() title;
   @Input() emptyListText;
   @Input() createNewElementText;
+  @Input() allowStoringFilters: boolean;
+  @Input() localStorageKey: string;
 
   data: Observable<any[]>;
   showEmptyPage = false;
@@ -98,7 +100,9 @@ export class GenericListComponent implements OnChanges, OnInit {
         facets: [],
       };
     }
-
+    if (this.allowStoringFilters) {
+      this.filterState.facets = this.loadFilterFacets();
+    }
     if (this.source) {
       this.data = new Observable(observer => {
         this.fetchData(observer, noCache, 2);
@@ -220,4 +224,14 @@ export class GenericListComponent implements OnChanges, OnInit {
   createNewElement() {
     // TODO
   }
+
+  protected loadFilterFacets() {
+    if (!this.localStorageKey) {
+      console.warn('GenericListComponent::loadFilterFacets: cannot load filters, please assign localStorageKey. Loading default state instead.');
+      return [];
+    }
+    const loadedFacets = localStorage.getItem(this.localStorageKey) || 'null';
+    return JSON.parse(loadedFacets) || [];
+  }
+
 }
