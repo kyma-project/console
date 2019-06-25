@@ -70,7 +70,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
             }
 
             this.getServices(this.id);
-            this.getApplications(this.id);
           },
           err => {
             this.errorMessage = err.message;
