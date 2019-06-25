@@ -4,7 +4,7 @@ import { ApplicationsService } from '../../services/applications.service';
 import { ModalService, ModalComponent } from 'fundamental-ngx';
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 
-import { some as _some } from 'lodash/some';
+import { some as _some } from 'lodash';
 import { forkJoin } from 'rxjs';
 
 @Component({
