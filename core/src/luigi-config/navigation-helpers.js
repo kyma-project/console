@@ -20,9 +20,7 @@ const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
         : '';
       const nodeId = `${categoryId}${categoryId && nodeLabel ? '.': ''}${nodeLabel}`;
       
-      const shouldBeDisabled = (element) => {
-        return (element === categoryId || element === nodeId);
-      }
+      const shouldBeDisabled = element => element === categoryId || element === nodeId;
       node.hideFromNav = disabledNavNodes.some(shouldBeDisabled);
 
     });

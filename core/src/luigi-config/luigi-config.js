@@ -646,9 +646,8 @@ Promise.all(initPromises)
               hideFromNav: true
             }
           ];
-          var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
-          const nodeTree = [].concat.apply(staticNodes, fetchedNodes);
-
+          const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
+          const nodeTree = [...staticNodes, ...fetchedNodes];
           hideDisabledNodes(config.disabledNavigationNodes, nodeTree, false)
           return nodeTree;
         }
