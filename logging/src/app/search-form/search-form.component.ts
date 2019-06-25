@@ -355,13 +355,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
     else {
       this.canSetAutoRefresh = false;
-<<<<<<< HEAD
       this.stopPollingSubscription();
-=======
-      if (this.pollingSubscription && !this.pollingSubscription.closed) {
-        this.stopPollingSubscription();
-      }
->>>>>>> 4d86950c174a74fe29529356783b01090bce72a6
     }
   }
 
@@ -381,13 +375,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   private stopPollingSubscription() {
-<<<<<<< HEAD
     if (this.pollingSubscription && !this.pollingSubscription.closed) {
       this.pollingSubscription.unsubscribe(); 
     }
-=======
-    this.pollingSubscription.unsubscribe(); 
->>>>>>> 4d86950c174a74fe29529356783b01090bce72a6
   }
 
   private tryRefreshResults() {
