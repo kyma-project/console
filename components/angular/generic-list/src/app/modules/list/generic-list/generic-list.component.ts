@@ -228,7 +228,7 @@ export class GenericListComponent implements OnChanges, OnInit {
   protected loadFilterFacets() {
     if (!this.localStorageKey) {
       console.warn('GenericListComponent::loadFilterFacets: cannot load filters, please assign localStorageKey. Loading default state instead.');
-      return;
+      return [];
     }
     const loadedFacets = localStorage.getItem(this.localStorageKey) || 'null';
     return JSON.parse(loadedFacets) || [];
