@@ -8,6 +8,8 @@ import {
 
 export const ProvisionOnlyOnceInfoContentWrapper = styled(Panel)`
   && {
+    border: 1px solid #eeeeef;
+  
     border-left: ${props =>
       props.color ? '6px solid ' + props.color : 'none'};
 

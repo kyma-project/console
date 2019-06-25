@@ -1,8 +1,15 @@
 import styled from 'styled-components';
 import { TileGrid, Image as Img } from '@kyma-project/react-components';
+import { Icon as DefaultServiceClassIcon } from '@kyma-project/react-components';
 
 export const ServiceClassInfoContentWrapper = styled.div`
   background-color: #fff;
+`;
+
+export const Icon = styled(DefaultServiceClassIcon)`
+  && {
+    color: '#515559';
+  }
 `;
 
 export const Image = styled(Img)`

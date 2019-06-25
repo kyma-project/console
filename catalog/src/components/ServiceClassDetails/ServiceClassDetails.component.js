@@ -87,6 +87,8 @@ class ServiceClassDetails extends React.Component {
       );
     }
 
+    const {providerDisplayName, creationTimestamp, documentationUrl, supportUrl, imageUrl, tags, labels} = (serviceClass ? serviceClass : {});
+
     return (
       <div>
         {serviceClass && (
@@ -95,13 +97,13 @@ class ServiceClassDetails extends React.Component {
             {this.renObjData}
             <ServiceClassDetailsHeader
               serviceClassDisplayName={serviceClassDisplayName}
-              providerDisplayName={serviceClass.providerDisplayName}
-              creationTimestamp={serviceClass.creationTimestamp}
-              documentationUrl={serviceClass.documentationUrl}
-              supportUrl={serviceClass.supportUrl}
-              imageUrl={serviceClass.imageUrl}
-              tags={serviceClass.tags}
-              labels={serviceClass.labels}
+              providerDisplayName={providerDisplayName}
+              creationTimestamp={creationTimestamp}
+              documentationUrl={documentationUrl}
+              supportUrl={supportUrl}
+              imageUrl={imageUrl}
+              tags={tags}
+              labels={labels}
               description={serviceClassDescription}
               isProvisionedOnlyOnce={isProvisionedOnlyOnce}
             >

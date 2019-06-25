@@ -50,7 +50,6 @@ const ServiceClassDetailsHeader = ({
         </ServiceClassToolbar>
       </ServiceClassToolbarWrapper>
       <ServiceClassInfo
-        className="none"
         creationTimestamp={creationTimestamp}
         description={description}
         documentationUrl={documentationUrl}
