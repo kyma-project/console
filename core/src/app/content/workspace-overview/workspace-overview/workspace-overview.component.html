@@ -11,7 +11,6 @@
           (onFilterChanged)="onFilterChanged($event)"></y-list-search>
         <y-list-filter [hidden]="!initialized || showEmptyPage"
           [filterState]="filterState"
-          [allowStoringFilters]="true"
           [localStorageKey]="'workspace/namespaceFilters'"
           (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
         <button fd-button [glyph]="'add'" class="open-create-namespace-modal"

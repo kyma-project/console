@@ -50,7 +50,6 @@ export class WorkspaceOverviewComponent extends GenericListComponent
   ) {
     super(changeDetector);
 
-    this.allowStoringFilters = true;
     this.localStorageKey = 'workspace/namespaceFilters';
 
     this.namespacesService = namespacesService;

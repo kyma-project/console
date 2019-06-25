@@ -26,8 +26,8 @@ export class GenericListComponent implements OnChanges, OnInit {
   @Input() title;
   @Input() emptyListText;
   @Input() createNewElementText;
-  @Input() allowStoringFilters: boolean;
   @Input() localStorageKey: string;
+  
 
   data: Observable<any[]>;
   showEmptyPage = false;
@@ -38,6 +38,9 @@ export class GenericListComponent implements OnChanges, OnInit {
   constructor(private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    if (this.localStorageKey) {
+      this.loadFilterFacets();
+    }
     this.applyState();
   }
 
@@ -99,9 +102,6 @@ export class GenericListComponent implements OnChanges, OnInit {
         filters: [],
         facets: [],
       };
-    }
-    if (this.allowStoringFilters) {
-      this.filterState.facets = this.loadFilterFacets();
     }
     if (this.source) {
       this.data = new Observable(observer => {
@@ -226,12 +226,11 @@ export class GenericListComponent implements OnChanges, OnInit {
   }
 
   protected loadFilterFacets() {
-    if (!this.localStorageKey) {
-      console.warn('GenericListComponent::loadFilterFacets: cannot load filters, please assign localStorageKey. Loading default state instead.');
-      return [];
-    }
-    const loadedFacets = localStorage.getItem(this.localStorageKey) || 'null';
-    return JSON.parse(loadedFacets) || [];
+    const stringFacets = localStorage.getItem(this.localStorageKey);
+    if (!stringFacets) return;
+    const facets = JSON.parse(stringFacets);
+    if (!facets) return;
+    this.filterState.facets = facets;
   }
 
 }
