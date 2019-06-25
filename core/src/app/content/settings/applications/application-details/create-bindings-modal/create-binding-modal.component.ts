@@ -84,7 +84,7 @@ export class CreateBindingsModalComponent {
     usedNamespaces: EnabledMappingServices[],
     namespace: NamespaceInfo
   ) {
-    if (!namespace && !namespace.getLabel()) {
+    if (!namespace && !(typeof namespace.getLabel === 'function')) {
       return;
     }
     const exists = usedNamespaces.some(
