@@ -80,7 +80,13 @@ export class CreateBindingsModalComponent {
     });
   }
 
-  private getFilteredNamespaces(usedNamespaces: EnabledMappingServices[], namespace: NamespaceInfo) {
+  private getFilteredNamespaces(
+    usedNamespaces: EnabledMappingServices[],
+    namespace: NamespaceInfo
+  ) {
+    if (!namespace && !namespace.getLabel()) {
+      return;
+    }
     const exists = usedNamespaces.some(
       usedNamespace => usedNamespace.namespace === namespace.getLabel()
     );
