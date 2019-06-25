@@ -355,9 +355,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
     else {
       this.canSetAutoRefresh = false;
-      if (this.pollingSubscription && !this.pollingSubscription.closed) {
-        this.stopPollingSubscription();
-      }
+      this.stopPollingSubscription();
     }
   }
 
@@ -377,7 +375,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   private stopPollingSubscription() {
-    this.pollingSubscription.unsubscribe(); 
+    if (this.pollingSubscription && !this.pollingSubscription.closed) {
+      this.pollingSubscription.unsubscribe(); 
+    }
   }
 
   private tryRefreshResults() {
