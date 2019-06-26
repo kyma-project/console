@@ -1,4 +1,3 @@
-//you can now use ES6 goodies here
 Luigi.setConfig({
   navigation: {
     nodes: () => [
@@ -11,6 +10,11 @@ Luigi.setConfig({
             pathSegment: 'compass',
             label: 'Compass MF',
             viewUrl: 'http://localhost:3000/',
+          },
+          {
+            pathSegment: 'runtimes',
+            label: 'Runtimes',
+            viewUrl: 'http://localhost:3000/runtimes',
           },
         ],
       },
