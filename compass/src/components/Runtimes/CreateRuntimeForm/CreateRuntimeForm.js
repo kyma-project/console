@@ -1,26 +1,13 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import { Panel } from 'fundamental-react/lib/Panel';
+import { ADD_RUNTIME } from '../queries';
 
-import { Panel, PanelGrid } from 'fundamental-react/lib/Panel';
+const formValues = {
+  name: null,
+  description: null,
+};
 
-const ADD_RUNTIME = gql`
-  mutation {
-    createRuntime(
-      in: {
-        name: "testname"
-        description: "Test21"
-        labels: { test: ["hello", "there"] }
-        annotations: { key: value }
-      }
-    ) {
-      id
-      description
-      name
-    }
-  }
-`;
-let input;
 const CreateRuntimeForm = () => (
   <Mutation mutation={ADD_RUNTIME}>
     {createRuntime => (
@@ -32,23 +19,48 @@ const CreateRuntimeForm = () => (
           <form
             onSubmit={e => {
               e.preventDefault();
-              createRuntime({ variables: { name: 'abcd' } });
-              input.value = '';
+              createRuntime({
+                variables: {
+                  in: {
+                    name: formValues.name.value,
+                    description: formValues.description.value,
+                    labels: { test: ['hello', 'there'] },
+                  },
+                },
+              });
+              formValues.name.value = '';
+              formValues.description.value = '';
             }}
           >
             <div className="fd-form__set">
               <div className="fd-form__item">
-                <label className="fd-form__label" htmlFor="input-1">
+                <label className="fd-form__label" htmlFor="runtime-name">
                   Name:
                 </label>
                 <input
                   className="fd-form__control"
                   ref={node => {
-                    input = node;
+                    formValues.name = node;
                   }}
                   type="text"
-                  id="input-1"
+                  id="runtime-name"
                   placeholder="Runtime name"
+                  aria-required="true"
+                  required
+                />
+              </div>
+              <div className="fd-form__item">
+                <label className="fd-form__label" htmlFor="runtime-desc">
+                  Description:
+                </label>
+                <input
+                  className="fd-form__control"
+                  ref={node => {
+                    formValues.description = node;
+                  }}
+                  type="text"
+                  id="runtime-desc"
+                  placeholder="Runtime description"
                   aria-required="true"
                   required
                 />
