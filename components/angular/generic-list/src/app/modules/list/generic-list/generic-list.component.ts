@@ -227,9 +227,13 @@ export class GenericListComponent implements OnChanges, OnInit {
 
   protected loadFilterFacets() {
     const stringFacets = localStorage.getItem(this.localStorageKey);
-    if (!stringFacets) return;
+    if (!stringFacets) {
+      return;
+    }
     const facets = JSON.parse(stringFacets);
-    if (!facets) return;
+    if (!facets) {
+      return;
+    }
     this.filterState.facets = facets;
   }
 
