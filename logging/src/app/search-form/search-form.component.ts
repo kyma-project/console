@@ -2,7 +2,8 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { SearchService } from './service/search-service';
 import { IPlainLogQuery, ISearchFormData } from './data';
 
-import { Observable, of as observableOf } from 'rxjs';
+import { Observable, of as observableOf, interval, Subscription } from 'rxjs';
+
 import { ActivatedRoute } from '@angular/router';
 
 import { LuigiContextService } from './service/luigi-context.service';
@@ -10,6 +11,8 @@ import { ILogStream } from './data/log-stream';
 import { IPod, IPodQueryResponse } from './data/pod-query';
 
 import { PodsSubscriptonService } from './service/pods-subscription/pods-subscription.service';
+
+import { REFRESH_INTERVAL } from './shared/constants';
 
 @Component({
   selector: 'app-search-form',
@@ -53,6 +56,13 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   private namespace: string;
 
   public loaded: Observable<boolean> = observableOf(false);
+  private pollingSubscription: Subscription;
+  private autoRefreshEnabled = true;
+  public canSetAutoRefresh = true;
+
+  get isQueryEmpty(): boolean {
+    return !this.getSearchQuery().query;
+  }
 
   public isHistoricalDataSwitchVisible = false;
 
@@ -105,11 +115,32 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setupAutoRefresh();
+  }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.autoRefreshEnabled) {
+      this.stopPollingSubscription();
+    }
+  }
+
+  setupAutoRefresh() {
+    if (this.model.to === 'now') {
+      if (this.autoRefreshEnabled) {
+        this.runPollingSubscription();
+      }
+    }
+    else {
+      this.canSetAutoRefresh = false;
+    }
+  }
 
   onSubmit() {
+    this.refreshResults();
+  }
+
+  refreshResults() {
     const searchQuery: IPlainLogQuery = this.getSearchQuery();
 
     this.searchService.search(searchQuery).subscribe(
@@ -314,4 +345,45 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.onSubmit();
     });
   }
+
+  onToTimeChanged(event: { target: { value: string; }; }) {
+    if (event.target.value === 'now') {
+      this.canSetAutoRefresh = true;
+      if (this.autoRefreshEnabled) {
+        this.runPollingSubscription();
+      }
+    }
+    else {
+      this.canSetAutoRefresh = false;
+      this.stopPollingSubscription();
+    }
+  }
+
+  toggleAutoRefresh(e) {
+    this.autoRefreshEnabled = e.target.checked;
+    if (this.autoRefreshEnabled) {
+      this.tryRefreshResults(); // refresh so that user immediately can see new logs
+      this.runPollingSubscription();
+    }
+    else {
+      this.stopPollingSubscription();
+    }
+  }
+
+  private runPollingSubscription() {
+    this.pollingSubscription = interval(REFRESH_INTERVAL).subscribe(() => this.tryRefreshResults());
+  }
+
+  private stopPollingSubscription() {
+    if (this.pollingSubscription && !this.pollingSubscription.closed) {
+      this.pollingSubscription.unsubscribe(); 
+    }
+  }
+
+  private tryRefreshResults() {
+    if (!this.isQueryEmpty) {
+      this.refreshResults();
+    }
+  }
+
 }

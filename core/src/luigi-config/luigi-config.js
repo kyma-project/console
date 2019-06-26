@@ -1,6 +1,7 @@
 import LuigiClient from '@kyma-project/luigi-client';
 import rbacRulesMatched from './rbac-rules-matcher';
 import convertToNavigationTree from './microfrontend-converter';
+import { hideDisabledNodes } from './navigation-helpers';
 
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -224,6 +225,8 @@ function getNodes(context) {
     values.forEach(function (val) {
       nodeTree = [].concat.apply(nodeTree, val);
     })
+    
+    hideDisabledNodes(config.disabledNavigationNodes, nodeTree, true);
     return nodeTree;
   })
     .catch((err) => {
@@ -643,8 +646,10 @@ Promise.all(initPromises)
               hideFromNav: true
             }
           ];
-          var fetchedNodes = [].concat.apply([], clusterMicrofrontendNodes);
-          return [].concat.apply(staticNodes, fetchedNodes);
+          const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
+          const nodeTree = [...staticNodes, ...fetchedNodes];
+          hideDisabledNodes(config.disabledNavigationNodes, nodeTree, false)
+          return nodeTree;
         }
       },
       {
@@ -772,4 +777,3 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
   });
   return limitExceededErrorscomposed;
 }
-

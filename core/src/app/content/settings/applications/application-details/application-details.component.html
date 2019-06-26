@@ -2,7 +2,11 @@
   <section class="fd-section">
     <fd-breadcrumb>
       <fd-breadcrumb-item>
-        <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+        <a
+          href="javascript:void(null)"
+          fd-breadcrumb-link
+          (click)="navigateToList()"
+        >
           Applications
         </a>
       </fd-breadcrumb-item>
@@ -20,7 +24,12 @@
         </fd-action-bar-title>
       </fd-action-bar-header>
       <fd-action-bar-actions>
-        <button fd-button *ngIf="!isReadOnly" [options]="'emphasized'" (click)="showUrl()">
+        <button
+          fd-button
+          *ngIf="!isReadOnly"
+          [options]="'emphasized'"
+          (click)="showUrl()"
+        >
           Connect Application
         </button>
       </fd-action-bar-actions>
@@ -35,14 +44,17 @@
         <fd-panel-title>General Information</fd-panel-title>
       </fd-panel-head>
       <fd-panel-actions>
-        <button fd-button [options]="'light'" (click)="openEditApplicationModal()">
+        <button
+          fd-button
+          [options]="'light'"
+          (click)="openEditApplicationModal()"
+        >
           Edit
         </button>
       </fd-panel-actions>
     </fd-panel-header>
 
     <fd-panel-body [bleed]="true">
-
       <table class="fd-table fd-table--no-borders">
         <tbody>
           <tr>
@@ -51,7 +63,12 @@
           </tr>
           <tr>
             <td class="fd-has-color-text-4">Status</td>
-            <td><span class="fd-status-label" [ngClass]="determineClass(application)">{{ prettyStatus }}</span>
+            <td>
+              <span
+                class="fd-status-label"
+                [ngClass]="determineClass(application)"
+                >{{ prettyStatus }}</span
+              >
             </td>
           </tr>
           <tr>
@@ -61,20 +78,22 @@
           <tr>
             <td class="fd-has-color-text-4">Labels</td>
             <td>
-              <ng-container *ngIf='transformedLabels.length'>
-                <span class="fd-token y-fd-token y-fd-token--no-button" role="button"
-                  *ngFor="let label of transformedLabels">
+              <ng-container *ngIf="transformedLabels.length">
+                <span
+                  class="fd-token y-fd-token y-fd-token--no-button"
+                  role="button"
+                  *ngFor="let label of transformedLabels"
+                >
                   {{ label }}
                 </span>
               </ng-container>
-              <ng-container *ngIf='!transformedLabels.length'>
+              <ng-container *ngIf="!transformedLabels.length">
                 <span>{{ emptyText }}</span>
               </ng-container>
             </td>
           </tr>
         </tbody>
       </table>
-
     </fd-panel-body>
   </fd-panel>
 </section>
@@ -87,7 +106,12 @@
           <fd-panel-title>Namespace Bindings</fd-panel-title>
         </fd-panel-head>
         <fd-panel-actions>
-          <button fd-button [options]="'light'" [glyph]="'add'" (click)="openEditBindingsModal()">
+          <button
+            fd-button
+            [options]="'light'"
+            [glyph]="'add'"
+            (click)="openCreateBindingsModal()"
+          >
             Create Binding
           </button>
         </fd-panel-actions>
@@ -97,16 +121,35 @@
         <fd-table *ngIf="boundNamespaces.length > 0">
           <fd-table-header>
             <th>Name</th>
-            <th class="y-fd-table--col-1">
+            <th class="y-fd-table--col-3">
+              Service & event bindings
             </th>
-
+            <th class="y-fd-table--col-1"></th>
           </fd-table-header>
           <fd-table-body>
             <tr *ngFor="let namespace of boundNamespaces">
-              <td><span class="fd-has-font-weight-bold">{{ namespace }}</span></td>
+              <td
+                class="fd-has-font-weight-bold"
+                (click)="openBindingsDetailsModal(namespace.namespace)"
+              >
+                <a
+                  href="javascript:void(null)"
+                  [attr.data-e2e-id]="'application-name'"
+                  >{{ namespace.namespace }}</a
+                >
+              </td>
+              <td>
+                {{
+                  (namespace.allServices && application.services.length) ||
+                    namespace.services.length
+                }}/{{ application.services.length }}
+              </td>
               <td class="fd-has-float-right">
-                <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
-                </y-list-actions>
+                <y-list-actions
+                  [entry]="namespace.namespace"
+                  [entryEventHandler]="entryEventHandler"
+                  [actions]="actions"
+                ></y-list-actions>
               </td>
             </tr>
           </fd-table-body>
@@ -137,19 +180,27 @@
                 </span>
               </td>
               <td>
-                <span class="sap-icon--l" ngClass="{{
+                <span
+                  class="sap-icon--l"
+                  ngClass="{{
                     hasType(service.entries, 'API')
                       ? 'sap-icon--accept fd-has-color-status-1'
                       : 'sap-icon--decline fd-has-color-status-4'
-                  }}" role="presentation">
+                  }}"
+                  role="presentation"
+                >
                 </span>
               </td>
               <td>
-                <span class="sap-icon--l" ngClass="{{
+                <span
+                  class="sap-icon--l"
+                  ngClass="{{
                     hasType(service.entries, 'Events')
                       ? 'sap-icon--accept fd-has-color-status-1'
                       : 'sap-icon--decline fd-has-color-status-4'
-                  }}" role="presentation">
+                  }}"
+                  role="presentation"
+                >
                 </span>
               </td>
             </tr>
@@ -162,7 +213,14 @@
 
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-edit-bindings-modal #editbindingsmodal></app-edit-bindings-modal>
+<app-bindings-details-modal #bindingsdetailsmodal></app-bindings-details-modal>
+<app-create-bindings-modal #createbindingsmodal></app-create-bindings-modal>
 <app-information-modal #infoModal></app-information-modal>
-<app-edit-application-modal #editApplicationModal *ngIf="application" [name]="application.name"
-  [initialDescription]="application.description" [initialLabels]="transformedLabels">
+<app-edit-application-modal
+  #editApplicationModal
+  *ngIf="application"
+  [name]="application.name"
+  [initialDescription]="application.description"
+  [initialLabels]="transformedLabels"
+>
 </app-edit-application-modal>

@@ -1,5 +1,5 @@
 # Default owners of the repository
-* @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @johannesdoberer @marynakhromova
+* @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @johannesdoberer @marynakhromova @parostatkiem
 
 /catalog/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
 /instances/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
@@ -8,7 +8,7 @@
 /components/angular/ @kwiatekus @dariadomagala @y-kkamil @akucharska @parostatkiem
 /components/react/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
 /core/ @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska
-/tests/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil
+/tests/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
 /lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska
 
 # Owners of all .md files in the repository

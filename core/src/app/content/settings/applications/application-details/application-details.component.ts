@@ -4,6 +4,8 @@ import { ApplicationsService } from '../services/applications.service';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EditBindingsModalComponent } from './edit-bindings-modal/edit-binding-modal.component';
+import { BindingsDetailsModalComponent } from './bindings-details-modal/bindings-details-modal.component';
+import { CreateBindingsModalComponent } from './create-bindings-modal/create-binding-modal.component';
 
 import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../shared/components/information-modal/information-modal.component';
@@ -28,7 +30,12 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     {
       function: 'unbind',
       name: 'Unbind'
+    },
+    {
+      function: 'openEditBindingsModal',
+      name: 'Edit'
     }
+
   ];
   private boundNamespaces = [];
   private contextListenerId: string;
@@ -37,6 +44,8 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   entryEventHandler = this.getEntryEventHandler();
   @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
+  @ViewChild('bindingsdetailsmodal') bindingsdetailsmodal: BindingsDetailsModalComponent;
+  @ViewChild('createbindingsmodal') createbindingsmodal: CreateBindingsModalComponent;
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
   @ViewChild('editApplicationModal')
@@ -56,7 +65,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       this.currentAppId = params['id'];
       this.getApplication();
     });
-
     this.communication.observable$.subscribe(data => {
       const response: any = data;
 
@@ -66,9 +74,11 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         response.data.enableApplication &&
         response.data.enableApplication.namespace
       ) {
-        this.boundNamespaces.push(
-          response.data.enableApplication.namespace
-        );
+        this.boundNamespaces.push({
+          allServices: response.data.enableApplication.allServices,
+          namespace: response.data.enableApplication.namespace,
+          services: response.data.enableApplication.services
+        });
       }
 
       if (response.type === 'updateResource') {
@@ -85,27 +95,26 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getApplication() {
-    this.applicationsService
-      .getApplication(this.currentAppId)
-      .subscribe(
-        data => {
-          if (data && data.application) {
-            this.application = data.application;
-            this.transformedLabels = this.getTransformedLabels(
-              this.application.labels
-            );
-            this.boundNamespaces = data.application.enabledInNamespaces;
-            this.prettyStatus = this.applicationsService.printPrettyConnectionStatus(
-              data.application.status
-            );
-          } else {
-            this.navigateToList();
-          }
-        },
-        err => {
-          this.infoModal.show('Error', err);
+    this.applicationsService.getApplication(this.currentAppId).subscribe(
+      data => {
+        if (data && data.application) {
+          this.application = data.application;
+          this.transformedLabels = this.getTransformedLabels(
+            this.application.labels
+          );
+          this.boundNamespaces = data.application.enabledMappingServices;
+
+          this.prettyStatus = this.applicationsService.printPrettyConnectionStatus(
+            data.application.status
+          );
+        } else {
+          this.navigateToList();
         }
-      );
+      },
+      err => {
+        this.infoModal.show('Error', err);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -115,8 +124,12 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  openEditBindingsModal() {
-    this.editbindingsmodal.show();
+  openCreateBindingsModal() {
+    this.createbindingsmodal.show();
+  }
+
+  openBindingsDetailsModal(entry: any) {
+    this.bindingsdetailsmodal.show(entry);
   }
 
   getEntryEventHandler() {
@@ -127,15 +140,18 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
           .subscribe(
             data => {
               const response: any = data;
-              this.boundNamespaces = _.without(
-                this.boundNamespaces,
-                response.disableApplication.namespace
+
+              this.boundNamespaces = this.boundNamespaces.filter(
+                item => item.namespace !== response.disableApplication.namespace
               );
             },
             err => {
               this.infoModal.show('Error', err);
             }
           );
+      },
+      openEditBindingsModal: (entry: any) => {
+        this.editbindingsmodal.show(entry);
       }
     };
   }

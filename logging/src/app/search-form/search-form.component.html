@@ -67,7 +67,7 @@
           <fd-form-label [forValue]="'to'">
             To
           </fd-form-label>
-          <select fd-form-control id="to" required [(ngModel)]="model.to" name="to">
+          <select fd-form-control id="to" required [(ngModel)]="model.to" name="to" (change)="onToTimeChanged($event)">
             <option *ngFor="let to of toValues" [value]="to">{{ to }}</option>
           </select>
         </div>
@@ -130,6 +130,19 @@
         {{ label }}
         </div>
     </ng-container>
+  </div>
+  <div class="fd-form__item fd-form__item--check fd_panel__refresh-toggle">
+    <label class="fd-form__label" for="auto-refresh-toggle">
+        <span class="fd-toggle fd-form__control">
+            <input
+                type="checkbox"
+                checked id="auto-refresh-toggle"
+                (change)="toggleAutoRefresh($event)"
+                [disabled]="!canSetAutoRefresh">
+            <span class="fd-toggle__switch" role="presentation"></span>
+        </span>
+        Auto refresh
+    </label>
   </div>
   <div class="fd-panel__body">
     <fd-table>

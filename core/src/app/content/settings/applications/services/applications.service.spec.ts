@@ -101,9 +101,18 @@ describe('ApplicationsService', () => {
           description
           labels
           name
-          enabledInNamespaces
+          enabledMappingServices {
+            namespace
+            allServices
+            services {
+              id
+              displayName
+              exist
+            }
+          }
           status
           services {
+            id
             displayName
             entries {
               type
