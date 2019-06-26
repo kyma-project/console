@@ -17,7 +17,8 @@ var config = {
   docsModuleUrl: 'https://docs.' + k8sDomain,
   addOnsModuleUrl: 'https://add-ons.' + k8sDomain,
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
-  graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql'
+  graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
+  disabledNavigationNodes: []
 };
 
 if (clusterConfig) {
