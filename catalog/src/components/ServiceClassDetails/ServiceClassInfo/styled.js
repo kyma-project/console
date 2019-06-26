@@ -4,7 +4,7 @@ import { Icon as DefaultServiceClassIcon } from '@kyma-project/react-components'
 
 export const ServiceClassInfoContentWrapper = styled.div`
   background-color: #fff;
-  padding: 0 30px 0 15px
+  padding: 0 30px 0 15px;
 `;
 
 export const Icon = styled(DefaultServiceClassIcon)`
