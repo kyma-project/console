@@ -38,7 +38,7 @@ client
     `,
     variables: {},
   })
-  .then(result => console.log(result));
+  .then(result => console.log(result.data.runtimes.data));
 
 ReactDOM.render(
   <ApolloProvider client={client}>
