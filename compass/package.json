@@ -1,0 +1,40 @@
+{
+  "name": "compass",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@kyma-project/luigi-client": "^0.4.12",
+    "@kyma-project/luigi-core": "^0.4.12",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1"
+  },
+  "scripts": {
+    "start-live-server": "live-server --entry-file=src/index.html .",
+    "start": "concurrently \"npm run buildConfig:watch\" \"npm run start-live-server\" \"react-scripts start\" ",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
+    "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "webpack-cli": "^3.3.5"
+  }
+}
