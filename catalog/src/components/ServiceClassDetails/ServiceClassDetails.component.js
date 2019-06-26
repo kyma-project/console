@@ -8,10 +8,6 @@ import {
   PanelBody,
 } from '@kyma-project/react-components';
 
-import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
-import ServiceClassInfo from './ServiceClassInfo/ServiceClassInfo.component';
-import ServiceClassDescription from './ServiceClassDescription/ServiceClassDescription.component';
-import ProvisionOnlyOnceInfo from './ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 
@@ -19,8 +15,6 @@ import { isStringValueEqualToTrue } from '../../commons/helpers';
 
 import {
   ServiceClassDetailsWrapper,
-  ServiceGridWrapper,
-  LeftSideWrapper,
   CenterSideWrapper,
   EmptyList,
 } from './styled';
@@ -30,6 +24,7 @@ import {
   getDescription,
   backendModuleExists,
 } from '../../commons/helpers';
+import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
 class ServiceClassDetails extends React.Component {
   static propTypes = {
@@ -39,7 +34,7 @@ class ServiceClassDetails extends React.Component {
   };
 
   render() {
-    const { history, createServiceInstance } = this.props;
+    const { createServiceInstance } = this.props;
     const serviceClass =
       this.props.serviceClass.clusterServiceClass ||
       this.props.serviceClass.serviceClass;
@@ -92,45 +87,43 @@ class ServiceClassDetails extends React.Component {
       );
     }
 
+    const {
+      providerDisplayName,
+      creationTimestamp,
+      documentationUrl,
+      supportUrl,
+      imageUrl,
+      tags,
+      labels,
+    } = serviceClass ? serviceClass : {};
+
     return (
       <div>
         {serviceClass && (
           <div>
             <div> {this.arrayOfJsx} </div>
             {this.renObjData}
-            <ServiceClassToolbar
-              history={history}
+            <ServiceClassDetailsHeader
               serviceClassDisplayName={serviceClassDisplayName}
+              providerDisplayName={providerDisplayName}
+              creationTimestamp={creationTimestamp}
+              documentationUrl={documentationUrl}
+              supportUrl={supportUrl}
+              imageUrl={imageUrl}
+              tags={tags}
+              labels={labels}
+              description={serviceClassDescription}
+              isProvisionedOnlyOnce={isProvisionedOnlyOnce}
             >
               <CreateInstanceModal
                 serviceClass={serviceClass}
                 modalOpeningComponent={modalOpeningComponent}
                 createServiceInstance={createServiceInstance}
               />
-            </ServiceClassToolbar>
+            </ServiceClassDetailsHeader>
 
             <ServiceClassDetailsWrapper phoneRows>
-              <LeftSideWrapper>
-                <ServiceClassInfo
-                  serviceClassDisplayName={serviceClassDisplayName}
-                  providerDisplayName={serviceClass.providerDisplayName}
-                  creationTimestamp={serviceClass.creationTimestamp}
-                  documentationUrl={serviceClass.documentationUrl}
-                  supportUrl={serviceClass.supportUrl}
-                  imageUrl={serviceClass.imageUrl}
-                  tags={serviceClass.tags}
-                  labels={serviceClass.labels}
-                />
-              </LeftSideWrapper>
               <CenterSideWrapper>
-                <ServiceGridWrapper cols={isProvisionedOnlyOnce ? 4 : 1}>
-                  {serviceClassDescription && (
-                    <ServiceClassDescription
-                      description={serviceClassDescription}
-                    />
-                  )}
-                  {isProvisionedOnlyOnce && <ProvisionOnlyOnceInfo />}
-                </ServiceGridWrapper>
                 {backendModuleExists('cms') &&
                 backendModuleExists('assetstore') ? (
                   <ServiceClassTabs serviceClass={serviceClass} />

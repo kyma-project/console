@@ -3,6 +3,7 @@
 
 import BackendModuleDisabled from './BackendModuleDisabled';
 import Button from './Button';
+import { Breadcrumb, BreadcrumbItem } from './Breadcrumb';
 import Dropdown from './Dropdown';
 import ErrorBoundary from './ErrorBoundary';
 import Input from './Forms/Input';
@@ -42,7 +43,7 @@ import Tab from './Tabs/Tab';
 import Table from './Table';
 import Text from './Text';
 import ThemeWrapper from './ThemeWrapper';
-import { Tile, TileMedia, TileContent } from './Tile';
+import { Tile, TileMedia, TileContent, TileGrid } from './Tile';
 import Token from './Token';
 import Toolbar from './Toolbar';
 import Tooltip from './Tooltip';
@@ -63,6 +64,8 @@ import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 module.exports = {
   BackendModuleDisabled,
   Button,
+  Breadcrumb,
+  BreadcrumbItem,
   Dropdown,
   ErrorBoundary,
   Input,
@@ -103,6 +106,7 @@ module.exports = {
   Tile,
   TileMedia,
   TileContent,
+  TileGrid,
   Token,
   Toolbar,
   Tooltip,

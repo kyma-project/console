@@ -5,33 +5,35 @@ import Moment from 'react-moment';
 import {
   Label,
   Icon,
-  Header,
-  Separator,
-  Text,
   Tooltip,
+  Tile,
+  TileContent,
+  TileMedia,
 } from '@kyma-project/react-components';
 
 import {
   ServiceClassInfoContentWrapper,
-  ImagePlaceholder,
-  ServiceClassInfoContent,
   ExternalLink,
   Image,
   LabelsWrapper,
   LabelWrapper,
+  ServiceClassHeaderTileGrid,
 } from './styled';
 
+import { serviceClassTileTitles } from '../../../variables';
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
+import ProvisionOnlyOnceInfo from '../ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 
 const ServiceClassInfo = ({
-  serviceClassDisplayName,
-  providerDisplayName,
   creationTimestamp,
   documentationUrl,
   supportUrl,
   imageUrl,
   tags,
   labels,
+  description,
+  isProvisionedOnlyOnce,
+  providerDisplayName,
 }) => {
   function sortTags(tag1, tag2) {
     return tag1.length > 8 && tag2.length < 15;
@@ -73,77 +75,97 @@ const ServiceClassInfo = ({
     tag: '50px',
   };
 
+  const computeNumberOfColumns = isProvisionedOnlyOnce => {
+    const defaultNumberOfColumns = 4;
+    return isProvisionedOnlyOnce
+      ? defaultNumberOfColumns + 1
+      : defaultNumberOfColumns;
+  };
+
   return (
-    <div>
-      <ServiceClassInfoContentWrapper>
-        <ImagePlaceholder>
-          {imageUrl ? (
-            <Image size="l" photo={imageUrl} />
-          ) : (
-            <Icon glyph="crm-service-manager" style={{ color: '#515559' }} />
+    <ServiceClassInfoContentWrapper className="fd-has-padding-top-none">
+      <ServiceClassHeaderTileGrid
+        col={computeNumberOfColumns(isProvisionedOnlyOnce)}
+      >
+        <Tile>
+          <TileMedia className="fd-has-display-flex">
+            {imageUrl ? (
+              <Image size="l" photo={imageUrl} />
+            ) : (
+              <Icon glyph="crm-service-manager" />
+            )}
+          </TileMedia>
+          <TileContent title={serviceClassTileTitles.creator}>
+            <p>{providerDisplayName}</p>
+          </TileContent>
+        </Tile>
+        <Tile>
+          <TileContent title={serviceClassTileTitles.lastUpdate}>
+            <Moment unix format="MMM DD, YYYY">
+              {creationTimestamp}
+            </Moment>
+          </TileContent>
+        </Tile>
+        <Tile>
+          {documentationUrl && (
+            <TileContent title={serviceClassTileTitles.documentation}>
+              <ExternalLink href={documentationUrl} target="_blank">
+                Link
+              </ExternalLink>
+            </TileContent>
           )}
-        </ImagePlaceholder>
-        <ServiceClassInfoContent
-          title={serviceClassDisplayName}
-          data-e2e-id="service-title-and-provider"
-        >
-          {providerDisplayName || ''}
-        </ServiceClassInfoContent>
-      </ServiceClassInfoContentWrapper>
-      <Separator margin="30px 0 30px" />
-      <div>
-        <Header margin="0 0 20px">Vendor Information</Header>
-        <Text fontSize="14px" data-e2e-id="service-last-update">
-          Last Update:{' '}
-          <Moment unix format="MMM DD, YYYY">
-            {creationTimestamp}
-          </Moment>
-        </Text>
-        {documentationUrl && (
-          <Text fontSize="14px">
-            Documentation:{' '}
-            <ExternalLink href={documentationUrl} target="_blank">
-              Link
-            </ExternalLink>
-          </Text>
+        </Tile>
+        <Tile>
+          {supportUrl && (
+            <TileContent title={serviceClassTileTitles.support}>
+              <ExternalLink href={supportUrl} target="_blank">
+                Link
+              </ExternalLink>
+            </TileContent>
+          )}
+        </Tile>
+        {isProvisionedOnlyOnce && (
+          <Tile rowSpan={2} className="fd-has-padding-left-none">
+            <ProvisionOnlyOnceInfo />
+          </Tile>
         )}
-        {supportUrl && (
-          <Text fontSize="14px">
-            Support:{' '}
-            <ExternalLink href={supportUrl} target="_blank">
-              Link
-            </ExternalLink>
-          </Text>
-        )}
+        <Tile columnSpan={4}>
+          <TileContent title={serviceClassTileTitles.description}>
+            <p>{description}</p>
+          </TileContent>
+        </Tile>
         {modifiedTags && modifiedTags.length > 0 && (
-          <LabelsWrapper data-e2e-id="service-labels">
-            {modifiedTags.sort(sortTags).map(tag => (
-              <LabelWrapper key={`${tag.type}-${tag.name}`}>
-                <Tooltip
-                  content={tagsDescription[tag.type]}
-                  minWidth={tooltipWidth[tag.type]}
-                >
-                  <Label cursorType="help" data-e2e-id="service-label">
-                    {tag.name}
-                  </Label>
-                </Tooltip>
-              </LabelWrapper>
-            ))}
-          </LabelsWrapper>
+          <Tile columnSpan={computeNumberOfColumns(isProvisionedOnlyOnce)}>
+            <TileContent title={serviceClassTileTitles.tags}>
+              <LabelsWrapper data-e2e-id="service-labels">
+                {modifiedTags.sort(sortTags).map(tag => (
+                  <LabelWrapper key={`${tag.type}-${tag.name}`}>
+                    <Tooltip
+                      content={tagsDescription[tag.type]}
+                      minWidth={tooltipWidth[tag.type]}
+                    >
+                      <Label cursorType="help" data-e2e-id="service-label">
+                        {tag.name}
+                      </Label>
+                    </Tooltip>
+                  </LabelWrapper>
+                ))}
+              </LabelsWrapper>
+            </TileContent>
+          </Tile>
         )}
-      </div>
-    </div>
+      </ServiceClassHeaderTileGrid>
+    </ServiceClassInfoContentWrapper>
   );
 };
 
 ServiceClassInfo.propTypes = {
-  serviceClassDisplayName: PropTypes.string.isRequired,
-  providerDisplayName: PropTypes.string.isRequired,
-  creationTimestamp: PropTypes.number,
+  creationTimestamp: PropTypes.number.isRequired,
   documentationUrl: PropTypes.string,
   imageUrl: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
   labels: PropTypes.object,
+  description: PropTypes.string,
 };
 
 export default ServiceClassInfo;
