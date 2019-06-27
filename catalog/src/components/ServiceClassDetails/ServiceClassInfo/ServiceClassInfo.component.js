@@ -101,7 +101,11 @@ const ServiceClassInfo = ({
         </Tile>
         <Tile>
           <TileContent title={serviceClassTileTitles.lastUpdate}>
-            <Moment unix format="MMM DD, YYYY" data-e2e-id="service-last-update">
+            <Moment
+              unix
+              format="MMM DD, YYYY"
+              data-e2e-id="service-last-update"
+            >
               {creationTimestamp}
             </Moment>
           </TileContent>
