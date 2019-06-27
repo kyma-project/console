@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Panel } from 'fundamental-react/lib/Panel';
-import { ADD_RUNTIME } from '../queries';
+import { ADD_RUNTIME } from '../gql';
 
 const formValues = {
   name: null,

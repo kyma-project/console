@@ -3,45 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import LuigiClient from '@kyma-project/luigi-client';
 import ApolloClient from 'apollo-boost';
-import { gql } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
+import { COMPASS_GRAPHQL_ENDPOINT } from './config/config';
+import LuigiClient from '@kyma-project/luigi-client'; // this is NOT unused
 
-const client = new ApolloClient({
-  uri: `https://compass-gateway.kyma.local/director/graphql`,
+const gqlClient = new ApolloClient({
+  uri: COMPASS_GRAPHQL_ENDPOINT,
 });
 
-client
-  .query({
-    query: gql`
-      query {
-        runtimes(
-          filter: [
-            {
-              label: "group"
-              values: ["production", "experimental"]
-              operator: ANY
-            }
-          ]
-        ) {
-          data {
-            id
-            name
-            description
-            tenant
-            labels
-            annotations
-          }
-        }
-      }
-    `,
-    variables: {},
-  })
-  .then(result => console.log(result.data.runtimes.data));
-
 ReactDOM.render(
-  <ApolloProvider client={client}>
+  <ApolloProvider client={gqlClient}>
     <App />
   </ApolloProvider>,
   document.getElementById('root'),

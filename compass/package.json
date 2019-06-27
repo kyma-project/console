@@ -5,6 +5,7 @@
   "dependencies": {
     "@kyma-project/luigi-client": "^0.4.12",
     "@kyma-project/luigi-core": "^0.4.12",
+    "@kyma-project/react-components": "0.0.43",
     "apollo-boost": "^0.4.3",
     "fundamental-react": "^0.5.3",
     "fundamental-styles": "^0.1.0",
@@ -18,7 +19,7 @@
   },
   "scripts": {
     "start-live-server": "live-server --entry-file=src/index.html .",
-    "start": "concurrently \"npm run buildConfig:watch\" \"npm run start-live-server\" \"react-scripts start\" ",
+    "start": "concurrently \"react-scripts start\" \"npm run buildConfig:watch\" \"npm run start-live-server\" ",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
