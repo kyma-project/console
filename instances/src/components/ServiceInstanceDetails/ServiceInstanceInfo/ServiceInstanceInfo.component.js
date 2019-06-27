@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from 'styled-components-grid';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import {
@@ -8,11 +7,11 @@ import {
   Modal,
   PanelBody,
   PanelActions,
+  Label,
 } from '@kyma-project/react-components';
 
 import {
   ServiceInstanceInfoWrapper,
-  CenterSideWrapper,
   ContentHeader,
   ContentDescription,
   Element,
@@ -25,7 +24,8 @@ import {
   DescriptionWrapper,
   StatusWrapper,
   ServiceInstanceDescription,
-  GridCell
+  GridCell,
+  LabelWrapper,
 } from './styled';
 
 import { getResourceDisplayName } from '../../../commons/helpers';
@@ -55,6 +55,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
   if (!serviceInstance) {
     return null;
   }
+
+  serviceInstance.labels = ['hey', 'ho', 'kawal dobrej labelki'];
 
   const instanceClass = serviceInstance.clusterServiceClass
     ? serviceInstance.clusterServiceClass
@@ -143,9 +145,32 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               </GridCell>
             ) : null}
           </DescriptionGrid>
+          <DescriptionGrid>
+            {serviceInstance.labels && serviceInstance.labels.length > 0 && (
+              <div>
+                <DescriptionKey>Labels</DescriptionKey>
+                <Element margin="1px 0 0 0">
+                  {serviceInstance.labels.map((label, index) => (
+                    <LabelWrapper key={`${label}-${index}`}>
+                      <Label
+                        key={label}
+                        cursorType="auto"
+                        data-e2e-id="service-label"
+                      >
+                        {label}
+                      </Label>
+                    </LabelWrapper>
+                  ))}
+                </Element>
+              </div>
+            )}
+          </DescriptionGrid>
         </ContentDescription>
       </DescriptionWrapper>
-      <StatusWrapper colSpan={1} color={instanceStatusColor(serviceInstance.status.type)} >
+      <StatusWrapper
+        colSpan={1}
+        color={instanceStatusColor(serviceInstance.status.type)}
+      >
         <ContentHeader>
           Status
           <PanelActions>
@@ -159,9 +184,11 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
         </ContentHeader>
 
         <PanelBody>
-          <Element margin="0" 
+          <Element
+            margin="0"
             data-e2e-id="instance-status-type"
-            style={{color: instanceStatusColor(serviceInstance.status.type)}}>
+            style={{ color: instanceStatusColor(serviceInstance.status.type) }}
+          >
             {serviceInstance.status.type}
           </Element>
           <Element
