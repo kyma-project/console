@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const ToolbarWrapper = styled.section`
+  background-color: #fff;
+`;
+
 export const UpperBarWrapper = styled.div`{
   display: flex;
   justify-content: space-between;

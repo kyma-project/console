@@ -25,7 +25,6 @@ import {
   DescriptionWrapper,
   StatusWrapper,
   ServiceInstanceDescription,
-  GridCell,
   LabelWrapper,
 } from './styled';
 
@@ -55,8 +54,6 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     return null;
   }
 
-  serviceInstance.labels = ['hey', 'ho', 'kawal dobrej labelki'];
-
   const instanceClass = serviceInstance.clusterServiceClass
     ? serviceInstance.clusterServiceClass
     : serviceInstance.serviceClass;
@@ -65,14 +62,14 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     : serviceInstance.servicePlan;
 
   return (
-    <ServiceInstanceInfoWrapper cols={3}>
+    <ServiceInstanceInfoWrapper cols={3} className="fd-has-padding-bottom-medium">
       <DescriptionWrapper colSpan={2}>
         <ServiceInstanceDescription>
           {instanceClass && instanceClass.description}
         </ServiceInstanceDescription>
         <ContentDescription>
           <Grid>
-            <GridCell size={INFORMATION_CELL_SIZE}>
+            <Grid.Unit size={INFORMATION_CELL_SIZE}>
               <DescriptionKey>Service Class</DescriptionKey>
               <Element margin="0" data-e2e-id="instance-service-class">
                 {instanceClass && instanceClass.name ? (
@@ -85,8 +82,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                   '-'
                 )}
               </Element>
-            </GridCell>
-            <GridCell size={INFORMATION_CELL_SIZE}>
+            </Grid.Unit>
+            <Grid.Unit size={INFORMATION_CELL_SIZE}>
               <DescriptionKey>Plan</DescriptionKey>
               <Element margin="0" data-e2e-id="instance-service-plan">
                 {serviceInstance.planSpec &&
@@ -111,11 +108,11 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                   `${getResourceDisplayName(instancePlan) || '-'}`
                 )}
               </Element>
-            </GridCell>
+            </Grid.Unit>
           </Grid>
           <Grid>
             {instanceClass && instanceClass.documentationUrl ? (
-              <GridCell size={INFORMATION_CELL_SIZE}>
+              <Grid.Unit size={INFORMATION_CELL_SIZE}>
                 <DescriptionKey>Documentation</DescriptionKey>
                 <Element margin="0">
                   <ExternalLink
@@ -126,11 +123,11 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     Link
                   </ExternalLink>
                 </Element>
-              </GridCell>
+              </Grid.Unit>
             ) : null}
 
             {instanceClass && instanceClass.supportUrl ? (
-              <GridCell size={INFORMATION_CELL_SIZE}>
+              <Grid.Unit size={INFORMATION_CELL_SIZE}>
                 <DescriptionKey>Support</DescriptionKey>
                 <Element margin="0">
                   <ExternalLink
@@ -141,7 +138,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     Link
                   </ExternalLink>
                 </Element>
-              </GridCell>
+              </Grid.Unit>
             ) : null}
           </Grid>
           <Grid>

@@ -5,33 +5,10 @@ import {
   PanelHeader,
   PanelBody,
 } from '@kyma-project/react-components';
-import Grid from 'styled-components-grid';
 
 export const ServiceInstanceInfoWrapper = styled(PanelGrid)`
-  display: flex;
-  padding-bottom: 16px;
   margin-left: 16px;
   margin-right: 32px;
-`;
-
-export const ContentWrapper = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0 0 20px 0;
-  text-align: left;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
-  font-family: '72';
-  font-weight: normal;
-  border-left: ${props => (props.color ? '6px solid ' + props.color : 'none')};
-`;
-
-export const StretchedContentWrapper = styled(ContentWrapper)`
-  align-self: stretch;
-`;
-
-export const CenterSideWrapper = styled(Panel)`
 `;
 
 export const DescriptionWrapper = styled(Panel)`{
@@ -140,10 +117,6 @@ export const ServiceInstanceDescription = styled.div`
   color: #74777a;
   font-size: 16px;
   text-align: left;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   line-height: 1.25;
 `;
-
-export const GridCell = styled(Grid.Unit)`{
-  /*todo wywal*/
-}`;

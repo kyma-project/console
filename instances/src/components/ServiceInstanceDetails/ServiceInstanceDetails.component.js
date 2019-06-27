@@ -6,7 +6,7 @@ import {
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
-import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
+import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 
@@ -43,8 +43,8 @@ class ServiceInstanceDetails extends React.Component {
     }
 
     return (
-      <ThemeWrapper >
-        <ServiceInstanceToolbar
+      <ThemeWrapper>
+        <ServiceInstanceHeader
           serviceInstance={instance}
           deleteServiceInstance={deleteServiceInstance}
           history={history}
