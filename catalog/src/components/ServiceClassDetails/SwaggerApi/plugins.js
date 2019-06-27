@@ -78,6 +78,9 @@ export const ApiReferencePlugin = function(system) {
       authorizeBtn: (Original, system) => props => {
         return null;
       },
+      authorizeOperationBtn: (Original, system) => props => {
+        return null;
+      },
       info: (Original, system) => props => {
         return null;
       },
