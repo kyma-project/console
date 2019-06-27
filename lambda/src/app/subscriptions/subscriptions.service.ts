@@ -70,9 +70,6 @@ export class SubscriptionsService {
     const sp: ISubscriptionSpec = {
       endpoint: '',
       source_id: '',
-      push_request_timeout_ms:
-        AppConfig.subscriptionConfigSpec.pushRequestTimeoutMS,
-      max_inflight: AppConfig.subscriptionConfigSpec.maxInFlight,
       include_subscription_name_header:
         AppConfig.subscriptionConfigSpec.includeSubscriptionNameHeader,
       event_type: AppConfig.subscriptionConfigSpec.eventType,
