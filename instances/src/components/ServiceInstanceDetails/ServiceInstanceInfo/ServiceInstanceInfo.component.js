@@ -3,10 +3,10 @@ import Grid from 'styled-components-grid';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import {
-  Label,
   Icon,
   instanceStatusColor,
   Modal,
+  PanelBody,
   PanelActions,
 } from '@kyma-project/react-components';
 
@@ -18,15 +18,19 @@ import {
   Element,
   PlanModalButton,
   ServiceClassButton,
-  LabelWrapper,
   ExternalLink,
   JSONCode,
+  DescriptionKey,
+  DescriptionGrid,
+  DescriptionWrapper,
+  StatusWrapper,
+  ServiceInstanceDescription,
+  GridCell
 } from './styled';
 
 import { getResourceDisplayName } from '../../../commons/helpers';
 
-const INFORMATION_KEY_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.3 };
-const INFORMATION_VALUE_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.7 };
+const INFORMATION_CELL_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.5 };
 
 const ServiceInstanceInfo = ({ serviceInstance }) => {
   const statusIcon = statusType => {
@@ -61,13 +65,14 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
 
   return (
     <ServiceInstanceInfoWrapper cols={3}>
-      <CenterSideWrapper colSpan={2}>
+      <DescriptionWrapper colSpan={2}>
+        <ServiceInstanceDescription>
+          {instanceClass && instanceClass.description}
+        </ServiceInstanceDescription>
         <ContentDescription>
-          <Grid>
-            <Grid.Unit size={INFORMATION_KEY_SIZE}>
-              <Element margin="0">Service Class</Element>
-            </Grid.Unit>
-            <Grid.Unit size={INFORMATION_VALUE_SIZE}>
+          <DescriptionGrid>
+            <GridCell size={INFORMATION_CELL_SIZE}>
+              <DescriptionKey>Service Class</DescriptionKey>
               <Element margin="0" data-e2e-id="instance-service-class">
                 {instanceClass && instanceClass.name ? (
                   <ServiceClassButton
@@ -79,12 +84,10 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                   '-'
                 )}
               </Element>
-            </Grid.Unit>
-            <Grid.Unit size={INFORMATION_KEY_SIZE}>
-              <Element>Plan</Element>
-            </Grid.Unit>
-            <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-              <Element data-e2e-id="instance-service-plan">
+            </GridCell>
+            <GridCell size={INFORMATION_CELL_SIZE}>
+              <DescriptionKey>Plan</DescriptionKey>
+              <Element margin="0" data-e2e-id="instance-service-plan">
                 {serviceInstance.planSpec &&
                 serviceInstance.planSpec !== null &&
                 typeof serviceInstance.planSpec === 'object' &&
@@ -107,51 +110,13 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                   `${getResourceDisplayName(instancePlan) || '-'}`
                 )}
               </Element>
-            </Grid.Unit>
-          </Grid>
-          {serviceInstance.labels && serviceInstance.labels.length > 0 && (
-            <Grid>
-              <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                <Element>Labels</Element>
-              </Grid.Unit>
-              <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                <Element margin="1px 0 0 0">
-                  {serviceInstance.labels.map((label, index) => (
-                    <LabelWrapper key={`${label}-${index}`}>
-                      <Label
-                        key={label}
-                        cursorType="auto"
-                        data-e2e-id="service-label"
-                      >
-                        {label}
-                      </Label>
-                    </LabelWrapper>
-                  ))}
-                </Element>
-              </Grid.Unit>
-            </Grid>
-          )}
-          {instanceClass && instanceClass.documentationUrl ? (
-            <Grid>
-              <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                <Element
-                  margin={
-                    serviceInstance.labels && serviceInstance.labels.length > 0
-                      ? '11px 0 0 0'
-                      : '16px 0 0 0'
-                  }
-                >
-                  Documentation
-                </Element>
-              </Grid.Unit>
-              <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                <Element
-                  margin={
-                    serviceInstance.labels && serviceInstance.labels.length > 0
-                      ? '11px 0 0 0'
-                      : '16px 0 0 0'
-                  }
-                >
+            </GridCell>
+          </DescriptionGrid>
+          <DescriptionGrid>
+            {instanceClass && instanceClass.documentationUrl ? (
+              <GridCell size={INFORMATION_CELL_SIZE}>
+                <DescriptionKey>Documentation</DescriptionKey>
+                <Element margin="0">
                   <ExternalLink
                     href={instanceClass.documentationUrl}
                     target="_blank"
@@ -160,16 +125,13 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     Link
                   </ExternalLink>
                 </Element>
-              </Grid.Unit>
-            </Grid>
-          ) : null}
-          {instanceClass && instanceClass.supportUrl ? (
-            <Grid>
-              <Grid.Unit size={INFORMATION_KEY_SIZE}>
-                <Element>Support</Element>
-              </Grid.Unit>
-              <Grid.Unit size={INFORMATION_VALUE_SIZE}>
-                <Element>
+              </GridCell>
+            ) : null}
+
+            {instanceClass && instanceClass.supportUrl ? (
+              <GridCell size={INFORMATION_CELL_SIZE}>
+                <DescriptionKey>Support</DescriptionKey>
+                <Element margin="0">
                   <ExternalLink
                     href={instanceClass.supportUrl}
                     target="_blank"
@@ -178,15 +140,12 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                     Link
                   </ExternalLink>
                 </Element>
-              </Grid.Unit>
-            </Grid>
-          ) : null}
+              </GridCell>
+            ) : null}
+          </DescriptionGrid>
         </ContentDescription>
-      </CenterSideWrapper>
-      <CenterSideWrapper
-        colSpan={1}
-        color={instanceStatusColor(serviceInstance.status.type)}
-      >
+      </DescriptionWrapper>
+      <StatusWrapper colSpan={1} color={instanceStatusColor(serviceInstance.status.type)} >
         <ContentHeader>
           Status
           <PanelActions>
@@ -199,8 +158,10 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
           </PanelActions>
         </ContentHeader>
 
-        <ContentDescription>
-          <Element margin="0" data-e2e-id="instance-status-type">
+        <PanelBody>
+          <Element margin="0" 
+            data-e2e-id="instance-status-type"
+            style={{color: instanceStatusColor(serviceInstance.status.type)}}>
             {serviceInstance.status.type}
           </Element>
           <Element
@@ -209,8 +170,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
           >
             {serviceInstance.status.message}
           </Element>
-        </ContentDescription>
-      </CenterSideWrapper>
+        </PanelBody>
+      </StatusWrapper>
     </ServiceInstanceInfoWrapper>
   );
 };

@@ -1,11 +1,12 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
 import ServiceInstanceUpperBar from './../ServiceInstanceUpperBar/ServiceInstanceUpperBar.component';
 import ServiceInstanceInfo from './../ServiceInstanceInfo/ServiceInstanceInfo.component';
+import { ServiceClassDescription } from './styled';
 
 import {
   Toolbar,
 } from '@kyma-project/react-components';
+import styled from 'styled-components';
 
 const ServiceInstanceToolbar = ({
   serviceInstance,
@@ -27,7 +28,6 @@ const ServiceInstanceToolbar = ({
           history={history}/>
       <Toolbar
         title={serviceInstance.name}
-        description={instanceClass && instanceClass.description}
       />
       <ServiceInstanceInfo serviceInstance={serviceInstance} />
     </div>
@@ -35,4 +35,5 @@ const ServiceInstanceToolbar = ({
 };
 
 export default ServiceInstanceToolbar;
-/*todo font jasnoszarego opisu na 16px*/
+/* todo labelele */
+/* todo moze dodać margin: 0 dla wszystkich Element ów? */

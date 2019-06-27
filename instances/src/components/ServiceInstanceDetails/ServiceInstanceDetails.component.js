@@ -7,7 +7,6 @@ import {
 } from '@kyma-project/react-components';
 
 import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
-import ServiceInstanceInfo from './ServiceInstanceInfo/ServiceInstanceInfo.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 
