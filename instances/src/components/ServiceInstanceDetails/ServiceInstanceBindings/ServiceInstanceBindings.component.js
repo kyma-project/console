@@ -338,7 +338,9 @@ class ServiceInstanceBindings extends React.Component {
                   showTooltipTimeout={750}
                   key="service-binding-usage-tooltip"
                 >
-                  <span data-e2e-id="service-binding-usage-tab">Bound Applications</span>
+                  <span data-e2e-id="service-binding-usage-tab">
+                    Bound Applications
+                  </span>
                 </Tooltip>
               }
               addHeaderContent={boundApplicationContent}
