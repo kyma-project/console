@@ -1,17 +1,11 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import ServiceInstanceUpperBar from './../ServiceInstanceUpperBar/ServiceInstanceUpperBar.component';
+import ServiceInstanceInfo from './../ServiceInstanceInfo/ServiceInstanceInfo.component';
 
 import {
   Toolbar,
 } from '@kyma-project/react-components';
-
-// import {
-//   ServiceInstanceToolbarHeadline,
-//   ServiceInstanceToolbarHeadlineLink,
-//   UpperBarWrapper
-// } from './styled';
-// import { styled } from '@kyma-project/asyncapi-react/lib/theme';
 
 const ServiceInstanceToolbar = ({
   serviceInstance,
@@ -25,15 +19,6 @@ const ServiceInstanceToolbar = ({
       ? serviceInstance.clusterServiceClass
       : serviceInstance.serviceClass);
 
-  // const toolbarTitle = (
-  //   <ServiceInstanceToolbarHeadline>
-  //     <ServiceInstanceToolbarHeadlineLink onClick={goToServiceInstances}>
-  //       Service Instances
-  //     </ServiceInstanceToolbarHeadlineLink>{' '}
-  //     / {serviceInstance.name}
-  //   </ServiceInstanceToolbarHeadline>
-  // );
-
   return (
     <div style={{ backgroundColor: 'white' }}>
       <ServiceInstanceUpperBar 
@@ -44,8 +29,10 @@ const ServiceInstanceToolbar = ({
         title={serviceInstance.name}
         description={instanceClass && instanceClass.description}
       />
+      <ServiceInstanceInfo serviceInstance={serviceInstance} />
     </div>
   );
 };
 
 export default ServiceInstanceToolbar;
+/*todo font jasnoszarego opisu na 16px*/

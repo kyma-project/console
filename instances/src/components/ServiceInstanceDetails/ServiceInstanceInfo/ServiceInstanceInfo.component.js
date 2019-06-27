@@ -62,8 +62,6 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
   return (
     <ServiceInstanceInfoWrapper cols={3}>
       <CenterSideWrapper colSpan={2}>
-        <ContentHeader>General Information</ContentHeader>
-
         <ContentDescription>
           <Grid>
             <Grid.Unit size={INFORMATION_KEY_SIZE}>

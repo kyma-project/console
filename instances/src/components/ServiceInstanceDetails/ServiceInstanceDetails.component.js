@@ -51,7 +51,6 @@ class ServiceInstanceDetails extends React.Component {
           history={history}
         />
         <ServiceInstanceWrapper>
-          <ServiceInstanceInfo serviceInstance={instance} />
           <ServiceInstanceBindings
             defaultActiveTabIndex={this.state.defaultActiveTabIndex}
             callback={this.callback}
