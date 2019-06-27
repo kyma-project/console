@@ -1,5 +1,6 @@
-import React, { useRef, Component } from 'react';
+import React, { useRef } from 'react';
 import './Overview.scss';
+import { Panel } from 'fundamental-react/lib/Panel';
 import { Icon } from 'fundamental-react/lib/Icon';
 
 const Overview = () => {
@@ -7,13 +8,10 @@ const Overview = () => {
   const rotatingCompass = useRef(null);
 
   const handleMouseMove = e => {
+    const compassRect = rotatingCompass.current.getBoundingClientRect();
     const compassCenter = {
-      x:
-        rotatingCompass.current.getBoundingClientRect().x +
-        rotatingCompass.current.getBoundingClientRect().width / 2,
-      y:
-        rotatingCompass.current.getBoundingClientRect().y +
-        rotatingCompass.current.getBoundingClientRect().height / 2,
+      x: compassRect.x + compassRect.width / 2,
+      y: compassRect.y + compassRect.height / 2,
     };
     const angle =
       Math.atan2(e.clientX - compassCenter.x, -(e.clientY - compassCenter.y)) *
@@ -24,14 +22,25 @@ const Overview = () => {
   };
 
   return (
-    <section onMouseMove={handleMouseMove} className="fd-section center">
-      <h1>
-        Welcome to the Compass UI{' '}
-        <span ref={rotatingCompass}>
-          <Icon glyph="business-objects-explorer" size="xl" />
-        </span>{' '}
-      </h1>
-      <img alt="Compass logo" src="compass-logo.png" />
+    <section
+      onMouseMove={handleMouseMove}
+      className="fd-section center"
+      style={{ width: '100vw', height: '100vh' }}
+    >
+      <Panel>
+        <Panel.Header>
+          <Panel.Head title="Welcome to the Compass UI" />
+
+          <Panel.Actions>
+            <span ref={rotatingCompass}>
+              <Icon glyph="business-objects-explorer" size="xl" />
+            </span>
+          </Panel.Actions>
+        </Panel.Header>
+        <Panel.Body>
+          <img alt="Compass logo" src="compass-logo.png" />
+        </Panel.Body>
+      </Panel>
     </section>
   );
 };
