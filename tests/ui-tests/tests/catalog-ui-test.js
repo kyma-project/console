@@ -155,9 +155,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       ]);
       const frame2 = await kymaConsole.getFrame(page);
       await frame2.waitForSelector(exampleServiceClassTitle);
-      const title = await frame2.$(
-        exampleServiceClassTitle,
-      );
+      const title = await frame2.$(exampleServiceClassTitle);
       const description = await frame2.$(exampleServiceClassDescription);
       const lastUpdate = await frame2.$(exampleServiceClassLastUpdate);
       const labels = await catalog.getLabels(frame);
