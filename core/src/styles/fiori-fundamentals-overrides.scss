@@ -262,10 +262,35 @@
     width: 100%;
     margin-top: 8px;
   }
-  &__value{
+  &__value {
     display: block;
   }
-  a, fd-icon {
+  a,
+  fd-icon {
     display: inline;
+  }
+}
+
+.y-fd-list--no-hover {
+  .fd-list-group__item:hover {
+    background-color: transparent;
+  }
+}
+
+.y-fd-list-group__item--no-padding {
+  .fd-list-group__item {
+    padding: 0;
+  }
+}
+
+.y-fd-list--bottom-margin {
+  .fd-list-group {
+    margin-bottom: 40px;
+  }
+}
+
+.y-fd-inline-help__small {
+  .fd-inline-help__content {
+    min-width: 150px;
   }
 }

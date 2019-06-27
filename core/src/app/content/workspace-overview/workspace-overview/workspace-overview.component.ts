@@ -49,12 +49,15 @@ export class WorkspaceOverviewComponent extends GenericListComponent
     private applicationBindingService: ApplicationBindingService
   ) {
     super(changeDetector);
+
+    this.localStorageKey = 'workspace/namespaceFilters';
+
     this.namespacesService = namespacesService;
     const converter: DataConverter<
       INamespace,
       Namespace
     > = new NamespaceDataConverter(applicationBindingService, http);
-    const url = `${AppConfig.k8sApiServerUrl}namespaces?labelSelector`;
+    const url = `${AppConfig.k8sApiServerUrl}namespaces`;
     this.source = new KubernetesDataProvider(url, converter, this.http);
     this.entryRenderer = NamespaceCardComponent;
     this.filterState = {

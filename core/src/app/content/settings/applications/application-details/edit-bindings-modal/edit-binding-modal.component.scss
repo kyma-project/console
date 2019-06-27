@@ -21,7 +21,16 @@
 }
 
 .y-fd-popover__body {
-  width: calc(100% - (var(--fd-modal-padding-x)*2));
+  width: calc(100% - (var(--fd-modal-padding-x) * 2));
   overflow: auto;
   max-height: 300px;
+}
+
+.fd-list-group__action {
+  &--no-right {
+    right: 0;
+  }
+  &--no-top {
+    top: 0;
+  }
 }

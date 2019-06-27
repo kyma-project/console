@@ -16,6 +16,7 @@ import { Facet } from '../filter/Facet';
 })
 export class ListFilterComponent implements OnInit, OnChanges {
   @Input() filterState;
+  @Input() localStorageKey: string;
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onFilterChanged = new EventEmitter();
 
@@ -74,6 +75,10 @@ export class ListFilterComponent implements OnInit, OnChanges {
 
   filterChange() {
     this.onFilterChanged.emit(this.filterState);
+    
+    if (this.localStorageKey) {
+      this.saveFilterFacets();
+    }
   }
 
   facetSelected(facetLabel) {
@@ -101,5 +106,9 @@ export class ListFilterComponent implements OnInit, OnChanges {
       this.filterState.availableFacets &&
       this.filterState.availableFacets.length > 0
     );
+  }
+
+  private saveFilterFacets() {
+    localStorage.setItem(this.localStorageKey, JSON.stringify(this.filterState.facets));
   }
 }

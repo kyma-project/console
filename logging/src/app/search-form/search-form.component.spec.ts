@@ -8,9 +8,11 @@ import { LuigiContextService } from './service/luigi-context.service';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ISearchFormData } from './data';
+import { PodsSubscriptonService } from './service/pods-subscription/pods-subscription.service';
+import { Apollo } from 'apollo-angular';
 
 const ActivatedRouteMock = {
-  queryParams: of({ })
+  queryParams: of({}),
 };
 
 describe('SearchFormComponent', () => {
@@ -20,16 +22,14 @@ describe('SearchFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchFormComponent],
-      imports: [
-        HttpClientTestingModule,
-        FundamentalNgxModule,
-        FormsModule
-      ],
+      imports: [HttpClientTestingModule, FundamentalNgxModule, FormsModule],
       providers: [
         SearchService,
         LuigiContextService,
-        { provide: ActivatedRoute, useValue: ActivatedRouteMock }
-      ]
+        { provide: ActivatedRoute, useValue: ActivatedRouteMock },
+        PodsSubscriptonService,
+        Apollo,
+      ],
     }).compileComponents();
   }));
 
@@ -52,9 +52,10 @@ describe('SearchFormComponent', () => {
         limit: 123456,
         from: '1m',
         to: 'whatever',
-        label: 'whatever'
+        label: 'whatever',
+        showOutdatedLogs: false,
       };
-      return {...baseModel, ...override};
+      return { ...baseModel, ...override };
     }
 
     it('sets non-date params', () => {
@@ -63,7 +64,7 @@ describe('SearchFormComponent', () => {
         query: 'bla}',
         regexp: 'blu-mockExtra',
         limit: 123456,
-        direction: 'mock-direction'
+        direction: 'mock-direction',
       };
       const actual = component['getSearchQuery']();
       expect(actual.query).toEqual(expected.query);
@@ -109,7 +110,6 @@ describe('SearchFormComponent', () => {
     // });
   });
 
-
   describe('processParams()', () => {
     beforeEach(() => {
       component.title = 'mock-title';
@@ -131,7 +131,7 @@ describe('SearchFormComponent', () => {
 
     it('adds label and updates title if `function` param present', () => {
       const addLabelSpy = spyOn(component, 'addLabel');
-      component.processParams({function: 'mock-function'});
+      component.processParams({ function: 'mock-function' });
       expect(addLabelSpy).toHaveBeenCalledWith('function=mock-function', true);
       expect(component.title).toBe('Logs for function "mock-function"');
     });
@@ -145,7 +145,11 @@ describe('SearchFormComponent', () => {
 
     it('adds label but no title if `namespace` param present', () => {
       const addLabelSpy = spyOn(component, 'addLabel');
-      component.processParams({ function: 'mock-function', pod: 'mock-pod', namespace: 'mock-namespace' });
+      component.processParams({
+        function: 'mock-function',
+        pod: 'mock-pod',
+        namespace: 'mock-namespace',
+      });
       expect(addLabelSpy).toHaveBeenCalledWith('instance=mock-pod', true);
       expect(component.title).toBe('Logs for pod "mock-pod"');
     });

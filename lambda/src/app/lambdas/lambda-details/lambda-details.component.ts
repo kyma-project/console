@@ -60,7 +60,7 @@ import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trig
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
-import {has as _has, get as _get, set as _set} from 'lodash';
+import { has as _has, get as _get, set as _set } from 'lodash';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
@@ -227,6 +227,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
             this.mode = 'update';
             const lambdaName = params['name'];
+
             this.title = `${lambdaName} Details`;
             this.getFunction(lambdaName);
             this.apisService
@@ -894,18 +895,31 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
             this.dependency !== undefined &&
             this.dependency !== '';
 
-          if (!_has(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env')) {
-            _set(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env', []);
+          if (
+            !_has(
+              this,
+              'lambda.spec.deployment.spec.template.spec.containers[0].env',
+            )
+          ) {
+            _set(
+              this,
+              'lambda.spec.deployment.spec.template.spec.containers[0].env',
+              [],
+            );
           }
 
           this.setLoaded(true);
           this.initializeEditor();
-          if(lambda.metadata && lambda.metadata.annotations){
+          if (lambda.metadata && lambda.metadata.annotations) {
             this.functionSizes.forEach(s => {
-            if (`${s.name}` === lambda.metadata.annotations['function-size']) {
-              this.selectedFunctionSize = s;
-              this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
-            }
+              if (
+                `${s.name}` === lambda.metadata.annotations['function-size']
+              ) {
+                this.selectedFunctionSize = s;
+                this.selectedFunctionSizeName = this.selectedFunctionSize[
+                  'name'
+                ];
+              }
             });
           }
         },
@@ -1366,8 +1380,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  getEnvs(){
-    return _get(this, 'lambda.spec.deployment.spec.template.spec.containers[0].env');
+  getEnvs() {
+    return _get(
+      this,
+      'lambda.spec.deployment.spec.template.spec.containers[0].env',
+    );
   }
 
   changeTab(name: string) {
