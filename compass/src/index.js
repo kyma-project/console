@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { COMPASS_GRAPHQL_ENDPOINT } from './config/config';
-import LuigiClient from '@kyma-project/luigi-client'; // this is NOT unused
+import LuigiClient from '@kyma-project/luigi-client'; // eslint-disable-line no-unused-vars
 
 const gqlClient = new ApolloClient({
   uri: COMPASS_GRAPHQL_ENDPOINT,
