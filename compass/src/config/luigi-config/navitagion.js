@@ -1,21 +1,16 @@
 const navigation = {
   nodes: () => [
     {
-      pathSegment: 'home',
-      label: 'Home',
-
-      children: [
-        {
-          pathSegment: 'compass',
-          label: 'Compass MF',
-          viewUrl: 'http://localhost:3000/',
-        },
-        {
-          pathSegment: 'runtimes',
-          label: 'Runtimes',
-          viewUrl: 'http://localhost:3000/runtimes',
-        },
-      ],
+      hideSideNav: true,
+      pathSegment: 'overview',
+      label: 'Overview',
+      viewUrl: 'http://localhost:3000/',
+    },
+    {
+      hideSideNav: true,
+      pathSegment: 'runtimes',
+      label: 'Runtimes',
+      viewUrl: 'http://localhost:3000/runtimes',
     },
   ],
 };
