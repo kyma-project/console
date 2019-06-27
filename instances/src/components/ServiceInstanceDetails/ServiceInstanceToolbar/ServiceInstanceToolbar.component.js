@@ -12,14 +12,14 @@ const ServiceInstanceToolbar = ({
   history,
 }) => {
   return (
-    <ToolbarWrapper style={{backgroundColor: 'white'}}>
+    <section style={{backgroundColor: 'white'}}>
       <ServiceInstanceUpperBar 
           serviceInstance={serviceInstance}
           deleteServiceInstance={deleteServiceInstance}
           history={history}/>
       <Toolbar title={serviceInstance.name} />
       <ServiceInstanceInfo serviceInstance={serviceInstance} />
-    </ToolbarWrapper>
+    </section>
   );
 };
 

@@ -132,11 +132,8 @@ export const JSONCode = styled.code`
 export const DescriptionKey = styled.p`{
   margin-bottom: 0;
   color: #6a6d70;
-  font-size: 14px;
-}`;
-
-export const DescriptionGrid = styled(Grid)`{
   margin-top: 24px;
+  font-size: 14px;
 }`;
 
 export const ServiceInstanceDescription = styled.div`

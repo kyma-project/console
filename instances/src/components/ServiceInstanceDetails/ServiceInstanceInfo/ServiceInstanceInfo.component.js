@@ -1,5 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
+import Grid from 'styled-components-grid';
+import { getResourceDisplayName } from '../../../commons/helpers';
 
 import {
   Icon,
@@ -20,15 +22,12 @@ import {
   ExternalLink,
   JSONCode,
   DescriptionKey,
-  DescriptionGrid,
   DescriptionWrapper,
   StatusWrapper,
   ServiceInstanceDescription,
   GridCell,
   LabelWrapper,
 } from './styled';
-
-import { getResourceDisplayName } from '../../../commons/helpers';
 
 const INFORMATION_CELL_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.5 };
 
@@ -72,7 +71,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
           {instanceClass && instanceClass.description}
         </ServiceInstanceDescription>
         <ContentDescription>
-          <DescriptionGrid>
+          <Grid>
             <GridCell size={INFORMATION_CELL_SIZE}>
               <DescriptionKey>Service Class</DescriptionKey>
               <Element margin="0" data-e2e-id="instance-service-class">
@@ -113,8 +112,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 )}
               </Element>
             </GridCell>
-          </DescriptionGrid>
-          <DescriptionGrid>
+          </Grid>
+          <Grid>
             {instanceClass && instanceClass.documentationUrl ? (
               <GridCell size={INFORMATION_CELL_SIZE}>
                 <DescriptionKey>Documentation</DescriptionKey>
@@ -144,8 +143,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Element>
               </GridCell>
             ) : null}
-          </DescriptionGrid>
-          <DescriptionGrid>
+          </Grid>
+          <Grid>
             {serviceInstance.labels && serviceInstance.labels.length > 0 && (
               <div>
                 <DescriptionKey>Labels</DescriptionKey>
@@ -164,7 +163,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 </Element>
               </div>
             )}
-          </DescriptionGrid>
+          </Grid>
         </ContentDescription>
       </DescriptionWrapper>
       <StatusWrapper
