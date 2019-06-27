@@ -5,6 +5,7 @@ import { ComponentCommunicationService } from '../../../../shared/services/compo
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
+import { EnabledMappingServices } from 'shared/datamodel/enabled-mapping-services';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -13,7 +14,6 @@ import { EMPTY_TEXT } from 'shared/constants/constants';
 export class ApplicationsEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnInit, OnDestroy {
-
   public emptyText = EMPTY_TEXT;
 
   constructor(
@@ -55,8 +55,16 @@ export class ApplicationsEntryRendererComponent
 
   public listConnectedNamespaces(entry) {
     let result = '';
-    if (entry.enabledInNamespaces) {
-      result = entry.enabledInNamespaces.join(', ');
+    let namespaces = [];
+
+    if (entry.enabledMappingServices) {
+      namespaces = [
+        ...namespaces,
+        ...entry.enabledMappingServices.map(
+          (e: EnabledMappingServices) => e.namespace
+        )
+      ];
+      result = namespaces.join(', ');
     }
     return result;
   }
