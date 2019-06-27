@@ -36,9 +36,8 @@
       >{{ isSecured(entry) ? 'Yes' : 'No' }}</fd-badge
     >
   </td>
-  <td data-e2e-id="exposed-api-idp">
-    {{ isSecured(entry) ? getIDP(entry) : emptyText }}
-  </td>
+  <td data-e2e-id="exposed-api-idp"
+    >{{ isSecured(entry) ? getIDP(entry) : emptyText }}</td>
   <td class="fd-has-float-right">
     <y-list-actions
       [entry]="entry"
