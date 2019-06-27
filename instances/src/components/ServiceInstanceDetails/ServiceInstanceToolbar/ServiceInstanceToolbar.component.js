@@ -1,24 +1,25 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
+import ServiceInstanceUpperBar from './../ServiceInstanceUpperBar/ServiceInstanceUpperBar.component';
 
-import { Button, Modal, Toolbar } from '@kyma-project/react-components';
+import {
+  Button,
+  Modal,
+  Toolbar,
+} from '@kyma-project/react-components';
 
 import {
   ServiceInstanceToolbarHeadline,
   ServiceInstanceToolbarHeadlineLink,
+  UpperBarWrapper
 } from './styled';
+import { styled } from '@kyma-project/asyncapi-react/lib/theme';
 
 const ServiceInstanceToolbar = ({
   serviceInstance,
   deleteServiceInstance,
   history,
 }) => {
-  const handleDelete = async () => {
-    await deleteServiceInstance(serviceInstance.name);
-    setTimeout(() => {
-      history.goBack();
-    }, 100);
-  };
 
   const goToServiceInstances = () => {
     LuigiClient.linkManager()
@@ -32,31 +33,26 @@ const ServiceInstanceToolbar = ({
       ? serviceInstance.clusterServiceClass
       : serviceInstance.serviceClass);
 
+  const toolbarTitle = (
+    <ServiceInstanceToolbarHeadline>
+      <ServiceInstanceToolbarHeadlineLink onClick={goToServiceInstances}>
+        Service Instances
+      </ServiceInstanceToolbarHeadlineLink>{' '}
+      / {serviceInstance.name}
+    </ServiceInstanceToolbarHeadline>
+  );
+
   return (
-    <Toolbar
-      title={
-        <ServiceInstanceToolbarHeadline>
-          <ServiceInstanceToolbarHeadlineLink onClick={goToServiceInstances}>
-            Service Instances
-          </ServiceInstanceToolbarHeadlineLink>{' '}
-          / {serviceInstance.name}
-        </ServiceInstanceToolbarHeadline>
-      }
-      description={instanceClass && instanceClass.description}
-    >
-      <Modal
-        title="Delete"
-        confirmText="Delete"
-        cancelText="Cancel"
-        onConfirm={handleDelete}
-        modalOpeningComponent={<Button type="negative">Delete</Button>}
-        type="negative"
-        onShow={() => LuigiClient.uxManager().addBackdrop()}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
-      >
-        {`Are you sure you want to delete instance "${serviceInstance.name}"?`}
-      </Modal>
-    </Toolbar>
+    <div style={{ backgroundColor: 'white' }}>
+      <ServiceInstanceUpperBar 
+          serviceInstance={serviceInstance}
+          deleteServiceInstance={deleteServiceInstance}
+          history={history}/>
+      <Toolbar
+        title={toolbarTitle}
+        description={instanceClass && instanceClass.description}
+      />
+    </div>
   );
 };
 

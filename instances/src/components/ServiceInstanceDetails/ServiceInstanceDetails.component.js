@@ -44,19 +44,12 @@ class ServiceInstanceDetails extends React.Component {
     }
 
     return (
-      <ThemeWrapper>
+      <ThemeWrapper >
         <ServiceInstanceToolbar
           serviceInstance={instance}
           deleteServiceInstance={deleteServiceInstance}
           history={history}
         />
-
-        <NotificationMessage
-          type="error"
-          title="Error"
-          message={serviceInstance.error && serviceInstance.error.message}
-        />
-
         <ServiceInstanceWrapper>
           <ServiceInstanceInfo serviceInstance={instance} />
           <ServiceInstanceBindings
@@ -70,6 +63,13 @@ class ServiceInstanceDetails extends React.Component {
             <ServiceInstanceTabs serviceClass={serviceClass} />
           ) : null}
         </ServiceInstanceWrapper>
+
+        <NotificationMessage
+          type="error"
+          title="Error"
+          message={serviceInstance.error && serviceInstance.error.message}
+        />
+
       </ThemeWrapper>
     );
   }
