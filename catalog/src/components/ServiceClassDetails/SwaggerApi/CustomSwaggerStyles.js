@@ -4,10 +4,12 @@ import schemesSelect from './assets/schemes-background-image.png';
 import responsesSelect from './assets/responsesSelect.png';
 
 const summaries = css`
-  div.opblock-summary {
-    border-bottom: none;
-    padding: 4px 10px;
-    min-height: 48px;
+  && {
+    div.opblock-summary {
+      border-bottom: none;
+      padding: 4px 10px;
+      min-height: 48px;
+    }
   }
 
   span.opblock-summary-method {
@@ -61,6 +63,30 @@ const summaries = css`
 const tagHeader = css`
   h4.opblock-tag {
     border-bottom: none;
+    a.nostyle {
+      font-family: '72';
+      font-size: 14px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.43;
+      letter-spacing: normal;
+      color: #32363a;
+      text-transform: capitalize;
+    }
+    small {
+      font-family: '72';
+      font-size: 14px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.43;
+      letter-spacing: normal;
+      color: #6a6d70;
+    }
+    div > small {
+      display: none;
+    }
   }
 
   label[for='schemes'] > select {
@@ -79,6 +105,8 @@ const tagHeader = css`
 
 const sectionHeader = css`
   div.opblock-section-header {
+    padding-left: 16px;
+    box-shadow: none;
     border-top: solid 1px rgba(151, 151, 151, 0.26);
     background-color: #fafafa;
     h4.opblock-title {
@@ -175,112 +203,106 @@ const paramOptions = css`
 
 const paramTable = css`
   ${paramOptions}
-
-  table.parameters > thead > tr > th {
-    padding-top: 5px;
-    opacity: 0.6;
-    font-family: '72';
-    font-size: 11px;
-    line-height: 1.18;
-    color: #32363a;
-    text-transform: uppercase;
-  }
-
-  td.col.parameters-col_description div.markdown {
-    font-family: '72';
-    font-size: 14px;
-
-    line-height: 1.29;
-    letter-spacing: normal;
-    color: #000000;
-    margin-bottom: 15px;
-  }
-  td.col.parameters-col_description div:not(.markdown) {
-    ul.tab {
-      margin-top: 11px;
-      border-radius: 4px 4px 0 0;
-      margin-bottom: 0;
-      padding: 10px 0;
-      border: solid 1px #89919a;
-      & > li {
-        padding-left: 10px;
-        &:after {
-          display: none;
-        }
-        a {
+  div.table-container {
+    padding: 0;
+    table.parameters {
+      thead > tr {
+        background-color: rgba(243, 244, 245, 0.45);
+        border-top: solid 1px rgba(151, 151, 151, 0.26);
+        th {
+          padding: 13px 16px;
+          border: none;
+          opacity: 0.6;
           font-family: '72';
-          font-size: 14px;
-
-          line-height: 1.29;
-          letter-spacing: normal;
-          color: #74777a;
+          font-size: 11px;
+          line-height: 1.18;
+          color: #32363a;
+          text-transform: uppercase;
+        }
+      }
+      tbody > tr {
+        td {
+          div.parameter__name.required {
+            color: #3b4151;
+            font-family: '72';
+            padding-left: 15px;
+          }
+          div.parameter__in {
+            padding-left: 15px;
+          }
         }
       }
     }
 
-    ul.tab > li.tabitem.active > a {
-      color: #32363a;
+    td.col.parameters-col_description div.markdown {
+      font-family: '72';
+      font-size: 14px;
+
+      line-height: 1.29;
+      letter-spacing: normal;
+      color: #000000;
+      margin-bottom: 15px;
     }
-  }
+    td.col.parameters-col_description div:not(.markdown) {
+      ul.tab {
+        margin-top: 11px;
+        border-radius: 4px 4px 0 0;
+        margin-bottom: 0;
+        padding: 10px 0;
+        border: solid 1px #89919a;
+        & > li {
+          padding-left: 10px;
+          &:after {
+            display: none;
+          }
+          a {
+            font-family: '72';
+            font-size: 14px;
 
-  div.parameter__name.required {
-    color: #3b4151;
-  }
+            line-height: 1.29;
+            letter-spacing: normal;
+            color: #74777a;
+          }
+        }
+      }
 
-  div.highlight-code {
-    & > pre {
-      border-radius: 0 0 4px 4px;
-      border: solid 1px #89919a;
-      border-top: none;
-      background-color: #fafafa;
-      & > span {
-        font-family: Courier;
-        font-size: 14px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        /* original style has !important too, so we need this to override */
-        color: #3f5060 !important;
+      ul.tab > li.tabitem.active > a {
+        color: #32363a;
+      }
+    }
+
+    div.highlight-code {
+      & > pre {
+        border-radius: 0 0 4px 4px;
+        border: solid 1px #89919a;
+        border-top: none;
+        background-color: #fafafa;
+        & > span {
+          font-family: Courier;
+          font-size: 14px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          /* original style has !important too, so we need this to override */
+          color: #3f5060 !important;
+        }
       }
     }
   }
 `;
-const StyledSwagger = styled.section`
-  && {
-    span.schemes-title {
-      display: none;
-    }
 
-    div.scheme-container {
-      margin: 0;
-      padding: 0;
-      box-shadow: none;
-    }
-
-    ${tagHeader}
-    ${sectionHeader}
-    div.opblock {
-      box-shadow: none;
-      background-color: white;
-      border: solid 1px rgba(151, 151, 151, 0.26);
-    }
-
-    div.table-container {
-      padding: 15px;
-    }
-
-    ${summaries}
-    ${paramTable}
-
+const responsesTable = css`
+  div.responses-wrapper {
     div.responses-inner {
       padding: 0px;
       table.responses-table {
         padding-left: 10px;
         thead {
           background-color: rgba(243, 244, 245, 0.45);
-          td {
+          tr > td {
+            padding-left: 16px;
             border-bottom: none;
             padding-top: 13px;
             opacity: 0.6;
@@ -295,8 +317,68 @@ const StyledSwagger = styled.section`
             text-transform: uppercase;
           }
         }
+        tbody {
+          tr.response {
+            td.col {
+              padding-left: 16px;
+            }
+            td.col:first-child {
+              font-family: '72';
+              font-size: 14px;
+              font-weight: bold;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.29;
+              letter-spacing: normal;
+              color: #000000;
+            }
+            div.markdown {
+              border-radius: 4px;
+              border: solid 1px #89919a;
+              background-color: #fafafa;
+              font-family: Courier;
+              font-size: 14px;
+              font-weight: normal;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: normal;
+              letter-spacing: normal;
+              color: #32363a;
+            }
+          }
+        }
       }
     }
+  }
+`;
+
+const StyledSwagger = styled.section`
+  && {
+    span.schemes-title {
+      display: none;
+    }
+
+    div.scheme-container {
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    ${tagHeader};
+    ${sectionHeader};
+    div.opblock {
+      box-shadow: none;
+      background-color: white;
+      border: solid 1px rgba(151, 151, 151, 0.26);
+    }
+
+    div.table-container {
+      padding: 15px;
+    }
+
+    ${summaries};
+    ${paramTable};
+    ${responsesTable};
   }
 `;
 
