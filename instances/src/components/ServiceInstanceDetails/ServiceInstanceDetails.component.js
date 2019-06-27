@@ -67,7 +67,6 @@ class ServiceInstanceDetails extends React.Component {
           title="Error"
           message={serviceInstance.error && serviceInstance.error.message}
         />
-
       </ThemeWrapper>
     );
   }

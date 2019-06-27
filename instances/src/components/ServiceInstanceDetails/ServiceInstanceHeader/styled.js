@@ -4,11 +4,13 @@ export const ToolbarWrapper = styled.section`
   background-color: #fff;
 `;
 
-export const UpperBarWrapper = styled.div`{
-  display: flex;
-  justify-content: space-between;
-  max-height: 1.25em;
-  & > * {
-    margin: 32px 32px;
+export const UpperBarWrapper = styled.div`
+   {
+    display: flex;
+    justify-content: space-between;
+    max-height: 1.25em;
+    & > * {
+      margin: 32px;
+    }
   }
-}`
+`;

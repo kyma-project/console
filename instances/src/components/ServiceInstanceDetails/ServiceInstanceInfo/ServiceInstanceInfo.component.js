@@ -10,19 +10,18 @@ import {
   PanelBody,
   PanelActions,
   Label,
+  Panel,
 } from '@kyma-project/react-components';
 
 import {
   ServiceInstanceInfoWrapper,
   ContentHeader,
-  ContentDescription,
   Element,
   PlanModalButton,
   ServiceClassButton,
   ExternalLink,
   JSONCode,
   DescriptionKey,
-  DescriptionWrapper,
   StatusWrapper,
   ServiceInstanceDescription,
   LabelWrapper,
@@ -62,12 +61,15 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     : serviceInstance.servicePlan;
 
   return (
-    <ServiceInstanceInfoWrapper cols={3} className="fd-has-padding-bottom-medium">
-      <DescriptionWrapper colSpan={2}>
-        <ServiceInstanceDescription>
+    <ServiceInstanceInfoWrapper
+      cols={3}
+      className="fd-has-padding-bottom-medium"
+    >
+      <Panel colSpan={2}>
+        <ServiceInstanceDescription class="fd-has-margin-bottom-medium">
           {instanceClass && instanceClass.description}
         </ServiceInstanceDescription>
-        <ContentDescription>
+        <PanelBody className="fd-has-margin-bottom-medium fd-has-padding-none">
           <Grid>
             <Grid.Unit size={INFORMATION_CELL_SIZE}>
               <DescriptionKey>Service Class</DescriptionKey>
@@ -161,8 +163,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               </div>
             )}
           </Grid>
-        </ContentDescription>
-      </DescriptionWrapper>
+        </PanelBody>
+      </Panel>
       <StatusWrapper
         colSpan={1}
         color={instanceStatusColor(serviceInstance.status.type)}

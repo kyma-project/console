@@ -1,19 +1,19 @@
 import React from 'react';
-import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo.component';
-import { Toolbar, } from '@kyma-project/react-components';
-import { ToolbarWrapper } from './styled';
-import { Breadcrumb } from '@kyma-project/react-components';
-import { Button, Modal, } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
-
-import { UpperBarWrapper } from './styled';
+import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo.component';
+import {
+  Button,
+  Modal,
+  Breadcrumb,
+  Toolbar,
+} from '@kyma-project/react-components';
+import { UpperBarWrapper, ToolbarWrapper } from './styled';
 
 const ServiceInstanceHeader = ({
   serviceInstance,
   deleteServiceInstance,
   history,
 }) => {
-
   const goToServiceInstances = () => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
@@ -27,11 +27,16 @@ const ServiceInstanceHeader = ({
     }, 100);
   };
 
-  return ( <ToolbarWrapper>
+  return (
+    <ToolbarWrapper>
       <UpperBarWrapper>
         <Breadcrumb>
-          <Breadcrumb.Item name="Instances" url="#" onClick={goToServiceInstances} />
-          <Breadcrumb.Item/>
+          <Breadcrumb.Item
+            name="Instances"
+            url="#"
+            onClick={goToServiceInstances}
+          />
+          <Breadcrumb.Item />
         </Breadcrumb>
         <Modal
           title="Delete"
