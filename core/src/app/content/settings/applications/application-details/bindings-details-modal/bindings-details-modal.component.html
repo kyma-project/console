@@ -7,13 +7,11 @@
     (click)="$event.stopPropagation()"
   >
     <fd-modal-header
-      >Bound Service Classes in '{{ namespaceName }}'</fd-modal-header
+      >Services & Events bound to '{{ namespaceName }}'</fd-modal-header
     >
     <fd-modal-body class="">
       <div
-        *ngIf="
-          application && application.services && application.services.length > 0
-        "
+        *ngIf="applicationHasAnyServices; else noServicesHint"
         fd-form-item
       >
         <fd-list class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin">
@@ -65,6 +63,9 @@
           
         </fd-list>
       </div>
+      <ng-template #noServicesHint>
+        <p class="fd-has-font-style-italic">This binding doesn't enable any Service or Events.</p>
+      </ng-template>
     </fd-modal-body>
     <fd-modal-footer>
       <button fd-button [fdType]="'main'" (click)="close()">
