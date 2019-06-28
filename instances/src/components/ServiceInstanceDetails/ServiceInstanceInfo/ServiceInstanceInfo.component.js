@@ -2,6 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import Grid from 'styled-components-grid';
 import { getResourceDisplayName } from '../../../commons/helpers';
+import { serviceInstanceConstants } from './../../../variables';
 
 import {
   Icon,
@@ -72,7 +73,9 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
         <PanelBody className="fd-has-margin-bottom-medium fd-has-padding-none">
           <Grid>
             <Grid.Unit size={INFORMATION_CELL_SIZE}>
-              <DescriptionKey>Service Class</DescriptionKey>
+              <DescriptionKey>
+                {serviceInstanceConstants.classHeader}
+              </DescriptionKey>
               <Element margin="0" data-e2e-id="instance-service-class">
                 {instanceClass && instanceClass.name ? (
                   <ServiceClassButton
@@ -86,7 +89,9 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               </Element>
             </Grid.Unit>
             <Grid.Unit size={INFORMATION_CELL_SIZE}>
-              <DescriptionKey>Plan</DescriptionKey>
+              <DescriptionKey>
+                {serviceInstanceConstants.planHeader}
+              </DescriptionKey>
               <Element margin="0" data-e2e-id="instance-service-plan">
                 {serviceInstance.planSpec &&
                 serviceInstance.planSpec !== null &&
@@ -98,7 +103,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                         {getResourceDisplayName(instancePlan)}
                       </PlanModalButton>
                     }
-                    title="Instance Parameters"
+                    title={serviceInstanceConstants.instanceParameters}
                     onShow={() => LuigiClient.uxManager().addBackdrop()}
                     onHide={() => LuigiClient.uxManager().removeBackdrop()}
                   >
@@ -115,14 +120,16 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
           <Grid>
             {instanceClass && instanceClass.documentationUrl ? (
               <Grid.Unit size={INFORMATION_CELL_SIZE}>
-                <DescriptionKey>Documentation</DescriptionKey>
+                <DescriptionKey>
+                  {serviceInstanceConstants.documentationHeader}
+                </DescriptionKey>
                 <Element margin="0">
                   <ExternalLink
                     href={instanceClass.documentationUrl}
                     target="_blank"
                     data-e2e-id="instance-service-documentation-link"
                   >
-                    Link
+                    {serviceInstanceConstants.link}
                   </ExternalLink>
                 </Element>
               </Grid.Unit>
@@ -130,14 +137,16 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
 
             {instanceClass && instanceClass.supportUrl ? (
               <Grid.Unit size={INFORMATION_CELL_SIZE}>
-                <DescriptionKey>Support</DescriptionKey>
+                <DescriptionKey>
+                  {serviceInstanceConstants.supportHeader}
+                </DescriptionKey>
                 <Element margin="0">
                   <ExternalLink
                     href={instanceClass.supportUrl}
                     target="_blank"
                     data-e2e-id="instance-service-support-link"
                   >
-                    Link
+                    {serviceInstanceConstants.link}
                   </ExternalLink>
                 </Element>
               </Grid.Unit>
@@ -146,7 +155,9 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
           <Grid>
             {serviceInstance.labels && serviceInstance.labels.length > 0 && (
               <div>
-                <DescriptionKey>Labels</DescriptionKey>
+                <DescriptionKey>
+                  {serviceInstanceConstants.labelsHeader}
+                </DescriptionKey>
                 <Element margin="1px 0 0 0">
                   {serviceInstance.labels.map((label, index) => (
                     <LabelWrapper key={`${label}-${index}`}>
@@ -170,7 +181,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
         color={instanceStatusColor(serviceInstance.status.type)}
       >
         <ContentHeader>
-          Status
+          {serviceInstanceConstants.statusHeader}
           <PanelActions>
             <Icon
               glyph={statusIcon(serviceInstance.status.type)}

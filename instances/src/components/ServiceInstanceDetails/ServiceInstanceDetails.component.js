@@ -9,6 +9,7 @@ import {
 import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
+import { serviceInstanceConstants } from './../../variables';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { transformDataScalarStringsToObjects } from '../../store/transformers';
@@ -39,7 +40,9 @@ class ServiceInstanceDetails extends React.Component {
       instance && (instance.serviceClass || instance.clusterServiceClass);
 
     if (!serviceInstance.loading && !instance) {
-      return <EmptyList>Service Instance doesn't exist</EmptyList>;
+      return (
+        <EmptyList>{serviceInstanceConstants.instanceNotExists}</EmptyList>
+      );
     }
 
     return (
@@ -64,7 +67,7 @@ class ServiceInstanceDetails extends React.Component {
 
         <NotificationMessage
           type="error"
-          title="Error"
+          title={serviceInstanceConstants.error}
           message={serviceInstance.error && serviceInstance.error.message}
         />
       </ThemeWrapper>

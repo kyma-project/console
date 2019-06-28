@@ -1,6 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo.component';
+import { serviceInstanceConstants } from './../../../variables';
 import {
   Button,
   Modal,
@@ -32,27 +33,27 @@ const ServiceInstanceHeader = ({
       <UpperBarWrapper>
         <Breadcrumb>
           <Breadcrumb.Item
-            name="Instances"
+            name={serviceInstanceConstants.instances}
             url="#"
             onClick={goToServiceInstances}
           />
           <Breadcrumb.Item />
         </Breadcrumb>
         <Modal
-          title="Delete"
-          confirmText="Delete"
-          cancelText="Cancel"
+          title={serviceInstanceConstants.delete}
+          confirmText={serviceInstanceConstants.delete}
+          cancelText={serviceInstanceConstants.cancel}
           onConfirm={handleDelete}
           modalOpeningComponent={
             <Button type="negative" option="light">
-              Delete
+              {serviceInstanceConstants.delete}
             </Button>
           }
           type="negative"
           onShow={() => LuigiClient.uxManager().addBackdrop()}
           onHide={() => LuigiClient.uxManager().removeBackdrop()}
         >
-          {`Are you sure you want to delete instance "${
+          {`${serviceInstanceConstants.instanceDeleteConfirm} "${
             serviceInstance.name
           }"?`}
         </Modal>
