@@ -24,7 +24,7 @@ const Overview = () => {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="fd-section center"
+      className="fd-section flex-center"
       style={{ width: '100vw', height: '100vh' }}
     >
       <Panel>
