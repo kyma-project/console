@@ -3,7 +3,7 @@ import "./Overview.scss";
 import { Panel } from "fundamental-react/lib/Panel";
 
 const Overview = () => {
-  const compassInitialRotation = 70;
+  const compassInitialRotation = 46;
   const rotatingCompass = useRef(null);
 
   const handleMouseMove = e => {
