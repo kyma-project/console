@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
+import { Models } from './Models';
+import { ModelCollapse } from './ModelCollapse';
 const buttonStyle = css`
   border-radius: 4px;
   border: solid 1px #0a6ed1;
@@ -66,58 +67,54 @@ const Text = styled.p`
   color: #32363a;
 `;
 
+const plugin = {
+  wrapComponents: {
+    parameters: (Original, system) => props => {
+      const allowTryItOut = false;
+      const customProps = { ...props, allowTryItOut };
+
+      return <Original {...customProps} />;
+    },
+    authorizeBtn: (Original, system) => props => {
+      return null;
+    },
+    authorizeOperationBtn: (Original, system) => props => {
+      return null;
+    },
+    info: (Original, system) => props => {
+      return null;
+    },
+    Col: (Orig, system) => props => {
+      if (props.className === 'schemes wrapper') {
+        return (
+          <Wrapper>
+            <Text>API Console</Text>
+            <SchemesWrapper className="test">
+              <Text light>Schemes</Text>
+              <Orig {...props} />
+              <ExpandButton>Expand All</ExpandButton>
+            </SchemesWrapper>
+          </Wrapper>
+        );
+      }
+      return <Orig {...props} />;
+    },
+    OperationSummary: (Orig, system) => props => {
+      return <Orig {...props} />;
+    },
+    Models: Models,
+    ModelCollapse,
+  },
+};
+
 export const ApiReferencePlugin = function(system) {
   return {
-    wrapComponents: {
-      parameters: (Original, system) => props => {
-        const allowTryItOut = false;
-        const customProps = { ...props, allowTryItOut };
-
-        return <Original {...customProps} />;
-      },
-      authorizeBtn: (Original, system) => props => {
-        return null;
-      },
-      authorizeOperationBtn: (Original, system) => props => {
-        return null;
-      },
-      info: (Original, system) => props => {
-        return null;
-      },
-      Col: (Orig, system) => props => {
-        if (props.className === 'schemes wrapper') {
-          return (
-            <Wrapper>
-              <Text>API Console</Text>
-              <SchemesWrapper className="test">
-                <Text light>Schemes</Text>
-                <Orig {...props} />
-                <ExpandButton>Expand All</ExpandButton>
-              </SchemesWrapper>
-            </Wrapper>
-          );
-        }
-        return <Orig {...props} />;
-      },
-      OperationSummary: (Orig, system) => props => {
-        return <Orig {...props} />;
-      },
-    },
+    ...plugin,
   };
 };
 
 export const ApiConsolePlugin = function(system) {
   return {
-    wrapComponents: {
-      authorizeBtn: (Original, system) => props => {
-        return null;
-      },
-      info: (Original, system) => props => {
-        return null;
-      },
-      Col: (Orig, system) => props => {
-        return <Orig {...props} />;
-      },
-    },
+    ...plugin,
   };
 };

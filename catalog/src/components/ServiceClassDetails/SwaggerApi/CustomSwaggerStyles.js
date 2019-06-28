@@ -352,6 +352,29 @@ const responsesTable = css`
   }
 `;
 
+const modelSectionStyles = css`
+  section.models {
+    div.model-container {
+      span.model-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        div.model-box {
+          width: 100%;
+          span.model {
+            & > span {
+              display: flex;
+              justify-content: space-between;
+              & > span:nth-child(3):not(.brace-open) {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 const StyledSwagger = styled.section`
   && {
     span.schemes-title {
@@ -360,8 +383,9 @@ const StyledSwagger = styled.section`
 
     div.scheme-container {
       margin: 0;
-      padding: 0;
+      padding: 4px 0;
       box-shadow: none;
+      border-bottom: 1px solid #efeff0;
     }
 
     ${tagHeader};
@@ -379,6 +403,7 @@ const StyledSwagger = styled.section`
     ${summaries};
     ${paramTable};
     ${responsesTable};
+    ${modelSectionStyles};
   }
 `;
 
