@@ -66,7 +66,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
       className="fd-has-padding-bottom-medium"
     >
       <Panel colSpan={2}>
-        <ServiceInstanceDescription class="fd-has-margin-bottom-medium">
+        <ServiceInstanceDescription className="fd-has-margin-bottom-medium">
           {instanceClass && instanceClass.description}
         </ServiceInstanceDescription>
         <PanelBody className="fd-has-margin-bottom-medium fd-has-padding-none">
