@@ -112,4 +112,11 @@ export class BindingsDetailsModalComponent {
   hasType(entries, type) {
     return _some(entries, { type });
   }
+
+  get namespaceHasAnyServicesBound(): boolean {
+    return (
+      this.selectedApplicationsState &&
+      this.selectedApplicationsState.length > 0
+    );
+  }
 }

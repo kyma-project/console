@@ -11,7 +11,7 @@
     >
     <fd-modal-body class="">
       <div
-        *ngIf="applicationHasAnyServices; else noServicesHint"
+        *ngIf="applicationHasAnyServices && namespaceHasAnyServicesBound; else noServicesHint"
         fd-form-item
       >
         <fd-list class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin">
@@ -60,7 +60,7 @@
               </fd-list-action>
             </li>
           </ng-container>
-          
+
         </fd-list>
       </div>
       <ng-template #noServicesHint>
