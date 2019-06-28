@@ -12,6 +12,21 @@ const navigation = {
       label: 'Runtimes',
       viewUrl: 'http://localhost:3000/runtimes',
     },
+
+    {
+      hideSideNav: true,
+      hideFromNav: true,
+      pathSegment: 'runtime',
+      children: [
+        {
+          hideSideNav: true,
+          hideFromNav: true,
+          pathSegment: ':runtimeId',
+          label: 'Runtimes',
+          viewUrl: 'http://localhost:3000/runtime/:runtimeId',
+        },
+      ],
+    },
   ],
 };
 export default navigation;

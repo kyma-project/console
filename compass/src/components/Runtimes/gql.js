@@ -4,8 +4,11 @@ export const ADD_RUNTIME = gql`
   mutation CreateRuntime($in: RuntimeInput!) {
     createRuntime(in: $in) {
       id
-      description
       name
+      description
+      tenant
+      labels
+      annotations
     }
   }
 `;
@@ -26,6 +29,16 @@ export const GET_RUNTIMES = gql`
         name
         description
       }
+    }
+  }
+`;
+
+export const GET_RUNTIME = gql`
+  query Runtime($id: ID!) {
+    runtime(id: $id) {
+      id
+      name
+      description
     }
   }
 `;

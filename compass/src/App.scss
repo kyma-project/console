@@ -1,1 +1,22 @@
 @import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
+
+.link {
+  color: var(--fd-color-action-1);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fd-page__header--columns {
+  .fd-action-bar__description {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .columns__value {
+    display: block;
+    color: var(--fd-color-text-1);
+  }
+  a,
+  fd-icon {
+    display: inline;
+  }
+}
