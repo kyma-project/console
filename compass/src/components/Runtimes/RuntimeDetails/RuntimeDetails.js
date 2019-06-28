@@ -1,40 +1,62 @@
-import React from 'react';
-import { GET_RUNTIME } from '../gql';
-import { Query } from 'react-apollo';
-import { ActionBar } from 'fundamental-react/lib/ActionBar';
-import { Button } from 'fundamental-react/lib/Button';
-import { Panel } from 'fundamental-react/lib/Panel';
-import LuigiClient from '@kyma-project/luigi-client';
+import React from "react";
+import { GET_RUNTIME } from "../gql";
+import { Query } from "react-apollo";
+
+import { Button } from "fundamental-react/lib/Button";
+
+import LuigiClient from "@kyma-project/luigi-client";
+import { Badge } from "fundamental-react/lib/Badge";
+import { Token } from "fundamental-react/lib/Token";
+import { Panel } from "fundamental-react/lib/Panel";
 const RuntimeDetails = ({ runtimeId }) => {
   return (
     <Query query={GET_RUNTIME} variables={{ id: runtimeId }}>
       {({ loading, error, data }) => {
-        if (loading) return 'Loading...';
+        if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
-        console.log(data);
+
+        const { name, description, id, status, labels } = data.runtime;
         return (
           <>
             <header className="fd-page__header fd-page__header--columns fd-has-background-color-background-2">
               <section className="fd-section">
                 <div className="fd-action-bar">
                   <div className="fd-action-bar__header">
-                    <h3 className="fd-action-bar__title">
-                      {data.runtime.name}
-                    </h3>
+                    <h3 className="fd-action-bar__title">{name}</h3>
                     <div className="fd-action-bar__description">
                       <div className="fd-container fd-container--fluid">
                         <div className="fd-col--4">
                           Description
-                          <span className="columns__value">
-                            {data.runtime.description}
-                          </span>
+                          <span className="columns__value">{description}</span>
                         </div>
                         <div className="fd-col--4">
                           ID
-                          <span className="columns__value">
-                            {data.runtime.id}
-                          </span>
+                          <span className="columns__value">{id}</span>
                         </div>
+                        {status && (
+                          <div className="fd-col--4">
+                            Status
+                            <span className="columns__value">
+                              <Badge>{status.condition}</Badge>
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="fd-container fd-container--fluid">
+                        {labels &&
+                          Object.keys(labels) && (
+                            <div className="fd-col--4">
+                              Labels
+                              <span className="columns__value">
+                                {Object.keys(labels).map(label => (
+                                  <Token key={label} className="y-fd-token y-fd-token--no-button">
+                                    {label}=[{labels[label].join(", ")}]
+                                  </Token>
+                                ))}
+                              </span>
+                            </div>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -43,7 +65,8 @@ const RuntimeDetails = ({ runtimeId }) => {
                       onClick={() =>
                         LuigiClient.uxManager().showAlert({
                           text: "Hola Amigo, you can't do it yet",
-                          type: 'warning',
+                          type: "warning",
+                          closeAfter: 2000
                         })
                       }
                       type="negative"
@@ -55,7 +78,13 @@ const RuntimeDetails = ({ runtimeId }) => {
                 </div>
               </section>
             </header>
-            <section className="fd-section">asasd</section>
+            <section className="fd-section">
+              <Panel>
+                <Panel.Header>
+                  <Panel.Head title="Have you ever wondered what's inside a runtime?" />
+                </Panel.Header>
+              </Panel>
+            </section>
           </>
         );
       }}

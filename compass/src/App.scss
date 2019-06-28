@@ -1,4 +1,4 @@
-@import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
+@import "~fundamental-styles/dist/fundamental-styles-ie11.min.css";
 
 .link {
   color: var(--fd-color-action-1);
@@ -18,5 +18,17 @@
   a,
   fd-icon {
     display: inline;
+  }
+}
+
+.y-fd-token {
+  margin-top: fd-space("tiny") / 2;
+  margin-bottom: fd-space("tiny") / 2;
+  margin-right: fd-space("tiny");
+  &.y-fd-token--no-button {
+    cursor: default;
+    &:after {
+      all: unset;
+    }
   }
 }
