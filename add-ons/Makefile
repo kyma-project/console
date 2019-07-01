@@ -9,6 +9,13 @@ ci-release: resolve build validate test build-image push-image
 resolve:
 	npm install
 
+pull-licenses:
+ifdef LICENSE_PULLER_PATH
+	bash $(LICENSE_PULLER_PATH)
+else
+	mkdir -p licenses
+endif
+
 build:
 	../scripts/prepare-react-components.sh -d react-components
 	npm run build
@@ -20,7 +27,7 @@ validate:
 test:
 	CI=true npm run test
 
-build-image:
+build-image: pull-licenses
 	docker build -t $(IMG_NAME) .
 
 push-image:

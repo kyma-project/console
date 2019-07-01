@@ -4,6 +4,7 @@ FROM nginx:1.14.0-alpine
 ### Copy file ###
 COPY ./dist /usr/share/nginx/html
 COPY ./nginx /etc/nginx
+COPY ./licenses/ /app/licenses/
 
 ### Expose ports ###
 EXPOSE 80
