@@ -30,7 +30,7 @@ const Overview = () => {
         <Panel.Body>
           <div className="logo">
             <img alt="Compass logo" src="compass-background.png" />
-            <img className="neddle" ref={rotatingCompass} src="compass-neddle.png" />
+            <img alt="Compass neddle" className="neddle" ref={rotatingCompass} src="compass-neddle.png" />
           </div>
         </Panel.Body>
       </Panel>
