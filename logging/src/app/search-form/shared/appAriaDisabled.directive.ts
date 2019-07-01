@@ -1,22 +1,23 @@
 import {
   Directive,
   ElementRef,
-  Renderer,
   Input,
   SimpleChanges,
   HostListener,
+  Renderer2,
+  OnChanges,
 } from '@angular/core';
 
 @Directive({
   selector: '[appAriaDisabled]',
 })
-class AriaDisabledDirective {
-  constructor(private _elRef: ElementRef, private _renderer: Renderer) {}
+class AriaDisabledDirective implements OnChanges{
+  constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
   @Input('appAriaDisabled') isDisabled: boolean;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.isDisabled) {
-      this._renderer.setElementAttribute(
+      this._renderer.setAttribute(
         this._elRef.nativeElement,
         'aria-disabled',
         this.isDisabled.toString(),
