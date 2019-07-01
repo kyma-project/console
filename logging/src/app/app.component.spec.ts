@@ -12,6 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
+import AppAriaDisabled from './search-form/shared/appAriaDisabled.directive';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -24,7 +25,7 @@ describe('AppComponent', () => {
         FormsModule,
         HttpClientModule,
       ],
-      declarations: [AppComponent, SearchFormComponent],
+      declarations: [AppComponent, SearchFormComponent, AppAriaDisabled],
       providers: [SearchService, LuigiContextService, HttpClientModule, Apollo],
     }).compileComponents();
   }));
