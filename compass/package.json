@@ -21,7 +21,7 @@
   "scripts": {
     "start-live-server": "live-server --entry-file=src/index.html .",
     "start": "concurrently \"react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:3000/ && npm run start-live-server\" ",
-    "start:kyma":"This component is not ready yet to be served together with Console.",
+    "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
