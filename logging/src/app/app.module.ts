@@ -23,10 +23,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppConfig } from './app.config';
 import { TokenInterceptor } from './auth/token.interceptor';
-import AppAriaDisabled from './search-form/shared/appAriaDisabled.directive';
+import { AriaDisabledDirective } from './search-form/shared/appAriaDisabled.directive';
 
 @NgModule({
-  declarations: [AppComponent, SearchFormComponent, AppAriaDisabled],
+  declarations: [AppComponent, SearchFormComponent, AriaDisabledDirective],
   imports: [
     BrowserModule,
     AppRoutingModule,

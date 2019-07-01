@@ -17,7 +17,7 @@ import {
   DISABLED_SEARCH_BUTTON_TOOLTIP,
 } from './shared/constants';
 
-import AriaDisabledDirective from './shared/appAriaDisabled.directive';
+import { AriaDisabledDirective } from './shared/appAriaDisabled.directive';
 
 @Component({
   selector: 'app-search-form',
@@ -392,5 +392,4 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.refreshResults();
     }
   }
-
 }

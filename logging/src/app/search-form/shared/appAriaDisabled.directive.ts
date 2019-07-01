@@ -11,7 +11,7 @@ import {
 @Directive({
   selector: '[appAriaDisabled]',
 })
-class AriaDisabledDirective implements OnChanges{
+export class AriaDisabledDirective implements OnChanges {
   constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
   @Input('appAriaDisabled') isDisabled: boolean;
 
@@ -21,7 +21,7 @@ class AriaDisabledDirective implements OnChanges{
         this._elRef.nativeElement,
         'aria-disabled',
         this.isDisabled.toString(),
-      ); // set the directive input as 'aria-disabled' value 
+      ); // set the directive input as 'aria-disabled' value
     }
   }
 
@@ -32,5 +32,3 @@ class AriaDisabledDirective implements OnChanges{
     }
   }
 }
-
-export default AriaDisabledDirective;
