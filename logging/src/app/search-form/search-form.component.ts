@@ -12,7 +12,12 @@ import { IPod, IPodQueryResponse } from './data/pod-query';
 
 import { PodsSubscriptonService } from './service/pods-subscription/pods-subscription.service';
 
-import { REFRESH_INTERVAL } from './shared/constants';
+import {
+  REFRESH_INTERVAL,
+  DISABLED_SEARCH_BUTTON_TOOLTIP,
+} from './shared/constants';
+
+import AriaDisabledDirective from './shared/appAriaDisabled.directive';
 
 @Component({
   selector: 'app-search-form',
@@ -67,6 +72,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   public isHistoricalDataSwitchVisible = false;
 
   private podsForFunction: IPod[];
+  public isSearchButtonTooltipOpen = false;
+  readonly DISABLED_SEARCH_BUTTON_TOOLTIP = DISABLED_SEARCH_BUTTON_TOOLTIP;
 
   constructor(
     private route: ActivatedRoute,
@@ -130,8 +137,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       if (this.autoRefreshEnabled) {
         this.runPollingSubscription();
       }
-    }
-    else {
+    } else {
       this.canSetAutoRefresh = false;
     }
   }
@@ -346,37 +352,38 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  onToTimeChanged(event: { target: { value: string; }; }) {
+  onToTimeChanged(event: { target: { value: string } }) {
     if (event.target.value === 'now') {
       this.canSetAutoRefresh = true;
       if (this.autoRefreshEnabled) {
         this.runPollingSubscription();
       }
-    }
-    else {
+    } else {
       this.canSetAutoRefresh = false;
       this.stopPollingSubscription();
     }
   }
 
-  toggleAutoRefresh(e) {
-    this.autoRefreshEnabled = e.target.checked;
+  toggleAutoRefresh(e?) {
+    this.autoRefreshEnabled =
+      e === undefined ? !this.autoRefreshEnabled : e.target.checked;
     if (this.autoRefreshEnabled) {
       this.tryRefreshResults(); // refresh so that user immediately can see new logs
       this.runPollingSubscription();
-    }
-    else {
+    } else {
       this.stopPollingSubscription();
     }
   }
 
   private runPollingSubscription() {
-    this.pollingSubscription = interval(REFRESH_INTERVAL).subscribe(() => this.tryRefreshResults());
+    this.pollingSubscription = interval(REFRESH_INTERVAL).subscribe(() =>
+      this.tryRefreshResults(),
+    );
   }
 
   private stopPollingSubscription() {
     if (this.pollingSubscription && !this.pollingSubscription.closed) {
-      this.pollingSubscription.unsubscribe(); 
+      this.pollingSubscription.unsubscribe();
     }
   }
 
