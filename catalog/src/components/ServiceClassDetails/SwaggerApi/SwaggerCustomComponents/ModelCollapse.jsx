@@ -92,7 +92,6 @@ export const ModelCollapse = (_, system) =>
     };
 
     render() {
-      console.log(system);
       const { title, classes } = this.props;
 
       if (this.state.expanded) {
