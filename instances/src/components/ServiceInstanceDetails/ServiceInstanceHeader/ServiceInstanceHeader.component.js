@@ -28,6 +28,10 @@ const ServiceInstanceHeader = ({
     }, 100);
   };
 
+  const instanceClass = serviceInstance.clusterServiceClass
+    ? serviceInstance.clusterServiceClass
+    : serviceInstance.serviceClass;
+
   return (
     <ToolbarWrapper>
       <BreadcrumbWrapper>
@@ -43,7 +47,7 @@ const ServiceInstanceHeader = ({
 
       <Toolbar
         title={serviceInstance.name}
-        description={serviceInstance.description}
+        description={instanceClass.description}
       >
         <Modal
           title={serviceInstanceConstants.delete}
