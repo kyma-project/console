@@ -223,10 +223,29 @@ const paramTable = css`
       tbody > tr {
         td {
           div.parameter__name.required {
-            color: #3b4151;
+            padding-left: 15px;
             font-family: '72';
+            font-size: 14px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.29;
+            letter-spacing: normal;
+            color: #000000;
+          }
+
+          div.parameter__type {
+            font-family: '72';
+            font-size: 14px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.43;
+            letter-spacing: normal;
+            color: #515559;
             padding-left: 15px;
           }
+
           div.parameter__in {
             padding-left: 15px;
           }
@@ -354,10 +373,16 @@ const responsesTable = css`
 
 const modelSectionStyles = css`
   section.models {
+    box-shadow: inset 0 1px 0 0 #eeeeef;
+    background-color: #ffffff;
+    padding-bottom: 0;
+
     /* common */
     div.model-container {
       margin: 0;
       background: none;
+
+      border-bottom: 1px solid #eeeeef;
     }
     span.model.model-title {
       font-family: '72';
@@ -373,6 +398,10 @@ const modelSectionStyles = css`
     div.model-container > div.model-box > section {
       justify-content: space-between;
     }
+    div.model-container > div.model-box {
+      padding: 0 10px;
+    }
+
     /* dropped down */
     div.model-container > span.model-box {
       display: flex;
@@ -380,10 +409,27 @@ const modelSectionStyles = css`
       align-items: center;
       background-color: white;
       /* padding: 0; */
-      div.model-box {
+      & > div.model-box {
         width: 100%;
-        & > span.model > div > section:first-child {
-          justify-content: space-between;
+        padding-right: 0px;
+        span.model-title > span.model-title__text {
+          font-family: '72';
+          font-size: 14px;
+          font-weight: bold;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.43;
+          letter-spacing: normal;
+          color: #32363a;
+          padding-bottom: 10px;
+        }
+        & > span.model > div {
+          & > section:first-child {
+            justify-content: space-between;
+          }
+          & > section:nth-child(2) {
+            padding-left: 20px;
+          }
         }
       }
     }
@@ -426,12 +472,3 @@ const StyledSwagger = styled.section`
 `;
 
 export { StyledSwagger };
-/* span.model {
-            & > span {
-              display: flex;
-              justify-content: space-between;
-              & > span:nth-child(3):not(.brace-open) {
-                display: none;
-              }
-            }
-          } */

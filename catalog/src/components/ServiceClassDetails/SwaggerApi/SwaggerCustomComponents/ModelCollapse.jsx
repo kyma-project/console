@@ -28,6 +28,9 @@ const CodeWrapper = styled.section`
     background-color: #fafafa;
     table.model {
       width: unset;
+      & > tbody > tr > td > span.model > span.prop > span.prop-enum > div {
+        display: flex;
+      }
     }
   }
 `;
