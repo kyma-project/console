@@ -10,3 +10,9 @@ export const ServiceClassToolbarWrapper = styled.div`
     padding: 0 30px;
   }
 `;
+
+export const HeaderWrapper = styled.section`
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #fff;
+`;

@@ -82,10 +82,3 @@ export const DescriptionKey = styled.p`
   color: #6a6d70;
   font-size: 14px;
 `;
-
-export const ServiceInstanceDescription = styled.div`
-  color: #74777a;
-  font-size: 16px;
-  text-align: left;
-  line-height: 1.25;
-`;

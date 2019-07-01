@@ -4,7 +4,7 @@ export const ToolbarWrapper = styled.section`
   background-color: #fff;
 `;
 
-export const UpperBarWrapper = styled.div`
+export const BreadcrumbWrapper = styled.div`
    {
     display: flex;
     justify-content: space-between;

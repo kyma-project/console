@@ -24,7 +24,6 @@ import {
   JSONCode,
   DescriptionKey,
   StatusWrapper,
-  ServiceInstanceDescription,
   LabelWrapper,
 } from './styled';
 
@@ -67,9 +66,6 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
       className="fd-has-padding-bottom-medium"
     >
       <Panel colSpan={2}>
-        <ServiceInstanceDescription className="fd-has-margin-bottom-medium">
-          {instanceClass && instanceClass.description}
-        </ServiceInstanceDescription>
         <PanelBody className="fd-has-margin-bottom-medium fd-has-padding-none">
           <Grid>
             <Grid.Unit size={INFORMATION_CELL_SIZE}>
