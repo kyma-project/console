@@ -32,19 +32,17 @@
               {{ instanceBinding.instanceName }}
             </td>
             <td>
-              <table>
-                <tr *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
-                  <td class="y-fd-table--col-12 y-word-break"
+                <div *ngFor="let envVar of instanceBinding.envVarNames ; index as j" [attr.data-index]="j">
+                  <p class="y-fd-table--col-12 y-word-break"
                     *ngIf="instanceBinding.instanceBindingPrefix!='undefined-', else onlyEnvVar">
                     {{ instanceBinding.instanceBindingPrefix + envVar }}
-                  </td>
+                  </p>
                   <ng-template #onlyEnvVar>
-                    <td class="y-fd-table--col-12 y-word-break">
+                    <p class="y-fd-table--col-12 y-word-break">
                       {{ envVar }}
-                    </td>
+                    </p>
                   </ng-template>
-                </tr>
-              </table>
+                </div>
             </td>
             <td class="fd-has-float-right">
               <button fd-button [options]="'light'" [glyph]="'delete'" [compact]="true" (click)="remove(i)"

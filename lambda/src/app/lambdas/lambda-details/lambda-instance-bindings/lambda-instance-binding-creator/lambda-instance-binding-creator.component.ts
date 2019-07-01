@@ -32,7 +32,6 @@ export class LambdaInstanceBindingCreatorComponent {
   instanceBindingCreatorModal: ModalComponent;
 
   public isValid = false;
-  public isSelectedInstanceBindingPrefixInvalid = false;
   public createSecrets = true;
   public selectedInstance: ServiceInstance;
   public selectedBinding: ServiceBinding;
@@ -103,19 +102,6 @@ export class LambdaInstanceBindingCreatorComponent {
         this.isActive = false;
         luigiClient.uxManager().removeBackdrop();
       });
-  }
-
-  public validatesPrefix() {
-    const regex = /[a-z0-9]([(-|_)a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/;
-    const found = this.selectedInstanceBindingPrefix.match(regex);
-    this.isSelectedInstanceBindingPrefixInvalid =
-      (found && found[0] === this.selectedInstanceBindingPrefix) ||
-        this.selectedInstanceBindingPrefix === ''
-        ? false
-        : true;
-    if (this.selectedInstanceBindingPrefix.length > 61) {
-      this.isSelectedInstanceBindingPrefixInvalid = true;
-    }
   }
 
   public closeModal(event: Event): void {

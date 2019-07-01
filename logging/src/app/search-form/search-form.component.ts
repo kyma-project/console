@@ -57,7 +57,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   public loaded: Observable<boolean> = observableOf(false);
   private pollingSubscription: Subscription;
-  private autoRefreshEnabled = true;
+  public autoRefreshEnabled = true;
   public canSetAutoRefresh = true;
 
   get isQueryEmpty(): boolean {

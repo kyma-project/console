@@ -541,7 +541,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         };
         if (bs.currentState.instanceBindingPrefix !== undefined) {
           serviceBindingUsage.spec.parameters.envPrefix.name =
-            bs.currentState.instanceBindingPrefix + '-';
+            bs.currentState.instanceBindingPrefix;
         }
         createRequests.push(
           this.serviceBindingsService
@@ -561,7 +561,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         };
         if (bs.currentState.instanceBindingPrefix !== undefined) {
           serviceBindingUsage.spec.parameters.envPrefix.name =
-            bs.currentState.instanceBindingPrefix + '-';
+            bs.currentState.instanceBindingPrefix;
         }
       }
       serviceBindingUsage.spec.usedBy.kind = FUNCTION;

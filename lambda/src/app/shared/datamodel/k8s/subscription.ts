@@ -11,8 +11,6 @@ export interface ISubscription extends IMetaDataOwner {
 export interface ISubscriptionSpec {
   endpoint: string;
   source_id: string;
-  push_request_timeout_ms: number;
-  max_inflight: number;
   include_subscription_name_header: boolean;
   event_type: string;
   event_type_version: string;

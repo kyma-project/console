@@ -101,7 +101,11 @@ const ServiceClassInfo = ({
         </Tile>
         <Tile>
           <TileContent title={serviceClassTileTitles.lastUpdate}>
-            <Moment unix format="MMM DD, YYYY">
+            <Moment
+              unix
+              format="MMM DD, YYYY"
+              data-e2e-id="service-last-update"
+            >
               {creationTimestamp}
             </Moment>
           </TileContent>
@@ -131,7 +135,7 @@ const ServiceClassInfo = ({
         )}
         <Tile columnSpan={4}>
           <TileContent title={serviceClassTileTitles.description}>
-            <p>{description}</p>
+            <p data-e2e-id="service-description">{description}</p>
           </TileContent>
         </Tile>
         {modifiedTags && modifiedTags.length > 0 && (
