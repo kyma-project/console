@@ -72,11 +72,11 @@
           </select>
         </div>
 
-        <div fd-form-item [isInline]="true">
+        <div fd-form-item *ngIf="isHistoricalDataSwitchVisible" [isInline]="true">
           <fd-form-label >
             Show
           </fd-form-label>
-          <label *ngIf="isHistoricalDataSwitchVisible"  fd-form-label for="outdatedLogsToggle">
+          <label fd-form-label for="outdatedLogsToggle">
             <input fd-form-control type="checkbox"  [(ngModel)]="model.showOutdatedLogs"  name="showOutdatedLogs" (change)="onSubmit()" id="outdatedLogsToggle" >
             Outdated logs
           </label>
