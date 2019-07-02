@@ -266,15 +266,7 @@ class ServiceClassTabs extends Component {
 
       let error = Object.keys(fetchError).filter(key => fetchError[key]);
       error = error.length ? fetchError[error[0]] : null;
-      if (openApiSpec && openApiSpec.source) {
-        const data = openApiSpec.source.paths['/pet'].put;
-        openApiSpec.source.paths['/pet'].patch = data;
-        openApiSpec.source.paths['/pet'].options = data;
-        openApiSpec.source.paths['/pet'].head = data;
-        openApiSpec.source.paths['/pet'].connect = data;
-        openApiSpec.source.paths['/user'].trace = data;
-        // console.log(openApiSpec.source);
-      }
+
       return (
         <>
           {error && (
