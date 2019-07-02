@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledSwagger } from './SwaggerCustomStyles';
+import { StyledSwagger } from './SwaggerCustomComponents/CustomSwaggerStyles';
 class SwaggerConsole extends React.Component {
   async componentDidMount() {
     await this.createSwagger(this.prepareDataForCreate());
