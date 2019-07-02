@@ -7,4 +7,5 @@ export interface ISearchFormData {
   direction: string;
   label: string;
   showOutdatedLogs: boolean;
+  showHealthChecks: boolean;
 }

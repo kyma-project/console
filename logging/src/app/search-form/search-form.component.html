@@ -71,14 +71,18 @@
             <option *ngFor="let to of toValues" [value]="to">{{ to }}</option>
           </select>
         </div>
-
+        
         <div fd-form-item *ngIf="isHistoricalDataSwitchVisible" [isInline]="true">
           <fd-form-label >
             Show
           </fd-form-label>
-          <label fd-form-label for="outdatedLogsToggle">
+          <label fd-form-label class="fd-form-label--block" for="outdatedLogsToggle">
             <input fd-form-control type="checkbox"  [(ngModel)]="model.showOutdatedLogs"  name="showOutdatedLogs" (change)="onSubmit()" id="outdatedLogsToggle" >
             Outdated logs
+          </label>
+          <label fd-form-label class="fd-form-label--block" for="healthChecksToggle">
+            <input fd-form-control type="checkbox"  [(ngModel)]="model.showHealthChecks"  name="showHealthChecks" (change)="onSubmit()" id="healthChecksToggle" >
+            Health checks
           </label>
         </div>
         
@@ -148,6 +152,7 @@
 </div>
 </div>
 
+<ng-container *ngIf="searchResult && searchResult.streams && searchResult.streams[0]; else elseBlock">
 <div class="fd-section" *ngFor="let stream of searchResult.streams">
   <div class="fd-panel">
     <div class="fd-panel__filters" >
@@ -175,3 +180,10 @@
     </div>
   </div>
 </div>
+</ng-container>
+<ng-template #elseBlock>
+  <div class="fd-section">
+    Alternate text while primary text is hidden
+  </div>
+</ng-template>
+
