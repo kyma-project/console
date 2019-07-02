@@ -14,7 +14,6 @@ import { PodsSubscriptonService } from './service/pods-subscription/pods-subscri
 
 import {
   REFRESH_INTERVAL,
-  DISABLED_SEARCH_BUTTON_TOOLTIP,
 } from './shared/constants';
 
 import { AriaDisabledDirective } from './shared/appAriaDisabled.directive';
@@ -73,7 +72,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
   private podsForFunction: IPod[];
   public isSearchButtonTooltipOpen = false;
-  readonly DISABLED_SEARCH_BUTTON_TOOLTIP = DISABLED_SEARCH_BUTTON_TOOLTIP;
+  readonly DISABLED_SEARCH_BUTTON_TOOLTIP = `The results are updated automatically`;
 
   constructor(
     private route: ActivatedRoute,
