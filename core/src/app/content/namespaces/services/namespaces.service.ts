@@ -201,6 +201,22 @@ export class NamespacesService {
     );
   }
 
+  public editNamespace(name: string, labels: object) {
+    const mutation = `mutation UpdateNamespace($name: String!, $labels: Labels!) {
+      updateNamespace(name: $name, labels: $labels){
+        name
+        labels
+      }
+    }`;
+
+    const variables = {
+      name,
+      labels
+    };
+
+    return this.graphQLClientService.gqlMutation(mutation, variables);
+  }
+
   public getResourceQueryStatus(namespace: string) {
     const query = `query ResourceQuotasStatus($namespace: String!) {
       resourceQuotasStatus(namespace: $namespace){

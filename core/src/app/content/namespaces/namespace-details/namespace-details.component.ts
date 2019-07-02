@@ -12,6 +12,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
 import * as LuigiClient from '@kyma-project/luigi-client';
 import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
+import { NamespaceEditComponent } from '../namespace-edit/namespace-edit.component';
 
 @Component({
   selector: 'app-namespace-details',
@@ -20,6 +21,8 @@ import { ConfirmationModalComponent } from 'shared/components/confirmation-modal
 })
 export class NamespaceDetailsComponent implements OnInit, OnDestroy {
 
+  @ViewChild('editnamespacemodal')
+  private editnamespacemodal: NamespaceEditComponent;
   @ViewChild('uploaderModal')
   private uploaderModal: ResourceUploaderModalComponent;
   @ViewChild('infoModal')
@@ -27,7 +30,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('confirmationModal')
   private confirmationModal: ConfirmationModalComponent;
 
-  public namespace: NamespaceInfo = new NamespaceInfo({uid:'', name:''});
+  public namespace: NamespaceInfo = new NamespaceInfo({ uid: '', name: '' });
   public boundApplicationsCount: Observable<number> = of(0);
   public applications: any;
   public services: any;
@@ -60,23 +63,10 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .getCurrentNamespaceId()
       .subscribe(namespaceId => {
         this.id = namespaceId;
-        this.namespacesService.getNamespace(this.id).subscribe(
-          namespace => {
-            if (namespace) {
-              this.namespace = namespace;
-            }
-            if(this.namespace.getLabels() !== null &&  this.namespace.getLabels() !== undefined){
-              this.labelKeys = Object.keys(this.namespace.getLabels());
-            }
-
-            this.getServices(this.id);
-            this.getApplications(this.id);
-          },
-          err => {
-            this.errorMessage = err.message;
-            console.log(`error loading namespace ${namespaceId}`, err);
-          }
-        );
+        this.getNamespace(this.id, () => {
+          this.getServices(this.id);
+          this.getApplications(this.id);
+        })
       });
   }
 
@@ -89,7 +79,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getApplications(id) {
+  private getApplications(id: string) {
     this.applicationBindingService.getBoundApplications(id).subscribe(
       res => {
         this.applications = res['applications'];
@@ -101,15 +91,37 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getServices(id) {
+  private getServices(id: string) {
     const url = `${AppConfig.k8sApiServerUrl}namespaces/${id}/services`;
     this.http.get<any>(url).subscribe(res => {
       this.services = res.items;
     });
   }
 
+  private getNamespace(id: string, additionalCalls: Function) {
+    this.namespacesService.getNamespace(this.id).subscribe(
+      namespace => {
+        if (namespace) {
+          this.namespace = namespace;
+        }
+        if (this.namespace.getLabels() !== null && this.namespace.getLabels() !== undefined) {
+          this.labelKeys = Object.keys(this.namespace.getLabels());
+        }
+        additionalCalls();
+      },
+      err => {
+        this.errorMessage = err.message;
+        console.log(`error loading namespace ${id}`, err);
+      }
+    );
+  }
+
   private openUploadResourceModal() {
     this.uploaderModal.show();
+  }
+
+  private openEditNamespaceModal() {
+    this.editnamespacemodal.show(this.namespace);
   }
 
   private subscribeToRefreshComponent() {
@@ -119,6 +131,8 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       if (event.type === 'createResource' || event.type === 'deleteResource') {
         this.getApplications(this.id);
         this.getServices(this.id);
+      } else if (event.type === 'editLabel') {
+        this.getNamespace(this.id, () => { });
       }
     });
   }
@@ -150,15 +164,15 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
 
   public deleteNamespace() {
     this.confirmationModal.show('Delete', `Do you want to delete namespace ${this.namespace.getLabel()}?`)
-    .then(() => {
-      this.namespacesService.deleteNamespace(this.namespace.getLabel())
-      .subscribe(() => {
-          LuigiClient.linkManager().navigate('/home');
-      }, err => {
-        this.infoModal.show('Error', `There was an error while deleting namespace ${this.namespace.getLabel()}: ${err}`)
-      });
-    })
-    .catch(() => {});
+      .then(() => {
+        this.namespacesService.deleteNamespace(this.namespace.getLabel())
+          .subscribe(() => {
+            LuigiClient.linkManager().navigate('/home');
+          }, err => {
+            this.infoModal.show('Error', `There was an error while deleting namespace ${this.namespace.getLabel()}: ${err}`)
+          });
+      })
+      .catch(() => { });
   }
 
 }

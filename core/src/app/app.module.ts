@@ -22,6 +22,7 @@ import { WorkspaceOverviewComponent } from './content/workspace-overview/workspa
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ListModule } from 'app/generic-list/list.module';
 import { NamespaceCreateComponent } from './content/namespaces/namespace-create/namespace-create.component';
+import { NamespaceEditComponent } from './content/namespaces/namespace-edit/namespace-edit.component';
 import { CurrentNamespaceService } from './content/namespaces/services/current-namespace.service';
 import { NamespacesService } from './content/namespaces/services/namespaces.service';
 import { NamespaceCardComponent } from './content/workspace-overview/namespace-card/namespace-card.component';
@@ -127,6 +128,7 @@ import { GenericHelpersService } from './shared/services/generic-helpers.service
     NamespacesContainerComponent,
     WorkspaceOverviewComponent,
     NamespaceCreateComponent,
+    NamespaceEditComponent,
     NamespaceCardComponent,
     DeploymentsComponent,
     PodsComponent,
