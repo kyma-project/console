@@ -58,7 +58,6 @@ export const OperationTag = (Orig, { Im }) =>
       } = this.props;
 
       let { docExpansion, deepLinking } = getConfigs();
-      console.log(Icon);
       const isDeepLinkingEnabled = deepLinking && deepLinking !== 'false';
 
       const Collapse = getComponent('Collapse');
@@ -134,12 +133,6 @@ export const OperationTag = (Orig, { Im }) =>
               title={showTag ? 'Collapse operation' : 'Expand operation'}
               onClick={() => layoutActions.show(isShownKey, !showTag)}
             >
-              {/* <svg className="arrow" width="20" height="20">
-                <use
-                  href={showTag ? '#large-arrow-top' : '#large-arrow-down'}
-                  xlinkHref={showTag ? '#large-arrow-top' : '#large-arrow-down'}
-                />
-              </svg> */}
               {showTag ? (
                 <StyledIcon glyph="navigation-up-arrow" />
               ) : (

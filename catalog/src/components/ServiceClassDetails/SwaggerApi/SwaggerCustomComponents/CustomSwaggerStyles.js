@@ -467,6 +467,19 @@ const modelSectionStyles = css`
           }
           & > section:nth-child(2) {
             padding-left: 20px;
+            & > span.inner-object > table.model > tbody > tr > td {
+              &,
+              & span {
+                font-family: Courier;
+                font-size: 14px;
+                font-weight: normal;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                /* color: #3f5060; */
+              }
+            }
           }
         }
       }
