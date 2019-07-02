@@ -12,7 +12,7 @@ export default ({
   description,
   background,
   children,
-  disableDescriptionWrap,
+  nowrap,
 }) => (
   <ActionBar data-e2e-id="toolbar" background={background}>
     {typeof goBack === 'function' && (
@@ -21,7 +21,7 @@ export default ({
     <ActionBarHeader
       title={title}
       description={description}
-      disableDescriptionWrap={disableDescriptionWrap}
+      nowrap={nowrap}
       data-e2e-id="toolbar-header"
     />
     <ActionBarActions data-e2e-id="toolbar-actions">
