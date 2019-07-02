@@ -42,6 +42,14 @@ export class CreateBindingsModalComponent {
     this.applicationBindingService = applicationBindingService;
   }
 
+  get applicationHasAnyServices(): boolean {
+    return (
+      this.application &&
+      this.application.services &&
+      this.application.services.length
+    );
+  }
+
   public show() {
     this.route.params.subscribe(params => {
       const applicationId = params['id'];

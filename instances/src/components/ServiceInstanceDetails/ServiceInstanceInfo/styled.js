@@ -1,66 +1,33 @@
 import styled from 'styled-components';
-import {
-  PanelGrid,
-  Panel,
-  PanelHeader,
-  PanelBody,
-} from '@kyma-project/react-components';
+import { PanelGrid, Panel, PanelHeader } from '@kyma-project/react-components';
 
 export const ServiceInstanceInfoWrapper = styled(PanelGrid)`
-  display: flex;
-  padding-bottom: 20px;
+  margin: 0 32px;
+  && > * {
+    box-shadow: none;
+  }
 `;
 
-export const ContentWrapper = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0 0 20px 0;
-  text-align: left;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.08);
-  font-family: '72';
-  font-weight: normal;
-  border-left: ${props => (props.color ? '6px solid ' + props.color : 'none')};
-`;
-
-export const StretchedContentWrapper = styled(ContentWrapper)`
-  align-self: stretch;
-`;
-
-export const CenterSideWrapper = styled(Panel)`
-  && {
-    border-left: ${props =>
-      props.color ? '6px solid ' + props.color : 'none'};
+export const StatusWrapper = styled(Panel)`
+   {
+    && {
+      border: solid 1px #d9d9d9;
+      border-left: ${props =>
+        props.color ? '6px solid ' + props.color : 'none'};
+    }
   }
 `;
 
 export const ContentHeader = styled(PanelHeader)`
   && {
-    color: rgb(50, 54, 58);
+    color: #32363a;
     font-size: 16px;
     font-weight: normal;
   }
 `;
 
-export const ContentDescription = styled(PanelBody)``;
-
 export const Element = styled.div`
   margin: ${props => (props.margin ? props.margin : '16px 0 0 0')};
-`;
-
-export const InfoIcon = styled.div`
-  width: 13px;
-  height: 14px;
-  line-height: 19px;
-  font-family: SAP-icons;
-  font-size: 13px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: normal;
-  float: right;
-  color: ${props => props.color};
 `;
 
 export const ServiceClassButton = styled.span`
@@ -107,4 +74,11 @@ export const JSONCode = styled.code`
   white-space: -moz-pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
+`;
+
+export const DescriptionKey = styled.p`
+  margin-bottom: 0;
+  margin-top: 24px;
+  color: #6a6d70;
+  font-size: 14px;
 `;

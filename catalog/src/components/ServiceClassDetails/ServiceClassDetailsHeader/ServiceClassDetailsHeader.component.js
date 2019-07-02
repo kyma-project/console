@@ -6,7 +6,11 @@ import { Breadcrumb, BreadcrumbItem } from '@kyma-project/react-components';
 import ServiceClassToolbar from '../ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from '../ServiceClassInfo/ServiceClassInfo.component';
 
-import { BreadcrumbWrapper, ServiceClassToolbarWrapper } from './styled';
+import {
+  BreadcrumbWrapper,
+  ServiceClassToolbarWrapper,
+  HeaderWrapper,
+} from './styled';
 
 import { serviceClassConstants } from '../../../variables';
 
@@ -28,9 +32,8 @@ const ServiceClassDetailsHeader = ({
       .fromClosestContext()
       .navigate('/');
   };
-
   return (
-    <div>
+    <HeaderWrapper>
       <BreadcrumbWrapper>
         <Breadcrumb>
           <BreadcrumbItem
@@ -60,7 +63,7 @@ const ServiceClassDetailsHeader = ({
         supportUrl={supportUrl}
         tags={tags}
       />
-    </div>
+    </HeaderWrapper>
   );
 };
 

@@ -13,11 +13,7 @@ import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.conta
 
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 
-import {
-  ServiceClassDetailsWrapper,
-  CenterSideWrapper,
-  EmptyList,
-} from './styled';
+import { ServiceClassDetailsWrapper, EmptyList } from './styled';
 
 import {
   getResourceDisplayName,
@@ -123,12 +119,10 @@ class ServiceClassDetails extends React.Component {
             </ServiceClassDetailsHeader>
 
             <ServiceClassDetailsWrapper phoneRows>
-              <CenterSideWrapper>
-                {backendModuleExists('cms') &&
-                backendModuleExists('assetstore') ? (
-                  <ServiceClassTabs serviceClass={serviceClass} />
-                ) : null}
-              </CenterSideWrapper>
+              {backendModuleExists('cms') &&
+              backendModuleExists('assetstore') ? (
+                <ServiceClassTabs serviceClass={serviceClass} />
+              ) : null}
             </ServiceClassDetailsWrapper>
           </div>
         )}

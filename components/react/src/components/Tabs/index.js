@@ -85,7 +85,8 @@ class Tabs extends React.Component {
     const props = this.getPropsFromActiveTab(children);
 
     return (
-      <TabsWrapper border={this.props.border} noBorder={this.props.noBorder}>
+      <TabsWrapper>
+        {!this.props.hideSeparator && <Separator />}
         <TabsHeader
           noMargin={this.props.noMargin}
           customStyles={this.props.customStyles}
@@ -95,8 +96,10 @@ class Tabs extends React.Component {
             {this.renderAdditionalHeaderContent(children)}
           </TabsHeaderAdditionalContent>
         </TabsHeader>
-        {!this.props.hideSeparator && <Separator />}
-        <TabsContent noMargin={props && props.noMargin}>
+        <TabsContent
+          noMargin={props && props.noMargin}
+          wrapInPanel={props.wrapInPanel}
+        >
           {this.renderActiveTab(children)}
         </TabsContent>
       </TabsWrapper>

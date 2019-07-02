@@ -59,17 +59,9 @@
       </div>
       <div fd-form-item>
         <fd-form-label>Services & Events *</fd-form-label>
-        <fd-toggle [size]="'s'" [(ngModel)]="allServices">Select all</fd-toggle>
+        <fd-toggle [size]="'s'" [(ngModel)]="allServices" *ngIf="applicationHasAnyServices">Select all</fd-toggle>
       </div>
-      <div
-        fd-form-item
-        *ngIf="
-          !allServices &&
-          application &&
-          application.services &&
-          application.services.length > 0
-        "
-      >
+      <div fd-form-item *ngIf="!allServices && applicationHasAnyServices; else noServicesHint">
         <fd-list
           class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin"
         >
@@ -120,6 +112,9 @@
           </li>
         </fd-list>
       </div>
+      <ng-template #noServicesHint>
+        <p class="fd-has-color-text-4 fd-has-margin-bottom-small">This Application doesn't expose any Service or Events.</p>
+      </ng-template>
     </fd-modal-body>
     <fd-modal-footer>
       <button

@@ -9,6 +9,13 @@ ci-release: install-dependencies validate test build build-image push-image
 install-dependencies:
 	npm ci
 
+pull-licenses:
+ifdef LICENSE_PULLER_PATH
+	bash $(LICENSE_PULLER_PATH)
+else
+	mkdir -p licenses
+endif
+
 validate:
 	npm run lint
 
@@ -18,7 +25,7 @@ test:
 build:
 	npm run build
 
-build-image:
+build-image: pull-licenses
 	docker build -t $(IMG_NAME) .
 
 push-image:

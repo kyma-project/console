@@ -72,15 +72,17 @@
           </select>
         </div>
 
-        <div *ngIf="isHistoricalDataSwitchVisible" fd-form-item [isInline]="true">
+        <div fd-form-item *ngIf="isHistoricalDataSwitchVisible" [isInline]="true">
           <fd-form-label >
-            Historical Logs
+            Show
           </fd-form-label>
           <label fd-form-label for="outdatedLogsToggle">
             <input fd-form-control type="checkbox"  [(ngModel)]="model.showOutdatedLogs"  name="showOutdatedLogs" (change)="onSubmit()" id="outdatedLogsToggle" >
-            Include function's previous versions
+            Outdated logs
           </label>
         </div>
+        
+   
       </fieldset>
 
       <fieldset fd-form-set>
@@ -105,24 +107,32 @@
           </span>
         </div>
 
-        <div fd-form-item [isInline]="true">
-          <div class="fd-form__item fd-form__item--check fd_panel__refresh-toggle">
-            <label class="fd-form__label" for="auto-refresh-toggle">
-                <span class="fd-toggle fd-form__control">
-                    <input
-                        type="checkbox"
-                        checked id="auto-refresh-toggle"
-                        (change)="toggleAutoRefresh($event)"
-                        [disabled]="!canSetAutoRefresh || !searchData.form.valid">
-                    <span class="fd-toggle__switch" role="presentation"></span>
-                </span>
-                Auto refresh
-            </label>
-          </div>
-        </div>
 
         <div fd-form-item [isInline]="true">
-          <button fd-button type="submit" [glyph]="'search'" [options]="'light'" [disabled]="!searchData.form.valid || autoRefreshEnabled">Search</button>
+            <div class="fd-popover">
+                <div class="fd-popover__control">  
+                    <button fd-button type="submit" 
+                    [glyph]="'search'" 
+                    [options]="'light'"
+                    [appAriaDisabled]="!searchData.form.valid || autoRefreshEnabled" 
+                    (mouseenter)="autoRefreshEnabled? isSearchButtonTooltipOpen = true: null"
+                    (mouseout)="isSearchButtonTooltipOpen = false"
+                    [attr.aria-expanded]="isSearchButtonTooltipOpen" aria-haspopup="true">
+                      Search
+                    </button>
+                </div>
+                <div class="fd-popover__body fd-has-padding-tiny" [attr.aria-hidden]="!isSearchButtonTooltipOpen" >
+                   {{ DISABLED_SEARCH_BUTTON_TOOLTIP }}
+                </div>
+            </div>
+
+          <button fd-button 
+            class="fd-has-margin-left-small"
+            *ngIf="canSetAutoRefresh" 
+            [glyph]="autoRefreshEnabled?'media-pause':'media-play'" 
+            (click)="toggleAutoRefresh()">
+            Auto refresh
+          </button>
         </div>
       </fieldset>
 
@@ -140,28 +150,28 @@
 
 <div class="fd-section" *ngFor="let stream of searchResult.streams">
   <div class="fd-panel">
-  <div class="fd-panel__filters" >
-    Available labels for stream:
-    <ng-container *ngFor="let label of stream.availableLabels">
-      <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button"
-          *ngIf="!isSelectedLabel(label)" (click)="addLabel($event.target.outerText)">
-        {{ label }}
-        </div>
-    </ng-container>
-  </div>
-  <div class="fd-panel__body">
-    <fd-table>
-      <fd-table-header>
-        <th>Timestamp</th>
-        <th>Log</th>
-      </fd-table-header>
-      <fd-table-body>
-        <tr *ngFor="let row of stream.entries">
-          <td class="no-word-break">{{ row.ts }}</td>
-          <td class="word-break">{{ row.line }}</td>
-        </tr>
-      </fd-table-body>
-    </fd-table>
-  </div>
+    <div class="fd-panel__filters" >
+      Available labels for stream:
+      <ng-container *ngFor="let label of stream.availableLabels">
+        <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button"
+            *ngIf="!isSelectedLabel(label)" (click)="addLabel($event.target.outerText)">
+          {{ label }}
+          </div>
+      </ng-container>
+    </div>
+    <div class="fd-panel__body">
+      <fd-table>
+        <fd-table-header>
+          <th>Timestamp</th>
+          <th>Log</th>
+        </fd-table-header>
+        <fd-table-body>
+          <tr *ngFor="let row of stream.entries">
+            <td class="no-word-break">{{ row.ts }}</td>
+            <td class="word-break">{{ row.line }}</td>
+          </tr>
+        </fd-table-body>
+      </fd-table>
+    </div>
   </div>
 </div>

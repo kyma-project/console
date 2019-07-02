@@ -9,11 +9,18 @@ ci-release: install-dependencies validate build-image push-image
 install-dependencies:
 	npm ci
 
+pull-licenses:
+ifdef LICENSE_PULLER_PATH
+	bash $(LICENSE_PULLER_PATH)
+else
+	mkdir -p licenses
+endif
+
 validate:
 	npm run lint-check
 	eslint -c .eslinterrc ./ui-tests
 
-build-image:
+build-image: pull-licenses
 	docker build -t $(IMG_NAME) .
 
 push-image:

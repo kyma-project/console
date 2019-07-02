@@ -32,6 +32,14 @@ export class BindingsDetailsModalComponent {
     private modalService: ModalService
   ) {}
 
+  get applicationHasAnyServices(): boolean {
+    return (
+      this.application &&
+      this.application.services &&
+      this.application.services.length > 0
+    );
+  }
+
   public show(initialNamespace) {
     this.namespaceName = initialNamespace;
     this.route.params.subscribe(params => {
@@ -103,5 +111,12 @@ export class BindingsDetailsModalComponent {
 
   hasType(entries, type) {
     return _some(entries, { type });
+  }
+
+  get namespaceHasAnyServicesBound(): boolean {
+    return (
+      this.selectedApplicationsState &&
+      this.selectedApplicationsState.length > 0
+    );
   }
 }

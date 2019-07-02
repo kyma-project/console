@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { ISearchFormData } from './data';
 import { PodsSubscriptonService } from './service/pods-subscription/pods-subscription.service';
 import { Apollo } from 'apollo-angular';
+import { AriaDisabledDirective } from './shared/appAriaDisabled.directive';
 
 const ActivatedRouteMock = {
   queryParams: of({}),
@@ -21,7 +22,7 @@ describe('SearchFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchFormComponent],
+      declarations: [SearchFormComponent, AriaDisabledDirective],
       imports: [HttpClientTestingModule, FundamentalNgxModule, FormsModule],
       providers: [
         SearchService,
