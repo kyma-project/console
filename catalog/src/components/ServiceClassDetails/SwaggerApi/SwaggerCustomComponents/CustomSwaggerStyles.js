@@ -9,6 +9,26 @@ const summaries = css`
       border-bottom: none;
       padding: 4px 10px;
       min-height: 48px;
+      & > span.opblock-summary-path > a {
+        font-family: '72';
+        font-size: 14px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        color: #32363a;
+      }
+      & > div.opblock-summary-description {
+        font-family: '72';
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        color: #74777a;
+      }
     }
   }
 
@@ -201,6 +221,43 @@ const paramOptions = css`
   }
 `;
 
+const modelTableInnerStyling = css`
+  ul.tab {
+    margin-top: 11px;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
+    padding: 10px 0;
+    border: solid 1px #89919a;
+    & > li {
+      padding-left: 10px;
+      &:after {
+        display: none;
+      }
+      a {
+        font-family: '72';
+        font-size: 14px;
+
+        line-height: 1.29;
+        letter-spacing: normal;
+        color: #74777a;
+      }
+    }
+  }
+
+  ul.tab > li.tabitem.active > a {
+    color: #32363a;
+  }
+  ul.tab + div {
+    & > div.model-box {
+      width: 100%;
+      border-radius: 0 0 4px 4px;
+      border: 1px solid #89919a;
+      border-top: none;
+      background: none;
+    }
+  }
+`;
+
 const paramTable = css`
   ${paramOptions}
   div.table-container {
@@ -222,7 +279,7 @@ const paramTable = css`
       }
       tbody > tr {
         td {
-          div.parameter__name.required {
+          div.parameter__name {
             padding-left: 15px;
             font-family: '72';
             font-size: 14px;
@@ -262,51 +319,31 @@ const paramTable = css`
       color: #000000;
       margin-bottom: 15px;
     }
+
     td.col.parameters-col_description div:not(.markdown) {
-      ul.tab {
-        margin-top: 11px;
-        border-radius: 4px 4px 0 0;
-        margin-bottom: 0;
-        padding: 10px 0;
-        border: solid 1px #89919a;
-        & > li {
-          padding-left: 10px;
-          &:after {
-            display: none;
-          }
-          a {
-            font-family: '72';
-            font-size: 14px;
-
-            line-height: 1.29;
-            letter-spacing: normal;
-            color: #74777a;
-          }
-        }
-      }
-
-      ul.tab > li.tabitem.active > a {
-        color: #32363a;
-      }
+      ${modelTableInnerStyling}
     }
+  }
 
-    div.highlight-code {
-      & > pre {
-        border-radius: 0 0 4px 4px;
-        border: solid 1px #89919a;
-        border-top: none;
-        background-color: #fafafa;
-        & > span {
-          font-family: Courier;
-          font-size: 14px;
-          font-weight: normal;
-          font-style: normal;
-          font-stretch: normal;
-          line-height: normal;
-          letter-spacing: normal;
-          /* original style has !important too, so we need this to override */
-          color: #3f5060 !important;
-        }
+  td.col.response-col_description div:not(.markdown) {
+    ${modelTableInnerStyling}
+  }
+  div.highlight-code {
+    & > pre {
+      border-radius: 0 0 4px 4px;
+      border: solid 1px #89919a;
+      border-top: none;
+      background-color: #fafafa;
+      & > span {
+        font-family: Courier;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        /* original style has !important too, so we need this to override */
+        color: #3f5060 !important;
       }
     }
   }
@@ -350,8 +387,9 @@ const responsesTable = css`
               line-height: 1.29;
               letter-spacing: normal;
               color: #000000;
+              vertical-align: middle;
             }
-            div.markdown {
+            div.response-col_description__inner > div.markdown {
               border-radius: 4px;
               border: solid 1px #89919a;
               background-color: #fafafa;
