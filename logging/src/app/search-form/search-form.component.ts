@@ -68,7 +68,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     return !this.getSearchQuery().query;
   }
 
-  public isHistoricalDataSwitchVisible = false;
+  public isFunctionLabelPresent = false;
 
   private podsForFunction: IPod[];
   public isSearchButtonTooltipOpen = false;
@@ -104,7 +104,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       this.addLabel('function=' + params.function, true);
       this.title = `Logs for function "${params.function}"`;
       this.subscribeToCurrentPodName(params.function);
-      this.isHistoricalDataSwitchVisible = true;
+      this.isFunctionLabelPresent = true;
     }
 
     if (params.pod) {
@@ -151,11 +151,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.searchService.search(searchQuery).subscribe(
       data => {
         const result = JSON.parse(data);
-        if ('streams' in result) {
-          this.searchResult = this.processSearchResult(result);
-        } else {
-          this.searchResult = this.emptySearchResult;
-        }
+
+        this.searchResult =
+          'streams' in result
+            ? this.processSearchResult(result)
+            : this.emptySearchResult;
       },
       err => {
         console.error(err);
@@ -171,7 +171,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
         .replace('}', '')
         .split(',');
     });
-    if (this.isHistoricalDataSwitchVisible && !this.model.showOutdatedLogs) {
+    if (this.isFunctionLabelPresent && !this.model.showOutdatedLogs) {
       result.streams = result.streams.filter((ls: ILogStream) =>
         this.fiterStreamByInstance(ls, this.getLabelValue),
       );
