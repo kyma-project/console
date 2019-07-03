@@ -27,7 +27,7 @@ export const ActionBarHeader = styled(ABHeader)`
     text-align: left;
     width: auto;
     flex-grow: 1;
-    ${props => (props.nowrap ? `white-space: normal` : '')};
+    ${props => (props.disableDescriptionWrap ? `white-space: normal` : '')};
   }
 `;
 

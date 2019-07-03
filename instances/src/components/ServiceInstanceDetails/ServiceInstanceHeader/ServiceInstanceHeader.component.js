@@ -48,7 +48,7 @@ const ServiceInstanceHeader = ({
       <Toolbar
         title={serviceInstance.name}
         description={instanceClass.description}
-        nowrap="true"
+        disableDescriptionWrap="true"
       >
         <Modal
           title={serviceInstanceConstants.delete}
