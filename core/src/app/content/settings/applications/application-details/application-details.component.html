@@ -1,5 +1,5 @@
 <header class="fd-page__header fd-has-background-color-background-2">
-  <section class="fd-section fd-has-padding-bottom-none">
+  <section class="fd-section fd-has-padding-bottom-none fd-has-padding-left-regular">
     <fd-action-bar id="action-bar">
       <section id="action-bar-wrapper">
         <section>
@@ -19,7 +19,7 @@
           </fd-action-bar-header>
         </section>
         <fd-action-bar-actions>
-          <button fd-button *ngIf="!isReadOnly" [options]="'light'" (click)="showUrl()">
+          <button fd-button *ngIf="!isReadOnly" [options]="'emphasized'" (click)="showUrl()">
             Connect Application
           </button>
           <button fd-button [options]="'light'" (click)="openEditApplicationModal()">

@@ -10,7 +10,8 @@ export const BreadcrumbWrapper = styled.div`
     justify-content: space-between;
     max-height: 1.25em;
     & > * {
-      margin: 32px;
+      margin-top: 30px;
+      margin-left: 30px;
     }
   }
 `;
