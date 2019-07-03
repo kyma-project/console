@@ -55,6 +55,7 @@ describe('SearchFormComponent', () => {
         to: 'whatever',
         label: 'whatever',
         showOutdatedLogs: false,
+        showHealthChecks: false,
       };
       return { ...baseModel, ...override };
     }
