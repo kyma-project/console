@@ -180,6 +180,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (!this.model.showHealthChecks) {
       result.streams = result.streams.map(this.filterHealthchecks);
     }
+
     return result;
   }
 
@@ -401,5 +402,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     if (!this.isQueryEmpty) {
       this.refreshResults();
     }
+  }
+
+  public isSearchResultEmpty(searchResult: ISearchResult): boolean {
+    return (
+      searchResult &&
+      searchResult.streams &&
+      searchResult.streams[0] &&
+      !!searchResult.streams[0].entries &&
+      !!searchResult.streams[0].entries.length
+    );
   }
 }
