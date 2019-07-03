@@ -120,7 +120,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     this.uploaderModal.show();
   }
 
-  private openEditNamespaceModal() {
+  openEditNamespaceModal() {
     this.editnamespacemodal.show(this.namespace);
   }
 
