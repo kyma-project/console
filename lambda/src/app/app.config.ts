@@ -71,8 +71,6 @@ if (clusterConfig && clusterConfig['hpaCpuTargetAverageUtilization']) {
 }
 
 const defaultSubscriptionConfSpec = {
-  pushRequestTimeoutMS: 2000,
-  maxInFlight: 400,
   includeSubscriptionNameHeader: true,
   eventType: '',
   eventTypeVersion: '',

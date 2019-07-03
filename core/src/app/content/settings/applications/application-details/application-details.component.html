@@ -1,103 +1,79 @@
 <header class="fd-page__header fd-has-background-color-background-2">
-  <section class="fd-section">
-    <fd-breadcrumb>
-      <fd-breadcrumb-item>
-        <a
-          href="javascript:void(null)"
-          fd-breadcrumb-link
-          (click)="navigateToList()"
-        >
-          Applications
-        </a>
-      </fd-breadcrumb-item>
-      <fd-breadcrumb-item>
-        <span fd-breadcrumb-link>
-          {{ currentAppId }}
-        </span>
-      </fd-breadcrumb-item>
-    </fd-breadcrumb>
-
-    <fd-action-bar>
-      <fd-action-bar-header>
-        <fd-action-bar-title>
-          {{ currentAppId }}
-        </fd-action-bar-title>
-      </fd-action-bar-header>
-      <fd-action-bar-actions>
-        <button
-          fd-button
-          *ngIf="!isReadOnly"
-          [options]="'emphasized'"
-          (click)="showUrl()"
-        >
-          Connect Application
-        </button>
-      </fd-action-bar-actions>
+  <section class="fd-section fd-has-padding-bottom-none">
+    <fd-action-bar id="action-bar">
+      <section id="action-bar-wrapper">
+        <section>
+          <fd-breadcrumb>
+            <fd-breadcrumb-item>
+              <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+                Applications
+              </a>
+            </fd-breadcrumb-item>
+            <fd-breadcrumb-item>
+            </fd-breadcrumb-item>
+          </fd-breadcrumb>
+          <fd-action-bar-header class="fd-has-padding-top-none">
+            <fd-action-bar-title class="action-bar-title">
+              {{ currentAppId }}
+            </fd-action-bar-title>
+          </fd-action-bar-header>
+        </section>
+        <fd-action-bar-actions>
+          <button fd-button *ngIf="!isReadOnly" [options]="'light'" (click)="showUrl()">
+            Connect Application
+          </button>
+          <button fd-button [options]="'light'" (click)="openEditApplicationModal()">
+            Edit
+          </button>
+          <button fd-button *ngIf="!isReadOnly" [options]="'light'" [fdType]="'negative'" (click)="displayDeleteApplicationModal()">
+            Delete
+          </button>
+        </fd-action-bar-actions>
+      </section>
     </fd-action-bar>
   </section>
+  <fd-panel-body [bleed]="true" *ngIf="application">
+    <fd-panel-grid [col]="4" [nogap]="true">
+      <fd-panel>
+        <fd-panel-body>
+          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Name</p>
+          <p>{{ application.name }}</p>
+
+        </fd-panel-body>
+      </fd-panel>
+      <fd-panel>
+        <fd-panel-body>
+          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Status</p>
+          <p>
+            <span class="fd-status-label" [ngClass]="determineClass(application)">{{ prettyStatus }}</span>
+          </p>
+        </fd-panel-body>
+      </fd-panel>
+      <fd-panel>
+        <fd-panel-body>
+          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Description</p>
+          <p>{{ application.description }}</p>
+        </fd-panel-body>
+      </fd-panel>
+      <fd-panel>
+        <fd-panel-body>
+          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Labels</p>
+          <p>
+            <ng-container *ngIf="transformedLabels.length">
+              <span class="fd-token y-fd-token y-fd-token--no-button" role="button"
+                *ngFor="let label of transformedLabels">
+                {{ label }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="!transformedLabels.length">
+              <span>{{ emptyText }}</span>
+            </ng-container>
+          </p>
+        </fd-panel-body>
+      </fd-panel>
+    </fd-panel-grid>
+  </fd-panel-body>
 </header>
-
-<section class="fd-section">
-  <fd-panel class="y-fd-panel" *ngIf="application">
-    <fd-panel-header>
-      <fd-panel-head>
-        <fd-panel-title>General Information</fd-panel-title>
-      </fd-panel-head>
-      <fd-panel-actions>
-        <button
-          fd-button
-          [options]="'light'"
-          (click)="openEditApplicationModal()"
-        >
-          Edit
-        </button>
-      </fd-panel-actions>
-    </fd-panel-header>
-
-    <fd-panel-body [bleed]="true">
-      <table class="fd-table fd-table--no-borders">
-        <tbody>
-          <tr>
-            <td class="y-fd-table--col-2 fd-has-color-text-4">Name</td>
-            <td>{{ application.name }}</td>
-          </tr>
-          <tr>
-            <td class="fd-has-color-text-4">Status</td>
-            <td>
-              <span
-                class="fd-status-label"
-                [ngClass]="determineClass(application)"
-                >{{ prettyStatus }}</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td class="fd-has-color-text-4">Description</td>
-            <td>{{ application.description }}</td>
-          </tr>
-          <tr>
-            <td class="fd-has-color-text-4">Labels</td>
-            <td>
-              <ng-container *ngIf="transformedLabels.length">
-                <span
-                  class="fd-token y-fd-token y-fd-token--no-button"
-                  role="button"
-                  *ngFor="let label of transformedLabels"
-                >
-                  {{ label }}
-                </span>
-              </ng-container>
-              <ng-container *ngIf="!transformedLabels.length">
-                <span>{{ emptyText }}</span>
-              </ng-container>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </fd-panel-body>
-  </fd-panel>
-</section>
-
 <ng-container *ngIf="application">
   <section class="fd-section">
     <fd-panel class="y-fd-panel">
@@ -224,3 +200,4 @@
   [initialLabels]="transformedLabels"
 >
 </app-edit-application-modal>
+<app-confirmation-modal #confirmationModal></app-confirmation-modal>

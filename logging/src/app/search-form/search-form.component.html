@@ -20,7 +20,7 @@
             Log Labels
           </fd-form-label>
           <select fd-form-control id="label" name="label" (change)="loadLabelValues($event.target.value)">
-            <option value="">Select Log Label</option>
+            <option value="">Select Label Key</option>
             <option *ngFor="let label of labels.values" [value]="label">{{ label }}</option>
           </select>
         </div>
@@ -72,38 +72,67 @@
           </select>
         </div>
 
-        <div *ngIf="isHistoricalDataSwitchVisible" fd-form-item [isInline]="true">
+        <div fd-form-item *ngIf="isHistoricalDataSwitchVisible" [isInline]="true">
           <fd-form-label >
-            Historical data
+            Show
           </fd-form-label>
           <label fd-form-label for="outdatedLogsToggle">
             <input fd-form-control type="checkbox"  [(ngModel)]="model.showOutdatedLogs"  name="showOutdatedLogs" (change)="onSubmit()" id="outdatedLogsToggle" >
-            Show logs for outdated pods
+            Outdated logs
           </label>
         </div>
+        
+   
       </fieldset>
 
       <fieldset fd-form-set>
+
         <div fd-form-item [hidden]="mandatoryLabels.size">
-          <fd-form-label [forValue]="'query'" [isRequired]="true">Required Input</fd-form-label>
+          <label class="fd-form__label" for="query">
+              Search Query
+          </label>
           <input fd-form-control [type]="'text'" id="query" placeholder="Enter query" required [(ngModel)]="model.query"
-                 name="query">
+                name="query">
+          <span class="fd-form__message fd-form__message--help">
+              For example '{{ '{' }}app="my-service"} error' would return logs from 'my-service' app containing keyword 'error'.
+          </span>
         </div>
 
         <div fd-form-item [hidden]="!mandatoryLabels.size">
           <fd-form-label [forValue]="'extra-query'" [isRequired]="false">Query</fd-form-label>
           <input fd-form-control [type]="'text'" id="extraQuery" placeholder="Enter query" [(ngModel)]="model.extraQuery"
                  name="extra-query">
+          <span class="fd-form__message fd-form__message--help">
+            Filter logs by keyword, for example 'error'.
+          </span>
         </div>
 
+
         <div fd-form-item [isInline]="true">
-          <button fd-button type="submit" [glyph]="'search'" [options]="'light'" [disabled]="!searchData.form.valid"></button>
-          <span *ngIf="!mandatoryLabels.size" class="fd-has-margin-left-s">Query Examples</span>
-          <span *ngIf="!mandatoryLabels.size" class="fd-inline-help fd-has-margin-left-xxs">
-              <span class="fd-inline-help__content fd-inline-help__content--bottom-center">
-                  Searching keyword 'error' for a service with name my-service use '{{ '{' }}app="my-service"} error'.
-              </span>
-          </span>
+            <div class="fd-popover">
+                <div class="fd-popover__control">  
+                    <button fd-button type="submit" 
+                    [glyph]="'search'" 
+                    [options]="'light'"
+                    [appAriaDisabled]="!searchData.form.valid || autoRefreshEnabled" 
+                    (mouseenter)="autoRefreshEnabled? isSearchButtonTooltipOpen = true: null"
+                    (mouseout)="isSearchButtonTooltipOpen = false"
+                    [attr.aria-expanded]="isSearchButtonTooltipOpen" aria-haspopup="true">
+                      Search
+                    </button>
+                </div>
+                <div class="fd-popover__body fd-has-padding-tiny" [attr.aria-hidden]="!isSearchButtonTooltipOpen" >
+                   {{ DISABLED_SEARCH_BUTTON_TOOLTIP }}
+                </div>
+            </div>
+
+          <button fd-button 
+            class="fd-has-margin-left-small"
+            *ngIf="canSetAutoRefresh" 
+            [glyph]="autoRefreshEnabled?'media-pause':'media-play'" 
+            (click)="toggleAutoRefresh()">
+            Auto refresh
+          </button>
         </div>
       </fieldset>
 
@@ -113,7 +142,6 @@
             role="button" (click)="removeLabel($event.target.innerText)" *ngFor="let label of selectedLabels | keyvalue">
           {{ label.key }}="{{ label.value }}"
         </span>
-
       </div>
     </form>
   </div>
@@ -122,41 +150,28 @@
 
 <div class="fd-section" *ngFor="let stream of searchResult.streams">
   <div class="fd-panel">
-  <div class="fd-panel__filters" >
-    Available labels for stream:
-    <ng-container *ngFor="let label of stream.availableLabels">
-      <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button"
-          *ngIf="!isSelectedLabel(label)" (click)="addLabel($event.target.outerText)">
-        {{ label }}
-        </div>
-    </ng-container>
-  </div>
-  <div class="fd-form__item fd-form__item--check fd_panel__refresh-toggle">
-    <label class="fd-form__label" for="auto-refresh-toggle">
-        <span class="fd-toggle fd-form__control">
-            <input
-                type="checkbox"
-                checked id="auto-refresh-toggle"
-                (change)="toggleAutoRefresh($event)"
-                [disabled]="!canSetAutoRefresh">
-            <span class="fd-toggle__switch" role="presentation"></span>
-        </span>
-        Auto refresh
-    </label>
-  </div>
-  <div class="fd-panel__body">
-    <fd-table>
-      <fd-table-header>
-        <th>Timestamp</th>
-        <th>Log</th>
-      </fd-table-header>
-      <fd-table-body>
-        <tr *ngFor="let row of stream.entries">
-          <td class="no-word-break">{{ row.ts }}</td>
-          <td class="word-break">{{ row.line }}</td>
-        </tr>
-      </fd-table-body>
-    </fd-table>
-  </div>
+    <div class="fd-panel__filters" >
+      Available labels for stream:
+      <ng-container *ngFor="let label of stream.availableLabels">
+        <div class="fd-token y-fd-token y-fd-token--no-close-button" role="button"
+            *ngIf="!isSelectedLabel(label)" (click)="addLabel($event.target.outerText)">
+          {{ label }}
+          </div>
+      </ng-container>
+    </div>
+    <div class="fd-panel__body">
+      <fd-table>
+        <fd-table-header>
+          <th>Timestamp</th>
+          <th>Log</th>
+        </fd-table-header>
+        <fd-table-body>
+          <tr *ngFor="let row of stream.entries">
+            <td class="no-word-break">{{ row.ts }}</td>
+            <td class="word-break">{{ row.line }}</td>
+          </tr>
+        </fd-table-body>
+      </fd-table>
+    </div>
   </div>
 </div>

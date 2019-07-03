@@ -13,10 +13,12 @@ import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy
 import { EditApplicationModalComponent } from '../edit-application-modal/edit-application-modal.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
+import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-application-details',
-  templateUrl: './application-details.component.html'
+  templateUrl: './application-details.component.html',
+  styleUrls: ['./application-details.component.scss']
 })
 export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   public currentAppId = '';
@@ -35,7 +37,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       function: 'openEditBindingsModal',
       name: 'Edit'
     }
-
   ];
   private boundNamespaces = [];
   private contextListenerId: string;
@@ -50,6 +51,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('infoModal') infoModal: InformationModalComponent;
   @ViewChild('editApplicationModal')
   editApplicationModal: EditApplicationModalComponent;
+  @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -176,6 +178,32 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
           this.infoModal.show('Error', err);
         }
       );
+  }
+
+  displayDeleteApplicationModal() {
+    this.confirmationModal
+      .show(
+        'Confirm delete',
+        'Do you really want to delete ' + this.application.name + '?'
+      )
+      .then(() => {
+        this.applicationsService
+          .deleteApplication(this.application.name)
+          .subscribe(
+            () => {
+              this.navigateToList();
+            },
+            err => {
+              this.infoModal.show(
+                'Error',
+                `There was an error while deleting application ${
+                  this.application.name
+                }: ${err}`
+              );
+            }
+          );
+      })
+      .catch(() => {});
   }
 
   hasType(entries, type) {

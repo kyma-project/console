@@ -96,8 +96,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         'filter-item-basic-showcase',
       );
       const showcaseButtonName = 'showcase';
-      const exampleServiceClassTitleAndProvider = catalog.prepareSelector(
-        'service-title-and-provider',
+      const exampleServiceClassTitle = catalog.prepareSelector(
+        'toolbar-header',
       );
       const exampleServiceClassDescription = catalog.prepareSelector(
         'service-description',
@@ -154,14 +154,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         }),
       ]);
       const frame2 = await kymaConsole.getFrame(page);
-      await frame2.waitForSelector(exampleServiceClassTitleAndProvider);
-      const titleAndProvider = await frame2.$(
-        exampleServiceClassTitleAndProvider,
-      );
+      await frame2.waitForSelector(exampleServiceClassTitle);
+      const title = await frame2.$(exampleServiceClassTitle);
       const description = await frame2.$(exampleServiceClassDescription);
       const lastUpdate = await frame2.$(exampleServiceClassLastUpdate);
       const labels = await catalog.getLabels(frame);
-      expect(titleAndProvider.toString()).not.toBeNull();
+      expect(title.toString()).not.toBeNull();
       expect(description.toString()).not.toBeNull();
       expect(lastUpdate.toString()).not.toBeNull();
       expect(labels).toContain(showcaseButtonName);
@@ -285,7 +283,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       const labelButton = catalog.prepareSelector(`filter-${instanceLabel}`);
       const exampleServiceClassTitleAndProvider = catalog.prepareSelector(
-        'service-title-and-provider',
+        'toolbar-header',
       );
       const instancesHeaderSelector = catalog.prepareSelector('toolbar-header');
       const filterDropdownButton = catalog.prepareSelector('toggle-filter');

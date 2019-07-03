@@ -4,6 +4,8 @@ FROM node:10.11.0-alpine as ui-generator
 
 WORKDIR /app
 
+COPY licenses/ /app/licenses/
+
 # Install app dependencies
 COPY package.json package-lock.json config-overrides.js /app/
 RUN npm install --no-optional
@@ -28,6 +30,7 @@ LABEL source git@github.com:kyma-project/console.git
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/build var/public
+COPY --from=ui-generator /app/licenses/ /app/licenses/
 
 EXPOSE 80
 

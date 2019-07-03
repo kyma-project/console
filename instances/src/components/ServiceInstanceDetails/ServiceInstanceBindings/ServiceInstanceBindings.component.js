@@ -338,10 +338,11 @@ class ServiceInstanceBindings extends React.Component {
                   showTooltipTimeout={750}
                   key="service-binding-usage-tooltip"
                 >
-                  Bound Applications
+                  <span data-e2e-id="service-binding-usage-tab">
+                    Bound Applications
+                  </span>
                 </Tooltip>
               }
-              id={'service-binding-usage-tab'}
               addHeaderContent={boundApplicationContent}
               aditionalStatus={this.status(
                 serviceInstance.serviceBindingUsages,
@@ -364,10 +365,9 @@ class ServiceInstanceBindings extends React.Component {
                 showTooltipTimeout={750}
                 key="service-binding-tooltip"
               >
-                Credentials
+                <span data-e2e-id="service-binding-tab">Credentials</span>
               </Tooltip>
             }
-            id={'service-binding-tab'}
             addHeaderContent={createCredentialsContent}
             aditionalStatus={this.status(
               serviceInstance.serviceBindings.items,
