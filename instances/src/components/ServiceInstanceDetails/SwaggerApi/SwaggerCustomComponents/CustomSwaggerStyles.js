@@ -7,7 +7,7 @@ const summaries = css`
   && {
     div.opblock-summary {
       border-bottom: none;
-      padding: 4px 10px;
+      padding: 4px 16px;
       min-height: 48px;
       & > span.opblock-summary-path > a {
         font-family: '72';
@@ -34,6 +34,7 @@ const summaries = css`
 
   span.opblock-summary-method {
     min-width: 86px;
+    padding: 4px 16px;
   }
 
   /* http methods + deprecated */
@@ -390,6 +391,7 @@ const responsesTable = css`
               vertical-align: middle;
             }
             div.response-col_description__inner > div.markdown {
+              padding: 10px 15px;
               border-radius: 4px;
               border: solid 1px #89919a;
               background-color: #fafafa;
@@ -498,7 +500,7 @@ const StyledSwagger = styled.section`
 
     div.scheme-container {
       margin: 0;
-      padding: 10px 0;
+      padding: 0 0 10px 0;
       box-shadow: none;
       border-bottom: 1px solid #efeff0;
     }
