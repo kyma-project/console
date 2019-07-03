@@ -152,7 +152,7 @@
 </div>
 </div>
 
-<ng-container *ngIf="isSearchResultEmpty(searchResult); else noLogsMessage">
+<ng-container *ngIf="!isSearchResultEmpty(searchResult); else noLogsMessage">
 <div class="fd-section" *ngFor="let stream of searchResult.streams">
   <div class="fd-panel">
     <div class="fd-panel__filters" >
