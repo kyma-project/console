@@ -16,7 +16,7 @@ class Tabs extends React.Component {
     defaultActiveTabIndex: PropTypes.number,
     callback: PropTypes.func,
     border: PropTypes.bool,
-    noBorder: PropTypes.bool,
+    borderType: PropTypes.string,
     noMargin: PropTypes.bool,
     customStyles: PropTypes.bool,
     hideSeparator: PropTypes.bool,
@@ -77,16 +77,29 @@ class Tabs extends React.Component {
     }
   };
 
+  borderType = statusType => {
+    switch (statusType) {
+      case 'top':
+        return 'top';
+      case 'bottom':
+        return 'bottom';
+      case 'none':
+        return 'none';
+      default:
+        return 'bottom';
+    }
+  };
+
   render() {
     const children = []
       .concat(...this.props.children)
       .filter(child => child !== null && child !== undefined && child);
 
     const props = this.getPropsFromActiveTab(children);
-
+    const currentBorderType = this.borderType(this.props.borderType)
     return (
-      <TabsWrapper>
-        {!this.props.hideSeparator && <Separator />}
+      <TabsWrapper border={this.props.border} borderType={currentBorderType}>
+        {!this.props.hideSeparator && currentBorderType==='top' && <Separator />}
         <TabsHeader
           noMargin={this.props.noMargin}
           customStyles={this.props.customStyles}
@@ -96,6 +109,7 @@ class Tabs extends React.Component {
             {this.renderAdditionalHeaderContent(children)}
           </TabsHeaderAdditionalContent>
         </TabsHeader>
+        {!this.props.hideSeparator && (currentBorderType==='bottom') && <Separator />}
         <TabsContent
           noMargin={props && props.noMargin}
           wrapInPanel={props.wrapInPanel}

@@ -281,7 +281,7 @@ class ServiceClassTabs extends Component {
           )}
 
           <ServiceClassTabsWrapper>
-            <Tabs noMargin customStyles>
+            <Tabs noMargin customStyles borderType='top'>
               {!fetchError.docsData && docsData && docsData.length
                 ? docsFromNewApi
                 : null}
