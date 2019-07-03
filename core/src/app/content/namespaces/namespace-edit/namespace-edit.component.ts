@@ -55,7 +55,7 @@ export class NamespaceEditComponent {
     });
   }
 
-  setLabels(labels: NamespaceInfo["labels"]): string[] {
+  setLabels(labels: NamespaceInfo['labels']): string[] {
     if (labels === null || labels === undefined) {
       return [];
     }

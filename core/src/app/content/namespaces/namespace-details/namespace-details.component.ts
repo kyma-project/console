@@ -98,7 +98,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getNamespace(id: string, additionalCalls: Function) {
+  private getNamespace(id: string, additionalCalls: () => void) {
     this.namespacesService.getNamespace(this.id).subscribe(
       namespace => {
         if (namespace) {
