@@ -278,7 +278,7 @@ class ServiceClassList extends React.Component {
         <Tabs
           defaultActiveTabIndex={determineSelectedTab()}
           callback={handleTabChange}
-          borderType='none'
+          borderType="none"
           noMargin
           customStyles
           hideSeparator
