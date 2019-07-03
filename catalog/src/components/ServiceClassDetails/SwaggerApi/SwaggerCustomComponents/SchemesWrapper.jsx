@@ -29,18 +29,12 @@ const ContentWrapper = styled.section`
         & > select {
           width: 70px;
           height: 28px;
-          ${buttonStyle}
+          ${buttonStyle};
           box-shadow: none;
         }
       }
     }
   }
-`;
-
-const ExpandButton = styled.button`
-  ${buttonStyle}
-  width: 83px;
-  height: 29px;
 `;
 
 const Wrapper = styled.span`
@@ -74,7 +68,6 @@ export const SchemesWrapper = (Orig, system) => props => {
         <ContentWrapper>
           <Text light>Schemes</Text>
           <Orig {...props} />
-          <ExpandButton>Expand All</ExpandButton>
         </ContentWrapper>
       </Wrapper>
     );

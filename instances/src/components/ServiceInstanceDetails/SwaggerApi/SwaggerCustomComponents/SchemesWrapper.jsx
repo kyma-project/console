@@ -37,12 +37,6 @@ const ContentWrapper = styled.section`
   }
 `;
 
-const ExpandButton = styled.button`
-  ${buttonStyle}
-  width: 83px;
-  height: 29px;
-`;
-
 const Wrapper = styled.span`
   && {
     display: flex;
@@ -74,7 +68,6 @@ export const SchemesWrapper = (Orig, system) => props => {
         <ContentWrapper className="test">
           <Text light>Schemes</Text>
           <Orig {...props} />
-          <ExpandButton>Expand All</ExpandButton>
         </ContentWrapper>
       </Wrapper>
     );
