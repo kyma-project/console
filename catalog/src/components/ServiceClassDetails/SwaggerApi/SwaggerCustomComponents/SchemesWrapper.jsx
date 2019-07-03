@@ -71,7 +71,7 @@ export const SchemesWrapper = (Orig, system) => props => {
     return (
       <Wrapper>
         <Text>API Console</Text>
-        <ContentWrapper className="test">
+        <ContentWrapper>
           <Text light>Schemes</Text>
           <Orig {...props} />
           <ExpandButton>Expand All</ExpandButton>

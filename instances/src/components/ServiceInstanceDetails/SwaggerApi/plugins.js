@@ -7,31 +7,17 @@ import { SchemesWrapper } from './SwaggerCustomComponents/SchemesWrapper';
 const plugin = {
   wrapComponents: {
     parameters: (Original, system) => props => {
-      const allowTryItOut = false;
-      const customProps = { ...props, allowTryItOut };
-
+      const customProps = { ...props, allowTryItOut: false };
       return <Original {...customProps} />;
     },
-    authorizeBtn: (Original, system) => props => {
-      return null;
-    },
-    authorizeOperationBtn: (Original, system) => props => {
-      return null;
-    },
-    info: (Original, system) => props => {
-      return null;
-    },
+    authorizeBtn: () => () => null,
+    authorizeOperationBtn: () => () => null,
+    info: () => () => null,
     Col: SchemesWrapper,
-    Models: Models,
+    Models,
     ModelCollapse,
     OperationTag,
   },
-};
-
-export const ApiReferencePlugin = function(system) {
-  return {
-    ...plugin,
-  };
 };
 
 export const ApiConsolePlugin = function(system) {
