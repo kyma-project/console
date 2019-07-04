@@ -34,7 +34,7 @@ const FilterPopoverContainer: React.FunctionComponent = () => {
     <FilterPopoverComponent
       activeFiltersLength={activeFiltersLength}
       body={filterPopoverBody}
-      configurationsExist={configurationsExist()}
+      disableIcon={!Boolean(configurationsExist() && Object.keys(uniqueLabels).length)}
     />
   );
 };
