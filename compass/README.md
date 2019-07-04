@@ -6,7 +6,7 @@ This is an **experimental** user interface for the [Compass](https://github.com/
 
 ## Installation
 
-1.  Change your current directory to `console/compass` folder
+1.  Change your current directory to the `console/compass` folder.
 
 2.  Run following commands in your terminal
 
