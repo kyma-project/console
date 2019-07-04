@@ -53,7 +53,7 @@
       </ng-template>
     </fd-modal-body>
     <fd-modal-footer>
-      <button fd-button [fdType]="'main'" (click)="save()">
+      <button fd-button [fdType]="'main'" (click)="save()" [disabled]="!applicationHasAnyServices">
         Update
       </button>
       <button fd-button [fdType]="'light'" (click)="close()">
