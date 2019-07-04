@@ -59,11 +59,8 @@ export class NamespaceEditComponent {
     if (labels === null || labels === undefined) {
       return [];
     }
-    const formatedLabels = [];
     const labelKeys = Object.keys(labels);
-    labelKeys.forEach((label) => {
-      formatedLabels.push(`${label}=${labels[label]}`);
-    })
+    const formatedLabels : string[] = labelKeys.map(label => `${label}=${labels[label]}`);
     return formatedLabels;
   }
 

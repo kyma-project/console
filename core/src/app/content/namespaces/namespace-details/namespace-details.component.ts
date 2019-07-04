@@ -98,7 +98,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getNamespace(id: string, additionalCalls: () => void) {
+  private getNamespace(id: string, additionalCalls?: () => void) {
     this.namespacesService.getNamespace(this.id).subscribe(
       namespace => {
         if (namespace) {
@@ -107,7 +107,9 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
         if (this.namespace.getLabels() !== null && this.namespace.getLabels() !== undefined) {
           this.labelKeys = Object.keys(this.namespace.getLabels());
         }
-        additionalCalls();
+        if (typeof additionalCalls === 'function') {
+          additionalCalls();
+        }
       },
       err => {
         this.errorMessage = err.message;
@@ -132,7 +134,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
         this.getApplications(this.id);
         this.getServices(this.id);
       } else if (event.type === 'editLabel') {
-        this.getNamespace(this.id, () => { });
+        this.getNamespace(this.id);
       }
     });
   }
