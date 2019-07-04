@@ -111,12 +111,6 @@ const tagHeader = css`
   }
 
   label[for='schemes'] > select {
-    /* background-image: linear-gradient(45deg, transparent 50%, #0a6ed1 50%),
-        linear-gradient(135deg, #0a6ed1 50%, transparent 50%)
-      background-position: calc(100% - 19px) calc(1em + 2px),
-        calc(100% - 14px) calc(1em + 2px), calc(100% - 2.7em) 0em;
-      background-size: 5px 5px, 5px 5px, 1px 4em;
-      background-repeat: no-repeat; */
     min-width: 100px;
     background-image: url(${schemesSelect});
     background-size: 25px 25px;
@@ -154,6 +148,7 @@ const sectionHeader = css`
         background-image: url(${responsesSelect});
         background-size: 23px;
         background-position-x: 85%;
+        background-color: transparent;
       }
 
       span {
@@ -211,13 +206,6 @@ const paramOptions = css`
       background-position-x: 100%;
       background-size: 34px 34px;
       background-repeat: no-repeat;
-      /* background-image: linear-gradient(45deg, transparent 50%, #0a6ed1 50%),
-        linear-gradient(135deg, #0a6ed1 50%, transparent 50%),
-        linear-gradient(to right, #ccc, #ccc);
-      background-position: calc(100% - 19px) calc(1em + 2px),
-        calc(100% - 14px) calc(1em + 2px), calc(100% - 2.7em) 0em;
-      background-size: 5px 5px, 5px 5px, 1px 4em;
-      background-repeat: no-repeat; */
     }
   }
 `;
@@ -229,6 +217,7 @@ const modelTableInnerStyling = css`
     margin-bottom: 0;
     padding: 10px 0;
     border: solid 1px #89919a;
+    width: 95%;
     & > li {
       padding-left: 10px;
       &:after {
@@ -250,11 +239,14 @@ const modelTableInnerStyling = css`
   }
   ul.tab + div {
     & > div.model-box {
-      width: 100%;
+      width: 95%;
       border-radius: 0 0 4px 4px;
       border: 1px solid #89919a;
       border-top: none;
       background: none;
+      > span.model > div > section:nth-child(2) {
+        padding: 10px;
+      }
     }
   }
 `;
@@ -335,6 +327,7 @@ const paramTable = css`
       border: solid 1px #89919a;
       border-top: none;
       background-color: #fafafa;
+      width: 95%;
       & > span {
         font-family: Courier;
         font-size: 14px;
@@ -391,6 +384,7 @@ const responsesTable = css`
               vertical-align: middle;
             }
             div.response-col_description__inner > div.markdown {
+              width: 95%;
               padding: 10px 15px;
               border-radius: 4px;
               border: solid 1px #89919a;
@@ -403,6 +397,38 @@ const responsesTable = css`
               line-height: normal;
               letter-spacing: normal;
               color: #32363a;
+              > p {
+                font-family: Courier;
+                font-size: 14px;
+                font-weight: normal;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                color: #32363a;
+              }
+            }
+            table.headers {
+              thead > tr.header-row > th.header-col {
+                font-family: '72';
+                font-size: 14px;
+                font-weight: normal;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.43;
+                letter-spacing: normal;
+                color: #32363a;
+              }
+              tbody > tr > td.header-col {
+                font-family: '72';
+                font-size: 13px;
+                font-weight: normal;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.43;
+                letter-spacing: normal;
+                color: #32363a;
+              }
             }
           }
         }
@@ -451,7 +477,7 @@ const modelSectionStyles = css`
       /* padding: 0; */
       & > div.model-box {
         width: 100%;
-        padding-right: 0px;
+        padding: 0 0 10px 10px;
         span.model-title > span.model-title__text {
           font-family: '72';
           font-size: 14px;
@@ -466,9 +492,11 @@ const modelSectionStyles = css`
         & > span.model > div {
           & > section:first-child {
             justify-content: space-between;
+            margin-bottom: 10px;
           }
           & > section:nth-child(2) {
-            padding-left: 20px;
+            padding: 14px 20px;
+            margin-right: 10px;
             & > span.inner-object > table.model > tbody > tr > td {
               &,
               & span {
@@ -491,7 +519,7 @@ const modelSectionStyles = css`
 const StyledSwagger = styled.section`
   && {
     > div.swagger-ui > div > div.wrapper {
-      padding: 0 5px;
+      padding: 0;
     }
 
     span.schemes-title {

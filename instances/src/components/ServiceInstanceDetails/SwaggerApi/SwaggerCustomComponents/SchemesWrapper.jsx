@@ -29,7 +29,7 @@ const ContentWrapper = styled.section`
         & > select {
           width: 70px;
           height: 28px;
-          ${buttonStyle}
+          ${buttonStyle};
           box-shadow: none;
         }
       }
