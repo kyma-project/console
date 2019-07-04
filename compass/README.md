@@ -18,4 +18,4 @@ This is an **experimental** user interface for the [Compass](https://github.com/
     npm start
     ```
 
-3.  You should see the Compass website opened as a new tab in your browser. If not, please open `http://localhost:8080`
+3.  The Compass website opens in a new tab of your browser. If not, go to `http://localhost:8080`.
