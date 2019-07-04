@@ -1,15 +1,21 @@
-# This is an experimental user interface for Compass.
+# Compass
 
-## How to start it
+## Overview
 
-Change your current directory to `console/compass` folder, and then
+This is an **experimental** user interface for the Compass project.
 
-```bash
-npm install
-cd ..
-npm run bootstrap
-cd compass
-npm start
-```
+## Installation
 
-You should see the Compass website opened as a new tab in your browser.
+1.  Change your current directory to `console/compass` folder
+
+2.  Run following commands in your terminal
+
+    ```bash
+    npm install
+    cd ..
+    npm run bootstrap
+    cd compass
+    npm start
+    ```
+
+3.  You should see the Compass website opened as a new tab in your browser. If not, please open `http://localhost:8080`
