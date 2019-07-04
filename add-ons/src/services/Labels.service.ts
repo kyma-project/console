@@ -20,14 +20,18 @@ const useLabels = () => {
   const getFiltersLabels = (configs: Configuration[]): FilterLabels => {
     const labels: FilterLabels = {};
     configs.forEach(config => {
-      Object.keys(config.labels).forEach(key => {
-        const label = config.labels[key];
-        if (!labels[key]) {
-          labels[key] = [label];
-        } else {
-          labels[key].push(label);
-        }
-      });
+      if (config.labels) {
+        Object.keys(config.labels).forEach(key => {
+          if (config.labels) {
+            const label = config.labels[key];
+            if (!labels[key]) {
+              labels[key] = [label];
+            } else {
+              labels[key].push(label);
+            }
+          }
+        });
+      }
     });
 
     return labels;

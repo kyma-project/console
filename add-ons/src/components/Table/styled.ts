@@ -29,6 +29,11 @@ export const PanelWrapper = styled.div`
     .fd-tree__row--header .fd-tree__col {
       padding-top: 12px;
       padding-bottom: 12px;
+
+      button {
+        top: 10px;
+        height: 19px;
+      }
     }
 
     .fd-panel__body {
@@ -45,6 +50,7 @@ export const PanelWrapper = styled.div`
 
         button {
           top: 12px;
+          height: 19px;
         }
 
         .fd-tree__col--control--default-config {
@@ -125,4 +131,9 @@ export const TreeViewColActions = styled.div`
     color: #bb0000;
     margin-left: 6px;
   }
+`;
+
+export const NoAvailableLabelsText = styled.span`
+  display: block;
+  margin: 6px 6px 0 0;
 `;

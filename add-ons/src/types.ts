@@ -4,7 +4,7 @@ export type BackendModule = string;
 
 export interface Configuration {
   name: string;
-  labels: ConfigurationLabels;
+  labels?: ConfigurationLabels;
   urls: ConfigurationURL[];
 }
 
