@@ -8,7 +8,7 @@ This is an **experimental** user interface for the [Compass](https://github.com/
 
 1.  Change your current directory to the `console/compass` folder.
 
-2.  Run following commands in your terminal
+2.  Run the following commands in your terminal:
 
     ```bash
     npm install
