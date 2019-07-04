@@ -15,12 +15,7 @@ const FilterPopoverComponent: React.FunctionComponent<Props> = ({
   disableIcon = true,
 }) => {
   const control = (
-    <Button
-      glyph="filter"
-      option="light"
-      compact={true}
-      disabled={disableIcon}
-    >
+    <Button glyph="filter" option="light" compact={true} disabled={disableIcon}>
       {activeFiltersLength > 0 && (
         <Counter notification={true}>{activeFiltersLength}</Counter>
       )}
