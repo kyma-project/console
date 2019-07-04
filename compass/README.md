@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is an **experimental** user interface for the Compass project.
+This is an **experimental** user interface for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
 
 ## Installation
 
