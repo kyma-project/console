@@ -494,10 +494,12 @@ function getNamespaces() {
           return; //"pretend" that inactive namespace is already removed
         }
         const namespaceName = namespace.metadata.name;
+        const alternativeLocation = getCorrespondingNamespaceLocation(namespaceName);
+
         namespaces.push({
           category: 'Namespaces',
           label: namespaceName,
-          pathValue: namespaceName
+          pathValue: alternativeLocation || namespaceName
         });
       });
       return namespaces;
@@ -505,6 +507,20 @@ function getNamespaces() {
     .catch(function catchNamespaces(err) {
       console.error('get namespace: error', err);
     });
+}
+
+function getCorrespondingNamespaceLocation(namespaceName) {
+  const addressTokens = window.location.pathname.split('/');
+  // check if we are in namespaces context
+  if (addressTokens[2] !== 'namespaces') {
+    return null;
+  }
+  // check if any path after namespace name exists - if not,
+  // it will default to namespace name (and then to '/details')
+  if (!addressTokens[4]) {
+    return null;
+  }
+  return namespaceName + '/' + addressTokens[4];
 }
 
 function relogin() {
