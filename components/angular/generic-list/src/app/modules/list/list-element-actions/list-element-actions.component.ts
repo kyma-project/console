@@ -19,6 +19,15 @@ export class ListElementActionsComponent {
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
+  handlePopoverClick(event: Event): void {
+    const wasPopoverOpened = this.popover && this.popover.isOpen;
+    event.stopPropagation();
+    this.fireClick(document);
+    if (wasPopoverOpened) {
+      this.popover.toggle();
+    }
+  }
+
   executeAction(action: string, event) {
     if (this.popover) {
       this.popover.close();
@@ -48,4 +57,14 @@ export class ListElementActionsComponent {
 
     return entry;
   };
+
+  private fireClick(node: Document): void {
+    if (document.createEvent) {
+      const evt = document.createEvent('MouseEvents');
+      evt.initEvent('click', true, false);
+      node.dispatchEvent(evt);
+    } else if (typeof node.onclick === 'function') {
+      node.onclick(new MouseEvent('click'));
+    }
+  }
 }

@@ -1,4 +1,9 @@
-<fd-popover [placement]="'left'" [closeOnOutsideClick]="true" #popover>
+<fd-popover
+  [placement]="'right'"
+  [noArrow]="false"
+  (click)="handlePopoverClick($event)"
+  #popover
+>
   <fd-popover-control>
     <button
       aria-label="contextual menu"
