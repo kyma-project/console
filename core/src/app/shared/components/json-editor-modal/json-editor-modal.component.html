@@ -1,11 +1,11 @@
 <div luigiClientCommunication [isActive]="isActive">
   <ng-template
-    let-modal#jsonEditorModal
+    let-modal
+    #jsonEditorModal
     class="y-fd-modal"
     role="dialog"
     aria-labelledby="confirm"
     [width]="'650px'"
-    (click)="$event.stopPropagation()"
   >
     <fd-modal-header>
       Edit

@@ -1,10 +1,10 @@
 <div luigiClientCommunication [isActive]="isActive">
   <ng-template
-    let-modalclass="y-fd-modal"
+    let-modal
+    class="y-fd-modal"
     #editApplicationModal
     role="dialog"
     aria-labelledby="confirm"
-    (click)="$event.stopPropagation()"
   >
     <fd-modal-header>
       Edit Application
