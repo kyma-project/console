@@ -32,9 +32,10 @@ export class ResourceUploaderModalComponent {
     });
   }
 
-  private handleModalClose() {
+  public handleModalClose() {
     this.isActive = false;
     this.uploader.reset();
+    this.modalService.dismissAll();
   }
   cancel(event: Event) {
     this.isActive = false;

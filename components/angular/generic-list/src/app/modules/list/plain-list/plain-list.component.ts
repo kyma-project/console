@@ -9,7 +9,7 @@ import {
   Type,
   ViewChild,
   ViewContainerRef,
-  ViewRef,
+  ViewRef
 } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { delay } from 'rxjs/operators';
 @Component({
   selector: 'y-plain-list',
   templateUrl: './plain-list.component.html',
-  styleUrls: ['./plain-list.component.scss'],
+  styleUrls: ['./plain-list.component.scss']
 })
 export class PlainListComponent implements OnChanges {
   @Input() source: Observable<any[]>;
@@ -36,7 +36,7 @@ export class PlainListComponent implements OnChanges {
 
   constructor(
     public componentFactoryResolver: ComponentFactoryResolver,
-    private changeDetector: ChangeDetectorRef,
+    private changeDetector?: ChangeDetectorRef
   ) {
     this.componentFactoryResolver = componentFactoryResolver;
   }
@@ -84,14 +84,14 @@ export class PlainListComponent implements OnChanges {
         data.forEach(entry => {
           const inputProviders = [
             { provide: 'entry', useValue: entry },
-            { provide: 'entryEventHandler', useValue: this.entryEventHandler },
+            { provide: 'entryEventHandler', useValue: this.entryEventHandler }
           ];
           const injector = Injector.create({
             providers: inputProviders,
-            parent: this.entriesViewContainer.parentInjector,
+            parent: this.entriesViewContainer.parentInjector
           });
           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-            this.entryRenderer,
+            this.entryRenderer
           );
           const entryTag = this.entryTagName
             ? document.createElement(this.entryTagName)
@@ -100,7 +100,10 @@ export class PlainListComponent implements OnChanges {
           this.entriesViewContainer.insert(component.hostView);
         });
 
-        if (!(this.changeDetector as ViewRef).destroyed) {
+        if (
+          this.changeDetector &&
+          !(this.changeDetector as ViewRef).destroyed
+        ) {
           this.changeDetector.detectChanges();
         }
       },
@@ -115,7 +118,7 @@ export class PlainListComponent implements OnChanges {
         if (!(this.changeDetector as ViewRef).destroyed) {
           this.changeDetector.detectChanges();
         }
-      },
+      }
     );
   }
 }
