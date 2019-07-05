@@ -67,7 +67,6 @@
       <button
         fd-button
         [options]="'main'"
-        [state]="!isReadyToCreate() ? 'disabled' : ''"
         [disabled]="!isReadyToCreate()"
         (click)="save()"
       >

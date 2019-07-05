@@ -46,7 +46,7 @@
         <h3 fd-action-bar-title>
           {{ apiDefinition ? apiName : 'Create API' }}
         </h3>
-        <fd-action-bar-description class="header-columns">
+        <div fd-action-bar-description class="header-columns">
           <div class="fd-container fd-container--fluid">
             <div *ngIf="apiDefinition" class="fd-col--4">
               Hostname
@@ -72,7 +72,7 @@
               </span>
             </div>
           </div>
-        </fd-action-bar-description>
+        </div>
       </div>
       <div fd-action-bar-actions>
         <button
@@ -165,7 +165,7 @@
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
-              <label fd-form-label [forValue]="'host-input'">Host *</label>
+              <label fd-form-label for="host-input">Host *</label>
               <div class="fd-input-group fd-input-group--after">
                 <input
                   fd-form-control
@@ -193,9 +193,7 @@
         <div class="fd-col--4" *ngIf="apiDefinition">
           <div fd-form-set>
             <div fd-form-item>
-              <label fd-form-label [forValue]="'input-3'"
-                >Target Service</label
-              >
+              <label fd-form-label for="input-3">Target Service</label>
               <a
                 href="javascript:void(null)"
                 (click)="navigateToDetails(serviceName)"
@@ -209,9 +207,7 @@
         <div class="fd-col--4" *ngIf="apiDefinition">
           <div fd-form-set>
             <div fd-form-item>
-              <label fd-form-label [forValue]="'input-3'"
-                >Target Service Port *</label
-              >
+              <label fd-form-label for="input-3">Target Service Port *</label>
               <input
                 fd-form-control
                 [type]="'text'"
@@ -233,7 +229,7 @@
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
-              <label fd-form-label [forValue]="'input-1'">Name *</label>
+              <label fd-form-label for="input-1">Name *</label>
               <input
                 fd-form-control
                 [type]="'text'"
@@ -276,7 +272,7 @@
         <div class="fd-col--6">
           <fieldset fd-form-set>
             <div fd-form-item [isInline]="true" [isCheck]="true">
-              <label fd-form-label [forValue]="'Ai4ez611'">
+              <label fd-form-label for="Ai4ez611">
                 <input
                   *ngIf="canBeSecured"
                   fd-form-control
@@ -298,7 +294,7 @@
         <div class="fd-col--6">
           <div fd-form-set>
             <div fd-form-item>
-              <label fd-form-label [forValue]="'input-4'">Issuer *</label>
+              <label fd-form-label for="input-4">Issuer *</label>
               <input
                 fd-form-control
                 [type]="'text'"
@@ -317,7 +313,7 @@
         <div class="fd-col--6">
           <div fd-form-set>
             <div fd-form-item>
-              <label fd-form-label [forValue]="input - 5">JWKS URI *</label>
+              <label fd-form-label for="input-5">JWKS URI *</label>
               <input
                 fd-form-control
                 [type]="'text'"

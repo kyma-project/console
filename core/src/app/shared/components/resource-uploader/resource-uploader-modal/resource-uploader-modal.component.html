@@ -13,7 +13,6 @@
     <fd-modal-body>
       <fd-alert
         class="fd-has-margin-bottom-small"
-        [inline]="true"
         [type]="'error'"
         *ngIf="uploader.err"
       >
@@ -23,17 +22,13 @@
     </fd-modal-body>
 
     <fd-modal-footer>
-      <button
-        fd-button
-        [options]="'light'"
-        (click)="resourceUploader.dismiss('Cancel')"
-      >
+      <button fd-button [options]="'light'" (click)="modalService.dismissAll()">
         Cancel
       </button>
       <button
         fd-button
         (click)="upload($event)"
-        [state]="uploader.isFileReadyToUpload() ? '' : 'disabled'"
+        [disabled]="!uploader.isFileReadyToUpload()"
         [fdType]="'main'"
       >
         Upload

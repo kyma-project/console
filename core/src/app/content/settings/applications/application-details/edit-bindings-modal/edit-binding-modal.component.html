@@ -21,7 +21,8 @@
       </div>
       <div *ngIf="applicationHasAnyServices; else noServicesHint">
         <div fd-form-item *ngIf="!allServices">
-          <fd-list
+          <ul
+            fd-list
             class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin"
           >
             <li
@@ -69,7 +70,7 @@
                 </fd-inline-help>
               </fd-list-action>
             </li>
-          </fd-list>
+          </ul>
         </div>
       </div>
       <ng-template #noServicesHint>

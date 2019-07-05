@@ -17,7 +17,8 @@
         "
         fd-form-item
       >
-        <fd-list
+        <ul
+          fd-list
           class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin"
         >
           <ng-container *ngFor="let service of application.services">
@@ -65,7 +66,7 @@
               </fd-list-action>
             </li>
           </ng-container>
-        </fd-list>
+        </ul>
       </div>
       <ng-template #noServicesHint>
         <p class="fd-has-font-style-italic">
