@@ -1,7 +1,7 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal
-    class="y-fd-modal fd-modal--extra-large "
+  <ng-template
     let-modal
+    class="y-fd-modal fd-modal--extra-large "
     #createNamespaceModal
     role="dialog"
     aria-labelledby="createNamespace"
@@ -21,7 +21,7 @@
         </div>
         <div fd-form-set>
           <div fd-form-item>
-            <fd-form-label>Namespace Name *</fd-form-label>
+            <label fd-form-label>Namespace Name *</label>
             <input
               fd-form-control
               [type]="'text'"
@@ -40,7 +40,7 @@
           </div>
 
           <div fd-form-item>
-            <fd-form-label>Labels</fd-form-label>
+            <label fd-form-label>Labels</label>
             <app-labels-input
               [labels]="labels"
               (labelsChangeEmitter$)="updateLabels($event)"
@@ -210,5 +210,5 @@
         Create
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

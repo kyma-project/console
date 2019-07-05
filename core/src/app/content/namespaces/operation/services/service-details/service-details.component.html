@@ -13,16 +13,16 @@
       </fd-breadcrumb-item>
     </fd-breadcrumb>
 
-    <fd-action-bar>
-      <fd-action-bar-header>
-        <fd-action-bar-title>
+    <div fd-action-bar>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title>
           {{ serviceName }}
-        </fd-action-bar-title>
-      </fd-action-bar-header>
-      <fd-action-bar-actions>
+        </h3>
+      </div>
+      <div fd-action-bar-actions>
         <app-edit-resource [resourceData]="serviceDetails"></app-edit-resource>
-      </fd-action-bar-actions>
-    </fd-action-bar>
+      </div>
+    </div>
   </section>
 </header>
 

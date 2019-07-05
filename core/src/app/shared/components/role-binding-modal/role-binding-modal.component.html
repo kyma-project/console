@@ -1,23 +1,50 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #createBindingModal role="dialog" aria-labelledby="confirm"
-    (click)="$event.stopPropagation()">
+  <ng-template
+    let-modalclass="y-fd-modal"
+    #createBindingModal
+    role="dialog"
+    aria-labelledby="confirm"
+    (click)="$event.stopPropagation()"
+  >
     <fd-modal-header>Create Binding</fd-modal-header>
     <fd-modal-body>
       <div class="fd-form__group">
-        <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">{{ error }}</div>
+        <div
+          class="fd-alert fd-alert--error fd-has-margin-bottom-small"
+          role="alert"
+          *ngIf="error"
+        >
+          {{ error }}
+        </div>
         <div class="fd-form__set">
           <div class="fd-form__group">
-            <div class="fd-form__item fd-form__item--inline fd-form__item--check">
+            <div
+              class="fd-form__item fd-form__item--inline fd-form__item--check"
+            >
               <label class="fd-form__label" for="pDidh767">
-                <input type="radio" class="fd-form__control" id="pDidh767" name="radio" (click)='setUserMode()'
-                  [checked]="!isUserGroupMode">
+                <input
+                  type="radio"
+                  class="fd-form__control"
+                  id="pDidh767"
+                  name="radio"
+                  (click)="setUserMode()"
+                  [checked]="!isUserGroupMode"
+                />
                 User
               </label>
             </div>
-            <div class="fd-form__item fd-form__item--inline fd-form__item--check">
+            <div
+              class="fd-form__item fd-form__item--inline fd-form__item--check"
+            >
               <label class="fd-form__label" for="pDidh7618">
-                <input type="radio" class="fd-form__control" id="pDidh7618" name="radio" (click)='setUserGroupMode()'
-                  [checked]="isUserGroupMode">
+                <input
+                  type="radio"
+                  class="fd-form__control"
+                  id="pDidh7618"
+                  name="radio"
+                  (click)="setUserGroupMode()"
+                  [checked]="isUserGroupMode"
+                />
                 User Group
               </label>
             </div>
@@ -26,29 +53,66 @@
 
         <div fd-form-set>
           <div fd-form-item>
-            <fd-form-label>{{ isUserGroupMode ? 'User Group' : 'User' }} *</fd-form-label>
-            <input fd-form-control class="y-fd-form__control" type="text" name="userOrGroup"
-              placeholder="{{isUserGroupMode?'Enter User Group':'Enter User'}}" [(ngModel)]="userOrGroup"
-              (ngModelChange)="validateUserOrGroupInput()">
-            <fd-form-message [type]="'error'" *ngIf="userGroupError">{{ userGroupError }}</fd-form-message>
+            <label fd-form-label
+              >{{ isUserGroupMode ? 'User Group' : 'User' }} *</label
+            >
+            <input
+              fd-form-control
+              class="y-fd-form__control"
+              type="text"
+              name="userOrGroup"
+              placeholder="{{
+                isUserGroupMode ? 'Enter User Group' : 'Enter User'
+              }}"
+              [(ngModel)]="userOrGroup"
+              (ngModelChange)="validateUserOrGroupInput()"
+            />
+            <fd-form-message [type]="'error'" *ngIf="userGroupError">{{
+              userGroupError
+            }}</fd-form-message>
           </div>
           <div fd-form-item *ngIf="!isGlobalPermissionsView">
-            <fd-form-label>Kind *</fd-form-label>
-            <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown('Kind')"
-              clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-              <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                ngClass="{{!selectedKind ? 'fd-dropdown__control--placeholder' : ''}}"
-                [attr.aria-expanded]="ariaExpandedKind" aria-controls="kinds" (click)="toggleDropDown('Kind')">
-                <input fd-form-control class="y-fd-form__control" type="text" name="selectedKind"
-                  placeholder="Select Kind" [(ngModel)]="selectedKind" (ngModelChange)="filterNamespaces('Kind')"
-                  (keydown)="openDropDown('Kind', $event)" (click)="openDropDown('Kind', $event)" autocomplete="off">
+            <label fd-form-label>Kind *</label>
+            <div
+              class="fd-dropdown y-fd-dropdown fd-has-display-block"
+              (clickOutside)="closeDropDown('Kind')"
+              clickOutsideEvents="click,mousedown"
+              excludeBeforeClick="true"
+            >
+              <button
+                class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
+                ngClass="{{
+                  !selectedKind ? 'fd-dropdown__control--placeholder' : ''
+                }}"
+                [attr.aria-expanded]="ariaExpandedKind"
+                aria-controls="kinds"
+                (click)="toggleDropDown('Kind')"
+              >
+                <input
+                  fd-form-control
+                  class="y-fd-form__control"
+                  type="text"
+                  name="selectedKind"
+                  placeholder="Select Kind"
+                  [(ngModel)]="selectedKind"
+                  (ngModelChange)="filterNamespaces('Kind')"
+                  (keydown)="openDropDown('Kind', $event)"
+                  (click)="openDropDown('Kind', $event)"
+                  autocomplete="off"
+                />
               </button>
-              <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
-                [attr.aria-hidden]="!ariaExpandedKind" id="kinds">
+              <div
+                class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
+                [attr.aria-hidden]="!ariaExpandedKind"
+                id="kinds"
+              >
                 <div class="fd-menu">
                   <ul class="fd-menu__list">
-                    <li class="fd-menu__item" *ngFor="let kind of filteredKinds"
-                      (click)="closeDropDown(); selectKind(kind);">
+                    <li
+                      class="fd-menu__item"
+                      *ngFor="let kind of filteredKinds"
+                      (click)="closeDropDown(); selectKind(kind)"
+                    >
                       {{ kind }}
                     </li>
                   </ul>
@@ -58,23 +122,49 @@
           </div>
 
           <div fd-form-item>
-            <fd-form-label>Role *</fd-form-label>
-            <div class="fd-dropdown y-fd-dropdown fd-has-display-block" (clickOutside)="closeDropDown('Role')"
-              clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-              <button class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                ngClass="{{!selectedRole ? 'fd-dropdown__control--placeholder' : ''}}" [disabled]="!selectedKind"
-                [attr.aria-expanded]="ariaExpandedRole" aria-controls="roles" (click)="toggleDropDown('Role')">
-                <input fd-form-control class="y-fd-form__control" type="text" name="selectedRole"
-                  placeholder="Select Role" [disabled]="!selectedKind" [(ngModel)]="selectedRole"
-                  (ngModelChange)="filterNamespaces('Role')" (keydown)="openDropDown('Role', $event)"
-                  (click)="openDropDown('Role', $event)" autocomplete="off">
+            <label fd-form-label>Role *</label>
+            <div
+              class="fd-dropdown y-fd-dropdown fd-has-display-block"
+              (clickOutside)="closeDropDown('Role')"
+              clickOutsideEvents="click,mousedown"
+              excludeBeforeClick="true"
+            >
+              <button
+                class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
+                ngClass="{{
+                  !selectedRole ? 'fd-dropdown__control--placeholder' : ''
+                }}"
+                [disabled]="!selectedKind"
+                [attr.aria-expanded]="ariaExpandedRole"
+                aria-controls="roles"
+                (click)="toggleDropDown('Role')"
+              >
+                <input
+                  fd-form-control
+                  class="y-fd-form__control"
+                  type="text"
+                  name="selectedRole"
+                  placeholder="Select Role"
+                  [disabled]="!selectedKind"
+                  [(ngModel)]="selectedRole"
+                  (ngModelChange)="filterNamespaces('Role')"
+                  (keydown)="openDropDown('Role', $event)"
+                  (click)="openDropDown('Role', $event)"
+                  autocomplete="off"
+                />
               </button>
-              <div class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
-                [attr.aria-hidden]="!ariaExpandedRole" id="roles">
+              <div
+                class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
+                [attr.aria-hidden]="!ariaExpandedRole"
+                id="roles"
+              >
                 <div class="fd-menu">
                   <ul class="fd-menu__list">
-                    <li class="fd-menu__item" *ngFor="let role of filteredRoles"
-                      (click)="closeDropDown(); selectRole(role);">
+                    <li
+                      class="fd-menu__item"
+                      *ngFor="let role of filteredRoles"
+                      (click)="closeDropDown(); selectRole(role)"
+                    >
                       {{ role }}
                     </li>
                   </ul>
@@ -86,9 +176,14 @@
       </div>
     </fd-modal-body>
     <fd-modal-footer>
-      <button fd-button [fdType]="'main'" [disabled]="(!isReadyToCreate() || error) ? 'disabled' : ''" (click)="save()">
+      <button
+        fd-button
+        [fdType]="'main'"
+        [disabled]="!isReadyToCreate() || error ? 'disabled' : ''"
+        (click)="save()"
+      >
         Save
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

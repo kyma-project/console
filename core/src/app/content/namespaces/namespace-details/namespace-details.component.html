@@ -5,11 +5,11 @@
 <ng-container *ngIf="namespace.getLabel()">
   <header class="fd-page__header fd-has-background-color-background-2">
     <section class="fd-section">
-      <fd-action-bar>
-        <fd-action-bar-header>
-          <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
-        </fd-action-bar-header>
-        <fd-action-bar-actions>
+      <div fd-action-bar>
+        <div fd-action-bar-header>
+          <h3 fd-action-bar-title>{{ namespace.getLabel() }}</h3>
+        </div>
+        <div fd-action-bar-actions>
           <button
             fd-button
             [glyph]="'add'"
@@ -26,8 +26,8 @@
           >
             Delete
           </button>
-        </fd-action-bar-actions>
-      </fd-action-bar>
+        </div>
+      </div>
       <div class="fd-container fd-container--fluid">
         <div class="fd-col--6">
           <span class="fd-has-type fd-has-font-weight-light">
@@ -53,7 +53,7 @@
       <fd-panel-body>
         <div fd-form-set>
           <div fd-form-item>
-            <fd-form-label>Labels</fd-form-label>
+            <label fd-form-label>Labels</label>
             <ng-container *ngIf="labelKeys.length > 0">
               <span
                 class="fd-token y-fd-token y-fd-token--no-button "
@@ -114,12 +114,14 @@
       </fd-panel-head>
     </fd-panel-header>
     <fd-panel-body [bleed]="true">
-      <fd-table>
-        <fd-table-header>
-          <th>Name</th>
-          <th></th>
-        </fd-table-header>
-        <fd-table-body>
+      <table fd-table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
           <tr *ngFor="let namespace of applications">
             <td>
               <a
@@ -138,8 +140,8 @@
               </y-list-actions>
             </td>
           </tr>
-        </fd-table-body>
-      </fd-table>
+        </tbody>
+      </table>
     </fd-panel-body>
   </fd-panel>
 </section>

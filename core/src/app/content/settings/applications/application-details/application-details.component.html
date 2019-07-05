@@ -2,7 +2,7 @@
   <section
     class="fd-section fd-has-padding-bottom-none fd-has-padding-left-regular"
   >
-    <fd-action-bar id="action-bar">
+    <div fd-action-bar id="action-bar">
       <section id="action-bar-wrapper">
         <section>
           <fd-breadcrumb>
@@ -17,13 +17,13 @@
             </fd-breadcrumb-item>
             <fd-breadcrumb-item> </fd-breadcrumb-item>
           </fd-breadcrumb>
-          <fd-action-bar-header class="fd-has-padding-top-none">
-            <fd-action-bar-title class="action-bar-title">
+          <div fd-action-bar-header class="fd-has-padding-top-none">
+            <h3 fd-action-bar-title class="action-bar-title">
               {{ currentAppId }}
-            </fd-action-bar-title>
-          </fd-action-bar-header>
+            </h3>
+          </div>
         </section>
-        <fd-action-bar-actions>
+        <div fd-action-bar-actions>
           <button
             fd-button
             *ngIf="!isReadOnly"
@@ -48,9 +48,9 @@
           >
             Delete
           </button>
-        </fd-action-bar-actions>
+        </div>
       </section>
-    </fd-action-bar>
+    </div>
   </section>
   <fd-panel-body [bleed]="true" *ngIf="application">
     <fd-panel-grid [col]="4" [nogap]="true">
@@ -122,15 +122,17 @@
       </fd-panel-header>
 
       <fd-panel-body [bleed]="true">
-        <fd-table *ngIf="boundNamespaces.length > 0">
-          <fd-table-header>
-            <th>Name</th>
-            <th class="y-fd-table--col-3">
-              Service & event bindings
-            </th>
-            <th class="y-fd-table--col-1"></th>
-          </fd-table-header>
-          <fd-table-body>
+        <table fd-table *ngIf="boundNamespaces.length > 0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="y-fd-table--col-3">
+                Service & event bindings
+              </th>
+              <th class="y-fd-table--col-1"></th>
+            </tr>
+          </thead>
+          <tbody>
             <tr *ngFor="let namespace of boundNamespaces">
               <td
                 class="fd-has-font-weight-bold"
@@ -156,8 +158,8 @@
                 ></y-list-actions>
               </td>
             </tr>
-          </fd-table-body>
-        </fd-table>
+          </tbody>
+        </table>
       </fd-panel-body>
     </fd-panel>
   </section>
@@ -170,13 +172,15 @@
         </fd-panel-head>
       </fd-panel-header>
       <fd-panel-body [bleed]="true">
-        <fd-table>
-          <fd-table-header>
-            <th>ServiceClass Name</th>
-            <th class="y-fd-table--col-1">API</th>
-            <th class="y-fd-table--col-1">Events</th>
-          </fd-table-header>
-          <fd-table-body>
+        <table fd-table>
+          <thead>
+            <tr>
+              <th>ServiceClass Name</th>
+              <th class="y-fd-table--col-1">API</th>
+              <th class="y-fd-table--col-1">Events</th>
+            </tr>
+          </thead>
+          <tbody>
             <tr *ngFor="let service of application.services">
               <td>
                 <span class="fd-has-font-weight-bold">
@@ -208,8 +212,8 @@
                 </span>
               </td>
             </tr>
-          </fd-table-body>
-        </fd-table>
+          </tbody>
+        </table>
       </fd-panel-body>
     </fd-panel>
   </section>

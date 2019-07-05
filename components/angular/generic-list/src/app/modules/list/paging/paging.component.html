@@ -7,9 +7,7 @@
   "
   [class]="'fd-pagination fd-has-margin-tiny'"
   (selected)="goToPage($event)"
-  [pagination]="{
-    totalItems: pagingState.totalCount || 0,
-    itemsPerPage: pagingState.pageSize,
-    currentPage: pagingState.pageNumber
-  }"
+  [totalItems]="pagingState.totalCount || 0"
+  [itemsPerPage]="pagingState.pageSize"
+  [currentPage]="pagingState.pageNumber"
 ></fd-pagination>

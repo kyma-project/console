@@ -1,22 +1,41 @@
-<fd-popover [alignment]="'right'" *ngIf="filterState.availableFacets.length">
+<fd-popover [placement]="'right'" *ngIf="filterState.availableFacets.length">
   <fd-popover-control>
-    <button fd-button [glyph]="'filter'" [options]="'light'" [state]="hasFacets()?'':'disabled'">
-      <span class="fd-counter fd-counter--notification fd-has-background-color-status-4" aria-label="Unread count" *ngIf="filterState.facets && 0 < filterState.facets.length && hasFacets()">
+    <button
+      fd-button
+      [glyph]="'filter'"
+      [options]="'light'"
+      [disabled]="hasFacets()"
+    >
+      <span
+        class="fd-counter fd-counter--notification fd-has-background-color-status-4"
+        aria-label="Unread count"
+        *ngIf="
+          filterState.facets && 0 < filterState.facets.length && hasFacets()
+        "
+      >
         {{ filterState.facets.length }}
       </span>
     </button>
   </fd-popover-control>
   <fd-popover-body>
     <fd-menu class="y-fd-menu">
-      <fd-menu-list>
-        <li fd-menu-item *ngFor="let facet of filterState.availableFacets" (click)="toggleFacet(facet.label, $event)">
+      <ul fd-menu-list>
+        <li
+          fd-menu-item
+          *ngFor="let facet of filterState.availableFacets"
+          (click)="toggleFacet(facet.label, $event)"
+        >
           <a href="javascript:void(null)" title="facet.label">
-            <input class="fd-form__control" id="{{facet.label }}" type="checkbox"
-              [checked]="facetSelected(facet.label)">
+            <input
+              class="fd-form__control"
+              id="{{ facet.label }}"
+              type="checkbox"
+              [checked]="facetSelected(facet.label)"
+            />
             {{ facet.label }} ({{ facet.count }})
           </a>
         </li>
-      </fd-menu-list>
+      </ul>
     </fd-menu>
   </fd-popover-body>
 </fd-popover>

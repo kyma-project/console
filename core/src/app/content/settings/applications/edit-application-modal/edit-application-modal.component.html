@@ -1,24 +1,40 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #editApplicationModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+  <ng-template
+    let-modalclass="y-fd-modal"
+    #editApplicationModal
+    role="dialog"
+    aria-labelledby="confirm"
+    (click)="$event.stopPropagation()"
+  >
     <fd-modal-header>
       Edit Application
     </fd-modal-header>
     <fd-modal-body>
       <form #editApplicationsForm="ngForm">
-        <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">
+        <div
+          class="fd-alert fd-alert--error fd-has-margin-bottom-small"
+          role="alert"
+          *ngIf="error"
+        >
           {{ error }}
         </div>
         <div fd-form-set>
           <div fd-form-item>
-            <fd-form-label>Description *</fd-form-label>
-            <input fd-form-control autofocus [type]="'text'" name="applicationDescription"
-                [(ngModel)]="updatedDescription"
-                placeholder="Specify a description for your Application"
-            >
+            <label fd-form-label>Description *</label>
+            <input
+              fd-form-control
+              autofocus
+              [type]="'text'"
+              name="applicationDescription"
+              [(ngModel)]="updatedDescription"
+              placeholder="Specify a description for your Application"
+            />
           </div>
           <div fd-form-item>
-            <fd-form-label>Labels</fd-form-label>
-            <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)"
+            <label fd-form-label>Labels</label>
+            <app-labels-input
+              [labels]="updatedLabels"
+              (labelsChangeEmitter$)="updateLabelsData($event)"
             ></app-labels-input>
           </div>
         </div>
@@ -26,10 +42,15 @@
     </fd-modal-body>
     <fd-modal-footer>
       <button fd-button (click)="close()" [options]="'light'">Cancel</button>
-      <button fd-button ngClass="{{isReadyToSave() ? '' : 'disabled'}}"
-        [disabled]="!isReadyToSave()" (click)="save()" [fdType]="'main'">
+      <button
+        fd-button
+        ngClass="{{ isReadyToSave() ? '' : 'disabled' }}"
+        [disabled]="!isReadyToSave()"
+        (click)="save()"
+        [fdType]="'main'"
+      >
         Save
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

@@ -1,5 +1,6 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal
+  <ng-template
+    let-modal
     class="y-fd-modal"
     #confirmationModal
     role="dialog"
@@ -24,5 +25,5 @@
         OK
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

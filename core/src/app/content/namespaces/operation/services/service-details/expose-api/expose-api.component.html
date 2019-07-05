@@ -41,11 +41,11 @@
       </fd-breadcrumb-item>
     </fd-breadcrumb>
 
-    <fd-action-bar>
-      <fd-action-bar-header>
-        <fd-action-bar-title>
+    <div fd-action-bar>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title>
           {{ apiDefinition ? apiName : 'Create API' }}
-        </fd-action-bar-title>
+        </h3>
         <fd-action-bar-description class="header-columns">
           <div class="fd-container fd-container--fluid">
             <div *ngIf="apiDefinition" class="fd-col--4">
@@ -73,8 +73,8 @@
             </div>
           </div>
         </fd-action-bar-description>
-      </fd-action-bar-header>
-      <fd-action-bar-actions>
+      </div>
+      <div fd-action-bar-actions>
         <button
           fd-button
           [options]="'emphasized'"
@@ -84,8 +84,8 @@
         >
           Save
         </button>
-      </fd-action-bar-actions>
-    </fd-action-bar>
+      </div>
+    </div>
   </section>
 </header>
 
@@ -102,7 +102,7 @@
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label>Service *</fd-form-label>
+              <label fd-form-label>Service *</label>
               <div
                 class="fd-dropdown y-fd-dropdown fd-has-display-block"
                 (clickOutside)="closeDropDown()"
@@ -165,7 +165,7 @@
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'host-input'">Host *</fd-form-label>
+              <label fd-form-label [forValue]="'host-input'">Host *</label>
               <div class="fd-input-group fd-input-group--after">
                 <input
                   fd-form-control
@@ -193,8 +193,8 @@
         <div class="fd-col--4" *ngIf="apiDefinition">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-3'"
-                >Target Service</fd-form-label
+              <label fd-form-label [forValue]="'input-3'"
+                >Target Service</label
               >
               <a
                 href="javascript:void(null)"
@@ -209,8 +209,8 @@
         <div class="fd-col--4" *ngIf="apiDefinition">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-3'"
-                >Target Service Port *</fd-form-label
+              <label fd-form-label [forValue]="'input-3'"
+                >Target Service Port *</label
               >
               <input
                 fd-form-control
@@ -233,7 +233,7 @@
         <div class="fd-col--8">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-1'">Name *</fd-form-label>
+              <label fd-form-label [forValue]="'input-1'">Name *</label>
               <input
                 fd-form-control
                 [type]="'text'"
@@ -276,7 +276,7 @@
         <div class="fd-col--6">
           <fieldset fd-form-set>
             <div fd-form-item [isInline]="true" [isCheck]="true">
-              <fd-form-label [forValue]="'Ai4ez611'">
+              <label fd-form-label [forValue]="'Ai4ez611'">
                 <input
                   *ngIf="canBeSecured"
                   fd-form-control
@@ -287,7 +287,7 @@
                   data-e2e-id="secure-api-checkbox"
                 />
                 Secure API
-              </fd-form-label>
+              </label>
             </div>
           </fieldset>
         </div>
@@ -298,7 +298,7 @@
         <div class="fd-col--6">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="'input-4'">Issuer *</fd-form-label>
+              <label fd-form-label [forValue]="'input-4'">Issuer *</label>
               <input
                 fd-form-control
                 [type]="'text'"
@@ -317,7 +317,7 @@
         <div class="fd-col--6">
           <div fd-form-set>
             <div fd-form-item>
-              <fd-form-label [forValue]="input - 5">JWKS URI *</fd-form-label>
+              <label fd-form-label [forValue]="input - 5">JWKS URI *</label>
               <input
                 fd-form-control
                 [type]="'text'"
@@ -344,7 +344,7 @@
             Load Preset
             <fd-popover-body>
               <fd-menu>
-                <fd-menu-list>
+                <ul fd-menu-list>
                   <li
                     fd-menu-item
                     *ngFor="let preset of availablePresets"
@@ -353,7 +353,7 @@
                   >
                     {{ preset.label }}
                   </li>
-                </fd-menu-list>
+                </ul>
               </fd-menu>
             </fd-popover-body>
           </fd-popover>
