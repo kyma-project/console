@@ -20,13 +20,11 @@ import { NamespaceEditComponent } from '../namespace-edit/namespace-edit.compone
   styleUrls: ['./namespace-details.component.scss']
 })
 export class NamespaceDetailsComponent implements OnInit, OnDestroy {
-
   @ViewChild('editnamespacemodal')
   private editnamespacemodal: NamespaceEditComponent;
   @ViewChild('uploaderModal')
   private uploaderModal: ResourceUploaderModalComponent;
-  @ViewChild('infoModal')
-  private infoModal: InformationModalComponent;
+  @ViewChild('infoModal') private infoModal: InformationModalComponent;
   @ViewChild('confirmationModal')
   private confirmationModal: ConfirmationModalComponent;
 
@@ -66,7 +64,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
         this.getNamespace(this.id, () => {
           this.getServices(this.id);
           this.getApplications(this.id);
-        })
+        });
       });
   }
 
@@ -101,10 +99,15 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   private getNamespace(id: string, additionalCalls?: () => void) {
     this.namespacesService.getNamespace(this.id).subscribe(
       namespace => {
+        this.labelKeys = [];
+
         if (namespace) {
           this.namespace = namespace;
         }
-        if (this.namespace.getLabels() !== null && this.namespace.getLabels() !== undefined) {
+        if (
+          this.namespace.getLabels() !== null &&
+          this.namespace.getLabels() !== undefined
+        ) {
           this.labelKeys = Object.keys(this.namespace.getLabels());
         }
         if (typeof additionalCalls === 'function') {
@@ -127,16 +130,21 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToRefreshComponent() {
-    this.refreshComponentSubscription = this.communicationService.observable$.subscribe(e => {
-      const event: any = e;
+    this.refreshComponentSubscription = this.communicationService.observable$.subscribe(
+      e => {
+        const event: any = e;
 
-      if (event.type === 'createResource' || event.type === 'deleteResource') {
-        this.getApplications(this.id);
-        this.getServices(this.id);
-      } else if (event.type === 'editLabel') {
-        this.getNamespace(this.id);
+        if (
+          event.type === 'createResource' ||
+          event.type === 'deleteResource'
+        ) {
+          this.getApplications(this.id);
+          this.getServices(this.id);
+        } else if (event.type === 'editLabel') {
+          this.getNamespace(this.id);
+        }
       }
-    });
+    );
   }
 
   getEntryEventHandler() {
@@ -160,21 +168,33 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
 
   public navigateToApplications(applicationName = null) {
     LuigiClient.linkManager().navigate(
-      applicationName ? '/home/cmf-apps/details/' + applicationName : '/home/cmf-apps'
+      applicationName
+        ? '/home/cmf-apps/details/' + applicationName
+        : '/home/cmf-apps'
     );
   }
 
   public deleteNamespace() {
-    this.confirmationModal.show('Delete', `Do you want to delete namespace ${this.namespace.getLabel()}?`)
+    this.confirmationModal
+      .show(
+        'Delete',
+        `Do you want to delete namespace ${this.namespace.getLabel()}?`
+      )
       .then(() => {
-        this.namespacesService.deleteNamespace(this.namespace.getLabel())
-          .subscribe(() => {
-            LuigiClient.linkManager().navigate('/home');
-          }, err => {
-            this.infoModal.show('Error', `There was an error while deleting namespace ${this.namespace.getLabel()}: ${err}`)
-          });
+        this.namespacesService
+          .deleteNamespace(this.namespace.getLabel())
+          .subscribe(
+            () => {
+              LuigiClient.linkManager().navigate('/home');
+            },
+            err => {
+              this.infoModal.show(
+                'Error',
+                `There was an error while deleting namespace ${this.namespace.getLabel()}: ${err}`
+              );
+            }
+          );
       })
-      .catch(() => { });
+      .catch(() => {});
   }
-
 }
