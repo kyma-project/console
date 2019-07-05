@@ -1,9 +1,9 @@
 import { ApplicationBindingService } from '../application-binding-service';
 import { ComponentCommunicationService } from './../../../../../shared/services/component-communication.service';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info';
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 import * as _ from 'lodash';
@@ -15,7 +15,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./edit-binding-modal.component.scss']
 })
 export class EditBindingsModalComponent {
-  @ViewChild('editBindingModal') editBindingModal: ModalComponent;
+  @ViewChild('editBindingModal') editBindingModal: TemplateRef<ModalRef>;
 
   public namespaces = [];
   private selectedApplicationsState = [];
@@ -72,15 +72,21 @@ export class EditBindingsModalComponent {
         }
       );
       this.isActive = true;
-      this.modalService.open(this.editBindingModal).result.finally(() => {
-        this.isActive = false;
-        this.namespaceName = null;
-        this.allServices = true;
-      });
+      this.modalService
+        .open(this.editBindingModal)
+        .afterClosed.toPromise()
+        .finally(() => {
+          this.isActive = false;
+          this.namespaceName = null;
+          this.allServices = true;
+        });
     });
   }
 
-  private getInitialNamespace(usedNamespaces: EnabledMappingServices[], initialNamespaceName: string) {
+  private getInitialNamespace(
+    usedNamespaces: EnabledMappingServices[],
+    initialNamespaceName: string
+  ) {
     const initialNamespaceArray = usedNamespaces.filter(
       usedNamespace => usedNamespace.namespace === initialNamespaceName
     );
@@ -137,7 +143,7 @@ export class EditBindingsModalComponent {
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
-    this.modalService.close(this.editBindingModal);
+    this.modalService.dismissAll();
   }
 
   applicationSelected(id) {

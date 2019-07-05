@@ -1,16 +1,21 @@
 <header class="fd-page__header fd-has-background-color-background-2">
-  <section class="fd-section fd-has-padding-bottom-none fd-has-padding-left-regular">
+  <section
+    class="fd-section fd-has-padding-bottom-none fd-has-padding-left-regular"
+  >
     <fd-action-bar id="action-bar">
       <section id="action-bar-wrapper">
         <section>
           <fd-breadcrumb>
             <fd-breadcrumb-item>
-              <a href="javascript:void(null)" fd-breadcrumb-link (click)="navigateToList()">
+              <a
+                href="javascript:void(null)"
+                fd-breadcrumb-link
+                (click)="navigateToList()"
+              >
                 Applications
               </a>
             </fd-breadcrumb-item>
-            <fd-breadcrumb-item>
-            </fd-breadcrumb-item>
+            <fd-breadcrumb-item> </fd-breadcrumb-item>
           </fd-breadcrumb>
           <fd-action-bar-header class="fd-has-padding-top-none">
             <fd-action-bar-title class="action-bar-title">
@@ -19,13 +24,28 @@
           </fd-action-bar-header>
         </section>
         <fd-action-bar-actions>
-          <button fd-button *ngIf="!isReadOnly" [options]="'emphasized'" (click)="showUrl()">
+          <button
+            fd-button
+            *ngIf="!isReadOnly"
+            [options]="'emphasized'"
+            (click)="showUrl()"
+          >
             Connect Application
           </button>
-          <button fd-button [options]="'light'" (click)="openEditApplicationModal()">
+          <button
+            fd-button
+            [options]="'light'"
+            (click)="openEditApplicationModal()"
+          >
             Edit
           </button>
-          <button fd-button *ngIf="!isReadOnly" [options]="'light'" [fdType]="'negative'" (click)="displayDeleteApplicationModal()">
+          <button
+            fd-button
+            *ngIf="!isReadOnly"
+            [options]="'light'"
+            [fdType]="'negative'"
+            (click)="displayDeleteApplicationModal()"
+          >
             Delete
           </button>
         </fd-action-bar-actions>
@@ -38,20 +58,25 @@
         <fd-panel-body>
           <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Name</p>
           <p>{{ application.name }}</p>
-
         </fd-panel-body>
       </fd-panel>
       <fd-panel>
         <fd-panel-body>
           <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Status</p>
           <p>
-            <span class="fd-status-label" [ngClass]="determineClass(application)">{{ prettyStatus }}</span>
+            <span
+              class="fd-status-label"
+              [ngClass]="determineClass(application)"
+              >{{ prettyStatus }}</span
+            >
           </p>
         </fd-panel-body>
       </fd-panel>
       <fd-panel>
         <fd-panel-body>
-          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Description</p>
+          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">
+            Description
+          </p>
           <p>{{ application.description }}</p>
         </fd-panel-body>
       </fd-panel>
@@ -60,8 +85,11 @@
           <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Labels</p>
           <p>
             <ng-container *ngIf="transformedLabels.length">
-              <span class="fd-token y-fd-token y-fd-token--no-button" role="button"
-                *ngFor="let label of transformedLabels">
+              <span
+                class="fd-token y-fd-token y-fd-token--no-button"
+                role="button"
+                *ngFor="let label of transformedLabels"
+              >
                 {{ label }}
               </span>
             </ng-container>
@@ -79,7 +107,7 @@
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
-          <fd-panel-title>Namespace Bindings</fd-panel-title>
+          <h2>Namespace Bindings</h2>
         </fd-panel-head>
         <fd-panel-actions>
           <button
@@ -138,7 +166,7 @@
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
-          <fd-panel-title>Provided Services & Events</fd-panel-title>
+          <h2>Provided Services & Events</h2>
         </fd-panel-head>
       </fd-panel-header>
       <fd-panel-body [bleed]="true">

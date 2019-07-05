@@ -1,6 +1,6 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-copy2clipboard-modal',
@@ -8,7 +8,8 @@ import { ModalService, ModalComponent } from 'fundamental-ngx';
   templateUrl: './copy2clipboard-modal.component.html'
 })
 export class Copy2ClipboardModalComponent {
-  @ViewChild('copyToClipboardModal') copyToClipboardModal: ModalComponent;
+  @ViewChild('copyToClipboardModal')
+  copyToClipboardModal: TemplateRef<ModalRef>;
 
   public title: string;
   public isActive = false;
@@ -25,15 +26,18 @@ export class Copy2ClipboardModalComponent {
     this.content = content;
     this.message = message;
 
-    this.modalService.open(this.copyToClipboardModal).result.finally(() => {
-      this.isActive = false;
-      this.isCopied = false;
-      event.stopPropagation();
-    });
+    this.modalService
+      .open(this.copyToClipboardModal)
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        this.isCopied = false;
+        event.stopPropagation();
+      });
   }
 
   public cancel(event: Event) {
-    this.modalService.close(this.copyToClipboardModal);
+    this.modalService.dismissAll();
   }
 
   public removeSuccessClass() {

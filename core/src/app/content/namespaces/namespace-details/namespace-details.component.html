@@ -10,51 +10,64 @@
           <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
         </fd-action-bar-header>
         <fd-action-bar-actions>
-          <button fd-button [glyph]="'add'" (click)="openUploadResourceModal()"
-            *ngIf="!showSelectFileButton">
+          <button
+            fd-button
+            [glyph]="'add'"
+            (click)="openUploadResourceModal()"
+            *ngIf="!showSelectFileButton"
+          >
             Deploy new resource
           </button>
-          <button fd-button [options]="'light'" [fdType]="'negative'" (click)="deleteNamespace()">
+          <button
+            fd-button
+            [options]="'light'"
+            [fdType]="'negative'"
+            (click)="deleteNamespace()"
+          >
             Delete
           </button>
         </fd-action-bar-actions>
       </fd-action-bar>
-        <div class="fd-container fd-container--fluid">
-          <div class="fd-col--6">
-            <span class="fd-has-type fd-has-font-weight-light">
-              Namespace-ID
-            </span>
-            <span class="header-description">
-              {{ namespace.getUid() }}
-            </span>
-          </div>
+      <div class="fd-container fd-container--fluid">
+        <div class="fd-col--6">
+          <span class="fd-has-type fd-has-font-weight-light">
+            Namespace-ID
+          </span>
+          <span class="header-description">
+            {{ namespace.getUid() }}
+          </span>
         </div>
+      </div>
     </section>
   </header>
 </ng-container>
 
 <section class="fd-section">
   <fd-panel-grid [col]="2">
-      <fd-panel>
-          <fd-panel-header>
-            <fd-panel-head>
-              <fd-panel-title>General Information</fd-panel-title>
-            </fd-panel-head>
-          </fd-panel-header>
-          <fd-panel-body>
-            <div fd-form-set>
-              <div fd-form-item>
-                <fd-form-label>Labels</fd-form-label>
-                  <ng-container *ngIf="labelKeys.length > 0">
-                      <span class="fd-token y-fd-token y-fd-token--no-button " *ngFor="let labelkey of labelKeys">{{ labelkey }} : {{ namespace.getLabels()[labelkey] }}</span>
-                  </ng-container>
-                  <ng-container *ngIf="labelKeys.length == 0">
-                      -
-                  </ng-container>
-                </div>
-            </div>
-          </fd-panel-body>
-        </fd-panel>
+    <fd-panel>
+      <fd-panel-header>
+        <fd-panel-head>
+          <h2>General Information</h2>
+        </fd-panel-head>
+      </fd-panel-header>
+      <fd-panel-body>
+        <div fd-form-set>
+          <div fd-form-item>
+            <fd-form-label>Labels</fd-form-label>
+            <ng-container *ngIf="labelKeys.length > 0">
+              <span
+                class="fd-token y-fd-token y-fd-token--no-button "
+                *ngFor="let labelkey of labelKeys"
+                >{{ labelkey }} : {{ namespace.getLabels()[labelkey] }}</span
+              >
+            </ng-container>
+            <ng-container *ngIf="labelKeys.length == 0">
+              -
+            </ng-container>
+          </div>
+        </div>
+      </fd-panel-body>
+    </fd-panel>
     <fd-panel>
       <fd-panel-body class="fd-container fd-container--fluid">
         <div class="fd-col--6 fd-has-text-align-center">
@@ -65,18 +78,26 @@
             {{ services && services.length === 1 ? 'Service' : 'Services' }}
           </button>
         </div>
-        <div class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
+        <div
+          class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid"
+        >
           <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
             {{ boundApplicationsCount | async }}
           </h3>
-          <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
+          <span
+            class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny"
+          >
             {{
-            (boundApplicationsCount | async) === 1
-            ? 'Bound Application'
-            : 'Bound Applications'
+              (boundApplicationsCount | async) === 1
+                ? 'Bound Application'
+                : 'Bound Applications'
             }}
           </span>
-          <button fd-button [options]="'light'" (click)="navigateToApplications()">
+          <button
+            fd-button
+            [options]="'light'"
+            (click)="navigateToApplications()"
+          >
             Show All Applications
           </button>
         </div>
@@ -85,11 +106,11 @@
   </fd-panel-grid>
 </section>
 
-<section class='fd-section' *ngIf="applications && applications.length > 0">
+<section class="fd-section" *ngIf="applications && applications.length > 0">
   <fd-panel>
     <fd-panel-header>
       <fd-panel-head>
-        <fd-panel-title>Connected Applications</fd-panel-title>
+        <h2>Connected Applications</h2>
       </fd-panel-head>
     </fd-panel-header>
     <fd-panel-body [bleed]="true">
@@ -101,10 +122,19 @@
         <fd-table-body>
           <tr *ngFor="let namespace of applications">
             <td>
-              <a href="javascript:void(null)" (click)="navigateToApplications(namespace.name)" class="fd-has-font-weight-bold">{{ namespace.name }}</a>
+              <a
+                href="javascript:void(null)"
+                (click)="navigateToApplications(namespace.name)"
+                class="fd-has-font-weight-bold"
+                >{{ namespace.name }}</a
+              >
             </td>
             <td class="y-fd-table--col-1">
-              <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
+              <y-list-actions
+                [entry]="namespace"
+                [entryEventHandler]="entryEventHandler"
+                [actions]="actions"
+              >
               </y-list-actions>
             </td>
           </tr>

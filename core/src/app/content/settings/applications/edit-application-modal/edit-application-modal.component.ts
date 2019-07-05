@@ -1,8 +1,14 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ElementRef,
+  TemplateRef
+} from '@angular/core';
 import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
-import { ModalService } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-edit-application-modal',
@@ -15,7 +21,8 @@ export class EditApplicationModalComponent {
   @Input() public name: string;
 
   @ViewChild('editApplicationsForm') editApplicationsForm: NgForm;
-  @ViewChild('editApplicationModal') editApplicationModal: NgForm;
+  @ViewChild('editApplicationModal')
+  editApplicationModal: TemplateRef<ModalRef>;
 
   public isActive = false;
   public wrongLabels: boolean;
@@ -35,13 +42,14 @@ export class EditApplicationModalComponent {
 
     this.modalService
       .open(this.editApplicationModal)
-      .result.finally(() => {
+      .afterClosed.toPromise()
+      .finally(() => {
         this.isActive = false;
       });
   }
 
   public close(): void {
-    this.modalService.close(this.editApplicationModal);
+    this.modalService.dismissAll;
   }
 
   private resetForm(): void {

@@ -1,10 +1,10 @@
 import { ApplicationBindingService } from '../application-binding-service';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { NamespacesService } from '../../../../namespaces/services/namespaces.service';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info';
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 import * as _ from 'lodash';
@@ -16,7 +16,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./create-binding-modal.component.scss']
 })
 export class CreateBindingsModalComponent {
-  @ViewChild('createBindingModal') createBindingModal: ModalComponent;
+  @ViewChild('createBindingModal') createBindingModal: TemplateRef<ModalRef>;
 
   public namespaces = [];
   private selectedApplicationsState = [];
@@ -79,13 +79,16 @@ export class CreateBindingsModalComponent {
         }
       );
       this.isActive = true;
-      this.modalService.open(this.createBindingModal).result.finally(() => {
-        this.isActive = false;
-        this.namespaceName = null;
-        this.allServices = true;
-        this.filteredNamespaces = [];
-        this.filteredNamespacesNames = [];
-      });
+      this.modalService
+        .open(this.createBindingModal)
+        .afterClosed.toPromise()
+        .finally(() => {
+          this.isActive = false;
+          this.namespaceName = null;
+          this.allServices = true;
+          this.filteredNamespaces = [];
+          this.filteredNamespacesNames = [];
+        });
     });
   }
 
@@ -155,7 +158,7 @@ export class CreateBindingsModalComponent {
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
-    this.modalService.close(this.createBindingModal);
+    this.modalService.dismissAll;
   }
 
   filterNamespacesNames() {

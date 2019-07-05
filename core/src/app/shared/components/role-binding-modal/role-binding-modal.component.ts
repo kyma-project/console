@@ -1,10 +1,16 @@
-import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  ViewChild,
+  TemplateRef
+} from '@angular/core';
 import { RbacService } from '../../services/rbac.service';
 import * as _ from 'lodash';
 import { CurrentNamespaceService } from '../../../content/namespaces/services/current-namespace.service';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
-import { ModalComponent, ModalService } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-role-binding-modal',
@@ -12,7 +18,7 @@ import { ModalComponent, ModalService } from 'fundamental-ngx';
   styleUrls: ['./role-binding-modal.component.scss']
 })
 export class RoleBindingModalComponent implements OnDestroy {
-  @ViewChild('createBindingModal') createBindingModal: ModalComponent;
+  @ViewChild('createBindingModal') createBindingModal: TemplateRef<ModalRef>;
   public isActive = false;
   public roles = [];
   public userOrGroup = '';
@@ -46,7 +52,7 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   getClusterRoles() {
     this.rbacService.getClusterRoles().subscribe(
-      res => { 
+      res => {
         const response: any = res;
         if (response && response.items && _.isArray(response.items)) {
           this.roles = response.items.map(entry => entry.metadata.name).sort();
@@ -105,15 +111,18 @@ export class RoleBindingModalComponent implements OnDestroy {
     if (this.isGlobalPermissionsView) {
       this.selectKind('ClusterRole');
     }
-    this.modalService.open(this.createBindingModal).result.finally(() => {
-      this.isActive = false;
-      this.clearData();
-    });
+    this.modalService
+      .open(this.createBindingModal)
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        this.clearData();
+      });
     this.isUserGroupMode = true;
   }
 
   public close() {
-    this.modalService.close(this.createBindingModal);
+    this.modalService.dismissAll();
   }
 
   public clearData() {
@@ -265,8 +274,9 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   validateUserOrGroupInput() {
     // it must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com')
-    const regex = this.isUserGroupMode ? /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/ :
-      /^.*$/;
+    const regex = this.isUserGroupMode
+      ? /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/
+      : /^.*$/;
     this.userGroupError = regex.test(this.userOrGroup)
       ? ''
       : `The user group name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name').`;
