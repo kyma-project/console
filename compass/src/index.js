@@ -3,28 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import { COMPASS_GRAPHQL_ENDPOINT } from './config/config';
 import builder from './commons/builder';
-import { BrowserRouter } from 'react-router-dom';
+import { createApolloClient } from './store';
 
-console.log(builder.getTenant())
-const client = new ApolloClient({
-  uri: COMPASS_GRAPHQL_ENDPOINT,
-  // headers: {
-  //   tenant: builder.getTenant()
-  // }
-});
+const client = createApolloClient();
 
 (async () => {
   await builder.init();
   ReactDOM.render(
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>,
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>,
     document.getElementById('root'),
   );
 
