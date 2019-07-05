@@ -49,7 +49,9 @@ export class NamespaceEditComponent {
 
   public show(namespace: NamespaceInfo) {
     this.setDefaultValues(namespace);
-    this.modalService.open(this.editNamespaceModal).result.finally(() => {
+    this.modalService.open(this.editNamespaceModal, {
+      height: '140px'
+    }).result.finally(() => {
       this.isActive = false;
       this.cancelEvent.emit();
     });

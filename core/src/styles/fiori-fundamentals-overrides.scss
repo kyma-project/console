@@ -26,6 +26,17 @@
     }
   }
 
+  &.fd-modal--wide {
+    .fd-modal {
+      max-width: 55% !important; // override inline styles wrongly injected by Fundamental
+    }
+  }
+  // &.fd-modal--short {
+  //   .fd-modal .fd-modal__body {
+  //     height: 140px;
+  //   }
+  // }
+
   .fd-modal__close:focus {
     box-shadow: none;
   }
