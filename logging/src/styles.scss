@@ -28,3 +28,10 @@ $fd-fonts-path: "~fiori-fundamentals/scss/fonts/";
 .fd-table tr {
   cursor: default !important;
 }
+
+
+.fd-form-label{
+  &--block{
+    display: block;
+  }
+}

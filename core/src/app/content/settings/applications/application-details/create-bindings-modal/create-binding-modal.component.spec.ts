@@ -9,6 +9,7 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
 import { ApplicationBindingService } from '../application-binding-service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
+import { NamespaceInfo } from 'namespaces/namespace-info';
 
 const ActivatedRouteMock = {
   params: of({ id: 'id' })
@@ -32,7 +33,7 @@ const ApplicationBindingServiceMock = {
   }
 };
 
-fdescribe('CreateBindingsModalComponent', () => {
+describe('CreateBindingsModalComponent', () => {
   let component: CreateBindingsModalComponent;
   let fixture: ComponentFixture<CreateBindingsModalComponent>;
   let ApplicationsServiceMockStub: ApplicationsService;
@@ -111,15 +112,18 @@ fdescribe('CreateBindingsModalComponent', () => {
     // given
     const applications = of({
       application: {
-        enabledMappingServices: [{
-          namespace: 'namespace1',
-          allServices: true,
-          services: []
-        },{
-          namespace: 'namespace2',
-          allServices: true,
-          services: []
-        }]
+        enabledMappingServices: [
+          {
+            namespace: 'namespace1',
+            allServices: true,
+            services: []
+          },
+          {
+            namespace: 'namespace2',
+            allServices: true,
+            services: []
+          }
+        ]
       }
     });
 
@@ -137,14 +141,14 @@ fdescribe('CreateBindingsModalComponent', () => {
       ApplicationsServiceMockStub,
       'getApplication'
     ).and.returnValue(applications);
-    
+
     const spyGetNamespaces = spyOn(
       NamespacesServiceMockStub,
       'getNamespaces'
     ).and.returnValue(namespaces);
 
     const spyConsoleLog = spyOn(console, 'log');
-    
+
     // when
     fixture.detectChanges();
     component.show();
@@ -160,15 +164,18 @@ fdescribe('CreateBindingsModalComponent', () => {
       expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.application).toEqual({
-        enabledMappingServices: [{
-          namespace: 'namespace1',
-          allServices: true,
-          services: []
-        },{
-          namespace: 'namespace2',
-          allServices: true,
-          services: []
-        }]
+        enabledMappingServices: [
+          {
+            namespace: 'namespace1',
+            allServices: true,
+            services: []
+          },
+          {
+            namespace: 'namespace2',
+            allServices: true,
+            services: []
+          }
+        ]
       });
       expect(component.namespaces).toEqual([
         {
@@ -243,7 +250,7 @@ fdescribe('CreateBindingsModalComponent', () => {
     spyOn(ComponentCommunicationServiceMockStub, 'sendEvent');
 
     // when
-    component.selectedNamespace({ label: 'namespace3' });
+    component.selectedNamespace(new NamespaceInfo({ label: 'namespace3' }));
     fixture.detectChanges();
     await component.save();
 
@@ -252,7 +259,6 @@ fdescribe('CreateBindingsModalComponent', () => {
       expect(component).toBeTruthy();
       expect(spyBind.calls.any()).toBeTruthy('spyBind.calls.any');
       expect(ApplicationBindingServiceMockStub.bind).toHaveBeenCalledTimes(1);
-
       expect(
         ComponentCommunicationServiceMockStub.sendEvent
       ).toHaveBeenCalledWith({

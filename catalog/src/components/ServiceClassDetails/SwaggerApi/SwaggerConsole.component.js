@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { StyledSwagger } from './SwaggerCustomComponents/CustomSwaggerStyles';
 class SwaggerConsole extends React.Component {
   static propTypes = {
     plugins: PropTypes.array,
@@ -46,7 +46,7 @@ class SwaggerConsole extends React.Component {
   };
 
   render() {
-    return <div id="swagger" />;
+    return <StyledSwagger id="swagger" />;
   }
 }
 

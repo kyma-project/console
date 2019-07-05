@@ -23,6 +23,7 @@ export const VALUE_VARIABLE = '{VALUE}';
 export const LABEL_VARIABLE = '{LABEL}';
 
 export const CONTENT_HEADERS: string[] = ['Name / URL', 'Labels', ''];
+export const NO_LABELS_AVAILABLE: string = 'No labels available';
 
 export const NOTIFICATION = {
   ADD_CONFIGURATION: {

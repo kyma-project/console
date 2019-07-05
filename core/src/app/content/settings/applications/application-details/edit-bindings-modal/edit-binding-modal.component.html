@@ -12,70 +12,48 @@
     <fd-modal-body>
       <div fd-form-item>
         <fd-form-label>Services & Events *</fd-form-label>
-        <fd-toggle [size]="'s'" [(ngModel)]="allServices">Select all</fd-toggle>
+        <fd-toggle [size]="'s'" [(ngModel)]="allServices" *ngIf="applicationHasAnyServices">Select all</fd-toggle>
       </div>
-      <div
-        *ngIf="
-          !allServices &&
-          application &&
-          application.services &&
-          application.services.length > 0
-        "
-        fd-form-item
-      >
-        <fd-list
-          class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin"
-        >
-          <li
-            fd-list-item
-            *ngFor="let service of application.services"
-            (click)="toggleApplication(service.id, $event)"
-          >
-            <fd-list-checkbox [checked]="applicationSelected(service.id)">
-              {{ service.displayName }}
-            </fd-list-checkbox>
-            <fd-list-action
-              class="fd-list-group__action--no-top fd-list-group__action--no-right"
-            >
-              <fd-inline-help
-                class="y-fd-inline-help__small"
-                [position]="'left'"
-              >
-                <p>
-                  API:
-                  <span
-                    class="sap-icon--l"
-                    ngClass="{{
-                      hasType(service.entries, 'API')
-                        ? 'sap-icon--accept fd-has-color-status-1'
-                        : 'sap-icon--decline fd-has-color-status-4'
-                    }}"
-                    role="presentation"
-                  >
-                  </span>
-                </p>
-
-                <p>
-                  Events:
-                  <span
-                    class="sap-icon--l"
-                    ngClass="{{
-                      hasType(service.entries, 'Events')
-                        ? 'sap-icon--accept fd-has-color-status-1'
-                        : 'sap-icon--decline fd-has-color-status-4'
-                    }}"
-                    role="presentation"
-                  >
-                  </span>
-                </p>
-              </fd-inline-help>
-            </fd-list-action>
-          </li>
-        </fd-list>
+      <div *ngIf="applicationHasAnyServices; else noServicesHint">
+        <div fd-form-item *ngIf="!allServices">
+          <fd-list class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin">
+            <li fd-list-item *ngFor="let service of application.services" (click)="toggleApplication(service.id, $event)">
+              <fd-list-checkbox [checked]="applicationSelected(service.id)">
+                {{ service.displayName }}
+              </fd-list-checkbox>
+              <fd-list-action class="fd-list-group__action--no-top fd-list-group__action--no-right">
+                <fd-inline-help class="y-fd-inline-help__small" [position]="'left'">
+                  <p>
+                    API:
+                    <span class="sap-icon--l" ngClass="{{
+                            hasType(service.entries, 'API')
+                              ? 'sap-icon--accept fd-has-color-status-1'
+                              : 'sap-icon--decline fd-has-color-status-4'
+                          }}" role="presentation">
+                    </span>
+                  </p>
+      
+                  <p>
+                    Events:
+                    <span class="sap-icon--l" ngClass="{{
+                            hasType(service.entries, 'Events')
+                              ? 'sap-icon--accept fd-has-color-status-1'
+                              : 'sap-icon--decline fd-has-color-status-4'
+                          }}" role="presentation">
+                    </span>
+                  </p>
+                </fd-inline-help>
+              </fd-list-action>
+            </li>
+          </fd-list>
+        </div>
       </div>
+      <ng-template #noServicesHint>
+        <p class="fd-has-color-text-4 fd-has-margin-bottom-small">This Application doesn't expose any Service or Events.</p>
+      </ng-template>
     </fd-modal-body>
     <fd-modal-footer>
-      <button fd-button [fdType]="'main'" (click)="save()">
+      <button fd-button [fdType]="'main'" (click)="save()" [disabled]="!applicationHasAnyServices">
         Update
       </button>
       <button fd-button [fdType]="'light'" (click)="close()">

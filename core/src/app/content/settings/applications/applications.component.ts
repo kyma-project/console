@@ -85,6 +85,15 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
         application {
           name
           status
+          enabledMappingServices {
+            namespace
+            allServices
+            services {
+              id
+              displayName
+              exist
+            }
+          }
           labels
         }
         type

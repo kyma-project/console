@@ -5,11 +5,16 @@ export const TabsContent = styled.div`
   font-size: 14px;
   color: #515559;
   line-height: 1.57;
+  ${({ wrapInPanel }) =>
+    wrapInPanel &&
+    `padding: 20px;
+    border: solid 1px rgba(151,151,151,0.26);
+    border-radius: 4px;
+    background-color: #fff;`}
 `;
 
 export const TabsHeader = styled.ul`
   list-style: none;
-  padding: 0;
   margin: ${props => (props.noMargin ? '0' : '0 5px')};
   ${props =>
     props.customStyles &&
@@ -55,11 +60,10 @@ export const TabsWrapper = styled.div`
       border: solid 1px rgba(151,151,151,0.26);
       border-radius: 3px;
     `) ||
-    (!props.noBorder &&
-      `
+    (!props.borderType === 'none' &&
+      `	
       box-shadow: 0 5px 20px 0 rgba(50, 54, 58, 0.08);
     `)}
-
   .fd-panel {
     box-shadow: none;
   }

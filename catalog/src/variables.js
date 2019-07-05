@@ -20,3 +20,12 @@ export const serviceClassTabs = {
   asyncApi: 'Events',
   odata: 'OData',
 };
+
+export const serviceClassTileTitles = {
+  creator: 'Creator',
+  lastUpdate: 'Last Update',
+  documentation: 'Documentation',
+  support: 'Support',
+  description: 'Description',
+  tags: 'Tags',
+};

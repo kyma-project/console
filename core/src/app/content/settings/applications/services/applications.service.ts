@@ -87,6 +87,20 @@ export class ApplicationsService {
     );
   }
 
+  deleteApplication(name: string): Observable<any> {
+    const data = { name };
+    const mutation = `mutation deleteApplication($name: String!) {
+      deleteApplication(name: $name) {
+        name
+      }
+    }`;
+
+    return this.graphQLClientService.gqlMutation(
+      mutation,
+      data
+    );
+  }
+
   getConnectorServiceUrl(name: string): Observable<any> {
     const query = `query ConnectorService($application: String!) {
       connectorService(application: $application){

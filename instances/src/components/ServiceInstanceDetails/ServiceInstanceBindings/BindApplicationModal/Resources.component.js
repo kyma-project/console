@@ -169,7 +169,7 @@ class Resources extends React.Component {
               data-e2e-id="set-prefix"
               onClick={() => this.handleTogglePrefixButton(true)}
             >
-              {'Set namespace prefix'}
+              {'Set prefix for injected variables'}
               <InfoButton content={bindingVariables.setEnvPrefix} />
             </Link>
           )}

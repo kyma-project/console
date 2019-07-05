@@ -6,21 +6,16 @@ import FilterPopoverBody from './FilterPopoverBody.component';
 interface Props {
   body: React.ReactNode;
   activeFiltersLength: number;
-  configurationsExist: boolean;
+  disableIcon: boolean;
 }
 
 const FilterPopoverComponent: React.FunctionComponent<Props> = ({
   body,
   activeFiltersLength,
-  configurationsExist,
+  disableIcon = true,
 }) => {
   const control = (
-    <Button
-      glyph="filter"
-      option="light"
-      compact={true}
-      disabled={!configurationsExist}
-    >
+    <Button glyph="filter" option="light" compact={true} disabled={disableIcon}>
       {activeFiltersLength > 0 && (
         <Counter notification={true}>{activeFiltersLength}</Counter>
       )}

@@ -50,7 +50,7 @@ export const tabs = {
     });
 
     return [
-      <Tabs key={tabsCounter++} border={true}>
+      <Tabs key={tabsCounter++} borderType="bottom" border={true}>
         {children}
       </Tabs>,
     ];

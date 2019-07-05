@@ -9,7 +9,9 @@
       <fd-action-bar-actions>
         <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
           (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-        <y-list-filter [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
+        <y-list-filter [hidden]="!initialized || showEmptyPage"
+          [filterState]="filterState"
+          [localStorageKey]="'workspace/namespaceFilters'"
           (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
         <button fd-button [glyph]="'add'" class="open-create-namespace-modal"
           (click)="createModal.show()">Create Namespace</button>

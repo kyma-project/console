@@ -26,6 +26,7 @@ export class GenericListComponent implements OnChanges, OnInit {
   @Input() title;
   @Input() emptyListText;
   @Input() createNewElementText;
+  @Input() localStorageKey: string;
 
   data: Observable<any[]>;
   showEmptyPage = false;
@@ -36,6 +37,9 @@ export class GenericListComponent implements OnChanges, OnInit {
   constructor(private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    if (this.localStorageKey) {
+      this.loadFilterFacets();
+    }
     this.applyState();
   }
 
@@ -220,4 +224,17 @@ export class GenericListComponent implements OnChanges, OnInit {
   createNewElement() {
     // TODO
   }
+
+  protected loadFilterFacets() {
+    const stringFacets = localStorage.getItem(this.localStorageKey);
+    if (!stringFacets) {
+      return;
+    }
+    const facets = JSON.parse(stringFacets);
+    if (!facets) {
+      return;
+    }
+    this.filterState.facets = facets;
+  }
+
 }

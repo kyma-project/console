@@ -38,6 +38,14 @@ export class EditBindingsModalComponent {
     this.applicationBindingService = applicationBindingService;
   }
 
+  get applicationHasAnyServices(): boolean {
+    return (
+      this.application &&
+      this.application.services &&
+      this.application.services.length > 0
+    );
+  }
+
   public show(initialNamespace) {
     this.namespaceName = initialNamespace;
     this.route.params.subscribe(params => {

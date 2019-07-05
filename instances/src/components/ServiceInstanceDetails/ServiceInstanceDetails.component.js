@@ -6,10 +6,10 @@ import {
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
-import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
-import ServiceInstanceInfo from './ServiceInstanceInfo/ServiceInstanceInfo.component';
+import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
+import { serviceInstanceConstants } from './../../variables';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { transformDataScalarStringsToObjects } from '../../store/transformers';
@@ -40,25 +40,19 @@ class ServiceInstanceDetails extends React.Component {
       instance && (instance.serviceClass || instance.clusterServiceClass);
 
     if (!serviceInstance.loading && !instance) {
-      return <EmptyList>Service Instance doesn't exist</EmptyList>;
+      return (
+        <EmptyList>{serviceInstanceConstants.instanceNotExists}</EmptyList>
+      );
     }
 
     return (
       <ThemeWrapper>
-        <ServiceInstanceToolbar
+        <ServiceInstanceHeader
           serviceInstance={instance}
           deleteServiceInstance={deleteServiceInstance}
           history={history}
         />
-
-        <NotificationMessage
-          type="error"
-          title="Error"
-          message={serviceInstance.error && serviceInstance.error.message}
-        />
-
         <ServiceInstanceWrapper>
-          <ServiceInstanceInfo serviceInstance={instance} />
           <ServiceInstanceBindings
             defaultActiveTabIndex={this.state.defaultActiveTabIndex}
             callback={this.callback}
@@ -70,6 +64,12 @@ class ServiceInstanceDetails extends React.Component {
             <ServiceInstanceTabs serviceClass={serviceClass} />
           ) : null}
         </ServiceInstanceWrapper>
+
+        <NotificationMessage
+          type="error"
+          title={serviceInstanceConstants.error}
+          message={serviceInstance.error && serviceInstance.error.message}
+        />
       </ThemeWrapper>
     );
   }

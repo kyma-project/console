@@ -1,33 +1,27 @@
 import React from 'react';
+import { Models } from './SwaggerCustomComponents/Models';
+import { ModelCollapse } from './SwaggerCustomComponents/ModelCollapse';
+import { OperationTag } from './SwaggerCustomComponents/OperationTag';
+import { SchemesWrapper } from './SwaggerCustomComponents/SchemesWrapper';
 
-export const ApiReferencePlugin = function(system) {
-  return {
-    wrapComponents: {
-      parameters: (Original, system) => props => {
-        const allowTryItOut = false;
-        const customProps = { ...props, allowTryItOut };
-
-        return <Original {...customProps} />;
-      },
-      authorizeBtn: (Original, system) => props => {
-        return <div />;
-      },
-      info: (Original, system) => props => {
-        return <div />;
-      },
+const plugin = {
+  wrapComponents: {
+    parameters: (Original, system) => props => {
+      const customProps = { ...props, allowTryItOut: false };
+      return <Original {...customProps} />;
     },
-  };
+    authorizeBtn: () => () => null,
+    authorizeOperationBtn: () => () => null,
+    info: () => () => null,
+    Col: SchemesWrapper,
+    Models,
+    ModelCollapse,
+    OperationTag,
+  },
 };
 
 export const ApiConsolePlugin = function(system) {
   return {
-    wrapComponents: {
-      authorizeBtn: (Original, system) => props => {
-        return <div />;
-      },
-      info: (Original, system) => props => {
-        return <div />;
-      },
-    },
+    ...plugin,
   };
 };

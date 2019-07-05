@@ -15,10 +15,7 @@ import {
 import ApiReference from '../SwaggerApi/SwaggerApiReference.component';
 import { ServiceClassInstancesTable } from '../ServiceClassInstancesTable/ServiceClassInstancesTable.component';
 
-import {
-  ServiceClassTabsContentWrapper,
-  TabErrorMessageWrapper,
-} from './styled';
+import { ServiceClassTabsWrapper, TabErrorMessageWrapper } from './styled';
 
 import { serviceClassConstants, serviceClassTabs } from '../../../variables';
 import { processDocFilename, DocsProcessor } from '../../../commons/helpers';
@@ -256,6 +253,7 @@ class ServiceClassTabs extends Component {
         ? null
         : newDocs.map(type => (
             <Tab
+              wrapInPanel
               title={
                 (type.metadata && type.metadata.title) ||
                 processDocFilename(type.url)
@@ -282,13 +280,13 @@ class ServiceClassTabs extends Component {
             </TabErrorMessageWrapper>
           )}
 
-          <ServiceClassTabsContentWrapper>
-            <Tabs>
+          <ServiceClassTabsWrapper>
+            <Tabs noMargin customStyles borderType="top">
               {!fetchError.docsData && docsData && docsData.length
                 ? docsFromNewApi
                 : null}
               {!fetchError.openApiSpec && openApiSpec && openApiSpec.source ? (
-                <Tab title={serviceClassTabs.openApi}>
+                <Tab title={serviceClassTabs.openApi} wrapInPanel>
                   <ApiReference
                     url="http://petstore.swagger.io/v1/swagger.json"
                     schema={openApiSpec.source}
@@ -300,6 +298,7 @@ class ServiceClassTabs extends Component {
                   title={serviceClassTabs.asyncApi}
                   margin="0"
                   background="inherit"
+                  wrapInPanel
                 >
                   <AsyncApi
                     schema={asyncapi && asyncapi.source}
@@ -313,6 +312,7 @@ class ServiceClassTabs extends Component {
                   title={serviceClassTabs.odata}
                   margin="0"
                   background="inherit"
+                  wrapInPanel
                 >
                   <ODataReact schema={odata.source} />
                 </Tab>
@@ -323,7 +323,6 @@ class ServiceClassTabs extends Component {
                     this.props.serviceClass.instances.length,
                   )}
                   title={serviceClassConstants.instancesTabText}
-                  noMargin
                 >
                   <ServiceClassInstancesTable
                     tableData={this.props.serviceClass.instances}
@@ -331,7 +330,7 @@ class ServiceClassTabs extends Component {
                 </Tab>
               ) : null}
             </Tabs>
-          </ServiceClassTabsContentWrapper>
+          </ServiceClassTabsWrapper>
         </>
       );
     }

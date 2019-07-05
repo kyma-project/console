@@ -148,7 +148,7 @@ class ServiceInstances extends React.Component {
         <Tabs
           defaultActiveTabIndex={determineSelectedTab()}
           callback={handleTabChange}
-          noBorder
+          borderType="none"
           noMargin
           customStyles={`background-color: #fff;
           padding: 0 15px;`}

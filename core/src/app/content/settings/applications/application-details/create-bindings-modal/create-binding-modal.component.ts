@@ -42,6 +42,14 @@ export class CreateBindingsModalComponent {
     this.applicationBindingService = applicationBindingService;
   }
 
+  get applicationHasAnyServices(): boolean {
+    return (
+      this.application &&
+      this.application.services &&
+      this.application.services.length
+    );
+  }
+
   public show() {
     this.route.params.subscribe(params => {
       const applicationId = params['id'];
@@ -51,19 +59,20 @@ export class CreateBindingsModalComponent {
       ];
 
       forkJoin(observables).subscribe(
-        data => {
-          const response: any = data;
-
+        (response: any) => {
           this.application = response[0].application;
           this.namespaces = response[1];
-          this.namespaces.forEach(namespace => {
-            if (this.application && this.application.enabledMappingServices) {
+          if (this.application && this.application.enabledMappingServices) {
+            this.namespaces.forEach(namespace => {
+              if (typeof namespace.getLabel !== 'function') {
+                namespace = new NamespaceInfo(namespace);
+              }
               this.getFilteredNamespaces(
                 this.application.enabledMappingServices,
                 namespace
               );
-            }
-          });
+            });
+          }
         },
         err => {
           console.log(err);
@@ -80,7 +89,14 @@ export class CreateBindingsModalComponent {
     });
   }
 
-  private getFilteredNamespaces(usedNamespaces: EnabledMappingServices[], namespace: NamespaceInfo) {
+  private getFilteredNamespaces(
+    usedNamespaces: EnabledMappingServices[],
+    namespace: NamespaceInfo
+  ) {
+    if (!namespace || !(typeof namespace.getLabel === 'function')) {
+      console.warn(`Couldn't get label for namespace`, namespace);
+      return;
+    }
     const exists = usedNamespaces.some(
       usedNamespace => usedNamespace.namespace === namespace.getLabel()
     );
@@ -107,8 +123,8 @@ export class CreateBindingsModalComponent {
     this.ariaHidden = true;
   }
 
-  public selectedNamespace(namespace) {
-    this.namespaceName = namespace.label;
+  public selectedNamespace(namespace: NamespaceInfo) {
+    this.namespaceName = namespace.getLabel();
   }
 
   save() {
