@@ -24,7 +24,7 @@ export class ResourceUploaderModalComponent {
   show(): Promise<boolean> {
     this.isActive = true;
     this.modalService
-      .open(this.resourceUploader)
+      .open(this.resourceUploader, { width: '30em' })
       .afterClosed.toPromise()
       .finally(() => this.handleModalClose());
     return new Promise((resolve, reject) => {
