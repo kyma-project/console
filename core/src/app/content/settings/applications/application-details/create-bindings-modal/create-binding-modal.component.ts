@@ -9,6 +9,7 @@ import { NamespaceInfo } from '../../../../../content/namespaces/namespace-info'
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 import * as _ from 'lodash';
 import { forkJoin } from 'rxjs';
+import { DEFAULT_MODAL_CONFIG } from '../../../../../shared/constants/constants';
 
 @Component({
   selector: 'app-create-bindings-modal',
@@ -80,7 +81,10 @@ export class CreateBindingsModalComponent {
       );
       this.isActive = true;
       this.modalService
-        .open(this.createBindingModal, { height: '35em', maxHeight: '95%' })
+        .open(this.createBindingModal, {
+          ...DEFAULT_MODAL_CONFIG,
+          height: '35em'
+        })
         .afterClosed.toPromise()
         .finally(() => {
           this.isActive = false;

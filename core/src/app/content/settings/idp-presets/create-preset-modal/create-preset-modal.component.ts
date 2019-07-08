@@ -2,6 +2,7 @@ import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { IdpPresetsService } from '../idp-presets.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { ModalService, ModalRef } from 'fundamental-ngx';
+import { DEFAULT_MODAL_CONFIG } from '../../../../shared/constants/constants';
 
 @Component({
   selector: 'app-create-preset-modal',
@@ -28,7 +29,10 @@ export class CreatePresetModalComponent {
   show() {
     this.isActive = true;
     this.modalService
-      .open(this.createIDPPresetModal, { width: '30em', maxWidth: '95%' })
+      .open(this.createIDPPresetModal, {
+        ...DEFAULT_MODAL_CONFIG,
+        width: '30em'
+      })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;

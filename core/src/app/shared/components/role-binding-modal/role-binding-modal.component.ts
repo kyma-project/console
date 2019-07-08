@@ -11,6 +11,7 @@ import { CurrentNamespaceService } from '../../../content/namespaces/services/cu
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { ModalService, ModalRef } from 'fundamental-ngx';
+import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-role-binding-modal',
@@ -112,7 +113,7 @@ export class RoleBindingModalComponent implements OnDestroy {
       this.selectKind('ClusterRole');
     }
     this.modalService
-      .open(this.createBindingModal, { width: '25em', maxWidth: '95%' })
+      .open(this.createBindingModal, { ...DEFAULT_MODAL_CONFIG, width: '25em' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;

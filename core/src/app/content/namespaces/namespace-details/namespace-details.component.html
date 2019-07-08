@@ -5,7 +5,6 @@
 <ng-container *ngIf="namespace.getLabel()">
   <header class="fd-page__header fd-has-background-color-background-2">
     <section class="fd-section">
-<<<<<<< HEAD
       <div fd-action-bar>
         <div fd-action-bar-header>
           <h3 fd-action-bar-title>{{ namespace.getLabel() }}</h3>
@@ -17,14 +16,6 @@
             (click)="openUploadResourceModal()"
             *ngIf="!showSelectFileButton"
           >
-=======
-      <fd-action-bar>
-        <fd-action-bar-header>
-          <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
-        </fd-action-bar-header>
-        <fd-action-bar-actions>
-          <button fd-button [glyph]="'add'" (click)="openUploadResourceModal()" *ngIf="!showSelectFileButton">
->>>>>>> b4ed3dcf42c186eb6a892f329227b2db9bd7b33d
             Deploy new resource
           </button>
           <button
@@ -35,7 +26,6 @@
           >
             Delete
           </button>
-<<<<<<< HEAD
         </div>
       </div>
       <div class="fd-container fd-container--fluid">
@@ -48,20 +38,6 @@
           </span>
         </div>
       </div>
-=======
-        </fd-action-bar-actions>
-      </fd-action-bar>
-      <div class="fd-container fd-container--fluid">
-        <div class="fd-col--6">
-          <span class="fd-has-type fd-has-font-weight-light">
-            Namespace-ID
-          </span>
-          <span class="header-description">
-            {{ namespace.getUid() }}
-          </span>
-        </div>
-      </div>
->>>>>>> b4ed3dcf42c186eb6a892f329227b2db9bd7b33d
     </section>
   </header>
 </ng-container>
@@ -71,35 +47,27 @@
     <fd-panel>
       <fd-panel-header>
         <fd-panel-head>
-<<<<<<< HEAD
-          <h2>General Information</h2>
-        </fd-panel-head>
-=======
-          <fd-panel-title>Labels</fd-panel-title>
+          <h2>Labels</h2>
         </fd-panel-head>
         <fd-panel-actions>
-          <button fd-button [options]="'light'" (click)="openEditNamespaceModal()">
+          <button
+            fd-button
+            [options]="'light'"
+            (click)="openEditNamespaceModal()"
+          >
             Edit
           </button>
         </fd-panel-actions>
->>>>>>> b4ed3dcf42c186eb6a892f329227b2db9bd7b33d
       </fd-panel-header>
       <fd-panel-body>
         <div fd-form-set>
           <div fd-form-item>
-<<<<<<< HEAD
-            <label fd-form-label>Labels</label>
             <ng-container *ngIf="labelKeys.length > 0">
               <span
                 class="fd-token y-fd-token y-fd-token--no-button "
                 *ngFor="let labelkey of labelKeys"
-                >{{ labelkey }} : {{ namespace.getLabels()[labelkey] }}</span
+                >{{ labelkey }}={{ namespace.getLabels()[labelkey] }}</span
               >
-=======
-            <ng-container *ngIf="labelKeys.length > 0">
-              <span class="fd-token y-fd-token y-fd-token--no-button "
-                *ngFor="let labelkey of labelKeys">{{ labelkey }}={{ namespace.getLabels()[labelkey] }}</span>
->>>>>>> b4ed3dcf42c186eb6a892f329227b2db9bd7b33d
             </ng-container>
             <ng-container *ngIf="labelKeys.length == 0">
               -
@@ -168,7 +136,8 @@
                 href="javascript:void(null)"
                 (click)="navigateToApplications(namespace.name)"
                 class="fd-has-font-weight-bold"
-                >{{ namespace.name }}</a>
+                >{{ namespace.name }}</a
+              >
             </td>
             <td class="y-fd-table--col-1">
               <y-list-actions
