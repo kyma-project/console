@@ -97,8 +97,6 @@ export const NavigationLink = styled.a`
   border: 1px solid transparent;
   border-left: ${props =>
     props.active && props.noArrow ? '3px solid' : '1px solid transparent'};
-  padding-left: 6px;
-  margin-left: 10px;
   position: relative;
 
   :hover {

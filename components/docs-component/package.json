@@ -1,0 +1,79 @@
+{
+  "name": "@kyma-project/docs-component",
+  "version": "0.1.0",
+  "private": false,
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@kyma-project/asyncapi-react": "^0.2.0",
+    "@kyma-project/documentation-component": "https://github.com/magicmatatjahu/documentation-component/raw/initial-docs-component/packages/documentation-component/kyma-project-documentation-component-0.1.0.tgz",
+    "@kyma-project/react-components": "https://github.com/magicmatatjahu/console/raw/docs-component/components/react/kyma-project-react-components-0.0.43.tgz",
+    "react": "^16.8.6",
+    "react-copy-to-clipboard": "^5.0.1",
+    "react-sticky": "^6.0.3",
+    "swagger-ui-dist": "^3.22.3"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.24",
+    "@types/react": "^16.8.22",
+    "@types/react-copy-to-clipboard": "^4.2.6",
+    "@types/react-sticky": "^6.0.3",
+    "@types/styled-components": "^4.1.16",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
+    "react-scripts": "^3.0.1",
+    "styled-components": "^4.3.2",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "tslint-react-hooks": "^2.1.0",
+    "typescript": "^3.5.2"
+  },
+  "peerDependencies": {
+    "styled-components": ">= 3.4.10"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "tsc",
+    "test": "react-scripts test; exit 0",
+    "eject": "react-scripts eject",
+    "lint-check": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose && prettier --config ../../.prettierrc --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-fix": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --config ../../.prettierrc --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "conflict-check": "tslint-config-prettier-check ./tslint.json",
+    "prepare": "npm run build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "**/*.{js,jsx,json,css,html,yaml}": [
+        "prettier --config ../../.prettierrc --write",
+        "git add"
+      ],
+      "**/*.{ts,tsx}": [
+        "tslint -c tslint.json --project tsconfig.json --format verbose --fix",
+        "prettier --config ../../.prettierrc --write"
+      ]
+    },
+    "ignore": [
+      "package.json",
+      "package-lock.json"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "files": [
+    "/lib",
+    "./README.md",
+    "./LICENSE"
+  ]
+}

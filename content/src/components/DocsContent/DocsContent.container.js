@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { Toolbar } from '@kyma-project/react-components';
 
 import DocsContent from './DocsContent.component';
-import { DocsProcessor } from './DocsProcessor';
 import deepEqual from 'deep-equal';
 
 import { DocsWrapper } from './styled';
-import { Toolbar } from '@kyma-project/react-components';
+
 export default class DocsContentContainer extends Component {
   constructor(props) {
     super(props);
@@ -44,9 +44,14 @@ export default class DocsContentContainer extends Component {
           })
           .then(text => {
             return {
-              metadata: doc.metadata,
-              url: doc.url,
-              source: text,
+              source: {
+                type: 'md',
+                rawContent: text,
+                data: {
+                  frontmatter: doc.metadata,
+                  url: doc.url,
+                },
+              },
             };
           })
           .catch(err => {
@@ -79,11 +84,6 @@ export default class DocsContentContainer extends Component {
             let newDocs = component;
             let docsTypesLength = {};
             if (newDocs) {
-              newDocs = new DocsProcessor(component)
-                .replaceImagePaths()
-                .removeMatadata()
-                .result();
-
               newDocs.forEach(doc => {
                 if (!doc.metadata) return;
 

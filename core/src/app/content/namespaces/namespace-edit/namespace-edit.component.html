@@ -1,0 +1,31 @@
+<div luigiClientCommunication [isActive]="isActive">
+  <fd-modal class="y-fd-modal fd-modal--wide fd-modal--short" #editNamespaceModal role="dialog" aria-labelledby="editLabels"
+    data-e2e-id="edit-namespace-modal">
+    <fd-modal-header>
+      Edit Labels for '{{ namespaceName }}' namespace
+    </fd-modal-header>
+    <fd-modal-body>
+      <form>
+        <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="err">
+          {{ err }}
+        </div>
+        <div fd-form-set>
+          <div fd-form-item>
+            <fd-form-label>Labels</fd-form-label>
+            <app-labels-input [labels]="labels" (labelsChangeEmitter$)="updateLabels($event)"></app-labels-input>
+          </div>
+
+        </div>
+      </form>
+    </fd-modal-body>
+    <fd-modal-footer>
+      <button fd-button class="namespace-edit-btn" [fdType]="'main'" (click)="editNamespace()" [disabled]="labelsError"
+        data-e2e-id="edit-namespace-button">
+        Save
+      </button>
+      <button fd-button [options]="'light'" (click)="cancel()">
+        Cancel
+      </button>
+    </fd-modal-footer>
+  </fd-modal>
+</div>
