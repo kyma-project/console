@@ -1,12 +1,20 @@
 <tr>
   <th>Name</th>
-  <th>Pods</th>
+  <th class="y-fd-table--col-1">Pods</th>
   <th>Age</th>
-  <th ngClass="{{showBoundServices ? 'y-fd-table--col-2' : 'y-fd-table--col-3'}}">
+  <th
+    ngClass="{{
+      showBoundServices ? 'y-fd-table--col-2' : 'y-fd-table--col-3'
+    }}"
+  >
     Images
   </th>
   <th *ngIf="showBoundServices">Bound service instances</th>
-  <th ngClass="{{showBoundServices ? 'y-fd-table--col-2' : 'y-fd-table--col-3'}}">
+  <th
+    ngClass="{{
+      showBoundServices ? 'y-fd-table--col-2' : 'y-fd-table--col-3'
+    }}"
+  >
     Labels
   </th>
   <th>Status</th>
