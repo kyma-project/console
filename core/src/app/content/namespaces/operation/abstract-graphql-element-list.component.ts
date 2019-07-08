@@ -36,7 +36,7 @@ export class AbstractGraphqlElementListComponent
   };
 
   constructor(
-    private currentNamespaceService: CurrentNamespaceService,
+    protected currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef

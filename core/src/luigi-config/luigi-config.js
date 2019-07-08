@@ -491,32 +491,35 @@ window.addEventListener('message', e => {
 
 function getNamespaces() {
   if (window.Luigi.cachedNamespaces) {
-    return window.Luigi.cachedNamespaces;
-  }
-  return fetchFromKyma(
-    k8sServerUrl + '/api/v1/namespaces'
-  )
-    .then(function getNamespacesFromApi(response) {
-      var namespaces = [];
-      response.items.map(namespace => {
-        if (namespace.status && namespace.status.phase !== 'Active') {
-          return; //"pretend" that inactive namespace is already removed
-        }
-        const namespaceName = namespace.metadata.name;
-        const alternativeLocation = getCorrespondingNamespaceLocation(namespaceName);
-
-        namespaces.push({
-          category: 'Namespaces',
-          label: namespaceName,
-          pathValue: alternativeLocation || namespaceName
-        });
+    return createNamespacesList(window.Luigi.cachedNamespaces);
+  } else {
+    return fetchFromKyma(k8sServerUrl + '/api/v1/namespaces')
+      .then(response => {
+        window.Luigi.cachedNamespaces = response.items;
+        return createNamespacesList(response.items);
+      })
+      .catch(function catchNamespaces(err) {
+        console.error('get namespace: error', err);
       });
-      window.Luigi.cachedNamespaces = namespaces;
-      return namespaces;
-    })
-    .catch(function catchNamespaces(err) {
-      console.error('get namespace: error', err);
+  }
+}
+
+function createNamespacesList(rawNamespaces) {
+  var namespaces = [];
+  rawNamespaces.map(namespace => {
+    if (namespace.status && namespace.status.phase !== 'Active') {
+      return; //"pretend" that inactive namespace is already removed
+    }
+    const namespaceName = namespace.metadata.name;
+    const alternativeLocation = getCorrespondingNamespaceLocation(namespaceName);
+
+    namespaces.push({
+      category: 'Namespaces',
+      label: namespaceName,
+      pathValue: alternativeLocation || namespaceName
     });
+  });
+  return namespaces;
 }
 
 function getCorrespondingNamespaceLocation(namespaceName) {
