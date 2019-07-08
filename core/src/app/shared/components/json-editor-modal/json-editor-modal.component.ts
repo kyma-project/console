@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { JsonEditorComponent } from './json-editor/json-editor.component';
 import { K8sResourceEditorService } from './services/k8s-resource-editor.service';
+import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-json-editor-modal',
@@ -31,7 +32,7 @@ export class JsonEditorModalComponent {
     this.modalResourceData = cloneDeep(this.resourceData);
 
     this.modalService
-      .open(this.jsonEditorModal)
+      .open(this.jsonEditorModal, { ...DEFAULT_MODAL_CONFIG, width: '40em' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;

@@ -113,7 +113,11 @@ export class RoleBindingModalComponent implements OnDestroy {
       this.selectKind('ClusterRole');
     }
     this.modalService
-      .open(this.createBindingModal, { ...DEFAULT_MODAL_CONFIG, width: '25em' })
+      .open(this.createBindingModal, {
+        ...DEFAULT_MODAL_CONFIG,
+        width: '28em',
+        height: '36em'
+      })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
