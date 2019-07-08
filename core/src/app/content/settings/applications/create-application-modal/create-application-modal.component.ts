@@ -29,7 +29,7 @@ export class CreateApplicationModalComponent {
     this.resetForm();
     this.isActive = true;
     this.modalService
-      .open(this.createApplicationModal)
+      .open(this.createApplicationModal, { width: '30em' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;

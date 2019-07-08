@@ -80,7 +80,7 @@ export class CreateBindingsModalComponent {
       );
       this.isActive = true;
       this.modalService
-        .open(this.createBindingModal)
+        .open(this.createBindingModal, { height: '35em', maxHeight: '95%' })
         .afterClosed.toPromise()
         .finally(() => {
           this.isActive = false;

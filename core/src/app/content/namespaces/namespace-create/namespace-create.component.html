@@ -59,7 +59,7 @@
                   checked
                 />
                 Enable Istio
-                <fd-inline-help [position]="'right'">
+                <fd-inline-help [placement]="'bottom-start'">
                   Select this option to enable istio to mediate all
                   communication between the pods in your namespace.
                 </fd-inline-help>
@@ -76,7 +76,7 @@
                   [(ngModel)]="resourceQuotaChecked"
                 />
                 Apply Total Memory Quotas
-                <fd-inline-help [position]="'right'">
+                <fd-inline-help [placement]="'right'">
                   Define constraints that limit total memory consumption in your
                   namespace. Use plain value in bytes, or suffix equivalents.
                   For example: 128974848, 129e6, 129M, 123Mi.
@@ -132,7 +132,7 @@
                   [(ngModel)]="limitRangeChecked"
                 />
                 Apply Limits per Container
-                <fd-inline-help [position]="'right'">
+                <fd-inline-help [placement]="'right'">
                   Define memory constraints for individual containers in your
                   namespace. Use plain value in bytes, or suffix equivalents.
                   For example: 128974848, 129e6, 129M, 123Mi.
