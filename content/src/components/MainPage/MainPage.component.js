@@ -152,8 +152,19 @@ class MainPage extends Component {
     const { history } = this.props;
     const { activeContent, activeNav, docsList, docsLoaded } = this.state;
 
-    const itemsExternal = this.props.clusterDocsTopicsExternal || {};
-    const itemsRoot = this.props.clusterDocsTopicsRoot || {};
+    let itemsExternal = this.props.clusterDocsTopicsExternal || [];
+    let itemsRoot = this.props.clusterDocsTopicsRoot || [];
+
+    itemsExternal = itemsExternal.map(item => ({
+      name: item.name,
+      groupName: item.groupName,
+      displayName: item.displayName,
+    }));
+    itemsRoot = itemsRoot.map(item => ({
+      name: item.name,
+      groupName: item.groupName,
+      displayName: item.displayName,
+    }));
 
     return (
       <ThemeWrapper>

@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
-import {
-  NotificationMessage,
-  ReactMarkdown,
-  Spinner,
-} from '@kyma-project/react-components';
-
-import {
-  Wrapper,
-  ContentHeader,
-  ContentDescription,
-  Anchor,
-  TextWrapper,
-} from './styled';
-import { tokenize } from '../../commons/helpers';
+import { NotificationMessage, Spinner } from '@kyma-project/react-components';
+import { DocsComponent } from '@kyma-project/docs-component';
 
 class DocsContent extends Component {
   componentDidMount() {
@@ -33,8 +21,7 @@ class DocsContent extends Component {
   };
 
   render() {
-    let { docs, docsLoaded, docsTypesLength, error } = this.props;
-    let lastType = '';
+    let { docs, docsLoaded, error } = this.props;
 
     if (!docsLoaded) {
       return <Spinner />;
@@ -60,45 +47,11 @@ class DocsContent extends Component {
       );
     }
 
-    return (
-      <>
-        {docs.map((doc, index) => {
-          const type = doc.metadata.type || doc.metadata.title;
-          const tokenizedType = tokenize(type);
-          const hash = `${tokenizedType}-${tokenize(doc.metadata.title)}`;
-          const typeHash = `${tokenizedType}-${tokenizedType}`;
+    if (!docs || !docs.length) {
+      return null;
+    }
 
-          const isFirstOfType = type !== lastType;
-          lastType = type;
-
-          const typeLength = docsTypesLength[type];
-
-          return (
-            <Wrapper key={index}>
-              {isFirstOfType && typeLength && (
-                <Anchor
-                  id={typeHash}
-                  data-scrollspy-node-type="groupOfDocuments"
-                />
-              )}
-              <ContentHeader
-                id={hash}
-                data-scrollspy-node-type={
-                  typeLength ? 'document' : 'groupOfDocuments'
-                }
-              >
-                {doc.metadata.title}
-              </ContentHeader>
-              <ContentDescription>
-                <TextWrapper>
-                  {doc && doc.source && <ReactMarkdown source={doc.source} />}
-                </TextWrapper>
-              </ContentDescription>
-            </Wrapper>
-          );
-        })}
-      </>
-    );
+    return <DocsComponent sources={docs} navigation={true} />;
   }
 }
 
