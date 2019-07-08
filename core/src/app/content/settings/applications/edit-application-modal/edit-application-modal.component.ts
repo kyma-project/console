@@ -49,7 +49,7 @@ export class EditApplicationModalComponent {
   }
 
   public close(): void {
-    this.modalService.dismissAll;
+    this.modalService.dismissAll();
   }
 
   private resetForm(): void {

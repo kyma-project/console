@@ -127,6 +127,9 @@
       </ng-template>
     </fd-modal-body>
     <fd-modal-footer>
+      <button fd-button [fdType]="'light'" (click)="close()">
+        Cancel
+      </button>
       <button
         fd-button
         [fdType]="'main'"
@@ -134,9 +137,6 @@
         (click)="save()"
       >
         Create
-      </button>
-      <button fd-button [fdType]="'light'" (click)="close()">
-        Cancel
       </button>
     </fd-modal-footer>
   </ng-template>

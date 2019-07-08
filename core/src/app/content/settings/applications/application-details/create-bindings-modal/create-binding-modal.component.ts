@@ -158,7 +158,7 @@ export class CreateBindingsModalComponent {
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
-    this.modalService.dismissAll;
+    this.modalService.dismissAll();
   }
 
   filterNamespacesNames() {

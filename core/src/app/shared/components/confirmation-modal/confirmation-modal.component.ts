@@ -35,10 +35,7 @@ export class ConfirmationModalComponent implements OnInit {
     this.isActive = true;
 
     this.modalService
-      .open(this.confirmationModal, {
-        escKeyCloseable: true,
-        hasBackdrop: false
-      })
+      .open(this.confirmationModal, {})
       .afterClosed.toPromise()
       .finally(() => {
         this.cancelPromise(false);

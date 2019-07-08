@@ -28,7 +28,7 @@ export class CreatePresetModalComponent {
   show() {
     this.isActive = true;
     this.modalService
-      .open(this.createIDPPresetModal)
+      .open(this.createIDPPresetModal, { width: '30em', maxWidth: '95%' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
