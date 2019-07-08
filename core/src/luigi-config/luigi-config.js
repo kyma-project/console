@@ -483,7 +483,16 @@ function getConsoleInitData() {
   return fetchFromGraphQL(query, undefined, gracefully);
 }
 
+window.addEventListener('message', e => {
+  if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+    window.Luigi.cachedNamespaces = null;
+  }
+});
+
 function getNamespaces() {
+  if (window.Luigi.cachedNamespaces) {
+    return window.Luigi.cachedNamespaces;
+  }
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces'
   )
@@ -502,6 +511,7 @@ function getNamespaces() {
           pathValue: alternativeLocation || namespaceName
         });
       });
+      window.Luigi.cachedNamespaces = namespaces;
       return namespaces;
     })
     .catch(function catchNamespaces(err) {

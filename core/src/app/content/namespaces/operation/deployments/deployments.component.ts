@@ -24,6 +24,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   public resourceKind = 'Deployment';
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
+  private namespaceRefreshSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
@@ -34,7 +35,6 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
     changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
-
     const query = `query Deployments($namespace: String!) {
       deployments(namespace: $namespace) {
         name
@@ -83,11 +83,20 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
   public ngOnInit() {
     super.ngOnInit();
     this.subscribeToRefreshComponent();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
+    }
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
     }
     super.ngOnDestroy();
   }

@@ -153,6 +153,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     .then(() => {
       this.namespacesService.deleteNamespace(this.namespace.getLabel())
       .subscribe(() => {
+          this.refreshContextSwitcher();
           LuigiClient.linkManager().navigate('/home');
       }, err => {
         this.infoModal.show('Error', `There was an error while deleting namespace ${this.namespace.getLabel()}: ${err}`)
@@ -161,4 +162,8 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     .catch(() => {});
   }
 
+  private refreshContextSwitcher() {
+    console.log('')
+    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
+  }
 }

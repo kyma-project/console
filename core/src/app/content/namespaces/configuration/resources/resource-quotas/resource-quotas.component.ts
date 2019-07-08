@@ -24,6 +24,7 @@ export class ResourceQuotasComponent
   public resourceKind = 'Resource Quota';
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
+  private namespaceRefreshSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
@@ -71,11 +72,20 @@ export class ResourceQuotasComponent
   public ngOnInit() {
     super.ngOnInit();
     this.subscribeToRefreshComponent();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
+    }
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
     }
     super.ngOnDestroy();
  }

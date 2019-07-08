@@ -25,6 +25,7 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
   resourceKind = 'Secret';
   private currentNamespaceId;
   private currentNamespaceSubscription: Subscription;
+  private namespaceRefreshSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
@@ -56,6 +57,12 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
   public ngOnInit() {
     super.ngOnInit();
     this.subscribeToRefreshComponent();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   public navigateToDetails(entry) {
@@ -77,6 +84,9 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
+    }
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
     }
     super.ngOnDestroy();
   }

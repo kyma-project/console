@@ -23,6 +23,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   public resourceKind = 'Limit Range';
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
+  private namespaceRefreshSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
@@ -76,11 +77,20 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
   public ngOnInit() {
     super.ngOnInit();
     this.subscribeToRefreshComponent();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
+    }
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
     }
     super.ngOnDestroy();
   }

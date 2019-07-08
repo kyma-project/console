@@ -8,6 +8,7 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 
 import * as luigiClient from '@kyma-project/luigi-client';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -21,6 +22,8 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
   public entryRenderer = PodsEntryRendererComponent;
   public headerRenderer = PodsHeaderRendererComponent;
 
+  private namespaceRefreshSubscription: Subscription;
+  
   constructor(
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
@@ -37,10 +40,20 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
 
   public ngOnDestroy() {
     super.ngOnDestroy();
+
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
+    }
   }
 
   public ngOnInit() {
     super.ngOnInit();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   getGraphqlQueryForList() {

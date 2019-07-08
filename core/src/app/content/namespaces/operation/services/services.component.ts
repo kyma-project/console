@@ -26,6 +26,7 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   public resourceKind = 'Service';
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
+  private namespaceRefreshSubscription: Subscription;
   public hideFilter = false;
 
   constructor(
@@ -58,6 +59,12 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   public ngOnInit() {
     super.ngOnInit();
     this.subscribeToRefreshComponent();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   getEntryEventHandler() {
@@ -89,6 +96,9 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
+    }
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
     }
     super.ngOnDestroy();
   }

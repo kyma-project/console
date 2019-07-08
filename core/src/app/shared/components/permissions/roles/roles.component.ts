@@ -9,6 +9,7 @@ import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-roles',
@@ -29,6 +30,8 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
 
   // tslint:disable-next-line:no-input-rename
   @Input('mode') private mode: string;
+
+  private namespaceRefreshSubscription: Subscription;
 
   constructor(
     private http: HttpClient,
@@ -78,10 +81,20 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
     }
     this.subscribeToRefreshComponent();
     super.ngOnInit();
+
+    this.namespaceRefreshSubscription = this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(_ => {
+        this.reload();
+      });
   }
 
   public ngOnDestroy() {
     super.ngOnDestroy();
+
+    if (this.namespaceRefreshSubscription) {
+      this.namespaceRefreshSubscription.unsubscribe();
+    }
   }
 
   public getResourceUrl(entry: any): string {
