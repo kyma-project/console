@@ -31,8 +31,6 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
   // tslint:disable-next-line:no-input-rename
   @Input('mode') private mode: string;
 
-  private namespaceRefreshSubscription: Subscription;
-
   constructor(
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
@@ -67,6 +65,7 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
               converter,
               this.http
             );
+            //#this.reload();
           });
         break;
       case 'clusterRoles':
@@ -81,20 +80,10 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
     }
     this.subscribeToRefreshComponent();
     super.ngOnInit();
-
-    this.namespaceRefreshSubscription = this.currentNamespaceService
-      .getCurrentNamespaceId()
-      .subscribe(_ => {
-        this.reload();
-      });
   }
 
   public ngOnDestroy() {
     super.ngOnDestroy();
-
-    if (this.namespaceRefreshSubscription) {
-      this.namespaceRefreshSubscription.unsubscribe();
-    }
   }
 
   public getResourceUrl(entry: any): string {

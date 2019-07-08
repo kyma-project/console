@@ -18,7 +18,6 @@ import { BindingHeaderRendererComponent } from './binding-header-renderer/bindin
 import { IRoleBinding, RoleBinding } from '../../../datamodel/k8s/role-binding';
 import { RoleBindingModalComponent } from '../../role-binding-modal/role-binding-modal.component';
 import { IEmptyListData } from 'shared/datamodel';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bindings',
@@ -38,8 +37,6 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
 
   @ViewChild('createrolebindingsmodal')
   private createRoleBindingsModal: RoleBindingModalComponent;
-
-  private namespaceRefreshSubscription: Subscription;
 
   constructor(
     private http: HttpClient,
@@ -77,24 +74,15 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
             AppConfig.k8sApiServerUrl_rbac
           }namespaces/${namespaceId}/rolebindings`;
           this.source = new KubernetesDataProvider(url, converter, this.http);
+          //#this.reload();
         });
     }
     this.subscribeToRefreshComponent();
     super.ngOnInit();
-
-    this.namespaceRefreshSubscription = this.currentNamespaceService
-      .getCurrentNamespaceId()
-      .subscribe(_ => {
-        this.reload();
-      });
   }
 
   public ngOnDestroy() {
     super.ngOnDestroy();
-
-    if (this.namespaceRefreshSubscription) {
-      this.namespaceRefreshSubscription.unsubscribe();
-    }
   }
 
   public getResourceUrl(kind: string, entry: any): string {
