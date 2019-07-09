@@ -117,6 +117,40 @@ export class GenericListComponent implements OnChanges, OnInit {
     }
   }
 
+  protected reloadResults() {
+    of(0)
+      .pipe(delay(350))
+      .subscribe(() => {
+        if (!this.loaded) {
+          this.setLoading(true);
+        }
+      });
+
+    if (!this.pagingState) {
+      this.pagingState = {
+        pageNumber: 1,
+        pageSize: 16,
+        totalCount: 0,
+      };
+    }
+    if (!this.filterState) {
+      this.filterState = {
+        filters: [],
+        facets: [],
+      };
+    }
+
+    if (this.source) {
+      this.data = new Observable(observer => {
+        this.fetchData(observer, true, 2);
+      });
+      this.setLoaded(false);
+    } else {
+      this.data = null;
+      this.setLoaded(true);
+    }
+  }
+
   private fetchData(observer, noCache: boolean, retries) {
     this.source
       .getData(
