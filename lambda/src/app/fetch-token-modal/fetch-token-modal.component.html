@@ -1,4 +1,4 @@
-<fd-modal #fetchTokenModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+<ng-template let-modal #fetchTokenModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
   <fd-modal-header>{{ title }}</fd-modal-header>
   <fd-modal-body>
     <textarea fd-form-control class="y-fd-form__control" type="text" value="{{ token }}" placeholder="content will be copy after click the copy button" rows="10" cols="50"></textarea>
@@ -9,4 +9,4 @@
       <button fd-button class="fd-has-float-left" [ngClass]="{'fd-has-color-status-1': isTokenCopied}" type="button" (click)=copyToken() [options]="'light'">Copy to clipboard</button>
     </div>
   </fd-modal-footer>
-</fd-modal>
+</ng-template>

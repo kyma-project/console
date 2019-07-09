@@ -4,7 +4,8 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  HostListener
+  HostListener,
+  TemplateRef,
 } from '@angular/core';
 import { ServiceInstance } from '../../../../shared/datamodel/k8s/service-instance';
 import { ServiceInstancesService } from '../../../../service-instances/service-instances.service';
@@ -13,7 +14,7 @@ import { ServiceBinding } from '../../../../shared/datamodel/k8s/service-binding
 import { InstanceBindingInfo } from '../../../../shared/datamodel/instance-binding-info';
 import * as luigiClient from '@kyma-project/luigi-client';
 import { ServiceBindingList } from '../../../../shared/datamodel/k8s/service-binding-list';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 const RUNNING = 'RUNNING';
 
@@ -27,9 +28,9 @@ export class LambdaInstanceBindingCreatorComponent {
     private serviceInstancesService: ServiceInstancesService,
     private serviceBindingsService: ServiceBindingsService,
     private modalService: ModalService,
-  ) { }
+  ) {}
   @ViewChild('instanceBindingCreatorModal')
-  instanceBindingCreatorModal: ModalComponent;
+  instanceBindingCreatorModal: TemplateRef<ModalRef>;
 
   public isValid = false;
   public createSecrets = true;
@@ -83,7 +84,7 @@ export class LambdaInstanceBindingCreatorComponent {
             );
             this.instances = instances.data.serviceInstances;
           },
-          err => { },
+          err => {},
         );
       this.serviceBindingsService
         .getServiceBindings(this.environment, this.token)
@@ -91,14 +92,15 @@ export class LambdaInstanceBindingCreatorComponent {
           bindings => {
             this.serviceBindings = bindings;
           },
-          err => { },
+          err => {},
         );
     });
 
     this.isActive = true;
     this.modalService
       .open(this.instanceBindingCreatorModal)
-      .result.finally(() => {
+      .afterClosed.toPromise()
+      .finally(() => {
         this.isActive = false;
         luigiClient.uxManager().removeBackdrop();
       });
@@ -108,7 +110,7 @@ export class LambdaInstanceBindingCreatorComponent {
     if (this.isActive) {
       event.stopPropagation();
       luigiClient.uxManager().removeBackdrop();
-      this.modalService.close(this.instanceBindingCreatorModal);
+      this.modalService.dismissAll();
       this.reset();
     }
   }

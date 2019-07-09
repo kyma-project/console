@@ -1,5 +1,5 @@
 
-<fd-modal #eventTriggerModal role="dialog" [width]="'80%'">
+<ng-template let-modal #eventTriggerModal role="dialog" [width]="'80%'">
   <fd-modal-header>{{ title }}</fd-modal-header>
   <fd-modal-body>
     <input type="search" class="fd-input" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
@@ -28,4 +28,4 @@
     <button fd-button [options]="'light'" (click)="closeEventTriggerChooserModal()">Cancel</button>
     <button fd-button [fdType]="'main'" (click)="addEvents()" [disabled]="!enableAdd">Add</button>
   </fd-modal-footer>
-</fd-modal>
+</ng-template>

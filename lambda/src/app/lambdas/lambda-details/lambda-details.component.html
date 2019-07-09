@@ -24,14 +24,14 @@
     </fd-breadcrumb>
 
 
-    <fd-action-bar>
-      <fd-action-bar-header>
-        <fd-action-bar-title>
+    <div fd-action-bar>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title>
           {{ lambda?.metadata?.name }}
-        </fd-action-bar-title>
+        </h3>
 
-      </fd-action-bar-header>
-      <fd-action-bar-actions [hidden]="!loaded">
+      </div>
+      <div fd-action-bar-actions [hidden]="!loaded">
         <button fd-button [options]="'light'" (click)="showLogs()" *ngIf="mode !== 'create' && canShowLogs">Show
           Logs</button>
         <button fd-button [options]="'light'" (click)="cancel()">Cancel</button>
@@ -39,8 +39,8 @@
           [disabled]="!lambda.metadata.name || !isLambdaFormValid">
           {{ mode == 'create' ? 'Create' : 'Save' }}
         </button>
-      </fd-action-bar-actions>
-    </fd-action-bar>
+      </div>
+    </div>
 
     <nav class="fd-tabs" role="tablist">
       <span class="fd-tabs__item">
@@ -55,7 +55,7 @@
           Testing
         </a>
 
-        <fd-inline-help [position]="'right'" class="fd-has-margin-left-tiny" *ngIf="!existingHTTPEndpoint">
+        <fd-inline-help [placement]="'right'" class="fd-has-margin-left-tiny" *ngIf="!existingHTTPEndpoint">
           You'll be able to test your lambda once it's deployed and has an HTTPS endpoint.
         </fd-inline-help>
       </span>

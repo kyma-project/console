@@ -1,8 +1,15 @@
-import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  HostListener,
+  TemplateRef,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { isEmpty } from 'lodash';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 import { Clipboard } from 'ts-clipboard';
 import * as luigiClient from '@kyma-project/luigi-client';
 
@@ -25,7 +32,7 @@ export class HttpTriggerComponent {
   selectedHTTPTriggers: HTTPEndpoint[] = [];
   @Output() httpEmitter = new EventEmitter<HTTPEndpoint[]>();
   @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
-  @ViewChild('httpTriggerModal') httpTriggerModal: ModalComponent;
+  @ViewChild('httpTriggerModal') httpTriggerModal: TemplateRef<ModalRef>;
 
   public title: string;
   public isActive = false;
@@ -56,7 +63,7 @@ export class HttpTriggerComponent {
     private graphQLClientService: GraphqlClientService,
     private httpClient: HttpClient,
     private modalService: ModalService,
-  ) { }
+  ) {}
 
   public show(lambda, environment, selectedHTTPTriggers) {
     this.lambda = lambda;
@@ -65,7 +72,7 @@ export class HttpTriggerComponent {
     this.selectedHTTPTriggers = selectedHTTPTriggers;
     this.httpURL = `https://${this.lambda.metadata.name}-${this.environment}.${
       AppConfig.domain
-      }/`.toLowerCase();
+    }/`.toLowerCase();
 
     this.fetchAuthIssuer();
 
@@ -78,10 +85,13 @@ export class HttpTriggerComponent {
     });
     luigiClient.uxManager().addBackdrop();
 
-    this.modalService.open(this.httpTriggerModal).result.finally(() => {
-      this.isActive = false;
-      luigiClient.uxManager().removeBackdrop();
-    });
+    this.modalService
+      .open(this.httpTriggerModal)
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        luigiClient.uxManager().removeBackdrop();
+      });
   }
 
   addTrigger() {
@@ -115,11 +125,11 @@ export class HttpTriggerComponent {
     Clipboard.copy(`${this.httpURL}`);
   }
 
-  pushTrigger(httpTrigger: HTTPEndpoint) { }
+  pushTrigger(httpTrigger: HTTPEndpoint) {}
 
   closeHttpTriggerModal() {
     if (this.isActive) {
-      this.modalService.close(this.httpTriggerModal);
+      this.modalService.dismissAll();
     }
   }
 

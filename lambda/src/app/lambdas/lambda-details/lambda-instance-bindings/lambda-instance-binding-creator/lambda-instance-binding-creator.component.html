@@ -1,4 +1,4 @@
-<fd-modal #instanceBindingCreatorModal role="dialog" aria-labelledby="confirm">
+<ng-template let-modal #instanceBindingCreatorModal role="dialog" aria-labelledby="confirm">
   <fd-modal-header>
     Create Service Binding*
   </fd-modal-header>
@@ -44,4 +44,4 @@
     <button fd-button (click)="closeModal($event)" [options]="'light'">Cancel</button>
     <button fd-button [disabled]="!isValid" (click)="submit($event)" [fdType]="'main'">Create Service Binding</button>
   </fd-modal-footer>
-</fd-modal>
+</ng-template>

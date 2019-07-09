@@ -1,17 +1,28 @@
 <tr>
   <td>
-    <a href="javascript:void(null)" (click)="goToDetails(entry.metadata.name)" class="fd-has-font-weight-bold">
+    <a
+      href="javascript:void(null)"
+      (click)="goToDetails(entry.metadata.name)"
+      class="fd-has-font-weight-bold"
+    >
       {{ entry.metadata.name }}
     </a>
   </td>
   <td>
-    <fd-badge [modifier]="'filled'" [status]="status ? 'success' : 'error'">
+    <span
+      fd-badge
+      [modifier]="'filled'"
+      [status]="status ? 'success' : 'error'"
+    >
       {{ statusText }}
-    </fd-badge>
+    </span>
   </td>
   <td>
     <ng-container *ngIf="entry.getLabels().length">
-      <span class="fd-token y-fd-token y-fd-token--no-button" *ngFor="let label of entry.getLabels()">
+      <span
+        class="fd-token y-fd-token y-fd-token--no-button"
+        *ngFor="let label of entry.getLabels()"
+      >
         {{ label }}
       </span>
     </ng-container>
@@ -20,11 +31,16 @@
     </ng-container>
   </td>
   <td>
-    <a [href]="functionMetrics" target="_blank">Dashboard
+    <a [href]="functionMetrics" target="_blank"
+      >Dashboard
       <fd-icon [glyph]="'action'" [size]="'s'"></fd-icon>
     </a>
   </td>
   <td class="fd-has-float-right">
-    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    <y-list-actions
+      [entry]="entry"
+      [entryEventHandler]="entryEventHandler"
+      [actions]="actions"
+    ></y-list-actions>
   </td>
 </tr>
