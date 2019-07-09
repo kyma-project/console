@@ -44,7 +44,7 @@ export function createApolloClient() {
     defaults: {},
     resolvers: {},
   });
-  
+
   const client = new ApolloClient({
     uri: COMPASS_GRAPHQL_ENDPOINT,
     cache,
