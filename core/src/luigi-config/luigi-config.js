@@ -499,6 +499,7 @@ function getNamespaces() {
         return createNamespacesList(response.items);
       })
       .catch(function catchNamespaces(err) {
+        window.Luigi.cachedNamespaces = null;
         console.error('get namespace: error', err);
       });
   }

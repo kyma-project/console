@@ -12,7 +12,8 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Filter, GenericTableComponent } from 'app/generic-list';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, of, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { IEmptyListData, IEmptyListDataBody, IEmptyListDataHeader } from 'shared/datamodel';
 
 @Injectable()
@@ -49,6 +50,40 @@ export class AbstractKubernetesElementListComponent
     private communicationService: ComponentCommunicationService
   ) {
     super(changeDet);
+  }
+
+  protected reloadResults() {
+    of(0)
+      .pipe(delay(350))
+      .subscribe(() => {
+        if (!this.loaded) {
+          this.setLoading(true);
+        }
+      });
+
+    if (!this.pagingState) {
+      this.pagingState = {
+        pageNumber: 1,
+        pageSize: 16,
+        totalCount: 0,
+      };
+    }
+    if (!this.filterState) {
+      this.filterState = {
+        filters: [],
+        facets: [],
+      };
+    }
+
+    if (this.source) {
+      this.data = new Observable(observer => {
+        this.fetchData(observer, true, 2);
+      });
+      this.setLoaded(false);
+    } else {
+      this.data = null;
+      this.setLoaded(true);
+    }
   }
 
   protected getBasicEmptyListData(resource: string, { headerTitle, namespaceSuffix } = { headerTitle: true, namespaceSuffix: true }): IEmptyListData {

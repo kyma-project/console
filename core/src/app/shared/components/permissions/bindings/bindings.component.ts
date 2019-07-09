@@ -74,7 +74,7 @@ export class BindingsComponent extends AbstractKubernetesElementListComponent
             AppConfig.k8sApiServerUrl_rbac
           }namespaces/${namespaceId}/rolebindings`;
           this.source = new KubernetesDataProvider(url, converter, this.http);
-          //#this.reload();
+          this.reload();
         });
     }
     this.subscribeToRefreshComponent();

@@ -65,7 +65,7 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
               converter,
               this.http
             );
-            //#this.reload();
+            this.reload();
           });
         break;
       case 'clusterRoles':

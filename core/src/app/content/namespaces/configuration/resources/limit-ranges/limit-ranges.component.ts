@@ -69,7 +69,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
         this.entryRenderer = LimitRangeEntryRendererComponent;
         this.headerRenderer = LimitRangeHeaderRendererComponent;
         this.filterState = { filters: [new Filter('name', '', false)] };
-        //#this.reload();
+        this.reloadResults();
       }
     );
   }
