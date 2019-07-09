@@ -12,8 +12,7 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Filter, GenericTableComponent } from 'app/generic-list';
-import { Subscription, of, Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
 import { IEmptyListData, IEmptyListDataBody, IEmptyListDataHeader } from 'shared/datamodel';
 
 @Injectable()
@@ -51,7 +50,7 @@ export class AbstractKubernetesElementListComponent
   ) {
     super(changeDet);
   }
-  
+
   protected getBasicEmptyListData(resource: string, { headerTitle, namespaceSuffix } = { headerTitle: true, namespaceSuffix: true }): IEmptyListData {
     const newBodyTextSuffix = namespaceSuffix ? 'in your namespace yet' : 'yet';
     const body: IEmptyListDataBody = {
