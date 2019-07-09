@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ListModule } from 'app/generic-list/list.module';
 import { AppComponent } from './app.component';
@@ -79,6 +80,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     ClickOutsideModule,
     FundamentalNgxModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     HttpClient,
