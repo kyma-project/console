@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Runtimes from './components/Runtimes/Runtimes';
 import Overview from './components/Overview/Overview';
 import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails';
+import ApplicationsList from './components/Applications/ApplicationsList/ApplicationsList';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         exact
         render={({ match }) => <RuntimeDetails runtimeId={match.params.id} />}
       />
+      <Route path="/applications" exact component={ApplicationsList} />
     </Router>
   );
 }
