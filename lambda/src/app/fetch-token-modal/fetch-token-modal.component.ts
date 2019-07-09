@@ -44,8 +44,9 @@ export class FetchTokenModalComponent {
     }
 
     this.isActive = true;
+
     this.modalService
-      .open(this.fetchTokenModal)
+      .open(this.fetchTokenModal, { height: '25em' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
@@ -60,7 +61,6 @@ export class FetchTokenModalComponent {
   public cancel(event: Event) {
     if (this.isActive) {
       event.preventDefault();
-      this.modalService.dismissAll();
     }
   }
 

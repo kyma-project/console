@@ -67,9 +67,7 @@
               [(ngModel)]="userOrGroup"
               (ngModelChange)="validateUserOrGroupInput()"
             />
-            <fd-form-message [type]="'error'" *ngIf="userGroupError">{{
-              userGroupError
-            }}</fd-form-message>
+            <fd-form-message [type]="'error'" *ngIf="userGroupError">{{ userGroupError }}</fd-form-message>
           </div>
           <div fd-form-item *ngIf="!isGlobalPermissionsView">
             <label fd-form-label>Kind *</label>

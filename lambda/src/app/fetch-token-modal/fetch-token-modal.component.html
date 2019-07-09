@@ -4,9 +4,8 @@
     <textarea
       fd-form-control
       class="y-fd-form__control"
-      type="text"
       value="{{ token }}"
-      placeholder="content will be copy after click the copy button"
+      placeholder="content will be copied after the copy button is clicked"
       rows="10"
       cols="50"
     ></textarea>
@@ -16,7 +15,7 @@
       <button
         fd-button
         class="fd-has-float-right"
-        (click)="cancel($event)"
+        (click)="modal.close()"
         [fdType]="'main'"
       >
         OK

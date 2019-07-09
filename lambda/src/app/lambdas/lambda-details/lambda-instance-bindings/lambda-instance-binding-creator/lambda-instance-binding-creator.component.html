@@ -19,9 +19,7 @@
           (ngModelChange)="validateSelection()"
         >
           <option></option>
-          <option *ngFor="let i of instances" [ngValue]="i">{{
-            i.name
-          }}</option>
+          <option *ngFor="let i of instances" [ngValue]="i">{{ i.name }}</option>
         </select>
         <span
           *ngIf="!instances?.length"
