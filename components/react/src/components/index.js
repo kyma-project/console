@@ -6,6 +6,7 @@ import Button from './Button';
 import { Breadcrumb, BreadcrumbItem } from './Breadcrumb';
 import Dropdown from './Dropdown';
 import ErrorBoundary from './ErrorBoundary';
+import Filter from './Filter';
 import Input from './Forms/Input';
 import Select from './Forms/Select';
 import Checkbox from './Forms/Checkbox';
@@ -41,6 +42,7 @@ import StatusWrapper from './Status/StatusWrapper';
 import Tabs from './Tabs';
 import Tab from './Tabs/Tab';
 import Table from './Table';
+import TableWithActionsToolbar from './TableWithActions/TableWithActionsToolbar';
 import Text from './Text';
 import ThemeWrapper from './ThemeWrapper';
 import { Tile, TileMedia, TileContent, TileGrid } from './Tile';
@@ -68,6 +70,7 @@ module.exports = {
   BreadcrumbItem,
   Dropdown,
   ErrorBoundary,
+  Filter,
   Input,
   Select,
   Checkbox,
@@ -101,6 +104,7 @@ module.exports = {
   Tabs,
   Tab,
   Table,
+  TableWithActionsToolbar,
   Text,
   ThemeWrapper,
   Tile,
