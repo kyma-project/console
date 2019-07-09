@@ -1,9 +1,13 @@
-
-<ng-template let-modal #eventTriggerModal role="dialog" [width]="'80%'">
+<ng-template let-modal #eventTriggerModal role="dialog">
   <fd-modal-header>{{ title }}</fd-modal-header>
   <fd-modal-body>
-    <input type="search" class="fd-input" [(ngModel)]="eventSearchQuery" (ngModelChange)="filterEvents(eventSearchQuery)"
-          placeholder="Search">
+    <input
+      type="search"
+      class="fd-input"
+      [(ngModel)]="eventSearchQuery"
+      (ngModelChange)="filterEvents(eventSearchQuery)"
+      placeholder="Search"
+    />
 
     <table class="fd-table">
       <thead>
@@ -15,7 +19,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let event of filteredTriggers">
-          <td><input type="checkbox" (change)="toggleEventSelection(event, $event)"></td>
+          <td>
+            <input
+              type="checkbox"
+              (change)="toggleEventSelection(event, $event)"
+            />
+          </td>
           <td>{{ event.eventType }}</td>
           <td>{{ event.version }}</td>
           <td>{{ event.sourceId }}</td>
@@ -25,7 +34,20 @@
     </table>
   </fd-modal-body>
   <fd-modal-footer>
-    <button fd-button [options]="'light'" (click)="closeEventTriggerChooserModal()">Cancel</button>
-    <button fd-button [fdType]="'main'" (click)="addEvents()" [disabled]="!enableAdd">Add</button>
+    <button
+      fd-button
+      [options]="'light'"
+      (click)="closeEventTriggerChooserModal()"
+    >
+      Cancel
+    </button>
+    <button
+      fd-button
+      [fdType]="'main'"
+      (click)="addEvents()"
+      [disabled]="!enableAdd"
+    >
+      Add
+    </button>
   </fd-modal-footer>
 </ng-template>

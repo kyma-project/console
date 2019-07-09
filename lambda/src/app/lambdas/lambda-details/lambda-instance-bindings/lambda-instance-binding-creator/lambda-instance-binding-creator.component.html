@@ -1,47 +1,99 @@
-<ng-template let-modal #instanceBindingCreatorModal role="dialog" aria-labelledby="confirm">
+<ng-template
+  let-modal
+  #instanceBindingCreatorModal
+  role="dialog"
+  aria-labelledby="confirm"
+>
   <fd-modal-header>
     Create Service Binding*
   </fd-modal-header>
   <fd-modal-body>
     <div fd-form-set>
       <div fd-form-item>
-        <fd-form-label class="control-label">Service Instance</fd-form-label>
-        <select fd-form-control [disabled]="!instances?.length" id="instanceSelect" [(ngModel)]="selectedInstance" (ngModelChange)="validateSelection()">
+        <label fd-form-label class="control-label">Service Instance</label>
+        <select
+          fd-form-control
+          [disabled]="!instances?.length"
+          id="instanceSelect"
+          [(ngModel)]="selectedInstance"
+          (ngModelChange)="validateSelection()"
+        >
           <option></option>
-          <option *ngFor="let i of instances" [ngValue]="i">{{ i.name }}</option>
+          <option *ngFor="let i of instances" [ngValue]="i">{{
+            i.name
+          }}</option>
         </select>
-        <span *ngIf="!instances?.length" class="fd-form__message y-fd-form__message--disabled">No unbound instances available.</span>
+        <span
+          *ngIf="!instances?.length"
+          class="fd-form__message y-fd-form__message--disabled"
+          >No unbound instances available.</span
+        >
       </div>
 
       <div fd-form-item>
-          <fd-form-label class="control-label">Prefix for Injected Variables
-              <span class="fd-inline-help fd-has-float-right">
-                  <span class="fd-inline-help__content fd-inline-help__content--bottom-left">
-                    Defines the prefix for environment variables that the ServiceBindingUsage injects. Prefixing is disabled by default.
-                  </span>
-              </span>
-          </fd-form-label>
-          <input fd-form-control [type]="'text'" id="input-svc-instance-prefix" [(ngModel)]="selectedInstanceBindingPrefix">
+        <label fd-form-label class="control-label"
+          >Prefix for Injected Variables
+          <fd-inline-help>
+            Defines the prefix for environment variables that the <br />
+            ServiceBindingUsage injects. Prefixing is disabled by default.
+          </fd-inline-help>
+        </label>
+        <input
+          fd-form-control
+          [type]="'text'"
+          id="input-svc-instance-prefix"
+          [(ngModel)]="selectedInstanceBindingPrefix"
+        />
       </div>
 
       <div class="fd-form__item fd-form__item--check">
         <label class="fd-form__label control-label" for="createSecrets">
-            <input type="checkbox" class="fd-form__control" id="createSecrets" [(ngModel)]="createSecrets" (ngModelChange)="validateSelection()">
-            Create new secret for the binding
+          <input
+            type="checkbox"
+            class="fd-form__control"
+            id="createSecrets"
+            [(ngModel)]="createSecrets"
+            (ngModelChange)="validateSelection()"
+          />
+          Create new secret for the binding
         </label>
       </div>
 
       <div fd-form-item *ngIf="!createSecrets">
-        <fd-form-label class="control-label">Secrets</fd-form-label>
-        <select fd-form-control [disabled]="!relevantServiceBindings.items.length" id="secretSelect" [(ngModel)]="selectedBinding" (ngModelChange)="validateSelection()">
-          <option *ngFor="let binding of relevantServiceBindings.items" [ngValue]="binding">{{ binding.spec.secretName }}</option>
+        <label fd-form-label class="control-label">Secrets</label>
+        <select
+          fd-form-control
+          [disabled]="!relevantServiceBindings.items.length"
+          id="secretSelect"
+          [(ngModel)]="selectedBinding"
+          (ngModelChange)="validateSelection()"
+        >
+          <option
+            *ngFor="let binding of relevantServiceBindings.items"
+            [ngValue]="binding"
+            >{{ binding.spec.secretName }}</option
+          >
         </select>
-        <span *ngIf="!relevantServiceBindings.items.length" class="fd-form__message y-fd-form__message--disabled">No secrets available. Please create a new secret for the binding.</span>
+        <span
+          *ngIf="!relevantServiceBindings.items.length"
+          class="fd-form__message y-fd-form__message--disabled"
+          >No secrets available. Please create a new secret for the
+          binding.</span
+        >
       </div>
     </div>
   </fd-modal-body>
   <fd-modal-footer>
-    <button fd-button (click)="closeModal($event)" [options]="'light'">Cancel</button>
-    <button fd-button [disabled]="!isValid" (click)="submit($event)" [fdType]="'main'">Create Service Binding</button>
+    <button fd-button (click)="closeModal($event)" [options]="'light'">
+      Cancel
+    </button>
+    <button
+      fd-button
+      [disabled]="!isValid"
+      (click)="submit($event)"
+      [fdType]="'main'"
+    >
+      Create Service Binding
+    </button>
   </fd-modal-footer>
 </ng-template>

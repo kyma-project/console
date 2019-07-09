@@ -22,6 +22,14 @@
   }
 }
 
+.fd-modal {
+  &__actions {
+    .fd-button:not(:last-of-type) {
+      @extend .fd-has-margin-right-tiny;
+    }
+  }
+}
+
 //Forms
 .y-fd-form__message--disabled {
   color: var(--fd-color-status-4) !important;
@@ -209,7 +217,6 @@
 //Page header
 .fd-page {
   &__header {
-
     margin-bottom: fd-space('large') / 2;
 
     .fd-section {
@@ -219,7 +226,8 @@
 }
 
 //Responsive improvements
-@media (max-width: map-get($fd-breakpoints, m)) { // 'm' = 600px
+@media (max-width: map-get($fd-breakpoints, m)) {
+  // 'm' = 600px
 
   //Panel grid
   .fd-panel-grid {
@@ -269,7 +277,7 @@
       width: 100%;
     }
 
-    &__actions {    
+    &__actions {
       display: flex;
       align-items: center;
       justify-content: flex-end;

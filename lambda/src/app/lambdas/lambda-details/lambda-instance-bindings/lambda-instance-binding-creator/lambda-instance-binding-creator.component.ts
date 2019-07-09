@@ -98,7 +98,7 @@ export class LambdaInstanceBindingCreatorComponent {
 
     this.isActive = true;
     this.modalService
-      .open(this.instanceBindingCreatorModal)
+      .open(this.instanceBindingCreatorModal,{width:'30em'})
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
