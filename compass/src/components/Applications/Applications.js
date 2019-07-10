@@ -7,8 +7,7 @@ import { GET_APPLICATIONS } from "./gql";
 import ApplicationsList from "./ApplicationsList/ApplicationsList";
 
 const actions = (
-  <div>
-    <Search/>
+  <>
     <Filter
       filter={[{
         count: 3,
@@ -16,7 +15,8 @@ const actions = (
         value: "name"
       }]}
       onChange={() => {}}/>
-  </div>
+      <Search/>
+  </>
 )
 
 const Applications = () => (
