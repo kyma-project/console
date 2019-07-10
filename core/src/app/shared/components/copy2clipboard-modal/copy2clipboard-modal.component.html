@@ -17,9 +17,8 @@
       <textarea
         fd-form-control
         readonly
-        type="text"
-        class=""
-        ngClass="{{ message ? 'fd-form__control--border' : '' }}"
+        #areaToCopyFrom
+        class="fd-form__control--border"
         value="{{ content }}"
         placeholder="content will be copied after clicking the copy button"
         rows="10"
@@ -40,10 +39,9 @@
           fd-button
           class="fd-has-float-left"
           [class.fd-has-color-status-1]="isCopied"
-          (cbOnSuccess)="isCopied = true; removeSuccessClass()"
           type="button"
-          ngxClipboard
-          [cbContent]="content"
+          [ngxClipboard]="areaToCopyFrom"
+          (cbOnSuccess)="isCopied = true; removeSuccessClass()"
           [options]="'light'"
         >
           Copy to clipboard
