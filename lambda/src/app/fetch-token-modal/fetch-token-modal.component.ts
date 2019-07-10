@@ -60,6 +60,7 @@ export class FetchTokenModalComponent {
 
   public cancel(event: Event) {
     if (this.isActive) {
+      this.isActive = false;
       event.preventDefault();
     }
   }

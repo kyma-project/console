@@ -51,7 +51,7 @@ export class ResourceUploaderModalComponent {
       () => {
         this.communicationService.sendEvent({ type: 'createResource' });
         this.handleModalClose();
-        this.modalService.dismissAll();
+
         this.infoModal.show(
           'Created',
           'New element has been created successfully'
@@ -71,7 +71,7 @@ export class ResourceUploaderModalComponent {
           er = error.error.message;
         }
         this.handleModalClose();
-        this.modalService.dismissAll();
+
         this.infoModal.show('Error', `Cannot create a k8s resource due: ${er}`);
         this.okPromise(true);
         console.error(error);

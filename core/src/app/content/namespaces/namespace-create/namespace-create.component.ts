@@ -193,6 +193,7 @@ export class NamespaceCreateComponent {
 
   public cancel() {
     if (this.modalService) {
+      this.isActive = false;
       this.modalService.dismissAll();
     }
   }

@@ -43,6 +43,7 @@ export class JsonEditorModalComponent {
   }
 
   cancel(event: Event) {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 
@@ -55,7 +56,7 @@ export class JsonEditorModalComponent {
           type: 'updateResource',
           data
         });
-        this.modalService.dismissAll();
+        this.cancel(event);
       },
       err => this.displayErrorMessage(err)
     );

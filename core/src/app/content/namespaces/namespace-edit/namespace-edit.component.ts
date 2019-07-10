@@ -93,6 +93,7 @@ export class NamespaceEditComponent {
   public cancel() {
     if (this.modalService) {
       this.removeError();
+      this.isActive = false;
       this.modalService.dismissAll();
     }
   }

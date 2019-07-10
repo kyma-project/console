@@ -49,6 +49,7 @@ export class EditApplicationModalComponent {
   }
 
   public close(): void {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

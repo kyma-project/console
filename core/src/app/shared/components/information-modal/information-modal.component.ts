@@ -43,6 +43,7 @@ export class InformationModalComponent {
   }
 
   public cancel(event: Event) {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

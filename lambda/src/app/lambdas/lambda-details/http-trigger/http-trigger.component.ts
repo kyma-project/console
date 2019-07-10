@@ -129,6 +129,7 @@ export class HttpTriggerComponent {
 
   closeHttpTriggerModal() {
     if (this.isActive) {
+      this.isActive = false;
       this.modalService.dismissAll();
     }
   }

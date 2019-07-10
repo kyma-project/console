@@ -37,6 +37,7 @@ export class Copy2ClipboardModalComponent {
   }
 
   public cancel(event: Event) {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

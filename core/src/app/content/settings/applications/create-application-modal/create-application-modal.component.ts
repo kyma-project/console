@@ -37,6 +37,7 @@ export class CreateApplicationModalComponent {
   }
 
   public close(): void {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

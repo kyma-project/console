@@ -98,7 +98,7 @@ export class LambdaInstanceBindingCreatorComponent {
 
     this.isActive = true;
     this.modalService
-      .open(this.instanceBindingCreatorModal,{width:'30em'})
+      .open(this.instanceBindingCreatorModal, { width: '30em' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
@@ -110,6 +110,7 @@ export class LambdaInstanceBindingCreatorComponent {
     if (this.isActive) {
       event.stopPropagation();
       luigiClient.uxManager().removeBackdrop();
+      this.isActive = false;
       this.modalService.dismissAll();
       this.reset();
     }

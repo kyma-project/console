@@ -45,6 +45,7 @@ export class CreatePresetModalComponent {
   }
 
   close() {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

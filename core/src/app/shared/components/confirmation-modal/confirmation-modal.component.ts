@@ -50,6 +50,7 @@ export class ConfirmationModalComponent implements OnInit {
   }
 
   closeModal() {
+    this.isActive = false;
     if (this.confirmationModal && this.modalService) {
       this.modalService.dismissAll();
     }

@@ -141,6 +141,7 @@ export class EditBindingsModalComponent {
   }
 
   public close() {
+    this.isActive = false;
     this.allServices = true;
     this.selectedApplicationsState = [];
     this.modalService.dismissAll();

@@ -103,6 +103,7 @@ export class BindingsDetailsModalComponent {
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

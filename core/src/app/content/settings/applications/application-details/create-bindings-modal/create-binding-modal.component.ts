@@ -162,6 +162,7 @@ export class CreateBindingsModalComponent {
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 

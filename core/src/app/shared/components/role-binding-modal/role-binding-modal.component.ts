@@ -127,6 +127,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   public close() {
+    this.isActive = false;
     this.modalService.dismissAll();
   }
 
