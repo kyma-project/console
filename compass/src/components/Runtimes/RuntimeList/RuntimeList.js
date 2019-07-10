@@ -9,7 +9,7 @@ import LuigiClient from "@kyma-project/luigi-client";
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({
     rowData: [
-      <span className="link " onClick={() => LuigiClient.linkManager().navigate(`/runtime/${runtime.id}`)}>
+      <span className="link " onClick={() => LuigiClient.linkManager().fromClosestContext().navigate(`/runtime/${runtime.id}`)}>
         {runtime.name}
       </span>,
       runtime.description
