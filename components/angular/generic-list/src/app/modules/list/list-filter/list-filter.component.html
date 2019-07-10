@@ -1,10 +1,14 @@
-<fd-popover [placement]="'right'" *ngIf="filterState.availableFacets.length">
+<fd-popover
+  [placement]="'bottom'"
+  [noArrow]="false"
+  *ngIf="filterState.availableFacets.length"
+>
   <fd-popover-control>
     <button
       fd-button
       [glyph]="'filter'"
       [options]="'light'"
-      [disabled]="hasFacets()"
+      [disabled]="!hasFacets()"
     >
       <span
         class="fd-counter fd-counter--notification fd-has-background-color-status-4"
