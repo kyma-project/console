@@ -7,6 +7,7 @@ export const GET_APPLICATIONS = gql`
         id
         name
         description
+        labels
       }
     }
   }
