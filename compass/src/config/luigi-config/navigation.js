@@ -38,16 +38,6 @@ const navigation = {
                 },
               ],
             },
-            {
-              pathSegment: 'application',
-              children: [
-                {
-                  pathSegment: ':applicationId',
-                  label: 'Applications',
-                  viewUrl: 'http://localhost:3000/application/:applicationId',
-                },
-              ],
-            },
           ],
         },
       ],
