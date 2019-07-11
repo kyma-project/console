@@ -6,6 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from 'react-apollo';
 import builder from './commons/builder';
 import { createApolloClient } from './store';
+// used for passing Luigi object down the level
+import LuigiClient from '@kyma-project/luigi-client'; // eslint-disable-line no-unused-vars
 
 const client = createApolloClient();
 
