@@ -101,7 +101,7 @@ export default props => {
           }
         />
         <PanelEntry title="Description" content={<p>{description}</p>} />
-        {!labels.length && (
+        {labels && !labels.length && (
           <PanelEntry
             title="Labels"
             content={labels && <LabelDisplay labels={labels} />}
