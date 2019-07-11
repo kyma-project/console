@@ -299,7 +299,7 @@ async function getUiEntities(entityname, namespace, placements) {
         return result.items
           .filter(function(item) {
             // placement only exists in clustermicrofrontends
-            return !placements || (placements.includes(item.spec.placement));
+            return !placements || placements.includes(item.spec.placement);
           })
           .map(function (item) {
 
