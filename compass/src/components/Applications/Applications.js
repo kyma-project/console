@@ -1,11 +1,30 @@
 import React from "react";
 
 import { Panel } from "fundamental-react/lib/Panel";
-import { TableWithActionsToolbar, Search, Filter } from "@kyma-project/react-components"; 
+import { TableWithActionsToolbar, Search, Filter } from "@kyma-project/react-components";
 import { Query } from "react-apollo";
 import { GET_APPLICATIONS } from "./gql";
-import ApplicationsList from "./ApplicationsList/ApplicationsList";
+import ApplicationsList from "../../shared/components/ApplicationsList/ApplicationsList";
 
+const createLabels = (labels) => {
+  const separatedLabels = [];
+  for (const key in labels) {
+    if (labels.hasOwnProperty(key) && labels[key].length > 0) {
+      labels[key].forEach(lab => {
+      if (lab === 'undefined') {
+        separatedLabels.push(key);
+      } else {
+        separatedLabels.push(key + '=' + lab);
+      } 
+    });
+    }
+  }
+  const labelsString = separatedLabels.join(', ')
+  return labelsString;
+}
+
+const headerRenderer = application => ["Name", "Description", "Label"];
+const rowRenderer = application => [<b>{application.name}</b>, application.description, application.labels ? createLabels(application.labels) : '-'];
 
 const Applications = () => (
   <Query query={GET_APPLICATIONS}>
@@ -25,13 +44,10 @@ const Applications = () => (
 
       return (
         <Panel>
-          <TableWithActionsToolbar 
-            title="Applications"
-            description="Description"
-            children={actions(apps)}/>
-          <ApplicationsList data={apps}></ApplicationsList>
+          <TableWithActionsToolbar title="Applications" description="Description" children={actions(apps)} />
+          <ApplicationsList entries={apps} {...{ headerRenderer, rowRenderer }} />
         </Panel>
-      )
+      );
     }}
   </Query>
 );
