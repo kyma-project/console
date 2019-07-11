@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { sizes } from '@kyma-project/react-components';
 
 export const Header = styled.header`
   background-color: #fff;
@@ -6,8 +7,10 @@ export const Header = styled.header`
 
 export const ActionBarWrapper = styled.header`
    {
-    display: flex;
-    justify-content: space-between;
+    @media (min-width: ${sizes.phone}px) {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 `;
 
