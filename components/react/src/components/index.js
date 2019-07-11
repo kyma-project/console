@@ -43,6 +43,7 @@ import Tabs from './Tabs';
 import Tab from './Tabs/Tab';
 import Table from './Table';
 import TableWithActionsToolbar from './TableWithActions/TableWithActionsToolbar';
+import TableWithActionsList from './TableWithActions/TableWithActionsList';
 import Text from './Text';
 import ThemeWrapper from './ThemeWrapper';
 import { Tile, TileMedia, TileContent, TileGrid } from './Tile';
@@ -105,6 +106,7 @@ module.exports = {
   Tab,
   Table,
   TableWithActionsToolbar,
+  TableWithActionsList,
   Text,
   ThemeWrapper,
   Tile,
