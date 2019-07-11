@@ -17,6 +17,7 @@ class SchemaData extends React.Component {
     onSubmitSchemaForm: PropTypes.func.isRequired,
     planName: PropTypes.string,
   };
+  additionalMetaSchemas = require('ajv/lib/refs/json-schema-draft-06.json');
 
   constructor(props) {
     super(props);
@@ -56,6 +57,7 @@ class SchemaData extends React.Component {
       >
         <JsonSchemaForm
           schema={instanceCreateParameterSchema}
+          additionalMetaSchemas={[additionalMetaSchemas]}
           onChange={this.onChangeSchemaForm}
           liveValidate={true}
           onSubmit={onSubmitSchemaForm}
