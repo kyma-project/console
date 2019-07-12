@@ -7,6 +7,7 @@ import {
   Icon,
 } from '@kyma-project/react-components';
 import { Bold, Flex } from './styled';
+const additionalMetaSchemas = require('ajv/lib/refs/json-schema-draft-06.json');
 
 class SchemaData extends React.Component {
   static propTypes = {
@@ -17,7 +18,6 @@ class SchemaData extends React.Component {
     onSubmitSchemaForm: PropTypes.func.isRequired,
     planName: PropTypes.string,
   };
-  additionalMetaSchemas = require('ajv/lib/refs/json-schema-draft-06.json');
 
   constructor(props) {
     super(props);
