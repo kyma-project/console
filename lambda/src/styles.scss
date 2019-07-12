@@ -3,3 +3,10 @@ $fd-icons-path: '~fiori-fundamentals/scss/icons/';
 $fd-fonts-path: '~fiori-fundamentals/scss/fonts/';
 @import '~fiori-fundamentals/scss/all.scss';
 @import 'styles/fiori-fundamentals-overrides';
+
+fd-icon.clickable {
+  cursor: pointer;
+  &:hover {
+    color: var(--fd-color-action-1);
+  }
+}

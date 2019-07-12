@@ -122,12 +122,32 @@
               </fd-form-message>
             </div>
           </div>
+          <div *ngIf="isDefaultProvider()" fd-form-set>
+            <div fd-form-item>
+              <label fd-form-label for="token-textarea"
+                >Token
+                <fd-icon
+                  [ngxClipboard]="tokenTextarea"
+                  class="fd-has-margin-left-tiny clickable align-middle"
+                  [glyph]="'copy'"
+                  [size]="'m'"
+                  title="Copy to clipboard"
+                >
+                </fd-icon
+              ></label>
+              <textarea
+                fd-form-control
+                #tokenTextarea
+                class="token-textarea"
+                value="Bearer {{ token }}"
+                placeholder="content will be copied after the copy button is clicked"
+                rows="10"
+                cols="50"
+                readonly
+              ></textarea>
+            </div>
+          </div>
         </div>
-      </div>
-      <div *ngIf="isDefaultProvider()" class="fd-container fd-container--flex">
-        <a href="javascript:void(null)" (click)="fetchTokenModal.show()"
-          >Fetch token</a
-        >
       </div>
     </ng-container>
   </fd-modal-body>
@@ -151,7 +171,3 @@
     </button>
   </fd-modal-footer>
 </ng-template>
-<app-fetch-token-modal
-  #fetchTokenModal
-  [useLuigiBackdrop]="false"
-></app-fetch-token-modal>

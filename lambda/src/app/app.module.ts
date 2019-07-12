@@ -13,6 +13,7 @@ import { LambdaInstanceBindingsComponent } from './lambdas/lambda-details/lambda
 import { LambdaInstanceBindingCreatorComponent } from './lambdas/lambda-details/lambda-instance-bindings/lambda-instance-binding-creator/lambda-instance-binding-creator.component';
 
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -81,6 +82,7 @@ const routes: Routes = [
     ClickOutsideModule,
     FundamentalNgxModule,
     BrowserAnimationsModule,
+    ClipboardModule,
   ],
   providers: [
     HttpClient,
