@@ -59,6 +59,7 @@ export class NamespaceCreateComponent {
         () => {
           const handleSuccess = () => {
             this.isActive = false;
+            this.modalService.dismissAll();
             this.refreshContextSwitcher();
             this.navigateToDetails(this.namespaceName);
           };

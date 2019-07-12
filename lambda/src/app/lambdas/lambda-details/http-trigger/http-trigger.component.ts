@@ -18,7 +18,6 @@ import { Authentication } from '../../../shared/datamodel/authentication';
 import { HTTPEndpoint } from '../../../shared/datamodel/http-endpoint';
 import { Lambda } from '../../../shared/datamodel/k8s/function';
 import { GraphqlClientService } from '../../../graphql-client/graphql-client.service';
-import { FetchTokenModalComponent } from '../../../fetch-token-modal/fetch-token-modal.component';
 import { Jwt } from '../../../shared/datamodel/jwt';
 
 @Component({
@@ -31,7 +30,6 @@ export class HttpTriggerComponent {
   environment: string;
   selectedHTTPTriggers: HTTPEndpoint[] = [];
   @Output() httpEmitter = new EventEmitter<HTTPEndpoint[]>();
-  @ViewChild('fetchTokenModal') fetchTokenModal: FetchTokenModalComponent;
   @ViewChild('httpTriggerModal') httpTriggerModal: TemplateRef<ModalRef>;
 
   public title: string;
