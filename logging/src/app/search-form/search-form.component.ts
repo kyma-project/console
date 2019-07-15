@@ -357,7 +357,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     allPodsQuery.valueChanges.subscribe((response: IPodQueryResponse) => {
       this.podsForFunction = response.data.pods.filter(
-        (p: IPod) => p.labels.function === lambdaName,
+        (p: IPod) => p.labels && (p.labels.function === lambdaName),
       );
       this.onSubmit();
     });
