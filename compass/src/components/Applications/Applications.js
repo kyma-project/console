@@ -1,5 +1,6 @@
 import React from "react";
 import { Token } from "fundamental-react/lib/Token";
+import { Badge } from "fundamental-react/lib/Badge";
 import GenericList from "../../shared/components/GenericList/GenericList";
 import { Query } from "react-apollo";
 import { GET_APPLICATIONS } from "./gql";
@@ -26,12 +27,36 @@ class Applications extends React.Component {
     ));
   };
 
-  headerRenderer = application => ["Name", "Description", "Labels"];
+  processStatus = status => {
+    let type = "warning";
+    switch (status) {
+      case "INITIAL":
+        return <Badge>{status}</Badge>;
+
+      case "READY":
+        type = "success";
+        break;
+      case "UNKNOWN":
+        type = "warning";
+        break;
+      case "FAILED":
+        type = "error";
+        break;
+      default:
+        type = "warning";
+    }
+
+    return <Badge type={type}>{status}</Badge>;
+  };
+
+  headerRenderer = application => ["Name", "Description", "Labels", "Status"];
   rowRenderer = application => [
     <b>{application.name}</b>,
     application.description,
-    application.labels ? this.createLabels(application.labels) : "-"
+    application.labels ? this.createLabels(application.labels) : "-",
+    this.processStatus(application.status.condition)
   ];
+
   actions = [
     {
       name: "Delete",

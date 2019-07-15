@@ -8,6 +8,9 @@ export const GET_APPLICATIONS = gql`
         name
         description
         labels
+        status {
+          condition
+        }
       }
     }
   }
