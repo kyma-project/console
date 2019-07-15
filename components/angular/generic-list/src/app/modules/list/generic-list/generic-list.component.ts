@@ -81,6 +81,15 @@ export class GenericListComponent implements OnChanges, OnInit {
   }
 
   applyState(noCache?: boolean) {
+    
+    this.reloadResults(noCache);
+
+    if (!(this.changeDetector as ViewRef).destroyed) {
+      this.changeDetector.detectChanges();
+    }
+  }
+
+  protected reloadResults(noCache: boolean = true) {
     of(0)
       .pipe(delay(350))
       .subscribe(() => {
@@ -106,43 +115,6 @@ export class GenericListComponent implements OnChanges, OnInit {
     if (this.source) {
       this.data = new Observable(observer => {
         this.fetchData(observer, noCache, 2);
-      });
-      this.setLoaded(false);
-    } else {
-      this.data = null;
-      this.setLoaded(true);
-    }
-    if (!(this.changeDetector as ViewRef).destroyed) {
-      this.changeDetector.detectChanges();
-    }
-  }
-
-  protected reloadResults() {
-    of(0)
-      .pipe(delay(350))
-      .subscribe(() => {
-        if (!this.loaded) {
-          this.setLoading(true);
-        }
-      });
-
-    if (!this.pagingState) {
-      this.pagingState = {
-        pageNumber: 1,
-        pageSize: 16,
-        totalCount: 0,
-      };
-    }
-    if (!this.filterState) {
-      this.filterState = {
-        filters: [],
-        facets: [],
-      };
-    }
-
-    if (this.source) {
-      this.data = new Observable(observer => {
-        this.fetchData(observer, true, 2);
       });
       this.setLoaded(false);
     } else {

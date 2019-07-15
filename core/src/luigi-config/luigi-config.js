@@ -534,7 +534,7 @@ function getCorrespondingNamespaceLocation(namespaceName) {
   if (!addressTokens[4]) {
     return null;
   }
-  return namespaceName + '/' + addressTokens[4];
+  return namespaceName + '/' + addressTokens.slice(4).join('/');
 }
 
 function relogin() {
