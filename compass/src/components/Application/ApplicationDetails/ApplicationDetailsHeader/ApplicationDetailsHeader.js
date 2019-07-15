@@ -10,6 +10,7 @@ import {
   determineClass,
   printPrettyConnectionStatus,
 } from './../../applicationUtility';
+import "./styles.scss";
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -49,8 +50,8 @@ export default function ApplicationDetailsHeader(props) {
 
   return (
     <header>
-      <section className="fd-has-padding-regular fd-has-padding-bottom-none fd-has-display-flex">
-        <section className="width-100">
+      <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
+        <section className="action-bar-wrapper__left-panel">
           <Breadcrumb>
             <Breadcrumb.Item
               name="Applications"
