@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Runtimes from './components/Runtimes/Runtimes';
 import Overview from './components/Overview/Overview';
 import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails';
-import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails';
+import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import { Notification } from '@kyma-project/react-components';
 import Applications from './components/Applications/Applications';
 
