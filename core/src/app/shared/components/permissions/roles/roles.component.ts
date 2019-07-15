@@ -9,7 +9,6 @@ import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-roles',
