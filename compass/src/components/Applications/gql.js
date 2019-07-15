@@ -11,6 +11,12 @@ export const GET_APPLICATIONS = gql`
         status {
           condition
         }
+        apis {
+          totalCount
+        }
+        eventAPIs {
+          totalCount
+        }
       }
     }
   }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Token } from "fundamental-react/lib/Token";
-import { Badge } from "fundamental-react/lib/Badge";
+import { Badge, Counter } from "fundamental-react/lib/Badge";
+
 import GenericList from "../../shared/components/GenericList/GenericList";
 import { Query } from "react-apollo";
 import { GET_APPLICATIONS } from "./gql";
@@ -49,11 +50,13 @@ class Applications extends React.Component {
     return <Badge type={type}>{status}</Badge>;
   };
 
-  headerRenderer = application => ["Name", "Description", "Labels", "Status"];
+  headerRenderer = application => ["Name", "Description", "Labels", "APIs", "EventAPIs", "Status"];
   rowRenderer = application => [
     <b>{application.name}</b>,
     application.description,
     application.labels ? this.createLabels(application.labels) : "-",
+    <Counter>{application.apis.totalCount}</Counter>,
+    <Counter>{application.eventAPIs.totalCount}</Counter>,
     this.processStatus(application.status.condition)
   ];
 
