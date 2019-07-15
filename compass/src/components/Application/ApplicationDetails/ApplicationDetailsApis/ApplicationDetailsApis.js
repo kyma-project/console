@@ -1,7 +1,6 @@
 import React from 'react';
-import { Panel } from 'fundamental-react/lib/Panel';
+import { Panel, Table } from '@kyma-project/react-components';
 import { Pagination } from 'fundamental-react/lib/Pagination';
-import { Table } from '@kyma-project/react-components';
 
 function createTableData(apis) {
   return apis.map(api => ({
@@ -9,7 +8,7 @@ function createTableData(apis) {
   }));
 }
 
-export default props => {
+export default function ApplicationDetailsApis(props) {
   const { totalCount, data: apis } = props.apis;
 
   return (

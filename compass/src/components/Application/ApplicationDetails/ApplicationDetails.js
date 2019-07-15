@@ -5,7 +5,7 @@ import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
 
-export default props => {
+export default function ApplicationDetails(props) {
   return (
     <Query query={GET_APPLICATION} variables={{ id: props.applicationId }}>
       {({ loading, error, data }) => {

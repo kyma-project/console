@@ -1,7 +1,6 @@
 import React from 'react';
-import { Panel } from 'fundamental-react/lib/Panel';
+import { Panel, Table } from '@kyma-project/react-components';
 import { Pagination } from 'fundamental-react/lib/Pagination';
-import { Table } from '@kyma-project/react-components';
 
 function createTableData(eventApis) {
   return eventApis.map(eventApi => ({
@@ -9,7 +8,7 @@ function createTableData(eventApis) {
   }));
 }
 
-export default props => {
+export default function ApplicationDetailsEventApis(props) {
   const { totalCount, data: eventApis } = props.eventApis;
 
   return (

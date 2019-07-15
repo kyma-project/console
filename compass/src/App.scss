@@ -36,3 +36,19 @@
 .fd-pagination {
   text-align: center;
 }
+
+header {
+  background-color: #fff;
+}
+
+.action-bar-wrapper {
+
+  @media (min-width: 600px) {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & > section {
+    width: 100%;
+  }
+}

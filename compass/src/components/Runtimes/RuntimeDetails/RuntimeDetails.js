@@ -6,7 +6,6 @@ import { Button } from "fundamental-react/lib/Button";
 
 import LuigiClient from "@kyma-project/luigi-client";
 import { Badge } from "fundamental-react/lib/Badge";
-import { Token } from "fundamental-react/lib/Token";
 import { Panel } from "fundamental-react/lib/Panel";
 import LabelDisplay from '../../Shared/LabelDisplay';
 

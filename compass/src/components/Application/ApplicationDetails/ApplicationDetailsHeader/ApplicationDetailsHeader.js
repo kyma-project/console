@@ -2,17 +2,14 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import classnames from 'classnames';
 
-import { Breadcrumb } from 'fundamental-react/lib/Breadcrumb';
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
-import { Button } from 'fundamental-react/lib/Button';
-import { Panel, PanelGrid } from 'fundamental-react/lib/Panel';
+import { Button, Breadcrumb, Panel, PanelGrid } from '@kyma-project/react-components';
 
 import LabelDisplay from '../../../Shared/LabelDisplay';
 import {
   determineClass,
   printPrettyConnectionStatus,
 } from './../../applicationUtility';
-import { TitlebarWrapper, Header, ActionBarWrapper } from './styled';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -32,7 +29,7 @@ function deleteApplication(applicationId) {
   console.log('todo delete (#1043)', applicationId);
 }
 
-export default props => {
+export default function ApplicationDetailsHeader(props) {
   const isReadOnly = false; //todo
 
   const PanelEntry = props => {
@@ -51,9 +48,9 @@ export default props => {
   const { id, name, status, description, labels } = props.application;
 
   return (
-    <Header>
-      <ActionBarWrapper className="fd-has-padding-regular fd-has-padding-bottom-none">
-        <TitlebarWrapper>
+    <header>
+      <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
+        <section>
           <Breadcrumb>
             <Breadcrumb.Item
               name="Applications"
@@ -63,9 +60,9 @@ export default props => {
             <Breadcrumb.Item />
           </Breadcrumb>
           <ActionBar.Header title={props.application.name} />
-        </TitlebarWrapper>
+        </section>
         <ActionBar.Actions>
-          {/* todo moze być readonly */}
+          {/* todo can be readonly */}
           {!isReadOnly && (
             <Button onClick={() => connectApplication(id)} option="emphasized">
               Connect Application
@@ -82,7 +79,7 @@ export default props => {
             Delete
           </Button>
         </ActionBar.Actions>
-      </ActionBarWrapper>
+      </section>
       <PanelGrid nogap cols={4}>
         <PanelEntry title="Name" content={<p>{name}</p>} />
         <PanelEntry
@@ -108,6 +105,6 @@ export default props => {
           />
         )}
       </PanelGrid>
-    </Header>
+    </header>
   );
 };
