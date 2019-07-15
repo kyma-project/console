@@ -30,6 +30,20 @@ const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
   }
 }
 
+const getSystemNamespaces = (namespaces) => {
+  return namespacesArray = namespaces ? namespaces.split(' ') : [];
+}
+
+const shouldShowSystemNamespaces = () => {
+  let showSystemNamespaces = false;
+  if (localStorage.getItem('console.showSystemNamespaces')) {
+    showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
+  }
+  return showSystemNamespaces;
+}
+
 module.exports = {
-  hideDisabledNodes
+  hideDisabledNodes,
+  getSystemNamespaces,
+  shouldShowSystemNamespaces
 };

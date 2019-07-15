@@ -1,7 +1,7 @@
 import LuigiClient from '@kyma-project/luigi-client';
 import rbacRulesMatched from './rbac-rules-matcher';
 import convertToNavigationTree from './microfrontend-converter';
-import { hideDisabledNodes } from './navigation-helpers';
+import { hideDisabledNodes, getSystemNamespaces, shouldShowSystemNamespaces } from './navigation-helpers';
 
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -19,6 +19,7 @@ var config = {
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   disabledNavigationNodes: '',
+  systemNamespaces: 'istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss'
 };
 
 if (clusterConfig) {
@@ -34,7 +35,8 @@ if (localStorage.getItem('luigi.auth')) {
   token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
 }
 
-var consoleViewGroupName = '_console_';
+const consoleViewGroupName = '_console_';
+const systemNamespaces = getSystemNamespaces(config.systemNamespaces)
 
 let navigation = {
   viewGroupSettings: {
@@ -52,6 +54,15 @@ let navigation = {
       {
         label: '+ New Namespace',
         link: '/home/workspace?~showModal=true'
+      }
+    ]
+  },
+  profile: {
+    items: [
+      {
+        icon: 'settings',
+        label: 'Settings',
+        link: '/home/settings'
       }
     ]
   }
@@ -487,18 +498,24 @@ function getNamespaces() {
   return fetchFromKyma(
     k8sServerUrl + '/api/v1/namespaces'
   )
-    .then(function getNamespacesFromApi(response) {
+    .then((response) => {
       var namespaces = [];
       response.items.map(namespace => {
         if (namespace.status && namespace.status.phase !== 'Active') {
           return; //"pretend" that inactive namespace is already removed
         }
         const namespaceName = namespace.metadata.name;
-        namespaces.push({
-          category: 'Namespaces',
-          label: namespaceName,
-          pathValue: namespaceName
+        const isSystemNamespace = systemNamespaces.some((namespace) => {
+          return namespace === namespaceName;
         });
+
+        if (!isSystemNamespace || shouldShowSystemNamespaces()) {
+          namespaces.push({
+            category: 'Namespaces',
+            label: namespaceName,
+            pathValue: namespaceName
+          });
+        }
       });
       return namespaces;
     })
@@ -571,7 +588,8 @@ Promise.all(initPromises)
         hideFromNav: true,
         context: {
           idToken: token,
-          backendModules
+          backendModules,
+          systemNamespaces
         },
         viewGroup: consoleViewGroupName,
         children: function () {

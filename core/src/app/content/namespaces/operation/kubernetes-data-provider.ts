@@ -22,7 +22,8 @@ export class KubernetesDataProvider<S extends any, T extends any>
   constructor(
     private resourceUrl: string,
     private dataConverter: DataConverter<S, T>,
-    private http: HttpClient
+    private http: HttpClient,
+    private namespacesToHide?: string[]
   ) {}
 
   getData(
@@ -46,7 +47,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
                     ? this.dataConverter.convert(item)
                     : item;
                 })
-                .filter(item => this.selectActiveNamespaces(item));
+                .filter(item => this.shouldNamespaceBeShown(item))
             }),
             catchError(error => {
               observer.error(error);
@@ -104,13 +105,16 @@ export class KubernetesDataProvider<S extends any, T extends any>
     return result;
   }
 
-  selectActiveNamespaces(item) {
-    if (item instanceof Namespace) {
-      return (
-        !item.status || !item.status.phase || item.status.phase === 'Active'
-      );
-    } else {
+  shouldNamespaceBeShown(item) {
+    if (!(item instanceof Namespace)) {
       return true;
     }
+
+    const shouldBeHidden = this.namespacesToHide ? this.namespacesToHide.some((namespaceToHide) => {
+      return namespaceToHide === item.metadata.name;
+    }) : false;
+    const isActive = !item.status || !item.status.phase || item.status.phase === 'Active';
+
+    return !shouldBeHidden && isActive;
   }
 }

@@ -46,5 +46,17 @@
         </button>
       </fd-panel-body>
     </fd-panel>
+
+    <fd-panel class="y-fd-panel">
+      <fd-panel-header>
+        <fd-panel-head>
+          <fd-panel-title>Namespaces settings</fd-panel-title>
+        </fd-panel-head>
+      </fd-panel-header>
+      <fd-panel-body>
+        <fd-toggle [(ngModel)]="showSystemNamespaces" (click)="toggleSystemNamespaceVisibility()">Show System Namespaces</fd-toggle>
+      </fd-panel-body>
+    </fd-panel>
+
   </fd-panel-grid>
 </section>
