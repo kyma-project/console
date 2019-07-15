@@ -229,6 +229,7 @@ class CreateApplicationModal extends React.Component {
     if (success) {
       this.clearState();
       await this.refetchApplicationExists();
+      this.props.applicationsQuery.refetch();
       LuigiClient.uxManager().removeBackdrop();
     }
   };
