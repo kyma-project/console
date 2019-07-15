@@ -8,7 +8,7 @@ WORKDIR /app
 COPY licenses/ /app/licenses/
 
 # Install app dependencies
-COPY package.json package-lock.json config-overrides.js /app/
+COPY package.json package-lock.json /app/
 RUN npm install --no-optional
 
 # Copy sources
