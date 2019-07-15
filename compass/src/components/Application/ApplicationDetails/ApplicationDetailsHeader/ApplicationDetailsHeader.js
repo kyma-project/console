@@ -49,8 +49,8 @@ export default function ApplicationDetailsHeader(props) {
 
   return (
     <header>
-      <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-        <section>
+      <section className="fd-has-padding-regular fd-has-padding-bottom-none fd-has-display-flex">
+        <section className="width-100">
           <Breadcrumb>
             <Breadcrumb.Item
               name="Applications"
