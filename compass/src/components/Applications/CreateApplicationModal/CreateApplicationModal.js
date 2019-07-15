@@ -2,6 +2,7 @@ import React from "react";
 
 import { Mutation } from "react-apollo";
 import { CREATE_APPLICATION_MUTATION } from "../gql";
+import { GET_RUNTIMES } from "../../Runtimes/gql";
 import { Button, Input, Modal } from "@kyma-project/react-components";
 import LuigiClient from "@kyma-project/luigi-client";
 
@@ -58,20 +59,30 @@ class CreateApplicationModal extends React.Component {
 
   onChangeLabel = (value, ss) => {
     let formData = this.state.formData;
-    let labelsValidated = true;
-
     try {
       formData.labels = JSON.parse(value);
-    } catch (err) {
-      labelsValidated = false;
-    }
+    } catch (err) {}
 
     this.setState({
       labels: value,
-      formData,
-      labelsValidated,
-      requiredFieldsFilled: this.state.nameFilled && labelsValidated
+      formData
     });
+  };
+
+  setLabelsAsValid = value => {
+    this.setState({
+      labelsValidated: Boolean(value),
+      requiredFieldsFilled: Boolean(value) && this.state.nameFilled
+    });
+  };
+
+  updateCacheAfterVote = (store, createVote) => {
+    const data = store.readQuery({ query: GET_RUNTIMES });
+    console.log("createVote", createVote);
+    // const votedLink = data.feed.links.find(link => link.id === linkId)
+    // votedLink.votes = createVote.link.votes
+
+    store.writeQuery({ query: GET_RUNTIMES, data });
   };
 
   render() {
@@ -112,6 +123,8 @@ class CreateApplicationModal extends React.Component {
               text={this.state.labels}
               schema={labelsSchema}
               onChangeText={this.onChangeLabel}
+              onError={() => this.setLabelsAsValid(false)}
+              onSuccess={() => this.setLabelsAsValid(true)}
             />
           </FormItem>
         </FormSet>
@@ -119,9 +132,19 @@ class CreateApplicationModal extends React.Component {
     );
 
     return (
-      <Mutation mutation={CREATE_APPLICATION_MUTATION} variables={{ in: formData }}>
+      <Mutation
+        mutation={CREATE_APPLICATION_MUTATION}
+        variables={{ in: formData }}
+        onCompleted={() => {
+          console.log("lolo");
+          LuigiClient.linkManager()
+            .fromClosestContext()
+            .navigate(`/runtimes`);
+        }}
+        update={(store, { data }) => this.updateStoreAfterVote(store, data)}
+      >
         {(createApplication, result) => {
-          const { data, loading, error, called } = result;
+          const { data, loading, error, called, client } = result;
           if (loading) {
             return <div>LOADING</div>;
           }
@@ -143,6 +166,7 @@ class CreateApplicationModal extends React.Component {
               type: "success",
               closeAfter: 2000
             });
+            console.log("called", called, result);
           }
 
           return (

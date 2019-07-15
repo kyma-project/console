@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Ajv from "ajv";
 import JSONEditor from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.css";
 
@@ -27,7 +27,28 @@ export default class JSONEditorComponent extends Component {
     }
   }
 
+  afterValidation = text => {
+    try {
+      const ajv = new Ajv();
+      const valid = ajv.validate(this.props.schema, JSON.parse(text));
+      valid ? this.props.onSuccess() : this.props.onError();
+    } catch (err) {
+      this.props.onError();
+    }
+  };
+
   componentWillUpdate(nextProps) {
+    if (nextProps.text === this.props.text) {
+      return;
+    }
+
+    if (
+      this.props.schema &&
+      typeof this.props.onSuccess === "function" &&
+      typeof this.props.onError === "function"
+    ) {
+      this.afterValidation(nextProps.text);
+    }
     this.jsoneditor.updateText(nextProps.text);
   }
 
