@@ -10,6 +10,7 @@ import {
   determineClass,
   printPrettyConnectionStatus,
 } from './../../applicationUtility';
+import ApplicationUpdateModal from '../ApplicationUpdateModal/ApplicationUpdateModal';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -19,10 +20,6 @@ function navigateToApplications() {
 
 function connectApplication(applicationId) {
   console.log('todo connect (#1042)', applicationId);
-}
-
-function editApplication(applicationId) {
-  console.log('todo edit (#1042)', applicationId);
 }
 
 function deleteApplication(applicationId) {
@@ -68,9 +65,9 @@ export default function ApplicationDetailsHeader(props) {
               Connect Application
             </Button>
           )}
-          <Button onClick={() => editApplication(id)} option="light">
-            Edit
-          </Button>
+
+          <ApplicationUpdateModal application={props.application} />
+      
           <Button
             onClick={() => deleteApplication(id)}
             option="light"
