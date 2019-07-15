@@ -1,0 +1,10 @@
+.action-bar-wrapper {
+  @media (min-width: 900px) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.action-bar-wrapper__left-panel {
+  flex-grow: 1;
+}
