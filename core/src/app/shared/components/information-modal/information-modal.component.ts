@@ -43,12 +43,12 @@ export class InformationModalComponent {
   }
 
   public cancel(event: Event) {
-    this.isActive = false;
-    this.modalService.dismissAll();
+    this.hide();
   }
 
   public hide() {
     this.isActive = false;
+    this.modalService.dismissAll();
   }
 
   public redirect() {
