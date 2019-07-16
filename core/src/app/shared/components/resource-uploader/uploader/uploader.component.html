@@ -1,9 +1,20 @@
-<div class="fd-container fd-container--centered fd-has-margin-tiny">
-  <div class="fd-col--10">
-    <input fd-form-control [type]="'text'" placeholder="Select YAML or JSON file" [(ngModel)]="fileName" readonly />
+<div class="y-uploader">
+  <div class="y-uploader__file-input">
+    <input
+      fd-form-control
+      [type]="'text'"
+      placeholder="Select YAML or JSON file"
+      [(ngModel)]="fileName"
+      readonly
+    />
   </div>
-  <fd-file-input class="fd-col--2" (onSelect)="selectFile($event)" #fileInput [multiple]="false"  
-    [accept]="'.yaml,.json'">
+  <fd-file-input
+    class="y-uploader__button"
+    (onSelect)="selectFile($event)"
+    #fileInput
+    [multiple]="false"
+    [accept]="'.yaml,.json'"
+  >
     <button fd-button (click)="fileInput.open()">
       Select
     </button>
