@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
 import LuigiClient from "@kyma-project/luigi-client";
 import { FormSet, FormItem, FormInput, FormLabel } from "fundamental-react";
 import { Button, Modal } from "@kyma-project/react-components";
 import JSONEditorComponent from "./../../../Shared/JSONEditor";
 import { labelsSchema } from "./../../../Shared/labelSchema";
-import { Mutation, graphql, withApollo, compose } from "react-apollo";
+import { withApollo } from "react-apollo";
 import { UPDATE_APPLICATION } from "./../../gql"; //todo orgnize importatas
+
+ApplicationUpdateModal.propTypes = {
+  application: PropTypes.object.isRequired
+}
 
 function ApplicationUpdateModal(props) {
   
@@ -45,7 +50,7 @@ function ApplicationUpdateModal(props) {
   }
 
   const modalOpeningComponent = (
-    <Button onClick={() => console.log(props)} option="light">
+    <Button option="light">
       Edit
     </Button>
   );
