@@ -4,49 +4,44 @@ import { FormSet, FormItem, FormInput, FormLabel } from "fundamental-react";
 import { Button, Modal } from "@kyma-project/react-components";
 import JSONEditorComponent from "./../../../Shared/JSONEditor";
 import { labelsSchema } from "./../../../Shared/labelSchema";
-import { Mutation } from "react-apollo";
+import { Mutation, graphql, withApollo, compose } from "react-apollo";
 import { UPDATE_APPLICATION } from "./../../gql"; //todo orgnize importatas
 
-export default function ApplicationUpdateModal(props) {
+function ApplicationUpdateModal(props) {
   
-
-    
   //todo clear hooks
-
-
 
   const [name, setName] = useState(props.application.name);
   const [description, setDescription] = useState(props.application.description);
   const [textLabels, setTextLabels] = useState(JSON.stringify(props.application.labels));
   const [areLabelsValid, setAreLabelsValid] = useState(true);
 
-  console.log(UPDATE_APPLICATION);
-  console.log(typeof UPDATE_APPLICATION);
-
   function isReadyToSave() {
     return name.trim() !== "" && description.trim() !== "" && areLabelsValid;
   }
 
   function createApplicationInput() {
+    console.log({name,
+      description,
+      labels: JSON.parse(textLabels),
+      annotations: props.application.annotations,
+      webhooks: props.application.webhooks,
+      healthCheckURL: props.application.healthCheckURL,
+      apis: props.application.apis,
+      eventAPIs: props.application.eventAPIs,
+      documents: props.application.documents})
 
-    console.log(
-
-
-        Object.assign({}, props.application, {
-            name,
-            description,
-            labels: JSON.parse(textLabels)
-          })
-
-    )
-
-
-
-    return Object.assign({}, props.application, {
+    return {
       name,
       description,
-      labels: JSON.parse(textLabels)
-    });
+      labels: JSON.parse(textLabels),
+      annotations: props.application.annotations,
+      webhooks: props.application.webhooks,
+      healthCheckURL: props.application.healthCheckURL,
+      apis: props.application.apis,
+      eventAPIs: props.application.eventAPIs,
+      documents: props.application.documents
+    };
   }
 
   const modalOpeningComponent = (
@@ -95,19 +90,57 @@ export default function ApplicationUpdateModal(props) {
     </FormSet>
   );
 
+    async function updateApplication() {
+
+      console.log({
+        id: props.application.id,
+        in: createApplicationInput()
+      })
+
+
+      try {
+        console.log(await props.client.mutate({
+          mutation: UPDATE_APPLICATION,
+          variables: {
+            id: props.application.id,
+            input: createApplicationInput() }
+          }));
+      }
+      catch(e) {
+        console.warn(e);
+      }
+    }
+
   return (
-    <Mutation
-      variables={{ id: props.application.id, in: createApplicationInput }}
-      mutation={UPDATE_APPLICATION}
-      onCompleted={() => {
-        console.log("SUCCESS");
-      }}
-    //   update={(store, { data }) => {
-    //     console.log("STORE: ", store);
-    //     console.log("DATA: ", data);
-    //   }}
+    <Modal
+      width={"480px"}
+      title="Edit Application"
+      confirmText="Update"
+      cancelText="Cancel"
+      type={"emphasized"}
+      modalOpeningComponent={modalOpeningComponent}
+      onConfirm={updateApplication}
+      disableConfirm={!isReadyToSave}
+      onShow={() => LuigiClient.uxManager().addBackdrop()}
+      onHide={() => LuigiClient.uxManager().removeBackdrop()}
     >
-      {(updateApplication, result) => {
+      {content}
+    </Modal>
+);
+
+//   variables={{ id: props.application.id, in: createApplicationInput }}
+//   mutation={UPDATE_APPLICATION}
+//   onCompleted={() => {
+//     console.log("SUCCESS");
+//   }}
+// //   update={(store, { data }) => {
+// //     console.log("STORE: ", store);
+// //     console.log("DATA: ", data);
+// //   }}
+
+  // return (
+  //   <>
+      {/* {(updateApplication, result) => {
         console.log("result: ",result);
         const { data, loading, error, called, client } = result;
         if (loading) {
@@ -133,25 +166,19 @@ export default function ApplicationUpdateModal(props) {
             closeAfter: 2000
           });
           console.log("called", called, result);
-        }
-
-        return (
-          <Modal
-            width={"480px"}
-            title="Edit Application"
-            confirmText="Update"
-            cancelText="Cancel"
-            type={"emphasized"}
-            modalOpeningComponent={modalOpeningComponent}
-            onConfirm={updateApplication}
-            disableConfirm={!isReadyToSave}
-            onShow={() => LuigiClient.uxManager().addBackdrop()}
-            onHide={() => LuigiClient.uxManager().removeBackdrop()}
-          >
-            {content}
-          </Modal>
-        );
-      }}
-    </Mutation>
-  );
+        } */}
+    //   }}
+    // </>
+    //     );
 }
+
+
+
+// const ApplicationUpdateModalithCompose = compose(
+//   graphql(SEND_NOTIFICATION, {
+//     name: 'sendNotification',
+//   }),
+// )(CreateCredentialsModal);
+
+export default withApollo(ApplicationUpdateModal);
+
