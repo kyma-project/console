@@ -156,7 +156,7 @@ export class NamespaceCreateComponent {
   public show() {
     this.setDefaultValues();
     this.modalService
-      .open(this.createNamespaceModal, { width: '40em', maxWidth: '90%' })
+      .open(this.createNamespaceModal, { width: '48em', maxWidth: '90%' })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
