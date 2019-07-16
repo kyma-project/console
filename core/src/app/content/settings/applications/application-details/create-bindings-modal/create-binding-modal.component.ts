@@ -83,7 +83,8 @@ export class CreateBindingsModalComponent {
       this.modalService
         .open(this.createBindingModal, {
           ...DEFAULT_MODAL_CONFIG,
-          height: '35em'
+
+          width: '30em'
         })
         .afterClosed.toPromise()
         .finally(() => {
