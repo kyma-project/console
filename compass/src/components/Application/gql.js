@@ -73,3 +73,17 @@ export const GET_APPLICATION = gql`
     }
   }
 `;
+
+export const UPDATE_APPLICATION = gql`
+  mutation updateApplication($id: ID!, $input: ApplicationInput!) {
+    updateApplication(id: $id, in: $input) {
+      id
+      description
+      name
+      labels
+      status {
+        condition
+      }
+    }
+  }
+`;

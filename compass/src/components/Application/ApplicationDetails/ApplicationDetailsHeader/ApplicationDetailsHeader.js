@@ -10,7 +10,7 @@ import {
   determineClass,
   printPrettyConnectionStatus,
 } from './../../applicationUtility';
-import ApplicationUpdateModal from '../ApplicationUpdateModal/ApplicationUpdateModal';
+import ApplicationUpdateModal from '../ApplicationUpdateModal/ApplicationUpdateModal2';
 import "./styles.scss";
 
 function navigateToApplications() {
