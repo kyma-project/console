@@ -76,6 +76,7 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
         this.entryRenderer = DeploymentEntryRendererComponent;
         this.headerRenderer = DeploymentHeaderRendererComponent;
         this.filterState = { filters: [new Filter('name', '', false)] };
+        this.reloadResults();
       }
     );
   }
