@@ -52,6 +52,7 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
         this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = ServicesEntryRendererComponent;
         this.headerRenderer = ServicesHeaderRendererComponent;
+        this.reloadResults();
       });
   }
 
