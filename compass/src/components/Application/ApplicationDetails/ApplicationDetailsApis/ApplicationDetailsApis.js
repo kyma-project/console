@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Panel, Table } from '@kyma-project/react-components';
 import { Pagination } from 'fundamental-react/lib/Pagination';
 
@@ -7,6 +8,10 @@ function createTableData(apis) {
     rowData: [api.name, api.description, api.targetURL],
   }));
 }
+
+ApplicationDetailsApis.propTypes = {
+  apis: PropTypes.object.isRequired
+};
 
 export default function ApplicationDetailsApis(props) {
   const { totalCount, data: apis } = props.apis;

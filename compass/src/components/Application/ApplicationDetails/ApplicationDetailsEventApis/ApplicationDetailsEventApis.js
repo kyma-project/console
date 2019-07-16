@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Panel, Table } from '@kyma-project/react-components';
 import { Pagination } from 'fundamental-react/lib/Pagination';
 
@@ -7,6 +8,10 @@ function createTableData(eventApis) {
     rowData: [eventApi.name, eventApi.description],
   }));
 }
+
+ApplicationDetailsEventApis.propTypes = {
+  eventApis: PropTypes.object.isRequired
+};
 
 export default function ApplicationDetailsEventApis(props) {
   const { totalCount, data: eventApis } = props.eventApis;

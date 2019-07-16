@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import classnames from 'classnames';
 
@@ -29,6 +30,10 @@ function editApplication(applicationId) {
 function deleteApplication(applicationId) {
   console.log('todo delete (#1043)', applicationId);
 }
+
+ApplicationDetailsHeader.propTypes = {
+  application: PropTypes.object.isRequired
+};
 
 export default function ApplicationDetailsHeader(props) {
   const isReadOnly = false; //todo
