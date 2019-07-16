@@ -53,7 +53,8 @@ export class LambdasComponent extends GenericTableComponent
   token: string;
   environment: string;
   error: string;
-  listenerId: number;
+  private initListenerId: number;
+  private contextUpdateListenerId: string;
 
   filterState = { filters: [new Filter('metadata.name', '', false)] };
   pagingState = { pageNumber: 1, pageSize: 10 };
@@ -211,8 +212,11 @@ export class LambdasComponent extends GenericTableComponent
   }
 
   ngOnDestroy() {
-    if (this.listenerId) {
-      luigiClient.removeInitListener(this.listenerId);
+    if (this.initListenerId) {
+      luigiClient.removeInitListener(this.initListenerId);
+    }
+    if (this.contextUpdateListenerId) {
+      luigiClient.removeContextUpdateListener(this.contextUpdateListenerId);
     }
   }
 
@@ -221,8 +225,12 @@ export class LambdasComponent extends GenericTableComponent
   }
 
   listeningForChangingTitle() {
+    this.initListenerId = luigiClient.addInitListener(() => this.loadData(this));
+    this.contextUpdateListenerId = luigiClient.addContextUpdateListener(() => this.loadData(this));
+  }
+
+  loadData(that: LambdasComponent) {
     // tslint:disable-next-line:no-this-assignment
-    const that: LambdasComponent = this;
     const converter: DataConverter<IFunction, Lambda> = {
       convert(entry: IFunction) {
         const func = new Lambda(entry);
@@ -243,19 +251,17 @@ export class LambdasComponent extends GenericTableComponent
         return func;
       },
     };
+    const eventData = luigiClient.getEventData();
+    this.environment = eventData.namespaceId;
+    this.token = eventData.idToken;
 
-    this.listenerId = luigiClient.addInitListener(() => {
-      const eventData = luigiClient.getEventData();
-      this.environment = eventData.namespaceId;
-      this.token = eventData.idToken;
-      this.source = new KubernetesDataProvider(
-        `${AppConfig.kubelessApiUrl}/namespaces/${this.environment}/functions`,
-        converter,
-        this.http,
-        this.token,
-      );
-      this.reload();
-    });
+    this.source = new KubernetesDataProvider(
+      `${AppConfig.kubelessApiUrl}/namespaces/${this.environment}/functions`,
+      converter,
+      this.http,
+      this.token,
+    );
+    this.reload();
   }
 
   goToCreate() {

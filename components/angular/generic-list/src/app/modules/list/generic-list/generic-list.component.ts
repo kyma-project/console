@@ -81,6 +81,15 @@ export class GenericListComponent implements OnChanges, OnInit {
   }
 
   applyState(noCache?: boolean) {
+    
+    this.reloadResults(noCache);
+
+    if (!(this.changeDetector as ViewRef).destroyed) {
+      this.changeDetector.detectChanges();
+    }
+  }
+
+  protected reloadResults(noCache: boolean = true) {
     of(0)
       .pipe(delay(350))
       .subscribe(() => {
@@ -111,9 +120,6 @@ export class GenericListComponent implements OnChanges, OnInit {
     } else {
       this.data = null;
       this.setLoaded(true);
-    }
-    if (!(this.changeDetector as ViewRef).destroyed) {
-      this.changeDetector.detectChanges();
     }
   }
 
