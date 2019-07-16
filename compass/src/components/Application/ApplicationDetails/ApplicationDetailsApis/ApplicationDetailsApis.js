@@ -1,10 +1,38 @@
-import React from 'react';
-import { Panel, Table } from '@kyma-project/react-components';
-import { Pagination } from 'fundamental-react/lib/Pagination';
+import React from "react";
+import { Panel, Table, Button } from "@kyma-project/react-components";
+import { Pagination } from "fundamental-react/lib/Pagination";
+import { Popover } from "fundamental-react/lib/Popover";
+import { Menu } from "fundamental-react/lib/Menu";
+import ApiDeleteModal from "./ApiDeleteModal";
 
-function createTableData(apis) {
+function createTableData(apis, applicationId) {
+  const PopoverBody = props => {
+    return (
+      <Menu>
+        <Menu.List>
+          <ApiDeleteModal
+            api={props.api}
+            applicationId={applicationId}
+            modalOpeningComponent={<Menu.Item urlProps={{ key: "delete" }}>Delete</Menu.Item>}
+          />
+        </Menu.List>
+      </Menu>
+    );
+  };
+
   return apis.map(api => ({
-    rowData: [api.name, api.description, api.targetURL],
+    rowData: [
+      api.name,
+      api.description,
+      api.targetURL,
+      <div className="fd-col--2 fd-has-text-align-center">
+        <Popover
+          body={<PopoverBody api={api} />}
+          control={<Button glyph="horizontal-grip" option="light" />}
+          placement="bottom-end"
+        />
+      </div>
+    ]
   }));
 }
 
@@ -18,20 +46,20 @@ export default function ApplicationDetailsApis(props) {
           <Panel.Head title="APIs" />
         </Panel.Header>
         <Table
-          headers={['Name', 'Description', 'Target URL']}
-          tableData={createTableData(apis)}
-          notFoundMessage={'There are no APIs available'}
+          headers={["Name", "Description", "Target URL", ""]}
+          tableData={createTableData(apis, props.applicationId)}
+          notFoundMessage={"There are no APIs available"}
         />
         {!!totalCount && (
           <Pagination
             displayTotal={false}
             itemsTotal={totalCount || 0}
             itemsPerPage={8}
-            onClick={() => console.log('will be done in #1039')}
+            onClick={() => console.log("will be done in #1039")}
             className="fd-has-padding-top-small"
           />
         )}
       </Panel.Body>
     </Panel>
   );
-};
+}

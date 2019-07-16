@@ -27,8 +27,8 @@ export default function ApplicationDetails(props) {
           <>
             <Header application={application} />
             <section className="fd-section">
-              <ApisList apis={application.apis} />
-              <EventApisList eventApis={application.eventAPIs} />
+              <ApisList apis={application.apis} applicationId={application.id} />
+              <EventApisList eventApis={application.eventAPIs} applicationId={application.id} />
             </section>
           </>
         );
