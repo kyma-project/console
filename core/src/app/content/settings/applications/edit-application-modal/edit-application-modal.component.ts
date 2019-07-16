@@ -9,6 +9,7 @@ import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
 import { ModalService, ModalRef } from 'fundamental-ngx';
+import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-edit-application-modal',
@@ -41,7 +42,10 @@ export class EditApplicationModalComponent {
     this.isActive = true;
 
     this.modalService
-      .open(this.editApplicationModal)
+      .open(this.editApplicationModal, {
+        ...DEFAULT_MODAL_CONFIG,
+        width: '32em'
+      })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;

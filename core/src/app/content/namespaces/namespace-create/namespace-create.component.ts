@@ -8,6 +8,7 @@ import {
 import { NamespacesService } from '../services/namespaces.service';
 import LuigiClient from '@kyma-project/luigi-client';
 import { ModalService, ModalRef } from 'fundamental-ngx';
+import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-namespace-create',
@@ -156,7 +157,10 @@ export class NamespaceCreateComponent {
   public show() {
     this.setDefaultValues();
     this.modalService
-      .open(this.createNamespaceModal, { width: '48em', maxWidth: '90%' })
+      .open(this.createNamespaceModal, {
+        ...DEFAULT_MODAL_CONFIG,
+        width: '48em'
+      })
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
