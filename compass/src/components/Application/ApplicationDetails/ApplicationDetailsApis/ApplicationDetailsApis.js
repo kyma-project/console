@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Panel, Table, Button } from "@kyma-project/react-components";
 import { Pagination } from "fundamental-react/lib/Pagination";
 import { Popover } from "fundamental-react/lib/Popover";
@@ -35,6 +36,10 @@ function createTableData(apis, applicationId) {
     ]
   }));
 }
+
+ApplicationDetailsApis.propTypes = {
+  apis: PropTypes.object.isRequired
+};
 
 export default function ApplicationDetailsApis(props) {
   const { totalCount, data: apis } = props.apis;

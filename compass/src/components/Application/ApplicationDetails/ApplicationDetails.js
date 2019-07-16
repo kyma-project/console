@@ -1,10 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { GET_APPLICATION } from './../gql';
 import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
+
+ApplicationDetails.propTypes = {
+  applicationId: PropTypes.string.isRequired
+};
 
 export default function ApplicationDetails(props) {
   return (
