@@ -40,16 +40,13 @@ class CreateApplicationModal extends React.Component {
       invalidInstanceName,
       instanceWithNameAlreadyExists,
       enableCheckNameExists,
-      requiredFieldsFilled
+      nameFilled,
+      labelsValidated
     } = this.state;
 
     if (equal(this.state, prevState)) return;
 
-    const stepFilled = formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
-
-    this.setState({
-      stepFilled
-    });
+    const requiredFieldsFilled = nameFilled && labelsValidated;
 
     const tooltipData = !requiredFieldsFilled
       ? {
@@ -57,6 +54,20 @@ class CreateApplicationModal extends React.Component {
           content: "Fill out all mandatory fields"
         }
       : null;
+    console.log(
+      "tooltipData",
+      tooltipData,
+      "requiredFieldsFilled",
+      requiredFieldsFilled,
+      "nameFilled",
+      nameFilled,
+      "labelsValidated",
+      labelsValidated
+    );
+    this.setState({
+      requiredFieldsFilled,
+      tooltipData
+    });
 
     clearTimeout(this.timer);
     if (
@@ -93,7 +104,6 @@ class CreateApplicationModal extends React.Component {
   onChangeName = value => {
     this.setState({
       nameFilled: Boolean(value),
-      requiredFieldsFilled: Boolean(value) && this.state.labelsValidated,
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: this.validateApplicationName(value),
       formData: {
@@ -126,8 +136,7 @@ class CreateApplicationModal extends React.Component {
 
   setLabelsAsValid = value => {
     this.setState({
-      labelsValidated: Boolean(value),
-      requiredFieldsFilled: Boolean(value) && this.state.nameFilled
+      labelsValidated: Boolean(value)
     });
   };
 
