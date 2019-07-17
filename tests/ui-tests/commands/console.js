@@ -146,7 +146,7 @@ async function applyTextSearchFilter(page, searchText) {
 
 async function createNamespace(page, name) {
   const frame = await getFrame(page);
-  const createNamespaceModal = '[data-e2e-id=create-namespace-modal]';
+  const createNamespaceModal = '[data-e2e-id=create-namespace-form]';
   const createBtn = '.namespace-create-btn';
   const namespaceNameInput = 'input[name=namespaceName]';
   const createButtonSelector = '.open-create-namespace-modal';
