@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService, ModalRef } from 'fundamental-ngx';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-information-modal',
@@ -54,7 +55,7 @@ export class InformationModalComponent {
   public redirect() {
     this.isActive = false;
     if (this.redirectUrl) {
-      this.router.navigate([this.redirectUrl]);
+      LuigiClient.linkManager().navigate(this.redirectUrl);
     }
   }
 }
