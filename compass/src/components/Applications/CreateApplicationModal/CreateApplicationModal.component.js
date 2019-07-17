@@ -13,6 +13,7 @@ import "./styles.scss";
 class CreateApplicationModal extends React.Component {
   constructor(props) {
     super(props);
+    this.timer = null;
     this.state = this.getInitialState();
   }
 
@@ -29,20 +30,29 @@ class CreateApplicationModal extends React.Component {
       nameFilled: false,
       labelsValidated: true,
       requiredFieldsFilled: false,
-      creatingApplication: false,
-      tooltipData: null
+      tooltipData: null,
+      enableCheckNameExists: false
     };
   };
 
+  refetchApplicationExists = async () => {
+    return await this.props.applicationsExists();
+  };
+
+  clearState = () => {
+    this.setState(this.getInitialState());
+  };
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+    this.clearState();
+  }
+
+  componentDidMount() {
+    clearTimeout(this.timer);
+  }
   componentDidUpdate(prevProps, prevState) {
-    const {
-      formData,
-      invalidInstanceName,
-      instanceWithNameAlreadyExists,
-      enableCheckNameExists,
-      nameFilled,
-      labelsValidated
-    } = this.state;
+    const { formData, invalidApplicationName, enableCheckNameExists, nameFilled, labelsValidated } = this.state;
 
     if (equal(this.state, prevState)) return;
 
@@ -54,25 +64,11 @@ class CreateApplicationModal extends React.Component {
           content: "Fill out all mandatory fields"
         }
       : null;
-    console.log(
-      "tooltipData",
-      tooltipData,
-      "requiredFieldsFilled",
-      requiredFieldsFilled,
-      "nameFilled",
-      nameFilled,
-      "labelsValidated",
-      labelsValidated
-    );
-    this.setState({
-      requiredFieldsFilled,
-      tooltipData
-    });
 
     clearTimeout(this.timer);
     if (
       enableCheckNameExists &&
-      !invalidInstanceName &&
+      !invalidApplicationName &&
       formData &&
       formData.name &&
       typeof this.checkNameExists === "function"
@@ -81,28 +77,61 @@ class CreateApplicationModal extends React.Component {
         this.checkNameExists(formData.name);
       }, 250);
     }
-  }
 
-  clearState = () => {
-    console.log("clearState");
-    this.setState(this.getInitialState());
-  };
+    this.setState({
+      requiredFieldsFilled,
+      tooltipData
+    });
+  }
 
   validateApplicationName = value => {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
-    this.wrongApplicationName = value && (!Boolean(regex.test(value || "")) || value.length > 253);
+    const wrongApplicationName = value && (!Boolean(regex.test(value || "")) || value.length > 253);
+    return wrongApplicationName;
   };
 
   checkNameExists = async name => {
-    const { data, error } = await this.props.refetchInstanceExists(name);
-
-    this.setState({
-      instanceWithNameAlreadyExists: !error && data && data.serviceInstance !== null
+    const { data, error } = await this.refetchApplicationExists();
+    const existingApplications =
+      data && data.applications && data.applications.data ? data.applications.data.map(app => app.name) : [];
+    const exist = existingApplications.filter(str => {
+      return str === name;
     });
+    this.setState({
+      applicationWithNameAlreadyExists: !error && exist && exist.length
+    });
+  };
+
+  invalidNameMessage = name => {
+    if (!name.length) {
+      return "Please enter the name";
+    }
+    if (name[0] === "-" || name[name.length - 1] === "-") {
+      return "The application name cannot begin or end with a dash";
+    }
+    if (name.length > 253) {
+      return "The maximum length of service name is 63 characters";
+    }
+    return "The application name can only contain lowercase alphanumeric characters or dashes";
+  };
+
+  getApplicationNameErrorMessage = () => {
+    const { invalidApplicationName, applicationWithNameAlreadyExists, formData } = this.state;
+
+    if (invalidApplicationName) {
+      return this.invalidNameMessage(formData.name);
+    }
+
+    if (applicationWithNameAlreadyExists) {
+      return `Application with name "${formData.name}" already exists`;
+    }
+
+    return null;
   };
 
   onChangeName = value => {
     this.setState({
+      enableCheckNameExists: true,
       nameFilled: Boolean(value),
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: this.validateApplicationName(value),
@@ -143,15 +172,11 @@ class CreateApplicationModal extends React.Component {
   createApplication = async () => {
     let success = true;
 
-    this.setState({
-      creatingApplication: true
-    });
     const { formData } = this.state;
     const { addRuntime, sendNotification } = this.props;
     try {
       let createdApplicationName;
-      const createdApplication = await addRuntime({});
-      console.log("createdApplication", createdApplication);
+      const createdApplication = await addRuntime(formData);
       if (
         createdApplication &&
         createdApplication.data &&
@@ -173,8 +198,8 @@ class CreateApplicationModal extends React.Component {
         });
       }
     } catch (e) {
-      console.log("createdApplication failed", e);
       success = false;
+
       this.setState({
         tooltipData: {
           type: "error",
@@ -192,8 +217,13 @@ class CreateApplicationModal extends React.Component {
   };
 
   render() {
-    const { formData, requiredFieldsFilled, tooltipData, creatingApplication } = this.state;
-    console.log("props", this.props, creatingApplication);
+    const {
+      formData,
+      requiredFieldsFilled,
+      tooltipData,
+      invalidApplicationName,
+      applicationWithNameAlreadyExists
+    } = this.state;
     const createApplicationButton = (
       <Button compact option="light" data-e2e-id="create-application-button">
         + Create Application
@@ -208,6 +238,8 @@ class CreateApplicationModal extends React.Component {
           value={formData.name}
           name="applicationName"
           handleChange={this.onChangeName}
+          isError={invalidApplicationName || applicationWithNameAlreadyExists}
+          message={this.getApplicationNameErrorMessage()}
           required={true}
           type="text"
         />
@@ -244,15 +276,17 @@ class CreateApplicationModal extends React.Component {
         type={"emphasized"}
         modalOpeningComponent={createApplicationButton}
         confirmText="Create"
-        cancelText="Cancel"
         disabledConfirm={!requiredFieldsFilled}
         tooltipData={tooltipData}
         onConfirm={this.createApplication}
-        waiting={creatingApplication}
+        handleClose={this.clearState}
         onShow={() => {
           return LuigiClient.uxManager().addBackdrop();
         }}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
+        onHide={() => {
+          this.clearState();
+          LuigiClient.uxManager().removeBackdrop();
+        }}
       >
         {content}
       </Modal>

@@ -1,12 +1,33 @@
-import { graphql, compose } from "react-apollo";
+import React from "react";
+import { graphql, withApollo, compose } from "react-apollo";
 
-import { CREATE_APPLICATION_MUTATION } from "../gql";
-import { GET_RUNTIMES, ADD_RUNTIME } from "../../Runtimes/gql";
+import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS, GET_RUNTIMES } from "../gql";
+import { ADD_RUNTIME } from "../../Runtimes/gql";
 import { SEND_NOTIFICATION } from "../../../gql";
 
 import CreateApplicationModal from "./CreateApplicationModal.component";
 
-export default compose(
+const CreateApplicationContainer = ({ client, ...props }) => {
+  const applicationsExists = () => {
+    return client.query({
+      query: CHECK_APPLICATION_EXISTS,
+      variables: {
+        filter: [
+          {
+            label: "group",
+            values: ["production", "experimental"],
+            operator: "ANY"
+          }
+        ]
+      },
+      fetchPolicy: "network-only",
+      errorPolicy: "all"
+    });
+  };
+  return <CreateApplicationModal applicationsExists={applicationsExists} {...props} />;
+};
+
+const CreateApplicationContainerWithCompose = compose(
   graphql(ADD_RUNTIME, {
     props: ({ mutate }) => ({
       addRuntime: data =>
@@ -20,4 +41,6 @@ export default compose(
   graphql(SEND_NOTIFICATION, {
     name: "sendNotification"
   })
-)(CreateApplicationModal);
+)(CreateApplicationContainer);
+
+export default withApollo(CreateApplicationContainerWithCompose);
