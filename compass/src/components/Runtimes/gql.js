@@ -6,7 +6,6 @@ export const ADD_RUNTIME = gql`
       id
       name
       description
-      tenant
       labels
       annotations
     }

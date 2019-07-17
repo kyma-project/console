@@ -10,6 +10,7 @@
     "apollo-link-context": "^1.0.18",
     "apollo-link-error": "^1.1.11",
     "apollo-link-state": "^0.4.2",
+    "deep-equal": "^1.0.1",
     "fundamental-react": "^0.5.3",
     "fundamental-styles": "^0.1.0",
     "graphql": "^14.3.1",
