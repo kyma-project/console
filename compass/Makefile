@@ -22,7 +22,7 @@ build:
 
 validate:
 	npm run lint-check
-	eslint -c .eslinterrc ./src
+	npm run eslint-check
 	
 test:
 	CI=true npm run test

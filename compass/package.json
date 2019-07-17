@@ -34,7 +34,8 @@
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
     "lint-fix": "prettier --config ../.prettierrc --write \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\""
+    "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
+    "eslint-check": "eslint -c .eslinterrc ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
