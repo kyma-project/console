@@ -6,16 +6,6 @@ Luigi.setConfig({
 
   routing: {
     useHashRouting: false,
-
-
-
-
-
-
-
-
-
-    
   },
   settings,
 });
