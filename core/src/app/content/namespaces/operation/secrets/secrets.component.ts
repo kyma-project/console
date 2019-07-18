@@ -50,6 +50,7 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
         this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = SecretsEntryRendererComponent;
         this.headerRenderer = SecretsHeaderRendererComponent;
+        this.reloadResults();
       });
   }
 

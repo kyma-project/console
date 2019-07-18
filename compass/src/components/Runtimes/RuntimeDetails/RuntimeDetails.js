@@ -6,8 +6,9 @@ import { Button } from "fundamental-react/lib/Button";
 
 import LuigiClient from "@kyma-project/luigi-client";
 import { Badge } from "fundamental-react/lib/Badge";
-import { Token } from "fundamental-react/lib/Token";
 import { Panel } from "fundamental-react/lib/Panel";
+import LabelDisplay from '../../Shared/LabelDisplay';
+
 const RuntimeDetails = ({ runtimeId }) => {
   return (
     <Query query={GET_RUNTIME} variables={{ id: runtimeId }}>
@@ -48,13 +49,10 @@ const RuntimeDetails = ({ runtimeId }) => {
                           Object.keys(labels) && (
                             <div className="fd-col--4">
                               Labels
-                              <span className="columns__value">
-                                {Object.keys(labels).map(label => (
-                                  <Token key={label} className="y-fd-token y-fd-token--no-button">
-                                    {label}=[{labels[label].join(", ")}]
-                                  </Token>
-                                ))}
-                              </span>
+                              <LabelDisplay
+                                labels={labels}
+                                className="columns__value"
+                              />
                             </div>
                           )}
                       </div>
