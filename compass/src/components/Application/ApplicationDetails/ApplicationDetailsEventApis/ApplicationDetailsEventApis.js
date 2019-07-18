@@ -59,7 +59,7 @@ export default function ApplicationDetailsEventApis(props) {
             displayTotal={false}
             itemsTotal={totalCount || 0}
             itemsPerPage={8}
-            onClick={() => console.log("will be done in #1039")}
+            onClick={() => console.log('will be done in #1039')}
             className="fd-has-padding-top-small"
           />
         )}

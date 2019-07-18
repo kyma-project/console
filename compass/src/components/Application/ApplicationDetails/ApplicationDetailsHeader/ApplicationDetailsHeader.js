@@ -54,7 +54,7 @@ export default function ApplicationDetailsHeader(props) {
   const { id, name, status, description, labels } = props.application;
 
   return (
-    <header>
+    <header className="application-details-header">
       <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
         <section className="action-bar-wrapper__left-panel">
           <Breadcrumb>
