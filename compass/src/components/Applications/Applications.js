@@ -50,7 +50,7 @@ class Applications extends React.Component {
     return <Badge type={type}>{status}</Badge>;
   };
 
-  headerRenderer = application => ["Name", "Description", "Labels", "APIs", "EventAPIs", "Status"];
+  headerRenderer = applications => ["Name", "Description", "Labels", "APIs", "EventAPIs", "Status"];
   rowRenderer = application => [
     <b>{application.name}</b>,
     application.description,
@@ -89,6 +89,8 @@ class Applications extends React.Component {
 
           return (
             <GenericList
+              title="Applications"
+              description="List of all aplications"
               actions={this.actions}
               entries={apps}
               headerRenderer={this.headerRenderer}

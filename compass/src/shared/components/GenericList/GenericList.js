@@ -64,17 +64,20 @@ class GenericList extends React.Component {
     );
 
     return (
-      <Panel>
+      <Panel className="fd-panel--no-background">
         <TableWithActionsToolbar
-          title="Applications"
-          description="Description"
+          title={this.props.title}
+          description={this.props.description}
           children={headerActions(filteredEntries)}
         />
-        <TableWithActionsList
-          entries={filteredEntries}
-          headerRenderer={this.headerRenderer}
-          rowRenderer={this.rowRenderer}
-        />
+
+        <Panel.Body className="abc">
+          <TableWithActionsList
+            entries={filteredEntries}
+            headerRenderer={this.headerRenderer}
+            rowRenderer={this.rowRenderer}
+          />
+        </Panel.Body>
       </Panel>
     );
   }
@@ -82,6 +85,8 @@ class GenericList extends React.Component {
 export default GenericList;
 
 GenericList.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object),
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
