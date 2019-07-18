@@ -28,7 +28,7 @@ class Applications extends React.Component {
     ));
   };
 
-  processStatus = status => {
+  processStatus(status) {
     let type = "warning";
     switch (status) {
       case "INITIAL":
@@ -48,7 +48,7 @@ class Applications extends React.Component {
     }
 
     return <Badge type={type}>{status}</Badge>;
-  };
+  }
 
   headerRenderer = applications => ["Name", "Description", "Labels", "APIs", "EventAPIs", "Status"];
   rowRenderer = application => [

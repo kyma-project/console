@@ -50,7 +50,10 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "react-test-renderer": "^16.8.6",
+    "waait": "^1.0.5",
     "webpack-cli": "^3.3.5"
   }
 }

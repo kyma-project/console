@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Applications processStatus() Renders proper <Badge> when ERROR prop is provided 1`] = `
+<Badge
+  type="warning"
+>
+  ERROR
+</Badge>
+`;
+
+exports[`Applications processStatus() Renders proper <Badge> when INITIAL prop is provided 1`] = `
+<Badge>
+  INITIAL
+</Badge>
+`;
+
+exports[`Applications processStatus() Renders proper <Badge> when no prop is provided 1`] = `
+<Badge
+  type="warning"
+/>
+`;
+
+exports[`Applications should render loading state initially 1`] = `"Loading..."`;
