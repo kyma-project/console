@@ -2,41 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Panel } from "fundamental-react/lib/Panel";
-import { Popover } from "fundamental-react/lib/Popover";
-import { Menu } from "fundamental-react/lib/Menu";
-import { Button } from "fundamental-react/lib/Button";
-import { Search, Filter, TableWithActionsToolbar, TableWithActionsList } from "@kyma-project/react-components";
+
+import { Search, TableWithActionsToolbar, TableWithActionsList } from "@kyma-project/react-components";
+
+import { filterEntries } from "./helpers";
+import { renderActionElement } from "./internalRenderers";
 
 class GenericList extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      allFilters: [],
-      activeFilters: []
+      entries: props.entries,
+      filteredEntries: props.entries
     };
   }
-
-  processActionElement = (actions, entry) => (
-    <Popover
-      body={
-        <Menu>
-          <Menu.List>
-            {actions.map((
-              action,
-              id // no unique key error appears here. 'key' is not passed further by Fd-react
-            ) => (
-              <Menu.Item onClick={() => action.handler(entry)} key={(entry.name || entry.id) + id}>
-                {action.name}
-              </Menu.Item>
-            ))}
-          </Menu.List>
-        </Menu>
-      }
-      control={<Button glyph="vertical-grip" option="light" />}
-      placement="bottom-end"
-    />
-  );
 
   headerRenderer = entries => {
     if (this.props.actions) {
@@ -48,26 +27,54 @@ class GenericList extends React.Component {
 
   rowRenderer = entry => {
     if (this.props.actions) {
-      return [...this.props.rowRenderer(entry), this.processActionElement(this.props.actions, entry)];
+      return [...this.props.rowRenderer(entry), renderActionElement(this.props.actions, entry)];
     } else {
       return this.props.rowRenderer(entry);
     }
   };
 
-  render() {
-    const { entries: apps } = this.props;
+  renderSearchList = entries =>
+    entries
+      .map(entry => {
+        return [
+          { text: entry.name.substring(0, 18), callback: () => this.handleQueryChange(entry.name) },
+          { text: entry.description.substring(0, 18), callback: () => this.handleQueryChange(entry.description) }
+        ];
+      })
+      .flat();
 
-    const headerActions = apps => (
+  handleQueryChange = query => {
+    this.setState(prevState => ({
+      filteredEntries: filterEntries(prevState.entries, query)
+    }));
+  };
+
+  render() {
+    const { filteredEntries } = this.state;
+
+    const headerActions = filteredEntries => (
       <>
-        <Filter data={apps} allFilters={[]} activeFilters={[]} onChange={() => {}} />
-        <Search />
+        {/* {this.processFilterElement(allFilters)} */}
+        <Search
+          onEnter={this.handleQueryChange}
+          placeholder="Type your query"
+          searchList={this.renderSearchList(filteredEntries)}
+        />
       </>
     );
 
     return (
       <Panel>
-        <TableWithActionsToolbar title="Applications" description="Description" children={headerActions(apps)} />
-        <TableWithActionsList entries={apps} headerRenderer={this.headerRenderer} rowRenderer={this.rowRenderer} />
+        <TableWithActionsToolbar
+          title="Applications"
+          description="Description"
+          children={headerActions(filteredEntries)}
+        />
+        <TableWithActionsList
+          entries={filteredEntries}
+          headerRenderer={this.headerRenderer}
+          rowRenderer={this.rowRenderer}
+        />
       </Panel>
     );
   }
