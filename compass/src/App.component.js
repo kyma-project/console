@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Runtimes from "./components/Runtimes/Runtimes";
 import Overview from "./components/Overview/Overview";
 import RuntimeDetails from "./components/Runtimes/RuntimeDetails/RuntimeDetails";
+import ApplicationDetails from "./components/Application/ApplicationDetails/ApplicationDetails";
 import { Notification } from "@kyma-project/react-components";
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
@@ -51,9 +52,7 @@ class App extends React.Component {
           <Route
             path="/application/:id"
             exact
-            render={({ match }) => (
-              <ApplicationDetails applicationId={match.params.id} />
-            )}
+            render={({ match }) => <ApplicationDetails applicationId={match.params.id} />}
           />
         </Router>
       </div>
