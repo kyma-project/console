@@ -62,3 +62,21 @@ export const GET_APPLICATION = gql`
     }
   }
 `;
+
+export const ADD_APPLICATION_API = gql`
+  mutation addAPI($applicationID: ID!, $in: APIDefinitionInput!) {
+    addAPI(applicationID: $applicationID, in: $in) {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_APPLICATION_EVENT_API = gql`
+  mutation addEventAPI($applicationID: ID!, $in: EventAPIDefinitionInput!) {
+    addEventAPI(applicationID: $applicationID, in: $in) {
+      id
+      name
+    }
+  }
+`;

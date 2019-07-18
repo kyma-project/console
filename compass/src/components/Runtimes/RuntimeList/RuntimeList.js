@@ -5,6 +5,7 @@ import { Panel } from "fundamental-react/lib/Panel";
 import { GET_RUNTIMES } from "../gql";
 import { Table } from "@kyma-project/react-components";
 import LuigiClient from "@kyma-project/luigi-client";
+import Addapitest from "../../addapitest";
 
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({
@@ -24,6 +25,7 @@ const RuntimeList = () => (
 
       return (
         <Panel className="fd-has-margin-top-medium">
+        <Addapitest />
           <Panel.Header>
             <Panel.Head title="Runtime list" />
           </Panel.Header>
