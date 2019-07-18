@@ -1,0 +1,412 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GenericList Renders actions button when 'actions' prop is provided 1`] = `
+<div
+  className="fd-panel fd-panel--no-background"
+>
+  <div
+    className="fd-action-bar sc-kafWEX kXuvQ"
+    data-e2e-id="toolbar"
+  >
+    <div
+      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      data-e2e-id="toolbar-header"
+    >
+      <h1
+        className="fd-action-bar__title"
+      >
+        
+      </h1>
+    </div>
+    <div
+      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      data-e2e-id="toolbar-actions"
+    >
+      <div
+        className="fd-search-input"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            className="fd-popover__control"
+          >
+            <div
+              aria-expanded={false}
+              aria-haspopup="true"
+              className="fd-combobox-control"
+            >
+              <div
+                className="fd-input-group fd-input-group--after"
+              >
+                <input
+                  className="fd-input"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onKeyPress={[Function]}
+                  placeholder="Type your query"
+                  style={Object {}}
+                  type="text"
+                  value=""
+                />
+                <span
+                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                >
+                  <button
+                    className="fd-button--light sap-icon--search"
+                    onClick={[Function]}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-hidden={true}
+            className="fd-popover__body fd-popover__body--no-arrow"
+          >
+            <div
+              className=""
+            >
+              <nav
+                className="fd-menu"
+              >
+                <ul
+                  className="fd-menu__list"
+                >
+                  <li
+                    className="fd-menu__item"
+                    onClick={[Function]}
+                  >
+                    <strong>
+                      
+                    </strong>
+                  </li>
+                  <li
+                    className="fd-menu__item"
+                    onClick={[Function]}
+                  >
+                    <strong>
+                      
+                    </strong>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body abc"
+  >
+    <div
+      className="fd-panel sc-gGBfsJ eaQlFN"
+    >
+      <div
+        className="fd-panel__body sc-hEsumM gUkXwJ"
+      >
+        <table
+          className="fd-table sc-ktHwxA kmRrJU"
+        >
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                first_entry
+              </td>
+              <td>
+                <div
+                  className="fd-popover"
+                >
+                  <div
+                    onFocus={[Function]}
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                  >
+                    <div
+                      className="fd-popover__control"
+                    >
+                      <button
+                        className="fd-button--light sap-icon--vertical-grip"
+                        onClick={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                second_entry
+              </td>
+              <td>
+                <div
+                  className="fd-popover"
+                >
+                  <div
+                    onFocus={[Function]}
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                  >
+                    <div
+                      className="fd-popover__control"
+                    >
+                      <button
+                        className="fd-button--light sap-icon--vertical-grip"
+                        onClick={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GenericList Renders title and description 1`] = `
+<div
+  className="fd-panel fd-panel--no-background"
+>
+  <div
+    className="fd-action-bar sc-kafWEX kXuvQ"
+    data-e2e-id="toolbar"
+  >
+    <div
+      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      data-e2e-id="toolbar-header"
+    >
+      <h1
+        className="fd-action-bar__title"
+      >
+        title
+      </h1>
+      <p
+        className="fd-action-bar__description"
+      >
+        description
+      </p>
+    </div>
+    <div
+      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      data-e2e-id="toolbar-actions"
+    >
+      <div
+        className="fd-search-input"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            className="fd-popover__control"
+          >
+            <div
+              aria-expanded={false}
+              aria-haspopup="true"
+              className="fd-combobox-control"
+            >
+              <div
+                className="fd-input-group fd-input-group--after"
+              >
+                <input
+                  className="fd-input"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onKeyPress={[Function]}
+                  placeholder="Type your query"
+                  style={Object {}}
+                  type="text"
+                  value=""
+                />
+                <span
+                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                >
+                  <button
+                    className="fd-button--light sap-icon--search"
+                    onClick={[Function]}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-hidden={true}
+            className="fd-popover__body fd-popover__body--no-arrow"
+          >
+            <div
+              className=""
+            >
+              <nav
+                className="fd-menu"
+              >
+                <ul
+                  className="fd-menu__list"
+                >
+                  <li
+                    className="fd-menu__item"
+                  >
+                    No result
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body abc"
+  >
+    <div
+      className="fd-panel sc-gGBfsJ eaQlFN"
+    >
+      <div
+        className="fd-panel__body sc-hEsumM gUkXwJ"
+      >
+        <table
+          className="fd-table sc-ktHwxA kmRrJU"
+        >
+          <thead>
+            <tr />
+          </thead>
+          <tbody />
+        </table>
+        <p
+          className="sc-cIShpX eszIwp"
+        >
+          There are no applications available
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GenericList Renders with minimal props 1`] = `
+<div
+  className="fd-panel fd-panel--no-background"
+>
+  <div
+    className="fd-action-bar sc-kafWEX kXuvQ"
+    data-e2e-id="toolbar"
+  >
+    <div
+      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      data-e2e-id="toolbar-header"
+    >
+      <h1
+        className="fd-action-bar__title"
+      >
+        
+      </h1>
+    </div>
+    <div
+      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      data-e2e-id="toolbar-actions"
+    >
+      <div
+        className="fd-search-input"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            className="fd-popover__control"
+          >
+            <div
+              aria-expanded={false}
+              aria-haspopup="true"
+              className="fd-combobox-control"
+            >
+              <div
+                className="fd-input-group fd-input-group--after"
+              >
+                <input
+                  className="fd-input"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onKeyPress={[Function]}
+                  placeholder="Type your query"
+                  style={Object {}}
+                  type="text"
+                  value=""
+                />
+                <span
+                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                >
+                  <button
+                    className="fd-button--light sap-icon--search"
+                    onClick={[Function]}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-hidden={true}
+            className="fd-popover__body fd-popover__body--no-arrow"
+          >
+            <div
+              className=""
+            >
+              <nav
+                className="fd-menu"
+              >
+                <ul
+                  className="fd-menu__list"
+                >
+                  <li
+                    className="fd-menu__item"
+                  >
+                    No result
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body abc"
+  >
+    <div
+      className="fd-panel sc-gGBfsJ eaQlFN"
+    >
+      <div
+        className="fd-panel__body sc-hEsumM gUkXwJ"
+      >
+        <table
+          className="fd-table sc-ktHwxA kmRrJU"
+        >
+          <thead>
+            <tr />
+          </thead>
+          <tbody />
+        </table>
+        <p
+          className="sc-cIShpX eszIwp"
+        >
+          There are no applications available
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
