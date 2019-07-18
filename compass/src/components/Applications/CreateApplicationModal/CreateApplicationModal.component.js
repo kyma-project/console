@@ -173,17 +173,18 @@ class CreateApplicationModal extends React.Component {
     let success = true;
 
     const { formData } = this.state;
-    const { addRuntime, sendNotification } = this.props;
+    const { addApplication, sendNotification } = this.props;
+
     try {
       let createdApplicationName;
-      const createdApplication = await addRuntime(formData);
+      const createdApplication = await addApplication(formData);
       if (
         createdApplication &&
         createdApplication.data &&
-        createdApplication.data.createRuntime &&
-        createdApplication.data.createRuntime.name
+        createdApplication.data.createApplication &&
+        createdApplication.data.createApplication.name
       ) {
-        createdApplicationName = createdApplication.data.createRuntime.name;
+        createdApplicationName = createdApplication.data.createApplication.name;
       }
 
       if (typeof sendNotification === "function") {
@@ -200,14 +201,10 @@ class CreateApplicationModal extends React.Component {
     } catch (e) {
       success = false;
 
-      this.setState({
-        tooltipData: {
-          type: "error",
-          title: "Error occored during creation",
-          content: e.message,
-          show: true,
-          minWidth: "261px"
-        }
+      LuigiClient.uxManager().showAlert({
+        text: `Error occored during creation ${e.message}`,
+        type: "error",
+        closeAfter: 10000
       });
     }
     if (success) {

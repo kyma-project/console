@@ -1,8 +1,7 @@
 import React from "react";
 import { graphql, withApollo, compose } from "react-apollo";
 
-import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS, GET_RUNTIMES } from "../gql";
-import { ADD_RUNTIME } from "../../Runtimes/gql";
+import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS } from "../gql";
 import { SEND_NOTIFICATION } from "../../../gql";
 
 import CreateApplicationModal from "./CreateApplicationModal.component";
@@ -28,9 +27,9 @@ const CreateApplicationContainer = ({ client, ...props }) => {
 };
 
 const CreateApplicationContainerWithCompose = compose(
-  graphql(ADD_RUNTIME, {
+  graphql(CREATE_APPLICATION_MUTATION, {
     props: ({ mutate }) => ({
-      addRuntime: data =>
+      addApplication: data =>
         mutate({
           variables: {
             in: data

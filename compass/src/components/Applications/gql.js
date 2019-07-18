@@ -20,13 +20,3 @@ export const CHECK_APPLICATION_EXISTS = gql`
     }
   }
 `;
-
-export const GET_RUNTIMES = gql`
-  query {
-    runtimes(filter: [{ label: "group", values: ["production", "experimental"], operator: ANY }]) {
-      data {
-        name
-      }
-    }
-  }
-`;
