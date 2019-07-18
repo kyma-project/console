@@ -33,15 +33,21 @@ class GenericList extends React.Component {
     }
   };
 
-  renderSearchList = entries =>
-    entries
-      .map(entry => {
-        return [
-          { text: entry.name.substring(0, 18), callback: () => this.handleQueryChange(entry.name) },
-          { text: entry.description.substring(0, 18), callback: () => this.handleQueryChange(entry.description) }
-        ];
-      })
-      .flat();
+  renderSearchList = entries => {
+    const filteredEntries =
+      entries && entries.length
+        ? entries.map(entry => {
+            return [
+              { text: entry.name.substring(0, 18), callback: () => this.handleQueryChange(entry.name) },
+              {
+                text: entry.description.substring(0, 18),
+                callback: () => this.handleQueryChange(entry.description)
+              }
+            ];
+          })
+        : null;
+    return filteredEntries && Array.isArray(filterEntries) ? filteredEntries.flat() : entries;
+  };
 
   handleQueryChange = query => {
     this.setState(prevState => ({
