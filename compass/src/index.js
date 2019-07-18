@@ -6,8 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from 'react-apollo';
 import builder from './commons/builder';
 import { createApolloClient } from './store';
-// eslint-disable-line no-unused-vars
-import LuigiClient from '@kyma-project/luigi-client'; //used on lower levels
+// eslint-disable-next-line no-unused-vars
+import _LuigiClient from '@kyma-project/luigi-client';
 
 const client = createApolloClient();
 
