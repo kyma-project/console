@@ -6,12 +6,7 @@ import {
   ActionBarHeader,
 } from '../../Toolbar/styled';
 
-const TableWithActionsToolbar = ({
-  goBack,
-  title,
-  description,
-  children,
-}) => (
+const TableWithActionsToolbar = ({ goBack, title, description, children }) => (
   <ActionBar data-e2e-id="toolbar">
     {typeof goBack === 'function' && (
       <ActionBarBack onClick={goBack} data-e2e-id="toolbar-back" />
@@ -27,4 +22,4 @@ const TableWithActionsToolbar = ({
   </ActionBar>
 );
 
-export default TableWithActionsToolbar
+export default TableWithActionsToolbar;

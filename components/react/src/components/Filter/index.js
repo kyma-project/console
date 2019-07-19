@@ -6,42 +6,45 @@ import {
   FormLabel,
   FormItem,
   Panel,
-  PanelBody
+  PanelBody,
 } from './styled';
 
 class Filter extends React.Component {
-
   render() {
-    const filters = []
+    const filters = [];
     if (this.props.data && this.props.data.length) {
       this.props.data.forEach(app => {
         for (const key in app.labels) {
           if (app.labels.hasOwnProperty(key) && app.labels[key].length > 0) {
             app.labels[key].forEach(lab => {
-            if (lab === 'undefined') {
-              filters.push({
-                value: key,
-                checked: false
-              });
-            } else {
-              filters.push({
-                value: key + '=' + lab,
-                checked: false 
-              });
-            } 
-          });
+              if (lab === 'undefined') {
+                filters.push({
+                  value: key,
+                  checked: false,
+                });
+              } else {
+                filters.push({
+                  value: key + '=' + lab,
+                  checked: false,
+                });
+              }
+            });
           }
         }
       });
     }
 
     const control = (
-      <Button option="emphasized" disabled={!this.props.allFilters} data-e2e-id="toggle-filter">
+      <Button
+        option="emphasized"
+        disabled={!this.props.allFilters}
+        data-e2e-id="toggle-filter"
+      >
         Filter
       </Button>
     );
 
-    const body = ({filters, onChange}) => { 
+    const body = ({ filters, onChange }) => {
       return (
         <Panel>
           <PanelBody>
@@ -56,7 +59,9 @@ class Filter extends React.Component {
                       name={`checkbox-name-${index}`}
                       // checked={item.checked}
                       onClick={onChange()}
-                      onChange={() => {item.checked = !item.checked}}
+                      onChange={() => {
+                        item.checked = !item.checked;
+                      }}
                     />
                     <FormLabel htmlFor={`checkbox-${index}`}>
                       {item.value}
@@ -67,19 +72,19 @@ class Filter extends React.Component {
             </FormFieldset>
           </PanelBody>
         </Panel>
-      )
-    }
+      );
+    };
 
     return !filters ? null : (
       <FiltersDropdownWrapper>
         <Popover
           disabled={!filters}
           control={control}
-          body={body({filters, onChange: this.props.onChange})}
+          body={body({ filters, onChange: this.props.onChange })}
         />
       </FiltersDropdownWrapper>
     );
-  };
+  }
 }
 
 export default Filter;
