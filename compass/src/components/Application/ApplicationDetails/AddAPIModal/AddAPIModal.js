@@ -8,18 +8,56 @@ import { Button, Modal, FormItem, FormInput, FormLabel } from "@kyma-project/rea
 import { Tab, TabGroup, InlineHelp, FormSet } from "fundamental-react";
 import "./style.scss";
 
-//import { ADD_APPLICATION_API, ADD_APPLICATION_EVENT_API, GET_APPLICATION } from "../../gql";
+import { ADD_APPLICATION_API, ADD_APPLICATION_EVENT_API, GET_APPLICATION } from "../../gql";
 import {
-  isSpecAsyncAPI,
+  getSpecType,
   isFileTypeValid,
-  loadSpec,
-  createAPI,
-  createEventAPI,
-  getSpecFileType
+  parseSpecFromText,
+  getSpecFileType,
+  getAPISpecType,
+  getAsyncAPISpecType
 } from "./APIUploadHelper";
 
 import FileInput from "./FileInput";
 import TextFormItem from "./TextFormItem";
+
+// create grapql-ready form of API
+function createAPI(apiData) {
+  return {
+    name: apiData.name,
+    description: apiData.description,
+    targetURL: apiData.targetURL,
+    group: apiData.group ? apiData.group : null,
+    spec: {
+      data: JSON.stringify(apiData.spec),
+      format: apiData.actualFileType,
+      type: getAPISpecType(apiData.spec)
+    },
+    defaultAuth: {
+      credential: {
+        oauth: {
+          clientId: apiData.clientId,
+          clientSecret: apiData.clientSecret,
+          url: apiData.url
+        }
+      }
+    }
+  };
+}
+
+// create grapql-ready form of Event API
+function createEventAPI(apiData) {
+  return {
+    name: apiData.name,
+    description: apiData.description,
+    group: apiData.group ? apiData.group : null,
+    spec: {
+      data: JSON.stringify(apiData.spec),
+      format: apiData.actualFileType,
+      eventSpecType: getAsyncAPISpecType(apiData.spec)
+    }
+  };
+}
 
 class AddAPIModal extends React.Component {
   constructor(props) {
@@ -29,10 +67,10 @@ class AddAPIModal extends React.Component {
       name: "",
       description: "",
       group: "",
-      targetUrl: "",
+      targetURL: "",
       specFile: null,
       spec: null,
-      clientID: "",
+      clientId: "",
       clientSecret: "",
       url: "",
 
@@ -51,12 +89,12 @@ class AddAPIModal extends React.Component {
       name: "",
       description: "",
       group: "",
-      targetUrl: "",
+      targetURL: "",
       specFile: null,
       spec: null,
-      clientID: "",
+      clientId: "",
       clientSecret: "",
-      url: "", 
+      url: "",
 
       actualFileType: null,
       apiType: null,
@@ -70,7 +108,8 @@ class AddAPIModal extends React.Component {
     }
 
     if (this.state.apiType === "API") {
-      if (!this.state.clientID.trim() || !this.state.clientSecret.trim() || !this.state.url.trim() || !this.state.targetUrl.trim()) {
+      const { targetURL, clientId, clientSecret, url } = this.state;
+      if (!targetURL.trim() || !clientId.trim() || !clientSecret.trim() || !url.trim()) {
         return false;
       }
     }
@@ -83,8 +122,10 @@ class AddAPIModal extends React.Component {
       return;
     }
 
+    this.setState({ specFile: null, apiType: null, spec: null });
+
     if (!isFileTypeValid(file)) {
-      this.setState({currentFileError: "Invalid file type."});
+      this.setState({ currentFileError: "Invalid file type." });
       return;
     }
 
@@ -97,13 +138,13 @@ class AddAPIModal extends React.Component {
 
   processFile(e) {
     const fileContent = e.target.result;
-    const parsedSpec = loadSpec(fileContent);
+    const parsedSpec = parseSpecFromText(fileContent);
 
     if (parsedSpec !== null) {
       this.setState({
         spec: parsedSpec,
         actualFileType: getSpecFileType(fileContent),
-        apiType: isSpecAsyncAPI(parsedSpec) ? "EVENT_API" : "API"
+        apiType: getSpecType(parsedSpec)
       });
     } else {
       this.setState({ specFile: null, apiType: null, spec: null, currentFileError: "Spec file is corrupted." });
@@ -111,45 +152,40 @@ class AddAPIModal extends React.Component {
   }
 
   async addSpecification() {
-    const isAsyncAPI = isSpecAsyncAPI(this.state.spec);
-    if (isAsyncAPI) {
-      console.log(createEventAPI(this.state));
-    } else {
-      console.log(createAPI(this.state));
+    const isAsyncAPI = this.state.apiType === "EVENT_API";
+    const mutation = isAsyncAPI ? ADD_APPLICATION_EVENT_API : ADD_APPLICATION_API;
+    const variables = {
+      applicationID: this.props.application.id,
+      in: isAsyncAPI ? createEventAPI(this.state) : createAPI(this.state)
+    };
+
+    try {
+      const res = await this.props.client.mutate({
+        mutation,
+        variables
+      });
+      console.log(res);
+    } catch (e) {
+      console.warn(e);
     }
-    // try {
-    //   console.log(await props.client.mutate({
-    //       mutation: UPDATE_APPLICATION,
-    //       variables: {
-    //         id: props.application.id,
-    //         input: createFileInput()
-    //       }
-    //     }));
-    // } catch (e) {
-    //   console.warn(e);
-    // }
   }
 
   render() {
-
-    const isEventAPI = () => this.state.apiType === "API";
+    const isEventAPI = this.state.apiType === "API";
 
     let credentialsTabText;
-    if (this.state.apiType === 'EVENT_API') {
+    if (this.state.apiType === "EVENT_API") {
       credentialsTabText = "Credentials can be only specified for APIs.";
+    } else if (!this.state.apiType) {
+      credentialsTabText = "Please upload the API spec file.";
     }
-    else if (!this.state.apiType) {
-      credentialsTabText =  "Please upload the API spec file."
-    }
-  
+
     let targetUrlInfoText;
-    if (this.state.apiType === 'EVENT_API') {
+    if (this.state.apiType === "EVENT_API") {
       targetUrlInfoText = "Target URL can be only specified for APIs.";
+    } else if (!this.state.apiType) {
+      targetUrlInfoText = "Please upload the API spec file.";
     }
-    else if (!this.state.apiType) {
-      targetUrlInfoText = "Please upload the API spec file."
-    }
-  
 
     const modalOpeningComponent = <Button option="light">Add</Button>;
 
@@ -157,26 +193,37 @@ class AddAPIModal extends React.Component {
       <TabGroup>
         <Tab key="api-data" id="api-data" title="API data">
           <FormSet>
-            <TextFormItem inputKey="name" required label="Name" defaultValue={this.state.name}
-                onChange={e => this.setState({ name: e.target.value })} />
-            <TextFormItem inputKey="description" label="Description" defaultValue={this.state.description}
-                onChange={e => this.setState({ description: e.target.value })} />
-            <TextFormItem inputKey="group" label="Group" defaultValue={this.state.group}
-                onChange={e => this.setState({ group: e.target.value })} />
-            <FormItem key="targetUrl">
-              <FormLabel htmlFor="targetUrl" required className="target-url__label--info">
+            <TextFormItem
+              inputKey="name"
+              required
+              label="Name"
+              defaultValue={this.state.name}
+              onChange={e => this.setState({ name: e.target.value })}
+            />
+            <TextFormItem
+              inputKey="description"
+              label="Description"
+              defaultValue={this.state.description}
+              onChange={e => this.setState({ description: e.target.value })}
+            />
+            <TextFormItem
+              inputKey="group"
+              label="Group"
+              defaultValue={this.state.group}
+              onChange={e => this.setState({ group: e.target.value })}
+            />
+            <FormItem key="targetURL">
+              <FormLabel htmlFor="targetURL" required className="target-url__label--info">
                 Target URL
               </FormLabel>
-              {!isEventAPI() && (
-                <InlineHelp placement="right" text={targetUrlInfoText} />
-              )}
+              {!isEventAPI && <InlineHelp placement="right" text={targetUrlInfoText} />}
               <FormInput
-                disabled={!isEventAPI()}
-                id="targetUrl"
+                disabled={!isEventAPI}
+                id="targetURL"
                 type="text"
                 placeholder="Target URL"
-                defaultValue={this.state.targetUrl}
-                onChange={e => this.setState({ targetUrl: e.target.value })}
+                defaultValue={this.state.targetURL}
+                onChange={e => this.setState({ targetURL: e.target.value })}
               />
             </FormItem>
             <FormItem key="spec">
@@ -184,22 +231,40 @@ class AddAPIModal extends React.Component {
               <FileInput
                 fileInputChanged={this.fileInputChanged}
                 file={this.state.specFile}
-                error={this.state.currentFileError} />
+                error={this.state.currentFileError}
+              />
             </FormItem>
           </FormSet>
         </Tab>
-        <Tab key="credentials" id="credentials" title="Credentials" disabled={!isEventAPI()}>
+        <Tab key="credentials" id="credentials" title="Credentials" disabled={!isEventAPI}>
           <FormSet>
-            <TextFormItem inputKey="client-id" required type="password" label="Client ID" defaultValue={this.state.clientID}
-                onChange={e => this.setState({ clientID: e.target.value })} />
-            <TextFormItem inputKey="client-secret" required type="password" label="Client Secret" defaultValue={this.state.clientSecret}
-                onChange={e => this.setState({ clientSecret: e.target.value })} />
-            <TextFormItem inputKey="url" required type="url" label="Url" defaultValue={this.state.url}
-                onChange={e => this.setState({ url: e.target.value })} />
-            </FormSet>
+            <TextFormItem
+              inputKey="client-id"
+              required
+              type="password"
+              label="Client ID"
+              defaultValue={this.state.clientId}
+              onChange={e => this.setState({ clientId: e.target.value })}
+            />
+            <TextFormItem
+              inputKey="client-secret"
+              required
+              type="password"
+              label="Client Secret"
+              defaultValue={this.state.clientSecret}
+              onChange={e => this.setState({ clientSecret: e.target.value })}
+            />
+            <TextFormItem
+              inputKey="url"
+              required
+              type="url"
+              label="Url"
+              defaultValue={this.state.url}
+              onChange={e => this.setState({ url: e.target.value })}
+            />
+          </FormSet>
         </Tab>
-        {!isEventAPI() && 
-          <InlineHelp placement="right" text={credentialsTabText} /> }
+        {!isEventAPI && <InlineHelp placement="right" text={credentialsTabText} />}
       </TabGroup>
     );
 
@@ -215,7 +280,6 @@ class AddAPIModal extends React.Component {
         disabledConfirm={!this.isReadyToUpload()}
         onShow={() => {
           this.setInitialState();
-
           LuigiClient.uxManager().addBackdrop();
         }}
         onHide={() => LuigiClient.uxManager().removeBackdrop()}

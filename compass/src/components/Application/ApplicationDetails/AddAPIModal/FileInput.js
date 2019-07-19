@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
 import classNames from "classnames";
 import { FormMessage } from "fundamental-react";
+
+FileInput.propTypes = {
+  fileInputChanged: PropTypes.func.isRequired,
+  file: PropTypes.object,
+  error: PropTypes.string
+};
 
 export default function FileInput(props) {
   const [draggingOverCounter, setDraggingCounter] = useState(0);
@@ -46,45 +53,3 @@ export default function FileInput(props) {
     </div>
   );
 }
-
-// export default class FileInput2 extends React.Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-//       draggingOverCounter: 0,
-
-//     };
-
-//     this.dragEnter = this.dragEnter.bind(this);
-//     this.dragLeave = this.dragLeave.bind(this);
-//     this.dragOver = this.dragOver.bind(this);
-//     this.drop = this.drop.bind(this);
-//   }
-
-//   // needed for onDrag to fire
-//   dragOver(e) {
-//     e.stopPropagation();
-//     e.preventDefault();
-//   }
-
-//   dragEnter(e) {
-//     this.setState({ draggingOverCounter: this.state.draggingOverCounter + 1 });
-//   }
-
-//   dragLeave() {
-//     this.setState({ draggingOverCounter: this.state.draggingOverCounter - 1 });
-//   }
-
-//   drop(e) {
-//     this.setState({ draggingOverCounter: 0 });
-//     e.preventDefault();
-//     e.nativeEvent.stopImmediatePropagation(); // to avoid event.js error
-//     this.props.fileInputChanged(e.dataTransfer.files[0]);
-//   }
-
-//   render() {
-
-//     );
-//   }
-// }
