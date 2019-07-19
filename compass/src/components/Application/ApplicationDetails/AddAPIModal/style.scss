@@ -63,7 +63,25 @@
     margin-bottom: 4px;
 }
 
-.file-name {
+.fd-file-upload__file-name {
     font-style: italic;
     margin-bottom: 0;
+}
+
+.fd-file-upload-error {
+    color: var(--fd-color-status-3);
+}
+
+.target-url__label--info {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.fd-tabs > .fd-inline-help {
+    display: block;
+    margin-top: 13px;
+}
+
+.fd-inline-help__content {
+    min-width: 230px;
 }

@@ -2,90 +2,97 @@ import React from "react";
 import PropTypes from "prop-types";
 import LuigiClient from "@kyma-project/luigi-client";
 import { withApollo } from "react-apollo";
-import './style.scss';
+// todo docs
 
-import { Button, Modal } from "@kyma-project/react-components";
-import { ADD_APPLICATION_API, ADD_APPLICATION_EVENT_API, GET_APPLICATION } from "../../gql";
-import { getFileType, isSpecAsyncAPI, getAPISpecType, isFileTypeValid, getAsyncAPISpecType, loadSpec, createAPI, createEventAPI } from './APIUploadHelper';
-import classNames from 'classnames';
+import { Button, Modal, FormItem, FormInput, FormLabel } from "@kyma-project/react-components";
+import { Tab, TabGroup, InlineHelp, FormSet } from "fundamental-react";
+import "./style.scss";
 
-import { FormSet, FormItem, FormInput, FormLabel } from "fundamental-react";
+//import { ADD_APPLICATION_API, ADD_APPLICATION_EVENT_API, GET_APPLICATION } from "../../gql";
+import {
+  isSpecAsyncAPI,
+  isFileTypeValid,
+  loadSpec,
+  createAPI,
+  createEventAPI,
+  getSpecFileType
+} from "./APIUploadHelper";
+
+import FileInput from "./FileInput";
+import TextFormItem from "./TextFormItem";
 
 class AddAPIModal extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       name: "",
+      description: "",
+      group: "",
+      targetUrl: "",
       specFile: null,
       spec: null,
-      draggingOverCounter: 0
+      clientID: "",
+      clientSecret: "",
+      url: "",
+
+      actualFileType: null,
+      apiType: null
     };
 
     this.fileInputChanged = this.fileInputChanged.bind(this);
     this.isReadyToUpload = this.isReadyToUpload.bind(this);
     this.addSpecification = this.addSpecification.bind(this);
-    this.handleDrop = this.handleDrop.bind(this);
-    this.dragEnter = this.dragEnter.bind(this);
-    this.dragLeave =this.dragLeave.bind(this);
-    this.dragOver = this.dragOver.bind(this);
-    this.drop = this.drop.bind(this);
-  }
-
-  // needed for onDrag to fire
-  dragOver(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
-  dragEnter() {
-    this.setState({draggingOverCounter: this.state.draggingOverCounter + 1});
-  }
-
-  dragLeave() {
-    this.setState({draggingOverCounter: this.state.draggingOverCounter - 1});
-  }
-
-  drop(e) {
-    this.setState({draggingOverCounter: 0});
-    e.preventDefault();
-    e.nativeEvent.stopImmediatePropagation(); // to avoid event.js error
-    this.fileInputChanged(e.dataTransfer.files[0])
+    this.fileInputChanged = this.fileInputChanged.bind(this);
   }
 
   setInitialState() {
     this.setState({
       name: "",
+      description: "",
+      group: "",
+      targetUrl: "",
       specFile: null,
       spec: null,
-      draggingOverCounter: 0
+      clientID: "",
+      clientSecret: "",
+      url: "", 
+
+      actualFileType: null,
+      apiType: null,
+      currentFileError: null
     });
   }
 
   isReadyToUpload() {
-    console.log(this.state.name);
-    return this.state.trim() !== "" && false; // todo
-  }
-  
-  fileInputChanged(file) {
-    console.log(file);
-    this.setState({specFile: file});
+    if (!this.state.spec || !this.state.name.trim()) {
+      return false;
+    }
 
-    if (!isFileTypeValid(file)) {
-      console.log('brzydki typ pliku');
+    if (this.state.apiType === "API") {
+      if (!this.state.clientID.trim() || !this.state.clientSecret.trim() || !this.state.url.trim() || !this.state.targetUrl.trim()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  fileInputChanged(file) {
+    if (!file) {
       return;
     }
 
-    console.log(getFileType(file))
+    if (!isFileTypeValid(file)) {
+      this.setState({currentFileError: "Invalid file type."});
+      return;
+    }
+
+    this.setState({ specFile: file, currentFileError: null });
+
     const reader = new FileReader();
     reader.onload = this.processFile.bind(this);
     reader.readAsText(file);
-  }
-
-  handleDrop(e) {
-    e.preventDefault();
-    this.fileInputChanged(e.dataTransfer.files[0]);
   }
 
   processFile(e) {
@@ -93,31 +100,22 @@ class AddAPIModal extends React.Component {
     const parsedSpec = loadSpec(fileContent);
 
     if (parsedSpec !== null) {
-      this.setState({spec: parsedSpec});
-      
-      const isasync = isSpecAsyncAPI(parsedSpec);
-      console.log('is async: ' + isasync);
-      if (isasync) {
-        console.log('typ: ', getAsyncAPISpecType(parsedSpec))
-      }
-      else {
-        console.log('typ: ', getAPISpecType(parsedSpec));
-      }
-    }
-
-    else {
-      console.log('blad w pliczku');
+      this.setState({
+        spec: parsedSpec,
+        actualFileType: getSpecFileType(fileContent),
+        apiType: isSpecAsyncAPI(parsedSpec) ? "EVENT_API" : "API"
+      });
+    } else {
+      this.setState({ specFile: null, apiType: null, spec: null, currentFileError: "Spec file is corrupted." });
     }
   }
 
   async addSpecification() {
     const isAsyncAPI = isSpecAsyncAPI(this.state.spec);
-    
     if (isAsyncAPI) {
-      console.log(createAPI(this.state.name, this.state.specFile, this.state.spec));
-    }
-    else {
-      console.log(createEventAPI(this.state.name, this.state.specFile, this.state.spec));
+      console.log(createEventAPI(this.state));
+    } else {
+      console.log(createAPI(this.state));
     }
     // try {
     //   console.log(await props.client.mutate({
@@ -133,71 +131,98 @@ class AddAPIModal extends React.Component {
   }
 
   render() {
-    const modalOpeningComponent = <Button option="light">Add</Button>;
 
-    const labelClass = classNames('fd-file-upload__label', 
-      { 'fd-file-upload__input--drag-over': this.state.draggingOverCounter !== 0 });
+    const isEventAPI = () => this.state.apiType === "API";
 
-    const content = (
-      <FormSet>
-        <FormItem key="name">
-          <FormLabel htmlFor="name" required={true}>
-            Name
-          </FormLabel>
-          <FormInput
-            id="name"
-            type="text"
-            placeholder={"Name"}
-            defaultValue={this.state.name}
-            onChange={e => this.setState( {name: e.target.value} )}
-          />
-        </FormItem>
-        <FormItem key="spec">
-          <FormLabel htmlFor="spec">Spec</FormLabel>
-          <div className="fd-file-upload"
-            onDrop={this.drop}
-            onDragEnter={this.dragEnter}
-            onDragLeave={this.dragLeave} 
-            onDragOver = {this.dragOver}>
-            {!!this.state.specFile && 
-              <p className="file-name">{this.state.specFile.name}</p>
-            }
-            <input type="file"
-              id="file-upload"
-              className="fd-file-upload__input"
-              onChange={e => this.fileInputChanged(e.target.files[0])}
-              accept=".yml,.yaml,.json"/>
-            <label htmlFor="file-upload" className={labelClass}>
-              <span className="fd-file-upload__text">Browse</span>
-              <p className="fd-file-upload__message"> or drop file here</p>
-              <p className="fd-file-upload__message">Available file types: JSON, YAML.</p>
-            </label>
-          </div>
-        </FormItem>
-      </FormSet>
-    );
+    let credentialsTabText;
+    if (this.state.apiType === 'EVENT_API') {
+      credentialsTabText = "Credentials can be only specified for APIs.";
+    }
+    else if (!this.state.apiType) {
+      credentialsTabText =  "Please upload the API spec file."
+    }
+  
+    let targetUrlInfoText;
+    if (this.state.apiType === 'EVENT_API') {
+      targetUrlInfoText = "Target URL can be only specified for APIs.";
+    }
+    else if (!this.state.apiType) {
+      targetUrlInfoText = "Please upload the API spec file."
+    }
   
 
-  return (
-    <Modal
-      width={"480px"}
-      title="Add Specification"
-      confirmText="Add"
-      cancelText="Cancel"
-      type={"emphasized"}
-      modalOpeningComponent={modalOpeningComponent}
-      onConfirm={this.addSpecification}
-      disableConfirm={!this.isReadyToUpload}
-      onShow={() => {
-        console.log(this);
-        this.setInitialState();
-        LuigiClient.uxManager().addBackdrop();
-      }}
-      onHide={() => LuigiClient.uxManager().removeBackdrop()}
-    >
-      {content}
-    </Modal>
-  );
+    const modalOpeningComponent = <Button option="light">Add</Button>;
+
+    const content = (
+      <TabGroup>
+        <Tab key="api-data" id="api-data" title="API data">
+          <FormSet>
+            <TextFormItem inputKey="name" required label="Name" defaultValue={this.state.name}
+                onChange={e => this.setState({ name: e.target.value })} />
+            <TextFormItem inputKey="description" label="Description" defaultValue={this.state.description}
+                onChange={e => this.setState({ description: e.target.value })} />
+            <TextFormItem inputKey="group" label="Group" defaultValue={this.state.group}
+                onChange={e => this.setState({ group: e.target.value })} />
+            <FormItem key="targetUrl">
+              <FormLabel htmlFor="targetUrl" required className="target-url__label--info">
+                Target URL
+              </FormLabel>
+              {!isEventAPI() && (
+                <InlineHelp placement="right" text={targetUrlInfoText} />
+              )}
+              <FormInput
+                disabled={!isEventAPI()}
+                id="targetUrl"
+                type="text"
+                placeholder="Target URL"
+                defaultValue={this.state.targetUrl}
+                onChange={e => this.setState({ targetUrl: e.target.value })}
+              />
+            </FormItem>
+            <FormItem key="spec">
+              <FormLabel htmlFor="spec">Spec</FormLabel>
+              <FileInput
+                fileInputChanged={this.fileInputChanged}
+                file={this.state.specFile}
+                error={this.state.currentFileError} />
+            </FormItem>
+          </FormSet>
+        </Tab>
+        <Tab key="credentials" id="credentials" title="Credentials" disabled={!isEventAPI()}>
+          <FormSet>
+            <TextFormItem inputKey="client-id" required type="password" label="Client ID" defaultValue={this.state.clientID}
+                onChange={e => this.setState({ clientID: e.target.value })} />
+            <TextFormItem inputKey="client-secret" required type="password" label="Client Secret" defaultValue={this.state.clientSecret}
+                onChange={e => this.setState({ clientSecret: e.target.value })} />
+            <TextFormItem inputKey="url" required type="url" label="Url" defaultValue={this.state.url}
+                onChange={e => this.setState({ url: e.target.value })} />
+            </FormSet>
+        </Tab>
+        {!isEventAPI() && 
+          <InlineHelp placement="right" text={credentialsTabText} /> }
+      </TabGroup>
+    );
+
+    return (
+      <Modal
+        width={"480px"}
+        title="Add Specification"
+        confirmText="Add"
+        cancelText="Cancel"
+        type={"emphasized"}
+        modalOpeningComponent={modalOpeningComponent}
+        onConfirm={this.addSpecification}
+        disabledConfirm={!this.isReadyToUpload()}
+        onShow={() => {
+          this.setInitialState();
+
+          LuigiClient.uxManager().addBackdrop();
+        }}
+        onHide={() => LuigiClient.uxManager().removeBackdrop()}
+      >
+        {content}
+      </Modal>
+    );
   }
 }
 
