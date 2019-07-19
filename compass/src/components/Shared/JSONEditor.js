@@ -14,7 +14,7 @@ export default class JSONEditorComponent extends Component {
       sortObjectKeys: false,
       mainMenuBar: false,
       onChangeText: this.props.onChangeText,
-      schema: this.props.schema ? this.props.schema : null
+      schema: this.props.schema
     };
 
     this.jsoneditor = new JSONEditor(this.container, options);

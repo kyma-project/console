@@ -1,5 +1,5 @@
 export const labelsSchema = {
-  title: "Example Schema",
+  title: "Application labels",
   type: "object",
   patternProperties: {
     "^.*$": {

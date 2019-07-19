@@ -214,7 +214,6 @@ class CreateCredentialsModal extends React.Component {
         key={serviceInstance.name}
         title={title}
         confirmText="Create"
-        cancelText="Cancel"
         onConfirm={this.handleConfirmation}
         modalOpeningComponent={createCredentialsButton}
         disabledConfirm={disabled}
