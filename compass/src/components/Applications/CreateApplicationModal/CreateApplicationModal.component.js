@@ -293,7 +293,9 @@ class CreateApplicationModal extends React.Component {
         type={'emphasized'}
         modalOpeningComponent={createApplicationButton}
         confirmText="Create"
-        disabledConfirm={!requiredFieldsFilled}
+        disabledConfirm={
+          !requiredFieldsFilled || applicationWithNameAlreadyExists
+        }
         tooltipData={tooltipData}
         onConfirm={this.createApplication}
         handleClose={this.clearState}
