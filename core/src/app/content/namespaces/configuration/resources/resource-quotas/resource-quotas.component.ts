@@ -64,6 +64,7 @@ export class ResourceQuotasComponent
         this.entryRenderer = ResourceQuotaEntryRendererComponent;
         this.headerRenderer = ResourceQuotaHeaderRendererComponent;
         this.filterState = { filters: [new Filter('name', '', false)] };
+        this.reloadResults();
       }
     );
   }

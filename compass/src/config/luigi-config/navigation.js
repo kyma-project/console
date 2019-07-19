@@ -1,4 +1,4 @@
-import { getTenants } from './helpers/navigation-helpers';
+import { getTenants } from './helpers/navigation-helpers'
 
 const navigation = {
   nodes: () => [
@@ -18,7 +18,7 @@ const navigation = {
           pathSegment: ':tenantId',
           navigationContext: 'tenant',
           context: {
-            tenantId: ':tenantId',
+            tenantId: ':tenantId'
           },
           children: [
             {
@@ -27,7 +27,7 @@ const navigation = {
               label: 'Runtimes',
               viewUrl: 'http://localhost:3000/runtimes',
             },
-
+            
             {
               pathSegment: 'runtime',
               children: [
@@ -38,18 +38,29 @@ const navigation = {
                 },
               ],
             },
-          ],
-        },
-      ],
-    },
+            
+            {
+              pathSegment: 'application',
+              children: [
+                {
+                  pathSegment: ':applicationId',
+                  label: 'Applications',
+                  viewUrl: 'http://localhost:3000/application/:applicationId',
+                },
+              ],
+            },
+          ]
+        }
+      ]
+    }
   ],
 
   contextSwitcher: {
     defaultLabel: 'Select Tenant...',
-    parentNodePath: '/tenant',
+    parentNodePath: '/tenant', 
     lazyloadOptions: false,
     options: getTenants,
-  },
+  }
 };
 
 export default navigation;
