@@ -8,7 +8,7 @@ import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEvent
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
 
 ApplicationDetails.propTypes = {
-  applicationId: PropTypes.string.isRequired
+  applicationId: PropTypes.string.isRequired,
 };
 
 export default function ApplicationDetails(props) {
@@ -19,9 +19,8 @@ export default function ApplicationDetails(props) {
         if (error) {
           console.warn(error);
           if (!data || !data.application) {
-            return <ApplicationNotFoundMessage />
-          }
-          else {
+            return <ApplicationNotFoundMessage />;
+          } else {
             return `Error! ${error.message}`;
           }
         }
@@ -40,4 +39,4 @@ export default function ApplicationDetails(props) {
       }}
     </Query>
   );
-};
+}

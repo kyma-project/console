@@ -4,14 +4,19 @@ import LuigiClient from '@kyma-project/luigi-client';
 import classnames from 'classnames';
 
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
-import { Button, Breadcrumb, Panel, PanelGrid } from '@kyma-project/react-components';
+import {
+  Button,
+  Breadcrumb,
+  Panel,
+  PanelGrid,
+} from '@kyma-project/react-components';
 
 import LabelDisplay from '../../../Shared/LabelDisplay';
 import {
   determineClass,
   printPrettyConnectionStatus,
 } from './../../applicationUtility';
-import "./styles.scss";
+import './styles.scss';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -32,7 +37,7 @@ function deleteApplication(applicationId) {
 }
 
 ApplicationDetailsHeader.propTypes = {
-  application: PropTypes.object.isRequired
+  application: PropTypes.object.isRequired,
 };
 
 export default function ApplicationDetailsHeader(props) {
@@ -113,4 +118,4 @@ export default function ApplicationDetailsHeader(props) {
       </PanelGrid>
     </header>
   );
-};
+}
