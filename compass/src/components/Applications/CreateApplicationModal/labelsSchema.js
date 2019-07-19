@@ -1,19 +1,19 @@
 export const labelsSchema = {
-  title: "Application labels",
-  type: "object",
+  title: 'Application labels',
+  type: 'object',
   patternProperties: {
-    "^.*$": {
+    '^.*$': {
       anyOf: [
         {
-          type: "array",
+          type: 'array',
           items: {
-            type: "string"
-          }
+            type: 'string',
+          },
         },
         {
-          type: "null"
-        }
-      ]
-    }
-  }
+          type: 'null',
+        },
+      ],
+    },
+  },
 };

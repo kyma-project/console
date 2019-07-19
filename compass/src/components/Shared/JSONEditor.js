@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Ajv from "ajv";
-import JSONEditor from "jsoneditor";
-import "jsoneditor/dist/jsoneditor.css";
+import React, { Component } from 'react';
+import Ajv from 'ajv';
+import JSONEditor from 'jsoneditor';
+import 'jsoneditor/dist/jsoneditor.css';
 
 export default class JSONEditorComponent extends Component {
   componentDidMount() {
@@ -9,12 +9,12 @@ export default class JSONEditorComponent extends Component {
       escapeUnicode: false,
       history: true,
       indentation: 2,
-      mode: "code",
+      mode: 'code',
       search: true,
       sortObjectKeys: false,
       mainMenuBar: false,
       onChangeText: this.props.onChangeText,
-      schema: this.props.schema
+      schema: this.props.schema,
     };
 
     this.jsoneditor = new JSONEditor(this.container, options);
@@ -44,8 +44,8 @@ export default class JSONEditorComponent extends Component {
 
     if (
       this.props.schema &&
-      typeof this.props.onSuccess === "function" &&
-      typeof this.props.onError === "function"
+      typeof this.props.onSuccess === 'function' &&
+      typeof this.props.onError === 'function'
     ) {
       this.afterValidation(nextProps.text);
     }
@@ -53,6 +53,11 @@ export default class JSONEditorComponent extends Component {
   }
 
   render() {
-    return <div className="jsoneditor-react-container" ref={elem => (this.container = elem)} />;
+    return (
+      <div
+        className="jsoneditor-react-container"
+        ref={elem => (this.container = elem)}
+      />
+    );
   }
 }

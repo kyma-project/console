@@ -1,26 +1,26 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 const resolvers = {
   Query: {
     notification: (_, args, { cache }) => {
-      console.log("notification lo");
-    }
+      console.log('notification lo');
+    },
   },
   Mutation: {
     sendNotification: (_, args, { cache }) => {
       const notification = {
         ...args,
         visible: true,
-        __typename: "Notification"
+        __typename: 'Notification',
       };
 
-      console.log("sendNotification done", notification);
+      console.log('sendNotification done', notification);
       cache.writeData({
         data: {
-          notification
-        }
+          notification,
+        },
       });
-      console.log("sendNotification cache", cache);
+      console.log('sendNotification cache', cache);
       return notification;
     },
     clearNotification: (_, args, { cache }) => {
@@ -35,20 +35,20 @@ const resolvers = {
               visible
             }
           }
-        `
+        `,
       }).notification;
 
       cache.writeData({
         data: {
           notification: {
             ...notification,
-            visible: false
-          }
-        }
+            visible: false,
+          },
+        },
       });
       return null;
-    }
-  }
+    },
+  },
 };
 
 export default resolvers;

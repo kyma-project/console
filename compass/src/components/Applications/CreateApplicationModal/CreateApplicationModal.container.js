@@ -1,40 +1,40 @@
-import { graphql, compose } from "react-apollo";
+import { graphql, compose } from 'react-apollo';
 
-import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS } from "../gql";
-import { SEND_NOTIFICATION } from "../../../gql";
+import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS } from '../gql';
+import { SEND_NOTIFICATION } from '../../../gql';
 
-import CreateApplicationModal from "./CreateApplicationModal.component";
+import CreateApplicationModal from './CreateApplicationModal.component';
 
 export default compose(
   graphql(CHECK_APPLICATION_EXISTS, {
-    name: "existingApplications",
+    name: 'existingApplications',
     options: props => {
       return {
         variables: {
           filter: [
             {
-              label: "group",
-              values: ["production", "experimental"],
-              operator: "ANY"
-            }
-          ]
+              label: 'group',
+              values: ['production', 'experimental'],
+              operator: 'ANY',
+            },
+          ],
         },
-        fetchPolicy: "network-only",
-        errorPolicy: "all"
+        fetchPolicy: 'network-only',
+        errorPolicy: 'all',
       };
-    }
+    },
   }),
   graphql(CREATE_APPLICATION_MUTATION, {
     props: ({ mutate }) => ({
       addApplication: data =>
         mutate({
           variables: {
-            in: data
-          }
-        })
-    })
+            in: data,
+          },
+        }),
+    }),
   }),
   graphql(SEND_NOTIFICATION, {
-    name: "sendNotification"
-  })
+    name: 'sendNotification',
+  }),
 )(CreateApplicationModal);

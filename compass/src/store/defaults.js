@@ -1,5 +1,5 @@
-import Notification from "./Notification/defaults";
+import Notification from './Notification/defaults';
 
 export default {
-  ...Notification
+  ...Notification,
 };

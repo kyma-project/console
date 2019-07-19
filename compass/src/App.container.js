@@ -1,14 +1,14 @@
-import { graphql, compose } from "react-apollo";
+import { graphql, compose } from 'react-apollo';
 
-import { GET_NOTIFICATION, CLEAR_NOTIFICATION } from "./gql";
+import { GET_NOTIFICATION, CLEAR_NOTIFICATION } from './gql';
 
-import App from "./App.component";
+import App from './App.component';
 
 export default compose(
   graphql(GET_NOTIFICATION, {
-    name: "notification"
+    name: 'notification',
   }),
   graphql(CLEAR_NOTIFICATION, {
-    name: "clearNotification"
-  })
+    name: 'clearNotification',
+  }),
 )(App);

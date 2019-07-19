@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Query } from "react-apollo";
-import { Panel } from "fundamental-react/lib/Panel";
-import { GET_RUNTIMES } from "../gql";
-import { Table } from "@kyma-project/react-components";
-import LuigiClient from "@kyma-project/luigi-client";
-import CreateApplicationModal from "../../Applications/CreateApplicationModal/CreateApplicationModal.container";
+import { Query } from 'react-apollo';
+import { Panel } from 'fundamental-react/lib/Panel';
+import { GET_RUNTIMES } from '../gql';
+import { Table } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
+import CreateApplicationModal from '../../Applications/CreateApplicationModal/CreateApplicationModal.container';
 
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({

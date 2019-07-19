@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const GET_NOTIFICATION = gql`
   query GetNotification {
@@ -26,8 +26,13 @@ export const SEND_NOTIFICATION = gql`
     $icon: String!
     $instanceName: String!
   ) {
-    sendNotification(title: $title, content: $content, color: $color, icon: $icon, instanceName: $instanceName)
-      @client {
+    sendNotification(
+      title: $title
+      content: $content
+      color: $color
+      icon: $icon
+      instanceName: $instanceName
+    ) @client {
       title
     }
   }

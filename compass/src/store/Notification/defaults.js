@@ -1,5 +1,5 @@
 const defaults = {
-  notification: null
+  notification: null,
 };
 
 export default defaults;
