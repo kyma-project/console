@@ -36,7 +36,7 @@ class CreateApplicationModal extends React.Component {
   };
 
   refetchApplicationExists = async () => {
-    return await this.props.applicationsExists();
+    return await this.props.existingApplications.refetch();
   };
 
   clearState = () => {
@@ -51,6 +51,7 @@ class CreateApplicationModal extends React.Component {
   componentDidMount() {
     clearTimeout(this.timer);
   }
+
   componentDidUpdate(prevProps, prevState) {
     const { formData, invalidApplicationName, enableCheckNameExists, nameFilled, labelsValidated } = this.state;
 
@@ -91,10 +92,12 @@ class CreateApplicationModal extends React.Component {
   };
 
   checkNameExists = async name => {
-    const { data, error } = await this.refetchApplicationExists();
     const existingApplications =
-      data && data.applications && data.applications.data ? data.applications.data.map(app => app.name) : [];
-    const exist = existingApplications.filter(str => {
+      (this.props.existingApplications && this.props.existingApplications.applications) || {};
+    const error = this.props.existingApplications && this.props.existingApplications.error;
+    const existingApplicationsArray =
+      existingApplications && existingApplications.data ? existingApplications.data.map(app => app.name) : [];
+    const exist = existingApplicationsArray.filter(str => {
       return str === name;
     });
     this.setState({
@@ -209,6 +212,7 @@ class CreateApplicationModal extends React.Component {
     }
     if (success) {
       this.clearState();
+      await this.refetchApplicationExists();
       LuigiClient.uxManager().removeBackdrop();
     }
   };
