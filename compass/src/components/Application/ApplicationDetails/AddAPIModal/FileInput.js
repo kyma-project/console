@@ -24,6 +24,7 @@ export default function FileInput(props) {
     e.nativeEvent.stopImmediatePropagation(); // to avoid event.js error
     props.fileInputChanged(e.dataTransfer.files[0]);
   }
+  
   const labelClass = classNames("fd-file-upload__label", {
     "fd-file-upload__input--drag-over": draggingOverCounter !== 0
   });

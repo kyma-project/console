@@ -4,6 +4,7 @@ import { FormItem, FormInput, FormLabel } from "@kyma-project/react-components";
 
 TextFormItem.propTypes = {
   inputKey: PropTypes.string.isRequired,
+  required: PropTypes.bool,
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
   onChange: PropTypes.func.isRequired

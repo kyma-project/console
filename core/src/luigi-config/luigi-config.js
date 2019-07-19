@@ -216,7 +216,7 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', namespace, []),
+    getUiEntities('microfrontends', namespace),
     getUiEntities('clustermicrofrontends', namespace, [
       'namespace',
       'namespace'

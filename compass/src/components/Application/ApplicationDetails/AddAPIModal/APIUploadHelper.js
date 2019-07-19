@@ -48,7 +48,6 @@ export function parseSpecFromText(textData) {
     // as every valid JSON is also avalid YAML
     return jsyaml.safeLoad(textData);
   } catch (e) {
-    console.warn(e);
     return null;
   }
 }

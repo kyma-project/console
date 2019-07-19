@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { Query } from "react-apollo";
 import { Panel } from "fundamental-react/lib/Panel";
@@ -10,17 +10,24 @@ import Addapitest from "../../addapitest";
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({
     rowData: [
-      <span className="link " onClick={() => LuigiClient.linkManager().fromClosestContext().navigate(`/runtime/${runtime.id}`)}>
+      <span
+        className="link "
+        onClick={() =>
+          LuigiClient.linkManager()
+            .fromClosestContext()
+            .navigate(`/runtime/${runtime.id}`)
+        }
+      >
         {runtime.name}
       </span>,
-      runtime.description
-    ]
+      runtime.description,
+    ],
   }));
 
 const RuntimeList = () => (
   <Query query={GET_RUNTIMES}>
     {({ loading, error, data }) => {
-      if (loading) return "Loading...";
+      if (loading) return 'Loading...';
       if (error) return `Error! ${error.message}`;
 
       return (
@@ -31,9 +38,9 @@ const RuntimeList = () => (
           </Panel.Header>
           <Panel.Body>
             <Table
-              headers={["Name", "Description"]}
+              headers={['Name', 'Description']}
               tableData={prepareRowData(data.runtimes.data)}
-              notFoundMessage={"There are no runtimes available"}
+              notFoundMessage={'There are no runtimes available'}
             />
           </Panel.Body>
         </Panel>
