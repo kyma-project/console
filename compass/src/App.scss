@@ -1,9 +1,13 @@
-@import "~fundamental-styles/dist/fundamental-styles-ie11.min.css";
+@import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
 
 .link {
   color: var(--fd-color-action-1);
   text-decoration: underline;
   cursor: pointer;
+}
+
+.fd-action-bar__actions .fd-popover {
+  top: 0 !important;
 }
 
 .fd-page__header--columns {

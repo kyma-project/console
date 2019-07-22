@@ -1,25 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Panel } from "fundamental-react/lib/Panel";
+import { Panel } from 'fundamental-react/lib/Panel';
 
-import { Search, TableWithActionsToolbar, TableWithActionsList } from "@kyma-project/react-components";
+import {
+  Search,
+  TableWithActionsToolbar,
+  TableWithActionsList,
+} from '@kyma-project/react-components';
 
-import { filterEntries } from "./helpers";
-import { renderActionElement } from "./internalRenderers";
+import { filterEntries } from './helpers';
+import { renderActionElement } from './internalRenderers';
 
 class GenericList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       entries: props.entries,
-      filteredEntries: props.entries
+      filteredEntries: props.entries,
     };
   }
 
   headerRenderer = entries => {
     if (this.props.actions) {
-      return [...this.props.headerRenderer(entries), ""];
+      return [...this.props.headerRenderer(entries), ''];
     } else {
       return this.props.headerRenderer(entries);
     }
@@ -27,7 +31,10 @@ class GenericList extends React.Component {
 
   rowRenderer = entry => {
     if (this.props.actions) {
-      return [...this.props.rowRenderer(entry), renderActionElement(this.props.actions, entry)];
+      return [
+        ...this.props.rowRenderer(entry),
+        renderActionElement(this.props.actions, entry),
+      ];
     } else {
       return this.props.rowRenderer(entry);
     }
@@ -39,11 +46,14 @@ class GenericList extends React.Component {
         ? entries.map(entry => {
             return entry.name !== undefined && entry.description !== undefined
               ? [
-                  { text: entry.name.substring(0, 18), callback: () => this.handleQueryChange(entry.name) },
+                  {
+                    text: entry.name.substring(0, 18),
+                    callback: () => this.handleQueryChange(entry.name),
+                  },
                   {
                     text: entry.description.substring(0, 18),
-                    callback: () => this.handleQueryChange(entry.description)
-                  }
+                    callback: () => this.handleQueryChange(entry.description),
+                  },
                 ]
               : entries;
           })
@@ -54,15 +64,17 @@ class GenericList extends React.Component {
   handleQueryChange = event => {
     const searchTerm = event.target.value;
     this.setState(prevState => ({
-      filteredEntries: filterEntries(prevState.entries, searchTerm)
+      filteredEntries: filterEntries(prevState.entries, searchTerm),
     }));
   };
 
   render() {
     const { filteredEntries } = this.state;
+    const { extreaHeaderContent } = this.props;
 
     const headerActions = filteredEntries => (
       <>
+        {extreaHeaderContent}
         {/* {this.processFilterElement(allFilters)} */}
         <Search
           onChange={this.handleQueryChange}
@@ -99,5 +111,8 @@ GenericList.propTypes = {
   entries: PropTypes.arrayOf(PropTypes.object),
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
-  actions: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, handler: PropTypes.func }))
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string, handler: PropTypes.func }),
+  ),
+  extreaHeaderContent: PropTypes.node,
 };

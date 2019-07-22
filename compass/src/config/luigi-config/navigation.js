@@ -50,7 +50,7 @@ const navigation = {
                 {
                   pathSegment: ':applicationId',
                   label: 'Applications',
-                  viewUrl: 'http://localhost:3000/application/:applicationId',
+                  viewUrl: 'http://localhost:8888/application/:applicationId',
                 },
               ],
             },

@@ -6,6 +6,7 @@ import Overview from './components/Overview/Overview';
 import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails';
 import { Notification } from '@kyma-project/react-components';
+import Applications from './components/Applications/Applications';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
@@ -51,6 +52,7 @@ class App extends React.Component {
               <RuntimeDetails runtimeId={match.params.id} />
             )}
           />
+          <Route path="/applications" exact component={Applications} />
           <Route
             path="/application/:id"
             exact
