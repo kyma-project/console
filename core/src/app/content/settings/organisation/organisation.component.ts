@@ -11,7 +11,7 @@ import * as FileSaver from 'file-saver';
 export class OrganisationComponent implements OnInit {
   public orgId: string;
   public orgName: string;
-  private showSystemNamespaces = false;
+  public showSystemNamespaces = false;
 
   constructor(private http: HttpClient) {}
 
@@ -34,7 +34,7 @@ export class OrganisationComponent implements OnInit {
     }
   }
 
-  private toggleSystemNamespaceVisibility() {
+  public toggleSystemNamespaceVisibility() {
     localStorage.setItem('console.showSystemNamespaces', (!this.showSystemNamespaces).toString());
     this.refreshContextSwitcher();
   }
