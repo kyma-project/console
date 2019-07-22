@@ -38,6 +38,7 @@ const navigation = {
                 },
               ],
             },
+
             {
               pathSegment: 'application',
               children: [

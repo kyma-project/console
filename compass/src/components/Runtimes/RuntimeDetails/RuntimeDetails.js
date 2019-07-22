@@ -4,9 +4,9 @@ import { Query } from 'react-apollo';
 
 import { Button } from 'fundamental-react/lib/Button';
 
-import LuigiClient from "@kyma-project/luigi-client";
-import { Badge } from "fundamental-react/lib/Badge";
-import { Panel } from "fundamental-react/lib/Panel";
+import LuigiClient from '@kyma-project/luigi-client';
+import { Badge } from 'fundamental-react/lib/Badge';
+import { Panel } from 'fundamental-react/lib/Panel';
 import LabelDisplay from '../../Shared/LabelDisplay';
 
 const RuntimeDetails = ({ runtimeId }) => {
@@ -45,18 +45,6 @@ const RuntimeDetails = ({ runtimeId }) => {
                       </div>
 
                       <div className="fd-container fd-container--fluid">
-<<<<<<< HEAD
-                        {labels &&
-                          Object.keys(labels) && (
-                            <div className="fd-col--4">
-                              Labels
-                              <LabelDisplay
-                                labels={labels}
-                                className="columns__value"
-                              />
-                            </div>
-                          )}
-=======
                         {labels && Object.keys(labels) && (
                           <div className="fd-col--4">
                             Labels
@@ -66,7 +54,6 @@ const RuntimeDetails = ({ runtimeId }) => {
                             />
                           </div>
                         )}
->>>>>>> ebd243023e1f150079c50c0bc53ba66d73d638f8
                       </div>
                     </div>
                   </div>

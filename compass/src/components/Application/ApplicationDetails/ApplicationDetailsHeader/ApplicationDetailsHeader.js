@@ -118,4 +118,4 @@ export default function ApplicationDetailsHeader(props) {
       </PanelGrid>
     </header>
   );
-};
+}

@@ -39,4 +39,4 @@ export default function ApplicationDetailsApis(props) {
       </Panel.Body>
     </Panel>
   );
-};
+}
