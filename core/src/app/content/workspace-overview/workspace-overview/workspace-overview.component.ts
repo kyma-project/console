@@ -122,6 +122,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                       type: 'deleteResource',
                       data: entry
                     });
+                    this.refreshContextSwitcher();
                     this.router.navigateByUrl('/home/namespaces');
                   },
                   err => {

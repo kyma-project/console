@@ -3,6 +3,7 @@ import navigation from './navigation';
 
 Luigi.setConfig({
   navigation,
+
   routing: {
     useHashRouting: false,
   },

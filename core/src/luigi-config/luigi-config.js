@@ -227,7 +227,7 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', namespace, []),
+    getUiEntities('microfrontends', namespace),
     getUiEntities('clustermicrofrontends', namespace, [
       'namespace',
       'namespace'
@@ -494,34 +494,62 @@ function getConsoleInitData() {
   return fetchFromGraphQL(query, undefined, gracefully);
 }
 
-function getNamespaces() {
-  return fetchFromKyma(
-    k8sServerUrl + '/api/v1/namespaces'
-  )
-    .then((response) => {
-      var namespaces = [];
-      response.items.map(namespace => {
-        if (namespace.status && namespace.status.phase !== 'Active') {
-          return; //"pretend" that inactive namespace is already removed
-        }
-        const namespaceName = namespace.metadata.name;
-        const isSystemNamespace = systemNamespaces.some((namespace) => {
-          return namespace === namespaceName;
-        });
+window.addEventListener('message', e => {
+  if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+    window.Luigi.cachedNamespaces = null;
+  }
+});
 
-        if (!isSystemNamespace || shouldShowSystemNamespaces()) {
-          namespaces.push({
-            category: 'Namespaces',
-            label: namespaceName,
-            pathValue: namespaceName
-          });
-        }
+function getNamespaces() {
+  if (window.Luigi.cachedNamespaces) {
+    return createNamespacesList(window.Luigi.cachedNamespaces);
+  } else {
+    return fetchFromKyma(k8sServerUrl + '/api/v1/namespaces')
+      .then(response => {
+        window.Luigi.cachedNamespaces = response.items;
+        return createNamespacesList(response.items);
+      })
+      .catch(function catchNamespaces(err) {
+        window.Luigi.cachedNamespaces = null;
+        console.error('get namespace: error', err);
       });
-      return namespaces;
-    })
-    .catch(function catchNamespaces(err) {
-      console.error('get namespace: error', err);
+  }
+}
+
+function createNamespacesList(rawNamespaces) {
+  var namespaces = [];
+  rawNamespaces.map(namespace => {
+    if (namespace.status && namespace.status.phase !== 'Active') {
+      return; //"pretend" that inactive namespace is already removed
+    }
+    const namespaceName = namespace.metadata.name;
+    const isSystemNamespace = systemNamespaces.some((namespace) => {
+      return namespace === namespaceName;
     });
+    const alternativeLocation = getCorrespondingNamespaceLocation(namespaceName);
+    if (!isSystemNamespace || shouldShowSystemNamespaces()) {
+      namespaces.push({
+        category: 'Namespaces',
+        label: namespaceName,
+        pathValue: alternativeLocation || namespaceName
+      });
+    }
+  });
+  return namespaces;
+}
+
+function getCorrespondingNamespaceLocation(namespaceName) {
+  const addressTokens = window.location.pathname.split('/');
+  // check if we are in namespaces context
+  if (addressTokens[2] !== 'namespaces') {
+    return null;
+  }
+  // check if any path after namespace name exists - if not,
+  // it will default to namespace name (and then to '/details')
+  if (!addressTokens[4]) {
+    return null;
+  }
+  return namespaceName + '/' + addressTokens.slice(4).join('/');
 }
 
 function relogin() {

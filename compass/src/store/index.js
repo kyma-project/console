@@ -9,6 +9,9 @@ import { onError } from 'apollo-link-error';
 import { COMPASS_GRAPHQL_ENDPOINT } from '../config/config';
 import builder from '../commons/builder';
 
+import resolvers from './resolvers';
+import defaults from './defaults';
+
 export function createApolloClient() {
   const httpLink = createHttpLink({ uri: COMPASS_GRAPHQL_ENDPOINT });
   const authLink = setContext((_, { headers }) => {
@@ -41,10 +44,10 @@ export function createApolloClient() {
 
   const stateLink = withClientState({
     cache,
-    defaults: {},
-    resolvers: {},
+    defaults,
+    resolvers,
   });
-  
+
   const client = new ApolloClient({
     uri: COMPASS_GRAPHQL_ENDPOINT,
     cache,
