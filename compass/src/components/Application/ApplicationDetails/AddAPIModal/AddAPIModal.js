@@ -188,6 +188,22 @@ class AddAPIModal extends React.Component {
         variables,
         update: (store, { data }) => this.updateStore(store, data, isAsyncAPI)
       });
+
+      const { sendNotification } = this.props;
+      console.log(this.props);
+      console.log(sendNotification);
+      if (typeof sendNotification === 'function') {
+        sendNotification({
+          variables: {
+            content: `Application binding "${2}" created successfully`,
+            title: `${2}`,
+            color: '#359c46',
+            icon: 'accept',
+            instanceName: 2,
+          },
+        });
+      }
+
     } catch (e) {
       console.warn(e);
     }
