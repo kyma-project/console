@@ -58,7 +58,10 @@ class GenericList extends React.Component {
               : entries;
           })
         : null;
-    return Array.isArray(filteredEntries) ? filteredEntries.flat() : entries;
+    return Array.isArray(filteredEntries) &&
+      typeof filterEntries.flat === 'function'
+      ? filteredEntries.flat()
+      : entries;
   };
 
   handleQueryChange = event => {
