@@ -1,7 +1,8 @@
-import React from 'react';
+import React from "react";
 import PropTypes from 'prop-types';
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
+import LuigiClient from '@kyma-project/luigi-client';
 
 ApplicationDetailsEventApis.propTypes = {
   eventApis: PropTypes.object.isRequired,
@@ -14,7 +15,6 @@ export default function ApplicationDetailsEventApis(props) {
 
   const rowRenderer = api => [
     <span className="link">
-      {' '}
       {/* todo add link to API (other task) */}
       {api.name}
     </span>,
@@ -25,8 +25,16 @@ export default function ApplicationDetailsEventApis(props) {
     {
       name: 'Delete',
       handler: entry => {
-        console.log('todo #1009');
-      },
+        LuigiClient.uxManager()
+          .showConfirmationModal({
+            header: 'Remove Event API',
+            body: `Are you sure you want to delete ${entry.name}?`,
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No',
+          })
+          .then(() => {})
+          .catch(() => {});
+      }
     },
   ];
 

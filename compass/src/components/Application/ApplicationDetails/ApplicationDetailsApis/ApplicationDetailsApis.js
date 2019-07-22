@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import PropTypes from 'prop-types';
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
@@ -14,7 +14,6 @@ export default function ApplicationDetailsApis(props) {
 
   const rowRenderer = api => [
     <span className="link">
-      {' '}
       {/* todo add link to API (other task) */}
       {api.name}
     </span>,

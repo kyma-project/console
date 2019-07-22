@@ -62,3 +62,23 @@ export const GET_APPLICATION = gql`
     }
   }
 `;
+
+export const DELETE_APPLICATION_API = gql`
+  mutation deleteAPI($id: ID!) {
+    deleteAPI(id: $id) {
+      id
+      name
+      description
+    }
+  }
+`;
+
+export const DELETE_APPLICATION_EVENT_API = gql`
+  mutation deleteEventAPI($id: ID!) {
+    deleteEventAPI(id: $id) {
+      id
+      name
+      description
+    }
+  }
+`;
