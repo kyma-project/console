@@ -24,7 +24,31 @@ class CreateInstanceModal extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
+
+    const { serviceClass } = props;
+
+    const plans = (serviceClass && serviceClass.plans) || [];
+    plans.forEach(plan => {
+      this.parseDefaultIntegerValues(plan);
+    });
+
+    this.state.serviceClass = serviceClass;
   }
+
+  parseDefaultIntegerValues = plan => {
+    const schema = (plan && plan.instanceCreateParameterSchema) || null;
+    if (schema && schema.properties) {
+      const schemaProps = schema.properties;
+      Object.keys(schemaProps).forEach(key => {
+        if (
+          schemaProps[key].default !== undefined &&
+          schemaProps[key].type === 'integer'
+        ) {
+          schemaProps[key].default = Number(schemaProps[key].default);
+        }
+      });
+    }
+  };
 
   getInitialState = () => {
     return {
@@ -38,6 +62,7 @@ class CreateInstanceModal extends Component {
       instanceCreateParameters: {},
       tooltipData: {},
       errors: [],
+      serviceClass: {},
     };
   };
 
@@ -46,7 +71,7 @@ class CreateInstanceModal extends Component {
   };
 
   componentDidMount() {
-    const { serviceClass } = this.props;
+    const { serviceClass } = this.state;
 
     if (!serviceClass) return;
 
@@ -187,8 +212,9 @@ class CreateInstanceModal extends Component {
   };
 
   render() {
-    const { serviceClass, modalOpeningComponent } = this.props;
+    const { modalOpeningComponent } = this.props;
     const {
+      serviceClass,
       formData,
       firstStepFilled,
       creatingInstance,

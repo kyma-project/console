@@ -38,7 +38,7 @@ function createTableData(apis, applicationId) {
 }
 
 ApplicationDetailsApis.propTypes = {
-  apis: PropTypes.object.isRequired
+  apis: PropTypes.object.isRequired,
 };
 
 export default function ApplicationDetailsApis(props) {

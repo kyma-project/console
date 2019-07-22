@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, PanelBody } from "@kyma-project/react-components";
+import { Panel, PanelBody } from '@kyma-project/react-components';
 
 export default function ApplicationNotFoundMessage() {
   return (
