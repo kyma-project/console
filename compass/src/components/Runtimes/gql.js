@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const ADD_RUNTIME = gql`
   mutation CreateRuntime($in: RuntimeInput!) {
@@ -6,7 +6,6 @@ export const ADD_RUNTIME = gql`
       id
       name
       description
-      tenant
       labels
       annotations
     }
@@ -15,7 +14,15 @@ export const ADD_RUNTIME = gql`
 
 export const GET_RUNTIMES = gql`
   query {
-    runtimes(filter: [{ label: "group", values: ["production", "experimental"], operator: ANY }]) {
+    runtimes(
+      filter: [
+        {
+          label: "group"
+          values: ["production", "experimental"]
+          operator: ANY
+        }
+      ]
+    ) {
       data {
         id
         name

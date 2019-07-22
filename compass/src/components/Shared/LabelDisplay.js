@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Token } from "@kyma-project/react-components";
+import { Token } from '@kyma-project/react-components';
 
 LabelDisplay.propTypes = {
   className: PropTypes.string,

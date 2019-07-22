@@ -10,7 +10,7 @@ function createTableData(eventApis) {
 }
 
 ApplicationDetailsEventApis.propTypes = {
-  eventApis: PropTypes.object.isRequired
+  eventApis: PropTypes.object.isRequired,
 };
 
 export default function ApplicationDetailsEventApis(props) {
