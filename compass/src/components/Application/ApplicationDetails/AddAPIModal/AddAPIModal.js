@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import LuigiClient from "@kyma-project/luigi-client";
 import { withApollo } from "react-apollo";
+import _ from 'lodash';
 // todo docs
 
 import { Button, Modal, FormItem, FormInput, FormLabel } from "@kyma-project/react-components";
@@ -125,7 +126,7 @@ class AddAPIModal extends React.Component {
     this.setState({ specFile: null, apiType: null, spec: null });
 
     if (!isFileTypeValid(file)) {
-      this.setState({ currentFileError: "Invalid file type." });
+      this.setState({ currentFileError: "Error: Invalid file type." });
       return;
     }
 
@@ -147,8 +148,30 @@ class AddAPIModal extends React.Component {
         apiType: getSpecType(parsedSpec)
       });
     } else {
-      this.setState({ specFile: null, apiType: null, spec: null, currentFileError: "Spec file is corrupted." });
+      this.setState({ specFile: null, apiType: null, spec: null, currentFileError: "Error: Spec file is corrupted." });
     }
+  }
+
+  updateStore(store, data, isAsyncAPI) {
+    const originalQuery = { query: GET_APPLICATION, variables: { id: this.props.application.id } };
+    const { application } = store.readQuery(originalQuery);
+
+    const clonedApplication = _.cloneDeep(application);
+    
+    if (isAsyncAPI) {
+      clonedApplication.eventAPIs.data.push(data.addEventAPI);
+      clonedApplication.eventAPIs.totalCount += 1;
+    }
+    else {
+      clonedApplication.apis.data.push(data.addAPI);
+      clonedApplication.apis.totalCount += 1;
+    }
+
+    this.props.client.writeQuery({
+      ...originalQuery,
+      data: { application: clonedApplication }
+    });
+    this.props.client.queryManager.broadcastQueries();
   }
 
   async addSpecification() {
@@ -160,11 +183,11 @@ class AddAPIModal extends React.Component {
     };
 
     try {
-      const res = await this.props.client.mutate({
+      await this.props.client.mutate({
         mutation,
-        variables
+        variables,
+        update: (store, { data }) => this.updateStore(store, data, isAsyncAPI)
       });
-      console.log(res);
     } catch (e) {
       console.warn(e);
     }

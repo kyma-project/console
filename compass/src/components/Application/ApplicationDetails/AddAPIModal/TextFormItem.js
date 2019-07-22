@@ -22,7 +22,7 @@ export default function TextFormItem(props) {
       <FormLabel htmlFor={inputKey} required={required}>
         {label}
       </FormLabel>
-      <FormInput id={inputKey} type={type} placeholder={label} defaultValue={defaultValue} onChange={onChange} />
+      <FormInput id={inputKey} type={type} placeholder={label} defaultValue={defaultValue} onChange={onChange} autoComplete="off"/>
     </FormItem>
   );
 }

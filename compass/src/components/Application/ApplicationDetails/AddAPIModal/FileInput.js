@@ -14,8 +14,8 @@ export default function FileInput(props) {
 
   // needed for onDrag to fire
   function dragOver(e) {
-    e.stopPropagation();
-    e.preventDefault();
+    // e.stopPropagation();
+    // e.preventDefault();
   }
 
   function drop(e) {

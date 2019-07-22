@@ -68,6 +68,14 @@ export const ADD_APPLICATION_API = gql`
     addAPI(applicationID: $applicationID, in: $in) {
       id
       name
+      description
+      targetURL
+      spec {
+        data
+        format
+        type
+      }
+      group
     }
   }
 `;
@@ -77,6 +85,13 @@ export const ADD_APPLICATION_EVENT_API = gql`
     addEventAPI(applicationID: $applicationID, in: $in) {
       id
       name
+      description
+      spec {
+        data
+        format
+        type
+      }
+      group
     }
   }
 `;
