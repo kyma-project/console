@@ -1,9 +1,13 @@
-@import "~fundamental-styles/dist/fundamental-styles-ie11.min.css";
+@import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
 
 .link {
   color: var(--fd-color-action-1);
   text-decoration: underline;
   cursor: pointer;
+}
+
+.fd-action-bar__actions .fd-popover {
+  top: 0 !important;
 }
 
 .fd-page__header--columns {
@@ -22,15 +26,20 @@
 }
 
 .y-fd-token {
-  margin-top: fd-space("tiny") / 2;
-  margin-bottom: fd-space("tiny") / 2;
-  margin-right: fd-space("tiny");
   &.y-fd-token--no-button {
     cursor: default;
     &:after {
       all: unset;
     }
   }
+
+  &.y-fd-token--gap:not(:last-of-type) {
+    margin-right: 8px;
+  }
+}
+
+.fd-panel.fd-panel--no-background {
+  background-color: transparent;
 }
 
 .fd-pagination {

@@ -242,8 +242,8 @@ class CreateApplicationModal extends React.Component {
       applicationWithNameAlreadyExists,
     } = this.state;
     const createApplicationButton = (
-      <Button compact option="light" data-e2e-id="create-application-button">
-        + Create Application
+      <Button glyph="add" data-e2e-id="create-application-button">
+        Create Application
       </Button>
     );
 

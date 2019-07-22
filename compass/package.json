@@ -28,13 +28,14 @@
   },
   "scripts": {
     "start-live-server": "live-server --entry-file=src/index.html .",
-    "start": "concurrently \"react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:3000/ && npm run start-live-server\" ",
+    "start": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server\" ",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
+    "install": "cd .. && npm run bootstrap",
     "lint-fix": "prettier --config ../.prettierrc --write \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
     "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
     "eslint-check": "eslint -c .eslinterrc ./src"
@@ -56,6 +57,10 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "react-test-renderer": "^16.8.6",
+    "waait": "^1.0.5",
     "webpack-cli": "^3.3.5"
   }
 }

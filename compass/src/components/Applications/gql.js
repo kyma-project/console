@@ -1,5 +1,27 @@
 import gql from 'graphql-tag';
 
+export const GET_APPLICATIONS = gql`
+  query {
+    applications {
+      data {
+        id
+        name
+        description
+        labels
+        status {
+          condition
+        }
+        apis {
+          totalCount
+        }
+        eventAPIs {
+          totalCount
+        }
+      }
+    }
+  }
+`;
+
 export const CREATE_APPLICATION_MUTATION = gql`
   mutation createApplication($in: ApplicationInput!) {
     createApplication(in: $in) {
