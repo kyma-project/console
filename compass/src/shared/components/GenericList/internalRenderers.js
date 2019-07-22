@@ -1,7 +1,7 @@
 import React from "react";
 import { Popover } from "fundamental-react/lib/Popover";
 import { Menu } from "fundamental-react/lib/Menu";
-import { Button } from "fundamental-react/lib/Button";
+import { Button } from "@kyma-project/react-components";
 
 export const renderActionElement = (actions, entry) =>
   Array.isArray(actions) &&

@@ -37,21 +37,24 @@ class GenericList extends React.Component {
     const filteredEntries =
       entries && entries.length
         ? entries.map(entry => {
-            return [
-              { text: entry.name.substring(0, 18), callback: () => this.handleQueryChange(entry.name) },
-              {
-                text: entry.description.substring(0, 18),
-                callback: () => this.handleQueryChange(entry.description)
-              }
-            ];
+            return entry.name !== undefined && entry.description !== undefined
+              ? [
+                  { text: entry.name.substring(0, 18), callback: () => this.handleQueryChange(entry.name) },
+                  {
+                    text: entry.description.substring(0, 18),
+                    callback: () => this.handleQueryChange(entry.description)
+                  }
+                ]
+              : entries;
           })
         : null;
-    return Array.isArray(filterEntries) ? filteredEntries.flat() : entries;
+    return Array.isArray(filteredEntries) ? filteredEntries.flat() : entries;
   };
 
-  handleQueryChange = query => {
-    this.setState(prevState => ({
-      filteredEntries: filterEntries(prevState.entries, query)
+  handleQueryChange = event => {
+    const searchTerm = event.target.value;
+    this.setState(async prevState => ({
+      filteredEntries: await filterEntries(prevState.entries, searchTerm)
     }));
   };
 
@@ -62,7 +65,7 @@ class GenericList extends React.Component {
       <>
         {/* {this.processFilterElement(allFilters)} */}
         <Search
-          onEnter={this.handleQueryChange}
+          onChange={this.handleQueryChange}
           placeholder="Type your query"
           searchList={this.renderSearchList(filteredEntries)}
         />

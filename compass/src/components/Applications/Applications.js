@@ -1,5 +1,5 @@
 import React from "react";
-import { Token } from "fundamental-react/lib/Token";
+import { Token } from "@kyma-project/react-components";
 import { Badge, Counter } from "fundamental-react/lib/Badge";
 
 import GenericList from "../../shared/components/GenericList/GenericList";

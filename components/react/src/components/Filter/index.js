@@ -57,7 +57,6 @@ class Filter extends React.Component {
                       type="checkbox"
                       id={`checkbox-${index}`}
                       name={`checkbox-name-${index}`}
-                      // checked={item.checked}
                       onClick={onChange()}
                       onChange={() => {
                         item.checked = !item.checked;
