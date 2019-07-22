@@ -41,21 +41,17 @@ export default function ApplicationDetailsApis(props) {
       },
     },
   ];
+
   return (
     <Panel className="fd-has-margin-top-small">
-      <Panel.Body>
-        <Panel.Header>
-          <Panel.Head title="APIs" />
-        </Panel.Header>
-        <GenericList
-          title="APIs"
-          description="List of APIs"
-          actions={actions}
-          entries={apisList}
-          headerRenderer={headerRenderer}
-          rowRenderer={rowRenderer}
-        />
-      </Panel.Body>
+      <GenericList
+        title="APIs"
+        description="List of APIs"
+        actions={actions}
+        entries={apisList}
+        headerRenderer={headerRenderer}
+        rowRenderer={rowRenderer}
+      />
     </Panel>
   );
 }

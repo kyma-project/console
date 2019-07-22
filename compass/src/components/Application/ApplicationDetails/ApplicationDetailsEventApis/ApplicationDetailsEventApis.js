@@ -29,21 +29,17 @@ export default function ApplicationDetailsEventApis(props) {
       },
     },
   ];
+
   return (
     <Panel className="fd-has-margin-top-medium">
-      <Panel.Body>
-        <Panel.Header>
-          <Panel.Head title="Event APIs" />
-        </Panel.Header>
-        <GenericList
-          title="Event APIs"
-          description="List of Event APIs"
-          actions={actions}
-          entries={eventApiList}
-          headerRenderer={headerRenderer}
-          rowRenderer={rowRenderer}
-        />
-      </Panel.Body>
+      <GenericList
+        title="Event APIs"
+        description="List of Event APIs"
+        actions={actions}
+        entries={eventApiList}
+        headerRenderer={headerRenderer}
+        rowRenderer={rowRenderer}
+      />
     </Panel>
   );
 }
