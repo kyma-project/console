@@ -43,7 +43,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     const namespaces = await kymaConsole.getNamespacesFromContextSwitcher(page);
     await page.click(dropdownButton);
     console.log('Check if namespaces exist', namespaces);
-    expect(namespaces.length).toBeGreaterThan(1);
+    expect(namespaces.length).toBeGreaterThan(0);
   });
 
   test('Create namespace', async () => {
