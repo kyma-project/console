@@ -199,25 +199,23 @@ async function createApplication(page, name) {
 async function deleteApplication(page, name) {
   const frame = await getFrame(page);
   const applicationsSelector = 'tr';
-  const modalSelector = '[data-e2e-id=confirmation-modal]';
 
   await frame.waitForSelector(applicationsSelector);
-  await frame.$$eval(
-    applicationsSelector,
-    (item, name) => {
-      const actionsSelector = `button[aria-controls=${name}]`;
-      const deleteActionSelector = `#${name} li > a[name=Delete]`;
-      const testApplication = item.find(row => row.textContent.includes(name));
-      testApplication.querySelector(actionsSelector).click();
-      testApplication.querySelector(deleteActionSelector).click();
-    },
-    name,
-  );
-  await frame.waitForSelector(modalSelector);
-  await frame.evaluate(() => {
-    const deleteButton = `[data-e2e-id=confirmation-modal-button-ok]`;
-    document.querySelector(deleteButton).click();
-  });
+  const actionsSelector = `button[aria-controls=${name}]`;
+  const deleteActionSelector = `#${name} li > a[name=Delete]`;
+  await frame.waitForSelector(actionsSelector);
+  await frame.click(actionsSelector);
+  await frame.waitForSelector(deleteActionSelector)
+  await frame.click(deleteActionSelector);
+
+  const deleteButton = '[data-e2e-id=confirmation-modal-button-ok]';
+  await frame.waitFor(deleteButton);
+  await frame.click(deleteButton);
+  await frame.waitForSelector(deleteButton, { hidden: true });
+    
+  const appsEmptyPage = '[data-e2e="empty-list-placeholder"]';
+  await frame.waitForSelector(appsEmptyPage);
+
   console.log(`Application ${name} deleted!`);
 }
 
