@@ -78,7 +78,6 @@ class GenericList extends React.Component {
         {/* {this.processFilterElement(allFilters)} */}
         <Search
           onChange={this.handleQueryChange}
-          placeholder="Type your query"
           searchList={this.renderSearchList(filteredEntries)}
         />
       </>
