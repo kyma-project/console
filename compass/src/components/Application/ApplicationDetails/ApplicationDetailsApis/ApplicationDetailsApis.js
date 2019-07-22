@@ -1,14 +1,66 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
+import LuigiClient from '@kyma-project/luigi-client';
+import { withApollo } from 'react-apollo';
+import { DELETE_APPLICATION_API, GET_APPLICATION } from './../../gql';
+import _ from 'lodash';
 
 ApplicationDetailsApis.propTypes = {
   apis: PropTypes.object.isRequired,
 };
 
-export default function ApplicationDetailsApis(props) {
+function ApplicationDetailsApis(props) {
+  const listRef = React.useRef();
   const apisList = props.apis.data;
+
+  function deleteHandler(entry) {
+    LuigiClient.uxManager()
+      .showConfirmationModal({
+        header: 'Remove API',
+        body: `Are you sure you want to delete ${entry.name}?`,
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No',
+      })
+      .then(() => {
+        const mutation = {
+          mutation: DELETE_APPLICATION_API,
+          variables: { id: entry.id },
+        };
+
+        return props.client
+          .mutate(mutation)
+          .then(() => {
+            const originalQuery = {
+              query: GET_APPLICATION,
+              variables: { id: props.applicationId },
+            };
+            const { application } = props.client.cache.readQuery(originalQuery);
+            console.log(application);
+            const updatedApplication = _.cloneDeep(application);
+
+            updatedApplication.apis.data = updatedApplication.apis.data.filter(
+              api => api.id !== entry.id,
+            );
+            updatedApplication.apis.totalCount -= 1;
+
+            console.log(updatedApplication);
+            props.client.cache.writeQuery({
+              ...originalQuery,
+              data: { application: updatedApplication },
+            });
+
+            listRef.current.resetList();
+          })
+          .catch(err => {
+            console.warn(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
@@ -24,26 +76,14 @@ export default function ApplicationDetailsApis(props) {
   const actions = [
     {
       name: 'Delete',
-      handler: entry => {
-        console.log('todo #1009j');
-        // LuigiClient.uxManager()
-        //   .showConfirmationModal({
-        //     header: 'Remove application',
-        //     body: `Are you sure you want to delete ${entry.name}?`,
-        //     buttonConfirm: 'No',
-        //     buttonDismiss: 'Also no',
-        //   })
-        //   .catch(() => {})
-        //   .finally(() => {
-        //     console.warn('As you wish, nothing will be removed');
-        //   });
-      },
+      handler: deleteHandler,
     },
   ];
 
   return (
     <Panel className="fd-has-margin-top-small">
       <GenericList
+        ref={listRef}
         title="APIs"
         description="List of APIs"
         actions={actions}
@@ -54,3 +94,5 @@ export default function ApplicationDetailsApis(props) {
     </Panel>
   );
 }
+
+export default withApollo(ApplicationDetailsApis);

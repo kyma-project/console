@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import { Modal } from "@kyma-project/react-components";
 import LuigiClient from "@kyma-project/luigi-client";
 import { DELETE_APPLICATION_EVENT_API, GET_APPLICATION } from './../../gql';
-
+/*todo delete*/
 export default function EventApiDeleteModal(props) {
 
   const updateCache = (store) => {
