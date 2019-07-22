@@ -29,7 +29,7 @@ export class NamespaceCardComponent implements OnInit, OnDestroy {
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;
-  private isSystemNamespace = false;
+  public isSystemNamespace = false;
 
   ngOnInit() {
     LuigiClient.addInitListener(eventData => {
