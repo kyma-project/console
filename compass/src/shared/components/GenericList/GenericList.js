@@ -53,8 +53,8 @@ class GenericList extends React.Component {
 
   handleQueryChange = event => {
     const searchTerm = event.target.value;
-    this.setState(async prevState => ({
-      filteredEntries: await filterEntries(prevState.entries, searchTerm)
+    this.setState(prevState => ({
+      filteredEntries: filterEntries(prevState.entries, searchTerm)
     }));
   };
 
@@ -80,7 +80,7 @@ class GenericList extends React.Component {
           children={headerActions(filteredEntries)}
         />
 
-        <Panel.Body className="abc">
+        <Panel.Body>
           <TableWithActionsList
             entries={filteredEntries}
             headerRenderer={this.headerRenderer}
