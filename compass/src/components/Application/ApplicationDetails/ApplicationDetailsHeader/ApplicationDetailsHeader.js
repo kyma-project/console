@@ -112,7 +112,11 @@ export default function ApplicationDetailsHeader(props) {
         {labels && !labels.length && (
           <PanelEntry
             title="Labels"
-            content={labels && <LabelDisplay labels={labels} />}
+            content={
+              labels && (
+                <LabelDisplay labels={labels} className="labels-display" />
+              )
+            }
           />
         )}
       </PanelGrid>

@@ -1,41 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, Table } from '@kyma-project/react-components';
-import { Pagination } from 'fundamental-react/lib/Pagination';
-
-function createTableData(eventApis) {
-  return eventApis.map(eventApi => ({
-    rowData: [eventApi.name, eventApi.description],
-  }));
-}
+import { Panel } from '@kyma-project/react-components';
+import GenericList from '../../../../shared/components/GenericList/GenericList';
 
 ApplicationDetailsEventApis.propTypes = {
   eventApis: PropTypes.object.isRequired,
 };
 
 export default function ApplicationDetailsEventApis(props) {
-  const { totalCount, data: eventApis } = props.eventApis;
+  const eventApiList = props.eventApis.data;
 
+  const headerRenderer = () => ['Name', 'Description'];
+
+  const rowRenderer = api => [
+    <span className="link">
+      {' '}
+      {/* todo add link to API (other task) */}
+      {api.name}
+    </span>,
+    api.description,
+  ];
+
+  const actions = [
+    {
+      name: 'Delete',
+      handler: entry => {
+        console.log('todo #1009');
+      },
+    },
+  ];
   return (
     <Panel className="fd-has-margin-top-medium">
       <Panel.Body>
         <Panel.Header>
           <Panel.Head title="Event APIs" />
         </Panel.Header>
-        <Table
-          headers={['Name', 'Description']}
-          tableData={createTableData(eventApis)}
-          notFoundMessage={'There are no event APIs available'}
+        <GenericList
+          title="Event APIs"
+          description="List of Event APIs"
+          actions={actions}
+          entries={eventApiList}
+          headerRenderer={headerRenderer}
+          rowRenderer={rowRenderer}
         />
-        {!!totalCount && (
-          <Pagination
-            displayTotal={false}
-            itemsTotal={totalCount || 0}
-            itemsPerPage={8}
-            onClick={() => console.log('will be done in #1039')}
-            className="fd-has-padding-top-small"
-          />
-        )}
       </Panel.Body>
     </Panel>
   );
