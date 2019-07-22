@@ -1,18 +1,19 @@
-import React from "react";
-import { GET_RUNTIME } from "../gql";
-import { Query } from "react-apollo";
+import React from 'react';
+import { GET_RUNTIME } from '../gql';
+import { Query } from 'react-apollo';
 
-import { Button } from "fundamental-react/lib/Button";
+import { Button } from 'fundamental-react/lib/Button';
 
-import LuigiClient from "@kyma-project/luigi-client";
-import { Badge } from "fundamental-react/lib/Badge";
-import { Token } from "fundamental-react/lib/Token";
-import { Panel } from "fundamental-react/lib/Panel";
+import LuigiClient from '@kyma-project/luigi-client';
+import { Badge } from 'fundamental-react/lib/Badge';
+import { Panel } from 'fundamental-react/lib/Panel';
+import LabelDisplay from '../../Shared/LabelDisplay';
+
 const RuntimeDetails = ({ runtimeId }) => {
   return (
     <Query query={GET_RUNTIME} variables={{ id: runtimeId }}>
       {({ loading, error, data }) => {
-        if (loading) return "Loading...";
+        if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
         const { name, description, id, status, labels } = data.runtime;
@@ -44,19 +45,15 @@ const RuntimeDetails = ({ runtimeId }) => {
                       </div>
 
                       <div className="fd-container fd-container--fluid">
-                        {labels &&
-                          Object.keys(labels) && (
-                            <div className="fd-col--4">
-                              Labels
-                              <span className="columns__value">
-                                {Object.keys(labels).map(label => (
-                                  <Token key={label} className="y-fd-token y-fd-token--no-button">
-                                    {label}=[{labels[label].join(", ")}]
-                                  </Token>
-                                ))}
-                              </span>
-                            </div>
-                          )}
+                        {labels && Object.keys(labels) && (
+                          <div className="fd-col--4">
+                            Labels
+                            <LabelDisplay
+                              labels={labels}
+                              className="columns__value"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -65,8 +62,8 @@ const RuntimeDetails = ({ runtimeId }) => {
                       onClick={() =>
                         LuigiClient.uxManager().showAlert({
                           text: "Hola Amigo, you can't do it yet",
-                          type: "warning",
-                          closeAfter: 2000
+                          type: 'warning',
+                          closeAfter: 2000,
                         })
                       }
                       type="negative"

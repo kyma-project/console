@@ -44,7 +44,9 @@ export class SecretsEntryRendererComponent
   }
 
   ngOnDestroy() {
-    this.communicationServiceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
   }
 
   public navigateToDetails(secretName) {
