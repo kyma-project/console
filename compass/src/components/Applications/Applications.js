@@ -110,7 +110,7 @@ class Applications extends React.Component {
           return (
             <>
               <GenericList
-                extreaHeaderContent={<CreateApplicationModal />}
+                extraHeaderContent={<CreateApplicationModal />}
                 title="Applications"
                 description="List of all aplications"
                 actions={this.actions}

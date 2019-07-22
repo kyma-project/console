@@ -70,13 +70,14 @@ class GenericList extends React.Component {
 
   render() {
     const { filteredEntries } = this.state;
-    const { extreaHeaderContent } = this.props;
+    const { extraHeaderContent } = this.props;
 
     const headerActions = filteredEntries => (
       <>
-        {extreaHeaderContent}
+        {extraHeaderContent}
         {/* {this.processFilterElement(allFilters)} */}
         <Search
+          placeholder="Search..."
           onChange={this.handleQueryChange}
           searchList={this.renderSearchList(filteredEntries)}
         />
@@ -113,5 +114,5 @@ GenericList.propTypes = {
   actions: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string, handler: PropTypes.func }),
   ),
-  extreaHeaderContent: PropTypes.node,
+  extraHeaderContent: PropTypes.node,
 };
