@@ -1,71 +1,71 @@
-import { getTenants } from "./helpers/navigation-helpers";
+import { getTenants } from './helpers/navigation-helpers';
 
 const navigation = {
   nodes: () => [
     {
       hideSideNav: true,
-      pathSegment: "overview",
-      label: "Overview",
-      viewUrl: "http://localhost:8888/"
+      pathSegment: 'overview',
+      label: 'Overview',
+      viewUrl: 'http://localhost:8888/',
     },
     {
       hideSideNav: true,
       hideFromNav: true,
-      pathSegment: "tenant",
+      pathSegment: 'tenant',
       children: [
         {
           hideSideNav: true,
-          pathSegment: ":tenantId",
-          navigationContext: "tenant",
+          pathSegment: ':tenantId',
+          navigationContext: 'tenant',
           context: {
-            tenantId: ":tenantId"
+            tenantId: ':tenantId',
           },
           children: [
             {
               keepSelectedForChildren: true,
-              pathSegment: "runtimes",
-              label: "Runtimes",
-              viewUrl: "http://localhost:8888/runtimes"
+              pathSegment: 'runtimes',
+              label: 'Runtimes',
+              viewUrl: 'http://localhost:8888/runtimes',
             },
             {
-              pathSegment: "runtime",
+              pathSegment: 'runtime',
               children: [
                 {
-                  pathSegment: ":runtimeId",
-                  label: "Runtimes",
-                  viewUrl: "http://localhost:8888/runtime/:runtimeId"
-                }
-              ]
+                  pathSegment: ':runtimeId',
+                  label: 'Runtimes',
+                  viewUrl: 'http://localhost:8888/runtime/:runtimeId',
+                },
+              ],
             },
 
             {
               keepSelectedForChildren: true,
-              pathSegment: "applications",
-              label: "Applications",
-              viewUrl: "http://localhost:8888/applications"
+              pathSegment: 'applications',
+              label: 'Applications',
+              viewUrl: 'http://localhost:8888/applications',
             },
             {
-              pathSegment: "application",
+              pathSegment: 'application',
               children: [
                 {
-                  pathSegment: ":applicationId",
-                  label: "Applications",
-                  viewUrl: "http://localhost:3000/application/:applicationId"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
+                  pathSegment: ':applicationId',
+                  label: 'Applications',
+                  viewUrl: 'http://localhost:3000/application/:applicationId',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ],
 
   contextSwitcher: {
-    defaultLabel: "Select Tenant...",
-    parentNodePath: "/tenant",
+    defaultLabel: 'Select Tenant...',
+    parentNodePath: '/tenant',
     lazyloadOptions: false,
-    options: getTenants
-  }
+    options: getTenants,
+  },
 };
 
 export default navigation;
