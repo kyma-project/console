@@ -205,14 +205,14 @@ async function deleteApplication(page, name) {
   const deleteActionSelector = `#${name} li > a[name=Delete]`;
   await frame.waitForSelector(actionsSelector);
   await frame.click(actionsSelector);
-  await frame.waitForSelector(deleteActionSelector)
+  await frame.waitForSelector(deleteActionSelector);
   await frame.click(deleteActionSelector);
 
   const deleteButton = '[data-e2e-id=confirmation-modal-button-ok]';
   await frame.waitFor(deleteButton);
   await frame.click(deleteButton);
   await frame.waitForSelector(deleteButton, { hidden: true });
-    
+
   const appsEmptyPage = '[data-e2e="empty-list-placeholder"]';
   await frame.waitForSelector(appsEmptyPage);
 
