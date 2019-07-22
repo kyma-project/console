@@ -63,6 +63,39 @@ export const GET_APPLICATION = gql`
   }
 `;
 
+export const ADD_APPLICATION_API = gql`
+  mutation addAPI($applicationID: ID!, $in: APIDefinitionInput!) {
+    addAPI(applicationID: $applicationID, in: $in) {
+      id
+      name
+      description
+      targetURL
+      spec {
+        data
+        format
+        type
+      }
+      group
+    }
+  }
+`;
+
+export const ADD_APPLICATION_EVENT_API = gql`
+  mutation addEventAPI($applicationID: ID!, $in: EventAPIDefinitionInput!) {
+    addEventAPI(applicationID: $applicationID, in: $in) {
+      id
+      name
+      description
+      spec {
+        data
+        format
+        type
+      }
+      group
+    }
+  }
+`;
+
 export const DELETE_APPLICATION_API = gql`
   mutation deleteAPI($id: ID!) {
     deleteAPI(id: $id) {
