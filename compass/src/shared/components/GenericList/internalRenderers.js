@@ -1,7 +1,7 @@
-import React from "react";
-import { Popover } from "fundamental-react/lib/Popover";
-import { Menu } from "fundamental-react/lib/Menu";
-import { Button } from "@kyma-project/react-components";
+import React from 'react';
+import { Popover } from 'fundamental-react/lib/Popover';
+import { Menu } from 'fundamental-react/lib/Menu';
+import { Button } from '@kyma-project/react-components';
 
 export const renderActionElement = (actions, entry) =>
   Array.isArray(actions) &&
@@ -12,9 +12,12 @@ export const renderActionElement = (actions, entry) =>
           <Menu.List>
             {actions.map((
               action,
-              id // no unique key error appears here. 'key' is not passed further by Fd-react
+              id, // no unique key error appears here. 'key' is not passed further by Fd-react
             ) => (
-              <Menu.Item onClick={() => action.handler(entry)} key={(entry.name || entry.id) + id}>
+              <Menu.Item
+                onClick={() => action.handler(entry)}
+                key={(entry.name || entry.id) + id}
+              >
                 {action.name}
               </Menu.Item>
             ))}
