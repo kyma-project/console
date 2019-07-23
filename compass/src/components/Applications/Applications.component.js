@@ -5,8 +5,6 @@ import { Badge, Counter } from 'fundamental-react/lib/Badge';
 
 import LuigiClient from '@kyma-project/luigi-client';
 import GenericList from '../../shared/components/GenericList/GenericList';
-import { graphql, withApollo, compose } from 'react-apollo';
-import { GET_APPLICATIONS, DELETE_APPLICATION_MUTATION } from './gql';
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
 
 class Applications extends React.Component {
@@ -148,24 +146,4 @@ class Applications extends React.Component {
   }
 }
 
-const CreateApplicationContainer = compose(
-  graphql(GET_APPLICATIONS, {
-    name: 'applications',
-    options: {
-      fetchPolicy: 'cache-and-network',
-    },
-  }),
-  graphql(DELETE_APPLICATION_MUTATION, {
-    props: ({ mutate }) => ({
-      deleteApplication: id =>
-        mutate({
-          variables: {
-            id: id,
-          },
-        }),
-    }),
-  }),
-)(Applications);
-
-export default withApollo(CreateApplicationContainer);
-// export default Applications;
+export default Applications;
