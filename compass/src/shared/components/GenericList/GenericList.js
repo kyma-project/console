@@ -58,7 +58,10 @@ class GenericList extends React.Component {
               : entries;
           })
         : null;
-    return Array.isArray(filteredEntries) ? filteredEntries.flat() : entries;
+    return Array.isArray(filteredEntries) &&
+      typeof filterEntries.flat === 'function'
+      ? filteredEntries.flat()
+      : entries;
   };
 
   handleQueryChange = event => {
@@ -70,7 +73,7 @@ class GenericList extends React.Component {
 
   render() {
     const { filteredEntries } = this.state;
-    const { extraHeaderContent } = this.props;
+    const { extraHeaderContent, notFoundMessage } = this.props;
 
     const headerActions = filteredEntries => (
       <>
@@ -94,6 +97,7 @@ class GenericList extends React.Component {
 
         <Panel.Body>
           <TableWithActionsList
+            notFoundMessage={notFoundMessage || 'There are no items to show'}
             entries={filteredEntries}
             headerRenderer={this.headerRenderer}
             rowRenderer={this.rowRenderer}

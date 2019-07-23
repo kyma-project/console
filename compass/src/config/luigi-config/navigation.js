@@ -44,6 +44,12 @@ const navigation = {
               viewUrl: 'http://localhost:8888/applications',
             },
             {
+              keepSelectedForChildren: true,
+              pathSegment: 'applications',
+              label: 'Applications',
+              viewUrl: 'http://localhost:8888/applications',
+            },
+            {
               pathSegment: 'application',
               children: [
                 {

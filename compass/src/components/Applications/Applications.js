@@ -113,6 +113,7 @@ class Applications extends React.Component {
                 extraHeaderContent={<CreateApplicationModal />}
                 title="Applications"
                 description="List of all aplications"
+                notFoundMessage="There are no applications available"
                 actions={this.actions}
                 entries={apps}
                 headerRenderer={this.headerRenderer}
