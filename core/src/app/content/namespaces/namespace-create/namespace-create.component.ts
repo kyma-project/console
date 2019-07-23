@@ -1,7 +1,14 @@
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  TemplateRef
+} from '@angular/core';
 import { NamespacesService } from '../services/namespaces.service';
 import LuigiClient from '@kyma-project/luigi-client';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
+import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
 @Component({
   selector: 'app-namespace-create',
@@ -11,7 +18,8 @@ import { ModalService, ModalComponent } from 'fundamental-ngx';
 export class NamespaceCreateComponent {
   @Output() cancelEvent: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('createNamespaceModal') createNamespaceModal: ModalComponent;
+  @ViewChild('createNamespaceModal')
+  createNamespaceModal: TemplateRef<ModalRef>;
 
   // default values
   public isActive: boolean;
@@ -46,56 +54,61 @@ export class NamespaceCreateComponent {
   ) {}
 
   public createNamespace() {
-    this.namespacesService.createNamespace(
-      this.namespaceName, 
-      this.labelsArrayToObject()
-    ).subscribe(
-      () => {
+    this.namespacesService
+      .createNamespace(this.namespaceName, this.labelsArrayToObject())
+      .subscribe(
+        () => {
+          const handleSuccess = () => {
+            this.isActive = false;
+            this.modalService.dismissAll();
+            this.refreshContextSwitcher();
+            this.navigateToDetails(this.namespaceName);
+          };
 
-        const handleSuccess = () => {
-          this.isActive = false;
-          this.refreshContextSwitcher();
-          this.navigateToDetails(this.namespaceName);
+          if (this.resourceQuotaChecked && this.limitRangeChecked) {
+            this.createResourceQuotaAndLimitRange().subscribe(
+              () => {
+                handleSuccess();
+              },
+              err => {
+                this.refreshContextSwitcher();
+                this.err = `Namespace has been created, but there was an error while creating Limits: ${err}`;
+              }
+            );
+          } else if (this.resourceQuotaChecked && !this.limitRangeChecked) {
+            this.createResourceQuota().subscribe(
+              () => {
+                handleSuccess();
+              },
+              err => {
+                this.refreshContextSwitcher();
+                this.err = `Namespace has been created, but there was an error while creating Resource Quota: ${err}`;
+              }
+            );
+          } else if (this.limitRangeChecked && !this.resourceQuotaChecked) {
+            this.createLimitRange().subscribe(
+              () => {
+                handleSuccess();
+              },
+              err => {
+                this.refreshContextSwitcher();
+                this.err = `Namespace has been created, but there was an error while creating Limit Range: ${err}`;
+              }
+            );
+          } else {
+            handleSuccess();
+          }
+        },
+        err => {
+          this.err = err;
         }
-
-        if (this.resourceQuotaChecked && this.limitRangeChecked) {
-          this.createResourceQuotaAndLimitRange().subscribe(() => {
-            handleSuccess();
-          }, err => {
-            this.refreshContextSwitcher();
-            this.err = `Namespace has been created, but there was an error while creating Limits: ${err}`;
-          });
-        } else if (this.resourceQuotaChecked && !this.limitRangeChecked) {
-          this.createResourceQuota()
-          .subscribe(() => {
-            handleSuccess();
-          }, err => {
-            this.refreshContextSwitcher();
-            this.err = `Namespace has been created, but there was an error while creating Resource Quota: ${err}`;
-          });
-        } else if (this.limitRangeChecked && !this.resourceQuotaChecked) {
-          this.createLimitRange()
-          .subscribe(() => {
-            handleSuccess();
-          }, err => {
-            this.refreshContextSwitcher();
-            this.err = `Namespace has been created, but there was an error while creating Limit Range: ${err}`;
-          });
-        } else {
-          handleSuccess();
-        }
-
-      }, 
-      err => {
-        this.err = err;
-      }
-    );
+      );
   }
 
   public createResourceQuotaAndLimitRange() {
     return this.namespacesService.createResourceQuotaAndLimitRange(
       this.namespaceName,
-      this.memoryLimits, 
+      this.memoryLimits,
       this.memoryRequests,
       this.default,
       this.defaultRequest,
@@ -106,7 +119,7 @@ export class NamespaceCreateComponent {
   public createResourceQuota() {
     return this.namespacesService.createResourceQuota(
       this.namespaceName,
-      this.memoryLimits, 
+      this.memoryLimits,
       this.memoryRequests
     );
   }
@@ -121,25 +134,39 @@ export class NamespaceCreateComponent {
   }
 
   public namespaceCanBeCreated(): boolean {
-    const hasErrors = (this.err || this.nameError || this.labelsError || this.memoryLimitsError || this.memoryRequestsError || this.maxError || this.defaultError || this.defaultRequestError);
+    const hasErrors =
+      this.err ||
+      this.nameError ||
+      this.labelsError ||
+      this.memoryLimitsError ||
+      this.memoryRequestsError ||
+      this.maxError ||
+      this.defaultError ||
+      this.defaultRequestError;
     let rqFields = true;
     let lrFields = true;
     if (this.resourceQuotaChecked) {
-      rqFields = !!(this.memoryLimits && this.memoryRequests)
+      rqFields = !!(this.memoryLimits && this.memoryRequests);
     }
     if (this.limitRangeChecked) {
-      lrFields = !!(this.default && this.defaultRequest && this.max)
+      lrFields = !!(this.default && this.defaultRequest && this.max);
     }
-    return (this.namespaceName && rqFields && lrFields && !hasErrors)
+    return this.namespaceName && rqFields && lrFields && !hasErrors;
   }
 
   public show() {
     this.setDefaultValues();
-    this.modalService.open(this.createNamespaceModal).result.finally(() => {
-      this.isActive = false;
-      this.nameError = false;
-      this.cancelEvent.emit();
-    });
+    this.modalService
+      .open(this.createNamespaceModal, {
+        ...DEFAULT_MODAL_CONFIG,
+        width: '48em'
+      })
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        this.nameError = false;
+        this.cancelEvent.emit();
+      });
   }
 
   public setDefaultValues() {
@@ -157,7 +184,7 @@ export class NamespaceCreateComponent {
     this.istioInjectionEnabled = true;
     this.resourceQuotaChecked = false;
     this.limitRangeChecked = false;
-  
+
     // input errors
     this.err = undefined;
     this.nameError = false;
@@ -170,8 +197,9 @@ export class NamespaceCreateComponent {
   }
 
   public cancel() {
-    if(this.modalService) {
-      this.modalService.close(this.createNamespaceModal);
+    if (this.modalService) {
+      this.isActive = false;
+      this.modalService.dismissAll();
     }
   }
 
@@ -180,7 +208,9 @@ export class NamespaceCreateComponent {
   }
 
   public navigateToDetails(namespaceName: string) {
-    LuigiClient.linkManager().navigate(`/home/namespaces/${namespaceName}/details`);
+    LuigiClient.linkManager().navigate(
+      `/home/namespaces/${namespaceName}/details`
+    );
   }
 
   private refreshContextSwitcher() {
@@ -195,12 +225,18 @@ export class NamespaceCreateComponent {
   }
 
   public validateLimitsRegex(change: string, name: string) {
-    //  plain integer or plain integer + k | Ki | M | Mi | G | Gi | T | Ti | P | Pi | E | Ei | m 
+    //  plain integer or plain integer + k | Ki | M | Mi | G | Gi | T | Ti | P | Pi | E | Ei | m
     const regex = /^[+]?[0-9]*(\.[0-9]*)?(([eE][-+]?[0-9]+(\.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$/;
-    change ? (this[name] = !regex.test(change)) : (this[name] = false)
+    change ? (this[name] = !regex.test(change)) : (this[name] = false);
   }
 
-  public updateLabels({ labels, wrongLabels }: { labels?: string[], wrongLabels?: boolean }): void {
+  public updateLabels({
+    labels,
+    wrongLabels
+  }: {
+    labels?: string[];
+    wrongLabels?: boolean;
+  }): void {
     if (labels) {
       // enable 'istio injection' button if label has been removed (by default istio is injected if label is not in place).
       const istioLabel = labels.find(this.isIstioLabel);
@@ -212,32 +248,36 @@ export class NamespaceCreateComponent {
       }
     }
     this.labels = labels !== undefined ? labels : this.labels;
-    this.labelsError = wrongLabels !== undefined ? wrongLabels : this.labelsError;
+    this.labelsError =
+      wrongLabels !== undefined ? wrongLabels : this.labelsError;
   }
 
-  public toggleIstioCheck(checked: boolean) {	
-    if (this.labels && this.labels.length > 0) {	
-      const istioLabel = this.labels.find(this.isIstioLabel);	
-      if (istioLabel) {	
-        this.labels.splice(this.labels.indexOf(istioLabel), 1)	
-      }	
-    }	
-    const istioLabelArray = ['istio-injection', checked ? 'enabled' : 'disabled']	
-    this.labels.push(istioLabelArray.join('='))	
+  public toggleIstioCheck(checked: boolean) {
+    if (this.labels && this.labels.length > 0) {
+      const istioLabel = this.labels.find(this.isIstioLabel);
+      if (istioLabel) {
+        this.labels.splice(this.labels.indexOf(istioLabel), 1);
+      }
+    }
+    const istioLabelArray = [
+      'istio-injection',
+      checked ? 'enabled' : 'disabled'
+    ];
+    this.labels.push(istioLabelArray.join('='));
   }
-  
+
   public isIstioLabel(label: string): boolean {
     const key = label.split('=')[0];
-    return key === 'istio-injection'
+    return key === 'istio-injection';
   }
 
   public labelsArrayToObject(): object {
     const labelsObject = {};
     if (this.labels && this.labels.length > 0) {
-      this.labels.forEach((label) => {
+      this.labels.forEach(label => {
         const [key, value] = label.split('=');
         labelsObject[key] = value;
-      })
+      });
     }
     return labelsObject;
   }

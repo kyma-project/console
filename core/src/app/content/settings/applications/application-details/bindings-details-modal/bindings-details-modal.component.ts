@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationsService } from '../../services/applications.service';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 import { EnabledMappingServices } from '../../../../../shared/datamodel/enabled-mapping-services';
 
 import { some as _some } from 'lodash';
@@ -13,7 +13,8 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./bindings-details-modal.component.scss']
 })
 export class BindingsDetailsModalComponent {
-  @ViewChild('bindingsDetailsModal') bindingsDetailsModal: ModalComponent;
+  @ViewChild('bindingsDetailsModal')
+  bindingsDetailsModal: TemplateRef<ModalRef>;
 
   public namespaces = [];
   private selectedApplicationsState = [];
@@ -60,11 +61,14 @@ export class BindingsDetailsModalComponent {
         }
       );
       this.isActive = true;
-      this.modalService.open(this.bindingsDetailsModal).result.finally(() => {
-        this.isActive = false;
-        this.namespaceName = null;
-        this.allServices = true;
-      });
+      this.modalService
+        .open(this.bindingsDetailsModal)
+        .afterClosed.toPromise()
+        .finally(() => {
+          this.isActive = false;
+          this.namespaceName = null;
+          this.allServices = true;
+        });
     });
   }
 
@@ -99,7 +103,8 @@ export class BindingsDetailsModalComponent {
   public close() {
     this.allServices = true;
     this.selectedApplicationsState = [];
-    this.modalService.close(this.bindingsDetailsModal);
+    this.isActive = false;
+    this.modalService.dismissAll();
   }
 
   applicationSelected(id) {

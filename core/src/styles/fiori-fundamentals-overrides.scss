@@ -61,6 +61,14 @@
   }
 }
 
+.fd-modal {
+  &__actions {
+    .fd-button:not(:last-of-type) {
+      @extend .fd-has-margin-right-tiny;
+    }
+  }
+}
+
 //Tables
 .fd-table {
   .disabled {
@@ -198,6 +206,7 @@
   &.is-hidden {
     margin-top: -15px;
     transform: none;
+    display: none;
   }
 }
 

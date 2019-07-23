@@ -1,6 +1,13 @@
-import { Component, OnInit, Input, ChangeDetectorRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectorRef,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import * as luigiClient from '@kyma-project/luigi-client';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-confirmation-modal',
@@ -11,13 +18,13 @@ export class ConfirmationModalComponent implements OnInit {
   @Input() message: string;
   @Input() title: string;
 
-  @ViewChild('confirmationModal') confirmationModal: ModalComponent;
+  @ViewChild('confirmationModal') confirmationModal: TemplateRef<ModalRef>;
 
   isActive = false;
   private okPromise: any;
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private modalService: ModalService
+    private modalService: ModalService,
   ) {}
 
   ngOnInit() {}
@@ -32,12 +39,15 @@ export class ConfirmationModalComponent implements OnInit {
     this.isActive = true;
     luigiClient.uxManager().addBackdrop();
 
-    this.modalService.open(this.confirmationModal).result.finally(() => {
-      this.isActive = false;
-      luigiClient.uxManager().removeBackdrop();
-      event.stopPropagation();
-      this.changeDetector.detectChanges();
-    });
+    this.modalService
+      .open(this.confirmationModal)
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        luigiClient.uxManager().removeBackdrop();
+        event.stopPropagation();
+        this.changeDetector.detectChanges();
+      });
 
     return new Promise((resolve, reject) => {
       this.okPromise = resolve;
@@ -47,7 +57,8 @@ export class ConfirmationModalComponent implements OnInit {
 
   closeModal() {
     if (this.confirmationModal && this.modalService) {
-      this.modalService.close(this.confirmationModal);
+      this.isActive = false;
+      this.modalService.dismissAll();
     }
   }
 

@@ -1,6 +1,7 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-information-modal',
@@ -11,7 +12,7 @@ export class InformationModalComponent {
   @Input() public message: string;
   @Input() public title: string;
 
-  @ViewChild('informationModal') informationModal: ModalComponent;
+  @ViewChild('informationModal') informationModal: TemplateRef<ModalRef>;
 
   public isActive = false;
   public redirectUrl: string;
@@ -33,24 +34,28 @@ export class InformationModalComponent {
     }
     this.isActive = true;
 
-    this.modalService.open(this.informationModal).result.finally(() => {
-      this.isActive = false;
-      event.stopPropagation();
-    });
+    this.modalService
+      .open(this.informationModal)
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        event.stopPropagation();
+      });
   }
 
   public cancel(event: Event) {
-    this.modalService.close(this.informationModal);
+    this.hide();
   }
 
   public hide() {
     this.isActive = false;
+    this.modalService.dismissAll();
   }
 
   public redirect() {
     this.isActive = false;
     if (this.redirectUrl) {
-      this.router.navigate([this.redirectUrl]);
+      LuigiClient.linkManager().navigate(this.redirectUrl);
     }
   }
 }

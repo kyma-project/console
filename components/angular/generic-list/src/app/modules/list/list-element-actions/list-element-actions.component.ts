@@ -23,12 +23,8 @@ export class ListElementActionsComponent {
     const wasPopoverOpened = this.popover && this.popover.isOpen;
     event.stopPropagation();
     this.fireClick(document);
-    if (this.popover && typeof this.popover.onClickHandler === 'function') {
-      if (!wasPopoverOpened) {
-        this.popover.onClickHandler(event);
-      }
-    } else {
-      console.warn(`Could not fire Popover's built-in click event`);
+    if (wasPopoverOpened) {
+      this.popover.toggle();
     }
   }
 

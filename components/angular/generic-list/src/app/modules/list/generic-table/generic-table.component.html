@@ -1,30 +1,48 @@
 <header class="fd-page__header fd-has-background-color-background-2">
   <section class="fd-section">
-    <fd-action-bar>
-      <fd-action-bar-header>
-        <fd-action-bar-title *ngIf="!showEmptyPage">
+    <div fd-action-bar>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title *ngIf="!showEmptyPage">
           {{ title }}
-        </fd-action-bar-title>
-      </fd-action-bar-header>
-      <fd-action-bar-actions [hidden]="!initialized">
-        <y-list-search [filterState]="filterState" [hidden]="!initialized || showEmptyPage"
-          (onFilterChanged)="onFilterChanged($event)"></y-list-search>
-        <y-list-filter [filterState]="filterState" [hidden]="!initialized || showEmptyPage"
-          (onFilterChanged)="onFilterChanged($event)"></y-list-filter>
-      </fd-action-bar-actions>
-    </fd-action-bar>
+        </h3>
+      </div>
+      <div fd-action-bar-actions [hidden]="!initialized">
+        <y-list-search
+          [filterState]="filterState"
+          [hidden]="!initialized || showEmptyPage"
+          (onFilterChanged)="onFilterChanged($event)"
+        ></y-list-search>
+        <y-list-filter
+          [filterState]="filterState"
+          [hidden]="!initialized || showEmptyPage"
+          (onFilterChanged)="onFilterChanged($event)"
+        ></y-list-filter>
+      </div>
+    </div>
   </section>
 </header>
 
 <section class="fd-section">
-  <y-plain-table [source]="data" [headerRenderer]="headerRenderer" [entryRenderer]="entryRenderer"
-    [entryEventHandler]="entryEventHandler" [footerRenderer]="footerRenderer">
-    <fd-loading-spinner empty-list-placeholder [loading]="loading"></fd-loading-spinner>
-    <div empty-list-placeholder *ngIf="showEmptyPage" class="fd-container fd-container--centered">
+  <y-plain-table
+    [source]="data"
+    [headerRenderer]="headerRenderer"
+    [entryRenderer]="entryRenderer"
+    [entryEventHandler]="entryEventHandler"
+    [footerRenderer]="footerRenderer"
+  >
+    <fd-loading-spinner
+      empty-list-placeholder
+      [loading]="loading"
+    ></fd-loading-spinner>
+    <div
+      empty-list-placeholder
+      *ngIf="showEmptyPage"
+      class="fd-container fd-container--centered"
+    >
       <fd-panel class="y-fd-panel fd-col--4 fd-col--shift-4">
         <fd-panel-header>
           <fd-panel-head>
-            <fd-panel-title>{{ title }}</fd-panel-title>
+            <h2>{{ title }}</h2>
             <fd-panel-description>{{ emptyListText }}</fd-panel-description>
           </fd-panel-head>
         </fd-panel-header>
@@ -38,6 +56,9 @@
     </div>
   </y-plain-table>
 
-  <y-list-paging [pagingState]="pagingState" (onPageChanged)="onPageChanged($event)">
+  <y-list-paging
+    [pagingState]="pagingState"
+    (onPageChanged)="onPageChanged($event)"
+  >
   </y-list-paging>
 </section>

@@ -14,3 +14,11 @@
     position: absolute !important;
   }
 }
+
+.token-textarea {
+  height: 14em;
+  padding: 8px;
+  border: 1px solid;
+  border-color: var(--fd-color-neutral-4);
+  border-radius: 4px;
+}

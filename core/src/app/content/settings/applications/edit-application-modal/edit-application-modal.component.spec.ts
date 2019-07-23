@@ -90,10 +90,10 @@ describe('EditApplicationModalComponent', () => {
 
   describe('close()', () => {
     it('deactivates the form', () => {
-      spyOn(mockModalService, 'close');
+      spyOn(mockModalService, 'dismissAll');
       (component.editApplicationModal as any) = 'mock-value';
       component.close();
-      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
     });
   });
 
@@ -166,10 +166,9 @@ describe('EditApplicationModalComponent', () => {
 
   describe('save()', () => {
     it('updates new application', () => {
-      spyOn(
-        mockApplicationsService,
-        'updateApplication'
-      ).and.returnValue(EMPTY);
+      spyOn(mockApplicationsService, 'updateApplication').and.returnValue(
+        EMPTY
+      );
       component.name = 're-name';
       component.updatedDescription = 're-desc';
       component.updatedLabels = ['key1=val1'];
@@ -179,16 +178,15 @@ describe('EditApplicationModalComponent', () => {
         labels: { key1: 'val1' }
       };
       component.save();
-      expect(
-        mockApplicationsService.updateApplication
-      ).toHaveBeenCalledWith(expectedData);
+      expect(mockApplicationsService.updateApplication).toHaveBeenCalledWith(
+        expectedData
+      );
     });
 
     it('handles success on creating application', () => {
-      spyOn(
-        mockApplicationsService,
-        'updateApplication'
-      ).and.returnValue(of('update-success-response'));
+      spyOn(mockApplicationsService, 'updateApplication').and.returnValue(
+        of('update-success-response')
+      );
       spyOn(mockComponentCommunicationService, 'sendEvent');
       const expectedEventData = {
         type: 'updateResource',
@@ -204,10 +202,9 @@ describe('EditApplicationModalComponent', () => {
     });
 
     it('handles error when creating application', () => {
-      spyOn(
-        mockApplicationsService,
-        'updateApplication'
-      ).and.returnValue(throwError('re-not-updated'));
+      spyOn(mockApplicationsService, 'updateApplication').and.returnValue(
+        throwError('re-not-updated')
+      );
       component.error = null;
       component.save();
       expect(component.error).toBe('Error: re-not-updated');

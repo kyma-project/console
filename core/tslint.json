@@ -17,6 +17,7 @@
     "no-output-on-prefix": true,
     "no-forward-ref": true,
     "no-unused-css": true,
+
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": false,
@@ -41,7 +42,8 @@
       "brace/theme/tomorrow",
       "shared",
       "namespaces",
-      "app"
+      "app",
+      "fundamental-ngx"
     ],
     "no-implicit-dependencies": [true, ["shared", "namespaces", "app"]],
     "interface-name": false

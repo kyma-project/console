@@ -1,20 +1,26 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal
+  <ng-template
+    let-modal
     class="y-fd-modal"
     #bindingsDetailsModal
     role="dialog"
     aria-labelledby="confirm"
-    (click)="$event.stopPropagation()"
   >
     <fd-modal-header
       >Services & Events bound to '{{ namespaceName }}'</fd-modal-header
     >
     <fd-modal-body class="">
       <div
-        *ngIf="applicationHasAnyServices && namespaceHasAnyServicesBound; else noServicesHint"
+        *ngIf="
+          applicationHasAnyServices && namespaceHasAnyServicesBound;
+          else noServicesHint
+        "
         fd-form-item
       >
-        <fd-list class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin">
+        <ul
+          fd-list
+          class="y-fd-list--no-hover y-fd-list-group__item--no-padding y-fd-list--bottom-margin"
+        >
           <ng-container *ngFor="let service of application.services">
             <li
               class="fd-form__item"
@@ -27,7 +33,7 @@
               >
                 <fd-inline-help
                   class="y-fd-inline-help__small"
-                  [position]="'left'"
+                  [placement]="'left'"
                 >
                   <p>
                     API:
@@ -60,11 +66,12 @@
               </fd-list-action>
             </li>
           </ng-container>
-
-        </fd-list>
+        </ul>
       </div>
       <ng-template #noServicesHint>
-        <p class="fd-has-font-style-italic">This binding doesn't enable any Service or Events.</p>
+        <p class="fd-has-font-style-italic">
+          This binding doesn't enable any Service or Events.
+        </p>
       </ng-template>
     </fd-modal-body>
     <fd-modal-footer>
@@ -72,5 +79,5 @@
         OK
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

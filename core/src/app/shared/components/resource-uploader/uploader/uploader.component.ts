@@ -3,7 +3,8 @@ import { ResourceUploadService } from '../services/resource-upload.service';
 
 @Component({
   selector: 'app-uploader',
-  templateUrl: './uploader.component.html'
+  templateUrl: './uploader.component.html',
+  styleUrls: ['./uploader.component.scss']
 })
 export class UploaderComponent {
   public err = false;

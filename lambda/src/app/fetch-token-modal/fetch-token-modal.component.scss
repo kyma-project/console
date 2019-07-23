@@ -1,6 +1,10 @@
-.y-fd-form__control {
+.fd-form__control {
   height: 14em;
-  resize: none;
-  border: none;
-  padding: 0;
+
+  &--border {
+    padding: 8px;
+    border: 1px solid;
+    border-color: var(--fd-color-neutral-4);
+    border-radius: 4px;
+  }
 }

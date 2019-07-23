@@ -24,11 +24,10 @@ describe('CreatePresetModalComponent', () => {
   let mockModalService: ModalService;
   const modalService = {
     open: () => ({
-      result: { finally: () => { } }
+      result: { finally: () => {} }
     }),
-    close: () => { }
+    close: () => {}
   };
-
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -169,25 +168,22 @@ describe('CreatePresetModalComponent', () => {
   });
 
   it('should react on Cancel event', done => {
-    spyOn(mockModalService, 'close');
+    spyOn(mockModalService, 'dismissAll');
     (component.createIDPPresetModal as any) = 'mock-value';
 
     component.close();
 
     fixture.whenStable().then(() => {
       // then
-      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
       done();
     });
   });
 
   it('should react on Create event', done => {
-    spyOn(mockModalService, 'close');
+    spyOn(mockModalService, 'dismissAll');
     (component.createIDPPresetModal as any) = 'mock-value';
-    spyOn(
-      IdpPresetsServiceMockStub,
-      'createIdpPreset'
-    ).and.returnValue(of({}));
+    spyOn(IdpPresetsServiceMockStub, 'createIdpPreset').and.returnValue(of({}));
 
     component.save();
 
@@ -195,7 +191,7 @@ describe('CreatePresetModalComponent', () => {
       expect(IdpPresetsServiceMockStub.createIdpPreset).toHaveBeenCalledTimes(
         1
       );
-      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
 
       done();
     });
@@ -234,5 +230,4 @@ describe('CreatePresetModalComponent', () => {
       done();
     });
   });
-
 });

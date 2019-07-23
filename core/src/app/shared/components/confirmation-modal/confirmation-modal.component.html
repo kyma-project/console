@@ -1,9 +1,13 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #confirmationModal role="dialog" aria-labelledby="confirm"
-    (click)="$event.stopPropagation()" data-e2e-id="confirmation-modal">
-    <fd-modal-header>
-      {{ title }}
-    </fd-modal-header>
+  <ng-template
+    let-modal
+    class="y-fd-modal"
+    #confirmationModal
+    role="dialog"
+    aria-labelledby="confirm"
+    data-e2e-id="confirmation-modal"
+  >
+    <fd-modal-header> {{ title }} </fd-modal-header>
     <fd-modal-body>
       {{ message }}
     </fd-modal-body>
@@ -11,9 +15,14 @@
       <button fd-button (click)="cancel($event)" [options]="'light'">
         Cancel
       </button>
-      <button fd-button (click)="ok($event)" [fdType]="'main'" data-e2e-id="confirmation-modal-button-ok">
+      <button
+        fd-button
+        (click)="ok($event)"
+        [fdType]="'main'"
+        data-e2e-id="confirmation-modal-button-ok"
+      >
         OK
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

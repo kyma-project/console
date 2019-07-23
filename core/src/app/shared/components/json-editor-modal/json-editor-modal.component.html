@@ -1,20 +1,36 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal #jsonEditorModal class="y-fd-modal" role="dialog" aria-labelledby="confirm" [width]="'650px'"
-    (click)="$event.stopPropagation()">
+  <ng-template
+    let-modal
+    #jsonEditorModal
+    class="y-fd-modal"
+    role="dialog"
+    aria-labelledby="confirm"
+  >
     <fd-modal-header>
       Edit
     </fd-modal-header>
     <fd-modal-body>
-      <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">
+      <div
+        class="fd-alert fd-alert--error fd-has-margin-bottom-small"
+        role="alert"
+        *ngIf="error"
+      >
         {{ error.message }}
       </div>
       <div class="json-editor" *ngIf="modalResourceData">
-        <app-json-editor #jsoneditor [resourceData]="modalResourceData"></app-json-editor>
+        <app-json-editor
+          #jsoneditor
+          [resourceData]="modalResourceData"
+        ></app-json-editor>
       </div>
     </fd-modal-body>
     <fd-modal-footer>
-      <button [options]="'light'" fd-button (click)="cancel($event)">Cancel</button>
-      <button fd-button [fdType]="'main'" (click)="update($event)">Update</button>
+      <button [options]="'light'" fd-button (click)="cancel($event)">
+        Cancel
+      </button>
+      <button fd-button [fdType]="'main'" (click)="update($event)">
+        Update
+      </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>
