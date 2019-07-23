@@ -19,6 +19,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
   filterMatcher = new SimpleFilterMatcher();
   facetMatcher = new SimpleFacetMatcher();
   observableDataSource: any;
+  namespacesToHide = [];
 
   constructor(
     private resourceUrl: string,
@@ -33,6 +34,9 @@ export class KubernetesDataProvider<S extends any, T extends any>
     facets: string[],
     noCache?: boolean
   ): Observable<DataProviderResult> {
+
+    this.getSystemNamespaces();
+
     return new Observable(observer => {
       if (noCache || this.observableDataSource === undefined) {
         this.observableDataSource = this.http
@@ -105,21 +109,22 @@ export class KubernetesDataProvider<S extends any, T extends any>
     return result;
   }
 
+  getSystemNamespaces() {
+    const showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') && localStorage.getItem('console.showSystemNamespaces') === 'true';
+
+    if (!showSystemNamespaces) { 
+      LuigiClient.addInitListener(eventData => {
+        this.namespacesToHide = eventData && eventData.systemNamespaces ? eventData.systemNamespaces : [];
+      });
+    }
+  }
+
   shouldNamespaceBeShown(item) {
     if (!(item instanceof Namespace)) {
       return true;
     }
-
-    let showSystemNamespaces = false;
-    if (localStorage.getItem('console.showSystemNamespaces')) {
-      showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
-    }
-    let namespacesToHide = [];
-    LuigiClient.addInitListener(eventData => {
-      namespacesToHide = eventData && eventData.systemNamespaces && !showSystemNamespaces ? eventData.systemNamespaces : [];
-    })
     
-    const shouldBeHidden = namespacesToHide ? namespacesToHide.some((namespaceToHide) => {
+    const shouldBeHidden = this.namespacesToHide ? this.namespacesToHide.some((namespaceToHide) => {
       return namespaceToHide === item.metadata.name;
     }) : false;
 
