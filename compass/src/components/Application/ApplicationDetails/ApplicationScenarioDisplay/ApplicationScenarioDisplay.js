@@ -25,7 +25,7 @@ export default function ApplicationScenarioDisplay(props) {
       handler: () => console.log('todo in other task'),
     },
   ];
-  
+
   return (
     <Panel>
       <GenericList

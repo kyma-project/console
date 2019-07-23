@@ -94,7 +94,7 @@ export default class CreateAPIModal extends React.Component {
     this.addSpecification = this.addSpecification.bind(this);
     this.fileInputChanged = this.fileInputChanged.bind(this);
   }
-  
+
   setInitialState() {
     this.setState(initialState);
   }
