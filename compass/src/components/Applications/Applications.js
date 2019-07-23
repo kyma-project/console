@@ -32,27 +32,7 @@ class Applications extends React.Component {
     ));
   };
 
-  processStatus(status) {
-    let type = 'warning';
-    switch (status) {
-      case 'INITIAL':
-        return <Badge>{status}</Badge>;
-
-      case 'READY':
-        type = 'success';
-        break;
-      case 'UNKNOWN':
-        type = 'warning';
-        break;
-      case 'FAILED':
-        type = 'error';
-        break;
-      default:
-        type = 'warning';
-    }
-
-    return <Badge type={type}>{status}</Badge>;
-  }
+  processStatus(st
 
   headerRenderer = applications => [
     'Name',
