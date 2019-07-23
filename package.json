@@ -16,7 +16,7 @@
     "husky": "^0.14.0",
     "lerna": "^2.11.0",
     "lint-staged": "^7.0.0",
-    "prettier": "^1.11.0"
+    "prettier": "^1.18.2"
   },
   "lint-staged": {
     "**/*.{css,js,jsx,json,ts,tsx}": [

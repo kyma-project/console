@@ -48,9 +48,7 @@ class ApplicaApplicationDetailsHeadertions extends React.Component {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove application',
-        body: `Are you sure you want to delete application "${
-          application.name
-        }"?`,
+        body: `Are you sure you want to delete application "${application.name}"?`,
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
@@ -137,13 +135,12 @@ class ApplicaApplicationDetailsHeadertions extends React.Component {
             }
           />
           <PanelEntry title="Description" content={<p>{description}</p>} />
-          {labels &&
-            !labels.length && (
-              <PanelEntry
-                title="Labels"
-                content={labels && <LabelDisplay labels={labels} />}
-              />
-            )}
+          {labels && !labels.length && (
+            <PanelEntry
+              title="Labels"
+              content={labels && <LabelDisplay labels={labels} />}
+            />
+          )}
         </PanelGrid>
       </header>
     );
