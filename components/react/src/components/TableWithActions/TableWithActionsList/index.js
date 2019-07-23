@@ -8,12 +8,17 @@ const prepareRowData = (entries, rowRenderer) =>
     rowData: rowRenderer(entry),
   }));
 
-const TableWithActionsList = ({ entries, headerRenderer, rowRenderer }) =>
+const TableWithActionsList = ({
+  entries,
+  headerRenderer,
+  rowRenderer,
+  notFoundMessage,
+}) =>
   entries ? (
     <Table
       headers={headerRenderer(entries)}
       tableData={prepareRowData(entries, rowRenderer)}
-      notFoundMessage={'There are no applications available'}
+      notFoundMessage={notFoundMessage || ''}
     />
   ) : (
     <h1>No elements</h1>
