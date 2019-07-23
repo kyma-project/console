@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+import _ from 'lodash';
 
 import { showErrorPrompt } from './../../../../shared/utility';
 
@@ -26,13 +27,13 @@ import {
 import FileInput from './FileInput';
 import TextFormItem from './TextFormItem';
 
-// create grapql-ready form of API
+// create graphql-ready form of API
 function createAPI(apiData) {
   return {
     name: apiData.name,
     description: apiData.description,
     targetURL: apiData.targetURL,
-    group: apiData.group ? apiData.group : null,
+    group: apiData.group ? apiData.group : null, // if group is '', just write null
     spec: {
       data: JSON.stringify(apiData.spec),
       format: apiData.actualFileType,
@@ -41,21 +42,21 @@ function createAPI(apiData) {
     defaultAuth: {
       credential: {
         oauth: {
-          clientId: apiData.clientId,
-          clientSecret: apiData.clientSecret,
-          url: apiData.url,
+          clientId: apiData.oAuthCredentialData.clientId,
+          clientSecret: apiData.oAuthCredentialData.clientSecret,
+          url: apiData.oAuthCredentialData.url,
         },
       },
     },
   };
 }
 
-// create grapql-ready form of Event API
+// create graphql-ready form of Event API
 function createEventAPI(apiData) {
   return {
     name: apiData.name,
     description: apiData.description,
-    group: apiData.group ? apiData.group : null,
+    group: apiData.group ? apiData.group : null, // if group is '', just write null
     spec: {
       data: JSON.stringify(apiData.spec),
       format: apiData.actualFileType,
@@ -64,50 +65,41 @@ function createEventAPI(apiData) {
   };
 }
 
+const initialState = {
+  name: '',
+  description: '',
+  group: '',
+  targetURL: '',
+  specFile: null,
+  oAuthCredentialData: {
+    clientId: '',
+    clientSecret: '',
+    url: '',
+  },
+
+  spec: null,
+  actualFileType: null,
+  apiType: null,
+  currentFileError: null,
+};
+
 export default class CreateAPIModal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      name: '',
-      description: '',
-      group: '',
-      targetURL: '',
-      specFile: null,
-      spec: null,
-      clientId: '',
-      clientSecret: '',
-      url: '',
-
-      actualFileType: null,
-      apiType: null,
-    };
+    this.state = _.cloneDeep(initialState);
 
     this.fileInputChanged = this.fileInputChanged.bind(this);
     this.isReadyToUpload = this.isReadyToUpload.bind(this);
     this.addSpecification = this.addSpecification.bind(this);
     this.fileInputChanged = this.fileInputChanged.bind(this);
   }
-
+  
   setInitialState() {
-    this.setState({
-      name: '',
-      description: '',
-      group: '',
-      targetURL: '',
-      specFile: null,
-      spec: null,
-      clientId: '',
-      clientSecret: '',
-      url: '',
-
-      actualFileType: null,
-      apiType: null,
-      currentFileError: null,
-    });
+    this.setState(initialState);
   }
 
-  showSuccessNotification(apiName, isAsyncAPI) {
+  showCreateSuccessNotification(apiName, isAsyncAPI) {
     const content = isAsyncAPI
       ? `Event API "${apiName}" created.`
       : `API "${apiName}" created.`;
@@ -124,12 +116,14 @@ export default class CreateAPIModal extends React.Component {
   }
 
   isReadyToUpload() {
-    if (!this.state.spec || !this.state.name.trim()) {
+    const { spec, name, apiType, targetURL } = this.state;
+
+    if (!spec || !name.trim()) {
       return false;
     }
 
-    if (this.state.apiType === 'API') {
-      const { targetURL, clientId, clientSecret, url } = this.state;
+    if (apiType === 'API') {
+      const { clientId, clientSecret, url } = this.state.oAuthCredentialData;
       if (
         !targetURL.trim() ||
         !clientId.trim() ||
@@ -191,7 +185,7 @@ export default class CreateAPIModal extends React.Component {
 
     try {
       await mutation(apiData, this.props.applicationId);
-      this.showSuccessNotification(this.state.name, isAsyncAPI);
+      this.showCreateSuccessNotification(this.state.name, isAsyncAPI);
     } catch (error) {
       console.warn(error);
       showErrorPrompt(error.message);
@@ -283,7 +277,14 @@ export default class CreateAPIModal extends React.Component {
               type="password"
               label="Client ID"
               defaultValue={this.state.clientId}
-              onChange={e => this.setState({ clientId: e.target.value })}
+              onChange={e =>
+                this.setState({
+                  oAuthCredentialData: {
+                    ...this.state.oAuthCredentialData,
+                    clientId: e.target.value,
+                  },
+                })
+              }
             />
             <TextFormItem
               inputKey="client-secret"
@@ -291,7 +292,14 @@ export default class CreateAPIModal extends React.Component {
               type="password"
               label="Client Secret"
               defaultValue={this.state.clientSecret}
-              onChange={e => this.setState({ clientSecret: e.target.value })}
+              onChange={e =>
+                this.setState({
+                  oAuthCredentialData: {
+                    ...this.state.oAuthCredentialData,
+                    clientSecret: e.target.value,
+                  },
+                })
+              }
             />
             <TextFormItem
               inputKey="url"
@@ -299,7 +307,14 @@ export default class CreateAPIModal extends React.Component {
               type="url"
               label="Url"
               defaultValue={this.state.url}
-              onChange={e => this.setState({ url: e.target.value })}
+              onChange={e =>
+                this.setState({
+                  oAuthCredentialData: {
+                    ...this.state.oAuthCredentialData,
+                    url: e.target.value,
+                  },
+                })
+              }
             />
           </form>
         </Tab>

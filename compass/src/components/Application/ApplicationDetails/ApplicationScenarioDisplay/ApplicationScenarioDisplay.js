@@ -5,16 +5,16 @@ import GenericList from '../../../../shared/components/GenericList/GenericList';
 
 ApplicationScenarioDisplay.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  labels: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default function ApplicationScenarioDisplay(props) {
   const headerRenderer = () => ['Name', 'Provided in Runtimes'];
 
-  const rowRenderer = scenario => [
+  const rowRenderer = label => [
     <span className="link">
       {/* todo add link to scenario (other task) */}
-      {scenario}
+      {label.scenario}
     </span>,
     '?/?', // todo add in other task
   ];
@@ -25,7 +25,7 @@ export default function ApplicationScenarioDisplay(props) {
       handler: () => console.log('todo in other task'),
     },
   ];
-
+  
   return (
     <Panel>
       <GenericList

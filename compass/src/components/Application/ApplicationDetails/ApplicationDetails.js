@@ -32,7 +32,8 @@ export default function ApplicationDetails(props) {
 
         let scenarios = [];
         if (application.labels && application.labels.scenarios) {
-          scenarios = application.labels.scenarios;
+          scenarios = application.labels.scenarios
+            .map(scenario => {return { scenario }}); // list requires a list of objects
         }
 
         return (

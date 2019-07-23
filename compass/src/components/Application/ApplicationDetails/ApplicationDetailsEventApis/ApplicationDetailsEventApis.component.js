@@ -16,7 +16,7 @@ ApplicationDetailsEventApis.propTypes = {
 };
 
 export default function ApplicationDetailsEventApis(props) {
-  function showSuccessNotification(apiName) {
+  function showDeleteSuccessNotification(apiName) {
     props.sendNotification({
       variables: {
         content: `Deleted Event API "${apiName}".`,
@@ -33,13 +33,13 @@ export default function ApplicationDetailsEventApis(props) {
       .showConfirmationModal({
         header: 'Remove Event API',
         body: `Are you sure you want to delete ${entry.name}?`,
-        buttonConfirm: 'Yes',
-        buttonDismiss: 'No',
+        buttonConfirm: 'Confirm',
+        buttonDismiss: 'Cancel',
       })
       .then(async () => {
         try {
           await props.deleteEventAPI(entry.id, props.applicationId);
-          showSuccessNotification(entry.name);
+          showDeleteSuccessNotification(entry.name);
         } catch (error) {
           console.warn(error);
           showErrorPrompt(error);

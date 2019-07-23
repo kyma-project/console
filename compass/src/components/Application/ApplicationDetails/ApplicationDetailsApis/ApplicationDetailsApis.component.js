@@ -33,8 +33,8 @@ export default function ApplicationDetailsApis(props) {
       .showConfirmationModal({
         header: 'Remove API',
         body: `Are you sure you want to delete ${entry.name}?`,
-        buttonConfirm: 'Yes',
-        buttonDismiss: 'No',
+        buttonConfirm: 'Confirm',
+        buttonDismiss: 'Cancel',
       })
       .then(async () => {
         try {

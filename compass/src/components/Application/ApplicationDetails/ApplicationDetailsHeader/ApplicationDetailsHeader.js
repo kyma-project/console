@@ -11,7 +11,7 @@ import {
   PanelGrid,
 } from '@kyma-project/react-components';
 
-import LabelDisplay from '../../../Shared/LabelDisplay';
+//import LabelDisplay from '../../../Shared/LabelDisplay';
 import {
   determineClass,
   printPrettyConnectionStatus,
@@ -56,7 +56,8 @@ export default function ApplicationDetailsHeader(props) {
     );
   };
 
-  const { id, name, status, description, labels } = props.application;
+  //const { id, name, status, description, labels } = props.application;
+  const { id, status, description} = props.application;
 
   return (
     <header className="application-details-header">

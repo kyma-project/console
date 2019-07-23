@@ -19,6 +19,7 @@ export function isFileTypeValid(file) {
 
 // content-based check for parseable file content
 export function getSpecFileType(textData) {
+  //we already know that content is already JSON or YAML
   try {
     JSON.parse(textData);
     return 'JSON';
@@ -32,7 +33,7 @@ export function getSpecType(spec) {
 }
 
 export function getAPISpecType(spec) {
-  // according to https://swagger.io/specification/#format
+  // according to https://swagger.io/specification/#fixed-fields
   const isOpenAPI = 'openapi' in spec;
   return isOpenAPI ? 'OPEN_API' : 'ODATA';
 }
@@ -45,9 +46,10 @@ export function getAsyncAPISpecType() {
 export function parseSpecFromText(textData) {
   try {
     // jsyaml can read both YAML and JSON,
-    // as every valid JSON is also avalid YAML
+    // as every valid JSON is also a valid YAML
     return jsyaml.safeLoad(textData);
   } catch (e) {
+    console.warn(e);
     return null;
   }
 }
