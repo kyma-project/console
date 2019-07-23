@@ -289,7 +289,7 @@ exports[`GenericList Renders title and description 1`] = `
         <p
           className="sc-cIShpX eszIwp"
         >
-          There are no applications available
+          There are no items to show
         </p>
       </div>
     </div>
@@ -403,7 +403,7 @@ exports[`GenericList Renders with minimal props 1`] = `
         <p
           className="sc-cIShpX eszIwp"
         >
-          There are no applications available
+          There are no items to show
         </p>
       </div>
     </div>
