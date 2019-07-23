@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FormItem, FormInput, FormLabel } from "@kyma-project/react-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FormItem, FormInput, FormLabel } from '@kyma-project/react-components';
 
 TextFormItem.propTypes = {
   inputKey: PropTypes.string.isRequired,
   required: PropTypes.bool,
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 TextFormItem.defaultProps = {
-  type: "text"
+  type: 'text',
 };
 
 export default function TextFormItem(props) {
@@ -22,7 +22,14 @@ export default function TextFormItem(props) {
       <FormLabel htmlFor={inputKey} required={required}>
         {label}
       </FormLabel>
-      <FormInput id={inputKey} type={type} placeholder={label} defaultValue={defaultValue} onChange={onChange} autoComplete="off"/>
+      <FormInput
+        id={inputKey}
+        type={type}
+        placeholder={label}
+        defaultValue={defaultValue}
+        onChange={onChange}
+        autoComplete="off"
+      />
     </FormItem>
   );
 }

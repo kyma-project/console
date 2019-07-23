@@ -1,16 +1,16 @@
-import jsyaml from "js-yaml";
+import jsyaml from 'js-yaml';
 
 function isYaml(file) {
-  return file.name.endsWith(".yaml") || file.name.endsWith(".yml");
+  return file.name.endsWith('.yaml') || file.name.endsWith('.yml');
 }
 
 function isJSON(file) {
-  return file.name.endsWith(".json");
+  return file.name.endsWith('.json');
 }
 
 function isSpecAsyncAPI(spec) {
   // according to https://www.asyncapi.com/docs/specifications/1.2.0/#a-name-a2sobject-a-asyncapi-object
-  return "asyncapi" in spec;
+  return 'asyncapi' in spec;
 }
 
 export function isFileTypeValid(file) {
@@ -21,25 +21,25 @@ export function isFileTypeValid(file) {
 export function getSpecFileType(textData) {
   try {
     JSON.parse(textData);
-    return "JSON";
+    return 'JSON';
   } catch (e) {
-    return "YAML";
+    return 'YAML';
   }
 }
 
 export function getSpecType(spec) {
-  return isSpecAsyncAPI(spec) ? "EVENT_API" : "API"
+  return isSpecAsyncAPI(spec) ? 'EVENT_API' : 'API';
 }
 
 export function getAPISpecType(spec) {
   // according to https://swagger.io/specification/#format
-  const isOpenAPI = "openapi" in spec;
-  return isOpenAPI? "OPEN_API" : "ODATA";
+  const isOpenAPI = 'openapi' in spec;
+  return isOpenAPI ? 'OPEN_API' : 'ODATA';
 }
 
 export function getAsyncAPISpecType() {
   // according to documentation, for now there's only one possible value
-  return "ASYNC_API";
+  return 'ASYNC_API';
 }
 
 export function parseSpecFromText(textData) {

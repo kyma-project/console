@@ -1,21 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from '@kyma-project/react-components';
-import GenericList from '../../../../shared/components/GenericList/GenericList';
 import LuigiClient from '@kyma-project/luigi-client';
 import { withApollo } from 'react-apollo';
-import { DELETE_APPLICATION_EVENT_API, GET_APPLICATION } from './../../gql';
 import _ from 'lodash';
+
+import { Panel } from '@kyma-project/react-components';
+import GenericList from '../../../../shared/components/GenericList/GenericList';
+import AddAPIModal from './../AddAPIModal/AddAPIModal';
+
+import { DELETE_APPLICATION_EVENT_API, GET_APPLICATION } from './../../gql';
 
 ApplicationDetailsEventApis.propTypes = {
   eventApis: PropTypes.object.isRequired,
 };
 
 function ApplicationDetailsEventApis(props) {
-  const listRef = React.useRef();
   const eventApiList = props.eventApis.data;
 
   function deleteHandler(entry) {
+    function updateCache() {
+      const originalQuery = {
+        query: GET_APPLICATION,
+        variables: { id: props.applicationId },
+      };
+      const { application } = props.client.cache.readQuery(originalQuery);
+      // needed for actually refreshing Query components
+      const updatedApplication = _.cloneDeep(application);
+
+      updatedApplication.eventAPIs.data = updatedApplication.eventAPIs.data.filter(
+        eventApi => eventApi.id !== entry.id,
+      );
+      updatedApplication.eventAPIs.totalCount -= 1;
+
+      props.client.writeQuery({
+        ...originalQuery,
+        data: { application: updatedApplication },
+      });
+    }
+
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove Event API',
@@ -31,33 +53,10 @@ function ApplicationDetailsEventApis(props) {
 
         return props.client
           .mutate(mutation)
-          .then(() => {
-            const originalQuery = {
-              query: GET_APPLICATION,
-              variables: { id: props.applicationId },
-            };
-            const { application } = props.client.cache.readQuery(originalQuery);
-            const updatedApplication = _.cloneDeep(application);
-
-            updatedApplication.eventAPIs.data = updatedApplication.eventAPIs.data.filter(
-              eventApi => eventApi.id !== entry.id,
-            );
-            updatedApplication.eventAPIs.totalCount -= 1;
-
-            props.client.writeQuery({
-              ...originalQuery,
-              data: { application: updatedApplication },
-            });
-
-            listRef.current.resetList();
-          })
-          .catch(err => {
-            console.warn(err);
-          });
+          .then(updateCache)
+          .catch(err => console.warn(err)); // todo ładniej
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(() => {});
   }
 
   const headerRenderer = () => ['Name', 'Description'];
@@ -76,12 +75,11 @@ function ApplicationDetailsEventApis(props) {
       handler: deleteHandler,
     },
   ];
-
   return (
     <Panel className="fd-has-margin-top-medium">
       <GenericList
-        ref={listRef}
-        title={'Event APIs ' + eventApiList.length}
+        extraHeaderContent={<AddAPIModal applicationId={props.applicationId} />}
+        title="Event APIs"
         description="List of Event APIs"
         actions={actions}
         entries={eventApiList}
@@ -93,3 +91,7 @@ function ApplicationDetailsEventApis(props) {
 }
 
 export default withApollo(ApplicationDetailsEventApis);
+//todo hardkodowany tekst
+//todo mizerne odświeanie listy
+//todo TESTUJ
+//todo popover nie znika

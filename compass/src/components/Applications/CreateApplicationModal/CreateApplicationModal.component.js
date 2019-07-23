@@ -205,7 +205,7 @@ class CreateApplicationModal extends React.Component {
       ) {
         createdApplicationName = createdApplication.data.createApplication.name;
       }
-      
+
       if (typeof sendNotification === 'function') {
         sendNotification({
           variables: {

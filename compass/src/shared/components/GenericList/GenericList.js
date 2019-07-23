@@ -68,8 +68,11 @@ class GenericList extends React.Component {
     }));
   };
 
-  resetList() {
-    this.setState({ filteredEntries: this.props.entries });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.entries.length !== prevState.entries.length) {
+      return { filteredEntries: nextProps.entries };
+    }
+    return null;
   }
 
   render() {

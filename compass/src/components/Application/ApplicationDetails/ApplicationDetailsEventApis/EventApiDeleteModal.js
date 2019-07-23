@@ -1,20 +1,24 @@
-import React from "react";
+import React from 'react';
 import { Mutation } from 'react-apollo';
-import { Modal } from "@kyma-project/react-components";
-import LuigiClient from "@kyma-project/luigi-client";
+import { Modal } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
 import { DELETE_APPLICATION_EVENT_API, GET_APPLICATION } from './../../gql';
 /*todo delete*/
 export default function EventApiDeleteModal(props) {
-
-  const updateCache = (store) => {
-    const originalQuery = { query: GET_APPLICATION, variables: {id: props.applicationId} };
+  const updateCache = store => {
+    const originalQuery = {
+      query: GET_APPLICATION,
+      variables: { id: props.applicationId },
+    };
     const { application } = store.readQuery(originalQuery);
 
-    application.eventAPIs.data = application.eventAPIs.data.filter(eventApi => eventApi.id !== props.eventApi.id);
+    application.eventAPIs.data = application.eventAPIs.data.filter(
+      eventApi => eventApi.id !== props.eventApi.id,
+    );
 
     store.writeQuery({
       ...originalQuery,
-      data: { application }
+      data: { application },
     });
   };
 
@@ -34,8 +38,8 @@ export default function EventApiDeleteModal(props) {
           console.warn(error);
           LuigiClient.uxManager().showAlert({
             text: error.message,
-            type: "error",
-            closeAfter: 2000
+            type: 'error',
+            closeAfter: 2000,
           });
         }
 
@@ -49,8 +53,8 @@ export default function EventApiDeleteModal(props) {
 
         return (
           <Modal
-            title={"Confirm delete"}
-            confirmText={"Delete"}
+            title={'Confirm delete'}
+            confirmText={'Delete'}
             onConfirm={handleDelete}
             modalOpeningComponent={props.modalOpeningComponent}
             type="negative"

@@ -12,10 +12,12 @@ const config = {
 function addapitest(props) {
   return (
     <>
-    {!!props.data.application && <>
-        <p>APIsy: {props.data.application.apis.data.length}</p>
-        <p>Event APIsy: {props.data.application.eventAPIs.data.length}</p>
-    </>}
+      {!!props.data.application && (
+        <>
+          <p>APIsy: {props.data.application.apis.data.length}</p>
+          <p>Event APIsy: {props.data.application.eventAPIs.data.length}</p>
+        </>
+      )}
       <AddAPIModal application={{ id: APP_ID }} />
     </>
   );

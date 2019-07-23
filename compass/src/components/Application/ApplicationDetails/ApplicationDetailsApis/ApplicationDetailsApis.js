@@ -1,21 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from '@kyma-project/react-components';
-import GenericList from '../../../../shared/components/GenericList/GenericList';
 import LuigiClient from '@kyma-project/luigi-client';
 import { withApollo } from 'react-apollo';
-import { DELETE_APPLICATION_API, GET_APPLICATION } from './../../gql';
 import _ from 'lodash';
+
+import { Panel } from '@kyma-project/react-components';
+import GenericList from '../../../../shared/components/GenericList/GenericList';
+import AddAPIModal from './../AddAPIModal/AddAPIModal';
+
+import { DELETE_APPLICATION_API, GET_APPLICATION } from './../../gql';
 
 ApplicationDetailsApis.propTypes = {
   apis: PropTypes.object.isRequired,
 };
 
 function ApplicationDetailsApis(props) {
-  const listRef = React.useRef();
   const apisList = props.apis.data;
 
   function deleteHandler(entry) {
+    function updateCache() {
+      const originalQuery = {
+        query: GET_APPLICATION,
+        variables: { id: props.applicationId },
+      };
+      const { application } = props.client.cache.readQuery(originalQuery);
+      const updatedApplication = _.cloneDeep(application);
+
+      updatedApplication.apis.data = updatedApplication.apis.data.filter(
+        api => api.id !== entry.id,
+      );
+      updatedApplication.apis.totalCount -= 1;
+
+      props.client.writeQuery({
+        ...originalQuery,
+        data: { application: updatedApplication },
+      });
+    }
+
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove API',
@@ -31,35 +52,10 @@ function ApplicationDetailsApis(props) {
 
         return props.client
           .mutate(mutation)
-          .then(() => {
-            const originalQuery = {
-              query: GET_APPLICATION,
-              variables: { id: props.applicationId },
-            };
-            const { application } = props.client.cache.readQuery(originalQuery);
-            console.log(application);
-            const updatedApplication = _.cloneDeep(application);
-
-            updatedApplication.apis.data = updatedApplication.apis.data.filter(
-              api => api.id !== entry.id,
-            );
-            updatedApplication.apis.totalCount -= 1;
-
-            console.log(updatedApplication);
-            props.client.cache.writeQuery({
-              ...originalQuery,
-              data: { application: updatedApplication },
-            });
-
-            listRef.current.resetList();
-          })
-          .catch(err => {
-            console.warn(err);
-          });
+          .then(updateCache)
+          .catch(err => console.warn(err)); // todo ładniej
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(() => {});
   }
 
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
@@ -83,7 +79,7 @@ function ApplicationDetailsApis(props) {
   return (
     <Panel className="fd-has-margin-top-small">
       <GenericList
-        ref={listRef}
+        extraHeaderContent={<AddAPIModal applicationId={props.applicationId} />}
         title="APIs"
         description="List of APIs"
         actions={actions}

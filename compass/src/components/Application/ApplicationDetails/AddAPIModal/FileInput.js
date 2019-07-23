@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import classNames from "classnames";
-import { FormMessage } from "fundamental-react";
+import classNames from 'classnames';
+import { FormMessage } from 'fundamental-react';
 
 FileInput.propTypes = {
   fileInputChanged: PropTypes.func.isRequired,
   file: PropTypes.object,
-  error: PropTypes.string
+  error: PropTypes.string,
 };
 
 export default function FileInput(props) {
@@ -24,9 +24,9 @@ export default function FileInput(props) {
     e.nativeEvent.stopImmediatePropagation(); // to avoid event.js error
     props.fileInputChanged(e.dataTransfer.files[0]);
   }
-  
-  const labelClass = classNames("fd-file-upload__label", {
-    "fd-file-upload__input--drag-over": draggingOverCounter !== 0
+
+  const labelClass = classNames('fd-file-upload__label', {
+    'fd-file-upload__input--drag-over': draggingOverCounter !== 0,
   });
 
   return (
@@ -37,7 +37,9 @@ export default function FileInput(props) {
       onDragLeave={() => setDraggingCounter(draggingOverCounter - 1)}
       onDragOver={dragOver}
     >
-      {!!props.file && <p className="fd-file-upload__file-name">{props.file.name}</p>}
+      {!!props.file && (
+        <p className="fd-file-upload__file-name">{props.file.name}</p>
+      )}
       <input
         type="file"
         id="file-upload"
@@ -48,7 +50,9 @@ export default function FileInput(props) {
       <label htmlFor="file-upload" className={labelClass}>
         <span className="fd-file-upload__text">Browse</span>
         <p className="fd-file-upload__message"> or drop file here</p>
-        <p className="fd-file-upload__message">Available file types: JSON, YAML.</p>
+        <p className="fd-file-upload__message">
+          Available file types: JSON, YAML.
+        </p>
       </label>
       {!!props.error && <FormMessage type="error">{props.error} </FormMessage>}
     </div>

@@ -1,26 +1,36 @@
-import React from "react";
-import PropTypes from "prop-types";
-import LuigiClient from "@kyma-project/luigi-client";
-import { withApollo } from "react-apollo";
+import React from 'react';
+import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
+import { withApollo } from 'react-apollo';
 import _ from 'lodash';
 // todo docs
 
-import { Button, Modal, FormItem, FormInput, FormLabel } from "@kyma-project/react-components";
-import { Tab, TabGroup, InlineHelp, FormSet } from "fundamental-react";
-import "./style.scss";
+import {
+  Button,
+  Modal,
+  FormItem,
+  FormInput,
+  FormLabel,
+} from '@kyma-project/react-components';
+import { Tab, TabGroup, InlineHelp, FormSet } from 'fundamental-react';
+import './style.scss';
 
-import { ADD_APPLICATION_API, ADD_APPLICATION_EVENT_API, GET_APPLICATION } from "../../gql";
+import {
+  ADD_APPLICATION_API,
+  ADD_APPLICATION_EVENT_API,
+  GET_APPLICATION,
+} from '../../gql';
 import {
   getSpecType,
   isFileTypeValid,
   parseSpecFromText,
   getSpecFileType,
   getAPISpecType,
-  getAsyncAPISpecType
-} from "./APIUploadHelper";
+  getAsyncAPISpecType,
+} from './APIUploadHelper';
 
-import FileInput from "./FileInput";
-import TextFormItem from "./TextFormItem";
+import FileInput from './FileInput';
+import TextFormItem from './TextFormItem';
 
 // create grapql-ready form of API
 function createAPI(apiData) {
@@ -32,17 +42,17 @@ function createAPI(apiData) {
     spec: {
       data: JSON.stringify(apiData.spec),
       format: apiData.actualFileType,
-      type: getAPISpecType(apiData.spec)
+      type: getAPISpecType(apiData.spec),
     },
     defaultAuth: {
       credential: {
         oauth: {
           clientId: apiData.clientId,
           clientSecret: apiData.clientSecret,
-          url: apiData.url
-        }
-      }
-    }
+          url: apiData.url,
+        },
+      },
+    },
   };
 }
 
@@ -55,8 +65,8 @@ function createEventAPI(apiData) {
     spec: {
       data: JSON.stringify(apiData.spec),
       format: apiData.actualFileType,
-      eventSpecType: getAsyncAPISpecType(apiData.spec)
-    }
+      eventSpecType: getAsyncAPISpecType(apiData.spec),
+    },
   };
 }
 
@@ -65,18 +75,18 @@ class AddAPIModal extends React.Component {
     super(props);
 
     this.state = {
-      name: "",
-      description: "",
-      group: "",
-      targetURL: "",
+      name: '',
+      description: '',
+      group: '',
+      targetURL: '',
       specFile: null,
       spec: null,
-      clientId: "",
-      clientSecret: "",
-      url: "",
+      clientId: '',
+      clientSecret: '',
+      url: '',
 
       actualFileType: null,
-      apiType: null
+      apiType: null,
     };
 
     this.fileInputChanged = this.fileInputChanged.bind(this);
@@ -87,19 +97,19 @@ class AddAPIModal extends React.Component {
 
   setInitialState() {
     this.setState({
-      name: "",
-      description: "",
-      group: "",
-      targetURL: "",
+      name: '',
+      description: '',
+      group: '',
+      targetURL: '',
       specFile: null,
       spec: null,
-      clientId: "",
-      clientSecret: "",
-      url: "",
+      clientId: '',
+      clientSecret: '',
+      url: '',
 
       actualFileType: null,
       apiType: null,
-      currentFileError: null
+      currentFileError: null,
     });
   }
 
@@ -108,9 +118,14 @@ class AddAPIModal extends React.Component {
       return false;
     }
 
-    if (this.state.apiType === "API") {
+    if (this.state.apiType === 'API') {
       const { targetURL, clientId, clientSecret, url } = this.state;
-      if (!targetURL.trim() || !clientId.trim() || !clientSecret.trim() || !url.trim()) {
+      if (
+        !targetURL.trim() ||
+        !clientId.trim() ||
+        !clientSecret.trim() ||
+        !url.trim()
+      ) {
         return false;
       }
     }
@@ -126,7 +141,7 @@ class AddAPIModal extends React.Component {
     this.setState({ specFile: null, apiType: null, spec: null });
 
     if (!isFileTypeValid(file)) {
-      this.setState({ currentFileError: "Error: Invalid file type." });
+      this.setState({ currentFileError: 'Error: Invalid file type.' });
       return;
     }
 
@@ -145,88 +160,93 @@ class AddAPIModal extends React.Component {
       this.setState({
         spec: parsedSpec,
         actualFileType: getSpecFileType(fileContent),
-        apiType: getSpecType(parsedSpec)
+        apiType: getSpecType(parsedSpec),
       });
     } else {
-      this.setState({ specFile: null, apiType: null, spec: null, currentFileError: "Error: Spec file is corrupted." });
+      this.setState({
+        specFile: null,
+        apiType: null,
+        spec: null,
+        currentFileError: 'Error: Spec file is corrupted.',
+      });
     }
   }
 
   updateStore(store, data, isAsyncAPI) {
-    const originalQuery = { query: GET_APPLICATION, variables: { id: this.props.application.id } };
+    const originalQuery = {
+      query: GET_APPLICATION,
+      variables: { id: this.props.applicationId },
+    };
     const { application } = store.readQuery(originalQuery);
+    const updatedApplication = _.cloneDeep(application);
 
-    const clonedApplication = _.cloneDeep(application);
-    
     if (isAsyncAPI) {
-      clonedApplication.eventAPIs.data.push(data.addEventAPI);
-      clonedApplication.eventAPIs.totalCount += 1;
-    }
-    else {
-      clonedApplication.apis.data.push(data.addAPI);
-      clonedApplication.apis.totalCount += 1;
+      updatedApplication.eventAPIs.data.push(data.addEventAPI);
+      updatedApplication.eventAPIs.totalCount += 1;
+    } else {
+      updatedApplication.apis.data.push(data.addAPI);
+      updatedApplication.apis.totalCount += 1;
     }
 
     this.props.client.writeQuery({
       ...originalQuery,
-      data: { application: clonedApplication }
+      data: { application: updatedApplication },
     });
     this.props.client.queryManager.broadcastQueries();
   }
 
   async addSpecification() {
-    const isAsyncAPI = this.state.apiType === "EVENT_API";
-    const mutation = isAsyncAPI ? ADD_APPLICATION_EVENT_API : ADD_APPLICATION_API;
+    const isAsyncAPI = this.state.apiType === 'EVENT_API';
+    const mutation = isAsyncAPI
+      ? ADD_APPLICATION_EVENT_API
+      : ADD_APPLICATION_API;
     const variables = {
-      applicationID: this.props.application.id,
-      in: isAsyncAPI ? createEventAPI(this.state) : createAPI(this.state)
+      applicationID: this.props.applicationId,
+      in: isAsyncAPI ? createEventAPI(this.state) : createAPI(this.state),
     };
 
     try {
       await this.props.client.mutate({
         mutation,
         variables,
-        update: (store, { data }) => this.updateStore(store, data, isAsyncAPI)
+        update: (store, { data }) => this.updateStore(store, data, isAsyncAPI),
       });
 
-      const { sendNotification } = this.props;
-      console.log(this.props);
-      console.log(sendNotification);
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            content: `Application binding "${2}" created successfully`,
-            title: `${2}`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: 2,
-          },
-        });
-      }
-
+      // const { sendNotification } = this.props;
+      // if (typeof sendNotification === 'function') {
+      //   sendNotification({
+      //     variables: {
+      //       content: `Application binding "${2}" created successfully`,
+      //       title: `${2}`,
+      //       color: '#359c46',
+      //       icon: 'accept',
+      //       instanceName: 2,
+      //     },
+      //   });
+      // }
     } catch (e) {
       console.warn(e);
     }
   }
 
   render() {
-    const isEventAPI = this.state.apiType === "API";
+    const isEventAPI = this.state.apiType === 'API';
 
     let credentialsTabText;
-    if (this.state.apiType === "EVENT_API") {
-      credentialsTabText = "Credentials can be only specified for APIs.";
+    if (this.state.apiType === 'EVENT_API') {
+      credentialsTabText = 'Credentials can be only specified for APIs.';
     } else if (!this.state.apiType) {
-      credentialsTabText = "Please upload the API spec file.";
+      credentialsTabText = 'Please upload the API spec file.';
     }
 
     let targetUrlInfoText;
-    if (this.state.apiType === "EVENT_API") {
-      targetUrlInfoText = "Target URL can be only specified for APIs.";
+    if (this.state.apiType === 'EVENT_API') {
+      targetUrlInfoText = 'Target URL can be only specified for APIs.';
     } else if (!this.state.apiType) {
-      targetUrlInfoText = "Please upload the API spec file.";
+      targetUrlInfoText = 'Please upload the API spec file.';
     }
 
-    const modalOpeningComponent = <Button option="light">Add</Button>;
+    const modalOpeningComponent = <Button option="light">Add API</Button>;
 
     const content = (
       <TabGroup>
@@ -252,10 +272,16 @@ class AddAPIModal extends React.Component {
               onChange={e => this.setState({ group: e.target.value })}
             />
             <FormItem key="targetURL">
-              <FormLabel htmlFor="targetURL" required className="target-url__label--info">
+              <FormLabel
+                htmlFor="targetURL"
+                required
+                className="target-url__label--info"
+              >
                 Target URL
               </FormLabel>
-              {!isEventAPI && <InlineHelp placement="right" text={targetUrlInfoText} />}
+              {!isEventAPI && (
+                <InlineHelp placement="right" text={targetUrlInfoText} />
+              )}
               <FormInput
                 disabled={!isEventAPI}
                 id="targetURL"
@@ -275,7 +301,12 @@ class AddAPIModal extends React.Component {
             </FormItem>
           </FormSet>
         </Tab>
-        <Tab key="credentials" id="credentials" title="Credentials" disabled={!isEventAPI}>
+        <Tab
+          key="credentials"
+          id="credentials"
+          title="Credentials"
+          disabled={!isEventAPI}
+        >
           <FormSet>
             <TextFormItem
               inputKey="client-id"
@@ -303,17 +334,19 @@ class AddAPIModal extends React.Component {
             />
           </FormSet>
         </Tab>
-        {!isEventAPI && <InlineHelp placement="right" text={credentialsTabText} />}
+        {!isEventAPI && (
+          <InlineHelp placement="right" text={credentialsTabText} />
+        )}
       </TabGroup>
     );
 
     return (
       <Modal
-        width={"480px"}
+        width={'480px'}
         title="Add Specification"
         confirmText="Add"
         cancelText="Cancel"
-        type={"emphasized"}
+        type={'emphasized'}
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addSpecification}
         disabledConfirm={!this.isReadyToUpload()}
@@ -330,7 +363,7 @@ class AddAPIModal extends React.Component {
 }
 
 AddAPIModal.propTypes = {
-  application: PropTypes.object.isRequired
+  applicationId: PropTypes.string.isRequired,
 };
 
 export default withApollo(AddAPIModal);
