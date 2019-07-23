@@ -12,12 +12,14 @@ import {
 } from 'app/generic-list';
 import { Observable } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
+import LuigiClient from '@kyma-project/luigi-client';
 
 export class KubernetesDataProvider<S extends any, T extends any>
   implements DataProvider {
   filterMatcher = new SimpleFilterMatcher();
   facetMatcher = new SimpleFacetMatcher();
   observableDataSource: any;
+  namespacesToHide = [];
 
   constructor(
     private resourceUrl: string,
@@ -32,6 +34,9 @@ export class KubernetesDataProvider<S extends any, T extends any>
     facets: string[],
     noCache?: boolean
   ): Observable<DataProviderResult> {
+
+    this.getSystemNamespaces();
+
     return new Observable(observer => {
       if (noCache || this.observableDataSource === undefined) {
         this.observableDataSource = this.http
@@ -46,7 +51,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
                     ? this.dataConverter.convert(item)
                     : item;
                 })
-                .filter(item => this.selectActiveNamespaces(item));
+                .filter(item => this.shouldNamespaceBeShown(item))
             }),
             catchError(error => {
               observer.error(error);
@@ -104,13 +109,27 @@ export class KubernetesDataProvider<S extends any, T extends any>
     return result;
   }
 
-  selectActiveNamespaces(item) {
-    if (item instanceof Namespace) {
-      return (
-        !item.status || !item.status.phase || item.status.phase === 'Active'
-      );
-    } else {
+  getSystemNamespaces() {
+    const showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') && localStorage.getItem('console.showSystemNamespaces') === 'true';
+
+    if (!showSystemNamespaces) { 
+      LuigiClient.addInitListener(eventData => {
+        this.namespacesToHide = eventData && eventData.systemNamespaces ? eventData.systemNamespaces : [];
+      });
+    }
+  }
+
+  shouldNamespaceBeShown(item) {
+    if (!(item instanceof Namespace)) {
       return true;
     }
+    
+    const shouldBeHidden = this.namespacesToHide ? this.namespacesToHide.some((namespaceToHide) => {
+      return namespaceToHide === item.metadata.name;
+    }) : false;
+
+    const isActive = !item.status || !item.status.phase || item.status.phase === 'Active';
+
+    return !shouldBeHidden && isActive;
   }
 }

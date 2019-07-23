@@ -56,7 +56,7 @@ export class CreateBindingsModalComponent {
       const applicationId = params['id'];
       const observables = [
         this.applicationService.getApplication(applicationId) as any,
-        this.namespacesService.getNamespaces() as any
+        this.namespacesService.getFilteredNamespaces() as any
       ];
 
       forkJoin(observables).subscribe(

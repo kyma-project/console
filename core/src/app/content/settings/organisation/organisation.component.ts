@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver';
 export class OrganisationComponent implements OnInit {
   public orgId: string;
   public orgName: string;
+  public showSystemNamespaces = false;
 
   constructor(private http: HttpClient) {}
 
@@ -27,5 +28,18 @@ export class OrganisationComponent implements OnInit {
   ngOnInit() {
     this.orgId = AppConfig.orgId;
     this.orgName = AppConfig.orgName;
+
+    if (localStorage.getItem('console.showSystemNamespaces')) {
+      this.showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
+    }
+  }
+
+  public toggleSystemNamespaceVisibility() {
+    localStorage.setItem('console.showSystemNamespaces', (!this.showSystemNamespaces).toString());
+    this.refreshContextSwitcher();
+  }
+
+  private refreshContextSwitcher() {
+    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 }
