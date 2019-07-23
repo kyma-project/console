@@ -2,21 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { showErrorPrompt} from './../../../../shared/utility';
+import { showErrorPrompt } from './../../../../shared/utility';
 
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
 
 ApplicationDetailsEventApis.propTypes = {
+  applicationId: PropTypes.string.isRequired,
   eventApis: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
   deleteEventAPI: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsEventApis(props) {
-  const eventApiList = props.eventApis.data;
-
   function showSuccessNotification(apiName) {
     props.sendNotification({
       variables: {
@@ -65,22 +64,20 @@ export default function ApplicationDetailsEventApis(props) {
       handler: deleteHandler,
     },
   ];
+
+  const { applicationId, eventApis } = props;
+
   return (
     <Panel className="fd-has-margin-top-medium">
       <GenericList
-        extraHeaderContent={
-          <CreateAPIModal applicationId={props.applicationId} />
-        }
+        extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
         title="Event APIs"
-        description="List of Event APIs"
         notFoundMessage="There are no Event APIs available for this Application"
         actions={actions}
-        entries={eventApiList}
+        entries={eventApis.data}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
       />
     </Panel>
   );
 }
-
-//todo popover nie znika + ISSUE

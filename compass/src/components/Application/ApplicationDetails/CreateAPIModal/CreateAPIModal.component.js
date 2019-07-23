@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-// todo docs
 
 import { showErrorPrompt } from './../../../../shared/utility';
 
@@ -186,7 +185,9 @@ export default class CreateAPIModal extends React.Component {
   async addSpecification() {
     const isAsyncAPI = this.state.apiType === 'EVENT_API';
     const mutation = isAsyncAPI ? this.props.addEventAPI : this.props.addAPI;
-    const apiData = isAsyncAPI ? createEventAPI(this.state) : createAPI(this.state);
+    const apiData = isAsyncAPI
+      ? createEventAPI(this.state)
+      : createAPI(this.state);
 
     try {
       await mutation(apiData, this.props.applicationId);
@@ -201,14 +202,14 @@ export default class CreateAPIModal extends React.Component {
     const isEventAPI = this.state.apiType === 'API';
 
     let credentialsTabText;
-    if (this.state.apiType === 'EVENT_API') {
+    if (isEventAPI) {
       credentialsTabText = 'Credentials can be only specified for APIs.';
     } else if (!this.state.apiType) {
       credentialsTabText = 'Please upload the API spec file.';
     }
 
     let targetUrlInfoText;
-    if (this.state.apiType === 'EVENT_API') {
+    if (isEventAPI) {
       targetUrlInfoText = 'Target URL can be only specified for APIs.';
     } else if (!this.state.apiType) {
       targetUrlInfoText = 'Please upload the API spec file.';
@@ -336,4 +337,3 @@ CreateAPIModal.propTypes = {
   addAPI: PropTypes.func.isRequired,
   addEventAPI: PropTypes.func.isRequired,
 };
-

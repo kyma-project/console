@@ -92,7 +92,7 @@ export default function ApplicationDetailsHeader(props) {
         </ActionBar.Actions>
       </section>
       <PanelGrid nogap cols={4}>
-        <PanelEntry title="Name" content={<p>{name}</p>} />
+        <PanelEntry title="Description" content={<p>{description}</p>} />
         <PanelEntry
           title="Status"
           content={
@@ -108,17 +108,6 @@ export default function ApplicationDetailsHeader(props) {
             </p>
           }
         />
-        <PanelEntry title="Description" content={<p>{description}</p>} />
-        {labels && !labels.length && (
-          <PanelEntry
-            title="Labels"
-            content={
-              labels && (
-                <LabelDisplay labels={labels} className="labels-display" />
-              )
-            }
-          />
-        )}
       </PanelGrid>
     </header>
   );

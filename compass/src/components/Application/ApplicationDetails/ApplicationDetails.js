@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
+import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay';
 import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
@@ -29,10 +30,19 @@ export default function ApplicationDetails(props) {
 
         const application = data.application;
 
+        let scenarios = [];
+        if (application.labels && application.labels.scenarios) {
+          scenarios = application.labels.scenarios;
+        }
+
         return (
           <>
             <Header application={application} />
             <section className="fd-section">
+              <ScenarioDisplay
+                labels={scenarios}
+                applicationId={application.id}
+              />
               <ApisList
                 apis={application.apis}
                 applicationId={application.id}

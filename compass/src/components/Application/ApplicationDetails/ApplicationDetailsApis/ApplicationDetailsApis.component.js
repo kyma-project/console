@@ -9,15 +9,14 @@ import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
 
 ApplicationDetailsApis.propTypes = {
+  applicationId: PropTypes.string.isRequired,
   apis: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
   deleteAPI: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsApis(props) {
-  const apisList = props.apis.data;
-
-  function showSuccessNotification(apiName) {
+  function showDeleteSuccessNotification(apiName) {
     props.sendNotification({
       variables: {
         content: `Deleted API "${apiName}".`,
@@ -40,7 +39,7 @@ export default function ApplicationDetailsApis(props) {
       .then(async () => {
         try {
           await props.deleteAPI(entry.id, props.applicationId);
-          showSuccessNotification(entry.name);
+          showDeleteSuccessNotification(entry.name);
         } catch (error) {
           console.warn(error);
           showErrorPrompt(error);
@@ -67,17 +66,16 @@ export default function ApplicationDetailsApis(props) {
     },
   ];
 
+  const { applicationId, apis } = props;
+
   return (
     <Panel className="fd-has-margin-top-small">
       <GenericList
-        extraHeaderContent={
-          <CreateAPIModal applicationId={props.applicationId} />
-        }
+        extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
         title="APIs"
-        description="List of APIs"
         notFoundMessage="There are no APIs available for this Application"
         actions={actions}
-        entries={apisList}
+        entries={apis.data}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
       />
