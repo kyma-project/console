@@ -27,8 +27,8 @@ function updateCache(props, applicationId, apiId) {
 export default compose(
   graphql(DELETE_API, {
     props: props => ({
-      deleteAPI: (apiId, applicationId) => {
-        props.mutate({ variables: { id: apiId } });
+      deleteAPI: async (apiId, applicationId) => {
+        await props.mutate({ variables: { id: apiId } });
         updateCache(props, applicationId, apiId);
       },
     }),

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { withApollo } from 'react-apollo';
-import _ from 'lodash';
 // todo docs
+
+import { showErrorPrompt } from './../../../../shared/utility';
 
 import {
   Button,
@@ -15,11 +15,6 @@ import {
 import { Tab, TabGroup, InlineHelp } from 'fundamental-react';
 import './style.scss';
 
-import {
-  ADD_APPLICATION_API,
-  ADD_APPLICATION_EVENT_API,
-  GET_APPLICATION,
-} from '../../gql';
 import {
   getSpecType,
   isFileTypeValid,
@@ -70,7 +65,7 @@ function createEventAPI(apiData) {
   };
 }
 
-class CreateAPIModal extends React.Component {
+export default class CreateAPIModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -126,14 +121,6 @@ class CreateAPIModal extends React.Component {
         icon: 'accept',
         instanceName: apiName,
       },
-    });
-  }
-
-  showErrorPrompt(error) {
-    LuigiClient.uxManager().showAlert({
-      text: error.message,
-      type: 'error',
-      closeAfter: 2000,
     });
   }
 
@@ -196,50 +183,17 @@ class CreateAPIModal extends React.Component {
     }
   }
 
-  updateStore(store, data, isAsyncAPI) {
-    const originalQuery = {
-      query: GET_APPLICATION,
-      variables: { id: this.props.applicationId },
-    };
-    const { application } = store.readQuery(originalQuery);
-    const updatedApplication = _.cloneDeep(application);
-
-    if (isAsyncAPI) {
-      updatedApplication.eventAPIs.data.push(data.addEventAPI);
-      updatedApplication.eventAPIs.totalCount += 1;
-    } else {
-      updatedApplication.apis.data.push(data.addAPI);
-      updatedApplication.apis.totalCount += 1;
-    }
-
-    this.props.client.writeQuery({
-      ...originalQuery,
-      data: { application: updatedApplication },
-    });
-    this.props.client.queryManager.broadcastQueries();
-  }
-
   async addSpecification() {
     const isAsyncAPI = this.state.apiType === 'EVENT_API';
-    const mutation = isAsyncAPI
-      ? ADD_APPLICATION_EVENT_API
-      : ADD_APPLICATION_API;
-    const variables = {
-      applicationID: this.props.applicationId,
-      in: isAsyncAPI ? createEventAPI(this.state) : createAPI(this.state),
-    };
+    const mutation = isAsyncAPI ? this.props.addEventAPI : this.props.addAPI;
+    const apiData = isAsyncAPI ? createEventAPI(this.state) : createAPI(this.state);
 
     try {
-      await this.props.client.mutate({
-        mutation,
-        variables,
-        update: (store, { data }) => this.updateStore(store, data, isAsyncAPI),
-      });
-
+      await mutation(apiData, this.props.applicationId);
       this.showSuccessNotification(this.state.name, isAsyncAPI);
     } catch (error) {
       console.warn(error);
-      this.showErrorPrompt(error.message);
+      showErrorPrompt(error.message);
     }
   }
 
@@ -379,6 +333,7 @@ class CreateAPIModal extends React.Component {
 CreateAPIModal.propTypes = {
   applicationId: PropTypes.string.isRequired,
   sendNotification: PropTypes.func.isRequired,
+  addAPI: PropTypes.func.isRequired,
+  addEventAPI: PropTypes.func.isRequired,
 };
 
-export default withApollo(CreateAPIModal);

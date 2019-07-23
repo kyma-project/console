@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
+import { showErrorPrompt} from './../../../../shared/utility';
+
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
@@ -24,14 +26,6 @@ export default function ApplicationDetailsEventApis(props) {
         icon: 'accept',
         instanceName: apiName,
       },
-    });
-  }
-
-  function showErrorPrompt(error) {
-    LuigiClient.uxManager().showAlert({
-      text: error.message,
-      type: 'error',
-      closeAfter: 2000,
     });
   }
 
@@ -79,6 +73,7 @@ export default function ApplicationDetailsEventApis(props) {
         }
         title="Event APIs"
         description="List of Event APIs"
+        notFoundMessage="There are no Event APIs available for this Application"
         actions={actions}
         entries={eventApiList}
         headerRenderer={headerRenderer}
