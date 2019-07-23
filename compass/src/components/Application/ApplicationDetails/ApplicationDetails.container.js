@@ -6,7 +6,7 @@ import { GET_APPLICATION } from './../gql';
 import ApplicationDetails from './ApplicationDetails.component';
 export default compose(
   graphql(GET_APPLICATION, {
-    name: 'application',
+    name: 'applicationQuery',
     options: props => {
       return {
         fetchPolicy: 'cache-and-network',
@@ -19,7 +19,7 @@ export default compose(
   }),
   graphql(DELETE_APPLICATION_MUTATION, {
     props: ({ mutate }) => ({
-      deleteApplication: id =>
+      deleteApplicationMutation: id =>
         mutate({
           variables: {
             id: id,

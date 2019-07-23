@@ -1,22 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
 
-ApplicationDetails.propTypes = {
-  applicationId: PropTypes.string.isRequired,
-};
-
-export default function ApplicationDetails(props) {
-  const application = props.application;
-  const app = (application && application.application) || {};
-  const loading = application.loading;
-  const error = application.error;
+const ApplicationDetails = ({
+  applicationQuery,
+  deleteApplicationMutation,
+}) => {
+  const application = (applicationQuery && applicationQuery.application) || {};
+  const loading = applicationQuery.loading;
+  const error = applicationQuery.error;
   if (loading) return 'Loading...';
   if (error) {
-    if (!application || !application.application) {
+    if (!applicationQuery || !applicationQuery.application) {
       return <ApplicationNotFoundMessage />;
     } else {
       return `Error! ${error.message}`;
@@ -24,11 +21,16 @@ export default function ApplicationDetails(props) {
   }
   return (
     <>
-      <Header application={app} deleteApplication={props.deleteApplication} />
+      <Header
+        application={application}
+        deleteApplication={deleteApplicationMutation}
+      />
       <section className="fd-section">
-        <ApisList apis={app.apis} />
-        <EventApisList eventApis={app.eventAPIs} />
+        <ApisList apis={application.apis} />
+        <EventApisList eventApis={application.eventAPIs} />
       </section>
     </>
   );
-}
+};
+
+export default ApplicationDetails;

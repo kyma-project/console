@@ -1,11 +1,10 @@
-import React from 'react';
-import Applications from '../Applications';
 import renderer from 'react-test-renderer';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { GET_APPLICATIONS_MOCK } from './mock';
+import Applications from '../Applications.container';
+import ApplicationsComponent from '../Applications.component';
+import React from 'react';
+import { GET_APPLICATIONS_MOCK, MOCKED_DATA } from './mock';
 import { shallow } from 'enzyme';
-
-const wait = require('waait');
 
 describe('Applications', () => {
   it('should render loading state initially', () => {
@@ -18,7 +17,9 @@ describe('Applications', () => {
     expect(tree).toMatchSnapshot();
   });
   describe('processStatus()', () => {
-    const component = shallow(<Applications />);
+    const component = shallow(
+      <ApplicationsComponent applications={MOCKED_DATA} />,
+    );
     const processStatusFn = component.instance().processStatus;
 
     it('Renders proper <Badge> when no prop is provided', async () => {

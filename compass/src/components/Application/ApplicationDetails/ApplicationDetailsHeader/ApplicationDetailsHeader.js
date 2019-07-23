@@ -32,19 +32,27 @@ function editApplication(applicationId) {
   console.log('todo edit (#1042)', applicationId);
 }
 
-class ApplicaApplicationDetailsHeadertions extends React.Component {
+class ApplicationDetailsHeader extends React.Component {
   PropTypes = {
     application: PropTypes.object.isRequired,
   };
 
-  handleDelete = async element => {
-    await this.props.deleteApplication(element.id);
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(`/applications`);
+  delete = async element => {
+    try {
+      await this.props.deleteApplication(element.id);
+      LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(`/applications`);
+    } catch (e) {
+      LuigiClient.uxManager().showAlert({
+        text: `Error occored during deletion ${e.message}`,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    }
   };
 
-  deleteApplication = application => {
+  handleDelete = application => {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove application',
@@ -52,16 +60,10 @@ class ApplicaApplicationDetailsHeadertions extends React.Component {
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
-      .catch(e => {
-        LuigiClient.uxManager().showAlert({
-          text: `Error occored during deletion ${e.message}`,
-          type: 'error',
-          closeAfter: 10000,
-        });
+      .then(() => {
+        this.delete(application);
       })
-      .finally(() => {
-        this.handleDelete(application);
-      });
+      .catch(() => {});
   };
 
   render() {
@@ -109,7 +111,7 @@ class ApplicaApplicationDetailsHeadertions extends React.Component {
               Edit
             </Button>
             <Button
-              onClick={() => this.deleteApplication(this.props.application)}
+              onClick={() => this.handleDelete(this.props.application)}
               option="light"
               type="negative"
             >
@@ -146,4 +148,4 @@ class ApplicaApplicationDetailsHeadertions extends React.Component {
     );
   }
 }
-export default ApplicaApplicationDetailsHeadertions;
+export default ApplicationDetailsHeader;

@@ -65,6 +65,7 @@ class Applications extends React.Component {
     'EventAPIs',
     'Status',
   ];
+
   rowRenderer = application => [
     <span
       className="link"
@@ -84,8 +85,16 @@ class Applications extends React.Component {
   ];
 
   handleDelete = async element => {
-    await this.props.deleteApplication(element.id);
-    this.refreshApplications();
+    try {
+      await this.props.deleteApplication(element.id);
+      this.refreshApplications();
+    } catch (e) {
+      LuigiClient.uxManager().showAlert({
+        text: `Error occored during deletion ${e.message}`,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    }
   };
 
   refreshApplications = () => {
@@ -103,31 +112,28 @@ class Applications extends React.Component {
             buttonConfirm: 'Delete',
             buttonDismiss: 'Cancel',
           })
-          .catch(e => {
-            LuigiClient.uxManager().showAlert({
-              text: `Error occored during deletion ${e.message}`,
-              type: 'error',
-              closeAfter: 10000,
-            });
-          })
-          .finally(() => {
+          .then(() => {
             this.handleDelete(entry);
-          });
+          })
+          .catch(() => {});
       },
     },
   ];
 
   render() {
     const applicationsQuery = this.props.applications;
+
     const applications =
       (applicationsQuery &&
         applicationsQuery.applications &&
         applicationsQuery.applications.data) ||
       {};
-    const loading = applicationsQuery.loading;
-    const error = applicationsQuery.error;
+    const loading = applicationsQuery && applicationsQuery.loading;
+    const error = applicationsQuery && applicationsQuery.error;
+
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
+
     return (
       <GenericList
         extraHeaderContent={
