@@ -12,6 +12,7 @@ import {
 } from 'app/generic-list';
 import { Observable } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
+import LuigiClient from '@kyma-project/luigi-client';
 
 export class KubernetesDataProvider<S extends any, T extends any>
   implements DataProvider {
@@ -22,8 +23,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
   constructor(
     private resourceUrl: string,
     private dataConverter: DataConverter<S, T>,
-    private http: HttpClient,
-    private namespacesToHide?: string[]
+    private http: HttpClient
   ) {}
 
   getData(
@@ -110,9 +110,19 @@ export class KubernetesDataProvider<S extends any, T extends any>
       return true;
     }
 
-    const shouldBeHidden = this.namespacesToHide ? this.namespacesToHide.some((namespaceToHide) => {
+    let showSystemNamespaces = false;
+    if (localStorage.getItem('console.showSystemNamespaces')) {
+      showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
+    }
+    let namespacesToHide = [];
+    LuigiClient.addInitListener(eventData => {
+      namespacesToHide = eventData && eventData.systemNamespaces && !showSystemNamespaces ? eventData.systemNamespaces : [];
+    })
+    
+    const shouldBeHidden = namespacesToHide ? namespacesToHide.some((namespaceToHide) => {
       return namespaceToHide === item.metadata.name;
     }) : false;
+
     const isActive = !item.status || !item.status.phase || item.status.phase === 'Active';
 
     return !shouldBeHidden && isActive;

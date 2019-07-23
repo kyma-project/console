@@ -58,17 +58,8 @@ export class WorkspaceOverviewComponent extends GenericListComponent
       Namespace
     > = new NamespaceDataConverter(applicationBindingService, http);
 
-    let showSystemNamespaces = false;
-    if (localStorage.getItem('console.showSystemNamespaces')) {
-      showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
-    }
-    let namespacesToHide = [];
-    LuigiClient.addInitListener(eventData => {
-      namespacesToHide = eventData && eventData.systemNamespaces && !showSystemNamespaces ? eventData.systemNamespaces : [];
-    })
-
     const url = `${AppConfig.k8sApiServerUrl}namespaces`;
-    this.source = new KubernetesDataProvider(url, converter, this.http, namespacesToHide);
+    this.source = new KubernetesDataProvider(url, converter, this.http);
     this.entryRenderer = NamespaceCardComponent;
     this.filterState = {
       filters: [
