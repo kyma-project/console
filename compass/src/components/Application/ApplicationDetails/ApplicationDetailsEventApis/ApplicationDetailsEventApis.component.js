@@ -1,21 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { withApollo } from 'react-apollo';
-import _ from 'lodash';
 
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
 
-import { DELETE_APPLICATION_EVENT_API, GET_APPLICATION } from '../../gql';
-
 ApplicationDetailsEventApis.propTypes = {
   eventApis: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
+  deleteEventAPI: PropTypes.func.isRequired,
 };
 
-function ApplicationDetailsEventApis(props) {
+export default function ApplicationDetailsEventApis(props) {
   const eventApiList = props.eventApis.data;
 
   function showSuccessNotification(apiName) {
@@ -39,26 +36,6 @@ function ApplicationDetailsEventApis(props) {
   }
 
   function deleteHandler(entry) {
-    function updateCache() {
-      const originalQuery = {
-        query: GET_APPLICATION,
-        variables: { id: props.applicationId },
-      };
-      const { application } = props.client.cache.readQuery(originalQuery);
-      // needed for actually refreshing Query components
-      const updatedApplication = _.cloneDeep(application);
-
-      updatedApplication.eventAPIs.data = updatedApplication.eventAPIs.data.filter(
-        eventApi => eventApi.id !== entry.id,
-      );
-      updatedApplication.eventAPIs.totalCount -= 1;
-
-      props.client.writeQuery({
-        ...originalQuery,
-        data: { application: updatedApplication },
-      });
-    }
-
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove Event API',
@@ -66,22 +43,14 @@ function ApplicationDetailsEventApis(props) {
         buttonConfirm: 'Yes',
         buttonDismiss: 'No',
       })
-      .then(() => {
-        const mutation = {
-          mutation: DELETE_APPLICATION_EVENT_API,
-          variables: { id: entry.id },
-        };
-
-        return props.client
-          .mutate(mutation)
-          .then(() => {
-            updateCache();
-            showSuccessNotification(entry.name);
-          })
-          .catch(error => {
-            console.warn(error);
-            showErrorPrompt(error);
-          });
+      .then(async () => {
+        try {
+          await props.deleteEventAPI(entry.id, props.applicationId);
+          showSuccessNotification(entry.name);
+        } catch (error) {
+          console.warn(error);
+          showErrorPrompt(error);
+        }
       })
       .catch(() => {});
   }
@@ -119,8 +88,4 @@ function ApplicationDetailsEventApis(props) {
   );
 }
 
-export default withApollo(ApplicationDetailsEventApis);
-//todo hardkodowany tekst
-//todo mizerne odświeanie listy
-//todo TESTUJ
-//todo popover nie znika
+//todo popover nie znika + ISSUE

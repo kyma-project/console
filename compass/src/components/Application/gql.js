@@ -96,7 +96,7 @@ export const ADD_APPLICATION_EVENT_API = gql`
   }
 `;
 
-export const DELETE_APPLICATION_API = gql`
+export const DELETE_API = gql`
   mutation deleteAPI($id: ID!) {
     deleteAPI(id: $id) {
       id
@@ -106,7 +106,7 @@ export const DELETE_APPLICATION_API = gql`
   }
 `;
 
-export const DELETE_APPLICATION_EVENT_API = gql`
+export const DELETE_EVENT_API = gql`
   mutation deleteEventAPI($id: ID!) {
     deleteEventAPI(id: $id) {
       id

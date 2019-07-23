@@ -4,34 +4,16 @@ import { SEND_NOTIFICATION } from '../../../../gql';
 import CreateAPIModal from './CreateAPIModal.component';
 
 export default compose(
-  //   graphql(CHECK_APPLICATION_EXISTS, {
-  //     name: 'existingApplications',
-  //     options: props => {
-  //       return {
+  // graphql(CREATE_APPLICATION_MUTATION, {
+  //   props: ({ mutate }) => ({
+  //     addApplication: data =>
+  //       mutate({
   //         variables: {
-  //           filter: [
-  //             {
-  //               label: 'group',
-  //               values: ['production', 'experimental'],
-  //               operator: 'ANY',
-  //             },
-  //           ],
+  //           in: data,
   //         },
-  //         fetchPolicy: 'network-only',
-  //         errorPolicy: 'all',
-  //       };
-  //     },
+  //       }),
   //   }),
-  //   graphql(CREATE_APPLICATION_MUTATION, {
-  //     props: ({ mutate }) => ({
-  //       addApplication: data =>
-  //         mutate({
-  //           variables: {
-  //             in: data,
-  //           },
-  //         }),
-  //     }),
-  //   }),
+  // }),
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
