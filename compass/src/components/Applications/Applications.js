@@ -33,7 +33,6 @@ class Applications extends React.Component {
   };
 
   processStatus(status) {
-    return <Badge>{status}</Badge>;
     let type = 'warning';
     switch (status) {
       case 'INITIAL':
