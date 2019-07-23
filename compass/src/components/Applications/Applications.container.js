@@ -1,4 +1,4 @@
-import { graphql, withApollo, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { GET_APPLICATIONS, DELETE_APPLICATION_MUTATION } from './gql';
 
 import Applications from './Applications.component';
