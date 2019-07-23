@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
-import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
+import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
+import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
 
 import { GET_APPLICATION } from './../gql';

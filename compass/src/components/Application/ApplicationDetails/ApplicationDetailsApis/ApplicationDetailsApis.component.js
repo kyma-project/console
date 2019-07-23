@@ -6,16 +6,37 @@ import _ from 'lodash';
 
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
-import AddAPIModal from './../AddAPIModal/AddAPIModal';
+import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
 
-import { DELETE_APPLICATION_API, GET_APPLICATION } from './../../gql';
+import { DELETE_APPLICATION_API, GET_APPLICATION } from '../../gql';
 
 ApplicationDetailsApis.propTypes = {
   apis: PropTypes.object.isRequired,
+  sendNotification: PropTypes.func.isRequired,
 };
 
 function ApplicationDetailsApis(props) {
   const apisList = props.apis.data;
+
+  function showSuccessNotification(apiName) {
+    props.sendNotification({
+      variables: {
+        content: `Deleted API "${apiName}".`,
+        title: `${apiName}`,
+        color: '#359c46',
+        icon: 'accept',
+        instanceName: apiName,
+      },
+    });
+  }
+
+  function showErrorPrompt(error) {
+    LuigiClient.uxManager().showAlert({
+      text: error.message,
+      type: 'error',
+      closeAfter: 2000,
+    });
+  }
 
   function deleteHandler(entry) {
     function updateCache() {
@@ -52,8 +73,14 @@ function ApplicationDetailsApis(props) {
 
         return props.client
           .mutate(mutation)
-          .then(updateCache)
-          .catch(err => console.warn(err)); // todo ładniej
+          .then(() => {
+            updateCache();
+            showSuccessNotification(entry.name);
+          })
+          .catch(error => {
+            console.warn(error);
+            showErrorPrompt(error);
+          });
       })
       .catch(() => {});
   }
@@ -79,7 +106,9 @@ function ApplicationDetailsApis(props) {
   return (
     <Panel className="fd-has-margin-top-small">
       <GenericList
-        extraHeaderContent={<AddAPIModal applicationId={props.applicationId} />}
+        extraHeaderContent={
+          <CreateAPIModal applicationId={props.applicationId} />
+        }
         title="APIs"
         description="List of APIs"
         actions={actions}

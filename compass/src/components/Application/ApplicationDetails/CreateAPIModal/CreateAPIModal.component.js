@@ -12,7 +12,7 @@ import {
   FormInput,
   FormLabel,
 } from '@kyma-project/react-components';
-import { Tab, TabGroup, InlineHelp, FormSet } from 'fundamental-react';
+import { Tab, TabGroup, InlineHelp } from 'fundamental-react';
 import './style.scss';
 
 import {
@@ -70,7 +70,7 @@ function createEventAPI(apiData) {
   };
 }
 
-class AddAPIModal extends React.Component {
+class CreateAPIModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -110,6 +110,30 @@ class AddAPIModal extends React.Component {
       actualFileType: null,
       apiType: null,
       currentFileError: null,
+    });
+  }
+
+  showSuccessNotification(apiName, isAsyncAPI) {
+    const content = isAsyncAPI
+      ? `Event API "${apiName}" created.`
+      : `API "${apiName}" created.`;
+
+    this.props.sendNotification({
+      variables: {
+        content,
+        title: `${apiName}`,
+        color: '#359c46',
+        icon: 'accept',
+        instanceName: apiName,
+      },
+    });
+  }
+
+  showErrorPrompt(error) {
+    LuigiClient.uxManager().showAlert({
+      text: error.message,
+      type: 'error',
+      closeAfter: 2000,
     });
   }
 
@@ -212,20 +236,10 @@ class AddAPIModal extends React.Component {
         update: (store, { data }) => this.updateStore(store, data, isAsyncAPI),
       });
 
-      // const { sendNotification } = this.props;
-      // if (typeof sendNotification === 'function') {
-      //   sendNotification({
-      //     variables: {
-      //       content: `Application binding "${2}" created successfully`,
-      //       title: `${2}`,
-      //       color: '#359c46',
-      //       icon: 'accept',
-      //       instanceName: 2,
-      //     },
-      //   });
-      // }
-    } catch (e) {
-      console.warn(e);
+      this.showSuccessNotification(this.state.name, isAsyncAPI);
+    } catch (error) {
+      console.warn(error);
+      this.showErrorPrompt(error.message);
     }
   }
 
@@ -251,7 +265,7 @@ class AddAPIModal extends React.Component {
     const content = (
       <TabGroup>
         <Tab key="api-data" id="api-data" title="API data">
-          <FormSet>
+          <form>
             <TextFormItem
               inputKey="name"
               required
@@ -299,7 +313,7 @@ class AddAPIModal extends React.Component {
                 error={this.state.currentFileError}
               />
             </FormItem>
-          </FormSet>
+          </form>
         </Tab>
         <Tab
           key="credentials"
@@ -307,7 +321,7 @@ class AddAPIModal extends React.Component {
           title="Credentials"
           disabled={!isEventAPI}
         >
-          <FormSet>
+          <form>
             <TextFormItem
               inputKey="client-id"
               required
@@ -332,7 +346,7 @@ class AddAPIModal extends React.Component {
               defaultValue={this.state.url}
               onChange={e => this.setState({ url: e.target.value })}
             />
-          </FormSet>
+          </form>
         </Tab>
         {!isEventAPI && (
           <InlineHelp placement="right" text={credentialsTabText} />
@@ -362,8 +376,9 @@ class AddAPIModal extends React.Component {
   }
 }
 
-AddAPIModal.propTypes = {
+CreateAPIModal.propTypes = {
   applicationId: PropTypes.string.isRequired,
+  sendNotification: PropTypes.func.isRequired,
 };
 
-export default withApollo(AddAPIModal);
+export default withApollo(CreateAPIModal);
