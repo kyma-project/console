@@ -5,7 +5,6 @@ const Runtimes = () => {
   return (
     <section className="fd-section">
       <h1>Runtimes</h1>
-      <CreateRuntimeForm />
       <RuntimeList />
     </section>
   );

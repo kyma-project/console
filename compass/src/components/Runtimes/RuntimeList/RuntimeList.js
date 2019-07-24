@@ -5,6 +5,7 @@ import { Panel } from 'fundamental-react/lib/Panel';
 import { GET_RUNTIMES } from '../gql';
 import { Table } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
+import CreateRuntimeModal from '../CreateRuntimeModal/CreateRuntimeModal.component';
 
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({
@@ -33,6 +34,9 @@ const RuntimeList = () => (
         <Panel className="fd-has-margin-top-medium">
           <Panel.Header>
             <Panel.Head title="Runtime list" />
+            <Panel.Actions>
+              <CreateRuntimeModal />
+            </Panel.Actions>
           </Panel.Header>
           <Panel.Body>
             <Table
