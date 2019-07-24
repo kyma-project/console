@@ -35,6 +35,9 @@ export const GET_RUNTIMES = gql`
         id
         name
         description
+        status {
+          condition
+        }
         labels
       }
     }

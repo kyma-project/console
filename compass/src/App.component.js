@@ -3,8 +3,8 @@ import './App.scss';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Runtimes from './components/Runtimes/Runtimes.container';
 import Overview from './components/Overview/Overview';
-import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails';
-import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
+import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.component';
+import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.component';
 import { Notification } from '@kyma-project/react-components';
 import Applications from './components/Applications/Applications.container';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Token } from 'fundamental-react/lib/Token';
+import { Badge } from 'fundamental-react/lib/Badge';
 
 import LuigiClient from '@kyma-project/luigi-client';
 import GenericList from '../../shared/components/GenericList/GenericList';
@@ -11,33 +11,11 @@ class Runtimes extends React.Component {
     runtimes: PropTypes.object.isRequired,
   };
 
-  createLabels = labels => {
-    const separatedLabels = [];
-    for (const key in labels) {
-      if (labels.hasOwnProperty(key) && labels[key].length > 0) {
-        labels[key].forEach(lab => {
-          if (lab === 'undefined') {
-            separatedLabels.push(key);
-          } else {
-            separatedLabels.push(key + '=' + lab);
-          }
-        });
-      }
-    }
-    return separatedLabels.map((label, id) => (
-      <Token
-        key={id}
-        className="y-fd-token y-fd-token--no-button y-fd-token--gap"
-      >
-        {label}
-      </Token>
-    ));
-  };
-
   headerRenderer = runtimes => [
     'Name',
     'Description',
-    'Labels',
+    'Assigned Scenarios',
+    'Status'
   ];
 
   rowRenderer = runtime => [
@@ -51,7 +29,8 @@ class Runtimes extends React.Component {
       <b>{runtime.name}</b>
     </span>,
     runtime.description ? runtime.description : '-',
-    runtime.labels ? this.createLabels(runtime.labels) : '-',
+    runtime.labels && runtime.labels.scenarios ? runtime.labels.scenarios.length : 0,
+    runtime.status && runtime.status.condition ? this.processStatus(runtime.status.condition) : this.processStatus('UNKNOWN')
   ];
 
   handleDelete = async element => {
@@ -89,6 +68,28 @@ class Runtimes extends React.Component {
       },
     },
   ];
+
+  processStatus(status) {
+    let type = 'warning';
+    switch (status) {
+      case 'INITIAL':
+        return <Badge>{status}</Badge>;
+
+      case 'READY':
+        type = 'success';
+        break;
+      case 'UNKNOWN':
+        type = 'warning';
+        break;
+      case 'FAILED':
+        type = 'error';
+        break;
+      default:
+        type = 'warning';
+    }
+
+    return <Badge type={type}>{status}</Badge>;
+  }
 
   render() {
     const runtimesQuery = this.props.runtimes;
