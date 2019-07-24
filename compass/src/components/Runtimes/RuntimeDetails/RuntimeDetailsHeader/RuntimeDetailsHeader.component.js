@@ -1,16 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GET_RUNTIME } from '../../gql';
-import { Query } from 'react-apollo';
 
-import LuigiClient from '@kyma-project/luigi-client';
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
 import { Badge } from 'fundamental-react/lib/Badge';
-import {
-  Button,
-  Breadcrumb,
-  Panel
-} from '@kyma-project/react-components';
+
+import LuigiClient from '@kyma-project/luigi-client';
+import { Button, Breadcrumb } from '@kyma-project/react-components';
 
 
 class RuntimeDetailsHeader extends React.Component {
@@ -27,14 +22,13 @@ class RuntimeDetailsHeader extends React.Component {
         buttonDismiss: 'Cancel',
       })
       .then(() => {
-        this.deleteRuntime2(runtime);
+        this.deleteEntry(runtime);
       })
       .catch(() => {});
   };
   
-  deleteRuntime2 = async element => {
+  deleteEntry = async element => {
     try {
-      console.log(this)
       await this.props.deleteRuntime(element.id);
       LuigiClient.linkManager()
         .fromClosestContext()
@@ -48,75 +42,65 @@ class RuntimeDetailsHeader extends React.Component {
     }
   };
 
-  render = () => {
-    console.log(this.props)
-    return (
-      <Query query={GET_RUNTIME} variables={{ id: this.props.runtimeId }}>
-        {({ loading, error, data }) => {
-          if (loading) return 'Loading...';
-          if (error) return `Error! ${error.message}`;
+  navigateToRuntimesList = () => {
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/runtimes`);
+  }
 
-          const { name, description, id, status } = data.runtime;
-          return (
-            <>
-              <header className="fd-page__header fd-page__header--columns fd-has-background-color-background-2">
-                <section className="fd-section">
-                  <div className="fd-action-bar">
-                    <div className="fd-action-bar__header">
-                      <Breadcrumb>
-                        <Breadcrumb.Item
-                          name="Runtimes"
-                          url="#"
-                        />
-                        <Breadcrumb.Item />
-                      </Breadcrumb>
-                      <ActionBar.Header title={name} />
-                      <div className="fd-action-bar__description">
-                        <div className="fd-container fd-container--fluid">
-                          {status && (
-                            <div className="fd-col--4">
-                              Status
-                              <span className="columns__value">
-                                <Badge>{status.condition}</Badge>
-                              </span>
-                            </div>
-                          )}
-                          <div className="fd-col--4">
-                            Description
-                            <span className="columns__value">{description ? description : '-'}</span>
-                          </div>
-                          <div className="fd-col--4">
-                            ID
-                            <span className="columns__value">{id}</span>
-                          </div>
-                        </div>
+  render = () => {
+    const { name, description, id, status } = this.props.runtime;
+    return (
+      <>
+        <header className="fd-page__header fd-page__header--columns fd-has-background-color-background-2">
+          <section className="fd-section">
+            <div className="fd-action-bar">
+              <div className="fd-action-bar__header">
+                <Breadcrumb>
+                  <Breadcrumb.Item
+                    name="Runtimes"
+                    url="#"
+                    onClick={this.navigateToRuntimesList}
+                  />
+                  <Breadcrumb.Item />
+                </Breadcrumb>
+                <ActionBar.Header title={name} />
+                <div className="fd-action-bar__description">
+                  <div className="fd-container fd-container--fluid">
+                    {status && (
+                      <div className="fd-col--4">
+                        Status
+                        <span className="columns__value">
+                          <Badge>{status.condition}</Badge>
+                        </span>
                       </div>
+                    )}
+                    <div className="fd-col--4">
+                      Description
+                      <span className="columns__value">{description ? description : '-'}</span>
                     </div>
-                    <ActionBar.Actions>
-                      <Button
-                        onClick={() =>
-                          this.handleDelete(data.runtime)
-                        }
-                        type="negative"
-                        option="light"
-                      >
-                        Delete
-                      </Button>
-                    </ActionBar.Actions>
+                    <div className="fd-col--4">
+                      ID
+                      <span className="columns__value">{id}</span>
+                    </div>
                   </div>
-                </section>
-              </header>
-              <section className="fd-section">
-                <Panel>
-                  <Panel.Header>
-                    <Panel.Head title="Have you ever wondered what's inside a runtime?" />
-                  </Panel.Header>
-                </Panel>
-              </section>
-            </>
-          );
-        }}
-      </Query>
+                </div>
+              </div>
+              <ActionBar.Actions>
+                <Button
+                  onClick={() =>
+                    this.handleDelete(this.props.runtime)
+                  }
+                  type="negative"
+                  option="light"
+                >
+                  Delete
+                </Button>
+              </ActionBar.Actions>
+            </div>
+          </section>
+        </header>
+      </>
     );
   };
 }

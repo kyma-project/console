@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { Panel } from '@kyma-project/react-components';
+
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
 
 const RuntimeDetails = ({
@@ -6,7 +9,6 @@ const RuntimeDetails = ({
   deleteRuntime,
 }) => {
   const runtime = (runtimeQuery && runtimeQuery.runtime) || {};
-  console.log(runtimeQuery)
   const loading = runtimeQuery.loading;
   const error = runtimeQuery.error;
   if (loading) return 'Loading...';
@@ -23,8 +25,13 @@ const RuntimeDetails = ({
         runtime={runtime}
         deleteRuntime={deleteRuntime}
       />
+      
       <section className="fd-section">
-        tetetetetetetetetet
+        <Panel>
+          <Panel.Header>
+            <Panel.Head title="Have you ever wondered what's inside a runtime?" />
+          </Panel.Header>
+        </Panel>
       </section>
     </>
   );
