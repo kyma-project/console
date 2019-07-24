@@ -71,8 +71,7 @@ class Applications extends React.Component {
       className="link"
       onClick={() =>
         LuigiClient.linkManager()
-          .fromClosestContext()
-          .navigate(`/applications/details/${application.id}`)
+          .navigate(`details/${application.id}`)
       }
     >
       <b>{application.name}</b>

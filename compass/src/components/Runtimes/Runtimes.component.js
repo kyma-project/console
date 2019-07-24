@@ -45,8 +45,7 @@ class Runtimes extends React.Component {
       className="link"
       onClick={() =>
         LuigiClient.linkManager()
-          .fromClosestContext()
-          .navigate(`/runtimes/details/${runtime.id}`)
+          .navigate(`details/${runtime.id}`)
       }
     >
       <b>{runtime.name}</b>
