@@ -5,19 +5,29 @@
 <ng-container *ngIf="namespace.getLabel()">
   <header class="fd-page__header fd-has-background-color-background-2">
     <section class="fd-section">
-      <fd-action-bar>
-        <fd-action-bar-header>
-          <fd-action-bar-title>{{ namespace.getLabel() }}</fd-action-bar-title>
-        </fd-action-bar-header>
-        <fd-action-bar-actions>
-          <button fd-button [glyph]="'add'" (click)="openUploadResourceModal()" *ngIf="!showSelectFileButton">
+      <div fd-action-bar>
+        <div fd-action-bar-header>
+          <h3 fd-action-bar-title>{{ namespace.getLabel() }}</h3>
+        </div>
+        <div fd-action-bar-actions>
+          <button
+            fd-button
+            [glyph]="'add'"
+            (click)="openUploadResourceModal()"
+            *ngIf="!showSelectFileButton"
+          >
             Deploy new resource
           </button>
-          <button fd-button [options]="'light'" [fdType]="'negative'" (click)="deleteNamespace()">
+          <button
+            fd-button
+            [options]="'light'"
+            [fdType]="'negative'"
+            (click)="deleteNamespace()"
+          >
             Delete
           </button>
-        </fd-action-bar-actions>
-      </fd-action-bar>
+        </div>
+      </div>
       <div class="fd-container fd-container--fluid">
         <div class="fd-col--6">
           <span class="fd-has-type fd-has-font-weight-light">
@@ -37,10 +47,14 @@
     <fd-panel>
       <fd-panel-header>
         <fd-panel-head>
-          <fd-panel-title>Labels</fd-panel-title>
+          <h2>Labels</h2>
         </fd-panel-head>
         <fd-panel-actions>
-          <button fd-button [options]="'light'" (click)="openEditNamespaceModal()">
+          <button
+            fd-button
+            [options]="'light'"
+            (click)="openEditNamespaceModal()"
+          >
             Edit
           </button>
         </fd-panel-actions>
@@ -49,8 +63,11 @@
         <div fd-form-set>
           <div fd-form-item>
             <ng-container *ngIf="labelKeys.length > 0">
-              <span class="fd-token y-fd-token y-fd-token--no-button "
-                *ngFor="let labelkey of labelKeys">{{ labelkey }}={{ namespace.getLabels()[labelkey] }}</span>
+              <span
+                class="fd-token y-fd-token y-fd-token--no-button "
+                *ngFor="let labelkey of labelKeys"
+                >{{ labelkey }}={{ namespace.getLabels()[labelkey] }}</span
+              >
             </ng-container>
             <ng-container *ngIf="labelKeys.length == 0">
               -
@@ -69,18 +86,26 @@
             {{ services && services.length === 1 ? 'Service' : 'Services' }}
           </button>
         </div>
-        <div class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid">
+        <div
+          class="fd-col--6 fd-has-text-align-center fd-container fd-container--fluid"
+        >
           <h3 class="fd-has-type-6 fd-has-font-weight-bold fd-col--12">
             {{ boundApplicationsCount | async }}
           </h3>
-          <span class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny">
+          <span
+            class="fd-has-type fd-has-font-weight-light fd-col--12 fd-has-padding-tiny"
+          >
             {{
-            (boundApplicationsCount | async) === 1
-            ? 'Bound Application'
-            : 'Bound Applications'
+              (boundApplicationsCount | async) === 1
+                ? 'Bound Application'
+                : 'Bound Applications'
             }}
           </span>
-          <button fd-button [options]="'light'" (click)="navigateToApplications()">
+          <button
+            fd-button
+            [options]="'light'"
+            (click)="navigateToApplications()"
+          >
             Show All Applications
           </button>
         </div>
@@ -89,32 +114,42 @@
   </fd-panel-grid>
 </section>
 
-<section class='fd-section' *ngIf="applications && applications.length > 0">
+<section class="fd-section" *ngIf="applications && applications.length > 0">
   <fd-panel>
     <fd-panel-header>
       <fd-panel-head>
-        <fd-panel-title>Connected Applications</fd-panel-title>
+        <h2>Connected Applications</h2>
       </fd-panel-head>
     </fd-panel-header>
     <fd-panel-body [bleed]="true">
-      <fd-table>
-        <fd-table-header>
-          <th>Name</th>
-          <th></th>
-        </fd-table-header>
-        <fd-table-body>
+      <table fd-table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
           <tr *ngFor="let namespace of applications">
             <td>
-              <a href="javascript:void(null)" (click)="navigateToApplications(namespace.name)"
-                class="fd-has-font-weight-bold">{{ namespace.name }}</a>
+              <a
+                href="javascript:void(null)"
+                (click)="navigateToApplications(namespace.name)"
+                class="fd-has-font-weight-bold"
+                >{{ namespace.name }}</a
+              >
             </td>
             <td class="y-fd-table--col-1">
-              <y-list-actions [entry]="namespace" [entryEventHandler]="entryEventHandler" [actions]="actions">
+              <y-list-actions
+                [entry]="namespace"
+                [entryEventHandler]="entryEventHandler"
+                [actions]="actions"
+              >
               </y-list-actions>
             </td>
           </tr>
-        </fd-table-body>
-      </fd-table>
+        </tbody>
+      </table>
     </fd-panel-body>
   </fd-panel>
 </section>

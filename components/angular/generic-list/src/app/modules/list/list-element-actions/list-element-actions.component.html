@@ -1,15 +1,30 @@
-<fd-popover [alignment]="'right'" (click)="handlePopoverClick($event);" #popover>
-    <fd-popover-control>
-        <button aria-label="contextual menu" fd-button [fdType]="'light'" [glyph]="'overflow'"
-            [attr.aria-controls]="entryAsString(entry)"></button>
-    </fd-popover-control>
-    <fd-popover-body>
-        <fd-menu>
-            <fd-menu-list [id]="entryAsString(entry)">
-                <li fd-menu-item *ngFor="let action of actions">
-                    <a href="javascript:void(null)" (click)="executeAction(action, $event);" [name]="action.name">{{ action.name }}</a>
-                </li>
-            </fd-menu-list>
-        </fd-menu>
-    </fd-popover-body>
+<fd-popover
+  [placement]="'right'"
+  [noArrow]="false"
+  (click)="handlePopoverClick($event)"
+  #popover
+>
+  <fd-popover-control>
+    <button
+      aria-label="contextual menu"
+      fd-button
+      [fdType]="'light'"
+      [glyph]="'overflow'"
+      [attr.aria-controls]="entryAsString(entry)"
+    ></button>
+  </fd-popover-control>
+  <fd-popover-body>
+    <fd-menu>
+      <ul fd-menu-list [id]="entryAsString(entry)">
+        <li fd-menu-item *ngFor="let action of actions">
+          <a
+            href="javascript:void(null)"
+            (click)="executeAction(action, $event)"
+            [name]="action.name"
+            >{{ action.name }}</a
+          >
+        </li>
+      </ul>
+    </fd-menu>
+  </fd-popover-body>
 </fd-popover>

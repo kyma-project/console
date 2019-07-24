@@ -32,90 +32,120 @@ function editApplication(applicationId) {
   console.log('todo edit (#1042)', applicationId);
 }
 
-function deleteApplication(applicationId) {
-  console.log('todo delete (#1043)', applicationId);
-}
-
-ApplicationDetailsHeader.propTypes = {
-  application: PropTypes.object.isRequired,
-};
-
-export default function ApplicationDetailsHeader(props) {
-  const isReadOnly = false; //todo
-
-  const PanelEntry = props => {
-    return (
-      <Panel>
-        <Panel.Body>
-          <p className="fd-has-color-text-4 fd-has-margin-bottom-none">
-            {props.title}
-          </p>
-          {props.content}
-        </Panel.Body>
-      </Panel>
-    );
+class ApplicationDetailsHeader extends React.Component {
+  PropTypes = {
+    application: PropTypes.object.isRequired,
   };
 
-  const { id, name, status, description, labels } = props.application;
+  delete = async element => {
+    try {
+      await this.props.deleteApplication(element.id);
+      LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(`/applications`);
+    } catch (e) {
+      LuigiClient.uxManager().showAlert({
+        text: `Error occored during deletion ${e.message}`,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    }
+  };
 
-  return (
-    <header className="application-details-header">
-      <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-        <section className="action-bar-wrapper__left-panel">
-          <Breadcrumb>
-            <Breadcrumb.Item
-              name="Applications"
-              url="#"
-              onClick={navigateToApplications}
-            />
-            <Breadcrumb.Item />
-          </Breadcrumb>
-          <ActionBar.Header title={props.application.name} />
-        </section>
-        <ActionBar.Actions>
-          {/* todo can be readonly */}
-          {!isReadOnly && (
-            <Button onClick={() => connectApplication(id)} option="emphasized">
-              Connect Application
-            </Button>
-          )}
-          <Button onClick={() => editApplication(id)} option="light">
-            Edit
-          </Button>
-          <Button
-            onClick={() => deleteApplication(id)}
-            option="light"
-            type="negative"
-          >
-            Delete
-          </Button>
-        </ActionBar.Actions>
-      </section>
-      <PanelGrid nogap cols={4}>
-        <PanelEntry title="Name" content={<p>{name}</p>} />
-        <PanelEntry
-          title="Status"
-          content={
-            <p>
-              <span
-                className={classnames(
-                  'fd-status-label',
-                  determineClass(status.condition),
-                )}
-              >
-                {printPrettyConnectionStatus(status.condition)}
-              </span>
+  handleDelete = application => {
+    LuigiClient.uxManager()
+      .showConfirmationModal({
+        header: 'Remove application',
+        body: `Are you sure you want to delete application "${application.name}"?`,
+        buttonConfirm: 'Delete',
+        buttonDismiss: 'Cancel',
+      })
+      .then(() => {
+        this.delete(application);
+      })
+      .catch(() => {});
+  };
+
+  render() {
+    const isReadOnly = false; //todo
+    const { id, name, status, description, labels } = this.props.application;
+
+    const PanelEntry = props => {
+      return (
+        <Panel>
+          <Panel.Body>
+            <p className="fd-has-color-text-4 fd-has-margin-bottom-none">
+              {props.title}
             </p>
-          }
-        />
-        <PanelEntry title="Description" content={<p>{description}</p>} />
-        {labels && !labels.length && (
+            {props.content}
+          </Panel.Body>
+        </Panel>
+      );
+    };
+
+    return (
+      <header className="application-details-header">
+        <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
+          <section className="action-bar-wrapper__left-panel">
+            <Breadcrumb>
+              <Breadcrumb.Item
+                name="Applications"
+                url="#"
+                onClick={navigateToApplications}
+              />
+              <Breadcrumb.Item />
+            </Breadcrumb>
+            <ActionBar.Header title={name} />
+          </section>
+          <ActionBar.Actions>
+            {/* todo can be readonly */}
+            {!isReadOnly && (
+              <Button
+                onClick={() => connectApplication(id)}
+                option="emphasized"
+              >
+                Connect Application
+              </Button>
+            )}
+            <Button onClick={() => editApplication(id)} option="light">
+              Edit
+            </Button>
+            <Button
+              onClick={() => this.handleDelete(this.props.application)}
+              option="light"
+              type="negative"
+            >
+              Delete
+            </Button>
+          </ActionBar.Actions>
+        </section>
+        <PanelGrid nogap cols={4}>
+          <PanelEntry title="Name" content={<p>{name}</p>} />
           <PanelEntry
-            title="Labels"
-            content={labels && <LabelDisplay labels={labels} />}
+            title="Status"
+            content={
+              <p>
+                <span
+                  className={classnames(
+                    'fd-status-label',
+                    determineClass(status.condition),
+                  )}
+                >
+                  {printPrettyConnectionStatus(status.condition)}
+                </span>
+              </p>
+            }
           />
-        )}
-      </PanelGrid>
-    </header>
-  );
+          <PanelEntry title="Description" content={<p>{description}</p>} />
+          {labels && !labels.length && (
+            <PanelEntry
+              title="Labels"
+              content={labels && <LabelDisplay labels={labels} />}
+            />
+          )}
+        </PanelGrid>
+      </header>
+    );
+  }
 }
+export default ApplicationDetailsHeader;

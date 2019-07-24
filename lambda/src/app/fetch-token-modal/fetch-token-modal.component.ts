@@ -1,8 +1,14 @@
-import { Component, Input, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  HostListener,
+  TemplateRef,
+} from '@angular/core';
 import { Clipboard } from 'ts-clipboard';
 
 import * as luigiClient from '@kyma-project/luigi-client';
-import { ModalService, ModalComponent } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-fetch-token-modal',
@@ -11,7 +17,7 @@ import { ModalService, ModalComponent } from 'fundamental-ngx';
 })
 export class FetchTokenModalComponent {
   @Input() useLuigiBackdrop = true;
-  @ViewChild('fetchTokenModal') fetchTokenModal: ModalComponent;
+  @ViewChild('fetchTokenModal') fetchTokenModal: TemplateRef<ModalRef>;
 
   public title: string;
   public token: string;
@@ -23,7 +29,7 @@ export class FetchTokenModalComponent {
     this.cancel(event);
   }
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService) {}
 
   public show() {
     this.title = 'Fetch token';
@@ -38,20 +44,24 @@ export class FetchTokenModalComponent {
     }
 
     this.isActive = true;
-    this.modalService.open(this.fetchTokenModal).result.finally(() => {
-      this.isActive = false;
-      this.isTokenCopied = false;
-      event.stopPropagation();
-      if (this.useLuigiBackdrop !== false) {
-        luigiClient.uxManager().removeBackdrop();
-      }
-    });
+
+    this.modalService
+      .open(this.fetchTokenModal, { height: '25em' })
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        this.isTokenCopied = false;
+        event.stopPropagation();
+        if (this.useLuigiBackdrop !== false) {
+          luigiClient.uxManager().removeBackdrop();
+        }
+      });
   }
 
   public cancel(event: Event) {
     if (this.isActive) {
+      this.isActive = false;
       event.preventDefault();
-      this.modalService.close(this.fetchTokenModal);
     }
   }
 

@@ -33,6 +33,17 @@ export const CREATE_APPLICATION_MUTATION = gql`
   }
 `;
 
+export const DELETE_APPLICATION_MUTATION = gql`
+  mutation deleteApplication($id: ID!) {
+    deleteApplication(id: $id) {
+      name
+      description
+      labels
+      id
+    }
+  }
+`;
+
 export const CHECK_APPLICATION_EXISTS = gql`
   query applications($filter: [LabelFilter!]) {
     applications(filter: $filter) {

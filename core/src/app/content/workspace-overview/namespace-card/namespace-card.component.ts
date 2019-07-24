@@ -29,8 +29,16 @@ export class NamespaceCardComponent implements OnInit, OnDestroy {
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;
+  public isSystemNamespace = false;
 
   ngOnInit() {
+    LuigiClient.addInitListener(eventData => {
+      const systemNamespaces = eventData && eventData.systemNamespaces ? eventData.systemNamespaces : [];
+      this.isSystemNamespace = systemNamespaces.some((systemNamespace) => {
+        return systemNamespace === this.entry.metadata.name;
+      });
+    })
+
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
@@ -42,7 +50,9 @@ export class NamespaceCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.communicationServiceSubscription.unsubscribe();
+    if (this.communicationServiceSubscription) {
+      this.communicationServiceSubscription.unsubscribe();
+    }
   }
 
   public navigateToDetails(namespaceName) {

@@ -1,25 +1,52 @@
-<fd-modal class="http-trigger-modal" #httpTriggerModal role="dialog" [width]="'650px'">
+<ng-template
+  let-modal
+  class="http-trigger-modal"
+  #httpTriggerModal
+  role="dialog"
+>
   <fd-modal-header>{{ title }}</fd-modal-header>
   <fd-modal-body>
-    <div class="fd-container fd-container--fluid y-fd-container--space-bottom y-fd-container--border-light">
+    <div
+      class="fd-container fd-container--fluid y-fd-container--space-bottom y-fd-container--border-light"
+    >
       <div class="fd-col--3 fd-has-font-weight-bold">HTTPS-endpoint</div>
-      <div class="fd-col--8"><a class="link" href="{{ httpURL }}" target="_blank">{{ httpURL }}</a></div>
-      <div class="fd-col--1"><button fd-button [options]="'light'" [glyph]="'copy'" [compact]="true" (click)="copyHTTPUrlEndpoint()"></button></div>
+      <div class="fd-col--8">
+        <a class="link" href="{{ httpURL }}" target="_blank">{{ httpURL }}</a>
+      </div>
+      <div class="fd-col--1">
+        <button
+          fd-button
+          [options]="'light'"
+          [glyph]="'copy'"
+          [compact]="true"
+          (click)="copyHTTPUrlEndpoint()"
+        ></button>
+      </div>
     </div>
 
     <div class="fd-container fd-container--flex">
       <div class="fd-col fd-has-font-weight-bold">Security</div>
     </div>
     <div class="fd-container fd-container--flex y-fd-container--space-bottom">
-      <div class="fd-col--10">HTTPS endpoint will be exposed securely over the internet</div>
+      <div class="fd-col--10">
+        HTTPS endpoint will be exposed securely over the internet
+      </div>
     </div>
 
-    <div class="fd-container fd-container--flex y-fd-container--space-bottom y-fd-container--border-light">
+    <div
+      class="fd-container fd-container--flex y-fd-container--space-bottom y-fd-container--border-light"
+    >
       <div class="fd-col">
         <fieldset class="fd-form__set">
           <div class="fd-form__item fd-form__item--check">
             <label class="fd-form__label" for="Ai4ez611">
-              <input type="checkbox" class="fd-form__control" id="Ai4ez611" [(ngModel)]="secure" checked>
+              <input
+                type="checkbox"
+                class="fd-form__control"
+                id="Ai4ez611"
+                [(ngModel)]="secure"
+                checked
+              />
               Enable Authentication
             </label>
           </div>
@@ -28,57 +55,119 @@
     </div>
 
     <ng-container *ngIf="secure">
-    <div class="fd-container fd-container--flex">
-      <div class="fd-col fd-has-font-weight-bold">Identity Provider</div>
-      <div class="fd-col">
-        <fd-popover [compact]="true" [alignment]="'left'" class="fd-has-float-right">
-          <fd-popover-control>
-            <button fd-button [options]="'light'" [glyph]="'slim-arrow-down'" [attr.aria-controls]="'httpLoadPreset'">Load preset</button>
-          </fd-popover-control>
-          <fd-popover-body *ngIf="availablePresets?.length">
-            <fd-menu>
-              <fd-menu-list [id]="'httpLoadPreset'">
-                <li fd-menu-item  *ngFor="let preset of availablePresets">
-                  <a href="javascript:void(null)" (click)="selectPreset(preset)">{{ preset.label }}</a>
-                </li>
-              </fd-menu-list>
-            </fd-menu>
-          </fd-popover-body>
-        </fd-popover>
+      <div class="fd-container fd-container--flex">
+        <div class="fd-col fd-has-font-weight-bold">Identity Provider</div>
+        <div class="fd-col">
+          <fd-popover placement="left" class="fd-has-float-right">
+            <fd-popover-control>
+              <button
+                fd-button
+                [options]="'light'"
+                [glyph]="'slim-arrow-down'"
+                [attr.aria-controls]="'httpLoadPreset'"
+              >
+                Load preset
+              </button>
+            </fd-popover-control>
+            <fd-popover-body *ngIf="availablePresets?.length">
+              <fd-menu>
+                <ul fd-menu-list [id]="'httpLoadPreset'">
+                  <li fd-menu-item *ngFor="let preset of availablePresets">
+                    <a
+                      href="javascript:void(null)"
+                      (click)="selectPreset(preset)"
+                      >{{ preset.label }}</a
+                    >
+                  </li>
+                </ul>
+              </fd-menu>
+            </fd-popover-body>
+          </fd-popover>
+        </div>
       </div>
-    </div>
 
-    <div class="fd-container fd-container--flex">
-      <div class="fd-col fd-has-margin-bottom-small">
-        <div fd-form-set>
-          <div fd-form-item>
-            <fd-form-label for="input-4">Issuer *</fd-form-label>
-            <input fd-form-control [type]="'text'" id="input-4" [(ngModel)]="issuer" (ngModelChange)="validateDetails()" (blur)="validateDetails()" [state]="errorIssuer ? 'invalid' : undefined">
-            <fd-form-message [type]="'error'" *ngIf="errorIssuer">
-              {{ errorIssuer }}
-            </fd-form-message>
+      <div class="fd-container fd-container--flex">
+        <div class="fd-col fd-has-margin-bottom-small">
+          <div fd-form-set>
+            <div fd-form-item>
+              <label fd-form-label for="input-4">Issuer *</label>
+              <input
+                fd-form-control
+                [type]="'text'"
+                id="input-4"
+                [(ngModel)]="issuer"
+                (ngModelChange)="validateDetails()"
+                (blur)="validateDetails()"
+                [disabled]="errorIssuer"
+              />
+              <fd-form-message [type]="'error'" *ngIf="errorIssuer">
+                {{ errorIssuer }}
+              </fd-form-message>
+            </div>
+          </div>
+          <div fd-form-set>
+            <div fd-form-item>
+              <label fd-form-label for="input-5">JWKS URI *</label>
+              <input
+                fd-form-control
+                [type]="'text'"
+                id="input-5"
+                [(ngModel)]="jwksUri"
+                (ngModelChange)="validateDetails()"
+                (blur)="validateDetails()"
+                [disabled]="errorJWKSUri"
+              />
+              <fd-form-message [type]="'error'" *ngIf="errorJWKSUri">
+                {{ errorJWKSUri }}
+              </fd-form-message>
+            </div>
+          </div>
+          <div *ngIf="isDefaultProvider()" fd-form-set>
+            <div fd-form-item>
+              <label fd-form-label for="token-textarea"
+                >Token
+                <fd-icon
+                  [ngxClipboard]="tokenTextarea"
+                  class="fd-has-margin-left-tiny clickable align-middle"
+                  [glyph]="'copy'"
+                  [size]="'m'"
+                  title="Copy to clipboard"
+                >
+                </fd-icon
+              ></label>
+              <textarea
+                fd-form-control
+                #tokenTextarea
+                class="token-textarea"
+                value="Bearer {{ token }}"
+                placeholder="content will be copied after the copy button is clicked"
+                rows="10"
+                cols="50"
+                readonly
+              ></textarea>
+            </div>
           </div>
         </div>
-        <div fd-form-set>
-          <div fd-form-item>
-            <fd-form-label for="input-5">JWKS URI *</fd-form-label>
-            <input fd-form-control [type]="'text'" id="input-5" [(ngModel)]="jwksUri" (ngModelChange)="validateDetails()" (blur)="validateDetails()" [state]="errorJWKSUri ? 'invalid' : undefined">
-            <fd-form-message [type]="'error'" *ngIf="errorJWKSUri">
-              {{ errorJWKSUri }}
-            </fd-form-message>
-        </div>
-        </div>
       </div>
-    </div>
-    <div *ngIf="isDefaultProvider()" class="fd-container fd-container--flex">  
-      <a href="javascript:void(null)" (click)="fetchTokenModal.show()">Fetch token</a>
-    </div>
     </ng-container>
   </fd-modal-body>
   <fd-modal-footer>
-    <button fd-button [options]="'light'" class="cancel" (click)="closeHttpTriggerModal()">Cancel</button>
-    <button fd-button [fdType]="'main'" ngClass="{{secure && !isAbleToMakeRequest() ? '' : 'disabled'}}"
-      [disabled]="secure && !isAbleToMakeRequest()" (click)=addTrigger()>Add</button>
+    <button
+      fd-button
+      [options]="'light'"
+      class="cancel"
+      (click)="closeHttpTriggerModal()"
+    >
+      Cancel
+    </button>
+    <button
+      fd-button
+      [fdType]="'main'"
+      ngClass="{{ secure && !isAbleToMakeRequest() ? '' : 'disabled' }}"
+      [disabled]="secure && !isAbleToMakeRequest()"
+      (click)="addTrigger()"
+    >
+      Add
+    </button>
   </fd-modal-footer>
-</fd-modal>
-<app-fetch-token-modal #fetchTokenModal [useLuigiBackdrop]="false"></app-fetch-token-modal>
+</ng-template>

@@ -1,6 +1,11 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal y-word-wrap" #informationModal role="dialog" aria-labelledby="confirm"
-    (click)="$event.stopPropagation()">
+  <ng-template
+    let-modal
+    class="y-fd-modal y-word-wrap"
+    #informationModal
+    role="dialog"
+    aria-labelledby="confirm"
+  >
     <fd-modal-header>
       {{ title }}
     </fd-modal-header>
@@ -12,5 +17,5 @@
         OK
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

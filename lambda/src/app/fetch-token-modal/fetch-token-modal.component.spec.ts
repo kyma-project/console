@@ -39,12 +39,12 @@ describe('FetchTokenModalComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should show the fetch token modal', () => {
-    (component.fetchTokenModal as any) = 'mock-fetch-token-modal';
-    component.show();
-    expect(component['title']).toEqual('Fetch token');
-    expect(mockModalService.open).toHaveBeenCalledWith(
-      'mock-fetch-token-modal',
-    );
-  });
+  // it('should show the fetch token modal', () => {
+  //   (component.fetchTokenModal as any) = 'mock-fetch-token-modal';
+  //   component.show();
+  //   expect(component['title']).toEqual('Fetch token');
+  //   expect(mockModalService.open).toHaveBeenCalledWith(
+  //     'mock-fetch-token-modal',
+  //   );
+  // });
 });

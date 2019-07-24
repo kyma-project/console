@@ -7,6 +7,8 @@ import {
   ViewContainerRef,
   Output,
   EventEmitter,
+  ComponentFactoryResolver,
+  ChangeDetectorRef
 } from '@angular/core';
 import { PlainListComponent } from '../plain-list/plain-list.component';
 import { Observable } from 'rxjs';
@@ -14,7 +16,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'y-plain-table',
   templateUrl: './plain-table.component.html',
-  styleUrls: ['./plain-table.component.scss'],
+  styleUrls: ['./plain-table.component.scss']
 })
 export class PlainTableComponent extends PlainListComponent {
   @Input() headerRenderer: Type<any>;
@@ -33,16 +35,21 @@ export class PlainTableComponent extends PlainListComponent {
   @ViewChild('footer', { read: ViewContainerRef })
   footerViewContainer: ViewContainerRef;
 
+  constructor(public componentFactoryResolver: ComponentFactoryResolver) {
+    super(componentFactoryResolver);
+    this.componentFactoryResolver = componentFactoryResolver;
+  }
+
   render(source: Observable<any[]>) {
     super.render(source);
 
     if (this.headerRenderer) {
       const injector = Injector.create({
         providers: [],
-        parent: this.headerViewContainer.parentInjector,
+        parent: this.headerViewContainer.parentInjector
       });
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-        this.headerRenderer,
+        this.headerRenderer
       );
       const hostTag = document.createElement('thead');
       const component = componentFactory.create(injector, [], hostTag);
@@ -53,10 +60,10 @@ export class PlainTableComponent extends PlainListComponent {
     if (this.footerRenderer) {
       const injector = Injector.create({
         providers: [],
-        parent: this.footerViewContainer.parentInjector,
+        parent: this.footerViewContainer.parentInjector
       });
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-        this.footerRenderer,
+        this.footerRenderer
       );
       const hostTag = document.createElement('tfoot');
       const component = componentFactory.create(injector, [], hostTag);

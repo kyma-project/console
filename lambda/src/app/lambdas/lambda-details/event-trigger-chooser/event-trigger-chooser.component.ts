@@ -4,10 +4,11 @@ import {
   EventEmitter,
   HostListener,
   ViewChild,
+  TemplateRef,
 } from '@angular/core';
 import * as _ from 'lodash';
 import * as luigiClient from '@kyma-project/luigi-client';
-import { ModalComponent, ModalService } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
 
 import { EventTrigger } from '../../../shared/datamodel/event-trigger';
 
@@ -20,7 +21,7 @@ export class EventTriggerChooserComponent {
   availableEventTriggers: EventTrigger[] = [];
   selectedEventTriggers: EventTrigger[] = [];
   @Output() eventEmitter = new EventEmitter<EventTrigger[]>();
-  @ViewChild('eventTriggerModal') eventTriggerModal: ModalComponent;
+  @ViewChild('eventTriggerModal') eventTriggerModal: TemplateRef<ModalRef>;
 
   public eventSearchQuery = '';
   public filteredTriggers: EventTrigger[] = [];
@@ -29,7 +30,7 @@ export class EventTriggerChooserComponent {
   private eventsSelected = 0;
   public enableAdd = false;
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService) {}
 
   initializeView() {
     this.eventSearchQuery = '';
@@ -64,10 +65,13 @@ export class EventTriggerChooserComponent {
     this.title = 'Add Event Trigger';
     this.isActive = true;
     luigiClient.uxManager().addBackdrop();
-    this.modalService.open(this.eventTriggerModal).result.finally(() => {
-      this.isActive = false;
-      luigiClient.uxManager().removeBackdrop();
-    });
+    this.modalService
+      .open(this.eventTriggerModal)
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        luigiClient.uxManager().removeBackdrop();
+      });
   }
 
   filterEvents(search) {
@@ -105,7 +109,8 @@ export class EventTriggerChooserComponent {
 
   closeEventTriggerChooserModal() {
     if (this.isActive) {
-      this.modalService.close(this.eventTriggerModal);
+      this.isActive = false;
+      this.modalService.dismissAll();
     }
   }
 

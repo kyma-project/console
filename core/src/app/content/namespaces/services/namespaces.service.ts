@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
+import LuigiClient from '@kyma-project/luigi-client';
 
 @Injectable()
 export class NamespacesService {
@@ -30,6 +31,46 @@ export class NamespacesService {
             if (response.items) {
               response.items.forEach(namespace => {
                 if (namespace.status.phase === 'Active') {
+                  namespaces.push(
+                    new NamespaceInfo(
+                      namespace.metadata
+                    )
+                  );
+                }
+              });
+            }
+            return namespaces;
+          },
+          err => console.log(err)
+        )
+      );
+  }
+
+  public getFilteredNamespaces(): Observable<NamespaceInfo[]> {
+    if (localStorage.getItem('console.showSystemNamespaces')) {
+      const showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
+      if (showSystemNamespaces) {
+        return this.getNamespaces();
+      }
+    }
+
+    let systemNamespaces = [];
+    LuigiClient.addInitListener((eventData) => {
+      systemNamespaces = eventData.systemNamespaces;
+    });
+    return this.http
+      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces')
+      .pipe(
+        map(
+          response => {
+            const namespaces: NamespaceInfo[] = [];
+
+            if (response.items) {
+              response.items.forEach(namespace => {
+                const isSystemNamespace = systemNamespaces.some((systemNamespace) => {
+                  return systemNamespace === namespace.metadata.name;
+                });
+                if (namespace.status.phase === 'Active' && !isSystemNamespace) {
                   namespaces.push(
                     new NamespaceInfo(
                       namespace.metadata

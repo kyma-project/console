@@ -78,10 +78,10 @@ describe('CreateApplicationModalComponent', () => {
 
   describe('close()', () => {
     it('deactivates the form', () => {
-      spyOn(mockModalService, 'close');
+      spyOn(mockModalService, 'dismissAll');
       (component.createApplicationModal as any) = 'mock-value';
       component.close();
-      expect(mockModalService.close).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
     });
   });
 
@@ -173,10 +173,9 @@ describe('CreateApplicationModalComponent', () => {
 
   describe('save()', () => {
     it('creates new application', () => {
-      spyOn(
-        mockApplicationsService,
-        'createApplication'
-      ).and.returnValue(EMPTY);
+      spyOn(mockApplicationsService, 'createApplication').and.returnValue(
+        EMPTY
+      );
       component.name = 're-name';
       component.description = 're-desc';
       component.labels = ['key1=val1'];
@@ -186,16 +185,15 @@ describe('CreateApplicationModalComponent', () => {
         labels: { key1: 'val1' }
       };
       component.save();
-      expect(
-        mockApplicationsService.createApplication
-      ).toHaveBeenCalledWith(expectedData);
+      expect(mockApplicationsService.createApplication).toHaveBeenCalledWith(
+        expectedData
+      );
     });
 
     it('handles success on creating application', () => {
-      spyOn(
-        mockApplicationsService,
-        'createApplication'
-      ).and.returnValue(of('create-success-response'));
+      spyOn(mockApplicationsService, 'createApplication').and.returnValue(
+        of('create-success-response')
+      );
       spyOn(mockComponentCommunicationService, 'sendEvent');
       const expectedEventData = {
         type: 'createResource',
@@ -211,10 +209,9 @@ describe('CreateApplicationModalComponent', () => {
     });
 
     it('handles error when creating application', () => {
-      spyOn(
-        mockApplicationsService,
-        'createApplication'
-      ).and.returnValue(throwError('re-not-created'));
+      spyOn(mockApplicationsService, 'createApplication').and.returnValue(
+        throwError('re-not-created')
+      );
       component.error = null;
       component.save();
       expect(component.error).toBe('Error: re-not-created');

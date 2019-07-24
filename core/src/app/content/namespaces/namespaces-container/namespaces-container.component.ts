@@ -88,7 +88,7 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
               this.infoModal.show(
                 'Error',
                 `Namespace ${namespaceId} doesn't exist.`,
-                '/home/namespaces'
+                '/home/workspace'
               );
             }
           }
@@ -133,7 +133,10 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
       if (url === previousUrl) {
         return false;
       }
-      if (url.match(namespaceExtUrlPattern) && previousUrl.match(namespaceExtUrlPattern)) {
+      if (
+        url.match(namespaceExtUrlPattern) &&
+        previousUrl.match(namespaceExtUrlPattern)
+      ) {
         return true;
       }
       if (
@@ -150,9 +153,13 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
     this.currentNamespaceService
       .getCurrentNamespaceId()
       .pipe(
-        tap(namespace => (this.overview = url.includes(`${namespace}/details`))),
+        tap(
+          namespace => (this.overview = url.includes(`${namespace}/details`))
+        ),
         filter(namespace => url.includes('namespaces/' + namespace)),
-        filter(namespace => namespace !== this.previousNamespace || this.overview),
+        filter(
+          namespace => namespace !== this.previousNamespace || this.overview
+        ),
         take(1),
         concatMap(namespace =>
           this.namespacesService.getResourceQueryStatus(namespace).pipe(

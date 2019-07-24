@@ -24,14 +24,14 @@
     </fd-breadcrumb>
 
 
-    <fd-action-bar>
-      <fd-action-bar-header>
-        <fd-action-bar-title>
+    <div fd-action-bar>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title>
           {{ lambda?.metadata?.name }}
-        </fd-action-bar-title>
+        </h3>
 
-      </fd-action-bar-header>
-      <fd-action-bar-actions [hidden]="!loaded">
+      </div>
+      <div fd-action-bar-actions [hidden]="!loaded">
         <button fd-button [options]="'light'" (click)="showLogs()" *ngIf="mode !== 'create' && canShowLogs">Show
           Logs</button>
         <button fd-button [options]="'light'" (click)="cancel()">Cancel</button>
@@ -39,8 +39,8 @@
           [disabled]="!lambda.metadata.name || !isLambdaFormValid">
           {{ mode == 'create' ? 'Create' : 'Save' }}
         </button>
-      </fd-action-bar-actions>
-    </fd-action-bar>
+      </div>
+    </div>
 
     <nav class="fd-tabs" role="tablist">
       <span class="fd-tabs__item">
@@ -55,7 +55,7 @@
           Testing
         </a>
 
-        <fd-inline-help [position]="'right'" class="fd-has-margin-left-tiny" *ngIf="!existingHTTPEndpoint">
+        <fd-inline-help [placement]="'right'" class="fd-has-margin-left-tiny" *ngIf="!existingHTTPEndpoint">
           You'll be able to test your lambda once it's deployed and has an HTTPS endpoint.
         </fd-inline-help>
       </span>
@@ -77,7 +77,7 @@
       <fd-panel class="y-fd-panel">
         <fd-panel-header>
           <fd-panel-head>
-            <fd-panel-title>General information</fd-panel-title>
+            <h2 fd-panel-title>General information</h2>
           </fd-panel-head>
         </fd-panel-header>
 
@@ -113,7 +113,7 @@
                 <form #editLabelsForm="ngForm">
                   <div fd-form-set>
                     <div fd-form-item>
-                      <fd-form-label>Labels</fd-form-label>
+                      <label fd-form-label>Labels</label>
                       <app-labels-input [labels]="updatedLabels" (labelsChangeEmitter$)="updateLabelsData($event)">
                       </app-labels-input>
                     </div>
@@ -133,11 +133,11 @@
       <fd-panel class="y-fd-panel">
         <fd-panel-header>
           <fd-panel-head>
-            <fd-panel-title>Settings &amp; Code</fd-panel-title>
+            <h2 fd-panel-title>Settings &amp; Code</h2>
           </fd-panel-head>
           <fd-panel-actions>
             <label class="fd-label">Size:</label>
-            <fd-popover [compact]="true" [alignment]="'right'">
+            <fd-popover  [noArrow]="false" [isDropdown]='true' placement='bottom'>
               <fd-popover-control>
                 <button fd-button [options]="'light'" [glyph]="'slim-arrow-down'" [disabled]="
                     lambda.metadata.name.length <= 0 || isFunctionNameInvalid
@@ -148,18 +148,18 @@
 
               <fd-popover-body *ngIf="functionSizes?.length">
                 <fd-menu>
-                  <fd-menu-list>
+                  <ul fd-menu-list>
                     <li fd-menu-item *ngFor="let option of functionSizes">
                       <a href="javascript:void(null)"
                         (click)="selectSize(option)"><strong>{{ option.name }}</strong><br />{{ option.description }}</a>
                     </li>
-                  </fd-menu-list>
+                  </ul>
                 </fd-menu>
               </fd-popover-body>
             </fd-popover>
 
             <label class="fd-label">Type:</label>
-            <fd-popover [compact]="true" [alignment]="'right'">
+            <fd-popover  [noArrow]="false" [isDropdown]='true' placement='bottom'>
               <fd-popover-control>
                 <button fd-button [options]="'light'" [glyph]="'slim-arrow-down'" [disabled]="
                     lambda.metadata.name.length <= 0 || isFunctionNameInvalid
@@ -170,11 +170,11 @@
 
               <fd-popover-body *ngIf="types?.length">
                 <fd-menu>
-                  <fd-menu-list>
+                  <ul fd-menu-list>
                     <li fd-menu-item *ngFor="let option of types">
                       <a href="javascript:void(null)" (click)="selectType(option)">{{ option.kind }}</a>
                     </li>
-                  </fd-menu-list>
+                  </ul>
                 </fd-menu>
               </fd-popover-body>
             </fd-popover>
@@ -293,7 +293,7 @@
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
-          <fd-panel-title>Payload</fd-panel-title>
+          <h2 fd-panel-title>Payload</h2>
         </fd-panel-head>
         <fd-panel-actions>
 
@@ -348,7 +348,7 @@
     <fd-panel *ngIf='testingResponse' class="y-fd-panel fd-has-margin-top-small">
         <fd-panel-header>
           <fd-panel-head>
-            <fd-panel-title>Response</fd-panel-title>
+            <h2 fd-panel-title>Response</h2>
           </fd-panel-head>
         </fd-panel-header>
 

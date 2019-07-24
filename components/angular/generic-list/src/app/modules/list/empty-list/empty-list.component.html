@@ -2,7 +2,7 @@
   <fd-panel>
     <fd-panel-header *ngIf="emptyListPlaceholderData.header">
       <fd-panel-head *ngIf="emptyListPlaceholderData.header.text">
-        <fd-panel-title>{{ emptyListPlaceholderData.header.text }}</fd-panel-title>
+        <h2>{{ emptyListPlaceholderData.header.text }}</h2>
       </fd-panel-head>
       <fd-panel-actions *ngIf="emptyListPlaceholderData.header.actionButton">
         <button fd-button class="fd-button--light fd-has-float-right" (click)="onButtonClicked()"

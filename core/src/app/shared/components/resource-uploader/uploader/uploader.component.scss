@@ -1,0 +1,11 @@
+.y-uploader {
+  display: flex;
+  align-content: stretch;
+  &__button {
+    flex-grow: 0;
+    margin-left: 16px;
+  }
+  &__file-input {
+    flex-grow: 1;
+  }
+}

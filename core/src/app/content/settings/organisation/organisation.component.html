@@ -13,16 +13,27 @@
         <fieldset fd-form-set class="fd-col--6">
           <fd-form-group>
             <div fd-form-item>
-              <fd-form-label>Name</fd-form-label>
-              <input fd-form-control [type]="'text'" placeholder="Function name" value="{{ orgName }}" readonly />
+              <label fd-form-label>Name</label>
+              <input
+                fd-form-control
+                [type]="'text'"
+                placeholder="Function name"
+                value="{{ orgName }}"
+                readonly
+              />
             </div>
           </fd-form-group>
         </fieldset>
         <fieldset fd-form-set class="fd-col--6">
           <fd-form-group>
             <div fd-form-item>
-              <fd-form-label>Org-ID</fd-form-label>
-              <input fd-form-control [type]="'text'" value="{{ orgId }}" readonly />
+              <label fd-form-label>Org-ID</label>
+              <input
+                fd-form-control
+                [type]="'text'"
+                value="{{ orgId }}"
+                readonly
+              />
             </div>
           </fd-form-group>
         </fieldset>
@@ -32,18 +43,32 @@
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
-          <fd-panel-title>Kubeconfig</fd-panel-title>
-
+          <h2 fd-panel-title>Kubeconfig</h2>
         </fd-panel-head>
       </fd-panel-header>
       <fd-panel-body>
         <p class="fd-has-type fd-has-color-text-3 fd-has-font-style-italic">
-          kubeconfig is a file used to configure access to a cluster.
-          Download it to access the cluster using command line.
+          kubeconfig is a file used to configure access to a cluster. Download
+          it to access the cluster using command line.
         </p>
         <button fd-button [glyph]="'download'" (click)="downloadKubeconfig()">
           Download config
         </button>
+      </fd-panel-body>
+    </fd-panel>
+
+    <fd-panel class="y-fd-panel">
+      <fd-panel-header>
+        <fd-panel-head>
+          <h2 fd-panel-title>Namespaces settings</h2>
+        </fd-panel-head>
+      </fd-panel-header>
+      <fd-panel-body>
+        <fd-toggle
+          [(ngModel)]="showSystemNamespaces"
+          (click)="toggleSystemNamespaceVisibility()"
+          >Show System Namespaces</fd-toggle
+        >
       </fd-panel-body>
     </fd-panel>
   </fd-panel-grid>

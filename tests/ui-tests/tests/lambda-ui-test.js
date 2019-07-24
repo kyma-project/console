@@ -88,12 +88,9 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     const lambdasListBreadcrumbLink = 'a[fd-breadcrumb-link]';
     await frame.click(lambdasListBreadcrumbLink);
 
-    const unsavedModalOkButton = 'button[data-cy=luigi-modal-confirm]';
-    await page.waitForSelector(unsavedModalOkButton);
-    await page.click(unsavedModalOkButton);
-
     frame = await kymaConsole.getFrame(page);
     const dropdownButton = `button[aria-controls=${testLambda}]`;
+    await frame.waitFor(dropdownButton);
     await frame.click(dropdownButton);
 
     // given

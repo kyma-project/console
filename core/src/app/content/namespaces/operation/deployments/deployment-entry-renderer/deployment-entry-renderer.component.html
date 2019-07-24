@@ -1,10 +1,17 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
   <td>
-    <fd-badge [modifier]="'filled'"
-      [status]="(entry.status.readyReplicas || 0)===entry.status.replicas? 'success' : 'error'">
+    <span
+      fd-badge
+      [modifier]="'filled'"
+      [status]="
+        (entry.status.readyReplicas || 0) === entry.status.replicas
+          ? 'success'
+          : 'error'
+      "
+    >
       {{ entry.status.readyReplicas || '0' }}/{{ entry.status.replicas }}
-    </fd-badge>
+    </span>
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
@@ -13,19 +20,36 @@
     </span>
   </td>
   <ng-container *ngIf="showBoundServices">
-    <td> 
-      <ng-container *ngIf="entry.boundServiceInstanceNames && entry.boundServiceInstanceNames.length > 0">
-        <a href="javascript:void(null)" *ngFor="let instance of entry.boundServiceInstanceNames" (click)="goToServiceInstanceDetails(instance)">
+    <td>
+      <ng-container
+        *ngIf="
+          entry.boundServiceInstanceNames &&
+          entry.boundServiceInstanceNames.length > 0
+        "
+      >
+        <a
+          href="javascript:void(null)"
+          *ngFor="let instance of entry.boundServiceInstanceNames"
+          (click)="goToServiceInstanceDetails(instance)"
+        >
           {{ instance }}
         </a>
       </ng-container>
-      <ng-container *ngIf="!entry.boundServiceInstanceNames || entry.boundServiceInstanceNames.length === 0">
+      <ng-container
+        *ngIf="
+          !entry.boundServiceInstanceNames ||
+          entry.boundServiceInstanceNames.length === 0
+        "
+      >
         {{ emptyText }}
       </ng-container>
     </td>
   </ng-container>
   <td>
-    <span *ngFor="let label of getLabels(entry.labels)" class="fd-token y-fd-token y-fd-token--no-button">
+    <span
+      *ngFor="let label of getLabels(entry.labels)"
+      class="fd-token y-fd-token y-fd-token--no-button"
+    >
       {{ label }}
     </span>
     <ng-container *ngIf="!getLabels(entry.labels).length">
@@ -38,6 +62,10 @@
     </app-status-label>
   </td>
   <td class="fd-has-float-right">
-    <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    <y-list-actions
+      [entry]="entry"
+      [entryEventHandler]="entryEventHandler"
+      [actions]="actions"
+    ></y-list-actions>
   </td>
 </tr>

@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { ModalComponent, ModalService } from 'fundamental-ngx';
+import { ModalRef, ModalService } from 'fundamental-ngx';
 
 @Component({
   selector: 'app-create-application-modal',
@@ -9,7 +9,8 @@ import { ModalComponent, ModalService } from 'fundamental-ngx';
   styleUrls: ['./create-application-modal.component.scss']
 })
 export class CreateApplicationModalComponent {
-  @ViewChild('createApplicationModal') createApplicationModal: ModalComponent;
+  @ViewChild('createApplicationModal')
+  createApplicationModal: TemplateRef<ModalRef>;
   public isActive = false;
   public name: string;
   public wrongApplicationName: boolean;
@@ -27,13 +28,17 @@ export class CreateApplicationModalComponent {
   public show(): void {
     this.resetForm();
     this.isActive = true;
-    this.modalService.open(this.createApplicationModal).result.finally(() => {
-      this.isActive = false;
-    });
+    this.modalService
+      .open(this.createApplicationModal, { width: '30em' })
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+      });
   }
 
   public close(): void {
-    this.modalService.close(this.createApplicationModal);
+    this.isActive = false;
+    this.modalService.dismissAll();
   }
 
   private resetForm(): void {

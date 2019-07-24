@@ -14,13 +14,12 @@ const resolvers = {
         __typename: 'Notification',
       };
 
-      console.log('sendNotification done', notification);
       cache.writeData({
         data: {
           notification,
         },
       });
-      console.log('sendNotification cache', cache);
+
       return notification;
     },
     clearNotification: (_, args, { cache }) => {

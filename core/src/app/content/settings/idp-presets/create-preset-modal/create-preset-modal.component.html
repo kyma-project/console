@@ -1,35 +1,62 @@
 <div luigiClientCommunication [isActive]="isActive">
-  <fd-modal class="y-fd-modal" #createIDPPresetModal role="dialog" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+  <ng-template
+    let-modal
+    class="y-fd-modal"
+    #createIDPPresetModal
+    role="dialog"
+    aria-labelledby="confirm"
+  >
     <fd-modal-header>Create Preset</fd-modal-header>
     <fd-modal-body>
       <div class="fd-form__group">
-        <div class="fd-alert fd-alert--error fd-has-margin-bottom-small" role="alert" *ngIf="error">{{ error }}</div>
+        <div
+          class="fd-alert fd-alert--error fd-has-margin-bottom-small"
+          role="alert"
+          *ngIf="error"
+        >
+          {{ error }}
+        </div>
         <div fd-form-set>
           <div fd-form-item>
-            <fd-form-label>Name *</fd-form-label>
-            <input fd-form-control
+            <label fd-form-label>Name *</label>
+            <input
+              fd-form-control
               type="text"
               name="presetName"
               placeholder="Specify a name for your new IDP preset"
               [(ngModel)]="presetName"
-              (ngModelChange)=validatePresetNameRegex()>
+              (ngModelChange)="validatePresetNameRegex()"
+            />
             <fd-form-message [type]="'error'" *ngIf="wrongPresetName">
-              The IDPPreset name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character and cannot be longer that 253 characters (e.g. 'my-name1.com').
+              The IDPPreset name has the wrong format. The name must consist of
+              lower case alphanumeric characters, dashes or dots, and must start
+              and end with an alphanumeric character and cannot be longer that
+              253 characters (e.g. 'my-name1.com').
             </fd-form-message>
           </div>
           <div fd-form-item>
-            <fd-form-label>Issuer *</fd-form-label>
-            <input fd-form-control
+            <label fd-form-label>Issuer *</label>
+            <input
+              fd-form-control
               type="text"
               name="issuer"
               placeholder="Specify an issuer for your new IDP preset"
-              [(ngModel)]="issuer">
+              [(ngModel)]="issuer"
+            />
           </div>
           <div fd-form-item>
-            <fd-form-label>JWKS URI *</fd-form-label>
+            <label fd-form-label>JWKS URI *</label>
             <div class="fd-input-group fd-input-group--before">
-              <span class="fd-input-group__addon fd-input-group__addon--before">{{ urlPrefix }}</span>
-              <input type="text" name="jwks" placeholder="Specify JSON Web Key Set URI" [(ngModel)]="jwks">
+              <span
+                class="fd-input-group__addon fd-input-group__addon--before"
+                >{{ urlPrefix }}</span
+              >
+              <input
+                type="text"
+                name="jwks"
+                placeholder="Specify JSON Web Key Set URI"
+                [(ngModel)]="jwks"
+              />
             </div>
           </div>
         </div>
@@ -37,13 +64,14 @@
     </fd-modal-body>
     <fd-modal-footer>
       <button fd-button [options]="'light'" (click)="close()">Cancel</button>
-      <button fd-button 
+      <button
+        fd-button
         [options]="'main'"
-        [state]="!isReadyToCreate() ? 'disabled' : ''"
         [disabled]="!isReadyToCreate()"
-        (click)="save()">
+        (click)="save()"
+      >
         Create
       </button>
     </fd-modal-footer>
-  </fd-modal>
+  </ng-template>
 </div>

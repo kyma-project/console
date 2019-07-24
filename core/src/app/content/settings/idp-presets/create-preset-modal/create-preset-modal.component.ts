@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { IdpPresetsService } from '../idp-presets.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { ModalComponent, ModalService } from 'fundamental-ngx';
+import { ModalService, ModalRef } from 'fundamental-ngx';
+import { DEFAULT_MODAL_CONFIG } from '../../../../shared/constants/constants';
 
 @Component({
   selector: 'app-create-preset-modal',
@@ -9,7 +10,8 @@ import { ModalComponent, ModalService } from 'fundamental-ngx';
   styleUrls: ['./create-preset-modal.component.scss']
 })
 export class CreatePresetModalComponent {
-  @ViewChild('createIDPPresetModal') createIDPPresetModal: ModalComponent;
+  @ViewChild('createIDPPresetModal')
+  createIDPPresetModal: TemplateRef<ModalRef>;
   public presetName = '';
   public issuer = '';
   public jwks = '';
@@ -26,27 +28,29 @@ export class CreatePresetModalComponent {
 
   show() {
     this.isActive = true;
-    this.modalService.open(this.createIDPPresetModal).result.finally(() => {
-      this.isActive = false;
-      this.presetName = '';
-      this.issuer = '';
-      this.jwks = '';
-      this.error = '';
-      this.wrongPresetName = false;
-    });
+    this.modalService
+      .open(this.createIDPPresetModal, {
+        ...DEFAULT_MODAL_CONFIG,
+        width: '30em'
+      })
+      .afterClosed.toPromise()
+      .finally(() => {
+        this.isActive = false;
+        this.presetName = '';
+        this.issuer = '';
+        this.jwks = '';
+        this.error = '';
+        this.wrongPresetName = false;
+      });
   }
 
   close() {
-    this.modalService.close(this.createIDPPresetModal);
+    this.isActive = false;
+    this.modalService.dismissAll();
   }
 
   isReadyToCreate() {
-    return (
-      this.presetName &&
-      this.issuer &&
-      this.jwks &&
-      !this.wrongPresetName
-    );
+    return this.presetName && this.issuer && this.jwks && !this.wrongPresetName;
   }
 
   validatePresetNameRegex() {

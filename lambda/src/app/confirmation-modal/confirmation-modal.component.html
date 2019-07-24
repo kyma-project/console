@@ -1,4 +1,4 @@
-<fd-modal #confirmationModal role="dialog" class="y-fd-modal" aria-labelledby="confirm" (click)="$event.stopPropagation()">
+<ng-template let-modal #confirmationModal role="dialog" class="y-fd-modal" aria-labelledby="confirm" >
   <fd-modal-header>
     {{ title }}
   </fd-modal-header>
@@ -9,5 +9,5 @@
     <button fd-button (click)="cancel($event)" [options]="'light'">Cancel</button>
     <button fd-button (click)="ok($event)" [fdType]="'main'" data-e2e-id="confirmation-modal-button-ok">OK</button>
   </fd-modal-footer>
-</fd-modal>
+</ng-template>
 
