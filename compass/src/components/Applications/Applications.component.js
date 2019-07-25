@@ -1,14 +1,17 @@
 import React from 'react';
-import { Token } from '@kyma-project/react-components';
+import PropTypes from 'prop-types';
+import { Token } from 'fundamental-react/lib/Token';
 import { Badge, Counter } from 'fundamental-react/lib/Badge';
 
-import GenericList from '../../shared/components/GenericList/GenericList';
-import { Query } from 'react-apollo';
-import { GET_APPLICATIONS } from './gql';
 import LuigiClient from '@kyma-project/luigi-client';
+import GenericList from '../../shared/components/GenericList/GenericList';
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
 
 class Applications extends React.Component {
+  static propTypes = {
+    applications: PropTypes.object.isRequired,
+  };
+
   createLabels = labels => {
     const separatedLabels = [];
     for (const key in labels) {
@@ -62,6 +65,7 @@ class Applications extends React.Component {
     'EventAPIs',
     'Status',
   ];
+
   rowRenderer = application => [
     <span
       className="link"
@@ -71,7 +75,7 @@ class Applications extends React.Component {
           .navigate(`/application/${application.id}`)
       }
     >
-      {application.name}
+      <b>{application.name}</b>
     </span>,
     application.description,
     application.labels ? this.createLabels(application.labels) : '-',
@@ -80,6 +84,23 @@ class Applications extends React.Component {
     this.processStatus(application.status.condition),
   ];
 
+  handleDelete = async element => {
+    try {
+      await this.props.deleteApplication(element.id);
+      this.refreshApplications();
+    } catch (e) {
+      LuigiClient.uxManager().showAlert({
+        text: `Error occored during deletion ${e.message}`,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    }
+  };
+
+  refreshApplications = () => {
+    this.props.applications.refetch();
+  };
+
   actions = [
     {
       name: 'Delete',
@@ -87,43 +108,46 @@ class Applications extends React.Component {
         LuigiClient.uxManager()
           .showConfirmationModal({
             header: 'Remove application',
-            body: `Are you sure you want to delete ${entry.name}?`,
-            buttonConfirm: 'No',
-            buttonDismiss: 'Also no',
+            body: `Are you sure you want to delete application "${entry.name}"?`,
+            buttonConfirm: 'Delete',
+            buttonDismiss: 'Cancel',
           })
-          .catch(() => {})
-          .finally(() => {
-            console.warn('As you wish, nothing will be removed');
-          });
+          .then(() => {
+            this.handleDelete(entry);
+          })
+          .catch(() => {});
       },
     },
   ];
 
   render() {
-    return (
-      <Query query={GET_APPLICATIONS}>
-        {({ loading, error, data }) => {
-          if (loading) return 'Loading...';
-          if (error) return `Error! ${error.message}`;
-          const apps = data.applications.data;
+    const applicationsQuery = this.props.applications;
 
-          return (
-            <>
-              <GenericList
-                extraHeaderContent={<CreateApplicationModal />}
-                title="Applications"
-                description="List of all aplications"
-                notFoundMessage="There are no applications available"
-                actions={this.actions}
-                entries={apps}
-                headerRenderer={this.headerRenderer}
-                rowRenderer={this.rowRenderer}
-              />
-            </>
-          );
-        }}
-      </Query>
+    const applications =
+      (applicationsQuery &&
+        applicationsQuery.applications &&
+        applicationsQuery.applications.data) ||
+      {};
+    const loading = applicationsQuery && applicationsQuery.loading;
+    const error = applicationsQuery && applicationsQuery.error;
+
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
+
+    return (
+      <GenericList
+        extraHeaderContent={
+          <CreateApplicationModal applicationsQuery={applicationsQuery} />
+        }
+        title="Applications"
+        description="List of all aplications"
+        actions={this.actions}
+        entries={applications}
+        headerRenderer={this.headerRenderer}
+        rowRenderer={this.rowRenderer}
+      />
     );
   }
 }
+
 export default Applications;
