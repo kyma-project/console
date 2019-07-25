@@ -17,8 +17,6 @@ class Scenarios extends React.Component {
 
   render() {
     const scenarioLabelDefinitionSchemaQuery = this.props.scenario_label_schema;
-    console.log(scenarioLabelDefinitionSchemaQuery);
-
     const scenarios =
       (scenarioLabelDefinitionSchemaQuery &&
         scenarioLabelDefinitionSchemaQuery.labelDefinition &&
@@ -26,9 +24,6 @@ class Scenarios extends React.Component {
         scenarioLabelDefinitionSchemaQuery.labelDefinition.schema.items &&
         scenarioLabelDefinitionSchemaQuery.labelDefinition.schema.items.enum) ||
       {};
-
-    console.log(scenarios);
-
     const loading =
       scenarioLabelDefinitionSchemaQuery &&
       scenarioLabelDefinitionSchemaQuery.loading;
