@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
-import { Badge } from 'fundamental-react/lib/Badge';
-
-import LuigiClient from '@kyma-project/luigi-client';
 import { Button, Breadcrumb } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
+
+import StatusBadge from '../../../Shared/StatusBadge';
 
 class RuntimeDetailsHeader extends React.Component {
   handleDelete = runtime => {
@@ -65,7 +64,7 @@ class RuntimeDetailsHeader extends React.Component {
                       <div className="fd-col--4">
                         Status
                         <span className="columns__value">
-                          <Badge>{status.condition}</Badge>
+                          <StatusBadge status={status.condition} />
                         </span>
                       </div>
                     )}

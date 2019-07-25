@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Panel } from '@kyma-project/react-components';
 
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
@@ -13,7 +12,7 @@ const RuntimeDetails = ({
   const runtime = (runtimeQuery && runtimeQuery.runtime) || {};
   const loading = runtimeQuery.loading;
   const error = runtimeQuery.error;
-  
+
   if (!runtimeQuery || !runtimeQuery.runtime) {
     if (loading) return 'Loading...';
     if (error) return <ResourceNotFound resource="Runtime" breadcrumb="Runtimes"/>;

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { Panel } from '@kyma-project/react-components';
 
 import GenericList from '../../../../shared/components/GenericList/GenericList';

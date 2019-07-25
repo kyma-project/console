@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from 'fundamental-react/lib/Badge';
-
 import LuigiClient from '@kyma-project/luigi-client';
-import GenericList from '../../shared/components/GenericList/GenericList';
+
 import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm';
+import StatusBadge from '../Shared/StatusBadge';
+import GenericList from '../../shared/components/GenericList/GenericList';
 
 class Runtimes extends React.Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class Runtimes extends React.Component {
     </span>,
     runtime.description ? runtime.description : '-',
     runtime.labels && runtime.labels.scenarios ? runtime.labels.scenarios.length : 0,
-    runtime.status && runtime.status.condition ? this.processStatus(runtime.status.condition) : this.processStatus('UNKNOWN')
+    <StatusBadge status={runtime.status && runtime.status.condition ? runtime.status.condition : 'UNKNOWN'}/>
   ];
 
   handleDelete = async element => {
@@ -68,28 +68,6 @@ class Runtimes extends React.Component {
       },
     },
   ];
-
-  processStatus(status) {
-    let type = 'warning';
-    switch (status) {
-      case 'INITIAL':
-        return <Badge>{status}</Badge>;
-
-      case 'READY':
-        type = 'success';
-        break;
-      case 'UNKNOWN':
-        type = 'warning';
-        break;
-      case 'FAILED':
-        type = 'error';
-        break;
-      default:
-        type = 'warning';
-    }
-
-    return <Badge type={type}>{status}</Badge>;
-  }
 
   render() {
     const runtimesQuery = this.props.runtimes;
