@@ -5,7 +5,7 @@ import { Counter } from 'fundamental-react/lib/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
-import StatusBadge from '../Shared/StatusBadge';
+import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
 
 class Applications extends React.Component {

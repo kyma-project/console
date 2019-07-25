@@ -4,7 +4,7 @@ import { Badge } from 'fundamental-react/lib/Badge';
 
 class StatusBadge extends React.Component {
   PropTypes = {
-    status: PropTypes.string,
+    status: PropTypes.string.isRequired,
   };
 
   processStatus() {

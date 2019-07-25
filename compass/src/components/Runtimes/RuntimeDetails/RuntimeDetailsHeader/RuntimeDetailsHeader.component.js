@@ -3,7 +3,7 @@ import { ActionBar } from 'fundamental-react/lib/ActionBar';
 import { Button, Breadcrumb } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import StatusBadge from '../../../Shared/StatusBadge';
+import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
 
 class RuntimeDetailsHeader extends React.Component {
   handleDelete = runtime => {

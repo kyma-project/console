@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm';
-import StatusBadge from '../Shared/StatusBadge';
+import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
 
 class Runtimes extends React.Component {
