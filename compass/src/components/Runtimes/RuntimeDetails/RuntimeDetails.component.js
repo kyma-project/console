@@ -3,6 +3,7 @@ import React from 'react';
 import { Panel } from '@kyma-project/react-components';
 
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
+import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.component';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
 const RuntimeDetails = ({
@@ -12,6 +13,7 @@ const RuntimeDetails = ({
   const runtime = (runtimeQuery && runtimeQuery.runtime) || {};
   const loading = runtimeQuery.loading;
   const error = runtimeQuery.error;
+  
   if (!runtimeQuery || !runtimeQuery.runtime) {
     if (loading) return 'Loading...';
     if (error) return <ResourceNotFound resource="Runtime" breadcrumb="Runtimes"/>;
@@ -19,6 +21,13 @@ const RuntimeDetails = ({
   }
   if (error) {
     return `Error! ${error.message}`;
+  }
+
+  let scenarios = [];
+  if (runtime.labels && runtime.labels.scenarios) {
+    scenarios = runtime.labels.scenarios.map(scenario => {
+      return { scenario };
+    }); // list requires a list of objects
   }
   return (
     <>
@@ -29,9 +38,7 @@ const RuntimeDetails = ({
       
       <section className="fd-section">
         <Panel>
-          <Panel.Header>
-            <Panel.Head title="Have you ever wondered what's inside a runtime?" />
-          </Panel.Header>
+          <RuntimeScenarios scenarios={scenarios}/>
         </Panel>
       </section>
     </>
