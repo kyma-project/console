@@ -15,9 +15,14 @@ ApplicationDetailsApis.propTypes = {
   deleteAPI: PropTypes.func.isRequired,
 };
 
-export default function ApplicationDetailsApis(props) {
+export default function ApplicationDetailsApis({
+  applicationId,
+  apis,
+  sendNotification,
+  deleteAPI,
+}) {
   function showDeleteSuccessNotification(apiName) {
-    props.sendNotification({
+    sendNotification({
       variables: {
         content: `Deleted API "${apiName}".`,
         title: `${apiName}`,
@@ -38,7 +43,7 @@ export default function ApplicationDetailsApis(props) {
       })
       .then(async () => {
         try {
-          await props.deleteAPI(entry.id, props.applicationId);
+          await deleteAPI(entry.id, applicationId);
           showDeleteSuccessNotification(entry.name);
         } catch (error) {
           console.warn(error);
@@ -65,8 +70,6 @@ export default function ApplicationDetailsApis(props) {
       handler: deleteHandler,
     },
   ];
-
-  const { applicationId, apis } = props;
 
   return (
     <Panel className="fd-has-margin-top-small">

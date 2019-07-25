@@ -11,10 +11,7 @@ ApplicationDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
 };
 
-function ApplicationDetails({
-  applicationQuery,
-  deleteApplicationMutation,
-}) {
+function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
   const application = (applicationQuery && applicationQuery.application) || {};
   const loading = applicationQuery.loading;
   const error = applicationQuery.error;
@@ -40,15 +37,9 @@ function ApplicationDetails({
         application={application}
         deleteApplication={deleteApplicationMutation}
       />
-       <section className="fd-section">
-        <ScenarioDisplay
-          labels={scenarios}
-          applicationId={application.id}
-        />
-        <ApisList
-          apis={application.apis}
-          applicationId={application.id}
-        />
+      <section className="fd-section">
+        <ScenarioDisplay labels={scenarios} applicationId={application.id} />
+        <ApisList apis={application.apis} applicationId={application.id} />
         <EventApisList
           eventApis={application.eventAPIs}
           applicationId={application.id}
@@ -56,6 +47,6 @@ function ApplicationDetails({
       </section>
     </>
   );
-};
+}
 
 export default ApplicationDetails;
