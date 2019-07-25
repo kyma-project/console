@@ -4,7 +4,7 @@ import { Button } from 'fundamental-react/lib/Button';
 import LuigiClient from '@kyma-project/luigi-client';
 import CreateRuntimeForm from './CreateRuntimeForm.component';
 
-const CreateRuntimeModal = ({}) => {
+const CreateRuntimeModal = ({ performRefetch }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
   const formElement = useRef(null);
@@ -20,6 +20,17 @@ const CreateRuntimeModal = ({}) => {
 
   const handleFormChanged = e => {
     setValid(formElement.current.checkValidity());
+  };
+
+  const handleFormError = e => {
+    LuigiClient.uxManager().showAlert({ type: 'error', text: e.message });
+  };
+  const handleFormSuccess = e => {
+    LuigiClient.uxManager().showAlert({
+      type: 'success',
+      text: 'Runtime added successfully',
+    });
+    performRefetch();
   };
 
   return (
@@ -51,7 +62,7 @@ const CreateRuntimeModal = ({}) => {
                 if (
                   typeof form.reportValidity === 'function'
                     ? form.reportValidity()
-                    : form.checkValidity() // IE workaround
+                    : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
                 ) {
                   form.dispatchEvent(new Event('submit'));
                   setOpenStatus(false);
@@ -71,6 +82,8 @@ const CreateRuntimeModal = ({}) => {
           formElement={formElement}
           onChange={handleFormChanged}
           isValid={isValid}
+          onError={handleFormError}
+          onCompleted={handleFormSuccess}
         />
       </Modal>
     </div>

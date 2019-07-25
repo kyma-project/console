@@ -24,9 +24,9 @@ const prepareRowData = runtimesArray =>
     ],
   }));
 
-const RuntimeList = () => (
+const RuntimeList = ({}) => (
   <Query query={GET_RUNTIMES}>
-    {({ loading, error, data }) => {
+    {({ loading, error, data, refetch }) => {
       if (loading) return 'Loading...';
       if (error) return `Error! ${error.message}`;
 
@@ -35,7 +35,7 @@ const RuntimeList = () => (
           <Panel.Header>
             <Panel.Head title="Runtime list" />
             <Panel.Actions>
-              <CreateRuntimeModal />
+              <CreateRuntimeModal performRefetch={() => refetch()} />
             </Panel.Actions>
           </Panel.Header>
           <Panel.Body>
