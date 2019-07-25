@@ -6,7 +6,6 @@ import { Badge } from 'fundamental-react/lib/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Button, Breadcrumb } from '@kyma-project/react-components';
 
-
 class RuntimeDetailsHeader extends React.Component {
   handleDelete = runtime => {
     LuigiClient.uxManager()

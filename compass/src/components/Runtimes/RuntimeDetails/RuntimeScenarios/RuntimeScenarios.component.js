@@ -11,8 +11,7 @@ import GenericList from '../../../../shared/components/GenericList/GenericList';
 
  export default function RuntimeScenarios(props) {
   const headerRenderer = () => ['Name'];
-
-  const rowRenderer = label => [label.scenario];
+  const rowRenderer = label => [<b>{label.scenario}</b>];
 
    return (
     <Panel>
