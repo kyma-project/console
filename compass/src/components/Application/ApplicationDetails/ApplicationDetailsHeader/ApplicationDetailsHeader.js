@@ -69,7 +69,7 @@ class ApplicationDetailsHeader extends React.Component {
 
   render() {
     const isReadOnly = false; //todo
-    const { id, name, status, description, labels } = this.props.application;
+    const { id, name, status, description } = this.props.application;
 
     const PanelEntry = props => {
       return (

@@ -1,13 +1,20 @@
 import React from 'react';
-import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
+import PropTypes from 'prop-types';
+
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
+import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay';
+import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
+import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
 
-const ApplicationDetails = ({
+ApplicationDetails.propTypes = {
+  applicationId: PropTypes.string.isRequired,
+};
+
+function ApplicationDetails({
   applicationQuery,
   deleteApplicationMutation,
-}) => {
+}) {
   const application = (applicationQuery && applicationQuery.application) || {};
   const loading = applicationQuery.loading;
   const error = applicationQuery.error;
@@ -19,15 +26,33 @@ const ApplicationDetails = ({
       return `Error! ${error.message}`;
     }
   }
+
+  let scenarios = [];
+  if (application.labels && application.labels.scenarios) {
+    scenarios = application.labels.scenarios.map(scenario => {
+      return { scenario }; // list requires a list of objects
+    });
+  }
+
   return (
     <>
       <Header
         application={application}
         deleteApplication={deleteApplicationMutation}
       />
-      <section className="fd-section">
-        <ApisList apis={application.apis} />
-        <EventApisList eventApis={application.eventAPIs} />
+       <section className="fd-section">
+        <ScenarioDisplay
+          labels={scenarios}
+          applicationId={application.id}
+        />
+        <ApisList
+          apis={application.apis}
+          applicationId={application.id}
+        />
+        <EventApisList
+          eventApis={application.eventAPIs}
+          applicationId={application.id}
+        />
       </section>
     </>
   );
