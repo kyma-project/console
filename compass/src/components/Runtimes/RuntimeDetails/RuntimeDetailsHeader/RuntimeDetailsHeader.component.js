@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
 import { Badge } from 'fundamental-react/lib/Badge';
@@ -9,10 +8,6 @@ import { Button, Breadcrumb } from '@kyma-project/react-components';
 
 
 class RuntimeDetailsHeader extends React.Component {
-  PropTypes = {
-    runtimeId: PropTypes.object.isRequired,
-  };
-
   handleDelete = runtime => {
     LuigiClient.uxManager()
       .showConfirmationModal({
