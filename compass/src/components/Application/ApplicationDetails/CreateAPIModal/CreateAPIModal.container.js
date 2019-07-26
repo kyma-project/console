@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import CreateAPIModal from './CreateAPIModal.component';
 
+// todo delete after implementing subscriptions
 function updateCache(props, applicationId, data, isAsyncAPI) {
   const client = props.result.client;
   const originalQuery = {

@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import ApplicationDetailsApis from './ApplicationDetailsApis.component';
 
+// todo delete after implementing subscriptions
 function updateCache(props, applicationId, apiId) {
   const client = props.result.client;
   const originalQuery = {
