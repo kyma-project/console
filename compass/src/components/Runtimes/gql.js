@@ -14,7 +14,7 @@ export const ADD_RUNTIME = gql`
 
 export const GET_RUNTIMES = gql`
   query {
-    runtimes{
+    runtimes {
       data {
         id
         name
