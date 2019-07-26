@@ -9,7 +9,7 @@ class StatusBadge extends React.Component {
 
   processStatus() {
     const { status } = this.props;
-    let type = 'warning';
+    let type;
 
     switch (status) {
       case 'INITIAL':
