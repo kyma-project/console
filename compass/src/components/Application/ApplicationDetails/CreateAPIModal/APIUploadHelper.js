@@ -27,22 +27,20 @@ export function isFileTypeValid(file) {
 }
 
 export function parseSpecFromText(textData) {
-
   const parsers = {
-    'JSON': JSON.parse,
-    'XML': parseXML,
-    'YAML': jsyaml.safeLoad,
+    JSON: JSON.parse,
+    XML: parseXML,
+    YAML: jsyaml.safeLoad,
   };
 
   const errors = [];
-  for (const type of Object.keys(parsers)){
+  for (const type of Object.keys(parsers)) {
     try {
       return {
         spec: parsers[type](textData),
-        type
-      }
-    }
-    catch (e) {
+        type,
+      };
+    } catch (e) {
       errors.push(e);
       // move on to the next parser
     }
@@ -59,21 +57,21 @@ export function getSpecType(spec) {
   if ('asyncapi' in spec) {
     return {
       mainType: 'ASYNC_API',
-      subType: 'ASYNC_API'
+      subType: 'ASYNC_API',
     };
   }
   // according to https://swagger.io/specification/#fixed-fields
   if ('openapi' in spec) {
     return {
       mainType: 'API',
-      subType: 'OPEN_API'
+      subType: 'OPEN_API',
     };
   }
   // OData should be in EDMX format
   if ('edmx:Edmx' in spec) {
     return {
       mainType: 'API',
-      subType: 'ODATA'
+      subType: 'ODATA',
     };
   }
 

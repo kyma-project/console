@@ -86,16 +86,16 @@ export default class CreateAPIModal extends React.Component {
         clientSecret: '',
         url: '',
       },
-  
+
       spec: null,
       actualFileType: null,
       loadedFileContent: null,
-      mainAPIType: null, /* API, EVENT_API, UNKNOWN */
-      apiSubType: null, /* ASYNC_API, OPEN_API, ODATA */
+      mainAPIType: null /* API, EVENT_API, UNKNOWN */,
+      apiSubType: null /* ASYNC_API, OPEN_API, ODATA */,
       currentError: null,
-    }
-  };
-  
+    };
+  }
+
   showCreateSuccessNotification(apiName, isAsyncAPI) {
     const content = isAsyncAPI
       ? `Event API "${apiName}" created.`
@@ -158,13 +158,13 @@ export default class CreateAPIModal extends React.Component {
     const parsedSpec = parseSpecFromText(fileContent);
 
     if (!parsedSpec) {
-      this.setState({ currentError: 'Error: API spec file is invalid.', });
+      this.setState({ currentError: 'Error: API spec file is invalid.' });
       return;
     }
     const type = getSpecType(parsedSpec.spec);
 
     if (!type) {
-      this.setState({ currentError: 'Error: cannot recognize spec file.', });
+      this.setState({ currentError: 'Error: cannot recognize spec file.' });
       return;
     }
 
@@ -183,11 +183,9 @@ export default class CreateAPIModal extends React.Component {
 
     const isAsyncAPI = state.mainAPIType === 'ASYNC_API';
     const mutation = isAsyncAPI ? props.addEventAPI : props.addAPI;
-    
-    const apiData = isAsyncAPI
-      ? createEventAPI(state)
-      : createAPI(state);
-      
+
+    const apiData = isAsyncAPI ? createEventAPI(state) : createAPI(state);
+
     try {
       await mutation(apiData, props.applicationId);
       this.showCreateSuccessNotification(state.name, isAsyncAPI);
@@ -202,8 +200,16 @@ export default class CreateAPIModal extends React.Component {
   }
 
   render() {
-
-    const { name, description, group, targetURL, mainAPIType, specFile, currentError, oAuthCredentialData } = this.state;
+    const {
+      name,
+      description,
+      group,
+      targetURL,
+      mainAPIType,
+      specFile,
+      currentError,
+      oAuthCredentialData,
+    } = this.state;
 
     const isAsyncAPI = mainAPIType === 'ASYNC_API';
     const isAPI = mainAPIType === 'API';
@@ -331,10 +337,7 @@ export default class CreateAPIModal extends React.Component {
             />
           </form>
         </Tab>
-        {!isAPI && (
-          <InlineHelp placement="right" text={credentialsTabText} />
-        )}
-        
+        {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
       </TabGroup>
     );
 

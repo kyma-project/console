@@ -55,9 +55,7 @@ class ApplicationDetailsHeader extends React.Component {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove application',
-        body: `Are you sure you want to delete application "${
-          application.name
-        }"?`,
+        body: `Are you sure you want to delete application "${application.name}"?`,
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
