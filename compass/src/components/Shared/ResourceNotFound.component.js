@@ -2,7 +2,6 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Breadcrumb, Panel, PanelBody } from '@kyma-project/react-components';
 
-
 const ResourceNotFound = ({ resource, breadcrumb }) => (
   <>
     <header className="fd-page__header fd-page__header--columns fd-has-background-color-background-2">
@@ -27,9 +26,9 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
       </PanelBody>
     </Panel>
   </>
-)
+);
 
-const navigateToList = (breadcrumb) => {
+const navigateToList = breadcrumb => {
   const path = breadcrumb.toLowerCase();
   LuigiClient.linkManager()
     .fromClosestContext()

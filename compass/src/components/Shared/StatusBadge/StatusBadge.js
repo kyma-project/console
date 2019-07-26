@@ -1,7 +1,6 @@
 import React from 'react';
 import { Badge } from 'fundamental-react/lib/Badge';
 
-
 const StatusBadge = ({ status }) => {
   let type;
 
@@ -22,6 +21,6 @@ const StatusBadge = ({ status }) => {
   }
 
   return <Badge type={type}>{status}</Badge>;
-}
+};
 
 export default StatusBadge;
