@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import './CreateRuntimeForm.scss';
 import { InlineHelp } from 'fundamental-react/lib/InlineHelp';
+import { CustomPropTypes } from '../../../shared/typechecking';
 
 const CreateRuntimeForm = ({
   formElementRef,
@@ -111,6 +113,14 @@ const CreateRuntimeForm = ({
       </div>
     </form>
   );
+};
+
+CreateRuntimeForm.propTypes = {
+  formElementRef: CustomPropTypes.elementRef, // used to store <form> element reference
+  isValid: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired, // args: title(string), message(string)
+  onCompleted: PropTypes.func.isRequired, // args: title(string), message(string)
 };
 
 export default CreateRuntimeForm;

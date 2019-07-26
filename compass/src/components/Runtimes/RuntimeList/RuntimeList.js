@@ -25,7 +25,7 @@ const prepareRowData = runtimesArray =>
     ],
   }));
 
-const RuntimeList = ({}) => (
+const RuntimeList = () => (
   <Query query={GET_RUNTIMES}>
     {({ loading, error, data, refetch }) => {
       if (loading) return 'Loading...';
@@ -38,6 +38,7 @@ const RuntimeList = ({}) => (
             <Panel.Actions>
               <ModalWithForm
                 title="Create new runtime"
+                button={{ text: 'Create runtime', glyph: 'add' }}
                 performRefetch={() => refetch()} // to be removed after subscriptions are done
               >
                 <CreateRuntimeForm />

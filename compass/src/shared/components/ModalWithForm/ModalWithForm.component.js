@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'fundamental-react/lib/Modal';
 import { Button } from 'fundamental-react/lib/Button';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -7,6 +8,7 @@ const ModalWithForm = ({
   performRefetch,
   sendNotification,
   title,
+  button,
   children,
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -50,12 +52,12 @@ const ModalWithForm = ({
   return (
     <div>
       <Button
-        glyph="add"
+        glyph={button.glyph}
         onClick={() => {
           setOpenStatus(true);
         }}
       >
-        Create runtime
+        {button.text}
       </Button>
       <Modal
         show={isOpen}
@@ -103,6 +105,16 @@ const ModalWithForm = ({
       </Modal>
     </div>
   );
+};
+
+ModalWithForm.propTypes = {
+  performRefetch: PropTypes.func.isRequired,
+  sendNotification: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  button: PropTypes.exact({
+    text: PropTypes.string.isRequired,
+    glyph: PropTypes.string,
+  }).isRequired,
 };
 
 export default ModalWithForm;
