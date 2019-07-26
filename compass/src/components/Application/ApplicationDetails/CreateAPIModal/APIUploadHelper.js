@@ -34,6 +34,7 @@ export function parseSpecFromText(textData) {
     'YAML': jsyaml.safeLoad,
   };
 
+  const errors = [];
   for (const type of Object.keys(parsers)){
     try {
       return {
@@ -42,9 +43,39 @@ export function parseSpecFromText(textData) {
       }
     }
     catch (e) {
-      console.warn(e);
+      errors.push(e);
       // move on to the next parser
     }
   }
+
+  // warn only if no parser succeeded
+  errors.forEach(console.warn);
+
+  return null;
+}
+
+export function getSpecType(spec) {
+  // according to https://www.asyncapi.com/docs/specifications/1.2.0/#a-name-a2sobject-a-asyncapi-object
+  if ('asyncapi' in spec) {
+    return {
+      mainType: 'ASYNC_API',
+      subType: 'ASYNC_API'
+    };
+  }
+  // according to https://swagger.io/specification/#fixed-fields
+  if ('openapi' in spec) {
+    return {
+      mainType: 'API',
+      subType: 'OPEN_API'
+    };
+  }
+  // OData should be in EDMX format
+  if ('edmx:Edmx' in spec) {
+    return {
+      mainType: 'API',
+      subType: 'ODATA'
+    };
+  }
+
   return null;
 }

@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { showErrorPrompt } from './../../../../shared/utility';
-
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
@@ -47,7 +45,11 @@ export default function ApplicationDetailsEventApis({
           showDeleteSuccessNotification(entry.name);
         } catch (error) {
           console.warn(error);
-          showErrorPrompt(error);
+          LuigiClient.uxManager().showAlert({
+            text: error.message,
+            type: 'error',
+            closeAfter: 10000,
+          });
         }
       })
       .catch(() => {});

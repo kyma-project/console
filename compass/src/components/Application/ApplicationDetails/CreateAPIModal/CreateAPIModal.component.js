@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { showErrorPrompt } from './../../../../shared/utility';
 
 import {
   Button,
@@ -12,12 +11,11 @@ import {
 } from '@kyma-project/react-components';
 import { Tab, TabGroup, InlineHelp } from 'fundamental-react';
 import './style.scss';
-import SchemaValidator from './validator/SchemaValidator';
-import { SPEC_UNKNOWN } from './validator/SchemaValidator';
 
 import {
   isFileTypeValid,
   parseSpecFromText,
+  getSpecType,
 } from './APIUploadHelper';
 
 import FileInput from './FileInput';
@@ -66,9 +64,7 @@ export default class CreateAPIModal extends React.Component {
     super(props);
 
     this.state = this.createInitialState();
-    this.validator = new SchemaValidator();
 
-    this.fileInputChanged = this.fileInputChanged.bind(this);
     this.isReadyToUpload = this.isReadyToUpload.bind(this);
     this.addSpecification = this.addSpecification.bind(this);
     this.fileInputChanged = this.fileInputChanged.bind(this);
@@ -160,65 +156,71 @@ export default class CreateAPIModal extends React.Component {
   processFile(e) {
     const fileContent = e.target.result;
     const parsedSpec = parseSpecFromText(fileContent);
-    console.log(parsedSpec);
-    return;
 
-    if (parsedSpec !== null) {
-      const result = this.validator.validateSpec(parsedSpec.spec);
-      this.setState({
-        mainAPIType: result.mainType,
-        apiSubType: result.apiType,
-        spec: parsedSpec,
-        loadedFileContent: fileContent,
-        currentError: result.mainAPIType === SPEC_UNKNOWN ? 
-          'Unknown spec type' : result.errors,
-        actualFileType: parsedSpec.type
-      });
-    } else {
-      this.setState({
-        specFile: null,
-        mainmainAPIType: null,
-        spec: null,
-        loadedFileContent: null,
-        currentError: 'Error: Spec file is corrupted.',
-      });
+    if (!parsedSpec) {
+      this.setState({ currentError: 'Error: API spec file is invalid.', });
+      return;
     }
+    const type = getSpecType(parsedSpec.spec);
+
+    if (!type) {
+      this.setState({ currentError: 'Error: cannot recognize spec file.', });
+      return;
+    }
+
+    this.setState({
+      spec: parsedSpec,
+      mainAPIType: type.mainType,
+      apiSubType: type.subType,
+      actualFileType: parsedSpec.type,
+      currentError: null,
+      loadedFileContent: fileContent,
+    });
   }
 
   async addSpecification() {
-    const isAsyncAPI = this.state.mainAPIType === 'EVENT_API';
-    const mutation = isAsyncAPI ? this.props.addEventAPI : this.props.addAPI;
-    const apiData = isAsyncAPI
-      ? createEventAPI(this.state)
-      : createAPI(this.state);
+    const { props, state } = this;
 
+    const isAsyncAPI = state.mainAPIType === 'ASYNC_API';
+    const mutation = isAsyncAPI ? props.addEventAPI : props.addAPI;
+    
+    const apiData = isAsyncAPI
+      ? createEventAPI(state)
+      : createAPI(state);
+      
     try {
-      await mutation(apiData, this.props.applicationId);
-      this.showCreateSuccessNotification(this.state.name, isAsyncAPI);
+      await mutation(apiData, props.applicationId);
+      this.showCreateSuccessNotification(state.name, isAsyncAPI);
     } catch (error) {
       console.warn(error);
-      showErrorPrompt(error.message);
+      LuigiClient.uxManager().showAlert({
+        text: error.message,
+        type: 'error',
+        closeAfter: 10000,
+      });
     }
   }
 
   render() {
-    const isEventAPI = this.state.mainAPIType === 'API';
+
+    const { name, description, group, targetURL, mainAPIType, specFile, currentError, oAuthCredentialData } = this.state;
+
+    const isAsyncAPI = mainAPIType === 'ASYNC_API';
+    const isAPI = mainAPIType === 'API';
 
     let credentialsTabText;
-    if (isEventAPI) {
+    if (isAsyncAPI) {
       credentialsTabText = 'Credentials can be only specified for APIs.';
-    } else if (!this.state.mainAPIType) {
-      credentialsTabText = 'Please upload the API spec file.';
+    } else if (!mainAPIType) {
+      credentialsTabText = 'Please upload valid API spec file.';
     }
 
     let targetUrlInfoText;
-    if (isEventAPI) {
+    if (isAsyncAPI) {
       targetUrlInfoText = 'Target URL can be only specified for APIs.';
-    } else if (!this.state.mainAPIType) {
-      targetUrlInfoText = 'Please upload the API spec file.';
+    } else if (!mainAPIType) {
+      targetUrlInfoText = 'Please upload valid API spec file.';
     }
-
-
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
 
@@ -230,19 +232,19 @@ export default class CreateAPIModal extends React.Component {
               inputKey="name"
               required
               label="Name"
-              defaultValue={this.state.name}
+              defaultValue={name}
               onChange={e => this.setState({ name: e.target.value })}
             />
             <TextFormItem
               inputKey="description"
               label="Description"
-              defaultValue={this.state.description}
+              defaultValue={description}
               onChange={e => this.setState({ description: e.target.value })}
             />
             <TextFormItem
               inputKey="group"
               label="Group"
-              defaultValue={this.state.group}
+              defaultValue={group}
               onChange={e => this.setState({ group: e.target.value })}
             />
             <FormItem key="targetURL">
@@ -253,15 +255,15 @@ export default class CreateAPIModal extends React.Component {
               >
                 Target URL
               </FormLabel>
-              {!isEventAPI && (
+              {!isAPI && (
                 <InlineHelp placement="right" text={targetUrlInfoText} />
               )}
               <FormInput
-                disabled={!isEventAPI}
+                disabled={!isAPI}
                 id="targetURL"
                 type="text"
                 placeholder="Target URL"
-                defaultValue={this.state.targetURL}
+                defaultValue={targetURL}
                 onChange={e => this.setState({ targetURL: e.target.value })}
               />
             </FormItem>
@@ -269,8 +271,8 @@ export default class CreateAPIModal extends React.Component {
               <FormLabel htmlFor="spec">Spec</FormLabel>
               <FileInput
                 fileInputChanged={this.fileInputChanged}
-                file={this.state.specFile}
-                error={this.state.currentError}
+                file={specFile}
+                error={currentError}
               />
             </FormItem>
           </form>
@@ -279,7 +281,7 @@ export default class CreateAPIModal extends React.Component {
           key="credentials"
           id="credentials"
           title="Credentials"
-          disabled={!isEventAPI}
+          disabled={!isAPI}
         >
           <form>
             <TextFormItem
@@ -287,11 +289,11 @@ export default class CreateAPIModal extends React.Component {
               required
               type="password"
               label="Client ID"
-              defaultValue={this.state.clientId}
+              defaultValue={oAuthCredentialData.clientId}
               onChange={e =>
                 this.setState({
                   oAuthCredentialData: {
-                    ...this.state.oAuthCredentialData,
+                    ...oAuthCredentialData,
                     clientId: e.target.value,
                   },
                 })
@@ -302,11 +304,11 @@ export default class CreateAPIModal extends React.Component {
               required
               type="password"
               label="Client Secret"
-              defaultValue={this.state.clientSecret}
+              defaultValue={oAuthCredentialData.clientSecret}
               onChange={e =>
                 this.setState({
                   oAuthCredentialData: {
-                    ...this.state.oAuthCredentialData,
+                    ...oAuthCredentialData,
                     clientSecret: e.target.value,
                   },
                 })
@@ -317,11 +319,11 @@ export default class CreateAPIModal extends React.Component {
               required
               type="url"
               label="Url"
-              defaultValue={this.state.url}
+              defaultValue={oAuthCredentialData.url}
               onChange={e =>
                 this.setState({
                   oAuthCredentialData: {
-                    ...this.state.oAuthCredentialData,
+                    ...oAuthCredentialData,
                     url: e.target.value,
                   },
                 })
@@ -329,7 +331,7 @@ export default class CreateAPIModal extends React.Component {
             />
           </form>
         </Tab>
-        {!isEventAPI && (
+        {!isAPI && (
           <InlineHelp placement="right" text={credentialsTabText} />
         )}
         
