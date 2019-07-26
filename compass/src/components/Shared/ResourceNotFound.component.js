@@ -6,7 +6,7 @@ import { Breadcrumb, Panel, PanelBody } from '@kyma-project/react-components';
 class ResourceNotFound extends React.Component {
   PropTypes = {
     resource: PropTypes.string.isRequired,
-    breadcrumb: PropTypes.string.isRequired
+    breadcrumb: PropTypes.string.isRequired,
   };
 
   navigateToList = () => {
@@ -14,7 +14,7 @@ class ResourceNotFound extends React.Component {
     LuigiClient.linkManager()
       .fromClosestContext()
       .navigate(`/${path}`);
-  }
+  };
 
   render = () => (
     <>
@@ -43,4 +43,4 @@ class ResourceNotFound extends React.Component {
   );
 }
 
-export default ResourceNotFound
+export default ResourceNotFound;

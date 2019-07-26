@@ -14,7 +14,7 @@ class StatusBadge extends React.Component {
     switch (status) {
       case 'INITIAL':
         return <Badge>{status}</Badge>;
-       case 'READY':
+      case 'READY':
         type = 'success';
         break;
       case 'UNKNOWN':
@@ -30,9 +30,7 @@ class StatusBadge extends React.Component {
     return <Badge type={type}>{status}</Badge>;
   }
 
-  render = () => (
-    this.processStatus()
-  );
+  render = () => this.processStatus();
 }
 
-export default StatusBadge
+export default StatusBadge;

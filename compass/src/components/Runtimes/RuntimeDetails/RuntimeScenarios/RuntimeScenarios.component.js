@@ -4,15 +4,15 @@ import { Panel } from '@kyma-project/react-components';
 
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 
- RuntimeScenarios.propTypes = {
+RuntimeScenarios.propTypes = {
   scenarios: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
- export default function RuntimeScenarios(props) {
+export default function RuntimeScenarios(props) {
   const headerRenderer = () => ['Name'];
   const rowRenderer = label => [<b>{label.scenario}</b>];
 
-   return (
+  return (
     <Panel>
       <GenericList
         title="Scenarios"

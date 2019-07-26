@@ -36,8 +36,8 @@ const navigation = {
                       viewUrl: 'http://localhost:8888/runtime/:runtimeId',
                     },
                   ],
-                }
-              ]
+                },
+              ],
             },
 
             {
@@ -52,11 +52,12 @@ const navigation = {
                     {
                       pathSegment: ':applicationId',
                       label: 'Applications',
-                      viewUrl: 'http://localhost:8888/application/:applicationId',
+                      viewUrl:
+                        'http://localhost:8888/application/:applicationId',
                     },
                   ],
-                }
-              ]
+                },
+              ],
             },
           ],
         },

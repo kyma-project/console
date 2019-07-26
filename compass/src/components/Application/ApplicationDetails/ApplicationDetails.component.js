@@ -13,7 +13,10 @@ const ApplicationDetails = ({
   const error = applicationQuery.error;
   if (!applicationQuery || !applicationQuery.application) {
     if (loading) return 'Loading...';
-    if (error) return <ResourceNotFound resource="Application" breadcrumb="Applications"/>;
+    if (error)
+      return (
+        <ResourceNotFound resource="Application" breadcrumb="Applications" />
+      );
     return '';
   }
   if (error) {

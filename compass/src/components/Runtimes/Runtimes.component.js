@@ -15,22 +15,29 @@ class Runtimes extends React.Component {
     'Name',
     'Description',
     'Assigned Scenarios',
-    'Status'
+    'Status',
   ];
 
   rowRenderer = runtime => [
     <span
       className="link"
       onClick={() =>
-        LuigiClient.linkManager()
-          .navigate(`details/${runtime.id}`)
+        LuigiClient.linkManager().navigate(`details/${runtime.id}`)
       }
     >
       <b>{runtime.name}</b>
     </span>,
     runtime.description ? runtime.description : '-',
-    runtime.labels && runtime.labels.scenarios ? runtime.labels.scenarios.length : 0,
-    <StatusBadge status={runtime.status && runtime.status.condition ? runtime.status.condition : 'UNKNOWN'}/>
+    runtime.labels && runtime.labels.scenarios
+      ? runtime.labels.scenarios.length
+      : 0,
+    <StatusBadge
+      status={
+        runtime.status && runtime.status.condition
+          ? runtime.status.condition
+          : 'UNKNOWN'
+      }
+    />,
   ];
 
   handleDelete = async element => {

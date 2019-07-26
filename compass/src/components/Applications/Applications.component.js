@@ -49,8 +49,7 @@ class Applications extends React.Component {
     <span
       className="link"
       onClick={() =>
-        LuigiClient.linkManager()
-          .navigate(`details/${application.id}`)
+        LuigiClient.linkManager().navigate(`details/${application.id}`)
       }
     >
       <b>{application.name}</b>
@@ -59,7 +58,13 @@ class Applications extends React.Component {
     application.labels ? this.createLabels(application.labels) : '-',
     <Counter>{application.apis.totalCount}</Counter>,
     <Counter>{application.eventAPIs.totalCount}</Counter>,
-    <StatusBadge status={application.status && application.status.condition ? application.status.condition : 'UNKNOWN'}/>
+    <StatusBadge
+      status={
+        application.status && application.status.condition
+          ? application.status.condition
+          : 'UNKNOWN'
+      }
+    />,
   ];
 
   handleDelete = async element => {

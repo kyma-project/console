@@ -5,17 +5,15 @@ import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.co
 import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.component';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
-const RuntimeDetails = ({
-  runtimeQuery,
-  deleteRuntime,
-}) => {
+const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
   const runtime = (runtimeQuery && runtimeQuery.runtime) || {};
   const loading = runtimeQuery.loading;
   const error = runtimeQuery.error;
 
   if (!runtimeQuery || !runtimeQuery.runtime) {
     if (loading) return 'Loading...';
-    if (error) return <ResourceNotFound resource="Runtime" breadcrumb="Runtimes"/>;
+    if (error)
+      return <ResourceNotFound resource="Runtime" breadcrumb="Runtimes" />;
     return '';
   }
   if (error) {
@@ -30,14 +28,11 @@ const RuntimeDetails = ({
   }
   return (
     <>
-      <RuntimeDetailsHeader
-        runtime={runtime}
-        deleteRuntime={deleteRuntime}
-      />
-      
+      <RuntimeDetailsHeader runtime={runtime} deleteRuntime={deleteRuntime} />
+
       <section className="fd-section">
         <Panel>
-          <RuntimeScenarios scenarios={scenarios}/>
+          <RuntimeScenarios scenarios={scenarios} />
         </Panel>
       </section>
     </>

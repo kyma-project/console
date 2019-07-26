@@ -1,7 +1,7 @@
 import { graphql, compose } from 'react-apollo';
 
 import { GET_RUNTIME, DELETE_RUNTIME } from '../gql';
-import RuntimeDetails from './RuntimeDetails.component'
+import RuntimeDetails from './RuntimeDetails.component';
 
 export default compose(
   graphql(GET_RUNTIME, {

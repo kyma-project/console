@@ -19,7 +19,7 @@ class RuntimeDetailsHeader extends React.Component {
       })
       .catch(() => {});
   };
-  
+
   deleteEntry = async element => {
     try {
       await this.props.deleteRuntime(element.id);
@@ -39,7 +39,7 @@ class RuntimeDetailsHeader extends React.Component {
     LuigiClient.linkManager()
       .fromClosestContext()
       .navigate(`/runtimes`);
-  }
+  };
 
   render = () => {
     const { name, description, id, status } = this.props.runtime;
@@ -70,7 +70,9 @@ class RuntimeDetailsHeader extends React.Component {
                     )}
                     <div className="fd-col--4">
                       Description
-                      <span className="columns__value">{description ? description : '-'}</span>
+                      <span className="columns__value">
+                        {description ? description : '-'}
+                      </span>
                     </div>
                     <div className="fd-col--4">
                       ID
@@ -81,9 +83,7 @@ class RuntimeDetailsHeader extends React.Component {
               </div>
               <ActionBar.Actions>
                 <Button
-                  onClick={() =>
-                    this.handleDelete(this.props.runtime)
-                  }
+                  onClick={() => this.handleDelete(this.props.runtime)}
                   type="negative"
                   option="light"
                 >
