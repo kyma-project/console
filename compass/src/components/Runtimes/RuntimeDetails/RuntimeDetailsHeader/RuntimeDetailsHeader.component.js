@@ -1,9 +1,15 @@
 import React from 'react';
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
-import { Button, Breadcrumb } from '@kyma-project/react-components';
+import {
+  Button,
+  Breadcrumb,
+  Panel,
+  PanelGrid,
+} from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
+import '../../../../shared/styles/header.scss';
 
 class RuntimeDetailsHeader extends React.Component {
   handleDelete = runtime => {
@@ -43,55 +49,58 @@ class RuntimeDetailsHeader extends React.Component {
 
   render = () => {
     const { name, description, id, status } = this.props.runtime;
+
+    const PanelEntry = props => {
+      return (
+        <Panel>
+          <Panel.Body>
+            <p className="fd-has-color-text-4 fd-has-margin-bottom-none">
+              {props.title}
+            </p>
+            {props.content}
+          </Panel.Body>
+        </Panel>
+      );
+    };
+
     return (
       <>
-        <header className="fd-page__header fd-page__header--columns fd-has-background-color-background-2">
-          <section className="fd-section">
-            <div className="fd-action-bar">
-              <div className="fd-action-bar__header">
-                <Breadcrumb>
-                  <Breadcrumb.Item
-                    name="Runtimes"
-                    url="#"
-                    onClick={this.navigateToRuntimesList}
-                  />
-                  <Breadcrumb.Item />
-                </Breadcrumb>
-                <ActionBar.Header title={name} />
-                <div className="fd-action-bar__description">
-                  <div className="fd-container fd-container--fluid">
-                    {status && (
-                      <div className="fd-col--4">
-                        Status
-                        <span className="columns__value">
-                          <StatusBadge status={status.condition} />
-                        </span>
-                      </div>
-                    )}
-                    <div className="fd-col--4">
-                      Description
-                      <span className="columns__value">
-                        {description ? description : '-'}
-                      </span>
-                    </div>
-                    <div className="fd-col--4">
-                      ID
-                      <span className="columns__value">{id}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ActionBar.Actions>
-                <Button
-                  onClick={() => this.handleDelete(this.props.runtime)}
-                  type="negative"
-                  option="light"
-                >
-                  Delete
-                </Button>
-              </ActionBar.Actions>
-            </div>
+        <header className="fd-has-background-color-background-2">
+          <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
+            <section>
+              <Breadcrumb>
+                <Breadcrumb.Item
+                  name="Runtimes"
+                  url="#"
+                  onClick={this.navigateToRuntimesList}
+                />
+                <Breadcrumb.Item />
+              </Breadcrumb>
+              <ActionBar.Header title={name} />
+            </section>
+            <ActionBar.Actions>
+              <Button
+                onClick={() => this.handleDelete(this.props.runtime)}
+                type="negative"
+                option="light"
+              >
+                Delete
+              </Button>
+            </ActionBar.Actions>
           </section>
+          <PanelGrid nogap cols={3}>
+            {status && (
+              <PanelEntry
+                title="Status"
+                content={<StatusBadge status={status.condition} />}
+              />
+            )}
+            <PanelEntry
+              title="Description"
+              content={description ? description : '-'}
+            />
+            <PanelEntry title="ID" content={id} />
+          </PanelGrid>
         </header>
       </>
     );
