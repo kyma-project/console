@@ -2,10 +2,10 @@ import { graphql, compose } from 'react-apollo';
 
 import { SEND_NOTIFICATION } from '../../../gql';
 
-import CreateRuntimeModal from './CreateRuntimeModal.component';
+import ModalWithForm from './ModalWithForm.component';
 
 export default compose(
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
-)(CreateRuntimeModal);
+)(ModalWithForm);

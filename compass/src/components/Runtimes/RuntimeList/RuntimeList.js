@@ -5,7 +5,8 @@ import { Panel } from 'fundamental-react/lib/Panel';
 import { GET_RUNTIMES } from '../gql';
 import { Table } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
-import CreateRuntimeModal from '../CreateRuntimeModal/CreateRuntimeModal.container';
+import ModalWithForm from '../../../shared/components/ModalWithForm/ModalWithForm.container';
+import CreateRuntimeForm from '../CreateRuntimeForm/CreateRuntimeForm.container';
 
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({
@@ -35,7 +36,12 @@ const RuntimeList = ({}) => (
           <Panel.Header>
             <Panel.Head title="Runtime list" />
             <Panel.Actions>
-              <CreateRuntimeModal performRefetch={() => refetch()} />
+              <ModalWithForm
+                title="Create new runtime"
+                performRefetch={() => refetch()} // to be removed after subscriptions are done
+              >
+                <CreateRuntimeForm />
+              </ModalWithForm>
             </Panel.Actions>
           </Panel.Header>
           <Panel.Body>

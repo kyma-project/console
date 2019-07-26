@@ -2,12 +2,11 @@ import React, { useState, useRef } from 'react';
 import { Modal } from 'fundamental-react/lib/Modal';
 import { Button } from 'fundamental-react/lib/Button';
 import LuigiClient from '@kyma-project/luigi-client';
-import CreateRuntimeForm from './CreateRuntimeForm.container';
 
-const CreateRuntimeModal = ({ performRefetch, sendNotification }) => {
+const ModalWithForm = ({ performRefetch, sendNotification, children }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
-  const formElement = useRef(null);
+  const formElementRef = useRef(null);
 
   const setOpenStatus = status => {
     if (status) {
@@ -19,7 +18,7 @@ const CreateRuntimeModal = ({ performRefetch, sendNotification }) => {
   };
 
   const handleFormChanged = e => {
-    setValid(formElement.current.checkValidity());
+    setValid(formElementRef.current.checkValidity());
   };
 
   const handleFormError = (title, message) => {
@@ -43,7 +42,6 @@ const CreateRuntimeModal = ({ performRefetch, sendNotification }) => {
     });
     performRefetch();
   };
-
   return (
     <div>
       <Button
@@ -69,7 +67,7 @@ const CreateRuntimeModal = ({ performRefetch, sendNotification }) => {
             <Button
               aria-disabled={!isValid}
               onClick={() => {
-                const form = formElement.current;
+                const form = formElementRef.current;
                 if (
                   typeof form.reportValidity === 'function'
                     ? form.reportValidity()
@@ -89,16 +87,17 @@ const CreateRuntimeModal = ({ performRefetch, sendNotification }) => {
         }}
         title="Create new runtime"
       >
-        <CreateRuntimeForm
-          formElement={formElement}
-          onChange={handleFormChanged}
-          isValid={isValid}
-          onError={handleFormError}
-          onCompleted={handleFormSuccess}
-        />
+        {React.createElement(children.type, {
+          formElementRef,
+          isValid,
+          onChange: handleFormChanged,
+          onError: handleFormError,
+          onCompleted: handleFormSuccess,
+          ...children.props,
+        })}
       </Modal>
     </div>
   );
 };
 
-export default CreateRuntimeModal;
+export default ModalWithForm;

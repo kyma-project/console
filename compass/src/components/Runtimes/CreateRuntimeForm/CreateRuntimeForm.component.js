@@ -3,7 +3,7 @@ import './CreateRuntimeForm.scss';
 import { InlineHelp } from 'fundamental-react/lib/InlineHelp';
 
 const CreateRuntimeForm = ({
-  formElement,
+  formElementRef,
   onChange,
   onCompleted,
   onError,
@@ -82,10 +82,11 @@ const CreateRuntimeForm = ({
       />
     </>
   );
+
   return (
     <form
       onChange={onChange}
-      ref={formElement}
+      ref={formElementRef}
       style={{ width: '30em' }}
       onSubmit={handleFormSubmit}
     >
