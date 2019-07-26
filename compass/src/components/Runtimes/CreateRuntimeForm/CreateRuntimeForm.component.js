@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './CreateRuntimeForm.scss';
 import { InlineHelp } from 'fundamental-react/lib/InlineHelp';
-import { CustomPropTypes } from '../../../shared/typechecking';
+import { CustomPropTypes } from '../../../shared/typechecking/CustomPropTypes';
 
 const CreateRuntimeForm = ({
   formElementRef,
