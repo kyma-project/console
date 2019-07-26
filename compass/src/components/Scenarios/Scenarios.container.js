@@ -5,7 +5,7 @@ import Scenarios from './Scenarios.component';
 
 export default compose(
   graphql(GET_SCENARIOS_LABEL_SCHEMA, {
-    name: 'scenario_label_schema',
+    name: 'scenarioLabelSchema',
     options: {
       fetchPolicy: 'cache-and-network',
     },
