@@ -115,6 +115,7 @@ ModalWithForm.propTypes = {
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
   }).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default ModalWithForm;
