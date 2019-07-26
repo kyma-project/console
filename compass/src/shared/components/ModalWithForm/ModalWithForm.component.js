@@ -3,7 +3,12 @@ import { Modal } from 'fundamental-react/lib/Modal';
 import { Button } from 'fundamental-react/lib/Button';
 import LuigiClient from '@kyma-project/luigi-client';
 
-const ModalWithForm = ({ performRefetch, sendNotification, children }) => {
+const ModalWithForm = ({
+  performRefetch,
+  sendNotification,
+  title,
+  children,
+}) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
@@ -85,7 +90,7 @@ const ModalWithForm = ({ performRefetch, sendNotification, children }) => {
         onClose={() => {
           setOpenStatus(false);
         }}
-        title="Create new runtime"
+        title={title}
       >
         {React.createElement(children.type, {
           formElementRef,
