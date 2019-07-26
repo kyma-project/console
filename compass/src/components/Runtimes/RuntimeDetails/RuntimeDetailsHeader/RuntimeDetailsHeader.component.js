@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ActionBar } from 'fundamental-react/lib/ActionBar';
 import {
   Button,
@@ -12,6 +13,11 @@ import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
 import '../../../../shared/styles/header.scss';
 
 class RuntimeDetailsHeader extends React.Component {
+  PropTypes = {
+    runtime: PropTypes.object.isRequired,
+    deleteRuntime: PropTypes.func.isRequired
+  }
+  
   handleDelete = runtime => {
     LuigiClient.uxManager()
       .showConfirmationModal({

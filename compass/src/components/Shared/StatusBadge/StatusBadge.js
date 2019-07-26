@@ -1,36 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Badge } from 'fundamental-react/lib/Badge';
 
-class StatusBadge extends React.Component {
-  PropTypes = {
-    status: PropTypes.string.isRequired,
-  };
 
-  processStatus() {
-    const { status } = this.props;
-    let type;
+const StatusBadge = ({ status }) => {
+  let type;
 
-    switch (status) {
-      case 'INITIAL':
-        return <Badge>{status}</Badge>;
-      case 'READY':
-        type = 'success';
-        break;
-      case 'UNKNOWN':
-        type = 'warning';
-        break;
-      case 'FAILED':
-        type = 'error';
-        break;
-      default:
-        type = 'warning';
-    }
-
-    return <Badge type={type}>{status}</Badge>;
+  switch (status) {
+    case 'INITIAL':
+      return <Badge>{status}</Badge>;
+    case 'READY':
+      type = 'success';
+      break;
+    case 'UNKNOWN':
+      type = 'warning';
+      break;
+    case 'FAILED':
+      type = 'error';
+      break;
+    default:
+      type = 'warning';
   }
 
-  render = () => this.processStatus();
+  return <Badge type={type}>{status}</Badge>;
 }
 
 export default StatusBadge;
