@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { Modal } from 'fundamental-react/lib/Modal';
 import { Button } from 'fundamental-react/lib/Button';
 import LuigiClient from '@kyma-project/luigi-client';
-import CreateRuntimeForm from './CreateRuntimeForm.component';
+import CreateRuntimeForm from './CreateRuntimeForm.container';
 
-const CreateRuntimeModal = ({ performRefetch }) => {
+const CreateRuntimeModal = ({ performRefetch, sendNotification }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
   const formElement = useRef(null);
@@ -22,13 +22,24 @@ const CreateRuntimeModal = ({ performRefetch }) => {
     setValid(formElement.current.checkValidity());
   };
 
-  const handleFormError = e => {
-    LuigiClient.uxManager().showAlert({ type: 'error', text: e.message });
+  const handleFormError = (title, message) => {
+    sendNotification({
+      variables: {
+        content: message,
+        title: title,
+        color: '#BB0000',
+        icon: 'decline',
+      },
+    });
   };
-  const handleFormSuccess = e => {
-    LuigiClient.uxManager().showAlert({
-      type: 'success',
-      text: 'Runtime added successfully',
+  const handleFormSuccess = (title, message) => {
+    sendNotification({
+      variables: {
+        content: message,
+        title: title,
+        color: '#107E3E',
+        icon: 'accept',
+      },
     });
     performRefetch();
   };
@@ -56,7 +67,7 @@ const CreateRuntimeModal = ({ performRefetch }) => {
               Cancel
             </Button>
             <Button
-              disabled={!isValid}
+              aria-disabled={!isValid}
               onClick={() => {
                 const form = formElement.current;
                 if (

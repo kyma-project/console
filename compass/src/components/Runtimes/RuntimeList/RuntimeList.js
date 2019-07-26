@@ -5,7 +5,7 @@ import { Panel } from 'fundamental-react/lib/Panel';
 import { GET_RUNTIMES } from '../gql';
 import { Table } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
-import CreateRuntimeModal from '../CreateRuntimeModal/CreateRuntimeModal.component';
+import CreateRuntimeModal from '../CreateRuntimeModal/CreateRuntimeModal.container';
 
 const prepareRowData = runtimesArray =>
   runtimesArray.map(runtime => ({

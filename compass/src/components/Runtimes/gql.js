@@ -11,6 +11,7 @@ export const ADD_RUNTIME = gql`
   }
 `;
 
+// TODO: add filtering, pagination etc.
 export const GET_RUNTIMES = gql`
   query {
     runtimes(
@@ -26,6 +27,17 @@ export const GET_RUNTIMES = gql`
         id
         name
         description
+      }
+    }
+  }
+`;
+
+// no pagination, filtering etc. Just all names.
+export const GET_ALL_RUNTIME_NAMES = gql`
+  query {
+    runtimes {
+      data {
+        name
       }
     }
   }
