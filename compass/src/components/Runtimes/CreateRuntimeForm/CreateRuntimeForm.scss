@@ -1,3 +1,21 @@
 .fd-form__control:invalid {
-  border: 2px solid var(--fd-color-status-3);
+  border: 1px solid var(--fd-color-status-3);
+  animation: gentleRedBorderPulse 2s ease infinite;
+}
+
+@keyframes gentleRedBorderPulse {
+  $color1: #d04343;
+  $color2: darken(#d04343, 18%);
+  0% {
+    border-color: $color1;
+  }
+  50% {
+    border-color: $color2;
+  }
+  100% {
+    border-color: $color1;
+  }
+}
+.fd-inline-help {
+  margin-left: 3px;
 }

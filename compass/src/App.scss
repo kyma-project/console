@@ -45,3 +45,11 @@
 .fd-pagination {
   text-align: center;
 }
+
+.fd-modal {
+  &__actions {
+    *:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+}
