@@ -52,7 +52,7 @@ const ModalWithForm = ({
   return (
     <div>
       <Button
-        glyph={button.glyph}
+        glyph={button.glyph || null}
         onClick={() => {
           setOpenStatus(true);
         }}
