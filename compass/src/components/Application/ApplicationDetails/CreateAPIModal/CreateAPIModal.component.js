@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import _ from 'lodash';
-
 import { showErrorPrompt } from './../../../../shared/utility';
 
 import {
@@ -14,14 +12,12 @@ import {
 } from '@kyma-project/react-components';
 import { Tab, TabGroup, InlineHelp } from 'fundamental-react';
 import './style.scss';
+import SchemaValidator from './validator/SchemaValidator';
+import { SPEC_UNKNOWN } from './validator/SchemaValidator';
 
 import {
-  getSpecType,
   isFileTypeValid,
   parseSpecFromText,
-  getSpecFileType,
-  getAPISpecType,
-  getAsyncAPISpecType,
 } from './APIUploadHelper';
 
 import FileInput from './FileInput';
@@ -35,9 +31,9 @@ function createAPI(apiData) {
     targetURL: apiData.targetURL,
     group: apiData.group ? apiData.group : null, // if group is '', just write null
     spec: {
-      data: JSON.stringify(apiData.spec),
+      data: apiData.loadedFileContent,
       format: apiData.actualFileType,
-      type: getAPISpecType(apiData.spec),
+      type: apiData.apiSubType,
     },
     defaultAuth: {
       credential: {
@@ -58,36 +54,19 @@ function createEventAPI(apiData) {
     description: apiData.description,
     group: apiData.group ? apiData.group : null, // if group is '', just write null
     spec: {
-      data: JSON.stringify(apiData.spec),
+      data: apiData.loadedFileContent,
       format: apiData.actualFileType,
-      eventSpecType: getAsyncAPISpecType(apiData.spec),
+      eventSpecType: apiData.apiSubType,
     },
   };
 }
-
-const initialState = {
-  name: '',
-  description: '',
-  group: '',
-  targetURL: '',
-  specFile: null,
-  oAuthCredentialData: {
-    clientId: '',
-    clientSecret: '',
-    url: '',
-  },
-
-  spec: null,
-  actualFileType: null,
-  apiType: null,
-  currentFileError: null,
-};
 
 export default class CreateAPIModal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = _.cloneDeep(initialState);
+    this.state = this.createInitialState();
+    this.validator = new SchemaValidator();
 
     this.fileInputChanged = this.fileInputChanged.bind(this);
     this.isReadyToUpload = this.isReadyToUpload.bind(this);
@@ -96,9 +75,31 @@ export default class CreateAPIModal extends React.Component {
   }
 
   setInitialState() {
-    this.setState(initialState);
+    this.setState(this.createInitialState());
   }
 
+  createInitialState() {
+    return {
+      name: '',
+      description: '',
+      group: '',
+      targetURL: '',
+      specFile: null,
+      oAuthCredentialData: {
+        clientId: '',
+        clientSecret: '',
+        url: '',
+      },
+  
+      spec: null,
+      actualFileType: null,
+      loadedFileContent: null,
+      mainAPIType: null, /* API, EVENT_API, UNKNOWN */
+      apiSubType: null, /* ASYNC_API, OPEN_API, ODATA */
+      currentError: null,
+    }
+  };
+  
   showCreateSuccessNotification(apiName, isAsyncAPI) {
     const content = isAsyncAPI
       ? `Event API "${apiName}" created.`
@@ -116,13 +117,13 @@ export default class CreateAPIModal extends React.Component {
   }
 
   isReadyToUpload() {
-    const { spec, name, apiType, targetURL } = this.state;
+    const { spec, name, mainAPIType, targetURL } = this.state;
 
     if (!spec || !name.trim()) {
       return false;
     }
 
-    if (apiType === 'API') {
+    if (mainAPIType === 'API') {
       const { clientId, clientSecret, url } = this.state.oAuthCredentialData;
       if (
         !targetURL.trim() ||
@@ -142,14 +143,14 @@ export default class CreateAPIModal extends React.Component {
       return;
     }
 
-    this.setState({ specFile: null, apiType: null, spec: null });
+    this.setState({ specFile: null, mainAPIType: null, spec: null });
 
     if (!isFileTypeValid(file)) {
-      this.setState({ currentFileError: 'Error: Invalid file type.' });
+      this.setState({ currentError: 'Error: Invalid file type.' });
       return;
     }
 
-    this.setState({ specFile: file, currentFileError: null });
+    this.setState({ specFile: file, currentError: null });
 
     const reader = new FileReader();
     reader.onload = this.processFile.bind(this);
@@ -159,25 +160,33 @@ export default class CreateAPIModal extends React.Component {
   processFile(e) {
     const fileContent = e.target.result;
     const parsedSpec = parseSpecFromText(fileContent);
+    console.log(parsedSpec);
+    return;
 
     if (parsedSpec !== null) {
+      const result = this.validator.validateSpec(parsedSpec.spec);
       this.setState({
+        mainAPIType: result.mainType,
+        apiSubType: result.apiType,
         spec: parsedSpec,
-        actualFileType: getSpecFileType(fileContent),
-        apiType: getSpecType(parsedSpec),
+        loadedFileContent: fileContent,
+        currentError: result.mainAPIType === SPEC_UNKNOWN ? 
+          'Unknown spec type' : result.errors,
+        actualFileType: parsedSpec.type
       });
     } else {
       this.setState({
         specFile: null,
-        apiType: null,
+        mainmainAPIType: null,
         spec: null,
-        currentFileError: 'Error: Spec file is corrupted.',
+        loadedFileContent: null,
+        currentError: 'Error: Spec file is corrupted.',
       });
     }
   }
 
   async addSpecification() {
-    const isAsyncAPI = this.state.apiType === 'EVENT_API';
+    const isAsyncAPI = this.state.mainAPIType === 'EVENT_API';
     const mutation = isAsyncAPI ? this.props.addEventAPI : this.props.addAPI;
     const apiData = isAsyncAPI
       ? createEventAPI(this.state)
@@ -193,21 +202,23 @@ export default class CreateAPIModal extends React.Component {
   }
 
   render() {
-    const isEventAPI = this.state.apiType === 'API';
+    const isEventAPI = this.state.mainAPIType === 'API';
 
     let credentialsTabText;
     if (isEventAPI) {
       credentialsTabText = 'Credentials can be only specified for APIs.';
-    } else if (!this.state.apiType) {
+    } else if (!this.state.mainAPIType) {
       credentialsTabText = 'Please upload the API spec file.';
     }
 
     let targetUrlInfoText;
     if (isEventAPI) {
       targetUrlInfoText = 'Target URL can be only specified for APIs.';
-    } else if (!this.state.apiType) {
+    } else if (!this.state.mainAPIType) {
       targetUrlInfoText = 'Please upload the API spec file.';
     }
+
+
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
 
@@ -259,7 +270,7 @@ export default class CreateAPIModal extends React.Component {
               <FileInput
                 fileInputChanged={this.fileInputChanged}
                 file={this.state.specFile}
-                error={this.state.currentFileError}
+                error={this.state.currentError}
               />
             </FormItem>
           </form>
@@ -321,6 +332,7 @@ export default class CreateAPIModal extends React.Component {
         {!isEventAPI && (
           <InlineHelp placement="right" text={credentialsTabText} />
         )}
+        
       </TabGroup>
     );
 

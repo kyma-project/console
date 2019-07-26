@@ -1,4 +1,5 @@
 import jsyaml from 'js-yaml';
+import xmlJS from 'xml-js';
 
 function isYaml(file) {
   return file.name.endsWith('.yaml') || file.name.endsWith('.yml');
@@ -8,48 +9,42 @@ function isJSON(file) {
   return file.name.endsWith('.json');
 }
 
-function isSpecAsyncAPI(spec) {
-  // according to https://www.asyncapi.com/docs/specifications/1.2.0/#a-name-a2sobject-a-asyncapi-object
-  return 'asyncapi' in spec;
+function isXML(file) {
+  return file.name.endsWith('.xml');
+}
+
+function parseXML(textData) {
+  const parsed = xmlJS.xml2js(textData, { compact: true });
+  // xmlJS returns empty object, if parsing failed
+  if (!Object.keys(parsed).length) {
+    return Error('Spec file is corrupted');
+  }
+  return parsed;
 }
 
 export function isFileTypeValid(file) {
-  return isYaml(file) || isJSON(file);
-}
-
-// content-based check for parseable file content
-export function getSpecFileType(textData) {
-  //we already know that content is already JSON or YAML
-  try {
-    JSON.parse(textData);
-    return 'JSON';
-  } catch (e) {
-    return 'YAML';
-  }
-}
-
-export function getSpecType(spec) {
-  return isSpecAsyncAPI(spec) ? 'EVENT_API' : 'API';
-}
-
-export function getAPISpecType(spec) {
-  // according to https://swagger.io/specification/#fixed-fields
-  const isOpenAPI = 'openapi' in spec;
-  return isOpenAPI ? 'OPEN_API' : 'ODATA';
-}
-
-export function getAsyncAPISpecType() {
-  // according to documentation, for now there's only one possible value
-  return 'ASYNC_API';
+  return isYaml(file) || isJSON(file) || isXML(file);
 }
 
 export function parseSpecFromText(textData) {
-  try {
-    // jsyaml can read both YAML and JSON,
-    // as every valid JSON is also a valid YAML
-    return jsyaml.safeLoad(textData);
-  } catch (e) {
-    console.warn(e);
-    return null;
+
+  const parsers = {
+    'JSON': JSON.parse,
+    'XML': parseXML,
+    'YAML': jsyaml.safeLoad,
+  };
+
+  for (const type of Object.keys(parsers)){
+    try {
+      return {
+        spec: parsers[type](textData),
+        type
+      }
+    }
+    catch (e) {
+      console.warn(e);
+      // move on to the next parser
+    }
   }
+  return null;
 }

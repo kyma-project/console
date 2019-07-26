@@ -45,13 +45,13 @@ export default function FileInput(props) {
         id="file-upload"
         className="fd-file-upload__input"
         onChange={e => props.fileInputChanged(e.target.files[0])}
-        accept=".yml,.yaml,.json"
+        accept=".yml,.yaml,.json,.xml"
       />
       <label htmlFor="file-upload" className={labelClass}>
         <span className="fd-file-upload__text">Browse</span>
         <p className="fd-file-upload__message"> or drop file here</p>
         <p className="fd-file-upload__message">
-          Available file types: JSON, YAML.
+          Available file types: JSON, YAML, XML.
         </p>
       </label>
       {!!props.error && <FormMessage type="error">{props.error} </FormMessage>}
