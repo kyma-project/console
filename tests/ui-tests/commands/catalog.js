@@ -190,7 +190,7 @@ module.exports = {
   getBindingsStatus: async page =>
     await getElements(page, 'status-service-binding-usage'),
   getNumberOfInstancesStatus: async page =>
-    await getElements(page, 'instances-provisioned-testing-bundle'),
+    await getElements(page, 'instances-provisioned-testing-addon'),
   prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`,
 };
 async function confirmModal(page) {
