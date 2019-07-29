@@ -1,16 +1,16 @@
 # Default owners of the repository
-* @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @pekura @maxmarkus @jesusreal @kwiatekus @dariadomagala @hardl @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @johannesdoberer @marynakhromova @parostatkiem
+* @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @antiheld @joek @lilitgh @venturasr @sayanh @rakesh-garimella @k15r @parostatkiem @sjanota
 
-/catalog/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/instances/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/brokers/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @aszecowka @PK85 @mszostok @piotrmiskiewicz @polskikiel @jasiu001 @kwiatekus @dariadomagala @y-kkamil @parostatkiem
+/catalog/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem @sjanota
+/instances/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem @sjanota
+/brokers/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @aszecowka @PK85 @mszostok @piotrmiskiewicz @polskikiel @jasiu001 @kwiatekus @dariadomagala @y-kkamil @parostatkiem @sjanota
 /content/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu
-/compass/ @kwiatekus @dariadomagala @y-kkamil @akucharska @parostatkiem
-/components/angular/ @kwiatekus @dariadomagala @y-kkamil @akucharska @parostatkiem
-/components/react/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/core/ @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska
-/tests/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem
-/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska
+/compass/ @kwiatekus @dariadomagala @y-kkamil @akucharska @parostatkiem @sjanota
+/components/angular/ @kwiatekus @dariadomagala @y-kkamil @akucharska @parostatkiem @sjanota
+/components/react/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem @sjanota
+/core/ @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska @sjanota
+/tests/ @akucharska @michal-hudy @aerfio @m00g3n @magicmatatjahu @kwiatekus @dariadomagala @y-kkamil @parostatkiem @sjanota
+/lambda/ @rakesh-garimella @joek @sayanh @venturasr @lilitgh @k15r @kwiatekus @dariadomagala @y-kkamil @parostatkiem @akucharska @sjanota
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj
