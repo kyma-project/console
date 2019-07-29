@@ -23,7 +23,6 @@ const CreateRuntimeForm = ({
       await addRuntime({
         name: runtimeName,
         description: formValues.description.current.value,
-        labels: { test: ['hello', 'there'] },
       });
       onCompleted(runtimeName, `Runtime created succesfully`);
     } catch (e) {
