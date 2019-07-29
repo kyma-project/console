@@ -33,7 +33,7 @@ const CreateRuntimeForm = ({
   const nameField = () => (
     <>
       <label className="fd-form__label" htmlFor="runtime-name">
-        Name*:
+        Name *
         <InlineHelp
           placement="bottom-right"
           text="Name must be no longer than 63 characters, must start and end with a lowercase letter or number, and may contain lowercase letters, numbers, and dashes."
@@ -63,8 +63,7 @@ const CreateRuntimeForm = ({
         <div className="fd-form__item">{nameField()}</div>
         <div className="fd-form__item">
           <label className="fd-form__label" htmlFor="runtime-desc">
-            Description*:
-            <InlineHelp placement="bottom-right" text="Must not be empty" />
+            Description
           </label>
 
           <input
@@ -73,8 +72,6 @@ const CreateRuntimeForm = ({
             type="text"
             id="runtime-desc"
             placeholder="Runtime description"
-            aria-required="true"
-            required
           />
         </div>
       </div>
