@@ -1,5 +1,5 @@
-const EMPTY_TEXT_PLACEHOLDER = '-'
+const EMPTY_TEXT_PLACEHOLDER = '-';
 
 module.export = {
-  EMPTY_TEXT_PLACEHOLDER
-}
+  EMPTY_TEXT_PLACEHOLDER,
+};
