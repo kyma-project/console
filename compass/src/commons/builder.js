@@ -1,4 +1,6 @@
 import LuigiClient from '@kyma-project/luigi-client';
+const uuidv5 = require('uuid/v5');
+const NAMESPACE = '1b671a64-babe-b00b-face-da01ff1f3341';
 
 class Builder {
   currentTenant = null;
@@ -16,7 +18,7 @@ class Builder {
   }
 
   getTenant() {
-    return this.currentTenant;
+    return uuidv5(this.currentTenant, NAMESPACE); // ⇨ '630eb68f-e0fa-5ecc-887a-7c7a62614681'
   }
 }
 
