@@ -66,7 +66,7 @@ const CreateRuntimeForm = ({
         Name:
         <InlineHelp
           placement="bottom-right"
-          text="Name must be no longer than 63 characters, must start and end with a lowercase letter or number, and may contain lowercase letters, numbers, and hyphens."
+          text="Name must be no longer than 63 characters, must start and end with a lowercase letter or number, and may contain lowercase letters, numbers, and dashes."
         />
       </label>
       <input
