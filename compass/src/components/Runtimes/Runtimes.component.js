@@ -5,6 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
+import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants'
 
 class Runtimes extends React.Component {
   static propTypes = {
@@ -27,7 +28,7 @@ class Runtimes extends React.Component {
     >
       <b>{runtime.name}</b>
     </span>,
-    runtime.description ? runtime.description : '-',
+    runtime.description ? runtime.description : {EMPTY_TEXT_PLACEHOLDER},
     runtime.labels && runtime.labels.scenarios
       ? runtime.labels.scenarios.length
       : 0,

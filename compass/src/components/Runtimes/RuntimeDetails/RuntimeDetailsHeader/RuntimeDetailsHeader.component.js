@@ -11,6 +11,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
 import '../../../../shared/styles/header.scss';
+import { EMPTY_TEXT_PLACEHOLDER } from '../../../../shared/constants'
 
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {
@@ -103,7 +104,7 @@ class RuntimeDetailsHeader extends React.Component {
             )}
             <PanelEntry
               title="Description"
-              content={description ? description : '-'}
+              content={description ? description : {EMPTY_TEXT_PLACEHOLDER}}
             />
             <PanelEntry title="ID" content={id} />
           </PanelGrid>
