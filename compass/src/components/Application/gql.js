@@ -54,3 +54,11 @@ export const GET_APPLICATION = gql`
     }
   }
 `;
+
+export const GET_SCENARIOS = gql`
+  query {
+    scenarios: labelDefinition(key: "scenarios") {
+      schema
+    }
+  }
+`;
