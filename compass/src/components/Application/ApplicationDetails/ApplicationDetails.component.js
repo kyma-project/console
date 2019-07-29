@@ -1,7 +1,7 @@
 import React from 'react';
 import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay';
+import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay.container';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
 import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
 
@@ -21,12 +21,9 @@ const ApplicationDetails = ({
     }
   }
 
-  let scenarios = [];
-  if (application.labels && application.labels.scenarios) {
-    scenarios = application.labels.scenarios.map(scenario => {
-      return { scenario }; // list requires a list of objects
-    });
-  }
+  const scenarios = application.labels
+    ? application.labels.scenarios
+    : [] || [];
 
   return (
     <>
@@ -35,7 +32,7 @@ const ApplicationDetails = ({
         deleteApplication={deleteApplicationMutation}
       />
       <section className="fd-section">
-        <ScenarioDisplay labels={scenarios} applicationId={application.id} />
+        <ScenarioDisplay scenarios={scenarios} applicationId={application.id} />
         <ApisList apis={application.apis} applicationId={application.id} />
         <EventApisList
           eventApis={application.eventAPIs}

@@ -1,15 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Panel } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
+import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import ApplicationScenarioModal from './ApplicationScenarioModal/ApplicationScenarioModal.container';
 
 ApplicationScenarioDisplay.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  labels: PropTypes.arrayOf(PropTypes.object).isRequired,
+  scenarios: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setScenarios: PropTypes.func.isRequired,
 };
 
 export default function ApplicationScenarioDisplay(props) {
+  async function removeScenario(entry) {
+    const { applicationId, scenarios, setScenarios } = props;
+
+    try {
+      await setScenarios(
+        applicationId,
+        scenarios.filter(scenario => scenario !== entry.scenario),
+      );
+    } catch (error) {
+      console.warn(error);
+      LuigiClient.uxManager().showAlert({
+        text: error.message,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    }
+  }
+
   const headerRenderer = () => ['Name', 'Provided in Runtimes'];
 
   const rowRenderer = label => [
@@ -23,21 +43,23 @@ export default function ApplicationScenarioDisplay(props) {
   const actions = [
     {
       name: 'Remove',
-      handler: () => console.log('todo in other task'),
+      handler: removeScenario,
     },
   ];
 
   const extraHeaderContent = (
     <header>
-      <Button option="light">Add Scenario</Button>
       <ApplicationScenarioModal
         applicationId={props.applicationId}
-        applicationScenarios={props.labels}
+        applicationScenarios={props.scenarios}
       />
     </header>
   );
 
-  
+  const entries = props.scenarios.map(scenario => {
+    return { scenario: scenario };
+  }); // list requires a list of objects
+
   return (
     <Panel>
       <GenericList
@@ -45,7 +67,7 @@ export default function ApplicationScenarioDisplay(props) {
         title="Assigned to Scenario"
         notFoundMessage="This Applications isn't assigned to any scenario"
         actions={actions}
-        entries={props.labels}
+        entries={entries}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
       />

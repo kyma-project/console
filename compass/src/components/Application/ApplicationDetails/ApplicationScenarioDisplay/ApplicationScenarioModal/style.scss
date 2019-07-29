@@ -4,3 +4,39 @@
     vertical-align: middle;
     align-items: center;
 }
+
+.fd-popover {
+  margin: 0 0 20px 0;
+  width: 100%;
+
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.fd-popper__body {
+  width: 100%;
+
+  & > li {
+    list-style-type: none;
+  }
+}
+
+.fd-dropdown {
+  width: 100%;
+
+  .fd-dropdown__control {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    justify-items: center;
+  }
+}
+
+.fd-dropdown__control > *{
+  margin: 8px;
+}
+
+.mt-10px {
+  margin-top: 10px;
+}
