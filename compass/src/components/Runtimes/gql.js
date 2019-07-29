@@ -24,17 +24,6 @@ export const GET_RUNTIMES = gql`
   }
 `;
 
-// no pagination, filtering etc. Just all names.
-export const GET_ALL_RUNTIME_NAMES = gql`
-  query {
-    runtimes {
-      data {
-        name
-      }
-    }
-  }
-`;
-
 export const GET_RUNTIME = gql`
   query Runtime($id: ID!) {
     runtime(id: $id) {

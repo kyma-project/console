@@ -20,7 +20,7 @@ exports[`CreateRuntimeForm Renders with minimal props 1`] = `
         className="fd-form__label"
         htmlFor="runtime-name"
       >
-        Name:
+        Name*:
         <span
           className="fd-inline-help"
         >
@@ -35,7 +35,6 @@ exports[`CreateRuntimeForm Renders with minimal props 1`] = `
         aria-required="true"
         className="fd-form__control"
         id="runtime-name"
-        onChange={[Function]}
         pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
         placeholder="Runtime name"
         required={true}
@@ -49,7 +48,7 @@ exports[`CreateRuntimeForm Renders with minimal props 1`] = `
         className="fd-form__label"
         htmlFor="runtime-desc"
       >
-        Description:
+        Description*:
         <span
           className="fd-inline-help"
         >

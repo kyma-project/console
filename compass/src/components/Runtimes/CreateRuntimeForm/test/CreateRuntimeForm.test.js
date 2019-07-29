@@ -4,15 +4,13 @@ import { shallow } from 'enzyme';
 import CreateRuntimeForm from '../CreateRuntimeForm.container';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { mocks } from './mock';
-
 describe('CreateRuntimeForm', () => {
   const emptyFn = () => {};
   const emptyRef = { current: null };
 
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider addTypename={false}>
         <CreateRuntimeForm
           formElementRef={emptyRef}
           isValid={false}

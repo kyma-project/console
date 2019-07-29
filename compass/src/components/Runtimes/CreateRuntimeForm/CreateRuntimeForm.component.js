@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import './CreateRuntimeForm.scss';
 import { InlineHelp } from 'fundamental-react/lib/InlineHelp';
@@ -10,28 +10,11 @@ const CreateRuntimeForm = ({
   onCompleted,
   onError,
   addRuntime,
-  getRuntimeNames,
 }) => {
   const formValues = {
     name: useRef(null),
     description: useRef(null),
   };
-  const [runtimeNames, setRuntimeNames] = useState(null);
-
-  useEffect(() => {
-    const fetchRuntimeNames = async () => {
-      const allRuntimes = await getRuntimeNames.refetch();
-      if (allRuntimes.errors) {
-        setRuntimeNames([]);
-      } else {
-        setRuntimeNames(allRuntimes.data.runtimes.data.map(r => r.name));
-      }
-    };
-
-    if (runtimeNames === null) {
-      fetchRuntimeNames();
-    }
-  }, [getRuntimeNames]);
 
   const handleFormSubmit = async e => {
     e.preventDefault();
@@ -43,17 +26,12 @@ const CreateRuntimeForm = ({
         labels: { test: ['hello', 'there'] },
       });
       onCompleted(runtimeName, `Runtime created succesfully`);
-    } catch {
-      onError(runtimeName, `The runtime could not be created succesfully`);
+    } catch (e) {
+      onError(
+        `The runtime could not be created succesfully`,
+        e.message || `An u`,
+      );
     }
-  };
-
-  const handleNameChanged = async () => {
-    formValues.name.current.setCustomValidity(
-      runtimeNames.includes(formValues.name.current.value)
-        ? 'This name is already taken by another runtime'
-        : '',
-    );
   };
 
   const nameField = () => (
@@ -74,7 +52,6 @@ const CreateRuntimeForm = ({
         aria-required="true"
         required
         pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-        onChange={e => handleNameChanged(e.target)}
       />
     </>
   );
