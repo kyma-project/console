@@ -14,15 +14,7 @@ export const ADD_RUNTIME = gql`
 // TODO: add filtering, pagination etc.
 export const GET_RUNTIMES = gql`
   query {
-    runtimes(
-      filter: [
-        {
-          label: "group"
-          values: ["production", "experimental"]
-          operator: ANY
-        }
-      ]
-    ) {
+    runtimes {
       data {
         id
         name

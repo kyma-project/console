@@ -2,15 +2,7 @@ import gql from 'graphql-tag';
 
 export const GET_APPLICATIONS = gql`
   query {
-    applications(
-      filter: [
-        {
-          label: "group"
-          values: ["production", "experimental"]
-          operator: ANY
-        }
-      ]
-    ) {
+    applications {
       data {
         id
         name
