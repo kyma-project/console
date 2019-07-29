@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Token } from 'fundamental-react/lib/Token';
-import { Badge, Counter } from 'fundamental-react/lib/Badge';
-
+import { Counter } from 'fundamental-react/lib/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
-import GenericList from '../../shared/components/GenericList/GenericList';
+
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
+import StatusBadge from '../Shared/StatusBadge/StatusBadge';
+import GenericList from '../../shared/components/GenericList/GenericList';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -35,28 +36,6 @@ class Applications extends React.Component {
     ));
   };
 
-  processStatus(status) {
-    let type = 'warning';
-    switch (status) {
-      case 'INITIAL':
-        return <Badge>{status}</Badge>;
-
-      case 'READY':
-        type = 'success';
-        break;
-      case 'UNKNOWN':
-        type = 'warning';
-        break;
-      case 'FAILED':
-        type = 'error';
-        break;
-      default:
-        type = 'warning';
-    }
-
-    return <Badge type={type}>{status}</Badge>;
-  }
-
   headerRenderer = applications => [
     'Name',
     'Description',
@@ -70,9 +49,7 @@ class Applications extends React.Component {
     <span
       className="link"
       onClick={() =>
-        LuigiClient.linkManager()
-          .fromClosestContext()
-          .navigate(`/application/${application.id}`)
+        LuigiClient.linkManager().navigate(`details/${application.id}`)
       }
     >
       <b>{application.name}</b>
@@ -81,7 +58,13 @@ class Applications extends React.Component {
     application.labels ? this.createLabels(application.labels) : '-',
     <Counter>{application.apis.totalCount}</Counter>,
     <Counter>{application.eventAPIs.totalCount}</Counter>,
-    this.processStatus(application.status.condition),
+    <StatusBadge
+      status={
+        application.status && application.status.condition
+          ? application.status.condition
+          : 'UNKNOWN'
+      }
+    />,
   ];
 
   handleDelete = async element => {

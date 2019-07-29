@@ -5,7 +5,16 @@ export const ADD_RUNTIME = gql`
     createRuntime(in: $in) {
       id
       name
-      description
+      labels
+    }
+  }
+`;
+
+export const DELETE_RUNTIME = gql`
+  mutation DeleteRuntime($id: ID!) {
+    deleteRuntime(id: $id) {
+      id
+      name
       labels
     }
   }
@@ -19,6 +28,10 @@ export const GET_RUNTIMES = gql`
         id
         name
         description
+        status {
+          condition
+        }
+        labels
       }
     }
   }

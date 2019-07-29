@@ -44,7 +44,7 @@ class GenericList extends React.Component {
     const filteredEntries =
       entries && entries.length
         ? entries.map(entry => {
-            return entry.name !== undefined && entry.description !== undefined
+            return entry.name && entry.description
               ? [
                   {
                     text: entry.name.substring(0, 18),
