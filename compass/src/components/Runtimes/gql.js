@@ -7,7 +7,6 @@ export const ADD_RUNTIME = gql`
       name
       description
       labels
-      annotations
     }
   }
 `;
@@ -34,7 +33,6 @@ export const GET_RUNTIME = gql`
         condition
       }
       labels
-      annotations
     }
   }
 `;
