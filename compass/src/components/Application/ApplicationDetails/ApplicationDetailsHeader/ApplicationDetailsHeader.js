@@ -16,7 +16,7 @@ import {
   determineClass,
   printPrettyConnectionStatus,
 } from './../../applicationUtility';
-import './styles.scss';
+import '../../../../shared/styles/header.scss';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -84,9 +84,9 @@ class ApplicationDetailsHeader extends React.Component {
     };
 
     return (
-      <header className="application-details-header">
+      <header className="fd-has-background-color-background-2">
         <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-          <section className="action-bar-wrapper__left-panel">
+          <section>
             <Breadcrumb>
               <Breadcrumb.Item
                 name="Applications"

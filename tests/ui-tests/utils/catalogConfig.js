@@ -1,12 +1,12 @@
 import config from '../config';
 
-export const configExampleServiceClassName = 'Testing bundle';
-export const configExampleServiceClassNameAndProvider = 'Testing bundleSAP';
+export const configExampleServiceClassName = 'Testing addon';
+export const configExampleServiceClassNameAndProvider = 'Testing addonSAP';
 export const configExampleServiceClassButton = `div[${
   config.catalogTestingAtribute
-}="go-to-details-testing-bundle"]`;
-export const configInstanceTitle = 'testing-bundle-minimal-instance';
-export const configInstanceTitle2 = 'testing-bundle-full-instance';
+}="go-to-details-testing-addon"]`;
+export const configInstanceTitle = 'testing-addon-minimal-instance';
+export const configInstanceTitle2 = 'testing-addon-full-instance';
 export const configInstanceLabel = 'test-label';
 export const configInstancePlan = 'Minimal';
 export const configInstancePlan2 = 'Full';

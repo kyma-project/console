@@ -5,28 +5,32 @@ export const ADD_RUNTIME = gql`
     createRuntime(in: $in) {
       id
       name
-      description
       labels
-      annotations
+    }
+  }
+`;
+
+export const DELETE_RUNTIME = gql`
+  mutation DeleteRuntime($id: ID!) {
+    deleteRuntime(id: $id) {
+      id
+      name
+      labels
     }
   }
 `;
 
 export const GET_RUNTIMES = gql`
   query {
-    runtimes(
-      filter: [
-        {
-          label: "group"
-          values: ["production", "experimental"]
-          operator: ANY
-        }
-      ]
-    ) {
+    runtimes {
       data {
         id
         name
         description
+        status {
+          condition
+        }
+        labels
       }
     }
   }
@@ -42,7 +46,6 @@ export const GET_RUNTIME = gql`
         condition
       }
       labels
-      annotations
     }
   }
 `;

@@ -75,7 +75,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
   testPluggable(
     REQUIRED_MODULE,
-    'Check if `Testing bundle` is on the list and has details',
+    'Check if `Testing addon` is on the list and has details',
     async () => {
       // Hardcodes for specific test
       const exampleServiceClassNameAndProvider = configExampleServiceClassNameAndProvider;
@@ -106,7 +106,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         'service-last-update',
       );
 
-      console.log('Check if `Testing bundle` is on the list');
+      console.log('Check if `Testing addon` is on the list');
       await Promise.all([
         page.goto(address.console.getCatalog(TEST_NAMESPACE)),
         page.waitForNavigation({
@@ -168,7 +168,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
   testPluggable(
     REQUIRED_MODULE,
-    'Provision `Testing bundle` with `Minimal` plan and check confirmation link',
+    'Provision `Testing addon` with `Minimal` plan and check confirmation link',
     async () => {
       // Hardcodes for specific test
       const instancePlan = configInstancePlan;
@@ -267,7 +267,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
   testPluggable(
     REQUIRED_MODULE,
-    'Provision `Testing bundle` with `Full` plan and check confirmation link',
+    'Provision `Testing addon` with `Full` plan and check confirmation link',
     async () => {
       // Hardcodes for specific test
       const exampleServiceClassButton = configExampleServiceClassButton;

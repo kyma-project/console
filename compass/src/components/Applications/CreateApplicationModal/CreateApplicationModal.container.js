@@ -10,15 +10,6 @@ export default compose(
     name: 'existingApplications',
     options: props => {
       return {
-        variables: {
-          filter: [
-            {
-              label: 'group',
-              values: ['production', 'experimental'],
-              operator: 'ANY',
-            },
-          ],
-        },
         fetchPolicy: 'network-only',
         errorPolicy: 'all',
       };
