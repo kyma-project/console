@@ -1,4 +1,4 @@
-.fd-form__control:invalid {
+.fd-form__control:not(:placeholder-shown):invalid {
   border: 1px solid var(--fd-color-status-3);
   animation: gentleRedBorderPulse 2s ease infinite;
 }
