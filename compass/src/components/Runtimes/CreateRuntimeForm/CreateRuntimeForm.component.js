@@ -16,25 +16,21 @@ const CreateRuntimeForm = ({
     name: useRef(null),
     description: useRef(null),
   };
-  const [runtimeNames, setRuntimeNames] = useState([]);
+  const [runtimeNames, setRuntimeNames] = useState(null);
 
   useEffect(() => {
     const fetchRuntimeNames = async () => {
       const allRuntimes = await getRuntimeNames.refetch();
-      if (
-        !allRuntimes.errors &&
-        allRuntimes &&
-        allRuntimes.data &&
-        allRuntimes.data.runtimes &&
-        allRuntimes.data.runtimes.data
-      ) {
-        setRuntimeNames(allRuntimes.data.runtimes.data.map(r => r.name));
-      } else {
+      if (allRuntimes.errors) {
         setRuntimeNames([]);
+      } else {
+        setRuntimeNames(allRuntimes.data.runtimes.data.map(r => r.name));
       }
     };
 
-    fetchRuntimeNames();
+    if (runtimeNames === null) {
+      fetchRuntimeNames();
+    }
   }, [getRuntimeNames]);
 
   const handleFormSubmit = async e => {
