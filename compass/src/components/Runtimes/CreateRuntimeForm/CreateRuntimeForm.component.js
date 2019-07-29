@@ -27,10 +27,7 @@ const CreateRuntimeForm = ({
       });
       onCompleted(runtimeName, `Runtime created succesfully`);
     } catch (e) {
-      onError(
-        `The runtime could not be created succesfully`,
-        e.message || `An u`,
-      );
+      onError(`The runtime could not be created succesfully`, e.message || ``);
     }
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow } from 'enzyme';
+
 import CreateRuntimeForm from '../CreateRuntimeForm.container';
 import { MockedProvider } from 'react-apollo/test-utils';
 
