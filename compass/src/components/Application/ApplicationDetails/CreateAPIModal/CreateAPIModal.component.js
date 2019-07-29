@@ -185,7 +185,6 @@ export default class CreateAPIModal extends React.Component {
     const mutation = isAsyncAPI ? props.addEventAPI : props.addAPI;
 
     const apiData = isAsyncAPI ? createEventAPI(state) : createAPI(state);
-
     try {
       await mutation(apiData, props.applicationId);
       this.showCreateSuccessNotification(state.name, isAsyncAPI);

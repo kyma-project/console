@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import classnames from 'classnames';
 
-import { ActionBar } from 'fundamental-react/lib/ActionBar';
+import { ActionBar, Badge } from 'fundamental-react';
 import {
   Button,
   Breadcrumb,
@@ -11,10 +10,6 @@ import {
   PanelGrid,
 } from '@kyma-project/react-components';
 
-import {
-  determineClass,
-  printPrettyConnectionStatus,
-} from './../../applicationUtility';
 import './styles.scss';
 
 function navigateToApplications() {
@@ -122,18 +117,7 @@ class ApplicationDetailsHeader extends React.Component {
           <PanelEntry title="Description" content={<p>{description}</p>} />
           <PanelEntry
             title="Status"
-            content={
-              <p>
-                <span
-                  className={classnames(
-                    'fd-status-label',
-                    determineClass(status.condition),
-                  )}
-                >
-                  {printPrettyConnectionStatus(status.condition)}
-                </span>
-              </p>
-            }
+            content={<Badge>{status.condition}</Badge>}
           />
         </PanelGrid>
       </header>

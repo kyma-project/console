@@ -41,7 +41,7 @@ export default function ApplicationDetailsApis({
       })
       .then(async () => {
         try {
-          await deleteAPI(entry.id, applicationId);
+          await deleteAPI(entry.id);
           showDeleteSuccessNotification(entry.name);
         } catch (error) {
           console.warn(error);
@@ -58,10 +58,7 @@ export default function ApplicationDetailsApis({
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
-    <span className="link">
-      {/* todo add link to API (other task) */}
-      {api.name}
-    </span>,
+    <span className="link">{api.name}</span>,
     api.description,
     api.targetURL,
   ];

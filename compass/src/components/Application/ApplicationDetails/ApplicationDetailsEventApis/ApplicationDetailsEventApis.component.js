@@ -41,7 +41,7 @@ export default function ApplicationDetailsEventApis({
       })
       .then(async () => {
         try {
-          await deleteEventAPI(entry.id, applicationId);
+          await deleteEventAPI(entry.id);
           showDeleteSuccessNotification(entry.name);
         } catch (error) {
           console.warn(error);
@@ -58,10 +58,7 @@ export default function ApplicationDetailsEventApis({
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
-    <span className="link">
-      {/* todo add link to API (other task) */}
-      {api.name}
-    </span>,
+    <span className="link">{api.name}</span>,
     api.description,
   ];
 
