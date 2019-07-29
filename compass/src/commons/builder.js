@@ -18,7 +18,7 @@ class Builder {
   }
 
   getTenant() {
-    return uuidv5(this.currentTenant, NAMESPACE); // ⇨ '630eb68f-e0fa-5ecc-887a-7c7a62614681'
+    return uuidv5(this.currentTenant, NAMESPACE);
   }
 }
 
