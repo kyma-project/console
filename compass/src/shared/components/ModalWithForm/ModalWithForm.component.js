@@ -71,7 +71,7 @@ const ModalWithForm = ({
               onClick={() => {
                 setOpenStatus(false);
               }}
-              type="standard"
+              option="light"
             >
               Cancel
             </Button>
@@ -88,6 +88,7 @@ const ModalWithForm = ({
                   setOpenStatus(false);
                 }
               }}
+              option="emphasized"
             >
               Create
             </Button>
