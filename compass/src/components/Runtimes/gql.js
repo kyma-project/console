@@ -45,7 +45,6 @@ export const GET_RUNTIME = gql`
         condition
       }
       labels
-      annotations
     }
   }
 `;
