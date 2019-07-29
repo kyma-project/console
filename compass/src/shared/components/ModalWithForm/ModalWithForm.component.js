@@ -26,6 +26,10 @@ const ModalWithForm = ({
 
   const handleFormChanged = e => {
     setValid(formElementRef.current.checkValidity());
+    if (typeof e.target.reportValidity === 'function') {
+      // for IE
+      e.target.reportValidity();
+    }
   };
 
   const handleFormError = (title, message) => {
