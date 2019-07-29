@@ -10,6 +10,7 @@ import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 class Runtimes extends React.Component {
   static propTypes = {
     runtimes: PropTypes.object.isRequired,
+    deleteRuntime: PropTypes.func.isRequired,
   };
 
   headerRenderer = runtimes => [
@@ -81,12 +82,9 @@ class Runtimes extends React.Component {
     const runtimesQuery = this.props.runtimes;
 
     const runtimes =
-      (runtimesQuery &&
-        runtimesQuery.runtimes &&
-        runtimesQuery.runtimes.data) ||
-      {};
-    const loading = runtimesQuery && runtimesQuery.loading;
-    const error = runtimesQuery && runtimesQuery.error;
+      (runtimesQuery.runtimes && runtimesQuery.runtimes.data) || {};
+    const loading = runtimesQuery.loading;
+    const error = runtimesQuery.error;
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;

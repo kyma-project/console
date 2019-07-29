@@ -29,10 +29,9 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
 );
 
 const navigateToList = breadcrumb => {
-  const path = breadcrumb.toLowerCase();
   LuigiClient.linkManager()
     .fromClosestContext()
-    .navigate(`/${path}`);
+    .navigate(`/${breadcrumb}`);
 };
 
 export default ResourceNotFound;
