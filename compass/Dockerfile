@@ -23,7 +23,6 @@ ENV PRODUCTION true
 
 # Test & Build
 ENV CI true
-RUN npm test
 RUN npm run build
 
 FROM nginx:1.14.0-alpine

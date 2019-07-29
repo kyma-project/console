@@ -7,22 +7,13 @@ export const ADD_RUNTIME = gql`
       name
       description
       labels
-      annotations
     }
   }
 `;
 
 export const GET_RUNTIMES = gql`
   query {
-    runtimes(
-      filter: [
-        {
-          label: "group"
-          values: ["production", "experimental"]
-          operator: ANY
-        }
-      ]
-    ) {
+    runtimes {
       data {
         id
         name
@@ -42,7 +33,6 @@ export const GET_RUNTIME = gql`
         condition
       }
       labels
-      annotations
     }
   }
 `;
