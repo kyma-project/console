@@ -28,7 +28,7 @@ class Applications extends React.Component {
     return separatedLabels.map((label, id) => (
       <Token
         key={id}
-        className="y-fd-token y-fd-token--no-button  y-fd-token--gap"
+        className="y-fd-token y-fd-token--no-button y-fd-token--gap"
       >
         {label}
       </Token>
