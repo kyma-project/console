@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateRuntimeForm Renders with minimal props 1`] = `
+<form
+  onChange={[Function]}
+  onSubmit={[Function]}
+  style={
+    Object {
+      "width": "30em",
+    }
+  }
+>
+  <div
+    className="fd-form__set"
+  >
+    <div
+      className="fd-form__item"
+    >
+      <label
+        className="fd-form__label"
+        htmlFor="runtime-name"
+      >
+        Name:
+        <span
+          className="fd-inline-help"
+        >
+          <span
+            className="fd-inline-help__content fd-inline-help__content--bottom-right"
+          >
+            Name must be no longer than 63 characters, must start and end with a lowercase letter or number, and may contain lowercase letters, numbers, and dashes.
+          </span>
+        </span>
+      </label>
+      <input
+        aria-required="true"
+        className="fd-form__control"
+        id="runtime-name"
+        onChange={[Function]}
+        pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+        placeholder="Runtime name"
+        required={true}
+        type="text"
+      />
+    </div>
+    <div
+      className="fd-form__item"
+    >
+      <label
+        className="fd-form__label"
+        htmlFor="runtime-desc"
+      >
+        Description:
+        <span
+          className="fd-inline-help"
+        >
+          <span
+            className="fd-inline-help__content fd-inline-help__content--bottom-right"
+          >
+            Must not be empty
+          </span>
+        </span>
+      </label>
+      <input
+        aria-required="true"
+        className="fd-form__control"
+        id="runtime-desc"
+        placeholder="Runtime description"
+        required={true}
+        type="text"
+      />
+    </div>
+  </div>
+</form>
+`;
