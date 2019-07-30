@@ -14,15 +14,6 @@ import { AppConfig } from '../../../../../app.config';
 export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
-  public getHostnameURL = this.genericHelpers.getHostnameURL;
-  public addDomainIfMissing = this.genericHelpers.addDomainIfMissing;
-  public disabled = false;
-  public hostname: string = this.addDomainIfMissing(
-    this.entry.hostname,
-    AppConfig.domain
-  );
-  private communicationServiceSubscription: Subscription;
-
   constructor(
     protected injector: Injector,
     private componentCommunicationService: ComponentCommunicationService,
@@ -39,6 +30,18 @@ export class ApiDefinitionEntryRendererComponent
         name: 'Delete'
       }
     ];
+  }
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
+  public disabled = false;
+
+  public hostname: string = ApiDefinitionEntryRendererComponent.addDomainIfMissing(
+    this.entry.hostname,
+    AppConfig.domain
+  );
+  private communicationServiceSubscription: Subscription;
+
+  static addDomainIfMissing(hostname: string, domain: string): string {
+    return hostname.endsWith('.' + domain) ? hostname : `${hostname}.${domain}`;
   }
 
   ngOnInit() {
