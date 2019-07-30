@@ -22,7 +22,7 @@ const ApplicationsServiceMock = {
 };
 
 const NamespacesServiceMock = {
-  getNamespaces() {
+  getFilteredNamespaces() {
     return of({});
   }
 };
@@ -42,9 +42,11 @@ describe('CreateBindingsModalComponent', () => {
   let ComponentCommunicationServiceMockStub: ComponentCommunicationService;
   const modalService = {
     open: () => ({
-      result: { finally: () => {} }
+      afterClosed: {
+        toPromise: () => ({ finally: () => {} })
+      }
     }),
-    close: () => {}
+    dismissAll: () => {}
   };
   const ComponentCommunicationServiceMock = {
     sendEvent: () => {}
@@ -144,7 +146,7 @@ describe('CreateBindingsModalComponent', () => {
 
     const spyGetNamespaces = spyOn(
       NamespacesServiceMockStub,
-      'getNamespaces'
+      'getFilteredNamespaces'
     ).and.returnValue(namespaces);
 
     const spyConsoleLog = spyOn(console, 'log');
@@ -154,14 +156,20 @@ describe('CreateBindingsModalComponent', () => {
     component.show();
     fixture.whenStable().then(() => {
       // then
-      expect(component).toBeTruthy();
-      expect(spyGetApplication.calls.any()).toBeTruthy();
-      expect(spyGetNamespaces.calls.any()).toBeTruthy();
-      expect(spyConsoleLog.calls.any()).toBeFalsy();
+      expect(component).toBeTruthy('component');
+      expect(spyGetApplication.calls.any()).toBeTruthy(
+        'spyGetApplication.calls.any()'
+      );
+      expect(spyGetNamespaces.calls.any()).toBeTruthy(
+        'spyGetNamespaces.calls.any()'
+      );
+      expect(spyConsoleLog.calls.any()).toBeFalsy('spyConsoleLog.calls.any()');
       expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
-      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
+      expect(
+        NamespacesServiceMockStub.getFilteredNamespaces
+      ).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.application).toEqual({
         enabledMappingServices: [
@@ -185,8 +193,10 @@ describe('CreateBindingsModalComponent', () => {
           label: 'namespace4'
         }
       ]);
-      expect(component.isActive).toBeTruthy();
-      expect(component.checkIfNamespaceExists()).toBeFalsy();
+      expect(component.isActive).toBeTruthy('component.isActive');
+      expect(component.checkIfNamespaceExists()).toBeFalsy(
+        'component.checkIfNamespaceExists()'
+      );
 
       done();
     });
@@ -208,7 +218,7 @@ describe('CreateBindingsModalComponent', () => {
     ).and.returnValue(applications);
     const spyGetNamespaces = spyOn(
       NamespacesServiceMockStub,
-      'getNamespaces'
+      'getFilteredNamespaces'
     ).and.returnValue(namespaces);
     const spyConsoleLog = spyOn(console, 'log');
 
@@ -224,7 +234,9 @@ describe('CreateBindingsModalComponent', () => {
       expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
-      expect(NamespacesServiceMockStub.getNamespaces).toHaveBeenCalledTimes(1);
+      expect(
+        NamespacesServiceMockStub.getFilteredNamespaces
+      ).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.application).toEqual(undefined);
       expect(component.namespaces).toEqual([]);

@@ -49,7 +49,7 @@ describe('RoleBindingModalComponent', () => {
         },
         {
           provide: ModalService,
-          useValue: { close: () => {} }
+          useValue: { dismissAll: () => {} }
         },
         ComponentCommunicationService
       ],
