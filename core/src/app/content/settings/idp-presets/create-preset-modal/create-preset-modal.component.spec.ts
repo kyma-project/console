@@ -1,13 +1,13 @@
-import {LuigiClientCommunicationDirective} from './../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {APP_BASE_HREF} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { LuigiClientCommunicationDirective } from './../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { APP_BASE_HREF } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import {CreatePresetModalComponent} from './create-preset-modal.component';
-import {IdpPresetsService} from '../idp-presets.service';
-import {ComponentCommunicationService} from '../../../../shared/services/component-communication.service';
-import {of} from 'rxjs';
-import {ModalService} from 'fundamental-ngx';
+import { CreatePresetModalComponent } from './create-preset-modal.component';
+import { IdpPresetsService } from '../idp-presets.service';
+import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { of } from 'rxjs';
+import { ModalService } from 'fundamental-ngx';
 
 class IdpPresetsServiceMock {
   public createIdpPreset(data) {
@@ -24,13 +24,11 @@ describe('CreatePresetModalComponent', () => {
     open: () => ({
       afterClosed: {
         toPromise: () => ({
-          finally: () => {
-          }
+          finally: () => {}
         })
       }
     }),
-    dismissAll: () => {
-    }
+    dismissAll: () => {}
   };
 
   beforeEach(async(() => {
@@ -204,8 +202,8 @@ describe('CreatePresetModalComponent', () => {
   it('show create idp preset modal', done => {
     spyOn(mockModalService, 'open').and.returnValue({
       afterClosed: {
-        toPromise: () => ({finally: fn => fn()})
-        }
+        toPromise: () => ({ finally: fn => fn() })
+      }
     });
 
     // given

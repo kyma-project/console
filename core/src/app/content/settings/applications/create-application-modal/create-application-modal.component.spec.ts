@@ -1,10 +1,10 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {EMPTY, of, throwError} from 'rxjs';
-import {ModalService} from 'fundamental-ngx';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EMPTY, of, throwError } from 'rxjs';
+import { ModalService } from 'fundamental-ngx';
 
-import {CreateApplicationModalComponent} from './create-application-modal.component';
-import {ApplicationsService} from '../services/applications.service';
-import {ComponentCommunicationService} from '../../../../shared/services/component-communication.service';
+import { CreateApplicationModalComponent } from './create-application-modal.component';
+import { ApplicationsService } from '../services/applications.service';
+import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 
 describe('CreateApplicationModalComponent', () => {
   let component: CreateApplicationModalComponent;

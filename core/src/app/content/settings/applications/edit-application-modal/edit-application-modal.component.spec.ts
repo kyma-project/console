@@ -76,7 +76,7 @@ describe('EditApplicationModalComponent', () => {
       expect(component.isActive).toBe(true);
     });
 
-   it('deactivates the form finally', () => {
+    it('deactivates the form finally', () => {
       spyOn(mockModalService, 'open').and.returnValue({
         afterClosed: {
           toPromise: () => ({

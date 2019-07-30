@@ -157,13 +157,19 @@ describe('CreateBindingsModalComponent', () => {
     fixture.whenStable().then(() => {
       // then
       expect(component).toBeTruthy('component');
-      expect(spyGetApplication.calls.any()).toBeTruthy('spyGetApplication.calls.any()');
-      expect(spyGetNamespaces.calls.any()).toBeTruthy('spyGetNamespaces.calls.any()');
+      expect(spyGetApplication.calls.any()).toBeTruthy(
+        'spyGetApplication.calls.any()'
+      );
+      expect(spyGetNamespaces.calls.any()).toBeTruthy(
+        'spyGetNamespaces.calls.any()'
+      );
       expect(spyConsoleLog.calls.any()).toBeFalsy('spyConsoleLog.calls.any()');
       expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
-      expect(NamespacesServiceMockStub.getFilteredNamespaces).toHaveBeenCalledTimes(1);
+      expect(
+        NamespacesServiceMockStub.getFilteredNamespaces
+      ).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.application).toEqual({
         enabledMappingServices: [
@@ -188,7 +194,9 @@ describe('CreateBindingsModalComponent', () => {
         }
       ]);
       expect(component.isActive).toBeTruthy('component.isActive');
-      expect(component.checkIfNamespaceExists()).toBeFalsy('component.checkIfNamespaceExists()');
+      expect(component.checkIfNamespaceExists()).toBeFalsy(
+        'component.checkIfNamespaceExists()'
+      );
 
       done();
     });
@@ -226,7 +234,9 @@ describe('CreateBindingsModalComponent', () => {
       expect(ApplicationsServiceMockStub.getApplication).toHaveBeenCalledTimes(
         1
       );
-      expect(NamespacesServiceMockStub.getFilteredNamespaces).toHaveBeenCalledTimes(1);
+      expect(
+        NamespacesServiceMockStub.getFilteredNamespaces
+      ).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.application).toEqual(undefined);
       expect(component.namespaces).toEqual([]);
