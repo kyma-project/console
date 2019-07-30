@@ -59,6 +59,12 @@ const navigation = {
                 },
               ],
             },
+            {
+              keepSelectedForChildren: true,
+              pathSegment: 'scenarios',
+              label: 'Scenarios',
+              viewUrl: 'http://localhost:8888/scenarios',
+            },
           ],
         },
       ],

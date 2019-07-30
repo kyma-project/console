@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError, EMPTY } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 import { ModalService } from 'fundamental-ngx';
 
 import { CreateApplicationModalComponent } from './create-application-modal.component';
@@ -14,12 +14,12 @@ describe('CreateApplicationModalComponent', () => {
   let mockModalService: ModalService;
 
   const modalServiceMock = {
-    close: () => {},
+    dismissAll: () => {},
     open: () => {
       return {
-        result: new Promise(res => {
-          res();
-        })
+        afterClosed: {
+          toPromise: () => new Promise(res => res())
+        }
       };
     }
   };
@@ -77,11 +77,11 @@ describe('CreateApplicationModalComponent', () => {
   });
 
   describe('close()', () => {
-    it('deactivates the form', () => {
+    it('deactivates the form finally', () => {
       spyOn(mockModalService, 'dismissAll');
       (component.createApplicationModal as any) = 'mock-value';
       component.close();
-      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll).toHaveBeenCalled();
     });
   });
 

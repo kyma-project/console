@@ -7,6 +7,7 @@ import Overview from './components/Overview/Overview';
 import Runtimes from './components/Runtimes/Runtimes.container';
 import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.container';
 import Applications from './components/Applications/Applications.container';
+import Scenarios from './components/Scenarios/Scenarios.container';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
@@ -61,6 +62,7 @@ class App extends React.Component {
               <ApplicationDetails applicationId={match.params.id} />
             )}
           />
+          <Route path="/scenarios" exact component={Scenarios} />
         </Router>
       </div>
     );

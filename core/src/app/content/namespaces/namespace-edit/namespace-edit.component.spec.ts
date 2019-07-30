@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { NamespaceEditComponent } from './namespace-edit.component';
 
-fdescribe('NamespaceEditComponent', () => {
+describe('NamespaceEditComponent', () => {
   let component: NamespaceEditComponent;
   let fixture: ComponentFixture<NamespaceEditComponent>;
 

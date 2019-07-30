@@ -12,15 +12,15 @@
     <a
       class="display-inline"
       title="Open link in a new tab"
-      [href]="getHostnameURL(entry.hostname)"
+      [href]="getHostnameURL(hostname)"
       target="_blank"
     >
-      {{ entry.hostname }}
+      {{ hostname }}
       <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
     </a>
     <fd-icon
       ngxClipboard
-      [cbContent]="getHostnameURL(entry.hostname)"
+      [cbContent]="getHostnameURL(hostname)"
       class="fd-has-margin-left-tiny clickable align-middle"
       [glyph]="'copy'"
       [size]="'m'"
