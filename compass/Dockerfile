@@ -32,6 +32,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/build var/public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
-EXPOSE 80
+EXPOSE 80 8888
 
 CMD ["nginx", "-g", "daemon off;"]
