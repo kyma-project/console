@@ -1,6 +1,7 @@
-import ApplicationScenarioModal from './ApplicationScenarioModal.component';
 import { compose, graphql } from 'react-apollo';
-import { GET_SCENARIOS, SET_APPLICATION_SCENARIOS } from '../../../gql';
+import AssignScenarioModal from './../../../Shared/AssignScenarioModal/AssignScenarioModal.component';
+import { GET_SCENARIOS } from '../../../Shared/gql';
+import { SET_APPLICATION_SCENARIOS } from '../../gql';
 
 export default compose(
   graphql(GET_SCENARIOS, {
@@ -19,4 +20,4 @@ export default compose(
       },
     }),
   }),
-)(ApplicationScenarioModal);
+)(AssignScenarioModal);

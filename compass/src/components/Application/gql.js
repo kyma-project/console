@@ -55,14 +55,6 @@ export const GET_APPLICATION = gql`
   }
 `;
 
-export const GET_SCENARIOS = gql`
-  query {
-    scenarios: labelDefinition(key: "scenarios") {
-      schema
-    }
-  }
-`;
-
 export const SET_APPLICATION_SCENARIOS = gql`
   mutation setApplicationLabel($id: ID!, $scenarios: Any!) {
     setApplicationLabel(

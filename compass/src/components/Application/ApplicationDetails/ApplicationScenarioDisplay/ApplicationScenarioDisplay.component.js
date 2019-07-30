@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
-import ApplicationScenarioModal from './ApplicationScenarioModal/ApplicationScenarioModal.container';
+import ApplicationScenarioModal from './ApplicationScenarioModal.container';
 
 ApplicationScenarioDisplay.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -44,8 +44,9 @@ export default function ApplicationScenarioDisplay(props) {
   const extraHeaderContent = (
     <header>
       <ApplicationScenarioModal
-        applicationId={props.applicationId}
-        applicationScenarios={props.scenarios}
+        entityId={props.applicationId}
+        scenarios={props.scenarios}
+        notAssignedMessage={'Application is not assigned to any scenario.'}
       />
     </header>
   );

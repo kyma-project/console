@@ -6,30 +6,35 @@ import { Modal, Button, Dropdown, Icon } from '@kyma-project/react-components';
 import { Menu } from 'fundamental-react';
 import './style.scss';
 
-ApplicationScenarioModal.propTypes = {
-  applicationId: PropTypes.string.isRequired,
-  applicationScenarios: PropTypes.arrayOf(PropTypes.string),
+AssignScenarioModal.propTypes = {
+  entityId: PropTypes.string.isRequired,
+  scenarios: PropTypes.arrayOf(PropTypes.string),
+  notAssignedMessage: PropTypes.string,
 
   scenariosQuery: PropTypes.object.isRequired,
   setScenarios: PropTypes.func.isRequired,
 };
 
-export default function ApplicationScenarioModal(props) {
-  const [applicationScenarios, setApplicationScenarios] = React.useState([]);
+AssignScenarioModal.defaultProps = {
+  notAssignedMessage: 'Entity is not assigned to any scenario.',
+};
+
+export default function AssignScenarioModal(props) {
+  const [scenarios, setScenarios] = React.useState([]);
 
   function assignLabel(label) {
-    setApplicationScenarios([...applicationScenarios, label]);
+    setScenarios([...scenarios, label]);
   }
 
   function unassignLabel(label) {
-    setApplicationScenarios(applicationScenarios.filter(l => l !== label));
+    setScenarios(scenarios.filter(l => l !== label));
   }
 
   async function updateLabels() {
-    const { applicationId, setScenarios } = props;
+    const { entityId, setScenarios } = props;
 
     try {
-      await setScenarios(applicationId, applicationScenarios);
+      await setScenarios(entityId, scenarios);
     } catch (error) {
       console.warn(error);
       LuigiClient.uxManager().showAlert({
@@ -41,9 +46,9 @@ export default function ApplicationScenarioModal(props) {
   }
 
   function createModalContent() {
-    const applicationScenariosList = !!applicationScenarios.length ? (
+    const scenariosList = !!scenarios.length ? (
       <ul>
-        {applicationScenarios.map(scenario => (
+        {scenarios.map(scenario => (
           <li className="scenario-list__list-element" key={scenario}>
             <span>{scenario}</span>
             <Button
@@ -57,14 +62,12 @@ export default function ApplicationScenarioModal(props) {
         ))}
       </ul>
     ) : (
-      <p className="scenario-list__message">
-        {'Application is not assigned to any scenario.'}
-      </p>
+      <p className="scenario-list__message">{props.notAssignedMessage}</p>
     );
 
     const allScenarios = props.scenariosQuery.scenarios.schema.items.enum;
     const availableScenarios = allScenarios
-      .filter(scenario => applicationScenarios.indexOf(scenario) === -1)
+      .filter(scenario => scenarios.indexOf(scenario) === -1)
       .map(scenario => (
         <Menu.Item onClick={e => assignLabel(e.target.textContent)}>
           {scenario}
@@ -90,14 +93,14 @@ export default function ApplicationScenarioModal(props) {
 
     return (
       <>
-        {applicationScenariosList}
+        {scenariosList}
         {scenarioDropdown}
       </>
     );
   }
 
   function reinitializeState() {
-    setApplicationScenarios(props.applicationScenarios);
+    setScenarios(props.scenarios);
   }
 
   const modalOpeningComponent = (
