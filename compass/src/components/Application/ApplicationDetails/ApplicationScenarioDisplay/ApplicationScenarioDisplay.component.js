@@ -32,13 +32,7 @@ export default function ApplicationScenarioDisplay(props) {
 
   const headerRenderer = () => ['Name', 'Provided in Runtimes'];
 
-  const rowRenderer = label => [
-    <span className="link">
-      {/* todo add link to scenario (other task) */}
-      {label.scenario}
-    </span>,
-    '?/?', // todo add in other task
-  ];
+  const rowRenderer = label => [label.scenario, '?/?'];
 
   const actions = [
     {

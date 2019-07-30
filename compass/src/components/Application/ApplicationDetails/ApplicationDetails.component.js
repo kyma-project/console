@@ -24,9 +24,8 @@ const ApplicationDetails = ({
     return `Error! ${error.message}`;
   }
 
-  const scenarios = application.labels
-    ? application.labels.scenarios
-    : [] || [];
+  const scenarios =
+    (application.labels ? application.labels.scenarios : []) || [];
 
   return (
     <>

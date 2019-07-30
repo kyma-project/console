@@ -15,9 +15,7 @@ ApplicationScenarioModal.propTypes = {
 };
 
 export default function ApplicationScenarioModal(props) {
-  const [applicationScenarios, setApplicationScenarios] = React.useState(
-    props.applicationScenarios,
-  );
+  const [applicationScenarios, setApplicationScenarios] = React.useState([]);
 
   function assignLabel(label) {
     setApplicationScenarios([...applicationScenarios, label]);
@@ -59,7 +57,7 @@ export default function ApplicationScenarioModal(props) {
         ))}
       </ul>
     ) : (
-      <p className="mt-10px">
+      <p className="scenario-list__message">
         {'Application is not assigned to any scenario.'}
       </p>
     );
@@ -98,6 +96,10 @@ export default function ApplicationScenarioModal(props) {
     );
   }
 
+  function reinitializeState() {
+    setApplicationScenarios(props.applicationScenarios);
+  }
+
   const modalOpeningComponent = (
     <Button>
       <Icon glyph="add" />
@@ -113,7 +115,10 @@ export default function ApplicationScenarioModal(props) {
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateLabels}
-      onShow={() => LuigiClient.uxManager().addBackdrop()}
+      onShow={() => {
+        reinitializeState();
+        LuigiClient.uxManager().addBackdrop();
+      }}
       onHide={() => LuigiClient.uxManager().removeBackdrop()}
     >
       {props.scenariosQuery.loading ? (

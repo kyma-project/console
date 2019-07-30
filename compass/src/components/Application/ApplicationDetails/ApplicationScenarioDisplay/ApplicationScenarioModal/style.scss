@@ -5,6 +5,10 @@
     align-items: center;
 }
 
+.scenario-list__message {
+  margin-top: 10px;
+}
+
 .fd-popover {
   margin: 0 0 20px 0;
   width: 100%;
@@ -31,12 +35,4 @@
     justify-content: space-between;
     justify-items: center;
   }
-}
-
-.fd-dropdown__control > *{
-  margin: 8px;
-}
-
-.mt-10px {
-  margin-top: 10px;
 }
