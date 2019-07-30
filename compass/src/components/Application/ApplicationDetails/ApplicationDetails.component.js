@@ -5,7 +5,7 @@ import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
 import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay';
 import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
-import ApplicationNotFoundMessage from './ApplicationNotFoundMessage/ApplicationNotFoundMessage';
+import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
 ApplicationDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -15,13 +15,16 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
   const application = (applicationQuery && applicationQuery.application) || {};
   const loading = applicationQuery.loading;
   const error = applicationQuery.error;
-  if (loading) return 'Loading...';
+  if (!applicationQuery || !applicationQuery.application) {
+    if (loading) return 'Loading...';
+    if (error)
+      return (
+        <ResourceNotFound resource="Application" breadcrumb="Applications" />
+      );
+    return '';
+  }
   if (error) {
-    if (!applicationQuery || !applicationQuery.application) {
-      return <ApplicationNotFoundMessage />;
-    } else {
-      return `Error! ${error.message}`;
-    }
+    return `Error! ${error.message}`;
   }
 
   let scenarios = [];

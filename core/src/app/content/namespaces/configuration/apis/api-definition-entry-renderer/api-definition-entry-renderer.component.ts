@@ -1,9 +1,10 @@
-import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 import { GenericHelpersService } from '../../../../../shared/services/generic-helpers.service';
+import { AppConfig } from '../../../../../app.config';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
@@ -13,10 +14,6 @@ import { GenericHelpersService } from '../../../../../shared/services/generic-he
 export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
-  public getHostnameURL = this.genericHelpers.getHostnameURL;
-  public disabled = false;
-  private communicationServiceSubscription: Subscription;
-
   constructor(
     protected injector: Injector,
     private componentCommunicationService: ComponentCommunicationService,
@@ -33,6 +30,18 @@ export class ApiDefinitionEntryRendererComponent
         name: 'Delete'
       }
     ];
+  }
+  public getHostnameURL = this.genericHelpers.getHostnameURL;
+  public disabled = false;
+
+  public hostname: string = ApiDefinitionEntryRendererComponent.addDomainIfMissing(
+    this.entry.hostname,
+    AppConfig.domain
+  );
+  private communicationServiceSubscription: Subscription;
+
+  static addDomainIfMissing(hostname: string, domain: string): string {
+    return hostname.endsWith('.' + domain) ? hostname : `${hostname}.${domain}`;
   }
 
   ngOnInit() {

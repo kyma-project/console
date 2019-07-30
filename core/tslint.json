@@ -17,6 +17,7 @@
     "no-output-on-prefix": true,
     "no-forward-ref": true,
     "no-unused-css": true,
+    "no-focused-tests": true,
 
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
@@ -49,5 +50,5 @@
     "interface-name": false
   },
   "rulesDirectory": ["node_modules/codelyzer"],
-  "extends": ["tslint:latest", "tslint-angular", "tslint-config-prettier"]
+  "extends": ["tslint:latest", "tslint-angular", "tslint-config-prettier", "tslint-jasmine-rules"]
 }
