@@ -26,14 +26,16 @@ const navigation = {
               pathSegment: 'runtimes',
               label: 'Runtimes',
               viewUrl: 'http://localhost:8888/runtimes',
-            },
-            {
-              pathSegment: 'runtime',
               children: [
                 {
-                  pathSegment: ':runtimeId',
-                  label: 'Runtimes',
-                  viewUrl: 'http://localhost:8888/runtime/:runtimeId',
+                  pathSegment: 'details',
+                  children: [
+                    {
+                      pathSegment: ':runtimeId',
+                      label: 'Runtimes',
+                      viewUrl: 'http://localhost:8888/runtime/:runtimeId',
+                    },
+                  ],
                 },
               ],
             },
@@ -43,16 +45,25 @@ const navigation = {
               pathSegment: 'applications',
               label: 'Applications',
               viewUrl: 'http://localhost:8888/applications',
-            },
-            {
-              pathSegment: 'application',
               children: [
                 {
-                  pathSegment: ':applicationId',
-                  label: 'Applications',
-                  viewUrl: 'http://localhost:8888/application/:applicationId',
+                  pathSegment: 'details',
+                  children: [
+                    {
+                      pathSegment: ':applicationId',
+                      label: 'Applications',
+                      viewUrl:
+                        'http://localhost:8888/application/:applicationId',
+                    },
+                  ],
                 },
               ],
+            },
+            {
+              keepSelectedForChildren: true,
+              pathSegment: 'scenarios',
+              label: 'Scenarios',
+              viewUrl: 'http://localhost:8888/scenarios',
             },
           ],
         },
