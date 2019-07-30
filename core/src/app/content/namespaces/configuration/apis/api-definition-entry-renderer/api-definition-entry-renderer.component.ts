@@ -1,9 +1,10 @@
-import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 import { GenericHelpersService } from '../../../../../shared/services/generic-helpers.service';
+import { AppConfig } from '../../../../../app.config';
 
 @Component({
   selector: 'app-api-definition-entry-renderer',
@@ -14,7 +15,12 @@ export class ApiDefinitionEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public getHostnameURL = this.genericHelpers.getHostnameURL;
+  public addDomainIfMissing = this.genericHelpers.addDomainIfMissing;
   public disabled = false;
+  public hostname: string = this.addDomainIfMissing(
+    this.entry.hostname,
+    AppConfig.domain
+  );
   private communicationServiceSubscription: Subscription;
 
   constructor(

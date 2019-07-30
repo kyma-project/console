@@ -24,4 +24,18 @@ describe('GenericHelpersService', () => {
       );
     });
   });
+
+  describe('addDomainIfMissing()', () => {
+    it('returns adds domain if hostname is short', () => {
+      expect(genericHelpers.addDomainIfMissing('hostname', 'domain.com')).toBe(
+        'hostname.domain.com'
+      );
+    });
+
+    it('returns hostname if it has domain', () => {
+      expect(
+        genericHelpers.addDomainIfMissing('hostname.domain.com', 'domain.com')
+      ).toBe('hostname.domain.com');
+    });
+  });
 });
