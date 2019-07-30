@@ -1,15 +1,13 @@
-import { LuigiClientCommunicationDirective } from './../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
-import { APP_BASE_HREF } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import {LuigiClientCommunicationDirective} from './../../../../shared/directives/luigi-client-communication/luigi-client-communication.directive';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {APP_BASE_HREF} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
-import { CreatePresetModalComponent } from './create-preset-modal.component';
-import { IdpPresetsService } from '../idp-presets.service';
-import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
-import { Observable, of } from 'rxjs';
-import { ModalService } from 'fundamental-ngx';
+import {CreatePresetModalComponent} from './create-preset-modal.component';
+import {IdpPresetsService} from '../idp-presets.service';
+import {ComponentCommunicationService} from '../../../../shared/services/component-communication.service';
+import {of} from 'rxjs';
+import {ModalService} from 'fundamental-ngx';
 
 class IdpPresetsServiceMock {
   public createIdpPreset(data) {
@@ -24,9 +22,15 @@ describe('CreatePresetModalComponent', () => {
   let mockModalService: ModalService;
   const modalService = {
     open: () => ({
-      result: { finally: () => {} }
+      afterClosed: {
+        toPromise: () => ({
+          finally: () => {
+          }
+        })
+      }
     }),
-    close: () => {}
+    dismissAll: () => {
+    }
   };
 
   beforeEach(async(() => {
@@ -175,7 +179,7 @@ describe('CreatePresetModalComponent', () => {
 
     fixture.whenStable().then(() => {
       // then
-      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll).toHaveBeenCalled();
       done();
     });
   });
@@ -191,7 +195,7 @@ describe('CreatePresetModalComponent', () => {
       expect(IdpPresetsServiceMockStub.createIdpPreset).toHaveBeenCalledTimes(
         1
       );
-      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll).toHaveBeenCalled();
 
       done();
     });
@@ -199,11 +203,9 @@ describe('CreatePresetModalComponent', () => {
 
   it('show create idp preset modal', done => {
     spyOn(mockModalService, 'open').and.returnValue({
-      result: {
-        finally: fn => {
-          fn();
+      afterClosed: {
+        toPromise: () => ({finally: fn => fn()})
         }
-      }
     });
 
     // given

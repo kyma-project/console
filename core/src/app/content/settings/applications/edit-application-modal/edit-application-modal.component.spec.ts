@@ -15,9 +15,11 @@ describe('EditApplicationModalComponent', () => {
   let mockModalService: ModalService;
   const modalService = {
     open: () => ({
-      result: { finally: () => {} }
+      afterClosed: {
+        toPromise: () => ({ finally: () => {} })
+      }
     }),
-    close: () => {}
+    dismissAll: () => {}
   };
 
   beforeEach(async(() => {
@@ -74,12 +76,12 @@ describe('EditApplicationModalComponent', () => {
       expect(component.isActive).toBe(true);
     });
 
-    it('deactivates the form', () => {
+   it('deactivates the form finally', () => {
       spyOn(mockModalService, 'open').and.returnValue({
-        result: {
-          finally: fn => {
-            fn();
-          }
+        afterClosed: {
+          toPromise: () => ({
+            finally: fn => fn()
+          })
         }
       });
       component.isActive = true;
@@ -93,7 +95,8 @@ describe('EditApplicationModalComponent', () => {
       spyOn(mockModalService, 'dismissAll');
       (component.editApplicationModal as any) = 'mock-value';
       component.close();
-      expect(mockModalService.dismissAll()).toHaveBeenCalledWith('mock-value');
+      expect(mockModalService.dismissAll).toHaveBeenCalled();
+      expect(component.isActive).toBeFalsy();
     });
   });
 
