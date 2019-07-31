@@ -1,8 +1,8 @@
 const settings = {
   header: {
-    logo: '/public/compass-logo.png',
+    logo: '/compass-logo.png',
     title: 'Compass',
-    favicon: '/public/compass-logo.png',
+    favicon: '/compass-logo.png',
   },
 };
 

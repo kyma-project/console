@@ -1,18 +1,12 @@
 const getTenants = () => {
-  const tenants = [
-    {
-      label: 'Tenant 1',
-      pathValue: 'tenant1',
-    },
-    {
-      label: 'Tenant 2',
-      pathValue: 'tenant2',
-    },
-    {
-      label: 'Tenant 3',
-      pathValue: 'tenant3',
-    },
-  ];
+  const tenantsString = window.clusterConfig.tenants || "";
+  const tenantsUIDs = tenantsString.split(" ")
+  const tenants = tenantsUIDs.map(tenantUId => {
+    return {
+      label: tenantUId,
+      pathValue: tenantUId,
+    };
+  });
   return tenants;
 };
 

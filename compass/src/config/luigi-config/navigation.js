@@ -2,7 +2,6 @@ import { getTenants } from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
 
-
 const navigation = {
   nodes: () => [
     {
@@ -28,7 +27,7 @@ const navigation = {
               keepSelectedForChildren: true,
               pathSegment: 'runtimes',
               label: 'Runtimes',
-              viewUrl: compassMfUrl+'/runtimes',
+              viewUrl: compassMfUrl + '/runtimes',
               children: [
                 {
                   pathSegment: 'details',
@@ -36,8 +35,7 @@ const navigation = {
                     {
                       pathSegment: ':runtimeId',
                       label: 'Runtimes',
-                      viewUrl:
-                      compassMfUrl+'/runtime/:runtimeId',
+                      viewUrl: compassMfUrl + '/runtime/:runtimeId',
                     },
                   ],
                 },
@@ -48,7 +46,7 @@ const navigation = {
               keepSelectedForChildren: true,
               pathSegment: 'applications',
               label: 'Applications',
-              viewUrl: compassMfUrl +'/applications',
+              viewUrl: compassMfUrl + '/applications',
               children: [
                 {
                   pathSegment: 'details',
@@ -56,8 +54,7 @@ const navigation = {
                     {
                       pathSegment: ':applicationId',
                       label: 'Applications',
-                      viewUrl:
-                      compassMfUrl + '/application/:applicationId',
+                      viewUrl: compassMfUrl + '/application/:applicationId',
                     },
                   ],
                 },
@@ -67,7 +64,7 @@ const navigation = {
               keepSelectedForChildren: true,
               pathSegment: 'scenarios',
               label: 'Scenarios',
-              viewUrl: compassMfUrl +'/scenarios',
+              viewUrl: compassMfUrl + '/scenarios',
             },
           ],
         },
