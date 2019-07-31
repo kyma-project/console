@@ -8,7 +8,7 @@ WORKDIR /app
 COPY licenses/ /app/licenses/
 
 # Install app dependencies
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json webpack-generateConfig.config.js /app/
 RUN npm install --no-optional
 
 # Copy sources
@@ -20,6 +20,8 @@ COPY react-components/index.js /app/node_modules/@kyma-project/react-components/
 
 # Set env variables 
 ENV PRODUCTION true
+
+RUN npm run buildConfig
 
 # Test & Build
 ENV CI true
