@@ -31,7 +31,7 @@ export default function ApplicationDetailsEventApis({
     });
   }
 
-  function deleteHandler(entry) {
+  function handleDelete(entry) {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: 'Remove Event API',
@@ -65,7 +65,7 @@ export default function ApplicationDetailsEventApis({
   const actions = [
     {
       name: 'Delete',
-      handler: deleteHandler,
+      handler: handleDelete,
     },
   ];
 

@@ -14,9 +14,13 @@ TextFormItem.defaultProps = {
   type: 'text',
 };
 
-export default function TextFormItem(props) {
-  const { inputKey, required, label, type, defaultValue, onChange } = props;
-
+export default function TextFormItem({
+  inputKey,
+  required,
+  label,
+  type,
+  onChange,
+}) {
   return (
     <FormItem key={inputKey}>
       <FormLabel htmlFor={inputKey} required={required}>
@@ -26,7 +30,6 @@ export default function TextFormItem(props) {
         id={inputKey}
         type={type}
         placeholder={label}
-        defaultValue={defaultValue}
         onChange={onChange}
         autoComplete="off"
       />

@@ -1,75 +1,12 @@
-.fd-file-upload {
-    font-size: 14px;
-    line-height: 1.42857;
-    color: #32363a;
-    color: var(--fd-color-text-1);
-    font-family: '72',-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
-    font-size: 1rem;
-    line-height: 1.42857;
-    font-weight: 400;
-}
+@import '../../../../../node_modules/fiori-fundamentals/dist/components/asset-upload.min.css';
 
-.fd-file-upload__input {
-    height: 0;
-    width: 0;
-    overflow: hidden;
-}
-
-.fd-file-upload__input--drag-over {
+.fd-asset-upload__input--drag-over {
     border: 1px solid var(--fd-color-action-1) !important;
 }
 
-.fd-file-upload__input + .fd-file-upload__label {
-    background-color: var(--fd-color-neutral-1);
-    border: 1px dashed var(--fd-color-neutral-4);
-    text-align: center;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: block;
-}
-
-.fd-file-upload__text {
-    display: block;
-    color: var(--fd-color-action-1);
-    margin-bottom: 0;
-    margin-top: 0;
-}
-
-.fd-file-upload__input + .fd-file-upload__label {
-    background-color: var(--fd-color-neutral-1);
-    border: 1px dashed var(--fd-color-neutral-4);
-    text-align: center;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: block;
-}
-
-.fd-file-upload__text::before {
-    content: "";
-    font-family: SAP-icons;
-    font-style: normal;
-    font-weight: 400;
-    text-align: center;
-    text-decoration: inherit;
-    text-transform: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 1.14286rem;
-    line-height: 1;
-    display: block;
-    margin-bottom: 4px;
-}
-
-.fd-file-upload__file-name {
+.fd-asset-upload__file-name {
     font-style: italic;
     margin-bottom: 0;
-}
-
-.fd-file-upload-error {
-    color: var(--fd-color-status-3);
 }
 
 .target-url__label--info {

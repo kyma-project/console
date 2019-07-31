@@ -15,7 +15,7 @@ function isXML(file) {
 
 function parseXML(textData) {
   const parsed = xmlJS.xml2js(textData, { compact: true });
-  // xmlJS returns empty object if parsing failed
+  // xmlJS returns empty object, if parsing failed
   if (!Object.keys(parsed).length) {
     return Error('Spec file is corrupted');
   }

@@ -25,32 +25,32 @@ export default function FileInput(props) {
     props.fileInputChanged(e.dataTransfer.files[0]);
   }
 
-  const labelClass = classNames('fd-file-upload__label', {
-    'fd-file-upload__input--drag-over': draggingOverCounter !== 0,
+  const labelClass = classNames('fd-asset-upload__label', {
+    'fd-asset-upload__input--drag-over': draggingOverCounter !== 0,
   });
 
   return (
     <div
-      className="fd-file-upload"
+      className="fd-asset-upload"
       onDrop={drop}
       onDragEnter={() => setDraggingCounter(draggingOverCounter + 1)}
       onDragLeave={() => setDraggingCounter(draggingOverCounter - 1)}
       onDragOver={dragOver}
     >
       {!!props.file && (
-        <p className="fd-file-upload__file-name">{props.file.name}</p>
+        <p className="fd-asset-upload__file-name">{props.file.name}</p>
       )}
       <input
         type="file"
         id="file-upload"
-        className="fd-file-upload__input"
+        className="fd-asset-upload__input"
         onChange={e => props.fileInputChanged(e.target.files[0])}
         accept=".yml,.yaml,.json,.xml"
       />
       <label htmlFor="file-upload" className={labelClass}>
-        <span className="fd-file-upload__text">Browse</span>
-        <p className="fd-file-upload__message"> or drop file here</p>
-        <p className="fd-file-upload__message">
+        <span className="fd-asset-upload__text">Browse</span>
+        <p className="fd-asset-upload__message"> or drop file here</p>
+        <p className="fd-asset-upload__message">
           Available file types: JSON, YAML, XML.
         </p>
       </label>
