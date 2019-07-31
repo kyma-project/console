@@ -45,3 +45,16 @@
 .fd-pagination {
   text-align: center;
 }
+
+.labels-display {
+  display: block;
+  color: var(--fd-color-text-1);
+}
+
+.fd-modal {
+  &__actions {
+    *:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+}

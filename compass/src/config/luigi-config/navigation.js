@@ -39,7 +39,6 @@ const navigation = {
                 },
               ],
             },
-
             {
               keepSelectedForChildren: true,
               pathSegment: 'applications',

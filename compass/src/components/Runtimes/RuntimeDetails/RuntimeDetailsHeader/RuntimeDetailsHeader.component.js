@@ -104,7 +104,7 @@ class RuntimeDetailsHeader extends React.Component {
             )}
             <PanelEntry
               title="Description"
-              content={description ? description : { EMPTY_TEXT_PLACEHOLDER }}
+              content={description ? description : EMPTY_TEXT_PLACEHOLDER}
             />
             <PanelEntry title="ID" content={id} />
           </PanelGrid>

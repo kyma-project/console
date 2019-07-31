@@ -11,7 +11,10 @@ export default function LabelDisplay(props) {
   return (
     <span className={props.className}>
       {Object.keys(props.labels).map(label => (
-        <Token key={label} className="y-fd-token y-fd-token--no-button">
+        <Token
+          key={label}
+          className="y-fd-token y-fd-token--no-button fd-has-margin-right-tiny"
+        >
           {label}=[{props.labels[label].join(', ')}]
         </Token>
       ))}

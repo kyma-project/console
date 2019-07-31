@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 
+import ModalWithForm from '../../shared/components/ModalWithForm/ModalWithForm.container';
+import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm.container';
 class Runtimes extends React.Component {
   static propTypes = {
     runtimes: PropTypes.object.isRequired,
@@ -29,7 +30,7 @@ class Runtimes extends React.Component {
     >
       <b>{runtime.name}</b>
     </span>,
-    runtime.description ? runtime.description : { EMPTY_TEXT_PLACEHOLDER },
+    runtime.description ? runtime.description : EMPTY_TEXT_PLACEHOLDER,
     runtime.labels && runtime.labels.scenarios
       ? runtime.labels.scenarios.length
       : 0,
@@ -90,17 +91,23 @@ class Runtimes extends React.Component {
     if (error) return `Error! ${error.message}`;
 
     return (
-      <>
-        <CreateRuntimeForm />
-        <GenericList
-          title="Runtimes"
-          description="List of all runtimes"
-          actions={this.actions}
-          entries={runtimes}
-          headerRenderer={this.headerRenderer}
-          rowRenderer={this.rowRenderer}
-        />
-      </>
+      <GenericList
+        extraHeaderContent={
+          <ModalWithForm
+            title="Create new runtime"
+            button={{ text: 'Create runtime', glyph: 'add' }}
+            performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
+          >
+            <CreateRuntimeForm />
+          </ModalWithForm>
+        }
+        title="Runtimes"
+        description="List of all runtimes"
+        actions={this.actions}
+        entries={runtimes}
+        headerRenderer={this.headerRenderer}
+        rowRenderer={this.rowRenderer}
+      />
     );
   }
 }

@@ -20,6 +20,7 @@ export const DELETE_RUNTIME = gql`
   }
 `;
 
+// TODO: add filtering, pagination etc.
 export const GET_RUNTIMES = gql`
   query {
     runtimes {
