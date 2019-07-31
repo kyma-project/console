@@ -2,21 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from '@kyma-project/react-components';
-import GenericList from '../../../../shared/components/GenericList/GenericList';
+import GenericList from './../../../../shared/components/GenericList/GenericList';
 import ApplicationScenarioModal from './ApplicationScenarioModal.container';
 
-ApplicationScenarioDisplay.propTypes = {
+ApplicationDetailsScenarios.propTypes = {
   applicationId: PropTypes.string.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setScenarios: PropTypes.func.isRequired,
+  updateScenarios: PropTypes.func.isRequired,
 };
 
-export default function ApplicationScenarioDisplay(props) {
+export default function ApplicationDetailsScenarios(props) {
   async function removeScenario(entry) {
-    const { applicationId, scenarios, setScenarios } = props;
+    const { applicationId, scenarios, updateScenarios } = props;
 
     try {
-      await setScenarios(
+      await updateScenarios(
         applicationId,
         scenarios.filter(scenario => scenario !== entry.scenario),
       );

@@ -1,7 +1,7 @@
 import React from 'react';
-import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay.container';
+import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
+import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios.container';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
@@ -34,7 +34,7 @@ const ApplicationDetails = ({
         deleteApplication={deleteApplicationMutation}
       />
       <section className="fd-section">
-        <ScenarioDisplay scenarios={scenarios} applicationId={application.id} />
+        <ScenariosList scenarios={scenarios} applicationId={application.id} />
         <ApisList apis={application.apis} applicationId={application.id} />
         <EventApisList
           eventApis={application.eventAPIs}

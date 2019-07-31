@@ -1,11 +1,11 @@
-import ApplicationScenarioDisplay from './ApplicationScenarioDisplay.component';
+import ApplicationDetailsScenarios from './ApplicationDetailsScenarios.component';
 import { compose, graphql } from 'react-apollo';
 import { SET_APPLICATION_SCENARIOS } from './../../gql';
 
 export default compose(
   graphql(SET_APPLICATION_SCENARIOS, {
     props: props => ({
-      setScenarios: async (applicationId, scenarios) => {
+      updateScenarios: async (applicationId, scenarios) => {
         await props.mutate({
           variables: {
             id: applicationId,
@@ -16,4 +16,4 @@ export default compose(
       },
     }),
   }),
-)(ApplicationScenarioDisplay);
+)(ApplicationDetailsScenarios);

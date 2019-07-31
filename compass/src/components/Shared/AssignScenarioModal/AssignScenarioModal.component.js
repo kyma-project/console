@@ -12,7 +12,7 @@ AssignScenarioModal.propTypes = {
   notAssignedMessage: PropTypes.string,
 
   scenariosQuery: PropTypes.object.isRequired,
-  setScenarios: PropTypes.func.isRequired,
+  updateScenarios: PropTypes.func.isRequired,
 };
 
 AssignScenarioModal.defaultProps = {
@@ -20,21 +20,21 @@ AssignScenarioModal.defaultProps = {
 };
 
 export default function AssignScenarioModal(props) {
-  const [scenarios, setScenarios] = React.useState([]);
+  const [editedScenarios, setEditedScenarios] = React.useState([]);
 
   function assignLabel(label) {
-    setScenarios([...scenarios, label]);
+    setEditedScenarios([...editedScenarios, label]);
   }
 
   function unassignLabel(label) {
-    setScenarios(scenarios.filter(l => l !== label));
+    setEditedScenarios(editedScenarios.filter(l => l !== label));
   }
 
   async function updateLabels() {
-    const { entityId, setScenarios } = props;
+    const { entityId, updateScenarios } = props;
 
     try {
-      await setScenarios(entityId, scenarios);
+      await updateScenarios(entityId, editedScenarios);
     } catch (error) {
       console.warn(error);
       LuigiClient.uxManager().showAlert({
@@ -46,9 +46,9 @@ export default function AssignScenarioModal(props) {
   }
 
   function createModalContent() {
-    const scenariosList = !!scenarios.length ? (
+    const scenariosList = !!editedScenarios.length ? (
       <ul>
-        {scenarios.map(scenario => (
+        {editedScenarios.map(scenario => (
           <li className="scenario-list__list-element" key={scenario}>
             <span>{scenario}</span>
             <Button
@@ -67,7 +67,7 @@ export default function AssignScenarioModal(props) {
 
     const allScenarios = props.scenariosQuery.scenarios.schema.items.enum;
     const availableScenarios = allScenarios
-      .filter(scenario => scenarios.indexOf(scenario) === -1)
+      .filter(scenario => editedScenarios.indexOf(scenario) === -1)
       .map(scenario => (
         <Menu.Item onClick={e => assignLabel(e.target.textContent)}>
           {scenario}
@@ -100,7 +100,7 @@ export default function AssignScenarioModal(props) {
   }
 
   function reinitializeState() {
-    setScenarios(props.scenarios);
+    setEditedScenarios(props.scenarios);
   }
 
   const modalOpeningComponent = (
