@@ -10,52 +10,12 @@
     <fd-modal-body>
       <div fd-form-item>
         <label fd-form-label>Namespace *</label>
-        <div
-          class="fd-dropdown fd-has-display-block"
-          (clickOutside)="closeDropDown()"
-          clickOutsideEvents="click,mousedown"
-          excludeBeforeClick="true"
+        <fd-combobox 
+          [(ngModel)]="namespaceName"
+          [dropdownValues]="filteredNamespacesNames"
+          [placeholder]="'Select namespace'"
         >
-          <div class="fd-popover fd-has-display-block">
-            <div class="fd-popover__control">
-              <button
-                class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                aria-controls="nNJnB279"
-                [attr.aria-expanded]="ariaExpanded"
-                aria-haspopup="true"
-                (click)="toggleDropDown()"
-              >
-                <input
-                  class="fd-form__control y-fd-form__control"
-                  type="text"
-                  name="namespaceName"
-                  autocomplete="off"
-                  placeholder="Choose namespace"
-                  [(ngModel)]="namespaceName"
-                  (ngModelChange)="filterNamespacesNames()"
-                  (keydown)="openDropDown($event)"
-                  (click)="openDropDown($event)"
-                />
-              </button>
-            </div>
-            <div
-              class="fd-popover__body y-fd-popover__body fd-popover__body--no-arrow"
-              [attr.aria-hidden]="ariaHidden"
-              id="nNJnB279"
-            >
-              <nav class="fd-menu">
-                <ul class="fd-menu__list">
-                  <li
-                    *ngFor="let namespace of filteredNamespacesNames"
-                    (click)="toggleDropDown(); selectedNamespace(namespace)"
-                  >
-                    <span class="fd-menu__item">{{ namespace.label }}</span>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
+        </fd-combobox>
       </div>
       <div fd-form-item>
         <label fd-form-label>Services & Events *</label>
