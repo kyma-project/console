@@ -6,11 +6,13 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 
-import { COMPASS_GRAPHQL_ENDPOINT } from '../config/config';
+// import { COMPASS_GRAPHQL_ENDPOINT } from '../config/config';
 import builder from '../commons/builder';
 
 import resolvers from './resolvers';
 import defaults from './defaults';
+
+const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
 
 export function createApolloClient() {
   const httpLink = createHttpLink({ uri: COMPASS_GRAPHQL_ENDPOINT });
