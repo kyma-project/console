@@ -31,7 +31,7 @@
     "start-live-server": "live-server --entry-file=public/luigi-index.html .",
     "start": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server\" ",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
-    "build": "react-scripts build",
+    "build": "react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'build/luigi-core'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
@@ -59,6 +59,7 @@
     "concurrently": "^4.1.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "ncp": "^2.0.0",
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
     "webpack-cli": "^3.3.5"
