@@ -1,1 +1,5 @@
-export const COMPASS_GRAPHQL_ENDPOINT = `https://compass-gateway.kyma.local/director/graphql`;
+window.clusterConfig = {
+  microfrontendContentUrl: 'http://localhost:8888',
+  graphqlApiUrl: 'https://compass-gateway.kyma.local/director/graphql',
+  tenants: 'A B C',
+};
