@@ -71,104 +71,25 @@
           </div>
           <div fd-form-item *ngIf="!isGlobalPermissionsView">
             <label fd-form-label>Kind *</label>
-            <div
-              class="fd-dropdown y-fd-dropdown fd-has-display-block"
-              (clickOutside)="closeDropDown('Kind')"
-              clickOutsideEvents="click,mousedown"
-              excludeBeforeClick="true"
+
+            <fd-combobox 
+              [(ngModel)]="selectedKind"
+              [dropdownValues]="kinds"
+              [placeholder]="'Select Kind'"
+              (ngModelChange)="selectKind()"
             >
-              <button
-                class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                ngClass="{{
-                  !selectedKind ? 'fd-dropdown__control--placeholder' : ''
-                }}"
-                [attr.aria-expanded]="ariaExpandedKind"
-                aria-controls="kinds"
-                (click)="toggleDropDown('Kind')"
-              >
-                <input
-                  fd-form-control
-                  class="y-fd-form__control"
-                  type="text"
-                  name="selectedKind"
-                  placeholder="Select Kind"
-                  [(ngModel)]="selectedKind"
-                  (ngModelChange)="filterNamespaces('Kind')"
-                  (keydown)="openDropDown('Kind', $event)"
-                  (click)="openDropDown('Kind', $event)"
-                  autocomplete="off"
-                />
-              </button>
-              <div
-                class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
-                [attr.aria-hidden]="!ariaExpandedKind"
-                id="kinds"
-              >
-                <div class="fd-menu">
-                  <ul class="fd-menu__list">
-                    <li
-                      class="fd-menu__item"
-                      *ngFor="let kind of filteredKinds"
-                      (click)="closeDropDown(); selectKind(kind)"
-                    >
-                      {{ kind }}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            </fd-combobox>
           </div>
 
           <div fd-form-item>
             <label fd-form-label>Role *</label>
-            <div
-              class="fd-dropdown y-fd-dropdown fd-has-display-block"
-              (clickOutside)="closeDropDown('Role')"
-              clickOutsideEvents="click,mousedown"
-              excludeBeforeClick="true"
+            <fd-combobox 
+              [(ngModel)]="selectedRole"
+              [dropdownValues]="roles"
+              [placeholder]="'Select Role'"
+              [disabled]="!isSelectedKindCorrect()"
             >
-              <button
-                class="fd-dropdown__control y-fd-dropdown__control fd-button fd-has-padding-none"
-                ngClass="{{
-                  !selectedRole ? 'fd-dropdown__control--placeholder' : ''
-                }}"
-                [disabled]="!selectedKind"
-                [attr.aria-expanded]="ariaExpandedRole"
-                aria-controls="roles"
-                (click)="toggleDropDown('Role')"
-              >
-                <input
-                  fd-form-control
-                  class="y-fd-form__control"
-                  type="text"
-                  name="selectedRole"
-                  placeholder="Select Role"
-                  [disabled]="!selectedKind"
-                  [(ngModel)]="selectedRole"
-                  (ngModelChange)="filterNamespaces('Role')"
-                  (keydown)="openDropDown('Role', $event)"
-                  (click)="openDropDown('Role', $event)"
-                  autocomplete="off"
-                />
-              </button>
-              <div
-                class="fd-popover__body fd-popover__body--no-arrow y-fd-popover__body"
-                [attr.aria-hidden]="!ariaExpandedRole"
-                id="roles"
-              >
-                <div class="fd-menu">
-                  <ul class="fd-menu__list">
-                    <li
-                      class="fd-menu__item"
-                      *ngFor="let role of filteredRoles"
-                      (click)="closeDropDown(); selectRole(role)"
-                    >
-                      {{ role }}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            </fd-combobox>
           </div>
         </div>
       </div>

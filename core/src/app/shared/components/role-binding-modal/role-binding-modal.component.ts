@@ -27,11 +27,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   public selectedKind = '';
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
-  public ariaExpandedRole = false;
-  private ariaExpandedKind = false;
   public error = '';
-  public filteredRoles = [];
-  public filteredKinds = ['Role', 'ClusterRole'];
   private kinds = ['Role', 'ClusterRole'];
   public userGroupError: string;
   public isUserGroupMode: boolean;
@@ -57,9 +53,6 @@ export class RoleBindingModalComponent implements OnDestroy {
         const response: any = res;
         if (response && response.items && _.isArray(response.items)) {
           this.roles = response.items.map(entry => entry.metadata.name).sort();
-          this.filteredRoles = response.items
-            .map(entry => entry.metadata.name)
-            .sort();
         }
       },
       err => console.log(err)
@@ -72,51 +65,45 @@ export class RoleBindingModalComponent implements OnDestroy {
         const response: any = res;
         if (response && response.items && _.isArray(response.items)) {
           this.roles = response.items.map(entry => entry.metadata.name).sort();
-          this.filteredRoles = response.items
-            .map(entry => entry.metadata.name)
-            .sort();
         }
       },
       err => console.log(err)
     );
   }
 
-  selectRole(role) {
-    this.selectedRole = role;
-    this.error = '';
-  }
-
   setUserGroupMode() {
     this.isUserGroupMode = true;
     this.validateUserOrGroupInput();
   }
+
   setUserMode() {
     this.isUserGroupMode = false;
     this.validateUserOrGroupInput();
   }
 
-  selectKind(kind) {
-    this.error = '';
-    if (this.selectedKind !== kind) {
-      this.selectedRole = '';
-    }
-    this.selectedKind = kind;
-    if ('ClusterRole' === this.selectedKind) {
-      return this.getClusterRoles();
-    }
-    return this.getRoles();
+  isSelectedKindCorrect() {
+    return this.selectedKind === 'Role' || this.selectedKind === 'ClusterRole'
   }
 
+  selectKind() {
+    if (this.isSelectedKindCorrect()) {
+      if ('ClusterRole' === this.selectedKind) {
+        return this.getClusterRoles();
+      }
+      return this.getRoles();
+    }
+  }
+  
   public show() {
     this.isActive = true;
     if (this.isGlobalPermissionsView) {
-      this.selectKind('ClusterRole');
+      this.selectedKind = 'ClusterRole';
+      this.selectKind();
     }
     this.modalService
       .open(this.createBindingModal, {
         ...DEFAULT_MODAL_CONFIG,
-        width: '28em',
-        height: '36em'
+        width: '28em'
       })
       .afterClosed.toPromise()
       .finally(() => {
@@ -128,6 +115,7 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   public close() {
     this.isActive = false;
+    this.clearData();
     this.modalService.dismissAll();
   }
 
@@ -186,72 +174,10 @@ export class RoleBindingModalComponent implements OnDestroy {
     );
   }
 
-  public toggleDropDown(dropdown) {
-    switch (dropdown) {
-      case 'Kind':
-        this.ariaExpandedRole = false;
-        return (this.ariaExpandedKind = !this.ariaExpandedKind);
-      case 'Role':
-        this.ariaExpandedKind = false;
-        return (this.ariaExpandedRole = !this.ariaExpandedRole);
-    }
-  }
-
-  public closeDropDown(dropdown) {
-    switch (dropdown) {
-      case 'Kind':
-        return (this.ariaExpandedKind = false);
-      case 'Role':
-        return (this.ariaExpandedRole = false);
-      default:
-        this.ariaExpandedRole = false;
-        this.ariaExpandedKind = false;
-    }
-  }
-
-  public openDropDown(dropdown: any, event: Event) {
-    event.stopPropagation();
-    switch (dropdown) {
-      case 'Kind':
-        return (this.ariaExpandedKind = true);
-      case 'Role':
-        return (this.ariaExpandedRole = true);
-      default:
-        this.ariaExpandedRole = true;
-        this.ariaExpandedKind = true;
-    }
-  }
-
   public ngOnDestroy() {
     if (this.currentNamespaceSubscription) {
       this.currentNamespaceSubscription.unsubscribe();
     }
-  }
-
-  filterNamespaces(field) {
-    this.error = '';
-    switch (field) {
-      case 'Kind':
-        return (this.filteredKinds = this.filter(
-          this.kinds,
-          this.selectedKind
-        ));
-      case 'Role':
-        return (this.filteredRoles = this.filter(
-          this.roles,
-          this.selectedRole
-        ));
-    }
-  }
-
-  filter(array, name) {
-    const namespaces = [];
-    array.forEach(element => {
-      if (element.toLowerCase().includes(name.toLowerCase())) {
-        namespaces.push(element);
-      }
-    });
-    return namespaces;
   }
 
   isReadyToCreate() {
