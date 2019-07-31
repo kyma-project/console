@@ -11,6 +11,7 @@
     "apollo-link-error": "^1.1.11",
     "apollo-link-state": "^0.4.2",
     "deep-equal": "^1.0.1",
+    "fiori-fundamentals": "^1.7.0",
     "fundamental-react": "^0.5.3",
     "fundamental-styles": "^0.1.0",
     "graphql": "^14.3.1",
@@ -25,7 +26,8 @@
     "react-scripts": "3.0.1",
     "styled-components": "^3.4.10",
     "uuid": "^3.3.2",
-    "wait-on": "^3.2.0"
+    "wait-on": "^3.2.0",
+    "xml-js": "^1.6.11"
   },
   "scripts": {
     "start-live-server": "live-server --entry-file=src/index.html .",

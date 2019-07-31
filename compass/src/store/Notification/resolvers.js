@@ -19,7 +19,6 @@ const resolvers = {
           notification,
         },
       });
-
       return notification;
     },
     clearNotification: (_, args, { cache }) => {

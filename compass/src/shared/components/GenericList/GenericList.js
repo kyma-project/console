@@ -71,10 +71,11 @@ class GenericList extends React.Component {
     }));
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.entries.length !== state.filteredEntries.length) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.entries.length !== prevState.entries.length) {
       return {
-        filteredEntries: props.entries,
+        filteredEntries: nextProps.entries,
+        entries: nextProps.entries,
       };
     }
     return null;

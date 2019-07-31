@@ -1,0 +1,26 @@
+ // todo change after fd-styles 0.2.0 is released
+ // and remove fiori-fundamentals from package.json
+ @import '../../../../../node_modules/fiori-fundamentals/dist/components/asset-upload.min.css';
+
+.fd-asset-upload__input--drag-over {
+    border: 1px solid var(--fd-color-action-1) !important;
+}
+
+.fd-asset-upload__file-name {
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.target-url__label--info {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.fd-tabs > .fd-inline-help {
+    display: block;
+    margin-top: 13px;
+}
+
+.fd-inline-help__content {
+    min-width: 230px;
+}

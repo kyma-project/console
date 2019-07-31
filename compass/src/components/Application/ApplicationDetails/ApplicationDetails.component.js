@@ -1,14 +1,16 @@
 import React from 'react';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
 import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios.container';
-import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
+import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
+import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
+import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
-const ApplicationDetails = ({
-  applicationQuery,
-  deleteApplicationMutation,
-}) => {
+ApplicationDetails.propTypes = {
+  applicationId: PropTypes.string.isRequired,
+};
+
+function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
   const application = (applicationQuery && applicationQuery.application) || {};
   const loading = applicationQuery.loading;
   const error = applicationQuery.error;
@@ -45,6 +47,6 @@ const ApplicationDetails = ({
       </section>
     </>
   );
-};
+}
 
 export default ApplicationDetails;
