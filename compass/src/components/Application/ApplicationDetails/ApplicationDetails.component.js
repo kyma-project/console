@@ -25,7 +25,9 @@ const ApplicationDetails = ({
   }
 
   const scenarios =
-    (application.labels ? application.labels.scenarios : []) || [];
+    application.labels && application.labels.scenarios
+      ? application.labels.scenarios
+      : [];
 
   return (
     <>
