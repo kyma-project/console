@@ -29,7 +29,7 @@ export function createAPI({ apiData, credentialsData }) {
 }
 
 // create graphql-ready form of Event API
-export function createEventAPI(data) {
+export function createEventAPI({ apiData }) {
   const {
     name,
     description,
@@ -37,7 +37,7 @@ export function createEventAPI(data) {
     loadedFileContent,
     actualFileType,
     apiSubType,
-  } = data.apiData;
+  } = apiData;
 
   return {
     name,
