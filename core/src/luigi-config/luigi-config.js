@@ -19,7 +19,7 @@ var config = {
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   disabledNavigationNodes: '',
-  systemNamespaces: 'istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss'
+  systemNamespaces: 'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss'
 };
 
 if (clusterConfig) {
