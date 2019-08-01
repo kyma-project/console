@@ -11,11 +11,12 @@ configureFonts();
 export default class ThemeWrapper extends Component {
   render() {
     return (
-      <GlobalStyle>
+      <React.Fragment>
+        <GlobalStyle />
         <ThemeProvider theme={theme}>
           <div>{this.props.children}</div>
         </ThemeProvider>
-      </GlobalStyle>
+      </React.Fragment>
     );
   }
 }
