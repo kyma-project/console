@@ -1,13 +1,17 @@
 import React from 'react';
-import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis';
+import PropTypes from 'prop-types';
+
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis';
+import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay';
+import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
+import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
-const ApplicationDetails = ({
-  applicationQuery,
-  deleteApplicationMutation,
-}) => {
+ApplicationDetails.propTypes = {
+  applicationId: PropTypes.string.isRequired,
+};
+
+function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
   const application = (applicationQuery && applicationQuery.application) || {};
   const loading = applicationQuery.loading;
   const error = applicationQuery.error;
@@ -22,6 +26,14 @@ const ApplicationDetails = ({
   if (error) {
     return `Error! ${error.message}`;
   }
+
+  let scenarios = [];
+  if (application.labels && application.labels.scenarios) {
+    scenarios = application.labels.scenarios.map(scenario => {
+      return { scenario }; // list requires a list of objects
+    });
+  }
+
   return (
     <>
       <Header
@@ -29,11 +41,15 @@ const ApplicationDetails = ({
         deleteApplication={deleteApplicationMutation}
       />
       <section className="fd-section">
-        <ApisList apis={application.apis} />
-        <EventApisList eventApis={application.eventAPIs} />
+        <ScenarioDisplay labels={scenarios} applicationId={application.id} />
+        <ApisList apis={application.apis} applicationId={application.id} />
+        <EventApisList
+          eventApis={application.eventAPIs}
+          applicationId={application.id}
+        />
       </section>
     </>
   );
-};
+}
 
 export default ApplicationDetails;

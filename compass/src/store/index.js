@@ -55,7 +55,6 @@ export function createApolloClient() {
     cache,
     link: ApolloLink.from([stateLink, errorLink, authHttpLink]),
     connectToDevTools: true,
-    resolvers: {},
   });
 
   return client;

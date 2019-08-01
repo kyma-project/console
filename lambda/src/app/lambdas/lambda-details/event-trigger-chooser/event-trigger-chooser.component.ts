@@ -109,6 +109,7 @@ export class EventTriggerChooserComponent {
 
   closeEventTriggerChooserModal() {
     if (this.isActive) {
+      luigiClient.uxManager().removeBackdrop();
       this.isActive = false;
       this.modalService.dismissAll();
     }

@@ -127,6 +127,7 @@ export class HttpTriggerComponent {
 
   closeHttpTriggerModal() {
     if (this.isActive) {
+      luigiClient.uxManager().removeBackdrop();
       this.isActive = false;
       this.modalService.dismissAll();
     }

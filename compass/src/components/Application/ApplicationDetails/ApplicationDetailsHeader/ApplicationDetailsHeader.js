@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import classnames from 'classnames';
 
-import { ActionBar } from 'fundamental-react/lib/ActionBar';
+import { ActionBar, Badge } from 'fundamental-react';
 import {
   Button,
   Breadcrumb,
@@ -11,11 +10,6 @@ import {
   PanelGrid,
 } from '@kyma-project/react-components';
 
-import LabelDisplay from '../../../Shared/LabelDisplay';
-import {
-  determineClass,
-  printPrettyConnectionStatus,
-} from './../../applicationUtility';
 import '../../../../shared/styles/header.scss';
 
 function navigateToApplications() {
@@ -68,7 +62,7 @@ class ApplicationDetailsHeader extends React.Component {
 
   render() {
     const isReadOnly = false; //todo
-    const { id, name, status, description, labels } = this.props.application;
+    const { id, name, status, description } = this.props.application;
 
     const PanelEntry = props => {
       return (
@@ -120,29 +114,11 @@ class ApplicationDetailsHeader extends React.Component {
           </ActionBar.Actions>
         </section>
         <PanelGrid nogap cols={4}>
-          <PanelEntry title="Name" content={<p>{name}</p>} />
+          <PanelEntry title="Description" content={<p>{description}</p>} />
           <PanelEntry
             title="Status"
-            content={
-              <p>
-                <span
-                  className={classnames(
-                    'fd-status-label',
-                    determineClass(status.condition),
-                  )}
-                >
-                  {printPrettyConnectionStatus(status.condition)}
-                </span>
-              </p>
-            }
+            content={<Badge>{status.condition}</Badge>}
           />
-          <PanelEntry title="Description" content={<p>{description}</p>} />
-          {labels && !labels.length && (
-            <PanelEntry
-              title="Labels"
-              content={labels && <LabelDisplay labels={labels} />}
-            />
-          )}
         </PanelGrid>
       </header>
     );
