@@ -28,7 +28,7 @@
     "typescript": "^3.3.3"
   },
   "peerDependencies": {
-    "styled-components": ">= 3.4.10"
+    "styled-components": ">= 4"
   },
   "main": "lib/ODataReact.js",
   "types": "lib/ODataReact.d.ts",
