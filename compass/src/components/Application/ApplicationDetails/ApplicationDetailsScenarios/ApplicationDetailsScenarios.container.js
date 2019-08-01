@@ -1,6 +1,7 @@
 import ApplicationDetailsScenarios from './ApplicationDetailsScenarios.component';
 import { compose, graphql } from 'react-apollo';
 import { SET_APPLICATION_SCENARIOS } from './../../gql';
+import { SEND_NOTIFICATION } from '../../../../gql';
 
 export default compose(
   graphql(SET_APPLICATION_SCENARIOS, {
@@ -12,8 +13,10 @@ export default compose(
             scenarios: scenarios,
           },
         });
-        props.result.client.reFetchObservableQueries();
       },
     }),
+  }),
+  graphql(SEND_NOTIFICATION, {
+    name: 'sendNotification',
   }),
 )(ApplicationDetailsScenarios);

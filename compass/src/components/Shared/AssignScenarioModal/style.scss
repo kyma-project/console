@@ -1,41 +1,44 @@
-.scenario-list__list-element {
+.assign-scenario-list__list-element {
     display: flex;
     justify-content: space-between;
     vertical-align: middle;
     align-items: center;
+
+    & > :first-child {
+      margin-left: 3px;
+    }
 }
 
-.scenario-list__message {
-  margin-top: 10px;
-}
-
-.fd-modal__body {
+.assign-scenario-modal__body {
   min-height: 200px;
-}
-
-.fd-popover {
-  width: 100%;
-
-  :last-child {
-    margin-bottom: 0;
-  }
-}
-
-.fd-popper__body {
-  width: 100%;
-
-  & > li {
-    list-style-type: none;
-  }
-}
-
-.fd-dropdown {
-  width: 100%;
-
-  .fd-dropdown__control {
-    display: flex;
+  .fd-popover {
     width: 100%;
-    justify-content: space-between;
-    justify-items: center;
+  
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .fd-popper__body {
+    width: 100%;
+  
+    & > li {
+      list-style-type: none;
+    }
+  }
+  
+  .fd-dropdown {
+    width: 100%;
+  
+    .fd-dropdown__control {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      justify-items: center;
+
+      &::after {
+        margin-top: -2px;
+      }
+    }
   }
 }

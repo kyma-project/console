@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+import _ from 'lodash';
 
 import { Modal, Button, Dropdown, Icon } from '@kyma-project/react-components';
 import { Menu } from 'fundamental-react';
@@ -10,9 +11,11 @@ AssignScenarioModal.propTypes = {
   entityId: PropTypes.string.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.string),
   notAssignedMessage: PropTypes.string,
+  entityQuery: PropTypes.object.isRequired,
 
   scenariosQuery: PropTypes.object.isRequired,
   updateScenarios: PropTypes.func.isRequired,
+  sendNotification: PropTypes.func.isRequired,
 };
 
 AssignScenarioModal.defaultProps = {
@@ -31,10 +34,30 @@ export default function AssignScenarioModal(props) {
   }
 
   async function updateLabels() {
-    const { entityId, updateScenarios } = props;
+    const {
+      scenarios,
+      entityId,
+      updateScenarios,
+      sendNotification,
+      entityQuery,
+    } = props;
+
+    if (_.isEqual(scenarios, editedScenarios)) {
+      return;
+    }
 
     try {
       await updateScenarios(entityId, editedScenarios);
+      entityQuery.refetch();
+      sendNotification({
+        variables: {
+          content: 'Scenarios updated.',
+          title: 'Assigned scenarios list',
+          color: '#359c46',
+          icon: 'accept',
+          instanceName: entityId,
+        },
+      });
     } catch (error) {
       console.warn(error);
       LuigiClient.uxManager().showAlert({
@@ -46,10 +69,10 @@ export default function AssignScenarioModal(props) {
   }
 
   function createModalContent() {
-    const scenariosList = !!editedScenarios.length ? (
+    const scenariosList = editedScenarios.length ? (
       <ul>
         {editedScenarios.map(scenario => (
-          <li className="scenario-list__list-element" key={scenario}>
+          <li className="assign-scenario-list__list-element" key={scenario}>
             <span>{scenario}</span>
             <Button
               option="light"
@@ -62,7 +85,9 @@ export default function AssignScenarioModal(props) {
         ))}
       </ul>
     ) : (
-      <p className="scenario-list__message">{props.notAssignedMessage}</p>
+      <p className="assign-scenario-list__message">
+        {props.notAssignedMessage}
+      </p>
     );
 
     const allScenarios = props.scenariosQuery.scenarios.schema.items.enum;
@@ -79,7 +104,7 @@ export default function AssignScenarioModal(props) {
         control={
           <Button dropdown>
             <span>
-              {!!availableScenarios.length
+              {availableScenarios.length
                 ? 'Choose scenario'
                 : 'No scenarios available'}
             </span>
@@ -92,10 +117,10 @@ export default function AssignScenarioModal(props) {
     );
 
     return (
-      <>
+      <section className="assign-scenario-modal__body">
         {scenariosList}
         {scenarioDropdown}
-      </>
+      </section>
     );
   }
 

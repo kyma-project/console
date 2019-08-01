@@ -4,22 +4,41 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from '@kyma-project/react-components';
 import GenericList from './../../../../shared/components/GenericList/GenericList';
 import ApplicationScenarioModal from './ApplicationScenarioModal.container';
+import { ApplicationQueryContext } from './../../ApplicationDetails/ApplicationDetails.component';
 
 ApplicationDetailsScenarios.propTypes = {
   applicationId: PropTypes.string.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.string).isRequired,
   updateScenarios: PropTypes.func.isRequired,
+  sendNotification: PropTypes.func.isRequired,
 };
 
-export default function ApplicationDetailsScenarios(props) {
-  async function removeScenario(entry) {
-    const { applicationId, scenarios, updateScenarios } = props;
+export default function ApplicationDetailsScenarios({
+  applicationId,
+  scenarios,
+  updateScenarios,
+  sendNotification,
+}) {
+  const applicationQuery = React.useContext(ApplicationQueryContext);
+
+  async function unassignScenario(entry) {
+    const scenarioName = entry.scenario;
 
     try {
       await updateScenarios(
         applicationId,
-        scenarios.filter(scenario => scenario !== entry.scenario),
+        scenarios.filter(scenario => scenario !== scenarioName),
       );
+      applicationQuery.refetch();
+      sendNotification({
+        variables: {
+          content: `Scenario "${scenarioName}" removed from application.`,
+          title: `${scenarioName}`,
+          color: '#359c46',
+          icon: 'accept',
+          instanceName: scenarioName,
+        },
+      });
     } catch (error) {
       console.warn(error);
       LuigiClient.uxManager().showAlert({
@@ -30,29 +49,30 @@ export default function ApplicationDetailsScenarios(props) {
     }
   }
 
-  const headerRenderer = () => ['Name', 'Provided in Runtimes'];
+  const headerRenderer = () => ['Name'];
 
-  const rowRenderer = label => [label.scenario, '?/?'];
+  const rowRenderer = label => [label.scenario];
 
   const actions = [
     {
-      name: 'Remove',
-      handler: removeScenario,
+      name: 'Unassign',
+      handler: unassignScenario,
     },
   ];
 
   const extraHeaderContent = (
     <header>
       <ApplicationScenarioModal
-        entityId={props.applicationId}
-        scenarios={props.scenarios}
+        entityId={applicationId}
+        scenarios={scenarios}
         notAssignedMessage={'Application is not assigned to any scenario.'}
+        entityQuery={applicationQuery}
       />
     </header>
   );
 
-  const entries = props.scenarios.map(scenario => {
-    return { scenario: scenario };
+  const entries = scenarios.map(scenario => {
+    return { scenario };
   }); // list requires a list of objects
 
   return (

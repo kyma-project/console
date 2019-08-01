@@ -10,6 +10,8 @@ ApplicationDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
 };
 
+export const ApplicationQueryContext = React.createContext(null);
+
 function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
   const application = (applicationQuery && applicationQuery.application) || {};
   const loading = applicationQuery.loading;
@@ -32,7 +34,7 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
       : [];
 
   return (
-    <>
+    <ApplicationQueryContext.Provider value={applicationQuery}>
       <Header
         application={application}
         deleteApplication={deleteApplicationMutation}
@@ -45,7 +47,7 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
           applicationId={application.id}
         />
       </section>
-    </>
+    </ApplicationQueryContext.Provider>
   );
 }
 
