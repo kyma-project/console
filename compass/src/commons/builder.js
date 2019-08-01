@@ -1,5 +1,6 @@
 import LuigiClient from '@kyma-project/luigi-client';
 const uuidv5 = require('uuid/v5');
+var validate = require('uuid-validate');
 const NAMESPACE = '1b671a64-babe-b00b-face-da01ff1f3341';
 
 class Builder {
@@ -18,6 +19,9 @@ class Builder {
   }
 
   getTenant() {
+    if(validate(this.currentTenant)){
+      return this.currentTenant;
+    }
     return uuidv5(this.currentTenant, NAMESPACE);
   }
 }
