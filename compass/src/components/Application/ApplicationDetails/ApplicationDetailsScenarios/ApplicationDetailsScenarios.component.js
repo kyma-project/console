@@ -24,29 +24,39 @@ export default function ApplicationDetailsScenarios({
   async function unassignScenario(entry) {
     const scenarioName = entry.scenario;
 
-    try {
-      await updateScenarios(
-        applicationId,
-        scenarios.filter(scenario => scenario !== scenarioName),
-      );
-      applicationQuery.refetch();
-      sendNotification({
-        variables: {
-          content: `Scenario "${scenarioName}" removed from application.`,
-          title: `${scenarioName}`,
-          color: '#359c46',
-          icon: 'accept',
-          instanceName: scenarioName,
-        },
-      });
-    } catch (error) {
-      console.warn(error);
-      LuigiClient.uxManager().showAlert({
-        text: error.message,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
+    LuigiClient.uxManager()
+      .showConfirmationModal({
+        header: 'Unassign Scenario',
+        body: `Are you sure you want to unassign ${scenarioName}?`,
+        buttonConfirm: 'Confirm',
+        buttonDismiss: 'Cancel',
+      })
+      .then(async () => {
+        try {
+          await updateScenarios(
+            applicationId,
+            scenarios.filter(scenario => scenario !== scenarioName),
+          );
+          applicationQuery.refetch();
+          sendNotification({
+            variables: {
+              content: `Scenario "${scenarioName}" removed from application.`,
+              title: `${scenarioName}`,
+              color: '#359c46',
+              icon: 'accept',
+              instanceName: scenarioName,
+            },
+          });
+        } catch (error) {
+          console.warn(error);
+          LuigiClient.uxManager().showAlert({
+            text: error.message,
+            type: 'error',
+            closeAfter: 10000,
+          });
+        }
+      })
+      .catch(() => {});
   }
 
   const headerRenderer = () => ['Name'];
