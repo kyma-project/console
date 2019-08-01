@@ -1,15 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import ScenarioDisplay from './ApplicationScenarioDisplay/ApplicationScenarioDisplay';
+import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios.container';
 import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
+import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
 ApplicationDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
 };
+
+export const ApplicationQueryContext = React.createContext(null);
 
 function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
   const application = (applicationQuery && applicationQuery.application) || {};
@@ -27,28 +28,26 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
     return `Error! ${error.message}`;
   }
 
-  let scenarios = [];
-  if (application.labels && application.labels.scenarios) {
-    scenarios = application.labels.scenarios.map(scenario => {
-      return { scenario }; // list requires a list of objects
-    });
-  }
+  const scenarios =
+    application.labels && application.labels.scenarios
+      ? application.labels.scenarios
+      : [];
 
   return (
-    <>
+    <ApplicationQueryContext.Provider value={applicationQuery}>
       <Header
         application={application}
         deleteApplication={deleteApplicationMutation}
       />
       <section className="fd-section">
-        <ScenarioDisplay labels={scenarios} applicationId={application.id} />
+        <ScenariosList scenarios={scenarios} applicationId={application.id} />
         <ApisList apis={application.apis} applicationId={application.id} />
         <EventApisList
           eventApis={application.eventAPIs}
           applicationId={application.id}
         />
       </section>
-    </>
+    </ApplicationQueryContext.Provider>
   );
 }
 

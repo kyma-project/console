@@ -107,3 +107,16 @@ export const DELETE_EVENT_API = gql`
     }
   }
 `;
+
+export const SET_APPLICATION_SCENARIOS = gql`
+  mutation setApplicationLabel($id: ID!, $scenarios: Any!) {
+    setApplicationLabel(
+      applicationID: $id
+      key: "scenarios"
+      value: $scenarios
+    ) {
+      key
+      value
+    }
+  }
+`;
