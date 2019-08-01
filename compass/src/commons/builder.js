@@ -19,7 +19,7 @@ class Builder {
   }
 
   getTenant() {
-    if(validate(this.currentTenant)){
+    if (validate(this.currentTenant)) {
       return this.currentTenant;
     }
     return uuidv5(this.currentTenant, NAMESPACE);
