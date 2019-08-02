@@ -6,7 +6,7 @@ This project contains UI acceptance tests for Kyma.
 
 ## Prerequisites
 
-To run the `catalog-ui-test`, you need to install Kyma with the `testing` bundle included. For more information about including the `testing` bundle, read [this](https://kyma-project.io/docs/master/components/helm-broker/#details-fetch-addons-from-https-servers) document.
+To run the `catalog-ui-test`, you need to install Kyma with the `testing` bundle included. For more information about including the `testing` bundle, read [this](https://kyma-project.io/docs/master/components/helm-broker/#details-create-addons-repository) document.
 
 ## Run all tests
 
