@@ -10,7 +10,6 @@ import builder from '../commons/builder';
 
 import resolvers from './resolvers';
 import defaults from './defaults';
-import '../config/config';
 
 const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
 
