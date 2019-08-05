@@ -11,7 +11,7 @@ describe('GenericHelpersService', () => {
     genericHelpers = TestBed.get(GenericHelpersService);
   });
 
-  fdescribe('getURL()', () => {
+  describe('getURL()', () => {
     it('sets domain if missing', () => {
       expect(
         genericHelpers.getURL({ host: 'testhostname', domain: 'testdomain' })
