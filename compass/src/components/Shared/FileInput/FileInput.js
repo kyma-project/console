@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FormMessage } from 'fundamental-react';
+import './style.scss';
 
 FileInput.propTypes = {
   fileInputChanged: PropTypes.func.isRequired,
   file: PropTypes.object,
   error: PropTypes.string,
+  availableFormatsMessage: PropTypes.string,
+  acceptedFileFormats: PropTypes.string.isRequired,
 };
 
 export default function FileInput(props) {
@@ -45,14 +48,16 @@ export default function FileInput(props) {
         id="file-upload"
         className="fd-asset-upload__input"
         onChange={e => props.fileInputChanged(e.target.files[0])}
-        accept=".yml,.yaml,.json,.xml"
+        accept={props.acceptedFileFormats}
       />
       <label htmlFor="file-upload" className={labelClass}>
         <span className="fd-asset-upload__text">Browse</span>
         <p className="fd-asset-upload__message"> or drop file here</p>
-        <p className="fd-asset-upload__message">
-          Available file types: JSON, YAML, XML.
-        </p>
+        {props.availableFormatsMessage && (
+          <p className="fd-asset-upload__message">
+            {props.availableFormatsMessage}
+          </p>
+        )}
       </label>
       {!!props.error && <FormMessage type="error">{props.error} </FormMessage>}
     </div>
