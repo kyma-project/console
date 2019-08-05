@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TooltipComponent } from '../tooltip/tooltip.component';
-import {AppConfig} from '../../../app.config';
-import {GenericHelpersService} from 'shared/services/generic-helpers.service';
+import { AppConfig } from '../../../app.config';
+import { GenericHelpersService } from 'shared/services/generic-helpers.service';
 
 @Component({
   selector: 'app-url-link',
@@ -9,5 +9,5 @@ import {GenericHelpersService} from 'shared/services/generic-helpers.service';
   providers: [GenericHelpersService]
 })
 export class UrlLinkComponent {
-  @Input() url: string
+  @Input() url: string;
 }

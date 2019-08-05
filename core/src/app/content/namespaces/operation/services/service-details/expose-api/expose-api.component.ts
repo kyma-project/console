@@ -207,7 +207,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.apiDefinition = data;
     this.serviceName = data.spec.service.name;
     this.hostname = this.splitHostname(data.spec.hostname);
-    this.url = this.genericHelpers.getURL({host: data.spec.hostname});
+    this.url = this.genericHelpers.getURL({ host: data.spec.hostname });
     this.servicePort = data.spec.service.port;
 
     if (

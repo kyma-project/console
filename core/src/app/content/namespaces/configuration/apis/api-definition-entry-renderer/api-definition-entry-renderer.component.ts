@@ -32,7 +32,9 @@ export class ApiDefinitionEntryRendererComponent
     ];
   }
   public disabled = false;
-  public url: string = this.genericHelpers.getURL({host: this.entry.hostname});
+  public url: string = this.genericHelpers.getURL({
+    host: this.entry.hostname
+  });
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {

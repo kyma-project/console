@@ -17,7 +17,9 @@ export class FilteredApisEntryRendererComponent
   implements OnDestroy, OnInit {
   public emptyText = EMPTY_TEXT;
   public disabled = false;
-  public url: string = this.genericHelpers.getURL({host: this.entry.hostname});
+  public url: string = this.genericHelpers.getURL({
+    host: this.entry.hostname
+  });
   private communicationServiceSubscription: Subscription;
 
   constructor(
