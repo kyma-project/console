@@ -9,7 +9,6 @@ import { ComponentCommunicationService } from '../../../../../shared/services/co
 import { ApplicationBindingService } from '../application-binding-service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from 'fundamental-ngx';
-import { NamespaceInfo } from 'namespaces/namespace-info';
 
 const ActivatedRouteMock = {
   params: of({ id: 'id' })
@@ -106,8 +105,6 @@ describe('CreateBindingsModalComponent', () => {
     // then
 
     expect(component).toBeTruthy();
-    expect(component.namespaces).toEqual([]);
-    expect(component.namespaces).toEqual([]);
   });
 
   it('should show and set namespaces and applications', done => {
@@ -185,14 +182,7 @@ describe('CreateBindingsModalComponent', () => {
           }
         ]
       });
-      expect(component.namespaces).toEqual([
-        {
-          label: 'namespace3'
-        },
-        {
-          label: 'namespace4'
-        }
-      ]);
+      
       expect(component.isActive).toBeTruthy('component.isActive');
       expect(component.checkIfNamespaceExists()).toBeFalsy(
         'component.checkIfNamespaceExists()'
@@ -239,7 +229,6 @@ describe('CreateBindingsModalComponent', () => {
       ).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.application).toEqual(undefined);
-      expect(component.namespaces).toEqual([]);
       expect(component.isActive).toBeTruthy();
       expect(component.checkIfNamespaceExists()).toBeFalsy();
 
@@ -262,7 +251,6 @@ describe('CreateBindingsModalComponent', () => {
     spyOn(ComponentCommunicationServiceMockStub, 'sendEvent');
 
     // when
-    component.selectedNamespace(new NamespaceInfo({ label: 'namespace3' }));
     fixture.detectChanges();
     await component.save();
 

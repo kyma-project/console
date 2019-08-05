@@ -1,7 +1,7 @@
 import { LuigiClientCommunicationDirective } from './../../directives/luigi-client-communication/luigi-client-communication.directive';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RoleBindingModalComponent } from './role-binding-modal.component';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { RbacService } from '../../services/rbac.service';
 import { CurrentNamespaceService } from '../../../content/namespaces/services/current-namespace.service';
@@ -33,7 +33,6 @@ describe('RoleBindingModalComponent', () => {
   let component: RoleBindingModalComponent;
   let fixture: ComponentFixture<RoleBindingModalComponent>;
   let RbacServiceMockStub: RbacService;
-  let CurrentNamespaceServiceMockStub: CurrentNamespaceService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -66,9 +65,6 @@ describe('RoleBindingModalComponent', () => {
     fixture = TestBed.createComponent(RoleBindingModalComponent);
     component = fixture.componentInstance;
     RbacServiceMockStub = fixture.debugElement.injector.get(RbacService);
-    CurrentNamespaceServiceMockStub = fixture.debugElement.injector.get(
-      CurrentNamespaceService
-    );
     fixture.detectChanges();
   });
 
@@ -77,7 +73,6 @@ describe('RoleBindingModalComponent', () => {
     expect(component).toBeTruthy();
     expect(component.isActive).toBeFalsy();
     expect(component.roles).toEqual([]);
-    expect(component.filteredRoles).toEqual([]);
   });
 
   it('should get the list of cluster roles', async done => {
@@ -116,7 +111,6 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getClusterRoles).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual(['user1', 'user2']);
-      expect(component.filteredRoles).toEqual(['user1', 'user2']);
 
       done();
     });
@@ -147,7 +141,6 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getClusterRoles).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual([]);
-      expect(component.filteredRoles).toEqual([]);
 
       done();
     });
@@ -176,7 +169,6 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getClusterRoles).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.roles).toEqual([]);
-      expect(component.filteredRoles).toEqual([]);
 
       done();
     });
@@ -217,7 +209,6 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual(['user1', 'user2']);
-      expect(component.filteredRoles).toEqual(['user1', 'user2']);
 
       done();
     });
@@ -247,7 +238,6 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
       expect(component.roles).toEqual([]);
-      expect(component.filteredRoles).toEqual([]);
 
       done();
     });
@@ -275,7 +265,6 @@ describe('RoleBindingModalComponent', () => {
       expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(component.roles).toEqual([]);
-      expect(component.filteredRoles).toEqual([]);
 
       done();
     });
@@ -283,29 +272,13 @@ describe('RoleBindingModalComponent', () => {
 
   it('should react on Save event with Role, on Permissions view', async done => {
     // given
-    const roles = of({
-      items: [
-        {
-          metadata: {
-            name: 'user1'
-          }
-        },
-        {
-          metadata: {
-            name: 'user2'
-          }
-        }
-      ]
-    });
     component.isActive = true;
     component.isGlobalPermissionsView = false;
     component.isUserGroupMode = true;
     component.userOrGroup = 'group';
+    component.selectedKind = 'Role';
     component.isReadyToCreate();
 
-    const spyGetRoles = spyOn(RbacServiceMockStub, 'getRoles').and.returnValue(
-      roles
-    );
     const spyCreateRoleBinding = spyOn(
       RbacServiceMockStub,
       'createRoleBinding'
@@ -313,8 +286,6 @@ describe('RoleBindingModalComponent', () => {
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
-    component.selectKind('Role');
-    component.selectRole('user1');
     fixture.detectChanges();
     await component.save();
 
@@ -322,11 +293,9 @@ describe('RoleBindingModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(component.isGlobalPermissionsView).toBeFalsy();
-      expect(spyGetRoles.calls.any()).toBeTruthy();
       expect(spyCreateRoleBinding.calls.any()).toBeTruthy();
+      expect(spyCreateRoleBinding).toHaveBeenCalledTimes(1);
       expect(spyConsoleLog.calls.any()).toBeFalsy();
-      expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
-      expect(RbacServiceMockStub.createRoleBinding).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
 
       done();
@@ -335,29 +304,13 @@ describe('RoleBindingModalComponent', () => {
 
   it('should react on Save event with Role for User, on Permissions view', async done => {
     // given
-    const roles = of({
-      items: [
-        {
-          metadata: {
-            name: 'user1'
-          }
-        },
-        {
-          metadata: {
-            name: 'user2'
-          }
-        }
-      ]
-    });
     component.isActive = true;
     component.isGlobalPermissionsView = false;
     component.isUserGroupMode = false;
     component.userOrGroup = 'user';
+    component.selectedKind = 'Role';
     component.isReadyToCreate();
 
-    const spyGetRoles = spyOn(RbacServiceMockStub, 'getRoles').and.returnValue(
-      roles
-    );
     const spyCreateRoleBinding = spyOn(
       RbacServiceMockStub,
       'createRoleBinding'
@@ -365,8 +318,6 @@ describe('RoleBindingModalComponent', () => {
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
-    component.selectKind('Role');
-    component.selectRole('user1');
     fixture.detectChanges();
     await component.save();
 
@@ -374,11 +325,9 @@ describe('RoleBindingModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(component.isGlobalPermissionsView).toBeFalsy();
-      expect(spyGetRoles.calls.any()).toBeTruthy();
       expect(spyCreateRoleBinding.calls.any()).toBeTruthy();
+      expect(spyCreateRoleBinding).toHaveBeenCalledTimes(1);
       expect(spyConsoleLog.calls.any()).toBeFalsy();
-      expect(RbacServiceMockStub.getRoles).toHaveBeenCalledTimes(1);
-      expect(RbacServiceMockStub.createRoleBinding).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
 
       done();
@@ -387,30 +336,13 @@ describe('RoleBindingModalComponent', () => {
 
   it('should react on Save event with ClusterRole, on GlobalPermissions view', async done => {
     // given
-    const clusterRoles = of({
-      items: [
-        {
-          metadata: {
-            name: 'user1'
-          }
-        },
-        {
-          metadata: {
-            name: 'user2'
-          }
-        }
-      ]
-    });
     component.isActive = true;
     component.isGlobalPermissionsView = true;
     component.isUserGroupMode = true;
     component.userOrGroup = 'group';
+    component.selectedKind = 'ClusterRole';
     component.isReadyToCreate();
 
-    const spyGetClusterRoles = spyOn(
-      RbacServiceMockStub,
-      'getClusterRoles'
-    ).and.returnValue(clusterRoles);
     const spyCreateClusterRoleBinding = spyOn(
       RbacServiceMockStub,
       'createClusterRoleBinding'
@@ -418,8 +350,6 @@ describe('RoleBindingModalComponent', () => {
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
-    component.selectKind('ClusterRole');
-    component.selectRole('user1');
     fixture.detectChanges();
     await component.save();
 
@@ -427,13 +357,9 @@ describe('RoleBindingModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(component.isGlobalPermissionsView).toBeTruthy();
-      expect(spyGetClusterRoles.calls.any()).toBeTruthy();
       expect(spyCreateClusterRoleBinding.calls.any()).toBeTruthy();
+      expect(spyCreateClusterRoleBinding).toHaveBeenCalledTimes(1);
       expect(spyConsoleLog.calls.any()).toBeFalsy();
-      expect(RbacServiceMockStub.getClusterRoles).toHaveBeenCalledTimes(1);
-      expect(
-        RbacServiceMockStub.createClusterRoleBinding
-      ).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
 
       done();
@@ -442,30 +368,13 @@ describe('RoleBindingModalComponent', () => {
 
   it('should react on Save event with ClusterRole for User, on GlobalPermissions view', async done => {
     // given
-    const clusterRoles = of({
-      items: [
-        {
-          metadata: {
-            name: 'user1'
-          }
-        },
-        {
-          metadata: {
-            name: 'user2'
-          }
-        }
-      ]
-    });
     component.isActive = true;
     component.isGlobalPermissionsView = true;
     component.isUserGroupMode = false;
     component.userOrGroup = 'user';
+    component.selectedKind = 'ClusterRole';
     component.isReadyToCreate();
 
-    const spyGetClusterRoles = spyOn(
-      RbacServiceMockStub,
-      'getClusterRoles'
-    ).and.returnValue(clusterRoles);
     const spyCreateClusterRoleBinding = spyOn(
       RbacServiceMockStub,
       'createClusterRoleBinding'
@@ -473,8 +382,6 @@ describe('RoleBindingModalComponent', () => {
     const spyConsoleLog = spyOn(console, 'log');
 
     // when
-    component.selectKind('ClusterRole');
-    component.selectRole('user1');
     fixture.detectChanges();
     await component.save();
 
@@ -482,13 +389,9 @@ describe('RoleBindingModalComponent', () => {
       // then
       expect(component).toBeTruthy();
       expect(component.isGlobalPermissionsView).toBeTruthy();
-      expect(spyGetClusterRoles.calls.any()).toBeTruthy();
       expect(spyCreateClusterRoleBinding.calls.any()).toBeTruthy();
+      expect(spyCreateClusterRoleBinding).toHaveBeenCalledTimes(1);
       expect(spyConsoleLog.calls.any()).toBeFalsy();
-      expect(RbacServiceMockStub.getClusterRoles).toHaveBeenCalledTimes(1);
-      expect(
-        RbacServiceMockStub.createClusterRoleBinding
-      ).toHaveBeenCalledTimes(1);
       expect(console.log).not.toHaveBeenCalled();
 
       done();

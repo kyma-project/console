@@ -98,8 +98,8 @@ export class RoleBindingModalComponent implements OnDestroy {
     this.isActive = true;
     if (this.isGlobalPermissionsView) {
       this.selectedKind = 'ClusterRole';
-      this.selectKind();
     }
+    this.selectKind();
     this.modalService
       .open(this.createBindingModal, {
         ...DEFAULT_MODAL_CONFIG,
