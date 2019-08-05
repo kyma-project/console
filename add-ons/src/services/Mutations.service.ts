@@ -122,11 +122,11 @@ const useMutations = () => {
   >(REMOVE_CLUSTER_ADDONS_CONFIGURATION_URLS_MUTATION);
 
   return {
-    createAddonsConfiguration: createAddonsConfiguration,
-    updateAddonsConfiguration: updateAddonsConfiguration,
-    deleteAddonsConfiguration: deleteAddonsConfiguration,
-    addAddonsConfigurationUrls: addAddonsConfigurationUrls,
-    removeAddonsConfigurationUrls: removeAddonsConfigurationUrls,
+    createAddonsConfiguration,
+    updateAddonsConfiguration,
+    deleteAddonsConfiguration,
+    addAddonsConfigurationUrls,
+    removeAddonsConfigurationUrls,
   };
 };
 
