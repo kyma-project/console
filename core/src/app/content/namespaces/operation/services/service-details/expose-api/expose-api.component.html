@@ -49,26 +49,9 @@
         <div fd-action-bar-description class="header-columns">
           <div class="fd-container fd-container--fluid">
             <div *ngIf="apiDefinition" class="fd-col--4">
-              Hostname
+              URL
               <span class="header-columns__value">
-                <a
-                  class="display-inline"
-                  title="Open link in a new tab"
-                  [href]="getHostnameURL(hostname, domain)"
-                  target="_blank"
-                >
-                  {{ hostname }}{{ domain }}
-                  <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
-                </a>
-                <fd-icon
-                  ngxClipboard
-                  [cbContent]="getHostnameURL(hostname, domain)"
-                  class="fd-has-margin-left-tiny clickable align-middle"
-                  [glyph]="'copy'"
-                  [size]="'m'"
-                  title="Copy to clipboard"
-                >
-                </fd-icon>
+                <app-url-link url="{{ url }}"></app-url-link>
               </span>
             </div>
           </div>
