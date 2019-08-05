@@ -3,76 +3,98 @@ import createContainer from 'constate';
 import { useMutation } from 'react-apollo-hooks';
 import { ConfigurationLabels } from '../types';
 
-export const CREATE_ADDONS_CONFIGURATION_MUTATION = gql`
-  mutation createAddonsConfiguration(
+export const CREATE_CLUSTER_ADDONS_CONFIGURATION_MUTATION = gql`
+  mutation createClusterAddonsConfiguration(
     $name: String!
     $urls: [String!]!
     $labels: Labels
   ) {
-    createAddonsConfiguration(name: $name, urls: $urls, labels: $labels) {
+    createClusterAddonsConfiguration(
+      name: $name
+      urls: $urls
+      labels: $labels
+    ) {
       name
     }
   }
 `;
 
-export const UPDATE_ADDONS_CONFIGURATION_MUTATION = gql`
-  mutation updateAddonsConfiguration(
+export const UPDATE_CLUSTER_ADDONS_CONFIGURATION_MUTATION = gql`
+  mutation updateClusterAddonsConfiguration(
     $name: String!
     $urls: [String!]!
     $labels: Labels
   ) {
-    updateAddonsConfiguration(name: $name, urls: $urls, labels: $labels) {
+    updateClusterAddonsConfiguration(
+      name: $name
+      urls: $urls
+      labels: $labels
+    ) {
       name
     }
   }
 `;
 
-export const DELETE_ADDONS_CONFIGURATION_MUTATION = gql`
-  mutation deleteAddonsConfiguration($name: String!) {
-    deleteAddonsConfiguration(name: $name) {
+export const DELETE_CLUSTER_ADDONS_CONFIGURATION_MUTATION = gql`
+  mutation deleteClusterAddonsConfiguration($name: String!) {
+    deleteClusterAddonsConfiguration(name: $name) {
       name
     }
   }
 `;
 
-export const ADD_ADDONS_CONFIGURATION_URLS_MUTATION = gql`
-  mutation addAddonsConfigurationURLs($name: String!, $urls: [String!]!) {
-    addAddonsConfigurationURLs(name: $name, urls: $urls) {
+export const ADD_CLUSTER_ADDONS_CONFIGURATION_URLS_MUTATION = gql`
+  mutation addClusterAddonsConfigurationURLs(
+    $name: String!
+    $urls: [String!]!
+  ) {
+    addClusterAddonsConfigurationURLs(name: $name, urls: $urls) {
       name
     }
   }
 `;
 
-export const REMOVE_ADDONS_CONFIGURATION_URLS_MUTATION = gql`
-  mutation removeAddonsConfigurationURLs($name: String!, $urls: [String!]!) {
-    removeAddonsConfigurationURLs(name: $name, urls: $urls) {
+export const REMOVE_CLUSTER_ADDONS_CONFIGURATION_URLS_MUTATION = gql`
+  mutation removeClusterAddonsConfigurationURLs(
+    $name: String!
+    $urls: [String!]!
+  ) {
+    removeClusterAddonsConfigurationURLs(name: $name, urls: $urls) {
       name
     }
   }
 `;
 
-interface CreateAddonsConfigurationVariables {
+export const RESYNC_CLUSTER_ADDONS_CONFIGURATION_MUTATION = gql`
+  mutation resyncClusterAddonsConfiguration($name: String!) {
+    resyncClusterAddonsConfiguration(name: $name) {
+      name
+    }
+  }
+`;
+
+interface CreateClusterAddonsConfigurationVariables {
   name: string;
   urls: string[];
   labels: ConfigurationLabels;
 }
 
-interface UpdateAddonsConfigurationVariables {
+interface UpdateClusterAddonsConfigurationVariables {
   name: string;
   urls: string[];
   labels: ConfigurationLabels;
 }
 
-interface DeleteAddonsConfigurationVariables {
+interface DeleteClusterAddonsConfigurationVariables {
   name: string;
 }
 
-interface AddAddonsConfigurationUrlsVariables {
+interface AddClusterAddonsConfigurationUrlsVariables {
   name: string;
   urls: string[];
 }
 
-interface RemoveAddonsConfigurationUrlsVariables {
+interface RemoveClusterAddonsConfigurationUrlsVariables {
   name: string;
   urls: string[];
 }
@@ -80,31 +102,31 @@ interface RemoveAddonsConfigurationUrlsVariables {
 const useMutations = () => {
   const createAddonsConfiguration = useMutation<
     {},
-    CreateAddonsConfigurationVariables
-  >(CREATE_ADDONS_CONFIGURATION_MUTATION);
+    CreateClusterAddonsConfigurationVariables
+  >(CREATE_CLUSTER_ADDONS_CONFIGURATION_MUTATION);
   const updateAddonsConfiguration = useMutation<
     {},
-    UpdateAddonsConfigurationVariables
-  >(UPDATE_ADDONS_CONFIGURATION_MUTATION);
+    UpdateClusterAddonsConfigurationVariables
+  >(UPDATE_CLUSTER_ADDONS_CONFIGURATION_MUTATION);
   const deleteAddonsConfiguration = useMutation<
     {},
-    DeleteAddonsConfigurationVariables
-  >(DELETE_ADDONS_CONFIGURATION_MUTATION);
+    DeleteClusterAddonsConfigurationVariables
+  >(DELETE_CLUSTER_ADDONS_CONFIGURATION_MUTATION);
   const addAddonsConfigurationUrls = useMutation<
     {},
-    AddAddonsConfigurationUrlsVariables
-  >(ADD_ADDONS_CONFIGURATION_URLS_MUTATION);
+    AddClusterAddonsConfigurationUrlsVariables
+  >(ADD_CLUSTER_ADDONS_CONFIGURATION_URLS_MUTATION);
   const removeAddonsConfigurationUrls = useMutation<
     {},
-    RemoveAddonsConfigurationUrlsVariables
-  >(REMOVE_ADDONS_CONFIGURATION_URLS_MUTATION);
+    RemoveClusterAddonsConfigurationUrlsVariables
+  >(REMOVE_CLUSTER_ADDONS_CONFIGURATION_URLS_MUTATION);
 
   return {
-    createAddonsConfiguration,
-    updateAddonsConfiguration,
-    deleteAddonsConfiguration,
-    addAddonsConfigurationUrls,
-    removeAddonsConfigurationUrls,
+    createAddonsConfiguration: createAddonsConfiguration,
+    updateAddonsConfiguration: updateAddonsConfiguration,
+    deleteAddonsConfiguration: deleteAddonsConfiguration,
+    addAddonsConfigurationUrls: addAddonsConfigurationUrls,
+    removeAddonsConfigurationUrls: removeAddonsConfigurationUrls,
   };
 };
 
