@@ -4,13 +4,13 @@ import { AppConfig } from '../../app.config';
 @Injectable()
 export class GenericHelpersService {
   public getURL = ({
-    schema = 'https',
+    scheme = 'https',
     host,
     domain = AppConfig.domain,
     port = '',
     path = '/'
   }: {
-    schema?: string;
+    scheme?: string;
     host: string;
     domain?: string;
     port?: string;
@@ -18,7 +18,7 @@ export class GenericHelpersService {
   }) => {
     const hostname = this.addDomainIfMissing(host, domain);
     const hostnameWithPort = port ? `${hostname}:${port}` : hostname;
-    return `${schema}://${hostnameWithPort}${path}`;
+    return `${scheme}://${hostnameWithPort}${path}`;
   };
 
   private addDomainIfMissing = (hostname: string, domain: string): string =>

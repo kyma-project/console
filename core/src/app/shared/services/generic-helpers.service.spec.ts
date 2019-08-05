@@ -27,12 +27,12 @@ describe('GenericHelpersService', () => {
       ).toBe('https://testhostname.testdomain/');
     });
 
-    it('sets schema', () => {
+    it('sets scheme', () => {
       expect(
         genericHelpers.getURL({
           host: 'testhostname',
           domain: 'testdomain',
-          schema: 'http'
+          scheme: 'http'
         })
       ).toBe('http://testhostname.testdomain/');
     });
@@ -60,7 +60,7 @@ describe('GenericHelpersService', () => {
     it('sets everything', () => {
       expect(
         genericHelpers.getURL({
-          schema: 'http',
+          scheme: 'http',
           host: 'testhostname',
           domain: 'testdomain',
           port: '80',
