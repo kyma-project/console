@@ -48,6 +48,7 @@ export const GET_SERVICE_CLASS = gql`
         ${docsTopic}
           assets {
              name
+             metadata
              type
              files(filterExtensions: $filterExtensions){
               url
@@ -76,6 +77,7 @@ export const GET_SERVICE_CLASS = gql`
          ${docsTopic}
           assets {
              name
+             metadata
              type
              files(filterExtensions: $filterExtensions){
               url
@@ -87,6 +89,7 @@ export const GET_SERVICE_CLASS = gql`
         ${docsTopic}
           assets {
              name
+             metadata
              type
              files(filterExtensions: $filterExtensions){
               url

@@ -26,6 +26,7 @@ const docsTopic = `
       description
       assets {
           name
+          metadata
           type
           files {
             url

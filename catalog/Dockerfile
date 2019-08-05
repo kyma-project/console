@@ -1,6 +1,8 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
 # If you want to build image without local changes of react components, delete 16 line of code.
 
+# copying .env in 13 line is a temporary solution for issue with babel-loader package in react-scripts 
+
 FROM node:10.11.0-alpine as ui-generator
 
 WORKDIR /app
@@ -8,7 +10,7 @@ WORKDIR /app
 COPY licenses/ /app/licenses/
 
 # Install app dependencies
-COPY package.json package-lock.json config-overrides.js /app/
+COPY package.json package-lock.json config-overrides.js .env /app/
 RUN npm install --no-optional
 
 # Copy sources
@@ -17,7 +19,6 @@ COPY public /app/public
 
 # Copy local changes from react-components package
 COPY react-components/index.js /app/node_modules/@kyma-project/react-components/lib/index.js
-COPY react-odata/lib /app/node_modules/@kyma-project/odata-react/lib
 
 # Set env variables 
 ENV PRODUCTION true

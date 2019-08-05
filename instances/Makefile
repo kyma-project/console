@@ -18,7 +18,6 @@ endif
 
 build:
 	../scripts/prepare-react-components.sh -d react-components
-	../scripts/prepare-react-odata.sh -d react-odata
 	npm run build
 
 validate:

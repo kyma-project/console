@@ -25,3 +25,4 @@ yarn-error.log*
 luigiConfig.bundle.js
 
 /react-components
+public-luigi/luigi-core

@@ -106,6 +106,7 @@ export default class DocsContentContainer extends Component {
                 docsTypesLength={docsTypesLength}
                 docsLoaded={this.props.docsLoaded}
                 setDocsInitialLoadStatus={this.props.setDocsInitialLoadStatus}
+                docsTopic={docs}
               />
             );
           })}

@@ -1,12 +1,14 @@
 import { getTenants } from './helpers/navigation-helpers';
 
+const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
+
 const navigation = {
   nodes: () => [
     {
       hideSideNav: true,
       pathSegment: 'overview',
       label: 'Overview',
-      viewUrl: 'http://localhost:8888/',
+      viewUrl: compassMfUrl,
     },
     {
       hideSideNav: true,
@@ -25,7 +27,7 @@ const navigation = {
               keepSelectedForChildren: true,
               pathSegment: 'runtimes',
               label: 'Runtimes',
-              viewUrl: 'http://localhost:8888/runtimes',
+              viewUrl: compassMfUrl + '/runtimes',
               children: [
                 {
                   pathSegment: 'details',
@@ -33,7 +35,7 @@ const navigation = {
                     {
                       pathSegment: ':runtimeId',
                       label: 'Runtimes',
-                      viewUrl: 'http://localhost:8888/runtime/:runtimeId',
+                      viewUrl: compassMfUrl + '/runtime/:runtimeId',
                     },
                   ],
                 },
@@ -43,7 +45,7 @@ const navigation = {
               keepSelectedForChildren: true,
               pathSegment: 'applications',
               label: 'Applications',
-              viewUrl: 'http://localhost:8888/applications',
+              viewUrl: compassMfUrl + '/applications',
               children: [
                 {
                   pathSegment: 'details',
@@ -51,8 +53,7 @@ const navigation = {
                     {
                       pathSegment: ':applicationId',
                       label: 'Applications',
-                      viewUrl:
-                        'http://localhost:8888/application/:applicationId',
+                      viewUrl: compassMfUrl + '/application/:applicationId',
                     },
                   ],
                 },
@@ -62,7 +63,7 @@ const navigation = {
               keepSelectedForChildren: true,
               pathSegment: 'scenarios',
               label: 'Scenarios',
-              viewUrl: 'http://localhost:8888/scenarios',
+              viewUrl: compassMfUrl + '/scenarios',
             },
           ],
         },

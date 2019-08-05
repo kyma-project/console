@@ -1,0 +1,84 @@
+{
+  "name": "@kyma-project/generic-documentation",
+  "version": "0.1.0",
+  "private": false,
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@kyma-project/documentation-component": "0.0.1-alpha.1",
+    "@kyma-project/odata-react": "https://github.com/kyma-incubator/documentation-component/raw/master/packages/odata-react/kyma-project-odata-react-0.1.2.tgz",
+    "@kyma-project/dc-markdown-render-engine": "0.0.1-alpha.1",
+    "@kyma-project/dc-open-api-render-engine": "0.0.1-alpha.1",
+    "@kyma-project/dc-async-api-render-engine": "0.0.1-alpha.1",
+    "@kyma-project/dc-odata-render-engine": "0.0.1-alpha.1",
+    "@braintree/sanitize-url": "^3.1.0",
+    "fundamental-react": "0.6.1",
+    "css.escape": "^1.5.1",
+    "react": "^16.8.6",
+    "react-copy-to-clipboard": "^5.0.1",
+    "react-sticky": "^6.0.3",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.24",
+    "@types/react": "^16.8.22",
+    "@types/react-copy-to-clipboard": "^4.2.6",
+    "@types/react-sticky": "^6.0.3",
+    "@types/styled-components": "^4.1.16",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
+    "react-scripts": "^3.0.1",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "tslint-react-hooks": "^2.1.0",
+    "typescript": "^3.5.2"
+  },
+  "peerDependencies": {
+    "styled-components": ">= 3.4.10"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "tsc && npm run copy-assets-open-api",
+    "test": "react-scripts test; exit 0",
+    "eject": "react-scripts eject",
+    "lint-check": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose && prettier --config ../../.prettierrc --check 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-fix": "tslint -c tslint.json --project tsconfig.json 'src/**/*.{ts,tsx}' --format verbose --fix && prettier --config ../../.prettierrc --write 'src/**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "conflict-check": "tslint-config-prettier-check ./tslint.json",
+    "copy-assets-open-api": "cp -r ./src/render-engines/open-api/styles/assets ./lib/render-engines/open-api/styles/assets"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "**/*.{js,jsx,json,css,html,yaml}": [
+        "prettier --config ../../.prettierrc --write",
+        "git add"
+      ],
+      "**/*.{ts,tsx}": [
+        "tslint -c tslint.json --project tsconfig.json --format verbose --fix",
+        "prettier --config ../../.prettierrc --write"
+      ]
+    },
+    "ignore": [
+      "package.json",
+      "package-lock.json"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "files": [
+    "/lib",
+    "./README.md",
+    "./LICENSE"
+  ]
+}

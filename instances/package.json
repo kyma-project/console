@@ -4,10 +4,8 @@
   "version": "0.5.0",
   "private": true,
   "dependencies": {
-    "@braintree/sanitize-url": "^3.1.0",
-    "@kyma-project/asyncapi-react": "0.2.0",
+    "@kyma-project/generic-documentation": "https://github.com/magicmatatjahu/console/raw/integrate-docs-component-2/components/generic-documentation/kyma-project-generic-documentation-0.1.0.tgz",
     "@kyma-project/luigi-client": "0.4.9",
-    "@kyma-project/odata-react": "0.1.2",
     "@kyma-project/react-components": "0.0.43",
     "ajv": "^6.0.0",
     "apollo-cache-inmemory": "^1.3.7",
@@ -19,7 +17,6 @@
     "apollo-link-http": "^1.5.5",
     "apollo-link-state": "^0.4.2",
     "apollo-utilities": "^1.0.24",
-    "css.escape": "^1.5.1",
     "deep-copy": "^1.4.2",
     "deep-equal": "^1.0.1",
     "graphql": "^14.0.2",
@@ -34,16 +31,13 @@
     "react-router-dom": "4.2.2",
     "styled-components": "^3.4.10",
     "styled-components-grid": "^2.2.1",
-    "subscriptions-transport-ws": "^0.9.15",
-    "swagger-ui-dist": "^3.13.4"
+    "subscriptions-transport-ws": "^0.9.15"
   },
   "devDependencies": {
-    "immutable": "^4.0.0-rc.12",
     "mkdirp": "^0.5.1",
     "prettier": "^1.16.4",
     "react-app-rewired": "^2.0.1",
-    "react-immutable-proptypes": "^2.1.0",
-    "react-scripts": "^2.1.3",
+    "react-scripts": "^3.0.1",
     "safe-buffer": "5.1.2",
     "source-map-explorer": "^1.6.0"
   },

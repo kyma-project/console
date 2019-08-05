@@ -6,6 +6,26 @@ import { ConfigurationsService } from './index';
 import { HELM_BROKER_IS_DEVELOPMENT_MODE, ERRORS } from '../constants';
 const URL_ERRORS = ERRORS.URL;
 
+const HTTP_PROTOCOL = 'http://';
+const HTTPS_PROTOCOL = 'https://';
+const GIT_PREFIX = 'git::';
+const GITHUB_PREFIX = 'github.com/';
+const BITBUCKET_PREFIX = 'bitbucket.org/';
+
+const DEVELOPMENT_MODE_PREFIXES = [
+  HTTP_PROTOCOL,
+  HTTPS_PROTOCOL,
+  GIT_PREFIX,
+  GITHUB_PREFIX,
+  BITBUCKET_PREFIX,
+];
+const PRODUCTION_MODE_PREFIXES = [
+  HTTPS_PROTOCOL,
+  GIT_PREFIX,
+  GITHUB_PREFIX,
+  BITBUCKET_PREFIX,
+];
+
 const useUrls = () => {
   const { originalConfigs } = useContext(ConfigurationsService);
 
@@ -19,12 +39,12 @@ const useUrls = () => {
       return URL_ERRORS.ALREADY_EXISTS;
     }
     if (HELM_BROKER_IS_DEVELOPMENT_MODE) {
-      if (!(url.startsWith('https://') || url.startsWith('http://'))) {
+      if (!DEVELOPMENT_MODE_PREFIXES.some(prefix => url.startsWith(prefix))) {
         return URL_ERRORS.STARTS_WITH_HTTP.DEVELOPMENT_MODE;
       }
     } else {
-      if (!url.startsWith('https://')) {
-        return URL_ERRORS.STARTS_WITH_HTTP.NOT_DEVELOPMENT_MODE;
+      if (!PRODUCTION_MODE_PREFIXES.some(prefix => url.startsWith(prefix))) {
+        return URL_ERRORS.STARTS_WITH_HTTP.PRODUCTION_MODE;
       }
     }
     return '';

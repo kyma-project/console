@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { GenericComponent } from '@kyma-project/generic-documentation';
 import { NotificationMessage, Spinner } from '@kyma-project/react-components';
-import { DocsComponent } from '@kyma-project/docs-component';
 
 class DocsContent extends Component {
   componentDidMount() {
@@ -21,7 +21,7 @@ class DocsContent extends Component {
   };
 
   render() {
-    let { docs, docsLoaded, error } = this.props;
+    let { docs, docsLoaded, error, docsTopic } = this.props;
 
     if (!docsLoaded) {
       return <Spinner />;
@@ -51,7 +51,7 @@ class DocsContent extends Component {
       return null;
     }
 
-    return <DocsComponent sources={docs} navigation={true} />;
+    return <GenericComponent docsTopic={docsTopic} layout="content-ui" />;
   }
 }
 

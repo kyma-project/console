@@ -1,6 +1,8 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
 # If you want to build image without local changes of react components, delete 20 line of code.
 
+# copying .env in 15 line is a temporary solution for issue with babel-loader package in react-scripts 
+
 FROM node:10.11.0-alpine as ui-generator
 
 WORKDIR /app
@@ -10,7 +12,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache curl
 
 # Install app dependencies
-COPY package.json package-lock.json config-overrides.js /app/
+COPY package.json package-lock.json config-overrides.js .env /app/
 RUN npm install --no-optional
 
 # Copy sources

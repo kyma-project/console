@@ -111,7 +111,10 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
 
   // Form
   const onSubmit = () => {
-    const urlsToCreated: string[] = [...urls];
+    let urlsToCreated: string[] = [...urls];
+    if (urlField.value && urlField.valid) {
+      urlsToCreated = [urlField.value, ...urlsToCreated];
+    }
     const extractedLabels = extractLabels();
 
     createAddonsConfiguration({

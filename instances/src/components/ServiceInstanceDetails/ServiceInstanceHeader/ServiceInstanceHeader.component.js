@@ -64,9 +64,7 @@ const ServiceInstanceHeader = ({
           onShow={() => LuigiClient.uxManager().addBackdrop()}
           onHide={() => LuigiClient.uxManager().removeBackdrop()}
         >
-          {`${serviceInstanceConstants.instanceDeleteConfirm} "${
-            serviceInstance.name
-          }"?`}
+          {`${serviceInstanceConstants.instanceDeleteConfirm} "${serviceInstance.name}"?`}
         </Modal>
       </Toolbar>
 

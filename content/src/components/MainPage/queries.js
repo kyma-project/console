@@ -13,6 +13,7 @@ export const CLUSTER_DOCS_TOPICS = gql`
       groupName
       assets {
         name
+        metadata
         type
         files(filterExtensions: $filterExtensions) {
           url

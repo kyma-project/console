@@ -188,9 +188,7 @@ export class ServiceInstancesTable extends Component {
             })(),
             <Modal
               title="Warning"
-              content={`Are you sure you want to delete instance "${
-                instance.name
-              }"?`}
+              content={`Are you sure you want to delete instance "${instance.name}"?`}
               confirmText="Delete"
               onConfirm={() => handleDelete(instance)}
               modalOpeningComponent={deleteButton}

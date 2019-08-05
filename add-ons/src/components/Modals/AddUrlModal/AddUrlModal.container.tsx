@@ -67,7 +67,11 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
   const urlField = useInput('', validateUrlField);
 
   const onSubmit = () => {
-    const urlsToCreated: string[] = [...urls];
+    let urlsToCreated: string[] = [...urls];
+    if (urlField.value && urlField.valid) {
+      urlsToCreated = [urlField.value, ...urlsToCreated];
+    }
+
     addAddonsConfigurationUrls({
       variables: {
         name: getConfigName(),

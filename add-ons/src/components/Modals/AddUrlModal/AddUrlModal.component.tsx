@@ -67,7 +67,10 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
         ))
       : null;
 
-  const disabledConfirm = !urls.length || urlField.error;
+  let disabledConfirm = urlField.error;
+  if (!disabledConfirm && !urls.length) {
+    disabledConfirm = !(urlField.value && urlField.valid);
+  }
 
   return (
     <Modal

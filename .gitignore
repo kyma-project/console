@@ -1,10 +1,20 @@
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 node_modules
-*.DS_Store
+.idea/
+.npmrc
+
 npm-debug.log*
 lerna-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.idea/
-.npmrc
+.idea
+.vscode
+
+**/lib/**/*
 
 /**/whitesource.config.json

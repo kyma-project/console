@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const DocsWrapper = styled.div`
   .fd-action-bar {
     padding: 30px 0 0;
+    margin-left: 310px;
   }
 `;
 

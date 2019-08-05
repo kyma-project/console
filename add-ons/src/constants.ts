@@ -75,9 +75,9 @@ export const MODAL = {
 };
 
 const HELP_URL_FIELD_DEVELOPMENT_MODE =
-  'The URL must be unique for a given configuration and start with the http(s) protocol.';
+  'The URL must be unique for a given configuration and start with the http(s) protocol or one of the following prefixes: git::, github.com/, bitbucket.org/';
 const HELP_URL_FIELD_NOT_DEVELOPMENT_MODE =
-  'The URL must be unique for a given configuration and start with the https protocol.';
+  'The URL must be unique for a given configuration and start with the https protocol or one of the following prefixes: git::, github.com/, bitbucket.org/';
 export const HELP = {
   URL_FIELD: HELM_BROKER_IS_DEVELOPMENT_MODE
     ? HELP_URL_FIELD_DEVELOPMENT_MODE
@@ -109,8 +109,10 @@ export const ERRORS = {
   URL: {
     ALREADY_EXISTS: 'This URL already exists in the configuration.',
     STARTS_WITH_HTTP: {
-      DEVELOPMENT_MODE: 'URL must start with the http(s) protocol.',
-      NOT_DEVELOPMENT_MODE: 'URL must start with the https protocol.',
+      DEVELOPMENT_MODE:
+        'URL must start with the http(s) protocol or one of the following prefixes: git::, github.com/, bitbucket.org/',
+      PRODUCTION_MODE:
+        'URL must start with the https protocol or one of the following prefixes: git::, github.com/, bitbucket.org/',
     },
     YAML_EXTENSION: 'URL must have .yaml or .yml extension.',
     RESOURCE_NOT_EXISTS: "URL doesn't exist.",
