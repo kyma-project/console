@@ -217,6 +217,8 @@ export class RoleBindingModalComponent implements OnDestroy {
 
   public filterKind = (content: string[], searchTerm: string): string[] => {
     const searchTermLower = searchTerm.toLocaleLowerCase();
-    return this.isSelectedKindCorrect() ? content : content.filter(term => term.toLocaleLowerCase().includes(searchTermLower));
+    return content.indexOf(this.selectedKind) >= 0
+      ? content
+      : content.filter(term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0);
   };
 }
