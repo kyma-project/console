@@ -27,17 +27,20 @@ export default function CredentialsForm({ updateState }) {
     <form>
       <TextFormItem
         inputKey="client-id"
+        required
         type="password"
         label="Client ID"
         onChange={e => updateOAuth('clientId', e.target.value)}
       />
       <TextFormItem
         inputKey="client-secret"
+        required
         type="password"
         label="Client Secret"
         onChange={e => updateOAuth('clientSecret', e.target.value)}
       />
       <TextFormItem
+        required
         inputKey="url"
         type="url"
         label="Url"
