@@ -93,7 +93,7 @@ export class RoleBindingModalComponent implements OnDestroy {
       return this.getRoles();
     }
   }
-  
+
   public show() {
     this.isActive = true;
     if (this.isGlobalPermissionsView) {
@@ -214,4 +214,9 @@ export class RoleBindingModalComponent implements OnDestroy {
       : `The user group name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name').`;
     return regex.test(this.userOrGroup);
   }
+
+  public filterKind = (content: string[], searchTerm: string): string[] => {
+    const searchTermLower = searchTerm.toLocaleLowerCase();
+    return this.isSelectedKindCorrect() ? content : content.filter(term => term.toLocaleLowerCase().includes(searchTermLower));
+  };
 }

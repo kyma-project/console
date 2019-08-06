@@ -72,18 +72,19 @@
           <div fd-form-item *ngIf="!isGlobalPermissionsView">
             <label fd-form-label>Kind *</label>
 
-            <fd-combobox 
+            <fd-combobox
               [(ngModel)]="selectedKind"
               [dropdownValues]="kinds"
               [placeholder]="'Select Kind'"
               (ngModelChange)="selectKind()"
+              [filterFn]="filterKind"
             >
             </fd-combobox>
           </div>
 
           <div fd-form-item>
             <label fd-form-label>Role *</label>
-            <fd-combobox 
+            <fd-combobox
               [(ngModel)]="selectedRole"
               [dropdownValues]="roles"
               [placeholder]="'Select Role'"
