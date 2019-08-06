@@ -109,8 +109,9 @@ import { ConfigMapsHeaderRendererComponent } from './content/namespaces/operatio
 import { StatusLabelComponent } from './shared/components/status-label/status-label.component';
 import { TooltipComponent } from './shared/components/tooltip/tooltip.component';
 import { LuigiClientCommunicationDirective } from './shared/directives/luigi-client-communication/luigi-client-communication.directive';
+import {FilterAllOnSelectedDirective} from './shared/directives/filter-all-on-selected/filter-all-on-selected.directive';
 
-import { FundamentalNgxModule } from 'fundamental-ngx';
+import { FundamentalNgxModule} from 'fundamental-ngx';
 import { GraphqlMutatorModalComponent } from 'shared/components/json-editor-modal/graphql-mutator-modal.component';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
 import { ApolloModule, Apollo } from 'apollo-angular';
@@ -207,7 +208,8 @@ import { GenericHelpersService } from './shared/services/generic-helpers.service
     LabelsInputComponent,
     StatusLabelComponent,
     TooltipComponent,
-    LuigiClientCommunicationDirective
+    LuigiClientCommunicationDirective,
+    FilterAllOnSelectedDirective,
   ],
   imports: [
     BrowserModule,
