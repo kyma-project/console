@@ -10,6 +10,7 @@ import Applications from './components/Applications/Applications.container';
 import Scenarios from './components/Scenarios/Scenarios.container';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
+import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
@@ -64,7 +65,20 @@ class App extends React.Component {
             )}
           />
           <Route path="/scenarios" exact component={Scenarios} />
-          <Route path="/metadatadefinitions" exact component={MetadataDefinitions} />
+          <Route
+            path="/metadatadefinitions"
+            exact
+            component={MetadataDefinitions}
+          />
+          <Route
+            path="/metadatadefinition/:definitionKey"
+            exact
+            render={({ match }) => (
+              <MetadataDefinitionDetails
+                definitionKey={match.params.definitionKey}
+              />
+            )}
+          />
         </Router>
       </div>
     );

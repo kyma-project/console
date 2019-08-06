@@ -70,8 +70,21 @@ const navigation = {
               pathSegment: 'metadatadefinitions',
               label: 'Metadata Definitions',
               viewUrl: compassMfUrl + '/metadatadefinitions',
-              category: 'SETTINGS'
-            }
+              category: 'SETTINGS',
+              children: [
+                {
+                  pathSegment: 'details',
+                  children: [
+                    {
+                      pathSegment: ':definitionKey',
+                      label: 'Metadata Definition',
+                      viewUrl:
+                        compassMfUrl + '/metadatadefinition/:definitionKey',
+                    },
+                  ],
+                },
+              ],
+            },
           ],
         },
       ],
