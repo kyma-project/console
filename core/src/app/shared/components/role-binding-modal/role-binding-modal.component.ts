@@ -82,7 +82,7 @@ export class RoleBindingModalComponent implements OnDestroy {
   }
 
   isSelectedKindCorrect() {
-    return this.selectedKind === 'Role' || this.selectedKind === 'ClusterRole'
+    return this.selectedKind === 'Role' || this.selectedKind === 'ClusterRole';
   }
 
   selectKind() {
@@ -219,6 +219,8 @@ export class RoleBindingModalComponent implements OnDestroy {
     const searchTermLower = searchTerm.toLocaleLowerCase();
     return content.indexOf(this.selectedKind) >= 0
       ? content
-      : content.filter(term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0);
+      : content.filter(
+          term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0
+        );
   };
 }
