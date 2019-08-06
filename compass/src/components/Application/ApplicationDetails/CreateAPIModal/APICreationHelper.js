@@ -1,3 +1,5 @@
+import { CREDENTIAL_TYPE_OAUTH } from './Forms/CredentialForms/OAuthCredentialsForm';
+
 // create graphql-ready form of API
 export function createAPI({ apiData, credentialsData }) {
   const {
@@ -10,6 +12,15 @@ export function createAPI({ apiData, credentialsData }) {
     apiSubType,
   } = apiData;
 
+  let defaultAuth = null;
+  if (credentialsData.type === CREDENTIAL_TYPE_OAUTH) {
+    defaultAuth = {
+      credential: {
+        oauth: credentialsData.oAuth,
+      },
+    };
+  }
+
   return {
     name,
     description,
@@ -20,11 +31,7 @@ export function createAPI({ apiData, credentialsData }) {
       format: actualFileType,
       type: apiSubType,
     },
-    defaultAuth: {
-      credential: {
-        oauth: credentialsData.oAuth,
-      },
-    },
+    defaultAuth,
   };
 }
 

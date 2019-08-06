@@ -9,7 +9,7 @@ import { createAPI, createEventAPI } from './APICreationHelper';
 import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
 
 import APIDataForm from './Forms/ApiDataForm';
-import CredentialsForm from './Forms/CredentialsForm';
+import CredentialsForm, { CREDENTIAL_TYPE_NONE } from './Forms/CredentialsForm';
 
 export default class CreateAPIModal extends React.Component {
   constructor(props) {
@@ -38,6 +38,8 @@ export default class CreateAPIModal extends React.Component {
       },
 
       credentialsData: {
+        type: CREDENTIAL_TYPE_NONE,
+        isFormReady: false,
         oAuth: {
           clientId: '',
           clientSecret: '',
@@ -79,13 +81,12 @@ export default class CreateAPIModal extends React.Component {
     }
 
     if (mainAPIType === 'API') {
-      const { clientId, clientSecret, url } = this.state.credentialsData.oAuth;
-      if (
-        !targetURL.trim() ||
-        !clientId.trim() ||
-        !clientSecret.trim() ||
-        !url.trim()
-      ) {
+      if (!targetURL.trim()) {
+        return false;
+      }
+
+      const { type, isFormReady } = this.state.credentialsData;
+      if (type !== CREDENTIAL_TYPE_NONE && !isFormReady) {
         return false;
       }
     }
@@ -115,6 +116,7 @@ export default class CreateAPIModal extends React.Component {
 
   render() {
     const mainAPIType = this.state.apiData.mainAPIType;
+    const credentialsType = this.state.credentialsData.type;
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
     const isAPI = mainAPIType === 'API';
@@ -140,7 +142,10 @@ export default class CreateAPIModal extends React.Component {
           title="Credentials"
           disabled={!isAPI}
         >
-          <CredentialsForm updateState={this.updateState('credentialsData')} />
+          <CredentialsForm
+            updateState={this.updateState('credentialsData')}
+            credentialsType={credentialsType}
+          />
         </Tab>
         {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
       </TabGroup>
