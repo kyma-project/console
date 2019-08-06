@@ -50,3 +50,12 @@ export const GET_RUNTIME = gql`
     }
   }
 `;
+
+export const SET_RUNTIME_SCENARIOS = gql`
+  mutation setRuntimeLabel($id: ID!, $scenarios: Any!) {
+    setRuntimeLabel(runtimeID: $id, key: "scenarios", value: $scenarios) {
+      key
+      value
+    }
+  }
+`;

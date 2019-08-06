@@ -2,8 +2,10 @@ import React from 'react';
 import { Panel } from '@kyma-project/react-components';
 
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
-import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.component';
+import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.container';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+
+export const RuntimeQueryContext = React.createContext(null);
 
 const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
   const runtime = (runtimeQuery && runtimeQuery.runtime) || {};
@@ -20,22 +22,19 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
     return `Error! ${error.message}`;
   }
 
-  let scenarios = [];
-  if (runtime.labels && runtime.labels.scenarios) {
-    scenarios = runtime.labels.scenarios.map(scenario => {
-      return { scenario };
-    }); // list requires a list of objects
-  }
+  const labels = runtimeQuery.runtime.labels;
+  const scenarios = labels && labels.scenarios ? labels.scenarios : [];
+
   return (
-    <>
+    <RuntimeQueryContext.Provider value={runtimeQuery}>
       <RuntimeDetailsHeader runtime={runtime} deleteRuntime={deleteRuntime} />
 
       <section className="fd-section">
         <Panel>
-          <RuntimeScenarios scenarios={scenarios} />
+          <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
         </Panel>
       </section>
-    </>
+    </RuntimeQueryContext.Provider>
   );
 };
 

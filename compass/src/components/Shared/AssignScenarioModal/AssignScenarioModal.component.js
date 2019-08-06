@@ -90,7 +90,8 @@ export default function AssignScenarioModal(props) {
       </p>
     );
 
-    const allScenarios = props.scenariosQuery.scenarios.schema.items.enum;
+    const schema = props.scenariosQuery.scenarios.schema;
+    const allScenarios = schema ? schema.items.enum : [];
     const availableScenarios = allScenarios
       .filter(scenario => editedScenarios.indexOf(scenario) === -1)
       .map(scenario => (
