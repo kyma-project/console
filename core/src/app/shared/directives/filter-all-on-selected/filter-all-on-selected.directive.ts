@@ -8,6 +8,7 @@ export class FilterAllOnSelectedDirective {
   private _combobox = null;
 
   constructor(private _viewContainerRef: ViewContainerRef) {
+    // Because of fundamental-ngx structure we cannot import ComboboxComponent here, thus the magic
     this._combobox = _viewContainerRef['_data'].componentView.component;
     this._combobox.filterFn = this.filterFn;
   }
