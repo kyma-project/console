@@ -64,11 +64,7 @@ class App extends React.Component {
             )}
           />
           <Route path="/scenarios" exact component={Scenarios} />
-          <Route
-            path="/metadatadefinitions"
-            exact
-            component={MetadataDefinitions}
-          />
+          <Route path="/metadatadefinitions" exact component={MetadataDefinitions} />
         </Router>
       </div>
     );
