@@ -1,4 +1,4 @@
-import {Directive, ViewContainerRef, Inject} from '@angular/core';
+import {Directive, ViewContainerRef} from '@angular/core';
 
 import {ComboboxComponent} from 'fundamental-ngx/lib/combobox/combobox.component';
 
@@ -9,7 +9,7 @@ export class FilterAllOnSelectedDirective {
 
   private combobox: ComboboxComponent = null;
 
-  constructor(@Inject(ComboboxComponent) private _viewContainerRef) {
+  constructor(private _viewContainerRef: ViewContainerRef) {
     if (
       !_viewContainerRef['_data']
       || !_viewContainerRef['_data'].componentView
