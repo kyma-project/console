@@ -10,7 +10,8 @@
     <fd-modal-body>
       <div fd-form-item>
         <label fd-form-label>Namespace *</label>
-        <fd-combobox 
+        <fd-combobox
+          filterAllOnSelected
           [(ngModel)]="namespaceName"
           [dropdownValues]="filteredNamespacesNames"
           [placeholder]="'Select namespace'"
