@@ -14,7 +14,6 @@ class MetadataDefinitions extends React.Component {
   ];
 
   render() {
-    debugger;
     const labelsDefinitionsQuery = this.props.labelDefinitions;
     const labelsDefinitions = labelsDefinitionsQuery.labelDefinitions;
 
