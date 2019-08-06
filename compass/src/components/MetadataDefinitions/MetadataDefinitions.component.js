@@ -10,17 +10,15 @@ class MetadataDefinitions extends React.Component {
     <span className="link">
       <b>{labelDef.key}</b>
     </span>,
-    <span>{labelDef.schema ? 'true' : 'false'}</span>
+    <span>{labelDef.schema ? 'true' : 'false'}</span>,
   ];
 
   render() {
     const labelsDefinitionsQuery = this.props.labelDefinitions;
     const labelsDefinitions = labelsDefinitionsQuery.labelDefinitions;
 
-    const loading =
-      labelsDefinitionsQuery && labelsDefinitionsQuery.loading;
-    const error =
-      labelsDefinitionsQuery && labelsDefinitionsQuery.error;
+    const loading = labelsDefinitionsQuery && labelsDefinitionsQuery.loading;
+    const error = labelsDefinitionsQuery && labelsDefinitionsQuery.error;
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
