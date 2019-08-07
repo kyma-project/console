@@ -4,12 +4,17 @@ import {
   Button,
   Breadcrumb,
   Panel,
+  PanelHead,
+  PanelHeader,
+  PanelBody,
   PanelGrid,
   PanelEntry,
 } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import '../../../shared/styles/header.scss';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+import JSONEditorComponent from '../../Shared/JSONEditor';
 
 const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
@@ -41,19 +46,39 @@ const MetadataDefinitionDetails = ({
           <section>
             <Breadcrumb>
               <Breadcrumb.Item
-                name="Applications"
+                name="Metadata Definitions"
                 url="#"
-                // onClick={navigateToApplications}
+                onClick={() =>
+                  LuigiClient.linkManager()
+                    .fromClosestContext()
+                    .navigate(`/metadata-definitions`)
+                }
               />
               <Breadcrumb.Item />
             </Breadcrumb>
-            <ActionBar.Header title="title" />
+            <ActionBar.Header
+              title={metadataDefinition.key || 'Loading name...'}
+            />
           </section>
-          <ActionBar.Actions></ActionBar.Actions>
+          <ActionBar.Actions>
+            <Button option="emphasized">Save</Button>
+          </ActionBar.Actions>
         </section>
-        <PanelGrid nogap cols={4}></PanelGrid>
       </header>
-      <section className="fd-section">aa</section>
+      <section className="fd-section">
+        <Panel>
+          <PanelHeader>
+            <PanelHead title="Schema" />
+          </PanelHeader>
+
+          <PanelBody>
+            <JSONEditorComponent
+              onSuccess={() => console.log('success')}
+              text={'gdsg'}
+            />
+          </PanelBody>
+        </Panel>
+      </section>
     </>
   );
 };
