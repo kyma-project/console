@@ -67,9 +67,9 @@ const navigation = {
             },
             {
               keepSelectedForChildren: true,
-              pathSegment: 'metadatadefinitions',
+              pathSegment: 'metadata-definitions',
               label: 'Metadata Definitions',
-              viewUrl: compassMfUrl + '/metadatadefinitions',
+              viewUrl: compassMfUrl + '/metadata-definitions',
               category: 'SETTINGS',
               children: [
                 {
