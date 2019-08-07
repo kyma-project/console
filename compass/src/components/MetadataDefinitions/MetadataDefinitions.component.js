@@ -17,8 +17,8 @@ class MetadataDefinitions extends React.Component {
     const labelsDefinitionsQuery = this.props.labelDefinitions;
     const labelsDefinitions = labelsDefinitionsQuery.labelDefinitions;
 
-    const loading = labelsDefinitionsQuery && labelsDefinitionsQuery.loading;
-    const error = labelsDefinitionsQuery && labelsDefinitionsQuery.error;
+    const loading = labelsDefinitionsQuery.loading;
+    const error = labelsDefinitionsQuery.error;
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
