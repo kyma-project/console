@@ -1,5 +1,5 @@
-import React from 'react';
-import { ActionBar, Badge } from 'fundamental-react';
+import React, { useState } from 'react';
+import { ActionBar } from 'fundamental-react';
 import {
   Button,
   Breadcrumb,
@@ -7,8 +7,6 @@ import {
   PanelHead,
   PanelHeader,
   PanelBody,
-  PanelGrid,
-  PanelEntry,
 } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -19,6 +17,17 @@ import JSONEditorComponent from '../../Shared/JSONEditor';
 const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
 }) => {
+  const [isSchemaValid, setSchemaValid] = useState(true);
+
+  const handleSchemaChange = schema => {
+    try {
+      JSON.parse(schema);
+      setSchemaValid(true);
+    } catch {
+      setSchemaValid(false);
+    }
+  };
+
   const metadataDefinition =
     (metadataDefinitionQuery && metadataDefinitionQuery.labelDefinition) || {};
   const loading = metadataDefinitionQuery.loading;
@@ -33,7 +42,7 @@ const MetadataDefinitionDetails = ({
           breadcrumb="MetadataDefinitions"
         />
       );
-    return '';
+    return null;
   }
   if (error) {
     return `Error! ${error.message}`;
@@ -61,7 +70,9 @@ const MetadataDefinitionDetails = ({
             />
           </section>
           <ActionBar.Actions>
-            <Button option="emphasized">Save</Button>
+            <Button disabled={!isSchemaValid} option="emphasized">
+              Save
+            </Button>
           </ActionBar.Actions>
         </section>
       </header>
@@ -73,8 +84,8 @@ const MetadataDefinitionDetails = ({
 
           <PanelBody>
             <JSONEditorComponent
-              onSuccess={() => console.log('success')}
-              text={'gdsg'}
+              onChangeText={handleSchemaChange}
+              text={JSON.stringify(metadataDefinition.schema || {}, null, 2)}
             />
           </PanelBody>
         </Panel>
