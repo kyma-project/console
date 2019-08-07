@@ -10,7 +10,7 @@ RuntimeScenarios.propTypes = {
 
 export default function RuntimeScenarios(props) {
   const headerRenderer = () => ['Name'];
-  const rowRenderer = label => [<b>{label.scenario}</b>];
+  const rowRenderer = label => [<b>{label.name}</b>];
 
   return (
     <Panel>
