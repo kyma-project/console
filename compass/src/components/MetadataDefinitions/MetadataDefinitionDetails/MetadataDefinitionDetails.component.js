@@ -16,15 +16,31 @@ import JSONEditorComponent from '../../Shared/JSONEditor';
 
 const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
+  updateLabelDefinition,
 }) => {
   const [isSchemaValid, setSchemaValid] = useState(true);
+  const [schema, setSchema] = useState({});
 
   const handleSchemaChange = schema => {
     try {
-      JSON.parse(schema);
+      setSchema(JSON.parse(schema));
+
       setSchemaValid(true);
     } catch {
       setSchemaValid(false);
+    }
+  };
+
+  const handleSaveChanges = async definitionKey => {
+    try {
+      await updateLabelDefinition({
+        key: definitionKey,
+        schema,
+      });
+      metadataDefinitionQuery.refetch(); //  to format the JSON
+      // onCompleted(runtimeName, `Runtime created succesfully`);
+    } catch (e) {
+      //onError(`The runtime could not be created succesfully`, e.message || ``);
     }
   };
 
@@ -70,7 +86,11 @@ const MetadataDefinitionDetails = ({
             />
           </section>
           <ActionBar.Actions>
-            <Button disabled={!isSchemaValid} option="emphasized">
+            <Button
+              onClick={() => handleSaveChanges(metadataDefinition.key)}
+              disabled={!isSchemaValid}
+              option="emphasized"
+            >
               Save
             </Button>
           </ActionBar.Actions>
