@@ -1,12 +1,14 @@
-import { Directive, ViewContainerRef } from '@angular/core';
-
+import { Directive, ViewContainerRef, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { ComboboxComponent } from 'fundamental-ngx/lib/combobox/combobox.component';
 
 @Directive({
   selector: '[filterAllOnSelected]'
 })
-export class FilterAllOnSelectedDirective {
+export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
   private combobox: ComboboxComponent = null;
+  @HostListener('mousedown') onMouseEnter() {
+    event.stopPropagation();
+  }
 
   constructor(private _viewContainerRef: ViewContainerRef) {
     if (
@@ -25,10 +27,25 @@ export class FilterAllOnSelectedDirective {
 
   public filterFn = (content: string[], searchTerm: string): string[] => {
     const searchTermLower = searchTerm.toLocaleLowerCase();
-    return content.indexOf(searchTerm) >= 0
+    return content.indexOf(searchTerm) >= 0 && !this.combobox.isOpen 
       ? content
       : content.filter(
-          term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0
-        );
+        term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0
+      );
+  };
+
+  public onOutsideDropdownClick = () => {
+    const searchValue = this.combobox.inputTextValue;
+    if (this.combobox.displayedValues.length === 0 || this.combobox.dropdownValues.includes(searchValue)) {
+      this.combobox.displayedValues = this.combobox.dropdownValues;
+    }
+  };
+
+  public ngOnInit() {
+    window.addEventListener('mousedown', this.onOutsideDropdownClick);
+  };
+
+  public ngOnDestroy() {
+    window.removeEventListener('mousedown', this.onOutsideDropdownClick);
   };
 }
