@@ -1,13 +1,7 @@
 import { FilterAllOnSelectedDirective } from 'shared/directives/filter-all-on-selected/filter-all-on-selected.directive';
-import {
-  Component,
-  DebugElement,
-  Input,
-  ViewContainerRef
-} from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComboboxModule, ModalModule } from 'fundamental-ngx';
-import { ComboboxComponent } from 'fundamental-ngx/lib/combobox/combobox.component';
 import { By } from '@angular/platform-browser';
 
 @Component({

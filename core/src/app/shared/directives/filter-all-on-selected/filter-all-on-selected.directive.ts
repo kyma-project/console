@@ -20,14 +20,14 @@ export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
       throw new Error('filterAllOnSelected can only be used wth fd-combobox');
     }
 
-    // Because of webpack (https://github.com/angular/angular-cli/issues/13658) we cannot import ComboboxComponent here, thus the magic
+    // Because of webpack (https://github.com/angular/angular-cli/issues/13658) we cannot use ComboboxComponent as argument
     this.combobox = _viewContainerRef['_data'].componentView.component;
     this.combobox.filterFn = this.filterFn;
   }
 
   public filterFn = (content: string[], searchTerm: string): string[] => {
     const searchTermLower = searchTerm.toLocaleLowerCase();
-    return content.indexOf(searchTerm) >= 0 && !this.combobox.isOpen 
+    return content.indexOf(searchTerm) >= 0 && !this.combobox.isOpen
       ? content
       : content.filter(
         term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0
