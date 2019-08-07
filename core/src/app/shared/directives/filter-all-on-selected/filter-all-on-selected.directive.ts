@@ -36,8 +36,9 @@ export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
 
   public onOutsideDropdownClick = () => {
     const searchValue = this.combobox.inputTextValue;
-    if (this.combobox.displayedValues.length === 0 || this.combobox.dropdownValues.includes(searchValue)) {
-      this.combobox.displayedValues = this.combobox.dropdownValues;
+    if (!this.combobox.dropdownValues.includes(searchValue)) {
+      this.combobox.inputTextValue = '';
+      this.combobox.handleSearchTermChange()
     }
   };
 
