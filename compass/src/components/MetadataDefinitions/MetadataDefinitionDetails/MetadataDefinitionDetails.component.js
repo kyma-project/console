@@ -7,12 +7,15 @@ import {
   PanelHead,
   PanelHeader,
   PanelBody,
+  Input,
 } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import '../../../shared/styles/header.scss';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import JSONEditorComponent from '../../Shared/JSONEditor';
+
+var ajv = new require('ajv')();
 
 const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
@@ -21,13 +24,24 @@ const MetadataDefinitionDetails = ({
 }) => {
   const [isSchemaValid, setSchemaValid] = useState(true);
   const [schema, setSchema] = useState(null);
+  const [schemaError, setSchemaError] = useState(null);
 
   const handleSchemaChange = currentSchema => {
     LuigiClient.uxManager().setDirtyStatus(true);
     try {
-      setSchema(JSON.parse(currentSchema));
+      const parsedSchema = JSON.parse(currentSchema);
+
+      if (typeof parsedSchema.properties !== 'object')
+        throw new Error(
+          'A schema should have a "properties" key that is an object',
+        );
+      if (!ajv.validateSchema(parsedSchema))
+        throw new Error('Provided JSON is not a valid schema');
+      setSchema(parsedSchema);
+      setSchemaError(null);
       setSchemaValid(true);
-    } catch {
+    } catch (e) {
+      setSchemaError(e.message);
       setSchemaValid(false);
     }
   };
@@ -82,8 +96,7 @@ const MetadataDefinitionDetails = ({
   LuigiClient.uxManager().setDirtyStatus(false);
 
   if (schema === null && metadataDefinition.schema) {
-    console.log('assigning schema');
-    setSchema(metadataDefinition.schema);
+    setSchema(metadataDefinition.schema); // to assign the schema to state initially
   }
 
   return (
@@ -129,6 +142,11 @@ const MetadataDefinitionDetails = ({
               onChangeText={handleSchemaChange}
               text={JSON.stringify(metadataDefinition.schema || {}, null, 2)}
             />
+            <Input
+              type="hidden"
+              isError={schemaError}
+              message={schemaError}
+            ></Input>
           </PanelBody>
         </Panel>
       </section>
