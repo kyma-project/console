@@ -1,4 +1,4 @@
-
+import processNodeForLocalDevelopment from './local-development-node-converter';
 
 function buildNode(node, spec, config) {
   var n = {
@@ -29,47 +29,14 @@ function buildNode(node, spec, config) {
     };
   }
 
-  processNodeForLocalDevelopment(n, config);
-  return n;
-}
-
-function processNodeForLocalDevelopment(node, config) {
-  const {domain, localDomain} = config;
-  const localDevDomainBindings = [
-    {startsWith: "lambdas-ui", replaceWith: config.lambdasModuleUrl},
-    {startsWith: "brokers", replaceWith: config.serviceBrokersModuleUrl},
-    {startsWith: "instances", replaceWith: config.serviceInstancesModuleUrl},
-    {startsWith: "catalog", replaceWith: config.serviceCatalogModuleUrl},
-    {startsWith: "add-ons", replaceWith: config.addOnsModuleUrl},
-    {startsWith: "log-ui", replaceWith: config.logsModuleUrl}
-  ];
   const isLocalDev = window.location.href.startsWith(
-    `http://${localDomain}:4200`
+    `http://${config.localDomain}:4200`
   );
 
-  if (!isLocalDev || !node.viewUrl) {
-    return;
+  if (isLocalDev && n.viewUrl) {
+    n = processNodeForLocalDevelopment(n, spec, config);
   }
-
-  //all non-cluster microfrontends
-  if (node.viewUrl.startsWith(`https://console.${domain}`)) {
-    node.viewUrl = node.viewUrl.replace(
-      `https://console.${domain}`,
-      `http://${localDomain}:4200`
-    );
-  }
-
-  //cluster microfrontends
-  localDevDomainBindings.forEach(binding=>{
-    if (node.viewUrl.startsWith(`https://${binding.startsWith}.${domain}`)) {
-      node.viewUrl = node.viewUrl.replace(
-        `https://${binding.startsWith}.${domain}`,
-        binding.replaceWith
-      );
-    }
-  });
-
-  return node;
+  return n;
 }
 
 function buildNodeWithChildren(specNode, spec, config) {
@@ -101,7 +68,7 @@ function getDirectChildren(parentNodeSegments, spec, config) {
     });
 }
 
-function convertToNavigationTree(name, spec, config, navigation, consoleViewGroupName, segmentPrefix) {
+export default function convertToNavigationTree(name, spec, config, navigation, consoleViewGroupName, segmentPrefix) {
   return spec.navigationNodes
     .filter(function getTopLevelNodes(node) {
       var segments = node.navigationPath.split('/');
@@ -128,7 +95,7 @@ function convertToNavigationTree(name, spec, config, navigation, consoleViewGrou
           node.viewGroup = node.navigationContext;
           if (spec.preloadUrl) {
             navigation.viewGroupSettings[node.viewGroup] = {
-              preloadUrl: spec.preloadUrl
+              preloadUrl: node.localPreloadUrl || spec.preloadUrl
             };
           }
         }
@@ -139,5 +106,3 @@ function convertToNavigationTree(name, spec, config, navigation, consoleViewGrou
       return node;
     });
 }
-
-module.exports = convertToNavigationTree;
