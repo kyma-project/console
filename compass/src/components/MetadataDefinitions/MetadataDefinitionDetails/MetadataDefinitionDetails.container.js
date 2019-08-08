@@ -5,6 +5,8 @@ import {
   UPDATE_LABEL_DEFINITION,
 } from '../gql';
 
+import { SEND_NOTIFICATION } from '../../../gql';
+
 import MetadataDefinitionDetails from './MetadataDefinitionDetails.component';
 
 export default compose(
@@ -35,5 +37,8 @@ export default compose(
           },
         }),
     }),
+  }),
+  graphql(SEND_NOTIFICATION, {
+    name: 'sendNotification',
   }),
 )(MetadataDefinitionDetails);

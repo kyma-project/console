@@ -17,14 +17,15 @@ import JSONEditorComponent from '../../Shared/JSONEditor';
 const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
   updateLabelDefinition,
+  sendNotification,
 }) => {
   const [isSchemaValid, setSchemaValid] = useState(true);
-  const [schema, setSchema] = useState({});
+  const [schema, setSchema] = useState(null);
 
-  const handleSchemaChange = schema => {
+  const handleSchemaChange = currentSchema => {
+    LuigiClient.uxManager().setDirtyStatus(true);
     try {
-      setSchema(JSON.parse(schema));
-
+      setSchema(JSON.parse(currentSchema));
       setSchemaValid(true);
     } catch {
       setSchemaValid(false);
@@ -37,10 +38,25 @@ const MetadataDefinitionDetails = ({
         key: definitionKey,
         schema,
       });
+
+      await sendNotification({
+        variables: {
+          content: 'Metadata definition has been saved succesfully',
+          title: 'Success',
+          color: '#107E3E',
+          icon: 'accept',
+        },
+      });
       metadataDefinitionQuery.refetch(); //  to format the JSON
-      // onCompleted(runtimeName, `Runtime created succesfully`);
     } catch (e) {
-      //onError(`The runtime could not be created succesfully`, e.message || ``);
+      sendNotification({
+        variables: {
+          content: e.message,
+          title: 'There was a problem with saving Metadata definition',
+          color: '#BB0000',
+          icon: 'decline',
+        },
+      });
     }
   };
 
@@ -62,6 +78,12 @@ const MetadataDefinitionDetails = ({
   }
   if (error) {
     return `Error! ${error.message}`;
+  }
+  LuigiClient.uxManager().setDirtyStatus(false);
+
+  if (schema === null && metadataDefinition.schema) {
+    console.log('assigning schema');
+    setSchema(metadataDefinition.schema);
   }
 
   return (
