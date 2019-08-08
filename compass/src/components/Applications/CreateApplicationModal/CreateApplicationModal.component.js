@@ -1,13 +1,9 @@
 import React from 'react';
-
 import { Button, Input, Modal } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
-
-import { FormLabel, FormItem, FormSet } from 'fundamental-react/lib/Forms';
-import JSONEditorComponent from '../../Shared/JSONEditor';
-import { labelsSchema } from './labelsSchema';
 import equal from 'deep-equal';
 
+import AssignScenarioForm from '../../Shared/AssignScenario/AssignScenarioForm.container';
 import './styles.scss';
 
 class CreateApplicationModal extends React.Component {
@@ -21,18 +17,22 @@ class CreateApplicationModal extends React.Component {
     return {
       formData: {
         name: '',
-        description: '',
-        labels: {},
+        description: ''
       },
-      labels: '{}',
+      currentScenarios: [],
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: false,
       nameFilled: false,
-      labelsValidated: true,
       requiredFieldsFilled: false,
       tooltipData: null,
       enableCheckNameExists: false,
     };
+  };
+
+  updateCurrentScenarios = (scenarios) => {
+    this.setState({
+      currentScenarios: scenarios
+    });
   };
 
   refetchApplicationExists = async () => {
@@ -58,12 +58,11 @@ class CreateApplicationModal extends React.Component {
       invalidApplicationName,
       enableCheckNameExists,
       nameFilled,
-      labelsValidated,
     } = this.state;
 
     if (equal(this.state, prevState)) return;
 
-    const requiredFieldsFilled = nameFilled && labelsValidated;
+    const requiredFieldsFilled = nameFilled;
 
     const tooltipData = !requiredFieldsFilled
       ? {
@@ -170,62 +169,59 @@ class CreateApplicationModal extends React.Component {
     });
   };
 
-  onChangeLabel = (value, ss) => {
-    let formData = this.state.formData;
-    try {
-      formData.labels = JSON.parse(value);
-    } catch (err) {}
-
-    this.setState({
-      labels: value,
-      formData,
-    });
-  };
-
-  setLabelsAsValid = value => {
-    this.setState({
-      labelsValidated: Boolean(value),
+  showLuigiError = (message) => {
+    LuigiClient.uxManager().showAlert({
+      text: message,
+      type: 'error',
+      closeAfter: 10000,
     });
   };
 
   createApplication = async () => {
     let success = true;
 
-    const { formData } = this.state;
-    const { addApplication, sendNotification } = this.props;
+    const { formData, currentScenarios } = this.state;
+    const { addApplication, sendNotification, updateScenarios } = this.props;
 
     try {
-      let createdApplicationName;
+      let createdApplicationName, createdApplicationId;
       const createdApplication = await addApplication(formData);
       if (
         createdApplication &&
         createdApplication.data &&
-        createdApplication.data.createApplication &&
-        createdApplication.data.createApplication.name
+        createdApplication.data.createApplication
       ) {
         createdApplicationName = createdApplication.data.createApplication.name;
+        createdApplicationId = createdApplication.data.createApplication.id
       }
 
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            content: `Application binding "${createdApplicationName}" created successfully`,
-            title: `${createdApplicationName}`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: createdApplicationName,
-          },
-        });
+      try {
+        if (!createdApplicationId && !currentScenarios) {
+          return;
+        }
+
+        await updateScenarios(createdApplicationId, currentScenarios);
+
+        if (typeof sendNotification === 'function') {
+          sendNotification({
+            variables: {
+              content: `Application "${createdApplicationName}" created successfully`,
+              title: `${createdApplicationName}`,
+              color: '#359c46',
+              icon: 'accept',
+              instanceName: createdApplicationName,
+            },
+          });
+        }
+      } catch(e) {
+        success = false;
+        this.showLuigiError(`Error occored during adding scenarios to application ${createdApplicationName}: ${e.message}`);
       }
     } catch (e) {
       success = false;
-
-      LuigiClient.uxManager().showAlert({
-        text: `Error occored during creation ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
+      this.showLuigiError(`Error occored during creation: ${e.message}`);
     }
+
     if (success) {
       this.clearState();
       await this.refetchApplicationExists();
@@ -271,19 +267,12 @@ class CreateApplicationModal extends React.Component {
           marginTop={15}
           type="text"
         />
-
-        <FormSet className="margin-top">
-          <FormItem>
-            <FormLabel>Labels</FormLabel>
-            <JSONEditorComponent
-              text={this.state.labels}
-              schema={labelsSchema}
-              onChangeText={this.onChangeLabel}
-              onError={() => this.setLabelsAsValid(false)}
-              onSuccess={() => this.setLabelsAsValid(true)}
-            />
-          </FormItem>
-        </FormSet>
+        <p>Scenarios</p>
+        <AssignScenarioForm
+          currentScenarios={this.state.currentScenarios}
+          notAssignedMessage=''
+          updateCurrentScenarios={this.updateCurrentScenarios}
+        />
       </>
     );
 
