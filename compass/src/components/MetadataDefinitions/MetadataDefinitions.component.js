@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import GenericList from '../../shared/components/GenericList/GenericList';
+import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.container';
 
 class MetadataDefinitions extends React.Component {
   headerRenderer = () => ['Labels', 'Schema Provided'];
@@ -29,6 +30,7 @@ class MetadataDefinitions extends React.Component {
         entries={labelsDefinitions}
         headerRenderer={this.headerRenderer}
         rowRenderer={this.rowRenderer}
+        extraHeaderContent={<CreateLabelModal />}
       />
     );
   }
