@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.1",
+    "core-js": "^3.1.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "ncp": "^2.0.0",

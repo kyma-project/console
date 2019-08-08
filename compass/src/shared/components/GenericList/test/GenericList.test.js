@@ -1,6 +1,7 @@
 import React from 'react';
 import GenericList from '../GenericList';
 import renderer from 'react-test-renderer';
+import 'core-js/es/array/flat-map';
 
 describe('GenericList', () => {
   const mockHeaderRenderer = entries => ['Name'];

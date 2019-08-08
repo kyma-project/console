@@ -51,6 +51,7 @@ export default function SearchInput({
           if (entryValue && entryValue.includes(searchTerm)) {
             return entryValue;
           }
+          return null;
         });
       })
       .filter(suggestion => suggestion);
