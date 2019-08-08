@@ -13,5 +13,8 @@
         "lint-check": "concurrently \"cd brokers && npm run lint-check\" \"cd catalog && npm run lint-check\"  \"cd instances && npm run lint-check\"",
         "eslint-check": "concurrently \"cd brokers && npm run eslint-check\" \"cd catalog && npm run eslint-check\"  \"cd instances && npm run eslint-check\"",
         "test": "concurrently \"cd brokers && npm run test\" \"cd catalog && npm run test\"  \"cd instances && npm run test\""
+    },
+    "config": {
+        "unsafe-perm":true
     }
 }
