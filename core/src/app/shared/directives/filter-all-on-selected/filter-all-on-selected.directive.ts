@@ -6,7 +6,7 @@ import { ComboboxComponent } from 'fundamental-ngx/lib/combobox/combobox.compone
 })
 export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
   private combobox: ComboboxComponent = null;
-  @HostListener('mousedown') onMouseEnter() {
+  @HostListener('mouseup') onMouseEnter() {
     event.stopPropagation();
   }
 
@@ -43,10 +43,10 @@ export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
   };
 
   public ngOnInit() {
-    window.addEventListener('mousedown', this.onOutsideDropdownClick);
+    window.addEventListener('mouseup', this.onOutsideDropdownClick);
   };
 
   public ngOnDestroy() {
-    window.removeEventListener('mousedown', this.onOutsideDropdownClick);
+    window.removeEventListener('mouseup', this.onOutsideDropdownClick);
   };
 }
