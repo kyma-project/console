@@ -46,6 +46,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public filteredServices;
   public routedFromServiceDetails = true;
   private pods: any;
+  private url = '';
 
   public ariaExpanded = false;
   public ariaHidden = true;
@@ -53,7 +54,6 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public ariaServiceHidden = true;
 
   public availablePresets = [];
-  public getHostnameURL = this.genericHelpers.getHostnameURL;
 
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
 
@@ -207,6 +207,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     this.apiDefinition = data;
     this.serviceName = data.spec.service.name;
     this.hostname = this.splitHostname(data.spec.hostname);
+    this.url = this.genericHelpers.getURL({ host: data.spec.hostname });
     this.servicePort = data.spec.service.port;
 
     if (

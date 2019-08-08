@@ -9,23 +9,7 @@
     </a>
   </td>
   <td>
-    <a
-      class="display-inline"
-      title="Open link in a new tab"
-      [href]="getHostnameURL(hostname)"
-      target="_blank"
-    >
-      {{ hostname }}
-      <fd-icon [glyph]="'inspect'" [size]="'s'"></fd-icon>
-    </a>
-    <fd-icon
-      ngxClipboard
-      [cbContent]="getHostnameURL(hostname)"
-      class="fd-has-margin-left-tiny clickable align-middle"
-      [glyph]="'copy'"
-      [size]="'m'"
-      title="Copy to clipboard"
-    ></fd-icon>
+    <app-url-link url="{{ url }}"></app-url-link>
   </td>
   <td>{{ entry.service.name }}</td>
   <td>
