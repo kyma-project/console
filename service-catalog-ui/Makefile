@@ -7,7 +7,7 @@ ci-master: resolve build validate test build-image push-image
 ci-release: resolve build validate test build-image push-image
 
 resolve:
-	npm install
+	npm install --unsafe-perm
 
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
