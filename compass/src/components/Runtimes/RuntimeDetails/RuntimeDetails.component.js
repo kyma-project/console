@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Panel } from '@kyma-project/react-components';
 
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
@@ -8,12 +9,11 @@ import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 export const RuntimeQueryContext = React.createContext(null);
 
 const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
-  const runtime = (runtimeQuery && runtimeQuery.runtime) || {};
-  const loading = runtimeQuery.loading;
-  const error = runtimeQuery.error;
+  const { runtime, loading, error } = runtimeQuery;
 
-  if (!runtimeQuery || !runtimeQuery.runtime) {
-    if (loading) return 'Loading...';
+  if (loading) return 'Loading...';
+
+  if (!runtime) {
     if (error)
       return <ResourceNotFound resource="Runtime" breadcrumb="Runtimes" />;
     return '';
@@ -22,7 +22,7 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
     return `Error! ${error.message}`;
   }
 
-  const labels = runtimeQuery.runtime.labels;
+  const labels = runtime.labels;
   const scenarios = labels && labels.scenarios ? labels.scenarios : [];
 
   return (
@@ -36,6 +36,11 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
       </section>
     </RuntimeQueryContext.Provider>
   );
+};
+
+RuntimeDetails.propTypes = {
+  runtimeQuery: PropTypes.object.isRequired,
+  deleteRuntime: PropTypes.func.isRequired,
 };
 
 export default RuntimeDetails;

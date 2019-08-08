@@ -30,6 +30,18 @@ export default function AssignScenarioForm({
     updateCurrentScenarios(currentScenarios.filter(l => l !== label));
   }
 
+  function getScenarios() {
+    if (availableScenariosQuery.error) {
+      return [];
+    }
+
+    try {
+      return availableScenariosQuery.scenarios.schema.items.enum || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
   function createForm() {
     const scenariosList = currentScenarios.length ? (
       <ul>
@@ -50,8 +62,7 @@ export default function AssignScenarioForm({
       <p className="assign-scenario-list__message">{notAssignedMessage}</p>
     );
 
-    const schema = availableScenariosQuery.scenarios.schema;
-    const allScenarios = schema ? schema.items.enum : [];
+    const allScenarios = getScenarios();
     const availableScenarios = allScenarios
       .filter(scenario => currentScenarios.indexOf(scenario) === -1)
       .map(scenario => (
