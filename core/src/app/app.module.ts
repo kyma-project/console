@@ -122,6 +122,7 @@ import { split } from 'apollo-link';
 import { AppConfig } from './app.config';
 import { WebSocketLink } from './ws';
 import { GenericHelpersService } from './shared/services/generic-helpers.service';
+import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
 
 @NgModule({
   declarations: [
@@ -209,7 +210,8 @@ import { GenericHelpersService } from './shared/services/generic-helpers.service
     StatusLabelComponent,
     TooltipComponent,
     LuigiClientCommunicationDirective,
-    FilterAllOnSelectedDirective
+    FilterAllOnSelectedDirective,
+    UrlLinkComponent
   ],
   imports: [
     BrowserModule,

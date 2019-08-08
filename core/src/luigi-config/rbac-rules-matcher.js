@@ -1,4 +1,4 @@
-function rbacRulesMatched(requiredPermissions, selfSubjectRulesReview) {
+export default function rbacRulesMatched(requiredPermissions, selfSubjectRulesReview) {
 
   if (
     !isNonEmptyArray(requiredPermissions) ||
@@ -70,5 +70,3 @@ const matchingVerbRuleFound = (allrules, requiredVerbRule) => {
   }
   return false;
 };
-
-module.exports = rbacRulesMatched;

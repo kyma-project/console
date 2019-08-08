@@ -31,18 +31,11 @@ export class ApiDefinitionEntryRendererComponent
       }
     ];
   }
-  public getHostnameURL = this.genericHelpers.getHostnameURL;
   public disabled = false;
-
-  public hostname: string = ApiDefinitionEntryRendererComponent.addDomainIfMissing(
-    this.entry.hostname,
-    AppConfig.domain
-  );
+  public url: string = this.genericHelpers.getURL({
+    host: this.entry.hostname
+  });
   private communicationServiceSubscription: Subscription;
-
-  static addDomainIfMissing(hostname: string, domain: string): string {
-    return hostname.endsWith('.' + domain) ? hostname : `${hostname}.${domain}`;
-  }
 
   ngOnInit() {
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(

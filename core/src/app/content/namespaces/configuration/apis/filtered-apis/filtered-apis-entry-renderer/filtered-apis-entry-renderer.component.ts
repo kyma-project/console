@@ -16,9 +16,10 @@ export class FilteredApisEntryRendererComponent
   extends AbstractKubernetesEntryRendererComponent
   implements OnDestroy, OnInit {
   public emptyText = EMPTY_TEXT;
-  public getHostnameURL = this.genericHelpers.getHostnameURL;
   public disabled = false;
-
+  public url: string = this.genericHelpers.getURL({
+    host: this.entry.hostname
+  });
   private communicationServiceSubscription: Subscription;
 
   constructor(
