@@ -1,0 +1,17 @@
+{
+    "name": "service-catalog-ui",
+    "description": "All Service Catalog UI",
+    "version": "0.5.0",
+    "private": true,
+    "devDependencies": {
+        "concurrently": "^4.1.1"
+    },
+    "scripts": {
+        "start": "concurrently \"cd brokers && npm start\" \"cd catalog && npm start\"  \"cd instances && npm start\"",
+        "install": "concurrently \"cd brokers && npm install\" \"cd catalog && npm install\"  \"cd instances && npm install\"",
+        "build": "concurrently \"cd brokers && npm run-script build\" \"cd catalog && npm run-script build\"  \"cd instances && npm run-script build\"",
+        "lint-check": "concurrently \"cd brokers && npm run lint-check\" \"cd catalog && npm run lint-check\"  \"cd instances && npm run lint-check\"",
+        "eslint-check": "concurrently \"cd brokers && npm run eslint-check\" \"cd catalog && npm run eslint-check\"  \"cd instances && npm run eslint-check\"",
+        "test": "concurrently \"cd brokers && npm run test\" \"cd catalog && npm run test\"  \"cd instances && npm run test\""
+    }
+}
