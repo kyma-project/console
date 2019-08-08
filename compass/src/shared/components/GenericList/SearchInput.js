@@ -4,13 +4,13 @@ import './style.scss';
 import { withDuplicatesRemoved } from './helpers';
 
 SearchInput.propTypes = {
-  searchTerm: PropTypes.string,
+  searchQuery: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object.isRequired),
   handleQueryChange: PropTypes.func.isRequired,
 };
 
 export default function SearchInput({
-  searchTerm,
+  searchQuery,
   filteredEntries,
   handleQueryChange,
 }) {
@@ -48,7 +48,7 @@ export default function SearchInput({
         const headers = ['name', 'description'];
         return headers.map(header => {
           const entryValue = entry[header];
-          if (entryValue && entryValue.includes(searchTerm)) {
+          if (entryValue && entryValue.includes(searchQuery)) {
             return entryValue;
           }
           return null;
@@ -59,8 +59,8 @@ export default function SearchInput({
   };
 
   const searchInputChanged = e => {
-    const searchTerm = e.target.value;
-    handleQueryChange(searchTerm);
+    const searchQuery = e.target.value;
+    handleQueryChange(searchQuery);
   };
 
   const openSearchList = () => {
@@ -85,7 +85,7 @@ export default function SearchInput({
                 type="text"
                 className="fd-input"
                 placeholder="Search..."
-                value={searchTerm}
+                value={searchQuery}
                 onChange={searchInputChanged}
                 onFocus={setInputFocus(true)}
                 onBlur={setInputFocus(false)}

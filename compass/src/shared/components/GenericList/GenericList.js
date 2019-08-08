@@ -19,7 +19,7 @@ class GenericList extends React.Component {
     this.state = {
       entries: props.entries,
       filteredEntries: props.entries,
-      searchTerm: '',
+      searchQuery: '',
     };
   }
 
@@ -42,17 +42,20 @@ class GenericList extends React.Component {
     }
   };
 
-  handleQueryChange = searchTerm => {
+  handleQueryChange = searchQuery => {
     this.setState(prevState => ({
-      filteredEntries: filterEntries(prevState.entries, searchTerm),
-      searchTerm,
+      filteredEntries: filterEntries(prevState.entries, searchQuery),
+      searchQuery,
     }));
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!_.isEqual(nextProps.entries, prevState.entries)) {
       return {
-        filteredEntries: filterEntries(nextProps.entries, prevState.searchTerm),
+        filteredEntries: filterEntries(
+          nextProps.entries,
+          prevState.searchQuery,
+        ),
         entries: nextProps.entries,
       };
     }
@@ -60,14 +63,14 @@ class GenericList extends React.Component {
   }
 
   render() {
-    const { filteredEntries, searchTerm } = this.state;
+    const { filteredEntries, searchQuery } = this.state;
     const { extraHeaderContent, notFoundMessage } = this.props;
 
     const headerActions = (
       <>
         {extraHeaderContent}
         <SearchInput
-          searchTerm={searchTerm}
+          searchQuery={searchQuery}
           filteredEntries={filteredEntries}
           handleQueryChange={this.handleQueryChange}
         />
