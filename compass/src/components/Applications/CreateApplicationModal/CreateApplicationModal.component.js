@@ -169,7 +169,7 @@ class CreateApplicationModal extends React.Component {
     });
   };
 
-  showLuigiError = (message) => {
+  showAlert = (message) => {
     LuigiClient.uxManager().showAlert({
       text: message,
       type: 'error',
@@ -215,11 +215,11 @@ class CreateApplicationModal extends React.Component {
         }
       } catch(e) {
         success = false;
-        this.showLuigiError(`Error occored during adding scenarios to application ${createdApplicationName}: ${e.message}`);
+        this.showAlert(`Error occored when assigning the application "${createdApplicationName}" to scenarios: ${e.message}`);
       }
     } catch (e) {
       success = false;
-      this.showLuigiError(`Error occored during creation: ${e.message}`);
+      this.showAlert(`Error occored when creating the application: ${e.message}`);
     }
 
     if (success) {
