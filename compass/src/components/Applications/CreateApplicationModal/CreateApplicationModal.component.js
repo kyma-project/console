@@ -267,7 +267,7 @@ class CreateApplicationModal extends React.Component {
           marginTop={15}
           type="text"
         />
-        <p>Scenarios</p>
+        <div class="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">Scenarios</div>
         <AssignScenarioForm
           currentScenarios={this.state.currentScenarios}
           notAssignedMessage=''

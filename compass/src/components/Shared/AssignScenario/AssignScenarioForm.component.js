@@ -47,7 +47,7 @@ export default function AssignScenarioForm({
         ))}
       </ul>
     ) : (
-      <p className="assign-scenario-list__message">{notAssignedMessage}</p>
+      notAssignedMessage ? <p className="assign-scenario-list__message">{notAssignedMessage}</p> : ''
     );
 
     const schema = availableScenariosQuery.scenarios.schema;
