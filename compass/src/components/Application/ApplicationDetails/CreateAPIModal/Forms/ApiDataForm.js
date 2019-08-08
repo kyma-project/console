@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileInput from './FileInput';
+import FileInput from './../../../../Shared/FileInput/FileInput';
 import TextFormItem from './TextFormItem';
 
 import { FormItem, FormInput, FormLabel } from '@kyma-project/react-components';
@@ -120,6 +120,8 @@ export default function APIDataForm({ mainAPIType, updateState }) {
           fileInputChanged={fileInputChanged}
           file={file}
           error={error}
+          availableFormatsMessage={'Available file types: JSON, YAML, XML.'}
+          acceptedFileFormats={'.yml,.yaml,.json,.xml'}
         />
       </FormItem>
     </form>
