@@ -9,11 +9,6 @@ import { By } from '@angular/platform-browser';
 })
 class TestFilterAllOnSelectedComboboxComponent {}
 
-@Component({
-  template: `<fd-modal-body filterAllOnSelected></fd-modal-body>`
-})
-class TestFilterAllOnSelectedModalComponent {}
-
 describe('FilterAllOnSelectedDirective', () => {
   let fixture: ComponentFixture<TestFilterAllOnSelectedComboboxComponent>;
   let comboboxEl: DebugElement;
@@ -22,8 +17,7 @@ describe('FilterAllOnSelectedDirective', () => {
     TestBed.configureTestingModule({
       declarations: [
         TestFilterAllOnSelectedComboboxComponent,
-        FilterAllOnSelectedDirective,
-        TestFilterAllOnSelectedModalComponent
+        FilterAllOnSelectedDirective
       ],
       imports: [ComboboxModule, ModalModule]
     });
@@ -38,21 +32,22 @@ describe('FilterAllOnSelectedDirective', () => {
     );
   });
 
-  it('crashes if component does not have filterFn', () => {
-    expect(() =>
-      TestBed.createComponent(TestFilterAllOnSelectedModalComponent)
-    ).toThrowError('filterAllOnSelected can only be used wth fd-combobox');
-  });
-
   describe('filterFn', () => {
-    it('returns all content if value matches', () => {
+    it('returns all content if search value matches', () => {
       const content = ['aa', 'ba', 'ca'];
       expect(comboboxEl.componentInstance.filterFn(content, 'aa')).toEqual(
         content
       );
     });
 
-    it('returns searched elements if values does not match', () => {
+    it('returns all content if search value is empty', () => {
+      const content = ['aa', 'ba', 'ca'];
+      expect(comboboxEl.componentInstance.filterFn(content, '')).toEqual(
+        content
+      );
+    });
+
+    it('returns searched elements if search value does not match', () => {
       const content = ['aa', 'ba', 'ca'];
       expect(comboboxEl.componentInstance.filterFn(content, 'b')).toEqual([
         'ba'
@@ -60,3 +55,26 @@ describe('FilterAllOnSelectedDirective', () => {
     });
   });
 });
+
+describe('FilterAllOnSelectedDirective with different template', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TestFilterAllOnSelectedComboboxComponent,
+        FilterAllOnSelectedDirective
+      ],
+      imports: [ComboboxModule, ModalModule]
+    });
+    TestBed.overrideComponent(TestFilterAllOnSelectedComboboxComponent, {
+      set: {
+        template: `<fd-modal-body filterAllOnSelected></fd-modal-body>`
+      }
+    })
+  });
+
+  it('crashes if component does not have filterFn', () => {
+    expect(() => 
+      TestBed.createComponent(TestFilterAllOnSelectedComboboxComponent)
+    ).toThrowError('filterAllOnSelected can only be used wth fd-combobox');
+  });
+})
