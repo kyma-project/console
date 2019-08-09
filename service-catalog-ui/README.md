@@ -47,4 +47,3 @@ If lint errors appear, the terminal displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode for all three applications.
 
-See the **Running Tests** section in this [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) document for more information.
