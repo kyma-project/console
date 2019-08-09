@@ -15,6 +15,6 @@
         "test": "concurrently \"cd brokers && npm run test\" \"cd catalog && npm run test\"  \"cd instances && npm run test\""
     },
     "config": {
-        "unsafe-perm":true
+        "unsafe-perm": true
     }
 }

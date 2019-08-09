@@ -18,12 +18,6 @@ endif
 
 prepare:
 	../scripts/prepare-react-components.sh -d react-components
-	rm -rf ./brokers/node_modules/@kyma-project/react-components/lib/index.js
-	rm -rf ./catalog/node_modules/@kyma-project/react-components/lib/index.js
-	rm -rf ./instances/node_modules/@kyma-project/react-components/lib/index.js
-	cp ./react-components/index.js ./brokers/node_modules/@kyma-project/react-components/lib/index.js
-	cp ./react-components/index.js ./catalog/node_modules/@kyma-project/react-components/lib/index.js
-	cp ./react-components/index.js ./instances/node_modules/@kyma-project/react-components/lib/index.js
 
 build:
 	npm run-script build
