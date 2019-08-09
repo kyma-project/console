@@ -38,7 +38,7 @@ This section describes how to run and test the applications.
 ### Run the applications
 
 Run the `npm start` command to start all three applications in the development mode.
-Open the `[http://localhost:8000](http://localhost:8000)`, `[http://localhost:8001](http://localhost:8001)` and `[http://localhost:8002](http://localhost:8002) links to view them in the browser.
+Open the `[http://localhost:8000](http://localhost:8000)`, `[http://localhost:8001](http://localhost:8001)` and `[http://localhost:8002](http://localhost:8002)` links to view them in the browser.
 
 The page reloads if you make edits.
 If lint errors appear, the terminal displays them.
