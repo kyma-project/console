@@ -3,7 +3,7 @@ import createContainer from 'constate';
 import { useQuery } from 'react-apollo-hooks';
 
 import appInitializer from '../core/app-initializer';
-import { Configuration } from "../types";
+import { Configuration } from '../types';
 
 const queryFields = `
   name
@@ -41,21 +41,21 @@ const useQueries = () => {
     ? ADDONS_CONFIGURATIONS_QUERY
     : CLUSTER_ADDONS_CONFIGURATIONS_QUERY;
 
-  const { data, error, loading } = useQuery<{
-    addonsConfigurations: Configuration[]
-    clusterAddonsConfigurations: Configuration[]
-  }, AddonsConfigurationsVariables>(
-    query,
+  const { data, error, loading } = useQuery<
     {
-      variables: {
-        namespace: currentNamespace,
-      }
-    }
-  );
+      addonsConfigurations: Configuration[];
+      clusterAddonsConfigurations: Configuration[];
+    },
+    AddonsConfigurationsVariables
+  >(query, {
+    variables: {
+      namespace: currentNamespace,
+    },
+  });
 
   const addonsConfigurations = currentNamespace
     ? data && data.addonsConfigurations
-    : data && data.clusterAddonsConfigurations
+    : data && data.clusterAddonsConfigurations;
 
   return {
     addonsConfigurations: addonsConfigurations || [],

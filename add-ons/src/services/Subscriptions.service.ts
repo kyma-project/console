@@ -55,7 +55,7 @@ interface SubscriptionPayload {
   addonsConfigurationEvent?: {
     type: SubscriptionType;
     addonsConfiguration: Configuration;
-  }
+  };
 }
 
 interface AddonsConfigurationsSubscriptionVariables {
@@ -110,15 +110,15 @@ const useSubscriptions = () => {
     setOriginalConfigs(configs => configs.filter(c => c.name !== config.name));
   };
 
-  const _ = useSubscription<SubscriptionPayload, AddonsConfigurationsSubscriptionVariables>(query, {
+  const _ = useSubscription<
+    SubscriptionPayload,
+    AddonsConfigurationsSubscriptionVariables
+  >(query, {
     variables: {
       namespace: currentNamespace,
     },
     onSubscriptionData: ({ subscriptionData }) => {
-      const {
-        data,
-        error,
-      } = subscriptionData;
+      const { data, error } = subscriptionData;
 
       if (error) {
         errorNotification('Error', ERRORS.SERVER);
@@ -128,7 +128,10 @@ const useSubscriptions = () => {
         return;
       }
 
-      const { clusterAddonsConfigurationEvent, addonsConfigurationEvent } = data
+      const {
+        clusterAddonsConfigurationEvent,
+        addonsConfigurationEvent,
+      } = data;
       const event = currentNamespace
         ? addonsConfigurationEvent
         : clusterAddonsConfigurationEvent;

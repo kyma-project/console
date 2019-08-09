@@ -2,7 +2,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { BackendModule } from '../types';
 
 class AppInitializer {
-  private currentNamespace: string = "";
+  private currentNamespace: string = '';
   private token: string | null = '';
   private backendModules: BackendModule[] = [];
 

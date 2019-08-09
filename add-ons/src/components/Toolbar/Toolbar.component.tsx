@@ -19,15 +19,12 @@ const Toolbar: React.FunctionComponent = () => {
 
   return (
     <StyledActionBar>
-      <ActionBar.Header
-        title={title}
-        description={description}
-      />
+      <ActionBar.Header title={title} description={description} />
       <ActionBar.Actions>
         <AddNewConfigurationModal />
       </ActionBar.Actions>
     </StyledActionBar>
   );
-}
+};
 
 export default Toolbar;
