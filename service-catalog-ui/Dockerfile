@@ -22,10 +22,12 @@ RUN npm install --no-optional --unsafe-perm
 
 # Copy sources
 COPY brokers/src /app/brokers/src
-COPY catalog/src /app/catalog/src
-COPY instances/src /app/instances/src
 COPY brokers/public /app/brokers/public
+
+COPY catalog/src /app/catalog/src
 COPY catalog/public /app/catalog/public
+
+COPY instances/src /app/instances/src
 COPY instances/public /app/instances/public
 
 # Copy local changes from react-components package

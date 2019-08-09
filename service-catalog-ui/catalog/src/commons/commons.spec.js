@@ -12,7 +12,6 @@ const checkingFormat = name => {
 describe('correctly random name', () => {
   it('should return true if the random name has a correctly pattern', () => {
     const randomName = randomNameGenerator();
-    console.log(randomName);
     const result = checkingFormat(randomName.toLowerCase());
 
     expect(result).toEqual(true);
