@@ -26,18 +26,18 @@ export default function RuntimeScenarios({
   const rowRenderer = label => [<b>{label.scenario}</b>];
   const actions = [
     {
-      name: 'Unassign',
-      handler: unassignScenario,
+      name: 'Deactivate',
+      handler: deactivateScenario,
     },
   ];
 
-  async function unassignScenario(entry) {
+  async function deactivateScenario(entry) {
     const scenarioName = entry.scenario;
 
     LuigiClient.uxManager()
       .showConfirmationModal({
-        header: 'Unassign Scenario',
-        body: `Are you sure you want to unassign ${scenarioName}?`,
+        header: 'Deactivate Scenario',
+        body: `Are you sure you want to deactivate ${scenarioName}?`,
         buttonConfirm: 'Confirm',
         buttonDismiss: 'Cancel',
       })
@@ -72,9 +72,10 @@ export default function RuntimeScenarios({
   const extraHeaderContent = (
     <header>
       <RuntimeScenarioModal
+        title="Activate scenario"
         entityId={runtimeId}
         scenarios={scenarios}
-        notAssignedMessage={'Runtime is not assigned to any scenario.'}
+        notAssignedMessage="This Runtime doesn't have any active scenarios."
         entityQuery={runtimeQuery}
       />
     </header>
@@ -88,8 +89,8 @@ export default function RuntimeScenarios({
     <Panel>
       <GenericList
         extraHeaderContent={extraHeaderContent}
-        title="Assign to Scenario"
-        notFoundMessage="This Runtime isn't assigned to any scenario"
+        title="Active scenarios"
+        notFoundMessage="This Runtime doesn't have any active scenarios."
         actions={actions}
         entries={entries}
         headerRenderer={headerRenderer}

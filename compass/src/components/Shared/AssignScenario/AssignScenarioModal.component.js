@@ -12,9 +12,14 @@ AssignScenarioModal.propTypes = {
   scenarios: PropTypes.arrayOf(PropTypes.string),
   notAssignedMessage: PropTypes.string,
   entityQuery: PropTypes.object.isRequired,
+  title: PropTypes.string,
 
   updateScenarios: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
+};
+
+AssignScenarioModal.defaultProps = {
+  title: "Assign to Scenario",
 };
 
 export default function AssignScenarioModal(props) {
@@ -46,7 +51,7 @@ export default function AssignScenarioModal(props) {
       entityQuery.refetch();
       sendNotification({
         variables: {
-          content: 'Scenarios updated.',
+          content: 'List of scenarios updated.',
           title: 'Assigned scenarios list',
           color: '#359c46',
           icon: 'accept',
@@ -72,7 +77,7 @@ export default function AssignScenarioModal(props) {
   return (
     <Modal
       width={'400px'}
-      title="Assign to Scenario"
+      title={props.title}
       confirmText="Save"
       cancelText="Close"
       type={'emphasized'}
