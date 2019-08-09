@@ -15,12 +15,3 @@ export const filterEntries = (entries, query) => {
     return entries;
   }
 };
-
-export const withDuplicatesRemoved = array => {
-  return array.reduce((list, current) => {
-    if (!list.some(entry => entry === current)) {
-      list.push(current);
-    }
-    return list;
-  }, []);
-};

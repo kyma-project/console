@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
-import { withDuplicatesRemoved } from './helpers';
+import 'core-js/es/array/flat-map';
 
 SearchInput.propTypes = {
   searchQuery: PropTypes.string,
@@ -55,12 +55,7 @@ export default function SearchInput({
         });
       })
       .filter(suggestion => suggestion);
-    return withDuplicatesRemoved(suggestions);
-  };
-
-  const searchInputChanged = e => {
-    const searchQuery = e.target.value;
-    handleQueryChange(searchQuery);
+    return Array.from(new Set(suggestions));
   };
 
   const openSearchList = () => {
@@ -68,10 +63,6 @@ export default function SearchInput({
     if (inputField !== document.activeElement) {
       inputField.focus();
     }
-  };
-
-  const setInputFocus = isFocused => () => {
-    setSearchHidden(!isFocused);
   };
 
   return (
@@ -86,9 +77,9 @@ export default function SearchInput({
                 className="fd-input"
                 placeholder="Search..."
                 value={searchQuery}
-                onChange={searchInputChanged}
-                onFocus={setInputFocus(true)}
-                onBlur={setInputFocus(false)}
+                onChange={e => handleQueryChange(e.target.value)}
+                onFocus={() => setSearchHidden(false)}
+                onBlur={() => setSearchHidden(true)}
               />
               <span className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button">
                 <button
