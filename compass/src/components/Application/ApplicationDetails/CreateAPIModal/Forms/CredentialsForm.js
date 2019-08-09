@@ -7,6 +7,7 @@ import OAuthCredentialsForm, {
   CREDENTIAL_TYPE_OAUTH,
 } from './CredentialForms/OAuthCredentialsForm';
 export const CREDENTIAL_TYPE_NONE = 'None';
+export const CREDENTIAL_TYPE_PLACEHOLDER = 'Choose credentials type';
 
 const availableCredentialTypes = [CREDENTIAL_TYPE_OAUTH, CREDENTIAL_TYPE_NONE];
 
