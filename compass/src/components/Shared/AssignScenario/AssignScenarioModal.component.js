@@ -35,6 +35,7 @@ export default function AssignScenarioModal(props) {
 
   async function updateLabels() {
     const {
+      title,
       scenarios,
       entityId,
       updateScenarios,
@@ -52,7 +53,7 @@ export default function AssignScenarioModal(props) {
       sendNotification({
         variables: {
           content: 'List of scenarios updated.',
-          title: 'Assigned scenarios list',
+          title,
           color: '#359c46',
           icon: 'accept',
           instanceName: entityId,
