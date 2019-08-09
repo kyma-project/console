@@ -45,7 +45,6 @@ RUN npm run build
 FROM nginx:1.14.0-alpine
 LABEL source git@github.com:kyma-project/console.git
 
-COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/brokers/build var/brokers-public
 COPY --from=ui-generator /app/catalog/build var/catalog-public
 COPY --from=ui-generator /app/instances/build var/instances-public
