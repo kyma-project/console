@@ -110,9 +110,7 @@ export default class CreateLabelModal extends React.Component {
   render() {
     const { nameError, specFile, specError } = this.state;
 
-    const modalOpeningComponent = (
-      <Button option="light">Add definition</Button>
-    );
+    const modalOpeningComponent = <Button glyph="add">Add definition</Button>;
 
     const content = (
       <form>
