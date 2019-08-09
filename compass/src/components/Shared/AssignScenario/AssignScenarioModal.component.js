@@ -19,7 +19,7 @@ AssignScenarioModal.propTypes = {
 };
 
 AssignScenarioModal.defaultProps = {
-  title: "Assign to Scenario",
+  title: 'Assign to Scenario',
 };
 
 export default function AssignScenarioModal(props) {
