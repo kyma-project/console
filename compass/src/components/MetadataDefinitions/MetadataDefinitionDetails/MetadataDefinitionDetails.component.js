@@ -16,7 +16,8 @@ import '../../../shared/styles/header.scss';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import JSONEditorComponent from '../../Shared/JSONEditor';
 
-var ajv = new require('ajv')();
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
