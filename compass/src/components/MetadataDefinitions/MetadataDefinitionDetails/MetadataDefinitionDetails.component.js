@@ -45,7 +45,7 @@ const MetadataDefinitionDetails = ({
 
   const handleSchemaChange = currentSchema => {
     LuigiClient.uxManager().setDirtyStatus(
-      currentSchema === metadataDefinition.schema,
+      currentSchema !== metadataDefinition.schema,
     );
     try {
       const parsedSchema =
@@ -59,6 +59,7 @@ const MetadataDefinitionDetails = ({
         );
       if (!ajv.validateSchema(parsedSchema))
         throw new Error('Provided JSON is not a valid schema');
+
       setEditedSchema(parsedSchema);
       setSchemaError(null);
       setSchemaValid(true);
@@ -70,7 +71,6 @@ const MetadataDefinitionDetails = ({
 
   const handleSaveChanges = async () => {
     try {
-      console.log('saving', editedSchema);
       await updateLabelDefinition({
         key: metadataDefinition.key,
         schema: isEditorShown && editedSchema ? editedSchema : null,
@@ -102,8 +102,7 @@ const MetadataDefinitionDetails = ({
     setIsEditorShown(!isEditorShown);
   };
 
-  const loading = metadataDefinitionQuery.loading;
-  const error = metadataDefinitionQuery.error;
+  const { loading, error } = metadataDefinitionQuery;
 
   if (!metadataDefinitionQuery) {
     if (loading) return 'Loading...';

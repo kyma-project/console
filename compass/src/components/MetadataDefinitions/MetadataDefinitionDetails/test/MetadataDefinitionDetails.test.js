@@ -1,10 +1,10 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-const wait = require('waait');
-
 import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { mocks } from './mock';
+
+const wait = require('waait');
 
 describe('MetadataDefinitionDetails', () => {
   const originalConsoleError = console.error;
