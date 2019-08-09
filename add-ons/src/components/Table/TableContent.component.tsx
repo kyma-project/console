@@ -97,7 +97,7 @@ const TableContentComponent: React.FunctionComponent<TableContentProps> = ({
                 <TreeView.Item>
                   {config.urls.map(url => (
                     <TreeView.Row key={url}>
-                      <TreeView.Col className="add-ons-url">
+                      <TreeView.Col className="addons-url">
                         {url.startsWith('http') ? (
                           <a href={url} target="_blank">
                             {url}

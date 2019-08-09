@@ -52,7 +52,7 @@ const config = {
   serviceBrokersModuleUrl: `https://brokers.${localDomain}`,
   docsModuleUrl: `https://docs.${localDomain}`,
   logsModuleUrl: `https://log-ui.${localDomain}`,
-  addOnsConfigurationModuleUrl: `https://add-ons.${localDomain}`,
+  addOnsConfigurationModuleUrl: `https://addons.${localDomain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl,
   dexFQDNUri : 'http://dex-service.kyma-system.svc.cluster.local:5556/keys'

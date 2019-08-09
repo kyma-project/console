@@ -1,6 +1,6 @@
 {
-  "name": "add-ons-ui",
-  "description": "Add-Ons Configuration UI",
+  "name": "addons-ui",
+  "description": "Addons Configuration UI",
   "version": "1.1.0",
   "private": true,
   "dependencies": {

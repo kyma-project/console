@@ -15,7 +15,7 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
-  addOnsModuleUrl: 'https://add-ons.' + k8sDomain,
+  addOnsModuleUrl: 'https://addons.' + k8sDomain,
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   disabledNavigationNodes: '',
