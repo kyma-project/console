@@ -1,9 +1,5 @@
 import { graphql, compose } from 'react-apollo';
-import {
-  GET_LABEL_DEFINITIONS,
-  GET_LABEL_DEFINITION,
-  UPDATE_LABEL_DEFINITION,
-} from '../gql';
+import { GET_LABEL_DEFINITION, UPDATE_LABEL_DEFINITION } from '../gql';
 
 import { SEND_NOTIFICATION } from '../../../gql';
 
