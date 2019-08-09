@@ -36,9 +36,8 @@ COPY react-components/index.js /app/instances/node_modules/@kyma-project/react-c
 # Set env variables 
 ENV PRODUCTION true
 
-# Test & Build
+# Build
 ENV CI true
-RUN npm test
 RUN npm run build
 
 FROM nginx:1.14.0-alpine

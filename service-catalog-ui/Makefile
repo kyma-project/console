@@ -2,9 +2,9 @@ IMG_NAME = service-catalog-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: resolve build validate test build-image push-image
-ci-master: resolve build validate test build-image push-image
-ci-release: resolve build validate test build-image push-image
+ci-pr: resolve prepare validate test build-image push-image
+ci-master: resolve prepare validate test build-image push-image
+ci-release: resolve prepare validate test build-image push-image
 
 resolve:
 	npm install --unsafe-perm
@@ -16,7 +16,7 @@ else
 	mkdir -p licenses
 endif
 
-build:
+prepare:
 	../scripts/prepare-react-components.sh -d react-components
 	rm -rf ./brokers/node_modules/@kyma-project/react-components/lib/index.js
 	rm -rf ./catalog/node_modules/@kyma-project/react-components/lib/index.js
@@ -24,6 +24,8 @@ build:
 	cp ./react-components/index.js ./brokers/node_modules/@kyma-project/react-components/lib/index.js
 	cp ./react-components/index.js ./catalog/node_modules/@kyma-project/react-components/lib/index.js
 	cp ./react-components/index.js ./instances/node_modules/@kyma-project/react-components/lib/index.js
+
+build:
 	npm run-script build
 
 validate:
