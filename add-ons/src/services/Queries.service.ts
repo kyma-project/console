@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import createContainer from 'constate';
 import { useQuery } from 'react-apollo-hooks';
 
-export const ADDONS_CONFIGURATIONS_QUERY = gql`
-  query addonsConfigurations {
-    addonsConfigurations {
+export const CLUSTER_ADDONS_CONFIGURATIONS_QUERY = gql`
+  query clusterAddonsConfigurations {
+    clusterAddonsConfigurations {
       name
       urls
       labels
@@ -13,10 +13,12 @@ export const ADDONS_CONFIGURATIONS_QUERY = gql`
 `;
 
 const useQueries = () => {
-  const { data, error, loading } = useQuery(ADDONS_CONFIGURATIONS_QUERY);
+  const { data, error, loading } = useQuery(
+    CLUSTER_ADDONS_CONFIGURATIONS_QUERY,
+  );
 
   return {
-    addonsConfigurations: data.addonsConfigurations,
+    addonsConfigurations: data.clusterAddonsConfigurations,
     error,
     loading,
   };

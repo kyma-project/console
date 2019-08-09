@@ -15,9 +15,9 @@ import {
   ERRORS,
 } from '../constants';
 
-export const ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION = gql`
-  subscription addonsConfigurationEvent {
-    addonsConfigurationEvent {
+export const CLUSTER_ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION = gql`
+  subscription clusterAddonsConfigurationEvent {
+    clusterAddonsConfigurationEvent {
       type
       addonsConfiguration {
         name
@@ -71,14 +71,14 @@ const useSubscriptions = () => {
     setOriginalConfigs(configs => configs.filter(c => c.name !== config.name));
   };
 
-  const _ = useSubscription(ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION, {
+  const _ = useSubscription(CLUSTER_ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION, {
     onSubscriptionData: ({ subscriptionData }) => {
       if (!configurationsExist()) {
         return;
       }
       const {
         data: {
-          addonsConfigurationEvent: { type, addonsConfiguration },
+          clusterAddonsConfigurationEvent: { type, addonsConfiguration },
         },
         error,
       } = subscriptionData;

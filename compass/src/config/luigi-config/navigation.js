@@ -65,6 +65,13 @@ const navigation = {
               label: 'Scenarios',
               viewUrl: compassMfUrl + '/scenarios',
             },
+            {
+              keepSelectedForChildren: true,
+              pathSegment: 'metadata-definitions',
+              label: 'Metadata Definitions',
+              viewUrl: compassMfUrl + '/metadata-definitions',
+              category: 'SETTINGS',
+            },
           ],
         },
       ],
