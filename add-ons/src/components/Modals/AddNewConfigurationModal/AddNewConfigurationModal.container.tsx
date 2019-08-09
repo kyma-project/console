@@ -13,7 +13,6 @@ import {
 import Component from './AddNewConfigurationModal.component';
 
 import { ConfigurationLabels } from '../../../types';
-import { CONFIGURATION_NAME_PREFIX, ERRORS } from '../../../constants';
 
 const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   // Services
