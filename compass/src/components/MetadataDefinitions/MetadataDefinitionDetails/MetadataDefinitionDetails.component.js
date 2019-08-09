@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActionBar } from 'fundamental-react';
+import { ActionBar, Toggle } from 'fundamental-react';
 import {
   Button,
   Breadcrumb,
@@ -7,6 +7,7 @@ import {
   PanelHead,
   PanelHeader,
   PanelBody,
+  PanelActions,
   Input,
 } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -22,14 +23,34 @@ const MetadataDefinitionDetails = ({
   updateLabelDefinition,
   sendNotification,
 }) => {
+  const defaultSchema = { properties: {}, required: [] };
+
   const [isSchemaValid, setSchemaValid] = useState(true);
-  const [schema, setSchema] = useState(null);
   const [schemaError, setSchemaError] = useState(null);
+  const [editedSchema, setEditedSchema] = useState(defaultSchema);
+  const [isEditorShown, setIsEditorShown] = useState(false);
+  const [metadataDefinition, setMetadataDefinition] = useState(null);
+
+  if (!metadataDefinition && !metadataDefinitionQuery.loading) {
+    // INITIALIZATION
+    const definition = metadataDefinitionQuery.labelDefinition;
+    setMetadataDefinition(definition);
+    setIsEditorShown(!!definition.schema);
+
+    setEditedSchema(definition.schema || defaultSchema);
+
+    LuigiClient.uxManager().setDirtyStatus(false);
+  }
 
   const handleSchemaChange = currentSchema => {
-    LuigiClient.uxManager().setDirtyStatus(true);
+    LuigiClient.uxManager().setDirtyStatus(
+      currentSchema === metadataDefinition.schema,
+    );
     try {
-      const parsedSchema = JSON.parse(currentSchema);
+      const parsedSchema =
+        typeof currentSchema === 'string'
+          ? JSON.parse(currentSchema)
+          : currentSchema;
 
       if (typeof parsedSchema.properties !== 'object')
         throw new Error(
@@ -37,7 +58,7 @@ const MetadataDefinitionDetails = ({
         );
       if (!ajv.validateSchema(parsedSchema))
         throw new Error('Provided JSON is not a valid schema');
-      setSchema(parsedSchema);
+      setEditedSchema(parsedSchema);
       setSchemaError(null);
       setSchemaValid(true);
     } catch (e) {
@@ -46,12 +67,15 @@ const MetadataDefinitionDetails = ({
     }
   };
 
-  const handleSaveChanges = async definitionKey => {
+  const handleSaveChanges = async () => {
     try {
+      console.log('saving', editedSchema);
       await updateLabelDefinition({
-        key: definitionKey,
-        schema,
+        key: metadataDefinition.key,
+        schema: isEditorShown && editedSchema ? editedSchema : null,
       });
+
+      setMetadataDefinition({ ...metadataDefinition, schema: editedSchema }); // to format the JSON
 
       await sendNotification({
         variables: {
@@ -61,7 +85,6 @@ const MetadataDefinitionDetails = ({
           icon: 'accept',
         },
       });
-      metadataDefinitionQuery.refetch(); //  to format the JSON
     } catch (e) {
       sendNotification({
         variables: {
@@ -74,8 +97,10 @@ const MetadataDefinitionDetails = ({
     }
   };
 
-  const metadataDefinition =
-    (metadataDefinitionQuery && metadataDefinitionQuery.labelDefinition) || {};
+  const handleSchemaToggle = () => {
+    setIsEditorShown(!isEditorShown);
+  };
+
   const loading = metadataDefinitionQuery.loading;
   const error = metadataDefinitionQuery.error;
 
@@ -92,11 +117,6 @@ const MetadataDefinitionDetails = ({
   }
   if (error) {
     return `Error! ${error.message}`;
-  }
-  LuigiClient.uxManager().setDirtyStatus(false);
-
-  if (schema === null && metadataDefinition.schema) {
-    setSchema(metadataDefinition.schema); // to assign the schema to state initially
   }
 
   return (
@@ -117,12 +137,15 @@ const MetadataDefinitionDetails = ({
               <Breadcrumb.Item />
             </Breadcrumb>
             <ActionBar.Header
-              title={metadataDefinition.key || 'Loading name...'}
+              title={
+                (metadataDefinition && metadataDefinition.key) ||
+                'Loading name...'
+              }
             />
           </section>
           <ActionBar.Actions>
             <Button
-              onClick={() => handleSaveChanges(metadataDefinition.key)}
+              onClick={handleSaveChanges}
               disabled={!isSchemaValid}
               option="emphasized"
             >
@@ -131,25 +154,39 @@ const MetadataDefinitionDetails = ({
           </ActionBar.Actions>
         </section>
       </header>
-      <section className="fd-section">
-        <Panel>
-          <PanelHeader>
-            <PanelHead title="Schema" />
-          </PanelHeader>
+      {metadataDefinition && (
+        <section className="fd-section">
+          <Panel>
+            <PanelHeader>
+              <PanelHead title="Schema" />
+              <PanelActions>
+                {!!isEditorShown && (
+                  <Toggle checked onChange={handleSchemaToggle} />
+                )}
+                {!isEditorShown && <Toggle onChange={handleSchemaToggle} />}
+              </PanelActions>
+            </PanelHeader>
 
-          <PanelBody>
-            <JSONEditorComponent
-              onChangeText={handleSchemaChange}
-              text={JSON.stringify(metadataDefinition.schema || {}, null, 2)}
-            />
-            <Input
-              type="hidden"
-              isError={schemaError}
-              message={schemaError}
-            ></Input>
-          </PanelBody>
-        </Panel>
-      </section>
+            {isEditorShown && (
+              <PanelBody>
+                <JSONEditorComponent
+                  onChangeText={handleSchemaChange}
+                  text={JSON.stringify(
+                    metadataDefinition.schema || defaultSchema,
+                    null,
+                    2,
+                  )}
+                />
+                <Input
+                  type="hidden"
+                  isError={schemaError}
+                  message={schemaError}
+                ></Input>
+              </PanelBody>
+            )}
+          </Panel>
+        </section>
+      )}
     </>
   );
 };
