@@ -108,14 +108,14 @@ exports[`MetadataDefinitionDetails Renders null schema 2`] = `
     in span
     in label (created by Toggle)
     in div (created by Toggle)
-    in Toggle (at MetadataDefinitionDetails.component.js:167)
+    in Toggle (at MetadataDefinitionDetails.component.js:166)
     in div
-    in Panel.Actions (at MetadataDefinitionDetails.component.js:163)
+    in Panel.Actions (at MetadataDefinitionDetails.component.js:162)
     in div
-    in Panel.Header (at MetadataDefinitionDetails.component.js:161)
+    in Panel.Header (at MetadataDefinitionDetails.component.js:160)
     in div
-    in Panel (at MetadataDefinitionDetails.component.js:160)
-    in section (at MetadataDefinitionDetails.component.js:159)
+    in Panel (at MetadataDefinitionDetails.component.js:159)
+    in section (at MetadataDefinitionDetails.component.js:158)
     in MetadataDefinitionDetails (created by Mutation)
     in Mutation (created by Apollo(MetadataDefinitionDetails))
     in Apollo(MetadataDefinitionDetails) (created by Mutation)
