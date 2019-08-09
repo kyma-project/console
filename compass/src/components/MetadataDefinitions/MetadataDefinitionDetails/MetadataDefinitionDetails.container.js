@@ -10,12 +10,6 @@ import { SEND_NOTIFICATION } from '../../../gql';
 import MetadataDefinitionDetails from './MetadataDefinitionDetails.component';
 
 export default compose(
-  graphql(GET_LABEL_DEFINITIONS, {
-    name: 'labelDefinitions',
-    options: {
-      fetchPolicy: 'cache-and-network',
-    },
-  }),
   graphql(GET_LABEL_DEFINITION, {
     name: 'metadataDefinition',
     options: props => {
