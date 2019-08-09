@@ -228,10 +228,7 @@ function getNodes(context) {
   ];
   return Promise.all([
     getUiEntities('microfrontends', namespace),
-    getUiEntities('clustermicrofrontends', namespace, [
-      'namespace',
-      'namespace'
-    ])
+    Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
   ]).then(function (values) {
     var nodeTree = [...staticNodes];
     values.forEach(function (val) {
@@ -601,6 +598,16 @@ Promise.all(initPromises)
                 }
                 return [];
               });
+          window.clusterMicrofrontendNodesForNamespace =
+              cmfs
+                .filter(cmf => cmf.placement === 'namespace')
+                .map(cmf => {
+                  if (cmf.navigationNodes) {
+                    var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
+                    return tree;
+                  }
+                  return [];
+                });
         }
       }
     },
