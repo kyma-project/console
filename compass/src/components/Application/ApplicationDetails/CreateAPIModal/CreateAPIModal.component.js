@@ -32,7 +32,7 @@ export default class CreateAPIModal extends React.Component {
         apiSubType: null /* ASYNC_API, OPEN_API, ODATA */,
       },
 
-      credentialsData: {
+      credentialsForm: {
         type: CREDENTIAL_TYPE_PLACEHOLDER,
         isFormReady: false,
         oAuth: {
@@ -48,10 +48,8 @@ export default class CreateAPIModal extends React.Component {
     const { mainAPIType } = this.state.apiData;
 
     if (mainAPIType === 'API') {
-      const { type } = this.state.credentialsData;
-      if (type === CREDENTIAL_TYPE_PLACEHOLDER) {
-        return true;
-      }
+      const { type } = this.state.credentialsForm;
+      return type === CREDENTIAL_TYPE_PLACEHOLDER;
     }
     return false;
   };
@@ -90,14 +88,11 @@ export default class CreateAPIModal extends React.Component {
         return false;
       }
 
-      const { type, isFormReady } = this.state.credentialsData;
+      const { type, isFormReady } = this.state.credentialsForm;
       if (type === CREDENTIAL_TYPE_PLACEHOLDER) {
         return false;
       }
-
-      if (type !== CREDENTIAL_TYPE_NONE && !isFormReady) {
-        return false;
-      }
+      return type === CREDENTIAL_TYPE_NONE || isFormReady;
     }
 
     return true;
@@ -125,7 +120,7 @@ export default class CreateAPIModal extends React.Component {
 
   render() {
     const mainAPIType = this.state.apiData.mainAPIType;
-    const credentialsType = this.state.credentialsData.type;
+    const credentialsType = this.state.credentialsForm.type;
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
     const isAPI = mainAPIType === 'API';
@@ -152,13 +147,13 @@ export default class CreateAPIModal extends React.Component {
           disabled={!isAPI}
         >
           <CredentialsForm
-            updateState={this.updateState('credentialsData')}
+            updateState={this.updateState('credentialsForm')}
             credentialsType={credentialsType}
           />
         </Tab>
         {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
         {this.shouldShowCredentialsPrompt() && (
-          <p class="assign-scenario-list__prompt-dot"></p>
+          <p className="assign-scenario-list__prompt-dot"></p>
         )}
       </TabGroup>
     );
