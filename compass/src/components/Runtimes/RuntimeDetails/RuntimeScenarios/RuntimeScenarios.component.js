@@ -50,7 +50,7 @@ export default function RuntimeScenarios({
           runtimeQuery.refetch();
           sendNotification({
             variables: {
-              content: `Scenario "${scenarioName}" removed from application.`,
+              content: `Scenario "${scenarioName}" removed from runtime.`,
               title: `${scenarioName}`,
               color: '#359c46',
               icon: 'accept',
