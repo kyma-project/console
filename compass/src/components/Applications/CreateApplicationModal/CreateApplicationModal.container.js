@@ -1,6 +1,6 @@
 import { graphql, compose } from 'react-apollo';
 
-import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS, SET_APPLICATION_SCENARIOS } from '../gql';
+import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS } from '../gql';
 import { SEND_NOTIFICATION } from '../../../gql';
 
 import CreateApplicationModal from './CreateApplicationModal.component';
@@ -23,18 +23,6 @@ export default compose(
             in: data,
           },
         }),
-    }),
-  }),
-  graphql(SET_APPLICATION_SCENARIOS, {
-    props: props => ({
-      updateScenarios: async (applicationId, scenarios) => {
-        await props.mutate({
-          variables: {
-            id: applicationId,
-            scenarios: scenarios,
-          },
-        });
-      },
     }),
   }),
   graphql(SEND_NOTIFICATION, {

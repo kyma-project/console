@@ -17,9 +17,9 @@ class CreateApplicationModal extends React.Component {
     return {
       formData: {
         name: '',
-        description: ''
+        description: '',
+        labels: {}
       },
-      currentScenarios: [],
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: false,
       nameFilled: false,
@@ -31,7 +31,7 @@ class CreateApplicationModal extends React.Component {
 
   updateCurrentScenarios = (scenarios) => {
     this.setState({
-      currentScenarios: scenarios
+      formData: { ...this.state.formData, labels: scenarios && scenarios.length ? { scenarios } : {} }
     });
   };
 
@@ -180,8 +180,8 @@ class CreateApplicationModal extends React.Component {
   createApplication = async () => {
     let success = true;
 
-    const { formData, currentScenarios } = this.state;
-    const { addApplication, sendNotification, updateScenarios } = this.props;
+    const { formData } = this.state;
+    const { addApplication, sendNotification } = this.props;
 
     try {
       let createdApplicationName, createdApplicationId;
@@ -192,30 +192,18 @@ class CreateApplicationModal extends React.Component {
         createdApplication.data.createApplication
       ) {
         createdApplicationName = createdApplication.data.createApplication.name;
-        createdApplicationId = createdApplication.data.createApplication.id
       }
 
-      try {
-        if (!createdApplicationId && !currentScenarios) {
-          return;
-        }
-
-        await updateScenarios(createdApplicationId, currentScenarios);
-
-        if (typeof sendNotification === 'function') {
-          sendNotification({
-            variables: {
-              content: `Application "${createdApplicationName}" created successfully`,
-              title: `${createdApplicationName}`,
-              color: '#359c46',
-              icon: 'accept',
-              instanceName: createdApplicationName,
-            },
-          });
-        }
-      } catch(e) {
-        success = false;
-        this.showAlert(`Error occored when assigning the application "${createdApplicationName}" to scenarios: ${e.message}`);
+      if (typeof sendNotification === 'function') {
+        sendNotification({
+          variables: {
+            content: `Application "${createdApplicationName}" created successfully`,
+            title: `${createdApplicationName}`,
+            color: '#359c46',
+            icon: 'accept',
+            instanceName: createdApplicationName,
+          },
+        });
       }
     } catch (e) {
       success = false;
@@ -269,7 +257,7 @@ class CreateApplicationModal extends React.Component {
         />
         <div class="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">Scenarios</div>
         <AssignScenarioForm
-          currentScenarios={this.state.currentScenarios}
+          currentScenarios={this.state.formData.labels.scenarios || []}
           notAssignedMessage=''
           updateCurrentScenarios={this.updateCurrentScenarios}
         />
