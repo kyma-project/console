@@ -5,7 +5,7 @@
     "compass",
     "service-catalog-ui/*",
     "content",
-    "addons",
+    "add-ons",
     "components/react",
     "components/angular/generic-list/dist",
     "lambda",
