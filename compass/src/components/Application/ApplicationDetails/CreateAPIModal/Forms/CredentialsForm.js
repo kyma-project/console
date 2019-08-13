@@ -13,7 +13,10 @@ const availableCredentialTypes = [CREDENTIAL_TYPE_OAUTH, CREDENTIAL_TYPE_NONE];
 
 CredentialsForm.propTypes = {
   updateState: PropTypes.func.isRequired,
-  credentialsType: PropTypes.oneOf(availableCredentialTypes),
+  credentialsType: PropTypes.oneOf([
+    ...availableCredentialTypes,
+    CREDENTIAL_TYPE_PLACEHOLDER,
+  ]),
 };
 
 export default function CredentialsForm({ updateState, credentialsType }) {

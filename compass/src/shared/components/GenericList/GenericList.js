@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
+import SearchInput from './SearchInput';
 
 import { Panel } from 'fundamental-react/lib/Panel';
 
 import {
-  Search,
   TableWithActionsToolbar,
   TableWithActionsList,
 } from '@kyma-project/react-components';
@@ -18,6 +19,7 @@ class GenericList extends React.Component {
     this.state = {
       entries: props.entries,
       filteredEntries: props.entries,
+      searchQuery: '',
     };
   }
 
@@ -40,41 +42,20 @@ class GenericList extends React.Component {
     }
   };
 
-  renderSearchList = entries => {
-    const filteredEntries =
-      entries && entries.length
-        ? entries.map(entry => {
-            return entry.name && entry.description
-              ? [
-                  {
-                    text: entry.name.substring(0, 18),
-                    callback: () => this.handleQueryChange(entry.name),
-                  },
-                  {
-                    text: entry.description.substring(0, 18),
-                    callback: () => this.handleQueryChange(entry.description),
-                  },
-                ]
-              : entries;
-          })
-        : null;
-    return Array.isArray(filteredEntries) &&
-      typeof filterEntries.flat === 'function'
-      ? filteredEntries.flat()
-      : entries;
-  };
-
-  handleQueryChange = event => {
-    const searchTerm = event.target.value;
+  handleQueryChange = searchQuery => {
     this.setState(prevState => ({
-      filteredEntries: filterEntries(prevState.entries, searchTerm),
+      filteredEntries: filterEntries(prevState.entries, searchQuery),
+      searchQuery,
     }));
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.entries.length !== prevState.entries.length) {
+    if (!_.isEqual(nextProps.entries, prevState.entries)) {
       return {
-        filteredEntries: nextProps.entries,
+        filteredEntries: filterEntries(
+          nextProps.entries,
+          prevState.searchQuery,
+        ),
         entries: nextProps.entries,
       };
     }
@@ -82,17 +63,16 @@ class GenericList extends React.Component {
   }
 
   render() {
-    const { filteredEntries } = this.state;
+    const { filteredEntries, searchQuery } = this.state;
     const { extraHeaderContent, notFoundMessage } = this.props;
 
-    const headerActions = filteredEntries => (
+    const headerActions = (
       <>
         {extraHeaderContent}
-        {/* {this.processFilterElement(allFilters)} */}
-        <Search
-          placeholder="Search..."
-          onChange={this.handleQueryChange}
-          searchList={this.renderSearchList(filteredEntries)}
+        <SearchInput
+          searchQuery={searchQuery}
+          filteredEntries={filteredEntries}
+          handleQueryChange={this.handleQueryChange}
         />
       </>
     );
@@ -102,7 +82,7 @@ class GenericList extends React.Component {
         <TableWithActionsToolbar
           title={this.props.title}
           description={this.props.description}
-          children={headerActions(filteredEntries)}
+          children={headerActions}
         />
 
         <Panel.Body>

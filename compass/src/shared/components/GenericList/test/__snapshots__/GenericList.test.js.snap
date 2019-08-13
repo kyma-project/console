@@ -23,7 +23,7 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
       data-e2e-id="toolbar-actions"
     >
       <div
-        className="fd-search-input"
+        className="fd-search-input generic-list-search"
       >
         <div
           className="fd-popover"
@@ -32,8 +32,6 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
             className="fd-popover__control"
           >
             <div
-              aria-expanded={false}
-              aria-haspopup="true"
               className="fd-combobox-control"
             >
               <div
@@ -41,11 +39,10 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
               >
                 <input
                   className="fd-input"
+                  onBlur={[Function]}
                   onChange={[Function]}
-                  onClick={[Function]}
-                  onKeyPress={[Function]}
+                  onFocus={[Function]}
                   placeholder="Search..."
-                  style={Object {}}
                   type="text"
                   value=""
                 />
@@ -64,34 +61,38 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
             aria-hidden={true}
             className="fd-popover__body fd-popover__body--no-arrow"
           >
-            <div
-              className=""
+            <nav
+              className="fd-menu"
             >
-              <nav
-                className="fd-menu"
+              <ul
+                className="fd-menu__list"
               >
-                <ul
-                  className="fd-menu__list"
+                <li
+                  className="fd-menu__item"
+                  onClick={[Function]}
                 >
-                  <li
-                    className="fd-menu__item"
-                    onClick={[Function]}
-                  >
-                    <strong>
-                      
-                    </strong>
-                  </li>
-                  <li
-                    className="fd-menu__item"
-                    onClick={[Function]}
-                  >
-                    <strong>
-                      
-                    </strong>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+                  first_entry
+                </li>
+                <li
+                  className="fd-menu__item"
+                  onClick={[Function]}
+                >
+                  testdescription1
+                </li>
+                <li
+                  className="fd-menu__item"
+                  onClick={[Function]}
+                >
+                  second_entry
+                </li>
+                <li
+                  className="fd-menu__item"
+                  onClick={[Function]}
+                >
+                  testdescription2
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
@@ -206,7 +207,7 @@ exports[`GenericList Renders title and description 1`] = `
       data-e2e-id="toolbar-actions"
     >
       <div
-        className="fd-search-input"
+        className="fd-search-input generic-list-search"
       >
         <div
           className="fd-popover"
@@ -215,8 +216,6 @@ exports[`GenericList Renders title and description 1`] = `
             className="fd-popover__control"
           >
             <div
-              aria-expanded={false}
-              aria-haspopup="true"
               className="fd-combobox-control"
             >
               <div
@@ -224,11 +223,10 @@ exports[`GenericList Renders title and description 1`] = `
               >
                 <input
                   className="fd-input"
+                  onBlur={[Function]}
                   onChange={[Function]}
-                  onClick={[Function]}
-                  onKeyPress={[Function]}
+                  onFocus={[Function]}
                   placeholder="Search..."
-                  style={Object {}}
                   type="text"
                   value=""
                 />
@@ -247,23 +245,19 @@ exports[`GenericList Renders title and description 1`] = `
             aria-hidden={true}
             className="fd-popover__body fd-popover__body--no-arrow"
           >
-            <div
-              className=""
+            <nav
+              className="fd-menu"
             >
-              <nav
-                className="fd-menu"
+              <ul
+                className="fd-menu__list"
               >
-                <ul
-                  className="fd-menu__list"
+                <li
+                  className="fd-menu__item fd-menu__item--no-entries"
                 >
-                  <li
-                    className="fd-menu__item"
-                  >
-                    No result
-                  </li>
-                </ul>
-              </nav>
-            </div>
+                  No entries found
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
@@ -320,7 +314,7 @@ exports[`GenericList Renders with minimal props 1`] = `
       data-e2e-id="toolbar-actions"
     >
       <div
-        className="fd-search-input"
+        className="fd-search-input generic-list-search"
       >
         <div
           className="fd-popover"
@@ -329,8 +323,6 @@ exports[`GenericList Renders with minimal props 1`] = `
             className="fd-popover__control"
           >
             <div
-              aria-expanded={false}
-              aria-haspopup="true"
               className="fd-combobox-control"
             >
               <div
@@ -338,11 +330,10 @@ exports[`GenericList Renders with minimal props 1`] = `
               >
                 <input
                   className="fd-input"
+                  onBlur={[Function]}
                   onChange={[Function]}
-                  onClick={[Function]}
-                  onKeyPress={[Function]}
+                  onFocus={[Function]}
                   placeholder="Search..."
-                  style={Object {}}
                   type="text"
                   value=""
                 />
@@ -361,23 +352,19 @@ exports[`GenericList Renders with minimal props 1`] = `
             aria-hidden={true}
             className="fd-popover__body fd-popover__body--no-arrow"
           >
-            <div
-              className=""
+            <nav
+              className="fd-menu"
             >
-              <nav
-                className="fd-menu"
+              <ul
+                className="fd-menu__list"
               >
-                <ul
-                  className="fd-menu__list"
+                <li
+                  className="fd-menu__item fd-menu__item--no-entries"
                 >
-                  <li
-                    className="fd-menu__item"
-                  >
-                    No result
-                  </li>
-                </ul>
-              </nav>
-            </div>
+                  No entries found
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>

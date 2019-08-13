@@ -22,7 +22,7 @@ export default function ApplicationDetailsScenarios({
   const applicationQuery = React.useContext(ApplicationQueryContext);
 
   async function unassignScenario(entry) {
-    const scenarioName = entry.scenario;
+    const scenarioName = entry.name;
 
     LuigiClient.uxManager()
       .showConfirmationModal({
@@ -61,7 +61,7 @@ export default function ApplicationDetailsScenarios({
 
   const headerRenderer = () => ['Name'];
 
-  const rowRenderer = label => [label.scenario];
+  const rowRenderer = label => [label.name];
 
   const actions = [
     {
@@ -82,7 +82,7 @@ export default function ApplicationDetailsScenarios({
   );
 
   const entries = scenarios.map(scenario => {
-    return { scenario };
+    return { name: scenario };
   }); // list requires a list of objects
 
   return (
