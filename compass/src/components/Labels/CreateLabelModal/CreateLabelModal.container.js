@@ -1,11 +1,12 @@
 import { graphql, compose } from 'react-apollo';
-import { GET_LABEL_NAMES, CREATE_LABEL } from './../gql';
+import { CREATE_LABEL } from './../gql';
+import { GET_LABEL_DEFINITIONS } from '../../MetadataDefinitions/gql';
 import { SEND_NOTIFICATION } from '../../../gql';
 
 import CreateLabelModal from './CreateLabelModal.component';
 
 export default compose(
-  graphql(GET_LABEL_NAMES, {
+  graphql(GET_LABEL_DEFINITIONS, {
     name: 'labelNamesQuery',
   }),
   graphql(CREATE_LABEL, {
