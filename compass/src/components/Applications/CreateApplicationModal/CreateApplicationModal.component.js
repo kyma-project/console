@@ -169,14 +169,6 @@ class CreateApplicationModal extends React.Component {
     });
   };
 
-  showAlert = (message) => {
-    LuigiClient.uxManager().showAlert({
-      text: message,
-      type: 'error',
-      closeAfter: 10000,
-    });
-  };
-
   createApplication = async () => {
     let success = true;
 
@@ -207,7 +199,11 @@ class CreateApplicationModal extends React.Component {
       }
     } catch (e) {
       success = false;
-      this.showAlert(`Error occored when creating the application: ${e.message}`);
+      LuigiClient.uxManager().showAlert({
+        text: `Error occored when creating the application: ${e.message}`,
+        type: 'error',
+        closeAfter: 10000,
+      });
     }
 
     if (success) {
