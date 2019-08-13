@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from '@kyma-project/react-components';
 import RuntimeScenarioModal from './RuntimeScenarioModal.container';
-import { RuntimeQueryContext } from '././/../RuntimeDetails.component';
+import { RuntimeQueryContext } from './../RuntimeDetails.component';
 
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 
@@ -50,7 +50,7 @@ export default function RuntimeScenarios({
           runtimeQuery.refetch();
           sendNotification({
             variables: {
-              content: `Scenario "${scenarioName}" removed from runtime.`,
+              content: `${scenarioName}" deactivated in the runtime.`,
               title: `${scenarioName}`,
               color: '#359c46',
               icon: 'accept',
