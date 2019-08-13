@@ -9,18 +9,13 @@ import { createAPI, createEventAPI } from './APICreationHelper';
 import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
 
 import APIDataForm from './Forms/ApiDataForm';
-import CredentialsForm from './Forms/CredentialsForm';
+import CredentialsForm, {
+  CREDENTIAL_TYPE_NONE,
+  CREDENTIAL_TYPE_PLACEHOLDER,
+} from './Forms/CredentialsForm';
 
 export default class CreateAPIModal extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = this.createInitialState();
-
-    this.addSpecification = this.addSpecification.bind(this);
-    this.isReadyToUpload = this.isReadyToUpload.bind(this);
-    this.updateState = this.updateState.bind(this);
-  }
+  state = this.createInitialState();
 
   createInitialState() {
     return {
@@ -37,7 +32,9 @@ export default class CreateAPIModal extends React.Component {
         apiSubType: null /* ASYNC_API, OPEN_API, ODATA */,
       },
 
-      credentialsData: {
+      credentialsForm: {
+        type: CREDENTIAL_TYPE_PLACEHOLDER,
+        isFormReady: false,
         oAuth: {
           clientId: '',
           clientSecret: '',
@@ -47,13 +44,21 @@ export default class CreateAPIModal extends React.Component {
     };
   }
 
-  updateState(key) {
-    return values => {
-      const state = { ...this.state };
-      state[key] = { ...state[key], ...values };
-      this.setState({ ...state });
-    };
-  }
+  shouldShowCredentialsPrompt = () => {
+    const { mainAPIType } = this.state.apiData;
+
+    if (mainAPIType === 'API') {
+      const { type } = this.state.credentialsForm;
+      return type === CREDENTIAL_TYPE_PLACEHOLDER;
+    }
+    return false;
+  };
+
+  updateState = key => values => {
+    const state = { ...this.state };
+    state[key] = { ...state[key], ...values };
+    this.setState({ ...state });
+  };
 
   showCreateSuccessNotification(apiName, isAsyncAPI) {
     const content = isAsyncAPI
@@ -71,7 +76,7 @@ export default class CreateAPIModal extends React.Component {
     });
   }
 
-  isReadyToUpload() {
+  isReadyToUpload = () => {
     const { spec, name, mainAPIType, targetURL } = this.state.apiData;
 
     if (!spec || !name.trim()) {
@@ -79,21 +84,21 @@ export default class CreateAPIModal extends React.Component {
     }
 
     if (mainAPIType === 'API') {
-      const { clientId, clientSecret, url } = this.state.credentialsData.oAuth;
-      if (
-        !targetURL.trim() ||
-        !clientId.trim() ||
-        !clientSecret.trim() ||
-        !url.trim()
-      ) {
+      if (!targetURL.trim()) {
         return false;
       }
+
+      const { type, isFormReady } = this.state.credentialsForm;
+      if (type === CREDENTIAL_TYPE_PLACEHOLDER) {
+        return false;
+      }
+      return type === CREDENTIAL_TYPE_NONE || isFormReady;
     }
 
     return true;
-  }
+  };
 
-  async addSpecification() {
+  addSpecification = async () => {
     const { props, state } = this;
 
     const isAsyncAPI = state.apiData.mainAPIType === 'ASYNC_API';
@@ -111,10 +116,11 @@ export default class CreateAPIModal extends React.Component {
         closeAfter: 10000,
       });
     }
-  }
+  };
 
   render() {
     const mainAPIType = this.state.apiData.mainAPIType;
+    const credentialsType = this.state.credentialsForm.type;
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
     const isAPI = mainAPIType === 'API';
@@ -140,9 +146,15 @@ export default class CreateAPIModal extends React.Component {
           title="Credentials"
           disabled={!isAPI}
         >
-          <CredentialsForm updateState={this.updateState('credentialsData')} />
+          <CredentialsForm
+            updateState={this.updateState('credentialsForm')}
+            credentialsType={credentialsType}
+          />
         </Tab>
         {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
+        {this.shouldShowCredentialsPrompt() && (
+          <p className="assign-scenario-list__prompt-dot"></p>
+        )}
       </TabGroup>
     );
 
