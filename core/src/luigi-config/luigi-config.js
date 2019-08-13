@@ -227,7 +227,7 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getUiEntities('microfrontends', namespace),
+    getMicrofrontends(namespace),
     Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
   ]).then(function (values) {
     var nodeTree = [...staticNodes];
@@ -274,52 +274,62 @@ async function getNamespace(namespaceName) {
 }
 
 /**
- * getUiEntities
- * @param {string} entityname microfrontends | clustermicrofrontends
+ * getMicrofrontends
  * @param {string} namespace k8s namespace name
- * @param {array} placements array of strings: namespace | namespace | cluster
  */
-async function getUiEntities(entityname, namespace, placements) {
-  if (namespace) {
-    const currentNamespace = await getNamespace(namespace);
-  }
-  var fetchUrl =
-    k8sServerUrl +
-    '/apis/ui.kyma-project.io/v1alpha1/' +
-    (namespace ? 'namespaces/' + namespace + '/' : '') +
-    entityname;
-  const segmentPrefix = entityname === 'clustermicrofrontends' ? 'cmf-' : 'mf-';
+async function getMicrofrontends(namespace) {
+  const segmentPrefix = 'mf-';
   const cacheName = '_console_mf_cache_';
   if (!window[cacheName]) {
-    window[cacheName] = {};
+     window[cacheName] = {};
   }
 
   const cache = window[cacheName];
-  const cacheKey = fetchUrl + (placements || '');
+  const cacheKey = segmentPrefix+namespace;
   const fromCache = cache[cacheKey];
+
+  const query = `query MicroFrontends($namespace: String!) {
+    microFrontends(namespace: $namespace){
+      name
+      category
+      viewBaseUrl
+      navigationNodes{
+        label
+        navigationPath
+        viewUrl
+        showInNavigation
+        order
+        settings
+        requiredPermissions{
+          verbs
+          resource
+          apiGroup
+        }
+      }
+    }
+  }`;
+  const variables = {
+    namespace
+  }
+
   return (
     fromCache ||
-    fetchFromKyma(fetchUrl)
+    fetchFromGraphQL(query, variables, true)
       .then(result => {
-        if (!result.items.length) {
+        if (!result.microFrontends.length) {
           return [];
         }
-        return result.items
-          .filter(function(item) {
-            // placement only exists in clustermicrofrontends
-            return !placements || placements.includes(item.spec.placement);
-          })
+        return result.microFrontends
           .map(function (item) {
-
-            if (item.spec.navigationNodes) {
-              var tree = convertToNavigationTree(item.metadata.name, item.spec, config, navigation, consoleViewGroupName, segmentPrefix);
+            if (item.navigationNodes) {
+              var tree = convertToNavigationTree(item.name, item, config, navigation, consoleViewGroupName, segmentPrefix);
               return tree;
             }
             return [];
           });
       })
       .catch(err => {
-        console.error('Error fetching UiEntity ' + name, err);
+        console.error('Error fetching Microfrontend ' + name, err);
         return [];
       })
       .then(result => {
@@ -600,7 +610,7 @@ Promise.all(initPromises)
               });
           window.clusterMicrofrontendNodesForNamespace =
               cmfs
-                .filter(cmf => cmf.placement === 'namespace')
+                .filter(cmf => cmf.placement === 'namespace' || cmf.placement === 'environment')
                 .map(cmf => {
                   if (cmf.navigationNodes) {
                     var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
