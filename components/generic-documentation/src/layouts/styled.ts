@@ -126,3 +126,12 @@ export const InstancesUIWrapper = styled.div`
     }
   }
 `;
+
+export const CompassUIWrapper = styled.div`
+  &&& {
+    width: 100%;
+    margin: 32px;
+    background: #fff;
+    border-radius: 4px;
+  }
+`;

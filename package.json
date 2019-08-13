@@ -1,30 +1,114 @@
 {
+  "private": true,
+  "license": "Apache-2.0",
   "scripts": {
-    "precommit": "lint-staged",
-    "bootstrap": "lerna bootstrap && npm run build:components:react && npm run git-ignore-config && sudo npm run append-hosts",
-    "clean": "lerna clean",
-    "start": "./scripts/pre-start-warning.sh && lerna exec --ignore ui-tests --ignore @kyma-project/* --parallel -- npm run start:kyma",
-    "start:api": "lerna exec --ignore ui-tests --ignore @kyma-project/* --parallel -- npm run start:kyma:api",
-    "build:components:react": "cd components/react && npm run build",
+    "bootstrap": "npm install && npm run install:libraries && npm run build:libraries && npm run install:apps && npm run append-host && npm run git-ignore-config",
+    "bootstrap:ci": "npm install && npm run install:libraries && npm run build:libraries",
+    "bootstrap:prod": "npm install --no-optional && npm run install:libraries && npm run build:libraries",
+    "install:libraries": "gulp install:libraries",
+    "build:libraries": "gulp build:libraries",
+    "watch:libraries": "gulp watch:libraries",
+    "install:apps": "gulp install:apps",
+    "start": "./scripts/pre-start-warning.sh && lerna exec --parallel -- npm run start:kyma",
+    "start:api": "./scripts/pre-start-warning.sh && lerna exec --parallel -- npm run start:kyma:api",
+    "lint-check": "tslint -c ./tslint.json --project tsconfig.base.json --format verbose && prettier --config ./.prettierrc --ignore-path ./.prettierignore --check '**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "lint-fix": "tslint -c ./tslint.json --project tsconfig.base.json --format verbose --fix && prettier --config ./.prettierrc --ignore-path ./.prettierignore --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml}'",
+    "conflict-check": "tslint-config-prettier-check ./tslint.json",
+    "markdownlint": "markdownlint **/*.md",
+    "lint-staged": "lint-staged",
     "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js service-catalog-ui/catalog/public/config/config.js service-catalog-ui/instances/public/config/config.js service-catalog-ui/brokers/public/config/config.js content/public/config/config.js logging/src/assets/config/config.js add-ons/public/config/config.js",
     "append-host": "grep -qF '127.0.0.1 console-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 console-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 console-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)",
     "append-host-ui-test": "sudo sed -i '' \"/ui-test-exposed-api.kyma.local/d\" '/etc/hosts' && (echo 'append: $(minikube ip) ui-test-exposed-api.kyma.local >> /etc/hosts' && echo $(minikube ip) ui-test-exposed-api.kyma.local | sudo tee -a /etc/hosts > /dev/null)",
     "append-hosts": "npm run append-host && npm run append-host-ui-test"
   },
   "dependencies": {
+    "@kyma-project/luigi-client": "^0.6.1",
+    "@kyma-project/common": "./common",
     "@kyma-project/generic-documentation": "./components/generic-documentation",
-    "@kyma-project/react-components": "./components/react"
+    "@kyma-project/react-components": "./components/react",
+    "@kyma-project/components": "./components/shared",
+    "@reach/router": "^1.2.1",
+    "@apollo/react-hooks": "3.0.0",
+    "apollo-client-transform": "^0.1.0",
+    "apollo-link-state": "^0.4.2",
+    "apollo-client": "^2.6.3",
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-link-context": "^1.0.18",
+    "apollo-link-error": "^1.1.11",
+    "apollo-link-http": "^1.5.15",
+    "apollo-utilities": "^1.3.2",
+    "subscriptions-transport-ws": "^0.9.16",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
+    "react-apollo": "2.5.8",
+    "ajv": "^6.10.2",
+    "deep-copy": "^1.4.2",
+    "deep-equal": "^1.0.1",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-moment": "^0.7.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-sticky": "^6.0.3",
+    "click-outside-hook": "^1.1.0",
+    "constate": "^1.2.0",
+    "fiori-fundamentals": "1.7.1",
+    "fundamental-react": "0.6.1",
+    "fundamental-styles": "0.1.0",
+    "styled-components": "4.3.2",
+    "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "husky": "^0.14.0",
-    "lerna": "^2.11.0",
-    "lint-staged": "^7.0.0",
+    "@types/fundamental-react": "^0.5.0",
+    "@types/graphql": "^14.2.3",
+    "@types/reach__router": "^1.2.4",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
+    "@types/react-sticky": "^6.0.3",
+    "@types/styled-components": "^4.1.16",
+    "cli-color": "^1.4.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "fancy-log": "^1.3.3",
+    "gulp": "^4.0.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-watch": "^5.0.1",
+    "node-sass": "^4.12.0",
+    "react-app-rewired": "2.1.3",
+    "react-scripts": "3.1.0",
+    "tslib": "^1.10.0",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "tslint-react-hooks": "^2.1.1",
+    "typescript": "^3.5.3"
+  },
+  "optionalDependencies": {
+    "lint-staged": "^8.2.1",
+    "husky": "^2.4.1",
+    "lerna": "^3.15.0",
+    "markdownlint-cli": "^0.17.0",
     "prettier": "^1.18.2"
   },
   "lint-staged": {
-    "**/*.{css,js,jsx,json,ts,tsx}": [
-      "prettier --write",
-      "git add"
+    "linters": {
+      "**/*.{ts,tsx,js,jsx,json,html,css,yaml}": [
+        "prettier --write",
+        "git add"
+      ],
+      "**/*.md": [
+        "markdownlint"
+      ]
+    },
+    "ignore": [
+      "package.json",
+      "package-lock.json"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

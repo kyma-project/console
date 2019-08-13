@@ -1,15 +1,14 @@
-import React from 'react';
-import { ActionBar, Button } from 'fundamental-react';
+import React, { useContext } from 'react';
+import { ActionBar } from 'fundamental-react';
+import { GlobalService } from '@kyma-project/common';
 
 import AddNewConfigurationModal from '../Modals/AddNewConfigurationModal/AddNewConfigurationModal.container';
 
 import { CORE } from '../../constants';
-
-import appInitializer from '../../core/app-initializer';
 import { StyledActionBar } from './styled';
 
 const Toolbar: React.FunctionComponent = () => {
-  const currentNamespace = appInitializer.getCurrentNamespace();
+  const { currentNamespace } = useContext(GlobalService);
   const title = currentNamespace
     ? CORE.ADD_ONS_CONFIGURATION_TITLE
     : CORE.CLUSTER_ADD_ONS_CONFIGURATION_TITLE;

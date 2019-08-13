@@ -1,3 +1,5 @@
+import { TooltipType } from '@kyma-project/components';
+
 export const DEFAULT_CONFIGURATION =
   (window as any).clusterConfig.DEFAULT_CONFIGURATION_NAME || 'helm-repos-urls';
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
@@ -6,7 +8,6 @@ export const HELM_BROKER_REPO_URL_PREFIXES = (window as any).clusterConfig
   .HELM_BROKER_REPO_URL_PREFIXES;
 
 export const KYMA_SYSTEM_ENV = 'kyma-system';
-
 export const NOTIFICATION_SHOW_TIME = 5000;
 
 export const BACKEND_MODULE_SERVICE_CATALOG = 'servicecatalogaddons';
@@ -114,6 +115,6 @@ export const ERRORS = {
 };
 
 export const TOOLTIP_DATA_ERROR = {
-  type: 'error',
+  type: TooltipType.NEGATIVE,
   content: 'Fill out all mandatory fields.',
 };

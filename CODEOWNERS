@@ -4,10 +4,13 @@
 /catalog/ @akucharska @dariadomagala @y-kkamil @parostatkiem
 /instances/ @akucharska @dariadomagala @y-kkamil @parostatkiem
 /brokers/ @akucharska @dariadomagala @y-kkamil @parostatkiem
+/common/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
 /content/ @michal-hudy @aerfio @m00g3n @magicmatatjahu
 /compass/ @dariadomagala @y-kkamil @akucharska @parostatkiem
 /components/angular/ @dariadomagala @y-kkamil @akucharska @parostatkiem
 /components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/components/shared/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/components/generic-documentation/ @michal-hudy @aerfio @m00g3n @magicmatatjahu
 /core/ @dariadomagala @y-kkamil @parostatkiem @akucharska
 /tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem
 /lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska

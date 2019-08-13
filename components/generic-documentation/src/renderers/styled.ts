@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { customScrollBar } from '../helpers';
+import { customScrollBar } from '@kyma-project/common';
 
 export const tabsStyling = css`
   .cms__tabs {

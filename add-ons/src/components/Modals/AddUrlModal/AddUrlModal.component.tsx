@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   FormSet,
@@ -9,8 +9,7 @@ import {
   Icon,
   FormSelect,
 } from 'fundamental-react';
-import LuigiClient from '@kyma-project/luigi-client';
-import { Modal } from '@kyma-project/react-components';
+import { Modal } from '@kyma-project/components';
 
 import InlineHelp from '../../Atoms/InlineHelp';
 
@@ -30,12 +29,11 @@ interface Props {
   configurationNameField: any;
   urlField: any;
   urls: string[];
-  onSubmit: (event: any) => void;
+  onSubmit: () => void;
   addUrl: () => void;
   removeUrl: (url: string) => void;
   handleEnterDownOnUrlField: (e: any) => void;
   onShowModal: () => void;
-  onHideModal: () => void;
 }
 
 const AddUrlModalComponent: React.FunctionComponent<Props> = ({
@@ -49,7 +47,6 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
   removeUrl,
   handleEnterDownOnUrlField,
   onShowModal,
-  onHideModal,
 }) => {
   const modalOpeningComponent = (
     <Button glyph="add" option="light" compact={true}>
@@ -76,15 +73,13 @@ const AddUrlModalComponent: React.FunctionComponent<Props> = ({
     <Modal
       width="681px"
       title={MODAL.ADD_URL_MODAL_TITLE}
-      type="emphasized"
       confirmText={MODAL.CONFIRM_TEXT}
-      cancelText={MODAL.CANCEL_TEXT}
-      modalOpeningComponent={modalOpeningComponent}
+      closeText={MODAL.CANCEL_TEXT}
+      openingComponent={modalOpeningComponent}
       onConfirm={onSubmit}
       disabledConfirm={disabledConfirm}
-      onShow={onShowModal}
-      onHide={onHideModal}
-      tooltipData={disabledConfirm ? TOOLTIP_DATA_ERROR : null}
+      onOpen={onShowModal}
+      tooltipData={disabledConfirm ? TOOLTIP_DATA_ERROR : undefined}
     >
       <FormSet>
         <FormItem key="configurationName">

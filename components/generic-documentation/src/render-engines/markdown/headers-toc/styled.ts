@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Icon } from 'fundamental-react/Icon';
-
-import { media } from '../../../components';
+import { media } from '@kyma-project/components';
+import { Icon } from 'fundamental-react';
 
 const navNode = (multiple: number) => css`
   span {

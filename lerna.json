@@ -1,21 +1,14 @@
 {
-  "lerna": "2.11.0",
+  "lerna": "3.15.0",
+  "version": "0.0.0",
+  "npmClient": "npm",
   "packages": [
     "core",
     "compass",
     "service-catalog-ui/*",
     "content",
     "add-ons",
-    "components/react",
-    "components/angular/generic-list/dist",
     "lambda",
-    "logging",
-    "tests"
-  ],
-  "version": "0.0.0",
-  "command": {
-    "publish": {
-      "message": "Bump version to %s"
-    }
-  }
+    "logging"
+  ]
 }

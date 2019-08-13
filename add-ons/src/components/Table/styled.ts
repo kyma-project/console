@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Token, Panel } from 'fundamental-react';
+import { Token } from 'fundamental-react';
 
 export const ErrorWrapper = styled.div`
   padding: 16px;
@@ -32,7 +32,6 @@ export const PanelWrapper = styled.div`
 
       button {
         top: 10px;
-        height: 19px;
       }
     }
 
@@ -50,7 +49,6 @@ export const PanelWrapper = styled.div`
 
         button {
           top: 12px;
-          height: 19px;
         }
 
         .fd-tree__col--control--default-config {

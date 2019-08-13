@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Spinner } from '@kyma-project/react-components';
+import { Spinner } from '@kyma-project/components';
 
 import TableComponent from './Table.component';
 import TableContentComponent from './TableContent.component';
@@ -12,13 +12,10 @@ import {
 
 import { ErrorWrapper } from './styled';
 
-import { Configuration } from '../../types';
 import { CONTENT_HEADERS, ERRORS } from '../../constants';
 
 const TableContainer: React.FunctionComponent = () => {
-  const { addonsConfigurations, error, loading = true } = useContext(
-    QueriesService,
-  );
+  const { error, loading = true } = useContext(QueriesService);
   const { configurationsExist, filteredConfigs } = useContext(
     ConfigurationsService,
   );

@@ -177,9 +177,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       const catalogExpectedHeader = configCatalogExpectedHeader;
 
       // consts
-      const notificationLink = `a[${
-        config.catalogTestingAtribute
-      }="notification-success"]`;
+      const notificationLink = `a[${config.catalogTestingAtribute}="notification-success"]`;
       const exampleInstanceServiceClass = catalog.prepareSelector(
         'instance-service-class',
       );

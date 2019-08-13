@@ -32,14 +32,14 @@ function copyFiles() {
     cp -R  "${ROOT_DIR}/node_modules" "${PWD}/${TEMP_DIR}/node_modules/"
   fi
 
-  local files="package.json package-lock.json"
+  local files="package.json package-lock.json gulpfile.js tsconfig.base.json"
   local filesArray=(${files})
 
   for f in "${filesArray[@]}"; do
     cp "${ROOT_DIR}/${f}" "${PWD}/${TEMP_DIR}/"
   done
 
-  local dirs="components"
+  local dirs="common components"
   local dirsArray=(${dirs})
 
   for d in "${dirsArray[@]}"; do

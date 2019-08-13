@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useReducer, useCallback } from 'react';
 import createContainer from 'constate';
 
 import {
@@ -16,7 +16,7 @@ const useFilters = () => {
   function activeFiltersReducer(state: Filters, action: ActiveFiltersAction) {
     switch (action.type) {
       case ActiveFiltersActionType.SET_SEARCH:
-        return { ...state, search: action.payload };
+        return { ...state, search: action.payload.value };
       case ActiveFiltersActionType.SET_LABEL:
         return {
           ...state,
@@ -47,16 +47,18 @@ const useFilters = () => {
 
   const [activeFilters, dispatchActiveFilters] = useReducer(
     activeFiltersReducer,
-    // @ts-ignore
     initialActiveFilters,
   );
 
-  const setSearchFilter = (search: string) => {
+  const setSearchFilter = useCallback((search: string) => {
     dispatchActiveFilters({
       type: ActiveFiltersActionType.SET_SEARCH,
-      payload: search,
+      payload: {
+        key: 'search',
+        value: search,
+      },
     });
-  };
+  }, []);
 
   const setFilterLabel = (key: string, value: string) => {
     if (!activeFilters.labels[key]) {

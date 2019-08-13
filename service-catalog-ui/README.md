@@ -3,10 +3,10 @@
 ## Overview
 
 The project contains three applications:
- - Service Brokers UI
- - Service Catalog
- - Service Instances
- These applications are included in the Kyma Console as micro front-ends.
+- Service Brokers UI
+- Service Catalog
+- Service Instances
+These applications are included in the Kyma Console as micro front-ends.
 
 ## Installation
 
@@ -27,7 +27,7 @@ The build is minified and the filenames include hashes.
 
 Run the following command to build and run the Docker image:
 
-```
+``` bash
 make build-image
 ```
 
@@ -46,4 +46,3 @@ If lint errors appear, the terminal displays them.
 ### Test the applications
 
 Run the `npm test` command to launch the test runner in the interactive watch mode for all three applications.
-

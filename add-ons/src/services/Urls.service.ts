@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import createContainer from 'constate';
 
 import { ConfigurationsService } from './index';
