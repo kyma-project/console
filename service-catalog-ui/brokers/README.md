@@ -21,16 +21,6 @@ The command allows you to bundle React in the production mode correctly, and to 
 
 The build is minified and the filenames include hashes.
 
-### Build and run a Docker image
-
-Run the following command to build and run the Docker image:
-
-```
-sh ../scripts/build-docker-image.sh brokers-ui
-docker run --rm -p 3000:80 brokers-ui
-open http://localhost:3000 or http://localhost:3000/status in a browser
-```
-
 ## Development
 
 This section describes how to run and test the application.
