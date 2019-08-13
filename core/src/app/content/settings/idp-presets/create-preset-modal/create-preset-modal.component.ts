@@ -28,6 +28,7 @@ export class CreatePresetModalComponent {
 
   show() {
     this.isActive = true;
+    this.resetForm();
     this.modalService
       .open(this.createIDPPresetModal, {
         ...DEFAULT_MODAL_CONFIG,
@@ -36,17 +37,20 @@ export class CreatePresetModalComponent {
       .afterClosed.toPromise()
       .finally(() => {
         this.isActive = false;
-        this.presetName = '';
-        this.issuer = '';
-        this.jwks = '';
-        this.error = '';
-        this.wrongPresetName = false;
       });
   }
 
   close() {
     this.isActive = false;
     this.modalService.dismissAll();
+  }
+
+  resetForm() {
+    this.presetName = '';
+    this.issuer = '';
+    this.jwks = '';
+    this.error = '';
+    this.wrongPresetName = false;
   }
 
   isReadyToCreate() {

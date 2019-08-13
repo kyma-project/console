@@ -45,15 +45,19 @@
     "build": "REACT_APP_ENV=production react-app-rewired build",
     "test": "react-app-rewired test --passWithNoTests --env=jsdom",
     "eject": "react-app-rewired eject",
-    "copy-config": "cp ../config.js public/config/config.js",
+    "copy-config": "cp ../../config.js public/config/config.js",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "lint-fix": "prettier --config ../.prettierrc --write './src/**/*.{js,jsx,ts,tsx,html,css,json}'",
-    "lint-check": "prettier --config ../.prettierrc --check './src/**/*.{js,jsx,ts,tsx,html,css,json}'"
+    "lint-fix": "prettier --config ../../.prettierrc --write './src/**/*.{js,jsx,ts,tsx,html,css,json}'",
+    "lint-check": "prettier --config ../../.prettierrc --check './src/**/*.{js,jsx,ts,tsx,html,css,json}'",
+    "eslint-check": "eslint -c .eslinterrc ./src"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "config": {
+    "unsafe-perm": true
+  }
 }

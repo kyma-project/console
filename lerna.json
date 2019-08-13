@@ -3,9 +3,7 @@
   "packages": [
     "core",
     "compass",
-    "catalog",
-    "instances",
-    "brokers",
+    "service-catalog-ui/*",
     "content",
     "add-ons",
     "components/react",
