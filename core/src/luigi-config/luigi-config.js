@@ -277,7 +277,7 @@ async function getNamespace(namespaceName) {
  * getMicrofrontends
  * @param {string} namespace k8s namespace name
  */
-async function getMicrofrontends(namespace) {
+const getMicrofrontends = async (namespace) => {
   const segmentPrefix = 'mf-';
 
   const cacheName = '_console_mf_cache_';
@@ -313,20 +313,19 @@ async function getMicrofrontends(namespace) {
     fromCache ||
     fetchFromGraphQL(query, {namespace}, true)
       .then(result => {
-        if (!result.microFrontends.length) {
+        if (!result.microFrontends || !result.microFrontends.length) {
           return [];
         }
         return result.microFrontends
           .map(function (item) {
             if (item.navigationNodes) {
-              var tree = convertToNavigationTree(item.name, item, config, navigation, consoleViewGroupName, segmentPrefix);
-              return tree;
+              return convertToNavigationTree(item.name, item, config, navigation, consoleViewGroupName, segmentPrefix);
             }
             return [];
           });
       })
       .catch(err => {
-        console.error('Error fetching Microfrontend ' + name, err);
+        console.error(`Error fetching Microfrontend ${name}: ${err}`);
         return [];
       })
       .then(result => {
@@ -610,8 +609,7 @@ Promise.all(initPromises)
                 .filter(cmf => cmf.placement === 'namespace' || cmf.placement === 'environment')
                 .map(cmf => {
                   if (cmf.navigationNodes) {
-                    var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
-                    return tree;
+                    return convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
                   }
                   return [];
                 });
