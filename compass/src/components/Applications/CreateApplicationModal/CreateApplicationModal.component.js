@@ -184,7 +184,7 @@ class CreateApplicationModal extends React.Component {
     const { addApplication, sendNotification } = this.props;
 
     try {
-      let createdApplicationName, createdApplicationId;
+      let createdApplicationName;
       const createdApplication = await addApplication(formData);
       if (
         createdApplication &&
