@@ -9,6 +9,7 @@ import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.
 import Applications from './components/Applications/Applications.container';
 import Scenarios from './components/Scenarios/Scenarios.container';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
+import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
@@ -63,6 +64,11 @@ class App extends React.Component {
             )}
           />
           <Route path="/scenarios" exact component={Scenarios} />
+          <Route
+            path="/metadata-definitions"
+            exact
+            component={MetadataDefinitions}
+          />
         </Router>
       </div>
     );

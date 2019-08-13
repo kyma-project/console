@@ -1,4 +1,4 @@
-const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
+export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
   if(disabledNavNodes !== null && disabledNavNodes!== undefined){
     const disabledNavNodesArray = disabledNavNodes.split(' ');
     if (disabledNavNodesArray && disabledNavNodesArray.length > 0) {
@@ -30,20 +30,14 @@ const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
   }
 }
 
-const getSystemNamespaces = (namespaces) => {
-  return namespacesArray = namespaces ? namespaces.split(' ') : [];
+export const getSystemNamespaces = (namespaces) => {
+  return namespaces ? namespaces.split(' ') : [];
 }
 
-const shouldShowSystemNamespaces = () => {
+export const shouldShowSystemNamespaces = () => {
   let showSystemNamespaces = false;
   if (localStorage.getItem('console.showSystemNamespaces')) {
     showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
   }
   return showSystemNamespaces;
 }
-
-module.exports = {
-  hideDisabledNodes,
-  getSystemNamespaces,
-  shouldShowSystemNamespaces
-};

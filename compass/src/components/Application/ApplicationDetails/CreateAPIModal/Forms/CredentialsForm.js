@@ -1,51 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Menu } from 'fundamental-react';
+import { Button, Dropdown } from '@kyma-project/react-components';
 
-import TextFormItem from './TextFormItem';
+import OAuthCredentialsForm, {
+  CREDENTIAL_TYPE_OAUTH,
+} from './CredentialForms/OAuthCredentialsForm';
+export const CREDENTIAL_TYPE_NONE = 'None';
+export const CREDENTIAL_TYPE_PLACEHOLDER = 'Choose credentials type';
+
+const availableCredentialTypes = [CREDENTIAL_TYPE_OAUTH, CREDENTIAL_TYPE_NONE];
 
 CredentialsForm.propTypes = {
   updateState: PropTypes.func.isRequired,
+  credentialsType: PropTypes.oneOf([
+    ...availableCredentialTypes,
+    CREDENTIAL_TYPE_PLACEHOLDER,
+  ]),
 };
 
-export default function CredentialsForm({ updateState }) {
-  const [oAuthCredentials, setOAuthCredentials] = React.useState({
-    clientId: '',
-    clientSecret: '',
-    url: '',
-  });
-
-  function updateOAuth(key, value) {
-    const updatedCredentials = {
-      ...oAuthCredentials,
-      [key]: value,
-    };
-    setOAuthCredentials(updatedCredentials);
-    updateState({ oAuth: updatedCredentials });
-  }
+export default function CredentialsForm({ updateState, credentialsType }) {
+  const credentialTypesList = (
+    <Menu>
+      <Menu.List>
+        {availableCredentialTypes.map(credentialType => (
+          <Menu.Item onClick={() => updateState({ type: credentialType })}>
+            {credentialType}
+          </Menu.Item>
+        ))}
+      </Menu.List>
+    </Menu>
+  );
 
   return (
-    <form>
-      <TextFormItem
-        inputKey="client-id"
-        required
-        type="password"
-        label="Client ID"
-        onChange={e => updateOAuth('clientId', e.target.value)}
-      />
-      <TextFormItem
-        inputKey="client-secret"
-        required
-        type="password"
-        label="Client Secret"
-        onChange={e => updateOAuth('clientSecret', e.target.value)}
-      />
-      <TextFormItem
-        required
-        inputKey="url"
-        type="url"
-        label="Url"
-        onChange={e => updateOAuth('url', e.target.value)}
-      />
-    </form>
+    <section>
+      <p>Credentials type</p>
+      <Dropdown
+        control={
+          <Button dropdown>
+            <span>{credentialsType}</span>
+          </Button>
+        }
+        placement="bottom"
+      >
+        {credentialTypesList}
+      </Dropdown>
+
+      {credentialsType === CREDENTIAL_TYPE_OAUTH && (
+        <OAuthCredentialsForm updateState={updateState} />
+      )}
+    </section>
   );
 }
