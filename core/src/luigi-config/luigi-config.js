@@ -279,11 +279,11 @@ async function getNamespace(namespaceName) {
  */
 async function getMicrofrontends(namespace) {
   const segmentPrefix = 'mf-';
+
   const cacheName = '_console_mf_cache_';
   if (!window[cacheName]) {
      window[cacheName] = {};
   }
-
   const cache = window[cacheName];
   const cacheKey = segmentPrefix+namespace;
   const fromCache = cache[cacheKey];
@@ -308,13 +308,10 @@ async function getMicrofrontends(namespace) {
       }
     }
   }`;
-  const variables = {
-    namespace
-  }
 
   return (
     fromCache ||
-    fetchFromGraphQL(query, variables, true)
+    fetchFromGraphQL(query, {namespace}, true)
       .then(result => {
         if (!result.microFrontends.length) {
           return [];
