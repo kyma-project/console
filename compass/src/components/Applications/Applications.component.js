@@ -56,7 +56,7 @@ class Applications extends React.Component {
       <b>{application.name}</b>
     </span>,
     application.description ? application.description : EMPTY_TEXT_PLACEHOLDER,
-    application.labels && application.labels.length ? this.createLabels(application.labels) : EMPTY_TEXT_PLACEHOLDER,
+    application.labels ? this.createLabels(application.labels) : EMPTY_TEXT_PLACEHOLDER,
     <Counter>{application.apis.totalCount}</Counter>,
     <Counter>{application.eventAPIs.totalCount}</Counter>,
     <StatusBadge
