@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Input, Modal } from '@kyma-project/react-components';
-import LuigiClient from '@kyma-project/luigi-client';
 import equal from 'deep-equal';
 import PropTypes from 'prop-types';
+import { Button, Input, Modal } from '@kyma-project/react-components';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import AssignScenarioForm from '../../Shared/AssignScenario/AssignScenarioForm.container';
 import './styles.scss';
@@ -17,9 +17,9 @@ class CreateApplicationModal extends React.Component {
   PropTypes = {
     existingApplications: PropTypes.array.isRequired,
     applicationsQuery: PropTypes.object.isRequired,
-    addApplication: PropTypes.func.isRequired, 
+    addApplication: PropTypes.func.isRequired,
     sendNotification: PropTypes.func.isRequired,
-  }
+  };
 
   getInitialState = () => {
     return {
