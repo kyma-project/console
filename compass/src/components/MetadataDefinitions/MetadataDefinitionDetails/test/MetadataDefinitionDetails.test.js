@@ -1,8 +1,10 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
 import { MockedProvider } from 'react-apollo/test-utils';
+
 import { mocks } from './mock';
+
+import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
 
 const wait = require('waait');
 
@@ -20,7 +22,7 @@ describe('MetadataDefinitionDetails', () => {
       </MockedProvider>,
     );
     await wait(0); // wait for response
-    let tree = component.toJSON();
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
 
     // catch "Warning: Each child in a list should have a unique \"key\" prop." comming from Fundamental

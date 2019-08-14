@@ -152,7 +152,7 @@ const MetadataDefinitionDetails = ({
             <PanelHeader>
               <PanelHead title="Schema" />
               <PanelActions>
-                {!!isEditorShown && (
+                {isEditorShown && (
                   <Toggle checked onChange={handleSchemaToggle} />
                 )}
                 {!isEditorShown && <Toggle onChange={handleSchemaToggle} />}
