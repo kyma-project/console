@@ -53,10 +53,6 @@ const MetadataDefinitionDetails = ({
           ? JSON.parse(currentSchema)
           : currentSchema;
 
-      if (typeof parsedSchema.properties !== 'object')
-        throw new Error(
-          'A schema should have a "properties" key that is an object',
-        );
       if (!ajv.validateSchema(parsedSchema))
         throw new Error('Provided JSON is not a valid schema');
 
