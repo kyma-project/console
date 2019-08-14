@@ -83,13 +83,9 @@ const MetadataDefinitionDetails = ({
         },
       });
     } catch (e) {
-      sendNotification({
-        variables: {
-          content: e.message,
-          title: 'There was a problem with saving Metadata definition',
-          color: '#BB0000',
-          icon: 'decline',
-        },
+      LuigiClient.uxManager().showAlert({
+        text: `There was a problem with saving Metadata definition. ${e.message}`,
+        type: 'error',
       });
     }
   };
