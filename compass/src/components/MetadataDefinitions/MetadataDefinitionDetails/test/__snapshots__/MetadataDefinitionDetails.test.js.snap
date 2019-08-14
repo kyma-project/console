@@ -99,39 +99,4 @@ Array [
 ]
 `;
 
-exports[`MetadataDefinitionDetails Renders null schema 2`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s",
-      "
-    in span
-    in label (created by Toggle)
-    in div (created by Toggle)
-    in Toggle (at MetadataDefinitionDetails.component.js:166)
-    in div
-    in Panel.Actions (at MetadataDefinitionDetails.component.js:162)
-    in div
-    in Panel.Header (at MetadataDefinitionDetails.component.js:160)
-    in div
-    in Panel (at MetadataDefinitionDetails.component.js:159)
-    in section (at MetadataDefinitionDetails.component.js:158)
-    in MetadataDefinitionDetails (created by Mutation)
-    in Mutation (created by Apollo(MetadataDefinitionDetails))
-    in Apollo(MetadataDefinitionDetails) (created by Mutation)
-    in Mutation (created by Apollo(Apollo(MetadataDefinitionDetails)))
-    in Apollo(Apollo(MetadataDefinitionDetails)) (created by Query)
-    in Query (created by Apollo(Apollo(Apollo(MetadataDefinitionDetails))))
-    in Apollo(Apollo(Apollo(MetadataDefinitionDetails))) (at MetadataDefinitionDetails.test.js:19)
-    in ApolloProvider (created by MockedProvider)
-    in MockedProvider (at MetadataDefinitionDetails.test.js:18)",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
-`;
+exports[`MetadataDefinitionDetails Renders null schema 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;

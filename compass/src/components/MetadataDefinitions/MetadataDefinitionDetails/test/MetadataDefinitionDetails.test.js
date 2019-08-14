@@ -22,6 +22,9 @@ describe('MetadataDefinitionDetails', () => {
     await wait(0); // wait for response
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-    expect(console.error).toMatchSnapshot(); // catch "Warning: Each child in a list should have a unique \"key\" prop." comming from Fundamental
+
+    // catch "Warning: Each child in a list should have a unique \"key\" prop." comming from Fundamental
+    expect(console.error.mock.calls.length).toBe(1);
+    expect(console.error.mock.calls[0][0]).toMatchSnapshot();
   });
 });
