@@ -28,7 +28,7 @@ class Runtimes extends React.Component {
         LuigiClient.linkManager().navigate(`details/${runtime.id}`)
       }
     >
-      <b>{runtime.name}</b>
+      {runtime.name}
     </span>,
     runtime.description ? runtime.description : EMPTY_TEXT_PLACEHOLDER,
     runtime.labels && runtime.labels.scenarios

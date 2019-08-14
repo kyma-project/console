@@ -52,7 +52,7 @@ class Applications extends React.Component {
         LuigiClient.linkManager().navigate(`details/${application.id}`)
       }
     >
-      <b>{application.name}</b>
+     {application.name}
     </span>,
     application.description,
     application.labels ? this.createLabels(application.labels) : '-',

@@ -5,11 +5,7 @@ import GenericList from '../../shared/components/GenericList/GenericList';
 class Scenarios extends React.Component {
   headerRenderer = () => ['Name'];
 
-  rowRenderer = scenario => [
-    <span className="link">
-      <b>{scenario.name}</b>
-    </span>,
-  ];
+  rowRenderer = scenario => [<span className="link">{scenario.name}</span>];
 
   render() {
     const scenarioLabelDefinitionSchemaQuery = this.props.scenarioLabelSchema;
