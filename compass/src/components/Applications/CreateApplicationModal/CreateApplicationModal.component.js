@@ -18,7 +18,7 @@ class CreateApplicationModal extends React.Component {
       formData: {
         name: '',
         description: '',
-        labels: {}
+        labels: {},
       },
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: false,
@@ -29,9 +29,12 @@ class CreateApplicationModal extends React.Component {
     };
   };
 
-  updateCurrentScenarios = (scenarios) => {
+  updateCurrentScenarios = scenarios => {
     this.setState({
-      formData: { ...this.state.formData, labels: scenarios && scenarios.length ? { scenarios } : {} }
+      formData: {
+        ...this.state.formData,
+        labels: scenarios && scenarios.length ? { scenarios } : {},
+      },
     });
   };
 
@@ -251,10 +254,12 @@ class CreateApplicationModal extends React.Component {
           marginTop={15}
           type="text"
         />
-        <div class="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">Scenarios</div>
+        <div class="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
+          Scenarios
+        </div>
         <AssignScenarioForm
           currentScenarios={this.state.formData.labels.scenarios || []}
-          notAssignedMessage=''
+          notAssignedMessage=""
           updateCurrentScenarios={this.updateCurrentScenarios}
         />
       </>
