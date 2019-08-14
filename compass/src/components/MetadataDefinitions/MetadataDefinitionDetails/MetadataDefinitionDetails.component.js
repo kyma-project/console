@@ -73,7 +73,7 @@ const MetadataDefinitionDetails = ({
       });
 
       setMetadataDefinition({ ...metadataDefinition, schema: editedSchema }); // to format the JSON
-
+      LuigiClient.uxManager().setDirtyStatus(false);
       await sendNotification({
         variables: {
           content: 'Metadata definition has been saved succesfully',
