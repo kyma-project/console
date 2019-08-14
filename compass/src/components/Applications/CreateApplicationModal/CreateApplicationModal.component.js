@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Input, Modal } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 import equal from 'deep-equal';
+import PropTypes from 'prop-types';
 
 import AssignScenarioForm from '../../Shared/AssignScenario/AssignScenarioForm.container';
 import './styles.scss';
@@ -11,6 +12,13 @@ class CreateApplicationModal extends React.Component {
     super(props);
     this.timer = null;
     this.state = this.getInitialState();
+  }
+
+  PropTypes = {
+    existingApplications: PropTypes.array.isRequired,
+    applicationsQuery: PropTypes.object.isRequired,
+    addApplication: PropTypes.func.isRequired, 
+    sendNotification: PropTypes.func.isRequired,
   }
 
   getInitialState = () => {
@@ -189,21 +197,19 @@ class CreateApplicationModal extends React.Component {
         createdApplicationName = createdApplication.data.createApplication.name;
       }
 
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            content: `Application "${createdApplicationName}" created successfully`,
-            title: `${createdApplicationName}`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: createdApplicationName,
-          },
-        });
-      }
+      sendNotification({
+        variables: {
+          content: `Application "${createdApplicationName}" created successfully`,
+          title: `${createdApplicationName}`,
+          color: '#359c46',
+          icon: 'accept',
+          instanceName: createdApplicationName,
+        },
+      });
     } catch (e) {
       success = false;
       LuigiClient.uxManager().showAlert({
-        text: `Error occored when creating the application: ${e.message}`,
+        text: `Error occured when creating the application: ${e.message}`,
         type: 'error',
         closeAfter: 10000,
       });
@@ -254,7 +260,7 @@ class CreateApplicationModal extends React.Component {
           marginTop={15}
           type="text"
         />
-        <div class="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
+        <div className="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
           Scenarios
         </div>
         <AssignScenarioForm
