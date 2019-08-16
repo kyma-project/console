@@ -9,6 +9,7 @@ import {
   ThemeWrapper,
   Status,
   StatusWrapper,
+  instancesTabUtils,
 } from '@kyma-project/react-components';
 
 import { serviceInstanceConstants } from '../../variables';
@@ -19,17 +20,14 @@ import { ServiceInstancesWrapper } from './styled';
 import { transformDataScalarStringsToObjects } from '../../store/transformers';
 
 class ServiceInstances extends React.Component {
-  setTabFilter = filterValue => {
-    this.props.filterClassesAndSetActiveFilters('local', filterValue);
+  setTabFilter = currentTabIndex => {
+    this.props.filterClassesAndSetActiveFilters('local', currentTabIndex === 0);
   };
 
   componentDidMount() {
     if (typeof this.props.filterItems === 'function') {
       this.props.filterItems();
     }
-    setTimeout(() => {
-      this.setTabFilter(true);
-    }, 100);
   }
 
   componentWillReceiveProps(newProps) {
@@ -95,40 +93,25 @@ class ServiceInstances extends React.Component {
     }
 
     const determineSelectedTab = () => {
-      const selectedTab = LuigiClient.getNodeParams().selectedTab;
-      let selectedTabIndex = null;
-      switch (selectedTab) {
-        case 'addons':
-          selectedTabIndex = 0;
-          break;
-        case 'services':
-          selectedTabIndex = 1;
-          break;
-        default:
-          selectedTabIndex = 0;
-      }
+      const selectedTabName = LuigiClient.getNodeParams().selectedTab;
+      const selectedTabIndex = instancesTabUtils.convertTabNameToIndex(
+        selectedTabName,
+      );
+
+      this.setTabFilter(selectedTabIndex);
       return selectedTabIndex;
     };
 
     const handleTabChange = ({ defaultActiveTabIndex }) => {
-      defaultActiveTabIndex
-        ? this.setTabFilter(false)
-        : this.setTabFilter(true);
-      // TODO: uncomment after https://github.com/kyma-project/luigi/issues/491 is done
-      // let tabName = '';
-      // switch (defaultActiveTabIndex) {
-      //   case 0:
-      //     tabName = 'addons';
-      //     break;
-      //   case 1:
-      //     tabName = 'services';
-      //     break;
-      //   default:
-      //     tabName = 'addons';
-      // }
-      // LuigiClient.linkManager()
-      //   .withParams({ selectedTab: tabName })
-      //   .navigate('');
+      this.setTabFilter(defaultActiveTabIndex);
+
+      const selectedTabName = instancesTabUtils.convertIndexToTabName(
+        defaultActiveTabIndex,
+      );
+
+      LuigiClient.linkManager()
+        .withParams({ selectedTab: selectedTabName })
+        .navigate('');
     };
 
     return (

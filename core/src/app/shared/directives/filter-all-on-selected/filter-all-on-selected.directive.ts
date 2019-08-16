@@ -1,4 +1,10 @@
-import { Directive, ViewContainerRef, OnDestroy, OnInit, HostListener } from '@angular/core';
+import {
+  Directive,
+  ViewContainerRef,
+  OnDestroy,
+  OnInit,
+  HostListener
+} from '@angular/core';
 import { ComboboxComponent } from 'fundamental-ngx/lib/combobox/combobox.component';
 
 @Directive({
@@ -30,8 +36,8 @@ export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
     return content.indexOf(searchTerm) >= 0 && !this.combobox.isOpen
       ? content
       : content.filter(
-        term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0
-      );
+          term => term.toLocaleLowerCase().indexOf(searchTermLower) >= 0
+        );
   };
 
   public onOutsideDropdownClick = () => {
@@ -46,9 +52,9 @@ export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
 
   public ngOnInit() {
     window.addEventListener('mouseup', this.onOutsideDropdownClick);
-  };
+  }
 
   public ngOnDestroy() {
     window.removeEventListener('mouseup', this.onOutsideDropdownClick);
-  };
+  }
 }

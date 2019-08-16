@@ -5,7 +5,9 @@ import { ComboboxModule, ModalModule } from 'fundamental-ngx';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  template: `<fd-combobox filterAllOnSelected></fd-combobox>`
+  template: `
+    <fd-combobox filterAllOnSelected></fd-combobox>
+  `
 })
 class TestFilterAllOnSelectedComboboxComponent {}
 
@@ -69,12 +71,12 @@ describe('FilterAllOnSelectedDirective with different template', () => {
       set: {
         template: `<fd-modal-body filterAllOnSelected></fd-modal-body>`
       }
-    })
+    });
   });
 
   it('crashes if component does not have filterFn', () => {
-    expect(() => 
+    expect(() =>
       TestBed.createComponent(TestFilterAllOnSelectedComboboxComponent)
     ).toThrowError('filterAllOnSelected can only be used wth fd-combobox');
   });
-})
+});
