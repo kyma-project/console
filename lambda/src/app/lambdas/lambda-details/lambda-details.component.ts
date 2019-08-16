@@ -189,12 +189,12 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     protected route: ActivatedRoute,
     private http: HttpClient,
   ) {
-    this.functionSizes = AppConfig.functionSizes.map(s => s['size']).map(s => {
-      s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${
-        s.minReplicas
-      } maxReplicas: ${s.maxReplicas}`;
-      return s;
-    });
+    this.functionSizes = AppConfig.functionSizes
+      .map(s => s['size'])
+      .map(s => {
+        s.description = `Memory: ${s.memory} CPU: ${s.cpu} minReplicas: ${s.minReplicas} maxReplicas: ${s.maxReplicas}`;
+        return s;
+      });
 
     this.selectedFunctionSize = this.functionSizes[0];
     this.selectedFunctionSizeName = this.selectedFunctionSize['name'];
@@ -208,7 +208,16 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.kind = 'nodejs8';
   }
 
+  public displaySelectedTab(selectedTab) {
+    if (selectedTab === 'test') {
+      this.changeTab(selectedTab);
+    }
+  }
+
   ngOnInit() {
+    const selectedTab = luigiClient.getNodeParams().selectedTab;
+    this.displaySelectedTab(selectedTab);
+
     this.initializeTriggers();
 
     this.route.params.subscribe(
@@ -678,14 +687,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       if (trigger.eventType !== 'http') {
         if (this.isEventTriggerNew(trigger as EventTrigger)) {
           const sub = this.subscriptionsService.initializeSubscription();
-          sub.metadata.name = `lambda-${this.lambda.metadata.name}-${
-            trigger.eventType
-          }-${trigger.version}`.toLowerCase();
+          sub.metadata.name = `lambda-${this.lambda.metadata.name}-${trigger.eventType}-${trigger.version}`.toLowerCase();
           sub.metadata.namespace = this.namespace;
           sub.metadata.labels['Function'] = this.lambda.metadata.name;
-          sub.spec.endpoint = `http://${this.lambda.metadata.name}.${
-            this.namespace
-          }:8080/`;
+          sub.spec.endpoint = `http://${this.lambda.metadata.name}.${this.namespace}:8080/`;
           sub.spec.event_type = trigger.eventType;
           sub.spec.event_type_version = trigger.version;
           sub.spec.source_id = trigger.sourceId;
@@ -703,9 +708,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.getEventTriggersToBeRemoved().forEach(et => {
       const req = this.subscriptionsService
         .deleteSubscription(
-          `lambda-${this.lambda.metadata.name}-${et.eventType}-${
-            et.version
-          }`.toLowerCase(),
+          `lambda-${this.lambda.metadata.name}-${et.eventType}-${et.version}`.toLowerCase(),
           this.namespace,
           this.token,
         )
@@ -1073,9 +1076,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       this.wrongLabelMessage =
         this.wrongLabel && this.wrongLabelMessage
           ? this.wrongLabelMessage
-          : `Invalid label ${
-              this.newLabel
-            }! A key and value should be separated by a "="`;
+          : `Invalid label ${this.newLabel}! A key and value should be separated by a "="`;
     }
   }
 
@@ -1304,9 +1305,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
     this.selectedTriggers.forEach(trigger => {
       if (trigger.eventType === 'http') {
-        this.httpURL = `${this.lambda.metadata.name}-${this.namespace}.${
-          AppConfig.domain
-        }`.toLowerCase();
+        this.httpURL = `${this.lambda.metadata.name}-${this.namespace}.${AppConfig.domain}`.toLowerCase();
 
         this.isHTTPTriggerAdded = true;
         this.isHTTPTriggerAuthenticated = (trigger as HTTPEndpoint).isAuthEnabled;
@@ -1342,9 +1341,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.lambda.spec.deployment.spec.template.spec.containers[0].resources = resources;
 
     // Autoscaler
-    this.lambda.spec.horizontalPodAutoscaler.metadata.name = `${
-      this.lambda.metadata.name
-    }`;
+    this.lambda.spec.horizontalPodAutoscaler.metadata.name = `${this.lambda.metadata.name}`;
     this.lambda.spec.horizontalPodAutoscaler.metadata.namespace = this.namespace;
     this.lambda.spec.horizontalPodAutoscaler.metadata.labels = {
       function: `${this.lambda.metadata.name}`,
@@ -1388,6 +1385,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   changeTab(name: string) {
+    luigiClient
+      .linkManager()
+      .withParams({ selectedTab: name })
+      .navigate('');
     this.currentTab = name;
   }
 

@@ -106,9 +106,11 @@ export class CreateBindingsModalComponent {
       usedNamespace => usedNamespace.namespace === namespace.getLabel()
     );
 
-    if (!exists && !this.filteredNamespacesNames.includes(namespace.getLabel())) {
+    if (
+      !exists &&
+      !this.filteredNamespacesNames.includes(namespace.getLabel())
+    ) {
       this.filteredNamespacesNames.push(namespace.getLabel());
-
     }
   }
 
@@ -148,8 +150,7 @@ export class CreateBindingsModalComponent {
 
   checkIfNamespaceExists() {
     if (this.filteredNamespacesNames.length > 0 && this.namespaceName) {
-      return this.filteredNamespacesNames
-        .includes(this.namespaceName);
+      return this.filteredNamespacesNames.includes(this.namespaceName);
     } else {
       return false;
     }

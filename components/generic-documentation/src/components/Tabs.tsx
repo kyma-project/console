@@ -5,17 +5,21 @@ import { TabProps } from './Tab';
 export interface TabsProps {
   className?: string;
   active?: number;
+  customChangeTabHandler?: (index: number) => void;
 }
-
 export const Tabs: React.FunctionComponent<TabsProps> = ({
   className = '',
   active = 0,
   children,
+  customChangeTabHandler,
 }) => {
   const [activeTab, setActiveTab] = useState(active);
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
+    if (customChangeTabHandler) {
+      customChangeTabHandler(index);
+    }
   };
 
   const renderHeader = (ch: Array<React.ReactElement<TabProps>>) =>

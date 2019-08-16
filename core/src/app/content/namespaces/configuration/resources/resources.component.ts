@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ResourceUploaderModalComponent } from '../../../../shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
+import { ResourceUploaderModalComponent } from 'shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 import { map } from 'rxjs/operators';
+
+import * as luigiClient from '@kyma-project/luigi-client';
 
 @Component({
   selector: 'app-resources',
@@ -14,50 +15,34 @@ export class ResourcesComponent implements OnInit {
   public limitRangesTabExpanded: boolean;
   public resourceQuotasTabExpanded: boolean;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.route.data.subscribe(routeData => {
+  constructor() {}
 
-      this.route.queryParamMap
-        .pipe(map((params: Params) => params.params))
-        .subscribe(paramsMap => {
-          const activeTab = paramsMap.tab;
-
-          switch (activeTab) {
-            case 'resourceQuotas':
-              this.limitRangesTabExpanded = false;
-              this.resourceQuotasTabExpanded = true;
-              break;
-            default:
-              this.limitRangesTabExpanded = true;
-              this.resourceQuotasTabExpanded = false;
-          }
-        });
-    });
+  ngOnInit() {
+    const selectedTab = luigiClient.getNodeParams().selectedTab;
+    this.displaySelectedTab(selectedTab);
   }
-
-  ngOnInit() {}
 
   openUploadResourceModal() {
     this.uploaderModal.show();
   }
 
-  public changeTab(tab) {
-    switch (tab) {
-      case 'limitRanges':
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: { tab: 'limitRanges' }
-        });
-        break;
+  public displaySelectedTab(selectedTab) {
+    switch (selectedTab) {
       case 'resourceQuotas':
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: { tab: 'resourceQuotas' }
-        });
+        this.limitRangesTabExpanded = false;
+        this.resourceQuotasTabExpanded = true;
         break;
+      default:
+        this.limitRangesTabExpanded = true;
+        this.resourceQuotasTabExpanded = false;
     }
+  }
+
+  public changeTab(tab) {
+    luigiClient
+      .linkManager()
+      .withParams({ selectedTab: tab })
+      .navigate('');
+    this.displaySelectedTab(tab);
   }
 }

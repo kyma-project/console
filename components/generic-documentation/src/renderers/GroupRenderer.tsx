@@ -26,12 +26,18 @@ export interface GroupRendererProps extends GroupRendererComponent {
   additionalTabs?: Array<{
     label: string;
     content: React.ReactNode;
+    id: string;
   }>;
+  tabRouteHandler: {
+    determineSelectedTab: (tabList: string[]) => number | undefined;
+    selectTab: () => void;
+  };
 }
 
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
+  tabRouteHandler,
 }) => {
   if (
     (!sources || !sources.length) &&
@@ -53,8 +59,38 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
       </Tab>
     ));
 
+  const prepareTabList = () => {
+    const tabList: string[] = [];
+    if (markdownsExists) {
+      tabList.push('Documentation');
+    }
+    if (openApiExists) {
+      tabList.push('Console');
+    }
+    if (asyncApiExists) {
+      tabList.push('Events');
+    }
+    if (odataExists) {
+      tabList.push('OData');
+    }
+
+    if (additionalTabs) {
+      additionalTabs.forEach(tab => {
+        tabList.push(tab.id);
+      });
+    }
+
+    return tabList;
+  };
+
   return (
-    <Tabs>
+    <Tabs
+      active={tabRouteHandler.determineSelectedTab(prepareTabList())}
+      customChangeTabHandler={tabRouteHandler.selectTab.bind(
+        null,
+        prepareTabList(),
+      )}
+    >
       {markdownsExists && (
         <Tab label="Documentation">
           <MarkdownWrapper className="custom-markdown-styling">

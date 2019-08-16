@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^6.1.4",
     "@angular/router": "^6.1.4",
     "@kyma-project/luigi-client": "0.5.0",
-    "@kyma-project/luigi-core": "0.5.0",
+    "@kyma-project/luigi-core": "0.6.0",
     "@types/async": "^2.0.49",
     "angular-sortablejs": "^2.6.0",
     "apollo-angular": "^1.5.0",
