@@ -181,6 +181,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       result.streams = result.streams.map(this.filterHealthchecks);
     }
 
+    result.streams
+      .sort(this.sortFromNewestLogs)
+
     return result;
   }
 
@@ -363,6 +366,21 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  sortFromNewestLogs(stream1, stream2) {
+    if (!(stream1 && stream1.entries && stream2 && stream2.entries)) { return 0 };
+
+    const getTimestamp = (stream) => {
+      const streamLastEntry = stream && stream.entries && stream.entries.length ? stream.entries[stream.entries.length - 1] : {};
+      const streamLastEntryTimestamp =  new Date(streamLastEntry && streamLastEntry.ts ? streamLastEntry.ts : 0);
+      return streamLastEntryTimestamp;
+    }
+
+    const stream1Timestamp = getTimestamp(stream1);
+    const stream2Timestamp = getTimestamp(stream2);
+    
+    return stream2Timestamp.getTime() - stream1Timestamp.getTime();
+ }
+
   onToTimeChanged(event: { target: { value: string } }) {
     if (event.target.value === 'now') {
       this.canSetAutoRefresh = true;
@@ -404,13 +422,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isSearchResultEmpty(searchResult: ISearchResult): boolean {
-    return !(
+  public isSearchResultEmpty(searchResult: any): boolean {
+    searchResult = searchResult.streams.filter(stream => {
+      return stream.entries && stream.entries.length;
+    });
+
+    return !!(
       searchResult &&
       searchResult.streams &&
-      searchResult.streams[0] &&
-      !!searchResult.streams[0].entries &&
-      !!searchResult.streams[0].entries.length
+      searchResult.streams.length
     );
   }
 }
