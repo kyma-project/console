@@ -1,4 +1,5 @@
-.assign-scenario-list__list-element {
+.multi-choice-list__list-element {
+    list-style-type: none;
     display: flex;
     justify-content: space-between;
     vertical-align: middle;
@@ -9,14 +10,9 @@
     }
 }
 
-.assign-scenario-modal__body {
-  min-height: 200px;
+.multi-choice-list-modal__body {
   .fd-popover {
     width: 100%;
-  
-    :last-child {
-      margin-bottom: 0;
-    }
   }
   
   .fd-popper__body {
@@ -43,12 +39,4 @@
   }
 }
 
-.assign-scenario-list__prompt-dot {
-  border-radius: 50%;
-  width: 8px;
-  height: 8px;
-  background-color: red;
-  position: relative;
-  left: -10px;
-  top: 12px;
-}
+

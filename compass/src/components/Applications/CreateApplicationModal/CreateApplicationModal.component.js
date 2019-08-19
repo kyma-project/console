@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Input, Modal } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import AssignScenarioForm from '../../Shared/AssignScenario/AssignScenarioForm.container';
+import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 import './styles.scss';
 
 class CreateApplicationModal extends React.Component {
@@ -19,6 +19,7 @@ class CreateApplicationModal extends React.Component {
     applicationsQuery: PropTypes.object.isRequired,
     addApplication: PropTypes.func.isRequired,
     sendNotification: PropTypes.func.isRequired,
+    scenariosQuery: PropTypes.object.isRequired,
   };
 
   getInitialState = () => {
@@ -37,7 +38,7 @@ class CreateApplicationModal extends React.Component {
     };
   };
 
-  updateCurrentScenarios = scenarios => {
+  updateCurrentScenarios = (scenarios, _) => {
     this.setState({
       formData: {
         ...this.state.formData,
@@ -237,39 +238,55 @@ class CreateApplicationModal extends React.Component {
       </Button>
     );
 
-    const content = (
-      <>
-        <Input
-          label="Name"
-          placeholder="Name of the Application"
-          value={formData.name}
-          name="applicationName"
-          handleChange={this.onChangeName}
-          isError={invalidApplicationName || applicationWithNameAlreadyExists}
-          message={this.getApplicationNameErrorMessage()}
-          required={true}
-          type="text"
-        />
+    const scenariosQuery = this.props.scenariosQuery;
+    if (scenariosQuery.loading) {
+      return <p>Loading...</p>;
+    }
 
-        <Input
-          label="Description"
-          placeholder="Description of the Application"
-          value={formData.description}
-          name="applicationName"
-          handleChange={this.onChangeDescription}
-          marginTop={15}
-          type="text"
-        />
-        <div className="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
-          Scenarios
-        </div>
-        <AssignScenarioForm
-          currentScenarios={this.state.formData.labels.scenarios || []}
-          notAssignedMessage=""
-          updateCurrentScenarios={this.updateCurrentScenarios}
-        />
-      </>
-    );
+    let content;
+    if (scenariosQuery.error) {
+      content = `Error! ${scenariosQuery.error.message}`;
+    } else {
+      const availableScenarios =
+        scenariosQuery.labelDefinition.schema.items.enum;
+
+      content = (
+        <>
+          <Input
+            label="Name"
+            placeholder="Name of the Application"
+            value={formData.name}
+            name="applicationName"
+            handleChange={this.onChangeName}
+            isError={invalidApplicationName || applicationWithNameAlreadyExists}
+            message={this.getApplicationNameErrorMessage()}
+            required={true}
+            type="text"
+          />
+
+          <Input
+            label="Description"
+            placeholder="Description of the Application"
+            value={formData.description}
+            name="applicationName"
+            handleChange={this.onChangeDescription}
+            marginTop={15}
+            type="text"
+          />
+          <div className="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
+            Scenarios
+          </div>
+          <MultiChoiceList
+            placeholder="Choose scenarios..."
+            notSelectedMessage=""
+            currentlySelectedItems={[]}
+            updateItems={this.updateCurrentScenarios}
+            currentlyNonSelectedItems={availableScenarios}
+            noEntitiesAvailableMessage="No more scenarios available"
+          />
+        </>
+      );
+    }
 
     return (
       <Modal
@@ -279,7 +296,9 @@ class CreateApplicationModal extends React.Component {
         modalOpeningComponent={createApplicationButton}
         confirmText="Create"
         disabledConfirm={
-          !requiredFieldsFilled || applicationWithNameAlreadyExists
+          !requiredFieldsFilled ||
+          applicationWithNameAlreadyExists ||
+          invalidApplicationName
         }
         tooltipData={tooltipData}
         onConfirm={this.createApplication}

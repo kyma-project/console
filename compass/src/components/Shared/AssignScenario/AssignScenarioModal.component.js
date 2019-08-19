@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import _ from 'lodash';
-import AssignScenarioForm from './AssignScenarioForm.container';
 
 import { Modal, Button, Icon } from '@kyma-project/react-components';
-import './style.scss';
+import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 
 AssignScenarioModal.propTypes = {
   entityId: PropTypes.string.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.string),
-  notAssignedMessage: PropTypes.string,
+  availableScenariosQuery: PropTypes.object.isRequired,
+  notSelectedMessage: PropTypes.string,
   entityQuery: PropTypes.object.isRequired,
   title: PropTypes.string,
 
@@ -29,8 +29,8 @@ export default function AssignScenarioModal(props) {
     setCurrentScenarios(props.scenarios);
   }
 
-  function updateCurrentScenarios(scenarios) {
-    setCurrentScenarios(scenarios);
+  function updateCurrentScenarios(scenariosToAssign, _) {
+    setCurrentScenarios(scenariosToAssign);
   }
 
   async function updateLabels() {
@@ -75,6 +75,15 @@ export default function AssignScenarioModal(props) {
     </Button>
   );
 
+  const { loading, error, scenarios } = props.availableScenariosQuery;
+
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
+
+  const availableScenarios = scenarios.schema.items.enum.filter(
+    scenario => !currentScenarios.includes(scenario),
+  );
+
   return (
     <Modal
       width={'400px'}
@@ -90,10 +99,12 @@ export default function AssignScenarioModal(props) {
       }}
       onHide={() => LuigiClient.uxManager().removeBackdrop()}
     >
-      <AssignScenarioForm
-        currentScenarios={currentScenarios}
-        notAssignedMessage={props.notAssignedMessage}
-        updateCurrentScenarios={updateCurrentScenarios}
+      <MultiChoiceList
+        currentlySelectedItems={currentScenarios}
+        currentlyNonSelectedItems={availableScenarios}
+        notSelectedMessage={props.notSelectedMessage}
+        updateItems={updateCurrentScenarios}
+        placeholder="Choose scenario..."
       />
     </Modal>
   );

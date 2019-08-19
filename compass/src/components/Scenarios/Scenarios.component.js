@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GenericList from '../../shared/components/GenericList/GenericList';
+import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
 
 class Scenarios extends React.Component {
   headerRenderer = () => ['Name'];
@@ -37,6 +38,11 @@ class Scenarios extends React.Component {
         entries={scenariosObjects}
         headerRenderer={this.headerRenderer}
         rowRenderer={this.rowRenderer}
+        extraHeaderContent={
+          <CreateScenarios
+            scenariosQuery={scenarioLabelDefinitionSchemaQuery}
+          />
+        }
       />
     );
   }

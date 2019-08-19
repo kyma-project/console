@@ -1,7 +1,6 @@
 import { compose, graphql } from 'react-apollo';
-import AssignScenarioModal from '../../../Shared/AssignScenario/AssignScenarioModal.component';
+import AssignScenarioModal from '../../../Shared/AssignScenario/AssignScenarioModal.container';
 import { SET_APPLICATION_SCENARIOS } from './../../gql';
-import { SEND_NOTIFICATION } from '../../../../gql';
 
 export default compose(
   graphql(SET_APPLICATION_SCENARIOS, {
@@ -15,8 +14,5 @@ export default compose(
         });
       },
     }),
-  }),
-  graphql(SEND_NOTIFICATION, {
-    name: 'sendNotification',
   }),
 )(AssignScenarioModal);
