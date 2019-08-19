@@ -30,7 +30,7 @@
       {{ emptyText }}
     </ng-container>
   </td>
-  <td>
+  <td *ngIf="showMetricsColumn">
     <a [href]="functionMetrics" target="_blank"
       >Dashboard
       <fd-icon [glyph]="'action'" [size]="'s'"></fd-icon>
