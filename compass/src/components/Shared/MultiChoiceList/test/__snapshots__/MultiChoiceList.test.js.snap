@@ -6,18 +6,26 @@ exports[`MultiChoiceList Renders empty list with custom caption props 1`] = `
 >
   not assigned message
   <div
-    className="sc-bwzfXH byurlq"
+    className="fd-dropdown"
   >
-    <button
-      className="sc-bdVaJa klrVQE"
-      data-e2e-id="toggle-"
-      disabled={false}
-      onClick={[Function]}
-    />
-    <div
-      className="sc-htpNat eOxiJd"
-      data-e2e-id="wrapper-"
-    />
+    <span
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popper__control fd-popover"
+      >
+        <button
+          className="fd-button fd-dropdown__control"
+          onClick={[Function]}
+        >
+          <span>
+            no entities available message
+          </span>
+        </button>
+      </div>
+    </span>
   </div>
 </section>
 `;
@@ -27,18 +35,26 @@ exports[`MultiChoiceList Renders empty list with default caption props 1`] = `
   className="multi-choice-list-modal__body"
 >
   <div
-    className="sc-bwzfXH byurlq"
+    className="fd-dropdown"
   >
-    <button
-      className="sc-bdVaJa klrVQE"
-      data-e2e-id="toggle-"
-      disabled={false}
-      onClick={[Function]}
-    />
-    <div
-      className="sc-htpNat eOxiJd"
-      data-e2e-id="wrapper-"
-    />
+    <span
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popper__control fd-popover"
+      >
+        <button
+          className="fd-button fd-dropdown__control"
+          onClick={[Function]}
+        >
+          <span>
+            No more entries available
+          </span>
+        </button>
+      </div>
+    </span>
   </div>
 </section>
 `;
@@ -55,13 +71,11 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
         choosen 1
       </span>
       <button
-        className="sc-bdVaJa fXKjvu"
+        className="fd-button--light fd-button--negative"
         onClick={[Function]}
-        type="negative"
       >
         <span
-          className="sc-kgoBCf jTTqLt"
-          data-e2e-id="icon"
+          className="sap-icon--decline sap-icon--l"
         />
       </button>
     </li>
@@ -72,45 +86,39 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
         choosen 2
       </span>
       <button
-        className="sc-bdVaJa fXKjvu"
+        className="fd-button--light fd-button--negative"
         onClick={[Function]}
-        type="negative"
       >
         <span
-          className="sc-kgoBCf jTTqLt"
-          data-e2e-id="icon"
+          className="sap-icon--decline sap-icon--l"
         />
       </button>
     </li>
   </ul>
   <div
-    className="sc-bwzfXH byurlq"
+    className="fd-dropdown"
   >
-    <button
-      className="sc-bdVaJa klrVQE"
-      data-e2e-id="toggle-"
-      disabled={false}
-      onClick={[Function]}
-    />
-    <div
-      className="sc-htpNat eOxiJd"
-      data-e2e-id="wrapper-"
+    <span
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
     >
-      <li
-        onClick={[Function]}
+      <div
+        className="fd-popper__control fd-popover"
       >
-        <a
-          className="fd-menu__item"
+        <button
+          className="fd-button fd-dropdown__control"
+          onClick={[Function]}
         >
-          non-choosen 1
-        </a>
-      </li>
-    </div>
+          <span>
+            Choose items...
+          </span>
+        </button>
+      </div>
+    </span>
   </div>
 </section>
 `;
-
-exports[`MultiChoiceList Renders two lists of object items 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
 
 exports[`MultiChoiceList Renders two lists of simple items 1`] = `
 <section
@@ -124,13 +132,11 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
         choosen 1
       </span>
       <button
-        className="sc-bdVaJa fXKjvu"
+        className="fd-button--light fd-button--negative"
         onClick={[Function]}
-        type="negative"
       >
         <span
-          className="sc-kgoBCf jTTqLt"
-          data-e2e-id="icon"
+          className="sap-icon--decline sap-icon--l"
         />
       </button>
     </li>
@@ -141,13 +147,11 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
         choosen 2
       </span>
       <button
-        className="sc-bdVaJa fXKjvu"
+        className="fd-button--light fd-button--negative"
         onClick={[Function]}
-        type="negative"
       >
         <span
-          className="sc-kgoBCf jTTqLt"
-          data-e2e-id="icon"
+          className="sap-icon--decline sap-icon--l"
         />
       </button>
     </li>
@@ -158,49 +162,36 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
         choosen 3
       </span>
       <button
-        className="sc-bdVaJa fXKjvu"
+        className="fd-button--light fd-button--negative"
         onClick={[Function]}
-        type="negative"
       >
         <span
-          className="sc-kgoBCf jTTqLt"
-          data-e2e-id="icon"
+          className="sap-icon--decline sap-icon--l"
         />
       </button>
     </li>
   </ul>
   <div
-    className="sc-bwzfXH byurlq"
+    className="fd-dropdown"
   >
-    <button
-      className="sc-bdVaJa klrVQE"
-      data-e2e-id="toggle-"
-      disabled={false}
-      onClick={[Function]}
-    />
-    <div
-      className="sc-htpNat eOxiJd"
-      data-e2e-id="wrapper-"
+    <span
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
     >
-      <li
-        onClick={[Function]}
+      <div
+        className="fd-popper__control fd-popover"
       >
-        <a
-          className="fd-menu__item"
+        <button
+          className="fd-button fd-dropdown__control"
+          onClick={[Function]}
         >
-          non-choosen 1
-        </a>
-      </li>
-      <li
-        onClick={[Function]}
-      >
-        <a
-          className="fd-menu__item"
-        >
-          non-choosen 2
-        </a>
-      </li>
-    </div>
+          <span>
+            Choose items...
+          </span>
+        </button>
+      </div>
+    </span>
   </div>
 </section>
 `;
