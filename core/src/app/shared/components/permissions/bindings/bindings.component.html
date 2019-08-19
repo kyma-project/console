@@ -1,7 +1,7 @@
 <fd-panel>
   <fd-panel-header>
     <fd-panel-head>
-      <h2>{{ title }}</h2>
+      <h2 fd-panel-title>{{ title }}</h2>
     </fd-panel-head>
     <fd-panel-actions class="y-fd-panel__actions">
       <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"
