@@ -148,6 +148,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   refreshResults() {
     const searchQuery: IPlainLogQuery = this.getSearchQuery();
 
+    this.isFunctionLabelPresent =
+      searchQuery &&
+      searchQuery.query &&
+      searchQuery.query.indexOf('{function=') > -1;
+
     this.searchService.search(searchQuery).subscribe(
       data => {
         const result = JSON.parse(data);
@@ -357,7 +362,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     allPodsQuery.valueChanges.subscribe((response: IPodQueryResponse) => {
       this.podsForFunction = response.data.pods.filter(
-        (p: IPod) => p.labels && (p.labels.function === lambdaName),
+        (p: IPod) => p.labels && p.labels.function === lambdaName,
       );
       this.onSubmit();
     });
