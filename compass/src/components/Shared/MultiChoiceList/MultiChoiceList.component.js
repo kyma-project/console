@@ -63,7 +63,7 @@ export default function MultiChoiceList({
 
   function createAssignedEntitiesList() {
     const selectedEntitiesList = (
-      <ul data-testid="selected-entities-list">
+      <ul>
         {selectedItems.map(item => (
           <li
             className="multi-choice-list__list-element"

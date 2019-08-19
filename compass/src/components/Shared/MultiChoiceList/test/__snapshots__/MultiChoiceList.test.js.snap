@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiChoiceList Renders empty list with custom caption props 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  not assigned message
+  <div
+    className="sc-bwzfXH byurlq"
+  >
+    <button
+      className="sc-bdVaJa klrVQE"
+      data-e2e-id="toggle-"
+      disabled={false}
+      onClick={[Function]}
+    />
+    <div
+      className="sc-htpNat eOxiJd"
+      data-e2e-id="wrapper-"
+    />
+  </div>
+</section>
+`;
+
+exports[`MultiChoiceList Renders empty list with default caption props 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  <div
+    className="sc-bwzfXH byurlq"
+  >
+    <button
+      className="sc-bdVaJa klrVQE"
+      data-e2e-id="toggle-"
+      disabled={false}
+      onClick={[Function]}
+    />
+    <div
+      className="sc-htpNat eOxiJd"
+      data-e2e-id="wrapper-"
+    />
+  </div>
+</section>
+`;
+
+exports[`MultiChoiceList Renders two lists of object items 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  <ul>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 1
+      </span>
+      <button
+        className="sc-bdVaJa fXKjvu"
+        onClick={[Function]}
+        type="negative"
+      >
+        <span
+          className="sc-kgoBCf jTTqLt"
+          data-e2e-id="icon"
+        />
+      </button>
+    </li>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 2
+      </span>
+      <button
+        className="sc-bdVaJa fXKjvu"
+        onClick={[Function]}
+        type="negative"
+      >
+        <span
+          className="sc-kgoBCf jTTqLt"
+          data-e2e-id="icon"
+        />
+      </button>
+    </li>
+  </ul>
+  <div
+    className="sc-bwzfXH byurlq"
+  >
+    <button
+      className="sc-bdVaJa klrVQE"
+      data-e2e-id="toggle-"
+      disabled={false}
+      onClick={[Function]}
+    />
+    <div
+      className="sc-htpNat eOxiJd"
+      data-e2e-id="wrapper-"
+    >
+      <li
+        onClick={[Function]}
+      >
+        <a
+          className="fd-menu__item"
+        >
+          non-choosen 1
+        </a>
+      </li>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`MultiChoiceList Renders two lists of object items 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MultiChoiceList Renders two lists of simple items 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  <ul>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 1
+      </span>
+      <button
+        className="sc-bdVaJa fXKjvu"
+        onClick={[Function]}
+        type="negative"
+      >
+        <span
+          className="sc-kgoBCf jTTqLt"
+          data-e2e-id="icon"
+        />
+      </button>
+    </li>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 2
+      </span>
+      <button
+        className="sc-bdVaJa fXKjvu"
+        onClick={[Function]}
+        type="negative"
+      >
+        <span
+          className="sc-kgoBCf jTTqLt"
+          data-e2e-id="icon"
+        />
+      </button>
+    </li>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 3
+      </span>
+      <button
+        className="sc-bdVaJa fXKjvu"
+        onClick={[Function]}
+        type="negative"
+      >
+        <span
+          className="sc-kgoBCf jTTqLt"
+          data-e2e-id="icon"
+        />
+      </button>
+    </li>
+  </ul>
+  <div
+    className="sc-bwzfXH byurlq"
+  >
+    <button
+      className="sc-bdVaJa klrVQE"
+      data-e2e-id="toggle-"
+      disabled={false}
+      onClick={[Function]}
+    />
+    <div
+      className="sc-htpNat eOxiJd"
+      data-e2e-id="wrapper-"
+    >
+      <li
+        onClick={[Function]}
+      >
+        <a
+          className="fd-menu__item"
+        >
+          non-choosen 1
+        </a>
+      </li>
+      <li
+        onClick={[Function]}
+      >
+        <a
+          className="fd-menu__item"
+        >
+          non-choosen 2
+        </a>
+      </li>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`MultiChoiceList Renders two lists of simple items 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop.%s%s See https://fb.me/react-warning-keys for more information.%s"`;
