@@ -4,7 +4,6 @@ exports[`MultiChoiceList Renders empty list with custom caption props 1`] = `
 <section
   className="multi-choice-list-modal__body"
 >
-<<<<<<< HEAD
   not assigned message
   <span
     className="fd-has-font-style-italic"
@@ -62,9 +61,6 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
       </button>
     </li>
   </ul>
-=======
-  <ul />
->>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
   <div
     className="fd-dropdown"
   >
@@ -81,11 +77,7 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
           onClick={[Function]}
         >
           <span>
-<<<<<<< HEAD
             Choose items...
-=======
-            placeholder value
->>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
           </span>
         </button>
       </div>
@@ -94,7 +86,6 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
 </section>
 `;
 
-<<<<<<< HEAD
 exports[`MultiChoiceList Renders two lists of simple items 1`] = `
 <section
   className="multi-choice-list-modal__body"
@@ -146,13 +137,6 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
       </button>
     </li>
   </ul>
-=======
-exports[`MultiChoiceList Renders empty list with default caption props 1`] = `
-<section
-  className="multi-choice-list-modal__body"
->
-  <ul />
->>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
   <div
     className="fd-dropdown"
   >
@@ -178,30 +162,4 @@ exports[`MultiChoiceList Renders empty list with default caption props 1`] = `
 </section>
 `;
 
-<<<<<<< HEAD
 exports[`MultiChoiceList Renders two lists of simple items 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop.%s%s See https://fb.me/react-warning-keys for more information.%s"`;
-=======
-exports[`MultiChoiceList Renders two lists of object items 1`] = `
-<section
-  className="multi-choice-list-modal__body"
->
-  <span
-    className="fd-has-font-style-italic"
-  >
-    No more entries available
-  </span>
-</section>
-`;
-
-exports[`MultiChoiceList Renders two lists of simple items 1`] = `
-<section
-  className="multi-choice-list-modal__body"
->
-  <span
-    className="fd-has-font-style-italic"
-  >
-    No more entries available
-  </span>
-</section>
-`;
->>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
