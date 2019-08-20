@@ -38,7 +38,7 @@ class CreateApplicationModal extends React.Component {
     };
   };
 
-  updateCurrentScenarios = (scenarios, _) => {
+  updateCurrentScenarios = scenarios => {
     this.setState({
       formData: {
         ...this.state.formData,

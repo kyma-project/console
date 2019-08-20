@@ -32,7 +32,7 @@ export default function MultiChoiceList({
   const [selectedItems, setSelectedItems] = React.useState(
     currentlySelectedItems,
   );
-  const [nonSelectedItems, setNonselectedItems] = React.useState(
+  const [nonSelectedItems, setNonSelectedItems] = React.useState(
     currentlyNonSelectedItems,
   );
 
@@ -56,13 +56,17 @@ export default function MultiChoiceList({
 
   function updateLists(newSelectedItems, newNonSelectedItems) {
     setSelectedItems(newSelectedItems);
-    setNonselectedItems(newNonSelectedItems);
+    setNonSelectedItems(newNonSelectedItems);
 
     updateItems(newSelectedItems, newNonSelectedItems);
   }
 
   function createAssignedEntitiesList() {
-    const selectedEntitiesList = (
+    if (selectedItems.length) {
+      return notSelectedMessage;
+    }
+
+    return (
       <ul>
         {selectedItems.map(item => (
           <li
@@ -81,18 +85,24 @@ export default function MultiChoiceList({
         ))}
       </ul>
     );
-
-    return selectedItems.length ? selectedEntitiesList : notSelectedMessage;
   }
 
   function createNonChoosenEntitiesDropdown() {
+    if (nonSelectedItems.length) {
+      return (
+        <span className="fd-has-font-style-italic">
+          {noEntitiesAvailableMessage}
+        </span>
+      );
+    }
+
     const nonChoosenItemsList = nonSelectedItems.map(item => (
       <Menu.Item onClick={() => selectItem(item)}>
         {getDisplayName(item)}
       </Menu.Item>
     ));
 
-    const dropdown = (
+    return (
       <Dropdown
         control={
           <Button dropdown>
@@ -104,14 +114,6 @@ export default function MultiChoiceList({
         {nonChoosenItemsList}
       </Dropdown>
     );
-
-    const noEntitiesMessage = (
-      <span className="fd-has-font-style-italic">
-        {noEntitiesAvailableMessage}
-      </span>
-    );
-
-    return nonSelectedItems.length ? dropdown : noEntitiesMessage;
   }
 
   return (

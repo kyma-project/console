@@ -29,7 +29,7 @@ export default function AssignScenarioModal(props) {
     setCurrentScenarios(props.scenarios);
   }
 
-  function updateCurrentScenarios(scenariosToAssign, _) {
+  function updateCurrentScenarios(scenariosToAssign) {
     setCurrentScenarios(scenariosToAssign);
   }
 

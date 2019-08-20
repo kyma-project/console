@@ -35,11 +35,11 @@ export default class CreateScenarioModal extends React.Component {
     }
   };
 
-  updateApplications = (assignedApplications, _) => {
+  updateApplications = assignedApplications => {
     this.setState({ applicationsToAssign: assignedApplications });
   };
 
-  updateRuntimes = (assignedRuntimes, _) => {
+  updateRuntimes = assignedRuntimes => {
     this.setState({ runtimesToAssign: assignedRuntimes });
   };
 
