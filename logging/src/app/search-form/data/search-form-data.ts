@@ -8,4 +8,5 @@ export interface ISearchFormData {
   label: string;
   showOutdatedLogs: boolean;
   showHealthChecks: boolean;
+  showIstioLogs: false
 }
