@@ -151,7 +151,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.isFunctionLabelPresent =
       searchQuery &&
       searchQuery.query &&
-      searchQuery.query.indexOf('{function=') > -1;
+      searchQuery.query.indexOf('function=') > -1;
 
     this.searchService.search(searchQuery).subscribe(
       data => {
