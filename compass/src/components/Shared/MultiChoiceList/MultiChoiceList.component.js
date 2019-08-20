@@ -62,7 +62,7 @@ export default function MultiChoiceList({
   }
 
   function createSelectedEntitiesList() {
-    if (selectedItems.length) {
+    if (!selectedItems.length) {
       return notSelectedMessage;
     }
 
@@ -88,7 +88,7 @@ export default function MultiChoiceList({
   }
 
   function createNonSelectedEntitiesDropdown() {
-    if (nonSelectedItems.length) {
+    if (!nonSelectedItems.length) {
       return (
         <span className="fd-has-font-style-italic">
           {noEntitiesAvailableMessage}
