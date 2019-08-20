@@ -92,15 +92,11 @@ export default function MultiChoiceList({
       </Menu.Item>
     ));
 
-    return (
+    const dropdown = (
       <Dropdown
         control={
           <Button dropdown>
-            <span>
-              {nonSelectedItems.length
-                ? placeholder
-                : noEntitiesAvailableMessage}
-            </span>
+            <span>{placeholder}</span>
           </Button>
         }
         placement="bottom"
@@ -108,6 +104,14 @@ export default function MultiChoiceList({
         {nonChoosenItemsList}
       </Dropdown>
     );
+
+    const noEntitiesMessage = (
+      <span className="fd-has-font-style-italic">
+        {noEntitiesAvailableMessage}
+      </span>
+    );
+
+    return nonSelectedItems.length ? dropdown : noEntitiesMessage;
   }
 
   return (

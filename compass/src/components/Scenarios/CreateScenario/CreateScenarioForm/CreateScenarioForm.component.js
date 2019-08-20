@@ -47,6 +47,7 @@ export default function CreateScenarioForm({
           currentlySelectedItems={[]}
           currentlyNonSelectedItems={runtimesQuery.runtimes.data}
           notSelectedMessage=""
+          noEntitiesAvailableMessage="No Runtimes available"
           itemSelector="runtimes"
           displayPropertySelector="name"
         />
@@ -59,6 +60,7 @@ export default function CreateScenarioForm({
           currentlySelectedItems={[]}
           currentlyNonSelectedItems={applicationsQuery.applications.data}
           notSelectedMessage=""
+          noEntitiesAvailableMessage="No Applications available"
           itemSelector="applications"
           displayPropertySelector="name"
         />
