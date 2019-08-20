@@ -422,15 +422,14 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isSearchResultEmpty(searchResult: any): boolean {
-    searchResult = searchResult.streams.filter(stream => {
+  public isSearchResultEmpty(searchResult: ISearchResult): boolean {
+    const searchResultFiltered = searchResult.streams.filter(stream => {
       return stream.entries && stream.entries.length;
     });
-
-    return !!(
-      searchResult &&
-      searchResult.streams &&
-      searchResult.streams.length
+    
+    return !(
+      searchResultFiltered &&
+      searchResultFiltered.length
     );
   }
 }
