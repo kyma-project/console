@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import dcopy from 'deep-copy';
+import 'core-js/es/array/flat-map';
 
 import {
   Button,
@@ -41,6 +42,21 @@ class BindApplicationModal extends React.Component {
       tooltipData: null,
     };
   };
+
+  async componentDidMount() {
+    try {
+      const bindableResources = (await this.props.fetchBindableResources()).data
+        .bindableResources;
+      this.setState({
+        bindableResources,
+      });
+    } catch (e) {
+      console.warn(e);
+      this.setState({
+        bindableResources: [],
+      });
+    }
+  }
 
   clearState = () => {
     this.setState(this.getInitialState());
@@ -180,18 +196,13 @@ class BindApplicationModal extends React.Component {
       selectedResource,
       prefixEnvironmentValue,
       bindingCreateParameters,
-
+      bindableResources,
       bindingsStepFilled,
       resourcesFilled,
       tooltipData,
     } = this.state;
 
-    const {
-      serviceInstance,
-      usageKinds,
-      fetchBindableResources,
-      id,
-    } = this.props;
+    const { serviceInstance, usageKinds, id } = this.props;
 
     const servicePlan =
       (serviceInstance &&
@@ -230,7 +241,7 @@ class BindApplicationModal extends React.Component {
         <Resources
           data={resourcesData}
           usageKinds={usageKinds.usageKinds}
-          fetchBindableResources={fetchBindableResources}
+          bindableResources={bindableResources}
           callback={this.callback}
         />
         {bindingCreateParameterSchemaExists && (
@@ -289,21 +300,28 @@ class BindApplicationModal extends React.Component {
       );
     }
 
+    const createDisabledBindApplicationButton = content => (
+      <Tooltip type="error" content={content} minWidth="161px">
+        <Button compact option="light" disabled={true}>
+          + Bind Application
+        </Button>
+      </Tooltip>
+    );
+
+    const noApplicationsAvailable =
+      bindableResources && !bindableResources.flatMap(r => r.resources).length;
+
+    if (noApplicationsAvailable) {
+      return createDisabledBindApplicationButton(
+        <span>There are no applications available</span>,
+      );
+    }
+
     if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
-      return (
-        <Tooltip
-          type="error"
-          content={
-            <span>
-              Service Class does not exist. Contact the cluster administrator.
-            </span>
-          }
-          minWidth="161px"
-        >
-          <Button compact option="light" disabled={true}>
-            + Bind Application
-          </Button>
-        </Tooltip>
+      return createDisabledBindApplicationButton(
+        <span>
+          Service Class does not exist. Contact the cluster administrator.
+        </span>,
       );
     }
 
