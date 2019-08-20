@@ -61,7 +61,7 @@ export default function MultiChoiceList({
     updateItems(newSelectedItems, newNonSelectedItems);
   }
 
-  function createAssignedEntitiesList() {
+  function createSelectedEntitiesList() {
     if (selectedItems.length) {
       return notSelectedMessage;
     }
@@ -87,7 +87,7 @@ export default function MultiChoiceList({
     );
   }
 
-  function createNonChoosenEntitiesDropdown() {
+  function createNonSelectedEntitiesDropdown() {
     if (nonSelectedItems.length) {
       return (
         <span className="fd-has-font-style-italic">
@@ -118,8 +118,8 @@ export default function MultiChoiceList({
 
   return (
     <section className="multi-choice-list-modal__body">
-      {createAssignedEntitiesList()}
-      {createNonChoosenEntitiesDropdown()}
+      {createSelectedEntitiesList()}
+      {createNonSelectedEntitiesDropdown()}
     </section>
   );
 }
