@@ -31,10 +31,13 @@ class ServiceClassDetails extends React.Component {
 
   render() {
     const { createServiceInstance } = this.props;
-    const serviceClass =
+    let serviceClass =
       this.props.serviceClass.clusterServiceClass ||
       this.props.serviceClass.serviceClass;
-
+      if(serviceClass){
+        serviceClass.plans=[]
+console.log('serviceClass',serviceClass.plans)
+}
     const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
     const serviceClassDescription = getDescription(serviceClass);

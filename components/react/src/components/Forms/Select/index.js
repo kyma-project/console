@@ -8,6 +8,7 @@ const Select = ({
   handleChange,
   name,
   items,
+  disabled,
   groupedItems,
   firstEmptyValue,
   placeholderText,
@@ -19,6 +20,7 @@ const Select = ({
       id={randomId}
       onChange={e => handleChange(e.target.value)}
       name={name}
+      disabled={disabled}
     >
       {(groupedItems || items) &&
         firstEmptyValue && [
@@ -62,6 +64,7 @@ Select.propTypes = {
   groupedItems: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.element),
   placeholderText: PropTypes.string,
+  disabled: PropTypes.bool,
   firstEmptyValue: PropTypes.bool,
   required: PropTypes.bool,
   noBottomMargin: PropTypes.bool,
