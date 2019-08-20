@@ -38,8 +38,11 @@ describe('MultiChoiceList', () => {
   });
 
   it('Renders two lists of simple items', () => {
+<<<<<<< HEAD
     console.error = jest.fn();
 
+=======
+>>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
     const component = renderer.create(
       <MultiChoiceList
         updateItems={() => {}}
@@ -49,10 +52,13 @@ describe('MultiChoiceList', () => {
     );
 
     expect(component.toJSON()).toMatchSnapshot();
+<<<<<<< HEAD
 
     // catch "Warning: Each child in a list should have a unique \"key\" prop." comming from Fundamental
     expect(console.error.mock.calls.length).toBe(1);
     expect(console.error.mock.calls[0][0]).toMatchSnapshot();
+=======
+>>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
   });
 
   it('Renders two lists of object items', () => {

@@ -62,7 +62,11 @@ export default function MultiChoiceList({
   }
 
   function createSelectedEntitiesList() {
+<<<<<<< HEAD
     if (!selectedItems.length) {
+=======
+    if (selectedItems.length) {
+>>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
       return notSelectedMessage;
     }
 
@@ -88,8 +92,12 @@ export default function MultiChoiceList({
   }
 
   function createNonSelectedEntitiesDropdown() {
+<<<<<<< HEAD
     console.log(nonSelectedItems);
     if (!nonSelectedItems.length) {
+=======
+    if (nonSelectedItems.length) {
+>>>>>>> f0f2460c7570d3741e3ffad192726005cabd5615
       return (
         <span className="fd-has-font-style-italic">
           {noEntitiesAvailableMessage}
