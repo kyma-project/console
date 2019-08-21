@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MetadataDefinitionDetails UI Clicking "Save" triggers the mutation 1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MetadataDefinitionDetails UI Clicking "Save" triggers the mutation 2`] = `"Found @client directives in a query but no ApolloClient resolvers were specified. This means ApolloClient local resolver handling has been disabled, and @client directives will be passed through to your link chain."`;
+
+exports[`MetadataDefinitionDetails UI Renders the name  1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MetadataDefinitionDetails UI The schema is not provided Doesn't render JSON editor 1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MetadataDefinitionDetails UI The schema is not provided Renders panel with toggle set to off 1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MetadataDefinitionDetails UI The schema is provided Renders JSON editor 1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MetadataDefinitionDetails UI The schema is provided Renders panel with toggle set to on  1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;

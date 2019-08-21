@@ -1,4 +1,4 @@
-import { GET_LABEL_DEFINITION } from '../../gql';
+import { GET_LABEL_DEFINITION, UPDATE_LABEL_DEFINITION } from '../../gql';
 
 export const mocks = [
   {
@@ -32,5 +32,22 @@ export const mocks = [
         },
       },
     },
+  },
+
+  {
+    request: {
+      query: UPDATE_LABEL_DEFINITION,
+      variables: {
+        in: { key: 'testkey', schema: null },
+      },
+    },
+    result: jest.fn().mockReturnValue({
+      data: {
+        updateLabelDefinition: {
+          key: 'testkey',
+          schema: null,
+        },
+      },
+    }),
   },
 ];

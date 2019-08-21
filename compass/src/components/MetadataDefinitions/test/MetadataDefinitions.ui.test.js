@@ -6,8 +6,6 @@ import { mocks } from './mock';
 import MetadataDefinitions from '../MetadataDefinitions.container';
 import GenericList from '../../../shared/components/GenericList/GenericList';
 
-const wait = require('waait');
-
 describe('MetadataDefinitions UI', () => {
   it(`Renders "loading" when there's no GQL response`, async () => {
     const component = mount(
