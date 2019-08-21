@@ -153,7 +153,7 @@ export default class CreateAPIModal extends React.Component {
         </Tab>
         {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
         {this.shouldShowCredentialsPrompt() && (
-          <p className="assign-scenario-list__prompt-dot"></p>
+          <p className="credentials-tab__prompt-dot"></p>
         )}
       </TabGroup>
     );

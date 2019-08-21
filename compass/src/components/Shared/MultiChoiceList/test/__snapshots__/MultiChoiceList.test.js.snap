@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiChoiceList Renders empty list with custom caption props 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  not assigned message
+  <span
+    className="fd-has-font-style-italic"
+  >
+    no entities available message
+  </span>
+</section>
+`;
+
+exports[`MultiChoiceList Renders empty list with default caption props 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  <span
+    className="fd-has-font-style-italic"
+  >
+    No more entries available
+  </span>
+</section>
+`;
+
+exports[`MultiChoiceList Renders two lists of object items 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  <ul>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 1
+      </span>
+      <button
+        className="fd-button--light fd-button--negative"
+        onClick={[Function]}
+      >
+        <span
+          className="sap-icon--decline sap-icon--l"
+        />
+      </button>
+    </li>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 2
+      </span>
+      <button
+        className="fd-button--light fd-button--negative"
+        onClick={[Function]}
+      >
+        <span
+          className="sap-icon--decline sap-icon--l"
+        />
+      </button>
+    </li>
+  </ul>
+  <div
+    className="fd-dropdown"
+  >
+    <span
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popper__control fd-popover"
+      >
+        <button
+          className="fd-button fd-dropdown__control"
+          onClick={[Function]}
+        >
+          <span>
+            Choose items...
+          </span>
+        </button>
+      </div>
+    </span>
+  </div>
+</section>
+`;
+
+exports[`MultiChoiceList Renders two lists of simple items 1`] = `
+<section
+  className="multi-choice-list-modal__body"
+>
+  <ul>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 1
+      </span>
+      <button
+        className="fd-button--light fd-button--negative"
+        onClick={[Function]}
+      >
+        <span
+          className="sap-icon--decline sap-icon--l"
+        />
+      </button>
+    </li>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 2
+      </span>
+      <button
+        className="fd-button--light fd-button--negative"
+        onClick={[Function]}
+      >
+        <span
+          className="sap-icon--decline sap-icon--l"
+        />
+      </button>
+    </li>
+    <li
+      className="multi-choice-list__list-element"
+    >
+      <span>
+        choosen 3
+      </span>
+      <button
+        className="fd-button--light fd-button--negative"
+        onClick={[Function]}
+      >
+        <span
+          className="sap-icon--decline sap-icon--l"
+        />
+      </button>
+    </li>
+  </ul>
+  <div
+    className="fd-dropdown"
+  >
+    <span
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popper__control fd-popover"
+      >
+        <button
+          className="fd-button fd-dropdown__control"
+          onClick={[Function]}
+        >
+          <span>
+            Choose items...
+          </span>
+        </button>
+      </div>
+    </span>
+  </div>
+</section>
+`;
+
+exports[`MultiChoiceList Renders two lists of simple items 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop.%s%s See https://fb.me/react-warning-keys for more information.%s"`;

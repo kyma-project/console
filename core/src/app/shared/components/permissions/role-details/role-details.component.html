@@ -35,7 +35,7 @@
   <fd-panel class="y-fd-panel" *ngIf="roleDetails">
     <fd-panel-header>
       <fd-panel-head>
-        <h2>Details</h2>
+        <h2 fd-panel-title>Details</h2>
       </fd-panel-head>
     </fd-panel-header>
     <fd-panel-body [bleed]="true">
@@ -66,7 +66,7 @@
     <fd-panel class="y-fd-panel" *ngFor="let rule of roleDetails.rules">
       <fd-panel-header>
         <fd-panel-head>
-          <h2>Rule</h2>
+          <h2 fd-panel-title>Rule</h2>
         </fd-panel-head>
       </fd-panel-header>
       <fd-panel-body [bleed]="true">

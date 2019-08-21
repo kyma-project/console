@@ -128,9 +128,7 @@ export default class CreateLabelModal extends React.Component {
           {nameError && <FormMessage type="error">{nameError}</FormMessage>}
         </FormItem>
         <FormItem key="label-schema">
-          <FormLabel htmlFor="label-schema" required>
-            Specification
-          </FormLabel>
+          <FormLabel htmlFor="label-schema">Specification</FormLabel>
           <FileInput
             fileInputChanged={this.fileInputChanged}
             file={specFile}
