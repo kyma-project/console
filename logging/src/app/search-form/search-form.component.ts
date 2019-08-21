@@ -424,6 +424,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   public isSearchResultEmpty(searchResult: ISearchResult): boolean {
-    return !searchResult.streams.some((s: ILogStream) => s.entries && s.entries.length)
+    return !searchResult.streams.some((s: ILogStream) => !!(s.entries && s.entries.length))
   }
 }
