@@ -366,10 +366,10 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  sortFromNewestLogs(stream1, stream2) {
+  sortFromNewestLogs(stream1: ILogStream, stream2: ILogStream): number {
     if (!(stream1 && stream1.entries && stream2 && stream2.entries)) { return 0 };
 
-    const getTimestamp = (stream) => {
+    const getTimestamp = (stream: ILogStream) => {
       const streamLastEntry = stream && stream.entries && stream.entries.length ? stream.entries[stream.entries.length - 1] : {};
       const streamLastEntryTimestamp =  new Date(streamLastEntry && streamLastEntry.ts ? streamLastEntry.ts : 0);
       return streamLastEntryTimestamp;
