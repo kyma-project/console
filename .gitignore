@@ -21,3 +21,4 @@ yarn-error.log*
 
 catalog/build
 instances/build
+brokers/build
