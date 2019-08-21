@@ -181,8 +181,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       result.streams = result.streams.map(this.filterHealthchecks);
     }
 
-    result.streams
+    result.streams = result.streams
       .sort(this.sortFromNewestLogs)
+      .filter((s: ILogStream) => s.entries && s.entries.length);
 
     return result;
   }
@@ -423,13 +424,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   public isSearchResultEmpty(searchResult: ISearchResult): boolean {
-    const nonEmptyStreams = searchResult.streams.filter(stream => {
-      return stream.entries && stream.entries.length;
-    });
-    
-    return !(
-      nonEmptyStreams &&
-      nonEmptyStreams.length
-    );
+    return !searchResult.streams.some((s: ILogStream) => s.entries && s.entries.length)
   }
 }
