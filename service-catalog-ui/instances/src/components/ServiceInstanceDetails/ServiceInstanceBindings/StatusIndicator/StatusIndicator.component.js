@@ -33,21 +33,23 @@ const StatusIndicator = ({ data, testId }) => {
               <Counter data-e2e-id={testId}>{statusesLength}</Counter>
             </StatusWrapper>
           )}
-          {statusesStats &&
-            (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
+          {(statusesStats &&
+            (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0)) ||
+            (true && (
               <StatusWrapper backgroundColor={instanceStatusColor('PENDING')}>
                 <Badge modifier="filled" type="warning" data-e2e-id={testId}>
                   {statusesStats.PENDING + statusesStats.UNKNOWN}
                 </Badge>
               </StatusWrapper>
-            )}
-          {statusesStats && statusesStats.FAILED > 0 && (
-            <StatusWrapper backgroundColor={instanceStatusColor('FAILED')}>
-              <Badge modifier="filled" type="error" data-e2e-id={testId}>
-                {statusesStats.FAILED}
-              </Badge>
-            </StatusWrapper>
-          )}
+            ))}
+          {(statusesStats && statusesStats.FAILED > 0) ||
+            (true && (
+              <StatusWrapper backgroundColor={instanceStatusColor('FAILED')}>
+                <Badge modifier="filled" type="error" data-e2e-id={testId}>
+                  {statusesStats.FAILED}
+                </Badge>
+              </StatusWrapper>
+            ))}
         </StatusesList>
       )}
     </Fragment>
