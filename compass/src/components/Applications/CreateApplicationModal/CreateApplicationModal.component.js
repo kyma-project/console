@@ -1,13 +1,10 @@
 import React from 'react';
-
+import equal from 'deep-equal';
+import PropTypes from 'prop-types';
 import { Button, Input, Modal } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { FormLabel, FormItem, FormSet } from 'fundamental-react/lib/Forms';
-import JSONEditorComponent from '../../Shared/JSONEditor';
-import { labelsSchema } from './labelsSchema';
-import equal from 'deep-equal';
-
+import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 import './styles.scss';
 
 class CreateApplicationModal extends React.Component {
@@ -17,6 +14,14 @@ class CreateApplicationModal extends React.Component {
     this.state = this.getInitialState();
   }
 
+  PropTypes = {
+    existingApplications: PropTypes.array.isRequired,
+    applicationsQuery: PropTypes.object.isRequired,
+    addApplication: PropTypes.func.isRequired,
+    sendNotification: PropTypes.func.isRequired,
+    scenariosQuery: PropTypes.object.isRequired,
+  };
+
   getInitialState = () => {
     return {
       formData: {
@@ -24,15 +29,22 @@ class CreateApplicationModal extends React.Component {
         description: '',
         labels: {},
       },
-      labels: '{}',
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: false,
       nameFilled: false,
-      labelsValidated: true,
       requiredFieldsFilled: false,
       tooltipData: null,
       enableCheckNameExists: false,
     };
+  };
+
+  updateCurrentScenarios = scenarios => {
+    this.setState({
+      formData: {
+        ...this.state.formData,
+        labels: scenarios && scenarios.length ? { scenarios } : {},
+      },
+    });
   };
 
   refetchApplicationExists = async () => {
@@ -58,12 +70,11 @@ class CreateApplicationModal extends React.Component {
       invalidApplicationName,
       enableCheckNameExists,
       nameFilled,
-      labelsValidated,
     } = this.state;
 
     if (equal(this.state, prevState)) return;
 
-    const requiredFieldsFilled = nameFilled && labelsValidated;
+    const requiredFieldsFilled = nameFilled;
 
     const tooltipData = !requiredFieldsFilled
       ? {
@@ -170,24 +181,6 @@ class CreateApplicationModal extends React.Component {
     });
   };
 
-  onChangeLabel = (value, ss) => {
-    let formData = this.state.formData;
-    try {
-      formData.labels = JSON.parse(value);
-    } catch (err) {}
-
-    this.setState({
-      labels: value,
-      formData,
-    });
-  };
-
-  setLabelsAsValid = value => {
-    this.setState({
-      labelsValidated: Boolean(value),
-    });
-  };
-
   createApplication = async () => {
     let success = true;
 
@@ -200,32 +193,29 @@ class CreateApplicationModal extends React.Component {
       if (
         createdApplication &&
         createdApplication.data &&
-        createdApplication.data.createApplication &&
-        createdApplication.data.createApplication.name
+        createdApplication.data.createApplication
       ) {
         createdApplicationName = createdApplication.data.createApplication.name;
       }
 
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            content: `Application binding "${createdApplicationName}" created successfully`,
-            title: `${createdApplicationName}`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: createdApplicationName,
-          },
-        });
-      }
+      sendNotification({
+        variables: {
+          content: `Application "${createdApplicationName}" created successfully`,
+          title: `${createdApplicationName}`,
+          color: '#359c46',
+          icon: 'accept',
+          instanceName: createdApplicationName,
+        },
+      });
     } catch (e) {
       success = false;
-
       LuigiClient.uxManager().showAlert({
-        text: `Error occored during creation ${e.message}`,
+        text: `Error occured when creating the application: ${e.message}`,
         type: 'error',
         closeAfter: 10000,
       });
     }
+
     if (success) {
       this.clearState();
       await this.refetchApplicationExists();
@@ -248,44 +238,55 @@ class CreateApplicationModal extends React.Component {
       </Button>
     );
 
-    const content = (
-      <>
-        <Input
-          label="Name"
-          placeholder="Name of the Application"
-          value={formData.name}
-          name="applicationName"
-          handleChange={this.onChangeName}
-          isError={invalidApplicationName || applicationWithNameAlreadyExists}
-          message={this.getApplicationNameErrorMessage()}
-          required={true}
-          type="text"
-        />
+    const scenariosQuery = this.props.scenariosQuery;
+    if (scenariosQuery.loading) {
+      return <p>Loading...</p>;
+    }
 
-        <Input
-          label="Description"
-          placeholder="Description of the Application"
-          value={formData.description}
-          name="applicationName"
-          handleChange={this.onChangeDescription}
-          marginTop={15}
-          type="text"
-        />
+    let content;
+    if (scenariosQuery.error) {
+      content = `Error! ${scenariosQuery.error.message}`;
+    } else {
+      const availableScenarios =
+        scenariosQuery.labelDefinition.schema.items.enum;
 
-        <FormSet className="margin-top">
-          <FormItem>
-            <FormLabel>Labels</FormLabel>
-            <JSONEditorComponent
-              text={this.state.labels}
-              schema={labelsSchema}
-              onChangeText={this.onChangeLabel}
-              onError={() => this.setLabelsAsValid(false)}
-              onSuccess={() => this.setLabelsAsValid(true)}
-            />
-          </FormItem>
-        </FormSet>
-      </>
-    );
+      content = (
+        <>
+          <Input
+            label="Name"
+            placeholder="Name of the Application"
+            value={formData.name}
+            name="applicationName"
+            handleChange={this.onChangeName}
+            isError={invalidApplicationName || applicationWithNameAlreadyExists}
+            message={this.getApplicationNameErrorMessage()}
+            required={true}
+            type="text"
+          />
+
+          <Input
+            label="Description"
+            placeholder="Description of the Application"
+            value={formData.description}
+            name="applicationName"
+            handleChange={this.onChangeDescription}
+            marginTop={15}
+            type="text"
+          />
+          <div className="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
+            Scenarios
+          </div>
+          <MultiChoiceList
+            placeholder="Choose scenarios..."
+            notSelectedMessage=""
+            currentlySelectedItems={[]}
+            updateItems={this.updateCurrentScenarios}
+            currentlyNonSelectedItems={availableScenarios}
+            noEntitiesAvailableMessage="No more scenarios available"
+          />
+        </>
+      );
+    }
 
     return (
       <Modal
@@ -295,7 +296,9 @@ class CreateApplicationModal extends React.Component {
         modalOpeningComponent={createApplicationButton}
         confirmText="Create"
         disabledConfirm={
-          !requiredFieldsFilled || applicationWithNameAlreadyExists
+          !requiredFieldsFilled ||
+          applicationWithNameAlreadyExists ||
+          invalidApplicationName
         }
         tooltipData={tooltipData}
         onConfirm={this.createApplication}

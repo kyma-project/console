@@ -1,19 +1,22 @@
 .action-bar-title {
-    width: 100%;
+  width: 100%;
 }
 
 #action-bar-wrapper {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  & > section {
+    flex-grow: 1;
+  }
 }
 
 @media (max-width: 600px) {
-    .fd-action-bar__actions {
-        justify-content: flex-start;
-    }
+  .fd-action-bar__actions {
+    justify-content: flex-start;
+  }
 
-    #action-bar-wrapper {
-        display: block;
-    }
+  #action-bar-wrapper {
+    display: block;
+  }
 }

@@ -1,7 +1,11 @@
 import LuigiClient from '@kyma-project/luigi-client';
 import rbacRulesMatched from './rbac-rules-matcher';
 import convertToNavigationTree from './microfrontend-converter';
-import { hideDisabledNodes, getSystemNamespaces, shouldShowSystemNamespaces } from './navigation-helpers';
+import {
+  hideDisabledNodes,
+  getSystemNamespaces,
+  shouldShowSystemNamespaces
+} from './navigation-helpers';
 
 var clusterConfig = window['clusterConfig'];
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -15,11 +19,12 @@ var config = {
   lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
-  addOnsModuleUrl: 'https://add-ons.' + k8sDomain,
+  addOnsModuleUrl: 'https://addons.' + k8sDomain,
   logsModuleUrl: 'https://log-ui.' + k8sDomain,
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   disabledNavigationNodes: '',
-  systemNamespaces: 'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss'
+  systemNamespaces:
+    'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss'
 };
 
 if (clusterConfig) {
@@ -36,7 +41,7 @@ if (localStorage.getItem('luigi.auth')) {
 }
 
 const consoleViewGroupName = '_console_';
-const systemNamespaces = getSystemNamespaces(config.systemNamespaces)
+const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
 let navigation = {
   viewGroupSettings: {
@@ -83,12 +88,12 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      category: {label: 'Service Management', icon: 'add-coursebook'},
+      category: { label: 'Service Management', icon: 'add-coursebook' },
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: {label: 'Configuration', icon: 'key-user-settings'},
+      category: { label: 'Configuration', icon: 'key-user-settings' },
       pathSegment: '_configuration_category_placeholder_',
       hideFromNav: true
     },
@@ -130,12 +135,12 @@ function getNodes(context) {
       viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/configmaps'
     },
     {
-      category: {label: 'Development', icon: 'source-code'},
+      category: { label: 'Development', icon: 'source-code' },
       pathSegment: '_development_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: {label: 'Operation', icon: 'instance'},
+      category: { label: 'Operation', icon: 'instance' },
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
@@ -229,25 +234,24 @@ function getNodes(context) {
   return Promise.all([
     getMicrofrontends(namespace),
     Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
-  ]).then(function (values) {
-    var nodeTree = [...staticNodes];
-    values.forEach(function (val) {
-      nodeTree = [].concat.apply(nodeTree, val);
-    })
+  ])
+    .then(function(values) {
+      var nodeTree = [...staticNodes];
+      values.forEach(function(val) {
+        nodeTree = [].concat.apply(nodeTree, val);
+      });
 
-    hideDisabledNodes(config.disabledNavigationNodes, nodeTree, true);
-    return nodeTree;
-  })
-    .catch((err) => {
+      hideDisabledNodes(config.disabledNavigationNodes, nodeTree, true);
+      return nodeTree;
+    })
+    .catch(err => {
       const errParsed = JSON.parse(err);
       console.error('Error', errParsed);
       const settings = {
         text: `Namespace ${errParsed.details.name} not found.`,
         type: 'error'
       };
-      LuigiClient
-        .uxManager()
-        .showAlert(settings)
+      LuigiClient.uxManager().showAlert(settings);
     });
 }
 
@@ -277,15 +281,15 @@ async function getNamespace(namespaceName) {
  * getMicrofrontends
  * @param {string} namespace k8s namespace name
  */
-const getMicrofrontends = async (namespace) => {
+const getMicrofrontends = async namespace => {
   const segmentPrefix = 'mf-';
 
   const cacheName = '_console_mf_cache_';
   if (!window[cacheName]) {
-     window[cacheName] = {};
+    window[cacheName] = {};
   }
   const cache = window[cacheName];
-  const cacheKey = segmentPrefix+namespace;
+  const cacheKey = segmentPrefix + namespace;
   const fromCache = cache[cacheKey];
 
   const query = `query MicroFrontends($namespace: String!) {
@@ -311,18 +315,24 @@ const getMicrofrontends = async (namespace) => {
 
   return (
     fromCache ||
-    fetchFromGraphQL(query, {namespace}, true)
+    fetchFromGraphQL(query, { namespace }, true)
       .then(result => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
         }
-        return result.microFrontends
-          .map(function (item) {
-            if (item.navigationNodes) {
-              return convertToNavigationTree(item.name, item, config, navigation, consoleViewGroupName, segmentPrefix);
-            }
-            return [];
-          });
+        return result.microFrontends.map(function(item) {
+          if (item.navigationNodes) {
+            return convertToNavigationTree(
+              item.name,
+              item,
+              config,
+              navigation,
+              consoleViewGroupName,
+              segmentPrefix
+            );
+          }
+          return [];
+        });
       })
       .catch(err => {
         console.error(`Error fetching Microfrontend ${name}: ${err}`);
@@ -335,7 +345,7 @@ const getMicrofrontends = async (namespace) => {
         return result;
       })
   );
-}
+};
 
 function fetchFromKyma(url) {
   return new Promise(function(resolve, reject) {
@@ -388,7 +398,7 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.open('POST', config.graphqlApiUrl, true);
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify({query, variables}));
+    xmlHttp.send(JSON.stringify({ query, variables }));
   });
 }
 
@@ -450,14 +460,17 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
 }
 
 function navigationPermissionChecker(nodeToCheckPermissionsFor) {
-
   const noRulesApplied =
     nodeToCheckPermissionsFor.requiredPermissions === null ||
     nodeToCheckPermissionsFor.requiredPermissions === undefined ||
     nodeToCheckPermissionsFor.requiredPermissions.length === 0;
 
   return (
-    (noRulesApplied || rbacRulesMatched(nodeToCheckPermissionsFor.requiredPermissions, selfSubjectRulesReview)) &&
+    (noRulesApplied ||
+      rbacRulesMatched(
+        nodeToCheckPermissionsFor.requiredPermissions,
+        selfSubjectRulesReview
+      )) &&
     checkRequiredBackendModules(nodeToCheckPermissionsFor)
   );
 }
@@ -526,10 +539,12 @@ function createNamespacesList(rawNamespaces) {
       return; //"pretend" that inactive namespace is already removed
     }
     const namespaceName = namespace.metadata.name;
-    const isSystemNamespace = systemNamespaces.some((namespace) => {
+    const isSystemNamespace = systemNamespaces.some(namespace => {
       return namespace === namespaceName;
     });
-    const alternativeLocation = getCorrespondingNamespaceLocation(namespaceName);
+    const alternativeLocation = getCorrespondingNamespaceLocation(
+      namespaceName
+    );
     if (!isSystemNamespace || shouldShowSystemNamespaces()) {
       namespaces.push({
         category: 'Namespaces',
@@ -571,21 +586,18 @@ let selfSubjectRulesReview = [];
 let clusterMicrofrontendNodes = [];
 var initPromises = [getFreshKeys()];
 
-if(token){
-  initPromises.push(getConsoleInitData())
+if (token) {
+  initPromises.push(getConsoleInitData());
 }
 
 Promise.all(initPromises)
   .then(
     res => {
-      if(token){
+      if (token) {
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
         const cmfs = res[1].clusterMicroFrontends;
-        if (
-          modules &&
-          modules.length > 0
-        ) {
+        if (modules && modules.length > 0) {
           modules.forEach(backendModule => {
             backendModules.push(backendModule.name);
           });
@@ -594,25 +606,40 @@ Promise.all(initPromises)
           selfSubjectRulesReview = subjectRules;
         }
         if (cmfs && cmfs.length > 0) {
-          clusterMicrofrontendNodes =
-            cmfs
-              .filter(cmf => cmf.placement === 'cluster')
-              .map(cmf => {
-                if (cmf.navigationNodes) {
-                  var tree = convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
-                  return tree;
-                }
-                return [];
-              });
-          window.clusterMicrofrontendNodesForNamespace =
-              cmfs
-                .filter(cmf => cmf.placement === 'namespace' || cmf.placement === 'environment')
-                .map(cmf => {
-                  if (cmf.navigationNodes) {
-                    return convertToNavigationTree(cmf.name, cmf, config, navigation, consoleViewGroupName, 'cmf-');
-                  }
-                  return [];
-                });
+          clusterMicrofrontendNodes = cmfs
+            .filter(cmf => cmf.placement === 'cluster')
+            .map(cmf => {
+              if (cmf.navigationNodes) {
+                var tree = convertToNavigationTree(
+                  cmf.name,
+                  cmf,
+                  config,
+                  navigation,
+                  consoleViewGroupName,
+                  'cmf-'
+                );
+                return tree;
+              }
+              return [];
+            });
+          window.clusterMicrofrontendNodesForNamespace = cmfs
+            .filter(
+              cmf =>
+                cmf.placement === 'namespace' || cmf.placement === 'environment'
+            )
+            .map(cmf => {
+              if (cmf.navigationNodes) {
+                return convertToNavigationTree(
+                  cmf.name,
+                  cmf,
+                  config,
+                  navigation,
+                  consoleViewGroupName,
+                  'cmf-'
+                );
+              }
+              return [];
+            });
         }
       }
     },
@@ -622,7 +649,7 @@ Promise.all(initPromises)
   )
   // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
   .then(() => {
-    navigation.nodes = () => [
+    (navigation.nodes = () => [
       {
         pathSegment: 'home',
         hideFromNav: true,
@@ -632,7 +659,7 @@ Promise.all(initPromises)
           systemNamespaces
         },
         viewGroup: consoleViewGroupName,
-        children: function () {
+        children: function() {
           var staticNodes = [
             {
               pathSegment: 'workspace',
@@ -675,8 +702,7 @@ Promise.all(initPromises)
               navigationContext: 'global-permissions',
               label: 'Global Permissions',
               category: 'Settings',
-              viewUrl:
-                '/consoleapp.html#/home/settings/globalPermissions',
+              viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
               keepSelectedForChildren: true,
               children: [
                 {
@@ -690,11 +716,13 @@ Promise.all(initPromises)
                   ]
                 }
               ],
-              requiredPermissions : [{
-                apiGroup : "rbac.authorization.k8s.io",
-                resource : "clusterrolebindings",
-                verbs : ["create"]
-              }]
+              requiredPermissions: [
+                {
+                  apiGroup: 'rbac.authorization.k8s.io',
+                  resource: 'clusterrolebindings',
+                  verbs: ['create']
+                }
+              ]
             },
             {
               category: {
@@ -707,7 +735,7 @@ Promise.all(initPromises)
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
           const nodeTree = [...staticNodes, ...fetchedNodes];
-          hideDisabledNodes(config.disabledNavigationNodes, nodeTree, false)
+          hideDisabledNodes(config.disabledNavigationNodes, nodeTree, false);
           return nodeTree;
         }
       },
@@ -722,55 +750,57 @@ Promise.all(initPromises)
         },
         icon: 'sys-help'
       }
-    ],
-    Luigi.setConfig({
-      auth: {
-        use: 'openIdConnect',
-        openIdConnect: {
-          authority: 'https://dex.' + k8sDomain,
-          client_id: 'console',
-          scope:
-            'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-          automaticSilentRenew: true,
-          loadUserInfo: false
-        },
+    ]),
+      Luigi.setConfig({
+        auth: {
+          use: 'openIdConnect',
+          openIdConnect: {
+            authority: 'https://dex.' + k8sDomain,
+            client_id: 'console',
+            scope:
+              'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
+            automaticSilentRenew: true,
+            loadUserInfo: false
+          },
 
-        events: {
-          onLogout: () => {
-            console.log('onLogout');
-          },
-          onAuthSuccessful: data => { },
-          onAuthExpired: () => {
-            console.log('onAuthExpired');
-          },
-          // TODO: define luigi-client api for getting errors
-          onAuthError: err => {
-            console.log('authErrorHandler 1', err);
+          events: {
+            onLogout: () => {
+              console.log('onLogout');
+            },
+            onAuthSuccessful: data => {},
+            onAuthExpired: () => {
+              console.log('onAuthExpired');
+            },
+            // TODO: define luigi-client api for getting errors
+            onAuthError: err => {
+              console.log('authErrorHandler 1', err);
+            }
+          }
+        },
+        navigation,
+        routing: {
+          nodeParamPrefix: '~',
+          skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+        },
+        settings: {
+          responsiveNavigation: 'simpleMobileOnly',
+          header: () => {
+            const logo =
+              clusterConfig && clusterConfig.headerLogoUrl
+                ? clusterConfig.headerLogoUrl
+                : '/assets/logo.svg';
+            const title = clusterConfig ? clusterConfig.headerTitle : undefined;
+            const favicon = clusterConfig
+              ? clusterConfig.faviconUrl
+              : undefined;
+            return {
+              logo,
+              title,
+              favicon
+            };
           }
         }
-      },
-      navigation,
-      routing: {
-        nodeParamPrefix: '~',
-        skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
-      },
-      settings: {
-        responsiveNavigation: 'simpleMobileOnly',
-        header: () => {
-          const logo =
-            clusterConfig && clusterConfig.headerLogoUrl
-              ? clusterConfig.headerLogoUrl
-              : '/assets/logo.svg';
-          const title = clusterConfig ? clusterConfig.headerTitle : undefined;
-          const favicon = clusterConfig ? clusterConfig.faviconUrl : undefined;
-          return {
-            logo,
-            title,
-            favicon
-          };
-        }
-      }
-    });
+      });
   })
   .catch(err => {
     console.error('Config Init Error', err);
@@ -813,7 +843,7 @@ window.addEventListener('message', e => {
       window.postMessage(
         {
           msg: 'luigi.ux.alert.show',
-          data: {settings}
+          data: { settings }
         },
         '*'
       );
@@ -827,9 +857,7 @@ function setLimitExceededErrorsMessages(limitExceededErrors) {
     if (resource.affectedResources && resource.affectedResources.length > 0) {
       resource.affectedResources.forEach(affectedResource => {
         limitExceededErrorscomposed.push(
-          `'${resource.resourceName}' by '${affectedResource}' (${
-            resource.quotaName
-            })`
+          `'${resource.resourceName}' by '${affectedResource}' (${resource.quotaName})`
         );
       });
     }

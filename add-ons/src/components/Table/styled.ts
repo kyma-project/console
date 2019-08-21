@@ -85,7 +85,7 @@ export const PanelWrapper = styled.div`
       font-weight: 400;
     }
 
-    .add-ons-url {
+    .addons-url {
       padding: 3px 0;
     }
   }

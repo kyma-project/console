@@ -7,6 +7,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
+import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -52,10 +53,12 @@ class Applications extends React.Component {
         LuigiClient.linkManager().navigate(`details/${application.id}`)
       }
     >
-      <b>{application.name}</b>
+      {application.name}
     </span>,
-    application.description,
-    application.labels ? this.createLabels(application.labels) : '-',
+    application.description ? application.description : EMPTY_TEXT_PLACEHOLDER,
+    application.labels && Object.keys(application.labels).length
+      ? this.createLabels(application.labels)
+      : EMPTY_TEXT_PLACEHOLDER,
     <Counter>{application.apis.totalCount}</Counter>,
     <Counter>{application.eventAPIs.totalCount}</Counter>,
     <StatusBadge

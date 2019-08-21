@@ -3,12 +3,11 @@ import { extractIsDevelopmentModeFlag } from './helpers';
 export const DEFAULT_CONFIGURATION =
   (window as any).clusterConfig.DEFAULT_CONFIGURATION_NAME || 'helm-repos-urls';
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
-  'This is the default add-ons configuration. Do not edit or delete it.';
+  'This is the default addons configuration. Do not edit or delete it.';
 export const HELM_BROKER_IS_DEVELOPMENT_MODE = extractIsDevelopmentModeFlag(
   (window as any).clusterConfig.HELM_BROKER_IS_DEVELOPMENT_MODE,
 );
 
-export const CONFIGURATION_NAME_PREFIX = 'addons-configuration';
 export const KYMA_SYSTEM_ENV = 'kyma-system';
 
 export const NOTIFICATION_SHOW_TIME = 5000;
@@ -53,9 +52,12 @@ export const FORMS = {
 
 export const CORE = {
   PANEL_TITLE: 'Repository URLs',
-  ADD_ONS_CONFIGURATION_TITLE: 'Add-Ons Configuration',
+  CLUSTER_ADD_ONS_CONFIGURATION_TITLE: 'Cluster Addons Configuration',
+  ADD_ONS_CONFIGURATION_TITLE: 'Addons Configuration',
+  CLUSTER_ADD_ONS_CONFIGURATION_DESCRIPTION:
+    'Create and manage cluster-wide addons configurations, which allows you to extend the Service Catalog with additional cluster-wide services.',
   ADD_ONS_CONFIGURATION_DESCRIPTION:
-    'Create and manage add-ons configurations, which allows you to extend the Service Catalog with additional services.',
+    'Create and manage Namespace-scoped addons configurations, which allows you to extend the Service Catalog with additional Namespace-scoped services.',
 };
 
 export const FILTERS = {

@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GenericList from '../../shared/components/GenericList/GenericList';
+import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
 
 class Scenarios extends React.Component {
   headerRenderer = () => ['Name'];
 
-  rowRenderer = scenario => [
-    <span className="link">
-      <b>{scenario.name}</b>
-    </span>,
-  ];
+  rowRenderer = scenario => [<span className="link">{scenario.name}</span>];
 
   render() {
     const scenarioLabelDefinitionSchemaQuery = this.props.scenarioLabelSchema;
@@ -41,6 +38,11 @@ class Scenarios extends React.Component {
         entries={scenariosObjects}
         headerRenderer={this.headerRenderer}
         rowRenderer={this.rowRenderer}
+        extraHeaderContent={
+          <CreateScenarios
+            scenariosQuery={scenarioLabelDefinitionSchemaQuery}
+          />
+        }
       />
     );
   }

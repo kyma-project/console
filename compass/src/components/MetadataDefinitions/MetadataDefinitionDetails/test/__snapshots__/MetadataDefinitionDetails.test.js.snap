@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MetadataDefinitionDetails Renders null schema 1`] = `
+Array [
+  <header
+    className="fd-has-background-color-background-2"
+  >
+    <section
+      className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper"
+    >
+      <section>
+        <ul
+          className="fd-breadcrumb"
+        >
+          <li
+            className="fd-breadcrumb__item"
+            onClick={[Function]}
+          >
+            <a
+              className="fd-breadcrumb__link"
+              href="#"
+            >
+              Metadata Definitions
+            </a>
+          </li>
+          <li
+            className="fd-breadcrumb__item"
+          />
+        </ul>
+        <div
+          className="fd-action-bar__header"
+        >
+          <h3
+            className="fd-action-bar__title"
+          >
+            testkey
+          </h3>
+        </div>
+      </section>
+      <div
+        className="fd-action-bar__actions"
+      >
+        <button
+          className="fd-button--emphasized"
+          disabled={false}
+          onClick={[Function]}
+        >
+          Save
+        </button>
+      </div>
+    </section>
+  </header>,
+  <section
+    className="fd-section"
+  >
+    <div
+      className="fd-panel"
+    >
+      <div
+        className="fd-panel__header"
+      >
+        <div
+          className="fd-panel__head"
+        >
+          <h1
+            className="fd-panel__title"
+          >
+            Schema
+          </h1>
+        </div>
+        <div
+          className="fd-panel__actions"
+        >
+          <div
+            className="fd-form__item fd-form__item--check"
+          >
+            <label
+              className="fd-form__label"
+            >
+              <span
+                className="fd-toggle fd-form__control"
+              >
+                <input
+                  checked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="fd-toggle__switch"
+                  role="presentation"
+                />
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;
+
+exports[`MetadataDefinitionDetails Renders null schema 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;

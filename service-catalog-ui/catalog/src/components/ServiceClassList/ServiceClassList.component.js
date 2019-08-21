@@ -15,6 +15,7 @@ import {
   Tooltip,
   Panel,
   PanelBody,
+  instancesTabUtils,
 } from '@kyma-project/react-components';
 
 import { serviceClassConstants } from '../../variables';
@@ -56,8 +57,8 @@ class ServiceClassList extends React.Component {
     };
   }
 
-  setTabFilter = filterValue => {
-    this.props.setServiceClassesFilter('local', filterValue);
+  setTabFilter = currentTabIndex => {
+    this.props.setServiceClassesFilter('local', currentTabIndex === 0);
   };
 
   componentDidMount() {
@@ -133,41 +134,25 @@ class ServiceClassList extends React.Component {
     const { filtersExists } = this.state;
 
     const determineSelectedTab = () => {
-      const selectedTab = LuigiClient.getNodeParams().selectedTab;
-      let selectedTabIndex = null;
+      const selectedTabName = LuigiClient.getNodeParams().selectedTab;
+      const selectedTabIndex = instancesTabUtils.convertTabNameToIndex(
+        selectedTabName,
+      );
 
-      switch (selectedTab) {
-        case 'addons':
-          selectedTabIndex = 0;
-          break;
-        case 'services':
-          selectedTabIndex = 1;
-          break;
-        default:
-          selectedTabIndex = 0;
-      }
+      this.setTabFilter(selectedTabIndex);
       return selectedTabIndex;
     };
 
     const handleTabChange = ({ defaultActiveTabIndex }) => {
-      defaultActiveTabIndex
-        ? this.setTabFilter(false)
-        : this.setTabFilter(true);
-      // TODO: uncomment after https://github.com/kyma-project/luigi/issues/491 is done
-      // let tabName = '';
-      // switch (defaultActiveTabIndex) {
-      //   case 0:
-      //     tabName = 'addons';
-      //     break;
-      //   case 1:
-      //     tabName = 'services';
-      //     break;
-      //   default:
-      //     tabName = 'addons';
-      // }
-      // LuigiClient.linkManager()
-      //   .withParams({ selectedTab: tabName })
-      //   .navigate('');
+      this.setTabFilter(defaultActiveTabIndex);
+
+      const selectedTabName = instancesTabUtils.convertIndexToTabName(
+        defaultActiveTabIndex,
+      );
+
+      LuigiClient.linkManager()
+        .withParams({ selectedTab: selectedTabName })
+        .navigate('');
     };
 
     const filterFn = e => {

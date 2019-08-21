@@ -1,5 +1,7 @@
-export default function rbacRulesMatched(requiredPermissions, selfSubjectRulesReview) {
-
+export default function rbacRulesMatched(
+  requiredPermissions,
+  selfSubjectRulesReview
+) {
   if (
     !isNonEmptyArray(requiredPermissions) ||
     !isNonEmptyArray(selfSubjectRulesReview)
@@ -13,7 +15,7 @@ export default function rbacRulesMatched(requiredPermissions, selfSubjectRulesRe
       let atomicVerbPermission = {
         apiGroup: requiredPermission.apiGroup,
         resource: requiredPermission.resource,
-        verbs: [atomicVerb],
+        verbs: [atomicVerb]
       };
       if (
         !matchingVerbRuleFound(selfSubjectRulesReview, atomicVerbPermission)
@@ -56,12 +58,12 @@ const matchingVerbRuleFound = (allrules, requiredVerbRule) => {
       arrayContainsStringOrJoker(
         rule.apiGroups,
         requiredVerbRule.apiGroup,
-        '*',
+        '*'
       ) &&
       arrayContainsStringOrJoker(
         rule.resources,
         requiredVerbRule.resource,
-        '*',
+        '*'
       ) &&
       arrayContainsStringOrJoker(rule.verbs, requiredVerbRule.verbs[0], '*')
     ) {

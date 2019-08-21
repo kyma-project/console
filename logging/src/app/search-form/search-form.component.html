@@ -72,18 +72,25 @@
           </select>
         </div>
         
-        <div fd-form-item *ngIf="isFunctionLabelPresent" [isInline]="true">
+        <div fd-form-item  [isInline]="true">
           <fd-form-label >
             Show
           </fd-form-label>
-          <label fd-form-label class="fd-form-label--block" for="outdatedLogsToggle">
+          <label *ngIf="isFunctionLabelPresent" fd-form-label class="fd-form-label--block" for="outdatedLogsToggle">
             <input fd-form-control type="checkbox"  [(ngModel)]="model.showOutdatedLogs"  name="showOutdatedLogs" (change)="onSubmit()" id="outdatedLogsToggle" >
             Outdated logs
           </label>
-          <label fd-form-label class="fd-form-label--block" for="healthChecksToggle">
+          <label *ngIf="isFunctionLabelPresent" fd-form-label class="fd-form-label--block" for="healthChecksToggle">
             <input fd-form-control type="checkbox"  [(ngModel)]="model.showHealthChecks"  name="showHealthChecks" (change)="onSubmit()" id="healthChecksToggle" >
             Health checks
           </label>
+
+          <label fd-form-label class="fd-form-label--block" for="istioLogsToggle">
+            <input fd-form-control type="checkbox" [(ngModel)]="model.showIstioLogs" name="showIstioLogs"
+              (change)="onSubmit()" id="istioLogsToggle">
+            Istio proxy logs
+          </label>
+
         </div>
         
    

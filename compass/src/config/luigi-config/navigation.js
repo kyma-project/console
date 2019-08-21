@@ -71,6 +71,19 @@ const navigation = {
               label: 'Metadata Definitions',
               viewUrl: compassMfUrl + '/metadata-definitions',
               category: 'SETTINGS',
+              children: [
+                {
+                  pathSegment: 'details',
+                  children: [
+                    {
+                      pathSegment: ':definitionKey',
+                      label: 'Metadata Definition',
+                      viewUrl:
+                        compassMfUrl + '/metadatadefinition/:definitionKey',
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

@@ -1,8 +1,8 @@
-# Add-Ons Configuration UI
+# Addons Configuration UI
 
 ## Overview
 
-This project contains an application with the Add-Ons Configuration UI page for the Kyma Console. The view enables you to list add-ons configurations.
+This project contains an application with the Addons Configuration UI page for the Kyma Console. The view enables you to list Namespace-scoped and cluster-wide addons configurations.
 
 ## Installation
 

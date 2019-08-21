@@ -5,11 +5,7 @@ import { QueriesService, FiltersService } from './index';
 
 import { randomNameGenerator } from '../helpers/random-names-generator';
 import { Configuration } from '../types';
-import {
-  DEFAULT_CONFIGURATION,
-  ERRORS,
-  CONFIGURATION_NAME_PREFIX,
-} from '../constants';
+import { DEFAULT_CONFIGURATION, ERRORS } from '../constants';
 const NAME_ERRORS = ERRORS.NAME;
 
 const useConfigurations = () => {
@@ -59,7 +55,7 @@ const useConfigurations = () => {
     const condition = (data: string) =>
       originalConfigs.some(config => config.name === data);
     do {
-      name = `${CONFIGURATION_NAME_PREFIX}-${randomNameGenerator()}`;
+      name = randomNameGenerator();
     } while (condition(name));
 
     return name;

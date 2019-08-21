@@ -4,21 +4,18 @@ function buildNode(node, spec, config) {
   var n = {
     label: node.label,
     pathSegment: node.navigationPath.split('/').pop(),
-    viewUrl: spec.viewBaseUrl
-      ? spec.viewBaseUrl + node.viewUrl
-      : node.viewUrl,
+    viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : node.viewUrl,
     hideFromNav: node.showInNavigation === false || undefined,
     order: node.order,
     context: {
       settings: node.settings
-        ? {...node.settings, ...(node.context || {})}
+        ? { ...node.settings, ...(node.context || {}) }
         : {}
     },
     requiredPermissions: node.requiredPermissions || undefined
   };
 
-  n.context.requiredBackendModules =
-    node.requiredBackendModules || undefined;
+  n.context.requiredBackendModules = node.requiredBackendModules || undefined;
 
   if (node.externalLink) {
     delete n.viewUrl;
@@ -52,12 +49,11 @@ function buildNodeWithChildren(specNode, spec, config) {
 function getDirectChildren(parentNodeSegments, spec, config) {
   // process only direct children
   return spec.navigationNodes
-    .filter(function (node) {
+    .filter(function(node) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
-        parentNodeSegments.length ===
-        currentNodeSegments.length - 1 &&
-        parentNodeSegments.filter(function (segment) {
+        parentNodeSegments.length === currentNodeSegments.length - 1 &&
+        parentNodeSegments.filter(function(segment) {
           return currentNodeSegments.includes(segment);
         }).length > 0;
       return isDirectChild;
@@ -68,7 +64,14 @@ function getDirectChildren(parentNodeSegments, spec, config) {
     });
 }
 
-export default function convertToNavigationTree(name, spec, config, navigation, consoleViewGroupName, segmentPrefix) {
+export default function convertToNavigationTree(
+  name,
+  spec,
+  config,
+  navigation,
+  consoleViewGroupName,
+  segmentPrefix
+) {
   return spec.navigationNodes
     .filter(function getTopLevelNodes(node) {
       var segments = node.navigationPath.split('/');
@@ -89,7 +92,10 @@ export default function convertToNavigationTree(name, spec, config, navigation, 
         node.viewGroup = node.navigationContext;
 
         node.navigationContext = spec.appName ? spec.appName : name;
-        if (node.viewUrl && node.viewUrl.indexOf(window.location.origin + '/') === 0) {
+        if (
+          node.viewUrl &&
+          node.viewUrl.indexOf(window.location.origin + '/') === 0
+        ) {
           node.viewGroup = consoleViewGroupName;
         } else {
           node.viewGroup = node.navigationContext;

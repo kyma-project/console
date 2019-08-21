@@ -7,7 +7,7 @@ export default function processNodeForLocalDevelopment(node, spec, config) {
     { startsWith: 'brokers', replaceWith: config.serviceBrokersModuleUrl },
     { startsWith: 'instances', replaceWith: config.serviceInstancesModuleUrl },
     { startsWith: 'catalog', replaceWith: config.serviceCatalogModuleUrl },
-    { startsWith: 'add-ons', replaceWith: config.addOnsModuleUrl },
+    { startsWith: 'addons', replaceWith: config.addOnsModuleUrl },
     { startsWith: 'log-ui', replaceWith: config.logsModuleUrl }
   ];
 

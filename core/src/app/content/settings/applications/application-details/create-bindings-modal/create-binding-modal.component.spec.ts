@@ -182,7 +182,7 @@ describe('CreateBindingsModalComponent', () => {
           }
         ]
       });
-      
+
       expect(component.isActive).toBeTruthy('component.isActive');
       expect(component.checkIfNamespaceExists()).toBeFalsy(
         'component.checkIfNamespaceExists()'

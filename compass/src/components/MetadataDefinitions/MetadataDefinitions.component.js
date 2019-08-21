@@ -1,15 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import GenericList from '../../shared/components/GenericList/GenericList';
+
 import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.container';
 
 class MetadataDefinitions extends React.Component {
   headerRenderer = () => ['Labels', 'Schema Provided'];
 
   rowRenderer = labelDef => [
-    <span className="link">
-      <b>{labelDef.key}</b>
+    <span
+      onClick={() =>
+        LuigiClient.linkManager().navigate(`details/${labelDef.key}`)
+      }
+      className="link"
+    >
+      {labelDef.key}
     </span>,
     <span>{labelDef.schema ? 'true' : 'false'}</span>,
   ];
