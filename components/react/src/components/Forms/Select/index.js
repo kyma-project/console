@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FormSet, FormItem, FormLabel, FormSelect } from 'fundamental-react';
+import { FormSet, FormItem, FormLabel, FormSelect, FormMessage } from 'fundamental-react';
 
 const Select = ({
   label,
@@ -13,8 +13,12 @@ const Select = ({
   firstEmptyValue,
   placeholderText,
   required,
+  isError,
+  message = ''
 }) => {
   const randomId = `select-${(Math.random() + 1).toString(36).substr(2, 5)}`;
+  const error = isError ? 'error' : '';
+
   const renderSelect = (
     <FormSelect
       id={randomId}
@@ -52,6 +56,12 @@ const Select = ({
           {label}
         </FormLabel>
         {renderSelect}
+
+        {isError && message && (
+          <FormMessage type={error}>
+            {message}
+          </FormMessage>
+        )}
       </FormItem>
     </FormSet>
   );
@@ -68,6 +78,10 @@ Select.propTypes = {
   firstEmptyValue: PropTypes.bool,
   required: PropTypes.bool,
   noBottomMargin: PropTypes.bool,
+  isSuccess: PropTypes.bool,
+  isWarning: PropTypes.bool,
+  isError: PropTypes.bool,
+  message: PropTypes.string,
 };
 
 export default Select;
