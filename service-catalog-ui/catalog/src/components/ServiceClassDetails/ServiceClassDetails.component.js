@@ -34,7 +34,7 @@ class ServiceClassDetails extends React.Component {
     const serviceClass =
       this.props.serviceClass.clusterServiceClass ||
       this.props.serviceClass.serviceClass;
-    
+
     const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
     const serviceClassDescription = getDescription(serviceClass);

@@ -45,13 +45,17 @@ class BasicData extends React.Component {
     while (true) {
       defaultInstanceName = `${
         serviceClass.externalName
-        }-${randomNameGenerator()}`;
+      }-${randomNameGenerator()}`;
 
       this.setState({
         formData: {
           ...formData,
           name: defaultInstanceName,
-          plan: (serviceClass.plans && serviceClass.plans.length && serviceClass.plans[0].name) || null,
+          plan:
+            (serviceClass.plans &&
+              serviceClass.plans.length &&
+              serviceClass.plans[0].name) ||
+            null,
         },
       });
 
@@ -71,7 +75,10 @@ class BasicData extends React.Component {
       instanceWithNameAlreadyExists,
     } = this.state;
     const stepFilled =
-      formData.plan && formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
+      formData.plan &&
+      formData.name &&
+      !invalidInstanceName &&
+      !instanceWithNameAlreadyExists;
 
     this.props.callback({
       formData,
@@ -91,7 +98,10 @@ class BasicData extends React.Component {
     if (equal(this.state, prevState)) return;
 
     const stepFilled =
-      formData.plan && formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
+      formData.plan &&
+      formData.name &&
+      !invalidInstanceName &&
+      !instanceWithNameAlreadyExists;
 
     this.setState({
       stepFilled,
@@ -99,9 +109,9 @@ class BasicData extends React.Component {
 
     const tooltipData = !stepFilled
       ? {
-        type: 'error',
-        content: 'Fill out all mandatory fields',
-      }
+          type: 'error',
+          content: 'Fill out all mandatory fields',
+        }
       : null;
 
     this.props.callback({
