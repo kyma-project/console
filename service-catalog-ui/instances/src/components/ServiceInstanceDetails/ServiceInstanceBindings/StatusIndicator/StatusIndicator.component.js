@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { instanceStatusColor } from '@kyma-project/react-components';
+import { Counter, Badge } from 'fundamental-react';
 
-import { StatusesList, StatusWrapper, Status } from './styled';
+import { StatusesList, StatusWrapper } from './styled';
 
 const StatusIndicator = ({ data, testId }) => {
   if (!data) return;
@@ -28,21 +29,23 @@ const StatusIndicator = ({ data, testId }) => {
       {statusesLength > 0 && (
         <StatusesList>
           {statusesLength > 0 && (
-            <StatusWrapper backgroundColor={'#0a6ed1'}>
-              <Status data-e2e-id={testId}>{statusesLength}</Status>
+            <StatusWrapper>
+              <Counter data-e2e-id={testId}>{statusesLength}</Counter>
             </StatusWrapper>
           )}
           {statusesStats &&
             (statusesStats.PENDING > 0 || statusesStats.UNKNOWN > 0) && (
               <StatusWrapper backgroundColor={instanceStatusColor('PENDING')}>
-                <Status data-e2e-id={testId}>
+                <Badge modifier="filled" type="warning" data-e2e-id={testId}>
                   {statusesStats.PENDING + statusesStats.UNKNOWN}
-                </Status>
+                </Badge>
               </StatusWrapper>
             )}
           {statusesStats && statusesStats.FAILED > 0 && (
             <StatusWrapper backgroundColor={instanceStatusColor('FAILED')}>
-              <Status data-e2e-id={testId}>{statusesStats.FAILED}</Status>
+              <Badge modifier="filled" type="error" data-e2e-id={testId}>
+                {statusesStats.FAILED}
+              </Badge>
             </StatusWrapper>
           )}
         </StatusesList>

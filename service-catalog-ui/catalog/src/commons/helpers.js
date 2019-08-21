@@ -28,7 +28,7 @@ export const getDescription = resource => {
 
   return resource.longDescription || resource.description;
 };
-
+/* eslint-disable no-unused-vars*/
 export function clearEmptyPropertiesInObject(object) {
   for (const key in object) {
     if (typeof object[key] === 'undefined' || object[key] === '') {
@@ -46,7 +46,7 @@ export function clearEmptyPropertiesInObject(object) {
     }
   }
 }
-
+/* eslint-enable no-unused-vars */
 export function randomNameGenerator() {
   return randomNamesGenerator();
 }
