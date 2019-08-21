@@ -75,7 +75,7 @@ export default function ApplicationDetailsScenarios({
       <ApplicationScenarioModal
         entityId={applicationId}
         scenarios={scenarios}
-        notAssignedMessage={'Application is not assigned to any scenario.'}
+        notSelectedMessage={'Application is not assigned to any scenario.'}
         entityQuery={applicationQuery}
       />
     </header>

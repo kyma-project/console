@@ -75,7 +75,7 @@ export default function RuntimeScenarios({
         title="Activate scenario"
         entityId={runtimeId}
         scenarios={scenarios}
-        notAssignedMessage="This Runtime doesn't have any active scenarios."
+        notSelectedMessage="This Runtime doesn't have any active scenarios."
         entityQuery={runtimeQuery}
       />
     </header>
