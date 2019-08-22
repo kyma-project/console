@@ -58,7 +58,12 @@ export default function ApplicationDetailsApis({
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
-    <span className="link">{api.name}</span>,
+    <span 
+      className="link"
+      onClick={() =>
+        LuigiClient.linkManager().navigate(`api/${api.id}`)
+      }
+    >{api.name}</span>,
     api.description,
     api.targetURL,
   ];

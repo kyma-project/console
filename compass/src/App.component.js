@@ -11,6 +11,7 @@ import Scenarios from './components/Scenarios/Scenarios.container';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
+import ApiDetails from './components/Api/ApiDetails/ApiDetails.container';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
@@ -62,6 +63,20 @@ class App extends React.Component {
             exact
             render={({ match }) => (
               <ApplicationDetails applicationId={match.params.id} />
+            )}
+          />
+          <Route
+            path="/application/:id/api/:apiid"
+            exact
+            render={({ match }) => (
+              <ApiDetails applicationId={match.params.id} apiId={match.params.apiid} />
+            )}
+          />
+          <Route
+            path="/application/:id/eventApi/:eventapiid"
+            exact
+            render={({ match }) => (
+              <ApiDetails applicationId={match.params.id} eventApiId={match.params.eventapiid} />
             )}
           />
           <Route path="/scenarios" exact component={Scenarios} />
