@@ -8,7 +8,7 @@ import '../../../../shared/styles/header.scss';
 
 function navigateToApplication() {
   LuigiClient.linkManager()
-    .fromClosestContext()
+    .fromContext('application')
     .navigate('');
 }
 

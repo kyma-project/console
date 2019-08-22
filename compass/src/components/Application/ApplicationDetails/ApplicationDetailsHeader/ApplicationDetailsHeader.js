@@ -14,7 +14,7 @@ import '../../../../shared/styles/header.scss';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
-    .fromClosestContext()
+    .fromContext('tenant')
     .navigate(`/applications`);
 }
 
