@@ -1,7 +1,7 @@
 import React from 'react';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { mount } from 'enzyme';
-import { mocks } from './mock';
+import { mocks, a } from './mock';
 import { ActionBar } from 'fundamental-react';
 import { Panel } from '@kyma-project/react-components';
 import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
@@ -10,6 +10,7 @@ import JSONEditorComponent from '../../../Shared/JSONEditor';
 describe('MetadataDefinitionDetails UI', () => {
   console.error = jest.fn();
   console.warn = jest.fn();
+
   afterEach(() => {
     console.error.mockReset();
     console.warn.mockReset();
@@ -43,36 +44,27 @@ describe('MetadataDefinitionDetails UI', () => {
     expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
   });
 
-  it(`Clicking "Save" triggers the mutation`, async () => {
-    const component = mount(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <MetadataDefinitionDetails definitionKey="noschemalabel" />
-      </MockedProvider>,
-    );
-
-    await wait(0); // wait for response
-    expect(mocks[2].result.mock.calls.length).toEqual(0);
-
-    component.find('.fd-button--emphasized').simulate('click');
-
-    await wait(0); // wait for response
-
-    expect(mocks[2].result.mock.calls.length).toEqual(1);
-
-    expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
-    expect(console.warn.mock.calls[0][0]).toMatchSnapshot(); // Apollo's @client warning because of Notification
-  });
-
   describe('The schema is provided', () => {
-    it(`Renders panel with toggle set to on `, async () => {
-      const component = mount(
+    let component = null;
+
+    beforeEach(async () => {
+      component = mount(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MetadataDefinitionDetails definitionKey="labelWithInvalidSchema" />
+          <MetadataDefinitionDetails definitionKey="labelWithValidSchema" />
         </MockedProvider>,
       );
-
       await wait(0); // wait for response
+    });
 
+    afterAll(() => {
+      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
+      if (console.warn.mock.calls.length) {
+        // in case there is a warning, make sure it's the expected one. TODO: remove it
+        expect(console.warn.mock.calls[0][0]).toMatchSnapshot(); // Apollo's @client warning because of Notification
+      }
+    });
+
+    it(`Renders panel with toggle set to on `, async () => {
       component.update();
 
       expect(
@@ -81,60 +73,89 @@ describe('MetadataDefinitionDetails UI', () => {
           .find('Toggle')
           .prop('checked'),
       ).toEqual(true);
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
     });
 
     it(`Renders JSON editor`, async () => {
-      const component = mount(
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <MetadataDefinitionDetails definitionKey="labelWithInvalidSchema" />
-        </MockedProvider>,
-      );
+      component.update();
+      expect(component.find(Panel).exists(JSONEditorComponent)).toBeTruthy();
+    });
 
+    it(`Clicking "Save" triggers the mutation`, async () => {
+      component.update();
+      expect(mocks[4].result.mock.calls.length).toEqual(0);
+
+      component.find('.fd-button--emphasized').simulate('click');
       await wait(0); // wait for response
 
+      expect(mocks[4].result.mock.calls.length).toEqual(1);
+    });
+
+    it(`"Save" button is enabled by default`, async () => {
       component.update();
 
-      expect(component.find(Panel).exists(JSONEditorComponent)).toBeTruthy();
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
+      expect(component.find('.fd-button--emphasized').prop('disabled')).toEqual(
+        false,
+      );
     });
   });
   describe('The schema is not provided', () => {
-    it(`Renders panel with toggle set to off`, async () => {
-      const component = mount(
+    let component;
+
+    beforeEach(async () => {
+      component = mount(
         <MockedProvider mocks={mocks} addTypename={false}>
           <MetadataDefinitionDetails definitionKey="noschemalabel" />
         </MockedProvider>,
       );
-
       await wait(0); // wait for response
+    });
 
+    afterAll(() => {
+      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
+      if (console.warn.mock.calls.length) {
+        // in case there is a warning, make sure it's the expected one. TODO: remove it
+        expect(console.warn.mock.calls[0][0]).toMatchSnapshot(); // Apollo's @client warning because of Notification
+      }
+    });
+
+    it(`Renders panel with toggle set to off`, async () => {
       component.update();
-
       expect(
         component
           .find(Panel)
           .find('Toggle')
           .prop('checked'),
       ).toBeUndefined();
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
+      //   expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
     });
 
     it(`Doesn't render JSON editor`, async () => {
-      const component = mount(
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <MetadataDefinitionDetails definitionKey="noschemalabel" />
-        </MockedProvider>,
-      );
-
-      await wait(0); // wait for response
-
       component.update();
-
       expect(
         component.find(Panel).exists(JSONEditorComponent),
       ).not.toBeTruthy();
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
+    });
+
+    it(`Clicking "Save" triggers the mutation`, async () => {
+      expect(mocks[3].result.mock.calls.length).toEqual(0);
+
+      component.find('.fd-button--emphasized').simulate('click');
+      await wait(0); // wait for response
+
+      expect(mocks[3].result.mock.calls.length).toEqual(1);
+    });
+    it(`JSONeditor is invisible after toggle is clicked`, async () => {
+      component.update();
+
+      expect(component.exists(JSONEditorComponent)).not.toBeTruthy();
+      component
+        .find('Toggle')
+        .find('input')
+        .simulate('change', { target: { checked: true } });
+      await wait(0);
+      component.update();
+
+      expect(component.exists(JSONEditorComponent)).toBeTruthy();
     });
   });
 });
