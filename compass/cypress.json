@@ -1,0 +1,7 @@
+{
+  "testFiles": "**/*.cypress.*",
+  "integrationFolder": "./src",
+  "port": 1234,
+  "baseUrl": "http://127.0.0.1:8080",
+  "chromeWebSecurity": false
+}

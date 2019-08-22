@@ -42,7 +42,9 @@
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
     "lint-fix": "prettier --config ../.prettierrc --write \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
     "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "eslint-check": "eslint -c .eslinterrc ./src"
+    "eslint-check": "eslint -c .eslinterrc ./src",
+    "test-ui": "jest -t='ui'",
+    "test-cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,6 +64,7 @@
   "devDependencies": {
     "concurrently": "^4.1.1",
     "core-js": "^3.1.4",
+    "cypress": "^3.4.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "jsdom-worker-fix": "^0.1.8",
