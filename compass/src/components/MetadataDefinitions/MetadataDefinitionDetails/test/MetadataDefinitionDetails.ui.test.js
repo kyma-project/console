@@ -1,7 +1,7 @@
 import React from 'react';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { mount } from 'enzyme';
-import { mocks, a } from './mock';
+import { mocks } from './mock';
 import { ActionBar } from 'fundamental-react';
 import { Panel } from '@kyma-project/react-components';
 import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
