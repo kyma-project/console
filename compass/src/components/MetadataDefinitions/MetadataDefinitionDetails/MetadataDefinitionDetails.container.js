@@ -1,6 +1,10 @@
 import { graphql, compose } from 'react-apollo';
 
-import { GET_LABEL_DEFINITION, UPDATE_LABEL_DEFINITION } from '../gql';
+import {
+  DELETE_LABEL_DEFINITION,
+  GET_LABEL_DEFINITION,
+  UPDATE_LABEL_DEFINITION,
+} from '../gql';
 import { SEND_NOTIFICATION } from '../../../gql';
 
 import MetadataDefinitionDetails from './MetadataDefinitionDetails.component';
@@ -24,6 +28,16 @@ export default compose(
         mutate({
           variables: {
             in: data,
+          },
+        }),
+    }),
+  }),
+  graphql(DELETE_LABEL_DEFINITION, {
+    props: ({ mutate }) => ({
+      deleteLabelDefinition: key =>
+        mutate({
+          variables: {
+            key: key,
           },
         }),
     }),

@@ -21,6 +21,39 @@ class MetadataDefinitions extends React.Component {
     <span>{labelDef.schema ? 'true' : 'false'}</span>,
   ];
 
+  deleteMetadataDefinition = metadataDefinitionKey => {
+    this.props
+      .deleteLabelDefinition(metadataDefinitionKey)
+      .then(() => {
+        this.props.labelDefinitions.refetch();
+      })
+      .catch(err => {
+        LuigiClient.uxManager().showAlert({
+          text: `An error occurred while deleting Metadata Definition ${metadataDefinitionKey}: ${err.message}`,
+          type: 'error',
+          closeAfter: 10000,
+        });
+      });
+  };
+
+  actions = [
+    {
+      name: 'Delete',
+      handler: entry => {
+        LuigiClient.uxManager()
+          .showConfirmationModal({
+            header: 'Remove Metadata Definition',
+            body: `Are you sure you want to delete Metadata Definition "${entry.key}"?`,
+            buttonConfirm: 'Delete',
+            buttonDismiss: 'Cancel',
+          })
+          .then(() => {
+            this.deleteMetadataDefinition(entry.key);
+          });
+      },
+    },
+  ];
+
   render() {
     const labelsDefinitionsQuery = this.props.labelDefinitions;
     const labelsDefinitions = labelsDefinitionsQuery.labelDefinitions;
@@ -38,6 +71,7 @@ class MetadataDefinitions extends React.Component {
         headerRenderer={this.headerRenderer}
         rowRenderer={this.rowRenderer}
         extraHeaderContent={<CreateLabelModal />}
+        actions={this.actions}
       />
     );
   }
@@ -45,6 +79,7 @@ class MetadataDefinitions extends React.Component {
 
 MetadataDefinitions.propTypes = {
   labelDefinitions: PropTypes.object.isRequired,
+  deleteLabelDefinition: PropTypes.func.isRequired,
 };
 
 export default MetadataDefinitions;

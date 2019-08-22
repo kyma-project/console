@@ -23,6 +23,7 @@ const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
   updateLabelDefinition,
   sendNotification,
+  deleteLabelDefinition,
 }) => {
   const defaultSchema = { properties: {}, required: [] };
 
@@ -94,6 +95,36 @@ const MetadataDefinitionDetails = ({
     setIsEditorShown(!isEditorShown);
   };
 
+  const deleteMetadataDefinition = () => {
+    deleteLabelDefinition(metadataDefinition.key)
+      .then(() => {
+        LuigiClient.linkManager()
+          .fromClosestContext()
+          .navigate(`/metadata-definitions`);
+      })
+      .catch(err => {
+        LuigiClient.uxManager().showAlert({
+          text: `An error occurred while deleting Metadata Definition ${metadataDefinition.key}: ${err.message}`,
+          type: 'error',
+          closeAfter: 10000,
+        });
+      });
+  };
+
+  const handleDeleteMetadataDefinition = () => {
+    LuigiClient.uxManager()
+      .showConfirmationModal({
+        header: 'Remove Metadata Definition',
+        body: `Are you sure you want to delete Metadata Definition "${metadataDefinition.key}"?`,
+        buttonConfirm: 'Delete',
+        buttonDismiss: 'Cancel',
+      })
+      .then(() => {
+        deleteMetadataDefinition();
+      })
+      .catch(() => {});
+  };
+
   const { loading, error } = metadataDefinitionQuery;
 
   if (!metadataDefinitionQuery) {
@@ -142,6 +173,13 @@ const MetadataDefinitionDetails = ({
               option="emphasized"
             >
               Save
+            </Button>
+            <Button
+              onClick={handleDeleteMetadataDefinition}
+              option="light"
+              type="negative"
+            >
+              Delete
             </Button>
           </ActionBar.Actions>
         </section>

@@ -49,7 +49,7 @@ class Runtimes extends React.Component {
       this.refreshRuntimes();
     } catch (e) {
       LuigiClient.uxManager().showAlert({
-        text: `Error occored during deletion ${e.message}`,
+        text: `An error occurred while deleting ${e.message}`,
         type: 'error',
         closeAfter: 10000,
       });
