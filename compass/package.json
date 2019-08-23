@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@kyma-project/generic-documentation": "/Users/i344125/Desktop/Kyma-project/console/components/generic-documentation/kyma-project-generic-documentation-0.1.0.tgz",
     "@kyma-project/luigi-client": "^0.4.12",
     "@kyma-project/luigi-core": "^0.4.12",
     "@kyma-project/react-components": "0.0.43",

@@ -2,6 +2,7 @@ import React from 'react';
 
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader'
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
 
 function ApiDetails({ applicationQuery, apiId }) {
 
@@ -36,6 +37,7 @@ function ApiDetails({ applicationQuery, apiId }) {
   return (
     <>
       <ApiDetailsHeader application={application} api={api}></ApiDetailsHeader>
+      <DocumentationComponent></DocumentationComponent>
     </>
   );
 }
