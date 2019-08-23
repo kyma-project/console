@@ -10,7 +10,7 @@ import {
   instancesTabUtils,
 } from '@kyma-project/react-components';
 import { Counter } from 'fundamental-react';
-import { StatusWrapper, StatusesList} from './styled'
+import { StatusWrapper, StatusesList } from './styled';
 import { serviceInstanceConstants } from '../../variables';
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
@@ -140,10 +140,7 @@ class ServiceInstances extends React.Component {
         >
           <Tab
             noMargin
-            status={this.status(
-              filteredInstancesCounts.local,
-              'addons-status',
-            )}
+            status={this.status(filteredInstancesCounts.local, 'addons-status')}
             title={
               <Tooltip
                 content={serviceInstanceConstants.addonsTooltipDescription}
