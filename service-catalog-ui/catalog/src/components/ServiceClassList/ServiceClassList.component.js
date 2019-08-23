@@ -7,8 +7,6 @@ import {
   NotificationMessage,
   Search,
   Spinner,
-  Status,
-  StatusWrapper,
   Tab,
   Tabs,
   Toolbar,
@@ -17,6 +15,8 @@ import {
   PanelBody,
   instancesTabUtils,
 } from '@kyma-project/react-components';
+import { StatusWrapper, StatusesList} from './styled';
+import { Counter } from 'fundamental-react';
 
 import { serviceClassConstants } from '../../variables';
 import FilterList from './FilterList/FilterList.component';
@@ -109,9 +109,11 @@ class ServiceClassList extends React.Component {
 
   status = (data, id) => {
     return (
-      <StatusWrapper key={id}>
-        <Status data-e2e-id={id}>{data}</Status>
-      </StatusWrapper>
+      <StatusesList>
+        <StatusWrapper key={id}>
+          <Counter data-e2e-id={id}>{data}</Counter>
+        </StatusWrapper>
+      </StatusesList>
     );
   };
 
@@ -271,7 +273,7 @@ class ServiceClassList extends React.Component {
           <Tab
             noMargin
             key="catalog-addons-tab"
-            aditionalStatus={this.status(
+            status={this.status(
               filteredClassesCounts.local,
               'addons-status',
             )}
@@ -299,7 +301,7 @@ class ServiceClassList extends React.Component {
           <Tab
             noMargin
             key="catalog-services-tab"
-            aditionalStatus={this.status(
+            status={this.status(
               filteredClassesCounts.notLocal,
               'services-status',
             )}
