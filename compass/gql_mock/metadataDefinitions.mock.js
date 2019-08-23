@@ -27,12 +27,8 @@ module.exports = {
             key: 'labelWithValidSchema',
             schema: validSchema,
           };
-        // case 'noschemalabel':
-        //     return {
-        //         key: 'noschemalabel',
-        //         schema: null,
-        //     };
       }
     },
   },
+  Mutation: {},
 };
