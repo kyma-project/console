@@ -4,8 +4,6 @@ import { ActionBar } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Breadcrumb, BreadcrumbItem } from '@kyma-project/react-components';
 
-import '../../../../shared/styles/header.scss';
-
 function navigateToApplication() {
   LuigiClient.linkManager()
     .fromContext('application')
