@@ -4,7 +4,7 @@ import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader'
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
 
-function ApiDetails({ applicationQuery, apiId }) {
+function ApiDetails({ applicationQuery, deleteApi, apiId }) {
 
   //This is a temporary solution. Rewrite once 'api' query is ready.
   const application = (applicationQuery && applicationQuery.application) || {};
@@ -36,7 +36,7 @@ function ApiDetails({ applicationQuery, apiId }) {
 
   return (
     <>
-      <ApiDetailsHeader application={application} api={api}></ApiDetailsHeader>
+      <ApiDetailsHeader application={application} api={api} deleteApi={deleteApi}></ApiDetailsHeader>
       <DocumentationComponent></DocumentationComponent>
     </>
   );

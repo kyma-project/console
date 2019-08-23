@@ -1,7 +1,7 @@
 import { graphql, compose } from 'react-apollo';
 import { withProps } from 'recompose'
 
-import { GET_APPLICATION_WITH_EVENT_APIS } from '../gql';
+import { GET_APPLICATION_WITH_EVENT_APIS, DELETE_EVENT_API } from '../gql';
 import EventApiDetails from './EventApiDetails.component';
 
 export default compose(
@@ -16,6 +16,16 @@ export default compose(
         },
       };
     },
+  }),
+  graphql(DELETE_EVENT_API, {
+    props: ({ mutate }) => ({
+      deleteEventApi: id =>
+        mutate({
+          variables: {
+            id: id,
+          },
+        }),
+    }),
   }),
   withProps((props) => ({
     eventApiId: props.eventApiId

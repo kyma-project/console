@@ -2,8 +2,9 @@ import React from 'react';
 
 import EventApiDetailsHeader from './EventApiDetailsHeader/EventApiDetailsHeader'
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
 
-function EventApiDetails({ applicationQuery, eventApiId }) {
+function EventApiDetails({ applicationQuery, deleteEventApi, eventApiId }) {
 
   //This is a temporary solution. Rewrite once 'eventApi' query is ready.
   const application = (applicationQuery && applicationQuery.application) || {};
@@ -35,7 +36,8 @@ function EventApiDetails({ applicationQuery, eventApiId }) {
 
   return (
     <>
-      <EventApiDetailsHeader application={application} eventApi={eventApi}></EventApiDetailsHeader>
+      <EventApiDetailsHeader application={application} eventApi={eventApi} deleteEventApi={deleteEventApi}></EventApiDetailsHeader>
+      <DocumentationComponent></DocumentationComponent>
     </>
   );
 }
