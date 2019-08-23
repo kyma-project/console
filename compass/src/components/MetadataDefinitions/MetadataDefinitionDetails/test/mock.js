@@ -13,7 +13,7 @@ export const mocks = [
     result: {
       data: {
         labelDefinition: {
-          key: 'testkey',
+          key: 'noschemalabel',
           schema: null,
         },
       },

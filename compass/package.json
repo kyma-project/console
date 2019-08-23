@@ -34,8 +34,10 @@
   "scripts": {
     "start-live-server": "live-server --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
     "start": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server\" ",
+    "start-test": "concurrently \"npm run mock-gql\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start\"",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
+    "mock-gql": "node gql_mock/index.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
@@ -44,7 +46,7 @@
     "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
     "eslint-check": "eslint -c .eslinterrc ./src",
     "test-ui": "jest -t='ui'",
-    "test-cypress": "cypress open"
+    "test-cypress": "(export MOCK_GQL_ENDPOINT=abc && cypress open)"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,13 +64,16 @@
     ]
   },
   "devDependencies": {
+    "apollo-server": "^2.8.2",
     "concurrently": "^4.1.1",
     "core-js": "^3.1.4",
     "cypress": "^3.4.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "graphql-import": "^0.7.1",
     "jsdom-worker-fix": "^0.1.8",
     "ncp": "^2.0.0",
+    "node-fetch": "^2.6.0",
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
     "webpack-cli": "^3.3.5"

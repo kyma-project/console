@@ -11,10 +11,16 @@ import builder from '../commons/builder';
 import resolvers from './resolvers';
 import defaults from './defaults';
 
-const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
+console.warn('env: ', process.env);
+const COMPASS_GRAPHQL_ENDPOINT =
+  process.env.REACT_APP_MOCK_GQL_URL || window.clusterConfig.graphqlApiUrl;
 
+const fetch = require('node-fetch');
 export function createApolloClient() {
-  const httpLink = createHttpLink({ uri: COMPASS_GRAPHQL_ENDPOINT });
+  const httpLink = createHttpLink({
+    uri: COMPASS_GRAPHQL_ENDPOINT,
+    fetchOptions: { fetch },
+  });
   const authLink = setContext((_, { headers }) => {
     return {
       headers: {
