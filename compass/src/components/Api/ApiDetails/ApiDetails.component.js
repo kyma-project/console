@@ -12,7 +12,7 @@ function ApiDetails({ applicationQuery, apiId }) {
   if (!applicationQuery || !applicationQuery.application) {
     if (loading) return 'Loading...';
     if (error) {
-    //fix!
+    //fix resource not found component
       return (
         <ResourceNotFound resource="Application" breadcrumb="Applications" />
       );
@@ -27,9 +27,8 @@ function ApiDetails({ applicationQuery, apiId }) {
     const apis = application.apis.data;
     api = apis.find(a => (a.id === apiId));
     if (!api) {
-      //fix!
       return (
-        <ResourceNotFound/>
+        <ResourceNotFound resource="Api"/>
       );
     }
   }
