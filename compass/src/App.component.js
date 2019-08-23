@@ -7,6 +7,7 @@ import Overview from './components/Overview/Overview';
 import Runtimes from './components/Runtimes/Runtimes.container';
 import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.container';
 import Applications from './components/Applications/Applications.container';
+import EditApi from './components/Api/EditApi/EditApi.container';
 import Scenarios from './components/Scenarios/Scenarios.container';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
@@ -62,6 +63,16 @@ class App extends React.Component {
             exact
             render={({ match }) => (
               <ApplicationDetails applicationId={match.params.id} />
+            )}
+          />
+          <Route
+            path="/application/:applicationId/api/:apiId/edit"
+            exact
+            render={({ match }) => (
+              <EditApi
+                apiId={match.params.apiId}
+                applicationId={match.params.applicationId}
+              />
             )}
           />
           <Route path="/scenarios" exact component={Scenarios} />

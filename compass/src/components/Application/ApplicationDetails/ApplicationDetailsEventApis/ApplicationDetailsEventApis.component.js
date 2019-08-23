@@ -58,7 +58,12 @@ export default function ApplicationDetailsEventApis({
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
-    <span className="link">{api.name}</span>,
+    <span
+      className="link"
+      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}/edit`)}
+    >
+      {api.name}
+    </span>,
     api.description,
   ];
 
