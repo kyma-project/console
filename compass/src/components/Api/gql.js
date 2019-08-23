@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const GET_APPLICATION = gql`
+export const GET_APPLICATION_WITH_APIS = gql`
   query Application($applicationId: ID!) {
     application(id: $applicationId) {
       name
@@ -20,6 +20,15 @@ export const GET_APPLICATION = gql`
         }
         totalCount
       }
+    }
+  }
+`;
+
+export const GET_APPLICATION_WITH_EVENT_APIS = gql`
+  query Application($applicationId: ID!) {
+    application(id: $applicationId) {
+      name
+      id
       eventAPIs {
         data {
           id

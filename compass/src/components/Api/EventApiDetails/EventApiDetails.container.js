@@ -1,11 +1,11 @@
 import { graphql, compose } from 'react-apollo';
 import { withProps } from 'recompose'
 
-import { GET_APPLICATION_WITH_APIS } from './../gql';
+import { GET_APPLICATION_WITH_EVENT_APIS } from '../gql';
+import EventApiDetails from './EventApiDetails.component';
 
-import ApiDetails from './ApiDetails.component';
 export default compose(
-  graphql(GET_APPLICATION_WITH_APIS, {
+  graphql(GET_APPLICATION_WITH_EVENT_APIS, {
     name: 'applicationQuery',
     options: props => {
       return {
@@ -18,6 +18,6 @@ export default compose(
     },
   }),
   withProps((props) => ({
-    apiId: props.apiId
+    eventApiId: props.eventApiId
   }))
-)(ApiDetails);
+)(EventApiDetails);
