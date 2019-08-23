@@ -15,7 +15,7 @@ import {
   PanelBody,
   instancesTabUtils,
 } from '@kyma-project/react-components';
-import { StatusWrapper, StatusesList} from './styled';
+import { StatusWrapper, StatusesList } from './styled';
 import { Counter } from 'fundamental-react';
 
 import { serviceClassConstants } from '../../variables';
@@ -273,10 +273,7 @@ class ServiceClassList extends React.Component {
           <Tab
             noMargin
             key="catalog-addons-tab"
-            status={this.status(
-              filteredClassesCounts.local,
-              'addons-status',
-            )}
+            status={this.status(filteredClassesCounts.local, 'addons-status')}
             title={
               <Tooltip
                 content={serviceClassConstants.addonsTooltipDescription}
