@@ -40,6 +40,7 @@ import { LabelsInputComponent } from './shared/components/labels-input/labels-in
 import { FundamentalNgxModule } from 'fundamental-ngx';
 import { EmptyComponent } from './shared/components/empty/empty.component';
 import { NotificationComponent } from './shared/components/notification/notification.component';
+import { LuigiClientService } from './shared/services/luigi-client.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'lambdas', pathMatch: 'full' },
@@ -96,6 +97,7 @@ const routes: Routes = [
     EventActivationsService,
     GraphqlClientService,
     SubscriptionsService,
+    LuigiClientService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

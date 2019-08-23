@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileInput from './../../../Shared/FileInput/FileInput';
-import TextFormItem from './../../../Shared/TextFormItem';
+import FileInput from './../../Shared/FileInput/FileInput';
+import TextFormItem from './../../Shared/TextFormItem';
 
 import { FormItem, FormInput, FormLabel } from '@kyma-project/react-components';
 import { InlineHelp } from 'fundamental-react';
@@ -109,6 +109,7 @@ export default function APIDataForm({ mainAPIType, updateState }) {
         <FormInput
           disabled={!isAPI}
           id="targetURL"
+          required
           type="url"
           placeholder="Target URL"
           onChange={e => updateState({ targetURL: e.target.value })}

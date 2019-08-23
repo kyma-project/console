@@ -12,6 +12,7 @@ import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-m
 import { finalize, map } from 'rxjs/operators';
 import * as LuigiClient from '@kyma-project/luigi-client';
 import { GenericHelpersService } from '../../../../../../shared/services/generic-helpers.service';
+import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-expose-api',
@@ -56,6 +57,8 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public availablePresets = [];
 
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
+  @ViewChild('confirmationModal')
+  private confirmationModal: ConfirmationModalComponent;
 
   constructor(
     private currentNamespaceService: CurrentNamespaceService,
@@ -166,6 +169,26 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
   public save() {
     this.validateDetails();
     this.apiDefinition ? this.updateResource() : this.createResource();
+  }
+
+  public deleteApi() {
+    this.confirmationModal
+      .show('Delete', `Do you want to delete API ${this.apiName}?`)
+      .then(() => {
+        const url = `${this.apiDefUrl}${this.apiName}`;
+        this.exposeApiService.deleteApiDefinition(url).subscribe(
+          () => {
+            this.goBack();
+          },
+          err => {
+            this.infoModal.show(
+              'Error',
+              `There was an error while deleting API ${this.apiName}: ${err}`
+            );
+          }
+        );
+      })
+      .catch(() => {});
   }
 
   public ngOnInit() {

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextFormItem from '../../../../Shared/TextFormItem';
+import TextFormItem from './../../../Shared/TextFormItem';
 
 export const CREDENTIAL_TYPE_OAUTH = 'OAuth';
 
 OAuthCredentialsForm.propTypes = {
   updateState: PropTypes.func.isRequired,
-  defaultApiData: PropTypes.object,
+  oAuthData: PropTypes.object,
 };
 
 OAuthCredentialsForm.defaultProps = {
@@ -17,10 +17,8 @@ OAuthCredentialsForm.defaultProps = {
   },
 };
 
-export default function OAuthCredentialsForm({ updateState, defaultApiData }) {
-  const [oAuthCredentials, setOAuthCredentials] = React.useState(
-    defaultApiData,
-  );
+export default function OAuthCredentialsForm({ updateState, oAuthData }) {
+  const [oAuthCredentials, setOAuthCredentials] = React.useState(oAuthData);
 
   function updateOAuth(key, value) {
     const updatedCredentials = {
@@ -40,7 +38,7 @@ export default function OAuthCredentialsForm({ updateState, defaultApiData }) {
         type="password"
         label="Client ID"
         onChange={e => updateOAuth('clientId', e.target.value)}
-        defaultValue={defaultApiData.clientId}
+        defaultValue={oAuthData.clientId}
       />
       <TextFormItem
         inputKey="client-secret"
@@ -48,7 +46,7 @@ export default function OAuthCredentialsForm({ updateState, defaultApiData }) {
         type="password"
         label="Client Secret"
         onChange={e => updateOAuth('clientSecret', e.target.value)}
-        defaultValue={defaultApiData.clientSecret}
+        defaultValue={oAuthData.clientSecret}
       />
       <TextFormItem
         inputKey="url"
@@ -56,7 +54,7 @@ export default function OAuthCredentialsForm({ updateState, defaultApiData }) {
         type="url"
         label="Url"
         onChange={e => updateOAuth('url', e.target.value)}
-        defaultValue={defaultApiData.url}
+        defaultValue={oAuthData.url}
       />
     </section>
   );

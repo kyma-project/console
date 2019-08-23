@@ -13,11 +13,7 @@ const availableCredentialTypes = [CREDENTIAL_TYPE_OAUTH, CREDENTIAL_TYPE_NONE];
 
 CredentialsForm.propTypes = {
   updateState: PropTypes.func.isRequired,
-  credentialsType: PropTypes.oneOf([
-    ...availableCredentialTypes,
-    CREDENTIAL_TYPE_PLACEHOLDER,
-  ]),
-  defaultApiData: PropTypes.object,
+  credentials: PropTypes.object.isRequired,
 };
 
 CredentialsForm.defaultProps = {
@@ -27,14 +23,11 @@ CredentialsForm.defaultProps = {
       clientSecret: '',
       url: '',
     },
+    type: CREDENTIAL_TYPE_NONE,
   },
 };
 
-export default function CredentialsForm({
-  updateState,
-  credentialsType,
-  defaultApiData,
-}) {
+export default function CredentialsForm({ updateState, credentials }) {
   const credentialTypesList = (
     <Menu>
       <Menu.List>
@@ -53,7 +46,7 @@ export default function CredentialsForm({
       <Dropdown
         control={
           <Button dropdown>
-            <span>{credentialsType}</span>
+            <span>{credentials.type}</span>
           </Button>
         }
         placement="bottom"
@@ -61,10 +54,10 @@ export default function CredentialsForm({
         {credentialTypesList}
       </Dropdown>
 
-      {credentialsType === CREDENTIAL_TYPE_OAUTH && (
+      {credentials.type === CREDENTIAL_TYPE_OAUTH && (
         <OAuthCredentialsForm
           updateState={updateState}
-          defaultApiData={defaultApiData.oAuth}
+          oAuthData={credentials.oAuth}
         />
       )}
     </section>

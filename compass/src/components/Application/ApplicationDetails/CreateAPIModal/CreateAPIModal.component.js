@@ -5,13 +5,13 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { Modal, Button } from '@kyma-project/react-components';
 import './style.scss';
 
-import { createAPI, createEventAPI } from './../../API/APICreationHelper';
+import { createAPI, createEventAPI } from './../../../Api/APICreationHelper';
 import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
 
-import APIDataForm from './../../API/Forms/ApiDataForm';
+import APIDataForm from './../../../Api/Forms/ApiDataForm';
 import CredentialsForm, {
   CREDENTIAL_TYPE_PLACEHOLDER,
-} from './../../API/Forms/CredentialsForm';
+} from './../../../Api/Forms/CredentialsForm';
 
 export default class CreateAPIModal extends React.Component {
   state = this.createInitialState();
@@ -34,7 +34,7 @@ export default class CreateAPIModal extends React.Component {
         apiSubType: null /* ASYNC_API, OPEN_API, ODATA */,
       },
 
-      credentialsForm: {
+      credentials: {
         type: CREDENTIAL_TYPE_PLACEHOLDER,
         oAuth: {
           clientId: '',
@@ -49,7 +49,7 @@ export default class CreateAPIModal extends React.Component {
     const { mainAPIType } = this.state.apiData;
 
     if (mainAPIType === 'API') {
-      const { type } = this.state.credentialsForm;
+      const { type } = this.state.credentials;
       return type === CREDENTIAL_TYPE_PLACEHOLDER;
     }
     return false;
@@ -84,7 +84,7 @@ export default class CreateAPIModal extends React.Component {
   checkInputValidity = () => {
     const form = this.formRef;
     const { spec, mainAPIType } = this.state.apiData;
-    const type = this.state.credentialsForm.type;
+    const type = this.state.credentials.type;
 
     if (mainAPIType === 'API' && type === CREDENTIAL_TYPE_PLACEHOLDER) {
       return false;
@@ -122,7 +122,7 @@ export default class CreateAPIModal extends React.Component {
 
   render() {
     const mainAPIType = this.state.apiData.mainAPIType;
-    const credentialsType = this.state.credentialsForm.type;
+    const credentials = this.state.credentials;
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
     const isAPI = mainAPIType === 'API';
@@ -150,8 +150,8 @@ export default class CreateAPIModal extends React.Component {
             disabled={!isAPI}
           >
             <CredentialsForm
-              updateState={this.updateState('credentialsForm')}
-              credentialsType={credentialsType}
+              updateState={this.updateState('credentials')}
+              credentials={credentials}
             />
           </Tab>
           {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
