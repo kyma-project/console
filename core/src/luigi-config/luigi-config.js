@@ -594,7 +594,7 @@ if (token) {
 Promise.all(initPromises)
   .then(
     res => {
-      if (token) {
+      if (token && res[1]) {
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
         const cmfs = res[1].clusterMicroFrontends;
@@ -761,7 +761,8 @@ Promise.all(initPromises)
             scope:
               'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
             automaticSilentRenew: true,
-            loadUserInfo: false
+            loadUserInfo: false,
+            logoutUrl: 'logout.html'
           },
 
           events: {
