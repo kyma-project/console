@@ -8,7 +8,7 @@ ci-master: resolve prepare validate test build-image push-image
 ci-release: resolve prepare validate test build-image push-image
 
 resolve:
-	npm install
+	npm install --no-optional
 
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
@@ -29,6 +29,7 @@ validate:
 	
 test:
 	CI=true npm run test
+	CI=true npm run test-ui
 
 build-image: pull-licenses
 	docker build -t $(IMG_NAME) .
