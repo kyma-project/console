@@ -3,6 +3,7 @@
 exports[`GenericList Renders actions button when 'actions' prop is provided 1`] = `
 <div
   className="fd-panel fd-panel--no-background"
+  test-id="generic-list"
 >
   <div
     className="fd-action-bar sc-kafWEX kXuvQ"
@@ -182,6 +183,7 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
 exports[`GenericList Renders title and description 1`] = `
 <div
   className="fd-panel fd-panel--no-background"
+  test-id="generic-list"
 >
   <div
     className="fd-action-bar sc-kafWEX kXuvQ"
@@ -294,6 +296,7 @@ exports[`GenericList Renders title and description 1`] = `
 exports[`GenericList Renders with minimal props 1`] = `
 <div
   className="fd-panel fd-panel--no-background"
+  test-id="generic-list"
 >
   <div
     className="fd-action-bar sc-kafWEX kXuvQ"

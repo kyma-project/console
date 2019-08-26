@@ -33,7 +33,7 @@ Array [
           <h3
             className="fd-action-bar__title"
           >
-            testkey
+            noschemalabel
           </h3>
         </div>
       </section>
