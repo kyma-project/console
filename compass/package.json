@@ -32,24 +32,26 @@
     "xml-js": "^1.6.11"
   },
   "scripts": {
-    "start-live-server": "live-server --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
     "start": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server\" ",
-    "start-test": "concurrently \"npm run start-gql-mock\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start\"",
-    "start-test-watch": "concurrently \"npm run start-gql-mock-watch\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start\"",
+    "start-quiet": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server --no-browser\" ",
+    "start-test-env": "concurrently \"npm run start-gql-mock\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start-quiet\"",
+    "start-test-env-watch": "concurrently \"npm run start-gql-mock-watch\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start\"",
+    "start-live-server": "live-server --quiet --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
+    "start-gql-mock": "node gql_mock/index.js",
+    "start-gql-mock-watch": "nodemon --watch gql_mock gql_mock/index.js",
+    "start-and-test": "concurrently \"npm run start-test-env\" \"wait-on http://localhost:8080 && wait-on http://localhost:8888 && npm run test-cypress-headless\"",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
     "test": "react-scripts test",
+    "test-ui": "jest -t='UI'",
+    "test-cypress": "cypress open",
+    "test-cypress-headless": "CI=true cypress run --browser chrome",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
     "lint-fix": "prettier --config ../.prettierrc --write \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
     "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "eslint-check": "eslint -c .eslinterrc ./src",
-    "test-ui": "jest -t='UI'",
-    "test-cypress": "cypress open",
-    "test-cypress-headless": "cypress run",
-    "start-gql-mock": "node gql_mock/index.js",
-    "start-gql-mock-watch": "nodemon --watch gql_mock gql_mock/index.js"
+    "eslint-check": "eslint -c .eslinterrc ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
