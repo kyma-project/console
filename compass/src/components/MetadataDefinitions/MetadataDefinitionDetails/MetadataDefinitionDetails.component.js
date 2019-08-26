@@ -15,6 +15,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import '../../../shared/styles/header.scss';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import JSONEditorComponent from '../../Shared/JSONEditor';
+import handleDelete from '../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 const Ajv = require('ajv');
 const ajv = new Ajv();
@@ -95,34 +96,10 @@ const MetadataDefinitionDetails = ({
     setIsEditorShown(!isEditorShown);
   };
 
-  const deleteMetadataDefinition = () => {
-    deleteLabelDefinition(metadataDefinition.key)
-      .then(() => {
-        LuigiClient.linkManager()
-          .fromClosestContext()
-          .navigate(`/metadata-definitions`);
-      })
-      .catch(err => {
-        LuigiClient.uxManager().showAlert({
-          text: `An error occurred while deleting Metadata Definition ${metadataDefinition.key}: ${err.message}`,
-          type: 'error',
-          closeAfter: 10000,
-        });
-      });
-  };
-
-  const handleDeleteMetadataDefinition = () => {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: 'Remove Metadata Definition',
-        body: `Are you sure you want to delete Metadata Definition "${metadataDefinition.key}"?`,
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(() => {
-        deleteMetadataDefinition();
-      })
-      .catch(() => {});
+  const navigateToList = () => {
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/metadata-definitions`);
   };
 
   const { loading, error } = metadataDefinitionQuery;
@@ -175,7 +152,14 @@ const MetadataDefinitionDetails = ({
               Save
             </Button>
             <Button
-              onClick={handleDeleteMetadataDefinition}
+              onClick={() => {
+                handleDelete(
+                  'Metadata Definition',
+                  metadataDefinition.key,
+                  deleteLabelDefinition,
+                  navigateToList,
+                );
+              }}
               option="light"
               type="negative"
             >
