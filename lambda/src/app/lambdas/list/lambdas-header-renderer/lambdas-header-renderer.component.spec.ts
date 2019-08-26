@@ -9,10 +9,9 @@ describe('LambdasHeaderRenderer', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LambdasHeaderRendererComponent ],
-      providers: [ LuigiClientService ]
-    })
-    .compileComponents();
+      declarations: [LambdasHeaderRendererComponent],
+      providers: [LuigiClientService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
