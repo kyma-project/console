@@ -32,9 +32,11 @@ class GenericList extends React.Component {
   };
 
   rowRenderer = entry => {
-    const actions = this.props.actions.filter(action =>
-      action.skipAction ? !action.skipAction(entry) : true,
-    );
+    const actions = this.props.actions
+      ? this.props.actions.filter(action =>
+          action.skipAction ? !action.skipAction(entry) : true,
+        )
+      : [];
     if (actions.length > 0) {
       return [
         ...this.props.rowRenderer(entry),
