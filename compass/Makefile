@@ -30,7 +30,7 @@ validate:
 test:
 	#CI=true npm run test
 	
-	CI=true start-and-test
+	CI=true npm run start-and-test
 	#npm run test-cypress
 
 build-image: pull-licenses
