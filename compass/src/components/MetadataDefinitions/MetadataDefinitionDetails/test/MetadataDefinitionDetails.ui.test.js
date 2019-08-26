@@ -15,7 +15,6 @@ describe('MetadataDefinitionDetails UI', () => {
     console.error.mockReset();
     console.warn.mockReset();
   });
-
   it(`Renders "Loading name..." when there's no GQL response`, async () => {
     const component = mount(
       <MockedProvider addTypename={false}>

@@ -57,13 +57,13 @@ export const mocks = [
     request: {
       query: UPDATE_LABEL_DEFINITION,
       variables: {
-        in: { key: 'testkey', schema: null },
+        in: { key: 'noschemalabel', schema: null },
       },
     },
     result: jest.fn().mockReturnValue({
       data: {
         updateLabelDefinition: {
-          key: 'testkey',
+          key: 'noschemalabel',
           schema: null,
         },
       },
