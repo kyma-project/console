@@ -37,6 +37,12 @@ export default function EditApiHeader({
       .navigate('');
   }
 
+  function navigateToApplications() {
+    LuigiClient.linkManager()
+      .fromContext('tenant')
+      .navigate('/applications');
+  }
+
   function handleDelete() {
     LuigiClient.uxManager()
       .showConfirmationModal({
@@ -100,6 +106,11 @@ export default function EditApiHeader({
       <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
         <section>
           <Breadcrumb>
+            <Breadcrumb.Item
+              name="Applications"
+              url="#"
+              onClick={navigateToApplications}
+            />
             <Breadcrumb.Item
               name={applicationName}
               url="#"

@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'fundamental-react';
 import { Button, Dropdown } from '@kyma-project/react-components';
+import './style.scss';
 
 import OAuthCredentialsForm, {
   CREDENTIAL_TYPE_OAUTH,
-} from './CredentialForms/OAuthCredentialsForm';
+} from './OAuthCredentialsForm';
 export const CREDENTIAL_TYPE_NONE = 'None';
 export const CREDENTIAL_TYPE_PLACEHOLDER = 'Choose credentials type';
 
@@ -41,7 +42,7 @@ export default function CredentialsForm({ updateState, credentials }) {
   );
 
   return (
-    <section>
+    <section class="credentials-form">
       <p>Credentials type</p>
       <Dropdown
         control={

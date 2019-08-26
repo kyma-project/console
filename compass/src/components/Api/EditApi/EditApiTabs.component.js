@@ -7,7 +7,7 @@ import './style.scss';
 
 import APIGeneralInformationForm from './APIGeneralInformationForm';
 import APISpecForm from './APISpecForm/APISpecForm';
-import CredentialsForm from './../../Api/Forms/CredentialsForm';
+import CredentialsForm from '../Forms/CredentialForms/CredentialsForm';
 
 EditApiTabs.propTypes = {
   editedApi: PropTypes.object.isRequired,

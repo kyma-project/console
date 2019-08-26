@@ -11,7 +11,7 @@ import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
 import APIDataForm from './../../../Api/Forms/ApiDataForm';
 import CredentialsForm, {
   CREDENTIAL_TYPE_PLACEHOLDER,
-} from './../../../Api/Forms/CredentialsForm';
+} from '../../../Api/Forms/CredentialForms/CredentialsForm';
 
 export default class CreateAPIModal extends React.Component {
   state = this.createInitialState();

@@ -1,4 +1,4 @@
-import { CREDENTIAL_TYPE_NONE } from './../../Api/Forms/CredentialsForm';
+import { CREDENTIAL_TYPE_NONE } from '../Forms/CredentialForms/CredentialsForm';
 import { CREDENTIAL_TYPE_OAUTH } from '../../Api/Forms/CredentialForms/OAuthCredentialsForm';
 import _ from 'lodash';
 
