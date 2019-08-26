@@ -19,6 +19,9 @@ const resolvers = {
   Query: {
     ...labelDefinitionQueries.Query,
   },
+  Mutation: {
+    ...labelDefinitionQueries.Mutation,
+  },
 };
 
 const server = new ApolloServer({

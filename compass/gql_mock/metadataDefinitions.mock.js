@@ -30,5 +30,13 @@ module.exports = {
       }
     },
   },
-  Mutation: {},
+  Mutation: {
+    updateLabelDefinition: (obj, args, context, info) => {
+      return {
+        key: 'asd',
+        schema: null,
+        __typename: 'aged',
+      };
+    },
+  },
 };

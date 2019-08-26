@@ -78,7 +78,7 @@ class GenericList extends React.Component {
     );
 
     return (
-      <Panel className="fd-panel--no-background">
+      <Panel className="fd-panel--no-background" test-id="generic-list">
         <TableWithActionsToolbar
           title={this.props.title}
           description={this.props.description}
