@@ -29,7 +29,6 @@ validate:
 	
 test:
 	CI=true npm run test
-	CI=true npm run test-ui
 
 build-image: pull-licenses
 	docker build -t $(IMG_NAME) .
