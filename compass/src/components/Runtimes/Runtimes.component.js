@@ -5,6 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
+import handleDelete from '../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 import ModalWithForm from '../../shared/components/ModalWithForm/ModalWithForm.container';
 import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm.container';
@@ -43,38 +44,17 @@ class Runtimes extends React.Component {
     />,
   ];
 
-  handleDelete = async element => {
-    try {
-      await this.props.deleteRuntime(element.id);
-      this.refreshRuntimes();
-    } catch (e) {
-      LuigiClient.uxManager().showAlert({
-        text: `An error occurred while deleting ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
-  };
-
-  refreshRuntimes = () => {
-    this.props.runtimes.refetch();
-  };
-
   actions = [
     {
       name: 'Delete',
       handler: entry => {
-        LuigiClient.uxManager()
-          .showConfirmationModal({
-            header: 'Remove runtime',
-            body: `Are you sure you want to delete runtime "${entry.name}"?`,
-            buttonConfirm: 'Delete',
-            buttonDismiss: 'Cancel',
-          })
-          .then(() => {
-            this.handleDelete(entry);
-          })
-          .catch(() => {});
+        handleDelete(
+          'Runtime',
+          entry.id,
+          entry.name,
+          this.props.deleteRuntime,
+          this.props.runtimes.refetch,
+        );
       },
     },
   ];

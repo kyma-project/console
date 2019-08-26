@@ -156,6 +156,7 @@ const MetadataDefinitionDetails = ({
                 handleDelete(
                   'Metadata Definition',
                   metadataDefinition.key,
+                  metadataDefinition.key,
                   deleteLabelDefinition,
                   navigateToList,
                 );

@@ -28,6 +28,7 @@ class MetadataDefinitions extends React.Component {
         handleDelete(
           'Metadata Definition',
           entry.key,
+          entry.key,
           this.props.deleteLabelDefinition,
           this.props.labelDefinitions.refetch,
         );

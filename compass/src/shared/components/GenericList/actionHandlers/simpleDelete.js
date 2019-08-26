@@ -18,13 +18,14 @@ function displayConfirmationMessage(entityType, entityName) {
 
 export default function handleDelete(
   entityType,
+  entityId,
   entityName,
   deleteRequestFn,
   callback,
 ) {
   displayConfirmationMessage(entityType, entityName)
     .then(() => {
-      return deleteRequestFn(entityName);
+      return deleteRequestFn(entityId);
     })
     .then(() => {
       callback();
