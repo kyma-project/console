@@ -1,2 +1,4 @@
 /src/assets/luigiConfig.bundle.js
 /src/config/luigi-config/main.js
+*.cypress.*
+*.ui.test.*

@@ -11,7 +11,7 @@ describe('ModalWithForm', () => {
         sendNotification={() => {}}
         button={{ text: '' }}
       >
-        <a></a>
+        <span></span>
       </ModalWithForm>,
     );
     let tree = component.toJSON();
