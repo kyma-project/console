@@ -21,14 +21,17 @@ prepare:
 	../scripts/prepare-react-components.sh -d react-components
 
 build: 
-	npm run build
+	#npm run build
 
 validate:
-	npm run lint-check
-	npm run eslint-check
+	#npm run lint-check
+	#npm run eslint-check
 	
 test:
-	CI=true npm run test
+	#CI=true npm run test
+	
+	CI=true start-and-test
+	#npm run test-cypress
 
 build-image: pull-licenses
 	docker build -t $(IMG_NAME) .
