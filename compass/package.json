@@ -45,7 +45,7 @@
     "test": "react-scripts test",
     "test-ui": "jest -t='UI'",
     "test-cypress": "cypress open",
-    "test-cypress-headless": "CI=true cypress run --browser chrome",
+    "test-cypress-headless": "CI=true cypress run",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
