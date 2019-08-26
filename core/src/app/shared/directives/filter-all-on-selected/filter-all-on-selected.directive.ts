@@ -42,7 +42,10 @@ export class FilterAllOnSelectedDirective implements OnInit, OnDestroy {
 
   public onOutsideDropdownClick = () => {
     if (this.combobox.isOpen) {
-      if (!this.combobox.displayedValues || !this.combobox.displayedValues.length) {
+      if (
+        !this.combobox.displayedValues ||
+        !this.combobox.displayedValues.length
+      ) {
         this.combobox.inputTextValue = '';
       }
       this.combobox.isOpen = false;
