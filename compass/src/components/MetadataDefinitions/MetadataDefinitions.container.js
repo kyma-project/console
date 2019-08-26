@@ -15,7 +15,7 @@ export default compose(
       deleteLabelDefinition: key =>
         mutate({
           variables: {
-            key: key,
+            key,
           },
         }),
     }),
