@@ -55,12 +55,16 @@ export default function ApplicationDetailsApis({
       .catch(() => {});
   }
 
+  function navigateToDetails(entry) {
+    LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
+  }
+
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
     <span
       className="link"
-      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}/edit`)}
+      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
     >
       {api.name}
     </span>,
@@ -69,6 +73,10 @@ export default function ApplicationDetailsApis({
   ];
 
   const actions = [
+    {
+      name: 'Edit',
+      handler: navigateToDetails,
+    },
     {
       name: 'Delete',
       handler: handleDelete,
