@@ -9,7 +9,12 @@ import {
 import { plugins as markdownPlugins } from '@kyma-project/dc-markdown-render-engine';
 
 import { markdownRE, openApiRE, asyncApiRE, odataRE } from './render-engines';
-import { ContentUILayout, CatalogUILayout, InstancesUILayout, CompassUILayout } from './layouts';
+import {
+  ContentUILayout,
+  CatalogUILayout,
+  InstancesUILayout,
+  CompassUILayout,
+} from './layouts';
 import { MarkdownSingleRenderer } from './renderers';
 import {
   disableInternalLinksMutationPlugin,
@@ -89,11 +94,11 @@ export interface GenericComponentProps {
 
 export const GenericComponent: React.FunctionComponent<
   GenericComponentProps
-> = ({ 
+> = ({
   docsTopic,
   sources: srcs = [],
-  layout = LayoutType.CONTENT_UI, 
-  ...others 
+  layout = LayoutType.CONTENT_UI,
+  ...others
 }) => {
   if (!docsTopic) {
     return null;
