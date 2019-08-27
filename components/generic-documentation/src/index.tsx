@@ -9,7 +9,7 @@ import {
 import { plugins as markdownPlugins } from '@kyma-project/dc-markdown-render-engine';
 
 import { markdownRE, openApiRE, asyncApiRE, odataRE } from './render-engines';
-import { ContentUILayout, CatalogUILayout, InstancesUILayout } from './layouts';
+import { ContentUILayout, CatalogUILayout, InstancesUILayout, CompassUILayout } from './layouts';
 import { MarkdownSingleRenderer } from './renderers';
 import {
   disableInternalLinksMutationPlugin,
@@ -61,6 +61,9 @@ function renderContent(type: LayoutType, props?: any): React.ReactNode {
     case LayoutType.INSTANCES_UI: {
       return <InstancesUILayout {...props} renderers={RENDERERS} />;
     }
+    case LayoutType.COMPASS_UI: {
+      return <CompassUILayout renderers={RENDERERS} />;
+    }
     default:
       return null;
   }
@@ -70,10 +73,12 @@ export enum LayoutType {
   CONTENT_UI = 'content-ui',
   CATALOG_UI = 'catalog-ui',
   INSTANCES_UI = 'instances-ui',
+  COMPASS_UI = 'compass-ui',
 }
 
 export interface GenericComponentProps {
-  docsTopic: ClusterDocsTopic | DocsTopic;
+  docsTopic?: ClusterDocsTopic | DocsTopic;
+  sources?: Sources;
   layout?: LayoutType;
   additionalTabs?: Array<{
     label: string;
@@ -84,7 +89,12 @@ export interface GenericComponentProps {
 
 export const GenericComponent: React.FunctionComponent<
   GenericComponentProps
-> = ({ docsTopic, layout = LayoutType.CONTENT_UI, ...others }) => {
+> = ({ 
+  docsTopic,
+  sources: srcs = [],
+  layout = LayoutType.CONTENT_UI, 
+  ...others 
+}) => {
   if (!docsTopic) {
     return null;
   }
@@ -93,12 +103,17 @@ export const GenericComponent: React.FunctionComponent<
     disableClickEventFromSwagger();
   }, []);
 
-  const [sources, setSources] = useState<Sources>([]);
+  const [sources, setSources] = useState<Sources>(srcs);
   useEffect(() => {
     const fetchAssets = async () => {
+      if (!docsTopic) {
+        return;
+      }
+
       loader.setDocsTopic(docsTopic);
       loader.setSortServiceClassDocumentation(layout !== LayoutType.CONTENT_UI);
       await loader.fetchAssets();
+
       setSources(loader.getSources(layout !== LayoutType.CONTENT_UI));
     };
     fetchAssets();
