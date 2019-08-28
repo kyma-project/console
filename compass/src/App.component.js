@@ -12,7 +12,6 @@ import ApplicationDetails from './components/Application/ApplicationDetails/Appl
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
 import ApiDetails from './components/Api/ApiDetails/ApiDetails.container';
-import EventApiDetails from './components/Api/EventApiDetails/EventApiDetails.container';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
