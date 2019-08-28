@@ -80,8 +80,8 @@ class ApplicationDetailsHeader extends React.Component {
               onClick={() => {
                 handleDelete(
                   'Application',
-                  this.props.application.id,
-                  this.props.application.name,
+                  id,
+                  name,
                   this.props.deleteApplication,
                   navigateToApplications,
                 );

@@ -62,8 +62,8 @@ class RuntimeDetailsHeader extends React.Component {
                 onClick={() =>
                   handleDelete(
                     'Runtime',
-                    this.props.runtime.id,
-                    this.props.runtime.name,
+                    id,
+                    name,
                     this.props.deleteRuntime,
                     this.navigateToRuntimesList,
                   )
