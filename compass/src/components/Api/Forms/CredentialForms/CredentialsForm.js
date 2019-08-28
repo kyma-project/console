@@ -42,7 +42,7 @@ export default function CredentialsForm({ updateState, credentials }) {
   );
 
   return (
-    <section class="credentials-form">
+    <section className="credentials-form">
       <p>Credentials type</p>
       <Dropdown
         control={
