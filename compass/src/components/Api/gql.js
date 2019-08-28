@@ -53,12 +53,12 @@ export const DELETE_API = gql`
       name
     }
   }
-`
+`;
 
 export const DELETE_EVENT_API = gql`
   mutation deleteEventApi($id: ID!) {
-    deleteEventApi(id: $id) {
+    deleteEventAPI(id: $id) {
       name
     }
   }
-`
+`;

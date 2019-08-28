@@ -24,14 +24,15 @@ function navigateToApplications() {
 
 class ApiDetailsHeader extends React.Component {
   PropTypes = {
+    apiType: PropTypes.oneOf(['openapi', 'asyncapi']).isRequired,
     api: PropTypes.object.isRequired,
     application: PropTypes.object.isRequired,
-    deleteApi: PropTypes.func.isRequired,
+    deleteMutation: PropTypes.func.isRequired,
   };
 
   delete = async element => {
     try {
-      await this.props.deleteApi(element.id);
+      await this.props.deleteMutation(element.id);
       this.navigateToApplication();
     } catch (e) {
       LuigiClient.uxManager().showAlert({
@@ -45,8 +46,8 @@ class ApiDetailsHeader extends React.Component {
   handleDelete = api => {
     LuigiClient.uxManager()
       .showConfirmationModal({
-        header: 'Remove api',
-        body: `Are you sure you want to delete api "${api.name}"?`,
+        header: `Remove ${this.props.apiType}`,
+        body: `Are you sure you want to delete ${this.props.apiType} "${api.name}"?`,
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
