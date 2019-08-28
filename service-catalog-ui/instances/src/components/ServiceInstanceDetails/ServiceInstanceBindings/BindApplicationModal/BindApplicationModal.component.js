@@ -34,7 +34,7 @@ class BindApplicationModal extends React.Component {
       selectedKind: '',
       selectedResource: '',
       prefixEnvironmentValue: '',
-      bindableResources: null,
+      bindableResources: [],
       bindingCreateParameters: {},
       bindingsStepFilled: false,
       resourcesFilled: false,
