@@ -16,9 +16,10 @@ const ApiDetails = ({
 }) => {
   const query = apiId ? getApisForApplication : getEventApisForApplication;
 
-  const loading = query.loading;
-  const error = query.error;
-  if (!query || !query.application) {
+  const { loading, error } = query;
+  const application = query && query.application;
+
+  if (!application) {
     if (loading) return 'Loading...';
     if (error) {
       return (
@@ -30,7 +31,6 @@ const ApiDetails = ({
   if (error) {
     return `Error! ${error.message}`;
   }
-  const application = (query && query.application) || {};
 
   let api;
   const rawApisForApplication = apiId
@@ -44,17 +44,22 @@ const ApiDetails = ({
   ) {
     const apisForApplication = rawApisForApplication.data;
     const idToLookFor = apiId || eventApiId;
+
     api = apisForApplication.find(a => a.id === idToLookFor);
+
     if (!api) {
       return <ResourceNotFound resource="Api" />;
     }
+  } else {
+    return <ResourceNotFound resource="Api" />;
   }
-  console.log(apiId, api);
+
   return (
     <>
       <ApiDetailsHeader
         application={application}
         api={api}
+        apiType={apiId ? 'OpenAPI' : 'AsyncAPI'}
         deleteMutation={apiId ? deleteApi : deleteEventApi}
       ></ApiDetailsHeader>
       <DocumentationComponent
