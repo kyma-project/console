@@ -70,14 +70,20 @@ class App extends React.Component {
             path="/application/:id/api/:apiid"
             exact
             render={({ match }) => (
-              <ApiDetails applicationId={match.params.id} apiId={match.params.apiid} />
+              <ApiDetails
+                applicationId={match.params.id}
+                apiId={match.params.apiid}
+              />
             )}
           />
           <Route
             path="/application/:id/eventApi/:eventapiid"
             exact
             render={({ match }) => (
-              <EventApiDetails applicationId={match.params.id} eventApiId={match.params.eventapiid} />
+              <ApiDetails
+                applicationId={match.params.id}
+                eventApiId={match.params.eventapiid}
+              />
             )}
           />
           <Route path="/scenarios" exact component={Scenarios} />

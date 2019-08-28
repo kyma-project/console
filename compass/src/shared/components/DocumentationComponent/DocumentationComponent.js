@@ -8,7 +8,7 @@ function DocumentationComponent({ content, type }) {
       sources={[
         {
           source: {
-            source: content,
+            rawContent: content,
             type,
           },
         },

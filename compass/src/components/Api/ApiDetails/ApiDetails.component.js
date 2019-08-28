@@ -1,45 +1,68 @@
 import React from 'react';
 
-import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader'
+import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
 
-function ApiDetails({ applicationQuery, deleteApi, apiId }) {
+const ApiDetails = ({
+  getApisForApplication,
+  getEventApisForApplication,
+  deleteApi,
+  deleteEventApi,
+  apiId,
+  eventApiId,
+  applicationId,
+}) => {
+  const query = apiId ? getApisForApplication : getEventApisForApplication;
 
-  //This is a temporary solution. Rewrite once 'api' query is ready.
-  const application = (applicationQuery && applicationQuery.application) || {};
-  const loading = applicationQuery.loading;
-  const error = applicationQuery.error;
-  if (!applicationQuery || !applicationQuery.application) {
+  const loading = query.loading;
+  const error = query.error;
+  if (!query || !query.application) {
     if (loading) return 'Loading...';
     if (error) {
-    //fix resource not found component
+      //fix resource not found component
       return (
         <ResourceNotFound resource="Application" breadcrumb="Applications" />
       );
     }
-    return '';
+    return `Unable to find application with id ${applicationId}`;
   }
   if (error) {
     return `Error! ${error.message}`;
   }
+  const application = (query && query.application) || {};
+
   let api;
-  if (application && application.apis && application.apis.data && application.apis.data.length) {
-    const apis = application.apis.data;
-    api = apis.find(a => (a.id === apiId));
+  const rawApisForApplication = apiId
+    ? application.apis
+    : application.eventAPIs;
+
+  if (
+    rawApisForApplication &&
+    rawApisForApplication.data &&
+    rawApisForApplication.data.length
+  ) {
+    const apisForApplication = rawApisForApplication.data;
+    const idToLookFor = apiId || eventApiId;
+    api = apisForApplication.find(a => a.id === idToLookFor);
     if (!api) {
-      return (
-        <ResourceNotFound resource="Api"/>
-      );
+      return <ResourceNotFound resource="Api" />;
     }
   }
-
+  console.log(apiId, api);
   return (
     <>
-      <ApiDetailsHeader application={application} api={api} deleteApi={deleteApi}></ApiDetailsHeader>
-      <DocumentationComponent></DocumentationComponent>
+      <ApiDetailsHeader
+        application={application}
+        api={api}
+        deleteApi={deleteApi}
+      ></ApiDetailsHeader>
+      <DocumentationComponent
+        type={apiId ? 'openapi' : 'asyncapi'}
+        content={api.spec.data}
+      ></DocumentationComponent>
     </>
   );
-}
+};
 
 export default ApiDetails;

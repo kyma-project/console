@@ -1,8 +1,12 @@
 import React from 'react';
-import PropTypes, { func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { ActionBar } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Breadcrumb, BreadcrumbItem, Button } from '@kyma-project/react-components';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+} from '@kyma-project/react-components';
 
 import '../../../../shared/styles/header.scss';
 
@@ -19,11 +23,10 @@ function navigateToApplications() {
 }
 
 class ApiDetailsHeader extends React.Component {
-
   PropTypes = {
     api: PropTypes.object.isRequired,
     application: PropTypes.object.isRequired,
-    deleteApi: PropTypes.func.isRequired
+    deleteApi: PropTypes.func.isRequired,
   };
 
   delete = async element => {
