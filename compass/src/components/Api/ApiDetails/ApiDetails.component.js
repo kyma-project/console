@@ -1,5 +1,6 @@
 import React from 'react';
 
+import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
@@ -20,7 +21,6 @@ const ApiDetails = ({
   if (!query || !query.application) {
     if (loading) return 'Loading...';
     if (error) {
-      //fix resource not found component
       return (
         <ResourceNotFound resource="Application" breadcrumb="Applications" />
       );
@@ -55,7 +55,7 @@ const ApiDetails = ({
       <ApiDetailsHeader
         application={application}
         api={api}
-        deleteApi={deleteApi}
+        deleteMutation={apiId ? deleteApi : deleteEventApi}
       ></ApiDetailsHeader>
       <DocumentationComponent
         type={apiId ? 'openapi' : 'asyncapi'}
