@@ -1,18 +1,19 @@
-import React from "react";
+import React from 'react';
 import { GenericComponent } from '@kyma-project/generic-documentation';
 
-function DocumentationComponent() {
-  
+function DocumentationComponent({ content, type }) {
   return (
-    <GenericComponent layout="catalog-ui" docsTopic={{
-      name: "test",
-      assets: [{
-        type: "md",
-        files: [{
-          url: "https://raw.githubusercontent.com/kyma-project/console/master/README.md"
-        }]
-      }]
-    }}/>
+    <GenericComponent
+      layout="compass-ui"
+      sources={[
+        {
+          source: {
+            source: content,
+            type,
+          },
+        },
+      ]}
+    />
   );
 }
 
