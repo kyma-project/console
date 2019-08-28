@@ -56,7 +56,12 @@ export function isStringValueEqualToTrue(value) {
 }
 
 export const backendModuleExists = name => {
-  return builder.getBackendModules().includes(name);
+  const backendModules = builder.getBackendModules();
+  if (!(backendModules && backendModules.length)) {
+    return false;
+  }
+
+  return backendModules.includes(name);
 };
 
 export const processDocFilename = arg => {

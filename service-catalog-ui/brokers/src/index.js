@@ -1,26 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import BrokersViewContent from './components/App/BrokersViewContent.component';
 
 import './index.css';
 
-import builder from './commons/builder';
+function Preload() {
+  return <div />;
+}
 
-import { createApolloClient } from './store';
-import App from './components/App/App.component';
-
-const client = createApolloClient();
-
-(async () => {
-  await builder.init();
-  ReactDOM.render(
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>,
-    document.getElementById('root'),
-  );
-})();
+ReactDOM.render(
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/preload" component={Preload} />
+      <Route component={BrokersViewContent} />
+    </Switch>
+  </BrowserRouter>,
+  document.getElementById('root'),
+);

@@ -12,5 +12,10 @@ export const statusColor = statusType => {
 };
 
 export const backendModuleExists = name => {
-  return builder.getBackendModules().includes(name);
+  const backendModules = builder.getBackendModules();
+  if (!(backendModules && backendModules.length)) {
+    return false;
+  }
+
+  return backendModules.includes(name);
 };

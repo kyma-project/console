@@ -67,6 +67,16 @@
         >
           Save
         </button>
+        <button
+          *ngIf="apiDefinition"
+          fd-button
+          [options]="'light'"
+          [fdType]="'negative'"
+          [disabled]="!isAbleToMakeRequest()"
+          (click)="deleteApi()"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </section>
@@ -342,5 +352,6 @@
   </fd-panel>
 </section>
 
+<app-confirmation-modal #confirmationModal></app-confirmation-modal>
 <app-copy2clipboard-modal #fetchModal></app-copy2clipboard-modal>
 <app-information-modal #infoModal></app-information-modal>

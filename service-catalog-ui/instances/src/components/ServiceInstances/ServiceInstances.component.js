@@ -7,11 +7,10 @@ import {
   Tabs,
   Tooltip,
   ThemeWrapper,
-  Status,
-  StatusWrapper,
   instancesTabUtils,
 } from '@kyma-project/react-components';
-
+import { Counter } from 'fundamental-react';
+import { StatusWrapper, StatusesList } from './styled';
 import { serviceInstanceConstants } from '../../variables';
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
@@ -46,9 +45,11 @@ class ServiceInstances extends React.Component {
 
   status = (data, id) => {
     return (
-      <StatusWrapper key={id}>
-        <Status data-e2e-id={id}>{data}</Status>
-      </StatusWrapper>
+      <StatusesList>
+        <StatusWrapper key={id}>
+          <Counter data-e2e-id={id}>{data}</Counter>
+        </StatusWrapper>
+      </StatusesList>
     );
   };
 
@@ -139,10 +140,7 @@ class ServiceInstances extends React.Component {
         >
           <Tab
             noMargin
-            aditionalStatus={this.status(
-              filteredInstancesCounts.local,
-              'addons-status',
-            )}
+            status={this.status(filteredInstancesCounts.local, 'addons-status')}
             title={
               <Tooltip
                 content={serviceInstanceConstants.addonsTooltipDescription}
@@ -163,7 +161,7 @@ class ServiceInstances extends React.Component {
           </Tab>
           <Tab
             noMargin
-            aditionalStatus={this.status(
+            status={this.status(
               filteredInstancesCounts.notLocal,
               'services-status',
             )}
