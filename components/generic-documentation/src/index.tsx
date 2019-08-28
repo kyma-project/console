@@ -100,7 +100,7 @@ export const GenericComponent: React.FunctionComponent<
   layout = LayoutType.CONTENT_UI,
   ...others
 }) => {
-  if (!docsTopic) {
+  if (!docsTopic && (!srcs || !srcs.length)) {
     return null;
   }
 
