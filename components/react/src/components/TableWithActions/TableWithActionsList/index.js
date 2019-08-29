@@ -5,7 +5,7 @@ import Table from '../../Table';
 
 const prepareRowData = (entries, rowRenderer) =>
   entries.map(entry => ({
-    rowData: rowRenderer(entry, entries),
+    rowData: rowRenderer(entry),
   }));
 
 const TableWithActionsList = ({
