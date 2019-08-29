@@ -34,7 +34,7 @@ class ApiDetailsHeader extends React.Component {
   delete = async element => {
     try {
       await this.props.deleteMutation(element.id);
-      this.navigateToApplication();
+      navigateToApplication();
     } catch (e) {
       LuigiClient.uxManager().showAlert({
         text: `Error occored during deletion ${e.message}`,
