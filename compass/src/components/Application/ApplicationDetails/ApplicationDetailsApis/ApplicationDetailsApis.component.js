@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
@@ -34,12 +35,12 @@ export default function ApplicationDetailsApis({
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
-    <span 
+    <span
       className="link"
-      onClick={() =>
-        LuigiClient.linkManager().navigate(`api/${api.id}`)
-      }
-    >{api.name}</span>,
+      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
+    >
+      {api.name}
+    </span>,
     api.description,
     api.targetURL,
   ];
