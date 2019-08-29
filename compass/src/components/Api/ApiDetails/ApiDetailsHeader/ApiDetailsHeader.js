@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActionBar, Badge } from 'fundamental-react';
+import { ActionBar } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 import {
   Breadcrumb,
@@ -8,7 +8,7 @@ import {
   Button,
   PanelGrid,
 } from '@kyma-project/react-components';
-import { PanelEntry } from '../../../../shared/components/PanelEntry/PanelEntry.component';
+import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
 function navigateToApplication() {

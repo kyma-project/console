@@ -5,7 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { ActionBar, Badge } from 'fundamental-react';
 import { Button, Breadcrumb, PanelGrid } from '@kyma-project/react-components';
 
-import { PanelEntry } from '../../../../shared/components/PanelEntry/PanelEntry.component';
+import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
 function navigateToApplications() {
