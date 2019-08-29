@@ -1,9 +1,9 @@
 import React from 'react';
-
 import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
+import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
 
 const ApiDetails = ({
   getApisForApplication,
@@ -62,10 +62,15 @@ const ApiDetails = ({
         apiType={apiId ? 'OpenAPI' : 'AsyncAPI'}
         deleteMutation={apiId ? deleteApi : deleteEventApi}
       ></ApiDetailsHeader>
-      <DocumentationComponent
-        type={apiId ? 'openapi' : 'asyncapi'}
-        content={api.spec.data}
-      ></DocumentationComponent>
+
+      {apiId ? (
+        <InProgressMessage />
+      ) : (
+        <DocumentationComponent
+          type={apiId ? 'openapi' : 'asyncapi'}
+          content={api.spec.data}
+        ></DocumentationComponent>
+      )}
     </>
   );
 };
