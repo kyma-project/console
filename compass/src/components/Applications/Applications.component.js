@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Token } from 'fundamental-react/lib/Token';
-import { Counter } from 'fundamental-react/lib/Badge';
+import { Token } from 'fundamental-react/Token';
+import { Counter } from 'fundamental-react/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';

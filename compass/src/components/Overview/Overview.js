@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import './Overview.scss';
-import { Panel } from 'fundamental-react/lib/Panel';
+import { Panel } from 'fundamental-react/Panel';
 
 const Overview = () => {
   const compassInitialRotation = 46;
