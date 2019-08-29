@@ -11,6 +11,7 @@ import {
 } from '@kyma-project/react-components';
 
 import '../../../../shared/styles/header.scss';
+import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -29,35 +30,6 @@ function editApplication(applicationId) {
 class ApplicationDetailsHeader extends React.Component {
   PropTypes = {
     application: PropTypes.object.isRequired,
-  };
-
-  delete = async element => {
-    try {
-      await this.props.deleteApplication(element.id);
-      LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(`/applications`);
-    } catch (e) {
-      LuigiClient.uxManager().showAlert({
-        text: `Error occored during deletion ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
-  };
-
-  handleDelete = application => {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: 'Remove application',
-        body: `Are you sure you want to delete application "${application.name}"?`,
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(() => {
-        this.delete(application);
-      })
-      .catch(() => {});
   };
 
   render() {
@@ -105,7 +77,15 @@ class ApplicationDetailsHeader extends React.Component {
               Edit
             </Button>
             <Button
-              onClick={() => this.handleDelete(this.props.application)}
+              onClick={() => {
+                handleDelete(
+                  'Application',
+                  id,
+                  name,
+                  this.props.deleteApplication,
+                  navigateToApplications,
+                );
+              }}
               option="light"
               type="negative"
             >

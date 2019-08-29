@@ -8,6 +8,7 @@ import CreateApplicationModal from './CreateApplicationModal/CreateApplicationMo
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
+import handleDelete from '../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -70,38 +71,17 @@ class Applications extends React.Component {
     />,
   ];
 
-  handleDelete = async element => {
-    try {
-      await this.props.deleteApplication(element.id);
-      this.refreshApplications();
-    } catch (e) {
-      LuigiClient.uxManager().showAlert({
-        text: `Error occored during deletion ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
-  };
-
-  refreshApplications = () => {
-    this.props.applications.refetch();
-  };
-
   actions = [
     {
       name: 'Delete',
       handler: entry => {
-        LuigiClient.uxManager()
-          .showConfirmationModal({
-            header: 'Remove application',
-            body: `Are you sure you want to delete application "${entry.name}"?`,
-            buttonConfirm: 'Delete',
-            buttonDismiss: 'Cancel',
-          })
-          .then(() => {
-            this.handleDelete(entry);
-          })
-          .catch(() => {});
+        handleDelete(
+          'Application',
+          entry.id,
+          entry.name,
+          this.props.deleteApplication,
+          this.props.applications.refetch,
+        );
       },
     },
   ];
