@@ -3,13 +3,9 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { ActionBar, Badge } from 'fundamental-react';
-import {
-  Button,
-  Breadcrumb,
-  Panel,
-  PanelGrid,
-} from '@kyma-project/react-components';
+import { Button, Breadcrumb, PanelGrid } from '@kyma-project/react-components';
 
+import { PanelEntry } from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
 function navigateToApplications() {
@@ -63,19 +59,6 @@ class ApplicationDetailsHeader extends React.Component {
   render() {
     const isReadOnly = false; //todo
     const { id, name, status, description } = this.props.application;
-
-    const PanelEntry = props => {
-      return (
-        <Panel>
-          <Panel.Body>
-            <p className="fd-has-color-text-4 fd-has-margin-bottom-none">
-              {props.title}
-            </p>
-            {props.content}
-          </Panel.Body>
-        </Panel>
-      );
-    };
 
     return (
       <header className="fd-has-background-color-background-2">

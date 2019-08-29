@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActionBar } from 'fundamental-react';
+import { ActionBar, Badge } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
+  PanelGrid,
 } from '@kyma-project/react-components';
-
+import { PanelEntry } from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
 function navigateToApplication() {
@@ -87,6 +88,10 @@ class ApiDetailsHeader extends React.Component {
             </Button>
           </ActionBar.Actions>
         </section>
+        <PanelGrid nogap cols={4}>
+          <PanelEntry title="Description" content={<p>abc</p>} />
+          <PanelEntry title="Status" content={<Badge>aaa</Badge>} />
+        </PanelGrid>
       </header>
     );
   }
