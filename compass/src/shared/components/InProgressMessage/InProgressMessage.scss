@@ -8,7 +8,6 @@
 }
 
 .rotating-icon {
-  // color: var(--fd-color-neutral-4);
   &:before {
     font-size: 24em;
     animation: infiniteRotation 130s linear infinite;
