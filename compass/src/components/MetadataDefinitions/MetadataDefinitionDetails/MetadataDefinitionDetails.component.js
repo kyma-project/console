@@ -15,6 +15,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import '../../../shared/styles/header.scss';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import JSONEditorComponent from '../../Shared/JSONEditor';
+import handleDelete from '../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 const Ajv = require('ajv');
 const ajv = new Ajv();
@@ -23,6 +24,7 @@ const MetadataDefinitionDetails = ({
   metadataDefinition: metadataDefinitionQuery,
   updateLabelDefinition,
   sendNotification,
+  deleteLabelDefinition,
 }) => {
   const defaultSchema = { properties: {}, required: [] };
 
@@ -94,6 +96,12 @@ const MetadataDefinitionDetails = ({
     setIsEditorShown(!isEditorShown);
   };
 
+  const navigateToList = () => {
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/metadata-definitions`);
+  };
+
   const { loading, error } = metadataDefinitionQuery;
 
   if (!metadataDefinitionQuery) {
@@ -142,6 +150,21 @@ const MetadataDefinitionDetails = ({
               option="emphasized"
             >
               Save
+            </Button>
+            <Button
+              onClick={() => {
+                handleDelete(
+                  'Metadata Definition',
+                  metadataDefinition.key,
+                  metadataDefinition.key,
+                  deleteLabelDefinition,
+                  navigateToList,
+                );
+              }}
+              option="light"
+              type="negative"
+            >
+              Delete
             </Button>
           </ActionBar.Actions>
         </section>

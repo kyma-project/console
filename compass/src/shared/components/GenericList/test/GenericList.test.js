@@ -55,4 +55,22 @@ describe('GenericList', () => {
 
     expect(tree).toMatchSnapshot();
   });
+
+  it("Skips rendering actions when 'actions' prop passes skipAction() call", () => {
+    let actions = [
+      { name: 'testaction', handler: () => {}, skipAction: () => true },
+    ];
+
+    let component = renderer.create(
+      <GenericList
+        title=""
+        actions={actions}
+        entries={mockEntries}
+        headerRenderer={mockHeaderRenderer}
+        rowRenderer={mockEntryRenderer}
+      />,
+    );
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });

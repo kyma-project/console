@@ -26,3 +26,12 @@ export const UPDATE_LABEL_DEFINITION = gql`
     }
   }
 `;
+
+export const DELETE_LABEL_DEFINITION = gql`
+  mutation DeleteLabelDefinition($key: String!) {
+    deleteLabelDefinition(key: $key) {
+      key
+      schema
+    }
+  }
+`;

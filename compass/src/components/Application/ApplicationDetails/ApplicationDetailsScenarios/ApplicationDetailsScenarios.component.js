@@ -67,6 +67,9 @@ export default function ApplicationDetailsScenarios({
     {
       name: 'Unassign',
       handler: unassignScenario,
+      skipAction: () => {
+        return scenarios && scenarios.length === 1;
+      },
     },
   ];
 
