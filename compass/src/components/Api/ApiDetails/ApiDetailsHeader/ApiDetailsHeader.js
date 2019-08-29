@@ -89,8 +89,7 @@ class ApiDetailsHeader extends React.Component {
           </ActionBar.Actions>
         </section>
         <PanelGrid nogap cols={4}>
-          <PanelEntry title="Description" content={<p>abc</p>} />
-          <PanelEntry title="Status" content={<Badge>aaa</Badge>} />
+          <PanelEntry title="Type" content={<p>{this.props.apiType}</p>} />
         </PanelGrid>
       </header>
     );
