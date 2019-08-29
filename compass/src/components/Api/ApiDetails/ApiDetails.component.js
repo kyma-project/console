@@ -1,9 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
 import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
+import { CustomPropTypes } from '../../../shared/typechecking/CustomPropTypes';
 
 const ApiDetails = ({
   getApisForApplication,
@@ -73,6 +76,15 @@ const ApiDetails = ({
       )}
     </>
   );
+};
+
+ApiDetails.propTypes = {
+  apiId: (props, propName, componentName) =>
+    CustomPropTypes.oneOfProps(props, componentName, ['apiId', 'eventApiId']),
+
+  eventApiId: (props, propName, componentName) =>
+    CustomPropTypes.oneOfProps(props, componentName, ['apiId', 'eventApiId']),
+  applicationId: PropTypes.string.isRequired,
 };
 
 export default ApiDetails;

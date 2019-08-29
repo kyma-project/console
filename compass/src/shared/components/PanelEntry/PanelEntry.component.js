@@ -13,7 +13,7 @@ const PanelEntry = ({ title, content }) => (
 
 PanelEntry.propTypes = {
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.node.isRequired,
 };
 
 export default PanelEntry;

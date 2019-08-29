@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalWithForm Renders with minimal props 1`] = `
+<header
+  className="fd-has-background-color-background-2"
+>
+  <section
+    className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper"
+  >
+    <section>
+      <ul
+        className="fd-breadcrumb"
+      >
+        <li
+          className="fd-breadcrumb__item"
+          onClick={[Function]}
+        >
+          <a
+            className="fd-breadcrumb__link"
+            href="#"
+          >
+            Applications
+          </a>
+        </li>
+        <li
+          className="fd-breadcrumb__item"
+          onClick={[Function]}
+        >
+          <a
+            className="fd-breadcrumb__link"
+            href="#"
+          >
+            abc
+          </a>
+        </li>
+        <li
+          className="fd-breadcrumb__item"
+        />
+      </ul>
+      <div
+        className="fd-action-bar__header"
+      >
+        <h3
+          className="fd-action-bar__title"
+        >
+          testapi
+        </h3>
+      </div>
+    </section>
+    <div
+      className="fd-action-bar__actions"
+    >
+      <button
+        className="fd-button--light fd-button--negative"
+        onClick={[Function]}
+      >
+        Delete
+      </button>
+    </div>
+  </section>
+  <div
+    className="fd-panel-grid fd-panel-grid--nogap fd-panel-grid--4col"
+  >
+    <div
+      className="fd-panel"
+    >
+      <div
+        className="fd-panel__body"
+      >
+        <p
+          className="fd-has-color-text-4 fd-has-margin-bottom-none"
+        >
+          Type
+        </p>
+        <p>
+          openapi
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+`;
