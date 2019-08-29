@@ -12,7 +12,7 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
               <Breadcrumb.Item
                 name={breadcrumb}
                 url="#"
-                onClick={(e) => navigateToList(breadcrumb)}
+                onClick={e => navigateToList(breadcrumb)}
               />
               <Breadcrumb.Item />
             </Breadcrumb>

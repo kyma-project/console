@@ -60,7 +60,9 @@ const navigation = {
                           children: [
                             {
                               pathSegment: ':apiId',
-                              viewUrl: compassMfUrl + '/application/:applicationId/api/:apiId',
+                              viewUrl:
+                                compassMfUrl +
+                                '/application/:applicationId/api/:apiId',
                             },
                           ],
                         },
@@ -69,7 +71,9 @@ const navigation = {
                           children: [
                             {
                               pathSegment: ':eventApiId',
-                              viewUrl: compassMfUrl + '/application/:applicationId/eventApi/:eventApiId',
+                              viewUrl:
+                                compassMfUrl +
+                                '/application/:applicationId/eventApi/:eventApiId',
                             },
                           ],
                         },
