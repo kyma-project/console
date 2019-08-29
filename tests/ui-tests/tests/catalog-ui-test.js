@@ -241,6 +241,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       let frame4, catalogHeader;
       await retry(async () => {
         try {
+          await page.waitFor(1000);
           await page.reload({
             waitUntil: ['domcontentloaded', 'networkidle0'],
           });
