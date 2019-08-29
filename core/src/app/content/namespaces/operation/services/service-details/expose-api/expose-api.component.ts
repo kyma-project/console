@@ -155,7 +155,9 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
           err => {
             this.infoModal.show(
               'Error',
-              `There was an error trying to update ${this.apiName} API: ${err.message}`
+              `There was an error trying to update ${this.apiName} API: ${
+                err.message
+              }`
             );
           }
         );

@@ -1,22 +1,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ApolloProvider } from 'react-apollo-hooks';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
-import AddonsViewContent from './core/AddonsViewContent';
-
+import App from './core/App';
 import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 
-function Preload() {
-  return <div />;
-}
+import nestServices from './services/nest';
+import {
+  NotificationsProvider,
+  QueriesProvider,
+  MutationsProvider,
+  SubscriptionsProvider,
+  FiltersProvider,
+  ConfigurationsProvider,
+  LabelsProvider,
+  UrlsProvider,
+} from './services';
 
-ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route exact={true} path="/preload" component={Preload} />
-      <Route component={AddonsViewContent} />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById('root'),
+import appInitializer from './core/app-initializer';
+import { createApolloClient } from './core/apollo-client';
+
+const Services = nestServices(
+  NotificationsProvider,
+  QueriesProvider,
+  MutationsProvider,
+  FiltersProvider,
+  ConfigurationsProvider,
+  LabelsProvider,
+  UrlsProvider,
+  SubscriptionsProvider,
 );
+
+(async () => {
+  await appInitializer.init();
+  const client = createApolloClient();
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <Services>
+        <App />
+      </Services>
+    </ApolloProvider>,
+    document.getElementById('root'),
+  );
+})();

@@ -41,7 +41,7 @@
     "mkdirp": "^0.5.1",
     "prettier": "^1.16.4",
     "react-app-rewired": "^2.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.0.1",
     "safe-buffer": "5.1.2",
     "source-map-explorer": "^1.6.0"
   },
