@@ -79,6 +79,9 @@ class ApiDetailsHeader extends React.Component {
             <ActionBar.Header title={this.props.api.name} />
           </section>
           <ActionBar.Actions>
+            <Button onClick={() => LuigiClient.linkManager().navigate('edit')}>
+              Edit
+            </Button>
             <Button
               onClick={() => this.handleDelete(this.props.api)}
               option="light"
