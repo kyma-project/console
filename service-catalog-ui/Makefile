@@ -2,9 +2,9 @@ IMG_NAME = service-catalog-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: resolve validate test prepare build-image push-image
-ci-master: resolve validate test prepare build-image push-image
-ci-release: resolve validate test prepare build-image push-image
+ci-pr: root-pr resolve validate test prepare build-image push-image
+ci-master: root-master resolve validate test prepare build-image push-image
+ci-release: root-master resolve validate test prepare build-image push-image
 
 root-pr:
 	make -C "../" ci-pr
