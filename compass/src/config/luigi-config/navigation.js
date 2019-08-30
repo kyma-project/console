@@ -80,7 +80,7 @@ const navigation = {
                                   label: 'Edit Api',
                                   viewUrl:
                                     compassMfUrl +
-                                    '/application/:applicationId/api/:apiId/edit',
+                                    '/application/:applicationId/eventApi/:eventApiId/edit',
                                 },
                               ],
                             },
