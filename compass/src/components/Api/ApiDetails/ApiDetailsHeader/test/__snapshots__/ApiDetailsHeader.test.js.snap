@@ -51,6 +51,12 @@ exports[`ModalWithForm Renders with minimal props 1`] = `
       className="fd-action-bar__actions"
     >
       <button
+        className="fd-button"
+        onClick={[Function]}
+      >
+        Edit
+      </button>
+      <button
         className="fd-button--light fd-button--negative"
         onClick={[Function]}
       >

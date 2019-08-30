@@ -8,6 +8,25 @@ import DocumentationComponent from '../../../shared/components/DocumentationComp
 import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
 import { CustomPropTypes } from '../../../shared/typechecking/CustomPropTypes';
 
+export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
+  const rawApisForApplication = apiId
+    ? applicationQuery.apis
+    : applicationQuery.eventAPIs;
+
+  if (
+    rawApisForApplication &&
+    rawApisForApplication.data &&
+    rawApisForApplication.data.length
+  ) {
+    const apisForApplication = rawApisForApplication.data;
+    const idToLookFor = apiId || eventApiId;
+
+    return apisForApplication.find(a => a.id === idToLookFor);
+  } else {
+    return null;
+  }
+};
+
 const ApiDetails = ({
   getApisForApplication,
   getEventApisForApplication,
@@ -19,8 +38,7 @@ const ApiDetails = ({
 }) => {
   const query = apiId ? getApisForApplication : getEventApisForApplication;
 
-  const { loading, error } = query;
-  const application = query && query.application;
+  const { loading, error, application } = query;
 
   if (!application) {
     if (loading) return 'Loading...';
@@ -35,25 +53,9 @@ const ApiDetails = ({
     return `Error! ${error.message}`;
   }
 
-  let api;
-  const rawApisForApplication = apiId
-    ? application.apis
-    : application.eventAPIs;
+  const api = getApiDataFromQuery(application, apiId, eventApiId);
 
-  if (
-    rawApisForApplication &&
-    rawApisForApplication.data &&
-    rawApisForApplication.data.length
-  ) {
-    const apisForApplication = rawApisForApplication.data;
-    const idToLookFor = apiId || eventApiId;
-
-    api = apisForApplication.find(a => a.id === idToLookFor);
-
-    if (!api) {
-      return <ResourceNotFound resource="Api" />;
-    }
-  } else {
+  if (!api) {
     return <ResourceNotFound resource="Api" />;
   }
 
