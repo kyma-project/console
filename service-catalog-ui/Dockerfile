@@ -14,6 +14,10 @@ RUN mkdir -p brokers && mkdir -p catalog && mkdir -p instances
 # Install app dependencies
 COPY ./temp /app
 RUN npm install --only=prod
+RUN app/components/react && npm install
+RUN app/components/react && npm run build
+RUN app/components/generic-documentation && npm install
+RUN app/components/generic-documentation && npm run build
 
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
@@ -32,11 +36,6 @@ COPY catalog/public /app/service-catalog/catalog/public
 
 COPY instances/src /app/service-catalog/instances/src
 COPY instances/public /app/service-catalog/instances/public
-
-# Copy local changes from react-components package
-COPY react-components/index.js /app/service-catalog/brokers/node_modules/@kyma-project/react-components/lib/index.js
-COPY react-components/index.js /app/service-catalog/catalog/node_modules/@kyma-project/react-components/lib/index.js
-COPY react-components/index.js /app/service-catalog/instances/node_modules/@kyma-project/react-components/lib/index.js
 
 # Set env variables 
 ENV PRODUCTION true
