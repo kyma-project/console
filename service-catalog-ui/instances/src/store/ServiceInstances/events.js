@@ -64,6 +64,7 @@ export const handleServiceBindingUsageEvent = (
 
   if (idx === -1) {
     // Try to search in another way
+    /* eslint-disable no-unused-vars */
     idx = currentItems.findIndex(instance => {
       for (const instanceBindingUsage of instance.serviceBindingUsages) {
         if (instanceBindingUsage.name === bindingUsage.name) {
@@ -77,6 +78,7 @@ export const handleServiceBindingUsageEvent = (
     if (idx === -1) {
       return instancesObj;
     }
+    /* eslint-enable no-unused-vars */
   }
 
   const currentInstanceServiceBindingUsages =

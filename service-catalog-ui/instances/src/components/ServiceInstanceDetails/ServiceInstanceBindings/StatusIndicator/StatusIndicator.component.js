@@ -17,12 +17,14 @@ const StatusIndicator = ({ data, testId }) => {
     .map(item => item.status.type)
     .filter((type, index, array) => array.indexOf(type) === index);
 
+  /* eslint-disable no-unused-vars */
   let statusesLength = 0;
   for (let type of statusTypes) {
     const length = data.filter(item => item.status.type === type).length;
     statusesStats[type] = length;
     statusesLength += length;
   }
+  /* eslint-enable no-unused-vars*/
 
   return (
     <Fragment>
