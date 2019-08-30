@@ -73,12 +73,9 @@ export const MODAL = {
   DELETE_MODAL_TITLE: 'Delete',
 };
 
-const HELP_URL_FIELDS_LIST =
-  "'" + HELM_BROKER_REPO_URL_PREFIXES.join("', '") + "'";
+const HELP_URL_FIELDS_LIST = `'${HELM_BROKER_REPO_URL_PREFIXES.join(`', '`)}'`;
 export const HELP = {
-  URL_FIELD:
-    'The URL must be unique for a given configuration and start with one of the following prefixes: ' +
-    HELP_URL_FIELDS_LIST,
+  URL_FIELD: `The URL must be unique for a given configuration and start with one of the following prefixes: ${HELP_URL_FIELDS_LIST}`,
   NAME_FIELD:
     'The name must be unique, start and end with a lowercase letter, and contain only lowercase letters, numbers, dashes, periods, and underscores.',
   LABELS_FIELD:
@@ -105,9 +102,7 @@ export const ERRORS = {
   },
   URL: {
     ALREADY_EXISTS: 'This URL already exists in the configuration.',
-    WRONG_PREFIX:
-      'URL must start with one of the following prefixes: ' +
-      HELP_URL_FIELDS_LIST,
+    WRONG_PREFIX: `URL must start with one of the following prefixes: ${HELP_URL_FIELDS_LIST}`,
     YAML_EXTENSION: 'URL must have .yaml or .yml extension.',
     RESOURCE_NOT_EXISTS: "URL doesn't exist.",
   },
