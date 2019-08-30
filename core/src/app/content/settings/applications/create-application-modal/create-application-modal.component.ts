@@ -60,7 +60,6 @@ export class CreateApplicationModalComponent {
   public isReadyToCreate(): boolean {
     return Boolean(
       this.name &&
-        this.description &&
         !this.wrongApplicationName &&
         !this.wrongLabels
     );
