@@ -11,8 +11,7 @@ import builder from '../commons/builder';
 import resolvers from './resolvers';
 import defaults from './defaults';
 
-const COMPASS_GRAPHQL_ENDPOINT =
-  process.env.REACT_APP_MOCK_GQL_URL || window.clusterConfig.graphqlApiUrl;
+const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
 
 export function createApolloClient() {
   const httpLink = createHttpLink({
