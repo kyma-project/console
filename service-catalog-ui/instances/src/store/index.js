@@ -68,8 +68,11 @@ export function createApolloClient() {
 
   const link = split(
     ({ query }) => {
-      const { kind, operation } = getMainDefinition(query);
-      return kind === 'OperationDefinition' && operation === 'subscription';
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
     },
     wsLink,
     enhancedAuthHttpLink,
