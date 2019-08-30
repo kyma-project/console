@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { ActionBar } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 import {
@@ -8,6 +9,8 @@ import {
   Button,
   PanelGrid,
 } from '@kyma-project/react-components';
+
+import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
@@ -29,33 +32,6 @@ class ApiDetailsHeader extends React.Component {
     api: PropTypes.object.isRequired,
     application: PropTypes.object.isRequired,
     deleteMutation: PropTypes.func.isRequired,
-  };
-
-  delete = async element => {
-    try {
-      await this.props.deleteMutation(element.id);
-      navigateToApplication();
-    } catch (e) {
-      LuigiClient.uxManager().showAlert({
-        text: `Error occored during deletion ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
-  };
-
-  handleDelete = api => {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: `Remove ${this.props.apiType}`,
-        body: `Are you sure you want to delete ${this.props.apiType} "${api.name}"?`,
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(() => {
-        this.delete(api);
-      })
-      .catch(() => {});
   };
 
   render() {
@@ -83,7 +59,17 @@ class ApiDetailsHeader extends React.Component {
               Edit
             </Button>
             <Button
-              onClick={() => this.handleDelete(this.props.api)}
+              onClick={() =>
+                handleDelete(
+                  this.props.apiType,
+                  this.props.api.id,
+                  this.props.api.name,
+                  this.props.deleteMutation,
+                  () => {
+                    navigateToApplication();
+                  },
+                )
+              }
               option="light"
               type="negative"
             >
