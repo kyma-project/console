@@ -2,9 +2,15 @@ IMG_NAME = service-catalog-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: resolve prepare validate test build-image push-image
-ci-master: resolve prepare validate test build-image push-image
-ci-release: resolve prepare validate test build-image push-image
+ci-pr: resolve validate test prepare build-image push-image
+ci-master: resolve validate test prepare build-image push-image
+ci-release: resolve validate test prepare build-image push-image
+
+root-pr:
+	make -C "../" ci-pr
+
+root-master:
+	make -C "../" ci-master
 
 resolve:
 	npm install --unsafe-perm
@@ -17,7 +23,7 @@ else
 endif
 
 prepare:
-	../scripts/prepare-react-components.sh -d react-components
+	../scripts/pre-build-docker-image.sh
 
 build:
 	npm run-script build

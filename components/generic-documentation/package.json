@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@kyma-project/documentation-component": "0.0.1-alpha.1",
-    "@kyma-project/odata-react": "https://github.com/kyma-incubator/documentation-component/raw/master/packages/odata-react/kyma-project-odata-react-0.1.2.tgz",
+    "@kyma-project/odata-react": "0.2.0-alpha.2",
     "@kyma-project/dc-markdown-render-engine": "0.0.1-alpha.1",
     "@kyma-project/dc-open-api-render-engine": "0.0.1-alpha.1",
     "@kyma-project/dc-async-api-render-engine": "0.0.1-alpha.1",

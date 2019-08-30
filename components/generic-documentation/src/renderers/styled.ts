@@ -374,12 +374,12 @@ export const StyledAsyncApi = styled.div`
 
 export const StyledOData = styled.div`
   &&&&& {
-    section[class^='styled__AppWrapper'] {
+    > section {
       display: flex;
       flex-direction: column;
     }
 
-    button[class*='styled__CollapseButton'] {
+    > section > button {
       font-size: 14px;
       font-weight: normal;
       font-style: normal;
@@ -392,13 +392,14 @@ export const StyledOData = styled.div`
       background-color: white;
       color: #0a6ed1;
       transition: background-color 0.2s ease-in-out;
+
       :hover {
         background-color: #0a6ed1;
         color: white;
       }
     }
 
-    section[class^='styled__TableWrapper'] {
+    > section > section {
       margin-bottom: 16px;
       border-radius: 4px;
       border: solid 1px #97979742;
@@ -423,14 +424,14 @@ export const StyledOData = styled.div`
       color: #32363a;
     }
 
-    tr[class^='styled__TableRow'] {
+    tr {
       border-radius: 4px;
 
-      & > td[class^='styled__TableCell'] {
+      & > td {
         border-radius: 4px;
       }
 
-      th[class^='styled__TableHeadCell'] {
+      th {
         background-color: #f3f4f573;
       }
     }
@@ -439,18 +440,18 @@ export const StyledOData = styled.div`
       padding: 16px 20px;
       border-radius: 4px;
 
-      & > table[class^='styled__StyledTable'] {
+      & > table {
         table-layout: fixed;
         border-collapse: collapse;
         border-radius: 4px;
 
-        > thead[class^='styled__TableHead'] {
+        > thead {
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
           border: solid 1px #97979742;
         }
 
-        > tbody[class^='styled__TableBody'] {
+        > tbody {
           border-bottom-left-radius: 4px;
           border-bottom-right-radius: 4px;
           border: solid 1px #97979742;
