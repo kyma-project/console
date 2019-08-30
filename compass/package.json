@@ -33,19 +33,11 @@
   },
   "scripts": {
     "start": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server\" ",
-    "start-quiet": "concurrently \"PORT=8888 react-scripts start\" \"npm run buildConfig:watch\" \"wait-on http://localhost:8888/ && npm run start-live-server --no-browser\" ",
-    "start-test-env": "concurrently \"npm run start-gql-mock\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start-quiet\"",
-    "start-test-env-watch": "concurrently \"npm run start-gql-mock-watch\" \"REACT_APP_MOCK_GQL_URL=http://localhost:1234 npm run start\"",
     "start-live-server": "live-server --quiet --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
-    "start-gql-mock": "node gql_mock/index.js",
-    "start-gql-mock-watch": "nodemon --watch gql_mock gql_mock/index.js",
-    "start-and-test": "concurrently \"npm run start-test-env\" \"wait-on http://localhost:8080 && wait-on http://localhost:8888 && npm run test-cypress-headless\"",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
     "test": "react-scripts test",
     "test-ui": "jest -t='UI'",
-    "test-cypress": "cypress open",
-    "test-cypress-headless": "CI=true cypress run",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
@@ -69,13 +61,10 @@
     ]
   },
   "devDependencies": {
-    "apollo-server": "^2.8.2",
     "concurrently": "^4.1.1",
     "core-js": "^3.1.4",
-    "cypress": "^3.4.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "graphql-import": "^0.7.1",
     "jsdom-worker-fix": "^0.1.8",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0",
@@ -86,7 +75,5 @@
   "config": {
     "unsafe-perm": true
   },
-  "optionalDependencies": {
-    "nodemon": "^1.19.1"
-  }
+  "optionalDependencies": {}
 }
