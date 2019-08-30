@@ -1,0 +1,17 @@
+.api-spec-form__editor {
+    border: 1px solid var(--fd-color-neutral-4);
+}
+
+.api-spec-form__editor--invalid {
+    border: 1px solid var(--fd-color-status-3);
+}
+
+.api-spec-form__error-wrapper {
+    min-height: 1.8em;
+
+    & * {
+        color: var(--fd-color-status-3);
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+}

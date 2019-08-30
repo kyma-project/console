@@ -5,20 +5,22 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { Modal, Button } from '@kyma-project/react-components';
 import './style.scss';
 
-import { createAPI, createEventAPI } from './APICreationHelper';
+import { createAPI, createEventAPI } from './../../../Api/APICreationHelper';
 import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
 
-import APIDataForm from './Forms/ApiDataForm';
+import APIDataForm from './../../../Api/Forms/ApiDataForm';
 import CredentialsForm, {
-  CREDENTIAL_TYPE_NONE,
   CREDENTIAL_TYPE_PLACEHOLDER,
-} from './Forms/CredentialsForm';
+} from '../../../Api/Forms/CredentialForms/CredentialsForm';
 
 export default class CreateAPIModal extends React.Component {
   state = this.createInitialState();
+  formRef = React.createRef();
 
   createInitialState() {
     return {
+      isReadyToUpload: false,
+
       apiData: {
         name: '',
         description: '',
@@ -32,9 +34,8 @@ export default class CreateAPIModal extends React.Component {
         apiSubType: null /* ASYNC_API, OPEN_API, ODATA */,
       },
 
-      credentialsForm: {
+      credentials: {
         type: CREDENTIAL_TYPE_PLACEHOLDER,
-        isFormReady: false,
         oAuth: {
           clientId: '',
           clientSecret: '',
@@ -48,7 +49,7 @@ export default class CreateAPIModal extends React.Component {
     const { mainAPIType } = this.state.apiData;
 
     if (mainAPIType === 'API') {
-      const { type } = this.state.credentialsForm;
+      const { type } = this.state.credentials;
       return type === CREDENTIAL_TYPE_PLACEHOLDER;
     }
     return false;
@@ -57,7 +58,11 @@ export default class CreateAPIModal extends React.Component {
   updateState = key => values => {
     const state = { ...this.state };
     state[key] = { ...state[key], ...values };
-    this.setState({ ...state });
+    this.setState({ ...state }, () => {
+      this.setState({
+        isReadyToUpload: this.checkInputValidity(),
+      });
+    });
   };
 
   showCreateSuccessNotification(apiName, isAsyncAPI) {
@@ -76,26 +81,18 @@ export default class CreateAPIModal extends React.Component {
     });
   }
 
-  isReadyToUpload = () => {
-    const { spec, name, mainAPIType, targetURL } = this.state.apiData;
+  checkInputValidity = () => {
+    const form = this.formRef;
+    const { spec, mainAPIType } = this.state.apiData;
+    const type = this.state.credentials.type;
 
-    if (!spec || !name.trim()) {
+    if (mainAPIType === 'API' && type === CREDENTIAL_TYPE_PLACEHOLDER) {
       return false;
     }
-
-    if (mainAPIType === 'API') {
-      if (!targetURL.trim()) {
-        return false;
-      }
-
-      const { type, isFormReady } = this.state.credentialsForm;
-      if (type === CREDENTIAL_TYPE_PLACEHOLDER) {
-        return false;
-      }
-      return type === CREDENTIAL_TYPE_NONE || isFormReady;
+    if (!spec) {
+      return false;
     }
-
-    return true;
+    return form.current && form.current.checkValidity(); //check compat
   };
 
   addSpecification = async () => {
@@ -118,9 +115,14 @@ export default class CreateAPIModal extends React.Component {
     }
   };
 
+  // prevent submit when user clicks on dropdown (or any other button inside form)
+  overrideSubmit = e => {
+    e.preventDefault();
+  };
+
   render() {
     const mainAPIType = this.state.apiData.mainAPIType;
-    const credentialsType = this.state.credentialsForm.type;
+    const credentials = this.state.credentials;
 
     const modalOpeningComponent = <Button option="light">Add API</Button>;
     const isAPI = mainAPIType === 'API';
@@ -133,29 +135,31 @@ export default class CreateAPIModal extends React.Component {
     }
 
     const content = (
-      <TabGroup>
-        <Tab key="api-data" id="api-data" title="API data">
-          <APIDataForm
-            mainAPIType={mainAPIType}
-            updateState={this.updateState('apiData')}
-          />
-        </Tab>
-        <Tab
-          key="credentials"
-          id="credentials"
-          title="Credentials"
-          disabled={!isAPI}
-        >
-          <CredentialsForm
-            updateState={this.updateState('credentialsForm')}
-            credentialsType={credentialsType}
-          />
-        </Tab>
-        {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
-        {this.shouldShowCredentialsPrompt() && (
-          <p className="credentials-tab__prompt-dot"></p>
-        )}
-      </TabGroup>
+      <form onSubmit={this.overrideSubmit} ref={this.formRef}>
+        <TabGroup>
+          <Tab key="api-data" id="api-data" title="API data">
+            <APIDataForm
+              mainAPIType={mainAPIType}
+              updateState={this.updateState('apiData')}
+            />
+          </Tab>
+          <Tab
+            key="credentials"
+            id="credentials"
+            title="Credentials"
+            disabled={!isAPI}
+          >
+            <CredentialsForm
+              updateState={this.updateState('credentials')}
+              credentials={credentials}
+            />
+          </Tab>
+          {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
+          {this.shouldShowCredentialsPrompt() && (
+            <p className="credentials-tab__prompt-dot"></p>
+          )}
+        </TabGroup>
+      </form>
     );
 
     return (
@@ -167,7 +171,7 @@ export default class CreateAPIModal extends React.Component {
         type={'emphasized'}
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addSpecification}
-        disabledConfirm={!this.isReadyToUpload()}
+        disabledConfirm={!this.state.isReadyToUpload}
         onShow={() => {
           this.setState(this.createInitialState());
           LuigiClient.uxManager().addBackdrop();

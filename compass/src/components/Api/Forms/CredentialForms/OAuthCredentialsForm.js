@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextFormItem from './../TextFormItem';
+import TextFormItem from './../../../Shared/TextFormItem';
 
 export const CREDENTIAL_TYPE_OAUTH = 'OAuth';
 
 OAuthCredentialsForm.propTypes = {
   updateState: PropTypes.func.isRequired,
+  oAuthData: PropTypes.object,
 };
 
-export default function OAuthCredentialsForm({ updateState }) {
-  const [oAuthCredentials, setOAuthCredentials] = React.useState({
+OAuthCredentialsForm.defaultProps = {
+  defaultApiData: {
     clientId: '',
     clientSecret: '',
     url: '',
-  });
+  },
+};
 
-  function areAllFieldsFilled(credentials) {
-    // in OAuth, all fields are required
-    return Object.values(credentials).every(val => val);
-  }
+export default function OAuthCredentialsForm({ updateState, oAuthData }) {
+  const [oAuthCredentials, setOAuthCredentials] = React.useState(oAuthData);
 
   function updateOAuth(key, value) {
     const updatedCredentials = {
@@ -27,20 +27,18 @@ export default function OAuthCredentialsForm({ updateState }) {
     };
     setOAuthCredentials(updatedCredentials);
 
-    updateState({
-      oAuth: updatedCredentials,
-      isFormReady: areAllFieldsFilled(updatedCredentials),
-    });
+    updateState({ oAuth: updatedCredentials });
   }
 
   return (
-    <form className="fd-has-margin-top-medium">
+    <section className="fd-has-margin-top-medium">
       <TextFormItem
         inputKey="client-id"
         required
         type="password"
         label="Client ID"
         onChange={e => updateOAuth('clientId', e.target.value)}
+        defaultValue={oAuthData.clientId}
       />
       <TextFormItem
         inputKey="client-secret"
@@ -48,6 +46,7 @@ export default function OAuthCredentialsForm({ updateState }) {
         type="password"
         label="Client Secret"
         onChange={e => updateOAuth('clientSecret', e.target.value)}
+        defaultValue={oAuthData.clientSecret}
       />
       <TextFormItem
         inputKey="url"
@@ -55,7 +54,8 @@ export default function OAuthCredentialsForm({ updateState }) {
         type="url"
         label="Url"
         onChange={e => updateOAuth('url', e.target.value)}
+        defaultValue={oAuthData.url}
       />
-    </form>
+    </section>
   );
 }

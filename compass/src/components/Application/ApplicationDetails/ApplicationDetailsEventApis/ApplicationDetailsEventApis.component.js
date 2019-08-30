@@ -31,6 +31,10 @@ export default function ApplicationDetailsEventApis({
     });
   }
 
+  function navigateToDetails(entry) {
+    LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
+  }
+
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
@@ -45,6 +49,10 @@ export default function ApplicationDetailsEventApis({
   ];
 
   const actions = [
+    {
+      name: 'Edit',
+      handler: navigateToDetails,
+    },
     {
       name: 'Delete',
       handler: entry =>
