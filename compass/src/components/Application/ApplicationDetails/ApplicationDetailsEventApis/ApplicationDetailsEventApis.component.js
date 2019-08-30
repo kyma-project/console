@@ -32,7 +32,7 @@ export default function ApplicationDetailsEventApis({
   }
 
   function navigateToDetails(entry) {
-    LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
+    LuigiClient.linkManager().navigate(`eventApi/${entry.id}/edit`);
   }
 
   const headerRenderer = () => ['Name', 'Description'];

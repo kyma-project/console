@@ -67,12 +67,12 @@ class App extends React.Component {
             )}
           />
           <Route
-            path="/application/:id/api/:apiid"
+            path="/application/:applicationId/api/:apiId"
             exact
             render={({ match }) => (
               <ApiDetails
-                applicationId={match.params.id}
-                apiId={match.params.apiid}
+                applicationId={match.params.applicationId}
+                apiId={match.params.apiId}
               />
             )}
           />
@@ -87,21 +87,21 @@ class App extends React.Component {
             )}
           />
           <Route
-            path="/application/:id/eventApi/:eventApiId"
+            path="/application/:applicationId/eventApi/:eventApiId"
             exact
             render={({ match }) => (
               <ApiDetails
-                applicationId={match.params.id}
-                eventApiId={match.params.eventapiid}
+                applicationId={match.params.applicationId}
+                eventApiId={match.params.eventApiId}
               />
             )}
           />
           <Route
-            path="/application/:id/eventApi/:eventApiId/edit"
+            path="/application/:applicationId/eventApi/:eventApiId/edit"
             exact
             render={({ match }) => (
               <EditApi
-                apiId={match.params.apiId}
+                apiId={match.params.eventApiId}
                 applicationId={match.params.applicationId}
               />
             )}
