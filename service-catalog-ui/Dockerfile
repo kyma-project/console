@@ -14,10 +14,10 @@ RUN mkdir -p brokers && mkdir -p catalog && mkdir -p instances
 # Install app dependencies
 COPY ./temp /app
 RUN npm install --only=prod
-RUN app/components/react && npm install
-RUN app/components/react && npm run build
-RUN app/components/generic-documentation && npm install
-RUN app/components/generic-documentation && npm run build
+RUN cd /app/components/react && npm install
+RUN cd /app/components/react && npm run build
+RUN cd /app/components/generic-documentation && npm install
+RUN cd /app/components/generic-documentation && npm run build
 
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
