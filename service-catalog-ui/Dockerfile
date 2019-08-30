@@ -9,8 +9,6 @@ WORKDIR /app
 
 COPY licenses/ /app/licenses/
 
-RUN mkdir -p brokers && mkdir -p catalog && mkdir -p instances
-
 # Install app dependencies
 COPY ./temp /app
 RUN npm install --only=prod
