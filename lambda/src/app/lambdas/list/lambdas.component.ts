@@ -82,7 +82,9 @@ export class LambdasComponent extends GenericTableComponent
           .then(() => {
             this.http
               .delete(
-                `${AppConfig.kubelessApiUrl}/namespaces/${this.environment}/functions/${entry.metadata.name}`,
+                `${AppConfig.kubelessApiUrl}/namespaces/${
+                  this.environment
+                }/functions/${entry.metadata.name}`,
                 {
                   headers: new HttpHeaders().set(
                     'Authorization',
@@ -223,12 +225,8 @@ export class LambdasComponent extends GenericTableComponent
   }
 
   listeningForChangingTitle() {
-    this.initListenerId = luigiClient.addInitListener(() =>
-      this.loadData(this),
-    );
-    this.contextUpdateListenerId = luigiClient.addContextUpdateListener(() =>
-      this.loadData(this),
-    );
+    this.initListenerId = luigiClient.addInitListener(() => this.loadData(this));
+    this.contextUpdateListenerId = luigiClient.addContextUpdateListener(() => this.loadData(this));
   }
 
   loadData(that: LambdasComponent) {

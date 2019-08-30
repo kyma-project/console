@@ -24,7 +24,10 @@ import LuigiClient from '@kyma-project/luigi-client';
 class BindApplicationModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.getInitialState();
+    this.state = {
+      bindableResources: [],
+      ...this.getInitialState(),
+    };
   }
 
   getInitialState = () => {
@@ -34,7 +37,6 @@ class BindApplicationModal extends React.Component {
       selectedKind: '',
       selectedResource: '',
       prefixEnvironmentValue: '',
-      bindableResources: null,
       bindingCreateParameters: {},
       bindingsStepFilled: false,
       resourcesFilled: false,
@@ -52,9 +54,6 @@ class BindApplicationModal extends React.Component {
       });
     } catch (e) {
       console.warn(e);
-      this.setState({
-        bindableResources: [],
-      });
     }
   }
 
@@ -302,7 +301,7 @@ class BindApplicationModal extends React.Component {
 
     const createDisabledBindApplicationButton = content => (
       <Tooltip type="error" content={content} minWidth="161px">
-        <Button compact option="light" disabled={true}>
+        <Button compact data-e2e-id={id} option="light" disabled={true}>
           + Bind Application
         </Button>
       </Tooltip>

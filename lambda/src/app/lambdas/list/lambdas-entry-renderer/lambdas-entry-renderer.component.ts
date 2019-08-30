@@ -5,16 +5,14 @@ import { AbstractTableEntryRendererComponent } from 'app/generic-list';
 import { AppConfig } from '../../../app.config';
 import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
 import { EMPTY_TEXT } from '../../../shared/constants/constants';
-import { LuigiClientService } from '../../../shared/services/luigi-client.service';
+import { LuigiClientService } from '../../../shared/services/luigi-client.service'
 
 @Component({
   selector: 'app-lambdas-entry-renderer',
   templateUrl: './lambdas-entry-renderer.component.html',
   styleUrls: ['./lambdas-entry-renderer.component.scss'],
 })
-export class LambdasEntryRendererComponent
-  extends AbstractTableEntryRendererComponent
-  implements OnInit {
+export class LambdasEntryRendererComponent extends AbstractTableEntryRendererComponent implements OnInit {
   public statusText: string;
   public status: boolean;
   public functionMetrics: string;
@@ -25,13 +23,13 @@ export class LambdasEntryRendererComponent
     {
       function: 'delete',
       name: 'Delete',
-    },
+    }
   ];
 
   constructor(
-    private appRef: ApplicationRef,
+    private appRef: ApplicationRef, 
     protected injector: Injector,
-    private luigiClientService: LuigiClientService,
+    private luigiClientService: LuigiClientService
   ) {
     super(injector);
     this.entry.functionStatus.subscribe(status => {
@@ -43,22 +41,18 @@ export class LambdasEntryRendererComponent
   }
 
   ngOnInit() {
-    this.showMetricsColumn = this.luigiClientService.hasBackendModule(
-      'grafana',
-    );
+    this.showMetricsColumn = this.luigiClientService.hasBackendModule('grafana');
 
-    LuigiClient.linkManager()
-      .pathExists('/home/cmf-logs')
-      .then(exists => {
-        if (exists) {
-          {
-            this.actions.push({
-              function: 'showLogs',
-              name: 'Show Logs',
-            });
-          }
+    LuigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
+      if (exists) {
+        {
+          this.actions.push({
+            function: 'showLogs',
+            name: 'Show Logs'
+          });
         }
-      });
+      }
+    });
   }
 
   getTrigger(entry) {
@@ -96,7 +90,11 @@ export class LambdasEntryRendererComponent
   }
 
   getFunctionMetricsUrl(entry) {
-    const url = `${AppConfig.metricsUrl}d/opc3b8Tyik/lambda-dashboard?refresh=30s&orgId=1&var-source=All&var-environment=${entry.metadata.namespace}&var-lambda_service=${entry.metadata.name}`;
+    const url = `${
+      AppConfig.metricsUrl
+    }d/opc3b8Tyik/lambda-dashboard?refresh=30s&orgId=1&var-source=All&var-environment=${
+      entry.metadata.namespace
+    }&var-lambda_service=${entry.metadata.name}`;
 
     return url;
   }

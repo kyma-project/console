@@ -83,12 +83,7 @@ export const validateContent = content => {
 };
 
 export const backendModuleExists = name => {
-  const backendModules = builder.getBackendModules();
-  if (!(backendModules && backendModules.length)) {
-    return false;
-  }
-
-  return backendModules.includes(name);
+  return builder.getBackendModules().includes(name);
 };
 
 export const processDocFilename = arg => {

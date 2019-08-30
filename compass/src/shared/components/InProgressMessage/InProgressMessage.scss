@@ -1,0 +1,26 @@
+@keyframes infiniteRotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating-icon {
+  &:before {
+    font-size: 24em;
+    animation: infiniteRotation 130s linear infinite;
+  }
+  margin-right: 0.8em;
+}
+
+.container {
+  padding: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: space-around;
+  align-items: center;
+}

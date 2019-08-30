@@ -99,11 +99,11 @@ export default function convertToNavigationTree(
           node.viewGroup = consoleViewGroupName;
         } else {
           node.viewGroup = node.navigationContext;
-          if (spec.preloadUrl) {
-            navigation.viewGroupSettings[node.viewGroup] = {
-              preloadUrl: node.localPreloadUrl || spec.preloadUrl
-            };
-          }
+          // if (spec.preloadUrl) { TODO: UNCOMMENT TO ENABLE PRELOADING (https://github.com/kyma-project/console/issues/1024)
+          //   navigation.viewGroupSettings[node.viewGroup] = {
+          //     preloadUrl: node.localPreloadUrl || spec.preloadUrl
+          //   };
+          // }
         }
 
         node.keepSelectedForChildren = true;

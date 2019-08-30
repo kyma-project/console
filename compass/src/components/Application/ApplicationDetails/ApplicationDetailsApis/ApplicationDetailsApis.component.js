@@ -5,6 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
+import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 ApplicationDetailsApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -31,42 +32,34 @@ export default function ApplicationDetailsApis({
     });
   }
 
-  function handleDelete(entry) {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: 'Remove API',
-        body: `Are you sure you want to delete ${entry.name}?`,
-        buttonConfirm: 'Confirm',
-        buttonDismiss: 'Cancel',
-      })
-      .then(async () => {
-        try {
-          await deleteAPI(entry.id);
-          showDeleteSuccessNotification(entry.name);
-        } catch (error) {
-          console.warn(error);
-          LuigiClient.uxManager().showAlert({
-            text: error.message,
-            type: 'error',
-            closeAfter: 10000,
-          });
-        }
-      })
-      .catch(() => {});
+  function navigateToDetails(entry) {
+    LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
   }
 
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
-    <span className="link">{api.name}</span>,
+    <span
+      className="link"
+      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
+    >
+      {api.name}
+    </span>,
     api.description,
     api.targetURL,
   ];
 
   const actions = [
     {
+      name: 'Edit',
+      handler: navigateToDetails,
+    },
+    {
       name: 'Delete',
-      handler: handleDelete,
+      handler: entry =>
+        handleDelete('API', entry.id, entry.name, deleteAPI, () => {
+          showDeleteSuccessNotification(entry.name);
+        }),
     },
   ];
 

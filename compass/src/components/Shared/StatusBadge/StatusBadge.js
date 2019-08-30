@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge } from 'fundamental-react/lib/Badge';
+import { Badge } from 'fundamental-react/Badge';
 
 const StatusBadge = ({ status }) => {
   let type;

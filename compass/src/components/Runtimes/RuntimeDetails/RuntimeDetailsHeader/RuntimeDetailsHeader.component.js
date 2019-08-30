@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActionBar } from 'fundamental-react/lib/ActionBar';
+import { ActionBar } from 'fundamental-react/ActionBar';
 import {
   Button,
   Breadcrumb,
@@ -12,40 +12,12 @@ import LuigiClient from '@kyma-project/luigi-client';
 import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
 import '../../../../shared/styles/header.scss';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../../../shared/constants';
+import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {
     runtime: PropTypes.object.isRequired,
     deleteRuntime: PropTypes.func.isRequired,
-  };
-
-  handleDelete = runtime => {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: 'Remove runtime',
-        body: `Are you sure you want to delete runtime "${runtime.name}"?`,
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(() => {
-        this.deleteEntry(runtime);
-      })
-      .catch(() => {});
-  };
-
-  deleteEntry = async element => {
-    try {
-      await this.props.deleteRuntime(element.id);
-      LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(`/runtimes`);
-    } catch (e) {
-      LuigiClient.uxManager().showAlert({
-        text: `Error occored during deletion ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
   };
 
   navigateToRuntimesList = () => {
@@ -87,7 +59,15 @@ class RuntimeDetailsHeader extends React.Component {
             </section>
             <ActionBar.Actions>
               <Button
-                onClick={() => this.handleDelete(this.props.runtime)}
+                onClick={() =>
+                  handleDelete(
+                    'Runtime',
+                    id,
+                    name,
+                    this.props.deleteRuntime,
+                    this.navigateToRuntimesList,
+                  )
+                }
                 type="negative"
                 option="light"
               >

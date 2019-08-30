@@ -1,0 +1,6 @@
+.credentials-form {
+    & .fd-dropdown__control::after {
+        position: relative;
+        top: -2px;
+    }
+}

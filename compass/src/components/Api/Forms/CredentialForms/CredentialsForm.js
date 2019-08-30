@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'fundamental-react';
 import { Button, Dropdown } from '@kyma-project/react-components';
+import './style.scss';
 
 import OAuthCredentialsForm, {
   CREDENTIAL_TYPE_OAUTH,
-} from './CredentialForms/OAuthCredentialsForm';
+} from './OAuthCredentialsForm';
 export const CREDENTIAL_TYPE_NONE = 'None';
 export const CREDENTIAL_TYPE_PLACEHOLDER = 'Choose credentials type';
 
@@ -13,13 +14,21 @@ const availableCredentialTypes = [CREDENTIAL_TYPE_OAUTH, CREDENTIAL_TYPE_NONE];
 
 CredentialsForm.propTypes = {
   updateState: PropTypes.func.isRequired,
-  credentialsType: PropTypes.oneOf([
-    ...availableCredentialTypes,
-    CREDENTIAL_TYPE_PLACEHOLDER,
-  ]),
+  credentials: PropTypes.object.isRequired,
 };
 
-export default function CredentialsForm({ updateState, credentialsType }) {
+CredentialsForm.defaultProps = {
+  defaultApiData: {
+    oAuth: {
+      clientId: '',
+      clientSecret: '',
+      url: '',
+    },
+    type: CREDENTIAL_TYPE_NONE,
+  },
+};
+
+export default function CredentialsForm({ updateState, credentials }) {
   const credentialTypesList = (
     <Menu>
       <Menu.List>
@@ -33,12 +42,12 @@ export default function CredentialsForm({ updateState, credentialsType }) {
   );
 
   return (
-    <section>
+    <section className="credentials-form">
       <p>Credentials type</p>
       <Dropdown
         control={
           <Button dropdown>
-            <span>{credentialsType}</span>
+            <span>{credentials.type}</span>
           </Button>
         }
         placement="bottom"
@@ -46,8 +55,11 @@ export default function CredentialsForm({ updateState, credentialsType }) {
         {credentialTypesList}
       </Dropdown>
 
-      {credentialsType === CREDENTIAL_TYPE_OAUTH && (
-        <OAuthCredentialsForm updateState={updateState} />
+      {credentials.type === CREDENTIAL_TYPE_OAUTH && (
+        <OAuthCredentialsForm
+          updateState={updateState}
+          oAuthData={credentials.oAuth}
+        />
       )}
     </section>
   );

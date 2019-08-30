@@ -489,7 +489,6 @@ function getConsoleInitData() {
       name
       category
       viewBaseUrl
-      preloadUrl
       placement
       navigationNodes{
         label

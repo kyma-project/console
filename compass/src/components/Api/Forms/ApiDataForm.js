@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileInput from './../../../../Shared/FileInput/FileInput';
-import TextFormItem from './TextFormItem';
+import FileInput from './../../Shared/FileInput/FileInput';
+import TextFormItem from './../../Shared/TextFormItem';
 
 import { FormItem, FormInput, FormLabel } from '@kyma-project/react-components';
 import { InlineHelp } from 'fundamental-react';
@@ -11,7 +11,7 @@ import {
   isFileTypeValid,
   parseSpecFromText,
   getSpecType,
-} from './APIUploadHelper';
+} from './../APIUploadHelper';
 
 APIDataForm.propTypes = {
   mainAPIType: PropTypes.string,
@@ -78,7 +78,7 @@ export default function APIDataForm({ mainAPIType, updateState }) {
   }
 
   return (
-    <form>
+    <>
       <TextFormItem
         inputKey="name"
         required
@@ -109,7 +109,8 @@ export default function APIDataForm({ mainAPIType, updateState }) {
         <FormInput
           disabled={!isAPI}
           id="targetURL"
-          type="text"
+          required
+          type="url"
           placeholder="Target URL"
           onChange={e => updateState({ targetURL: e.target.value })}
         />
@@ -124,6 +125,6 @@ export default function APIDataForm({ mainAPIType, updateState }) {
           acceptedFileFormats={'.yml,.yaml,.json,.xml'}
         />
       </FormItem>
-    </form>
+    </>
   );
 }
