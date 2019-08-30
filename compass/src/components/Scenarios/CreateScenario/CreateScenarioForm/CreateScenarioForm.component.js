@@ -40,7 +40,7 @@ export default function CreateScenarioForm({
         {nameError && <FormMessage type="error">{nameError}</FormMessage>}
       </FormItem>
       <div>
-        <p class="fd-has-font-weight-bold">Select Runtimes</p>
+        <p className="fd-has-font-weight-bold">Select Runtimes</p>
         <MultiChoiceList
           placeholder="Choose runtime"
           updateItems={updateRuntimes}
@@ -53,7 +53,7 @@ export default function CreateScenarioForm({
         />
       </div>
       <div>
-        <p class="fd-has-font-weight-bold">Add Application</p>
+        <p className="fd-has-font-weight-bold">Add Application</p>
         <MultiChoiceList
           placeholder="Choose application"
           updateItems={updateApplications}

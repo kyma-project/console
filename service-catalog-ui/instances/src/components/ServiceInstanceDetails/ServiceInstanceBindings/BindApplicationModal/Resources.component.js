@@ -68,7 +68,7 @@ class Resources extends React.Component {
     }
   }
 
-  getResources = async () => {
+  getResources = () => {
     this.setState({
       usageKindResourcesLoading: true,
       bindableResources: null,
@@ -79,13 +79,11 @@ class Resources extends React.Component {
     for (let i = 0; i < usageKinds.length; i++) {
       const usageKind = usageKinds[i];
       let resources = [];
-      (await this.props.fetchBindableResources()).data.bindableResources.forEach(
-        res => {
-          if (res.kind === usageKind.name && res.resources.length > 0) {
-            resources = res.resources;
-          }
-        },
-      );
+      this.props.bindableResources.forEach(res => {
+        if (res.kind === usageKind.name && res.resources.length > 0) {
+          resources = res.resources;
+        }
+      });
 
       if (usageKind.name && resources.length > 0) {
         response.push({

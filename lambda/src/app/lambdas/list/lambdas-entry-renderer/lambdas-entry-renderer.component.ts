@@ -5,6 +5,7 @@ import { AbstractTableEntryRendererComponent } from 'app/generic-list';
 import { AppConfig } from '../../../app.config';
 import { IDeploymentStatus } from '../../../shared/datamodel/k8s/deployment';
 import { EMPTY_TEXT } from '../../../shared/constants/constants';
+import { LuigiClientService } from '../../../shared/services/luigi-client.service'
 
 @Component({
   selector: 'app-lambdas-entry-renderer',
@@ -16,6 +17,7 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
   public status: boolean;
   public functionMetrics: string;
   public emptyText = EMPTY_TEXT;
+  public showMetricsColumn = true;
 
   actions = [
     {
@@ -24,7 +26,11 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
     }
   ];
 
-  constructor(private appRef: ApplicationRef, protected injector: Injector) {
+  constructor(
+    private appRef: ApplicationRef, 
+    protected injector: Injector,
+    private luigiClientService: LuigiClientService
+  ) {
     super(injector);
     this.entry.functionStatus.subscribe(status => {
       this.statusText = this.getStatus(status);
@@ -35,6 +41,8 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
   }
 
   ngOnInit() {
+    this.showMetricsColumn = this.luigiClientService.hasBackendModule('grafana');
+
     LuigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
       if (exists) {
         {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LuigiClientService } from '../../../shared/services/luigi-client.service'
 
 @Component({
   selector: 'app-lambdas-header-renderer',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lambdas-header-renderer.component.scss']
 })
 export class LambdasHeaderRendererComponent implements OnInit {
+  public showMetricsColumn = true;
 
-  constructor() { }
+  constructor( private luigiClientService: LuigiClientService ) { }
 
   ngOnInit() {
+    this.showMetricsColumn = this.luigiClientService.hasBackendModule('grafana');
   }
 
 }

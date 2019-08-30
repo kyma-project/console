@@ -5,6 +5,7 @@ import { TabLink, TabWrapper } from './components';
 
 const Tab = ({
   aditionalStatus,
+  status,
   title,
   onClick,
   tabIndex,
@@ -24,6 +25,7 @@ const Tab = ({
         smallPadding={smallPadding}
       >
         {title}
+        {status}
         {!isActive && aditionalStatus}
       </TabLink>
     </TabWrapper>
@@ -37,6 +39,7 @@ Tab.propTypes = {
   isActive: PropTypes.bool,
   margin: PropTypes.string,
   background: PropTypes.string,
+  status: PropTypes.node,
 };
 
 export default Tab;

@@ -51,7 +51,11 @@ class BasicData extends React.Component {
         formData: {
           ...formData,
           name: defaultInstanceName,
-          plan: serviceClass.plans[0].name,
+          plan:
+            (serviceClass.plans &&
+              serviceClass.plans.length &&
+              serviceClass.plans[0].name) ||
+            null,
         },
       });
 
@@ -71,7 +75,10 @@ class BasicData extends React.Component {
       instanceWithNameAlreadyExists,
     } = this.state;
     const stepFilled =
-      formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
+      formData.plan &&
+      formData.name &&
+      !invalidInstanceName &&
+      !instanceWithNameAlreadyExists;
 
     this.props.callback({
       formData,
@@ -91,7 +98,10 @@ class BasicData extends React.Component {
     if (equal(this.state, prevState)) return;
 
     const stepFilled =
-      formData.name && !invalidInstanceName && !instanceWithNameAlreadyExists;
+      formData.plan &&
+      formData.name &&
+      !invalidInstanceName &&
+      !instanceWithNameAlreadyExists;
 
     this.setState({
       stepFilled,
@@ -236,7 +246,6 @@ class BasicData extends React.Component {
               value={formData.name}
               name="nameServiceInstances"
               handleChange={this.onChangeName}
-              //onBlur={onBlur}
               isError={invalidInstanceName || instanceWithNameAlreadyExists}
               message={this.getInstanceNameErrorMessage()}
               required={true}
@@ -248,8 +257,11 @@ class BasicData extends React.Component {
             <Select
               label="Plan"
               handleChange={this.onChangePlans}
+              isError={Boolean(!formData.plan)}
+              message={'No Service Class Plan is available'}
               name="selectedKind"
               current={formData.plan}
+              disabled={Boolean(!formData.plan)}
               items={mappedPlans}
               required={true}
             />

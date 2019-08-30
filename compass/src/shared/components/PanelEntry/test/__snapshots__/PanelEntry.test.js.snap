@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PanelEntry Renders title and content 1`] = `
+<div
+  className="fd-panel"
+>
+  <div
+    className="fd-panel__body"
+  >
+    <p
+      className="fd-has-color-text-4 fd-has-margin-bottom-none"
+    >
+      testtitle
+    </p>
+    testcontent
+  </div>
+</div>
+`;

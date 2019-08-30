@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { ActionBar, Badge } from 'fundamental-react';
-import {
-  Button,
-  Breadcrumb,
-  Panel,
-  PanelGrid,
-} from '@kyma-project/react-components';
+import { Button, Breadcrumb, PanelGrid } from '@kyma-project/react-components';
 
+import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
+import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
-    .fromClosestContext()
+    .fromContext('tenant')
     .navigate(`/applications`);
 }
 
@@ -31,51 +28,9 @@ class ApplicationDetailsHeader extends React.Component {
     application: PropTypes.object.isRequired,
   };
 
-  delete = async element => {
-    try {
-      await this.props.deleteApplication(element.id);
-      LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(`/applications`);
-    } catch (e) {
-      LuigiClient.uxManager().showAlert({
-        text: `Error occored during deletion ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
-  };
-
-  handleDelete = application => {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: 'Remove application',
-        body: `Are you sure you want to delete application "${application.name}"?`,
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(() => {
-        this.delete(application);
-      })
-      .catch(() => {});
-  };
-
   render() {
     const isReadOnly = false; //todo
     const { id, name, status, description } = this.props.application;
-
-    const PanelEntry = props => {
-      return (
-        <Panel>
-          <Panel.Body>
-            <p className="fd-has-color-text-4 fd-has-margin-bottom-none">
-              {props.title}
-            </p>
-            {props.content}
-          </Panel.Body>
-        </Panel>
-      );
-    };
 
     return (
       <header className="fd-has-background-color-background-2">
@@ -105,7 +60,15 @@ class ApplicationDetailsHeader extends React.Component {
               Edit
             </Button>
             <Button
-              onClick={() => this.handleDelete(this.props.application)}
+              onClick={() => {
+                handleDelete(
+                  'Application',
+                  id,
+                  name,
+                  this.props.deleteApplication,
+                  navigateToApplications,
+                );
+              }}
               option="light"
               type="negative"
             >

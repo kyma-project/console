@@ -8,6 +8,7 @@ TextFormItem.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  defaultValue: PropTypes.any,
 };
 
 TextFormItem.defaultProps = {
@@ -20,6 +21,7 @@ export default function TextFormItem({
   label,
   type,
   onChange,
+  defaultValue,
 }) {
   return (
     <FormItem key={inputKey}>
@@ -27,11 +29,13 @@ export default function TextFormItem({
         {label}
       </FormLabel>
       <FormInput
+        required={required}
         id={inputKey}
         type={type}
         placeholder={label}
         onChange={onChange}
         autoComplete="off"
+        defaultValue={defaultValue}
       />
     </FormItem>
   );

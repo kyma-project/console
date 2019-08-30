@@ -12,7 +12,7 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
               <Breadcrumb.Item
                 name={breadcrumb}
                 url="#"
-                onClick={navigateToList(breadcrumb)}
+                onClick={e => navigateToList(breadcrumb)}
               />
               <Breadcrumb.Item />
             </Breadcrumb>
@@ -29,8 +29,9 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
 );
 
 const navigateToList = breadcrumb => {
+  breadcrumb = breadcrumb.toLowerCase();
   LuigiClient.linkManager()
-    .fromClosestContext()
+    .fromContext('tenant')
     .navigate(`/${breadcrumb}`);
 };
 

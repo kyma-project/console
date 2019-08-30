@@ -18,3 +18,7 @@ yarn-error.log*
 **/lib/**/*
 
 /**/whitesource.config.json
+
+catalog/build
+instances/build
+brokers/build

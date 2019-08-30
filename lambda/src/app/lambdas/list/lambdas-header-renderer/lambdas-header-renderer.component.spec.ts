@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LambdasHeaderRendererComponent } from './lambdas-header-renderer.component';
+import { LuigiClientService } from '../../../shared/services/luigi-client.service';
 
 describe('LambdasHeaderRenderer', () => {
   let component: LambdasHeaderRendererComponent;
@@ -8,7 +9,8 @@ describe('LambdasHeaderRenderer', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LambdasHeaderRendererComponent ]
+      declarations: [ LambdasHeaderRendererComponent ],
+      providers: [ LuigiClientService ]
     })
     .compileComponents();
   }));

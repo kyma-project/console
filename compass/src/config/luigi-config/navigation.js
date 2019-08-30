@@ -52,8 +52,50 @@ const navigation = {
                   children: [
                     {
                       pathSegment: ':applicationId',
-                      label: 'Applications',
                       viewUrl: compassMfUrl + '/application/:applicationId',
+                      navigationContext: 'application',
+                      children: [
+                        {
+                          pathSegment: 'api',
+                          children: [
+                            {
+                              pathSegment: ':apiId',
+                              viewUrl:
+                                compassMfUrl +
+                                '/application/:applicationId/api/:apiId',
+                              children: [
+                                {
+                                  pathSegment: 'edit',
+                                  label: 'Edit Api',
+                                  viewUrl:
+                                    compassMfUrl +
+                                    '/application/:applicationId/api/:apiId/edit',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          pathSegment: 'eventApi',
+                          children: [
+                            {
+                              pathSegment: ':eventApiId',
+                              viewUrl:
+                                compassMfUrl +
+                                '/application/:applicationId/eventApi/:eventApiId',
+                              children: [
+                                {
+                                  pathSegment: 'edit',
+                                  label: 'Edit Api',
+                                  viewUrl:
+                                    compassMfUrl +
+                                    '/application/:applicationId/eventApi/:eventApiId/edit',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
                     },
                   ],
                 },

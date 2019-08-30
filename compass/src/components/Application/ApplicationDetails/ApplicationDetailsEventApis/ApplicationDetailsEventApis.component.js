@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
+import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 ApplicationDetailsEventApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -31,41 +31,34 @@ export default function ApplicationDetailsEventApis({
     });
   }
 
-  function handleDelete(entry) {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: 'Remove Event API',
-        body: `Are you sure you want to delete ${entry.name}?`,
-        buttonConfirm: 'Confirm',
-        buttonDismiss: 'Cancel',
-      })
-      .then(async () => {
-        try {
-          await deleteEventAPI(entry.id);
-          showDeleteSuccessNotification(entry.name);
-        } catch (error) {
-          console.warn(error);
-          LuigiClient.uxManager().showAlert({
-            text: error.message,
-            type: 'error',
-            closeAfter: 10000,
-          });
-        }
-      })
-      .catch(() => {});
+  function navigateToDetails(entry) {
+    LuigiClient.linkManager().navigate(`eventApi/${entry.id}/edit`);
   }
 
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
-    <span className="link">{api.name}</span>,
+    <span
+      className="link"
+      onClick={() => LuigiClient.linkManager().navigate(`eventApi/${api.id}`)}
+    >
+      {api.name}
+    </span>,
+
     api.description,
   ];
 
   const actions = [
     {
+      name: 'Edit',
+      handler: navigateToDetails,
+    },
+    {
       name: 'Delete',
-      handler: handleDelete,
+      handler: entry =>
+        handleDelete('Event API', entry.id, entry.name, deleteEventAPI, () => {
+          showDeleteSuccessNotification(entry.name);
+        }),
     },
   ];
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import SearchInput from './SearchInput';
 
-import { Panel } from 'fundamental-react/lib/Panel';
+import { Panel } from 'fundamental-react/Panel';
 
 import {
   TableWithActionsToolbar,
@@ -32,10 +32,15 @@ class GenericList extends React.Component {
   };
 
   rowRenderer = entry => {
-    if (this.props.actions) {
+    const actions = this.props.actions
+      ? this.props.actions.filter(action =>
+          action.skipAction ? !action.skipAction(entry) : true,
+        )
+      : [];
+    if (actions.length > 0) {
       return [
         ...this.props.rowRenderer(entry),
-        renderActionElement(this.props.actions, entry),
+        renderActionElement(actions, entry),
       ];
     } else {
       return this.props.rowRenderer(entry);

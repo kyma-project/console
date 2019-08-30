@@ -206,6 +206,10 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       result.streams = result.streams.map(this.filterHealthchecks);
     }
 
+    result.streams = result.streams
+      .sort(this.sortFromNewestLogs)
+      .filter((s: ILogStream) => s.entries && s.entries.length);
+
     return result;
   }
 
@@ -388,6 +392,21 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  sortFromNewestLogs(stream1: ILogStream, stream2: ILogStream): number {
+    if (!(stream1 && stream1.entries && stream2 && stream2.entries)) { return 0 };
+
+    const getTimestamp = (stream: ILogStream) => {
+      const streamLastEntry = stream && stream.entries && stream.entries.length ? stream.entries[stream.entries.length - 1] : {};
+      const streamLastEntryTimestamp =  new Date(streamLastEntry && streamLastEntry.ts ? streamLastEntry.ts : 0);
+      return streamLastEntryTimestamp;
+    }
+
+    const stream1Timestamp = getTimestamp(stream1);
+    const stream2Timestamp = getTimestamp(stream2);
+    
+    return stream2Timestamp.getTime() - stream1Timestamp.getTime();
+ }
+
   onToTimeChanged(event: { target: { value: string } }) {
     if (event.target.value === 'now') {
       this.canSetAutoRefresh = true;
@@ -430,12 +449,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   public isSearchResultEmpty(searchResult: ISearchResult): boolean {
-    return !(
-      searchResult &&
-      searchResult.streams &&
-      searchResult.streams[0] &&
-      !!searchResult.streams[0].entries &&
-      !!searchResult.streams[0].entries.length
-    );
+    return !searchResult.streams.some((s: ILogStream) => !!(s.entries && s.entries.length))
   }
 }

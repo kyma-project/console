@@ -3,6 +3,15 @@ import gql from 'graphql-tag';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 import builder from '../../commons/builder';
 
+function getDistinctServiceClasses(collection) {
+  return collection.reduce((col, current) => {
+    if (!col.some(e => e.name === current.name)) {
+      col.push(current);
+    }
+    return col;
+  }, []);
+}
+
 export default {
   Query: {
     serviceClassFilters: (_, args, { cache }) => {
@@ -204,6 +213,8 @@ export default {
         classes && Object.keys(classes).length
           ? [...classes.clusterServiceClasses, ...classes.serviceClasses]
           : [];
+
+      classes = getDistinctServiceClasses(classes);
 
       const filteredClassesAndCounts = filterServiceClasses(
         classes,

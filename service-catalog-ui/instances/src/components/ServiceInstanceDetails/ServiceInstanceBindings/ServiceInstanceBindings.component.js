@@ -344,7 +344,7 @@ class ServiceInstanceBindings extends React.Component {
                 </Tooltip>
               }
               addHeaderContent={boundApplicationContent}
-              aditionalStatus={this.status(
+              status={this.status(
                 serviceInstance.serviceBindingUsages,
                 'status-service-binding-usage',
               )}
@@ -369,7 +369,7 @@ class ServiceInstanceBindings extends React.Component {
               </Tooltip>
             }
             addHeaderContent={createCredentialsContent}
-            aditionalStatus={this.status(
+            status={this.status(
               serviceInstance.serviceBindings.items,
               'status-service-binding',
             )}
