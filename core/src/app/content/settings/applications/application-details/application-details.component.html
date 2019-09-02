@@ -77,7 +77,9 @@
           <p class="fd-has-color-text-4 fd-has-margin-bottom-none">
             Description
           </p>
-          <p>{{ application.description ? application.description : '-' }}</p>
+          <p>
+            {{ application.description ? application.description : emptyText }}
+          </p>
         </fd-panel-body>
       </fd-panel>
       <fd-panel>
