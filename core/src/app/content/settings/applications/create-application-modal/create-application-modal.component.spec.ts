@@ -120,14 +120,14 @@ describe('CreateApplicationModalComponent', () => {
       expect(actual).toBe(true);
     });
 
-    it('returns false if name input is empty', () => {
-      component.name = '';
+    it('returns true if description input is empty', () => {
+      component.description = '';
       const actual: boolean = component.isReadyToCreate();
-      expect(actual).toBe(false);
+      expect(actual).toBe(true);
     });
 
-    it('returns false if description input is empty', () => {
-      component.description = '';
+    it('returns false if name input is empty', () => {
+      component.name = '';
       const actual: boolean = component.isReadyToCreate();
       expect(actual).toBe(false);
     });
