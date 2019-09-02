@@ -42,6 +42,7 @@ export const getResourceDisplayName = resource => {
 };
 
 export function clearEmptyPropertiesInObject(object) {
+  /* eslint-disable no-unused-vars */
   for (const key in object) {
     if (typeof object[key] === 'undefined' || object[key] === '') {
       delete object[key];
@@ -57,6 +58,7 @@ export function clearEmptyPropertiesInObject(object) {
       delete object[key];
     }
   }
+  /* eslint-enable no-unused-vars */
 }
 
 export const validateContent = content => {

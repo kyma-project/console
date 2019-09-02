@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-
 import { Panel } from '@kyma-project/react-components';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
@@ -33,7 +32,7 @@ export default function ApplicationDetailsEventApis({
   }
 
   function navigateToDetails(entry) {
-    LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
+    LuigiClient.linkManager().navigate(`eventApi/${entry.id}/edit`);
   }
 
   const headerRenderer = () => ['Name', 'Description'];
@@ -41,10 +40,11 @@ export default function ApplicationDetailsEventApis({
   const rowRenderer = api => [
     <span
       className="link"
-      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
+      onClick={() => LuigiClient.linkManager().navigate(`eventApi/${api.id}`)}
     >
       {api.name}
     </span>,
+
     api.description,
   ];
 

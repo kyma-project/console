@@ -11,6 +11,10 @@
     "append-host-ui-test": "sudo sed -i '' \"/ui-test-exposed-api.kyma.local/d\" '/etc/hosts' && (echo 'append: $(minikube ip) ui-test-exposed-api.kyma.local >> /etc/hosts' && echo $(minikube ip) ui-test-exposed-api.kyma.local | sudo tee -a /etc/hosts > /dev/null)",
     "append-hosts": "npm run append-host && npm run append-host-ui-test"
   },
+  "dependencies": {
+    "@kyma-project/generic-documentation": "./components/generic-documentation",
+    "@kyma-project/react-components": "./components/react"
+  },
   "devDependencies": {
     "husky": "^0.14.0",
     "lerna": "^2.11.0",

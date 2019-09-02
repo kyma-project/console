@@ -1,6 +1,6 @@
 import React from 'react';
-import { Popover } from 'fundamental-react/lib/Popover';
-import { Menu } from 'fundamental-react/lib/Menu';
+import { Popover } from 'fundamental-react/Popover';
+import { Menu } from 'fundamental-react/Menu';
 import { Button } from '@kyma-project/react-components';
 
 export const renderActionElement = (actions, entry) =>

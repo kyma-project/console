@@ -10,4 +10,14 @@ export class CustomPropTypes {
             componentName +
             '`. Validation failed.',
         );
+
+  static oneOfProps = (props, componentName, propsToLookFor = []) => {
+    if (!propsToLookFor.some(propName => props[propName])) {
+      return new Error(
+        `One of props [${propsToLookFor.join(
+          ', ',
+        )}] was not specified in '${componentName}'.`,
+      );
+    }
+  };
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import SearchInput from './SearchInput';
 
-import { Panel } from 'fundamental-react/lib/Panel';
+import { Panel } from 'fundamental-react/Panel';
 
 import {
   TableWithActionsToolbar,

@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CustomPropTypes Returns an error for null 1`] = `[Error: Invalid prop \`testprop\` supplied to \`testcomponent\`. Validation failed.]`;
+exports[`CustomPropTypes elementRef Returns an error for null 1`] = `[Error: Invalid prop \`testprop\` supplied to \`testcomponent\`. Validation failed.]`;
 
-exports[`CustomPropTypes Returns an error for string 1`] = `[Error: Invalid prop \`testprop\` supplied to \`testcomponent\`. Validation failed.]`;
+exports[`CustomPropTypes elementRef Returns an error for string 1`] = `[Error: Invalid prop \`testprop\` supplied to \`testcomponent\`. Validation failed.]`;
+
+exports[`CustomPropTypes oneOfProps Returns error no prop is provided 1`] = `[Error: One of props [a, b, c] was not specified in 'componentA'.]`;

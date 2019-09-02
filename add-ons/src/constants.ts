@@ -1,12 +1,9 @@
-import { extractIsDevelopmentModeFlag } from './helpers';
-
 export const DEFAULT_CONFIGURATION =
   (window as any).clusterConfig.DEFAULT_CONFIGURATION_NAME || 'helm-repos-urls';
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
   'This is the default addons configuration. Do not edit or delete it.';
-export const HELM_BROKER_IS_DEVELOPMENT_MODE = extractIsDevelopmentModeFlag(
-  (window as any).clusterConfig.HELM_BROKER_IS_DEVELOPMENT_MODE,
-);
+export const HELM_BROKER_REPO_URL_PREFIXES = (window as any).clusterConfig
+  .HELM_BROKER_REPO_URL_PREFIXES;
 
 export const KYMA_SYSTEM_ENV = 'kyma-system';
 
@@ -76,14 +73,9 @@ export const MODAL = {
   DELETE_MODAL_TITLE: 'Delete',
 };
 
-const HELP_URL_FIELD_DEVELOPMENT_MODE =
-  'The URL must be unique for a given configuration and start with the http(s) protocol or one of the following prefixes: git::, github.com/, bitbucket.org/';
-const HELP_URL_FIELD_NOT_DEVELOPMENT_MODE =
-  'The URL must be unique for a given configuration and start with the https protocol or one of the following prefixes: git::, github.com/, bitbucket.org/';
+const HELP_URL_FIELDS_LIST = `'${HELM_BROKER_REPO_URL_PREFIXES.join(`', '`)}'`;
 export const HELP = {
-  URL_FIELD: HELM_BROKER_IS_DEVELOPMENT_MODE
-    ? HELP_URL_FIELD_DEVELOPMENT_MODE
-    : HELP_URL_FIELD_NOT_DEVELOPMENT_MODE,
+  URL_FIELD: `The URL must be unique for a given configuration and start with one of the following prefixes: ${HELP_URL_FIELDS_LIST}`,
   NAME_FIELD:
     'The name must be unique, start and end with a lowercase letter, and contain only lowercase letters, numbers, dashes, periods, and underscores.',
   LABELS_FIELD:
@@ -110,12 +102,7 @@ export const ERRORS = {
   },
   URL: {
     ALREADY_EXISTS: 'This URL already exists in the configuration.',
-    STARTS_WITH_HTTP: {
-      DEVELOPMENT_MODE:
-        'URL must start with the http(s) protocol or one of the following prefixes: git::, github.com/, bitbucket.org/',
-      PRODUCTION_MODE:
-        'URL must start with the https protocol or one of the following prefixes: git::, github.com/, bitbucket.org/',
-    },
+    WRONG_PREFIX: `URL must start with one of the following prefixes: ${HELP_URL_FIELDS_LIST}`,
     YAML_EXTENSION: 'URL must have .yaml or .yml extension.',
     RESOURCE_NOT_EXISTS: "URL doesn't exist.",
   },
