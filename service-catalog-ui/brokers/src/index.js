@@ -30,7 +30,7 @@ function start() {
     ReactDOM.render(
       <BrowserRouter>
         <ApolloProvider client={client}>
-          <App/>
+          <App />
         </ApolloProvider>
       </BrowserRouter>,
       document.getElementById('root'),
