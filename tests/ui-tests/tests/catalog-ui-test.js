@@ -209,6 +209,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       ]);
       let frame2, serviceClass;
       await retry(async () => {
+        await page.waitFor(1500);
         await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
         frame2 = await kymaConsole.getFrame(page);
         serviceClass = await frame2.$eval(
@@ -241,7 +242,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       let frame4, catalogHeader;
       await retry(async () => {
         try {
-          await page.waitFor(1000);
+          await page.waitFor(1500);
           await page.reload({
             waitUntil: ['domcontentloaded', 'networkidle0'],
           });
