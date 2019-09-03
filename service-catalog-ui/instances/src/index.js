@@ -12,15 +12,28 @@ import builder from './commons/builder';
 
 import { createApolloClient } from './store';
 
-(async () => {
-  await builder.init();
-  const client = createApolloClient();
-  ReactDOM.render(
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>,
-    document.getElementById('root'),
-  );
-})();
+const path = new URL(window.location.href).pathname;
+
+if (path === '/preload') {
+  window.addEventListener('popstate', function listenToPopState() {
+    window.removeEventListener('popstate', listenToPopState);
+    start();
+  });
+} else {
+  start();
+}
+
+function start() {
+  (async () => {
+    await builder.init();
+    const client = createApolloClient();
+    ReactDOM.render(
+      <BrowserRouter>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </BrowserRouter>,
+      document.getElementById('root'),
+    );
+  })();
+}
