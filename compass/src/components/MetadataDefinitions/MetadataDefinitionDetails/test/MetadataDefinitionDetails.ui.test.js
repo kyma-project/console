@@ -125,7 +125,7 @@ describe('MetadataDefinitionDetails UI', () => {
           .find('Toggle')
           .prop('checked'),
       ).toBeUndefined();
-      //   expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
+      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
     });
 
     it(`Doesn't render JSON editor`, async () => {

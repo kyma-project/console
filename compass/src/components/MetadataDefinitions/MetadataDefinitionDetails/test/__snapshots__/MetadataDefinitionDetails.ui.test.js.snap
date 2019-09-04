@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MetadataDefinitionDetails UI Renders the name  1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
+
+exports[`MetadataDefinitionDetails UI The schema is not provided Renders panel with toggle set to off 1`] = `"Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s"`;
