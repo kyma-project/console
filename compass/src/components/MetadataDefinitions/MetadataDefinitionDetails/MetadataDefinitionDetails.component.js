@@ -150,6 +150,7 @@ const MetadataDefinitionDetails = ({
               onClick={handleSaveChanges}
               disabled={!isSchemaValid}
               option="emphasized"
+              data-test-id="save"
             >
               Save
             </Button>

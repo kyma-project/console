@@ -63,7 +63,7 @@ describe('MetadataDefinitionDetails UI', () => {
       }
     });
 
-    it(`Renders panel with toggle set to on `, async () => {
+    it(`Renders panel with toggle set to on `, () => {
       component.update();
 
       expect(
@@ -74,7 +74,7 @@ describe('MetadataDefinitionDetails UI', () => {
       ).toEqual(true);
     });
 
-    it(`Renders JSON editor`, async () => {
+    it(`Renders JSON editor`, () => {
       component.update();
       expect(component.find(Panel).exists(JSONEditorComponent)).toBeTruthy();
     });
@@ -83,18 +83,18 @@ describe('MetadataDefinitionDetails UI', () => {
       component.update();
       expect(mocks[4].result.mock.calls.length).toEqual(0);
 
-      component.find('.fd-button--emphasized').simulate('click');
+      component.find('button[data-test-id="save"]').simulate('click');
       await wait(0); // wait for response
 
       expect(mocks[4].result.mock.calls.length).toEqual(1);
     });
 
-    it(`"Save" button is enabled by default`, async () => {
+    it(`"Save" button is enabled by default`, () => {
       component.update();
 
-      expect(component.find('.fd-button--emphasized').prop('disabled')).toEqual(
-        false,
-      );
+      expect(
+        component.find('button[data-test-id="save"]').prop('disabled'),
+      ).toEqual(false);
     });
   });
   describe('The schema is not provided', () => {
@@ -117,7 +117,7 @@ describe('MetadataDefinitionDetails UI', () => {
       }
     });
 
-    it(`Renders panel with toggle set to off`, async () => {
+    it(`Renders panel with toggle set to off`, () => {
       component.update();
       expect(
         component
@@ -128,7 +128,7 @@ describe('MetadataDefinitionDetails UI', () => {
       expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
     });
 
-    it(`Doesn't render JSON editor`, async () => {
+    it(`Doesn't render JSON editor`, () => {
       component.update();
       expect(
         component.find(Panel).exists(JSONEditorComponent),
@@ -138,11 +138,12 @@ describe('MetadataDefinitionDetails UI', () => {
     it(`Clicking "Save" triggers the mutation`, async () => {
       expect(mocks[3].result.mock.calls.length).toEqual(0);
 
-      component.find('.fd-button--emphasized').simulate('click');
+      component.find('button[data-test-id="save"]').simulate('click');
       await wait(0); // wait for response
 
       expect(mocks[3].result.mock.calls.length).toEqual(1);
     });
+
     it(`JSONeditor is invisible after toggle is clicked`, async () => {
       component.update();
 
