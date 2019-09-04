@@ -40,7 +40,6 @@
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
     "test": "react-scripts test",
-    "test-ui": "jest -t='UI'",
     "eject": "react-scripts eject",
     "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
@@ -77,6 +76,5 @@
   },
   "config": {
     "unsafe-perm": true
-  },
-  "optionalDependencies": {}
+  }
 }
