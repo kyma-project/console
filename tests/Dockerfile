@@ -19,7 +19,7 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 WORKDIR /app
 
 COPY package.json package-lock.json .babelrc jest-setup.js /app/
-COPY ./licenses/ /app/licenses/
+# COPY ./licenses/ /app/licenses/
 
 RUN npm install
 

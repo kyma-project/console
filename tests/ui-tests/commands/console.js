@@ -1,6 +1,7 @@
 import request from 'request';
 import address from '../utils/address';
 import config from '../config';
+import { taggedTemplateExpression } from '@babel/types';
 
 async function testLogin(page) {
   await login(page, config);
@@ -57,6 +58,40 @@ async function login(page, config) {
 async function getFrame(page) {
   return page.frames().find(frame => frame.parentFrame() !== null);
 }
+
+
+const getFrameForApp = (page, appUrl) => {
+  return page.frames().find(frame => {
+    const frameUrl = frame.url();
+    const targetFrameFound = frame.parentFrame() !== null && !frame.isDetached() && frameUrl.indexOf(appUrl) !== -1;
+    if(!targetFrameFound){
+      console.log(`Target frame for ${appUrl} not found !!!`)
+    }
+    return targetFrameFound;
+  });
+};
+
+const waitForAppFrameLoaded = async (page, appUrl) => {
+
+  const timeoutMs = 3000;
+
+  const checkIfAppFrameLoaded = new Promise((resolve, reject) => {
+    
+  });
+
+  let timeout = new Promise((resolve, reject) => {
+    let timeoutId = setTimeout(() => {
+      clearTimeout(timeoutId);
+      reject(`Waiting for ${appUrl} frame timed out after ${timeoutMs} ms.'`)
+    }, timeoutMs)
+  });
+
+  return Promise.race([
+    checkIfAppFrameLoaded,
+    timeout
+  ]);
+
+};
 
 async function openLinkOnFrame(page, element, name) {
   const frame = await getFrame(page);
@@ -223,6 +258,7 @@ module.exports = {
   login,
   testLogin,
   getFrame,
+  getFrameForApp,
   openLink,
   openLinkOnFrame,
   clearData,
