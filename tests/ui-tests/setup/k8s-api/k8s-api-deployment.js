@@ -52,42 +52,52 @@ export class k8sApiDeployment {
     this.create();
   }
 
-  
   async waitUntilCreated() {
     const timeoutPromise = (ms, rejectMsg) => {
       return new Promise((resolve, reject) => {
         let timeoutId = setTimeout(() => {
           clearTimeout(timeoutId);
-          reject(rejectMsg)
-        }, ms)
+          reject(rejectMsg);
+        }, ms);
       });
     };
     let deploymentReady = false;
-    const waitUntilDeploymentReady = new Promise((resolve) => {
-      (async function isReady(api, namespace){
+    const waitUntilDeploymentReady = new Promise(resolve => {
+      (async function isReady(api, namespace) {
         try {
-          const response = await api.readNamespacedDeployment('http-db-service', namespace);
-          deploymentReady = response && response.body && response.body.status && response.body.status.availableReplicas && response.body.status.availableReplicas > 0;
-          if(deploymentReady){
-              resolve()
+          const response = await api.readNamespacedDeployment(
+            'http-db-service',
+            namespace,
+          );
+          deploymentReady =
+            response &&
+            response.body &&
+            response.body.status &&
+            response.body.status.availableReplicas &&
+            response.body.status.availableReplicas > 0;
+          if (deploymentReady) {
+            resolve();
           } else {
-            const timeoutId = setTimeout(()=>{
+            const timeoutId = setTimeout(() => {
               clearTimeout(timeoutId);
-              isReady(api, namespace)
+              isReady(api, namespace);
             }, 1000);
           }
         } catch (e) {
-          const timeoutId = setTimeout(()=>{
+          const timeoutId = setTimeout(() => {
             clearTimeout(timeoutId);
-            isReady(api, namespace)
+            isReady(api, namespace);
           }, 1000);
         }
       })(this.api, this.namespaceName);
     });
-  
+
     return Promise.race([
       waitUntilDeploymentReady,
-      timeoutPromise(20000, `Waiting for deployment [http-db-service] ready state timed out after 20 s.'`)
+      timeoutPromise(
+        20000,
+        `Waiting for deployment [http-db-service] ready state timed out after 20 s.'`,
+      ),
     ]);
   }
 

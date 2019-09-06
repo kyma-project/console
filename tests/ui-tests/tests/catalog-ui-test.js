@@ -41,17 +41,23 @@ const namespaceInstaller = new NamespaceManager(TEST_NAMESPACE);
 
 let page, browser;
 
-const waitForCatalogFrame = (page) => {
+const waitForCatalogFrame = page => {
   return kymaConsole.waitForAppFrameAttached(page, `catalog.${config.domain}`);
-}
+};
 
 const waitForInstancesFrame = (page, waitForLoaded) => {
-  if(waitForLoaded) {
-    return kymaConsole.waitForAppFrameLoaded(page, `instances.${config.domain}`);  
+  if (waitForLoaded) {
+    return kymaConsole.waitForAppFrameLoaded(
+      page,
+      `instances.${config.domain}`,
+    );
   } else {
-    return kymaConsole.waitForAppFrameAttached(page, `instances.${config.domain}`);
+    return kymaConsole.waitForAppFrameAttached(
+      page,
+      `instances.${config.domain}`,
+    );
   }
-}
+};
 
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
@@ -89,7 +95,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     REQUIRED_MODULE,
     'Check if `Testing addon` is on the list and has details',
     async () => {
-
       // Hardcodes for specific test
       const exampleServiceClassNameAndProvider = configExampleServiceClassNameAndProvider;
       const exampleServiceClassButton = configExampleServiceClassButton;
@@ -223,9 +228,14 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         }),
         (frame2 = await waitForInstancesFrame(page, true)),
       ]);
-      
-      const serviceClassElement = await frame2.waitForSelector(exampleInstanceServiceClass);
-      const serviceClass = await frame2.evaluate(element => element.textContent, serviceClassElement);
+
+      const serviceClassElement = await frame2.waitForSelector(
+        exampleInstanceServiceClass,
+      );
+      const serviceClass = await frame2.evaluate(
+        element => element.textContent,
+        serviceClassElement,
+      );
 
       expect(serviceClass).toContain(exampleServiceClassName);
 
@@ -242,8 +252,8 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         (frame3 = await waitForInstancesFrame(page, true)),
       ]);
 
-       const goToCatalog = await frame3.waitForSelector(addInstanceButton);
-       
+      const goToCatalog = await frame3.waitForSelector(addInstanceButton);
+
       await Promise.all([
         goToCatalog.click(),
         page.waitForNavigation({
@@ -252,8 +262,13 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       ]);
 
       const frame4 = await waitForCatalogFrame(page);
-      const catalogHeaderElement = await frame4.waitForSelector(catalogHeaderSelector);
-      const catalogHeader = await frame4.evaluate(element => element.textContent, catalogHeaderElement);
+      const catalogHeaderElement = await frame4.waitForSelector(
+        catalogHeaderSelector,
+      );
+      const catalogHeader = await frame4.evaluate(
+        element => element.textContent,
+        catalogHeaderElement,
+      );
 
       expect(catalogHeader).toContain(catalogExpectedHeader);
 
@@ -262,7 +277,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         frame4,
       );
       expect(numberOfInstances).toContain('1');
-     },
+    },
   );
 
   testPluggable(
@@ -294,7 +309,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       const closeModalSelector = '.fd-modal__close';
 
       const frame = await waitForCatalogFrame(page);
-      const testingBundle = await frame.waitForSelector(exampleServiceClassButton);
+      const testingBundle = await frame.waitForSelector(
+        exampleServiceClassButton,
+      );
       await Promise.all([
         testingBundle.click(),
         frame.waitForNavigation({
@@ -325,10 +342,15 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       const frame3 = await waitForInstancesFrame(page);
 
-      const instancesHeaderElement = await frame3.waitForSelector(instancesHeaderSelector);
-      const instancesHeader = await frame3.evaluate(element => element.textContent, instancesHeaderElement);
+      const instancesHeaderElement = await frame3.waitForSelector(
+        instancesHeaderSelector,
+      );
+      const instancesHeader = await frame3.evaluate(
+        element => element.textContent,
+        instancesHeaderElement,
+      );
 
-       expect(instancesHeader).toContain(instancesExpectedHeader);
+      expect(instancesHeader).toContain(instancesExpectedHeader);
 
       console.log('Validate instances list');
       const allInstances = await catalog.getInstances(frame3);
@@ -343,8 +365,13 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await frame3.waitForSelector(servicePlanButton);
       await frame3.click(servicePlanButton);
 
-      const servicePlanContentSelectorElement = await frame3.waitForSelector(servicePlanContentSelector);
-      const servicePlanContent = await frame3.evaluate(element => element.textContent, servicePlanContentSelectorElement);
+      const servicePlanContentSelectorElement = await frame3.waitForSelector(
+        servicePlanContentSelector,
+      );
+      const servicePlanContent = await frame3.evaluate(
+        element => element.textContent,
+        servicePlanContentSelectorElement,
+      );
 
       expect(servicePlanContent).toContain(additionalData);
       expect(servicePlanContent).toContain(planName);
@@ -377,14 +404,16 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
     console.log('Go to details of instance created with `minimal` plan');
 
-   const frame = await waitForInstancesFrame(page);
-    const minimalPlanInstance = await frame.waitForSelector(exampleInstanceLink,{visible: true,},);
+    const frame = await waitForInstancesFrame(page);
+    const minimalPlanInstance = await frame.waitForSelector(
+      exampleInstanceLink,
+      { visible: true },
+    );
     await minimalPlanInstance.click(),
-    await frame.waitForNavigation({
-      waitUntil: ['domcontentloaded', 'networkidle0'],
-    }),
-    
-    console.log('Confirm all necessary fields');
+      await frame.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
+      console.log('Confirm all necessary fields');
     await frame.waitForSelector(exampleInstanceServiceClass);
     const serviceClass = await frame.$(exampleInstanceServiceClass);
     const servicePlan = await frame.$(exampleInstanceServicePlan);
@@ -393,7 +422,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     expect(serviceClass.toString()).not.toBeNull();
     expect(servicePlan.toString()).not.toBeNull();
     expect(statusType.toString()).not.toBeNull();
-   });
+  });
 
   testPluggable(REQUIRED_MODULE, 'Check `full` plan details', async () => {
     // Hardcodes for specific test
@@ -423,16 +452,16 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
-      (frame = await waitForInstancesFrame(page, true))
+      (frame = await waitForInstancesFrame(page, true)),
     ]);
 
     const fullPlanInstance = await frame.waitForSelector(exampleInstanceLink, {
-       visible: true,
+      visible: true,
     });
     await fullPlanInstance.click();
     await frame.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0'],
-      });
+      waitUntil: ['domcontentloaded', 'networkidle0'],
+    });
 
     console.log('Confirm all necessary fields');
     await frame.waitForSelector(exampleInstanceServiceClass);

@@ -57,7 +57,10 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     );
 
     // given (go to create lambda)
-    const frame = await kymaConsole.waitForAppFrameAttached(page, `lambdas-ui.${config.domain}`);
+    const frame = await kymaConsole.waitForAppFrameAttached(
+      page,
+      `lambdas-ui.${config.domain}`,
+    );
     const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
     const currentLambdas = await lambdas.getLambdas(frame);
@@ -80,7 +83,10 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
 
-    let frame = await kymaConsole.getFrameForApp(page, `lambdas-ui.${config.domain}`);
+    let frame = await kymaConsole.getFrameForApp(
+      page,
+      `lambdas-ui.${config.domain}`,
+    );
 
     const lambdasListBreadcrumbLink = 'a[fd-breadcrumb-link]';
     await frame.click(lambdasListBreadcrumbLink);

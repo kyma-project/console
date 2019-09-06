@@ -138,7 +138,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     namespace = await new k8sApiNamespace(namespaceUnderTest);
     const deploymentApi = await new k8sApiDeployment(namespaceUnderTest);
     service = await new k8sApiService(namespaceUnderTest);
-    await deploymentApi.waitUntilCreated()
+    await deploymentApi.waitUntilCreated();
 
     serviceUrl = address.console.getService(
       namespace.definition.metadata.name,
@@ -210,7 +210,6 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   testPluggable(REQUIRED_MODULE, 'Create Application', async () => {
-
     await kymaConsole.createApplication(page, config.testApp);
     const applications = await kymaConsole.getApplicationNames(page);
     expect(applications).toContain(config.testApp);

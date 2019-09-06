@@ -63,34 +63,36 @@ async function getFrame(page) {
 const getFrameForApp = (page, appUrl) => {
   return page.frames().find(frame => {
     const frameUrl = frame.url();
-    const targetFrameFound = frame.parentFrame() !== null && !frame.isDetached() && frameUrl.indexOf(appUrl) !== -1;
+    const targetFrameFound =
+      frame.parentFrame() !== null &&
+      !frame.isDetached() &&
+      frameUrl.indexOf(appUrl) !== -1;
     return targetFrameFound;
   });
 };
 
 const waitForConsoleCoreFrame = (page, waitForLoaded) => {
-  if(waitForLoaded){
+  if (waitForLoaded) {
     return waitForAppFrameLoaded(page, 'consoleapp.html');
   }
   return waitForAppFrameAttached(page, 'consoleapp.html');
-}
+};
 
 const timeoutPromise = (ms, rejectMsg) => {
   return new Promise((resolve, reject) => {
     let timeoutId = setTimeout(() => {
       clearTimeout(timeoutId);
-      reject(rejectMsg)
-    }, ms)
+      reject(rejectMsg);
+    }, ms);
   });
 };
 
-
 const waitForAppFrameAttached = async (page, appUrl) => {
-  const waitForAppFrameAttached = new Promise((resolve) => {
-    (async function checkIfAppFrameAttached(){
+  const waitForAppFrameAttached = new Promise(resolve => {
+    (async function checkIfAppFrameAttached() {
       const frame = await getFrameForApp(page, appUrl);
-        if(frame){
-          resolve(frame)
+      if (frame) {
+        resolve(frame);
       } else {
         setTimeout(checkIfAppFrameAttached, 500);
       }
@@ -99,7 +101,10 @@ const waitForAppFrameAttached = async (page, appUrl) => {
 
   return Promise.race([
     waitForAppFrameAttached,
-    timeoutPromise(WAIT_FOR_FRAME_TIMEOUT, `Waiting for ${appUrl} frame attached timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`)
+    timeoutPromise(
+      WAIT_FOR_FRAME_TIMEOUT,
+      `Waiting for ${appUrl} frame attached timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`,
+    ),
   ]);
 };
 
@@ -109,15 +114,15 @@ const waitForAppFrameLoaded = async (page, appUrl) => {
   const listener = frame => {
     const frameUrl = frame.url();
     frameLoaded = frameUrl && frameUrl.indexOf(appUrl) !== -1;
-  }
+  };
 
   page.on('framenavigated', listener);
 
-  const waitForAppFrameLoaded = new Promise((resolve) => {
-    (function checkIfAppFrameLoaded(){
+  const waitForAppFrameLoaded = new Promise(resolve => {
+    (function checkIfAppFrameLoaded() {
       if (frameLoaded) {
         frameLoaded = false;
-        page.removeListener('framenavigated', listener); 
+        page.removeListener('framenavigated', listener);
         return resolve();
       } else {
         setTimeout(checkIfAppFrameLoaded, 500);
@@ -127,7 +132,10 @@ const waitForAppFrameLoaded = async (page, appUrl) => {
 
   await Promise.race([
     waitForAppFrameLoaded,
-    timeoutPromise(WAIT_FOR_FRAME_TIMEOUT, `Waiting for ${appUrl} frame loaded timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`)
+    timeoutPromise(
+      WAIT_FOR_FRAME_TIMEOUT,
+      `Waiting for ${appUrl} frame loaded timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`,
+    ),
   ]);
 
   return getFrameForApp(page, appUrl);

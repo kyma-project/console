@@ -26,7 +26,10 @@ module.exports = {
       }="modal-confirmation-button"]`;
       const disabledButtonClass = '.is-disabled';
 
-      const frame = await kymaConsole.getFrameForApp(page, `catalog.${config.domain}`);
+      const frame = await kymaConsole.getFrameForApp(
+        page,
+        `catalog.${config.domain}`,
+      );
       await frame.click(addToEnvButton);
       await frame.waitForSelector(modal, { visible: true });
 
@@ -93,7 +96,10 @@ module.exports = {
         config.catalogTestingAtribute
       }="modal-confirmation-button"]`;
 
-      const frame = await kymaConsole.getFrameForApp(page, `instances.${config.domain}`);
+      const frame = await kymaConsole.getFrameForApp(
+        page,
+        `instances.${config.domain}`,
+      );
       await frame.click(createCredentialsButton);
       await frame.waitForSelector(modal, { visible: true });
 
@@ -130,7 +136,10 @@ module.exports = {
         config.catalogTestingAtribute
       }="modal-confirmation-button"]`;
 
-      const frame = await kymaConsole.getFrameForApp(page, `instances.${config.domain}`);
+      const frame = await kymaConsole.getFrameForApp(
+        page,
+        `instances.${config.domain}`,
+      );
       await frame.click(bindAplicationButton);
       await frame.waitForSelector(modal, { visible: true });
 
