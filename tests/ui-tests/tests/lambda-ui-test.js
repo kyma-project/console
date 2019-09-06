@@ -3,6 +3,7 @@ import lambdas from '../commands/lambdas';
 import common from '../commands/common';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+import config from '../config';
 
 import { retry } from '../utils/retry';
 import {
@@ -54,10 +55,9 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await page.$$eval(navItem, item =>
       item.find(text => text.innerText.includes('Lambdas')).click(),
     );
-    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
     // given (go to create lambda)
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await kymaConsole.waitForAppFrameAttached(page, `lambdas-ui.${config.domain}`);
     const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
     const currentLambdas = await lambdas.getLambdas(frame);
@@ -66,29 +66,25 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
       btn.find(text => text.innerText.includes('Add Lambda')).click(),
     );
     // when (fill the input and save)
-    const frame2 = await kymaConsole.getFrame(page);
     const input = '#input-1';
-    await frame2.waitForSelector(input);
-    await frame2.type(input, testLambda);
+    await frame.waitForSelector(input);
+    await frame.type(input, testLambda);
     const createLambdaButton = '.fd-button.fd-button--emphasized';
-    await frame2.$eval(createLambdaButton, btn => btn.click());
+    await frame.$eval(createLambdaButton, btn => btn.click());
 
     // then
-    const frame3 = await kymaConsole.getFrame(page);
     const disabledLambdaNameInput = 'input[name=function_name][disabled]';
-
-    await frame3.waitForSelector(disabledLambdaNameInput);
+    await frame.waitForSelector(disabledLambdaNameInput);
   });
 
   testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
 
-    let frame = await kymaConsole.getFrame(page);
+    let frame = await kymaConsole.getFrameForApp(page, `lambdas-ui.${config.domain}`);
 
     const lambdasListBreadcrumbLink = 'a[fd-breadcrumb-link]';
     await frame.click(lambdasListBreadcrumbLink);
 
-    frame = await kymaConsole.getFrame(page);
     const dropdownButton = `button[aria-controls=${testLambda}]`;
     await frame.waitFor(dropdownButton);
     await frame.click(dropdownButton);
@@ -105,13 +101,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.waitForSelector(deleteConfirmButton, { hidden: true });
 
     //then
-    await retry(async () => {
-      await page.reload({
-        waitUntil: ['domcontentloaded', 'networkidle0'],
-      });
-      const frame2 = await kymaConsole.getFrame(page);
-      const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
-      await frame2.waitForSelector(lambdasEmptyPage);
-    });
+    const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
+    await frame.waitForSelector(lambdasEmptyPage);
   });
 });
