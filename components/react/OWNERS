@@ -1,0 +1,7 @@
+reviewers:
+    - default-reviewers
+
+approvers:
+    - default-approvers
+    - Wawrzyn321
+    - content-reviewers

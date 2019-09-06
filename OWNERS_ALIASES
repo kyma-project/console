@@ -1,0 +1,34 @@
+aliases:
+    default-reviewers:
+    - parostatkiem
+    - Wawrzyn321
+    - y-kkamil
+    - dariadomagala
+    - akucharska
+    - sjanota
+    default-approvers:
+    - parostatkiem
+    - kwiatekus
+    - y-kkamil
+    - dariadomagala
+    - akucharska
+    content-reviewers:
+    - magicmatatjahu
+    - aerfio
+    - m00g3n
+    documentation-reviewers:
+    - kazydek
+    - klaudiagrz
+    - tomekpapiernik
+    - bszwarc
+    - mmitoraj
+    - majakurcius
+    - alexandra-simeonova
+    documentation-approvers:
+    - kazydek
+    - klaudiagrz
+    - tomekpapiernik
+    - bszwarc
+    - mmitoraj
+    - majakurcius
+    - alexandra-simeonova
