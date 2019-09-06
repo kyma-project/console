@@ -5,7 +5,7 @@ export const DEFAULT_CONFIGURATION =
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
   'This is the default addons configuration. Do not edit or delete it.';
 export const HELM_BROKER_REPO_URL_PREFIXES = (window as any).clusterConfig
-  .HELM_BROKER_REPO_URL_PREFIXES;
+  .HELM_BROKER_REPO_URL_PREFIXES || ["https://", "git::", "github.com/", "bitbucket.org/", "http://"];
 
 export const KYMA_SYSTEM_ENV = 'kyma-system';
 export const NOTIFICATION_SHOW_TIME = 5000;
@@ -74,7 +74,7 @@ export const MODAL = {
   DELETE_MODAL_TITLE: 'Delete',
 };
 
-const HELP_URL_FIELDS_LIST = `'${HELM_BROKER_REPO_URL_PREFIXES.join(`', '`)}'`;
+const HELP_URL_FIELDS_LIST = HELM_BROKER_REPO_URL_PREFIXES.join(", ");
 export const HELP = {
   URL_FIELD: `The URL must be unique for a given configuration and start with one of the following prefixes: ${HELP_URL_FIELDS_LIST}`,
   NAME_FIELD:
