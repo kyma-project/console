@@ -5,11 +5,11 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
   className="fd-panel fd-panel--no-background"
 >
   <div
-    className="fd-action-bar sc-kafWEX kXuvQ"
+    className="fd-action-bar sc-ksYbfQ bYVodr"
     data-e2e-id="toolbar"
   >
     <div
-      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      className="fd-action-bar__header sc-frDJqD dkgsYC"
       data-e2e-id="toolbar-header"
     >
       <h1
@@ -19,7 +19,7 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
       </h1>
     </div>
     <div
-      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
       data-e2e-id="toolbar-actions"
     >
       <div
@@ -102,13 +102,13 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
     className="fd-panel__body"
   >
     <div
-      className="fd-panel sc-gGBfsJ eaQlFN"
+      className="fd-panel sc-caSCKo jjNSwx"
     >
       <div
-        className="fd-panel__body sc-hEsumM gUkXwJ"
+        className="fd-panel__body sc-TOsTZ iphcEB"
       >
         <table
-          className="fd-table sc-ktHwxA kmRrJU"
+          className="fd-table sc-kgAjT EPChu"
         >
           <thead>
             <tr>
@@ -184,11 +184,11 @@ exports[`GenericList Renders title and description 1`] = `
   className="fd-panel fd-panel--no-background"
 >
   <div
-    className="fd-action-bar sc-kafWEX kXuvQ"
+    className="fd-action-bar sc-ksYbfQ bYVodr"
     data-e2e-id="toolbar"
   >
     <div
-      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      className="fd-action-bar__header sc-frDJqD dkgsYC"
       data-e2e-id="toolbar-header"
     >
       <h1
@@ -203,7 +203,7 @@ exports[`GenericList Renders title and description 1`] = `
       </p>
     </div>
     <div
-      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
       data-e2e-id="toolbar-actions"
     >
       <div
@@ -267,13 +267,13 @@ exports[`GenericList Renders title and description 1`] = `
     className="fd-panel__body"
   >
     <div
-      className="fd-panel sc-gGBfsJ eaQlFN"
+      className="fd-panel sc-caSCKo jjNSwx"
     >
       <div
-        className="fd-panel__body sc-hEsumM gUkXwJ"
+        className="fd-panel__body sc-TOsTZ iphcEB"
       >
         <table
-          className="fd-table sc-ktHwxA kmRrJU"
+          className="fd-table sc-kgAjT EPChu"
         >
           <thead>
             <tr />
@@ -281,7 +281,7 @@ exports[`GenericList Renders title and description 1`] = `
           <tbody />
         </table>
         <p
-          className="sc-cIShpX eszIwp"
+          className="sc-cJSrbW gXxzRq"
         >
           There are no items to show
         </p>
@@ -296,11 +296,11 @@ exports[`GenericList Renders with minimal props 1`] = `
   className="fd-panel fd-panel--no-background"
 >
   <div
-    className="fd-action-bar sc-kafWEX kXuvQ"
+    className="fd-action-bar sc-ksYbfQ bYVodr"
     data-e2e-id="toolbar"
   >
     <div
-      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      className="fd-action-bar__header sc-frDJqD dkgsYC"
       data-e2e-id="toolbar-header"
     >
       <h1
@@ -310,7 +310,7 @@ exports[`GenericList Renders with minimal props 1`] = `
       </h1>
     </div>
     <div
-      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
       data-e2e-id="toolbar-actions"
     >
       <div
@@ -374,13 +374,13 @@ exports[`GenericList Renders with minimal props 1`] = `
     className="fd-panel__body"
   >
     <div
-      className="fd-panel sc-gGBfsJ eaQlFN"
+      className="fd-panel sc-caSCKo jjNSwx"
     >
       <div
-        className="fd-panel__body sc-hEsumM gUkXwJ"
+        className="fd-panel__body sc-TOsTZ iphcEB"
       >
         <table
-          className="fd-table sc-ktHwxA kmRrJU"
+          className="fd-table sc-kgAjT EPChu"
         >
           <thead>
             <tr />
@@ -388,7 +388,7 @@ exports[`GenericList Renders with minimal props 1`] = `
           <tbody />
         </table>
         <p
-          className="sc-cIShpX eszIwp"
+          className="sc-cJSrbW gXxzRq"
         >
           There are no items to show
         </p>
@@ -403,11 +403,11 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
   className="fd-panel fd-panel--no-background"
 >
   <div
-    className="fd-action-bar sc-kafWEX kXuvQ"
+    className="fd-action-bar sc-ksYbfQ bYVodr"
     data-e2e-id="toolbar"
   >
     <div
-      className="fd-action-bar__header sc-iELTvK cWSWPl"
+      className="fd-action-bar__header sc-frDJqD dkgsYC"
       data-e2e-id="toolbar-header"
     >
       <h1
@@ -417,7 +417,7 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
       </h1>
     </div>
     <div
-      className="fd-action-bar__actions sc-cmTdod fVngQh"
+      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
       data-e2e-id="toolbar-actions"
     >
       <div
@@ -500,13 +500,13 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
     className="fd-panel__body"
   >
     <div
-      className="fd-panel sc-gGBfsJ eaQlFN"
+      className="fd-panel sc-caSCKo jjNSwx"
     >
       <div
-        className="fd-panel__body sc-hEsumM gUkXwJ"
+        className="fd-panel__body sc-TOsTZ iphcEB"
       >
         <table
-          className="fd-table sc-ktHwxA kmRrJU"
+          className="fd-table sc-kgAjT EPChu"
         >
           <thead>
             <tr>
