@@ -1,19 +1,19 @@
 # Default owners of the repository
-* @akucharska @dariadomagala @y-kkamil @antiheld @parostatkiem @Wawrzyn321
+* @akucharska @dariadomagala @y-kkamil @antiheld @parostatkiem
 
-/catalog/ @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/instances/ @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/brokers/ @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/common/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/content/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/compass/ @dariadomagala @y-kkamil @akucharska @parostatkiem @Wawrzyn321
-/components/angular/ @dariadomagala @y-kkamil @akucharska @parostatkiem @Wawrzyn321
-/components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/components/shared/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/components/generic-documentation/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/core/ @dariadomagala @y-kkamil @parostatkiem @akucharska @Wawrzyn321
-/tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem @Wawrzyn321
-/lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska @Wawrzyn321
+/catalog/ @akucharska @dariadomagala @y-kkamil @parostatkiem
+/instances/ @akucharska @dariadomagala @y-kkamil @parostatkiem
+/brokers/ @akucharska @dariadomagala @y-kkamil @parostatkiem
+/common/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/content/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/compass/ @dariadomagala @y-kkamil @akucharska @parostatkiem
+/components/angular/ @dariadomagala @y-kkamil @akucharska @parostatkiem
+/components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/components/shared/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/components/generic-documentation/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
+/core/ @dariadomagala @y-kkamil @parostatkiem @akucharska
+/tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem
+/lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj @majakurcius @alexandra-simeonova
