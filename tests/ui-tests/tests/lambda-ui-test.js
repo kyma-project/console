@@ -63,7 +63,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     );
     const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
-    const currentLambdas = await lambdas.getLambdas(frame);
+    await lambdas.getLambdas(frame);
     const addLambdaButton = '.fd-button.sap-icon--add';
     await frame.$$eval(addLambdaButton, btn =>
       btn.find(text => text.innerText.includes('Add Lambda')).click(),

@@ -14,7 +14,6 @@ import {
 } from './../setup/k8s-api';
 
 let page, browser, namespace;
-let token = '';
 
 // TODO: Move application tests to a separate file
 const REQUIRED_MODULE = 'application';

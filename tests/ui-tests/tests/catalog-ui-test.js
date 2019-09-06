@@ -409,11 +409,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       exampleInstanceLink,
       { visible: true },
     );
-    await minimalPlanInstance.click(),
-      await frame.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0'],
-      }),
-      console.log('Confirm all necessary fields');
+    await minimalPlanInstance.click();
+    await frame.waitForNavigation({
+      waitUntil: ['domcontentloaded', 'networkidle0'],
+    });
+
+    console.log('Confirm all necessary fields');
     await frame.waitForSelector(exampleInstanceServiceClass);
     const serviceClass = await frame.$(exampleInstanceServiceClass);
     const servicePlan = await frame.$(exampleInstanceServicePlan);

@@ -1,7 +1,6 @@
 import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
 import common from '../commands/common';
-import docs from '../commands/docs';
 import address from '../utils/address';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';

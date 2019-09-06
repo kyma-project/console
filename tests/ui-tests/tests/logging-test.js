@@ -1,13 +1,11 @@
 import config from '../config';
 import kymaConsole from '../commands/console';
 import common from '../commands/common';
-import logOnEvents from '../utils/logging';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import logsCommands from '../commands/logging';
 
 let browser, page;
-let token = '';
 
 describeIf(dex.isStaticUser() && config.loggingEnabled, 'Log UI tests', () => {
   beforeAll(async () => {
