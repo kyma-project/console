@@ -13,7 +13,7 @@ validate:
 	npm run type-check
 
 .PHONY: validate-libraries
-validate:
+validate-libraries:
 	cd common && npm run type-check
 	cd components/shared && npm run type-check
 	cd components/generic-documentation && npm run type-check
