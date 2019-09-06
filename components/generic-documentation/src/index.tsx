@@ -120,10 +120,6 @@ export const GenericComponent: React.FunctionComponent<
     fetchAssets();
   }, [docsTopic]);
 
-  if (!docsTopic) {
-    return null;
-  }
-
   if (!sources || !sources.length) {
     return null;
   }
