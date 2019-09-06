@@ -6,6 +6,7 @@ import dex from '../utils/dex';
 import logsCommands from '../commands/logging';
 
 let browser, page;
+let token = ''; // eslint-disable-line no-unused-vars
 
 describeIf(dex.isStaticUser() && config.loggingEnabled, 'Log UI tests', () => {
   beforeAll(async () => {
