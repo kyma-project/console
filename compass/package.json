@@ -25,8 +25,8 @@
     "build": "../node_modules/.bin/react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
     "test": "../node_modules/.bin/react-scripts test",
     "eject": "../node_modules/.bin/react-scripts eject",
-    "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
-    "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch"
+    "buildConfig": "../node_modules/.bin/webpack --mode production --config webpack-generateConfig.config",
+    "buildConfig:watch": "../node_modules/.bin/webpack -d --config webpack-generateConfig.config --watch"
   },
   "browserslist": {
     "production": [
@@ -51,8 +51,7 @@
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
     "live-server": "^1.2.1",
-    "wait-on": "^3.2.0",
-    "webpack-cli": "^3.3.5"
+    "wait-on": "^3.2.0"
   },
   "config": {
     "unsafe-perm": true
