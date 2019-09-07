@@ -28,7 +28,7 @@ ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/compass && npm buildConfig
+RUN cd /app/compass && npm run buildConfig
 RUN cd /app/compass && npm test
 RUN cd /app/compass && npm run build
 
