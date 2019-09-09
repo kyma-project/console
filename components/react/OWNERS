@@ -1,7 +1,9 @@
 reviewers:
-    - default-reviewers
+    - default-approvers
+    - Wawrzyn321
+    - content-ui-approvers
 
 approvers:
     - default-approvers
     - Wawrzyn321
-    - content-reviewers
+    - content-ui-approvers

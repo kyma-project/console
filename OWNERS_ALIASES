@@ -12,10 +12,12 @@ aliases:
     - y-kkamil
     - dariadomagala
     - akucharska
-    content-reviewers:
+    content-ui-reviewers:
     - magicmatatjahu
     - aerfio
-    - m00g3n
+    content-ui-approvers:
+    - magicmatatjahu
+    - aerfio
     documentation-reviewers:
     - kazydek
     - klaudiagrz

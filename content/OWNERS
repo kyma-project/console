@@ -1,6 +1,6 @@
 reviewers:
     - default-reviewers
-    - content-reviewers
+    - content-ui-reviewers
 
 approvers:
-    - content-reviewers
+    - content-ui-approvers
