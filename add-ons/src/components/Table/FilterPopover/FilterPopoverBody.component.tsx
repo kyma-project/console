@@ -5,7 +5,6 @@ import {
   FormItem,
   FormInput,
   FormLabel,
-  Button,
 } from 'fundamental-react';
 
 import { FiltersLabelsInterface, Filters } from '../../../types';
@@ -19,7 +18,7 @@ interface Props {
 
 const FilterPopoverBody: React.FunctionComponent<
   Props & FiltersLabelsInterface
-> = ({ activeFilters, uniqueLabels, setFilterLabel, hasActiveLabel }) => (
+> = ({ uniqueLabels, setFilterLabel, hasActiveLabel }) => (
   <FormFieldsetWrapper>
     <FormFieldset>
       <StyledGroup>

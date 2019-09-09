@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Status, StatusWrapper } from '@kyma-project/react-components';
 import { GenericComponent } from '@kyma-project/generic-documentation';
-import LuigiClient from '@kyma-project/luigi-client';
 
 import { ServiceClassInstancesTable } from '../ServiceClassInstancesTable/ServiceClassInstancesTable.component';
 import { serviceClassConstants } from '../../../variables';
@@ -20,21 +19,6 @@ function getTabElementsIndicator(instancesCount) {
   );
 }
 
-const tabRouteHandler = {
-  determineSelectedTab: function(tabList) {
-    const selectedTab = LuigiClient.getNodeParams().selectedTab;
-    return tabList.indexOf(selectedTab) >= 0
-      ? tabList.indexOf(selectedTab)
-      : undefined;
-  },
-  selectTab: function(tabList, index) {
-    const activeTab = tabList[index];
-    LuigiClient.linkManager()
-      .withParams({ selectedTab: activeTab })
-      .navigate('');
-  },
-};
-
 const ServiceClassTabs = ({ serviceClass }) => {
   const docsTopic =
     serviceClass && (serviceClass.docsTopic || serviceClass.clusterDocsTopic);
@@ -48,7 +32,7 @@ const ServiceClassTabs = ({ serviceClass }) => {
               {getTabElementsIndicator(serviceClass.instances.length)}
             </>
           ),
-          content: (
+          children: (
             <ServiceClassInstancesTable tableData={serviceClass.instances} />
           ),
           id: serviceClassConstants.instancesTabText,
@@ -61,7 +45,6 @@ const ServiceClassTabs = ({ serviceClass }) => {
       docsTopic={docsTopic}
       additionalTabs={additionalTabs}
       layout="catalog-ui"
-      tabRouteHandler={tabRouteHandler}
     />
   );
 };

@@ -1,45 +1,43 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { ApolloProvider } from 'react-apollo-hooks';
+import { bootstrap, BackendModules } from '@kyma-project/common';
+import { NotificationContainer } from '@kyma-project/components';
 
 import App from './core/App';
-import 'fiori-fundamentals/dist/fiori-fundamentals.min.css';
 
-import nestServices from './services/nest';
 import {
-  NotificationsProvider,
   QueriesProvider,
   MutationsProvider,
-  SubscriptionsProvider,
   FiltersProvider,
   ConfigurationsProvider,
   LabelsProvider,
   UrlsProvider,
+  SubscriptionsProvider,
 } from './services';
 
-import appInitializer from './core/app-initializer';
-import { createApolloClient } from './core/apollo-client';
-
-const Services = nestServices(
-  NotificationsProvider,
-  QueriesProvider,
-  MutationsProvider,
-  FiltersProvider,
-  ConfigurationsProvider,
-  LabelsProvider,
-  UrlsProvider,
-  SubscriptionsProvider,
-);
-
 (async () => {
-  await appInitializer.init();
-  const client = createApolloClient();
-  ReactDOM.render(
-    <ApolloProvider client={client}>
-      <Services>
+  const services = [
+    QueriesProvider,
+    MutationsProvider,
+    FiltersProvider,
+    ConfigurationsProvider,
+    LabelsProvider,
+    UrlsProvider,
+    SubscriptionsProvider,
+  ];
+
+  await bootstrap({
+    app: (
+      <>
+        <NotificationContainer />
         <App />
-      </Services>
-    </ApolloProvider>,
-    document.getElementById('root'),
-  );
+      </>
+    ),
+    requiredBackendModules: [
+      BackendModules.SERVICE_CATALOG,
+      BackendModules.SERVICE_CATALOG_ADDONS,
+    ],
+    enableNotifications: true,
+    enableSubscriptions: true,
+    services,
+  });
 })();

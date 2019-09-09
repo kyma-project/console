@@ -1,2 +1,2 @@
-export * from './MarkdownSingleRenderer';
-export * from './GroupRenderer';
+export * from './Markdown.renderer';
+export * from './Group.renderer';

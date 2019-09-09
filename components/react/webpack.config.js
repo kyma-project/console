@@ -33,7 +33,7 @@ module.exports = {
     extensions: ['.js'],
   },
   output: {
-    path: path.join(__dirname, '/lib'),
+    path: path.join(__dirname, '/dist'),
     publicPath: '/',
     filename: 'index.js',
     library: libraryName,

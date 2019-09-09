@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Tooltip } from '@kyma-project/components';
 import {
   MarkdownRenderEngineOptions,
   MarkdownParserPluginReturnType,
 } from '@kyma-project/dc-markdown-render-engine';
-
-import { Tooltip } from '../../../../components';
 
 import { RELATIVE_LINKS_DISABLED } from '../../../../constants';
 

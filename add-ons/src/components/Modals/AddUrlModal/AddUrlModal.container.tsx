@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import React, { useState, useContext } from 'react';
 
 import { useInput } from '../../../services/Forms';
 import {
@@ -9,7 +8,6 @@ import {
 } from '../../../services';
 
 import AddUrlModal from './AddUrlModal.component';
-import { DEFAULT_CONFIGURATION, ERRORS } from '../../../constants';
 
 interface Props {
   configurationName?: string;
@@ -18,7 +16,9 @@ interface Props {
 const AddUrlModalContainer: React.FunctionComponent<Props> = ({
   configurationName,
 }) => {
-  const { addAddonsConfigurationUrls } = useContext(MutationsService);
+  const {
+    addAddonsConfigurationUrls: [addAddonsConfigurationUrls],
+  } = useContext(MutationsService);
   const { configurationNames } = useContext(ConfigurationsService);
   const { getUrlsFromConfigByName, validateUrl } = useContext(UrlsService);
 
@@ -87,11 +87,6 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
 
   const onShowModal = () => {
     resetFields();
-    LuigiClient.uxManager().addBackdrop();
-  };
-
-  const onHideModal = () => {
-    LuigiClient.uxManager().removeBackdrop();
   };
 
   const configs = configurationName ? [configurationName] : configurationNames;
@@ -108,7 +103,6 @@ const AddUrlModalContainer: React.FunctionComponent<Props> = ({
       removeUrl={removeUrl}
       handleEnterDownOnUrlField={handleEnterDownOnUrlField}
       onShowModal={onShowModal}
-      onHideModal={onHideModal}
     />
   );
 };

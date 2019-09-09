@@ -34,6 +34,7 @@ export function parseSpecFromText(textData) {
   };
 
   const errors = [];
+  /* eslint-disable no-unused-vars */
   for (const type of Object.keys(parsers)) {
     try {
       return {
@@ -45,6 +46,7 @@ export function parseSpecFromText(textData) {
       // move on to the next parser
     }
   }
+  /* eslint-enable no-unused-vars */
 
   // warn only if no parser succeeded
   errors.forEach(console.warn);

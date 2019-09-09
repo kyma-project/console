@@ -42,16 +42,30 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^0.12.4",
+    "@angular/cli": "~7.1.4",
+    "@angular/compiler-cli": "~7.1.4",
+    "@angular/language-service": "~7.1.4",
+    "@types/jasmine": "~2.8.8",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
+    "codelyzer": "~4.5.0",
+    "jasmine-core": "~3.3.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~3.0.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "~1.4.0",
+    "protractor": "~5.4.0",
+    "puppeteer": "^1.19.0",
+    "ts-node": "~7.0.0",
+    "tslint": "^5.11.0",
+    "tslint-angular": "^1.1.2",
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "3.1.6",
+    "webpack": "^4.28.3",
+    "webpack-dev-server": "^3.1.14"
   }
 }

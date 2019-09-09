@@ -1,8 +1,9 @@
+import { useContext } from 'react';
 import gql from 'graphql-tag';
 import createContainer from 'constate';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
+import { GlobalService } from '@kyma-project/common';
 
-import appInitializer from '../core/app-initializer';
 import { Configuration } from '../types';
 
 const queryFields = `
@@ -36,7 +37,7 @@ interface AddonsConfigurationsVariables {
 }
 
 const useQueries = () => {
-  const currentNamespace = appInitializer.getCurrentNamespace();
+  const { currentNamespace } = useContext(GlobalService);
   const query = currentNamespace
     ? ADDONS_CONFIGURATIONS_QUERY
     : CLUSTER_ADDONS_CONFIGURATIONS_QUERY;

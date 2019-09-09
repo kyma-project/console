@@ -1,5 +1,5 @@
 import React from 'react';
-import { TreeView, Popover, Button, InlineHelp } from 'fundamental-react';
+import { TreeView, InlineHelp } from 'fundamental-react';
 
 import DeleteConfigurationModal from '../Modals/DeleteConfigurationModal/DeleteConfigurationModal.container';
 import AddUrlModal from '../Modals/AddUrlModal/AddUrlModal.container';
@@ -97,9 +97,13 @@ const TableContentComponent: React.FunctionComponent<TableContentProps> = ({
                 <TreeView.Item>
                   {config.urls.map(url => (
                     <TreeView.Row key={url}>
-                      <TreeView.Col className="addons-url">
+                      <TreeView.Col className="add-ons-url">
                         {url.startsWith('http') ? (
-                          <a href={url} target="_blank">
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {url}
                           </a>
                         ) : (

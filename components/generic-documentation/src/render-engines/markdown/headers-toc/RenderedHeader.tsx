@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
+import { createElementClass, createModifierClass } from '@kyma-project/common';
 import { plugins } from '@kyma-project/dc-markdown-render-engine';
+
 import { CollapseArrow } from './styled';
 
 export type Header = plugins.Header;
 export type ActiveAnchors = plugins.ActiveAnchors;
-
-const CLASS_NAME_PREFIX = 'cms';
-
-const createElementClass = (element: string) =>
-  element ? `${CLASS_NAME_PREFIX}__${element}` : '';
-const createModifierClass = (modifier: string, element?: string) =>
-  modifier
-    ? `${CLASS_NAME_PREFIX}${element ? `__${element}` : ''}--${modifier}`
-    : '';
 
 const sumNumberOfHeaders = (headers: Header[]): number => {
   let sum: number = headers.length;

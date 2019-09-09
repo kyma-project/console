@@ -1,8 +1,8 @@
 {
-  "name": "service-catalog-ui",
+  "name": "@kyma-project/service-catalog-ui",
   "description": "All Service Catalog UIs",
-  "version": "0.5.0",
   "private": true,
+  "license": "Apache-2.0",
   "devDependencies": {
     "concurrently": "^4.1.1"
   },

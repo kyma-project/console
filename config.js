@@ -25,4 +25,12 @@ window.clusterConfig = {
   addOnsModuleUrl: 'http://' + localDomain + ':8004',
   lambdasModuleUrl: 'http://' + localDomain + ':4201',
   logsModuleUrl: 'http://' + localDomain + ':4400',
+
+  HELM_BROKER_REPO_URL_PREFIXES: [
+    'https://',
+    'git::',
+    'github.com/',
+    'bitbucket.org/',
+    'http://',
+  ],
 };

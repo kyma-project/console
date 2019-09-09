@@ -1,0 +1,12 @@
+{
+  "name": "@kyma-project/common",
+  "description": "Common for Kyma console",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
+}

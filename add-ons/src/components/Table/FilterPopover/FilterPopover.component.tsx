@@ -1,8 +1,6 @@
 import React from 'react';
 import { Popover, Button, Counter } from 'fundamental-react';
 
-import FilterPopoverBody from './FilterPopoverBody.component';
-
 interface Props {
   body: React.ReactNode;
   activeFiltersLength: number;
@@ -22,14 +20,7 @@ const FilterPopoverComponent: React.FunctionComponent<Props> = ({
     </Button>
   );
 
-  return (
-    <Popover
-      body={body}
-      control={control}
-      placement="bottom-end"
-      className="fd-popover__popper"
-    />
-  );
+  return <Popover body={body} control={control} placement="bottom-end" />;
 };
 
 export default FilterPopoverComponent;

@@ -1,6 +1,6 @@
+import { toKebabCase } from '@kyma-project/common';
 import { Source } from '@kyma-project/documentation-component';
 import { plugins } from '@kyma-project/dc-markdown-render-engine';
-import { toKebabCase } from '../../../helpers/toKebabCase';
 
 type Header = plugins.Header;
 

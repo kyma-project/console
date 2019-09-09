@@ -2,9 +2,7 @@ import config from '../config';
 
 export const configExampleServiceClassName = 'Testing addon';
 export const configExampleServiceClassNameAndProvider = 'Testing addonSAP';
-export const configExampleServiceClassButton = `div[${
-  config.catalogTestingAtribute
-}="go-to-details-testing-addon"]`;
+export const configExampleServiceClassButton = `div[${config.catalogTestingAtribute}="go-to-details-testing-addon"]`;
 export const configInstanceTitle = 'testing-addon-minimal-instance';
 export const configInstanceTitle2 = 'testing-addon-full-instance';
 export const configInstanceLabel = 'test-label';

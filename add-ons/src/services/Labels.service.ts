@@ -3,7 +3,7 @@ import createContainer from 'constate';
 
 import { ConfigurationsService } from './index';
 
-import { Configuration, ConfigurationLabels, FilterLabels } from '../types';
+import { Configuration, FilterLabels } from '../types';
 import {
   ERRORS,
   LABEL_VARIABLE,
@@ -46,7 +46,7 @@ const useLabels = () => {
   };
 
   const sortLabels = (labels: FilterLabels): FilterLabels => {
-    Object.keys(labels).map(key => {
+    Object.keys(labels).forEach(key => {
       labels[key] = labels[key].sort((a, b) => a.localeCompare(b));
     });
     return labels;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   FormSet,
@@ -8,7 +8,7 @@ import {
   FormMessage,
   Icon,
 } from 'fundamental-react';
-import { Modal } from '@kyma-project/react-components';
+import { Modal } from '@kyma-project/components';
 
 import InlineHelp from '../../Atoms/InlineHelp';
 
@@ -28,7 +28,7 @@ interface Props {
   urlField: any;
   labels: string[];
   urls: string[];
-  onSubmit: (event: any) => void;
+  onSubmit: () => void;
   addUrl: () => void;
   removeUrl: (url: string) => void;
   addLabel: () => void;
@@ -36,7 +36,6 @@ interface Props {
   handleEnterDownOnLabelsField: (e: any) => void;
   handleEnterDownOnUrlField: (e: any) => void;
   onShowModal: () => void;
-  onHideModal: () => void;
   error: boolean;
 }
 
@@ -54,7 +53,6 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
   handleEnterDownOnLabelsField,
   handleEnterDownOnUrlField,
   onShowModal,
-  onHideModal,
   error,
 }) => {
   const modalOpeningComponent = (
@@ -93,15 +91,13 @@ const AddNewConfigurationModalComponent: React.FunctionComponent<Props> = ({
     <Modal
       width="681px"
       title={MODAL.ADD_NEW_CONFIGURATION_MODAL_TITLE}
-      type="emphasized"
       confirmText={MODAL.CONFIRM_TEXT}
-      cancelText={MODAL.CANCEL_TEXT}
-      modalOpeningComponent={modalOpeningComponent}
+      closeText={MODAL.CANCEL_TEXT}
+      openingComponent={modalOpeningComponent}
       onConfirm={onSubmit}
       disabledConfirm={disabledConfirm}
-      onShow={onShowModal}
-      onHide={onHideModal}
-      tooltipData={disabledConfirm ? TOOLTIP_DATA_ERROR : null}
+      onOpen={onShowModal}
+      tooltipData={disabledConfirm ? TOOLTIP_DATA_ERROR : undefined}
     >
       <FormSet>
         <FormItem key="name">
