@@ -5,8 +5,8 @@ import Header from './Header/Header';
 export default function(props) {
   return (
     <>
-      <LogTable />
       <Header />
+      <LogTable />
     </>
   );
 }

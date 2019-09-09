@@ -1,5 +1,5 @@
-var domain = 'grazyna.cluster.stage.faros.kyma.cx';
-var localDomain = 'console-dev.grazyna.cluster.stage.faros.kyma.cx';
+var domain = 'arnold.cluster.stage.faros.kyma.cx';
+var localDomain = 'console-dev.arnold.cluster.stage.faros.kyma.cx';
 
 window.clusterConfig = {
   graphqlApiUrl: 'https://console-backend.' + domain + '/graphql',
@@ -25,4 +25,12 @@ window.clusterConfig = {
   addOnsModuleUrl: 'http://' + localDomain + ':8004',
   lambdasModuleUrl: 'http://' + localDomain + ':4201',
   logsModuleUrl: 'http://' + localDomain + ':4400',
+
+  HELM_BROKER_REPO_URL_PREFIXES: [
+    'https://',
+    'git::',
+    'github.com/',
+    'bitbucket.org/',
+    'http://',
+  ],
 };
