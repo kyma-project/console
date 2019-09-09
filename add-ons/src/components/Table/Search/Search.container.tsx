@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import useClickOutside from 'click-outside-hook';
 
 import { useInput } from '../../../services/Forms';
@@ -8,10 +8,7 @@ import Search from './Search.component';
 
 const SearchContainer: React.FunctionComponent = () => {
   const { configurationsExist } = useContext(ConfigurationsService);
-  const {
-    setSearchFilter,
-    activeFilters: { search },
-  } = useContext(FiltersService);
+  const { setSearchFilter } = useContext(FiltersService);
 
   const searchField = useInput('');
   const [showSearchIcon, setShowSearchIcon] = useState<boolean>(true);
@@ -24,7 +21,7 @@ const SearchContainer: React.FunctionComponent = () => {
 
   useEffect(() => {
     setSearchFilter(searchField.value);
-  }, [searchField.value]);
+  }, [searchField.value, setSearchFilter]);
 
   return (
     <Search

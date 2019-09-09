@@ -45,9 +45,7 @@ export class k8sApiService {
       )).response.body.items.length > 0;
     if (resourceExists) {
       console.info(
-        `Service ${
-          this.definition.metadata.name
-        } already exists, but probably it shouldn't. Skipping creation`,
+        `Service ${this.definition.metadata.name} already exists, but probably it shouldn't. Skipping creation`,
       );
       return;
     }

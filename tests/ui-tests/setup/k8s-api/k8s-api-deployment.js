@@ -112,9 +112,7 @@ export class k8sApiDeployment {
       )).response.body.items.length > 0;
     if (resourceExists) {
       console.info(
-        `Deployment ${
-          this.definition.metadata.name
-        } already exists, but probably it shouldn't. Skipping creation`,
+        `Deployment ${this.definition.metadata.name} already exists, but probably it shouldn't. Skipping creation`,
       );
       return;
     }

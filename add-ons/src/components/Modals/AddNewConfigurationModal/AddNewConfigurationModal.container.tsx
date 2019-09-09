@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import React, { useState, useContext } from 'react';
 
 import { useInput } from '../../../services/Forms';
 import {
@@ -9,21 +8,19 @@ import {
   LabelsService,
   UrlsService,
 } from '../../../services';
+import { ConfigurationLabels } from '../../../types';
 
 import Component from './AddNewConfigurationModal.component';
-
-import { ConfigurationLabels } from '../../../types';
 
 const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
   // Services
   const { error } = useContext(QueriesService);
-  const { createAddonsConfiguration } = useContext(MutationsService);
   const {
-    configurationsExist,
-    originalConfigs,
-    validateName,
-    configNameGenerator,
-  } = useContext(ConfigurationsService);
+    createAddonsConfiguration: [createAddonsConfiguration],
+  } = useContext(MutationsService);
+  const { validateName, configNameGenerator } = useContext(
+    ConfigurationsService,
+  );
   const { validateLabel } = useContext(LabelsService);
   const { validateUrl } = useContext(UrlsService);
 
@@ -100,7 +97,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
       return extractedLabels;
     }
 
-    labels.map(label => {
+    labels.forEach(label => {
       const splitedLabel = label.split('=');
       extractedLabels[splitedLabel[0]] = splitedLabel[1];
     });
@@ -137,12 +134,7 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
 
   const onShowModal = () => {
     resetFields();
-    LuigiClient.uxManager().addBackdrop();
     nameField.setValue(configNameGenerator());
-  };
-
-  const onHideModal = () => {
-    LuigiClient.uxManager().removeBackdrop();
   };
 
   return (
@@ -160,7 +152,6 @@ const AddNewConfigurationModalContainer: React.FunctionComponent = () => {
       handleEnterDownOnLabelsField={handleEnterDownOnLabelsField}
       handleEnterDownOnUrlField={handleEnterDownOnUrlField}
       onShowModal={onShowModal}
-      onHideModal={onHideModal}
       error={Boolean(error)}
     />
   );

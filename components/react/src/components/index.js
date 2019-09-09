@@ -33,7 +33,6 @@ import {
   PanelFooter,
 } from './Panel';
 import Paragraph from './Paragraph';
-import ReactMarkdown from './ReactMarkdown';
 import Search from './Search';
 import Separator from './Separator';
 import Spinner from './Spinner';
@@ -96,7 +95,6 @@ module.exports = {
   PanelFilters,
   PanelFooter,
   Paragraph,
-  ReactMarkdown,
   Search,
   Separator,
   Spinner,

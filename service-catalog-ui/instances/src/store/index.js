@@ -37,7 +37,6 @@ export function createApolloClient() {
       reconnect: true,
     },
   });
-
   const cache = new InMemoryCache();
 
   const errorLink = onError(

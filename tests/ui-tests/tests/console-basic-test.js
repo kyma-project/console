@@ -105,9 +105,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
           }
           if (response.statusCode !== expectedStatusCode) {
             resolve(
-              `expected status code ${expectedStatusCode}, received ${
-                response.statusCode
-              }`,
+              `expected status code ${expectedStatusCode}, received ${response.statusCode}`,
             );
           }
           resolve(true);
@@ -218,9 +216,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   testPluggable(REQUIRED_MODULE, 'Go to details and back', async () => {
     const frame = await kymaConsole.waitForConsoleCoreFrame(page);
     await frame.waitForXPath(
-      `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${
-        config.testApp
-      }")]`,
+      `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${config.testApp}")]`,
     );
     await kymaConsole.openLinkOnFrame(
       page,
@@ -237,9 +233,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   testPluggable(REQUIRED_MODULE, 'Delete Application', async () => {
     const frame = await kymaConsole.waitForConsoleCoreFrame(page);
     await frame.waitForXPath(
-      `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${
-        config.testApp
-      }")]`,
+      `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${config.testApp}")]`,
     );
     const initialApplications = await kymaConsole.getApplicationNames(page);
     await kymaConsole.deleteApplication(page, config.testApp);

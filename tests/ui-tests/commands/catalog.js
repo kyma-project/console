@@ -21,9 +21,7 @@ module.exports = {
       const additionalData = '#root_additionalData';
       const planName = '#root_planName';
       const regExpDataId = '#root_onlyNumbersString';
-      const modalCreate = `[${
-        config.catalogTestingAtribute
-      }="modal-confirmation-button"]`;
+      const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
       const disabledButtonClass = '.is-disabled';
 
       const frame = await kymaConsole.getFrameForApp(
@@ -87,14 +85,10 @@ module.exports = {
   },
   createCredentials: async (page, additionalData) => {
     try {
-      const createCredentialsButton = `[${
-        config.catalogTestingAtribute
-      }="create-credentials"]`;
+      const createCredentialsButton = `[${config.catalogTestingAtribute}="create-credentials"]`;
       const modal = '.fd-modal';
       const additionalDataInput = '#root_exampleField';
-      const modalCreate = `[${
-        config.catalogTestingAtribute
-      }="modal-confirmation-button"]`;
+      const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
 
       const frame = await kymaConsole.getFrameForApp(
         page,
@@ -118,9 +112,7 @@ module.exports = {
   },
   bindApplication: async (page, resource, prefix, additionalData) => {
     try {
-      const bindAplicationButton = `[${
-        config.catalogTestingAtribute
-      }="create-service-binding"]`;
+      const bindAplicationButton = `[${config.catalogTestingAtribute}="create-service-binding"]`;
       const modal = '.fd-modal';
       const resourcesInput = `[name="selectedResource"]`;
       const prefixInput = `[name="prefixEnvironmentValue"]`;
@@ -128,13 +120,9 @@ module.exports = {
       const additionalDataInput = '#root_exampleField';
 
       const setPrefixButton = `[${config.catalogTestingAtribute}="set-prefix"]`;
-      const selectExistingCredButton = `[${
-        config.catalogTestingAtribute
-      }="select-existing-cred"]`;
+      const selectExistingCredButton = `[${config.catalogTestingAtribute}="select-existing-cred"]`;
 
-      const modalCreate = `[${
-        config.catalogTestingAtribute
-      }="modal-confirmation-button"]`;
+      const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
 
       const frame = await kymaConsole.getFrameForApp(
         page,
@@ -204,14 +192,10 @@ module.exports = {
 };
 async function confirmModal(page) {
   try {
-    const deleteBindingButton = `[${
-      config.catalogTestingAtribute
-    }="delete-button"]`;
+    const deleteBindingButton = `[${config.catalogTestingAtribute}="delete-button"]`;
     const modal = '.fd-modal';
 
-    const modalDelete = `[${
-      config.catalogTestingAtribute
-    }="modal-confirmation-button"]`;
+    const modalDelete = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
 
     const frame = await kymaConsole.getFrame(page);
     await frame.click(deleteBindingButton);
@@ -228,9 +212,7 @@ async function getElements(page, e2eIdName) {
   try {
     return await page.evaluate(
       (config, e2eIdName) => {
-        const elementArraySelector = `[${
-          config.catalogTestingAtribute
-        }=${e2eIdName}]`;
+        const elementArraySelector = `[${config.catalogTestingAtribute}=${e2eIdName}]`;
         const elements = Array.from(
           document.querySelectorAll(elementArraySelector),
         );

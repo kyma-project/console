@@ -1,1 +1,1 @@
-export { randomNameGenerator } from './random-names-generator';
+export { isDevelopmentModeFlag } from './is-development-mode';

@@ -26,9 +26,7 @@ export class k8sApiNamespace {
       )).response.body.items.length > 0;
     if (resourceExists) {
       console.info(
-        `Namespace ${
-          this.definition.metadata.name
-        } already exists, but probably it shouldn't. Skipping creation`,
+        `Namespace ${this.definition.metadata.name} already exists, but probably it shouldn't. Skipping creation`,
       );
       return;
     }

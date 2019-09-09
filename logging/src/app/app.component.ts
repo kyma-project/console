@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@kyma-project/luigi-client';
 import {
   LuigiContextService,
   ILuigiContextTypes,
@@ -11,7 +11,7 @@ import {
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  public luigiClient: LuigiClient = LuigiClient;
+  public luigiClient = LuigiClient;
   public title = 'Kyma Log';
 
   constructor(private luigiService: LuigiContextService) {}

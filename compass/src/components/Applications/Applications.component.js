@@ -17,6 +17,7 @@ class Applications extends React.Component {
 
   createLabels = labels => {
     const separatedLabels = [];
+    /* eslint-disable no-unused-vars */
     for (const key in labels) {
       if (labels.hasOwnProperty(key) && labels[key].length > 0) {
         labels[key].forEach(lab => {
@@ -28,6 +29,7 @@ class Applications extends React.Component {
         });
       }
     }
+    /* eslint-enable no-unused-vars */
     return separatedLabels.map((label, id) => (
       <Token
         key={id}

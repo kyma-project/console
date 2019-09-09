@@ -15,9 +15,7 @@ module.exports = {
   },
   clearData: token => {
     const req = {
-      url: `https://apiserver.${
-        config.domain
-      }/apis/kubeless.io/v1beta1/namespaces/qa/functions/${config.testLambda}`,
+      url: `https://apiserver.${config.domain}/apis/kubeless.io/v1beta1/namespaces/qa/functions/${config.testLambda}`,
       method: 'DELETE',
       headers: { Authorization: token },
     };

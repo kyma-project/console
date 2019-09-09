@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import createContainer from 'constate';
 
 import { Notification } from '../types';
@@ -9,7 +9,8 @@ const useNotifications = () => {
     {} as Notification,
   );
   const [showNotification, setShowNotification] = useState<boolean>(false);
-  let timer: number = 0;
+  const [timer] = useState<number>(0);
+  const timerRef = useRef(timer);
 
   useEffect(() => {
     if (!notification) {
@@ -20,18 +21,18 @@ const useNotifications = () => {
     }
 
     setShowNotification(true);
-    timer = setTimeout(
+    timerRef.current = setTimeout(
       () => setShowNotification(false),
       NOTIFICATION_SHOW_TIME,
     );
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timerRef.current);
     };
   }, [notification]);
 
   const hideNotification = () => {
     setShowNotification(false);
-    clearTimeout(timer);
+    clearTimeout(timerRef.current);
   };
 
   const successNotification = (

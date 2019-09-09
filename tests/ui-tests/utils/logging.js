@@ -34,9 +34,7 @@ module.exports = function(page, callback) {
   //reacts on failed requests, like time outs
   page.on('requestfailed', request => {
     console.log(
-      `Request ${request._method} ${request._url} failed with message : ${
-        request._failureText
-      }`,
+      `Request ${request._method} ${request._url} failed with message : ${request._failureText}`,
     );
   });
 

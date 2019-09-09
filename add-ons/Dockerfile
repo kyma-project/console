@@ -1,35 +1,37 @@
-# This Dockerfile must be executed with higher context, because firstly we have to create react components lib with local changes.
-
 FROM node:10.11.0-alpine as ui-generator
 
 WORKDIR /app
 
+# Copy licenses
 COPY licenses/ /app/licenses/
 
-# Install app dependencies
-COPY package.json package-lock.json config-overrides.js /app/
-RUN npm install --no-optional
+# Install global dependencies
+RUN apk update && apk upgrade && \
+    apk add --no-cache curl
+
+# Install root and app dependencies
+COPY ./temp /app
+RUN npm run bootstrap:prod
+COPY package.json package-lock.json config-overrides.js /app/addons/
+RUN cd /app/addons && npm install --no-optional
 
 # Copy sources
-COPY src /app/src
-COPY public /app/public
-
-# Copy local changes from react-components package
-COPY react-components/index.js /app/node_modules/@kyma-project/react-components/lib/index.js
+COPY ./src /app/addons/src
+COPY ./public /app/addons/public
 
 # Set env variables 
 ENV PRODUCTION true
+ENV CI true
 
 # Test & Build
-ENV CI true
-RUN npm test
-RUN npm run build
+RUN cd /app/addons && npm test
+RUN cd /app/addons && npm run build
 
 FROM nginx:1.14.0-alpine
 LABEL source git@github.com:kyma-project/console.git
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=ui-generator /app/build var/public
+COPY --from=ui-generator /app/addons/build var/public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
 EXPOSE 80

@@ -443,8 +443,8 @@
           return null == n || n > t
             ? Pos(e.line, t)
             : n < 0
-              ? Pos(e.line, 0)
-              : e;
+            ? Pos(e.line, 0)
+            : e;
         }
         function clipPosArray(e, t) {
           for (var n = [], r = 0; r < t.length; r++) n[r] = clipPos(e, t[r]);
@@ -848,16 +848,16 @@
                 (c = s.charCodeAt(h)) <= 247
                   ? e.charAt(c)
                   : 1424 <= c && c <= 1524
-                    ? 'R'
-                    : 1536 <= c && c <= 1785
-                      ? t.charAt(c - 1536)
-                      : 1774 <= c && c <= 2220
-                        ? 'r'
-                        : 8192 <= c && c <= 8203
-                          ? 'w'
-                          : 8204 == c
-                            ? 'b'
-                            : 'L',
+                  ? 'R'
+                  : 1536 <= c && c <= 1785
+                  ? t.charAt(c - 1536)
+                  : 1774 <= c && c <= 2220
+                  ? 'r'
+                  : 8192 <= c && c <= 8203
+                  ? 'w'
+                  : 8204 == c
+                  ? 'b'
+                  : 'L',
               );
             for (var f = 0, g = u; f < d; ++f) {
               var m = p[f];
@@ -1048,8 +1048,8 @@
               (1 & e.button
                 ? (t = 1)
                 : 2 & e.button
-                  ? (t = 3)
-                  : 4 & e.button && (t = 2)),
+                ? (t = 3)
+                : 4 & e.button && (t = 2)),
             y && e.ctrlKey && 1 == t && (t = 3),
             t
           );
@@ -1953,8 +1953,8 @@
             ae
               ? (r = ae.delayedCallbacks)
               : se
-                ? (r = se)
-                : ((r = se = []), setTimeout(fireOrphanDelayed, 0));
+              ? (r = se)
+              : ((r = se = []), setTimeout(fireOrphanDelayed, 0));
             for (
               var i = function(e) {
                   r.push(function() {
@@ -1979,10 +1979,10 @@
             'text' == i
               ? updateLineText(e, t)
               : 'gutter' == i
-                ? updateLineGutter(e, t, n, r)
-                : 'class' == i
-                  ? updateLineClasses(e, t)
-                  : 'widget' == i && updateLineWidgets(e, t, r);
+              ? updateLineGutter(e, t, n, r)
+              : 'class' == i
+              ? updateLineClasses(e, t)
+              : 'widget' == i && updateLineWidgets(e, t, r);
           }
           t.changes = null;
         }
@@ -2334,9 +2334,9 @@
               t < s
                 ? ((o = 0), (i = 1), (a = 'left'))
                 : t < l
-                  ? (i = 1 + (o = t - s))
-                  : (c == e.length - 3 || (t == l && e[c + 3] > t)) &&
-                    ((o = (i = l - s) - 1), t >= l && (a = 'right')),
+                ? (i = 1 + (o = t - s))
+                : (c == e.length - 3 || (t == l && e[c + 3] > t)) &&
+                  ((o = (i = l - s) - 1), t >= l && (a = 'right')),
               null != o)
             ) {
               if (
@@ -2699,12 +2699,12 @@
                 0 == m
                   ? 'after'
                   : m == t.text.length
-                    ? 'before'
-                    : measureCharPrepared(e, i, m - (c ? 1 : 0)).bottom + a <=
-                        o ==
-                      c
-                      ? 'after'
-                      : 'before');
+                  ? 'before'
+                  : measureCharPrepared(e, i, m - (c ? 1 : 0)).bottom + a <=
+                      o ==
+                    c
+                  ? 'after'
+                  : 'before');
             var x = cursorCoords(e, Pos(n, m, h), 'line', t, i);
             (p = x.left), (v = o < x.top || o >= x.bottom);
           }
@@ -3345,9 +3345,9 @@
             t.left < 10
               ? (a.scrollLeft = 0)
               : t.left < d
-                ? (a.scrollLeft = Math.max(0, t.left - (h ? 0 : 10)))
-                : t.right > p + d - 3 &&
-                  (a.scrollLeft = t.right + (h ? 0 : 10) - p),
+              ? (a.scrollLeft = Math.max(0, t.left - (h ? 0 : 10)))
+              : t.right > p + d - 3 &&
+                (a.scrollLeft = t.right + (h ? 0 : 10) - p),
             a
           );
         }
@@ -4546,10 +4546,10 @@
           return t
             ? (clearSelectionEvents(e.done), lst(e.done))
             : e.done.length && !lst(e.done).ranges
-              ? lst(e.done)
-              : e.done.length > 1 && !e.done[e.done.length - 2].ranges
-                ? (e.done.pop(), lst(e.done))
-                : void 0;
+            ? lst(e.done)
+            : e.done.length > 1 && !e.done[e.done.length - 2].ranges
+            ? (e.done.pop(), lst(e.done))
+            : void 0;
         }
         function addChangeToHistory(e, t, n, r) {
           var o = e.history;
@@ -4852,10 +4852,10 @@
               ? clipPos(e, Pos(t.line - 1))
               : null
             : n > 0 && t.ch == (r || getLine(e, t.line)).text.length
-              ? t.line < e.first + e.size - 1
-                ? Pos(t.line + 1, 0)
-                : null
-              : new Pos(t.line, t.ch + n);
+            ? t.line < e.first + e.size - 1
+              ? Pos(t.line + 1, 0)
+              : null
+            : new Pos(t.line, t.ch + n);
         }
         function selectAll(e) {
           e.setSelection(Pos(e.firstLine(), 0), Pos(e.lastLine()), A);
@@ -5068,8 +5068,8 @@
             : i.line != a.line ||
               1 != t.text.length ||
               isWholeLineUpdate(e.doc, t)
-              ? regChange(e, i.line, a.line + 1, c)
-              : regLineChange(e, i.line, 'text');
+            ? regChange(e, i.line, a.line + 1, c)
+            : regLineChange(e, i.line, 'text');
           var u = hasHandler(e, 'changes'),
             d = hasHandler(e, 'change');
           if (d || u) {
@@ -5742,10 +5742,10 @@
             return null == e || 'head' == e
               ? t.head
               : 'anchor' == e
-                ? t.anchor
-                : 'end' == e || 'to' == e || !1 === e
-                  ? t.to()
-                  : t.from();
+              ? t.anchor
+              : 'end' == e || 'to' == e || !1 === e
+              ? t.to()
+              : t.from();
           },
           listSelections: function() {
             return this.sel.ranges;
@@ -5942,10 +5942,10 @@
                   'text' == t
                     ? 'textClass'
                     : 'background' == t
-                      ? 'bgClass'
-                      : 'gutter' == t
-                        ? 'gutterClass'
-                        : 'wrapClass';
+                    ? 'bgClass'
+                    : 'gutter' == t
+                    ? 'gutterClass'
+                    : 'wrapClass';
                 if (e[r]) {
                   if (classTest(n).test(e[r])) return !1;
                   e[r] += ' ' + n;
@@ -5964,10 +5964,10 @@
                     'text' == t
                       ? 'textClass'
                       : 'background' == t
-                        ? 'bgClass'
-                        : 'gutter' == t
-                          ? 'gutterClass'
-                          : 'wrapClass',
+                      ? 'bgClass'
+                      : 'gutter' == t
+                      ? 'gutterClass'
+                      : 'wrapClass',
                   o = e[r];
                 if (!o) return !1;
                 if (null == n) e[r] = null;
@@ -7143,8 +7143,8 @@
           return Ie && Ie.compare(n, e, t)
             ? ((We = Ie = null), 'triple')
             : We && We.compare(n, e, t)
-              ? ((Ie = new Fe(n, e, t)), (We = null), 'double')
-              : ((We = new Fe(n, e, t)), (Ie = null), 'single');
+            ? ((Ie = new Fe(n, e, t)), (We = null), 'double')
+            : ((We = new Fe(n, e, t)), (Ie = null), 'single');
         }
         function onMouseDown(e) {
           var t = this,
@@ -7177,14 +7177,14 @@
                       ? leftButtonDown(t, r, i, e)
                       : e_target(e) == n.scroller && e_preventDefault(e)
                     : 2 == o
-                      ? (r && extendSelection(t.doc, r),
-                        setTimeout(function() {
-                          return n.input.focus();
-                        }, 20))
-                      : 3 == o &&
-                        (S
-                          ? t.display.input.onContextMenu(e)
-                          : delayBlurEvent(t)));
+                    ? (r && extendSelection(t.doc, r),
+                      setTimeout(function() {
+                        return n.input.focus();
+                      }, 20))
+                    : 3 == o &&
+                      (S
+                        ? t.display.input.onContextMenu(e)
+                        : delayBlurEvent(t)));
             }
         }
         function handleMappedButton(e, t, n, r, o) {
@@ -7222,10 +7222,10 @@
             o.unit = i
               ? 'rectangle'
               : 'single' == t
-                ? 'char'
-                : 'double' == t
-                  ? 'word'
-                  : 'line';
+              ? 'char'
+              : 'double' == t
+              ? 'word'
+              : 'line';
           }
           return (
             (null == o.extend || e.doc.extend) &&
@@ -7332,17 +7332,17 @@
                   origin: '*mouse',
                 }))
               : c.length > 1 && c[s].empty() && 'char' == r.unit && !r.extend
-                ? (setSelection(
-                    i,
-                    normalizeSelection(
-                      e,
-                      c.slice(0, s).concat(c.slice(s + 1)),
-                      0,
-                    ),
-                    { scroll: !1, origin: '*mouse' },
+              ? (setSelection(
+                  i,
+                  normalizeSelection(
+                    e,
+                    c.slice(0, s).concat(c.slice(s + 1)),
+                    0,
                   ),
-                  (l = i.sel))
-                : replaceOneSelection(i, s, a, N)
+                  { scroll: !1, origin: '*mouse' },
+                ),
+                (l = i.sel))
+              : replaceOneSelection(i, s, a, N)
             : ((s = 0), setSelection(i, new ve([a], 0), N), (l = i.sel));
           var d = n;
           function extendTo(t) {
@@ -7690,11 +7690,11 @@
                   !r.prev || farAway(r, r.prev)
                     ? new ye(i, i)
                     : !r.prev.prev || farAway(r, r.prev.prev)
-                      ? e.findWordAt(i)
-                      : new ye(
-                          Pos(i.line, 0),
-                          clipPos(e.doc, Pos(i.line + 1, 0)),
-                        )),
+                    ? e.findWordAt(i)
+                    : new ye(
+                        Pos(i.line, 0),
+                        clipPos(e.doc, Pos(i.line + 1, 0)),
+                      )),
                   e.setSelection(o.anchor, o.head),
                   e.focus(),
                   e_preventDefault(n);
@@ -7775,10 +7775,10 @@
             ? (c =
                 t > i.first ? countColumn(getLine(i, t - 1).text, null, a) : 0)
             : 'add' == n
-              ? (c = l + e.options.indentUnit)
-              : 'subtract' == n
-                ? (c = l - e.options.indentUnit)
-                : 'number' == typeof n && (c = l + n),
+            ? (c = l + e.options.indentUnit)
+            : 'subtract' == n
+            ? (c = l - e.options.indentUnit)
+            : 'number' == typeof n && (c = l + n),
             (c = Math.max(0, c));
           var d = '',
             p = 0;
@@ -7837,18 +7837,18 @@
               (n && n > 0
                 ? (h = Pos(h.line, h.ch - n))
                 : e.state.overwrite && !a
-                  ? (f = Pos(
-                      f.line,
-                      Math.min(
-                        getLine(i, f.line).text.length,
-                        f.ch + lst(s).length,
-                      ),
-                    ))
-                  : a &&
-                    Ue &&
-                    Ue.lineWise &&
-                    Ue.text.join('\n') == t &&
-                    (h = f = Pos(h.line, 0)));
+                ? (f = Pos(
+                    f.line,
+                    Math.min(
+                      getLine(i, f.line).text.length,
+                      f.ch + lst(s).length,
+                    ),
+                  ))
+                : a &&
+                  Ue &&
+                  Ue.lineWise &&
+                  Ue.text.join('\n') == t &&
+                  (h = f = Pos(h.line, 0)));
             var g = {
               from: h,
               to: f,
@@ -7974,10 +7974,10 @@
                 h = isWordChar(p, u)
                   ? 'w'
                   : c && '\n' == p
-                    ? 'n'
-                    : !c || /\s/.test(p)
-                      ? null
-                      : 'p';
+                  ? 'n'
+                  : !c || /\s/.test(p)
+                  ? null
+                  : 'p';
               if ((!c || d || h || (h = 's'), l && l != h)) {
                 n < 0 && ((n = 1), moveOnce(), (t.sticky = 'after'));
                 break;
@@ -8846,8 +8846,8 @@
                     '​' == t.prevInput
                       ? operation(n, selectAll)(n)
                       : e++ < 10
-                        ? (r.detectingSelectAll = setTimeout(i, 500))
-                        : ((r.selForContextMenu = null), r.input.reset());
+                      ? (r.detectingSelectAll = setTimeout(i, 500))
+                      : ((r.selForContextMenu = null), r.input.reset());
                   };
                 r.detectingSelectAll = setTimeout(i, 200);
               }
@@ -9155,8 +9155,8 @@
                         ? 'smart'
                         : 'prev'
                       : t
-                        ? 'add'
-                        : 'subtract'),
+                      ? 'add'
+                      : 'subtract'),
                   isLine(this.doc, e) && indentLine(this, e, t, n);
               }),
               indentSelection: methodOp(function(e) {
@@ -9259,10 +9259,10 @@
                   null == e
                     ? n.head
                     : 'object' == typeof e
-                      ? clipPos(this.doc, e)
-                      : e
-                        ? n.from()
-                        : n.to(),
+                    ? clipPos(this.doc, e)
+                    : e
+                    ? n.from()
+                    : n.to(),
                   t || 'page',
                 );
               },
@@ -9384,8 +9384,8 @@
                   return n.display.shift || n.doc.extend || r.empty()
                     ? findPosH(n.doc, r.head, e, t, n.options.rtlMoveVisually)
                     : e < 0
-                      ? r.from()
-                      : r.to();
+                    ? r.from()
+                    : r.to();
                 }, D);
               }),
               deleteH: methodOp(function(e, t) {
@@ -9456,12 +9456,12 @@
                             return isWordChar(e, i);
                           }
                         : /\s/.test(a)
-                          ? function(e) {
-                              return /\s/.test(e);
-                            }
-                          : function(e) {
-                              return !/\s/.test(e) && !isWordChar(e);
-                            };
+                        ? function(e) {
+                            return /\s/.test(e);
+                          }
+                        : function(e) {
+                            return !/\s/.test(e) && !isWordChar(e);
+                          };
                     r > 0 && s(n.charAt(r - 1));
 
                   )
@@ -9504,8 +9504,8 @@
                   ? ((e = { from: this.doc.sel.primary().head, to: null }),
                     null == t && (t = this.options.cursorScrollMargin))
                   : 'number' == typeof e
-                    ? (e = { from: Pos(e, 0), to: null })
-                    : null == e.from && (e = { from: e, to: null }),
+                  ? (e = { from: Pos(e, 0), to: null })
+                  : null == e.from && (e = { from: e, to: null }),
                   e.to || (e.to = e.from),
                   (e.margin = t || 0),
                   null != e.from.line
@@ -9759,25 +9759,26 @@
                     ? 'symbol'
                     : typeof e;
                 },
-          a = ((r =
-            Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array &&
+          a =
+            ((r =
+              Object.setPrototypeOf ||
+              ({ __proto__: [] } instanceof Array &&
+                function(e, t) {
+                  e.__proto__ = t;
+                }) ||
               function(e, t) {
-                e.__proto__ = t;
-              }) ||
+                for (var n in t) t.hasOwnProperty(n) && (e[n] = t[n]);
+              }),
             function(e, t) {
-              for (var n in t) t.hasOwnProperty(n) && (e[n] = t[n]);
-            }),
-          function(e, t) {
-            function __() {
-              this.constructor = e;
-            }
-            r(e, t),
-              (e.prototype =
-                null === t
-                  ? Object.create(t)
-                  : ((__.prototype = t.prototype), new __()));
-          });
+              function __() {
+                this.constructor = e;
+              }
+              r(e, t),
+                (e.prototype =
+                  null === t
+                    ? Object.create(t)
+                    : ((__.prototype = t.prototype), new __()));
+            });
         Object.defineProperty(t, '__esModule', { value: !0 });
         var s,
           l = n(1),
@@ -10069,13 +10070,13 @@
                   'undo' === this.deferred.origin
                     ? this.editor.undo()
                     : 'redo' === this.deferred.origin
-                      ? this.editor.redo()
-                      : this.editor.replaceRange(
-                          this.deferred.text,
-                          this.deferred.from,
-                          this.deferred.to,
-                          this.deferred.origin,
-                        ),
+                    ? this.editor.redo()
+                    : this.editor.replaceRange(
+                        this.deferred.text,
+                        this.deferred.from,
+                        this.deferred.to,
+                        this.deferred.origin,
+                      ),
                   (this.emulating = !1),
                   (this.deferred = null);
               }),
@@ -10085,14 +10086,9 @@
                     ? (this.editor.setHistory(this.mirror.getHistory()),
                       this.mirror.undo())
                     : 'redo' === e.origin
-                      ? (this.editor.setHistory(this.mirror.getHistory()),
-                        this.mirror.redo())
-                      : this.mirror.replaceRange(
-                          e.text,
-                          e.from,
-                          e.to,
-                          e.origin,
-                        ),
+                    ? (this.editor.setHistory(this.mirror.getHistory()),
+                      this.mirror.redo())
+                    : this.mirror.replaceRange(e.text, e.from, e.to, e.origin),
                   this.mirror.getValue()
                 );
               }),
@@ -10589,26 +10585,26 @@
                     ? chain(inBlock('atom', ']]>'))
                     : null
                   : e.match('--')
-                    ? chain(inBlock('comment', '--\x3e'))
-                    : e.match('DOCTYPE', !0, !0)
-                      ? (e.eatWhile(/[\w\._\-]/), chain(doctype(1)))
-                      : null
+                  ? chain(inBlock('comment', '--\x3e'))
+                  : e.match('DOCTYPE', !0, !0)
+                  ? (e.eatWhile(/[\w\._\-]/), chain(doctype(1)))
+                  : null
                 : e.eat('?')
-                  ? (e.eatWhile(/[\w\._\-]/),
-                    (t.tokenize = inBlock('meta', '?>')),
-                    'meta')
-                  : ((i = e.eat('/') ? 'closeTag' : 'openTag'),
-                    (t.tokenize = inTag),
-                    'tag bracket')
+                ? (e.eatWhile(/[\w\._\-]/),
+                  (t.tokenize = inBlock('meta', '?>')),
+                  'meta')
+                : ((i = e.eat('/') ? 'closeTag' : 'openTag'),
+                  (t.tokenize = inTag),
+                  'tag bracket')
               : '&' == n
-                ? (e.eat('#')
-                  ? e.eat('x')
-                    ? e.eatWhile(/[a-fA-F\d]/) && e.eat(';')
-                    : e.eatWhile(/[\d]/) && e.eat(';')
-                  : e.eatWhile(/[\w\.\-:]/) && e.eat(';'))
-                  ? 'atom'
-                  : 'error'
-                : (e.eatWhile(/[^&<]/), null);
+              ? (e.eat('#')
+                ? e.eat('x')
+                  ? e.eatWhile(/[a-fA-F\d]/) && e.eat(';')
+                  : e.eatWhile(/[\d]/) && e.eat(';')
+                : e.eatWhile(/[\w\.\-:]/) && e.eat(';'))
+                ? 'atom'
+                : 'error'
+              : (e.eatWhile(/[^&<]/), null);
           }
           function inTag(e, t) {
             var n,
@@ -10629,16 +10625,17 @@
               return a ? a + ' tag error' : 'tag error';
             }
             return /[\'\"]/.test(o)
-              ? ((t.tokenize = ((n = o),
-                ((r = function(e, t) {
-                  for (; !e.eol(); )
-                    if (e.next() == n) {
-                      t.tokenize = inTag;
-                      break;
-                    }
-                  return 'string';
-                }).isInAttribute = !0),
-                r)),
+              ? ((t.tokenize =
+                  ((n = o),
+                  ((r = function(e, t) {
+                    for (; !e.eol(); )
+                      if (e.next() == n) {
+                        t.tokenize = inTag;
+                        break;
+                      }
+                    return 'string';
+                  }).isInAttribute = !0),
+                  r)),
                 (t.stringStartCol = e.column()),
                 t.tokenize(e, t))
               : (e.match(/^[^\s\u00a0=<>\"\']*[^\s\u00a0=<>\"\'\/]/), 'word');
@@ -10699,15 +10696,15 @@
             return 'openTag' == e
               ? ((n.tagStart = t.column()), tagNameState)
               : 'closeTag' == e
-                ? closeTagNameState
-                : baseState;
+              ? closeTagNameState
+              : baseState;
           }
           function tagNameState(e, t, n) {
             return 'word' == e
               ? ((n.tagName = t.current()), (a = 'tag'), attrState)
               : l.allowMissingTagName && 'endTag' == e
-                ? ((a = 'tag bracket'), attrState(e, 0, n))
-                : ((a = 'error'), tagNameState);
+              ? ((a = 'tag bracket'), attrState(e, 0, n))
+              : ((a = 'error'), tagNameState);
           }
           function closeTagNameState(e, t, n) {
             if ('word' == e) {
@@ -10759,8 +10756,8 @@
             return 'string' == e
               ? attrContinuedState
               : 'word' == e && l.allowUnquoted
-                ? ((a = 'string'), attrState)
-                : ((a = 'error'), attrState(e, 0, n));
+              ? ((a = 'string'), attrState)
+              : ((a = 'error'), attrState(e, 0, n));
           }
           function attrContinuedState(e, t, n) {
             return 'string' == e ? attrContinuedState : attrState(e, 0, n);
@@ -10931,18 +10928,21 @@
               r = e.next();
             if ('"' == r || "'" == r)
               return (
-                (t.tokenize = ((n = r),
-                function(e, t) {
-                  var r,
-                    o = !1;
-                  if (s && '@' == e.peek() && e.match(h))
+                (t.tokenize =
+                  ((n = r),
+                  function(e, t) {
+                    var r,
+                      o = !1;
+                    if (s && '@' == e.peek() && e.match(h))
+                      return (
+                        (t.tokenize = tokenBase), ret('jsonld-keyword', 'meta')
+                      );
+                    for (; null != (r = e.next()) && (r != n || o); )
+                      o = !o && '\\' == r;
                     return (
-                      (t.tokenize = tokenBase), ret('jsonld-keyword', 'meta')
+                      o || (t.tokenize = tokenBase), ret('string', 'string')
                     );
-                  for (; null != (r = e.next()) && (r != n || o); )
-                    o = !o && '\\' == r;
-                  return o || (t.tokenize = tokenBase), ret('string', 'string');
-                })),
+                  })),
                 t.tokenize(e, t)
               );
             if ('.' == r && e.match(/^\d+(?:[eE][+\-]?\d+)?/))
@@ -10961,12 +10961,12 @@
               return e.eat('*')
                 ? ((t.tokenize = tokenComment), tokenComment(e, t))
                 : e.eat('/')
-                  ? (e.skipToEnd(), ret('comment', 'comment'))
-                  : expressionAllowed(e, t, 1)
-                    ? (readRegexp(e),
-                      e.match(/^\b(([gimyus])(?![gimyus]*\2))+\b/),
-                      ret('regexp', 'string-2'))
-                    : (e.eat('='), ret('operator', 'operator', e.current()));
+                ? (e.skipToEnd(), ret('comment', 'comment'))
+                : expressionAllowed(e, t, 1)
+                ? (readRegexp(e),
+                  e.match(/^\b(([gimyus])(?![gimyus]*\2))+\b/),
+                  ret('regexp', 'string-2'))
+                : (e.eat('='), ret('operator', 'operator', e.current()));
             if ('`' == r) return (t.tokenize = tokenQuasi), tokenQuasi(e, t);
             if ('#' == r) return e.skipToEnd(), ret('error', 'error');
             if (p.test(r))
@@ -11087,8 +11087,8 @@
                 return m.marked
                   ? m.marked
                   : 'variable' == n && inScope(e, r)
-                    ? 'variable-2'
-                    : t;
+                  ? 'variable-2'
+                  : t;
               }
             }
           }
@@ -11202,151 +11202,99 @@
               return t == e
                 ? cont()
                 : ';' == e || '}' == t || ')' == t || ']' == t
-                  ? pass()
-                  : cont(exp);
+                ? pass()
+                : cont(exp);
             };
           }
           function statement(e, t) {
             return 'var' == e
               ? cont(pushlex('vardef', t), vardef, expect(';'), poplex)
               : 'keyword a' == e
-                ? cont(pushlex('form'), parenExpr, statement, poplex)
-                : 'keyword b' == e
-                  ? cont(pushlex('form'), statement, poplex)
-                  : 'keyword d' == e
-                    ? m.stream.match(/^\s*$/, !1)
-                      ? cont()
-                      : cont(
-                          pushlex('stat'),
-                          maybeexpression,
-                          expect(';'),
-                          poplex,
-                        )
-                    : 'debugger' == e
-                      ? cont(expect(';'))
-                      : '{' == e
-                        ? cont(
-                            pushlex('}'),
-                            pushblockcontext,
-                            block,
-                            poplex,
-                            popcontext,
-                          )
-                        : ';' == e
-                          ? cont()
-                          : 'if' == e
-                            ? ('else' == m.state.lexical.info &&
-                                m.state.cc[m.state.cc.length - 1] == poplex &&
-                                m.state.cc.pop()(),
-                              cont(
-                                pushlex('form'),
-                                parenExpr,
-                                statement,
-                                poplex,
-                                maybeelse,
-                              ))
-                            : 'function' == e
-                              ? cont(functiondef)
-                              : 'for' == e
-                                ? cont(
-                                    pushlex('form'),
-                                    forspec,
-                                    statement,
-                                    poplex,
-                                  )
-                                : 'class' == e || (c && 'interface' == t)
-                                  ? ((m.marked = 'keyword'),
-                                    cont(pushlex('form'), className, poplex))
-                                  : 'variable' == e
-                                    ? c && 'declare' == t
-                                      ? ((m.marked = 'keyword'),
-                                        cont(statement))
-                                      : c &&
-                                        ('module' == t ||
-                                          'enum' == t ||
-                                          'type' == t) &&
-                                        m.stream.match(/^\s*\w/, !1)
-                                        ? ((m.marked = 'keyword'),
-                                          'enum' == t
-                                            ? cont(enumdef)
-                                            : 'type' == t
-                                              ? cont(
-                                                  typeexpr,
-                                                  expect('operator'),
-                                                  typeexpr,
-                                                  expect(';'),
-                                                )
-                                              : cont(
-                                                  pushlex('form'),
-                                                  pattern,
-                                                  expect('{'),
-                                                  pushlex('}'),
-                                                  block,
-                                                  poplex,
-                                                  poplex,
-                                                ))
-                                        : c && 'namespace' == t
-                                          ? ((m.marked = 'keyword'),
-                                            cont(
-                                              pushlex('form'),
-                                              expression,
-                                              block,
-                                              poplex,
-                                            ))
-                                          : c && 'abstract' == t
-                                            ? ((m.marked = 'keyword'),
-                                              cont(statement))
-                                            : cont(pushlex('stat'), maybelabel)
-                                    : 'switch' == e
-                                      ? cont(
-                                          pushlex('form'),
-                                          parenExpr,
-                                          expect('{'),
-                                          pushlex('}', 'switch'),
-                                          pushblockcontext,
-                                          block,
-                                          poplex,
-                                          poplex,
-                                          popcontext,
-                                        )
-                                      : 'case' == e
-                                        ? cont(expression, expect(':'))
-                                        : 'default' == e
-                                          ? cont(expect(':'))
-                                          : 'catch' == e
-                                            ? cont(
-                                                pushlex('form'),
-                                                pushcontext,
-                                                maybeCatchBinding,
-                                                statement,
-                                                poplex,
-                                                popcontext,
-                                              )
-                                            : 'export' == e
-                                              ? cont(
-                                                  pushlex('stat'),
-                                                  afterExport,
-                                                  poplex,
-                                                )
-                                              : 'import' == e
-                                                ? cont(
-                                                    pushlex('stat'),
-                                                    afterImport,
-                                                    poplex,
-                                                  )
-                                                : 'async' == e
-                                                  ? cont(statement)
-                                                  : '@' == t
-                                                    ? cont(
-                                                        expression,
-                                                        statement,
-                                                      )
-                                                    : pass(
-                                                        pushlex('stat'),
-                                                        expression,
-                                                        expect(';'),
-                                                        poplex,
-                                                      );
+              ? cont(pushlex('form'), parenExpr, statement, poplex)
+              : 'keyword b' == e
+              ? cont(pushlex('form'), statement, poplex)
+              : 'keyword d' == e
+              ? m.stream.match(/^\s*$/, !1)
+                ? cont()
+                : cont(pushlex('stat'), maybeexpression, expect(';'), poplex)
+              : 'debugger' == e
+              ? cont(expect(';'))
+              : '{' == e
+              ? cont(pushlex('}'), pushblockcontext, block, poplex, popcontext)
+              : ';' == e
+              ? cont()
+              : 'if' == e
+              ? ('else' == m.state.lexical.info &&
+                  m.state.cc[m.state.cc.length - 1] == poplex &&
+                  m.state.cc.pop()(),
+                cont(pushlex('form'), parenExpr, statement, poplex, maybeelse))
+              : 'function' == e
+              ? cont(functiondef)
+              : 'for' == e
+              ? cont(pushlex('form'), forspec, statement, poplex)
+              : 'class' == e || (c && 'interface' == t)
+              ? ((m.marked = 'keyword'),
+                cont(pushlex('form'), className, poplex))
+              : 'variable' == e
+              ? c && 'declare' == t
+                ? ((m.marked = 'keyword'), cont(statement))
+                : c &&
+                  ('module' == t || 'enum' == t || 'type' == t) &&
+                  m.stream.match(/^\s*\w/, !1)
+                ? ((m.marked = 'keyword'),
+                  'enum' == t
+                    ? cont(enumdef)
+                    : 'type' == t
+                    ? cont(typeexpr, expect('operator'), typeexpr, expect(';'))
+                    : cont(
+                        pushlex('form'),
+                        pattern,
+                        expect('{'),
+                        pushlex('}'),
+                        block,
+                        poplex,
+                        poplex,
+                      ))
+                : c && 'namespace' == t
+                ? ((m.marked = 'keyword'),
+                  cont(pushlex('form'), expression, block, poplex))
+                : c && 'abstract' == t
+                ? ((m.marked = 'keyword'), cont(statement))
+                : cont(pushlex('stat'), maybelabel)
+              : 'switch' == e
+              ? cont(
+                  pushlex('form'),
+                  parenExpr,
+                  expect('{'),
+                  pushlex('}', 'switch'),
+                  pushblockcontext,
+                  block,
+                  poplex,
+                  poplex,
+                  popcontext,
+                )
+              : 'case' == e
+              ? cont(expression, expect(':'))
+              : 'default' == e
+              ? cont(expect(':'))
+              : 'catch' == e
+              ? cont(
+                  pushlex('form'),
+                  pushcontext,
+                  maybeCatchBinding,
+                  statement,
+                  poplex,
+                  popcontext,
+                )
+              : 'export' == e
+              ? cont(pushlex('stat'), afterExport, poplex)
+              : 'import' == e
+              ? cont(pushlex('stat'), afterImport, poplex)
+              : 'async' == e
+              ? cont(statement)
+              : '@' == t
+              ? cont(expression, statement)
+              : pass(pushlex('stat'), expression, expect(';'), poplex);
           }
           function maybeCatchBinding(e) {
             if ('(' == e) return cont(funarg, expect(')'));
@@ -11382,33 +11330,27 @@
             return g.hasOwnProperty(e)
               ? cont(o)
               : 'function' == e
-                ? cont(functiondef, o)
-                : 'class' == e || (c && 'interface' == t)
-                  ? ((m.marked = 'keyword'),
-                    cont(pushlex('form'), classExpression, poplex))
-                  : 'keyword c' == e || 'async' == e
-                    ? cont(n ? expressionNoComma : expression)
-                    : '(' == e
-                      ? cont(
-                          pushlex(')'),
-                          maybeexpression,
-                          expect(')'),
-                          poplex,
-                          o,
-                        )
-                      : 'operator' == e || 'spread' == e
-                        ? cont(n ? expressionNoComma : expression)
-                        : '[' == e
-                          ? cont(pushlex(']'), arrayLiteral, poplex, o)
-                          : '{' == e
-                            ? contCommasep(objprop, '}', null, o)
-                            : 'quasi' == e
-                              ? pass(quasi, o)
-                              : 'new' == e
-                                ? cont(maybeTarget(n))
-                                : 'import' == e
-                                  ? cont(expression)
-                                  : cont();
+              ? cont(functiondef, o)
+              : 'class' == e || (c && 'interface' == t)
+              ? ((m.marked = 'keyword'),
+                cont(pushlex('form'), classExpression, poplex))
+              : 'keyword c' == e || 'async' == e
+              ? cont(n ? expressionNoComma : expression)
+              : '(' == e
+              ? cont(pushlex(')'), maybeexpression, expect(')'), poplex, o)
+              : 'operator' == e || 'spread' == e
+              ? cont(n ? expressionNoComma : expression)
+              : '[' == e
+              ? cont(pushlex(']'), arrayLiteral, poplex, o)
+              : '{' == e
+              ? contCommasep(objprop, '}', null, o)
+              : 'quasi' == e
+              ? pass(quasi, o)
+              : 'new' == e
+              ? cont(maybeTarget(n))
+              : 'import' == e
+              ? cont(expression)
+              : cont();
           }
           function maybeexpression(e) {
             return e.match(/[;\}\)\],]/) ? pass() : pass(expression);
@@ -11422,45 +11364,37 @@
             return '=>' == e
               ? cont(pushcontext, n ? arrowBodyNoComma : arrowBody, popcontext)
               : 'operator' == e
-                ? /\+\+|--/.test(t) || (c && '!' == t)
-                  ? cont(r)
-                  : c && '<' == t && m.stream.match(/^([^>]|<.*?>)*>\s*\(/, !1)
-                    ? cont(pushlex('>'), commasep(typeexpr, '>'), poplex, r)
-                    : '?' == t
-                      ? cont(expression, expect(':'), o)
-                      : cont(o)
-                : 'quasi' == e
-                  ? pass(quasi, r)
-                  : ';' != e
-                    ? '(' == e
-                      ? contCommasep(expressionNoComma, ')', 'call', r)
-                      : '.' == e
-                        ? cont(property, r)
-                        : '[' == e
-                          ? cont(
-                              pushlex(']'),
-                              maybeexpression,
-                              expect(']'),
-                              poplex,
-                              r,
-                            )
-                          : c && 'as' == t
-                            ? ((m.marked = 'keyword'), cont(typeexpr, r))
-                            : 'regexp' == e
-                              ? ((m.state.lastType = m.marked = 'operator'),
-                                m.stream.backUp(
-                                  m.stream.pos - m.stream.start - 1,
-                                ),
-                                cont(o))
-                              : void 0
-                    : void 0;
+              ? /\+\+|--/.test(t) || (c && '!' == t)
+                ? cont(r)
+                : c && '<' == t && m.stream.match(/^([^>]|<.*?>)*>\s*\(/, !1)
+                ? cont(pushlex('>'), commasep(typeexpr, '>'), poplex, r)
+                : '?' == t
+                ? cont(expression, expect(':'), o)
+                : cont(o)
+              : 'quasi' == e
+              ? pass(quasi, r)
+              : ';' != e
+              ? '(' == e
+                ? contCommasep(expressionNoComma, ')', 'call', r)
+                : '.' == e
+                ? cont(property, r)
+                : '[' == e
+                ? cont(pushlex(']'), maybeexpression, expect(']'), poplex, r)
+                : c && 'as' == t
+                ? ((m.marked = 'keyword'), cont(typeexpr, r))
+                : 'regexp' == e
+                ? ((m.state.lastType = m.marked = 'operator'),
+                  m.stream.backUp(m.stream.pos - m.stream.start - 1),
+                  cont(o))
+                : void 0
+              : void 0;
           }
           function quasi(e, t) {
             return 'quasi' != e
               ? pass()
               : '${' != t.slice(t.length - 2)
-                ? cont(quasi)
-                : cont(expression, continueQuasi);
+              ? cont(quasi)
+              : cont(expression, continueQuasi);
           }
           function continueQuasi(e) {
             if ('}' == e)
@@ -11487,11 +11421,11 @@
               return '.' == t
                 ? cont(e ? targetNoComma : target)
                 : 'variable' == t && c
-                  ? cont(
-                      maybeTypeArgs,
-                      e ? maybeoperatorNoComma : maybeoperatorComma,
-                    )
-                  : pass(e ? expressionNoComma : expression);
+                ? cont(
+                    maybeTypeArgs,
+                    e ? maybeoperatorNoComma : maybeoperatorComma,
+                  )
+                : pass(e ? expressionNoComma : expression);
             };
           }
           function target(e, t) {
@@ -11514,30 +11448,30 @@
             return 'async' == e
               ? ((m.marked = 'property'), cont(objprop))
               : 'variable' == e || 'keyword' == m.style
-                ? ((m.marked = 'property'),
-                  'get' == t || 'set' == t
-                    ? cont(getterSetter)
-                    : (c &&
-                        m.state.fatArrowAt == m.stream.start &&
-                        (n = m.stream.match(/^\s*:\s*/, !1)) &&
-                        (m.state.fatArrowAt = m.stream.pos + n[0].length),
-                      cont(afterprop)))
-                : 'number' == e || 'string' == e
-                  ? ((m.marked = s ? 'property' : m.style + ' property'),
-                    cont(afterprop))
-                  : 'jsonld-keyword' == e
-                    ? cont(afterprop)
-                    : c && isModifier(t)
-                      ? ((m.marked = 'keyword'), cont(objprop))
-                      : '[' == e
-                        ? cont(expression, maybetype, expect(']'), afterprop)
-                        : 'spread' == e
-                          ? cont(expressionNoComma, afterprop)
-                          : '*' == t
-                            ? ((m.marked = 'keyword'), cont(objprop))
-                            : ':' == e
-                              ? pass(afterprop)
-                              : void 0;
+              ? ((m.marked = 'property'),
+                'get' == t || 'set' == t
+                  ? cont(getterSetter)
+                  : (c &&
+                      m.state.fatArrowAt == m.stream.start &&
+                      (n = m.stream.match(/^\s*:\s*/, !1)) &&
+                      (m.state.fatArrowAt = m.stream.pos + n[0].length),
+                    cont(afterprop)))
+              : 'number' == e || 'string' == e
+              ? ((m.marked = s ? 'property' : m.style + ' property'),
+                cont(afterprop))
+              : 'jsonld-keyword' == e
+              ? cont(afterprop)
+              : c && isModifier(t)
+              ? ((m.marked = 'keyword'), cont(objprop))
+              : '[' == e
+              ? cont(expression, maybetype, expect(']'), afterprop)
+              : 'spread' == e
+              ? cont(expressionNoComma, afterprop)
+              : '*' == t
+              ? ((m.marked = 'keyword'), cont(objprop))
+              : ':' == e
+              ? pass(afterprop)
+              : void 0;
             var n;
           }
           function getterSetter(e) {
@@ -11549,8 +11483,8 @@
             return ':' == e
               ? cont(expressionNoComma)
               : '(' == e
-                ? pass(functiondef)
-                : void 0;
+              ? pass(functiondef)
+              : void 0;
           }
           function commasep(e, t, n) {
             function proceed(r, o) {
@@ -11596,28 +11530,28 @@
               ? ((m.marked = 'keyword'),
                 cont('keyof' == t ? typeexpr : expressionNoComma))
               : 'variable' == e || 'void' == t
-                ? ((m.marked = 'type'), cont(afterType))
-                : 'string' == e || 'number' == e || 'atom' == e
-                  ? cont(afterType)
-                  : '[' == e
-                    ? cont(
-                        pushlex(']'),
-                        commasep(typeexpr, ']', ','),
-                        poplex,
-                        afterType,
-                      )
-                    : '{' == e
-                      ? cont(
-                          pushlex('}'),
-                          commasep(typeprop, '}', ',;'),
-                          poplex,
-                          afterType,
-                        )
-                      : '(' == e
-                        ? cont(commasep(typearg, ')'), maybeReturnType)
-                        : '<' == e
-                          ? cont(commasep(typeexpr, '>'), typeexpr)
-                          : void 0;
+              ? ((m.marked = 'type'), cont(afterType))
+              : 'string' == e || 'number' == e || 'atom' == e
+              ? cont(afterType)
+              : '[' == e
+              ? cont(
+                  pushlex(']'),
+                  commasep(typeexpr, ']', ','),
+                  poplex,
+                  afterType,
+                )
+              : '{' == e
+              ? cont(
+                  pushlex('}'),
+                  commasep(typeprop, '}', ',;'),
+                  poplex,
+                  afterType,
+                )
+              : '(' == e
+              ? cont(commasep(typearg, ')'), maybeReturnType)
+              : '<' == e
+              ? cont(commasep(typeexpr, '>'), typeexpr)
+              : void 0;
           }
           function maybeReturnType(e) {
             if ('=>' == e) return cont(typeexpr);
@@ -11626,31 +11560,31 @@
             return 'variable' == e || 'keyword' == m.style
               ? ((m.marked = 'property'), cont(typeprop))
               : '?' == t
-                ? cont(typeprop)
-                : ':' == e
-                  ? cont(typeexpr)
-                  : '[' == e
-                    ? cont(expression, maybetype, expect(']'), typeprop)
-                    : void 0;
+              ? cont(typeprop)
+              : ':' == e
+              ? cont(typeexpr)
+              : '[' == e
+              ? cont(expression, maybetype, expect(']'), typeprop)
+              : void 0;
           }
           function typearg(e, t) {
             return ('variable' == e && m.stream.match(/^\s*[?:]/, !1)) ||
               '?' == t
               ? cont(typearg)
               : ':' == e
-                ? cont(typeexpr)
-                : pass(typeexpr);
+              ? cont(typeexpr)
+              : pass(typeexpr);
           }
           function afterType(e, t) {
             return '<' == t
               ? cont(pushlex('>'), commasep(typeexpr, '>'), poplex, afterType)
               : '|' == t || '.' == e || '&' == t
-                ? cont(typeexpr)
-                : '[' == e
-                  ? cont(expect(']'), afterType)
-                  : 'extends' == t || 'implements' == t
-                    ? ((m.marked = 'keyword'), cont(typeexpr))
-                    : void 0;
+              ? cont(typeexpr)
+              : '[' == e
+              ? cont(expect(']'), afterType)
+              : 'extends' == t || 'implements' == t
+              ? ((m.marked = 'keyword'), cont(typeexpr))
+              : void 0;
           }
           function maybeTypeArgs(e, t) {
             if ('<' == t)
@@ -11676,14 +11610,14 @@
             return c && isModifier(t)
               ? ((m.marked = 'keyword'), cont(pattern))
               : 'variable' == e
-                ? (register(t), cont())
-                : 'spread' == e
-                  ? cont(pattern)
-                  : '[' == e
-                    ? contCommasep(eltpattern, ']')
-                    : '{' == e
-                      ? contCommasep(proppattern, '}')
-                      : void 0;
+              ? (register(t), cont())
+              : 'spread' == e
+              ? cont(pattern)
+              : '[' == e
+              ? contCommasep(eltpattern, ']')
+              : '{' == e
+              ? contCommasep(proppattern, '}')
+              : void 0;
           }
           function proppattern(e, t) {
             return 'variable' != e || m.stream.match(/^\s*:/, !1)
@@ -11691,10 +11625,10 @@
                 'spread' == e
                   ? cont(pattern)
                   : '}' == e
-                    ? pass()
-                    : '[' == e
-                      ? cont(expression, expect(']'), expect(':'), proppattern)
-                      : cont(expect(':'), pattern, maybeAssign))
+                  ? pass()
+                  : '[' == e
+                  ? cont(expression, expect(']'), expect(':'), proppattern)
+                  : cont(expect(':'), pattern, maybeAssign))
               : (register(t), cont(maybeAssign));
           }
           function eltpattern() {
@@ -11714,17 +11648,17 @@
             return 'await' == t
               ? cont(forspec)
               : '(' == e
-                ? cont(pushlex(')'), forspec1, expect(')'), poplex)
-                : void 0;
+              ? cont(pushlex(')'), forspec1, expect(')'), poplex)
+              : void 0;
           }
           function forspec1(e) {
             return 'var' == e
               ? cont(vardef, expect(';'), forspec2)
               : ';' == e
-                ? cont(forspec2)
-                : 'variable' == e
-                  ? cont(formaybeinof)
-                  : pass(expression, expect(';'), forspec2);
+              ? cont(forspec2)
+              : 'variable' == e
+              ? cont(formaybeinof)
+              : pass(expression, expect(';'), forspec2);
           }
           function formaybeinof(e, t) {
             return 'in' == t || 'of' == t
@@ -11735,8 +11669,8 @@
             return ';' == e
               ? cont(forspec3)
               : 'in' == t || 'of' == t
-                ? ((m.marked = 'keyword'), cont(expression))
-                : pass(expression, expect(';'), forspec3);
+              ? ((m.marked = 'keyword'), cont(expression))
+              : pass(expression, expect(';'), forspec3);
           }
           function forspec3(e) {
             ')' != e && cont(expression);
@@ -11745,25 +11679,25 @@
             return '*' == t
               ? ((m.marked = 'keyword'), cont(functiondef))
               : 'variable' == e
-                ? (register(t), cont(functiondef))
-                : '(' == e
-                  ? cont(
-                      pushcontext,
-                      pushlex(')'),
-                      commasep(funarg, ')'),
-                      poplex,
-                      mayberettype,
-                      statement,
-                      popcontext,
-                    )
-                  : c && '<' == t
-                    ? cont(
-                        pushlex('>'),
-                        commasep(typeparam, '>'),
-                        poplex,
-                        functiondef,
-                      )
-                    : void 0;
+              ? (register(t), cont(functiondef))
+              : '(' == e
+              ? cont(
+                  pushcontext,
+                  pushlex(')'),
+                  commasep(funarg, ')'),
+                  poplex,
+                  mayberettype,
+                  statement,
+                  popcontext,
+                )
+              : c && '<' == t
+              ? cont(
+                  pushlex('>'),
+                  commasep(typeparam, '>'),
+                  poplex,
+                  functiondef,
+                )
+              : void 0;
           }
           function funarg(e, t) {
             return (
@@ -11771,8 +11705,8 @@
               'spread' == e
                 ? cont(funarg)
                 : c && isModifier(t)
-                  ? ((m.marked = 'keyword'), cont(funarg))
-                  : pass(pattern, maybetype, maybeAssign)
+                ? ((m.marked = 'keyword'), cont(funarg))
+                : pass(pattern, maybetype, maybeAssign)
             );
           }
           function classExpression(e, t) {
@@ -11790,11 +11724,11 @@
                   classNameAfter,
                 )
               : 'extends' == t || 'implements' == t || (c && ',' == e)
-                ? ('implements' == t && (m.marked = 'keyword'),
-                  cont(c ? typeexpr : expression, classNameAfter))
-                : '{' == e
-                  ? cont(pushlex('}'), classBody, poplex)
-                  : void 0;
+              ? ('implements' == t && (m.marked = 'keyword'),
+                cont(c ? typeexpr : expression, classNameAfter))
+              : '{' == e
+              ? cont(pushlex('}'), classBody, poplex)
+              : void 0;
           }
           function classBody(e, t) {
             return 'async' == e ||
@@ -11806,57 +11740,57 @@
                 m.stream.match(/^\s+[\w$\xa1-\uffff]/, !1))
               ? ((m.marked = 'keyword'), cont(classBody))
               : 'variable' == e || 'keyword' == m.style
-                ? ((m.marked = 'property'),
-                  cont(c ? classfield : functiondef, classBody))
-                : '[' == e
-                  ? cont(
-                      expression,
-                      maybetype,
-                      expect(']'),
-                      c ? classfield : functiondef,
-                      classBody,
-                    )
-                  : '*' == t
-                    ? ((m.marked = 'keyword'), cont(classBody))
-                    : ';' == e
-                      ? cont(classBody)
-                      : '}' == e
-                        ? cont()
-                        : '@' == t
-                          ? cont(expression, classBody)
-                          : void 0;
+              ? ((m.marked = 'property'),
+                cont(c ? classfield : functiondef, classBody))
+              : '[' == e
+              ? cont(
+                  expression,
+                  maybetype,
+                  expect(']'),
+                  c ? classfield : functiondef,
+                  classBody,
+                )
+              : '*' == t
+              ? ((m.marked = 'keyword'), cont(classBody))
+              : ';' == e
+              ? cont(classBody)
+              : '}' == e
+              ? cont()
+              : '@' == t
+              ? cont(expression, classBody)
+              : void 0;
           }
           function classfield(e, t) {
             return '?' == t
               ? cont(classfield)
               : ':' == e
-                ? cont(typeexpr, maybeAssign)
-                : '=' == t
-                  ? cont(expressionNoComma)
-                  : pass(functiondef);
+              ? cont(typeexpr, maybeAssign)
+              : '=' == t
+              ? cont(expressionNoComma)
+              : pass(functiondef);
           }
           function afterExport(e, t) {
             return '*' == t
               ? ((m.marked = 'keyword'), cont(maybeFrom, expect(';')))
               : 'default' == t
-                ? ((m.marked = 'keyword'), cont(expression, expect(';')))
-                : '{' == e
-                  ? cont(commasep(exportField, '}'), maybeFrom, expect(';'))
-                  : pass(statement);
+              ? ((m.marked = 'keyword'), cont(expression, expect(';')))
+              : '{' == e
+              ? cont(commasep(exportField, '}'), maybeFrom, expect(';'))
+              : pass(statement);
           }
           function exportField(e, t) {
             return 'as' == t
               ? ((m.marked = 'keyword'), cont(expect('variable')))
               : 'variable' == e
-                ? pass(expressionNoComma, exportField)
-                : void 0;
+              ? pass(expressionNoComma, exportField)
+              : void 0;
           }
           function afterImport(e) {
             return 'string' == e
               ? cont()
               : '(' == e
-                ? pass(expression)
-                : pass(importSpec, maybeMoreImports, maybeFrom);
+              ? pass(expression)
+              : pass(importSpec, maybeMoreImports, maybeFrom);
           }
           function importSpec(e, t) {
             return '{' == e
@@ -11980,17 +11914,16 @@
                         ? l.info.length + 1
                         : 0)
                   : 'form' == d && '{' == s
-                    ? l.indented
-                    : 'form' == d
-                      ? l.indented + i
-                      : 'stat' == d
-                        ? l.indented + (isContinuedStatement(t, r) ? a || i : 0)
-                        : 'switch' != l.info || p || 0 == n.doubleIndentSwitch
-                          ? l.align
-                            ? l.column + (p ? 0 : 1)
-                            : l.indented + (p ? 0 : i)
-                          : l.indented +
-                            (/^(?:case|default)\b/.test(r) ? i : 2 * i);
+                  ? l.indented
+                  : 'form' == d
+                  ? l.indented + i
+                  : 'stat' == d
+                  ? l.indented + (isContinuedStatement(t, r) ? a || i : 0)
+                  : 'switch' != l.info || p || 0 == n.doubleIndentSwitch
+                  ? l.align
+                    ? l.column + (p ? 0 : 1)
+                    : l.indented + (p ? 0 : i)
+                  : l.indented + (/^(?:case|default)\b/.test(r) ? i : 2 * i);
               },
               electricInput: /^\s*(?:case .*?:|default:|\{|\})$/,
               blockCommentStart: l ? null : '/*',
@@ -12074,16 +12007,17 @@
         l = n(187),
         c = n.n(l),
         u = n(675),
-        d = (n(676),
-        Object.assign ||
-          function(e) {
-            for (var t = 1; t < arguments.length; t++) {
-              var n = arguments[t];
-              for (var r in n)
-                Object.prototype.hasOwnProperty.call(n, r) && (e[r] = n[r]);
-            }
-            return e;
-          }),
+        d =
+          (n(676),
+          Object.assign ||
+            function(e) {
+              for (var t = 1; t < arguments.length; t++) {
+                var n = arguments[t];
+                for (var r in n)
+                  Object.prototype.hasOwnProperty.call(n, r) && (e[r] = n[r]);
+              }
+              return e;
+            }),
         p = (function() {
           function defineProperties(e, t) {
             for (var n = 0; n < t.length; n++) {

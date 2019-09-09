@@ -26,7 +26,7 @@ const FilterPopoverContainer: React.FunctionComponent = () => {
   );
 
   let activeFiltersLength: number = 0;
-  Object.keys(activeFilters.labels).map(key => {
+  Object.keys(activeFilters.labels).forEach(key => {
     activeFiltersLength += activeFilters.labels[key].length;
   });
 

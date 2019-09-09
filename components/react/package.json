@@ -1,17 +1,12 @@
 {
   "name": "@kyma-project/react-components",
   "version": "0.0.43",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "private": false,
   "license": "Apache-2.0",
   "directories": {
-    "lib": "src"
+    "dist": "src"
   },
-  "files": [
-    "/lib",
-    "./README.md",
-    "./LICENSE"
-  ],
   "scripts": {
     "start": "npm run styleguide",
     "start:kyma": "npm run build:watch",
@@ -25,17 +20,12 @@
     "test:watchAll": "jest src/** --watchAll",
     "test:coverage:report": "open ./coverage/lcov-report/index.html",
     "lint-fix": "prettier --config ../../.prettierrc --write \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "lint-check": "prettier --config ../../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "prepare": "npm run build"
+    "lint-check": "prettier --config ../../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\""
   },
-  "homepage": "https://kyma-project.github.io/console/react",
   "dependencies": {
     "file-loader": "^1.1.11",
     "fundamental-react": "0.5.0",
     "polished": "^1.8.1",
-    "prism-react-renderer": "^0.1.6",
-    "react-copy-to-clipboard": "^5.0.1",
-    "react-markdown": "^4.0.8",
     "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"
   },
@@ -59,11 +49,7 @@
     "jest": "^21.2.1",
     "jest-styled-components": "^4.11.0-1",
     "npm-run-all": "^4.1.1",
-    "prettier": "^1.16.4",
-    "prop-types": "^15.6.0",
     "raf": "^3.4.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
     "react-jsonschema-form": "1.7.0",
     "react-modal": "^3.5.1",
     "react-styleguidist": "^8.0.6",
