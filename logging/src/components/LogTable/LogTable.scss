@@ -1,0 +1,13 @@
+.aaa {
+  background: red !important;
+  &::before {
+    content: ${props => (props.noIcon ? "''" : "'\uE00D'")};
+    position: absolute;
+    font-family: SAP-icons;
+    font-size: 16px;
+    font-style: normal;
+    pointer-events: none;
+    right: 10px;
+    top: 9px;
+  }
+}
