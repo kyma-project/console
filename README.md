@@ -26,6 +26,10 @@ The Console also includes React and Angular libraries:
 - [`Shared components`](./components/shared) - new versions of components for React applications written in TypeScript
 - [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content), [`Catalog`](./service-catalog-ui/catalog) and [`Instances`](./service-catalog-ui/instances) views.
 
+## Prerequisites
+
+- [`npm`](https://www.npmjs.com/): >= 6.4.0
+
 ## Installation
 
 1. Install [Kyma](https://kyma-project.io/docs/master/root/kyma/#installation-install-kyma-locally) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
