@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
 
+import handlePreload from '../../preloadHandling';
+
 import './index.css';
 
 import builder from './commons/builder';
@@ -13,7 +15,7 @@ import App from './components/App/App.component';
 
 const client = createApolloClient();
 
-(async () => {
+handlePreload(async () => {
   await builder.init();
   ReactDOM.render(
     <BrowserRouter>
@@ -23,4 +25,4 @@ const client = createApolloClient();
     </BrowserRouter>,
     document.getElementById('root'),
   );
-})();
+});
