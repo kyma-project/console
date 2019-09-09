@@ -100,7 +100,7 @@ export default function convertToNavigationTree(
         } else {
           node.viewGroup = node.navigationContext;
           if (spec.preloadUrl) {
-            navigation.viewGroupSettings[node.viewGroup] = {//TODO use ['preloadUrl']?
+            navigation.viewGroupSettings[node.viewGroup] = {
               preloadUrl: node.localPreloadUrl || spec.preloadUrl
             };
           }
