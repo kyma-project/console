@@ -1,4 +1,4 @@
-export default function handlePreload(startAppFn) {
+export function handlePreload(startAppFn) {
   const path = new URL(window.location.href).pathname;
 
   if (path === '/preload') {

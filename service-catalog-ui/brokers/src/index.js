@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
 
-import handlePreload from '../../preloadHandling';
+import { handlePreload } from '@kyma-project/react-components';
 
 import './index.css';
 
