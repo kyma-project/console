@@ -29,6 +29,7 @@ The Console also includes React and Angular libraries:
 ## Prerequisites
 
 - [`npm`](https://www.npmjs.com/): >= 6.4.0
+- [`node`](https://nodejs.org/en/): >= 8.9.0
 
 ## Installation
 
