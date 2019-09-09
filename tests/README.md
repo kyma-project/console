@@ -4,17 +4,19 @@
 
 This project contains UI acceptance tests for Kyma.
 
-## Installation
-
-To install dependencies, run the `npm install` command.
-
 ## Prerequisites
 
 To run the `catalog-ui-test`, you need to install Kyma with the `testing` bundle included. For more information about including the `testing` bundle, read [this](https://kyma-project.io/docs/master/components/helm-broker/#details-create-addons-repository) document.
 
-## Run all tests
+## Installation
 
-If you do not have the dependencies installed through Lerna, use the `npm install` command to install them.
+To install dependencies, run the `npm install` command.
+
+## Development
+
+Learn how to run all tests or specific one.
+
+### Run all tests
 
 > **NOTE:** You need a valid `kubeconfig` issued for a user with admin rights for the cluster. On local deployments, the appropriate `kubeconfig` file is set automatically during Minikube setup. For cluster deployments, you must obtain the `kubeconfig` file manually.
 
@@ -38,7 +40,7 @@ npm run test
 
 > **NOTE:** In the second case, take note of which **GraphQL API** endpoint you use.
 
-## Run specific tests
+### Run specific tests
 
 By default, the commands from the **Run all tests** section allow you to run all available tests. To run only the selected ones, change the value of the `testRegex` field in the [`package.json`](package.json) file. These are the available tests to run:
 
