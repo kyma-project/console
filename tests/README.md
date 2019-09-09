@@ -4,6 +4,10 @@
 
 This project contains UI acceptance tests for Kyma.
 
+## Installation
+
+To install dependencies, run the `npm install` command.
+
 ## Prerequisites
 
 To run the `catalog-ui-test`, you need to install Kyma with the `testing` bundle included. For more information about including the `testing` bundle, read [this](https://kyma-project.io/docs/master/components/helm-broker/#details-create-addons-repository) document.
@@ -16,19 +20,19 @@ If you do not have the dependencies installed through Lerna, use the `npm instal
 
 To run all acceptance tests inside a container in the cluster, use this command:
 
-```
+``` bash
 npm run test:cluster
 ```
 
 To run all acceptance tests outside the cluster, use this command:
 
-```
+``` bash
 npm run test:cluster-outside
 ```
 
 To run all acceptance tests during development against `http://console-dev.kyma.local:4200`, use this command:
 
-```
+``` bash
 npm run test
 ```
 
@@ -42,3 +46,4 @@ By default, the commands from the **Run all tests** section allow you to run all
 - `catalog-ui-test` for `service-catalog` and `instances` views
 - `docs-ui-test` for `content` view
 - `lambda-ui-test` for `lambda` view
+- `logging-test` for `logging` view

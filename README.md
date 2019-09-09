@@ -95,7 +95,7 @@ For the information on how to run tests and configure them, go to the [`tests`](
 
 ### CI fails on PRs related to staging dependencies
 
-Remove the `node_modules` folder and the `package-lock.json` file in all libraries in the (`components`)[./components] folder and on the root. Then rerun the `npm run bootstrap` command in the root context and push all the changes.
+Remove the `node_modules` folder and the `package-lock.json` file in all libraries in the [`components`](./components) folder and on the root. Then rerun the `npm run bootstrap` command in the root context and push all the changes.
 
 ### Can't access `console.kyma.local` and `console-dev.kyma.local:4200` after hibernating the Minikube cluster
 
