@@ -14,7 +14,7 @@ To install dependencies, run the `npm install` command.
 
 ## Development
 
-Learn how to run all tests or specific one.
+Learn how to run all tests or specific ones.
 
 ### Run all tests
 
