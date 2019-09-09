@@ -5,7 +5,6 @@ import { media, sizes } from './style-utils.js';
 import { instanceStatusColor } from './instance-status-color';
 import { randomNamesGenerator } from './random-names-generator';
 import { instancesTabUtils } from './instances-tab-utils';
-import { handlePreload } from './preload-handling';
 
 module.exports = {
   instanceStatusColor,
@@ -13,5 +12,4 @@ module.exports = {
   sizes,
   randomNamesGenerator,
   instancesTabUtils,
-  handlePreload,
 };
