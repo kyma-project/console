@@ -4,6 +4,12 @@ module.exports = {
   domain: process.env.DOMAIN || 'kyma.local',
   devConsoleUrl:
     process.env.DEV_CONSOLE_URl || 'http://console-dev.kyma.local:4200',
+  devCatalogUrl:
+    process.env.DEV_CATALOG_URl || 'http://console-dev.kyma.local:8000',
+  devInstancesUrl:
+    process.env.DEV_INSTANCES_URl || 'http://console-dev.kyma.local:8001',
+  devLambdasUrl:
+    process.env.DEV_LAMBDAS_URl || 'http://console-dev.kyma.local:4201',
   localdev: process.env.LOCAL_DEV || false,
   testNamespace: process.env.TEST_NAMESPACE || 'testnamespace',
   testApp: process.env.TEST_APP || 'testapplication',

@@ -1,6 +1,24 @@
 import config from '../config';
 
 class Console {
+  getCatalogFrameUrl() {
+    return config.localdev
+      ? config.devCatalogUrl
+      : 'https://catalog.' + config.domain;
+  }
+
+  getInstancesFrameUrl() {
+    return config.localdev
+      ? config.devInstancesUrl
+      : 'https://instances.' + config.domain;
+  }
+
+  getLambdasFrameUrl() {
+    return config.localdev
+      ? config.devLambdasUrl
+      : 'https://lambdas-ui.' + config.domain;
+  }
+
   getConsole() {
     return config.localdev
       ? config.devConsoleUrl

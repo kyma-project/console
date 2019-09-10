@@ -4,6 +4,7 @@ import common from '../commands/common';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
 import config from '../config';
+import address from '../utils/address';
 
 import { retry } from '../utils/retry';
 import {
@@ -59,7 +60,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     // given (go to create lambda)
     const frame = await kymaConsole.waitForAppFrameAttached(
       page,
-      `lambdas-ui.${config.domain}`,
+      address.console.getLambdasFrameUrl(),
     );
     const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
@@ -83,9 +84,9 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
   testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
 
-    let frame = await kymaConsole.getFrameForApp(
+    let frame = await kymaConsole.waitForAppFrameAttached(
       page,
-      `lambdas-ui.${config.domain}`,
+      address.console.getLambdasFrameUrl(),
     );
 
     const lambdasListBreadcrumbLink = 'a[fd-breadcrumb-link]';

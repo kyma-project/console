@@ -1,5 +1,6 @@
 import config from '../config';
 import kymaConsole from '../commands/console';
+import address from '../utils/address';
 
 module.exports = {
   createInstance: async (
@@ -26,7 +27,7 @@ module.exports = {
 
       const frame = await kymaConsole.getFrameForApp(
         page,
-        `catalog.${config.domain}`,
+        address.console.getCatalogFrameUrl(),
       );
       await frame.click(addToEnvButton);
       await frame.waitForSelector(modal, { visible: true });
@@ -92,7 +93,7 @@ module.exports = {
 
       const frame = await kymaConsole.getFrameForApp(
         page,
-        `instances.${config.domain}`,
+        address.console.getInstancesFrameUrl(),
       );
       await frame.click(createCredentialsButton);
       await frame.waitForSelector(modal, { visible: true });
@@ -126,7 +127,7 @@ module.exports = {
 
       const frame = await kymaConsole.getFrameForApp(
         page,
-        `instances.${config.domain}`,
+        address.console.getInstancesFrameUrl(),
       );
       await frame.click(bindAplicationButton);
       await frame.waitForSelector(modal, { visible: true });

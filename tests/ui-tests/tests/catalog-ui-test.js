@@ -42,20 +42,18 @@ const namespaceInstaller = new NamespaceManager(TEST_NAMESPACE);
 let page, browser;
 
 const waitForCatalogFrame = page => {
-  return kymaConsole.waitForAppFrameAttached(page, `catalog.${config.domain}`);
+  return kymaConsole.waitForAppFrameAttached(
+    page,
+    address.console.getCatalogFrameUrl(),
+  );
 };
 
 const waitForInstancesFrame = (page, waitForLoaded) => {
+  const instancesFrameUrl = address.console.getInstancesFrameUrl();
   if (waitForLoaded) {
-    return kymaConsole.waitForAppFrameLoaded(
-      page,
-      `instances.${config.domain}`,
-    );
+    return kymaConsole.waitForAppFrameLoaded(page, instancesFrameUrl);
   } else {
-    return kymaConsole.waitForAppFrameAttached(
-      page,
-      `instances.${config.domain}`,
-    );
+    return kymaConsole.waitForAppFrameAttached(page, instancesFrameUrl);
   }
 };
 
@@ -125,13 +123,14 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       );
 
       console.log('Check if `Testing addon` is on the list');
+      let frame;
       await Promise.all([
         page.goto(address.console.getCatalog(TEST_NAMESPACE)),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0'],
+          waitUntil: ['domcontentloaded'],
         }),
+        (frame = await waitForCatalogFrame(page)),
       ]);
-      const frame = await waitForCatalogFrame(page);
       await frame.waitForSelector(catalogHeaderSelector);
       const catalogHeader = await frame.$eval(
         catalogHeaderSelector,
@@ -245,7 +244,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0'],
+          waitUntil: ['domcontentloaded', 'networkidle2'],
         }),
         (frame3 = await waitForInstancesFrame(page, true)),
       ]);
@@ -331,14 +330,16 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         configUncorrectRegExpData,
       );
 
+      let frame3;
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0'],
+          waitUntil: ['domcontentloaded', 'networkidle2'],
         }),
+        (frame3 = await waitForInstancesFrame(page)),
       ]);
 
-      const frame3 = await waitForInstancesFrame(page);
+      // const frame3 = await waitForInstancesFrame(page);
 
       const instancesHeaderElement = await frame3.waitForSelector(
         instancesHeaderSelector,
@@ -409,7 +410,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     );
     await minimalPlanInstance.click();
     await frame.waitForNavigation({
-      waitUntil: ['domcontentloaded', 'networkidle0'],
+      waitUntil: ['domcontentloaded'],
     });
 
     console.log('Confirm all necessary fields');
@@ -449,7 +450,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await Promise.all([
       page.goto(instancesUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle0'],
+        waitUntil: ['domcontentloaded', 'networkidle2'],
       }),
       (frame = await waitForInstancesFrame(page, true)),
     ]);
