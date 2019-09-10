@@ -1,0 +1,28 @@
+@import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
+
+.link-button {
+  color: var(--fd-color-action-1);
+  cursor: pointer;
+}
+
+.caption-muted {
+    //@include fd-type("-1"); TODO
+    font-size: .85714rem;
+    font-weight: 400;
+    //@include fd-type("-1"); /TODO
+
+    // color: var(--fd-has-color-text-3); //TODO
+    color: #6a6d70;
+}
+
+.small-inline-help-wrapper {
+  display: inline;
+
+  .fd-inline-help::before {
+      margin-top: 6px;
+      margin-left: 4px;
+      width: 10px;
+      height: 10px;
+      font-size: 8px;
+  }
+}

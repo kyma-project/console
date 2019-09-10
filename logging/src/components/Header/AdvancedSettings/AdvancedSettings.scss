@@ -1,0 +1,41 @@
+.advanced_settings {
+  border-bottom: 1px solid var(--fd-color-background-1);
+}
+
+.advanced_settings__header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--fd-color-text-1);
+    margin-top: 12px;
+}
+
+.advanced_settings__entry {
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+
+    input[type=checkbox] {
+        margin: 8px;
+        margin-left: 0px;
+    }
+
+    > :first-child {
+        flex: 1 0 0;
+    }
+
+    > :nth-child(2) {
+        flex: 5 0 0;
+    }
+}
+
+.advanced_settings__header__close {
+    cursor: pointer;
+}
+
+#query {
+    max-width: 450px;
+}
+
+#result-limit {
+    max-width: 200px;
+}

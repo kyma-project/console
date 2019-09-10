@@ -1,13 +1,16 @@
-.aaa {
-  background: red !important;
-  &::before {
-    content: ${props => (props.noIcon ? "''" : "'\uE00D'")};
-    position: absolute;
-    font-family: SAP-icons;
-    font-size: 16px;
-    font-style: normal;
-    pointer-events: none;
-    right: 10px;
-    top: 9px;
-  }
+$table-margin: 24px;
+
+.fd-table {
+    width: calc(100% - 2 * #{$table-margin}) !important;
+}
+
+th:first-child, td:first-child {
+    width: 25%;
+}
+
+.log-table__pre-header {
+    color: var(--fd-color-text-1);
+    padding: 16px 20px;
+    margin: 0;
+    background: white;
 }

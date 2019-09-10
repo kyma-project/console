@@ -1,0 +1,21 @@
+.header__settings-group {
+
+  display: flex;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--fd-color-background-1);
+
+  & > * {
+      margin-right: 16px;
+  }
+
+  @media (max-width: 500px) {
+    display: initial;
+    & > * {
+        flex: 1;
+    }
+  }
+}
+
+.header__settings-group__toggle {
+  padding-top: 30px;
+}
