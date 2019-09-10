@@ -28,7 +28,7 @@ describeIf(dex.isStaticUser() && config.loggingEnabled, 'Log UI tests', () => {
     await page.$$eval(navItem, item =>
       item.find(text => text.innerText.includes('Logs')).click(),
     );
-    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle2'] });
 
     // check labels available
     const frame = await kymaConsole.getFrame(page);
