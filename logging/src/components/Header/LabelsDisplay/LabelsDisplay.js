@@ -1,23 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './LabelsDisplay.scss';
 
 import { Token } from 'fundamental-react';
 
-export default function LabelsDisplay(props) {
-  const samplelabels = ['namespace="demo"', 'function="hasselhoff'];
+LabelsDisplay.propTypes = {
+  labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  removeLabel: PropTypes.func.isRequired,
+  removeAll: PropTypes.func.isRequired,
+};
 
-  function removeLabel(label) {
-    console.log(label);
-  }
-
-  function removeAllLabels() {
-    console.log('remove all');
-  }
-
+export default function LabelsDisplay({
+  labels,
+  readonlyLabels,
+  removeLabel,
+  removeAll,
+}) {
   return (
     <section className="labels-display">
       <ul>
-        {samplelabels.map(label => (
+        {readonlyLabels.map(label => (
+          <li key={label}>
+            <Token className="caption-muted" disabled>
+              {label}
+            </Token>
+          </li>
+        ))}
+        {labels.map(label => (
           <li key={label}>
             <Token className="caption-muted" onClick={() => removeLabel(label)}>
               {label}
@@ -25,10 +35,10 @@ export default function LabelsDisplay(props) {
           </li>
         ))}
       </ul>
-      {samplelabels.length && (
+      {!!labels.length && (
         <span
           className="link-button fd-has-type-minus-1 fd-has-margin-left-tiny"
-          onClick={() => removeAllLabels()}
+          onClick={() => removeAll()}
         >
           Clear All
         </span>

@@ -19,7 +19,6 @@ export default function AdvancedSettings({
     return (
       <div className="advanced_settings__entry">
         <p className="caption-muted advanced_settings__entry-name">{name}</p>{' '}
-        {/* todo p -> label? */}
         <div className="advanced_settings__entry_name-control">{controls}</div>
       </div>
     );
@@ -65,7 +64,7 @@ export default function AdvancedSettings({
     <label htmlFor="result-limit">
       Result limit
       <span className="small-inline-help-wrapper">
-        <InlineHelp placement="right" text="TODO" />
+        <InlineHelp placement="right" text="Return only limited number of most recent log lines" />
       </span>
     </label>,
     <FormInput
@@ -93,13 +92,13 @@ export default function AdvancedSettings({
 
   const healthChecksInput = (
     <>
-      <input type="checkbox" id="health-checks" />
-      <label
-        className="caption-muted"
-        htmlFor="health-checks"
+      <input
+        type="checkbox"
+        id="health-checks"
         defaultChecked={advancedSettings.showHealthChecks}
         onChange={setHealthChecks}
-      >
+      />
+      <label className="caption-muted" htmlFor="health-checks">
         health check
       </label>
     </>
@@ -112,7 +111,7 @@ export default function AdvancedSettings({
         <Icon
           glyph="decline"
           size="s"
-          className="advanced_settings__header__close"
+          className="cursor-pointer"
           onClick={() => hideSettings()}
         />
       </h2>

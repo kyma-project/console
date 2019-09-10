@@ -6,17 +6,23 @@
 }
 
 .caption-muted {
-    //@include fd-type("-1"); TODO
     font-size: .85714rem;
     font-weight: 400;
-    //@include fd-type("-1"); /TODO
-
-    // color: var(--fd-has-color-text-3); //TODO
-    color: #6a6d70;
+    color: var(--fd-color-text-3);
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 
 .small-inline-help-wrapper {
   display: inline;
+
+  .fd-inline-help {
+    display: inline;
+    top: unset;
+  }
 
   .fd-inline-help::before {
       margin-top: 6px;
@@ -24,5 +30,15 @@
       width: 10px;
       height: 10px;
       font-size: 8px;
+  }
+}
+
+.fd-token[disabled] {
+  color: var(--fd-color-text-1);
+  background-color: var(--fd-color-neutral-2);
+  border-color: var(--fd-color-neutral-4);
+
+  &::after {
+    cursor: unset;
   }
 }
