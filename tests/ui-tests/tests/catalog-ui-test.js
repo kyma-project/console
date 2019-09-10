@@ -167,7 +167,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         testingBundle.click(),
         frame.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle2'],
+          waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
       ]);
       const frame2 = await waitForCatalogFrame(page);
@@ -204,7 +204,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       console.log('Provision `Testing bundle` with `Minimal` plan');
       await retry(async () => {
-        await page.reload({ waitUntil: ['domcontentloaded', 'networkidle2'] });
+        await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
         await catalog.createInstance(page, instancePlan, instanceTitle);
       });
 
@@ -221,7 +221,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         notification.click(),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle2'],
+          waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
         (frame2 = await waitForInstancesFrame(page, true)),
       ]);
@@ -244,7 +244,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle2'],
+          waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
         (frame3 = await waitForInstancesFrame(page, true)),
       ]);
@@ -254,7 +254,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         goToCatalog.click(),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle2'],
+          waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
       ]);
 
@@ -312,7 +312,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         testingBundle.click(),
         frame.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle2'],
+          waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
       ]);
       const frame2 = await waitForCatalogFrame(page);
@@ -334,7 +334,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle2'],
+          waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
         (frame3 = await waitForInstancesFrame(page)),
       ]);
@@ -448,7 +448,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     await Promise.all([
       page.goto(instancesUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle2'],
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
       (frame = await waitForInstancesFrame(page, true)),
     ]);
@@ -458,7 +458,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     });
     await fullPlanInstance.click();
     await frame.waitForNavigation({
-      waitUntil: ['domcontentloaded', 'networkidle2'],
+      waitUntil: ['domcontentloaded'],
     });
 
     console.log('Confirm all necessary fields');

@@ -16,7 +16,7 @@ async function _loginViaDex(page, config) {
   console.log(`Trying to log in ${config.login} via dex`);
   try {
     await page.reload({
-      waitUntil: ['domcontentloaded', 'networkidle2'],
+      waitUntil: ['domcontentloaded', 'networkidle0'],
     });
     await page.waitForSelector('#login');
     await page.type('#login', config.login);
@@ -26,7 +26,7 @@ async function _loginViaDex(page, config) {
     return Promise.all([
       page.click(loginButtonSelector),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle2'],
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
   } catch (err) {

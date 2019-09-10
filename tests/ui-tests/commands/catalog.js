@@ -25,7 +25,7 @@ module.exports = {
       const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
       const disabledButtonClass = '.is-disabled';
 
-      const frame = await kymaConsole.getFrameForApp(
+      const frame = await kymaConsole.waitForAppFrameAttached(
         page,
         address.console.getCatalogFrameUrl(),
       );
@@ -91,10 +91,11 @@ module.exports = {
       const additionalDataInput = '#root_exampleField';
       const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
 
-      const frame = await kymaConsole.getFrameForApp(
+      const frame = await kymaConsole.waitForAppFrameAttached(
         page,
         address.console.getInstancesFrameUrl(),
       );
+      await frame.waitForSelector(createCredentialsButton);
       await frame.click(createCredentialsButton);
       await frame.waitForSelector(modal, { visible: true });
 
@@ -125,7 +126,7 @@ module.exports = {
 
       const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
 
-      const frame = await kymaConsole.getFrameForApp(
+      const frame = await kymaConsole.waitForAppFrameAttached(
         page,
         address.console.getInstancesFrameUrl(),
       );
@@ -198,7 +199,10 @@ async function confirmModal(page) {
 
     const modalDelete = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
 
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await kymaConsole.waitForAppFrameAttached(
+      page,
+      address.console.getInstancesFrameUrl(),
+    );
     await frame.click(deleteBindingButton);
     await frame.waitForSelector(modal, { visible: true });
 

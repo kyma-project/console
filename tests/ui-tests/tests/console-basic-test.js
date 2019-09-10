@@ -51,7 +51,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await Promise.all([
       page.goto(address.console.getNamespacesAddress()),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle2'],
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
 
@@ -146,7 +146,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await Promise.all([
       page.goto(serviceUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle2'],
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
       (frame = await kymaConsole.waitForConsoleCoreFrame(page, true)),
     ]);
@@ -199,7 +199,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await Promise.all([
       page.goto(applicationsUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle2'],
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
     const applications = await kymaConsole.getApplicationNames(page);

@@ -47,7 +47,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
     await Promise.all([
       page.goto(docsUrl),
       page.waitForNavigation({
-        waitUntil: ['domcontentloaded', 'networkidle2'],
+        waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
 
