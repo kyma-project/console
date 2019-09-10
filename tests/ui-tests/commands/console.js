@@ -88,7 +88,7 @@ const timeoutPromise = (ms, rejectMsg) => {
 };
 
 const waitForAppFrameAttached = async (page, appUrl) => {
-  const waitForAppFrameAttached = new Promise(resolve => {
+  const waitForFrame = new Promise(resolve => {
     (async function checkIfAppFrameAttached() {
       const frame = await getFrameForApp(page, appUrl);
       if (frame) {
@@ -100,7 +100,7 @@ const waitForAppFrameAttached = async (page, appUrl) => {
   });
 
   return Promise.race([
-    waitForAppFrameAttached,
+    waitForFrame,
     timeoutPromise(
       WAIT_FOR_FRAME_TIMEOUT,
       `Waiting for ${appUrl} frame attached timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`,

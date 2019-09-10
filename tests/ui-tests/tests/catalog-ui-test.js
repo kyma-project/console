@@ -339,8 +339,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         (frame3 = await waitForInstancesFrame(page)),
       ]);
 
-      // const frame3 = await waitForInstancesFrame(page);
-
       const instancesHeaderElement = await frame3.waitForSelector(
         instancesHeaderSelector,
       );

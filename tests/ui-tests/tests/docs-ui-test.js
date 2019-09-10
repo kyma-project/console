@@ -42,7 +42,7 @@ describeIf(dex.isStaticUser(), 'Docs basic tests', () => {
 
     // consts
     const docsHeaderSelector = catalog.prepareSelector('go-to-environment');
-    const docsExpectedHeader = 'Back to Namespaces';
+    const docsExpectedHeader = 'Back to Environment';
 
     await Promise.all([
       page.goto(docsUrl),

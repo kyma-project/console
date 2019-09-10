@@ -21,6 +21,7 @@ const context = (function() {
           '--disable-setuid-sandbox',
           '--disk-cache-size=10000000',
           '--media-cache-size=10000000',
+          '--disable-dev-shm-usage',
         ],
       });
     },
