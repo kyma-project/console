@@ -6,7 +6,7 @@
     (pagingState.totalCount || 0) > pagingState.pageSize
   "
   [class]="'fd-pagination fd-has-margin-tiny'"
-  (selected)="goToPage($event)"
+  (pageChangeStart)="goToPage($event)"
   [totalItems]="pagingState.totalCount || 0"
   [itemsPerPage]="pagingState.pageSize"
   [currentPage]="pagingState.pageNumber"
