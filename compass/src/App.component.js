@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Notification } from '@kyma-project/react-components';
 
 import './App.scss';
@@ -49,79 +49,81 @@ class App extends React.Component {
       <div>
         <Notification {...notification} onClick={this.clearNotification} />
         <Router>
-          <Route path="/" exact component={Overview} />
-          <Route path="/runtimes" exact component={Runtimes} />
-          <Route
-            path="/runtime/:id"
-            exact
-            render={({ match }) => (
-              <RuntimeDetails runtimeId={match.params.id} />
-            )}
-          />
-          <Route path="/applications" exact component={Applications} />
-          <Route
-            path="/application/:id"
-            exact
-            render={({ match }) => (
-              <ApplicationDetails applicationId={match.params.id} />
-            )}
-          />
-          <Route
-            path="/application/:applicationId/api/:apiId"
-            exact
-            render={({ match }) => (
-              <ApiDetails
-                applicationId={match.params.applicationId}
-                apiId={match.params.apiId}
-              />
-            )}
-          />
-          <Route
-            path="/application/:applicationId/api/:apiId/edit"
-            exact
-            render={({ match }) => (
-              <EditApi
-                apiId={match.params.apiId}
-                applicationId={match.params.applicationId}
-              />
-            )}
-          />
-          <Route
-            path="/application/:applicationId/eventApi/:eventApiId"
-            exact
-            render={({ match }) => (
-              <ApiDetails
-                applicationId={match.params.applicationId}
-                eventApiId={match.params.eventApiId}
-              />
-            )}
-          />
-          <Route
-            path="/application/:applicationId/eventApi/:eventApiId/edit"
-            exact
-            render={({ match }) => (
-              <EditApi
-                apiId={match.params.eventApiId}
-                applicationId={match.params.applicationId}
-              />
-            )}
-          />
+          <Switch>
+            <Route path="/" exact component={Overview} />
+            <Route path="/runtimes" exact component={Runtimes} />
+            <Route
+              path="/runtime/:id"
+              exact
+              render={({ match }) => (
+                <RuntimeDetails runtimeId={match.params.id} />
+              )}
+            />
+            <Route path="/applications" exact component={Applications} />
+            <Route
+              path="/application/:id"
+              exact
+              render={({ match }) => (
+                <ApplicationDetails applicationId={match.params.id} />
+              )}
+            />
+            <Route
+              path="/application/:applicationId/api/:apiId"
+              exact
+              render={({ match }) => (
+                <ApiDetails
+                  applicationId={match.params.applicationId}
+                  apiId={match.params.apiId}
+                />
+              )}
+            />
+            <Route
+              path="/application/:applicationId/api/:apiId/edit"
+              exact
+              render={({ match }) => (
+                <EditApi
+                  apiId={match.params.apiId}
+                  applicationId={match.params.applicationId}
+                />
+              )}
+            />
+            <Route
+              path="/application/:applicationId/eventApi/:eventApiId"
+              exact
+              render={({ match }) => (
+                <ApiDetails
+                  applicationId={match.params.applicationId}
+                  eventApiId={match.params.eventApiId}
+                />
+              )}
+            />
+            <Route
+              path="/application/:applicationId/eventApi/:eventApiId/edit"
+              exact
+              render={({ match }) => (
+                <EditApi
+                  apiId={match.params.eventApiId}
+                  applicationId={match.params.applicationId}
+                />
+              )}
+            />
 
-          <Route path="/scenarios" exact component={Scenarios} />
-          <Route
-            path="/metadata-definitions"
-            exact
-            component={MetadataDefinitions}
-          />
-          <Route
-            path="/metadatadefinition/:definitionKey"
-            exact
-            render={({ match }) => (
-              <MetadataDefinitionDetails
-                definitionKey={match.params.definitionKey}
-              />
-            )}
-          />
+            <Route path="/scenarios" exact component={Scenarios} />
+            <Route
+              path="/metadata-definitions"
+              exact
+              component={MetadataDefinitions}
+            />
+            <Route
+              path="/metadatadefinition/:definitionKey"
+              exact
+              render={({ match }) => (
+                <MetadataDefinitionDetails
+                  definitionKey={match.params.definitionKey}
+                />
+              )}
+            />
+          </Switch>
         </Router>
       </div>
     );
