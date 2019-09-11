@@ -26,7 +26,7 @@
     "@kyma-project/common": "./common",
     "@kyma-project/components": "./components/shared",
     "@kyma-project/generic-documentation": "./components/generic-documentation",
-    "@kyma-project/luigi-client": "^0.6.1",
+    "@kyma-project/luigi-client": "^0.6.3",
     "@kyma-project/luigi-core": "^0.6.3",
     "@kyma-project/react-components": "./components/react",
     "@reach/router": "^1.2.1",
