@@ -14,7 +14,7 @@ import {
 } from './../setup/k8s-api';
 
 let page, browser, namespace;
-let token = '';
+let token = ''; // eslint-disable-line no-unused-vars
 
 // TODO: Move application tests to a separate file
 const REQUIRED_MODULE = 'application';
@@ -134,19 +134,21 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     // Create k8s resources
     const namespaceUnderTest = 'test-expose-api';
     namespace = await new k8sApiNamespace(namespaceUnderTest);
-    await new k8sApiDeployment(namespaceUnderTest);
+    const deploymentApi = await new k8sApiDeployment(namespaceUnderTest);
     service = await new k8sApiService(namespaceUnderTest);
-    await page.waitFor(15000); // TODO: provide a deterministic way to wait for new resources to be active
+    await deploymentApi.waitUntilCreated();
 
     serviceUrl = address.console.getService(
       namespace.definition.metadata.name,
       service.definition.metadata.name,
     );
+
     await Promise.all([
       page.goto(serviceUrl),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
+      (frame = await kymaConsole.waitForConsoleCoreFrame(page, true)),
     ]);
 
     // Before exposing API
@@ -154,7 +156,6 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     await callExposedAPI(404);
 
     // Expose API (not secured)
-    frame = await kymaConsole.getFrame(page);
     await frame.click('[data-e2e-id=open-expose-api]');
     await frame.waitForSelector('#host-input');
     await frame.type('#host-input', apiName);
@@ -207,17 +208,13 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   testPluggable(REQUIRED_MODULE, 'Create Application', async () => {
-    await retry(async () => {
-      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-      await kymaConsole.createApplication(page, config.testApp);
-    });
-    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+    await kymaConsole.createApplication(page, config.testApp);
     const applications = await kymaConsole.getApplicationNames(page);
     expect(applications).toContain(config.testApp);
   });
 
   testPluggable(REQUIRED_MODULE, 'Go to details and back', async () => {
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await kymaConsole.waitForConsoleCoreFrame(page);
     await frame.waitForXPath(
       `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${config.testApp}")]`,
     );
@@ -234,7 +231,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   testPluggable(REQUIRED_MODULE, 'Delete Application', async () => {
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await kymaConsole.waitForConsoleCoreFrame(page);
     await frame.waitForXPath(
       `//a[contains(@data-e2e-id, 'application-name') and contains(string(), "${config.testApp}")]`,
     );

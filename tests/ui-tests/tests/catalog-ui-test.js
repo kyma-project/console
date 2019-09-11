@@ -41,6 +41,22 @@ const namespaceInstaller = new NamespaceManager(TEST_NAMESPACE);
 
 let page, browser;
 
+const waitForCatalogFrame = page => {
+  return kymaConsole.waitForAppFrameAttached(
+    page,
+    address.console.getCatalogFrameUrl(),
+  );
+};
+
+const waitForInstancesFrame = (page, waitForLoaded) => {
+  const instancesFrameUrl = address.console.getInstancesFrameUrl();
+  if (waitForLoaded) {
+    return kymaConsole.waitForAppFrameLoaded(page, instancesFrameUrl);
+  } else {
+    return kymaConsole.waitForAppFrameAttached(page, instancesFrameUrl);
+  }
+};
+
 describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
   beforeAll(async () => {
     if (!(await isModuleEnabled(REQUIRED_MODULE))) {
@@ -107,13 +123,14 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       );
 
       console.log('Check if `Testing addon` is on the list');
+      let frame;
       await Promise.all([
         page.goto(address.console.getCatalog(TEST_NAMESPACE)),
         page.waitForNavigation({
-          waitUntil: ['domcontentloaded', 'networkidle0'],
+          waitUntil: ['domcontentloaded'],
         }),
+        (frame = await waitForCatalogFrame(page)),
       ]);
-      const frame = await kymaConsole.getFrame(page);
       await frame.waitForSelector(catalogHeaderSelector);
       const catalogHeader = await frame.$eval(
         catalogHeaderSelector,
@@ -153,7 +170,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
           waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
       ]);
-      const frame2 = await kymaConsole.getFrame(page);
+      const frame2 = await waitForCatalogFrame(page);
       await frame2.waitForSelector(exampleServiceClassTitle);
       const title = await frame2.$(exampleServiceClassTitle);
       const description = await frame2.$(exampleServiceClassDescription);
@@ -191,7 +208,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         await catalog.createInstance(page, instancePlan, instanceTitle);
       });
 
-      const frame = await kymaConsole.getFrame(page);
+      const frame = await waitForCatalogFrame(page);
 
       console.log(
         'Click on the provision confirmation link and confirm you were redirected to instance details page directly',
@@ -199,36 +216,41 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       const notification = await frame.waitForSelector(notificationLink, {
         visible: true,
       });
+
+      let frame2;
       await Promise.all([
         notification.click(),
         page.waitForNavigation({
           waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
+        (frame2 = await waitForInstancesFrame(page, true)),
       ]);
-      let frame2, serviceClass;
-      await retry(async () => {
-        await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-        frame2 = await kymaConsole.getFrame(page);
-        serviceClass = await frame2.$eval(
-          exampleInstanceServiceClass,
-          item => item.innerHTML,
-        );
-      });
+
+      const serviceClassElement = await frame2.waitForSelector(
+        exampleInstanceServiceClass,
+      );
+      const serviceClass = await frame2.evaluate(
+        element => element.textContent,
+        serviceClassElement,
+      );
 
       expect(serviceClass).toContain(exampleServiceClassName);
 
       console.log(
         'Go to main Instances list view and click `Add Instance` link and confirm you went to catalog',
       );
+
+      let frame3;
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
           waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
+        (frame3 = await waitForInstancesFrame(page, true)),
       ]);
 
-      const frame3 = await kymaConsole.getFrame(page);
       const goToCatalog = await frame3.waitForSelector(addInstanceButton);
+
       await Promise.all([
         goToCatalog.click(),
         page.waitForNavigation({
@@ -236,23 +258,14 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         }),
       ]);
 
-      let frame4, catalogHeader;
-      await retry(async () => {
-        try {
-          await page.waitFor(1000);
-          await page.reload({
-            waitUntil: ['domcontentloaded', 'networkidle0'],
-          });
-          frame4 = await kymaConsole.getFrame(page);
-          catalogHeader = await frame4.$eval(
-            catalogHeaderSelector,
-            item => item.innerHTML,
-          );
-        } catch (e) {
-          console.log(document.documentElement.innerHTML);
-          throw e;
-        }
-      });
+      const frame4 = await waitForCatalogFrame(page);
+      const catalogHeaderElement = await frame4.waitForSelector(
+        catalogHeaderSelector,
+      );
+      const catalogHeader = await frame4.evaluate(
+        element => element.textContent,
+        catalogHeaderElement,
+      );
 
       expect(catalogHeader).toContain(catalogExpectedHeader);
 
@@ -292,58 +305,47 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       );
       const closeModalSelector = '.fd-modal__close';
 
-      const frame = await kymaConsole.getFrame(page);
-      const testingBundle = await frame.$(exampleServiceClassButton);
+      const frame = await waitForCatalogFrame(page);
+      const testingBundle = await frame.waitForSelector(
+        exampleServiceClassButton,
+      );
       await Promise.all([
         testingBundle.click(),
         frame.waitForNavigation({
           waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
       ]);
-      const frame2 = await kymaConsole.getFrame(page);
+      const frame2 = await waitForCatalogFrame(page);
       await frame2.waitForSelector(exampleServiceClassTitleAndProvider);
 
       console.log('Provision `Testing bundle` with `Full` plan');
-      await retry(async () => {
-        await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-        await catalog.createInstance(
-          page,
-          instancePlan,
-          instanceTitle,
-          instanceLabel,
-          additionalData,
-          planName,
-          configRegExpData,
-          configUncorrectRegExpData,
-        );
-      });
-      //Reload the page after creation to delay navigation to instances list that sometimes causes failing test
-      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+      await catalog.createInstance(
+        page,
+        instancePlan,
+        instanceTitle,
+        instanceLabel,
+        additionalData,
+        planName,
+        configRegExpData,
+        configUncorrectRegExpData,
+      );
 
-      console.log('Navigate manually to instances list');
+      let frame3;
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
           waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
+        (frame3 = await waitForInstancesFrame(page)),
       ]);
 
-      let frame3, instancesHeader;
-      await retry(async () => {
-        try {
-          await page.reload({
-            waitUntil: ['domcontentloaded', 'networkidle0'],
-          });
-          frame3 = await kymaConsole.getFrame(page);
-          instancesHeader = await frame3.$eval(
-            instancesHeaderSelector,
-            item => item.innerHTML,
-          );
-        } catch (e) {
-          console.log(document.documentElement.innerHTML);
-          throw e;
-        }
-      });
+      const instancesHeaderElement = await frame3.waitForSelector(
+        instancesHeaderSelector,
+      );
+      const instancesHeader = await frame3.evaluate(
+        element => element.textContent,
+        instancesHeaderElement,
+      );
 
       expect(instancesHeader).toContain(instancesExpectedHeader);
 
@@ -360,10 +362,12 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       await frame3.waitForSelector(servicePlanButton);
       await frame3.click(servicePlanButton);
 
-      await frame3.waitForSelector(servicePlanContentSelector);
-      const servicePlanContent = await frame3.$eval(
+      const servicePlanContentSelectorElement = await frame3.waitForSelector(
         servicePlanContentSelector,
-        item => item.innerHTML,
+      );
+      const servicePlanContent = await frame3.evaluate(
+        element => element.textContent,
+        servicePlanContentSelectorElement,
       );
 
       expect(servicePlanContent).toContain(additionalData);
@@ -371,6 +375,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       const closeModalButton = await frame3.$(closeModalSelector);
       await closeModalButton.click();
+
+      await frame3.click(filterDropdownButton);
+      await frame3.click(labelButton);
     },
   );
 
@@ -393,30 +400,19 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     );
 
     console.log('Go to details of instance created with `minimal` plan');
-    let frame, minimalPlanInstance;
-    await retry(async () => {
-      try {
-        await Promise.all([
-          await page.reload({
-            waitUntil: ['domcontentloaded', 'networkidle0'],
-          }),
-          (frame = await kymaConsole.getFrame(page)),
-          (minimalPlanInstance = await frame.waitForSelector(
-            exampleInstanceLink,
-            {
-              visible: true,
-            },
-          )),
-          minimalPlanInstance.click(),
-          frame.waitForNavigation({
-            waitUntil: ['domcontentloaded', 'networkidle0'],
-          }),
-        ]);
-      } catch (e) {
-        console.log(document.documentElement.innerHTML);
-        throw e;
-      }
-    });
+
+    const frame = await waitForInstancesFrame(page);
+    const minimalPlanInstance = await frame.waitForSelector(
+      exampleInstanceLink,
+      { visible: true },
+    );
+
+    await Promise.all([
+      minimalPlanInstance.click(),
+      frame.waitForNavigation({
+        waitUntil: ['domcontentloaded'],
+      }),
+    ]);
 
     console.log('Confirm all necessary fields');
     await frame.waitForSelector(exampleInstanceServiceClass);
@@ -451,32 +447,21 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     );
 
     console.log('Go to details of instance created with `full` plan');
+    let frame;
     await Promise.all([
       page.goto(instancesUrl),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
+      (frame = await waitForInstancesFrame(page, true)),
     ]);
-    let frame, fullPlanInstance;
-    await retry(async () => {
-      try {
-        await Promise.all([
-          await page.reload({
-            waitUntil: ['domcontentloaded', 'networkidle0'],
-          }),
-          (frame = await kymaConsole.getFrame(page)),
-          (fullPlanInstance = await frame.waitForSelector(exampleInstanceLink, {
-            visible: true,
-          })),
-          fullPlanInstance.click(),
-          frame.waitForNavigation({
-            waitUntil: ['domcontentloaded', 'networkidle0'],
-          }),
-        ]);
-      } catch (e) {
-        console.log(document.documentElement.innerHTML);
-        throw e;
-      }
+
+    const fullPlanInstance = await frame.waitForSelector(exampleInstanceLink, {
+      visible: true,
+    });
+    await fullPlanInstance.click();
+    await frame.waitForNavigation({
+      waitUntil: ['domcontentloaded'],
     });
 
     console.log('Confirm all necessary fields');
@@ -522,7 +507,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     console.log(
       'Go to Credentials tab and create credentials and fill in the schema form',
     );
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await waitForInstancesFrame(page);
     await frame.waitForSelector(serviceBindingCredentialsTab);
     await frame.click(serviceBindingCredentialsTab);
 
@@ -596,7 +581,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
 
       const closeModalSelector = '.fd-modal__close';
 
-      const frame = await kymaConsole.getFrame(page);
+      const frame = await waitForInstancesFrame(page);
       await catalog.bindApplication(page, resource, prefix);
 
       await frame.waitForSelector(bindingName);
@@ -650,7 +635,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         'status-service-binding',
       );
 
-      const frame = await kymaConsole.getFrame(page);
+      const frame = await waitForInstancesFrame(page);
 
       await catalog.bindApplication(page, resource, null, additionalData);
 
@@ -669,7 +654,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       'service-binding-tab',
     );
 
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await waitForInstancesFrame(page);
     await frame.waitForSelector(serviceBindingCredentialsTab);
     await frame.click(serviceBindingCredentialsTab);
 

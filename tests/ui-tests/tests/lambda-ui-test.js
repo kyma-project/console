@@ -3,6 +3,8 @@ import lambdas from '../commands/lambdas';
 import common from '../commands/common';
 import { describeIf } from '../utils/skip';
 import dex from '../utils/dex';
+import config from '../config';
+import address from '../utils/address';
 
 import { retry } from '../utils/retry';
 import {
@@ -54,41 +56,42 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await page.$$eval(navItem, item =>
       item.find(text => text.innerText.includes('Lambdas')).click(),
     );
-    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
     // given (go to create lambda)
-    const frame = await kymaConsole.getFrame(page);
+    const frame = await kymaConsole.waitForAppFrameAttached(
+      page,
+      address.console.getLambdasFrameUrl(),
+    );
     const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
     await frame.waitForSelector(lambdasEmptyPage);
-    const currentLambdas = await lambdas.getLambdas(frame);
+    await lambdas.getLambdas(frame);
     const addLambdaButton = '.fd-button.sap-icon--add';
     await frame.$$eval(addLambdaButton, btn =>
       btn.find(text => text.innerText.includes('Add Lambda')).click(),
     );
     // when (fill the input and save)
-    const frame2 = await kymaConsole.getFrame(page);
     const input = '#input-1';
-    await frame2.waitForSelector(input);
-    await frame2.type(input, testLambda);
+    await frame.waitForSelector(input);
+    await frame.type(input, testLambda);
     const createLambdaButton = '.fd-button.fd-button--emphasized';
-    await frame2.$eval(createLambdaButton, btn => btn.click());
+    await frame.$eval(createLambdaButton, btn => btn.click());
 
     // then
-    const frame3 = await kymaConsole.getFrame(page);
     const disabledLambdaNameInput = 'input[name=function_name][disabled]';
-
-    await frame3.waitForSelector(disabledLambdaNameInput);
+    await frame.waitForSelector(disabledLambdaNameInput);
   });
 
   testPluggable(REQUIRED_MODULE, 'Delete Lambda Function', async () => {
     // given
 
-    let frame = await kymaConsole.getFrame(page);
+    let frame = await kymaConsole.waitForAppFrameAttached(
+      page,
+      address.console.getLambdasFrameUrl(),
+    );
 
     const lambdasListBreadcrumbLink = 'a[fd-breadcrumb-link]';
     await frame.click(lambdasListBreadcrumbLink);
 
-    frame = await kymaConsole.getFrame(page);
     const dropdownButton = `button[aria-controls=${testLambda}]`;
     await frame.waitFor(dropdownButton);
     await frame.click(dropdownButton);
@@ -106,12 +109,16 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
     //then
     await retry(async () => {
-      await page.reload({
-        waitUntil: ['domcontentloaded', 'networkidle0'],
-      });
-      const frame2 = await kymaConsole.getFrame(page);
+      let frame;
+      await Promise.all([
+        page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] }),
+        (frame = await kymaConsole.waitForAppFrameAttached(
+          page,
+          address.console.getLambdasFrameUrl(),
+        )),
+      ]);
       const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
-      await frame2.waitForSelector(lambdasEmptyPage);
+      await frame.waitForSelector(lambdasEmptyPage);
     });
   });
 });

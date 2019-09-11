@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
 
+import { preloadingStrategy } from '@kyma-project/common';
+
 import './index.css';
 
 import builder from './commons/builder';
@@ -13,14 +15,14 @@ import App from './components/App/App.component';
 
 const client = createApolloClient();
 
-(async () => {
+preloadingStrategy(async () => {
   await builder.init();
   ReactDOM.render(
-    <BrowserRouter>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
         <App />
-      </ApolloProvider>
-    </BrowserRouter>,
+      </BrowserRouter>
+    </ApolloProvider>,
     document.getElementById('root'),
   );
-})();
+});

@@ -14,13 +14,14 @@ const context = (function() {
       return puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: config.headless,
-        slowMo: 80,
+        slowMo: 40,
         args: [
           `--window-size=${config.viewportWidth},${config.viewportHeight}`,
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disk-cache-size=10000000',
           '--media-cache-size=10000000',
+          '--disable-dev-shm-usage',
         ],
       });
     },
