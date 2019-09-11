@@ -31,7 +31,7 @@
               "src/logout.html",
               {
                 "glob": "**",
-                "input": "node_modules/@kyma-project/luigi-core",
+                "input": "../node_modules/@kyma-project/luigi-core",
                 "output": "luigi-core"
               },
               {

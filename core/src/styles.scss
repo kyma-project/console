@@ -1,7 +1,8 @@
 // Include Fiori Fundamentals
 $fd-icons-path: '~fiori-fundamentals/scss/icons/';
 $fd-fonts-path: '~fiori-fundamentals/scss/fonts/';
-@import '~fiori-fundamentals/scss/all.scss';
+@import '~fiori-fundamentals/scss/helpers.scss';
+@import '~fiori-fundamentals/scss/fundamentals.less.scss';
 @import 'fiori-fundamentals-overrides';
 
 body,
