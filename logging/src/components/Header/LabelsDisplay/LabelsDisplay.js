@@ -22,7 +22,7 @@ export default function LabelsDisplay({
       <ul>
         {readonlyLabels.map(label => (
           <li key={label}>
-            <Token className="caption-muted" disabled>
+            <Token className="caption-muted y-fd-token--no-button">
               {label}
             </Token>
           </li>

@@ -33,12 +33,22 @@
   }
 }
 
-.fd-token[disabled] {
-  color: var(--fd-color-text-1);
-  background-color: var(--fd-color-neutral-2);
-  border-color: var(--fd-color-neutral-4);
-
-  &::after {
-    cursor: unset;
+.y-fd-token--no-button {
+  cursor: default;
+  &:after {
+    all: unset;
   }
+}
+// .fd-token[disabled] {
+//   color: var(--fd-color-text-1);
+//   background-color: var(--fd-color-neutral-2);
+//   border-color: var(--fd-color-neutral-4);
+
+//   &::after {
+//     cursor: unset;
+//   }
+// }
+
+.fd-inline-help__content {
+  min-width: 200px;
 }

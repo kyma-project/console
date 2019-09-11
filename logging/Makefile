@@ -17,7 +17,7 @@ else
 endif
 
 validate:
-	npm run lint
+	npm run lint-check
 
 test:
 	npm run test:single

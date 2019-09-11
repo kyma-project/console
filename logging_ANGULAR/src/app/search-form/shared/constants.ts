@@ -1,1 +1,0 @@
-export const REFRESH_INTERVAL = 2 * 1000; // ms
