@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import './DropdownRenderer.scss';
 
 DropdownRenderer.propTypes = {
-  recentLabels: PropTypes.array.isRequired,
-  logLabels: PropTypes.array.isRequired,
+  recentLabels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  logLabels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   chooseLabel: PropTypes.func.isRequired,
 };
 
@@ -60,7 +60,9 @@ export default function DropdownRenderer({
       ))}
     </ul>
   ) : (
-    <span className="fd-mega-menu__item--disabled">No log labels</span>
+    <span className="fd-mega-menu__item--disabled" data-test-id="no-log-labels">
+      No log labels
+    </span>
   );
 
   const logLabelsSubList = ({ logLabel, isHidden }) => (
@@ -101,7 +103,12 @@ export default function DropdownRenderer({
       ))}
     </ul>
   ) : (
-    <span className="fd-mega-menu__item--disabled">No recent labels</span>
+    <span
+      className="fd-mega-menu__item--disabled"
+      data-test-id="no-recent-labels"
+    >
+      No recent labels
+    </span>
   );
 
   return (

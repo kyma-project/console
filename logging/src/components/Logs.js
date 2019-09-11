@@ -4,6 +4,22 @@ import Header from './Header/Header';
 
 const sampleLabels = ['function="pamela"', 'function="hasselhoff"'];
 const sampleReadonlyLabels = ['function="rpamela"', 'function="rhasselhoff"'];
+const sampleEntries = [
+  {
+    timestamp: '14:14:01.384196009Z',
+    log: 'a',
+  },
+  {
+    timestamp: '14:14:01.384196009Z++',
+    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+    Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+    Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
+  },
+  {
+    timestamp: 3,
+    log: 'c',
+  },
+];
 
 export default class Logs extends React.Component {
   // state = {
@@ -50,7 +66,7 @@ export default class Logs extends React.Component {
           readonlyLabels={readonlyLabels}
           advancedSettings={advancedSettings}
         />
-        <LogTable />
+        <LogTable entries={sampleEntries} />
       </>
     );
   }

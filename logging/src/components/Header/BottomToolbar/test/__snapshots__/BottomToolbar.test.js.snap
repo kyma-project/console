@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ApiDetails Renders with minimal props 1`] = `
+exports[`BottomToolbar Renders with minimal props 1`] = `
 <div>
   <span
-    className="link-button fd-has-margin-right-small"
+    className="link-button fd-has-type-minus-1 fd-has-margin-right-small"
   >
     <span
-      className="sap-icon--sort sap-icon--s fd-has-margin-right-tiny "
+      className="sap-icon--sort sap-icon--s fd-has-margin-right-tiny"
     />
     last hour
   </span>
   <span
-    className="link-button"
+    className="link-button fd-has-type-minus-1"
     onClick={[Function]}
   >
     <span

@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvancedSettings Renders with minimal props 1`] = `
+<section
+  className="advanced_settings"
+>
+  <h2
+    className="advanced_settings__header"
+  >
+    Advanced Settings
+    <span
+      className="sap-icon--decline sap-icon--s cursor-pointer"
+      onClick={[Function]}
+    />
+  </h2>
+  <div
+    className="advanced_settings__entry"
+  >
+    <p
+      className="caption-muted"
+    >
+      <label
+        htmlFor="query"
+      >
+        Query
+      </label>
+    </p>
+    <div>
+      <input
+        autoComplete="off"
+        className="fd-form__control"
+        defaultValue="query"
+        id="query"
+        onChange={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+  <div
+    className="advanced_settings__entry"
+  >
+    <p
+      className="caption-muted"
+    >
+      <label
+        htmlFor="result-limit"
+      >
+        Result limit
+        <span
+          className="small-inline-help-wrapper"
+        >
+          <span
+            className="fd-inline-help"
+          >
+            <span
+              className="fd-inline-help__content fd-inline-help__content--right"
+            >
+              Return only limited number of most recent log lines.
+            </span>
+          </span>
+        </span>
+      </label>
+    </p>
+    <div>
+      <input
+        autoComplete="off"
+        className="fd-form__control"
+        defaultValue="query"
+        id="result-limit"
+        onChange={[Function]}
+        type="number"
+      />
+    </div>
+  </div>
+  <div
+    className="advanced_settings__entry"
+  >
+    <p
+      className="caption-muted"
+    >
+      Show
+    </p>
+    <div>
+      <input
+        defaultChecked={true}
+        id="previous-logs"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        className="caption-muted"
+        htmlFor="previous-logs"
+      >
+        logs of previous lambda version
+      </label>
+      <br />
+      <input
+        defaultChecked={true}
+        id="health-checks"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        className="caption-muted"
+        htmlFor="health-checks"
+      >
+        health check
+      </label>
+    </div>
+  </div>
+</section>
+`;

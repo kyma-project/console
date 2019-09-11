@@ -15,31 +15,31 @@ RUN apk update && apk upgrade && \
 # Install root and app dependencies
 COPY ./temp /app
 RUN npm run bootstrap:prod
-COPY package.json package-lock.json webpack-generateConfig.config.js /app/compass/
-RUN cd /app/compass && npm install --no-optional
+COPY package.json package-lock.json webpack-generateConfig.config.js /app/logging/
+RUN cd /app/logging && npm install --no-optional
 
 # Copy sources
-COPY ./src /app/compass/src
-COPY ./public /app/compass/public
-COPY ./public-luigi /app/compass/public-luigi
+COPY ./src /app/logging/src
+COPY ./public /app/logging/public
+COPY ./public-luigi /app/logging/public-luigi
 
 # Set env variables
 ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/compass && npm run buildConfig
-RUN cd /app/compass && npm test
-RUN cd /app/compass && npm run build
+RUN cd /app/logging && npm run buildConfig
+RUN cd /app/logging && npm test
+RUN cd /app/logging && npm run build
 
 FROM nginx:1.14.0-alpine
 LABEL source git@github.com:kyma-project/console.git
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=ui-generator /app/compass/build var/public
-COPY --from=ui-generator /app/compass/public-luigi var/public-luigi
+COPY --from=ui-generator /app/logging/build var/public
+COPY --from=ui-generator /app/logging/public-luigi var/public-luigi
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
-EXPOSE 80 8888
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

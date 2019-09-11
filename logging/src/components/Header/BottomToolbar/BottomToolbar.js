@@ -17,11 +17,14 @@ export default function BottomToolbar({ sortDirection, updateFilteringState }) {
 
   return (
     <div>
-      <span className="link-button fd-has-margin-right-small">
-        <Icon glyph="sort" className="fd-has-margin-right-tiny " size="s" />
+      <span className="link-button fd-has-type-minus-1 fd-has-margin-right-small">
+        <Icon glyph="sort" className="fd-has-margin-right-tiny" size="s" />
         last hour
       </span>
-      <span className="link-button" onClick={() => switchSortDirection()}>
+      <span
+        className="link-button fd-has-type-minus-1"
+        onClick={() => switchSortDirection()}
+      >
         <Icon glyph="past" size="s" /> {sortDirection}
       </span>
     </div>

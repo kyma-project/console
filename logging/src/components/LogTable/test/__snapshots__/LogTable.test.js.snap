@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LogTable Renders with minimal props 1`] = `
+<table
+  className="fd-table fd-has-margin-regular"
+>
+  <thead>
+    <tr>
+      <th
+        className="log-table__pre-header fd-has-type-0"
+        colSpan="2"
+      >
+        Stream Name
+      </th>
+    </tr>
+    <tr>
+      <th
+        className="caption-muted"
+      >
+        Timestamp
+      </th>
+      <th
+        className="caption-muted"
+      >
+        Log
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className="log-table__no-entries-text"
+        colSpan="2"
+      >
+        No entries
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

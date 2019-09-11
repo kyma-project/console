@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelDisplay Renders with minimal props 1`] = `
+<section
+  className="labels-display"
+>
+  <ul>
+    <li>
+      <span
+        className="fd-token caption-muted y-fd-token--no-button"
+        role="button"
+      >
+        c
+      </span>
+    </li>
+    <li>
+      <span
+        className="fd-token caption-muted y-fd-token--no-button"
+        role="button"
+      >
+        d
+      </span>
+    </li>
+    <li>
+      <span
+        className="fd-token caption-muted"
+        onClick={[Function]}
+        role="button"
+      >
+        a
+      </span>
+    </li>
+    <li>
+      <span
+        className="fd-token caption-muted"
+        onClick={[Function]}
+        role="button"
+      >
+        b
+      </span>
+    </li>
+  </ul>
+  <span
+    className="link-button fd-has-type-minus-1 fd-has-margin-left-tiny"
+    data-test-id="clear-all"
+    onClick={[Function]}
+  >
+    Clear All
+  </span>
+</section>
+`;

@@ -18,8 +18,8 @@ export default function AdvancedSettings({
   const settingsEntry = (name, controls) => {
     return (
       <div className="advanced_settings__entry">
-        <p className="caption-muted advanced_settings__entry-name">{name}</p>{' '}
-        <div className="advanced_settings__entry_name-control">{controls}</div>
+        <p className="caption-muted">{name}</p>
+        <div>{controls}</div>
       </div>
     );
   };
@@ -48,7 +48,7 @@ export default function AdvancedSettings({
   function setResultLimit(e) {
     updateState({ resultLimit: e.target.value });
   }
-  //todo KRZYWO
+
   const queryInput = settingsEntry(
     <label htmlFor="query">Query</label>,
     <FormInput

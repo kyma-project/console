@@ -13,9 +13,9 @@ import BottomToolbar from './BottomToolbar/BottomToolbar';
 Header.propTypes = {
   updateFilteringState: PropTypes.func.isRequired,
   searchPhrase: PropTypes.string.isRequired,
-  labels: PropTypes.array.isRequired,
+  labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  readonlyLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortDirection: PropTypes.oneOf(['ascending', 'descending']),
-  readonlyLabels: PropTypes.array.isRequired,
   advancedSettings: PropTypes.object.isRequired,
 };
 
@@ -55,7 +55,7 @@ export default function Header({
     <Panel className="fd-has-padding-regular fd-has-padding-bottom-none">
       <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny">Logs</h1>
       <section className="header__settings-group">
-        <LabelsInput readonlyLabels={readonlyLabels} addLabel={addLabel} />
+        <LabelsInput addLabel={addLabel} />
         <SearchInput
           searchPhrase={searchPhrase}
           updateFilteringState={updateFilteringState}

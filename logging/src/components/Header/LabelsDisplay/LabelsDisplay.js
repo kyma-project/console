@@ -37,6 +37,7 @@ export default function LabelsDisplay({
       </ul>
       {!!labels.length && (
         <span
+          data-test-id="clear-all"
           className="link-button fd-has-type-minus-1 fd-has-margin-left-tiny"
           onClick={() => removeAll()}
         >

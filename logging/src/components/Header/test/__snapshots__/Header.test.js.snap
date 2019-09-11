@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Renders with minimal props 1`] = `
+<div
+  className="fd-panel fd-has-padding-regular fd-has-padding-bottom-none"
+>
+  <h1
+    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+  >
+    Logs
+  </h1>
+  <section
+    className="header__settings-group"
+  >
+    <section>
+      <span
+        className="caption-muted"
+      >
+        Labels
+      </span>
+      <div
+        className="fd-combobox-input"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <div
+                className="fd-combobox-control"
+                onClick={[Function]}
+              >
+                <div
+                  className="fd-input-group fd-input-group--after"
+                >
+                  <input
+                    className="fd-input"
+                    placeholder="Select Label"
+                    type="text"
+                  />
+                  <span
+                    className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                  >
+                    <button
+                      className=" fd-button--light sap-icon--navigation-down-arrow"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <span
+        className="caption-muted search-input__caption"
+      >
+        Search
+        <div
+          className="small-inline-help-wrapper"
+        >
+          <span
+            className="fd-inline-help"
+          >
+            <span
+              className="fd-inline-help__content fd-inline-help__content--right"
+            >
+              Search for logs by text (optional)
+            </span>
+          </span>
+        </div>
+      </span>
+      <div
+        className="fd-search-input"
+        value="search phrase"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            className="fd-popover__control"
+          >
+            <div
+              aria-expanded={false}
+              aria-haspopup="true"
+              className="fd-combobox-control"
+            >
+              <div
+                className="fd-input-group fd-input-group--after"
+              >
+                <input
+                  className="fd-input"
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onKeyPress={[Function]}
+                  style={Object {}}
+                  type="text"
+                  value=""
+                />
+                <span
+                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                >
+                  <button
+                    className="fd-button--light sap-icon--search"
+                    onClick={[Function]}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <span
+      className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+      onClick={[Function]}
+    >
+      Show Advanced Settings
+    </span>
+  </section>
+  <div>
+    <section
+      className="labels-display"
+    >
+      <ul>
+        <li>
+          <span
+            className="fd-token caption-muted y-fd-token--no-button"
+            role="button"
+          >
+            a
+          </span>
+        </li>
+        <li>
+          <span
+            className="fd-token caption-muted y-fd-token--no-button"
+            role="button"
+          >
+            b
+          </span>
+        </li>
+        <li>
+          <span
+            className="fd-token caption-muted"
+            onClick={[Function]}
+            role="button"
+          >
+            a
+          </span>
+        </li>
+        <li>
+          <span
+            className="fd-token caption-muted"
+            onClick={[Function]}
+            role="button"
+          >
+            b
+          </span>
+        </li>
+      </ul>
+      <span
+        className="link-button fd-has-type-minus-1 fd-has-margin-left-tiny"
+        data-test-id="clear-all"
+        onClick={[Function]}
+      >
+        Clear All
+      </span>
+    </section>
+    <div>
+      <span
+        className="link-button fd-has-type-minus-1 fd-has-margin-right-small"
+      >
+        <span
+          className="sap-icon--sort sap-icon--s fd-has-margin-right-tiny"
+        />
+        last hour
+      </span>
+      <span
+        className="link-button fd-has-type-minus-1"
+        onClick={[Function]}
+      >
+        <span
+          className="sap-icon--past sap-icon--s"
+        />
+         
+        ascending
+      </span>
+    </div>
+  </div>
+</div>
+`;

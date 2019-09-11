@@ -79,8 +79,12 @@ stats.html
 compass/public-luigi/luigi-core
 compass/src/assets/luigiConfig.bundle.js
 compass/src/config/luigi-config/main.js
+compass/public-luigi/luigiConfig.bundle.js
+compass/public/luigiConfig.bundle.js
 components/angular
-logging
+compass/react-components/index.js
 core
 lambda
 */public/config/config.js
+
+**/temp/**

@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropdownRenderer Renders with minimal props 1`] = `
+<nav
+  className="fd-mega-menu"
+>
+  <div
+    className="fd-mega-menu__group"
+  >
+    <h3
+      className="fd-mega-menu__title"
+    >
+      Recently Selected Labels
+    </h3>
+    <ul
+      className="fd-mega-menu__list"
+    >
+      <li
+        className="fd-mega-menu__item"
+      >
+        <span
+          className="cursor-pointer fd-mega-menu__link"
+          onClick={[Function]}
+        >
+          a
+        </span>
+      </li>
+      <li
+        className="fd-mega-menu__item"
+      >
+        <span
+          className="cursor-pointer fd-mega-menu__link"
+          onClick={[Function]}
+        >
+          b
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="fd-mega-menu__group"
+  >
+    <h3
+      className="fd-mega-menu__title"
+    >
+      Log Labels
+    </h3>
+    <ul
+      className="fd-mega-menu__list"
+    >
+      <li
+        className="fd-mega-menu__item"
+      >
+        <span
+          aria-controls="name"
+          aria-haspopup="true"
+          className="fd-mega-menu__link has-child cursor-pointer"
+          onClick={[Function]}
+        >
+          name
+        </span>
+        <ul
+          aria-hidden={true}
+          className="fd-mega-menu__sublist"
+          id="name"
+        >
+          <li
+            className="fd-mega-menu__subitem"
+          >
+            <span
+              className="fd-mega-menu__sublink cursor-pointer"
+              onClick={[Function]}
+            >
+              c
+              d
+            </span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+`;

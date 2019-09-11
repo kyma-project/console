@@ -3,44 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/luigi-client": "^0.4.12",
-    "@kyma-project/luigi-core": "^0.4.12",
-    "@kyma-project/react-components": "0.0.43",
-    "apollo-cache-inmemory": "^1.6.3",
-    "apollo-client": "^2.6.4",
-    "apollo-link-context": "^1.0.18",
-    "apollo-link-error": "^1.1.11",
-    "apollo-link-http": "^1.5.15",
-    "apollo-link-state": "^0.4.2",
     "fiori-fundamentals": "^1.7.0",
     "fundamental-react": "^0.6.1",
     "fundamental-styles": "^0.1.0",
-    "graphql": "^14.5.4",
-    "graphql-tag": "^2.10.1",
-    "node-sass": "^4.12.0",
-    "prettier": "^1.18.2",
-    "react": "^16.9.0",
-    "react-apollo": "^3.1.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1",
     "styled-components": "^3.4.10"
   },
   "scripts": {
-    "start": "echo `` > public/config/config.js && PORT=4400 react-scripts start",
-    "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=4400 react-scripts start",
-    "start:kyma:api": "npm run copy-config && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=4400 react-scripts start",
-    "build": "react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
-    "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch",
-    "lint-fix": "prettier --config ../.prettierrc --write \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "lint-check": "prettier --config ../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\"",
-    "eslint-check": "eslint -c .eslinterrc ./src",
+    "start": "echo `` > public/config/config.js && PORT=8005 react-scripts start",
+    "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
+    "start:kyma:api": "npm run copy-config && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
+    "build": "../node_modules/.bin/react-scripts build",
+    "test": "../node_modules/.bin/react-scripts test",
+    "eject": "../node_modules/.bin/react-scripts eject",
     "copy-config": "cp ../config.js public/config/config.js"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "devDependencies": {
     "core-js": "^3.1.4",
@@ -52,9 +27,7 @@
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
     "live-server": "^1.2.1",
-    "wait-on": "^3.2.0",
-    "webpack": "^4.28.3",
-    "webpack-dev-server": "^3.1.14"
+    "wait-on": "^3.2.0"
   },
   "browserslist": {
     "production": [

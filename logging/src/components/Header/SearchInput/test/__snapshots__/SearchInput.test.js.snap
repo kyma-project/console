@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchInput Renders with minimal props 1`] = `
+<section>
+  <span
+    className="caption-muted search-input__caption"
+  >
+    Search
+    <div
+      className="small-inline-help-wrapper"
+    >
+      <span
+        className="fd-inline-help"
+      >
+        <span
+          className="fd-inline-help__content fd-inline-help__content--right"
+        >
+          Search for logs by text (optional)
+        </span>
+      </span>
+    </div>
+  </span>
+  <div
+    className="fd-search-input"
+    value="search phrase"
+  >
+    <div
+      className="fd-popover"
+    >
+      <div
+        className="fd-popover__control"
+      >
+        <div
+          aria-expanded={false}
+          aria-haspopup="true"
+          className="fd-combobox-control"
+        >
+          <div
+            className="fd-input-group fd-input-group--after"
+          >
+            <input
+              className="fd-input"
+              onChange={[Function]}
+              onClick={[Function]}
+              onKeyPress={[Function]}
+              style={Object {}}
+              type="text"
+              value=""
+            />
+            <span
+              className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+            >
+              <button
+                className="fd-button--light sap-icon--search"
+                onClick={[Function]}
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;

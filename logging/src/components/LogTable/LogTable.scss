@@ -14,3 +14,8 @@ th:first-child, td:first-child {
     margin: 0;
     background: white;
 }
+
+.log-table__no-entries-text {
+    // override .fd-table td, .fd-table th'  text-align: left
+    text-align: center !important;
+}

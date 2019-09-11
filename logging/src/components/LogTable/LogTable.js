@@ -1,33 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './LogTable.scss';
 
-export default function(props) {
-  const sampleEntries = [
-    {
-      timestamp: '14:14:01.384196009Z',
-      log: 'a',
-    },
-    {
-      timestamp: '14:14:01.384196009Z++',
-      log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
-      Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
-      Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
-    },
-    {
-      timestamp: 3,
-      log: 'c',
-    },
-  ];
+LogTable.propTypes = {
+  entries: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+};
 
+export default function LogTable({ entries }) {
   function renderEntries() {
-    return sampleEntries.map(entry => (
+    return entries.map(entry => (
       <tr key={entry.timestamp}>
         <td className="caption-muted">{entry.timestamp}</td>
         <td className="caption-muted">{entry.log}</td>
       </tr>
     ));
   }
-
+  entries = [];
   return (
     <table className="fd-table fd-has-margin-regular">
       <thead>
@@ -41,7 +29,17 @@ export default function(props) {
           <th className="caption-muted">Log</th>
         </tr>
       </thead>
-      <tbody>{renderEntries()}</tbody>
+      <tbody>
+        {!!entries.length ? (
+          renderEntries()
+        ) : (
+          <tr>
+            <td colSpan="2" className="log-table__no-entries-text">
+              No entries
+            </td>
+          </tr>
+        )}
+      </tbody>
     </table>
   );
 }

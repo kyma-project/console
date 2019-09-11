@@ -1,13 +1,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import BottomToolbar from './../BottomToolbar';
+import { shallow } from 'enzyme';
+import SearchInput from './../SearchInput';
 
-describe('BottomToolbar', () => {
+describe('SearchInput', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <BottomToolbar
+      <SearchInput
+        searchPhrase="search phrase"
         updateFilteringState={() => {}}
-        sortDirection="ascending"
       />,
     );
     let tree = component.toJSON();
