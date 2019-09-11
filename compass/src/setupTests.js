@@ -12,4 +12,6 @@ global.URL.createObjectURL = jest.fn();
 
 global.wait = require('waait');
 
+window.postMessage = jest.fn();
+
 Enzyme.configure({ adapter: new Adapter() });
