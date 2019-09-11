@@ -73,7 +73,9 @@ export default function DropdownRenderer({
         <li className="fd-mega-menu__subitem" key={name}>
           <span
             className="fd-mega-menu__sublink cursor-pointer"
-            onClick={() => chooseLabel(`${formatName(logLabel.name)}="${name}"`)}
+            onClick={() =>
+              chooseLabel(`${formatName(logLabel.name)}="${name}"`)
+            }
           >
             {name}
           </span>

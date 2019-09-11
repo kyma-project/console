@@ -10,7 +10,9 @@ BottomToolbar.propTypes = {
 
 export default function BottomToolbar({ sortDirection, updateFilteringState }) {
   function switchSortDirection() {
-    updateFilteringState({ sortDirection: sortDirection === 'ascending' ? 'descending' : 'ascending' });
+    updateFilteringState({
+      sortDirection: sortDirection === 'ascending' ? 'descending' : 'ascending',
+    });
   }
 
   return (
@@ -19,10 +21,7 @@ export default function BottomToolbar({ sortDirection, updateFilteringState }) {
         <Icon glyph="sort" className="fd-has-margin-right-tiny " size="s" />
         last hour
       </span>
-      <span
-        className="link-button"
-        onClick={() => switchSortDirection()}
-      >
+      <span className="link-button" onClick={() => switchSortDirection()}>
         <Icon glyph="past" size="s" /> {sortDirection}
       </span>
     </div>

@@ -43,23 +43,23 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
     updateRecentLabels(label);
   }
 
-    React.useEffect(() => {
-      async function fetchData() {
-        //const url = 'https://grafana.arnold.cluster.stage.faros.kyma.cx/api/datasources/proxy/2/api/prom/label/component/values?silent=true';
-        const url = 'https://loki.gke-release-1-5-0.kyma.pro/api/prom/label';
-        const response = await fetch(url, {
-          headers: new Headers({
-            Authorization: 'Bearer ' + builder.getBearerToken(),
-          }),
-        });
-        console.log(response);
-        const data = await response.json();
-        console.log(data);
-      }
-      fetchData();
-    }, [
-      /*todo*/
-    ]);
+  React.useEffect(() => {
+    async function fetchData() {
+      //const url = 'https://grafana.arnold.cluster.stage.faros.kyma.cx/api/datasources/proxy/2/api/prom/label/component/values?silent=true';
+      const url = 'https://loki.gke-release-1-5-0.kyma.pro/api/prom/label';
+      const response = await fetch(url, {
+        headers: new Headers({
+          Authorization: 'Bearer ' + builder.getBearerToken(),
+        }),
+      });
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+    }
+    fetchData();
+  }, [
+    /*todo*/
+  ]);
 
   return (
     <section>

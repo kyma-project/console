@@ -64,7 +64,10 @@ export default function AdvancedSettings({
     <label htmlFor="result-limit">
       Result limit
       <span className="small-inline-help-wrapper">
-        <InlineHelp placement="right" text="Return only limited number of most recent log lines." />
+        <InlineHelp
+          placement="right"
+          text="Return only limited number of most recent log lines."
+        />
       </span>
     </label>,
     <FormInput

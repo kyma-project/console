@@ -21,7 +21,10 @@ export default function SearchInput({ updateFilteringState, searchPhrase }) {
       <span className="caption-muted search-input__caption">
         Search
         <div className="small-inline-help-wrapper">
-          <InlineHelp placement="right" text="Search for logs by text (optional)" />
+          <InlineHelp
+            placement="right"
+            text="Search for logs by text (optional)"
+          />
         </div>
       </span>
       <Search onChange={updateSearchQuery} value={searchPhrase} />
