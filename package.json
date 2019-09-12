@@ -4,7 +4,7 @@
   "scripts": {
     "bootstrap": "npm install && npm run install:libraries && npm run build:libraries && npm run install:apps && npm run append-hosts && npm run git-ignore-config",
     "bootstrap:ci": "npm install && npm run install:libraries && npm run build:libraries",
-    "bootstrap:prod": "npm install --no-optional && npm run install:libraries && npm run build:libraries",
+    "bootstrap:prod": "npm ci && npm run install:libraries && npm run build:libraries",
     "install:libraries": "gulp install:libraries",
     "build:libraries": "gulp build:libraries",
     "watch:libraries": "gulp watch:libraries",

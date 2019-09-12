@@ -6,8 +6,8 @@ ci-pr:  resolve validate test build build-image push-image
 ci-master: resolve validate test build build-image push-image
 
 resolve:
-	cd .. && npm install --no-optional # Install common dependencies 
-	npm install --no-optional
+	cd .. && npm ci # Install common dependencies 
+	npm ci
 
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
