@@ -62,7 +62,7 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
   // ]);
 
   return (
-    <section>
+    <section className="fd-display-l-inline-block">
       <span className="caption-muted">Labels</span>
       <ComboboxInput
         menu={

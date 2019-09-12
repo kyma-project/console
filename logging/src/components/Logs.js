@@ -1,8 +1,11 @@
 import React from 'react';
 import LogTable from './LogTable/LogTable';
+import LuigiClient from '@kyma-project/luigi-client';
 import Header from './Header/Header';
+import CompactHeader from './CompactHeader/CompactHeader';
+import { SORT_ASCENDING, DEFAULT_PERIOD } from './../constants';
 
-const sampleLabels = ['function="pamela"', 'function="hasselhoff"'];
+const sampleLabels = ['function="pamela"'];
 const sampleReadonlyLabels = ['function="rpamela"', 'function="rhasselhoff"'];
 const sampleEntries = [
   {
@@ -23,9 +26,11 @@ const sampleEntries = [
 
 export default class Logs extends React.Component {
   // state = {
+  //    compact: false,
   //   searchPhrase: '',
   //   labels: [],
   //   readonlyLabels: [],
+  //    logsPeriod: DEFAULT_PERIOD,
   //   advancedSettings: {
   //     query: '',
   //     resultLimit: 0,
@@ -33,39 +38,77 @@ export default class Logs extends React.Component {
   //     showHealthChecks: true,
   //   },
   //   recentlySelectedLabels: [],
-  //   sortDirection: 'ascending',
+  //   sortDirection: SORT_ASCENDING,
   // };
-  state = {
-    searchPhrase: '',
-    labels: sampleLabels,
-    readonlyLabels: sampleReadonlyLabels,
-    advancedSettings: {
-      query: '',
-      resultLimit: 0,
-      showPreviousLogs: true,
-      showHealthChecks: true,
-    },
-    sortDirection: 'ascending',
-  };
+
+  todo_is_lambda() {
+    var params = LuigiClient.getNodeParams();
+    return !!params.function;
+  }
+
+  constructor(props) {
+    super(props);
+
+    const readonlyLabels = this.tryGetReadonlyLabels();
+    //console.log(readonlyLabels);
+    this.state = {
+      compact: this.todo_is_lambda(),
+      searchPhrase: '',
+      labels: sampleLabels,
+      readonlyLabels: readonlyLabels || sampleReadonlyLabels,
+      logsPeriod: DEFAULT_PERIOD,
+      advancedSettings: {
+        query: '',
+        resultLimit: 0,
+        showPreviousLogs: true,
+        showHealthChecks: true,
+      },
+      sortDirection: SORT_ASCENDING,
+    };
+  }
+
+  tryGetReadonlyLabels() {
+    const params = LuigiClient.getNodeParams();
+    if (params.function && params.namespace) {
+      return [
+        `function="${params.function}"`,
+        `namespace="${params.namespace}"`,
+      ];
+    }
+    return null;
+  }
 
   render() {
     const {
       searchPhrase,
       labels,
       readonlyLabels,
+      logsPeriod,
       sortDirection,
       advancedSettings,
+      compact,
     } = this.state;
     return (
       <>
-        <Header
-          updateFilteringState={this.setState.bind(this)}
-          searchPhrase={searchPhrase}
-          labels={labels}
-          sortDirection={sortDirection}
-          readonlyLabels={readonlyLabels}
-          advancedSettings={advancedSettings}
-        />
+        {compact ? (
+          <CompactHeader
+            updateFilteringState={this.setState.bind(this)}
+            searchPhrase={searchPhrase}
+            logsPeriod={logsPeriod}
+            sortDirection={sortDirection}
+            advancedSettings={advancedSettings}
+          />
+        ) : (
+          <Header
+            updateFilteringState={this.setState.bind(this)}
+            searchPhrase={searchPhrase}
+            labels={labels}
+            readonlyLabels={readonlyLabels}
+            logsPeriod={logsPeriod}
+            sortDirection={sortDirection}
+            advancedSettings={advancedSettings}
+          />
+        )}
         <LogTable entries={sampleEntries} />
       </>
     );

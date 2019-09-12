@@ -1,7 +1,9 @@
 .labels-display {
+
+  display: inline-block;
+
   ul {
-    display: inline-block;
-    margin-bottom: 0px;
+    display: inline;
 
     li {
       display: inline-block;

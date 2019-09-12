@@ -17,6 +17,7 @@ exports[`Header UI Shows / hides advanced settings when corresponding button is 
       maxRecentCount={4}
     />
     <SearchInput
+      compact={false}
       searchPhrase="search phrase"
       updateFilteringState={[Function]}
     />
@@ -50,10 +51,36 @@ exports[`Header UI Shows / hides advanced settings when corresponding button is 
       removeAll={[Function]}
       removeLabel={[Function]}
     />
-    <BottomToolbar
-      sortDirection="ascending"
-      updateFilteringState={[Function]}
-    />
+    <div
+      className="header__options-wrapper"
+    >
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "last minute",
+            "last 5 minutes",
+            "last 15 minutes",
+            "last hour",
+          ]
+        }
+        compact={false}
+        currentValue="last hour"
+        icon="past"
+        updateValue={[Function]}
+      />
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "descending",
+            "ascending",
+          ]
+        }
+        compact={false}
+        currentValue="ascending"
+        icon="sort"
+        updateValue={[Function]}
+      />
+    </div>
   </div>
 </Panel>
 `;
@@ -75,6 +102,7 @@ exports[`Header UI Shows / hides advanced settings when corresponding button is 
       maxRecentCount={4}
     />
     <SearchInput
+      compact={false}
       searchPhrase="search phrase"
       updateFilteringState={[Function]}
     />
@@ -108,10 +136,36 @@ exports[`Header UI Shows / hides advanced settings when corresponding button is 
       removeAll={[Function]}
       removeLabel={[Function]}
     />
-    <BottomToolbar
-      sortDirection="ascending"
-      updateFilteringState={[Function]}
-    />
+    <div
+      className="header__options-wrapper"
+    >
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "last minute",
+            "last 5 minutes",
+            "last 15 minutes",
+            "last hour",
+          ]
+        }
+        compact={false}
+        currentValue="last hour"
+        icon="past"
+        updateValue={[Function]}
+      />
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "descending",
+            "ascending",
+          ]
+        }
+        compact={false}
+        currentValue="ascending"
+        icon="sort"
+        updateValue={[Function]}
+      />
+    </div>
   </div>
 </Panel>
 `;

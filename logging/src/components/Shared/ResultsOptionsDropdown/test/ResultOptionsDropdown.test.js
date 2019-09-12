@@ -1,13 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import BottomToolbar from './../BottomToolbar';
+import ResultsOptionsDropdown from './../ResultsOptionsDropdown';
 
-describe('BottomToolbar', () => {
+describe('ResultsOptionsDropdown', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <BottomToolbar
+      <ResultsOptionsDropdown
+        advancedSettings={{}}
         updateFilteringState={() => {}}
-        sortDirection="ascending"
       />,
     );
     let tree = component.toJSON();

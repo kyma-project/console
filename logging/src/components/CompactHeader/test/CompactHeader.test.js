@@ -1,8 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Header from './../Header';
+import CompactHeader from './../CompactHeader';
+import { DEFAULT_PERIOD, SORT_ASCENDING } from '../../../constants';
 
-describe('Header', () => {
+describe('CompactHeader', () => {
   console.error = jest.fn();
 
   afterEach(() => {
@@ -15,14 +16,12 @@ describe('Header', () => {
 
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <Header
+      <CompactHeader
         updateFilteringState={() => {}}
         searchPhrase="search phrase"
-        readonlyLabels={['a', 'b']}
-        labels={['a', 'b']}
-        sortDirection="ascending"
+        logsPeriod={DEFAULT_PERIOD}
+        sortDirection={SORT_ASCENDING}
         advancedSettings={{}}
-        compact={false}
       />,
     );
     let tree = component.toJSON();

@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Header from './../Header';
+import SelectDropdown from './../SelectDropdown';
 
-describe('Header', () => {
+describe('SelectDropdown', () => {
   console.error = jest.fn();
 
   afterEach(() => {
@@ -15,14 +15,11 @@ describe('Header', () => {
 
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <Header
-        updateFilteringState={() => {}}
-        searchPhrase="search phrase"
-        readonlyLabels={['a', 'b']}
-        labels={['a', 'b']}
-        sortDirection="ascending"
-        advancedSettings={{}}
-        compact={false}
+      <SelectDropdown
+        currentValue={'a'}
+        availabelValues={['a', 'b']}
+        icon="connected"
+        updateValue={() => {}}
       />,
     );
     let tree = component.toJSON();

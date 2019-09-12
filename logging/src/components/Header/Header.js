@@ -4,18 +4,20 @@ import './Header.scss';
 
 import { Panel } from 'fundamental-react';
 
-import SearchInput from './SearchInput/SearchInput';
-import LabelsInput from './LabelsInput/LabelsInput';
-import AdvancedSettings from './AdvancedSettings/AdvancedSettings';
-import LabelsDisplay from './LabelsDisplay/LabelsDisplay';
-import BottomToolbar from './BottomToolbar/BottomToolbar';
+import SearchInput from './../Shared/SearchInput/SearchInput';
+import LabelsInput from './../Shared/LabelsInput/LabelsInput';
+import AdvancedSettings from './../Shared/AdvancedSettings/AdvancedSettings';
+import LabelsDisplay from './../Shared/LabelsDisplay/LabelsDisplay';
+import OptionsDropdown from '../Shared/SelectDropdown/SelectDropdown';
+import { PERIODS, SORT_TYPES } from '../../constants';
 
 Header.propTypes = {
   updateFilteringState: PropTypes.func.isRequired,
   searchPhrase: PropTypes.string.isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   readonlyLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sortDirection: PropTypes.oneOf(['ascending', 'descending']),
+  logsPeriod: PropTypes.oneOf(PERIODS),
+  sortDirection: PropTypes.oneOf(SORT_TYPES),
   advancedSettings: PropTypes.object.isRequired,
 };
 
@@ -23,8 +25,9 @@ export default function Header({
   updateFilteringState,
   searchPhrase,
   labels,
-  sortDirection,
   readonlyLabels,
+  logsPeriod,
+  sortDirection,
   advancedSettings,
 }) {
   const [advancedShown, setAdvancedShown] = React.useState(false);
@@ -45,6 +48,14 @@ export default function Header({
 
   function toggleAdvancedSettingsVisibility() {
     setAdvancedShown(!advancedShown);
+  }
+
+  function updateLogsPeriod(logsPeriod) {
+    updateFilteringState({ logsPeriod });
+  }
+
+  function updateSortDirection(sortDirection) {
+    updateFilteringState({ sortDirection });
   }
 
   const advancedSettingsButtonText = advancedShown
@@ -82,10 +93,20 @@ export default function Header({
           removeLabel={removeLabel}
           removeAll={removeAllLabels}
         />
-        <BottomToolbar
-          sortDirection={sortDirection}
-          updateFilteringState={updateFilteringState}
-        />
+        <div className="header__options-wrapper">
+          <OptionsDropdown
+            availabelValues={PERIODS}
+            currentValue={logsPeriod}
+            icon="past"
+            updateValue={updateLogsPeriod}
+          />
+          <OptionsDropdown
+            availabelValues={SORT_TYPES}
+            currentValue={sortDirection}
+            icon="sort"
+            updateValue={updateSortDirection}
+          />
+        </div>
       </div>
     </Panel>
   );

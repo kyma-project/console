@@ -11,8 +11,10 @@ describe('Header UI', () => {
         searchPhrase="search phrase"
         labels={['a', 'b']}
         sortDirection="ascending"
+        logsPeriod="last hour"
         readonlyLabels={['c', 'd']}
         advancedSettings={{}}
+        compact={false}
       />,
     );
 

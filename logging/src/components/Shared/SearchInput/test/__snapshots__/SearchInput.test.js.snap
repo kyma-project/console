@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchInput Renders with minimal props 1`] = `
-<section>
+<section
+  className="fd-has-margin-right-small"
+>
   <span
     className="caption-muted search-input__caption"
   >
@@ -43,6 +45,7 @@ exports[`SearchInput Renders with minimal props 1`] = `
               onChange={[Function]}
               onClick={[Function]}
               onKeyPress={[Function]}
+              placeholder="Search"
               style={Object {}}
               type="text"
               value=""

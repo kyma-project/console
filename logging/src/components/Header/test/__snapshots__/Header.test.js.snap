@@ -12,7 +12,9 @@ exports[`Header Renders with minimal props 1`] = `
   <section
     className="header__settings-group"
   >
-    <section>
+    <section
+      className="fd-display-l-inline-block"
+    >
       <span
         className="caption-muted"
       >
@@ -58,7 +60,9 @@ exports[`Header Renders with minimal props 1`] = `
         </div>
       </div>
     </section>
-    <section>
+    <section
+      className="fd-has-margin-right-small"
+    >
       <span
         className="caption-muted search-input__caption"
       >
@@ -100,6 +104,7 @@ exports[`Header Renders with minimal props 1`] = `
                   onChange={[Function]}
                   onClick={[Function]}
                   onKeyPress={[Function]}
+                  placeholder="Search"
                   style={Object {}}
                   type="text"
                   value=""
@@ -174,24 +179,56 @@ exports[`Header Renders with minimal props 1`] = `
         Clear All
       </span>
     </section>
-    <div>
+    <div
+      className="header__options-wrapper"
+    >
       <span
-        className="link-button fd-has-type-minus-1 fd-has-margin-right-small"
+        className="link-button fd-has-type-minus-1 select-dropdown"
       >
-        <span
-          className="sap-icon--sort sap-icon--s fd-has-margin-right-tiny"
-        />
-        last hour
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
+                onClick={[Function]}
+                size="xs"
+              />
+            </div>
+          </div>
+        </div>
       </span>
       <span
-        className="link-button fd-has-type-minus-1"
-        onClick={[Function]}
+        className="link-button fd-has-type-minus-1 select-dropdown"
       >
-        <span
-          className="sap-icon--past sap-icon--s"
-        />
-         
-        ascending
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
+                onClick={[Function]}
+                size="xs"
+              >
+                ascending
+              </button>
+            </div>
+          </div>
+        </div>
       </span>
     </div>
   </div>
