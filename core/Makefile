@@ -7,6 +7,7 @@ ci-master: install-dependencies validate test build build-image push-image
 ci-release: install-dependencies validate test build build-image push-image
 
 install-dependencies:
+	cd .. && npm install --no-optional # Install common dependencies 
 	npm ci
 
 pull-licenses:
