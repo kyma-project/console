@@ -20,12 +20,12 @@
     }
 
     > :first-child {
-        flex: 1 0 0;
+        flex: 0 1 120px;
         margin-right: 16px;
     }
 
     > :nth-child(2) {
-        flex: 5 0 0;
+        flex-grow: 5;
     }
 }
 

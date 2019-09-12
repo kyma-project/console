@@ -2,8 +2,8 @@ IMG_NAME = log-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: root-pr resolve build pre-build-image pull-licenses build-image push-image
-ci-master: root-master resolve build pre-build-image pull-licenses build-image push-image
+ci-pr: root-pr resolve test build pre-build-image pull-licenses build-image push-image
+ci-master: root-master resolve test build pre-build-image pull-licenses build-image push-image
 
 .PHONY: root-pr
 root-pr:
@@ -16,6 +16,10 @@ root-master:
 .PHONY: resolve
 resolve:
 	npm install
+
+.PHONY: test
+test:
+	npm run test:single
 
 .PHONY: build
 build:

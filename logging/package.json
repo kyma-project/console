@@ -15,6 +15,7 @@
     "start:kyma:api": "npm run copy-config && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
     "build": "../node_modules/.bin/react-scripts build",
     "test": "../node_modules/.bin/react-scripts test",
+    "test:single": "CI=true ../node_modules/.bin/react-scripts test --env=jsdom",
     "eject": "../node_modules/.bin/react-scripts eject",
     "copy-config": "cp ../config.js public/config/config.js"
   },

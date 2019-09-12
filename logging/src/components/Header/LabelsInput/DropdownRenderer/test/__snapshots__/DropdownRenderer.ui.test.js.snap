@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DropdownRenderer Shows / hides nested list when parent its parent is clicked 1`] = `
+exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is clicked 1`] = `
 <nav
   className="fd-mega-menu"
 >
@@ -97,7 +97,7 @@ exports[`DropdownRenderer Shows / hides nested list when parent its parent is cl
 </nav>
 `;
 
-exports[`DropdownRenderer Shows / hides nested list when parent its parent is clicked 2`] = `
+exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is clicked 2`] = `
 <nav
   className="fd-mega-menu"
 >

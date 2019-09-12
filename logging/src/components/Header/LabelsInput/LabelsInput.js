@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Search } from '@kyma-project/react-components';
-import { ComboboxInput, Menu } from 'fundamental-react/ComboboxInput';
+//import { Search } from '@kyma-project/react-components';
+import { ComboboxInput /*, Menu*/ } from 'fundamental-react/ComboboxInput';
 
 import DropdownRenderer from './DropdownRenderer/DropdownRenderer';
 
-import httpConfig from './../../../store/httpConfig';
-import builder from './../../../store/builder';
+// import httpConfig from './../../../store/httpConfig';
+// import builder from './../../../store/builder';
 
 LabelsInput.propTypes = {
   addLabel: PropTypes.func.isRequired,
