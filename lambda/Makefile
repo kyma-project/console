@@ -2,11 +2,11 @@ IMG_NAME = lambda
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: resolve validate test build build-image push-image
+ci-pr:  resolve validate test build build-image push-image
 ci-master: resolve validate test build build-image push-image
-ci-release: resolve validate test build build-image push-image
 
 resolve:
+	cd .. && npm install --no-optional # Install common dependencies 
 	npm install --no-optional
 
 pull-licenses:
