@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import DropdownRenderer from './../DropdownRenderer';
 
 const mockRecentLabels = ['a', 'b'];
@@ -26,14 +26,18 @@ describe('DropdownRenderer', () => {
   });
 
   it('Shows "No log labels" text when there is no log labels', () => {
-    const component = shallow(
+    const component = mount(
       <DropdownRenderer
         recentLabels={mockRecentLabels}
         logLabels={[]}
         chooseLabel={() => {}}
       />,
     );
-    expect(component.find('button[data-test-id="no-log-labels"]')).toBeTruthy();
+    expect(
+      component.containsMatchingElement(
+        <span data-test-id="no-log-labels">No log labels</span>,
+      ),
+    ).toBe(true);
   });
 
   it('Shows "No recent labels" text when there is no recent labels', () => {
@@ -45,7 +49,9 @@ describe('DropdownRenderer', () => {
       />,
     );
     expect(
-      component.find('button[data-test-id="no-recent-labels"]'),
-    ).toBeTruthy();
+      component.containsMatchingElement(
+        <span data-test-id="no-recent-labels"> No recent labels </span>,
+      ),
+    ).toBe(true);
   });
 });

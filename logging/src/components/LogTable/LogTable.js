@@ -15,7 +15,7 @@ export default function LogTable({ entries }) {
       </tr>
     ));
   }
-  entries = [];
+
   return (
     <table className="fd-table fd-has-margin-regular">
       <thead>

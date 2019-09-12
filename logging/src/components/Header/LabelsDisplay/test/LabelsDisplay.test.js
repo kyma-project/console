@@ -20,13 +20,12 @@ describe('LabelDisplay', () => {
   it('Does not show "Clear All" button when labels are not provided', () => {
     const component = shallow(
       <LabelsDisplay
-        labels={['a']}
+        labels={[]}
         readonlyLabels={[]}
         removeLabel={() => {}}
         removeAll={() => {}}
       />,
     );
-    console.log(component.find('button[data-test-id="clear-all"]').debug());
-    expect(component.find('button[data-test-id="clear-all"]')).not.toBeTruthy();
+    expect(component.exists('span[data-test-id="clear-all"]')).not.toBeTruthy();
   });
 });

@@ -120,6 +120,7 @@ exports[`Header Renders with minimal props 1`] = `
     </section>
     <span
       className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+      data-test-id="advanced-settings-toggle"
       onClick={[Function]}
     >
       Show Advanced Settings

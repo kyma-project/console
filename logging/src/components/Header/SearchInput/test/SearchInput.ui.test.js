@@ -9,6 +9,6 @@ describe('MetadataDefinitionDetails UI', () => {
       <SearchInput searchPhrase="" updateFilteringState={mockCallback} />,
     );
     component.find('.fd-input').simulate('change', { target: { value: 't' } });
-    expect(mockCallback).toHaveBeenCalledWith({ searchPhrase: 't' });
+    expect(mockCallback).toHaveBeenNthCalledWith(1, { searchPhrase: 't' });
   });
 });

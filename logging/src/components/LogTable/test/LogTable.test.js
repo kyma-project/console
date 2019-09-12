@@ -18,8 +18,8 @@ describe('LogTable', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('Does show "No entries" button when there are no entries', () => {
+  it('Displays "No entries" button when there are no entries', () => {
     const component = shallow(<LogTable entries={[]} />);
-    expect(component.find('.log-table__no-entries-text')).toBeTruthy();
+    expect(component.exists('.log-table__no-entries-text')).toBeTruthy();
   });
 });

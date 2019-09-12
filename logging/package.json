@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "enzyme-to-json": "^3.4.0",
     "fiori-fundamentals": "^1.7.0",
     "fundamental-react": "^0.6.1",
     "fundamental-styles": "^0.1.0",

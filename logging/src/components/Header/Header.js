@@ -61,6 +61,7 @@ export default function Header({
           updateFilteringState={updateFilteringState}
         />
         <span
+          data-test-id="advanced-settings-toggle"
           className="link-button fd-has-type-minus-1 header__settings-group__toggle"
           onClick={toggleAdvancedSettingsVisibility}
         >

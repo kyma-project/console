@@ -60,8 +60,11 @@ export default function DropdownRenderer({
       ))}
     </ul>
   ) : (
-    <span className="fd-mega-menu__item--disabled" data-test-id="no-log-labels">
-      No log labels
+    <span
+      className="fd-mega-menu__item--disabled"
+      data-test-id="no-recent-labels"
+    >
+      No recent labels
     </span>
   );
 
@@ -86,7 +89,7 @@ export default function DropdownRenderer({
     </ul>
   );
 
-  const logLabelsList = recentLabels.length ? (
+  const logLabelsList = logLabels.length ? (
     <ul className="fd-mega-menu__list">
       {statefulLogLabels.map(l => (
         <li className="fd-mega-menu__item" key={l.logLabel.name}>
@@ -103,11 +106,8 @@ export default function DropdownRenderer({
       ))}
     </ul>
   ) : (
-    <span
-      className="fd-mega-menu__item--disabled"
-      data-test-id="no-recent-labels"
-    >
-      No recent labels
+    <span className="fd-mega-menu__item--disabled" data-test-id="no-log-labels">
+      No log labels
     </span>
   );
 

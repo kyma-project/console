@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header UI Shows / hides advanced settings when corresponding button is clicked 1`] = `
+<Panel
+  className="fd-has-padding-regular fd-has-padding-bottom-none"
+>
+  <h1
+    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+  >
+    Logs
+  </h1>
+  <section
+    className="header__settings-group"
+  >
+    <LabelsInput
+      addLabel={[Function]}
+      maxRecentCount={4}
+    />
+    <SearchInput
+      searchPhrase="search phrase"
+      updateFilteringState={[Function]}
+    />
+    <span
+      className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+      data-test-id="advanced-settings-toggle"
+      onClick={[Function]}
+    >
+      Hide Advanced Settings
+    </span>
+  </section>
+  <AdvancedSettings
+    advancedSettings={Object {}}
+    hideSettings={[Function]}
+    updateFilteringState={[Function]}
+  />
+  <div>
+    <LabelsDisplay
+      labels={
+        Array [
+          "a",
+          "b",
+        ]
+      }
+      readonlyLabels={
+        Array [
+          "c",
+          "d",
+        ]
+      }
+      removeAll={[Function]}
+      removeLabel={[Function]}
+    />
+    <BottomToolbar
+      sortDirection="ascending"
+      updateFilteringState={[Function]}
+    />
+  </div>
+</Panel>
+`;
+
+exports[`Header UI Shows / hides advanced settings when corresponding button is clicked 2`] = `
+<Panel
+  className="fd-has-padding-regular fd-has-padding-bottom-none"
+>
+  <h1
+    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+  >
+    Logs
+  </h1>
+  <section
+    className="header__settings-group"
+  >
+    <LabelsInput
+      addLabel={[Function]}
+      maxRecentCount={4}
+    />
+    <SearchInput
+      searchPhrase="search phrase"
+      updateFilteringState={[Function]}
+    />
+    <span
+      className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+      data-test-id="advanced-settings-toggle"
+      onClick={[Function]}
+    >
+      Hide Advanced Settings
+    </span>
+  </section>
+  <AdvancedSettings
+    advancedSettings={Object {}}
+    hideSettings={[Function]}
+    updateFilteringState={[Function]}
+  />
+  <div>
+    <LabelsDisplay
+      labels={
+        Array [
+          "a",
+          "b",
+        ]
+      }
+      readonlyLabels={
+        Array [
+          "c",
+          "d",
+        ]
+      }
+      removeAll={[Function]}
+      removeLabel={[Function]}
+    />
+    <BottomToolbar
+      sortDirection="ascending"
+      updateFilteringState={[Function]}
+    />
+  </div>
+</Panel>
+`;

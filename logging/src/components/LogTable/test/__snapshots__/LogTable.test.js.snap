@@ -29,10 +29,38 @@ exports[`LogTable Renders with minimal props 1`] = `
   <tbody>
     <tr>
       <td
-        className="log-table__no-entries-text"
-        colSpan="2"
+        className="caption-muted"
       >
-        No entries
+        a
+      </td>
+      <td
+        className="caption-muted"
+      >
+        b
+      </td>
+    </tr>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        c
+      </td>
+      <td
+        className="caption-muted"
+      >
+        d
+      </td>
+    </tr>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        e
+      </td>
+      <td
+        className="caption-muted"
+      >
+        f
       </td>
     </tr>
   </tbody>
