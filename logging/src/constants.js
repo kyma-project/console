@@ -11,3 +11,8 @@ export const PERIODS = [
 ];
 
 export const DEFAULT_PERIOD = PERIODS[2];
+
+export const LOG_LABEL_CATEGORIES = [
+  { name: 'namespace' },
+  { name: 'function' },
+];

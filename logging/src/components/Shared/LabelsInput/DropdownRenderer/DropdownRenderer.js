@@ -4,22 +4,24 @@ import './DropdownRenderer.scss';
 
 DropdownRenderer.propTypes = {
   recentLabels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  logLabels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  logLabelCategories: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   chooseLabel: PropTypes.func.isRequired,
+  loadLabels: PropTypes.func.isRequired,
 };
 
 export default function DropdownRenderer({
   recentLabels,
-  logLabels,
+  logLabelCategories,
   chooseLabel,
+  loadLabels,
 }) {
   const [statefulLogLabels, setStatefulLogLabels] = React.useState(
-    logLabels
-      .filter(logLabel => logLabel.labels.length)
+    logLabelCategories
+      //.filter(logLabel => logLabel.labels.length)
       .map(logLabel => {
         return {
           isHidden: true,
-          logLabel: logLabel,
+          ...logLabel,
         };
       }),
   );
@@ -28,12 +30,16 @@ export default function DropdownRenderer({
     return name.replace(' ', '_').toLowerCase();
   }
 
-  function switchState(labelName) {
+  async function switchState(category) {
+    const entry = statefulLogLabels.find(e => e.name === category);
+    const labels = entry.labels || (await loadLabels(category));
+
     setStatefulLogLabels(
       statefulLogLabels.map(entry => {
-        if (entry.logLabel.name === labelName) {
+        if (entry.name === category) {
           return {
             ...entry,
+            labels,
             isHidden: !entry.isHidden,
           };
         } else {
@@ -68,38 +74,43 @@ export default function DropdownRenderer({
     </span>
   );
 
-  const logLabelsSubList = ({ logLabel, isHidden }) => (
-    <ul
-      className="fd-mega-menu__sublist"
-      id={logLabel.name}
-      aria-hidden={isHidden}
-    >
-      {logLabel.labels.map(name => (
-        <li className="fd-mega-menu__subitem" key={name}>
-          <span
-            className="fd-mega-menu__sublink cursor-pointer"
-            onClick={() =>
-              chooseLabel(`${formatName(logLabel.name)}="${name}"`)
-            }
-          >
-            {name}
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
+  const logLabelsSubList = logLabel => {
+    if (!logLabel.labels) {
+      return null;
+    }
+    return (
+      <ul
+        className="fd-mega-menu__sublist"
+        id={logLabel.name}
+        aria-hidden={logLabel.isHidden}
+      >
+        {logLabel.labels.map(name => (
+          <li className="fd-mega-menu__subitem" key={name}>
+            <span
+              className="fd-mega-menu__sublink cursor-pointer"
+              onClick={() =>
+                chooseLabel(`${formatName(logLabel.name)}="${name}"`)
+              }
+            >
+              {name}
+            </span>
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
-  const logLabelsList = logLabels.length ? (
+  const logLabelCategoriesList = statefulLogLabels.length ? (
     <ul className="fd-mega-menu__list">
       {statefulLogLabels.map(l => (
-        <li className="fd-mega-menu__item" key={l.logLabel.name}>
+        <li className="fd-mega-menu__item" key={l.name}>
           <span
             className="fd-mega-menu__link has-child cursor-pointer"
-            aria-controls={l.logLabel.name}
+            aria-controls={l.name}
             aria-haspopup="true"
-            onClick={() => switchState(l.logLabel.name)}
+            onClick={() => switchState(l.name)}
           >
-            {l.logLabel.name}
+            {l.name}
           </span>
           {logLabelsSubList(l)}
         </li>
@@ -119,7 +130,7 @@ export default function DropdownRenderer({
       </div>
       <div className="fd-mega-menu__group">
         <h3 className="fd-mega-menu__title">Log Labels</h3>
-        {logLabelsList}
+        {logLabelCategoriesList}
       </div>
     </nav>
   );

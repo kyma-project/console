@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-//import { Search } from '@kyma-project/react-components';
-import { ComboboxInput /*, Menu*/ } from 'fundamental-react/ComboboxInput';
+import { ComboboxInput } from 'fundamental-react/ComboboxInput';
 
 import DropdownRenderer from './DropdownRenderer/DropdownRenderer';
+import { useHttpService } from '../../../services/httpService';
 
-// import httpConfig from './../../../store/httpConfig';
-// import builder from './../../../store/builder';
+import { LOG_LABEL_CATEGORIES } from '../../../constants';
 
 LabelsInput.propTypes = {
   addLabel: PropTypes.func.isRequired,
@@ -18,16 +17,12 @@ LabelsInput.defaultProps = {
   maxRecentCount: 4,
 };
 
-const sampleLogLabels = [
-  { name: 'Namespace', labels: ['a', 'b', 'c'] },
-  { name: 'Function', labels: ['pamela', 'hasselhoff"', 'ff'] },
-  { name: 'Container name', labels: ['a'] },
-];
-
-const sampleRecentLabels = ['function="pamela"', 'function="hasselhoff"'];
-
 export default function LabelsInput({ addLabel, maxRecentCount }) {
-  const [recentLabels, setRecentLabels] = React.useState(sampleRecentLabels);
+  const [recentLabels, setRecentLabels] = React.useState([]);
+  const [logLabelCategories, setLogLabelsCategories] = React.useState(
+    LOG_LABEL_CATEGORIES,
+  );
+  const { getLabels } = useHttpService();
 
   function updateRecentLabels(label) {
     if (!recentLabels.includes(label)) {
@@ -38,28 +33,26 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
     }
   }
 
+  async function loadLabels(category) {
+    const labels = await getLabels(category);
+
+    setLogLabelsCategories(
+      [...logLabelCategories].map(c =>
+        c.name === category
+          ? {
+              ...c,
+              labels,
+            }
+          : c,
+      ),
+    );
+    return labels;
+  }
+
   function chooseLabel(label) {
     addLabel(label);
     updateRecentLabels(label);
   }
-
-  // React.useEffect(() => {
-  //   async function fetchData() {
-  //     //const url = 'https://grafana.arnold.cluster.stage.faros.kyma.cx/api/datasources/proxy/2/api/prom/label/component/values?silent=true';
-  //     const url = 'https://grafana.arnold.cluster.stage.faros.kyma.cx/api/datasources/proxy/2/api/prom/label/component/values';
-  //     const response = await fetch(url, {
-  //       headers: new Headers({
-  //         Authorization: 'Bearer ' + builder.getBearerToken(),
-  //       }),
-  //     });
-  //     console.log(response);
-  //     const data = await response.json();
-  //     console.log(data);
-  //   }
-  //   fetchData();
-  // }, [
-  //   /*todo*/
-  // ]);
 
   return (
     <section className="fd-display-l-inline-block">
@@ -68,8 +61,9 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
         menu={
           <DropdownRenderer
             recentLabels={recentLabels}
-            logLabels={sampleLogLabels}
+            logLabelCategories={logLabelCategories}
             chooseLabel={chooseLabel}
+            loadLabels={loadLabels}
           />
         }
         placeholder="Select Label"
@@ -77,27 +71,3 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
     </section>
   );
 }
-
-// getLabels(): Observable<any> {
-//     return this.http.get(AppConfig.labelEndpoint, {
-//       headers: this.getBaseHttpHeaders(),
-//       responseType: 'text',
-//     });
-//   }
-
-//   getBaseHttpHeaders() {
-//     return new HttpHeaders().set(
-//       'Authorization',
-//       'Bearer ' + this.extractToken(),
-//     );
-//   }
-
-//   extractToken(): string {
-//     let idToken = '';
-//     this.luigiContextService.getContext().subscribe(data => {
-//       idToken = data.context.idToken;
-//     });
-
-//     return idToken;
-//   }
-// }

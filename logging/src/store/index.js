@@ -7,11 +7,11 @@ import { onError } from 'apollo-link-error';
 
 import builder from './builder';
 
-const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
+const GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
 
 export function createApolloClient() {
   const httpLink = createHttpLink({
-    uri: COMPASS_GRAPHQL_ENDPOINT,
+    uri: GRAPHQL_ENDPOINT,
   });
   const authLink = setContext((_, { headers }) => {
     return {
@@ -42,7 +42,7 @@ export function createApolloClient() {
   );
 
   const client = new ApolloClient({
-    uri: COMPASS_GRAPHQL_ENDPOINT,
+    uri: GRAPHQL_ENDPOINT,
     cache,
     link: ApolloLink.from([errorLink, authHttpLink]),
     connectToDevTools: true,

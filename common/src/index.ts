@@ -1,5 +1,5 @@
 export * from './bootstrap';
-export { luigiClient } from './core';
+export { luigiClient, appInitializer } from './core';
 export * from './gql';
 export * from './services';
 export * from './hooks';
