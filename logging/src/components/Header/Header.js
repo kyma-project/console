@@ -13,6 +13,7 @@ import { PERIODS, SORT_TYPES } from '../../constants';
 
 Header.propTypes = {
   updateFilteringState: PropTypes.func.isRequired,
+  updateQuery: PropTypes.func.isRequired,
   searchPhrase: PropTypes.string.isRequired,
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   readonlyLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -23,6 +24,7 @@ Header.propTypes = {
 
 export default function Header({
   updateFilteringState,
+  updateQuery,
   searchPhrase,
   labels,
   readonlyLabels,
@@ -84,6 +86,7 @@ export default function Header({
           advancedSettings={advancedSettings}
           hideSettings={() => setAdvancedShown(false)}
           updateFilteringState={updateFilteringState}
+          updateQuery={updateQuery}
         />
       )}
       <div>

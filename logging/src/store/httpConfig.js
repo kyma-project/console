@@ -7,7 +7,7 @@ if (clusterConfig && clusterConfig['domain']) {
 }
 
 const config = {
-  // queryEndpoint: `https://loki.${domain}/api/prom/query`,
+  queryEndpoint: `https://loki.${domain}/api/prom/query`,
   labelEndpoint: `https://loki.${domain}/api/prom/label`,
   lokiEndpoint: `https://loki.${domain}`,
   tets: `https://loki.${domain}/api/prom/label`,
