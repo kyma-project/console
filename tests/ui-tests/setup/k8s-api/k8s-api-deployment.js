@@ -95,8 +95,8 @@ export class k8sApiDeployment {
     return Promise.race([
       waitUntilDeploymentReady,
       timeoutPromise(
-        20000,
-        `Waiting for deployment [http-db-service] ready state timed out after 20 s.'`,
+        30000,
+        `Waiting for deployment [http-db-service] ready state timed out after 30 s.'`,
       ),
     ]);
   }
