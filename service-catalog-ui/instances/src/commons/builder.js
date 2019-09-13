@@ -8,6 +8,10 @@ class Builder {
   backendModules = [];
 
   init() {
+    LuigiClient.addContextUpdateListener(e => {
+      this.currentEnvironmentId = e.namespaceId;
+    });
+
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(resolve, 1000);
 
