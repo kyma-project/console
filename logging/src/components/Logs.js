@@ -1,70 +1,51 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LogTable from './LogTable/LogTable';
 import LuigiClient from '@kyma-project/luigi-client';
 import Header from './Header/Header';
 import CompactHeader from './CompactHeader/CompactHeader';
+
+import { QueryTransformServiceContext } from '../services/queryTransformService';
+import { HttpServiceContext } from '../services/httpService';
 import { SORT_ASCENDING, DEFAULT_PERIOD } from './../constants';
 
-const sampleLabels = ['function="pamela"'];
-const sampleReadonlyLabels = ['function="rpamela"', 'function="rhasselhoff"'];
-const sampleEntries = [
-  {
-    timestamp: '14:14:01.384196009Z',
-    log: 'a',
-  },
-  {
-    timestamp: '14:14:01.384196009Z++',
-    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
-    Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
-    Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
-  },
-  {
-    timestamp: 3,
-    log: 'c',
-  },
-];
-
-export default class Logs extends React.Component {
-  // state = {
-  //    compact: false,
-  //   searchPhrase: '',
-  //   labels: [],
-  //   readonlyLabels: [],
-  //    logsPeriod: DEFAULT_PERIOD,
-  //   advancedSettings: {
-  //     query: '',
-  //     resultLimit: 0,
-  //     showPreviousLogs: true,
-  //     showHealthChecks: true,
-  //   },
-  //   recentlySelectedLabels: [],
-  //   sortDirection: SORT_ASCENDING,
-  // };
+class Logs extends React.Component {
+  static propTypes = {
+    httpService: PropTypes.object.isRequired,
+    queryService: PropTypes.object.isRequired,
+  };
 
   todo_is_lambda() {
     var params = LuigiClient.getNodeParams();
     return !!params.function;
   }
 
-  constructor(props) {
-    super(props);
+  state = {
+    compact: this.todo_is_lambda(),
+    searchPhrase: '',
+    labels: [],
+    readonlyLabels: this.tryGetReadonlyLabels() || [],
+    logsPeriod: DEFAULT_PERIOD,
+    advancedSettings: {
+      query: '',
+      resultLimit: 0,
+      showPreviousLogs: true,
+      showHealthChecks: true,
+    },
+    sortDirection: SORT_ASCENDING,
+  };
 
-    const readonlyLabels = this.tryGetReadonlyLabels();
-    //console.log(readonlyLabels);
-    this.state = {
-      compact: this.todo_is_lambda(),
-      searchPhrase: '',
-      labels: sampleLabels,
-      readonlyLabels: readonlyLabels || sampleReadonlyLabels,
-      logsPeriod: DEFAULT_PERIOD,
+  componentDidMount() {
+    console.log(this.props);
+    const { toQuery } = this.props.queryTransformService;
+    const { labels, searchPhrase } = this.state;
+
+    this.setState({
       advancedSettings: {
-        query: '',
-        resultLimit: 0,
-        showPreviousLogs: true,
-        showHealthChecks: true,
+        ...this.state.advancedSettings,
+        query: toQuery(labels, searchPhrase),
       },
-      sortDirection: SORT_ASCENDING,
-    };
+    });
   }
 
   tryGetReadonlyLabels() {
@@ -78,6 +59,38 @@ export default class Logs extends React.Component {
     return null;
   }
 
+  // intercept setState to update query, labels and searchPhrase
+  updateState = partialState => {
+    const { parseQuery, toQuery } = this.queryTransformService;
+    const { labels, searchPhrase, query } = this.state;
+
+    let additionalState = {};
+
+    if ('searchPhrase' in partialState) {
+      // searchPhrase changed, update query
+      additionalState = {
+        advancedSettings: {
+          query: toQuery(labels, partialState.searchPhrase),
+        },
+      };
+    } else if ('labels' in partialState) {
+      // labels changed, update query
+      additionalState = {
+        advancedSettings: {
+          query: toQuery(partialState.labels, searchPhrase),
+        },
+      };
+    } else if (
+      // query changed, update searchPhrase and labels
+      'advancedSettings' in partialState &&
+      partialState.advancedSettings.query !== query
+    ) {
+      additionalState = parseQuery(partialState.advancedSettings.query);
+    }
+
+    this.setState({ ...partialState, ...additionalState });
+  };
+
   render() {
     const {
       searchPhrase,
@@ -90,9 +103,39 @@ export default class Logs extends React.Component {
     } = this.state;
     return (
       <>
+        <button
+          onClick={async () => {
+            const fetchLogs = this.props.httpService;
+            const {
+              searchPhrase,
+              labels,
+              readonlyLabels,
+              advancedSettings,
+            } = this.state;
+            const {
+              logsPeriod,
+              resultLimit,
+              showPreviousLogs,
+              showHealthChecks,
+            } = advancedSettings;
+            console.log(
+              await fetchLogs({
+                searchPhrase,
+                labels: [...readonlyLabels, labels],
+                resultLimit,
+                logsPeriod,
+                sortDirection,
+                showPreviousLogs,
+                showHealthChecks,
+              }),
+            );
+          }}
+        >
+          DAWAJ
+        </button>
         {compact ? (
           <CompactHeader
-            updateFilteringState={this.setState.bind(this)}
+            updateFilteringState={this.updateState}
             searchPhrase={searchPhrase}
             logsPeriod={logsPeriod}
             sortDirection={sortDirection}
@@ -100,7 +143,7 @@ export default class Logs extends React.Component {
           />
         ) : (
           <Header
-            updateFilteringState={this.setState.bind(this)}
+            updateFilteringState={this.updateState}
             searchPhrase={searchPhrase}
             labels={labels}
             readonlyLabels={readonlyLabels}
@@ -109,8 +152,20 @@ export default class Logs extends React.Component {
             advancedSettings={advancedSettings}
           />
         )}
-        <LogTable entries={sampleEntries} />
+        {/* <LogTable entries={sampleEntries} /> */}
       </>
     );
   }
+}
+
+export default function LogsContainer() {
+  const httpService = React.useContext(HttpServiceContext);
+  const queryTransformService = React.useContext(QueryTransformServiceContext);
+
+  return (
+    <Logs
+      httpService={httpService}
+      queryTransformService={queryTransformService}
+    />
+  );
 }

@@ -1,5 +1,5 @@
-var domain = 'arnold.cluster.stage.faros.kyma.cx';
-var localDomain = 'console-dev.arnold.cluster.stage.faros.kyma.cx';
+var domain = 'twoj.cluster.stage.faros.kyma.cx';
+var localDomain = 'console-dev.twoj.cluster.stage.faros.kyma.cx';
 
 window.clusterConfig = {
   graphqlApiUrl: 'https://console-backend.' + domain + '/graphql',

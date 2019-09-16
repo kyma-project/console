@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './SearchInput.scss';
 
-import { Search } from '@kyma-project/react-components';
 import { InlineHelp } from 'fundamental-react';
 
 SearchInput.propTypes = {
@@ -25,7 +24,6 @@ export default function SearchInput({
     const value = event.target.value;
     updateFilteringState({ searchPhrase: value });
   }
-
   return (
     <section className="fd-has-margin-right-small">
       <span className="caption-muted search-input__caption">
@@ -41,11 +39,14 @@ export default function SearchInput({
           </>
         )}
       </span>
-      <Search
+      <input
+        type="text"
         className={classNames({ 'search-input--compact': compact })}
         onChange={updateSearchQuery}
         value={searchPhrase}
         placeholder="Search"
+        id="search-input"
+        min="0"
       />
     </section>
   );

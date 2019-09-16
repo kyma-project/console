@@ -29,10 +29,10 @@ exports[`AdvancedSettings Renders with minimal props 1`] = `
       <input
         autoComplete="off"
         className="fd-form__control"
-        defaultValue="query"
         id="query"
         onChange={[Function]}
         type="text"
+        value="query"
       />
     </div>
   </div>
@@ -65,7 +65,7 @@ exports[`AdvancedSettings Renders with minimal props 1`] = `
       <input
         autoComplete="off"
         className="fd-form__control"
-        defaultValue="query"
+        defaultValue={10}
         id="result-limit"
         onChange={[Function]}
         type="number"

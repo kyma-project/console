@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ComboboxInput } from 'fundamental-react/ComboboxInput';
 
 import DropdownRenderer from './DropdownRenderer/DropdownRenderer';
-import { useHttpService } from '../../../services/httpService';
+import { HttpServiceContext } from '../../../services/httpService';
 
 import { LOG_LABEL_CATEGORIES } from '../../../constants';
 
@@ -22,7 +22,7 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
   const [logLabelCategories, setLogLabelsCategories] = React.useState(
     LOG_LABEL_CATEGORIES,
   );
-  const { getLabels } = useHttpService();
+  const { getLabels } = React.useContext(HttpServiceContext);
 
   function updateRecentLabels(label) {
     if (!recentLabels.includes(label)) {

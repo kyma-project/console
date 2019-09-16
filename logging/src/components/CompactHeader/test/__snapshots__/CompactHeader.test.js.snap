@@ -21,47 +21,15 @@ exports[`CompactHeader Renders with minimal props 1`] = `
         <span
           className="caption-muted search-input__caption"
         />
-        <div
-          className="fd-search-input search-input--compact"
+        <input
+          className="search-input--compact"
+          id="search-input"
+          minVal="0"
+          onChange={[Function]}
+          placeholder="Search"
+          type="text"
           value="search phrase"
-        >
-          <div
-            className="fd-popover"
-          >
-            <div
-              className="fd-popover__control"
-            >
-              <div
-                aria-expanded={false}
-                aria-haspopup="true"
-                className="fd-combobox-control"
-              >
-                <div
-                  className="fd-input-group fd-input-group--after"
-                >
-                  <input
-                    className="fd-input"
-                    onChange={[Function]}
-                    onClick={[Function]}
-                    onKeyPress={[Function]}
-                    placeholder="Search"
-                    style={Object {}}
-                    type="text"
-                    value=""
-                  />
-                  <span
-                    className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
-                  >
-                    <button
-                      className="fd-button--light sap-icon--search"
-                      onClick={[Function]}
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        />
       </section>
       <span
         className="link-button fd-has-type-minus-1"

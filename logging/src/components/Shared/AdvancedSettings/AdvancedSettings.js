@@ -8,14 +8,12 @@ AdvancedSettings.propTypes = {
   advancedSettings: PropTypes.object.isRequired,
   hideSettings: PropTypes.func.isRequired,
   updateFilteringState: PropTypes.func.isRequired,
-  updateQuery: PropTypes.func.isRequired,
 };
 
 export default function AdvancedSettings({
   advancedSettings,
   hideSettings,
   updateFilteringState,
-  updateQuery,
 }) {
   const settingsEntry = (name, controls) => {
     return (
@@ -44,7 +42,7 @@ export default function AdvancedSettings({
   }
 
   function setQuery(e) {
-    updateQuery({ query: e.target.value });
+    updateState({ query: e.target.value });
   }
 
   function setResultLimit(e) {
@@ -58,7 +56,7 @@ export default function AdvancedSettings({
       type="text"
       onChange={setQuery}
       autoComplete="off"
-      defaultValue={advancedSettings.query}
+      value={advancedSettings.query}
     />,
   );
 
@@ -77,7 +75,7 @@ export default function AdvancedSettings({
       type="number"
       onChange={setResultLimit}
       autoComplete="off"
-      defaultValue={advancedSettings.query}
+      defaultValue={advancedSettings.resultLimit}
     />,
   );
 

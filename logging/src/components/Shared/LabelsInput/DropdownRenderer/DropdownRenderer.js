@@ -16,14 +16,12 @@ export default function DropdownRenderer({
   loadLabels,
 }) {
   const [statefulLogLabels, setStatefulLogLabels] = React.useState(
-    logLabelCategories
-      //.filter(logLabel => logLabel.labels.length)
-      .map(logLabel => {
-        return {
-          isHidden: true,
-          ...logLabel,
-        };
-      }),
+    logLabelCategories.map(logLabel => {
+      return {
+        isHidden: true,
+        ...logLabel,
+      };
+    }),
   );
 
   function formatName(name) {
@@ -75,8 +73,18 @@ export default function DropdownRenderer({
   );
 
   const logLabelsSubList = logLabel => {
-    if (!logLabel.labels) {
-      return null;
+    if (!logLabel.labels || !logLabel.labels.length) {
+      return (
+        <ul
+          className="fd-mega-menu__sublist"
+          id={logLabel.name}
+          aria-hidden={logLabel.isHidden}
+        >
+          <li className="fd-mega-menu__subitem" key="not-entries">
+            <span className="fd-mega-menu__sublink">No entries</span>
+          </li>
+        </ul>
+      );
     }
     return (
       <ul
