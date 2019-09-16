@@ -330,15 +330,14 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
         configUncorrectRegExpData,
       );
 
-      let frame3;
       await Promise.all([
         page.goto(instancesUrl),
         page.waitForNavigation({
           waitUntil: ['domcontentloaded', 'networkidle0'],
         }),
-        (frame3 = await waitForInstancesFrame(page)),
       ]);
 
+      const frame3 = await waitForInstancesFrame(page);
       const instancesHeaderElement = await frame3.waitForSelector(
         instancesHeaderSelector,
       );

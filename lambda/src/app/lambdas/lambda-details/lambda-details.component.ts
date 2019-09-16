@@ -244,15 +244,18 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               .subscribe(
                 api => {
                   this.existingHTTPEndpoint = api;
-                  this.httpURL = `${api.spec.hostname}`;
+                  this.httpURL = this.getFQDNfromHostname(api.spec.hostname,AppConfig.domain);
                   const httpEndPoint: HTTPEndpoint = this.getHTTPEndPointFromApi(
                     api,
                   );
                   this.selectedTriggers.push(httpEndPoint);
                   this.isHTTPTriggerAdded = true;
                   this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
-                  this.jwksUri = httpEndPoint.authentication.jwt.jwksUri;
-                  this.authType = httpEndPoint.authentication.type;
+                  if (this.isHTTPTriggerAuthenticated  && httpEndPoint.authentication){ 
+                        this.jwksUri = httpEndPoint.authentication.jwt.jwksUri;
+                        this.authType = httpEndPoint.authentication.type;
+                  }
+                 
                 },
                 err => {
                   // Can be a valid 404 error when api is not found of a function
@@ -1565,6 +1568,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     } catch (e) {
       return;
     }
+  }
+
+  private getFQDNfromHostname(hostname: string, domain: string): string {
+    return hostname.indexOf(domain) === -1 ? `${hostname}.${domain}` : hostname;
   }
 
   public selectTrigger(trigger) {
