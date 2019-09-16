@@ -52,27 +52,52 @@ exports[`DropdownRenderer Renders with minimal props 1`] = `
         className="fd-mega-menu__item"
       >
         <span
-          aria-controls="name"
+          aria-controls="name 1"
           aria-haspopup="true"
           className="fd-mega-menu__link has-child cursor-pointer"
           onClick={[Function]}
         >
-          name
+          name 1
         </span>
         <ul
           aria-hidden={true}
           className="fd-mega-menu__sublist"
-          id="name"
+          id="name 1"
         >
           <li
             className="fd-mega-menu__subitem"
           >
             <span
-              className="fd-mega-menu__sublink cursor-pointer"
-              onClick={[Function]}
+              className="fd-mega-menu__sublink"
             >
-              c
-              d
+              No entries
+            </span>
+          </li>
+        </ul>
+      </li>
+      <li
+        className="fd-mega-menu__item"
+      >
+        <span
+          aria-controls="name 2"
+          aria-haspopup="true"
+          className="fd-mega-menu__link has-child cursor-pointer"
+          onClick={[Function]}
+        >
+          name 2
+        </span>
+        <ul
+          aria-hidden={true}
+          className="fd-mega-menu__sublist"
+          id="name 2"
+        >
+          <li
+            className="fd-mega-menu__subitem"
+          >
+            <span
+              className="fd-mega-menu__sublink"
+            >
+              No entries
             </span>
           </li>
         </ul>

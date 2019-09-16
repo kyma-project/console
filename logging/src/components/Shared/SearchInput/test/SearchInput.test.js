@@ -1,6 +1,5 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow } from 'enzyme';
 import SearchInput from './../SearchInput';
 
 describe('SearchInput', () => {
@@ -11,7 +10,19 @@ describe('SearchInput', () => {
         updateFilteringState={() => {}}
       />,
     );
-    let tree = component.toJSON();
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('Renders in compact mode', () => {
+    const component = renderer.create(
+      <SearchInput
+        searchPhrase="search phrase"
+        updateFilteringState={() => {}}
+        compact={true}
+      />,
+    );
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

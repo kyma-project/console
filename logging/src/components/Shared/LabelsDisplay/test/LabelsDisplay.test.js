@@ -13,7 +13,7 @@ describe('LabelDisplay', () => {
         removeAll={() => {}}
       />,
     );
-    let tree = component.toJSON();
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 

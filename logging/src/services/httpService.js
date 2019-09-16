@@ -50,22 +50,15 @@ const useHttpService = createUseContext(() => {
     return data.values || [];
   };
 
-  // advancedSettings: {
-  //   query: '',
-  //   showPreviousLogs: true,
-  //   showHealthChecks: true,
-  // },
-
   const fetchLogs = async params => {
-    console.log(params);
     const {
       searchPhrase,
       labels,
       resultLimit,
       logsPeriod,
       sortDirection,
-      showPreviousLogs,
-      showHealthChecks,
+      // showPreviousLogs,
+      // showHealthChecks,
     } = params;
 
     let direction = 'backward';
@@ -73,7 +66,7 @@ const useHttpService = createUseContext(() => {
       direction = 'forward';
     }
 
-    let limit = 0;
+    let limit = 100;
     if (resultLimit && resultLimit > 0) {
       limit = resultLimit;
     }
@@ -84,7 +77,6 @@ const useHttpService = createUseContext(() => {
 
     const encodedQuery = encodeURIComponent(query);
     const url = `${httpConfig.queryEndpoint}?query=${encodedQuery}&start=${start}&end=${end}&direction=${direction}&limit=${limit}`;
-    console.log(url);
 
     const response = await authorizedFetch(url);
     if (response.status === 200) {

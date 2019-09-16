@@ -7,8 +7,10 @@ const mockRecentLabels = ['a', 'b'];
 
 const mockLogLabels = [
   {
-    name: 'name',
-    labels: [['c', 'd']],
+    name: 'name 1',
+  },
+  {
+    name: 'name 2',
   },
 ];
 
@@ -17,11 +19,12 @@ describe('DropdownRenderer', () => {
     const component = renderer.create(
       <DropdownRenderer
         recentLabels={mockRecentLabels}
-        logLabels={mockLogLabels}
+        logLabelCategories={mockLogLabels}
         chooseLabel={() => {}}
+        loadLabels={() => {}}
       />,
     );
-    let tree = component.toJSON();
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 
@@ -29,8 +32,9 @@ describe('DropdownRenderer', () => {
     const component = mount(
       <DropdownRenderer
         recentLabels={mockRecentLabels}
-        logLabels={[]}
+        logLabelCategories={[]}
         chooseLabel={() => {}}
+        loadLabels={() => {}}
       />,
     );
     expect(
@@ -44,8 +48,9 @@ describe('DropdownRenderer', () => {
     const component = shallow(
       <DropdownRenderer
         recentLabels={[]}
-        logLabels={mockLogLabels}
+        logLabelCategories={mockLogLabels}
         chooseLabel={() => {}}
+        loadLabels={() => {}}
       />,
     );
     expect(

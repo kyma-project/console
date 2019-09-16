@@ -18,11 +18,24 @@ describe('SelectDropdown', () => {
       <SelectDropdown
         currentValue={'a'}
         availabelValues={['a', 'b']}
-        icon="connected"
         updateValue={() => {}}
       />,
     );
-    let tree = component.toJSON();
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('Renders with custom props', () => {
+    const component = renderer.create(
+      <SelectDropdown
+        currentValue={'a'}
+        availabelValues={['a', 'b']}
+        updateValue={() => {}}
+        icon="connected"
+        compact={true}
+      />,
+    );
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

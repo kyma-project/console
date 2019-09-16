@@ -1,0 +1,463 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logs Renders with lambda view props 1`] = `
+Array [
+  <div
+    className="fd-panel fd-has-padding-regular fd-has-padding-bottom-tiny"
+  >
+    <section
+      className="compact-header"
+    >
+      <h1
+        className="fd-has-type-3"
+      >
+        Logs
+      </h1>
+      <div
+        className="fd-has-display-flex"
+      >
+        <section
+          className="fd-has-margin-right-small"
+        >
+          <span
+            className="caption-muted search-input__caption"
+          />
+          <input
+            className="search-input--compact"
+            id="search-input"
+            min="0"
+            onChange={[Function]}
+            placeholder="Search"
+            type="text"
+            value=""
+          />
+        </section>
+        <span
+          className="link-button fd-has-type-minus-1"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--action-settings fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                />
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                />
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                />
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </section>
+  </div>,
+  <table
+    className="fd-table fd-has-margin-regular"
+  >
+    <thead>
+      <tr>
+        <th
+          className="log-table__pre-header fd-has-type-0"
+          colSpan="2"
+        >
+          Logs for test
+        </th>
+      </tr>
+      <tr>
+        <th
+          className="caption-muted"
+        >
+          Timestamp
+        </th>
+        <th
+          className="caption-muted"
+        >
+          Log
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:21.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.1api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:01.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:31.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2. details.
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:41.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          log
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:51.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.0147][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+]
+`;
+
+exports[`Logs Renders with minimal props 1`] = `
+Array [
+  <div
+    className="fd-panel fd-has-padding-regular fd-has-padding-bottom-none"
+  >
+    <h1
+      className="fd-has-type-3 fd-has-padding-bottom-tiny"
+    >
+      Logs
+    </h1>
+    <section
+      className="header__settings-group"
+    >
+      <section
+        className="fd-display-l-inline-block"
+      >
+        <span
+          className="caption-muted"
+        >
+          Labels
+        </span>
+        <div
+          className="fd-combobox-input"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <div
+                  className="fd-combobox-control"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="fd-input-group fd-input-group--after"
+                  >
+                    <input
+                      className="fd-input"
+                      placeholder="Select Label"
+                      type="text"
+                    />
+                    <span
+                      className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                    >
+                      <button
+                        className=" fd-button--light sap-icon--navigation-down-arrow"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        className="fd-has-margin-right-small"
+      >
+        <span
+          className="caption-muted search-input__caption"
+        >
+          Search
+          <div
+            className="small-inline-help-wrapper"
+          >
+            <span
+              className="fd-inline-help"
+            >
+              <span
+                className="fd-inline-help__content fd-inline-help__content--right"
+              >
+                Search for logs by text (optional)
+              </span>
+            </span>
+          </div>
+        </span>
+        <input
+          className=""
+          id="search-input"
+          min="0"
+          onChange={[Function]}
+          placeholder="Search"
+          type="text"
+          value=""
+        />
+      </section>
+      <span
+        className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+        data-test-id="advanced-settings-toggle"
+        onClick={[Function]}
+      >
+        Show Advanced Settings
+      </span>
+    </section>
+    <div>
+      <section
+        className="labels-display"
+      >
+        <ul />
+      </section>
+      <div
+        className="header__options-wrapper"
+      >
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                >
+                  last 15 minutes
+                </button>
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                >
+                  ascending
+                </button>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>,
+  <table
+    className="fd-table fd-has-margin-regular"
+  >
+    <thead>
+      <tr>
+        <th
+          className="log-table__pre-header fd-has-type-0"
+          colSpan="2"
+        >
+          Log stream
+        </th>
+      </tr>
+      <tr>
+        <th
+          className="caption-muted"
+        >
+          Timestamp
+        </th>
+        <th
+          className="caption-muted"
+        >
+          Log
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:21.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.1api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:01.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:31.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2. details.
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:41.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          log
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="caption-muted"
+        >
+          14:14:51.384196009Z
+        </td>
+        <td
+          className="caption-muted"
+        >
+          [2019-06-11 11:58:00.0147][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+]
+`;

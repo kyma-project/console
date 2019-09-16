@@ -1,35 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LogTable from './LogTable/LogTable';
-import LuigiClient from '@kyma-project/luigi-client';
 import Header from './Header/Header';
 import CompactHeader from './CompactHeader/CompactHeader';
+import LogTable from './LogTable/LogTable';
 // import 'core-js/es/array/flat-map'; todo
 
-import { QueryTransformServiceContext } from '../services/queryTransformService';
-import { HttpServiceContext } from '../services/httpService';
 import {
   SORT_ASCENDING,
   DEFAULT_PERIOD,
-  LOG_REFRESH_INTERVAL,
+  //LOG_REFRESH_INTERVAL,
 } from './../constants';
 
-class Logs extends React.Component {
+const SAMPLE_LOGS = [
+  {
+    timestamp: '14:14:21.384196009Z',
+    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.1api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
+  },
+  {
+    timestamp: '14:14:01.384196009Z',
+    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
+  },
+  {
+    timestamp: '14:14:31.384196009Z',
+    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2. details.`,
+  },
+  {
+    timestamp: '14:14:41.384196009Z',
+    log: `log`,
+  },
+  {
+    timestamp: '14:14:51.384196009Z',
+    log: `[2019-06-11 11:58:00.0147][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
+  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
+  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
+  },
+];
+
+export default class Logs extends React.Component {
   static propTypes = {
     httpService: PropTypes.object.isRequired,
     queryTransformService: PropTypes.object.isRequired,
+    isLambda: PropTypes.bool,
+    readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
+    lambdaName: PropTypes.string,
   };
 
-  todo_is_lambda() {
-    var params = LuigiClient.getNodeParams();
-    return !!params.function;
-  }
+  static defaultProps = {
+    isLambda: false,
+    readonlyLabels: [],
+    lambdaName: null,
+  };
 
   state = {
-    compact: this.todo_is_lambda(),
+    compact: this.props.isLambda,
     searchPhrase: '',
     labels: [],
-    readonlyLabels: this.tryGetReadonlyLabels() || [],
+    readonlyLabels: this.props.readonlyLabels,
     logsPeriod: DEFAULT_PERIOD,
     advancedSettings: {
       query: '',
@@ -38,38 +69,24 @@ class Logs extends React.Component {
       showHealthChecks: true,
     },
     sortDirection: SORT_ASCENDING,
-    logs: [],
+    logs: SAMPLE_LOGS,
   };
   intervalId = null;
 
   componentDidMount = () => {
-    const { toQuery } = this.props.queryTransformService;
     const { labels, searchPhrase } = this.state;
-
     this.setState({
       advancedSettings: {
         ...this.state.advancedSettings,
-        query: toQuery(labels, searchPhrase),
+        query: this.props.queryTransformService.toQuery(labels, searchPhrase),
       },
     });
-
     //this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
   };
 
   componentWillUnmount = () => {
     //clearInterval(this.intervalId);
   };
-
-  tryGetReadonlyLabels() {
-    const params = LuigiClient.getNodeParams();
-    if (params.function && params.namespace) {
-      return [
-        `function="${params.function}"`,
-        `namespace="${params.namespace}"`,
-      ];
-    }
-    return null;
-  }
 
   fetchLogs = async () => {
     const {
@@ -91,9 +108,8 @@ class Logs extends React.Component {
       showHealthChecks,
     } = advancedSettings;
 
-    const { fetchLogs } = this.props.httpService;
     try {
-      const res = await fetchLogs({
+      const res = await this.props.httpService.fetchLogs({
         searchPhrase,
         labels: [...readonlyLabels, labels],
         resultLimit,
@@ -102,11 +118,23 @@ class Logs extends React.Component {
         showPreviousLogs,
         showHealthChecks,
       });
-      const logs = res.streams.flatMap(stream => stream.entries);
+      const logs = res.streams
+        ? res.streams
+            .flatMap(stream => stream.entries)
+            .map(l => ({
+              timestamp: l.ts,
+              log: l.line,
+            }))
+        : [];
       this.setState({ logs });
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
+  };
+
+  filterHealthChecks = entry => {
+    const showHealthChecks = this.state.advancedSettings.showHealthChecks;
+    return showHealthChecks || entry.log.indexOf('GET /healthz') < 0;
   };
 
   // intercept setState to update query, labels and searchPhrase
@@ -120,6 +148,7 @@ class Logs extends React.Component {
       // searchPhrase changed, update query
       additionalState = {
         advancedSettings: {
+          ...this.state.advancedSettings,
           query: toQuery(labels, partialState.searchPhrase),
         },
       };
@@ -127,15 +156,19 @@ class Logs extends React.Component {
       // labels changed, update query
       additionalState = {
         advancedSettings: {
+          ...this.state.advancedSettings,
           query: toQuery(partialState.labels, searchPhrase),
         },
       };
     } else if (
-      // query changed, update searchPhrase and labels
       'advancedSettings' in partialState &&
       partialState.advancedSettings.query !== query
     ) {
-      additionalState = parseQuery(partialState.advancedSettings.query);
+      // query changed, update searchPhrase and labels
+      additionalState = {
+        ...this.state.advancedSettings,
+        ...parseQuery(partialState.advancedSettings.query),
+      };
     }
 
     this.setState({ ...partialState, ...additionalState });
@@ -152,6 +185,7 @@ class Logs extends React.Component {
       compact,
       logs,
     } = this.state;
+
     return (
       <>
         {compact ? (
@@ -173,20 +207,11 @@ class Logs extends React.Component {
             advancedSettings={advancedSettings}
           />
         )}
-        <LogTable entries={logs} />
+        <LogTable
+          entityName={this.props.lambdaName}
+          entries={logs.filter(this.filterHealthChecks)}
+        />
       </>
     );
   }
-}
-
-export default function LogsContainer() {
-  const httpService = React.useContext(HttpServiceContext);
-  const queryTransformService = React.useContext(QueryTransformServiceContext);
-
-  return (
-    <Logs
-      httpService={httpService}
-      queryTransformService={queryTransformService}
-    />
-  );
 }

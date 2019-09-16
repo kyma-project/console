@@ -21,8 +21,9 @@ describe('DropdownRenderer UI', () => {
     const component = shallow(
       <DropdownRenderer
         recentLabels={[]}
-        logLabels={mockLogLabels}
+        logLabelCategories={mockLogLabels}
         chooseLabel={() => {}}
+        loadLabels={() => {}}
       />,
     );
 
@@ -40,8 +41,9 @@ describe('DropdownRenderer UI', () => {
     const component = shallow(
       <DropdownRenderer
         recentLabels={mockRecentLabels}
-        logLabels={[]}
+        logLabelCategories={mockLogLabels}
         chooseLabel={mockCallback}
+        loadLabels={() => {}}
       />,
     );
 

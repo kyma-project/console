@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import './LogTable.scss';
 
 LogTable.propTypes = {
+  entityName: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
-export default function LogTable({ entries }) {
+export default function LogTable({ entityName, entries }) {
   function renderEntries() {
     return entries.map(entry => (
       <tr key={entry.timestamp}>
@@ -16,12 +17,14 @@ export default function LogTable({ entries }) {
     ));
   }
 
+  const title = entityName ? `Logs for ${entityName}` : 'Log stream';
+
   return (
     <table className="fd-table fd-has-margin-regular">
       <thead>
         <tr>
           <th colSpan="2" className="log-table__pre-header fd-has-type-0">
-            Stream Name
+            {title}
           </th>
         </tr>
         <tr>

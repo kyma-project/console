@@ -16,12 +16,10 @@ export default function DropdownRenderer({
   loadLabels,
 }) {
   const [statefulLogLabels, setStatefulLogLabels] = React.useState(
-    logLabelCategories.map(logLabel => {
-      return {
-        isHidden: true,
-        ...logLabel,
-      };
-    }),
+    logLabelCategories.map(logLabel => ({
+      isHidden: true,
+      ...logLabel,
+    })),
   );
 
   function formatName(name) {

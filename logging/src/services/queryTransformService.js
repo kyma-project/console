@@ -2,6 +2,14 @@ import createUseContext from 'constate';
 
 // query: `{...labels} searchPhrase?`
 const useQueryTransformService = createUseContext(() => {
+  const splitQueryLabels = queryLabels => {
+    return queryLabels
+      .replace(/{|}/g, '')
+      .split(',')
+      .map(e => e.trim())
+      .filter(e => e.length);
+  };
+
   const tryGetSearchPhrase = query => {
     // const splitQuery = query.split(' ');
     // const lastItem = splitQuery[splitQuery.length - 1];
@@ -12,7 +20,7 @@ const useQueryTransformService = createUseContext(() => {
     // }
     // return null;
 
-    const index = query.indexOf('}');
+    const index = query.lastIndexOf('}');
     if (index === -1) {
       return null;
     } else {
@@ -28,17 +36,13 @@ const useQueryTransformService = createUseContext(() => {
         0,
         query.length - searchPhrase.length,
       );
-      const labels = queryLabels
-        .replace(/{|}/g, '')
-        .trim()
-        .split(',');
       return {
-        labels,
+        labels: splitQueryLabels(queryLabels),
         searchPhrase,
       };
     } else {
       return {
-        labels: query.replace(/{|}/g, '').split(','),
+        labels: splitQueryLabels(query),
         searchPhrase: '',
       };
     }

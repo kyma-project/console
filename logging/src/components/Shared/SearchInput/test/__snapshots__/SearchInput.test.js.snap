@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SearchInput Renders in compact mode 1`] = `
+<section
+  className="fd-has-margin-right-small"
+>
+  <span
+    className="caption-muted search-input__caption"
+  />
+  <input
+    className="search-input--compact"
+    id="search-input"
+    min="0"
+    onChange={[Function]}
+    placeholder="Search"
+    type="text"
+    value="search phrase"
+  />
+</section>
+`;
+
 exports[`SearchInput Renders with minimal props 1`] = `
 <section
   className="fd-has-margin-right-small"
@@ -25,7 +44,7 @@ exports[`SearchInput Renders with minimal props 1`] = `
   <input
     className=""
     id="search-input"
-    minVal="0"
+    min="0"
     onChange={[Function]}
     placeholder="Search"
     type="text"
