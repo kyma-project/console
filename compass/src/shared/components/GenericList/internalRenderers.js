@@ -4,19 +4,15 @@ import { Menu } from 'fundamental-react/Menu';
 import { Button } from '@kyma-project/react-components';
 
 export const renderActionElement = (actions, entry) =>
-  Array.isArray(actions) &&
-  ((
+  !Array.isArray(actions) ? null : (
     <Popover
       body={
         <Menu>
           <Menu.List>
-            {actions.map((
-              action,
-              id, // no unique key error appears here. 'key' is not passed further by Fd-react
-            ) => (
+            {actions.map(action => (
               <Menu.Item
                 onClick={() => action.handler(entry)}
-                key={(entry.name || entry.id) + id}
+                key={action.name}
               >
                 {action.name}
               </Menu.Item>
@@ -27,5 +23,4 @@ export const renderActionElement = (actions, entry) =>
       control={<Button glyph="vertical-grip" option="light" />}
       placement="bottom-end"
     />
-  ) ||
-    null);
+  );
