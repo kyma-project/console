@@ -84,7 +84,7 @@ exports[`Header Renders with minimal props 1`] = `
       <input
         className=""
         id="search-input"
-        minVal="0"
+        min="0"
         onChange={[Function]}
         placeholder="Search"
         type="text"

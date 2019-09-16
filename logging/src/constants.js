@@ -16,3 +16,5 @@ export const LOG_LABEL_CATEGORIES = [
   { name: 'namespace' },
   { name: 'function' },
 ];
+
+export const LOG_REFRESH_INTERVAL = 2000; // ms

@@ -31,8 +31,7 @@ const useQueryTransformService = createUseContext(() => {
       const labels = queryLabels
         .replace(/{|}/g, '')
         .trim()
-        .split(',')
-        .trim();
+        .split(',');
       return {
         labels,
         searchPhrase,

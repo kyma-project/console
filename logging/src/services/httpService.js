@@ -5,7 +5,7 @@ import httpConfig from '../store/httpConfig';
 import { SORT_ASCENDING } from '../constants';
 
 function getTimestamp(date) {
-  return `${date.valueOf()}+000000`;
+  return `${date.valueOf()}000000`;
 }
 
 const useHttpService = createUseContext(() => {
@@ -73,7 +73,7 @@ const useHttpService = createUseContext(() => {
       direction = 'forward';
     }
 
-    let limit = 1000;
+    let limit = 0;
     if (resultLimit && resultLimit > 0) {
       limit = resultLimit;
     }
@@ -82,11 +82,16 @@ const useHttpService = createUseContext(() => {
 
     const query = `{${labels}} ${searchPhrase.trim()}`;
 
-    const queryParams = encodeURIComponent(query);
-    const url = `${httpConfig.queryEndpoint}?query=${queryParams}&start=${start}&end=${end}&direction=${direction}&limit=${limit}`;
+    const encodedQuery = encodeURIComponent(query);
+    const url = `${httpConfig.queryEndpoint}?query=${encodedQuery}&start=${start}&end=${end}&direction=${direction}&limit=${limit}`;
+    console.log(url);
 
     const response = await authorizedFetch(url);
-    console.log(await response.json());
+    if (response.status === 200) {
+      return await response.json();
+    } else {
+      return await response.text();
+    }
   };
 
   return {

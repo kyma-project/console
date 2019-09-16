@@ -4,15 +4,20 @@ import LogTable from './LogTable/LogTable';
 import LuigiClient from '@kyma-project/luigi-client';
 import Header from './Header/Header';
 import CompactHeader from './CompactHeader/CompactHeader';
+// import 'core-js/es/array/flat-map'; todo
 
 import { QueryTransformServiceContext } from '../services/queryTransformService';
 import { HttpServiceContext } from '../services/httpService';
-import { SORT_ASCENDING, DEFAULT_PERIOD } from './../constants';
+import {
+  SORT_ASCENDING,
+  DEFAULT_PERIOD,
+  LOG_REFRESH_INTERVAL,
+} from './../constants';
 
 class Logs extends React.Component {
   static propTypes = {
     httpService: PropTypes.object.isRequired,
-    queryService: PropTypes.object.isRequired,
+    queryTransformService: PropTypes.object.isRequired,
   };
 
   todo_is_lambda() {
@@ -28,15 +33,16 @@ class Logs extends React.Component {
     logsPeriod: DEFAULT_PERIOD,
     advancedSettings: {
       query: '',
-      resultLimit: 0,
+      resultLimit: 100,
       showPreviousLogs: true,
       showHealthChecks: true,
     },
     sortDirection: SORT_ASCENDING,
+    logs: [],
   };
+  intervalId = null;
 
-  componentDidMount() {
-    console.log(this.props);
+  componentDidMount = () => {
     const { toQuery } = this.props.queryTransformService;
     const { labels, searchPhrase } = this.state;
 
@@ -46,7 +52,13 @@ class Logs extends React.Component {
         query: toQuery(labels, searchPhrase),
       },
     });
-  }
+
+    //this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
+  };
+
+  componentWillUnmount = () => {
+    //clearInterval(this.intervalId);
+  };
 
   tryGetReadonlyLabels() {
     const params = LuigiClient.getNodeParams();
@@ -59,9 +71,47 @@ class Logs extends React.Component {
     return null;
   }
 
+  fetchLogs = async () => {
+    const {
+      searchPhrase,
+      labels,
+      readonlyLabels,
+      advancedSettings,
+      sortDirection,
+      logsPeriod,
+    } = this.state;
+
+    if (!labels.length && !readonlyLabels.length && !searchPhrase) {
+      return;
+    }
+
+    const {
+      resultLimit,
+      showPreviousLogs,
+      showHealthChecks,
+    } = advancedSettings;
+
+    const { fetchLogs } = this.props.httpService;
+    try {
+      const res = await fetchLogs({
+        searchPhrase,
+        labels: [...readonlyLabels, labels],
+        resultLimit,
+        logsPeriod,
+        sortDirection,
+        showPreviousLogs,
+        showHealthChecks,
+      });
+      const logs = res.streams.flatMap(stream => stream.entries);
+      this.setState({ logs });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // intercept setState to update query, labels and searchPhrase
   updateState = partialState => {
-    const { parseQuery, toQuery } = this.queryTransformService;
+    const { parseQuery, toQuery } = this.props.queryTransformService;
     const { labels, searchPhrase, query } = this.state;
 
     let additionalState = {};
@@ -100,39 +150,10 @@ class Logs extends React.Component {
       sortDirection,
       advancedSettings,
       compact,
+      logs,
     } = this.state;
     return (
       <>
-        <button
-          onClick={async () => {
-            const fetchLogs = this.props.httpService;
-            const {
-              searchPhrase,
-              labels,
-              readonlyLabels,
-              advancedSettings,
-            } = this.state;
-            const {
-              logsPeriod,
-              resultLimit,
-              showPreviousLogs,
-              showHealthChecks,
-            } = advancedSettings;
-            console.log(
-              await fetchLogs({
-                searchPhrase,
-                labels: [...readonlyLabels, labels],
-                resultLimit,
-                logsPeriod,
-                sortDirection,
-                showPreviousLogs,
-                showHealthChecks,
-              }),
-            );
-          }}
-        >
-          DAWAJ
-        </button>
         {compact ? (
           <CompactHeader
             updateFilteringState={this.updateState}
@@ -152,7 +173,7 @@ class Logs extends React.Component {
             advancedSettings={advancedSettings}
           />
         )}
-        {/* <LogTable entries={sampleEntries} /> */}
+        <LogTable entries={logs} />
       </>
     );
   }
