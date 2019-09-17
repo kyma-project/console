@@ -4,7 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import {
   isFileTypeValid,
-  parseSpecification,
+  checkAndStringifySpec,
 } from './LabelSpecificationUploadHelper';
 
 import { FormMessage } from 'fundamental-react';
@@ -27,7 +27,7 @@ export default class CreateLabelModal extends React.Component {
 
       specFile: null,
       specError: '',
-      parsedSpec: null,
+      stringifiedSpec: null,
     };
   }
 
@@ -48,12 +48,12 @@ export default class CreateLabelModal extends React.Component {
 
   addLabel = async () => {
     const { labelNamesQuery, createLabel, sendNotification } = this.props;
-    const { name, parsedSpec } = this.state;
+    const { name, stringifiedSpec } = this.state;
 
     try {
       await createLabel({
         key: name,
-        schema: parsedSpec,
+        schema: stringifiedSpec,
       });
       labelNamesQuery.refetch();
       sendNotification({
@@ -99,11 +99,11 @@ export default class CreateLabelModal extends React.Component {
 
   processFile(e) {
     const fileContent = e.target.result;
-    const parsedSpec = parseSpecification(fileContent);
+    const stringifiedSpec = checkAndStringifySpec(fileContent);
 
     this.setState({
-      parsedSpec,
-      specError: parsedSpec ? '' : 'Spec file is corrupted.',
+      stringifiedSpec,
+      specError: stringifiedSpec ? '' : 'Spec file is corrupted.',
     });
   }
 

@@ -5,9 +5,12 @@ export function isFileTypeValid(fileName) {
   return validExtensions.some(extension => fileName.endsWith(extension));
 }
 
-export function parseSpecification(specification) {
+export function checkAndStringifySpec(specification) {
   try {
-    return jsyaml.safeLoad(specification);
+    const checkedSchema = jsyaml.safeLoad(specification);
+    return typeof checkedSchema === 'string'
+      ? checkedSchema
+      : JSON.stringify(checkedSchema);
   } catch (e) {
     console.warn(e);
     return null;

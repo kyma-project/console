@@ -41,7 +41,9 @@ const MetadataDefinitionDetails = ({
       setMetadataDefinition(definition);
       setIsEditorShown(!!definition.schema);
 
-      setEditedSchema(definition.schema || defaultSchema);
+      setEditedSchema(
+        definition.schema ? JSON.parse(definition.schema) : defaultSchema,
+      );
 
       LuigiClient.uxManager().setDirtyStatus(false);
     }
@@ -71,12 +73,16 @@ const MetadataDefinitionDetails = ({
 
   const handleSaveChanges = async () => {
     try {
+      const newSchema =
+        typeof editedSchema === 'string'
+          ? editedSchema
+          : JSON.stringify(editedSchema);
       await updateLabelDefinition({
         key: metadataDefinition.key,
-        schema: isEditorShown && editedSchema ? editedSchema : null,
+        schema: isEditorShown && newSchema ? newSchema : null,
       });
 
-      setMetadataDefinition({ ...metadataDefinition, schema: editedSchema }); // to format the JSON
+      setMetadataDefinition({ ...metadataDefinition, schema: newSchema });
       LuigiClient.uxManager().setDirtyStatus(false);
       await sendNotification({
         variables: {
@@ -190,7 +196,7 @@ const MetadataDefinitionDetails = ({
                 <JSONEditorComponent
                   onChangeText={handleSchemaChange}
                   text={JSON.stringify(
-                    metadataDefinition.schema || defaultSchema,
+                    JSON.parse(metadataDefinition.schema) || defaultSchema,
                     null,
                     2,
                   )}
