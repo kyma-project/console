@@ -15,6 +15,7 @@ export default class Logs extends React.Component {
   static propTypes = {
     httpService: PropTypes.object.isRequired,
     queryTransformService: PropTypes.object.isRequired,
+    podsSubscriptionService: PropTypes.object.isRequired,
     isLambda: PropTypes.bool,
     readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
     lambdaName: PropTypes.string,
@@ -102,7 +103,7 @@ export default class Logs extends React.Component {
         : [];
       this.setState({ logs });
     } catch (e) {
-      console.warn(e);
+      console.warn(e); // todo add error message
     }
   };
 

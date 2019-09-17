@@ -151,7 +151,7 @@ exports[`Header Renders with minimal props 1`] = `
       className="header__options-wrapper"
     >
       <button
-        className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+        className="fd-button--light sap-icon--media-play link-button fd-has-margin-right-tiny fd-has-type-minus-1"
         data-test-id="auto-refresh-button"
         onClick={[Function]}
         size="xs"

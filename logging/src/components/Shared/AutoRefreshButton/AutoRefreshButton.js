@@ -19,7 +19,7 @@ export default function AutoRefreshButton({
   return (
     <Button
       className="link-button fd-has-margin-right-tiny fd-has-type-minus-1"
-      glyph={autoRefreshEnabled ? 'media-play' : 'media-pause'}
+      glyph={autoRefreshEnabled ? 'media-pause' : 'media-play'}
       option="light"
       size="xs"
       onClick={() => toggleAutoRefresh()}

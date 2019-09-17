@@ -4,10 +4,14 @@ import Logs from './Logs';
 
 import { QueryTransformServiceContext } from '../services/queryTransformService';
 import { HttpServiceContext } from '../services/httpService';
+import { PodSubscriptionServiceContext } from '../services/podSubscriptionService';
 
 export default function LogsContainer() {
   const httpService = React.useContext(HttpServiceContext);
   const queryTransformService = React.useContext(QueryTransformServiceContext);
+  const podsSubscriptionService = React.useContext(
+    PodSubscriptionServiceContext,
+  );
 
   function todo_is_lambda() {
     var params = LuigiClient.getNodeParams();
@@ -34,6 +38,7 @@ export default function LogsContainer() {
       <Logs
         httpService={httpService}
         queryTransformService={queryTransformService}
+        podsSubscriptionService={podsSubscriptionService}
         isLambda={true}
         readonlyLabels={labels}
         lambdaName={lambdaName}
@@ -44,6 +49,7 @@ export default function LogsContainer() {
       <Logs
         httpService={httpService}
         queryTransformService={queryTransformService}
+        podsSubscriptionService={podsSubscriptionService}
       />
     );
   }

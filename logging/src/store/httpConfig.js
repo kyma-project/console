@@ -9,14 +9,11 @@ if (clusterConfig && clusterConfig['domain']) {
 const config = {
   queryEndpoint: `https://loki.${domain}/api/prom/query`,
   labelEndpoint: `https://loki.${domain}/api/prom/label`,
-  lokiEndpoint: `https://loki.${domain}`,
-  tets: `https://loki.${domain}/api/prom/label`,
   resourceLabels: resource =>
     `https://loki.${domain}/api/prom/label/${resource}/values`,
 
   // graphqlApiUrl: `https://console-backend.${domain}/graphql`,
   // subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
-  // authIssuer: `https://dex.${domain}`,
 };
 
 export default { ...config };
