@@ -29,6 +29,12 @@ import {
   customFirstNode,
 } from './render-engines/markdown/helpers';
 
+import '@kyma-project/asyncapi-react/lib/styles/fiori.css';
+import '@kyma-project/dc-open-api-render-engine/lib/styles.css';
+import '@kyma-project/odata-react/lib/styles.css';
+
+import 'fiori-fundamentals/dist/fiori-fundamentals.css';
+
 const PLUGINS: Plugins = [
   markdownPlugins.frontmatterMutationPlugin,
   markdownPlugins.replaceAllLessThanCharsMutationPlugin,

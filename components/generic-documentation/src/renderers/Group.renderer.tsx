@@ -16,7 +16,7 @@ import {
   asyncApiTypes,
   odataTypes,
 } from '../constants';
-import { StyledAsyncApi, StyledOData } from './styled';
+import { StyledOData, StyledAsyncAPI } from './styled';
 import { StyledSwagger } from '../render-engines/open-api/styles';
 
 function existFiles(sources: Source[], types: string[]) {
@@ -114,9 +114,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
       )}
       {asyncApiExists && (
         <Tab label={TabsLabels.EVENTS} id={TabsLabels.EVENTS}>
-          <StyledAsyncApi className="custom-async-api-styling">
+          <StyledAsyncAPI className="custom-async-api-styling">
             <RenderedContent sourceTypes={asyncApiTypes} />
-          </StyledAsyncApi>
+          </StyledAsyncAPI>
         </Tab>
       )}
       {odataExists && (

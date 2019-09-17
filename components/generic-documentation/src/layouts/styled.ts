@@ -91,22 +91,15 @@ export const InstancesUIWrapper = styled.div`
       border-top-left-radius: 0;
     }
 
-    .custom-async-api-styling > div > div {
-      border: none;
-
-      &:first-child {
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-      }
-    }
-
     .custom-odata-styling {
+      padding: 0 16px 16px 16px;
+
       button {
         margin: 16px 0;
       }
 
       > section {
-        padding: 0 16px;
+        padding: 16px;
       }
     }
 
@@ -123,6 +116,10 @@ export const InstancesUIWrapper = styled.div`
     .headers-navigation-wrapper {
       margin-top: 16px;
       margin-right: 16px;
+    }
+
+    .asyncapi {
+      padding: 16px;
     }
   }
 `;

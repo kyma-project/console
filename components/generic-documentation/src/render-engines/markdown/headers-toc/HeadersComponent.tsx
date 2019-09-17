@@ -25,7 +25,7 @@ export const HeadersNavigation: React.FunctionComponent<
         enableSmoothScroll={enableSmoothScroll}
         offset={16}
       >
-        <StyledHeadersNavigation className="cms__toc-wrapper">
+        <StyledHeadersNavigation className="dc-markdown__toc-wrapper">
           <RenderedHeader />
         </StyledHeadersNavigation>
       </HN>
