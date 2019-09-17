@@ -55,6 +55,14 @@ Array [
             </div>
           </div>
         </span>
+        <button
+          className="fd-button--light sap-icon--media-play link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+          data-test-id="auto-refresh-button"
+          onClick={[Function]}
+          size="xs"
+        >
+          auto refresh
+        </button>
         <span
           className="link-button fd-has-type-minus-1 select-dropdown"
         >
@@ -252,6 +260,14 @@ Array [
       <div
         className="header__options-wrapper"
       >
+        <button
+          className="fd-button--light sap-icon--media-play link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+          data-test-id="auto-refresh-button"
+          onClick={[Function]}
+          size="xs"
+        >
+          auto refresh
+        </button>
         <span
           className="link-button fd-has-type-minus-1 select-dropdown"
         >

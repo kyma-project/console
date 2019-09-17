@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CompactHeader.scss';
+import { PERIODS, SORT_TYPES } from '../../constants';
 
 import { Panel } from 'fundamental-react';
 
 import SearchInput from './../Shared/SearchInput/SearchInput';
 import OptionsDropdown from '../Shared/SelectDropdown/SelectDropdown';
-import { PERIODS, SORT_TYPES } from '../../constants';
+import AutoRefreshButton from './../Shared/AutoRefreshButton/AutoRefreshButton';
 import ResultOptionsDropdown from '../Shared/ResultsOptionsDropdown/ResultsOptionsDropdown';
 
 CompactHeader.propTypes = {
@@ -15,6 +16,7 @@ CompactHeader.propTypes = {
   logsPeriod: PropTypes.oneOf(PERIODS),
   sortDirection: PropTypes.oneOf(SORT_TYPES),
   advancedSettings: PropTypes.object.isRequired,
+  autoRefreshEnabled: PropTypes.bool.isRequired,
 };
 
 export default function CompactHeader({
@@ -23,6 +25,7 @@ export default function CompactHeader({
   logsPeriod,
   sortDirection,
   advancedSettings,
+  autoRefreshEnabled,
 }) {
   function updateLogsPeriod(logsPeriod) {
     updateFilteringState({ logsPeriod });
@@ -45,6 +48,10 @@ export default function CompactHeader({
           <ResultOptionsDropdown
             advancedSettings={advancedSettings}
             updateFilteringState={updateFilteringState}
+          />
+          <AutoRefreshButton
+            autoRefreshEnabled={autoRefreshEnabled}
+            updateParentState={updateFilteringState}
           />
           <OptionsDropdown
             availabelValues={PERIODS}

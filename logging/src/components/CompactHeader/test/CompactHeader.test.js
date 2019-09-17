@@ -22,6 +22,7 @@ describe('CompactHeader', () => {
         logsPeriod={DEFAULT_PERIOD}
         sortDirection={SORT_ASCENDING}
         advancedSettings={{}}
+        autoRefreshEnabled={false}
       />,
     );
     const tree = component.toJSON();

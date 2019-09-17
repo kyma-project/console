@@ -8,7 +8,8 @@ import SearchInput from './../Shared/SearchInput/SearchInput';
 import LabelsInput from './../Shared/LabelsInput/LabelsInput';
 import AdvancedSettings from './../Shared/AdvancedSettings/AdvancedSettings';
 import LabelsDisplay from './../Shared/LabelsDisplay/LabelsDisplay';
-import OptionsDropdown from '../Shared/SelectDropdown/SelectDropdown';
+import OptionsDropdown from './../Shared/SelectDropdown/SelectDropdown';
+import AutoRefreshButton from './../Shared/AutoRefreshButton/AutoRefreshButton';
 import { PERIODS, SORT_TYPES } from '../../constants';
 
 Header.propTypes = {
@@ -19,6 +20,7 @@ Header.propTypes = {
   logsPeriod: PropTypes.oneOf(PERIODS),
   sortDirection: PropTypes.oneOf(SORT_TYPES),
   advancedSettings: PropTypes.object.isRequired,
+  autoRefreshEnabled: PropTypes.bool.isRequired,
 };
 
 export default function Header({
@@ -29,6 +31,7 @@ export default function Header({
   logsPeriod,
   sortDirection,
   advancedSettings,
+  autoRefreshEnabled,
 }) {
   const [advancedShown, setAdvancedShown] = React.useState(false);
 
@@ -94,6 +97,10 @@ export default function Header({
           removeAll={removeAllLabels}
         />
         <div className="header__options-wrapper">
+          <AutoRefreshButton
+            autoRefreshEnabled={autoRefreshEnabled}
+            updateParentState={updateFilteringState}
+          />
           <OptionsDropdown
             availabelValues={PERIODS}
             currentValue={logsPeriod}

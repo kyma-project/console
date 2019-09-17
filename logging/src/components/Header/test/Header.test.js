@@ -23,6 +23,7 @@ describe('Header', () => {
         sortDirection="ascending"
         advancedSettings={{}}
         compact={false}
+        autoRefreshEnabled={false}
       />,
     );
     const tree = component.toJSON();

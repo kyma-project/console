@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutoRefreshButton Renders in enabled state 1`] = `
+<button
+  className="fd-button--light sap-icon--media-play link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+  data-test-id="auto-refresh-button"
+  onClick={[Function]}
+  size="xs"
+>
+  auto refresh
+</button>
+`;
+
+exports[`AutoRefreshButton Renders in paused state 1`] = `
+<button
+  className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+  data-test-id="auto-refresh-button"
+  onClick={[Function]}
+  size="xs"
+>
+  auto refresh
+</button>
+`;

@@ -10,15 +10,6 @@ export const queryTransformService = () => {
   };
 
   const tryGetSearchPhrase = query => {
-    // const splitQuery = query.split(' ');
-    // const lastItem = splitQuery[splitQuery.length - 1];
-
-    // // check if query contains searchPhrase
-    // if (lastItem && !lastItem.includes('}')) {
-    //   return lastItem;
-    // }
-    // return null;
-
     const index = query.lastIndexOf('}');
     if (index === -1) {
       return query;

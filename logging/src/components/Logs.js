@@ -40,6 +40,7 @@ export default class Logs extends React.Component {
     },
     sortDirection: SORT_ASCENDING,
     logs: [],
+    autoRefreshEnabled: true,
   };
   intervalId = null;
 
@@ -51,7 +52,10 @@ export default class Logs extends React.Component {
         query: this.props.queryTransformService.toQuery(labels, searchPhrase),
       },
     });
-    this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
+
+    if (this.state.autoRefreshEnabled) {
+      this.startAutoRefresh();
+    }
   };
 
   componentWillUnmount = () => {
@@ -79,7 +83,7 @@ export default class Logs extends React.Component {
     } = advancedSettings;
 
     try {
-      const res = await this.props.httpService.fetchLogs({
+      const result = await this.props.httpService.fetchLogs({
         searchPhrase,
         labels: [...readonlyLabels, labels],
         resultLimit,
@@ -88,8 +92,8 @@ export default class Logs extends React.Component {
         showPreviousLogs,
         showHealthChecks,
       });
-      const logs = res.streams
-        ? res.streams
+      const logs = result.streams
+        ? result.streams
             .flatMap(stream => stream.entries)
             .map(l => ({
               timestamp: l.ts,
@@ -107,7 +111,12 @@ export default class Logs extends React.Component {
     return showHealthChecks || entry.log.indexOf('GET /healthz') < 0;
   };
 
-  // intercept setState to update query, labels and searchPhrase
+  startAutoRefresh() {
+    this.fetchLogs();
+    this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
+  }
+
+  // intercept setState
   updateState = partialState => {
     const { parseQuery, toQuery } = this.props.queryTransformService;
     const { labels, searchPhrase, query } = this.state;
@@ -141,6 +150,14 @@ export default class Logs extends React.Component {
       };
     }
 
+    if ('autoRefreshEnabled' in partialState) {
+      if (partialState.autoRefreshEnabled) {
+        this.startAutoRefresh();
+      } else {
+        clearInterval(this.intervalId);
+      }
+    }
+
     this.setState({ ...partialState, ...additionalState });
   };
 
@@ -152,6 +169,7 @@ export default class Logs extends React.Component {
       logsPeriod,
       sortDirection,
       advancedSettings,
+      autoRefreshEnabled,
       compact,
       logs,
     } = this.state;
@@ -165,6 +183,7 @@ export default class Logs extends React.Component {
             logsPeriod={logsPeriod}
             sortDirection={sortDirection}
             advancedSettings={advancedSettings}
+            autoRefreshEnabled={autoRefreshEnabled}
           />
         ) : (
           <Header
@@ -175,6 +194,7 @@ export default class Logs extends React.Component {
             logsPeriod={logsPeriod}
             sortDirection={sortDirection}
             advancedSettings={advancedSettings}
+            autoRefreshEnabled={autoRefreshEnabled}
           />
         )}
         <LogTable

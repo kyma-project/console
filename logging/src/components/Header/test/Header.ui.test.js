@@ -15,6 +15,7 @@ describe('Header UI', () => {
         readonlyLabels={['c', 'd']}
         advancedSettings={{}}
         compact={false}
+        autoRefreshEnabled={false}
       />,
     );
 

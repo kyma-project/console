@@ -54,6 +54,10 @@ exports[`Header UI Shows / hides advanced settings when corresponding button is 
     <div
       className="header__options-wrapper"
     >
+      <AutoRefreshButton
+        autoRefreshEnabled={false}
+        updateParentState={[Function]}
+      />
       <SelectDropdown
         availabelValues={
           Array [
@@ -139,6 +143,10 @@ exports[`Header UI Shows / hides advanced settings when corresponding button is 
     <div
       className="header__options-wrapper"
     >
+      <AutoRefreshButton
+        autoRefreshEnabled={false}
+        updateParentState={[Function]}
+      />
       <SelectDropdown
         availabelValues={
           Array [
