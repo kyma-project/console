@@ -24,6 +24,63 @@ import { serviceClassTileTitles } from '../../../variables';
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
 import ProvisionOnlyOnceInfo from '../ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 
+const CreatorTile = ({ imageUrl, displayName }) => {
+  return (
+    <Tile>
+      <TileMedia className="fd-has-display-flex">
+        {imageUrl ? (
+          <Image size="l" photo={imageUrl} />
+        ) : (
+          <Icon glyph="crm-service-manager" />
+        )}
+      </TileMedia>
+      <TileContent title={serviceClassTileTitles.creator}>
+        <p>{displayName}</p>
+      </TileContent>
+    </Tile>
+  );
+};
+
+const LastUpdateTile = ({ timestamp }) => {
+  return (
+    <Tile>
+      <TileContent title={serviceClassTileTitles.lastUpdate}>
+        <Moment unix format="MMM DD, YYYY" data-e2e-id="service-last-update">
+          {timestamp}
+        </Moment>
+      </TileContent>
+    </Tile>
+  );
+};
+
+const DocumentationTile = ({ url }) => {
+  return (
+    <Tile>
+      {url && (
+        <TileContent title={serviceClassTileTitles.documentation}>
+          <ExternalLink href={url} target="_blank">
+            Link
+          </ExternalLink>
+        </TileContent>
+      )}
+    </Tile>
+  );
+};
+
+const SupportTile = ({ url }) => {
+  return (
+    <Tile>
+      {url && (
+        <TileContent title={serviceClassTileTitles.support}>
+          <ExternalLink href={url} target="_blank">
+            Link
+          </ExternalLink>
+        </TileContent>
+      )}
+    </Tile>
+  );
+};
+
 const ServiceClassInfo = ({
   creationTimestamp,
   documentationUrl,
@@ -87,38 +144,10 @@ const ServiceClassInfo = ({
       <ServiceClassHeaderTileGrid
         col={computeNumberOfColumns(isProvisionedOnlyOnce)}
       >
-        <Tile>
-          <TileMedia className="fd-has-display-flex">
-            {imageUrl ? (
-              <Image size="l" photo={imageUrl} />
-            ) : (
-              <Icon glyph="crm-service-manager" />
-            )}
-          </TileMedia>
-          <TileContent title={serviceClassTileTitles.creator}>
-            <p>{providerDisplayName}</p>
-          </TileContent>
-        </Tile>
-        <Tile>
-          <TileContent title={serviceClassTileTitles.lastUpdate}>
-            <Moment
-              unix
-              format="MMM DD, YYYY"
-              data-e2e-id="service-last-update"
-            >
-              {creationTimestamp}
-            </Moment>
-          </TileContent>
-        </Tile>
-        <Tile>
-          {documentationUrl && (
-            <TileContent title={serviceClassTileTitles.documentation}>
-              <ExternalLink href={documentationUrl} target="_blank">
-                Link
-              </ExternalLink>
-            </TileContent>
-          )}
-        </Tile>
+        <CreatorTile imageUrl={imageUrl} displayName={providerDisplayName} />
+        <LastUpdateTile timestamp={creationTimestamp} />
+        <DocumentationTile url={documentationUrl} />
+        <SupportTile url={supportUrl} />
         <Tile>
           {supportUrl && (
             <TileContent title={serviceClassTileTitles.support}>
