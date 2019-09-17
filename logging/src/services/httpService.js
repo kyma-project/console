@@ -4,11 +4,11 @@ import createUseContext from 'constate';
 import httpConfig from '../store/httpConfig';
 import { SORT_ASCENDING } from '../constants';
 
-function getTimestamp(date) {
-  return `${date.valueOf()}000000`;
-}
+export const httpService = () => {
+  const getTimestamp = date => {
+    return `${date.valueOf()}000000`;
+  };
 
-const useHttpService = createUseContext(() => {
   const getPeriod = period => {
     const endDate = new Date();
     const end = getTimestamp(endDate);
@@ -90,7 +90,7 @@ const useHttpService = createUseContext(() => {
     getLabels,
     fetchLogs,
   };
-});
+};
 
-const { Provider, Context } = useHttpService;
+const { Provider, Context } = createUseContext(httpService);
 export { Provider as HttpServiceProvider, Context as HttpServiceContext };

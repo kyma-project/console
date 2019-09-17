@@ -8,38 +8,8 @@ import LogTable from './LogTable/LogTable';
 import {
   SORT_ASCENDING,
   DEFAULT_PERIOD,
-  //LOG_REFRESH_INTERVAL,
+  LOG_REFRESH_INTERVAL,
 } from './../constants';
-
-const SAMPLE_LOGS = [
-  {
-    timestamp: '14:14:21.384196009Z',
-    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
-  Using deprecated option 'envoy.1api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
-  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
-  },
-  {
-    timestamp: '14:14:01.384196009Z',
-    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
-  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
-  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
-  },
-  {
-    timestamp: '14:14:31.384196009Z',
-    log: `[2019-06-11 11:58:00.047][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
-  Using deprecated option 'envoy.api.v2. details.`,
-  },
-  {
-    timestamp: '14:14:41.384196009Z',
-    log: `log`,
-  },
-  {
-    timestamp: '14:14:51.384196009Z',
-    log: `[2019-06-11 11:58:00.0147][15][warning][misc] [external/envoy/source/common/protobuf/utility.cc:174] 
-  Using deprecated option 'envoy.api.v2.Listener.use_original_dst' from file lds.proto. This configuration will be removed from 
-  Envoy soon. Please see https://www.envoyproxy.io/docs/envoy/latest/intro/deprecated for details.`,
-  },
-];
 
 export default class Logs extends React.Component {
   static propTypes = {
@@ -69,7 +39,7 @@ export default class Logs extends React.Component {
       showHealthChecks: true,
     },
     sortDirection: SORT_ASCENDING,
-    logs: SAMPLE_LOGS,
+    logs: [],
   };
   intervalId = null;
 
@@ -81,11 +51,11 @@ export default class Logs extends React.Component {
         query: this.props.queryTransformService.toQuery(labels, searchPhrase),
       },
     });
-    //this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
+    this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
   };
 
   componentWillUnmount = () => {
-    //clearInterval(this.intervalId);
+    clearInterval(this.intervalId);
   };
 
   fetchLogs = async () => {

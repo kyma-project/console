@@ -1,7 +1,6 @@
 import createUseContext from 'constate';
 
-// query: `{...labels} searchPhrase?`
-const useQueryTransformService = createUseContext(() => {
+export const queryTransformService = () => {
   const splitQueryLabels = queryLabels => {
     return queryLabels
       .replace(/{|}/g, '')
@@ -22,7 +21,7 @@ const useQueryTransformService = createUseContext(() => {
 
     const index = query.lastIndexOf('}');
     if (index === -1) {
-      return null;
+      return query;
     } else {
       return query.substring(index + 1).trim();
     }
@@ -57,9 +56,9 @@ const useQueryTransformService = createUseContext(() => {
     parseQuery,
     toQuery,
   };
-});
+};
 
-const { Provider, Context } = useQueryTransformService;
+const { Provider, Context } = createUseContext(queryTransformService);
 export {
   Provider as QueryTransformServiceProvider,
   Context as QueryTransformServiceContext,

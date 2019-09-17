@@ -36,7 +36,25 @@ describe('DropdownRenderer UI', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('Click on subitem triggers callback', async () => {
+  it('Click on recent list item triggers callback', async () => {
+    const mockCallback = jest.fn();
+    const component = shallow(
+      <DropdownRenderer
+        recentLabels={mockRecentLabels}
+        logLabelCategories={mockLogLabels}
+        chooseLabel={mockCallback}
+        loadLabels={() => {}}
+      />,
+    );
+
+    const link = component.find('span.fd-mega-menu__link').first();
+
+    link.simulate('click');
+
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+  });
+
+  it('Click on category triggers callback', async () => {
     const mockCallback = jest.fn();
     const component = shallow(
       <DropdownRenderer
