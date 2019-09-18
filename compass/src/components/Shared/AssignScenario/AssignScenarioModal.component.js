@@ -80,7 +80,7 @@ export default function AssignScenarioModal(props) {
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const availableScenarios = scenarios.schema.items.enum.filter(
+  const availableScenarios = JSON.parse(scenarios.schema).items.enum.filter(
     scenario => !currentScenarios.includes(scenario),
   );
 
