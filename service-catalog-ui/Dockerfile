@@ -20,8 +20,8 @@ RUN npm run bootstrap:prod
 
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
-COPY catalog/package.json catalog/package-lock.json catalog/config-overrides.js catalog/.env /app/service-catalog/catalog/
-COPY instances/package.json instances/package-lock.json instances/config-overrides.js instances/.env /app/service-catalog/instances/
+COPY catalog/package.json catalog/package-lock.json catalog/config-overrides.js catalog/.env catalog/postinstall.js /app/service-catalog/catalog/
+COPY instances/package.json instances/package-lock.json instances/config-overrides.js instances/.env instances/postinstall.js /app/service-catalog/instances/
 RUN cd /app/service-catalog && npm install --no-optional --unsafe-perm
 
 # Copy sources
