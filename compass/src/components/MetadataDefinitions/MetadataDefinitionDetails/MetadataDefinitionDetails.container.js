@@ -25,7 +25,10 @@ export default compose(
   graphql(UPDATE_LABEL_DEFINITION, {
     props: ({ mutate, error }) => ({
       updateLabelDefinition: data => {
-        const input = { ...data, schema: JSON.stringify(data.schema) };
+        const input = {
+          ...data,
+          schema: data.schema ? JSON.stringify(data.schema) : null,
+        };
         mutate({
           variables: {
             in: input,

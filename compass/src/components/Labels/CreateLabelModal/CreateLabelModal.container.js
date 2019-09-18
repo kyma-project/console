@@ -14,7 +14,7 @@ export default compose(
       createLabel: async labelInput => {
         const input = {
           ...labelInput,
-          schema: JSON.stringify(labelInput.schema),
+          schema: labelInput.schema ? JSON.stringify(labelInput.schema) : null,
         };
         await props.mutate({ variables: { in: input } });
       },
