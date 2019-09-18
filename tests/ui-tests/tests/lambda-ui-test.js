@@ -28,7 +28,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     }
 
     await retry(async () => {
-      const data = await common.beforeAll(t => (token = t));
+      const data = await common.beforeAll(t => (token = t), 80);
       browser = data.browser;
       page = data.page;
     });

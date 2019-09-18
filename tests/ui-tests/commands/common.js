@@ -21,9 +21,9 @@ const retryFailedRequestListener = request => {
   throw new Error(text);
 };
 
-async function beforeAll(tokenCallback) {
+async function beforeAll(tokenCallback, slowMoFactor) {
   const consoleUrl = address.console.getConsole();
-  let browser = await context.getBrowser();
+  let browser = await context.getBrowser(slowMoFactor);
 
   // throttle network to test variable conditions
   if (config.throttleNetwork) {

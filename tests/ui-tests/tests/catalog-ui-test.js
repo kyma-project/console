@@ -72,7 +72,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       throw new Error('Failed to create a namespace:', err);
     }
     await retry(async () => {
-      const data = await common.beforeAll();
+      const data = await common.beforeAll(null, 80);
       browser = data.browser;
       page = data.page;
     });
