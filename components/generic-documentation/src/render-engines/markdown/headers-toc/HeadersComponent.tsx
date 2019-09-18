@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { plugins } from '@kyma-project/dc-markdown-render-engine';
 import { RenderedHeader } from './RenderedHeader';
 import { postProcessingHeaders } from '../helpers';
-import { HeadersNavigationsWrapper, StyledHeadersNavigation } from './styled';
+import { HeadersNavigationWrapper, StyledHeadersNavigation } from './styled';
 
 const HN = plugins.HeadersNavigation;
 
@@ -16,7 +16,7 @@ export const HeadersNavigation: React.FunctionComponent<
   const headersWrapperRef = useRef<HTMLDivElement>();
 
   return (
-    <HeadersNavigationsWrapper
+    <HeadersNavigationWrapper
       ref={headersWrapperRef as any}
       className="headers-navigation-wrapper"
     >
@@ -29,6 +29,6 @@ export const HeadersNavigation: React.FunctionComponent<
           <RenderedHeader />
         </StyledHeadersNavigation>
       </HN>
-    </HeadersNavigationsWrapper>
+    </HeadersNavigationWrapper>
   );
 };

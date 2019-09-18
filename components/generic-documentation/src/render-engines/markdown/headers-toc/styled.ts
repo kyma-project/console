@@ -12,7 +12,7 @@ const navNode = (multiple: number) => css`
   }
 `;
 
-export const HeadersNavigationsWrapper = styled.div`
+export const HeadersNavigationWrapper = styled.div`
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
