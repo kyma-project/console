@@ -27,7 +27,7 @@ module.exports = {
     downloadThroughput: 280000,
     uploadThroughput: 256000,
   },
-  defaultSlowMoFactor: process.env.SLOW_MO || 50,
+  defaultSlowMoFactor: process.env.SLOW_MO || 40,
   defaultNavigationTimeout: 60000,
   outsideCluster: process.env.OUTSIDE_CLUSTER
     ? process.env.OUTSIDE_CLUSTER
