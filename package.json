@@ -43,7 +43,7 @@
     "constate": "^1.2.0",
     "deep-copy": "^1.4.2",
     "deep-equal": "^1.0.1",
-    "fiori-fundamentals": "1.7.1",
+    "fiori-fundamentals": "^1.7.1",
     "fundamental-react": "^0.6.1",
     "fundamental-styles": "^0.1.0",
     "graphql": "^14.4.2",
