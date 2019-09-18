@@ -99,7 +99,7 @@ class ServiceInstances extends React.Component {
         selectedTabName,
       );
 
-      this.setTabFilter(selectedTabIndex);
+      setTimeout(() => this.setTabFilter(selectedTabIndex));
       return selectedTabIndex;
     };
 
