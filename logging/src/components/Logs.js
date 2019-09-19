@@ -18,13 +18,11 @@ export default class Logs extends React.Component {
     podsSubscriptionService: PropTypes.object.isRequired,
     isLambda: PropTypes.bool,
     readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
-    lambdaName: PropTypes.string,
   };
 
   static defaultProps = {
     isLambda: false,
     readonlyLabels: [],
-    lambdaName: null,
   };
 
   state = {
@@ -198,10 +196,7 @@ export default class Logs extends React.Component {
             autoRefreshEnabled={autoRefreshEnabled}
           />
         )}
-        <LogTable
-          entityName={this.props.lambdaName}
-          entries={logs.filter(this.filterHealthChecks)}
-        />
+        <LogTable entries={logs.filter(this.filterHealthChecks)} />
       </>
     );
   }
