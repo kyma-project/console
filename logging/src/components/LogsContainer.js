@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import Logs from './Logs';
 
 import { QueryTransformServiceContext } from '../services/queryTransformService';
 import { HttpServiceContext } from '../services/httpService';
 import { PodSubscriptionServiceContext } from '../services/podSubscriptionService';
+
+export const isLambdaContext = createContext(true);
 
 export default function LogsContainer() {
   const httpService = React.useContext(HttpServiceContext);
@@ -29,28 +31,18 @@ export default function LogsContainer() {
     return { labels, lambdaName };
   }
 
-  const isLambda = todo_is_lambda();
+  const isCompact = false;
 
-  if (isLambda) {
-    const { labels, lambdaName } = getLambdaData();
-
-    return (
+  return (
+    <isLambdaContext.Provider value={false}>
       <Logs
         httpService={httpService}
         queryTransformService={queryTransformService}
         podsSubscriptionService={podsSubscriptionService}
-        isLambda={true}
-        readonlyLabels={labels}
-        lambdaName={lambdaName}
+        //  readonlyLabels={labels}
+
+        isCompact={isCompact}
       />
-    );
-  } else {
-    return (
-      <Logs
-        httpService={httpService}
-        queryTransformService={queryTransformService}
-        podsSubscriptionService={podsSubscriptionService}
-      />
-    );
-  }
+    </isLambdaContext.Provider>
+  );
 }

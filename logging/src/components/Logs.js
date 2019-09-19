@@ -16,7 +16,8 @@ export default class Logs extends React.Component {
     httpService: PropTypes.object.isRequired,
     queryTransformService: PropTypes.object.isRequired,
     podsSubscriptionService: PropTypes.object.isRequired,
-    isLambda: PropTypes.bool,
+
+    isCompact: PropTypes.bool,
     readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
   };
 
@@ -26,7 +27,6 @@ export default class Logs extends React.Component {
   };
 
   state = {
-    compact: this.props.isLambda,
     searchPhrase: '',
     labels: [],
     readonlyLabels: this.props.readonlyLabels,
@@ -161,13 +161,14 @@ export default class Logs extends React.Component {
       sortDirection,
       advancedSettings,
       autoRefreshEnabled,
-      compact,
+
       logs,
     } = this.state;
+    const { isCompact } = this.props;
 
     return (
       <>
-        {compact ? (
+        {isCompact ? (
           <CompactHeader
             updateFilteringState={this.updateState}
             searchPhrase={searchPhrase}

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import './AdvancedSettings.scss';
+import { isLambdaContext } from '../../LogsContainer';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
 
@@ -10,19 +11,21 @@ AdvancedSettings.propTypes = {
   updateFilteringState: PropTypes.func.isRequired,
 };
 
+const SettingsEntry = ({ name, children }) => {
+  return (
+    <div className="advanced_settings__entry">
+      <p className="caption-muted">{name}</p>
+      <div>{children}</div>
+    </div>
+  );
+};
+
 export default function AdvancedSettings({
   advancedSettings,
   hideSettings,
   updateFilteringState,
 }) {
-  const SettingsEntry = ({ name, children }) => {
-    return (
-      <div className="advanced_settings__entry">
-        <p className="caption-muted">{name}</p>
-        <div>{children}</div>
-      </div>
-    );
-  };
+  const isLambda = useContext(isLambdaContext);
 
   function updateState(data) {
     updateFilteringState({
@@ -113,6 +116,20 @@ export default function AdvancedSettings({
     </>
   );
 
+  const ShowIstioLogsInput = () => (
+    <>
+      <input
+        type="checkbox"
+        id="istio-logs"
+        defaultChecked={advancedSettings.showIstioLogs}
+        onChange={setShowPreviousLogs}
+      />
+      <label className="caption-muted" htmlFor="previous-logs">
+        Istio logs
+      </label>
+    </>
+  );
+
   return (
     <section className="advanced_settings">
       <h2 className="advanced_settings__header">
@@ -127,9 +144,15 @@ export default function AdvancedSettings({
       <QueryInput />
       <ResultLimitInput />
       <SettingsEntry name="Show">
-        <PreviousLogsInput />
-        <br />
-        <HealthChecksInput />
+        {isLambda && (
+          <>
+            <PreviousLogsInput />
+            <br />
+            <HealthChecksInput />
+            <br />
+          </>
+        )}
+        <ShowIstioLogsInput />
       </SettingsEntry>
     </section>
   );
