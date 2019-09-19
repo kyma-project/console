@@ -36,9 +36,9 @@ const MetadataDefinitionDetails = ({
 
   if (!metadataDefinition && !metadataDefinitionQuery.loading) {
     // INITIALIZATION
-    let definition = metadataDefinitionQuery.labelDefinition;
+    const definition = metadataDefinitionQuery.labelDefinition;
     if (definition) {
-      definition = { ...definition, schema: JSON.parse(definition.schema) };
+      definition.schema = JSON.parse(definition.schema);
 
       setMetadataDefinition(definition);
       setIsEditorShown(!!definition.schema);
