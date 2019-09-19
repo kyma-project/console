@@ -46,7 +46,6 @@ export default function SearchInput({
         value={searchPhrase}
         placeholder="Search"
         id="search-input"
-        min="0"
       />
     </section>
   );

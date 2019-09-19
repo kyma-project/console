@@ -38,9 +38,9 @@ export const queryTransformService = () => {
     }
   };
 
-  const toQuery = (labels, searchPhrase) => {
+  const toQuery = labels => {
     const queryLabels = labels.join(',');
-    return `{${queryLabels}} ${searchPhrase.trim()}`;
+    return `{${queryLabels}}`;
   };
 
   return {

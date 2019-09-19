@@ -73,10 +73,11 @@ export const httpService = () => {
 
     const { start, end } = getPeriod(logsPeriod);
 
-    const query = `{${labels}} ${searchPhrase.trim()}`;
+    const query = `{${labels}}`;
+    const regexpParam = searchPhrase ? `&regexp=${searchPhrase}` : '';
 
     const encodedQuery = encodeURIComponent(query);
-    const url = `${httpConfig.queryEndpoint}?query=${encodedQuery}&start=${start}&end=${end}&direction=${direction}&limit=${limit}`;
+    const url = `${httpConfig.queryEndpoint}?query=${encodedQuery}&start=${start}&end=${end}&direction=${direction}&limit=${limit}${regexpParam}`;
 
     const response = await authorizedFetch(url);
     if (response.status === 200) {

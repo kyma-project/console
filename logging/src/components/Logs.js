@@ -44,11 +44,11 @@ export default class Logs extends React.Component {
   intervalId = null;
 
   componentDidMount = () => {
-    const { labels, searchPhrase } = this.state;
+    const { labels } = this.state;
     this.setState({
       advancedSettings: {
         ...this.state.advancedSettings,
-        query: this.props.queryTransformService.toQuery(labels, searchPhrase),
+        query: this.props.queryTransformService.toQuery(labels),
       },
     });
 
@@ -118,24 +118,16 @@ export default class Logs extends React.Component {
   // intercept setState
   updateState = partialState => {
     const { parseQuery, toQuery } = this.props.queryTransformService;
-    const { labels, searchPhrase, query } = this.state;
+    const { query } = this.state;
 
     let additionalState = {};
 
-    if ('searchPhrase' in partialState) {
-      // searchPhrase changed, update query
-      additionalState = {
-        advancedSettings: {
-          ...this.state.advancedSettings,
-          query: toQuery(labels, partialState.searchPhrase),
-        },
-      };
-    } else if ('labels' in partialState) {
+    if ('labels' in partialState) {
       // labels changed, update query
       additionalState = {
         advancedSettings: {
           ...this.state.advancedSettings,
-          query: toQuery(partialState.labels, searchPhrase),
+          query: toQuery(partialState.labels),
         },
       };
     } else if (
