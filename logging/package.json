@@ -2,13 +2,7 @@
   "name": "logging",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "enzyme-to-json": "^3.4.0",
-    "fiori-fundamentals": "^1.7.0",
-    "fundamental-react": "^0.6.1",
-    "fundamental-styles": "^0.1.0",
-    "styled-components": "^3.4.10"
-  },
+  "dependencies": {},
   "scripts": {
     "start": "echo `` > public/config/config.js && PORT=8005 react-scripts start",
     "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
@@ -20,15 +14,14 @@
     "copy-config": "cp ../config.js public/config/config.js"
   },
   "devDependencies": {
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
     "jsdom-worker-fix": "^0.1.8",
     "live-server": "^1.2.1",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0",
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
-    "wait-on": "^3.2.0"
+    "wait-on": "^3.2.0",
+    "enzyme-to-json": "^3.4.0"
   },
   "browserslist": {
     "production": [
