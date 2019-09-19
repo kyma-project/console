@@ -6,9 +6,9 @@
 }
 
 .caption-muted {
-    font-size: .85714rem;
-    font-weight: 400;
-    color: var(--fd-color-text-3);
+  font-size: 0.85714rem;
+  font-weight: 400;
+  color: var(--fd-color-text-3);
 }
 
 .cursor-pointer {
@@ -24,11 +24,11 @@
   }
 
   .fd-inline-help::before {
-      margin-top: 6px;
-      margin-left: 4px;
-      width: 10px;
-      height: 10px;
-      font-size: 8px;
+    margin-top: 6px;
+    margin-left: 4px;
+    width: 10px;
+    height: 10px;
+    font-size: 8px;
   }
 }
 
@@ -50,4 +50,7 @@
 
 .fd-inline-help__content {
   min-width: 200px;
+}
+.fd-table tr {
+  cursor: default;
 }
