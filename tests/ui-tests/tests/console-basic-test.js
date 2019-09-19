@@ -136,7 +136,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     namespace = await new k8sApiNamespace(namespaceUnderTest);
     const deploymentApi = await new k8sApiDeployment(namespaceUnderTest);
     service = await new k8sApiService(namespaceUnderTest);
-    await deploymentApi.waitUntilCreated();
+    await deploymentApi.waitUntilCreated(40000);
 
     serviceUrl = address.console.getService(
       namespace.definition.metadata.name,

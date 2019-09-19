@@ -28,7 +28,7 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     }
 
     await retry(async () => {
-      const data = await common.beforeAll(t => (token = t));
+      const data = await common.beforeAll(t => (token = t), 60);
       browser = data.browser;
       page = data.page;
     });
@@ -109,14 +109,11 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
 
     //then
     await retry(async () => {
-      let frame;
-      await Promise.all([
-        page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] }),
-        (frame = await kymaConsole.waitForAppFrameAttached(
-          page,
-          address.console.getLambdasFrameUrl(),
-        )),
-      ]);
+      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+      const frame = await kymaConsole.waitForAppFrameAttached(
+        page,
+        address.console.getLambdasFrameUrl(),
+      );
       const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
       await frame.waitForSelector(lambdasEmptyPage);
     });

@@ -52,7 +52,7 @@ export class k8sApiDeployment {
     this.create();
   }
 
-  async waitUntilCreated() {
+  async waitUntilCreated(maxTimeout) {
     const timeoutPromise = (ms, rejectMsg) => {
       return new Promise((resolve, reject) => {
         let timeoutId = setTimeout(() => {
@@ -95,8 +95,9 @@ export class k8sApiDeployment {
     return Promise.race([
       waitUntilDeploymentReady,
       timeoutPromise(
-        30000,
-        `Waiting for deployment [http-db-service] ready state timed out after 30 s.'`,
+        maxTimeout,
+        `Waiting for deployment [http-db-service] ready state timed out after ${maxTimeout /
+          1000} s.'`,
       ),
     ]);
   }
