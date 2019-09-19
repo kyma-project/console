@@ -15,11 +15,11 @@ export default function AdvancedSettings({
   hideSettings,
   updateFilteringState,
 }) {
-  const settingsEntry = (name, controls) => {
+  const SettingsEntry = ({ name, children }) => {
     return (
       <div className="advanced_settings__entry">
         <p className="caption-muted">{name}</p>
-        <div>{controls}</div>
+        <div>{children}</div>
       </div>
     );
   };
@@ -49,37 +49,43 @@ export default function AdvancedSettings({
     updateState({ resultLimit: e.target.value });
   }
 
-  const queryInput = settingsEntry(
-    <label htmlFor="query">Query</label>,
-    <FormInput
-      id="query"
-      type="text"
-      onChange={setQuery}
-      autoComplete="off"
-      value={advancedSettings.query}
-    />,
+  const QueryInput = () => (
+    <SettingsEntry name={<label htmlFor="query">Query</label>}>
+      <FormInput
+        id="query"
+        type="text"
+        onChange={setQuery}
+        autoComplete="off"
+        value={advancedSettings.query}
+      />
+    </SettingsEntry>
   );
 
-  const resultLimitInput = settingsEntry(
-    <label htmlFor="result-limit">
-      Result limit
-      <span className="small-inline-help-wrapper">
-        <InlineHelp
-          placement="right"
-          text="Return only limited number of most recent log lines."
-        />
-      </span>
-    </label>,
-    <FormInput
-      id="result-limit"
-      type="number"
-      onChange={setResultLimit}
-      autoComplete="off"
-      defaultValue={advancedSettings.resultLimit}
-    />,
+  const ResultLimitInput = () => (
+    <SettingsEntry
+      name={
+        <label htmlFor="result-limit">
+          Result limit
+          <span className="small-inline-help-wrapper">
+            <InlineHelp
+              placement="right"
+              text="Return only limited number of most recent log lines."
+            />
+          </span>
+        </label>
+      }
+    >
+      <FormInput
+        id="result-limit"
+        type="number"
+        onChange={setResultLimit}
+        autoComplete="off"
+        defaultValue={advancedSettings.resultLimit}
+      />
+    </SettingsEntry>
   );
 
-  const previousLogsInput = (
+  const PreviousLogsInput = () => (
     <>
       <input
         type="checkbox"
@@ -93,7 +99,7 @@ export default function AdvancedSettings({
     </>
   );
 
-  const healthChecksInput = (
+  const HealthChecksInput = () => (
     <>
       <input
         type="checkbox"
@@ -118,16 +124,13 @@ export default function AdvancedSettings({
           onClick={() => hideSettings()}
         />
       </h2>
-      {queryInput}
-      {resultLimitInput}
-      {settingsEntry(
-        'Show',
-        <>
-          {previousLogsInput}
-          <br />
-          {healthChecksInput}
-        </>,
-      )}
+      <QueryInput />
+      <ResultLimitInput />
+      <SettingsEntry name="Show">
+        <PreviousLogsInput />
+        <br />
+        <HealthChecksInput />
+      </SettingsEntry>
     </section>
   );
 }
