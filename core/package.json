@@ -17,6 +17,7 @@
   },
   "private": true,
   "dependencies": {
+    "@kyma-project/luigi-core": "^0.6.3",
     "@angular/animations": "^6.1.4",
     "@angular/common": "^6.1.4",
     "@angular/compiler": "^6.1.4",

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/luigi-core": "0.4.12",
+    "@kyma-project/luigi-core": "^0.6.3",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
     "uuid": "^3.3.2",
