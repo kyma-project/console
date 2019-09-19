@@ -362,6 +362,14 @@ export const StyledOData = styled.div`
       .fd-panel {
         box-shadow: none;
       }
+
+      .fd-panel__header {
+        cursor: pointer;
+      }
+
+      .odata__table {
+        overflow: auto;
+      }
     }
   }
 `;

@@ -372,6 +372,12 @@ const responsesTable = css`
             td.col {
               padding-left: 16px;
             }
+            td.response-col_status {
+              padding-left: 16px;
+            }
+            td.response-col_links {
+              padding-left: 16px;
+            }
             td.col:first-child {
               font-family: '72';
               font-size: 14px;

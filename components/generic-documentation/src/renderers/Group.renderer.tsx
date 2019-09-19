@@ -74,7 +74,6 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 
   return (
     <Tabs
-      active={TabsLabels.DOCUMENTATION}
       onInit={onInitTabs}
       onChangeTab={{
         func: onChangeTab,
