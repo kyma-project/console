@@ -1,9 +1,16 @@
 .fd-mega-menu__item--disabled {
-    padding: 10px 20px;
-    color: #51555a;
-    display: block;
-    font-size: 1rem;
-    line-height: 1.42857;
-    font-weight: 400;
-    color: var(--fd-color-text-4);
+  padding: 10px 20px;
+  color: #51555a;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  color: var(--fd-color-text-4);
+}
+
+.fd-mega-menu__list.dimmed {
+  .fd-mega-menu__link {
+    color: var(--fd-color-neutral-4);
+    font-style: italic;
+  }
 }

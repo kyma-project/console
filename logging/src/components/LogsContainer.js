@@ -34,7 +34,7 @@ export default function LogsContainer() {
   const isCompact = false;
 
   return (
-    <isLambdaContext.Provider value={false}>
+    <isLambdaContext.Provider value={true}>
       <Logs
         httpService={httpService}
         queryTransformService={queryTransformService}

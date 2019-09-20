@@ -48,29 +48,31 @@ export default function DropdownRenderer({
     );
   }
 
-  const recentLabelsList = recentLabels.length ? (
-    <ul className="fd-mega-menu__list">
-      {recentLabels.map(entry => (
-        <li key={entry} className="fd-mega-menu__item">
-          <span
-            className="cursor-pointer fd-mega-menu__link"
-            onClick={() => chooseLabel(entry)}
-          >
-            {entry}
-          </span>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <span
-      className="fd-mega-menu__item--disabled"
-      data-test-id="no-recent-labels"
-    >
-      No recent labels
-    </span>
-  );
+  function RecentLabelsList({ recentLabels }) {
+    return recentLabels.length ? (
+      <ul className="fd-mega-menu__list dimmed">
+        {recentLabels.map(entry => (
+          <li key={entry} className="fd-mega-menu__item">
+            <span
+              className="cursor-pointer fd-mega-menu__link"
+              onClick={() => chooseLabel(entry)}
+            >
+              {entry}
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <span
+        className="fd-mega-menu__item--disabled"
+        data-test-id="no-recent-labels"
+      >
+        No recent labels
+      </span>
+    );
+  }
 
-  const logLabelsSubList = logLabel => {
+  function LogLabelsSubList({ logLabel }) {
     if (!logLabel.labels || !logLabel.labels.length) {
       return (
         <ul
@@ -104,39 +106,44 @@ export default function DropdownRenderer({
         ))}
       </ul>
     );
-  };
+  }
 
-  const logLabelCategoriesList = statefulLogLabels.length ? (
-    <ul className="fd-mega-menu__list">
-      {statefulLogLabels.map(l => (
-        <li className="fd-mega-menu__item" key={l.name}>
-          <span
-            className="fd-mega-menu__link has-child cursor-pointer"
-            aria-controls={l.name}
-            aria-haspopup="true"
-            onClick={() => switchState(l.name)}
-          >
-            {l.name}
-          </span>
-          {logLabelsSubList(l)}
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <span className="fd-mega-menu__item--disabled" data-test-id="no-log-labels">
-      No log labels
-    </span>
-  );
+  function LogLabelCategoriesList({ statefulLogLabels }) {
+    return statefulLogLabels.length ? (
+      <ul className="fd-mega-menu__list">
+        {statefulLogLabels.map(l => (
+          <li className="fd-mega-menu__item" key={l.name}>
+            <span
+              className="fd-mega-menu__link has-child cursor-pointer"
+              aria-controls={l.name}
+              aria-haspopup="true"
+              onClick={() => switchState(l.name)}
+            >
+              {l.name}
+            </span>
+            <LogLabelsSubList logLabel={l} />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <span
+        className="fd-mega-menu__item--disabled"
+        data-test-id="no-log-labels"
+      >
+        No log labels
+      </span>
+    );
+  }
 
   return (
     <nav className="fd-mega-menu">
       <div className="fd-mega-menu__group">
         <h3 className="fd-mega-menu__title">Recently Selected Labels</h3>
-        {recentLabelsList}
+        <RecentLabelsList recentLabels={recentLabels} />
       </div>
       <div className="fd-mega-menu__group">
         <h3 className="fd-mega-menu__title">Log Labels</h3>
-        {logLabelCategoriesList}
+        <LogLabelCategoriesList statefulLogLabels={statefulLogLabels} />
       </div>
     </nav>
   );
