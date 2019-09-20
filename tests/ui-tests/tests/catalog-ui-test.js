@@ -514,6 +514,9 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     console.log(
       'Go to Credentials tab and create credentials and fill in the schema form',
     );
+
+    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+
     const frame = await waitForInstancesFrame(page);
     await frame.waitForSelector(serviceBindingCredentialsTab);
     await frame.click(serviceBindingCredentialsTab);
