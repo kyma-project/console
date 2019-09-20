@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { Icon } from 'fundamental-react';
 import './DropdownRenderer.scss';
 
 DropdownRenderer.propTypes = {
+  selectedLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   recentLabels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   logLabelCategories: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   chooseLabel: PropTypes.func.isRequired,
@@ -14,6 +17,7 @@ export default function DropdownRenderer({
   logLabelCategories,
   chooseLabel,
   loadLabels,
+  selectedLabels,
 }) {
   const [statefulLogLabels, setStatefulLogLabels] = React.useState(
     logLabelCategories.map(logLabel => ({
@@ -92,18 +96,26 @@ export default function DropdownRenderer({
         id={logLabel.name}
         aria-hidden={logLabel.isHidden}
       >
-        {logLabel.labels.map(name => (
-          <li className="fd-mega-menu__subitem" key={name}>
-            <span
-              className="fd-mega-menu__sublink cursor-pointer"
-              onClick={() =>
-                chooseLabel(`${formatName(logLabel.name)}="${name}"`)
-              }
+        {logLabel.labels.map(name => {
+          const formattedLabel = `${formatName(logLabel.name)}="${name}"`;
+          const isSelected = ~selectedLabels.indexOf(formattedLabel);
+          return (
+            <li
+              className={classNames('fd-mega-menu__subitem', {
+                selected: isSelected,
+              })}
+              key={name}
             >
-              {name}
-            </span>
-          </li>
-        ))}
+              <span
+                className="fd-mega-menu__sublink cursor-pointer"
+                onClick={() => chooseLabel(formattedLabel)}
+              >
+                {name}
+                {(isSelected && <Icon glyph="accept" size="m" />) || null}
+              </span>
+            </li>
+          );
+        })}
       </ul>
     );
   }

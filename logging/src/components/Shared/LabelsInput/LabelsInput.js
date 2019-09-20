@@ -9,6 +9,7 @@ import { HttpServiceContext } from '../../../services/httpService';
 import { LOG_LABEL_CATEGORIES } from '../../../constants';
 const localStorageKey = 'recent_log_labels';
 LabelsInput.propTypes = {
+  selectedLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   addLabel: PropTypes.func.isRequired,
   maxRecentCount: PropTypes.number,
 };
@@ -26,7 +27,11 @@ function getRecentLabels() {
   return storageLabels ? JSON.parse(storageLabels) : [];
 }
 
-export default function LabelsInput({ addLabel, maxRecentCount }) {
+export default function LabelsInput({
+  addLabel,
+  maxRecentCount,
+  selectedLabels,
+}) {
   const [logLabelCategories, setLogLabelsCategories] = React.useState(
     LOG_LABEL_CATEGORIES.map(c => ({ name: c })),
   );
@@ -70,6 +75,7 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
       <ComboboxInput
         menu={
           <DropdownRenderer
+            selectedLabels={selectedLabels}
             recentLabels={getRecentLabels()}
             logLabelCategories={logLabelCategories}
             chooseLabel={chooseLabel}

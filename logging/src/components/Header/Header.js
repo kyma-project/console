@@ -69,7 +69,7 @@ export default function Header({
     <Panel className="fd-has-padding-regular fd-has-padding-bottom-none">
       <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny">Logs</h1>
       <section className="header__settings-group">
-        <LabelsInput addLabel={addLabel} />
+        <LabelsInput selectedLabels={labels} addLabel={addLabel} />
         <SearchInput
           searchPhrase={searchPhrase}
           updateFilteringState={updateFilteringState}
