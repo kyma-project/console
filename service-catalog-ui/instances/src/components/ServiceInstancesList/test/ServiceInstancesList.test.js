@@ -3,7 +3,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
 import {
   serviceInstanceDeleteMutation,
-  serviceInstancesQuery,
+  allServiceInstancesQuery,
   serviceInstancesSubscription,
 } from './networkMock';
 import ServiceInstancesTable from '../ServiceInstancesTable/ServiceInstancesTable.component';
@@ -72,7 +72,7 @@ describe('InstancesList UI', () => {
   });
 
   it('Displays instances with their corresponding names in the table', async () => {
-    const { link } = createMockLink([serviceInstancesQuery]);
+    const { link } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>
         <ServiceInstancesList />
@@ -102,7 +102,7 @@ describe('InstancesList UI', () => {
   });
 
   it('Navigates to Service Catalog when clicked on "Add instance" button', async () => {
-    const { link } = createMockLink([serviceInstancesQuery]);
+    const { link } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>
         <ServiceInstancesList />
@@ -122,7 +122,7 @@ describe('InstancesList UI', () => {
   });
 
   it('Navigates to Instance details when clicked on Instance link', async () => {
-    const { link } = createMockLink([serviceInstancesQuery]);
+    const { link } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>
         <ServiceInstancesList />
@@ -144,7 +144,7 @@ describe('InstancesList UI', () => {
   });
 
   it(`Test deleting instances via subscription`, async () => {
-    const { link, sendEvent } = createMockLink([serviceInstancesQuery]);
+    const { link, sendEvent } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>
         <ServiceInstancesList />
@@ -160,7 +160,7 @@ describe('InstancesList UI', () => {
   });
 
   it(`Test adding instances via subscription`, async () => {
-    const { link, sendEvent } = createMockLink([serviceInstancesQuery]);
+    const { link, sendEvent } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>
         <ServiceInstancesList />
@@ -177,7 +177,7 @@ describe('InstancesList UI', () => {
 
   it(`Validate if modal delete button fires deleteMutation`, async () => {
     const { link } = createMockLink([
-      serviceInstancesQuery,
+      allServiceInstancesQuery,
       serviceInstanceDeleteMutation,
     ]);
 

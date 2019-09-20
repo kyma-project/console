@@ -58,10 +58,7 @@ export default function ServiceInstancesList() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeLabelFilters, setActiveLabelFilters] = useState([]);
 
-  const [
-    deleteServiceInstanceMutation,
-    { deleteServiceMutationData },
-  ] = useMutation(deleteServiceInstance);
+  const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
 
   const {
     data: queryData,

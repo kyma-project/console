@@ -22,20 +22,15 @@ import { getServiceInstanceDetails } from '../../queries/queries';
 import {
   SERVICE_BINDING_EVENT_SUBSCRIPTION,
   SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
-  SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
 } from '../DataProvider/subscriptions';
 import {
-  handleInstanceEvent,
   handleServiceBindingEvent,
   handleServiceBindingUsageEvent,
 } from '../../store/ServiceInstances/events';
 import { deleteServiceInstance } from '../../queries/mutations';
 
-function callback() {}
-
 export default function ServiceInstanceDetails({ match }) {
   const history = createBrowserHistory();
-
   const { loading, error, data, subscribeToMore } = useQuery(
     getServiceInstanceDetails,
     {
@@ -112,7 +107,6 @@ export default function ServiceInstanceDetails({ match }) {
       <ServiceInstanceWrapper>
         <ServiceInstanceBindings
           defaultActiveTabIndex={0}
-          callback={callback}
           serviceInstance={serviceInstance}
         />
         {serviceClass &&

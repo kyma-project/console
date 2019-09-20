@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, Dropdown, FormFieldset } from '@kyma-project/react-components';
 

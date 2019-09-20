@@ -258,12 +258,7 @@ class ServiceInstanceBindings extends React.Component {
   };
 
   render() {
-    const {
-      createBinding,
-      createBindingUsage,
-      serviceInstance,
-      callback,
-    } = this.props;
+    const { createBinding, createBindingUsage, serviceInstance } = this.props;
 
     const bindable = serviceInstance.bindable;
     if (!bindable) {
@@ -325,10 +320,7 @@ class ServiceInstanceBindings extends React.Component {
 
     return (
       <ServiceInstanceBindingsWrapper>
-        <Tabs
-          defaultActiveTabIndex={this.props.defaultActiveTabIndex}
-          callback={callback}
-        >
+        <Tabs defaultActiveTabIndex={this.props.defaultActiveTabIndex}>
           {serviceCatalogAddonsBackendModuleExists ? (
             <Tab
               title={

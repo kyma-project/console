@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import { Notification, Modal } from '@kyma-project/react-components';
+import { Notification } from '@kyma-project/react-components';
 
 import NotificationContext from '../../contexts/NotificationContext/NotificationContext';
 
