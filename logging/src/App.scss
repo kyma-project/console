@@ -24,11 +24,12 @@
   }
 
   .fd-inline-help::before {
-    margin-top: 6px;
+    margin-top: 4px;
     margin-left: 4px;
-    width: 10px;
-    height: 10px;
-    font-size: 8px;
+    width: 13px;
+    height: 13px;
+    font-size: 10px;
+    cursor: help;
   }
 }
 
