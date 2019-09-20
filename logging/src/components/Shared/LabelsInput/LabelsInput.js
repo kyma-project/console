@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { ComboboxInput } from 'fundamental-react/ComboboxInput';
 
 import DropdownRenderer from './DropdownRenderer/DropdownRenderer';
 import { HttpServiceContext } from '../../../services/httpService';
+import { LogsContext } from '../../Logs/Logs.reducer';
 
 import { LOG_LABEL_CATEGORIES } from '../../../constants';
 const localStorageKey = 'recent_log_labels';
 LabelsInput.propTypes = {
-  selectedLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  addLabel: PropTypes.func.isRequired,
   maxRecentCount: PropTypes.number,
 };
 
@@ -27,11 +26,9 @@ function getRecentLabels() {
   return storageLabels ? JSON.parse(storageLabels) : [];
 }
 
-export default function LabelsInput({
-  addLabel,
-  maxRecentCount,
-  selectedLabels,
-}) {
+export default function LabelsInput({ maxRecentCount }) {
+  const [state, actions] = useContext(LogsContext);
+
   const [logLabelCategories, setLogLabelsCategories] = React.useState(
     LOG_LABEL_CATEGORIES.map(c => ({ name: c })),
   );
@@ -65,7 +62,7 @@ export default function LabelsInput({
   }
 
   function chooseLabel(label) {
-    addLabel(label);
+    actions.addLabel(label);
     updateRecentLabels(label);
   }
 
@@ -75,7 +72,7 @@ export default function LabelsInput({
       <ComboboxInput
         menu={
           <DropdownRenderer
-            selectedLabels={selectedLabels}
+            selectedLabels={state.labels}
             recentLabels={getRecentLabels()}
             logLabelCategories={logLabelCategories}
             chooseLabel={chooseLabel}
