@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import CompactHeader from '../CompactHeader/CompactHeader';
 import LogTable from '../LogTable/LogTable';
-import reducer from './Logs.reducer'
+import reducer, {SET_LABELS, SET_SHOW_PREVIOUS_LOGS} from './Logs.reducer'
 // import 'core-js/es/array/flat-map'; todo
 
 import {
