@@ -66,7 +66,7 @@ export const httpService = () => {
       direction = 'forward';
     }
 
-    let limit = 500;
+    let limit = 1000;
     if (resultLimit && resultLimit > 0) {
       limit = resultLimit;
     }

@@ -42,9 +42,10 @@ export default class Logs extends React.Component {
     logsPeriod: DEFAULT_PERIOD,
     advancedSettings: {
       query: '',
-      resultLimit: 100,
+      resultLimit: 1000,
       showPreviousLogs: true,
       showHealthChecks: true,
+      showIstioLogs: false,
     },
     sortDirection: SORT_ASCENDING,
     logs: [],
@@ -88,6 +89,7 @@ export default class Logs extends React.Component {
       resultLimit,
       showPreviousLogs,
       showHealthChecks,
+      showIstioLogs,
     } = advancedSettings;
 
     try {
@@ -100,16 +102,22 @@ export default class Logs extends React.Component {
         showPreviousLogs,
         showHealthChecks,
       });
-      const logs = result.streams
-        ? result.streams
-            .flatMap(stream => stream.entries)
 
-            .map(l => ({
-              timestamp: l.ts,
-              log: l.line,
-            }))
-            .sort((e1, e2) => sortLogs(e1, e2, sortDirection))
-        : [];
+      let streams = result.streams || [];
+
+      if (!showIstioLogs) {
+        streams = [...streams].filter(
+          s => !~s.labels.indexOf('container_name="istio-proxy"'),
+        );
+      }
+      const logs = streams
+        .flatMap(stream => stream.entries)
+        .map(l => ({
+          timestamp: l.ts,
+          log: l.line,
+        }))
+        .sort((e1, e2) => sortLogs(e1, e2, sortDirection));
+
       this.setState({ logs });
     } catch (e) {
       console.warn(e); // todo add error message
@@ -118,7 +126,7 @@ export default class Logs extends React.Component {
 
   filterHealthChecks = entry => {
     const showHealthChecks = this.state.advancedSettings.showHealthChecks;
-    return showHealthChecks || entry.log.indexOf('GET /healthz') < 0;
+    return showHealthChecks || !~entry.log.indexOf('GET /healthz');
   };
 
   startAutoRefresh() {

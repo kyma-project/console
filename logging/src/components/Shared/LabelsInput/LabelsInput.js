@@ -27,8 +27,6 @@ function getRecentLabels() {
 }
 
 export default function LabelsInput({ addLabel, maxRecentCount }) {
-  // const [recentLabels, setRecentLabels] = React.useState([]);
-
   const [logLabelCategories, setLogLabelsCategories] = React.useState(
     LOG_LABEL_CATEGORIES.map(c => ({ name: c })),
   );

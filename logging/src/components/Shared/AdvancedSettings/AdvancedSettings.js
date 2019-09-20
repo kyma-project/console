@@ -44,6 +44,10 @@ export default function AdvancedSettings({
     updateState({ showHealthChecks: e.target.checked });
   }
 
+  function setIstioLogs(e) {
+    updateState({ showIstioLogs: e.target.checked });
+  }
+
   function setQuery(e) {
     updateState({ query: e.target.value });
   }
@@ -122,7 +126,7 @@ export default function AdvancedSettings({
         type="checkbox"
         id="istio-logs"
         defaultChecked={advancedSettings.showIstioLogs}
-        onChange={setShowPreviousLogs}
+        onChange={setIstioLogs}
       />
       <label className="caption-muted" htmlFor="previous-logs">
         Istio logs
