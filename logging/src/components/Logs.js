@@ -180,7 +180,6 @@ export default class Logs extends React.Component {
       sortDirection,
       advancedSettings,
       autoRefreshEnabled,
-
       logs,
     } = this.state;
     const { isCompact } = this.props;
