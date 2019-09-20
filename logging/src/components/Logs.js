@@ -11,6 +11,15 @@ import {
   LOG_REFRESH_INTERVAL,
 } from './../constants';
 
+function sortLogs(entry1, entry2, sortDirection) {
+  const positiveReturn = sortDirection === 'ascending' ? 1 : -1;
+  const date1 = new Date(entry1.timestamp);
+  const date2 = new Date(entry2.timestamp);
+  return date1.getTime() > date2.getTime()
+    ? positiveReturn
+    : -1 * positiveReturn;
+}
+
 export default class Logs extends React.Component {
   static propTypes = {
     httpService: PropTypes.object.isRequired,
@@ -94,10 +103,12 @@ export default class Logs extends React.Component {
       const logs = result.streams
         ? result.streams
             .flatMap(stream => stream.entries)
+
             .map(l => ({
               timestamp: l.ts,
               log: l.line,
             }))
+            .sort((e1, e2) => sortLogs(e1, e2, sortDirection))
         : [];
       this.setState({ logs });
     } catch (e) {
