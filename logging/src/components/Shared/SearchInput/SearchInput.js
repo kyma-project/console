@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './SearchInput.scss';
+import { LogsContext } from '../../Logs/Logs.reducer';
 
 import { InlineHelp } from 'fundamental-react';
 
 SearchInput.propTypes = {
-  updateFilteringState: PropTypes.func.isRequired,
-  searchPhrase: PropTypes.string.isRequired,
   compact: PropTypes.bool,
 };
 
@@ -15,15 +14,9 @@ SearchInput.defaultProps = {
   compact: false,
 };
 
-export default function SearchInput({
-  updateFilteringState,
-  searchPhrase,
-  compact,
-}) {
-  function updateSearchQuery(event) {
-    const value = event.target.value;
-    updateFilteringState({ searchPhrase: value });
-  }
+export default function SearchInput({ compact }) {
+  const [state, actions] = useContext(LogsContext);
+
   return (
     <section className="fd-has-margin-right-small">
       <span className="caption-muted search-input__caption">
@@ -42,8 +35,8 @@ export default function SearchInput({
       <input
         type="text"
         className={classNames({ 'search-input--compact': compact })}
-        onChange={updateSearchQuery}
-        value={searchPhrase}
+        onChange={() => actions.setSearchPhrase(e.target.value)}
+        value={state.searchPhrase}
         placeholder="Search"
         id="search-input"
       />
