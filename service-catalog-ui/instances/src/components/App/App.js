@@ -31,7 +31,9 @@ export default function App() {
       {notificationData.isOpen ? (
         <Notification
           {...notificationData.data}
-          onclick={setNotificationData({ isOpen: false })}
+          onClick={() => {
+            setNotificationData({ isOpen: false });
+          }}
         />
       ) : null}
       <BrowserRouter>

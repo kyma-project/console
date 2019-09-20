@@ -89,7 +89,12 @@ export default function ServiceInstanceDetails({ match }) {
         <Spinner />
       </EmptyList>
     );
-  if (error) return <p>Error :(</p>;
+  if (error)
+    return (
+      <EmptyList>
+        An error occurred while loading Service Instance details
+      </EmptyList>
+    );
 
   const serviceInstance = data.serviceInstance;
 
@@ -106,7 +111,7 @@ export default function ServiceInstanceDetails({ match }) {
       />
       <ServiceInstanceWrapper>
         <ServiceInstanceBindings
-          defaultActiveTabIndex={0}
+          defaultActiveTabIndex={serviceInstanceConstants.addonsIndex}
           serviceInstance={serviceInstance}
         />
         {serviceClass &&

@@ -23,7 +23,9 @@ export const serviceInstanceConstants = {
   link: 'Link',
   error: 'Error',
 
-  //instance list tabs
+  //instance list tabs indices
+  addonsIndex: 0,
+  servicesIndex: 1,
 };
 
 export const serviceInstanceTabs = {

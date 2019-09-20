@@ -3,7 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import { StatusWrapper, StatusesList } from './styled';
+import { StatusWrapper, StatusesList, EmptyList } from './styled';
 
 import builder from '../../commons/builder';
 import { getAllServiceInstances } from '../../queries/queries';
@@ -99,9 +99,19 @@ export default function ServiceInstancesList() {
     }
   }, [queryData]);
 
-  if (queryLoading) return <Spinner />;
-  if (queryError) return <p>Error :(</p>;
-  //TODO REMOVE TAB INDEX MAGIC NUBMERS
+  if (queryLoading)
+    return (
+      <EmptyList>
+        <Spinner />
+      </EmptyList>
+    );
+  if (queryError)
+    return (
+      <EmptyList>
+        An error occurred while loading Service Instances List
+      </EmptyList>
+    );
+
   const determineDisplayedInstances = (
     serviceInstances,
     tabIndex,
@@ -231,7 +241,7 @@ export default function ServiceInstancesList() {
           status={status(
             determineDisplayedInstances(
               serviceInstances,
-              0,
+              serviceInstanceConstants.addonsIndex,
               searchQuery,
               activeLabelFilters,
             ).length,
@@ -252,7 +262,7 @@ export default function ServiceInstancesList() {
             <ServiceInstancesTable
               data={determineDisplayedInstances(
                 serviceInstances,
-                0,
+                serviceInstanceConstants.addonsIndex,
                 searchQuery,
                 activeLabelFilters,
               )}
@@ -265,7 +275,7 @@ export default function ServiceInstancesList() {
           status={status(
             determineDisplayedInstances(
               serviceInstances,
-              1,
+              serviceInstanceConstants.servicesIndex,
               searchQuery,
               activeLabelFilters,
             ).length,
@@ -286,7 +296,7 @@ export default function ServiceInstancesList() {
             <ServiceInstancesTable
               data={determineDisplayedInstances(
                 serviceInstances,
-                1,
+                serviceInstanceConstants.servicesIndex,
                 searchQuery,
                 activeLabelFilters,
               )}
