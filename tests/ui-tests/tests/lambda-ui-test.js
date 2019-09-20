@@ -108,14 +108,12 @@ describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
     await frame.waitForSelector(deleteConfirmButton, { hidden: true });
 
     //then
-    await retry(async () => {
-      await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
-      const frame = await kymaConsole.waitForAppFrameAttached(
-        page,
-        address.console.getLambdasFrameUrl(),
-      );
-      const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
-      await frame.waitForSelector(lambdasEmptyPage);
-    });
+    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+    frame = await kymaConsole.waitForAppFrameAttached(
+      page,
+      address.console.getLambdasFrameUrl(),
+    );
+    const lambdasEmptyPage = '[data-e2e="empty-list-placeholder"]';
+    await frame.waitForSelector(lambdasEmptyPage);
   });
 });
