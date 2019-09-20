@@ -7,7 +7,7 @@ import DropdownRenderer from './DropdownRenderer/DropdownRenderer';
 import { HttpServiceContext } from '../../../services/httpService';
 
 import { LOG_LABEL_CATEGORIES } from '../../../constants';
-
+const localStorageKey = 'recent_log_labels';
 LabelsInput.propTypes = {
   addLabel: PropTypes.func.isRequired,
   maxRecentCount: PropTypes.number,
@@ -17,14 +17,26 @@ LabelsInput.defaultProps = {
   maxRecentCount: 4,
 };
 
+function setRecentLabels(labels) {
+  localStorage.setItem(localStorageKey, JSON.stringify(labels));
+}
+
+function getRecentLabels() {
+  const storageLabels = localStorage.getItem(localStorageKey);
+  return storageLabels ? JSON.parse(storageLabels) : [];
+}
+
 export default function LabelsInput({ addLabel, maxRecentCount }) {
-  const [recentLabels, setRecentLabels] = React.useState([]);
+  // const [recentLabels, setRecentLabels] = React.useState([]);
+
   const [logLabelCategories, setLogLabelsCategories] = React.useState(
     LOG_LABEL_CATEGORIES.map(c => ({ name: c })),
   );
   const { getLabels } = React.useContext(HttpServiceContext);
 
   function updateRecentLabels(label) {
+    const recentLabels = getRecentLabels();
+
     if (!recentLabels.includes(label)) {
       const newRecentLabels = [...recentLabels].filter(l => l !== label);
       newRecentLabels.unshift(label);
@@ -60,7 +72,7 @@ export default function LabelsInput({ addLabel, maxRecentCount }) {
       <ComboboxInput
         menu={
           <DropdownRenderer
-            recentLabels={recentLabels}
+            recentLabels={getRecentLabels()}
             logLabelCategories={logLabelCategories}
             chooseLabel={chooseLabel}
             loadLabels={loadLabels}
