@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {createContext, useContext} from 'react';
 import PropTypes from 'prop-types';
-import Header from './Header/Header';
-import CompactHeader from './CompactHeader/CompactHeader';
-import LogTable from './LogTable/LogTable';
+import Header from '../Header/Header';
+import CompactHeader from '../CompactHeader/CompactHeader';
+import LogTable from '../LogTable/LogTable';
+import reducer, {SET_LABELS, SET_SHOW_PREVIOUS_LOGS} from './Logs.reducer'
 // import 'core-js/es/array/flat-map'; todo
 
 import {
   SORT_ASCENDING,
   DEFAULT_PERIOD,
   LOG_REFRESH_INTERVAL,
-} from './../constants';
+} from './../../constants';
 
 function sortLogs(entry1, entry2, sortDirection) {
   const positiveReturn = sortDirection === 'ascending' ? 1 : -1;
@@ -54,6 +55,7 @@ export default class Logs extends React.Component {
   intervalId = null;
 
   componentDidMount = () => {
+    const [state, dispatch] = useReducer(reducer, {});
     const { labels } = this.state;
     this.setState({
       advancedSettings: {
@@ -184,8 +186,13 @@ export default class Logs extends React.Component {
     } = this.state;
     const { isCompact } = this.props;
 
+    const actions = {
+      setLabels: (labels) => ({type: SET_LABELS, value: labels}),
+      setShowPreviousLogs: (show) => ({type: SET_SHOW_PREVIOUS_LOGS, value: show})
+    };
+
     return (
-      <>
+      <LogsContext.Provider value={[state, actions]}>
         {isCompact ? (
           <CompactHeader
             updateFilteringState={this.updateState}
@@ -208,7 +215,7 @@ export default class Logs extends React.Component {
           />
         )}
         <LogTable entries={logs.filter(this.filterHealthChecks)} />
-      </>
+      </LogsContext.Provider>
     );
   }
 }

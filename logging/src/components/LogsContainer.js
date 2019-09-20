@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-import Logs from './Logs';
+import Logs from './Logs/Logs';
 
 import { QueryTransformServiceContext } from '../services/queryTransformService';
 import { HttpServiceContext } from '../services/httpService';
