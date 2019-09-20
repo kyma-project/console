@@ -4,12 +4,10 @@ import './AdvancedSettings.scss';
 import { isLambdaContext } from '../../LogsContainer';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
-import { useLogs } from '../../Logs';
+import { LogsContext } from '../../Logs/Logs.reducer';
 
 AdvancedSettings.propTypes = {
-  advancedSettings: PropTypes.object.isRequired,
   hideSettings: PropTypes.func.isRequired,
-  updateFilteringState: PropTypes.func.isRequired,
 };
 
 const SettingsEntry = ({ name, children }) => {
@@ -21,22 +19,9 @@ const SettingsEntry = ({ name, children }) => {
   );
 };
 
-export default function AdvancedSettings({
-  advancedSettings,
-  hideSettings,
-  updateFilteringState,
-}) {
+export default function AdvancedSettings({ hideSettings }) {
   const isLambda = useContext(isLambdaContext);
-  const [state, actions] = useLogs();
-
-  function updateState(data) {
-    updateFilteringState({
-      advancedSettings: {
-        ...advancedSettings,
-        ...data,
-      },
-    });
-  }
+  const [state, actions] = useContext(LogsContext);
 
   function setShowPreviousLogs(e) {
     actions.setShowPreviousLogs(e.target.checked);
@@ -50,22 +35,14 @@ export default function AdvancedSettings({
     updateState({ showIstioLogs: e.target.checked });
   }
 
-  function setQuery(e) {
-    updateState({ query: e.target.value });
-  }
-
-  function setResultLimit(e) {
-    updateState({ resultLimit: e.target.value });
-  }
-
   const QueryInput = () => (
     <SettingsEntry name={<label htmlFor="query">Query</label>}>
       <FormInput
         id="query"
         type="text"
-        onChange={setQuery}
+        onChange={e => actions.setQuery(e.target.value)}
         autoComplete="off"
-        value={advancedSettings.query}
+        value={state.query}
       />
     </SettingsEntry>
   );
@@ -87,9 +64,9 @@ export default function AdvancedSettings({
       <FormInput
         id="result-limit"
         type="number"
-        onChange={setResultLimit}
+        onChange={e => actions.setResultLimit(e.target.value)}
         autoComplete="off"
-        defaultValue={advancedSettings.resultLimit}
+        defaultValue={state.resultLimit}
       />
     </SettingsEntry>
   );
@@ -100,7 +77,7 @@ export default function AdvancedSettings({
         type="checkbox"
         id="previous-logs"
         defaultChecked={state.showPreviousLogs}
-        onChange={setShowPreviousLogs}
+        onChange={e => actions.setShowPreviousLogs(e.target.value)}
       />
       <label className="caption-muted" htmlFor="previous-logs">
         logs of previous lambda version
@@ -113,8 +90,8 @@ export default function AdvancedSettings({
       <input
         type="checkbox"
         id="health-checks"
-        defaultChecked={advancedSettings.showHealthChecks}
-        onChange={setHealthChecks}
+        defaultChecked={state.showHealthChecks}
+        onChange={e => actions.setShowHealthChecks(e.target.value)}
       />
       <label className="caption-muted" htmlFor="health-checks">
         health check
@@ -127,8 +104,8 @@ export default function AdvancedSettings({
       <input
         type="checkbox"
         id="istio-logs"
-        defaultChecked={advancedSettings.showIstioLogs}
-        onChange={setIstioLogs}
+        defaultChecked={state.showIstioLogs}
+        onChange={e => actions.setShowIstioLogs(e.target.value)}
       />
       <label className="caption-muted" htmlFor="previous-logs">
         Istio logs

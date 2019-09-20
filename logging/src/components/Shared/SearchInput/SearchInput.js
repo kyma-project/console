@@ -35,7 +35,7 @@ export default function SearchInput({ compact }) {
       <input
         type="text"
         className={classNames({ 'search-input--compact': compact })}
-        onChange={() => actions.setSearchPhrase(e.target.value)}
+        onChange={e => actions.setSearchPhrase(e.target.value)}
         value={state.searchPhrase}
         placeholder="Search"
         id="search-input"
