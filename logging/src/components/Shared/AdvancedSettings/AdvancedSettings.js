@@ -4,6 +4,7 @@ import './AdvancedSettings.scss';
 import { isLambdaContext } from '../../LogsContainer';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
+import { useLogs } from '../../Logs';
 
 AdvancedSettings.propTypes = {
   advancedSettings: PropTypes.object.isRequired,
@@ -26,6 +27,7 @@ export default function AdvancedSettings({
   updateFilteringState,
 }) {
   const isLambda = useContext(isLambdaContext);
+  const [state, actions] = useLogs();
 
   function updateState(data) {
     updateFilteringState({
@@ -37,7 +39,7 @@ export default function AdvancedSettings({
   }
 
   function setShowPreviousLogs(e) {
-    updateState({ showPreviousLogs: e.target.checked });
+    actions.setShowPreviousLogs(e.target.checked);
   }
 
   function setHealthChecks(e) {
@@ -97,7 +99,7 @@ export default function AdvancedSettings({
       <input
         type="checkbox"
         id="previous-logs"
-        defaultChecked={advancedSettings.showPreviousLogs}
+        defaultChecked={state.showPreviousLogs}
         onChange={setShowPreviousLogs}
       />
       <label className="caption-muted" htmlFor="previous-logs">
