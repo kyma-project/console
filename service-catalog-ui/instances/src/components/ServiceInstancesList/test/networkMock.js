@@ -316,11 +316,11 @@ export const serviceInstancesQuery = {
       namespace: builder.getCurrentEnvironmentId(),
     },
   },
-  result: jest.fn().mockReturnValue({
+  result: {
     data: {
       serviceInstances: [serviceInstance1, serviceInstance2],
     },
-  }),
+  },
 };
 
 export const serviceInstanceDeleteMutation = {
@@ -342,12 +342,6 @@ export const serviceInstanceDeleteMutation = {
 
 export function serviceInstancesSubscription(type) {
   return {
-    request: {
-      query: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
-      variables: {
-        namespace: builder.getCurrentEnvironmentId(),
-      },
-    },
     result: {
       data: {
         serviceInstanceEvent: {
@@ -359,17 +353,3 @@ export function serviceInstancesSubscription(type) {
     },
   };
 }
-
-export const serviceInstancesSubscriptionEmpty = {
-  request: {
-    query: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-    },
-  },
-  result: {
-    data: {
-      serviceInstanceEvent: null,
-    },
-  },
-};
