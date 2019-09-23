@@ -1,11 +1,11 @@
 import {
   getAllServiceInstances,
   getServiceInstanceDetails,
-} from '../../../queries/queries';
-import { deleteServiceInstance } from '../../../queries/mutations';
-import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../DataProvider/subscriptions';
+} from '../queries/queries';
+import { deleteServiceInstance } from '../queries/mutations';
+import { BINDING_CREATE_MUTATION } from '../components/ServiceInstanceDetails/ServiceInstanceBindings/mutations';
 
-import builder from '../../../commons/builder';
+import builder from '../commons/builder';
 
 const serviceInstance1 = {
   name: 'redis-motherly-deposit',
@@ -353,6 +353,24 @@ export const serviceInstanceDeleteMutation = {
     data: {
       deleteServiceInstance: {
         ...serviceInstance1,
+      },
+    },
+  }),
+};
+
+export const createBindingMutation = {
+  request: {
+    query: BINDING_CREATE_MUTATION,
+    variables: {
+      namespace: builder.getCurrentEnvironmentId(),
+      serviceInstanceName: 'redis-motherly-deposit',
+      parameters: {},
+    },
+  },
+  result: jest.fn().mockReturnValue({
+    data: {
+      createServiceBinding: {
+        name: 'mystifying-colden',
       },
     },
   }),

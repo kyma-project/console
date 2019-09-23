@@ -22,7 +22,7 @@ import { getServiceInstanceDetails } from '../../queries/queries';
 import {
   SERVICE_BINDING_EVENT_SUBSCRIPTION,
   SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
-} from '../DataProvider/subscriptions';
+} from '../../queries/subscriptions';
 import {
   handleServiceBindingEvent,
   handleServiceBindingUsageEvent,

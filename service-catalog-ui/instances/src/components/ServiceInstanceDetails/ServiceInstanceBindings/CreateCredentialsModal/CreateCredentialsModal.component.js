@@ -69,7 +69,6 @@ class CreateCredentialsModal extends React.Component {
         serviceInstance.name,
         bindingCreateParameters,
       );
-
       let createdBindingName;
       if (
         createdBinding &&
@@ -83,7 +82,6 @@ class CreateCredentialsModal extends React.Component {
       if (isOpenedModal) {
         this.child.child.handleCloseModal();
       }
-
       this.context.open({
         content: `Credentials "${createdBindingName}" created successfully`,
         title: `${createdBindingName}`,

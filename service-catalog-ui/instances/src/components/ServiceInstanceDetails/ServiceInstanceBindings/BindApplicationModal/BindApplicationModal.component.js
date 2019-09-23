@@ -108,12 +108,7 @@ class BindApplicationModal extends React.Component {
 
   create = async params => {
     const { checkbox } = this.state;
-    const {
-      serviceInstance,
-      createBinding,
-      createBindingUsage,
-      sendNotification,
-    } = this.props;
+    const { serviceInstance, createBinding, createBindingUsage } = this.props;
 
     let success = true;
 

@@ -25,7 +25,7 @@ import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
 
 import { ServiceInstancesWrapper } from './styled';
-import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../DataProvider/subscriptions';
+import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../queries/subscriptions';
 import { handleInstanceEvent } from '../../store/ServiceInstances/events';
 
 const determineSelectedTab = () => {

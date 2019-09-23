@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-// import { GenericComponent } from '@kyma-project/generic-documentation';
+import { GenericComponent } from '@kyma-project/generic-documentation';
 
 const tabRouteHandler = {
   determineSelectedTab: function(tabList) {
@@ -23,15 +23,13 @@ const ServiceInstanceTabs = ({ serviceClass }) => {
   const docsTopic =
     serviceClass && (serviceClass.docsTopic || serviceClass.clusterDocsTopic);
 
-  return <div>GENERICDOCUCOMPONENT</div>;
-
-  // return (
-  //   <GenericComponent
-  //     docsTopic={docsTopic}
-  //     layout="instances-ui"
-  //     tabRouteHandler={tabRouteHandler}
-  //   />
-  // );
+  return (
+    <GenericComponent
+      docsTopic={docsTopic}
+      layout="instances-ui"
+      tabRouteHandler={tabRouteHandler}
+    />
+  );
 };
 
 ServiceInstanceTabs.propTypes = {

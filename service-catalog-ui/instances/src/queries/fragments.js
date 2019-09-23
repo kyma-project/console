@@ -19,7 +19,7 @@ export const servicePlanGql = `
   bindingCreateParameterSchema
 `;
 
-const docsTopic = `
+export const docsTopicGql = `
       name
       groupName
       displayName
@@ -98,16 +98,16 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
         ${serviceClassGql}
         namespace
         docsTopic{
-          ${docsTopic}
+          ${docsTopicGql}
         }
         clusterDocsTopic {
-          ${docsTopic}
+          ${docsTopicGql}
         }
       }
       clusterServiceClass {
         ${serviceClassGql}
         clusterDocsTopic {
-          ${docsTopic}
+          ${docsTopicGql}
         }
       }
       servicePlan {
