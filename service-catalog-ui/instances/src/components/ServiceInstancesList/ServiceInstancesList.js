@@ -127,7 +127,7 @@ export default function ServiceInstancesList() {
     );
 
     let filteredByTab = [];
-    if (tabIndex === 0) {
+    if (tabIndex === serviceInstanceConstants.addonsIndex) {
       filteredByTab = filteredByLabels.filter(instance => {
         if (
           instance.clusterServiceClass &&
@@ -138,7 +138,7 @@ export default function ServiceInstancesList() {
         return false;
       });
     }
-    if (tabIndex === 1) {
+    if (tabIndex === serviceInstanceConstants.servicesIndex) {
       filteredByTab = filteredByLabels.filter(instance => {
         if (
           instance.clusterServiceClass &&
