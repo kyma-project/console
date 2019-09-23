@@ -141,15 +141,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
   return (
     <SearchParamsContext.Provider value={[searchParams, actions]}>
       {isCompact ? (
-        // <CompactHeader
-        //   updateFilteringState={this.updateState}
-        //   searchPhrase={searchPhrase}
-        //   logsPeriod={logsPeriod}
-        //   sortDirection={sortDirection}
-        //   advancedSettings={advancedSettings}
-        //   autoRefreshEnabled={autoRefreshEnabled}
-        // />
-        null
+        <CompactHeader />
       ) : (
           <Header />
         )}
