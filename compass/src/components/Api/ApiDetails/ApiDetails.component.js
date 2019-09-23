@@ -5,7 +5,6 @@ import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
-import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
 import { CustomPropTypes } from '../../../shared/typechecking/CustomPropTypes';
 
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
@@ -68,14 +67,10 @@ const ApiDetails = ({
         deleteMutation={apiId ? deleteApi : deleteEventApi}
       ></ApiDetailsHeader>
 
-      {apiId ? (
-        <InProgressMessage />
-      ) : (
-        <DocumentationComponent
-          type={apiId ? 'openapi' : 'asyncapi'}
-          content={api.spec.data}
-        ></DocumentationComponent>
-      )}
+      <DocumentationComponent
+        type={apiId ? 'openapi' : 'asyncapi'}
+        content={api.spec.data}
+      />
     </>
   );
 };

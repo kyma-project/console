@@ -4,20 +4,23 @@
   "private": true,
   "dependencies": {
     "@kyma-project/luigi-core": "^0.6.3",
+    "@kyma-project/asyncapi-react": "0.2.0",
+    "swagger-ui-dist": "3.17.3",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
     "uuid": "^3.3.2",
     "uuid-validate": "0.0.3",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "styled-components": "^3.4.10"
   },
   "scripts": {
     "start-live-server": "../node_modules/.bin/live-server --quiet --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
-    "start": "../node_modules/.bin/concurrently \"PORT=8888 ../node_modules/.bin/react-scripts start\" \"npm run buildConfig:watch\" \"../node_modules/.bin/wait-on http://localhost:8888/ && npm run start-live-server\" ",
+    "start": "../node_modules/.bin/concurrently \"PORT=8888 ../node_modules/.bin/react-app-rewired start\" \"npm run buildConfig:watch\" \"../node_modules/.bin/wait-on http://localhost:8888/ && npm run start-live-server\" ",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "start:kyma:api": "echo 'This component is not ready yet to be served together with Console.'",
-    "build": "../node_modules/.bin/react-scripts build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
-    "test": "../node_modules/.bin/react-scripts test",
-    "eject": "../node_modules/.bin/react-scripts eject",
+    "build": "../node_modules/.bin/react-app-rewired build && ncp 'node_modules/@kyma-project/luigi-core' 'public-luigi/luigi-core'",
+    "test": "../node_modules/.bin/react-app-rewired test",
+    "eject": "../node_modules/.bin/react-app-rewired eject",
     "buildConfig": "../node_modules/.bin/webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "../node_modules/.bin/webpack -d --config webpack-generateConfig.config --watch"
   },
