@@ -139,7 +139,6 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
   };
 
   return (
-
     <SearchParamsContext.Provider value={[searchParams, actions]}>
       {isCompact ? (
         // <CompactHeader

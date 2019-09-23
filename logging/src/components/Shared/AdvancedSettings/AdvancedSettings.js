@@ -65,7 +65,7 @@ export default function AdvancedSettings({ hideSettings }) {
         type="checkbox"
         id="previous-logs"
         defaultChecked={state.showPreviousLogs}
-        onChange={e => actions.setShowPreviousLogs(e.target.value)}
+        onChange={e => actions.setShowPreviousLogs(e.target.checked)}
       />
       <label className="caption-muted" htmlFor="previous-logs">
         logs of previous lambda version
@@ -79,7 +79,7 @@ export default function AdvancedSettings({ hideSettings }) {
         type="checkbox"
         id="health-checks"
         defaultChecked={state.showHealthChecks}
-        onChange={e => actions.setShowHealthChecks(e.target.value)}
+        onChange={e => actions.setShowHealthChecks(e.target.checked)}
       />
       <label className="caption-muted" htmlFor="health-checks">
         health check
@@ -93,7 +93,7 @@ export default function AdvancedSettings({ hideSettings }) {
         type="checkbox"
         id="istio-logs"
         defaultChecked={state.showIstioLogs}
-        onChange={e => actions.setShowIstioLogs(e.target.value)}
+        onChange={e => actions.setShowIstioLogs(e.target.checked)}
       />
       <label className="caption-muted" htmlFor="previous-logs">
         Istio logs

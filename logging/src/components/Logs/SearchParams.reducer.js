@@ -16,6 +16,7 @@ export const SET_LOGS_PERIOD = 'SET_LOGS_PERIOD';
 
 export default function searchParamsReducer(state, action) {
   const { type, value } = action;
+
   switch (type) {
     case ADD_LABEL: return { ...state, labels: [...state.labels, value] }
     case SET_LABELS: return { ...state, labels: value };
