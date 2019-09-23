@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import './ResultOptionsDropdown.scss';
 import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 import {

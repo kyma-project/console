@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import CompactHeader from '../CompactHeader/CompactHeader';
@@ -70,7 +70,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     return showHealthChecks || !~entry.log.indexOf('GET /healthz');
   };
 
-  async function fetchLogs(state) {
+  async function fetchLogs() {
     const {
       searchPhrase,
       labels,
@@ -81,7 +81,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
       showPreviousLogs,
       showHealthChecks,
       showIstioLogs,
-    } = state;
+    } = searchParams;
 
     if (!labels.length && !readonlyLabels.length && !searchPhrase) {
       return;
@@ -120,9 +120,9 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     }
   };
 
-  function startAutoRefresh(state) {
-    fetchLogs(state);
-    setIntervalId(setInterval(() => fetchLogs(state), LOG_REFRESH_INTERVAL))
+  function startAutoRefresh() {
+    fetchLogs();
+    setIntervalId(setInterval(fetchLogs, LOG_REFRESH_INTERVAL))
   }
   const actions = {
     addLabel: label => dispatch({ type: ADD_LABEL, value: label }),
@@ -140,16 +140,22 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
 
   return (
     <SearchParamsContext.Provider value={[searchParams, actions]}>
-      {isCompact ? (
-        <CompactHeader />
-      ) : (
-          <Header />
-        )}
+      {isCompact ? <CompactHeader /> : <Header />}
 
       <LogTable entries={logs.filter(filterHealthChecks)} />
     </SearchParamsContext.Provider>
   );
+}
 
+Logs.propTypes = {
+  readonlyLabels: PropTypes.arrayOf(PropTypes.string),
+  isCompact: PropTypes.bool,
+  httpService: PropTypes.object.isRequired,
+}
+
+Logs.defaultProps = {
+  readonlyLabels: [],
+  isCompact: false
 }
 
 export default Logs;

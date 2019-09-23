@@ -109,7 +109,7 @@ export default function AdvancedSettings({ hideSettings }) {
           glyph="decline"
           size="s"
           className="cursor-pointer"
-          onClick={() => hideSettings()}
+          onClick={hideSettings}
         />
       </h2>
       <QueryInput />

@@ -31,7 +31,7 @@ export default function LogsContainer() {
     return { labels, lambdaName };
   }
 
-  const isCompact = true;
+  const isCompact = false;
 
   return (
     <isLambdaContext.Provider value={true}>

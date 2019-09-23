@@ -7,14 +7,14 @@ LogTable.propTypes = {
 };
 
 export default function LogTable({ entries }) {
-  function renderEntries() {
+  const Entries = () => {
     return entries.map(entry => (
       <tr key={entry.timestamp}>
         <td className="caption-muted">{entry.timestamp}</td>
         <td className="caption-muted">{entry.log}</td>
       </tr>
     ));
-  }
+  };
 
   return (
     <table className="fd-table fd-has-margin-regular">
@@ -26,7 +26,7 @@ export default function LogTable({ entries }) {
       </thead>
       <tbody>
         {!!entries.length ? (
-          renderEntries()
+          <Entries />
         ) : (
           <tr>
             <td colSpan="2" className="log-table__no-entries-text">

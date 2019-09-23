@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import './LabelsDisplay.scss';
 import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 import { Token } from 'fundamental-react';
@@ -8,7 +7,7 @@ function getLabelsExceptOne(allLabels, labelToRemove) {
   return allLabels.filter(l => l !== labelToRemove);
 }
 
-export default function LabelsDisplay({}) {
+export default function LabelsDisplay() {
   const [{ readonlyLabels, labels }, actions] = useContext(SearchParamsContext);
 
   return (

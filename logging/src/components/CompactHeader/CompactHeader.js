@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import './CompactHeader.scss';
 import { PERIODS, SORT_TYPES } from '../../constants';
 
