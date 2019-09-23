@@ -6,8 +6,6 @@ import { QueryTransformServiceContext } from '../services/queryTransformService'
 import { HttpServiceContext } from '../services/httpService';
 import { PodSubscriptionServiceContext } from '../services/podSubscriptionService';
 
-export const isLambdaContext = createContext(true);
-
 export default function LogsContainer() {
   const httpService = React.useContext(HttpServiceContext);
   const queryTransformService = React.useContext(QueryTransformServiceContext);
@@ -34,14 +32,12 @@ export default function LogsContainer() {
   const isCompact = false;
 
   return (
-    <isLambdaContext.Provider value={true}>
-      <Logs
-        httpService={httpService}
-        queryTransformService={queryTransformService}
-        podsSubscriptionService={podsSubscriptionService}
-        readonlyLabels={[]}
-        isCompact={isCompact}
-      />
-    </isLambdaContext.Provider>
+    <Logs
+      httpService={httpService}
+      queryTransformService={queryTransformService}
+      podsSubscriptionService={podsSubscriptionService}
+      readonlyLabels={[]}
+      isCompact={isCompact}
+    />
   );
 }

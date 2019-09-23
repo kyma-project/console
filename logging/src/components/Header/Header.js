@@ -44,6 +44,7 @@ export default function Header() {
       {advancedShown && (
         <AdvancedSettings hideSettings={() => setAdvancedShown(false)} />
       )}
+
       <div>
         <LabelsDisplay />
         <div className="header__options-wrapper">

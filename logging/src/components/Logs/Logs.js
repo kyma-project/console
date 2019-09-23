@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState, useEffect, createContext } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import CompactHeader from '../CompactHeader/CompactHeader';
@@ -29,6 +29,8 @@ function sortLogs(entry1, entry2, sortDirection) {
     : -1 * positiveReturn;
 }
 
+export const lambdaNameContext = createContext(true);
+
 const Logs = ({ readonlyLabels, isCompact, httpService }) => {
   const defaultSearchParams = {
     searchPhrase: '',
@@ -49,6 +51,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
 
   const [intervalId, setIntervalId] = useState(null);
   const [logs, setLogs] = useState([]);
+  const [lambdaName, setLambdaName] = useState(null); // for local usage to connect useEffect() and lambdaNameContext
 
   useEffect(() => {
     const { autoRefreshEnabled } = searchParams;
@@ -64,6 +67,21 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
       setIntervalId(null)
     }
   }, [searchParams])
+
+
+  useEffect(() => {
+    const allLabels = [...searchParams.labels, ...searchParams.readonlyLabels];
+    const functionLabel = allLabels.find(l => ~l.indexOf('function='));
+
+    if (!functionLabel) {
+      setLambdaName(null)
+      return;
+    }
+
+    const lambdaName = functionLabel.split('=')[1];
+    setLambdaName(lambdaName)
+
+  }, [searchParams.labels, searchParams.readonlyLabels])
 
   const filterHealthChecks = entry => {
     const { showHealthChecks } = searchParams;
@@ -120,7 +138,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     }
   };
 
-  function startAutoRefresh() {
+  async function startAutoRefresh() {
     fetchLogs();
     setIntervalId(setInterval(fetchLogs, LOG_REFRESH_INTERVAL))
   }
@@ -139,11 +157,13 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
   };
 
   return (
-    <SearchParamsContext.Provider value={[searchParams, actions]}>
-      {isCompact ? <CompactHeader /> : <Header />}
+    <lambdaNameContext.Provider value={lambdaName}>
+      <SearchParamsContext.Provider value={[searchParams, actions]}>
+        {isCompact ? <CompactHeader /> : <Header />}
 
-      <LogTable entries={logs.filter(filterHealthChecks)} />
-    </SearchParamsContext.Provider>
+        <LogTable entries={logs.filter(filterHealthChecks)} />
+      </SearchParamsContext.Provider>
+    </lambdaNameContext.Provider>
   );
 }
 

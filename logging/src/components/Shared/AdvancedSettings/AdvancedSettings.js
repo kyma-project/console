@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import './AdvancedSettings.scss';
-import { isLambdaContext } from '../../LogsContainer';
+import { lambdaNameContext } from '../../Logs/Logs';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
 import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
@@ -19,87 +19,87 @@ const SettingsEntry = ({ name, children }) => {
   );
 };
 
+const QueryInput = ({ state, actions }) => (
+  <SettingsEntry name={<label htmlFor="query">Query</label>}>
+    <FormInput
+      id="query"
+      type="text"
+      onChange={async e => actions.setQuery(e.target.value)}
+      autoComplete="off"
+      value={state.query}
+    />
+  </SettingsEntry>
+);
+
+const ResultLimitInput = ({ state, actions }) => (
+  <SettingsEntry
+    name={
+      <label htmlFor="result-limit">
+        Result limit
+        <span className="small-inline-help-wrapper">
+          <InlineHelp
+            placement="right"
+            text="Return only limited number of most recent log lines."
+          />
+        </span>
+      </label>
+    }
+  >
+    <FormInput
+      id="result-limit"
+      type="number"
+      onChange={e => actions.setResultLimit(e.target.value)}
+      autoComplete="off"
+      defaultValue={state.resultLimit}
+    />
+  </SettingsEntry>
+);
+
+const PreviousLogsInput = ({ state, actions }) => (
+  <>
+    <input
+      type="checkbox"
+      id="previous-logs"
+      defaultChecked={state.showPreviousLogs}
+      onChange={e => actions.setShowPreviousLogs(e.target.checked)}
+    />
+    <label className="caption-muted" htmlFor="previous-logs">
+      logs of previous lambda version
+    </label>
+  </>
+);
+
+const HealthChecksInput = ({ state, actions }) => (
+  <>
+    <input
+      type="checkbox"
+      id="health-checks"
+      defaultChecked={state.showHealthChecks}
+      onChange={e => actions.setShowHealthChecks(e.target.checked)}
+    />
+    <label className="caption-muted" htmlFor="health-checks">
+      health check
+    </label>
+  </>
+);
+
+const ShowIstioLogsInput = ({ state, actions }) => (
+  <>
+    <input
+      type="checkbox"
+      id="istio-logs"
+      defaultChecked={state.showIstioLogs}
+      onChange={e => actions.setShowIstioLogs(e.target.checked)}
+    />
+    <label className="caption-muted" htmlFor="previous-logs">
+      Istio logs
+    </label>
+  </>
+);
+
 export default function AdvancedSettings({ hideSettings }) {
-  const isLambda = useContext(isLambdaContext);
+  const lambdaName = useContext(lambdaNameContext);
   const [state, actions] = useContext(SearchParamsContext);
-
-  const QueryInput = () => (
-    <SettingsEntry name={<label htmlFor="query">Query</label>}>
-      <FormInput
-        id="query"
-        type="text"
-        onChange={e => actions.setQuery(e.target.value)}
-        autoComplete="off"
-        value={state.query}
-      />
-    </SettingsEntry>
-  );
-
-  const ResultLimitInput = () => (
-    <SettingsEntry
-      name={
-        <label htmlFor="result-limit">
-          Result limit
-          <span className="small-inline-help-wrapper">
-            <InlineHelp
-              placement="right"
-              text="Return only limited number of most recent log lines."
-            />
-          </span>
-        </label>
-      }
-    >
-      <FormInput
-        id="result-limit"
-        type="number"
-        onChange={e => actions.setResultLimit(e.target.value)}
-        autoComplete="off"
-        defaultValue={state.resultLimit}
-      />
-    </SettingsEntry>
-  );
-
-  const PreviousLogsInput = () => (
-    <>
-      <input
-        type="checkbox"
-        id="previous-logs"
-        defaultChecked={state.showPreviousLogs}
-        onChange={e => actions.setShowPreviousLogs(e.target.checked)}
-      />
-      <label className="caption-muted" htmlFor="previous-logs">
-        logs of previous lambda version
-      </label>
-    </>
-  );
-
-  const HealthChecksInput = () => (
-    <>
-      <input
-        type="checkbox"
-        id="health-checks"
-        defaultChecked={state.showHealthChecks}
-        onChange={e => actions.setShowHealthChecks(e.target.checked)}
-      />
-      <label className="caption-muted" htmlFor="health-checks">
-        health check
-      </label>
-    </>
-  );
-
-  const ShowIstioLogsInput = () => (
-    <>
-      <input
-        type="checkbox"
-        id="istio-logs"
-        defaultChecked={state.showIstioLogs}
-        onChange={e => actions.setShowIstioLogs(e.target.checked)}
-      />
-      <label className="caption-muted" htmlFor="previous-logs">
-        Istio logs
-      </label>
-    </>
-  );
 
   return (
     <section className="advanced_settings">
@@ -112,18 +112,18 @@ export default function AdvancedSettings({ hideSettings }) {
           onClick={hideSettings}
         />
       </h2>
-      <QueryInput />
-      <ResultLimitInput />
+      <QueryInput state={state} actions={actions} />
+      <ResultLimitInput state={state} actions={actions} />
       <SettingsEntry name="Show">
-        {isLambda && (
+        {!!lambdaName && (
           <>
-            <PreviousLogsInput />
+            <PreviousLogsInput state={state} actions={actions} />
             <br />
-            <HealthChecksInput />
+            <HealthChecksInput state={state} actions={actions} />
             <br />
           </>
         )}
-        <ShowIstioLogsInput />
+        <ShowIstioLogsInput state={state} actions={actions} />
       </SettingsEntry>
     </section>
   );
