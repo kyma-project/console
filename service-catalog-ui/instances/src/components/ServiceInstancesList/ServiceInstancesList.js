@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-
-import { useQuery, useMutation } from '@apollo/react-hooks';
-
-import { StatusWrapper, StatusesList, EmptyList } from './styled';
-
-import builder from '../../commons/builder';
-import { getAllServiceInstances } from '../../queries/queries';
-import { deleteServiceInstance } from '../../queries/mutations';
-
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
+  instancesTabUtils,
   NotificationMessage,
   Spinner,
   Tab,
   Tabs,
-  Tooltip,
   ThemeWrapper,
-  instancesTabUtils,
+  Tooltip,
 } from '@kyma-project/react-components';
 import { Counter } from 'fundamental-react';
 
+import builder from '../../commons/builder';
+import { getAllServiceInstances } from '../../queries/queries';
+import { deleteServiceInstance } from '../../queries/mutations';
+import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../queries/subscriptions';
 import { serviceInstanceConstants } from '../../variables';
+
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
-
-import { ServiceInstancesWrapper } from './styled';
-import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../queries/subscriptions';
 import { handleInstanceEvent } from '../../store/ServiceInstances/events';
+
+import {
+  EmptyList,
+  ServiceInstancesWrapper,
+  StatusesList,
+  StatusWrapper,
+} from './styled';
 
 const determineSelectedTab = () => {
   const selectedTabName = LuigiClient.getNodeParams().selectedTab;
