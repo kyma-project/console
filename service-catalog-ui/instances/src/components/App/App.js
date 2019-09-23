@@ -8,7 +8,7 @@ import NotificationContext from '../../contexts/NotificationContext/Notification
 import ServiceInstanceDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
 import ServiceInstancesList from '../ServiceInstancesList/ServiceInstancesList';
 
-const NOTIFICATION_VISIBILITY_TIME = 35000;
+const NOTIFICATION_VISIBILITY_TIME = 5000;
 
 export default function App() {
   const [notificationData, setNotificationData] = useState({
