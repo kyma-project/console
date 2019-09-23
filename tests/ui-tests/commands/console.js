@@ -2,6 +2,8 @@ import request from 'request';
 import address from '../utils/address';
 import config from '../config';
 
+const WAIT_FOR_FRAME_TIMEOUT = 10000;
+
 async function testLogin(page) {
   await login(page, config);
 
@@ -58,8 +60,89 @@ async function getFrame(page) {
   return page.frames().find(frame => frame.parentFrame() !== null);
 }
 
+const getFrameForApp = (page, appUrl) => {
+  return page.frames().find(frame => {
+    const frameUrl = frame.url();
+    const targetFrameFound =
+      frame.parentFrame() !== null &&
+      !frame.isDetached() &&
+      frameUrl.indexOf(appUrl) !== -1;
+    return targetFrameFound;
+  });
+};
+
+const waitForConsoleCoreFrame = (page, waitForLoaded) => {
+  if (waitForLoaded) {
+    return waitForAppFrameLoaded(page, 'consoleapp.html');
+  }
+  return waitForAppFrameAttached(page, 'consoleapp.html');
+};
+
+const timeoutPromise = (ms, rejectMsg) => {
+  return new Promise((resolve, reject) => {
+    let timeoutId = setTimeout(() => {
+      clearTimeout(timeoutId);
+      reject(rejectMsg);
+    }, ms);
+  });
+};
+
+const waitForAppFrameAttached = async (page, appUrl) => {
+  const waitForFrame = new Promise(resolve => {
+    (async function checkIfAppFrameAttached() {
+      const frame = await getFrameForApp(page, appUrl);
+      if (frame) {
+        resolve(frame);
+      } else {
+        setTimeout(checkIfAppFrameAttached, 500);
+      }
+    })();
+  });
+
+  return Promise.race([
+    waitForFrame,
+    timeoutPromise(
+      WAIT_FOR_FRAME_TIMEOUT,
+      `Waiting for ${appUrl} frame attached timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`,
+    ),
+  ]);
+};
+
+const waitForAppFrameLoaded = async (page, appUrl) => {
+  let frameLoaded = false;
+
+  const listener = frame => {
+    const frameUrl = frame.url();
+    frameLoaded = frameUrl && frameUrl.indexOf(appUrl) !== -1;
+  };
+
+  page.on('framenavigated', listener);
+
+  const waitForAppFrameLoaded = new Promise(resolve => {
+    (function checkIfAppFrameLoaded() {
+      if (frameLoaded) {
+        frameLoaded = false;
+        page.removeListener('framenavigated', listener);
+        return resolve();
+      } else {
+        setTimeout(checkIfAppFrameLoaded, 500);
+      }
+    })();
+  });
+
+  await Promise.race([
+    waitForAppFrameLoaded,
+    timeoutPromise(
+      WAIT_FOR_FRAME_TIMEOUT,
+      `Waiting for ${appUrl} frame loaded timed out after ${WAIT_FOR_FRAME_TIMEOUT} ms.'`,
+    ),
+  ]);
+
+  return getFrameForApp(page, appUrl);
+};
+
 async function openLinkOnFrame(page, element, name) {
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   return frame.$$eval(
     element,
     (item, name) => {
@@ -130,7 +213,7 @@ async function getApplicationNames(page) {
 }
 
 async function getTextContentOnPageBySelector(page, nameSelector) {
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   return await frame.$$eval(nameSelector, nameComponents => {
     const namespaces = Array.from(nameComponents);
     return namespaces.map(namespace => namespace.textContent);
@@ -139,13 +222,13 @@ async function getTextContentOnPageBySelector(page, nameSelector) {
 
 async function applyTextSearchFilter(page, searchText) {
   const searchIconSelector = '.sap-icon--search';
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   await frame.click(searchIconSelector);
   return frame.type('input[type=search]', searchText);
 }
 
 async function createNamespace(page, name) {
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   const createNamespaceModal = '[data-e2e-id=create-namespace-form]';
   const createBtn = '.namespace-create-btn';
   const namespaceNameInput = 'input[name=namespaceName]';
@@ -161,7 +244,7 @@ async function createNamespace(page, name) {
 }
 
 async function deleteNamespace(page, namespaceName) {
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   const deleteConfirmButton = `[data-e2e-id=confirmation-modal-button-ok]`;
   const dropDownCard = `button[aria-controls=${namespaceName}]`;
   await frame.click(dropDownCard);
@@ -172,7 +255,7 @@ async function deleteNamespace(page, namespaceName) {
 }
 
 async function createApplication(page, name) {
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   // consts
   const createNamespaceBtn = '.open-create-namespace-modal';
   const createNamespaceModal = '.fd-modal';
@@ -197,7 +280,7 @@ async function createApplication(page, name) {
 }
 
 async function deleteApplication(page, name) {
-  const frame = await getFrame(page);
+  const frame = await waitForConsoleCoreFrame(page);
   const applicationsSelector = 'tr';
 
   await frame.waitForSelector(applicationsSelector);
@@ -223,6 +306,10 @@ module.exports = {
   login,
   testLogin,
   getFrame,
+  getFrameForApp,
+  waitForAppFrameLoaded,
+  waitForAppFrameAttached,
+  waitForConsoleCoreFrame,
   openLink,
   openLinkOnFrame,
   clearData,

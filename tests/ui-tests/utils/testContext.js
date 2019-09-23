@@ -10,17 +10,17 @@ const context = (function() {
   });
 
   return {
-    getBrowser: () => {
+    getBrowser: slowMoFactor => {
+      const slowMo = slowMoFactor || config.defaultSlowMoFactor;
       return puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: config.headless,
-        slowMo: 80,
+        slowMo,
         args: [
           `--window-size=${config.viewportWidth},${config.viewportHeight}`,
           '--no-sandbox',
           '--disable-setuid-sandbox',
-          '--disk-cache-size=10000000',
-          '--media-cache-size=10000000',
+          '--disable-dev-shm-usage',
         ],
       });
     },

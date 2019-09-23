@@ -30,7 +30,7 @@ export const mocks = [
       data: {
         labelDefinition: {
           key: 'labelWithInvalidSchema',
-          schema: invalidSchema,
+          schema: JSON.stringify(invalidSchema),
         },
       },
     },
@@ -47,7 +47,7 @@ export const mocks = [
       data: {
         labelDefinition: {
           key: 'labelWithValidSchema',
-          schema: validSchema,
+          schema: JSON.stringify(validSchema),
         },
       },
     },
@@ -57,7 +57,10 @@ export const mocks = [
     request: {
       query: UPDATE_LABEL_DEFINITION,
       variables: {
-        in: { key: 'noschemalabel', schema: null },
+        in: {
+          key: 'noschemalabel',
+          schema: null,
+        },
       },
     },
     result: jest.fn().mockReturnValue({
@@ -76,7 +79,7 @@ export const mocks = [
       variables: {
         in: {
           key: 'labelWithValidSchema',
-          schema: validSchema,
+          schema: JSON.stringify(validSchema),
         },
       },
     },
@@ -84,7 +87,7 @@ export const mocks = [
       data: {
         updateLabelDefinition: {
           key: 'labelWithValidSchema',
-          schema: validSchema,
+          schema: JSON.stringify(validSchema),
         },
       },
     }),

@@ -67,7 +67,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
         new Filter('metadata.uid', '', false)
       ]
     };
-    this.pagingState = { pageNumber: 1, pageSize: 20 };
+    this.pagingState = { pageNumber: 1, pageSize: 21 };
     this.namespacesService.namespaceChangeStateEmitter$.subscribe(() => {
       this.reload();
     });

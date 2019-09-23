@@ -24,12 +24,17 @@ export default compose(
   }),
   graphql(UPDATE_LABEL_DEFINITION, {
     props: ({ mutate, error }) => ({
-      updateLabelDefinition: data =>
+      updateLabelDefinition: data => {
+        const input = {
+          ...data,
+          schema: data.schema ? JSON.stringify(data.schema) : null,
+        };
         mutate({
           variables: {
-            in: data,
+            in: input,
           },
-        }),
+        });
+      },
     }),
   }),
   graphql(DELETE_LABEL_DEFINITION, {

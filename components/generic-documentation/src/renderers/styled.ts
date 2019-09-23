@@ -139,21 +139,21 @@ export const StyledMarkdown = styled.div`
     h1 {
       margin-bottom: 26px;
 
-      .cms__text {
+      .dc-markdown__text {
         font-size: 22px !important;
       }
     }
     h2 {
       margin-bottom: 16px;
 
-      .cms__text {
+      .dc-markdown__text {
         font-size: 16px !important;
       }
     }
     h3 {
       margin-bottom: 8px;
 
-      .cms__text {
+      .dc-markdown__text {
         font-size: 14px !important;
       }
     }
@@ -162,7 +162,7 @@ export const StyledMarkdown = styled.div`
       color: #0b74de;
       text-decoration: none;
 
-      > .cms__text {
+      > .dc-markdown__text {
         color: #0b74de !important;
       }
     }
@@ -204,7 +204,7 @@ export const StyledMarkdown = styled.div`
       text-transform: uppercase;
       line-height: 1.18;
 
-      .cms__text {
+      .dc-markdown__text {
         font-size: 11px;
       }
     }
@@ -225,7 +225,7 @@ export const StyledMarkdown = styled.div`
       white-space: -o-pre-wrap;
       word-wrap: break-word;
 
-      .cms__text {
+      .dc-markdown__text {
         font-size: 14px;
       }
     }
@@ -270,19 +270,19 @@ export const StyledMarkdown = styled.div`
       margin-bottom: 12px;
     }
 
-    .cms__text {
+    .dc-markdown__text {
       font-family: '72';
       font-size: 16px;
       color: rgb(81, 85, 89);
       line-height: 1.57;
     }
 
-    .cms__code-wrapper {
+    .dc-markdown__code-wrapper {
       position: relative;
       margin: 0 0 16px 0;
     }
 
-    .cms__code-pre-wrapper {
+    .dc-markdown__code-pre-wrapper {
       font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
         monospace !important;
       background: rgb(250, 250, 250);
@@ -316,25 +316,25 @@ export const StyledMarkdown = styled.div`
 
     ${tabsStyling}
 
-    .cms__blockquote {
+    .dc-markdown__blockquote {
       margin-left: 0;
       margin-right: 0;
       padding: 16px;
     }
 
-    .cms__blockquote--note {
+    .dc-markdown__blockquote--note {
       border-left: 3px solid rgb(0, 115, 230);
     }
 
-    .cms__blockquote--tip {
+    .dc-markdown__blockquote--tip {
       border-left: 3px solid rgb(73, 199, 160);
     }
 
-    .cms__blockquote--caution {
+    .dc-markdown__blockquote--caution {
       border-left: 3px solid rgb(221, 0, 0);
     }
 
-    .cms__blockquote-content {
+    .dc-markdown__blockquote-content {
       display: inline-block;
       > p {
         margin-bottom: 5px;
@@ -344,118 +344,82 @@ export const StyledMarkdown = styled.div`
       }
     }
 
-    .cms__strong {
+    .dc-markdown__strong {
       font-weight: 700;
 
-      .cms__text {
+      .dc-markdown__text {
         font-weight: 700 !important;
       }
     }
   }
 `;
 
-export const StyledAsyncApi = styled.div`
-  &&&&& {
-    > div > div {
-      padding: 16px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: rgba(151, 151, 151, 0.26);
-      border-image: initial;
-      border-radius: 4px;
-      margin-bottom: 20px;
+export const StyledOData = styled.div`
+  &&& {
+    .odata {
+      padding: 0;
 
-      &:last-child {
-        margin-bottom: 0;
+      .fd-panel {
+        box-shadow: none;
+      }
+
+      .fd-panel__header {
+        cursor: pointer;
+      }
+
+      .odata__table {
+        overflow: auto;
       }
     }
   }
 `;
 
-export const StyledOData = styled.div`
-  &&&&& {
-    > section {
-      display: flex;
-      flex-direction: column;
-    }
+export const StyledAsyncAPI = styled.div`
+  &&& {
+    .asyncapi {
+      padding-top: 0px;
+      background: transparent;
 
-    > section > button {
-      font-size: 14px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 1.43;
-      letter-spacing: normal;
-      align-self: flex-end;
-      border-radius: 4px;
-      border: solid 1px #0a6ed1;
-      background-color: white;
-      color: #0a6ed1;
-      transition: background-color 0.2s ease-in-out;
-
-      :hover {
-        background-color: #0a6ed1;
-        color: white;
+      > section > div,
+      > section > section > div {
+        border: solid 1px #97979742;
+        box-shadow: none;
+        margin-top: 12px;
       }
     }
-
-    > section > section {
-      margin-bottom: 16px;
-      border-radius: 4px;
+    h1 {
+      font-weight: 700;
+      font-size: 28px;
+    }
+    .asyncapi__info {
       border: solid 1px #97979742;
-
-      & > div[class*='styled__TablePanel'] {
-        border-radius: 4px;
-
-        & > div[class*='styled__TableHeaderWrapper'] {
-          border-top: none;
-          border-radius: 4px;
-        }
-      }
+      box-shadow: none;
     }
-
-    h1.fd-panel__title {
+    .asyncapi__info-description {
+      margin-top: 16px;
+    }
+    h2 {
+      font-weight: 700;
+      font-size: 21px;
+    }
+    h3 {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    h4 {
+      font-weight: 700;
       font-size: 14px;
-      font-weight: bold;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 1.43;
-      letter-spacing: normal;
-      color: #32363a;
     }
-
-    tr {
-      border-radius: 4px;
-
-      & > td {
-        border-radius: 4px;
+    .asyncapi__markdown {
+      ul {
+        list-style-type: disc;
       }
-
-      th {
-        background-color: #f3f4f573;
-      }
-    }
-
-    tr > td {
-      padding: 16px 20px;
-      border-radius: 4px;
-
-      & > table {
-        table-layout: fixed;
-        border-collapse: collapse;
-        border-radius: 4px;
-
-        > thead {
-          border-top-left-radius: 4px;
-          border-top-right-radius: 4px;
-          border: solid 1px #97979742;
-        }
-
-        > tbody {
-          border-bottom-left-radius: 4px;
-          border-bottom-right-radius: 4px;
-          border: solid 1px #97979742;
-        }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        margin: 1rem 0;
       }
     }
   }

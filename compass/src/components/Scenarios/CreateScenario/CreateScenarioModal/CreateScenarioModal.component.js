@@ -18,7 +18,9 @@ export default class CreateScenarioModal extends React.Component {
     const scenariosQuery = this.props.scenariosQuery;
     return (
       !!scenariosQuery.error || // scenariosQuery.error means there were no scenarios yet
-      scenariosQuery.labelDefinition.schema.items.enum.includes(scenarioName)
+      JSON.parse(scenariosQuery.labelDefinition.schema).items.enum.includes(
+        scenarioName,
+      )
     );
   };
 
@@ -65,7 +67,8 @@ export default class CreateScenarioModal extends React.Component {
     if (scenariosQuery.error) {
       await createScenarios([scenarioName]);
     } else {
-      const currentScenarios = scenariosQuery.labelDefinition.schema.items.enum;
+      const currentScenarios = JSON.parse(scenariosQuery.labelDefinition.schema)
+        .items.enum;
       await addScenario(currentScenarios, scenarioName);
     }
     scenariosQuery.refetch();

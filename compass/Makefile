@@ -2,21 +2,16 @@ IMG_NAME = compass-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-all: root-pr resolve test build pre-build-image build-image push-image
-ci-pr: root-pr resolve test build pre-build-image pull-licenses build-image push-image
-ci-master: root-master resolve test build pre-build-image pull-licenses build-image push-image
+all: resolve test pre-build-image build-image push-image
+ci-pr: resolve test pre-build-image pull-licenses build-image push-image
+ci-master:  resolve test pre-build-image pull-licenses build-image push-image
 
-.PHONY: root-pr
-root-pr:
-	make -C "../" ci-pr
-
-.PHONY: root-master
-root-master:
-	make -C "../" ci-master
 
 .PHONY: resolve
 resolve:
-	npm install --no-optional
+	cd .. && npm ci
+	cd ../components/react && npm ci && npm run build
+	npm ci
 
 .PHONY: test
 test:
@@ -26,14 +21,16 @@ test:
 build:
 	npm run build
 
-.PHONY: pre-build-image
-pre-build-image:
-	../scripts/pre-build-docker-image.sh
+.PHONY: pre-build-image	
+pre-build-image:	
+	../scripts/pre-build-docker-image.sh	
+
 
 .PHONY: pull-licenses
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
-	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,../common,../components/react,../components/shared,../components/generic-documentation"
+	@echo "Pulling licenses..."
+	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,../common,../components/react,../components/shared,../components/generic-documentation" > null
 else
 	mkdir -p licenses
 endif

@@ -4,7 +4,9 @@ import convertToNavigationTree from './microfrontend-converter';
 import {
   hideDisabledNodes,
   getSystemNamespaces,
-  shouldShowSystemNamespaces
+  shouldShowSystemNamespaces,
+  saveCurrentLocation,
+  getPreviousLocation
 } from './navigation-helpers';
 
 var clusterConfig = window['clusterConfig'];
@@ -489,6 +491,7 @@ function getConsoleInitData() {
       name
       category
       viewBaseUrl
+      preloadUrl
       placement
       navigationNodes{
         label
@@ -571,6 +574,7 @@ function getCorrespondingNamespaceLocation(namespaceName) {
 }
 
 function relogin() {
+  saveCurrentLocation();
   localStorage.removeItem('luigi.auth');
   location.reload();
 }
@@ -588,6 +592,8 @@ var initPromises = [getFreshKeys()];
 
 if (token) {
   initPromises.push(getConsoleInitData());
+} else {
+  saveCurrentLocation();
 }
 
 Promise.all(initPromises)
@@ -789,7 +795,12 @@ Promise.all(initPromises)
             onLogout: () => {
               console.log('onLogout');
             },
-            onAuthSuccessful: data => {},
+            onAuthSuccessful: () => {
+              const prevLocation = getPreviousLocation();
+              if (prevLocation) {
+                window.location.replace(prevLocation);
+              }
+            },
             onAuthExpired: () => {
               console.log('onAuthExpired');
             },

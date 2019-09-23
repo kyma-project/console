@@ -12,14 +12,15 @@ import CreateScenarioModal from './CreateScenarioModal.component';
 
 //create input for both create and update
 function createLabelDefinitionInput(scenarios) {
+  const schema = {
+    type: 'array',
+    minItems: 1,
+    uniqueItems: true,
+    items: { type: 'string', enum: scenarios },
+  };
   return {
     key: 'scenarios',
-    schema: {
-      type: 'array',
-      minItems: 1,
-      uniqueItems: true,
-      items: { type: 'string', enum: scenarios },
-    },
+    schema: JSON.stringify(schema),
   };
 }
 

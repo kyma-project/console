@@ -62,3 +62,7 @@
 .action-bar-wrapper > section {
   flex-grow: 1;
 }
+
+.fd-toggle input:checked + .fd-toggle__switch::before {
+  left: -2px !important;
+}

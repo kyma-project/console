@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GenericList > internalRenderers renderActionElement() Renders nothing if no args provided 1`] = `false`;
+exports[`GenericList > internalRenderers renderActionElement() Renders nothing if no args provided 1`] = `null`;
 
 exports[`GenericList > internalRenderers renderActionElement() Renders the popover if correct args are provided 1`] = `
 <Popover

@@ -372,6 +372,12 @@ const responsesTable = css`
             td.col {
               padding-left: 16px;
             }
+            td.response-col_status {
+              padding-left: 16px;
+            }
+            td.response-col_links {
+              padding-left: 16px;
+            }
             td.col:first-child {
               font-family: '72';
               font-size: 14px;
@@ -522,7 +528,7 @@ const modelSectionStyles = css`
 
 export const StyledSwagger = styled.section`
   background: #fff;
-  padding: 16px 0;
+  padding: 16px;
   border-style: solid;
   border-color: rgba(151, 151, 151, 0.26);
   border-image: initial;

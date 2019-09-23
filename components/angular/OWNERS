@@ -1,0 +1,6 @@
+reviewers:
+    - default-reviewers
+    - pekura
+
+approvers:
+    - default-approvers
