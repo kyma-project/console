@@ -1,20 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-
+import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 import { Button } from '@kyma-project/react-components';
 
-AutoRefreshButton.propTypes = {
-  autoRefreshEnabled: PropTypes.bool.isRequired,
-  updateParentState: PropTypes.func.isRequired,
-};
-
-export default function AutoRefreshButton({
-  autoRefreshEnabled,
-  updateParentState,
-}) {
-  function toggleAutoRefresh() {
-    updateParentState({ autoRefreshEnabled: !autoRefreshEnabled });
-  }
+export default function AutoRefreshButton({}) {
+  const [{ autoRefreshEnabled }, actions] = useContext(SearchParamsContext);
 
   return (
     <Button
@@ -22,7 +12,7 @@ export default function AutoRefreshButton({
       glyph={autoRefreshEnabled ? 'media-pause' : 'media-play'}
       option="light"
       size="xs"
-      onClick={() => toggleAutoRefresh()}
+      onClick={() => actions.setAutoRefresh(!autoRefreshEnabled)}
       data-test-id="auto-refresh-button"
     >
       auto refresh

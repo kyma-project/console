@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import './Header.scss';
 
 import { Panel } from 'fundamental-react';
@@ -11,54 +10,16 @@ import LabelsDisplay from './../Shared/LabelsDisplay/LabelsDisplay';
 import OptionsDropdown from './../Shared/SelectDropdown/SelectDropdown';
 import AutoRefreshButton from './../Shared/AutoRefreshButton/AutoRefreshButton';
 import { PERIODS, SORT_TYPES } from '../../constants';
+import { SearchParamsContext } from '../Logs/SearchParams.reducer';
 
-Header.propTypes = {
-  updateFilteringState: PropTypes.func.isRequired,
-  searchPhrase: PropTypes.string.isRequired,
-  labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  readonlyLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  logsPeriod: PropTypes.oneOf(PERIODS),
-  sortDirection: PropTypes.oneOf(SORT_TYPES),
-  advancedSettings: PropTypes.object.isRequired,
-  autoRefreshEnabled: PropTypes.bool.isRequired,
-};
-
-export default function Header({
-  updateFilteringState,
-  searchPhrase,
-  labels,
-  readonlyLabels,
-  logsPeriod,
-  sortDirection,
-  advancedSettings,
-  autoRefreshEnabled,
-}) {
+export default function Header() {
   const [advancedShown, setAdvancedShown] = React.useState(false);
+  const [state, actions] = useContext(SearchParamsContext);
 
-  function addLabel(label) {
-    if (!labels.includes(label)) {
-      updateFilteringState({ labels: [...labels, label] });
-    }
-  }
-
-  function removeLabel(label) {
-    updateFilteringState({ labels: labels.filter(l => l !== label) });
-  }
-
-  function removeAllLabels() {
-    updateFilteringState({ labels: [] });
-  }
+  const { logsPeriod, sortDirection } = state;
 
   function toggleAdvancedSettingsVisibility() {
     setAdvancedShown(!advancedShown);
-  }
-
-  function updateLogsPeriod(logsPeriod) {
-    updateFilteringState({ logsPeriod });
-  }
-
-  function updateSortDirection(sortDirection) {
-    updateFilteringState({ sortDirection });
   }
 
   const advancedSettingsButtonText = advancedShown
@@ -69,11 +30,8 @@ export default function Header({
     <Panel className="fd-has-padding-regular fd-has-padding-bottom-none">
       <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny">Logs</h1>
       <section className="header__settings-group">
-        <LabelsInput selectedLabels={labels} addLabel={addLabel} />
-        <SearchInput
-          searchPhrase={searchPhrase}
-          updateFilteringState={updateFilteringState}
-        />
+        <LabelsInput />
+        <SearchInput />
         <span
           data-test-id="advanced-settings-toggle"
           className="link-button fd-has-type-minus-1 header__settings-group__toggle"
@@ -83,35 +41,23 @@ export default function Header({
         </span>
       </section>
       {advancedShown && (
-        <AdvancedSettings
-          advancedSettings={advancedSettings}
-          hideSettings={() => setAdvancedShown(false)}
-          updateFilteringState={updateFilteringState}
-        />
+        <AdvancedSettings hideSettings={() => setAdvancedShown(false)} />
       )}
       <div>
-        <LabelsDisplay
-          labels={labels}
-          readonlyLabels={readonlyLabels}
-          removeLabel={removeLabel}
-          removeAll={removeAllLabels}
-        />
+        <LabelsDisplay />
         <div className="header__options-wrapper">
-          <AutoRefreshButton
-            autoRefreshEnabled={autoRefreshEnabled}
-            updateParentState={updateFilteringState}
-          />
+          <AutoRefreshButton />
           <OptionsDropdown
             availabelValues={PERIODS}
-            currentValue={logsPeriod}
             icon="past"
-            updateValue={updateLogsPeriod}
+            currentValue={logsPeriod}
+            updateValue={actions.setLogsPeriod}
           />
           <OptionsDropdown
             availabelValues={SORT_TYPES}
-            currentValue={sortDirection}
             icon="sort"
-            updateValue={updateSortDirection}
+            currentValue={sortDirection}
+            updateValue={actions.setSortDir}
           />
         </div>
       </div>

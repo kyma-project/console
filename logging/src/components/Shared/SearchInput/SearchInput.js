@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './SearchInput.scss';
-import { LogsContext } from '../../Logs/Logs.reducer';
+import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 
 import { InlineHelp } from 'fundamental-react';
 
@@ -15,7 +15,7 @@ SearchInput.defaultProps = {
 };
 
 export default function SearchInput({ compact }) {
-  const [state, actions] = useContext(LogsContext);
+  const [state, actions] = useContext(SearchParamsContext);
 
   return (
     <section className="fd-has-margin-right-small">

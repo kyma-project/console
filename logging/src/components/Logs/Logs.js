@@ -1,10 +1,18 @@
-import React, {createContext, useContext} from 'react';
+import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import CompactHeader from '../CompactHeader/CompactHeader';
 import LogTable from '../LogTable/LogTable';
-import reducer, {SET_LABELS, SET_SHOW_PREVIOUS_LOGS} from './Logs.reducer'
+import searchParamsReducer, {
+  SET_LABELS,
+  SET_SHOW_PREVIOUS_LOGS, SET_SEARCH_PHRASE,
+  ADD_LABEL, SET_QUERY, SET_RESULT_LIMIT,
+  SET_SHOW_ISTIO_LOGS, SET_SHOW_HEALTH_CHECKS,
+  SET_AUTO_REFRESH, SET_LOGS_PERIOD, SET_SORT_DIR,
+  SearchParamsContext
+} from './SearchParams.reducer'
 // import 'core-js/es/array/flat-map'; todo
+
 
 import {
   SORT_ASCENDING,
@@ -21,81 +29,66 @@ function sortLogs(entry1, entry2, sortDirection) {
     : -1 * positiveReturn;
 }
 
-export default class Logs extends React.Component {
-  static propTypes = {
-    httpService: PropTypes.object.isRequired,
-    queryTransformService: PropTypes.object.isRequired,
-    podsSubscriptionService: PropTypes.object.isRequired,
-
-    isCompact: PropTypes.bool,
-    readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
-  };
-
-  static defaultProps = {
-    isLambda: false,
-    readonlyLabels: [],
-  };
-
-  state = {
+const Logs = ({ readonlyLabels, isCompact, httpService }) => {
+  const defaultSearchParams = {
     searchPhrase: '',
     labels: [],
-    readonlyLabels: this.props.readonlyLabels,
+    readonlyLabels: readonlyLabels,
     logsPeriod: DEFAULT_PERIOD,
-    advancedSettings: {
-      query: '',
-      resultLimit: 1000,
-      showPreviousLogs: true,
-      showHealthChecks: true,
-      showIstioLogs: false,
-    },
+    query: '',
+    resultLimit: 1000,
+    showPreviousLogs: true,
+    showHealthChecks: true,
+    showIstioLogs: false,
     sortDirection: SORT_ASCENDING,
     logs: [],
     autoRefreshEnabled: true,
   };
-  intervalId = null;
 
-  componentDidMount = () => {
-    const [state, dispatch] = useReducer(reducer, {});
-    const { labels } = this.state;
-    this.setState({
-      advancedSettings: {
-        ...this.state.advancedSettings,
-        query: this.props.queryTransformService.toQuery(labels),
-      },
-    });
+  const [searchParams, dispatch] = useReducer(searchParamsReducer, defaultSearchParams);
 
-    if (this.state.autoRefreshEnabled) {
-      this.startAutoRefresh();
+  const [intervalId, setIntervalId] = useState(null);
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    const { autoRefreshEnabled } = searchParams;
+    if (intervalId) {
+      clearInterval(intervalId)
     }
+
+    if (autoRefreshEnabled) {
+      startAutoRefresh(searchParams)
+    }
+
+    if (!autoRefreshEnabled && intervalId) {
+      setIntervalId(null)
+    }
+  }, [searchParams])
+
+  const filterHealthChecks = entry => {
+    const { showHealthChecks } = searchParams;
+    return showHealthChecks || !~entry.log.indexOf('GET /healthz');
   };
 
-  componentWillUnmount = () => {
-    clearInterval(this.intervalId);
-  };
-
-  fetchLogs = async () => {
+  async function fetchLogs(state) {
     const {
       searchPhrase,
       labels,
       readonlyLabels,
-      advancedSettings,
       sortDirection,
       logsPeriod,
-    } = this.state;
+      resultLimit,
+      showPreviousLogs,
+      showHealthChecks,
+      showIstioLogs,
+    } = state;
 
     if (!labels.length && !readonlyLabels.length && !searchPhrase) {
       return;
     }
 
-    const {
-      resultLimit,
-      showPreviousLogs,
-      showHealthChecks,
-      showIstioLogs,
-    } = advancedSettings;
-
     try {
-      const result = await this.props.httpService.fetchLogs({
+      const result = await httpService.fetchLogs({
         searchPhrase,
         labels: [...readonlyLabels, labels],
         resultLimit,
@@ -104,6 +97,7 @@ export default class Logs extends React.Component {
         showPreviousLogs,
         showHealthChecks,
       });
+      console.log('fetchLogs')
 
       let streams = result.streams || [];
 
@@ -120,102 +114,51 @@ export default class Logs extends React.Component {
         }))
         .sort((e1, e2) => sortLogs(e1, e2, sortDirection));
 
-      this.setState({ logs });
+      setLogs(logs)
     } catch (e) {
       console.warn(e); // todo add error message
     }
   };
 
-  filterHealthChecks = entry => {
-    const showHealthChecks = this.state.advancedSettings.showHealthChecks;
-    return showHealthChecks || !~entry.log.indexOf('GET /healthz');
-  };
-
-  startAutoRefresh() {
-    this.fetchLogs();
-    this.intervalId = setInterval(this.fetchLogs, LOG_REFRESH_INTERVAL);
+  function startAutoRefresh(state) {
+    fetchLogs(state);
+    setIntervalId(setInterval(() => fetchLogs(state), LOG_REFRESH_INTERVAL))
   }
-
-  // intercept setState
-  updateState = partialState => {
-    const { parseQuery, toQuery } = this.props.queryTransformService;
-    const { query } = this.state;
-
-    let additionalState = {};
-
-    if ('labels' in partialState) {
-      // labels changed, update query
-      additionalState = {
-        advancedSettings: {
-          ...this.state.advancedSettings,
-          query: toQuery(partialState.labels),
-        },
-      };
-    } else if (
-      'advancedSettings' in partialState &&
-      partialState.advancedSettings.query !== query
-    ) {
-      // query changed, update searchPhrase and labels
-      additionalState = {
-        ...this.state.advancedSettings,
-        ...parseQuery(partialState.advancedSettings.query),
-      };
-    }
-
-    if ('autoRefreshEnabled' in partialState) {
-      if (partialState.autoRefreshEnabled) {
-        this.startAutoRefresh();
-      } else {
-        clearInterval(this.intervalId);
-      }
-    }
-
-    this.setState({ ...partialState, ...additionalState });
+  const actions = {
+    addLabel: label => dispatch({ type: ADD_LABEL, value: label }),
+    setLabels: labels => dispatch({ type: SET_LABELS, value: labels }),
+    setShowPreviousLogs: show => dispatch({ type: SET_SHOW_PREVIOUS_LOGS, value: show }),
+    setShowHealthChecks: show => dispatch({ type: SET_SHOW_HEALTH_CHECKS, value: show }),
+    setShowIstioLogs: show => dispatch({ type: SET_SHOW_ISTIO_LOGS, value: show }),
+    setSearchPhrase: phrase => dispatch({ type: SET_SEARCH_PHRASE, value: phrase }),
+    setQuery: query => dispatch({ type: SET_QUERY, value: query }),
+    setResultLimit: limit => dispatch({ type: SET_RESULT_LIMIT, value: limit }),
+    setAutoRefresh: isRefreshEnabled => dispatch({ type: SET_AUTO_REFRESH, value: isRefreshEnabled }),
+    setLogsPeriod: period => dispatch({ type: SET_LOGS_PERIOD, value: period }),
+    setSortDir: dir => dispatch({ type: SET_SORT_DIR, value: dir })
   };
 
-  render() {
-    const {
-      searchPhrase,
-      labels,
-      readonlyLabels,
-      logsPeriod,
-      sortDirection,
-      advancedSettings,
-      autoRefreshEnabled,
-      logs,
-    } = this.state;
-    const { isCompact } = this.props;
+  return (
 
-    const actions = {
-      setLabels: (labels) => ({type: SET_LABELS, value: labels}),
-      setShowPreviousLogs: (show) => ({type: SET_SHOW_PREVIOUS_LOGS, value: show})
-    };
-
-    return (
-      <LogsContext.Provider value={[state, actions]}>
-        {isCompact ? (
-          <CompactHeader
-            updateFilteringState={this.updateState}
-            searchPhrase={searchPhrase}
-            logsPeriod={logsPeriod}
-            sortDirection={sortDirection}
-            advancedSettings={advancedSettings}
-            autoRefreshEnabled={autoRefreshEnabled}
-          />
-        ) : (
-          <Header
-            updateFilteringState={this.updateState}
-            searchPhrase={searchPhrase}
-            labels={labels}
-            readonlyLabels={readonlyLabels}
-            logsPeriod={logsPeriod}
-            sortDirection={sortDirection}
-            advancedSettings={advancedSettings}
-            autoRefreshEnabled={autoRefreshEnabled}
-          />
+    <SearchParamsContext.Provider value={[searchParams, actions]}>
+      {isCompact ? (
+        // <CompactHeader
+        //   updateFilteringState={this.updateState}
+        //   searchPhrase={searchPhrase}
+        //   logsPeriod={logsPeriod}
+        //   sortDirection={sortDirection}
+        //   advancedSettings={advancedSettings}
+        //   autoRefreshEnabled={autoRefreshEnabled}
+        // />
+        null
+      ) : (
+          <Header />
         )}
-        <LogTable entries={logs.filter(this.filterHealthChecks)} />
-      </LogsContext.Provider>
-    );
-  }
+
+      <LogTable entries={logs.filter(filterHealthChecks)} />
+    </SearchParamsContext.Provider>
+  );
+
 }
+
+export default Logs;

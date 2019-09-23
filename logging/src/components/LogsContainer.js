@@ -39,8 +39,7 @@ export default function LogsContainer() {
         httpService={httpService}
         queryTransformService={queryTransformService}
         podsSubscriptionService={podsSubscriptionService}
-        //  readonlyLabels={labels}
-
+        readonlyLabels={[]}
         isCompact={isCompact}
       />
     </isLambdaContext.Provider>

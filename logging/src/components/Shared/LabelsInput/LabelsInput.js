@@ -5,7 +5,7 @@ import { ComboboxInput } from 'fundamental-react/ComboboxInput';
 
 import DropdownRenderer from './DropdownRenderer/DropdownRenderer';
 import { HttpServiceContext } from '../../../services/httpService';
-import { LogsContext } from '../../Logs/Logs.reducer';
+import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 
 import { LOG_LABEL_CATEGORIES } from '../../../constants';
 const localStorageKey = 'recent_log_labels';
@@ -27,7 +27,7 @@ function getRecentLabels() {
 }
 
 export default function LabelsInput({ maxRecentCount }) {
-  const [state, actions] = useContext(LogsContext);
+  const [state, actions] = useContext(SearchParamsContext);
 
   const [logLabelCategories, setLogLabelsCategories] = React.useState(
     LOG_LABEL_CATEGORIES.map(c => ({ name: c })),

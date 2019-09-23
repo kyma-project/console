@@ -29,7 +29,7 @@ export default function SelectDropdown({
     <Menu>
       <Menu.List>
         {availabelValues.map(value => (
-          <Menu.Item onClick={() => updateValue(value)}>
+          <Menu.Item key={value} onClick={() => updateValue(value)}>
             <span
               className={classNames('caption-muted', {
                 'fd-has-font-weight-bold': value === currentValue,

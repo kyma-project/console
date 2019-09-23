@@ -1,22 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import './LabelsDisplay.scss';
-
+import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 import { Token } from 'fundamental-react';
 
-LabelsDisplay.propTypes = {
-  labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  readonlyLabels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  removeLabel: PropTypes.func.isRequired,
-  removeAll: PropTypes.func.isRequired,
-};
+function getLabelsExceptOne(allLabels, labelToRemove) {
+  return allLabels.filter(l => l !== labelToRemove);
+}
 
-export default function LabelsDisplay({
-  labels,
-  readonlyLabels,
-  removeLabel,
-  removeAll,
-}) {
+export default function LabelsDisplay({}) {
+  const [{ readonlyLabels, labels }, actions] = useContext(SearchParamsContext);
+
   return (
     <section className="labels-display">
       <ul>
@@ -29,7 +23,12 @@ export default function LabelsDisplay({
         ))}
         {labels.map(label => (
           <li key={label}>
-            <Token className="caption-muted" onClick={() => removeLabel(label)}>
+            <Token
+              className="caption-muted"
+              onClick={() =>
+                actions.setLabels(getLabelsExceptOne(labels, label))
+              }
+            >
               {label}
             </Token>
           </li>
@@ -39,7 +38,7 @@ export default function LabelsDisplay({
         <span
           data-test-id="clear-all"
           className="link-button fd-has-type-minus-1 fd-has-margin-left-tiny"
-          onClick={() => removeAll()}
+          onClick={() => actions.setLabels([])}
         >
           Clear All
         </span>

@@ -4,7 +4,7 @@ import './AdvancedSettings.scss';
 import { isLambdaContext } from '../../LogsContainer';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
-import { LogsContext } from '../../Logs/Logs.reducer';
+import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
 
 AdvancedSettings.propTypes = {
   hideSettings: PropTypes.func.isRequired,
@@ -21,19 +21,7 @@ const SettingsEntry = ({ name, children }) => {
 
 export default function AdvancedSettings({ hideSettings }) {
   const isLambda = useContext(isLambdaContext);
-  const [state, actions] = useContext(LogsContext);
-
-  function setShowPreviousLogs(e) {
-    actions.setShowPreviousLogs(e.target.checked);
-  }
-
-  function setHealthChecks(e) {
-    updateState({ showHealthChecks: e.target.checked });
-  }
-
-  function setIstioLogs(e) {
-    updateState({ showIstioLogs: e.target.checked });
-  }
+  const [state, actions] = useContext(SearchParamsContext);
 
   const QueryInput = () => (
     <SettingsEntry name={<label htmlFor="query">Query</label>}>
