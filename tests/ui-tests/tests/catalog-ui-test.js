@@ -72,7 +72,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       throw new Error('Failed to create a namespace:', err);
     }
     await retry(async () => {
-      const data = await common.beforeAll(null, 60);
+      const data = await common.beforeAll(null, 80);
       browser = data.browser;
       page = data.page;
     });
@@ -467,9 +467,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       visible: true,
     });
     await fullPlanInstance.click();
-    await frame.waitForNavigation({
-      waitUntil: ['domcontentloaded'],
-    });
 
     console.log('Confirm all necessary fields');
     await frame.waitForSelector(exampleInstanceServiceClass);
