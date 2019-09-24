@@ -6,7 +6,7 @@ import LogTable from '../LogTable/LogTable';
 import searchParamsReducer, {
   SET_LABELS,
   SET_SHOW_PREVIOUS_LOGS, SET_SEARCH_PHRASE,
-  ADD_LABEL, SET_QUERY, SET_RESULT_LIMIT,
+  ADD_LABEL, SET_RESULT_LIMIT,
   SET_SHOW_ISTIO_LOGS, SET_SHOW_HEALTH_CHECKS,
   SET_AUTO_REFRESH, SET_LOGS_PERIOD, SET_SORT_DIR,
   SearchParamsContext
@@ -37,13 +37,11 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     labels: [],
     readonlyLabels: readonlyLabels,
     logsPeriod: DEFAULT_PERIOD,
-    query: '',
     resultLimit: 1000,
     showPreviousLogs: true,
     showHealthChecks: true,
     showIstioLogs: false,
     sortDirection: SORT_ASCENDING,
-    logs: [],
     autoRefreshEnabled: true,
   };
 
@@ -101,7 +99,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
       showIstioLogs,
     } = searchParams;
 
-    if (!labels.length && !readonlyLabels.length && !searchPhrase) {
+    if (!labels.length && !readonlyLabels.length) {
       return;
     }
 
@@ -149,7 +147,6 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     setShowHealthChecks: show => dispatch({ type: SET_SHOW_HEALTH_CHECKS, value: show }),
     setShowIstioLogs: show => dispatch({ type: SET_SHOW_ISTIO_LOGS, value: show }),
     setSearchPhrase: phrase => dispatch({ type: SET_SEARCH_PHRASE, value: phrase }),
-    setQuery: query => dispatch({ type: SET_QUERY, value: query }),
     setResultLimit: limit => dispatch({ type: SET_RESULT_LIMIT, value: limit }),
     setAutoRefresh: isRefreshEnabled => dispatch({ type: SET_AUTO_REFRESH, value: isRefreshEnabled }),
     setLogsPeriod: period => dispatch({ type: SET_LOGS_PERIOD, value: period }),
@@ -160,8 +157,10 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     <lambdaNameContext.Provider value={lambdaName}>
       <SearchParamsContext.Provider value={[searchParams, actions]}>
         {isCompact ? <CompactHeader /> : <Header />}
-
-        <LogTable entries={logs.filter(filterHealthChecks)} />
+        {searchParams.labels.length || searchParams.readonlyLabels.length
+          ? <LogTable entries={logs.filter(filterHealthChecks)} />
+          : <article className="fd-container fd-container--centered"><p className="fd-has-type-5 fd-has-margin-large">Add some labels to filter to see the logs</p></article>
+        }
       </SearchParamsContext.Provider>
     </lambdaNameContext.Provider>
   );

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import './AdvancedSettings.scss';
 import { lambdaNameContext } from '../../Logs/Logs';
+import QueryInput from '../QueryInput/QueryInput.component';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
 import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
@@ -18,18 +19,6 @@ const SettingsEntry = ({ name, children }) => {
     </div>
   );
 };
-
-const QueryInput = ({ state, actions }) => (
-  <SettingsEntry name={<label htmlFor="query">Query</label>}>
-    <FormInput
-      id="query"
-      type="text"
-      onChange={async e => actions.setQuery(e.target.value)}
-      autoComplete="off"
-      value={state.query}
-    />
-  </SettingsEntry>
-);
 
 const ResultLimitInput = ({ state, actions }) => (
   <SettingsEntry
@@ -112,7 +101,9 @@ export default function AdvancedSettings({ hideSettings }) {
           onClick={hideSettings}
         />
       </h2>
-      <QueryInput state={state} actions={actions} />
+      <SettingsEntry name={<label htmlFor="query">Query</label>}>
+        <QueryInput labels={state.labels} setLabelsAction={actions.setLabels} />
+      </SettingsEntry>
       <ResultLimitInput state={state} actions={actions} />
       <SettingsEntry name="Show">
         {!!lambdaName && (
