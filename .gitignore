@@ -46,5 +46,5 @@ licenses
 **/licenses
 
 
-**/src/assets/config/config.js
-**/public/config/config.js
+#**/src/assets/config/config.js
+#**/public/config/config.js
