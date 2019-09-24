@@ -15,7 +15,7 @@ import searchParamsReducer, {
 
 
 import {
-  SORT_ASCENDING,
+  SORT_DESCENDING,
   DEFAULT_PERIOD,
   LOG_REFRESH_INTERVAL,
 } from './../../constants';
@@ -39,10 +39,10 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     logsPeriod: DEFAULT_PERIOD,
     query: '',
     resultLimit: 1000,
-    showPreviousLogs: true,
-    showHealthChecks: true,
+    showPreviousLogs: false,
+    showHealthChecks: false,
     showIstioLogs: false,
-    sortDirection: SORT_ASCENDING,
+    sortDirection: SORT_DESCENDING,
     logs: [],
     autoRefreshEnabled: true,
   };

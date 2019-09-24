@@ -13,30 +13,30 @@ export default function LogsContainer() {
     PodSubscriptionServiceContext,
   );
 
-  function todo_is_lambda() {
+  function isSplitView() {
     var params = LuigiClient.getNodeParams();
-    return !!params.function;
+    return !!params.splitViewMode;
   }
 
-  function getLambdaData() {
+  function getLabelValuesFromViewParams() {
     const params = LuigiClient.getNodeParams();
-    const labels = [
-      `function="${params.function}"`,
-      `namespace="${params.namespace}"`,
-      `container_name="${params.container_name}"`,
-    ];
-    const lambdaName = params.container_name;
-    return { labels, lambdaName };
+    delete params.splitViewMode;
+    const labels = [];
+    for (var paramName in params) {
+      labels.push(`${paramName}="${params[paramName]}"`);
+    }
+    return labels;
   }
 
-  const isCompact = false;
+  const isCompact = isSplitView();
+  const readOnlyLabels = getLabelValuesFromViewParams();
 
   return (
     <Logs
       httpService={httpService}
       queryTransformService={queryTransformService}
       podsSubscriptionService={podsSubscriptionService}
-      readonlyLabels={[]}
+      readonlyLabels={readOnlyLabels}
       isCompact={isCompact}
     />
   );
