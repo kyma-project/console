@@ -1,13 +1,19 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import CompactHeader from './../CompactHeader';
-import { DEFAULT_PERIOD, SORT_ASCENDING } from '../../../constants';
+import {
+  SearchParamsContext,
+  defaultSearchParams,
+  actions,
+} from '../../Logs/SearchParams.reducer';
 
 describe('CompactHeader', () => {
   console.error = jest.fn();
+  const dispatch = jest.fn();
 
   afterEach(() => {
     console.error.mockReset();
+    dispatch.mockReset();
   });
 
   afterAll(() => {
@@ -16,14 +22,11 @@ describe('CompactHeader', () => {
 
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <CompactHeader
-        updateFilteringState={() => {}}
-        searchPhrase="search phrase"
-        logsPeriod={DEFAULT_PERIOD}
-        sortDirection={SORT_ASCENDING}
-        advancedSettings={{}}
-        autoRefreshEnabled={false}
-      />,
+      <SearchParamsContext.Provider
+        value={[defaultSearchParams, actions(dispatch)]}
+      >
+        <CompactHeader />
+      </SearchParamsContext.Provider>,
     );
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
