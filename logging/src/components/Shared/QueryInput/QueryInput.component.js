@@ -42,8 +42,6 @@ const QueryInput = ({ labels, setLabelsAction }) => {
     }
   }
 
-  console.log('queryinput render');
-
   return (
     <FormInput
       id="query"

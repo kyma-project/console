@@ -4,21 +4,14 @@ import Header from '../Header/Header';
 import CompactHeader from '../CompactHeader/CompactHeader';
 import LogTable from '../LogTable/LogTable';
 import searchParamsReducer, {
-  SET_LABELS,
-  SET_SHOW_PREVIOUS_LOGS, SET_SEARCH_PHRASE,
-  ADD_LABEL, SET_RESULT_LIMIT,
-  SET_SHOW_ISTIO_LOGS, SET_SHOW_HEALTH_CHECKS,
-  SET_AUTO_REFRESH, SET_LOGS_PERIOD, SET_SORT_DIR,
-  SearchParamsContext
+  actions,
+  SearchParamsContext,
+  defaultSearchParams
 } from './SearchParams.reducer'
 // import 'core-js/es/array/flat-map'; todo
 
 
-import {
-  SORT_ASCENDING,
-  DEFAULT_PERIOD,
-  LOG_REFRESH_INTERVAL,
-} from './../../constants';
+import { LOG_REFRESH_INTERVAL } from './../../constants';
 
 function sortLogs(entry1, entry2, sortDirection) {
   const positiveReturn = sortDirection === 'ascending' ? 1 : -1;
@@ -32,20 +25,9 @@ function sortLogs(entry1, entry2, sortDirection) {
 export const lambdaNameContext = createContext(true);
 
 const Logs = ({ readonlyLabels, isCompact, httpService }) => {
-  const defaultSearchParams = {
-    searchPhrase: '',
-    labels: [],
-    readonlyLabels: readonlyLabels,
-    logsPeriod: DEFAULT_PERIOD,
-    resultLimit: 1000,
-    showPreviousLogs: true,
-    showHealthChecks: true,
-    showIstioLogs: false,
-    sortDirection: SORT_ASCENDING,
-    autoRefreshEnabled: true,
-  };
 
-  const [searchParams, dispatch] = useReducer(searchParamsReducer, defaultSearchParams);
+
+  const [searchParams, dispatch] = useReducer(searchParamsReducer, { ...defaultSearchParams, readonlyLabels });
 
   const [intervalId, setIntervalId] = useState(null);
   const [logs, setLogs] = useState([]);
@@ -113,7 +95,6 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
         showPreviousLogs,
         showHealthChecks,
       });
-      console.log('fetchLogs')
 
       let streams = result.streams || [];
 
@@ -140,22 +121,11 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     fetchLogs();
     setIntervalId(setInterval(fetchLogs, LOG_REFRESH_INTERVAL))
   }
-  const actions = {
-    addLabel: label => dispatch({ type: ADD_LABEL, value: label }),
-    setLabels: labels => dispatch({ type: SET_LABELS, value: labels }),
-    setShowPreviousLogs: show => dispatch({ type: SET_SHOW_PREVIOUS_LOGS, value: show }),
-    setShowHealthChecks: show => dispatch({ type: SET_SHOW_HEALTH_CHECKS, value: show }),
-    setShowIstioLogs: show => dispatch({ type: SET_SHOW_ISTIO_LOGS, value: show }),
-    setSearchPhrase: phrase => dispatch({ type: SET_SEARCH_PHRASE, value: phrase }),
-    setResultLimit: limit => dispatch({ type: SET_RESULT_LIMIT, value: limit }),
-    setAutoRefresh: isRefreshEnabled => dispatch({ type: SET_AUTO_REFRESH, value: isRefreshEnabled }),
-    setLogsPeriod: period => dispatch({ type: SET_LOGS_PERIOD, value: period }),
-    setSortDir: dir => dispatch({ type: SET_SORT_DIR, value: dir })
-  };
+
 
   return (
     <lambdaNameContext.Provider value={lambdaName}>
-      <SearchParamsContext.Provider value={[searchParams, actions]}>
+      <SearchParamsContext.Provider value={[searchParams, actions(dispatch)]}>
         {isCompact ? <CompactHeader /> : <Header />}
         {searchParams.labels.length || searchParams.readonlyLabels.length
           ? <LogTable entries={logs.filter(filterHealthChecks)} />
