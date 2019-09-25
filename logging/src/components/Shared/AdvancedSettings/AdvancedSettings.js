@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import './AdvancedSettings.scss';
-import { lambdaNameContext } from '../../Logs/Logs';
-import QueryInput from '../QueryInput/QueryInput.component';
+import { LambdaNameContext, useLambdaName } from '../../Logs/Logs';
+import QueryInput from '../QueryInput/QueryInput';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
-import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
+import {
+  SearchParamsContext,
+  useSearchParams,
+} from '../../Logs/SearchParams.reducer';
 
 AdvancedSettings.propTypes = {
   hideSettings: PropTypes.func.isRequired,
@@ -20,7 +23,7 @@ const SettingsEntry = ({ name, children }) => {
   );
 };
 
-const ResultLimitInput = ({ state, actions }) => (
+export const ResultLimitInput = ({ state, actions }) => (
   <SettingsEntry
     name={
       <label htmlFor="result-limit">
@@ -58,7 +61,7 @@ const PreviousLogsInput = ({ state, actions }) => (
   </>
 );
 
-const HealthChecksInput = ({ state, actions }) => (
+export const HealthChecksInput = ({ state, actions }) => (
   <>
     <input
       type="checkbox"
@@ -87,8 +90,8 @@ const ShowIstioLogsInput = ({ state, actions }) => (
 );
 
 export default function AdvancedSettings({ hideSettings }) {
-  const lambdaName = useContext(lambdaNameContext);
-  const [state, actions] = useContext(SearchParamsContext);
+  const lambdaName = useLambdaName();
+  const [state, actions] = useSearchParams();
 
   return (
     <section className="advanced_settings">
@@ -108,8 +111,8 @@ export default function AdvancedSettings({ hideSettings }) {
       <SettingsEntry name="Show">
         {!!lambdaName && (
           <>
-            <PreviousLogsInput state={state} actions={actions} />
-            <br />
+            {/* <PreviousLogsInput state={state} actions={actions} />
+            <br /> */}
             <HealthChecksInput state={state} actions={actions} />
             <br />
           </>

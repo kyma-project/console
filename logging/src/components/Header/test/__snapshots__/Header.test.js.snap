@@ -84,7 +84,6 @@ exports[`Header Renders with minimal props 1`] = `
       <input
         className=""
         id="search-input"
-        min="0"
         onChange={[Function]}
         placeholder="Search"
         type="text"
@@ -95,6 +94,7 @@ exports[`Header Renders with minimal props 1`] = `
       className="link-button fd-has-type-minus-1 header__settings-group__toggle"
       data-test-id="advanced-settings-toggle"
       onClick={[Function]}
+      role="button"
     >
       Show Advanced Settings
     </span>
@@ -151,7 +151,7 @@ exports[`Header Renders with minimal props 1`] = `
       className="header__options-wrapper"
     >
       <button
-        className="fd-button--light sap-icon--media-play link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+        className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
         data-test-id="auto-refresh-button"
         onClick={[Function]}
         size="xs"
@@ -176,7 +176,9 @@ exports[`Header Renders with minimal props 1`] = `
                 className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
                 onClick={[Function]}
                 size="xs"
-              />
+              >
+                last 15 minutes
+              </button>
             </div>
           </div>
         </div>
@@ -209,4 +211,138 @@ exports[`Header Renders with minimal props 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`Header Shows / hides advanced settings when corresponding button is clicked 1`] = `
+<Panel
+  className="fd-has-padding-regular fd-has-padding-bottom-none"
+>
+  <h1
+    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+  >
+    Logs
+  </h1>
+  <section
+    className="header__settings-group"
+  >
+    <LabelsInput
+      maxRecentCount={4}
+    />
+    <SearchInput
+      compact={false}
+    />
+    <span
+      className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+      data-test-id="advanced-settings-toggle"
+      onClick={[Function]}
+      role="button"
+    >
+      Hide Advanced Settings
+    </span>
+  </section>
+  <AdvancedSettings
+    hideSettings={[Function]}
+  />
+  <div>
+    <LabelsDisplay />
+    <div
+      className="header__options-wrapper"
+    >
+      <AutoRefreshButton />
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "last minute",
+            "last 5 minutes",
+            "last 15 minutes",
+            "last hour",
+          ]
+        }
+        compact={false}
+        currentValue="last 15 minutes"
+        icon="past"
+        updateValue={[Function]}
+      />
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "descending",
+            "ascending",
+          ]
+        }
+        compact={false}
+        currentValue="ascending"
+        icon="sort"
+        updateValue={[Function]}
+      />
+    </div>
+  </div>
+</Panel>
+`;
+
+exports[`Header Shows / hides advanced settings when corresponding button is clicked 2`] = `
+<Panel
+  className="fd-has-padding-regular fd-has-padding-bottom-none"
+>
+  <h1
+    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+  >
+    Logs
+  </h1>
+  <section
+    className="header__settings-group"
+  >
+    <LabelsInput
+      maxRecentCount={4}
+    />
+    <SearchInput
+      compact={false}
+    />
+    <span
+      className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+      data-test-id="advanced-settings-toggle"
+      onClick={[Function]}
+      role="button"
+    >
+      Hide Advanced Settings
+    </span>
+  </section>
+  <AdvancedSettings
+    hideSettings={[Function]}
+  />
+  <div>
+    <LabelsDisplay />
+    <div
+      className="header__options-wrapper"
+    >
+      <AutoRefreshButton />
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "last minute",
+            "last 5 minutes",
+            "last 15 minutes",
+            "last hour",
+          ]
+        }
+        compact={false}
+        currentValue="last 15 minutes"
+        icon="past"
+        updateValue={[Function]}
+      />
+      <SelectDropdown
+        availabelValues={
+          Array [
+            "descending",
+            "ascending",
+          ]
+        }
+        compact={false}
+        currentValue="ascending"
+        icon="sort"
+        updateValue={[Function]}
+      />
+    </div>
+  </div>
+</Panel>
 `;

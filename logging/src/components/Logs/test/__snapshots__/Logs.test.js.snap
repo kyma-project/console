@@ -3,37 +3,26 @@
 exports[`Logs Renders with lambda view props 1`] = `
 Array [
   <div
-    className="fd-panel fd-has-padding-regular fd-has-padding-bottom-tiny"
+    className="fd-panel fd-has-padding-regular fd-has-padding-bottom-none"
   >
-    <section
-      className="compact-header"
+    <h1
+      className="fd-has-type-3 fd-has-padding-bottom-tiny"
     >
-      <h1
-        className="fd-has-type-3"
+      Logs
+    </h1>
+    <section
+      className="header__settings-group"
+    >
+      <section
+        className="fd-display-l-inline-block"
       >
-        Logs
-      </h1>
-      <div
-        className="fd-has-display-flex"
-      >
-        <section
-          className="fd-has-margin-right-small"
-        >
-          <span
-            className="caption-muted search-input__caption"
-          />
-          <input
-            className="search-input--compact"
-            id="search-input"
-            min="0"
-            onChange={[Function]}
-            placeholder="Search"
-            type="text"
-            value=""
-          />
-        </section>
         <span
-          className="link-button fd-has-type-minus-1"
+          className="caption-muted"
+        >
+          Labels
+        </span>
+        <div
+          className="fd-combobox-input"
         >
           <div
             className="fd-popover"
@@ -46,15 +35,80 @@ Array [
               <div
                 className="fd-popover__control"
               >
-                <button
-                  className="fd-button--light sap-icon--action-settings fd-has-margin-right-tiny"
+                <div
+                  className="fd-combobox-control"
                   onClick={[Function]}
-                  size="xs"
-                />
+                >
+                  <div
+                    className="fd-input-group fd-input-group--after"
+                  >
+                    <input
+                      className="fd-input"
+                      placeholder="Select Label"
+                      type="text"
+                    />
+                    <span
+                      className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                    >
+                      <button
+                        className=" fd-button--light sap-icon--navigation-down-arrow"
+                      />
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+      <section
+        className="fd-has-margin-right-small"
+      >
+        <span
+          className="caption-muted search-input__caption"
+        >
+          Search
+          <div
+            className="small-inline-help-wrapper"
+          >
+            <span
+              className="fd-inline-help"
+            >
+              <span
+                className="fd-inline-help__content fd-inline-help__content--right"
+              >
+                Search for logs by text (optional)
+              </span>
+            </span>
+          </div>
         </span>
+        <input
+          className=""
+          id="search-input"
+          onChange={[Function]}
+          placeholder="Search"
+          type="text"
+          value=""
+        />
+      </section>
+      <span
+        className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+        data-test-id="advanced-settings-toggle"
+        onClick={[Function]}
+        role="button"
+      >
+        Show Advanced Settings
+      </span>
+    </section>
+    <div>
+      <section
+        className="labels-display"
+      >
+        <ul />
+      </section>
+      <div
+        className="header__options-wrapper"
+      >
         <button
           className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
           data-test-id="auto-refresh-button"
@@ -81,7 +135,9 @@ Array [
                   className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
                   onClick={[Function]}
                   size="xs"
-                />
+                >
+                  last 15 minutes
+                </button>
               </div>
             </div>
           </div>
@@ -104,50 +160,25 @@ Array [
                   className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
                   onClick={[Function]}
                   size="xs"
-                />
+                >
+                  ascending
+                </button>
               </div>
             </div>
           </div>
         </span>
       </div>
-    </section>
+    </div>
   </div>,
-  <table
-    className="fd-table fd-has-margin-regular"
+  <article
+    className="fd-container fd-container--centered"
   >
-    <thead>
-      <tr>
-        <th
-          className="log-table__pre-header fd-has-type-0"
-          colSpan="2"
-        >
-          Logs for test
-        </th>
-      </tr>
-      <tr>
-        <th
-          className="caption-muted"
-        >
-          Timestamp
-        </th>
-        <th
-          className="caption-muted"
-        >
-          Log
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td
-          className="log-table__no-entries-text"
-          colSpan="2"
-        >
-          No entries
-        </td>
-      </tr>
-    </tbody>
-  </table>,
+    <p
+      className="fd-has-type-5 fd-has-margin-large"
+    >
+      Add some labels to filter to see the logs
+    </p>
+  </article>,
 ]
 `;
 
@@ -236,7 +267,6 @@ Array [
         <input
           className=""
           id="search-input"
-          min="0"
           onChange={[Function]}
           placeholder="Search"
           type="text"
@@ -247,6 +277,7 @@ Array [
         className="link-button fd-has-type-minus-1 header__settings-group__toggle"
         data-test-id="advanced-settings-toggle"
         onClick={[Function]}
+        role="button"
       >
         Show Advanced Settings
       </span>
@@ -321,41 +352,14 @@ Array [
       </div>
     </div>
   </div>,
-  <table
-    className="fd-table fd-has-margin-regular"
+  <article
+    className="fd-container fd-container--centered"
   >
-    <thead>
-      <tr>
-        <th
-          className="log-table__pre-header fd-has-type-0"
-          colSpan="2"
-        >
-          Log stream
-        </th>
-      </tr>
-      <tr>
-        <th
-          className="caption-muted"
-        >
-          Timestamp
-        </th>
-        <th
-          className="caption-muted"
-        >
-          Log
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td
-          className="log-table__no-entries-text"
-          colSpan="2"
-        >
-          No entries
-        </td>
-      </tr>
-    </tbody>
-  </table>,
+    <p
+      className="fd-has-type-5 fd-has-margin-large"
+    >
+      Add some labels to filter to see the logs
+    </p>
+  </article>,
 ]
 `;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AdvancedSettings Renders with minimal props 1`] = `
+exports[` 1`] = `
 <section
   className="advanced_settings"
 >
@@ -28,11 +28,11 @@ exports[`AdvancedSettings Renders with minimal props 1`] = `
     <div>
       <input
         autoComplete="off"
-        className="fd-form__control"
+        className="fd-form__control is-normal"
         id="query"
         onChange={[Function]}
         type="text"
-        value="query"
+        value=""
       />
     </div>
   </div>
@@ -65,7 +65,7 @@ exports[`AdvancedSettings Renders with minimal props 1`] = `
       <input
         autoComplete="off"
         className="fd-form__control"
-        defaultValue={10}
+        defaultValue={1000}
         id="result-limit"
         onChange={[Function]}
         type="number"
@@ -82,8 +82,8 @@ exports[`AdvancedSettings Renders with minimal props 1`] = `
     </p>
     <div>
       <input
-        defaultChecked={true}
-        id="previous-logs"
+        defaultChecked={false}
+        id="istio-logs"
         onChange={[Function]}
         type="checkbox"
       />
@@ -91,22 +91,37 @@ exports[`AdvancedSettings Renders with minimal props 1`] = `
         className="caption-muted"
         htmlFor="previous-logs"
       >
-        logs of previous lambda version
-      </label>
-      <br />
-      <input
-        defaultChecked={true}
-        id="health-checks"
-        onChange={[Function]}
-        type="checkbox"
-      />
-      <label
-        className="caption-muted"
-        htmlFor="health-checks"
-      >
-        health check
+        Istio logs
       </label>
     </div>
   </div>
 </section>
+`;
+
+exports[`HealthChecksInput Changing "Show health checks" triggers callback 1`] = `
+Array [
+  Array [
+    Object {
+      "type": "SET_SHOW_HEALTH_CHECKS",
+      "value": false,
+    },
+  ],
+  Array [
+    Object {
+      "type": "SET_SHOW_HEALTH_CHECKS",
+      "value": true,
+    },
+  ],
+]
+`;
+
+exports[`ResultLimitInput Changing "Result limit" triggers callback 1`] = `
+Array [
+  Array [
+    Object {
+      "type": "SET_RESULT_LIMIT",
+      "value": 12,
+    },
+  ],
+]
 `;

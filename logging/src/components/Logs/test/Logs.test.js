@@ -1,6 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Logs from './../Logs';
+import Logs from '../Logs';
+import { isTest } from 'apollo-utilities';
 
 describe('Logs', () => {
   it('Renders with minimal props', () => {
@@ -44,4 +45,6 @@ describe('Logs', () => {
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
+
+  test.todo('Renders with some labels')
 });
