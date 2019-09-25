@@ -47,7 +47,9 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     if (!autoRefreshEnabled && intervalId) {
       setIntervalId(null);
     }
-  }, [searchParams, intervalId, startAutoRefresh]);
+    //TODO 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   useEffect(() => {
     const allLabels = [...searchParams.labels, ...searchParams.readonlyLabels];
