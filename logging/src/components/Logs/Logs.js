@@ -8,6 +8,7 @@ import searchParamsReducer, {
   SearchParamsContext,
   defaultSearchParams,
 } from './SearchParams.reducer';
+import './Logs.scss'
 // import 'core-js/es/array/flat-map'; todo
 
 import { LOG_REFRESH_INTERVAL } from './../../constants';
@@ -130,12 +131,12 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
         {searchParams.labels.length || searchParams.readonlyLabels.length ? (
           <LogTable entries={logs.filter(filterHealthChecks)} />
         ) : (
-          <article className="fd-container fd-container--centered">
-            <p className="fd-has-type-5 fd-has-margin-large">
-              Add some labels to filter to see the logs
+            <article className="fd-container fd-container--centered">
+              <p className="fd-has-margin-large logs__no-filter">
+                Add some labels to filter to see the logs
             </p>
-          </article>
-        )}
+            </article>
+          )}
       </SearchParamsContext.Provider>
     </LambdaNameContext.Provider>
   );
