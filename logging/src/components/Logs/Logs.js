@@ -66,7 +66,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
 
   const filterHealthChecks = entry => {
     const { showHealthChecks } = searchParams;
-    return showHealthChecks || !~entry.log.indexOf('GET /healthz');
+    return showHealthChecks || !~entry.log.indexOf('::ffff:127.0.0.1');
   };
 
   async function fetchLogs() {
