@@ -14,14 +14,14 @@
     "copy-config": "cp ../config.js public/config/config.js"
   },
   "devDependencies": {
+    "enzyme-to-json": "^3.4.0",
     "jsdom-worker-fix": "^0.1.8",
     "live-server": "^1.2.1",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0",
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
-    "wait-on": "^3.2.0",
-    "enzyme-to-json": "^3.4.0"
+    "wait-on": "^3.2.0"
   },
   "browserslist": {
     "production": [
@@ -33,6 +33,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ]
   }
 }
