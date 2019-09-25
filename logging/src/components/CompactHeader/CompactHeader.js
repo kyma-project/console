@@ -15,7 +15,7 @@ export default function CompactHeader() {
   const { logsPeriod, sortDirection } = state;
 
   return (
-    <Panel className="fd-has-padding-small sticky-header">
+    <Panel className="fd-has-padding-small fd-has-padding-right-regular fd-has-padding-left-regular sticky-header">
       <section className="compact-header">
         <h1 className="fd-has-type-3">Logs</h1>
         <div className="fd-has-display-flex">
