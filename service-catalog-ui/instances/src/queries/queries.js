@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { SERVICE_INSTANCE_DETAILS_FRAGMENT } from './fragments';
 
 const getServiceInstanceDetails = gql`

@@ -7,15 +7,9 @@ import {
   createBindingMutation,
 } from '../../../testing/networkMock';
 import ServiceInstanceDetails from '../ServiceInstanceDetails';
-import {
-  Button,
-  Spinner,
-  Toolbar,
-  Modal,
-} from '@kyma-project/react-components';
+import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
 import { createMockLink } from '../../../testing/apollo';
 import { componentUpdate } from '../../../testing';
-import { act } from 'react-dom/test-utils';
 import { serviceInstanceConstants } from '../../../variables';
 
 import ServiceInstanceHeader from '../ServiceInstanceHeader/ServiceInstanceHeader.component';
@@ -71,11 +65,11 @@ describe('Instance Details UI', () => {
       </MockedProvider>,
     );
 
-    expect(component.find(Spinner)).toHaveLength(1);
+    expect(component.find(Spinner).exists()).toBe(true);
 
     await componentUpdate(component);
 
-    expect(component.find(Spinner)).toHaveLength(0);
+    expect(component.find(Spinner).exists()).toBe(false);
   });
 
   it('Displays instance details ', async () => {

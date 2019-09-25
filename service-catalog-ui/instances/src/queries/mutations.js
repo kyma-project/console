@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 const deleteServiceInstance = gql`
   mutation DeleteServiceInstance($name: String!, $namespace: String!) {
