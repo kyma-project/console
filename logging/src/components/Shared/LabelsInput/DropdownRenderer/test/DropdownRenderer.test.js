@@ -45,7 +45,7 @@ describe('DropdownRenderer', () => {
   });
 
   it('Shows "No recent labels" text when there is no recent labels', () => {
-    const component = shallow(
+    const component = mount(
       <DropdownRenderer
         recentLabels={[]}
         logLabelCategories={mockLogLabels}

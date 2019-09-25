@@ -13,7 +13,7 @@ exports[`DropdownRenderer Renders with minimal props 1`] = `
       Recently Selected Labels
     </h3>
     <ul
-      className="fd-mega-menu__list"
+      className="fd-mega-menu__list dimmed"
     >
       <li
         className="fd-mega-menu__item"

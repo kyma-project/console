@@ -4,31 +4,12 @@ describe('QueryTransformService', () => {
   describe('toQuery', () => {
     const { toQuery } = queryTransformService();
 
-    it('Converts with labels and searchPhrase', () => {
+    it('Converts with labels', () => {
       const labels = ['a="b"', 'c="d"'];
-      const searchPhrase = 'search phrase';
 
-      const result = toQuery(labels, searchPhrase);
+      const result = toQuery(labels);
 
-      expect(result).toEqual('{a="b",c="d"} search phrase');
-    });
-
-    it('Converts with no labels and searchPhrase', () => {
-      const labels = [];
-      const searchPhrase = 'search phrase';
-
-      const result = toQuery(labels, searchPhrase);
-
-      expect(result).toEqual('{} search phrase');
-    });
-
-    it('Converts with labels and no searchPhrase', () => {
-      const labels = ['a="b"', 'c="d"'];
-      const searchPhrase = '';
-
-      const result = toQuery(labels, searchPhrase);
-
-      expect(result).toEqual('{a="b",c="d"} ');
+      expect(result).toEqual('{a="b",c="d"}');
     });
   });
 
