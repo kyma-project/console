@@ -27,9 +27,11 @@ export default function Header() {
     : 'Show Advanced Settings';
 
   return (
-    <Panel className="fd-has-padding-regular fd-has-padding-bottom-none">
-      <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny">Logs</h1>
-      <section className="header__settings-group">
+    <Panel className="fd-has-padding-bottom-none header">
+      <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular ">
+        Logs
+      </h1>
+      <section className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular ">
         <LabelsInput />
         <SearchInput />
         <span
@@ -45,7 +47,11 @@ export default function Header() {
         <AdvancedSettings hideSettings={() => setAdvancedShown(false)} />
       )}
 
-      <div className={'header-toolbar'}>
+      <div
+        className={
+          'header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular '
+        }
+      >
         <LabelsDisplay />
         <div>
           <AutoRefreshButton />
