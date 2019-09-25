@@ -10,11 +10,10 @@ exports[`SearchInput Renders in compact mode 1`] = `
   <input
     className="search-input--compact"
     id="search-input"
-    min="0"
     onChange={[Function]}
     placeholder="Search"
     type="text"
-    value="search phrase"
+    value=""
   />
 </section>
 `;
@@ -44,11 +43,10 @@ exports[`SearchInput Renders with minimal props 1`] = `
   <input
     className=""
     id="search-input"
-    min="0"
     onChange={[Function]}
     placeholder="Search"
     type="text"
-    value="search phrase"
+    value=""
   />
 </section>
 `;
