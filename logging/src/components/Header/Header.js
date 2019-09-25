@@ -45,9 +45,9 @@ export default function Header() {
         <AdvancedSettings hideSettings={() => setAdvancedShown(false)} />
       )}
 
-      <div>
+      <div className={'header-toolbar'}>
         <LabelsDisplay />
-        <div className="header__options-wrapper">
+        <div>
           <AutoRefreshButton />
           <OptionsDropdown
             availabelValues={PERIODS}
