@@ -1497,7 +1497,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           {
             type: `success`,
             message: `Test Event Sent.`,
-            description: `Check Lambda Logs.`,
           },
           5000,
         );
