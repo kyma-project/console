@@ -22,17 +22,10 @@
     "apollo-link": "^1.2.13",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
-    "apollo-link-ws": "^1.0.19",
     "core-js": "^3.2.1",
-    "graphql": "^14.5.4",
-    "graphql-tag": "^2.10.1",
-    "lodash.clonedeep": "^4.5.0",
     "react-apollo": "^3.0.0",
-    "recompose": "^0.30.0",
     "styled-components": "^3.4.10",
-    "styled-components-grid": "^2.2.2",
-    "subscriptions-transport-ws": "^0.9.16",
-    "waait": "^1.0.5"
+    "styled-components-grid": "^2.2.2"
   },
   "browserslist": {
     "production": [
