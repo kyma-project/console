@@ -6,10 +6,9 @@ import LogTable from '../LogTable/LogTable';
 import searchParamsReducer, {
   actions,
   SearchParamsContext,
-  defaultSearchParams
-} from './SearchParams.reducer'
+  defaultSearchParams,
+} from './SearchParams.reducer';
 // import 'core-js/es/array/flat-map'; todo
-
 
 import { LOG_REFRESH_INTERVAL } from './../../constants';
 
@@ -23,12 +22,13 @@ function sortLogs(entry1, entry2, sortDirection) {
 }
 
 export const LambdaNameContext = createContext(null);
-export const useLambdaName = () => React.useContext(LambdaNameContext)
+export const useLambdaName = () => React.useContext(LambdaNameContext);
 
 const Logs = ({ readonlyLabels, isCompact, httpService }) => {
-
-
-  const [searchParams, dispatch] = useReducer(searchParamsReducer, { ...defaultSearchParams, readonlyLabels });
+  const [searchParams, dispatch] = useReducer(searchParamsReducer, {
+    ...defaultSearchParams,
+    readonlyLabels,
+  });
 
   const [intervalId, setIntervalId] = useState(null);
   const [logs, setLogs] = useState([]);
@@ -37,32 +37,30 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
   useEffect(() => {
     const { autoRefreshEnabled } = searchParams;
     if (intervalId) {
-      clearInterval(intervalId)
+      clearInterval(intervalId);
     }
 
     if (autoRefreshEnabled) {
-      startAutoRefresh(searchParams)
+      startAutoRefresh(searchParams);
     }
 
     if (!autoRefreshEnabled && intervalId) {
-      setIntervalId(null)
+      setIntervalId(null);
     }
-  }, [searchParams])
-
+  }, [searchParams]);
 
   useEffect(() => {
     const allLabels = [...searchParams.labels, ...searchParams.readonlyLabels];
     const functionLabel = allLabels.find(l => ~l.indexOf('function='));
 
     if (!functionLabel) {
-      setLambdaName(null)
+      setLambdaName(null);
       return;
     }
 
     const lambdaName = functionLabel.split('=')[1];
-    setLambdaName(lambdaName)
-
-  }, [searchParams.labels, searchParams.readonlyLabels])
+    setLambdaName(lambdaName);
+  }, [searchParams.labels, searchParams.readonlyLabels]);
 
   const filterHealthChecks = entry => {
     const { showHealthChecks } = searchParams;
@@ -112,40 +110,44 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
         }))
         .sort((e1, e2) => sortLogs(e1, e2, sortDirection));
 
-      setLogs(logs)
+      setLogs(logs);
     } catch (e) {
       console.warn(e); // todo add error message
     }
-  };
+  }
 
   async function startAutoRefresh() {
     fetchLogs();
-    setIntervalId(setInterval(fetchLogs, LOG_REFRESH_INTERVAL))
+    setIntervalId(setInterval(fetchLogs, LOG_REFRESH_INTERVAL));
   }
-
 
   return (
     <LambdaNameContext.Provider value={lambdaName}>
       <SearchParamsContext.Provider value={[searchParams, actions(dispatch)]}>
         {isCompact ? <CompactHeader /> : <Header />}
-        {searchParams.labels.length || searchParams.readonlyLabels.length
-          ? <LogTable entries={logs.filter(filterHealthChecks)} />
-          : <article className="fd-container fd-container--centered"><p className="fd-has-type-5 fd-has-margin-large">Add some labels to filter to see the logs</p></article>
-        }
+        {searchParams.labels.length || searchParams.readonlyLabels.length ? (
+          <LogTable entries={logs.filter(filterHealthChecks)} />
+        ) : (
+          <article className="fd-container fd-container--centered">
+            <p className="fd-has-type-5 fd-has-margin-large">
+              Add some labels to filter to see the logs
+            </p>
+          </article>
+        )}
       </SearchParamsContext.Provider>
     </LambdaNameContext.Provider>
   );
-}
+};
 
 Logs.propTypes = {
   readonlyLabels: PropTypes.arrayOf(PropTypes.string),
   isCompact: PropTypes.bool,
   httpService: PropTypes.object.isRequired,
-}
+};
 
 Logs.defaultProps = {
   readonlyLabels: [],
-  isCompact: false
-}
+  isCompact: false,
+};
 
 export default Logs;

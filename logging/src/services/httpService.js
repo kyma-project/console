@@ -73,7 +73,8 @@ export const httpService = () => {
 
     const { start, end } = getPeriod(logsPeriod);
 
-    const query = `{${labels}}`;
+    const labelsString = `${labels}`.replace(/,\s*$/, '');
+    const query = `{${labelsString}}`;
     const regexpParam = searchPhrase ? `&regexp=${searchPhrase}` : '';
 
     const encodedQuery = encodeURIComponent(query);
