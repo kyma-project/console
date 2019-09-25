@@ -2,7 +2,7 @@
 
 exports[`CompactHeader Renders with minimal props 1`] = `
 <div
-  className="fd-panel fd-has-padding-regular fd-has-padding-bottom-tiny"
+  className="fd-panel fd-has-padding-small fd-has-padding-right-regular fd-has-padding-left-regular sticky-header"
 >
   <section
     className="compact-header"

@@ -1,195 +1,391 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is clicked 1`] = `
-<nav
-  className="fd-mega-menu"
+<DropdownRenderer
+  chooseLabel={[Function]}
+  loadLabels={[Function]}
+  logLabelCategories={
+    Array [
+      Object {
+        "labels": Array [
+          Array [
+            "c",
+            "d",
+          ],
+        ],
+        "name": "name",
+      },
+      Object {
+        "labels": Array [
+          Array [
+            "e",
+            "f",
+          ],
+        ],
+        "name": "name 2",
+      },
+    ]
+  }
+  recentLabels={Array []}
+  selectedLabels={Array []}
 >
-  <div
-    className="fd-mega-menu__group"
+  <nav
+    className="fd-mega-menu"
   >
-    <h3
-      className="fd-mega-menu__title"
+    <div
+      className="fd-mega-menu__group"
     >
-      Recently Selected Labels
-    </h3>
-    <span
-      className="fd-mega-menu__item--disabled"
-      data-test-id="no-recent-labels"
-    >
-      No recent labels
-    </span>
-  </div>
-  <div
-    className="fd-mega-menu__group"
-  >
-    <h3
-      className="fd-mega-menu__title"
-    >
-      Log Labels
-    </h3>
-    <ul
-      className="fd-mega-menu__list"
-    >
-      <li
-        className="fd-mega-menu__item"
-        key="name"
+      <h3
+        className="fd-mega-menu__title"
+      >
+        Recently Selected Labels
+      </h3>
+      <RecentLabelsList
+        chooseLabel={[Function]}
+        recentLabels={Array []}
       >
         <span
-          aria-controls="name"
-          aria-haspopup="true"
-          className="fd-mega-menu__link has-child cursor-pointer"
-          onClick={[Function]}
+          className="fd-mega-menu__item--disabled"
+          data-test-id="no-recent-labels"
         >
-          name
+          No recent labels
         </span>
-        <ul
-          aria-hidden={false}
-          className="fd-mega-menu__sublist"
-          id="name"
-        >
-          <li
-            className="fd-mega-menu__subitem"
-            key="c,d"
-          >
-            <span
-              className="fd-mega-menu__sublink cursor-pointer"
-              onClick={[Function]}
-            >
-              c
-              d
-            </span>
-          </li>
-        </ul>
-      </li>
-      <li
-        className="fd-mega-menu__item"
-        key="name 2"
+      </RecentLabelsList>
+    </div>
+    <div
+      className="fd-mega-menu__group"
+    >
+      <h3
+        className="fd-mega-menu__title"
       >
-        <span
-          aria-controls="name 2"
-          aria-haspopup="true"
-          className="fd-mega-menu__link has-child cursor-pointer"
-          onClick={[Function]}
-        >
-          name 2
-        </span>
+        Log Labels
+      </h3>
+      <LogLabelCategoriesList
+        chooseLabel={[Function]}
+        selectedLabels={Array []}
+        statefulLogLabels={
+          Array [
+            Object {
+              "isHidden": false,
+              "labels": Array [
+                Array [
+                  "c",
+                  "d",
+                ],
+              ],
+              "name": "name",
+            },
+            Object {
+              "isHidden": true,
+              "labels": Array [
+                Array [
+                  "e",
+                  "f",
+                ],
+              ],
+              "name": "name 2",
+            },
+          ]
+        }
+        switchState={[Function]}
+      >
         <ul
-          aria-hidden={true}
-          className="fd-mega-menu__sublist"
-          id="name 2"
+          className="fd-mega-menu__list"
         >
           <li
-            className="fd-mega-menu__subitem"
-            key="e,f"
+            className="fd-mega-menu__item"
+            key="name"
           >
             <span
-              className="fd-mega-menu__sublink cursor-pointer"
+              aria-controls="name"
+              aria-haspopup="true"
+              className="fd-mega-menu__link has-child cursor-pointer"
               onClick={[Function]}
             >
-              e
-              f
+              name
             </span>
+            <LogLabelsSubList
+              chooseLabel={[Function]}
+              logLabel={
+                Object {
+                  "isHidden": false,
+                  "labels": Array [
+                    Array [
+                      "c",
+                      "d",
+                    ],
+                  ],
+                  "name": "name",
+                }
+              }
+              selectedLabels={Array []}
+            >
+              <ul
+                aria-hidden={false}
+                className="fd-mega-menu__sublist"
+                id="name"
+              >
+                <li
+                  className="fd-mega-menu__subitem"
+                  key="c,d"
+                >
+                  <span
+                    className="fd-mega-menu__sublink cursor-pointer"
+                    onClick={[Function]}
+                  >
+                    c
+                    d
+                  </span>
+                </li>
+              </ul>
+            </LogLabelsSubList>
+          </li>
+          <li
+            className="fd-mega-menu__item"
+            key="name 2"
+          >
+            <span
+              aria-controls="name 2"
+              aria-haspopup="true"
+              className="fd-mega-menu__link has-child cursor-pointer"
+              onClick={[Function]}
+            >
+              name 2
+            </span>
+            <LogLabelsSubList
+              chooseLabel={[Function]}
+              logLabel={
+                Object {
+                  "isHidden": true,
+                  "labels": Array [
+                    Array [
+                      "e",
+                      "f",
+                    ],
+                  ],
+                  "name": "name 2",
+                }
+              }
+              selectedLabels={Array []}
+            >
+              <ul
+                aria-hidden={true}
+                className="fd-mega-menu__sublist"
+                id="name 2"
+              >
+                <li
+                  className="fd-mega-menu__subitem"
+                  key="e,f"
+                >
+                  <span
+                    className="fd-mega-menu__sublink cursor-pointer"
+                    onClick={[Function]}
+                  >
+                    e
+                    f
+                  </span>
+                </li>
+              </ul>
+            </LogLabelsSubList>
           </li>
         </ul>
-      </li>
-    </ul>
-  </div>
-</nav>
+      </LogLabelCategoriesList>
+    </div>
+  </nav>
+</DropdownRenderer>
 `;
 
 exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is clicked 2`] = `
-<nav
-  className="fd-mega-menu"
+<DropdownRenderer
+  chooseLabel={[Function]}
+  loadLabels={[Function]}
+  logLabelCategories={
+    Array [
+      Object {
+        "labels": Array [
+          Array [
+            "c",
+            "d",
+          ],
+        ],
+        "name": "name",
+      },
+      Object {
+        "labels": Array [
+          Array [
+            "e",
+            "f",
+          ],
+        ],
+        "name": "name 2",
+      },
+    ]
+  }
+  recentLabels={Array []}
+  selectedLabels={Array []}
 >
-  <div
-    className="fd-mega-menu__group"
+  <nav
+    className="fd-mega-menu"
   >
-    <h3
-      className="fd-mega-menu__title"
+    <div
+      className="fd-mega-menu__group"
     >
-      Recently Selected Labels
-    </h3>
-    <span
-      className="fd-mega-menu__item--disabled"
-      data-test-id="no-recent-labels"
-    >
-      No recent labels
-    </span>
-  </div>
-  <div
-    className="fd-mega-menu__group"
-  >
-    <h3
-      className="fd-mega-menu__title"
-    >
-      Log Labels
-    </h3>
-    <ul
-      className="fd-mega-menu__list"
-    >
-      <li
-        className="fd-mega-menu__item"
-        key="name"
+      <h3
+        className="fd-mega-menu__title"
+      >
+        Recently Selected Labels
+      </h3>
+      <RecentLabelsList
+        chooseLabel={[Function]}
+        recentLabels={Array []}
       >
         <span
-          aria-controls="name"
-          aria-haspopup="true"
-          className="fd-mega-menu__link has-child cursor-pointer"
-          onClick={[Function]}
+          className="fd-mega-menu__item--disabled"
+          data-test-id="no-recent-labels"
         >
-          name
+          No recent labels
         </span>
-        <ul
-          aria-hidden={false}
-          className="fd-mega-menu__sublist"
-          id="name"
-        >
-          <li
-            className="fd-mega-menu__subitem"
-            key="c,d"
-          >
-            <span
-              className="fd-mega-menu__sublink cursor-pointer"
-              onClick={[Function]}
-            >
-              c
-              d
-            </span>
-          </li>
-        </ul>
-      </li>
-      <li
-        className="fd-mega-menu__item"
-        key="name 2"
+      </RecentLabelsList>
+    </div>
+    <div
+      className="fd-mega-menu__group"
+    >
+      <h3
+        className="fd-mega-menu__title"
       >
-        <span
-          aria-controls="name 2"
-          aria-haspopup="true"
-          className="fd-mega-menu__link has-child cursor-pointer"
-          onClick={[Function]}
-        >
-          name 2
-        </span>
+        Log Labels
+      </h3>
+      <LogLabelCategoriesList
+        chooseLabel={[Function]}
+        selectedLabels={Array []}
+        statefulLogLabels={
+          Array [
+            Object {
+              "isHidden": true,
+              "labels": Array [
+                Array [
+                  "c",
+                  "d",
+                ],
+              ],
+              "name": "name",
+            },
+            Object {
+              "isHidden": true,
+              "labels": Array [
+                Array [
+                  "e",
+                  "f",
+                ],
+              ],
+              "name": "name 2",
+            },
+          ]
+        }
+        switchState={[Function]}
+      >
         <ul
-          aria-hidden={true}
-          className="fd-mega-menu__sublist"
-          id="name 2"
+          className="fd-mega-menu__list"
         >
           <li
-            className="fd-mega-menu__subitem"
-            key="e,f"
+            className="fd-mega-menu__item"
+            key="name"
           >
             <span
-              className="fd-mega-menu__sublink cursor-pointer"
+              aria-controls="name"
+              aria-haspopup="true"
+              className="fd-mega-menu__link has-child cursor-pointer"
               onClick={[Function]}
             >
-              e
-              f
+              name
             </span>
+            <LogLabelsSubList
+              chooseLabel={[Function]}
+              logLabel={
+                Object {
+                  "isHidden": true,
+                  "labels": Array [
+                    Array [
+                      "c",
+                      "d",
+                    ],
+                  ],
+                  "name": "name",
+                }
+              }
+              selectedLabels={Array []}
+            >
+              <ul
+                aria-hidden={true}
+                className="fd-mega-menu__sublist"
+                id="name"
+              >
+                <li
+                  className="fd-mega-menu__subitem"
+                  key="c,d"
+                >
+                  <span
+                    className="fd-mega-menu__sublink cursor-pointer"
+                    onClick={[Function]}
+                  >
+                    c
+                    d
+                  </span>
+                </li>
+              </ul>
+            </LogLabelsSubList>
+          </li>
+          <li
+            className="fd-mega-menu__item"
+            key="name 2"
+          >
+            <span
+              aria-controls="name 2"
+              aria-haspopup="true"
+              className="fd-mega-menu__link has-child cursor-pointer"
+              onClick={[Function]}
+            >
+              name 2
+            </span>
+            <LogLabelsSubList
+              chooseLabel={[Function]}
+              logLabel={
+                Object {
+                  "isHidden": true,
+                  "labels": Array [
+                    Array [
+                      "e",
+                      "f",
+                    ],
+                  ],
+                  "name": "name 2",
+                }
+              }
+              selectedLabels={Array []}
+            >
+              <ul
+                aria-hidden={true}
+                className="fd-mega-menu__sublist"
+                id="name 2"
+              >
+                <li
+                  className="fd-mega-menu__subitem"
+                  key="e,f"
+                >
+                  <span
+                    className="fd-mega-menu__sublink cursor-pointer"
+                    onClick={[Function]}
+                  >
+                    e
+                    f
+                  </span>
+                </li>
+              </ul>
+            </LogLabelsSubList>
           </li>
         </ul>
-      </li>
-    </ul>
-  </div>
-</nav>
+      </LogLabelCategoriesList>
+    </div>
+  </nav>
+</DropdownRenderer>
 `;

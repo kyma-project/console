@@ -2,15 +2,15 @@
 
 exports[`Header Renders with minimal props 1`] = `
 <div
-  className="fd-panel fd-has-padding-regular fd-has-padding-bottom-none"
+  className="fd-panel fd-has-padding-bottom-none header"
 >
   <h1
-    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+    className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
   >
     Logs
   </h1>
   <section
-    className="header__settings-group"
+    className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
   >
     <section
       className="fd-display-l-inline-block"
@@ -99,7 +99,9 @@ exports[`Header Renders with minimal props 1`] = `
       Show Advanced Settings
     </span>
   </section>
-  <div>
+  <div
+    className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+  >
     <section
       className="labels-display"
     >
@@ -147,9 +149,7 @@ exports[`Header Renders with minimal props 1`] = `
         Clear All
       </span>
     </section>
-    <div
-      className="header__options-wrapper"
-    >
+    <div>
       <button
         className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
         data-test-id="auto-refresh-button"
@@ -202,7 +202,7 @@ exports[`Header Renders with minimal props 1`] = `
                 onClick={[Function]}
                 size="xs"
               >
-                ascending
+                newest first
               </button>
             </div>
           </div>
@@ -215,15 +215,15 @@ exports[`Header Renders with minimal props 1`] = `
 
 exports[`Header Shows / hides advanced settings when corresponding button is clicked 1`] = `
 <Panel
-  className="fd-has-padding-regular fd-has-padding-bottom-none"
+  className="fd-has-padding-bottom-none header"
 >
   <h1
-    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+    className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
   >
     Logs
   </h1>
   <section
-    className="header__settings-group"
+    className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
   >
     <LabelsInput
       maxRecentCount={4}
@@ -243,11 +243,11 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
   <AdvancedSettings
     hideSettings={[Function]}
   />
-  <div>
+  <div
+    className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+  >
     <LabelsDisplay />
-    <div
-      className="header__options-wrapper"
-    >
+    <div>
       <AutoRefreshButton />
       <SelectDropdown
         availabelValues={
@@ -266,12 +266,18 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
       <SelectDropdown
         availabelValues={
           Array [
-            "descending",
-            "ascending",
+            Object {
+              "label": "newest first",
+              "value": "descending",
+            },
+            Object {
+              "label": "oldest first",
+              "value": "ascending",
+            },
           ]
         }
         compact={false}
-        currentValue="ascending"
+        currentValue="descending"
         icon="sort"
         updateValue={[Function]}
       />
@@ -282,15 +288,15 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
 
 exports[`Header Shows / hides advanced settings when corresponding button is clicked 2`] = `
 <Panel
-  className="fd-has-padding-regular fd-has-padding-bottom-none"
+  className="fd-has-padding-bottom-none header"
 >
   <h1
-    className="fd-has-type-3 fd-has-padding-bottom-tiny"
+    className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
   >
     Logs
   </h1>
   <section
-    className="header__settings-group"
+    className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
   >
     <LabelsInput
       maxRecentCount={4}
@@ -310,11 +316,11 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
   <AdvancedSettings
     hideSettings={[Function]}
   />
-  <div>
+  <div
+    className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+  >
     <LabelsDisplay />
-    <div
-      className="header__options-wrapper"
-    >
+    <div>
       <AutoRefreshButton />
       <SelectDropdown
         availabelValues={
@@ -333,12 +339,18 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
       <SelectDropdown
         availabelValues={
           Array [
-            "descending",
-            "ascending",
+            Object {
+              "label": "newest first",
+              "value": "descending",
+            },
+            Object {
+              "label": "oldest first",
+              "value": "ascending",
+            },
           ]
         }
         compact={false}
-        currentValue="ascending"
+        currentValue="descending"
         icon="sort"
         updateValue={[Function]}
       />

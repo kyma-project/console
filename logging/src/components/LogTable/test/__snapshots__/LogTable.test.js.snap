@@ -7,14 +7,6 @@ exports[`LogTable Renders custom title if name is provided 1`] = `
   <thead>
     <tr>
       <th
-        className="log-table__pre-header fd-has-type-0"
-        colSpan="2"
-      >
-        Logs for test
-      </th>
-    </tr>
-    <tr>
-      <th
         className="caption-muted"
       >
         Timestamp
@@ -72,14 +64,6 @@ exports[`LogTable Renders with minimal props 1`] = `
   className="fd-table fd-has-margin-regular"
 >
   <thead>
-    <tr>
-      <th
-        className="log-table__pre-header fd-has-type-0"
-        colSpan="2"
-      >
-        Log stream
-      </th>
-    </tr>
     <tr>
       <th
         className="caption-muted"

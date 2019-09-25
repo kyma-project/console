@@ -3,15 +3,15 @@
 exports[`Logs Renders with lambda view props 1`] = `
 Array [
   <div
-    className="fd-panel fd-has-padding-regular fd-has-padding-bottom-none"
+    className="fd-panel fd-has-padding-bottom-none header"
   >
     <h1
-      className="fd-has-type-3 fd-has-padding-bottom-tiny"
+      className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
     >
       Logs
     </h1>
     <section
-      className="header__settings-group"
+      className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
     >
       <section
         className="fd-display-l-inline-block"
@@ -100,15 +100,15 @@ Array [
         Show Advanced Settings
       </span>
     </section>
-    <div>
+    <div
+      className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
       <section
         className="labels-display"
       >
         <ul />
       </section>
-      <div
-        className="header__options-wrapper"
-      >
+      <div>
         <button
           className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
           data-test-id="auto-refresh-button"
@@ -161,7 +161,7 @@ Array [
                   onClick={[Function]}
                   size="xs"
                 >
-                  ascending
+                  newest first
                 </button>
               </div>
             </div>
@@ -174,7 +174,7 @@ Array [
     className="fd-container fd-container--centered"
   >
     <p
-      className="fd-has-type-5 fd-has-margin-large"
+      className="fd-has-margin-large logs__no-filter"
     >
       Add some labels to filter to see the logs
     </p>
@@ -185,15 +185,15 @@ Array [
 exports[`Logs Renders with minimal props 1`] = `
 Array [
   <div
-    className="fd-panel fd-has-padding-regular fd-has-padding-bottom-none"
+    className="fd-panel fd-has-padding-bottom-none header"
   >
     <h1
-      className="fd-has-type-3 fd-has-padding-bottom-tiny"
+      className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
     >
       Logs
     </h1>
     <section
-      className="header__settings-group"
+      className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
     >
       <section
         className="fd-display-l-inline-block"
@@ -282,15 +282,15 @@ Array [
         Show Advanced Settings
       </span>
     </section>
-    <div>
+    <div
+      className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
       <section
         className="labels-display"
       >
         <ul />
       </section>
-      <div
-        className="header__options-wrapper"
-      >
+      <div>
         <button
           className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
           data-test-id="auto-refresh-button"
@@ -343,7 +343,7 @@ Array [
                   onClick={[Function]}
                   size="xs"
                 >
-                  ascending
+                  newest first
                 </button>
               </div>
             </div>
@@ -356,7 +356,7 @@ Array [
     className="fd-container fd-container--centered"
   >
     <p
-      className="fd-has-type-5 fd-has-margin-large"
+      className="fd-has-margin-large logs__no-filter"
     >
       Add some labels to filter to see the logs
     </p>

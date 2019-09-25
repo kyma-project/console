@@ -28,12 +28,4 @@ describe('LogTable', () => {
     const component = shallow(<LogTable entries={[]} />);
     expect(component.exists('.log-table__no-entries-text')).toBeTruthy();
   });
-
-  it('Shows custom title when entityName is provided', () => {
-    const component = shallow(<LogTable entries={[]} entityName="test" />);
-
-    expect(component.find('.log-table__pre-header').text()).toEqual(
-      'Logs for test',
-    );
-  });
 });

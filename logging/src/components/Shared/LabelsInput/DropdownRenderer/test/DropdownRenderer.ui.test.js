@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import DropdownRenderer from './../DropdownRenderer';
 import toJson from 'enzyme-to-json';
 
@@ -18,8 +18,9 @@ const mockLogLabels = [
 
 describe('DropdownRenderer UI', () => {
   it('Shows / hides nested list when parent its parent is clicked', () => {
-    const component = shallow(
+    const component = mount(
       <DropdownRenderer
+        selectedLabels={[]}
         recentLabels={[]}
         logLabelCategories={mockLogLabels}
         chooseLabel={() => {}}
@@ -38,8 +39,9 @@ describe('DropdownRenderer UI', () => {
 
   it('Click on recent list item triggers callback', async () => {
     const mockCallback = jest.fn();
-    const component = shallow(
+    const component = mount(
       <DropdownRenderer
+        selectedLabels={[]}
         recentLabels={mockRecentLabels}
         logLabelCategories={mockLogLabels}
         chooseLabel={mockCallback}
@@ -56,8 +58,9 @@ describe('DropdownRenderer UI', () => {
 
   it('Click on category triggers callback', async () => {
     const mockCallback = jest.fn();
-    const component = shallow(
+    const component = mount(
       <DropdownRenderer
+        selectedLabels={[]}
         recentLabels={mockRecentLabels}
         logLabelCategories={mockLogLabels}
         chooseLabel={mockCallback}

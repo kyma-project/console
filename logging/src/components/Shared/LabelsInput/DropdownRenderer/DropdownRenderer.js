@@ -5,7 +5,7 @@ import { Icon } from 'fundamental-react';
 import './DropdownRenderer.scss';
 
 DropdownRenderer.propTypes = {
-  selectedLabels: PropTypes.arrayOf(PropTypes.string),
+  selectedLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   recentLabels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   logLabelCategories: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   chooseLabel: PropTypes.func.isRequired,

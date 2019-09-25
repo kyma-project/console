@@ -18,6 +18,7 @@ describe('DropdownRenderer', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
       <DropdownRenderer
+        selectedLabels={[]}
         recentLabels={mockRecentLabels}
         logLabelCategories={mockLogLabels}
         chooseLabel={() => {}}
@@ -31,6 +32,7 @@ describe('DropdownRenderer', () => {
   it('Shows "No log labels" text when there is no log labels', () => {
     const component = mount(
       <DropdownRenderer
+        selectedLabels={[]}
         recentLabels={mockRecentLabels}
         logLabelCategories={[]}
         chooseLabel={() => {}}
@@ -47,6 +49,7 @@ describe('DropdownRenderer', () => {
   it('Shows "No recent labels" text when there is no recent labels', () => {
     const component = mount(
       <DropdownRenderer
+        selectedLabels={[]}
         recentLabels={[]}
         logLabelCategories={mockLogLabels}
         chooseLabel={() => {}}
