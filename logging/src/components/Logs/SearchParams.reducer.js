@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import {
-  SORT_ASCENDING,
+  SORT_DESCENDING,
   DEFAULT_PERIOD
 } from '../../constants'
 
@@ -25,10 +25,10 @@ export const defaultSearchParams = {
   readonlyLabels: [],
   logsPeriod: DEFAULT_PERIOD,
   resultLimit: 1000,
-  showPreviousLogs: true,
-  showHealthChecks: true,
+  showPreviousLogs: false,
+  showHealthChecks: false,
   showIstioLogs: false,
-  sortDirection: SORT_ASCENDING,
+  sortDirection: SORT_DESCENDING,
   autoRefreshEnabled: true,
 };
 

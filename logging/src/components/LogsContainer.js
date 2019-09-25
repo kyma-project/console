@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import Logs from './Logs/Logs';
 

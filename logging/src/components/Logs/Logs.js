@@ -47,7 +47,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
     if (!autoRefreshEnabled && intervalId) {
       setIntervalId(null);
     }
-  }, [searchParams]);
+  }, [searchParams, intervalId, startAutoRefresh]);
 
   useEffect(() => {
     const allLabels = [...searchParams.labels, ...searchParams.readonlyLabels];

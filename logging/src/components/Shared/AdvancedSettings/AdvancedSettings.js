@@ -1,14 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './AdvancedSettings.scss';
-import { LambdaNameContext, useLambdaName } from '../../Logs/Logs';
+import { useLambdaName } from '../../Logs/Logs';
 import QueryInput from '../QueryInput/QueryInput';
 
 import { FormInput, Icon, InlineHelp } from 'fundamental-react';
-import {
-  SearchParamsContext,
-  useSearchParams,
-} from '../../Logs/SearchParams.reducer';
+import { useSearchParams } from '../../Logs/SearchParams.reducer';
 
 AdvancedSettings.propTypes = {
   hideSettings: PropTypes.func.isRequired,
@@ -47,19 +44,19 @@ export const ResultLimitInput = ({ state, actions }) => (
   </SettingsEntry>
 );
 
-const PreviousLogsInput = ({ state, actions }) => (
-  <>
-    <input
-      type="checkbox"
-      id="previous-logs"
-      defaultChecked={state.showPreviousLogs}
-      onChange={e => actions.setShowPreviousLogs(e.target.checked)}
-    />
-    <label className="caption-muted" htmlFor="previous-logs">
-      logs of previous lambda version
-    </label>
-  </>
-);
+// const PreviousLogsInput = ({ state, actions }) => (
+//   <>
+//     <input
+//       type="checkbox"
+//       id="previous-logs"
+//       defaultChecked={state.showPreviousLogs}
+//       onChange={e => actions.setShowPreviousLogs(e.target.checked)}
+//     />
+//     <label className="caption-muted" htmlFor="previous-logs">
+//       logs of previous lambda version
+//     </label>
+//   </>
+// );
 
 export const HealthChecksInput = ({ state, actions }) => (
   <>

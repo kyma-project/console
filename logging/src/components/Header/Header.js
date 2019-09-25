@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './Header.scss';
 
 import { Panel } from 'fundamental-react';
