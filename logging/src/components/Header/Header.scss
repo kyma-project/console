@@ -1,17 +1,16 @@
 .header__settings-group {
-
   display: flex;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--fd-color-background-1);
 
   & > * {
-      margin-right: 16px;
+    margin-right: 16px;
   }
 
   @media (max-width: 500px) {
     display: initial;
     & > * {
-        flex: 1;
+      flex: 1;
     }
   }
 }
@@ -20,6 +19,8 @@
   padding-top: 30px;
 }
 
-.header__options-wrapper {
-  float: right;
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

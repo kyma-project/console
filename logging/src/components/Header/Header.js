@@ -7,9 +7,9 @@ import SearchInput from './../Shared/SearchInput/SearchInput';
 import LabelsInput from './../Shared/LabelsInput/LabelsInput';
 import AdvancedSettings from './../Shared/AdvancedSettings/AdvancedSettings';
 import LabelsDisplay from './../Shared/LabelsDisplay/LabelsDisplay';
-import OptionsDropdown from './../Shared/SelectDropdown/SelectDropdown';
+import SelectDropdown from './../Shared/SelectDropdown/SelectDropdown';
 import AutoRefreshButton from './../Shared/AutoRefreshButton/AutoRefreshButton';
-import { PERIODS, SORT_TYPES } from '../../constants';
+import { PERIODS, SORT_DROPDOWN_VALUES } from '../../constants';
 import { useSearchParams } from '../Logs/SearchParams.reducer';
 
 export default function Header() {
@@ -27,9 +27,11 @@ export default function Header() {
     : 'Show Advanced Settings';
 
   return (
-    <Panel className="fd-has-padding-regular fd-has-padding-bottom-none">
-      <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny">Logs</h1>
-      <section className="header__settings-group">
+    <Panel className="fd-has-padding-bottom-none header">
+      <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular ">
+        Logs
+      </h1>
+      <section className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular ">
         <LabelsInput />
         <SearchInput />
         <span
@@ -45,18 +47,22 @@ export default function Header() {
         <AdvancedSettings hideSettings={() => setAdvancedShown(false)} />
       )}
 
-      <div>
+      <div
+        className={
+          'header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular '
+        }
+      >
         <LabelsDisplay />
-        <div className="header__options-wrapper">
+        <div>
           <AutoRefreshButton />
-          <OptionsDropdown
+          <SelectDropdown
             availabelValues={PERIODS}
             icon="past"
             currentValue={logsPeriod}
             updateValue={actions.setLogsPeriod}
           />
-          <OptionsDropdown
-            availabelValues={SORT_TYPES}
+          <SelectDropdown
+            availabelValues={SORT_DROPDOWN_VALUES}
             icon="sort"
             currentValue={sortDirection}
             updateValue={actions.setSortDir}

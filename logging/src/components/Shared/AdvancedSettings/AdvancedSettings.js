@@ -91,7 +91,7 @@ export default function AdvancedSettings({ hideSettings }) {
   const [state, actions] = useSearchParams();
 
   return (
-    <section className="advanced_settings">
+    <section className="advanced_settings fd-has-padding-right-regular fd-has-padding-left-regular ">
       <h2 className="advanced_settings__header">
         Advanced Settings
         <Icon

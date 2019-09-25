@@ -6,7 +6,7 @@ import {
 
 export const SearchParamsContext = createContext({});
 
-export const useSearchParams=()=>useContext(SearchParamsContext);
+export const useSearchParams = () => useContext(SearchParamsContext);
 
 export const ADD_LABEL = 'ADD_LABEL';
 export const SET_LABELS = 'SET_LABELS';
@@ -50,7 +50,7 @@ export default function searchParamsReducer(state, action) {
   const { type, value } = action;
 
   switch (type) {
-    case ADD_LABEL: return { ...state, labels: [...state.labels, value] }
+    case ADD_LABEL: return { ...state, labels: [...new Set([...state.labels, value])] }
     case SET_LABELS: return { ...state, labels: value };
 
     case SET_SHOW_PREVIOUS_LOGS: return { ...state, showPreviousLogs: value };

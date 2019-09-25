@@ -8,15 +8,16 @@ import searchParamsReducer, {
   SearchParamsContext,
   defaultSearchParams,
 } from './SearchParams.reducer';
+import './Logs.scss'
 // import 'core-js/es/array/flat-map'; todo
 
 import { LOG_REFRESH_INTERVAL } from './../../constants';
 
 function sortLogs(entry1, entry2, sortDirection) {
   const positiveReturn = sortDirection === 'ascending' ? 1 : -1;
-  const date1 = new Date(entry1.timestamp);
-  const date2 = new Date(entry2.timestamp);
-  return date1.getTime() > date2.getTime()
+  const date1 = Date.parse(entry1.timestamp);
+  const date2 = Date.parse(entry2.timestamp);
+  return date1 > date2
     ? positiveReturn
     : -1 * positiveReturn;
 }
@@ -130,12 +131,12 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
         {searchParams.labels.length || searchParams.readonlyLabels.length ? (
           <LogTable entries={logs.filter(filterHealthChecks)} />
         ) : (
-          <article className="fd-container fd-container--centered">
-            <p className="fd-has-type-5 fd-has-margin-large">
-              Add some labels to filter to see the logs
+            <article className="fd-container fd-container--centered">
+              <p className="fd-has-margin-large logs__no-filter">
+                Add some labels to filter to see the logs
             </p>
-          </article>
-        )}
+            </article>
+          )}
       </SearchParamsContext.Provider>
     </LambdaNameContext.Provider>
   );
