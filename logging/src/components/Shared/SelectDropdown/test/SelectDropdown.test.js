@@ -17,7 +17,7 @@ describe('SelectDropdown', () => {
     const component = renderer.create(
       <SelectDropdown
         currentValue={'a'}
-        availabelValues={['a', 'b']}
+        availableValues={['a', 'b']}
         updateValue={() => {}}
       />,
     );
@@ -29,7 +29,7 @@ describe('SelectDropdown', () => {
     const component = renderer.create(
       <SelectDropdown
         currentValue={'a'}
-        availabelValues={['a', 'b']}
+        availableValues={['a', 'b']}
         updateValue={() => {}}
         icon="connected"
         compact={true}

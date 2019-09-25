@@ -5,7 +5,7 @@ import './SelectDropdown.scss';
 
 import { Popover, Menu, Button } from 'fundamental-react';
 
-const SelectDropdownValue = PropTypes.oneOf([
+const SelectDropdownValue = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.shape({
     value: PropTypes.string.isRequired,
@@ -14,7 +14,7 @@ const SelectDropdownValue = PropTypes.oneOf([
 ]);
 
 SelectDropdown.propTypes = {
-  availabelValues: PropTypes.arrayOf(SelectDropdownValue).isRequired,
+  availableValues: PropTypes.arrayOf(SelectDropdownValue).isRequired,
   currentValue: PropTypes.string.isRequired,
   icon: PropTypes.string,
   updateValue: PropTypes.func.isRequired,
@@ -27,7 +27,7 @@ SelectDropdown.defaultProps = {
 };
 
 export default function SelectDropdown({
-  availabelValues,
+  availableValues,
   currentValue,
   icon,
   updateValue,
@@ -36,7 +36,7 @@ export default function SelectDropdown({
   const popoverContent = (
     <Menu>
       <Menu.List>
-        {availabelValues.map(value => {
+        {availableValues.map(value => {
           const v = value.value ? value.value : value;
           const l = value.label ? value.label : value;
           return (
@@ -55,7 +55,7 @@ export default function SelectDropdown({
     </Menu>
   );
 
-  const currentLabel = availabelValues
+  const currentLabel = availableValues
     .filter(value => value === currentValue || value.value === currentValue)
     .map(value => (value.label ? value.label : value))[0];
 

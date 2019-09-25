@@ -23,14 +23,14 @@ export default function CompactHeader() {
           <ResultOptionsDropdown />
           <AutoRefreshButton />
           <SelectDropdown
-            availabelValues={PERIODS}
+            availableValues={PERIODS}
             currentValue={logsPeriod}
             icon="past"
             updateValue={actions.setLogsPeriod}
             compact={true}
           />
           <SelectDropdown
-            availabelValues={SORT_DROPDOWN_VALUES}
+            availableValues={SORT_DROPDOWN_VALUES}
             currentValue={sortDirection}
             icon="sort"
             updateValue={actions.setSortDir}

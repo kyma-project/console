@@ -56,13 +56,13 @@ export default function Header() {
         <div>
           <AutoRefreshButton />
           <SelectDropdown
-            availabelValues={PERIODS}
+            availableValues={PERIODS}
             icon="past"
             currentValue={logsPeriod}
             updateValue={actions.setLogsPeriod}
           />
           <SelectDropdown
-            availabelValues={SORT_DROPDOWN_VALUES}
+            availableValues={SORT_DROPDOWN_VALUES}
             icon="sort"
             currentValue={sortDirection}
             updateValue={actions.setSortDir}

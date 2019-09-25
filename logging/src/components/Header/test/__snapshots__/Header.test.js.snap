@@ -250,7 +250,7 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
     <div>
       <AutoRefreshButton />
       <SelectDropdown
-        availabelValues={
+        availableValues={
           Array [
             "last minute",
             "last 5 minutes",
@@ -264,7 +264,7 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
         updateValue={[Function]}
       />
       <SelectDropdown
-        availabelValues={
+        availableValues={
           Array [
             Object {
               "label": "newest first",
@@ -323,7 +323,7 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
     <div>
       <AutoRefreshButton />
       <SelectDropdown
-        availabelValues={
+        availableValues={
           Array [
             "last minute",
             "last 5 minutes",
@@ -337,7 +337,7 @@ exports[`Header Shows / hides advanced settings when corresponding button is cli
         updateValue={[Function]}
       />
       <SelectDropdown
-        availabelValues={
+        availableValues={
           Array [
             Object {
               "label": "newest first",
