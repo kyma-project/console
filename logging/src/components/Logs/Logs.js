@@ -22,7 +22,8 @@ function sortLogs(entry1, entry2, sortDirection) {
     : -1 * positiveReturn;
 }
 
-export const lambdaNameContext = createContext(true);
+export const LambdaNameContext = createContext(null);
+export const useLambdaName = () => React.useContext(LambdaNameContext)
 
 const Logs = ({ readonlyLabels, isCompact, httpService }) => {
 
@@ -124,7 +125,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
 
 
   return (
-    <lambdaNameContext.Provider value={lambdaName}>
+    <LambdaNameContext.Provider value={lambdaName}>
       <SearchParamsContext.Provider value={[searchParams, actions(dispatch)]}>
         {isCompact ? <CompactHeader /> : <Header />}
         {searchParams.labels.length || searchParams.readonlyLabels.length
@@ -132,7 +133,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
           : <article className="fd-container fd-container--centered"><p className="fd-has-type-5 fd-has-margin-large">Add some labels to filter to see the logs</p></article>
         }
       </SearchParamsContext.Provider>
-    </lambdaNameContext.Provider>
+    </LambdaNameContext.Provider>
   );
 }
 

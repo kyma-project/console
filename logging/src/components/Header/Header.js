@@ -10,11 +10,11 @@ import LabelsDisplay from './../Shared/LabelsDisplay/LabelsDisplay';
 import OptionsDropdown from './../Shared/SelectDropdown/SelectDropdown';
 import AutoRefreshButton from './../Shared/AutoRefreshButton/AutoRefreshButton';
 import { PERIODS, SORT_TYPES } from '../../constants';
-import { SearchParamsContext } from '../Logs/SearchParams.reducer';
+import { useSearchParams } from '../Logs/SearchParams.reducer';
 
 export default function Header() {
   const [advancedShown, setAdvancedShown] = React.useState(false);
-  const [state, actions] = useContext(SearchParamsContext);
+  const [state, actions] = useSearchParams();
 
   const { logsPeriod, sortDirection } = state;
 

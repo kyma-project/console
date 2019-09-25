@@ -1,10 +1,12 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import {
   SORT_ASCENDING,
   DEFAULT_PERIOD
 } from '../../constants'
 
 export const SearchParamsContext = createContext({});
+
+export const useSearchParams=()=>useContext(SearchParamsContext);
 
 export const ADD_LABEL = 'ADD_LABEL';
 export const SET_LABELS = 'SET_LABELS';
