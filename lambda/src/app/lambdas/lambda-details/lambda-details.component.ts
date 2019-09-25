@@ -338,6 +338,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     if (this.listenerId) {
       luigiClient.removeInitListener(this.listenerId);
     }
+    if (this.logsViewHandle) {
+      this.logsViewHandle.expand()
+      this.logsViewHandle.close()
+    }
   }
 
   showError(error: string): void {
@@ -1004,7 +1008,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         .linkManager()
         .fromClosestContext()
         .navigate('/');
-      this.logsViewHandle.close();
     }, 100);
   }
 
