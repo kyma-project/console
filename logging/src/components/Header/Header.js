@@ -7,9 +7,9 @@ import SearchInput from './../Shared/SearchInput/SearchInput';
 import LabelsInput from './../Shared/LabelsInput/LabelsInput';
 import AdvancedSettings from './../Shared/AdvancedSettings/AdvancedSettings';
 import LabelsDisplay from './../Shared/LabelsDisplay/LabelsDisplay';
-import OptionsDropdown from './../Shared/SelectDropdown/SelectDropdown';
+import SelectDropdown from './../Shared/SelectDropdown/SelectDropdown';
 import AutoRefreshButton from './../Shared/AutoRefreshButton/AutoRefreshButton';
-import { PERIODS, SORT_TYPES } from '../../constants';
+import { PERIODS, SORT_DROPDOWN_VALUES } from '../../constants';
 import { useSearchParams } from '../Logs/SearchParams.reducer';
 
 export default function Header() {
@@ -55,14 +55,14 @@ export default function Header() {
         <LabelsDisplay />
         <div>
           <AutoRefreshButton />
-          <OptionsDropdown
+          <SelectDropdown
             availabelValues={PERIODS}
             icon="past"
             currentValue={logsPeriod}
             updateValue={actions.setLogsPeriod}
           />
-          <OptionsDropdown
-            availabelValues={SORT_TYPES}
+          <SelectDropdown
+            availabelValues={SORT_DROPDOWN_VALUES}
             icon="sort"
             currentValue={sortDirection}
             updateValue={actions.setSortDir}

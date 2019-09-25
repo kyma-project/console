@@ -2,6 +2,10 @@ export const SORT_DESCENDING = 'descending';
 export const SORT_ASCENDING = 'ascending';
 
 export const SORT_TYPES = [SORT_DESCENDING, SORT_ASCENDING];
+export const SORT_DROPDOWN_VALUES = [
+  { value: SORT_DESCENDING, label: 'newest first' },
+  { value: SORT_ASCENDING, label: 'oldest first' },
+];
 
 export const PERIODS = [
   'last minute',
