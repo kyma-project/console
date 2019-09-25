@@ -133,8 +133,8 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
         ) : (
             <article className="fd-container fd-container--centered">
               <p className="fd-has-margin-large logs__no-filter">
-                Add some labels to filter to see the logs
-            </p>
+                Add at least one label to the filter to see the logs.
+              </p>
             </article>
           )}
       </SearchParamsContext.Provider>
