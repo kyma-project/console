@@ -15,9 +15,9 @@ import { LOG_REFRESH_INTERVAL } from './../../constants';
 
 function sortLogs(entry1, entry2, sortDirection) {
   const positiveReturn = sortDirection === 'ascending' ? 1 : -1;
-  const date1 = new Date(entry1.timestamp);
-  const date2 = new Date(entry2.timestamp);
-  return date1.getTime() > date2.getTime()
+  const date1 = Date.parse(entry1.timestamp);
+  const date2 = Date.parse(entry2.timestamp);
+  return date1 > date2
     ? positiveReturn
     : -1 * positiveReturn;
 }
