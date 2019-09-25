@@ -9,7 +9,7 @@
     "start:kyma:api": "npm run copy-config && ng serve --disable-host-check --host console-dev.kyma.local --port 4201 --env api-local",
     "build": "ng build --prod",
     "test": "ng test",
-    "lint": "ng lint --tslint-config tslint.json",
+    "lint": "ng lint lambdas --tslint-config tslint.json",
     "e2e": "ng e2e",
     "copy-config": "cp ../config.js src/assets/config/config.js"
   },
@@ -30,7 +30,6 @@
     "brace": "^0.11.1",
     "copy-webpack-plugin": "^4.3.0",
     "core-js": "^2.5.7",
-    "fiori-fundamentals": "^1.6.0",
     "fundamental-ngx": "^0.7.0",
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.15",
@@ -68,8 +67,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "protractor": "^5.4.1",
     "rxjs-tslint": "^0.1.5",
-    "ts-node": "~4.1.0",
-    "tslint": "^5.11.0",
-    "typescript": "^2.7.2"
+    "typescript": "^2.7.2",
+    "ts-node": "~4.1.0"
   }
 }

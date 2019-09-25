@@ -12,7 +12,7 @@ const navNode = (multiple: number) => css`
   }
 `;
 
-export const HeadersNavigationsWrapper = styled.div`
+export const HeadersNavigationWrapper = styled.div`
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -173,6 +173,7 @@ export const CollapseArrow = styled(Icon)`
     text-align: center;
     cursor: pointer;
     color: #0b74de;
+
     &:before {
       font-size: 0.65rem;
       line-height: 1;

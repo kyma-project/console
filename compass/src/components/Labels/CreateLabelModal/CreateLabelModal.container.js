@@ -12,7 +12,11 @@ export default compose(
   graphql(CREATE_LABEL, {
     props: props => ({
       createLabel: async labelInput => {
-        await props.mutate({ variables: { in: labelInput } });
+        const input = {
+          ...labelInput,
+          schema: labelInput.schema ? JSON.stringify(labelInput.schema) : null,
+        };
+        await props.mutate({ variables: { in: input } });
       },
     }),
   }),

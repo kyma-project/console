@@ -40,7 +40,17 @@
       "@angular/router/testing",
       "app"
     ],
-    "no-implicit-dependencies": [true, ["app"]],
+    "no-implicit-dependencies": [
+        true,
+        [
+          "app",
+          "@kyma-project/luigi-client",
+          "apollo-cache-inmemory",
+          "apollo-utilities",
+          "graphql-tag",
+          "subscriptions-transport-ws"
+        ]
+    ],
     "interface-name": false
   },
   "rulesDirectory": ["node_modules/codelyzer"],

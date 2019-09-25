@@ -4,6 +4,7 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
+    "postinstall": "node ./postinstall.js",
     "start": "echo `` > public/config/config.js && PORT=8000 ../../node_modules/.bin/react-app-rewired start",
     "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=8000 ../../node_modules/.bin/react-app-rewired start",
     "start:kyma:api": "npm run copy-config && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8000 ../../node_modules/.bin/react-app-rewired start",

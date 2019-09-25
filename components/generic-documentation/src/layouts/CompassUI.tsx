@@ -10,7 +10,7 @@ export interface CompassUILayoutProps {
 export const CompassUILayout: React.FunctionComponent<CompassUILayoutProps> = ({
   renderers,
 }) => (
-  <CompassUIWrapper>
+  <CompassUIWrapper className="compass-ui">
     <Content renderers={renderers} />
   </CompassUIWrapper>
 );

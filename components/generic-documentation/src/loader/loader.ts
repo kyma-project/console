@@ -82,12 +82,7 @@ export class DocsLoader {
     }
 
     return await fetch(file.url)
-      .then(response => {
-        if (openApiTypes.includes(type)) {
-          return response.json();
-        }
-        return response.text();
-      })
+      .then(response => response.text())
       .then(text => {
         if (markdownTypes.includes(type)) {
           return this.serializeMarkdownFile(file, text);
@@ -204,13 +199,9 @@ export class DocsLoader {
   }
 
   private extractSpecification(types: string[]) {
-    const openApiAsset = this.extractAssets(types);
+    const assets = this.extractAssets(types);
 
-    const file =
-      openApiAsset &&
-      openApiAsset[0] &&
-      openApiAsset[0].files &&
-      openApiAsset[0].files[0];
+    const file = assets && assets[0] && assets[0].files && assets[0].files[0];
 
     return file;
   }

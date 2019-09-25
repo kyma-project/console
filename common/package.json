@@ -4,8 +4,8 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "build": "tsc",
-    "type-check": "tsc --noEmit"
+    "build": "../node_modules/.bin/tsc",
+    "type-check": "../node_modules/.bin/tsc --noEmit"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts"

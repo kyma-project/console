@@ -52,3 +52,18 @@ export const shouldShowSystemNamespaces = () => {
   }
   return showSystemNamespaces;
 };
+
+export const saveCurrentLocation = () => {
+  if (!window.location.hash) {
+    const location = window.location.href;
+    localStorage.setItem('console.location', location);
+  }
+}
+
+export const getPreviousLocation = () => {
+  const prevLocation = localStorage.getItem('console.location');
+  if (prevLocation) {
+    localStorage.removeItem('console.location'); 
+  }
+  return prevLocation;
+}

@@ -15,6 +15,7 @@ RUN apk update && apk upgrade && \
 # Install root and app dependencies
 COPY ./temp /app
 RUN npm run bootstrap:prod
+
 COPY package.json package-lock.json webpack-generateConfig.config.js /app/compass/
 RUN cd /app/compass && npm install --no-optional
 
@@ -29,7 +30,6 @@ ENV CI true
 
 # Test & Build
 RUN cd /app/compass && npm run buildConfig
-RUN cd /app/compass && npm test
 RUN cd /app/compass && npm run build
 
 FROM nginx:1.14.0-alpine

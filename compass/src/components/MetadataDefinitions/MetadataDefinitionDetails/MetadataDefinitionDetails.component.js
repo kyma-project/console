@@ -38,9 +38,10 @@ const MetadataDefinitionDetails = ({
     // INITIALIZATION
     const definition = metadataDefinitionQuery.labelDefinition;
     if (definition) {
+      definition.schema = JSON.parse(definition.schema);
+
       setMetadataDefinition(definition);
       setIsEditorShown(!!definition.schema);
-
       setEditedSchema(definition.schema || defaultSchema);
 
       LuigiClient.uxManager().setDirtyStatus(false);

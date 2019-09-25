@@ -14,8 +14,10 @@ class Scenarios extends React.Component {
       (scenarioLabelDefinitionSchemaQuery &&
         scenarioLabelDefinitionSchemaQuery.labelDefinition &&
         scenarioLabelDefinitionSchemaQuery.labelDefinition.schema &&
-        scenarioLabelDefinitionSchemaQuery.labelDefinition.schema.items &&
-        scenarioLabelDefinitionSchemaQuery.labelDefinition.schema.items.enum) ||
+        JSON.parse(scenarioLabelDefinitionSchemaQuery.labelDefinition.schema)
+          .items &&
+        JSON.parse(scenarioLabelDefinitionSchemaQuery.labelDefinition.schema)
+          .items.enum) ||
       [];
     const loading =
       scenarioLabelDefinitionSchemaQuery &&
