@@ -16,6 +16,15 @@ export const PERIODS = [
 
 export const DEFAULT_PERIOD = PERIODS[2];
 
-export const LOG_LABEL_CATEGORIES = ['namespace', 'function', 'container_name'];
+export const LOG_LABEL_CATEGORIES = [
+  'namespace',
+  'function',
+  'container_name',
+  'app',
+  'chart',
+  'job',
+  'release',
+  'stream',
+];
 
 export const LOG_REFRESH_INTERVAL = 2000; // ms
