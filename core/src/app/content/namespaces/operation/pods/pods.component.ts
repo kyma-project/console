@@ -87,7 +87,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
     handler.showLogs = (entry: any) => {
       luigiClient
         .linkManager()
-        .withParams({ pod: entry.name, namespace: this.currentNamespaceId })
+        .withParams({ app: entry.labels.app, namespace: this.currentNamespaceId, splitViewMode: 'true' })
         .openAsModal('/home/cmf-logs');
     };
     return handler;
