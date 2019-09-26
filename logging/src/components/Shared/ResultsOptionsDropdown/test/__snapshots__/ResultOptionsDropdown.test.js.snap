@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResultsOptionsDropdown Renders with minimal props 1`] = `
+<span
+  className="link-button fd-has-type-minus-1"
+>
+  <div
+    className="fd-popover"
+  >
+    <div
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popover__control"
+      >
+        <button
+          className="fd-button--light sap-icon--action-settings fd-has-margin-right-tiny"
+          onClick={[Function]}
+          size="xs"
+        />
+      </div>
+    </div>
+  </div>
+</span>
+`;

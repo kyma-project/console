@@ -72,7 +72,7 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       throw new Error('Failed to create a namespace:', err);
     }
     await retry(async () => {
-      const data = await common.beforeAll(null, 60);
+      const data = await common.beforeAll(null, 80);
       browser = data.browser;
       page = data.page;
     });
@@ -467,9 +467,6 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
       visible: true,
     });
     await fullPlanInstance.click();
-    await frame.waitForNavigation({
-      waitUntil: ['domcontentloaded'],
-    });
 
     console.log('Confirm all necessary fields');
     await frame.waitForSelector(exampleInstanceServiceClass);
@@ -485,190 +482,190 @@ describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
     expect(labels).toContain(instanceLabel);
   });
 
-  testPluggable(REQUIRED_BINDING_MODULE, 'Check credentials', async () => {
-    // Hardcodes for specific test
-    const additionalData = configBindingAdditionalData;
+  // testPluggable(REQUIRED_BINDING_MODULE, 'Check credentials', async () => {
+  //   // Hardcodes for specific test
+  //   const additionalData = configBindingAdditionalData;
 
-    // consts
-    const serviceBindingCredentialsTab = catalog.prepareSelector(
-      'service-binding-tab',
-    );
-    const serviceBindingTab = catalog.prepareSelector(
-      'service-binding-usage-tab',
-    );
+  //   // consts
+  //   const serviceBindingCredentialsTab = catalog.prepareSelector(
+  //     'service-binding-tab',
+  //   );
+  //   const serviceBindingTab = catalog.prepareSelector(
+  //     'service-binding-usage-tab',
+  //   );
 
-    const credentialName = catalog.prepareSelector('credential-name');
-    const credentialStatus = catalog.prepareSelector('status-service-binding');
+  //   const credentialName = catalog.prepareSelector('credential-name');
+  //   const credentialStatus = catalog.prepareSelector('status-service-binding');
 
-    const secretSelector = catalog.prepareSelector('secret-button');
-    const secretEncodedSelector = catalog.prepareSelector('secret-encoded');
-    const secretDecodedSelector = catalog.prepareSelector('secret-decoded');
-    const decodeButton = catalog.prepareSelector('button-decode');
-    const parametersSelector = catalog.prepareSelector('parameters-button');
-    const parametersContentSelector = catalog.prepareSelector(
-      'parameters-content',
-    );
+  //   const secretSelector = catalog.prepareSelector('secret-button');
+  //   const secretEncodedSelector = catalog.prepareSelector('secret-encoded');
+  //   const secretDecodedSelector = catalog.prepareSelector('secret-decoded');
+  //   const decodeButton = catalog.prepareSelector('button-decode');
+  //   const parametersSelector = catalog.prepareSelector('parameters-button');
+  //   const parametersContentSelector = catalog.prepareSelector(
+  //     'parameters-content',
+  //   );
 
-    const closeModalSelector = '.fd-modal__close';
+  //   const closeModalSelector = '.fd-modal__close';
 
-    console.log(
-      'Go to Credentials tab and create credentials and fill in the schema form',
-    );
+  //   console.log(
+  //     'Go to Credentials tab and create credentials and fill in the schema form',
+  //   );
 
-    await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
+  //   await page.reload({ waitUntil: ['domcontentloaded', 'networkidle0'] });
 
-    const frame = await waitForInstancesFrame(page);
-    await frame.waitForSelector(serviceBindingCredentialsTab);
-    await frame.click(serviceBindingCredentialsTab);
+  //   const frame = await waitForInstancesFrame(page);
+  //   await frame.waitForSelector(serviceBindingCredentialsTab);
+  //   await frame.click(serviceBindingCredentialsTab);
 
-    await catalog.createCredentials(page, additionalData);
+  //   await catalog.createCredentials(page, additionalData);
 
-    await frame.waitForSelector(credentialName);
-    const allCredentials = await catalog.getCredentials(frame);
-    expect(allCredentials.length).toEqual(1);
+  //   await frame.waitForSelector(credentialName);
+  //   const allCredentials = await catalog.getCredentials(frame);
+  //   expect(allCredentials.length).toEqual(1);
 
-    await frame.waitForSelector(secretSelector);
-    await frame.click(secretSelector);
+  //   await frame.waitForSelector(secretSelector);
+  //   await frame.click(secretSelector);
 
-    await frame.waitForSelector(secretEncodedSelector);
-    const secretEncodedContent = await frame.$eval(
-      secretEncodedSelector,
-      item => item.innerHTML,
-    );
+  //   await frame.waitForSelector(secretEncodedSelector);
+  //   const secretEncodedContent = await frame.$eval(
+  //     secretEncodedSelector,
+  //     item => item.innerHTML,
+  //   );
 
-    expect(secretEncodedContent).toContain('***');
+  //   expect(secretEncodedContent).toContain('***');
 
-    await frame.click(decodeButton);
-    const secretDecodedContent = await frame.$eval(
-      secretDecodedSelector,
-      item => item.innerHTML,
-    );
+  //   await frame.click(decodeButton);
+  //   const secretDecodedContent = await frame.$eval(
+  //     secretDecodedSelector,
+  //     item => item.innerHTML,
+  //   );
 
-    expect(secretDecodedContent).not.toContain('***');
+  //   expect(secretDecodedContent).not.toContain('***');
 
-    const closeSecretCredModalButton = await frame.$(closeModalSelector);
-    await closeSecretCredModalButton.click();
+  //   const closeSecretCredModalButton = await frame.$(closeModalSelector);
+  //   await closeSecretCredModalButton.click();
 
-    await frame.waitForSelector(parametersSelector);
-    await frame.click(parametersSelector);
-    const parametersContent = await frame.$eval(
-      parametersContentSelector,
-      item => item.innerHTML,
-    );
+  //   await frame.waitForSelector(parametersSelector);
+  //   await frame.click(parametersSelector);
+  //   const parametersContent = await frame.$eval(
+  //     parametersContentSelector,
+  //     item => item.innerHTML,
+  //   );
 
-    expect(parametersContent).toContain(additionalData);
+  //   expect(parametersContent).toContain(additionalData);
 
-    const closeParametersModalButton = await frame.$(closeModalSelector);
-    await closeParametersModalButton.click();
+  //   const closeParametersModalButton = await frame.$(closeModalSelector);
+  //   await closeParametersModalButton.click();
 
-    console.log(
-      'Go to Bound Applications tab and confirm that in Credentials tab you see (1)',
-    );
-    await frame.waitForSelector(serviceBindingTab);
-    await frame.click(serviceBindingTab);
+  //   console.log(
+  //     'Go to Bound Applications tab and confirm that in Credentials tab you see (1)',
+  //   );
+  //   await frame.waitForSelector(serviceBindingTab);
+  //   await frame.click(serviceBindingTab);
 
-    await frame.waitForSelector(credentialStatus);
-    const credentialsStatuses = await catalog.getCredentialsStatus(frame);
-    expect(credentialsStatuses).toContain('1');
-  });
+  //   await frame.waitForSelector(credentialStatus);
+  //   const credentialsStatuses = await catalog.getCredentialsStatus(frame);
+  //   expect(credentialsStatuses).toContain('1');
+  // });
 
-  testPluggable(
-    REQUIRED_BINDING_MODULE,
-    'Check bindings with `full` plan',
-    async () => {
-      // Hardcodes for specific test
-      const resource = configBindingResource;
-      const prefix = configBindingPrefix;
+  // testPluggable(
+  //   REQUIRED_BINDING_MODULE,
+  //   'Check bindings with `full` plan',
+  //   async () => {
+  //     // Hardcodes for specific test
+  //     const resource = configBindingResource;
+  //     const prefix = configBindingPrefix;
 
-      // consts
-      const bindingName = catalog.prepareSelector('binding-name');
+  //     // consts
+  //     const bindingName = catalog.prepareSelector('binding-name');
 
-      const secretSelector = catalog.prepareSelector('secret-button');
-      const secretEncodedSelector = catalog.prepareSelector('secret-encoded');
-      const secretDecodedSelector = catalog.prepareSelector('secret-decoded');
-      const secretPrefixSelector = catalog.prepareSelector('secret-prefix');
-      const decodeButton = catalog.prepareSelector('button-decode');
+  //     const secretSelector = catalog.prepareSelector('secret-button');
+  //     const secretEncodedSelector = catalog.prepareSelector('secret-encoded');
+  //     const secretDecodedSelector = catalog.prepareSelector('secret-decoded');
+  //     const secretPrefixSelector = catalog.prepareSelector('secret-prefix');
+  //     const decodeButton = catalog.prepareSelector('button-decode');
 
-      const closeModalSelector = '.fd-modal__close';
+  //     const closeModalSelector = '.fd-modal__close';
 
-      const frame = await waitForInstancesFrame(page);
-      await catalog.bindApplication(page, resource, prefix);
+  //     const frame = await waitForInstancesFrame(page);
+  //     await catalog.bindApplication(page, resource, prefix);
 
-      await frame.waitForSelector(bindingName);
-      const allBindings = await catalog.getBindings(frame);
-      expect(allBindings.length).toEqual(1);
+  //     await frame.waitForSelector(bindingName);
+  //     const allBindings = await catalog.getBindings(frame);
+  //     expect(allBindings.length).toEqual(1);
 
-      await frame.waitForSelector(secretSelector);
-      await frame.click(secretSelector);
+  //     await frame.waitForSelector(secretSelector);
+  //     await frame.click(secretSelector);
 
-      await frame.waitForSelector(secretEncodedSelector);
-      const secretBindingEncodedContent = await frame.$eval(
-        secretEncodedSelector,
-        item => item.innerHTML,
-      );
+  //     await frame.waitForSelector(secretEncodedSelector);
+  //     const secretBindingEncodedContent = await frame.$eval(
+  //       secretEncodedSelector,
+  //       item => item.innerHTML,
+  //     );
 
-      expect(secretBindingEncodedContent).toContain('***');
+  //     expect(secretBindingEncodedContent).toContain('***');
 
-      await frame.click(decodeButton);
-      const secretBindingDecodedContent = await frame.$eval(
-        secretDecodedSelector,
-        item => item.innerHTML,
-      );
+  //     await frame.click(decodeButton);
+  //     const secretBindingDecodedContent = await frame.$eval(
+  //       secretDecodedSelector,
+  //       item => item.innerHTML,
+  //     );
 
-      expect(secretBindingDecodedContent).not.toContain('***');
+  //     expect(secretBindingDecodedContent).not.toContain('***');
 
-      const secretPrefixContent = await frame.$eval(
-        secretPrefixSelector,
-        item => item.innerHTML,
-      );
+  //     const secretPrefixContent = await frame.$eval(
+  //       secretPrefixSelector,
+  //       item => item.innerHTML,
+  //     );
 
-      expect(secretPrefixContent).toContain(prefix);
+  //     expect(secretPrefixContent).toContain(prefix);
 
-      const closeSecretModalButton = await frame.$(closeModalSelector);
-      await closeSecretModalButton.click();
+  //     const closeSecretModalButton = await frame.$(closeModalSelector);
+  //     await closeSecretModalButton.click();
 
-      await catalog.deleteBinding(page);
-    },
-  );
+  //     await catalog.deleteBinding(page);
+  //   },
+  // );
 
-  testPluggable(
-    REQUIRED_BINDING_MODULE,
-    'Check bindings with `minimal` plan',
-    async () => {
-      // Hardcodes for specific test
-      const additionalData = configBindingAdditionalData;
-      const resource = configBindingResource;
+  // testPluggable(
+  //   REQUIRED_BINDING_MODULE,
+  //   'Check bindings with `minimal` plan',
+  //   async () => {
+  //     // Hardcodes for specific test
+  //     const additionalData = configBindingAdditionalData;
+  //     const resource = configBindingResource;
 
-      // consts
-      const bindingName = catalog.prepareSelector('binding-name');
-      const credentialStatus = catalog.prepareSelector(
-        'status-service-binding',
-      );
+  //     // consts
+  //     const bindingName = catalog.prepareSelector('binding-name');
+  //     const credentialStatus = catalog.prepareSelector(
+  //       'status-service-binding',
+  //     );
 
-      const frame = await waitForInstancesFrame(page);
+  //     const frame = await waitForInstancesFrame(page);
 
-      await catalog.bindApplication(page, resource, null, additionalData);
+  //     await catalog.bindApplication(page, resource, null, additionalData);
 
-      await frame.waitForSelector(bindingName);
-      const newBindings = await catalog.getBindings(frame);
-      expect(newBindings.length).toEqual(1);
+  //     await frame.waitForSelector(bindingName);
+  //     const newBindings = await catalog.getBindings(frame);
+  //     expect(newBindings.length).toEqual(1);
 
-      await frame.waitForSelector(credentialStatus);
-      const credentialsNewStatuses = await catalog.getCredentialsStatus(frame);
-      expect(credentialsNewStatuses).toContain('2');
-    },
-  );
+  //     await frame.waitForSelector(credentialStatus);
+  //     const credentialsNewStatuses = await catalog.getCredentialsStatus(frame);
+  //     expect(credentialsNewStatuses).toContain('2');
+  //   },
+  // );
 
-  testPluggable(REQUIRED_BINDING_MODULE, 'Delete bindings', async () => {
-    const serviceBindingCredentialsTab = catalog.prepareSelector(
-      'service-binding-tab',
-    );
+  // testPluggable(REQUIRED_BINDING_MODULE, 'Delete bindings', async () => {
+  //   const serviceBindingCredentialsTab = catalog.prepareSelector(
+  //     'service-binding-tab',
+  //   );
 
-    const frame = await waitForInstancesFrame(page);
-    await frame.waitForSelector(serviceBindingCredentialsTab);
-    await frame.click(serviceBindingCredentialsTab);
+  //   const frame = await waitForInstancesFrame(page);
+  //   await frame.waitForSelector(serviceBindingCredentialsTab);
+  //   await frame.click(serviceBindingCredentialsTab);
 
-    await catalog.deleteCredentials(page);
-    await catalog.deleteCredentials(page);
-  });
+  //   await catalog.deleteCredentials(page);
+  //   await catalog.deleteCredentials(page);
+  // });
 });

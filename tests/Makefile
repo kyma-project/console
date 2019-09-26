@@ -15,7 +15,7 @@ root-master:
 
 .PHONY: resolve
 resolve:
-	npm ci
+	npm install
 
 .PHONY: pull-licenses
 pull-licenses:

@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+<section
+  className="advanced_settings fd-has-padding-right-regular fd-has-padding-left-regular "
+>
+  <h2
+    className="advanced_settings__header"
+  >
+    Advanced Settings
+    <span
+      className="sap-icon--decline sap-icon--s cursor-pointer"
+      onClick={[Function]}
+    />
+  </h2>
+  <div
+    className="advanced_settings__entry"
+  >
+    <p
+      className="caption-muted"
+    >
+      <label
+        htmlFor="query"
+      >
+        Query
+      </label>
+    </p>
+    <div>
+      <input
+        autoComplete="off"
+        className="fd-form__control is-normal"
+        id="query"
+        onChange={[Function]}
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    className="advanced_settings__entry"
+  >
+    <p
+      className="caption-muted"
+    >
+      <label
+        htmlFor="result-limit"
+      >
+        Result limit
+        <span
+          className="small-inline-help-wrapper"
+        >
+          <span
+            className="fd-inline-help"
+          >
+            <span
+              className="fd-inline-help__content fd-inline-help__content--right"
+            >
+              Return only limited number of most recent log lines.
+            </span>
+          </span>
+        </span>
+      </label>
+    </p>
+    <div>
+      <input
+        autoComplete="off"
+        className="fd-form__control"
+        defaultValue={1000}
+        id="result-limit"
+        onChange={[Function]}
+        type="number"
+      />
+    </div>
+  </div>
+  <div
+    className="advanced_settings__entry"
+  >
+    <p
+      className="caption-muted"
+    >
+      Show
+    </p>
+    <div>
+      <input
+        defaultChecked={false}
+        id="istio-logs"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        className="caption-muted"
+        htmlFor="previous-logs"
+      >
+        Istio logs
+      </label>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`HealthChecksInput Changing "Show health checks" triggers callback 1`] = `
+Array [
+  Array [
+    Object {
+      "type": "SET_SHOW_HEALTH_CHECKS",
+      "value": false,
+    },
+  ],
+  Array [
+    Object {
+      "type": "SET_SHOW_HEALTH_CHECKS",
+      "value": true,
+    },
+  ],
+]
+`;
+
+exports[`ResultLimitInput Changing "Result limit" triggers callback 1`] = `
+Array [
+  Array [
+    Object {
+      "type": "SET_RESULT_LIMIT",
+      "value": 12,
+    },
+  ],
+]
+`;

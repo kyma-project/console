@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LogTable Renders custom title if name is provided 1`] = `
+<table
+  className="fd-table fd-has-margin-regular"
+>
+  <thead>
+    <tr>
+      <th
+        className="caption-muted"
+      >
+        Timestamp
+      </th>
+      <th
+        className="caption-muted"
+      >
+        Log
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        a
+      </td>
+      <td
+        className="caption-muted"
+      >
+        b
+      </td>
+    </tr>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        c
+      </td>
+      <td
+        className="caption-muted"
+      >
+        d
+      </td>
+    </tr>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        e
+      </td>
+      <td
+        className="caption-muted"
+      >
+        f
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`LogTable Renders with minimal props 1`] = `
+<table
+  className="fd-table fd-has-margin-regular"
+>
+  <thead>
+    <tr>
+      <th
+        className="caption-muted"
+      >
+        Timestamp
+      </th>
+      <th
+        className="caption-muted"
+      >
+        Log
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        a
+      </td>
+      <td
+        className="caption-muted"
+      >
+        b
+      </td>
+    </tr>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        c
+      </td>
+      <td
+        className="caption-muted"
+      >
+        d
+      </td>
+    </tr>
+    <tr>
+      <td
+        className="caption-muted"
+      >
+        e
+      </td>
+      <td
+        className="caption-muted"
+      >
+        f
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

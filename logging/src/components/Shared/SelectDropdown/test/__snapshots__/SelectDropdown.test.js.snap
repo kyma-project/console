@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectDropdown Renders with custom props 1`] = `
+<span
+  className="link-button fd-has-type-minus-1 select-dropdown"
+>
+  <div
+    className="fd-popover"
+  >
+    <div
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popover__control"
+      >
+        <button
+          className="fd-button--light sap-icon--connected fd-has-margin-right-tiny"
+          onClick={[Function]}
+          size="xs"
+        />
+      </div>
+    </div>
+  </div>
+</span>
+`;
+
+exports[`SelectDropdown Renders with minimal props 1`] = `
+<span
+  className="link-button fd-has-type-minus-1 select-dropdown"
+>
+  <div
+    className="fd-popover"
+  >
+    <div
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="fd-popover__control"
+      >
+        <button
+          className="fd-button--light fd-has-margin-right-tiny"
+          onClick={[Function]}
+          size="xs"
+        >
+          a
+        </button>
+      </div>
+    </div>
+  </div>
+</span>
+`;

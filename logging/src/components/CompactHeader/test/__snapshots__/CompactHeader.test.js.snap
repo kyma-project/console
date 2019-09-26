@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompactHeader Renders with minimal props 1`] = `
+<div
+  className="fd-panel fd-has-padding-small fd-has-padding-right-regular fd-has-padding-left-regular sticky-header"
+>
+  <section
+    className="compact-header"
+  >
+    <h1
+      className="fd-has-type-3"
+    >
+      Logs
+    </h1>
+    <div
+      className="fd-has-display-flex"
+    >
+      <section
+        className="fd-has-margin-right-small"
+      >
+        <span
+          className="caption-muted search-input__caption"
+        />
+        <input
+          className="search-input--compact"
+          id="search-input"
+          onChange={[Function]}
+          placeholder="Search"
+          type="text"
+          value=""
+        />
+      </section>
+      <span
+        className="link-button fd-has-type-minus-1"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--action-settings fd-has-margin-right-tiny"
+                onClick={[Function]}
+                size="xs"
+              />
+            </div>
+          </div>
+        </div>
+      </span>
+      <button
+        className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+        data-test-id="auto-refresh-button"
+        onClick={[Function]}
+        size="xs"
+      >
+        auto refresh
+      </button>
+      <span
+        className="link-button fd-has-type-minus-1 select-dropdown"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
+                onClick={[Function]}
+                size="xs"
+              />
+            </div>
+          </div>
+        </div>
+      </span>
+      <span
+        className="link-button fd-has-type-minus-1 select-dropdown"
+      >
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
+                onClick={[Function]}
+                size="xs"
+              />
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </section>
+</div>
+`;

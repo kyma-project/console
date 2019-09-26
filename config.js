@@ -24,8 +24,8 @@ window.clusterConfig = {
   docsModuleUrl: 'http://' + localDomain + ':8003',
   addOnsModuleUrl: 'http://' + localDomain + ':8004',
   lambdasModuleUrl: 'http://' + localDomain + ':4201',
-  logsModuleUrl: 'http://' + localDomain + ':4400',
   coreModuleUrl: 'http://' + localDomain + ':8889',
+  logsModuleUrl: 'http://' + localDomain + ':8005',
 
   HELM_BROKER_REPO_URL_PREFIXES: [
     'https://',

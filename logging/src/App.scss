@@ -1,0 +1,57 @@
+@import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
+
+.link-button {
+  color: var(--fd-color-action-1);
+  cursor: pointer;
+}
+
+.caption-muted {
+  font-size: 0.85714rem;
+  font-weight: 400;
+  color: var(--fd-color-text-3);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.small-inline-help-wrapper {
+  display: inline;
+
+  .fd-inline-help {
+    display: inline;
+    top: unset;
+  }
+
+  .fd-inline-help::before {
+    margin-top: 4px;
+    margin-left: 4px;
+    width: 13px;
+    height: 13px;
+    font-size: 10px;
+    cursor: help;
+  }
+}
+
+.y-fd-token--no-button {
+  cursor: default;
+  &:after {
+    all: unset;
+  }
+}
+// .fd-token[disabled] {
+//   color: var(--fd-color-text-1);
+//   background-color: var(--fd-color-neutral-2);
+//   border-color: var(--fd-color-neutral-4);
+
+//   &::after {
+//     cursor: unset;
+//   }
+// }
+
+.fd-inline-help__content {
+  min-width: 200px;
+}
+.fd-table tr {
+  cursor: default;
+}

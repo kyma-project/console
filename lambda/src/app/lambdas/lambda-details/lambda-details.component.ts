@@ -111,6 +111,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   @ViewChild('editLabelsForm') editLabelsForm: NgForm;
 
+  logsViewHandle;
   trigger: string;
   code: string;
   dependency: string;
@@ -159,6 +160,14 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   testPayload = {};
   responseEditorMode: 'json' | 'text' = 'json';
   notificationTimeout: NodeJS.Timeout;
+
+  public responseEditorOptions = {
+    showLineNumbers : false,
+    showGutter : false,
+    showFoldWidgets : false,
+    highlightActiveLine: false,
+    highlightSelectedWord: false,
+  }
 
   public issuer: string;
   public jwksUri: string;
@@ -223,8 +232,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       params => {
         this.listenerId = luigiClient.addInitListener(() => {
-          this.initCanShowLogs();
-
           const eventData = luigiClient.getEventData();
           this.namespace = eventData.namespaceId;
           this.token = eventData.idToken;
@@ -251,11 +258,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                   this.selectedTriggers.push(httpEndPoint);
                   this.isHTTPTriggerAdded = true;
                   this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
-                  if (this.isHTTPTriggerAuthenticated  && httpEndPoint.authentication){ 
+                  if (this.isHTTPTriggerAuthenticated  && httpEndPoint.authentication){
                         this.jwksUri = httpEndPoint.authentication.jwt.jwksUri;
                         this.authType = httpEndPoint.authentication.type;
                   }
-                 
+
                 },
                 err => {
                   // Can be a valid 404 error when api is not found of a function
@@ -330,6 +337,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.listenerId) {
       luigiClient.removeInitListener(this.listenerId);
+    }
+    if (this.logsViewHandle) {
+      this.logsViewHandle.expand()
+      this.logsViewHandle.close()
     }
   }
 
@@ -928,6 +939,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               }
             });
           }
+          this.initCanShowLogs()
         },
         err => {
           this.navigateToList();
@@ -969,22 +981,25 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
   initCanShowLogs() {
     luigiClient
-      .linkManager()
-      .pathExists('/home/cmf-logs')
-      .then(exists => {
-        this.canShowLogs = exists;
-      });
+    .linkManager()
+    .pathExists('/home/cmf-logs')
+    .then(exists => {
+      this.showLogs()
+    });
   }
 
   showLogs() {
-    luigiClient
-      .linkManager()
-      .withParams({
-        function: this.lambda.metadata.name,
-        namespace: this.namespace,
-        container_name: this.lambda.metadata.name,
-      })
-      .openAsModal('/home/cmf-logs');
+    if(!this.logsViewHandle){
+      this.logsViewHandle = luigiClient
+        .linkManager()
+        .withParams({
+          function: this.lambda.metadata.name,
+          namespace: this.namespace,
+          container_name: this.lambda.metadata.name,
+          splitViewMode: 'true',
+        })
+        .openAsSplitView('/home/cmf-logs',{title: 'Logs', size: 40, collapsed: true});
+    }
   }
 
   navigateToList() {
@@ -1388,11 +1403,24 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   changeTab(name: string) {
-    luigiClient
-      .linkManager()
-      .withParams({ selectedTab: name })
-      .navigate('');
+    // luigiClient
+    //   .linkManager()
+    //   .withParams({ selectedTab: name })
+    //   .navigate('');
     this.currentTab = name;
+    if(this.currentTab === 'test'){
+      this.expandSplitView();
+    } else {
+      this.collapseSplitView();
+    }
+  }
+
+  collapseSplitView(){
+    this.logsViewHandle.collapse();
+  }
+
+  expandSplitView(){
+    this.logsViewHandle.expand();
   }
 
   showNotification(notificationData: INotificationData, timeout?: number) {
@@ -1422,7 +1450,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   handleTestButtonClick() {
-    this.testingResponse = '';
+    this.testingResponse = 'Loading...';
     if (!this.existingHTTPEndpoint) {
       throw new Error('It looks like the Lambda is not deployed yet');
     }
@@ -1469,7 +1497,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           {
             type: `success`,
             message: `Test Event Sent.`,
-            description: `Check Lambda Logs.`,
           },
           5000,
         );

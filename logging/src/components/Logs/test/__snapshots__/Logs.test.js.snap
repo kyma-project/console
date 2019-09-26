@@ -1,0 +1,365 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logs Renders with lambda view props 1`] = `
+Array [
+  <div
+    className="fd-panel fd-has-padding-bottom-none header"
+  >
+    <h1
+      className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
+      Logs
+    </h1>
+    <section
+      className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
+      <section
+        className="fd-display-l-inline-block"
+      >
+        <span
+          className="caption-muted"
+        >
+          Labels
+        </span>
+        <div
+          className="fd-combobox-input"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <div
+                  className="fd-combobox-control"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="fd-input-group fd-input-group--after"
+                  >
+                    <input
+                      className="fd-input"
+                      placeholder="Select Label"
+                      type="text"
+                    />
+                    <span
+                      className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                    >
+                      <button
+                        className=" fd-button--light sap-icon--navigation-down-arrow"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        className="fd-has-margin-right-small"
+      >
+        <span
+          className="caption-muted search-input__caption"
+        >
+          Search
+          <div
+            className="small-inline-help-wrapper"
+          >
+            <span
+              className="fd-inline-help"
+            >
+              <span
+                className="fd-inline-help__content fd-inline-help__content--right"
+              >
+                Search for logs by text (optional)
+              </span>
+            </span>
+          </div>
+        </span>
+        <input
+          className=""
+          id="search-input"
+          onChange={[Function]}
+          placeholder="Search"
+          type="text"
+          value=""
+        />
+      </section>
+      <span
+        className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+        data-test-id="advanced-settings-toggle"
+        onClick={[Function]}
+        role="button"
+      >
+        Show Advanced Settings
+      </span>
+    </section>
+    <div
+      className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
+      <section
+        className="labels-display"
+      >
+        <ul />
+      </section>
+      <div>
+        <button
+          className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+          data-test-id="auto-refresh-button"
+          onClick={[Function]}
+          size="xs"
+        >
+          auto refresh
+        </button>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                >
+                  last 15 minutes
+                </button>
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                >
+                  newest first
+                </button>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>,
+  <article
+    className="fd-container fd-container--centered"
+  >
+    <p
+      className="fd-has-margin-large logs__no-filter"
+    >
+      Add some labels to filter to see the logs
+    </p>
+  </article>,
+]
+`;
+
+exports[`Logs Renders with minimal props 1`] = `
+Array [
+  <div
+    className="fd-panel fd-has-padding-bottom-none header"
+  >
+    <h1
+      className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
+      Logs
+    </h1>
+    <section
+      className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
+      <section
+        className="fd-display-l-inline-block"
+      >
+        <span
+          className="caption-muted"
+        >
+          Labels
+        </span>
+        <div
+          className="fd-combobox-input"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <div
+                  className="fd-combobox-control"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="fd-input-group fd-input-group--after"
+                  >
+                    <input
+                      className="fd-input"
+                      placeholder="Select Label"
+                      type="text"
+                    />
+                    <span
+                      className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                    >
+                      <button
+                        className=" fd-button--light sap-icon--navigation-down-arrow"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        className="fd-has-margin-right-small"
+      >
+        <span
+          className="caption-muted search-input__caption"
+        >
+          Search
+          <div
+            className="small-inline-help-wrapper"
+          >
+            <span
+              className="fd-inline-help"
+            >
+              <span
+                className="fd-inline-help__content fd-inline-help__content--right"
+              >
+                Search for logs by text (optional)
+              </span>
+            </span>
+          </div>
+        </span>
+        <input
+          className=""
+          id="search-input"
+          onChange={[Function]}
+          placeholder="Search"
+          type="text"
+          value=""
+        />
+      </section>
+      <span
+        className="link-button fd-has-type-minus-1 header__settings-group__toggle"
+        data-test-id="advanced-settings-toggle"
+        onClick={[Function]}
+        role="button"
+      >
+        Show Advanced Settings
+      </span>
+    </section>
+    <div
+      className="header-toolbar fd-has-padding-right-regular fd-has-padding-left-regular "
+    >
+      <section
+        className="labels-display"
+      >
+        <ul />
+      </section>
+      <div>
+        <button
+          className="fd-button--light sap-icon--media-pause link-button fd-has-margin-right-tiny fd-has-type-minus-1"
+          data-test-id="auto-refresh-button"
+          onClick={[Function]}
+          size="xs"
+        >
+          auto refresh
+        </button>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--past fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                >
+                  last 15 minutes
+                </button>
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          className="link-button fd-has-type-minus-1 select-dropdown"
+        >
+          <div
+            className="fd-popover"
+          >
+            <div
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <div
+                className="fd-popover__control"
+              >
+                <button
+                  className="fd-button--light sap-icon--sort fd-has-margin-right-tiny"
+                  onClick={[Function]}
+                  size="xs"
+                >
+                  newest first
+                </button>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>,
+  <article
+    className="fd-container fd-container--centered"
+  >
+    <p
+      className="fd-has-margin-large logs__no-filter"
+    >
+      Add some labels to filter to see the logs
+    </p>
+  </article>,
+]
+`;

@@ -44,3 +44,7 @@ licenses
 **/react-components/index.js
 **/temp
 **/licenses
+
+
+#**/src/assets/config/config.js
+#**/public/config/config.js

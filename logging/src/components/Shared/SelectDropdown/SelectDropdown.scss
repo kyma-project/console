@@ -1,0 +1,7 @@
+.select-dropdown  {
+    [class*=fd-button--], [class*=fd-button--]::before {
+        // override fd-button-- classes
+        font-size: .85714rem !important;
+        font-weight: 400 !important;
+    }
+}

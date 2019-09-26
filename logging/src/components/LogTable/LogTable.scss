@@ -1,0 +1,21 @@
+$table-margin: 24px;
+
+.fd-table {
+    width: calc(100% - 2 * #{$table-margin}) !important;
+}
+
+th:first-child, td:first-child {
+    width: 25%;
+}
+
+.log-table__pre-header {
+    color: var(--fd-color-text-1);
+    padding: 16px 20px;
+    margin: 0;
+    background: white;
+}
+
+.log-table__no-entries-text {
+    // override .fd-table td, .fd-table th'  text-align: left
+    text-align: center !important;
+}

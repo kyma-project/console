@@ -1,0 +1,43 @@
+.fd-mega-menu__item--disabled {
+  padding: 10px 20px;
+  color: #51555a;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  color: var(--fd-color-text-4);
+}
+
+.fd-mega-menu__list.dimmed {
+  .fd-mega-menu__link {
+    color: var(--fd-color-neutral-4);
+  }
+}
+
+.fd-popover__popper {
+  .fd-mega-menu {
+    width: auto;
+    max-width: 50vw;
+  }
+
+  .fd-mega-menu__sublist {
+    border: solid 1px #89919a;
+    width: auto;
+    max-width: 50vw;
+    right: unset;
+    left: 100%;
+  }
+}
+
+.fd-mega-menu__subitem.selected {
+  .fd-mega-menu__sublink {
+    display: flex;
+    align-content: normal;
+    justify-content: space-between;
+    color: var(--fd-color-neutral-4);
+    cursor: default;
+    .sap-icon--m {
+      margin-left: 5px;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchInput Renders in compact mode 1`] = `
+<section
+  className="fd-has-margin-right-small"
+>
+  <span
+    className="caption-muted search-input__caption"
+  />
+  <input
+    className="search-input--compact"
+    id="search-input"
+    onChange={[Function]}
+    placeholder="Search"
+    type="text"
+    value=""
+  />
+</section>
+`;
+
+exports[`SearchInput Renders with minimal props 1`] = `
+<section
+  className="fd-has-margin-right-small"
+>
+  <span
+    className="caption-muted search-input__caption"
+  >
+    Search
+    <div
+      className="small-inline-help-wrapper"
+    >
+      <span
+        className="fd-inline-help"
+      >
+        <span
+          className="fd-inline-help__content fd-inline-help__content--right"
+        >
+          Search for logs by text (optional)
+        </span>
+      </span>
+    </div>
+  </span>
+  <input
+    className=""
+    id="search-input"
+    onChange={[Function]}
+    placeholder="Search"
+    type="text"
+    value=""
+  />
+</section>
+`;

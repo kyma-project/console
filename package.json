@@ -17,7 +17,7 @@
     "conflict-check": "tslint-config-prettier-check ./tslint.json",
     "markdownlint": "markdownlint **/*.md",
     "lint-staged": "lint-staged",
-    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js service-catalog-ui/catalog/public/config/config.js service-catalog-ui/instances/public/config/config.js service-catalog-ui/brokers/public/config/config.js content/public/config/config.js logging/src/assets/config/config.js add-ons/public/config/config.js core-ui/public/config/config.js",
+    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js service-catalog-ui/catalog/public/config/config.js service-catalog-ui/instances/public/config/config.js service-catalog-ui/brokers/public/config/config.js content/public/config/config.js logging/public/config/config.js add-ons/public/config/config.js core-ui/public/config/config.js",
     "append-host": "grep -qF '127.0.0.1 console-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 console-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 console-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)",
     "append-host-ui-test": "sudo sed -i '' \"/ui-test-exposed-api.kyma.local/d\" '/etc/hosts' && (echo 'append: $(minikube ip) ui-test-exposed-api.kyma.local >> /etc/hosts' && echo $(minikube ip) ui-test-exposed-api.kyma.local | sudo tee -a /etc/hosts > /dev/null)",
     "append-hosts": "npm run append-host && npm run append-host-ui-test"
