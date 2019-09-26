@@ -17,6 +17,7 @@ root-master:
 .PHONY: resolve
 resolve:
 	cd .. && npm ci && npm run ci:libraries
+	cd ../components/react && npm ci && npm run build
 	npm ci --no-optional
 
 .PHONY: test
