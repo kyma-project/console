@@ -86,17 +86,11 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
   getEntryEventHandler(): any {
     const handler = super.getEntryEventHandler();
     handler.showLogs = (entry: any) => {
-      const nodeParams = { namespace: this.currentNamespaceId, splitViewMode: 'true' };
-      if(entry.labels && entry.labels.app) {
-        nodeParams['app'] = entry.labels.app;
-      }
-      if(entry.labels && entry.labels['pod-template-hash']) {
-        nodeParams['pod_template_hash'] = entry.labels['pod-template-hash'];
-      }
+      const nodeParams = { namespace: this.currentNamespaceId, splitViewMode: 'true', instance: entry.name };
       luigiClient
         .linkManager()
         .withParams(nodeParams)
-        .openAsModal('/home/cmf-logs', {title:' '});
+        .openAsModal('/home/cmf-logs', {title: `Logs from ${entry.name}`});
     };
     return handler;
   }
