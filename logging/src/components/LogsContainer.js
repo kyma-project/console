@@ -28,6 +28,7 @@ export default function LogsContainer() {
     return labels;
   }
 
+  const isCompactMode = isCompact();
   const readOnlyLabels = getLabelValuesFromViewParams();
 
   return (
@@ -36,7 +37,7 @@ export default function LogsContainer() {
       queryTransformService={queryTransformService}
       podsSubscriptionService={podsSubscriptionService}
       readonlyLabels={readOnlyLabels}
-      isCompact={isCompact()}
+      isCompact={isCompactMode}
     />
   );
 }
