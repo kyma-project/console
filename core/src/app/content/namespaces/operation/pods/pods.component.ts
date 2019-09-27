@@ -8,7 +8,7 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 
 import * as luigiClient from '@kyma-project/luigi-client';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
-import { identifierModuleUrl } from '@angular/compiler';
+
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
