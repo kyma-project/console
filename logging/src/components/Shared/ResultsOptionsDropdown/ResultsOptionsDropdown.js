@@ -15,7 +15,7 @@ export default function ResultOptionsDropdown() {
 
   const PopoverContent = () => (
     <FormSet id="result-options">
-      <FormItem className="fd-has-margin-small">
+      {/* <FormItem className="fd-has-margin-small">
         <FormInput
           type="checkbox"
           id="previous-logs"
@@ -28,7 +28,7 @@ export default function ResultOptionsDropdown() {
         >
           logs of previous lambda version
         </FormLabel>
-      </FormItem>
+      </FormItem> */}
       <FormItem className="fd-has-margin-small">
         <FormInput
           type="checkbox"
