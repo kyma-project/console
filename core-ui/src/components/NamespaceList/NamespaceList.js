@@ -78,7 +78,7 @@ export default function NamespaceList() {
   }, [subscribeToMore]);
 
   if (error) {
-    return <p>Nie pykło</p>;
+    return <p>Nie pykło!</p>;
   }
 
   if (loading) {
