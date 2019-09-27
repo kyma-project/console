@@ -13,14 +13,14 @@ export default function LogsContainer() {
     PodSubscriptionServiceContext,
   );
 
-  function isSplitView() {
+  function isCompact() {
     var params = LuigiClient.getNodeParams();
-    return !!params.splitViewMode;
+    return !!params.compact;
   }
 
   function getLabelValuesFromViewParams() {
     const params = LuigiClient.getNodeParams();
-    delete params.splitViewMode;
+    delete params.compact;
     const labels = [];
     for (var paramName in params) {
       labels.push(`${paramName}="${params[paramName]}"`);
@@ -28,7 +28,7 @@ export default function LogsContainer() {
     return labels;
   }
 
-  const isCompact = isSplitView();
+  const isCompactMode = isCompact();
   const readOnlyLabels = getLabelValuesFromViewParams();
 
   return (
@@ -37,7 +37,7 @@ export default function LogsContainer() {
       queryTransformService={queryTransformService}
       podsSubscriptionService={podsSubscriptionService}
       readonlyLabels={readOnlyLabels}
-      isCompact={isCompact}
+      isCompact={isCompactMode}
     />
   );
 }

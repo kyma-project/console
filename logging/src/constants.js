@@ -25,6 +25,7 @@ export const LOG_LABEL_CATEGORIES = [
   'job',
   'release',
   'stream',
+  'instance',
 ];
 
 export const LOG_REFRESH_INTERVAL = 2000; // ms

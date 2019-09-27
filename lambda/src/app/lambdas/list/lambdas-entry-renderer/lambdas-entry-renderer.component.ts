@@ -27,7 +27,7 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
   ];
 
   constructor(
-    private appRef: ApplicationRef, 
+    private appRef: ApplicationRef,
     protected injector: Injector,
     private luigiClientService: LuigiClientService
   ) {
@@ -42,17 +42,14 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
 
   ngOnInit() {
     this.showMetricsColumn = this.luigiClientService.hasBackendModule('grafana');
+    const lokiInstalled = this.luigiClientService.hasBackendModule('loki');
 
-    LuigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
-      if (exists) {
-        {
-          this.actions.push({
-            function: 'showLogs',
-            name: 'Show Logs'
-          });
-        }
-      }
-    });
+    if (lokiInstalled) {
+      this.actions.push({
+        function: 'showLogs',
+        name: 'Show Logs'
+      });
+    }
   }
 
   getTrigger(entry) {

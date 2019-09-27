@@ -1,3 +1,4 @@
+import { LuigiClientService } from 'shared/services/luigi-client.service';
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
 import { Subscription } from 'rxjs';
@@ -15,7 +16,8 @@ export class PodsEntryRendererComponent
   implements OnInit, OnDestroy {
   constructor(
     protected injector: Injector,
-    private componentCommunicationService: ComponentCommunicationService
+    private componentCommunicationService: ComponentCommunicationService,
+    private luigiClientService: LuigiClientService
   ) {
     super(injector);
   }
@@ -25,16 +27,16 @@ export class PodsEntryRendererComponent
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
-    luigiClient.linkManager().pathExists('/home/cmf-logs').then(exists => {
-      if (exists) {
-        {
-          this.actions.push({
-            function: 'showLogs',
-            name: 'Show Logs'
-          });
-        }
+    const lokiInstalled = this.luigiClientService.hasBackendModule('loki');
+    if (lokiInstalled) {
+      {
+        this.actions.push({
+          function: 'showLogs',
+          name: 'Show Logs'
+        });
       }
-    });
+    }
+
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
@@ -72,7 +74,7 @@ export class PodsEntryRendererComponent
     if (entry.status !== 'RUNNING' && entry.containerStates && entry.containerStates.length > 0) {
       const containerNotRunning = entry.containerStates.find((c) => c.state !== 'RUNNING');
       return `${containerNotRunning.state}: ${containerNotRunning.reason}`;
-      
+
     }
     return entry.status;
   }
