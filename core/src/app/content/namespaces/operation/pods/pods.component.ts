@@ -8,6 +8,7 @@ import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-
 
 import * as luigiClient from '@kyma-project/luigi-client';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Component({
   templateUrl: '../kubernetes-element-list.component.html'
@@ -85,10 +86,17 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
   getEntryEventHandler(): any {
     const handler = super.getEntryEventHandler();
     handler.showLogs = (entry: any) => {
+      const nodeParams = { namespace: this.currentNamespaceId, splitViewMode: 'true' };
+      if(entry.labels && entry.labels.app) {
+        nodeParams['app'] = entry.labels.app;
+      }
+      if(entry.labels && entry.labels['pod-template-hash']) {
+        nodeParams['pod_template_hash'] = entry.labels['pod-template-hash'];
+      }
       luigiClient
         .linkManager()
-        .withParams({ app: entry.labels.app, namespace: this.currentNamespaceId, splitViewMode: 'true' })
-        .openAsModal('/home/cmf-logs');
+        .withParams(nodeParams)
+        .openAsModal('/home/cmf-logs', {title:' '});
     };
     return handler;
   }
