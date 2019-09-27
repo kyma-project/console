@@ -134,7 +134,7 @@ export class LambdasComponent extends GenericTableComponent
           .withParams({
             function: entry.metadata.name,
             namespace: this.environment,
-            splitViewMode: 'true',
+            compact: 'true',
           })
           .openAsModal('/home/cmf-logs', {title: `Logs from ${entry.metadata.name}`});
       },
