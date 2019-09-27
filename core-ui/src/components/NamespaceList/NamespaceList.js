@@ -75,7 +75,7 @@ export default function NamespaceList() {
         return handleNamespaceEvent(prev, subscriptionData.data.namespaceEvent);
       },
     });
-  }, [subscribeToMore]);
+  }, [subscribeToMore, showSystemNamespaces]);
 
   if (error) {
     return <p>Nie pykło!</p>;
