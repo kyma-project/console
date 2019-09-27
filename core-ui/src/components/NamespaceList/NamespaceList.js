@@ -23,16 +23,18 @@ export default function NamespaceList() {
       return obj;
     }
 
-    let result;
+    let result, idx;
+    const items = [...currentItems];
     switch (event.type) {
       case 'ADD':
-        result = [...currentItems, targetItem];
+        idx = items.findIndex(i => i.name === targetItem.name);
+        if (idx === -1) {
+          result = [...currentItems, targetItem];
+        }
         break;
       case 'UPDATE':
-        const items = [...currentItems];
-        const idx = items.findIndex(i => i.name === targetItem.name);
+        idx = items.findIndex(i => i.name === targetItem.name);
         if (idx === -1) {
-          // if the `ADD` event hasn't been received
           result = [...currentItems, targetItem];
           break;
         }
