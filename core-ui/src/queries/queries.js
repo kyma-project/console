@@ -4,6 +4,7 @@ export const GET_NAMESPACES = gql`
   query Namespaces($showSystemNamespaces: Boolean) {
     namespaces(withSystemNamespaces: $showSystemNamespaces) {
       name
+      status
       pods {
         status
       }
@@ -19,6 +20,7 @@ export const NAMESPACES_EVENT_SUBSCRIPTION = gql`
       type
       namespace {
         name
+        status
         pods {
           status
         }
