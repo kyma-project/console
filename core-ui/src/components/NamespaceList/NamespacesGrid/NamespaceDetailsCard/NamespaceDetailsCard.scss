@@ -1,0 +1,43 @@
+.namespace-details-card {
+    position: relative;
+    cursor: pointer;
+
+    .fd-panel__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .popover-control::before {
+        font-size: 16px;
+    }
+    
+    .namespace-details-card__body {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.namespace-details-card--terminating {
+    pointer-events: none;
+
+    .overlay {
+        pointer-events: none;
+        background-color: rgba(225, 225, 225, 0.3);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: 100000;
+    }
+    
+    .overlay-spinner {
+        display: block;
+        position: absolute;
+        left: 35%;
+        top: 25%;
+    }
+}

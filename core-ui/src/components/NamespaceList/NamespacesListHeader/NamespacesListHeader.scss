@@ -1,0 +1,16 @@
+.namespace-list-header {
+    
+    @media (min-width: 320px) {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .namespace-list-actions > * {
+        margin-left: 16px;
+        display: inline-flex;
+    }
+}
+
+.remove-after::after {
+    content: unset;
+}
