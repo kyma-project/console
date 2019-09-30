@@ -2,6 +2,15 @@ import { getTenants } from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
 
+let token = null;
+if (localStorage.getItem('luigi.auth')) {
+  try {
+    token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
+  } catch (e) {
+    console.error('Error while reading ID Token: ', e);
+  }
+}
+
 const navigation = {
   nodes: () => [
     {
@@ -9,6 +18,9 @@ const navigation = {
       pathSegment: 'overview',
       label: 'Overview',
       viewUrl: compassMfUrl,
+      context: {
+        idToken: token,
+      },
     },
     {
       hideSideNav: true,
@@ -20,6 +32,7 @@ const navigation = {
           pathSegment: ':tenantId',
           navigationContext: 'tenant',
           context: {
+            idToken: token,
             tenantId: ':tenantId',
           },
           children: [

@@ -5,12 +5,14 @@ const NAMESPACE = '1b671a64-babe-b00b-face-da01ff1f3341';
 
 class Builder {
   currentTenant = null;
+  token = null;
+
   init() {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(resolve, 1000);
-
       LuigiClient.addInitListener(e => {
         this.currentTenant = e.tenantId;
+        this.token = e.idToken;
 
         clearTimeout(timeout);
         resolve();
@@ -23,6 +25,13 @@ class Builder {
       return this.currentTenant;
     }
     return uuidv5(this.currentTenant, NAMESPACE);
+  }
+
+  getToken() {
+    if (!this.token) {
+      return null;
+    }
+    return `Bearer ${this.token}`;
   }
 }
 

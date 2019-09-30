@@ -22,7 +22,7 @@
     "request": "^2.88.0"
   },
   "jest": {
-    "testRegex": "/tests/(console-basic-test|catalog-ui-test|docs-ui-test|lambda-ui-test|logging-test).jsx?$",
+    "testRegex": "/tests/(console-basic-test|docs-ui-test|lambda-ui-test|logging-test).jsx?$",
     "setupTestFrameworkScriptFile": "<rootDir>/jest-setup.js"
   }
 }

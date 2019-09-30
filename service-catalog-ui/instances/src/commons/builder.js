@@ -9,13 +9,11 @@ class Builder {
 
   initOrContextUpdate(callback) {
     LuigiClient.addInitListener(e => {
-      debugger;
       this.setCurrentContext(e);
       callback();
     });
 
     LuigiClient.addContextUpdateListener(e => {
-      debugger;
       if (!e.namespaceId) {
         return;
       }

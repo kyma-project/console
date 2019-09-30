@@ -15,5 +15,13 @@
     <script src="/config/config.js"></script>
     <script src="/luigi-core/luigi.js"></script>
     <script src="/luigiConfig.bundle.js"></script>
+    <script>
+      window.addEventListener('message', function(ev) {
+        if (ev.data === 'unauthorized') {
+          localStorage.removeItem('luigi.auth');
+          window.location.reload();
+        }
+      });
+    </script>
   </body>
 </html>
