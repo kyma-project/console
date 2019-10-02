@@ -1418,11 +1418,15 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   collapseSplitView(){
-    this.logsViewHandle.collapse();
+    if(this.logsViewHandle){
+      this.logsViewHandle.collapse();
+    }
   }
 
   expandSplitView(){
-    this.logsViewHandle.expand();
+    if(this.logsViewHandle){
+      this.logsViewHandle.expand();
+    }
   }
 
   showNotification(notificationData: INotificationData, timeout?: number) {
