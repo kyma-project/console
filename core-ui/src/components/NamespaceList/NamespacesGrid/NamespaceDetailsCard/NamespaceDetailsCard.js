@@ -148,9 +148,6 @@ export default function NamespaceDetailsCard({
             </p>
           </div>
         </section>
-        <p className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny">
-          {/* TODO id from updated backend here */}
-        </p>
       </Panel.Body>
       {isTerminating && (
         <div className="overlay">
