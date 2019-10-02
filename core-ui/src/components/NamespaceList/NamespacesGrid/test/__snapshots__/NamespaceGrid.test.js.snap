@@ -68,9 +68,6 @@ exports[`NamespaceGrid Renders with minimal props 1`] = `
             </p>
           </div>
         </section>
-        <p
-          className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
-        />
       </div>
     </div>
   </li>
@@ -143,9 +140,6 @@ exports[`NamespaceGrid Renders with minimal props 1`] = `
             </p>
           </div>
         </section>
-        <p
-          className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
-        />
       </div>
     </div>
   </li>

@@ -69,9 +69,6 @@ exports[`NamespaceDetailsCard Displays "SYSTEM" badge 1`] = `
         </p>
       </div>
     </section>
-    <p
-      className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
-    />
   </div>
 </div>
 `;
@@ -140,9 +137,6 @@ exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 1`] 
         </p>
       </div>
     </section>
-    <p
-      className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
-    />
   </div>
   <div
     className="overlay"
@@ -241,9 +235,6 @@ exports[`NamespaceDetailsCard Renders with minimal props 1`] = `
         </p>
       </div>
     </section>
-    <p
-      className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
-    />
   </div>
 </div>
 `;
