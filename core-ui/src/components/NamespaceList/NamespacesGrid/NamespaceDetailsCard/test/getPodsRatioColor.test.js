@@ -28,6 +28,11 @@ describe('getPodsRatioColor', () => {
         healthyCount: 0,
         color: '#bb0000',
       },
+      {
+        podsCount: 2,
+        healthyCount: 1,
+        color: '#bb0000',
+      },
     ];
 
     for (const { podsCount, healthyCount, color } of testCases) {

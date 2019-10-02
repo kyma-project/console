@@ -20,18 +20,18 @@ NamespaceDetailsCard.propTypes = {
 };
 
 export function getPodsRatioColor(healthyPods, allPods) {
-  // special case for one pod
-  if (allPods === 1 && healthyPods === 0) {
-    return '#bb0000';
+  if (allPods === 0) {
+    return '#107e3e';
   }
 
-  switch (allPods - healthyPods) {
-    case 0:
-      return '#107e3e';
-    case 1:
-      return '#e9730c';
-    default:
-      return '#bb0000';
+  const podsRatio = healthyPods / allPods;
+
+  if (podsRatio === 1) {
+    return '#107e3e';
+  } else if (podsRatio > 0.8) {
+    return '#e9730c';
+  } else {
+    return '#bb0000';
   }
 }
 
@@ -149,7 +149,7 @@ export default function NamespaceDetailsCard({
           </div>
         </section>
         <p className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny">
-          {/* TODO id from update backend here */}
+          {/* TODO id from updated backend here */}
         </p>
       </Panel.Body>
       {isTerminating && (
