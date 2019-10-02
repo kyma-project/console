@@ -5,7 +5,7 @@ import {
   serviceInstanceDeleteMutation,
   serviceInstanceQuery,
   createBindingMutation,
-} from '../../../testing/networkMock';
+} from '../../../testing/queriesMocks';
 import ServiceInstanceDetails from '../ServiceInstanceDetails';
 import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
 import { createMockLink } from '../../../testing/apollo';

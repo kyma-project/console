@@ -5,7 +5,7 @@ import {
   serviceInstanceDeleteMutation,
   allServiceInstancesQuery,
   serviceInstancesSubscription,
-} from '../../../testing/networkMock';
+} from '../../../testing/queriesMocks';
 import ServiceInstancesTable from '../ServiceInstancesTable/ServiceInstancesTable.component';
 
 import { Button, Spinner } from '@kyma-project/react-components';

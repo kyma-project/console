@@ -163,12 +163,7 @@ export default function ServiceInstancesList() {
     });
   };
 
-  const determineAvailableLabels = (
-    serviceInstances,
-    tabName,
-    searchQuery,
-    filterQuery,
-  ) => {
+  const determineAvailableLabels = (serviceInstances, tabName, searchQuery) => {
     const displayedInstances = determineDisplayedInstances(
       serviceInstances,
       tabName,
