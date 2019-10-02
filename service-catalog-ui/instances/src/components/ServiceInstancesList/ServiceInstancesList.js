@@ -18,6 +18,11 @@ import { deleteServiceInstance } from '../../queries/mutations';
 import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../queries/subscriptions';
 import { serviceInstanceConstants } from '../../variables';
 
+import {
+  determineAvailableLabels,
+  determineDisplayedInstances,
+} from './searchUtils';
+
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
 import { handleInstanceEvent } from '../../store/ServiceInstances/events';
@@ -113,47 +118,6 @@ export default function ServiceInstancesList() {
       </EmptyList>
     );
 
-  const determineDisplayedInstances = (
-    serviceInstances,
-    tabIndex,
-    searchQuery,
-    activeLabels,
-  ) => {
-    const searched = serviceInstances.filter(instance =>
-      new RegExp(searchQuery, 'i').test(instance.name),
-    );
-
-    const filteredByLabels = searched.filter(instance =>
-      activeLabels.every(activeLabel => instance.labels.includes(activeLabel)),
-    );
-
-    let filteredByTab = [];
-    if (tabIndex === serviceInstanceConstants.addonsIndex) {
-      filteredByTab = filteredByLabels.filter(instance => {
-        if (
-          instance.clusterServiceClass &&
-          instance.clusterServiceClass.labels
-        ) {
-          return instance.clusterServiceClass.labels.local === 'true';
-        }
-        return false;
-      });
-    }
-    if (tabIndex === serviceInstanceConstants.servicesIndex) {
-      filteredByTab = filteredByLabels.filter(instance => {
-        if (
-          instance.clusterServiceClass &&
-          instance.clusterServiceClass.labels
-        ) {
-          return instance.clusterServiceClass.labels.local !== 'true';
-        }
-        return true;
-      });
-    }
-
-    return filteredByTab;
-  };
-
   const handleDelete = instanceName => {
     deleteServiceInstanceMutation({
       variables: {
@@ -161,36 +125,6 @@ export default function ServiceInstancesList() {
         name: instanceName,
       },
     });
-  };
-
-  const determineAvailableLabels = (serviceInstances, tabName, searchQuery) => {
-    const displayedInstances = determineDisplayedInstances(
-      serviceInstances,
-      tabName,
-      searchQuery,
-      [],
-    );
-
-    const allLabels = serviceInstances.reduce(
-      (labelsCombined, instance) => [...labelsCombined, ...instance.labels],
-      [],
-    );
-
-    const labelsWithOccurrences = allLabels.reduce(
-      (labelsWithOccurrences, label) => ({
-        ...labelsWithOccurrences,
-        [label]: 0,
-      }),
-      {},
-    );
-
-    displayedInstances.forEach(instance => {
-      instance.labels.forEach(label => {
-        ++labelsWithOccurrences[label];
-      });
-    });
-
-    return labelsWithOccurrences;
   };
 
   const handleLabelChange = (labelId, checked) => {

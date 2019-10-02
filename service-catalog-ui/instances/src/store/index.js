@@ -40,5 +40,8 @@ export function createApolloClient() {
   return new ApolloClient({
     link,
     cache: new InMemoryCache(),
+    defaultOptions: {
+      fetchPolicy: 'no-cache',
+    },
   });
 }
