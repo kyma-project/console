@@ -65,7 +65,6 @@ export default function NamespaceList() {
   };
 
   const filterNamespace = namespace => {
-    // todo add id search
     if (namespace.name.indexOf(searchPhrase) === -1) {
       return false;
     }
