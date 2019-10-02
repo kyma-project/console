@@ -161,15 +161,26 @@ exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 1`] 
 `;
 
 exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 2`] = `
-"Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.
+Array [
+  Array [
+    "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.
 
 * Move code with side effects to componentDidMount, and set initial state in the constructor.
 * Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
 
-Please update the following components: styled.div"
-`;
+Please update the following components: styled.div",
+  ],
+  Array [
+    "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.
 
-exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 3`] = `undefined`;
+* Move data fetching code or side effects to componentDidUpdate.
+* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: styled.div",
+  ],
+]
+`;
 
 exports[`NamespaceDetailsCard Renders with minimal props 1`] = `
 <div

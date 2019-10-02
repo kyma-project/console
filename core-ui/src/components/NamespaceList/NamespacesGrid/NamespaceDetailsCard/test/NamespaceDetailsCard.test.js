@@ -58,8 +58,6 @@ describe('NamespaceDetailsCard', () => {
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
 
-    expect(console.warn.mock.calls.length).toBe(2);
-    expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
-    expect(console.warn.mock.calls[0][1]).toMatchSnapshot();
+    expect(console.warn.mock.calls).toMatchSnapshot();
   });
 });

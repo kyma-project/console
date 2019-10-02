@@ -124,6 +124,7 @@ export default function NamespaceDetailsCard({
           control={popoverControl}
           placement="right"
           noArrow
+          disabled={isTerminating}
         />
       </Panel.Header>
       <Panel.Body>

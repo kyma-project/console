@@ -30,9 +30,6 @@ export default function NamespaceFilters({ filters, updateFilters }) {
             type="checkbox"
             className="fd-has-margin-right-small"
             checked={e.isSelected}
-            onChange={() => {
-              /* event will be propagated to Menu.Item */
-            }}
           />
           {e.name}
         </Menu.Item>
