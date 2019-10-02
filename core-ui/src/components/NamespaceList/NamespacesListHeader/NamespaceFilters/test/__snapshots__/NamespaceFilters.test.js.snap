@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NamespaceFilters Renders with minimal props 1`] = `
+<div
+  className="fd-popover"
+>
+  <div
+    onFocus={[Function]}
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
+  >
+    <div
+      className="fd-popover__control"
+    >
+      <button
+        className="fd-button--light sap-icon--filter"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -12,14 +12,14 @@ import './NamespaceDetailsCard.scss';
 
 NamespaceDetailsCard.propTypes = {
   namespaceName: PropTypes.string.isRequired,
-  allPodsCount: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  healthyPodsCount: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  allPodsCount: PropTypes.number.isRequired,
+  healthyPodsCount: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   isSystemNamespace: PropTypes.bool.isRequired,
   applicationsCount: PropTypes.number.isRequired,
 };
 
-function getPodsRatioColor(healthyPods, allPods) {
+export function getPodsRatioColor(healthyPods, allPods) {
   // special case for one pod
   if (allPods === 1 && healthyPods === 0) {
     return '#bb0000';

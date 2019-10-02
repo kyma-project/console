@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NamespaceDetailsCard Displays "SYSTEM" badge 1`] = `
+<div
+  className="fd-panel namespace-details-card"
+  onClick={[Function]}
+>
+  <div
+    className="fd-panel__header fd-has-color-text-1 fd-has-type-1"
+  >
+    <span>
+      test
+      <span
+        className="fd-badge fd-has-margin-left-tiny"
+      >
+        System
+      </span>
+    </span>
+    <div
+      className="fd-popover"
+    >
+      <div
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+      >
+        <div
+          className="fd-popover__control"
+        >
+          <button
+            className="fd-button--light sap-icon--overflow popover-control"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <section
+      className="namespace-details-card__body"
+    >
+      <div>
+        <p
+          className="fd-has-type-4 fd-has-font-weight-light"
+          style={
+            Object {
+              "color": "#107e3e",
+            }
+          }
+        >
+          10
+          /
+          10
+        </p>
+        <p>
+          Pods are healthy
+        </p>
+      </div>
+      <div>
+        <p
+          className="fd-has-type-4 fd-has-font-weight-light"
+        >
+          0
+        </p>
+        <p>
+          Bound Applications
+        </p>
+      </div>
+    </section>
+    <p
+      className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
+    />
+  </div>
+</div>
+`;
+
+exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 1`] = `
+<div
+  className="fd-panel namespace-details-card namespace-details-card--terminating"
+  onClick={[Function]}
+>
+  <div
+    className="fd-panel__header fd-has-color-text-1 fd-has-type-1"
+  >
+    <span>
+      test
+    </span>
+    <div
+      className="fd-popover"
+    >
+      <div
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+      >
+        <div
+          className="fd-popover__control"
+        >
+          <button
+            className="fd-button--light sap-icon--overflow popover-control"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <section
+      className="namespace-details-card__body"
+    >
+      <div>
+        <p
+          className="fd-has-type-4 fd-has-font-weight-light"
+          style={
+            Object {
+              "color": "#107e3e",
+            }
+          }
+        >
+          10
+          /
+          10
+        </p>
+        <p>
+          Pods are healthy
+        </p>
+      </div>
+      <div>
+        <p
+          className="fd-has-type-4 fd-has-font-weight-light"
+        >
+          0
+        </p>
+        <p>
+          Bound Applications
+        </p>
+      </div>
+    </section>
+    <p
+      className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
+    />
+  </div>
+  <div
+    className="overlay"
+  >
+    <div
+      className="overlay-spinner"
+    >
+      <div
+        className="sc-Rmtcm gKkWKm"
+      >
+        <div
+          aria-hidden="false"
+          aria-label="Loading"
+          className="fd-spinner"
+        >
+          <div />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 2`] = `
+"Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.
+
+* Move code with side effects to componentDidMount, and set initial state in the constructor.
+* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: styled.div"
+`;
+
+exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 3`] = `undefined`;
+
+exports[`NamespaceDetailsCard Renders with minimal props 1`] = `
+<div
+  className="fd-panel namespace-details-card"
+  onClick={[Function]}
+>
+  <div
+    className="fd-panel__header fd-has-color-text-1 fd-has-type-1"
+  >
+    <span>
+      test
+    </span>
+    <div
+      className="fd-popover"
+    >
+      <div
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+      >
+        <div
+          className="fd-popover__control"
+        >
+          <button
+            className="fd-button--light sap-icon--overflow popover-control"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <section
+      className="namespace-details-card__body"
+    >
+      <div>
+        <p
+          className="fd-has-type-4 fd-has-font-weight-light"
+          style={
+            Object {
+              "color": "#107e3e",
+            }
+          }
+        >
+          10
+          /
+          10
+        </p>
+        <p>
+          Pods are healthy
+        </p>
+      </div>
+      <div>
+        <p
+          className="fd-has-type-4 fd-has-font-weight-light"
+        >
+          0
+        </p>
+        <p>
+          Bound Applications
+        </p>
+      </div>
+    </section>
+    <p
+      className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
+    />
+  </div>
+</div>
+`;

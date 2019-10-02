@@ -22,7 +22,13 @@ export default function NamespacesGrid({ namespaces }) {
   return (
     <ul className="grid-wrapper fd-has-margin-medium">
       {namespaces.map(namespace => {
-        const { name, pods, status, applications } = namespace;
+        const {
+          name,
+          pods,
+          status,
+          applications,
+          isSystemNamespace,
+        } = namespace;
         const [allPodsCount, healthyPodsCount] = getPodsCounts(pods);
 
         return (
@@ -32,6 +38,7 @@ export default function NamespacesGrid({ namespaces }) {
               allPodsCount={allPodsCount}
               healthyPodsCount={healthyPodsCount}
               status={status}
+              isSystemNamespace={isSystemNamespace}
               applicationsCount={applications.length}
             />
           </li>

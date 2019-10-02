@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NamespaceGrid Renders with minimal props 1`] = `
+<ul
+  className="grid-wrapper fd-has-margin-medium"
+>
+  <li>
+    <div
+      className="fd-panel namespace-details-card"
+      onClick={[Function]}
+    >
+      <div
+        className="fd-panel__header fd-has-color-text-1 fd-has-type-1"
+      >
+        <span>
+          a
+        </span>
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--overflow popover-control"
+                onClick={[Function]}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="fd-panel__body"
+      >
+        <section
+          className="namespace-details-card__body"
+        >
+          <div>
+            <p
+              className="fd-has-type-4 fd-has-font-weight-light"
+              style={
+                Object {
+                  "color": "#bb0000",
+                }
+              }
+            >
+              0
+              /
+              1
+            </p>
+            <p>
+              Pods are healthy
+            </p>
+          </div>
+          <div>
+            <p
+              className="fd-has-type-4 fd-has-font-weight-light"
+            >
+              2
+            </p>
+            <p>
+              Bound Applications
+            </p>
+          </div>
+        </section>
+        <p
+          className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
+        />
+      </div>
+    </div>
+  </li>
+  <li>
+    <div
+      className="fd-panel namespace-details-card"
+      onClick={[Function]}
+    >
+      <div
+        className="fd-panel__header fd-has-color-text-1 fd-has-type-1"
+      >
+        <span>
+          b
+          <span
+            className="fd-badge fd-has-margin-left-tiny"
+          >
+            System
+          </span>
+        </span>
+        <div
+          className="fd-popover"
+        >
+          <div
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+          >
+            <div
+              className="fd-popover__control"
+            >
+              <button
+                className="fd-button--light sap-icon--overflow popover-control"
+                onClick={[Function]}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="fd-panel__body"
+      >
+        <section
+          className="namespace-details-card__body"
+        >
+          <div>
+            <p
+              className="fd-has-type-4 fd-has-font-weight-light"
+              style={
+                Object {
+                  "color": "#bb0000",
+                }
+              }
+            >
+              0
+              /
+              1
+            </p>
+            <p>
+              Pods are healthy
+            </p>
+          </div>
+          <div>
+            <p
+              className="fd-has-type-4 fd-has-font-weight-light"
+            >
+              3
+            </p>
+            <p>
+              Bound Applications
+            </p>
+          </div>
+        </section>
+        <p
+          className="fd-has-type-minus-1 fd-has-color-text-2 fd-has-margin-top-tiny"
+        />
+      </div>
+    </div>
+  </li>
+</ul>
+`;

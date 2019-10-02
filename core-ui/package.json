@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.0",
+    "@apollo/react-testing": "^3.1.0",
     "@kyma-project/luigi-client": "0.4.12",
     "@kyma-project/luigi-core": "0.4.12",
     "apollo-boost": "^0.4.4",
@@ -16,7 +18,9 @@
     "fundamental-styles": "^0.1.0",
     "graphql-tag": "^2.10.1",
     "jsoneditor": "^6.2.1",
+    "npm": "^6.11.3",
     "react-ace": "^7.0.4",
+    "react-apollo": "^3.0.0",
     "react-router-dom": "^5.0.1",
     "recompose": "^0.30.0",
     "styled-components": "^3.4.10",

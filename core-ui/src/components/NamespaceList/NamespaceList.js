@@ -24,7 +24,7 @@ export default function NamespaceList() {
   const [labelFilters, setLabelFilters] = React.useState([]);
 
   const createFilters = namespaces => {
-    const storedFilters = storage.readStoredFilters();
+    const storedFilterLabels = storage.readStoredFilterLabels();
 
     // convert multi-keyed objects to one-keyed objects
     const labels = namespaces
@@ -34,7 +34,7 @@ export default function NamespaceList() {
 
     // group labels by key and value
     const filtersArray = [];
-    for (const label of labels) {
+    labels.forEach(label => {
       const key = Object.keys(label)[0];
       const value = label[key];
 
@@ -51,14 +51,13 @@ export default function NamespaceList() {
       } else {
         existingElement[0].count++;
       }
-    }
-
+    });
     const filters = filtersArray.map(({ key, value, count }) => {
       const label = { [key]: value };
       return {
         label: label,
         name: `${key}=${value} (${count})`,
-        isSelected: storedFilters.some(f => _.isEqual(f, label)),
+        isSelected: storedFilterLabels.some(f => _.isEqual(f, label)),
       };
     });
     sortByName(filters);
@@ -83,6 +82,7 @@ export default function NamespaceList() {
       return false;
     }
 
+    // eslint-disable-next-line
     for (const filterLabel of activeLabelFilters) {
       const labelKey = Object.keys(filterLabel)[0];
       if (
@@ -97,7 +97,7 @@ export default function NamespaceList() {
 
   const updateLabelFilters = filters => {
     const filterLabels = filters.filter(f => f.isSelected).map(f => f.label);
-    storage.saveStoredFilters(filterLabels);
+    storage.saveStoredFilterLabels(filterLabels);
 
     setLabelFilters(createFilters(namespaces));
   };
@@ -111,10 +111,10 @@ export default function NamespaceList() {
   });
 
   React.useEffect(() => {
-    if (data.namespaces) {
+    if (data && data.namespaces) {
       setLabelFilters(createFilters(data.namespaces));
     }
-  }, [data.namespaces]);
+  }, [data]);
 
   if (error) {
     return `Error! ${error.message}`;
