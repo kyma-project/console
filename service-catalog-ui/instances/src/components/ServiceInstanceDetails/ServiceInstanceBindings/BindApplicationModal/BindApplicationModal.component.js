@@ -20,11 +20,9 @@ import { SubSectionTitle } from './styled';
 
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
-import NotificationsContext from '../../../../contexts/NotificationContext/NotificationContext';
+import WithContext from '../WithContext/WithContext';
 
 class BindApplicationModal extends React.Component {
-  static contextType = NotificationsContext;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -148,7 +146,7 @@ class BindApplicationModal extends React.Component {
           createdBindingUsage.data.createServiceBindingUsage.name;
       }
 
-      this.context.open({
+      this.props.notification.open({
         content: `Application binding "${createdBindingUsageName}" created successfully`,
         title: `${createdBindingUsageName}`,
         color: '#359c46',
@@ -350,4 +348,6 @@ class BindApplicationModal extends React.Component {
   }
 }
 
-export default BindApplicationModal;
+export default function BindApplicationModalWithContext(props) {
+  return WithContext(BindApplicationModal, props);
+}

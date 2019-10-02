@@ -9,11 +9,9 @@ import InfoButton from '../InfoButton/InfoButton.component';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import NotificationsContext from '../../../../contexts/NotificationContext/NotificationContext';
+import WithContext from '../WithContext/WithContext';
 
 class CreateCredentialsModal extends React.Component {
-  static contextType = NotificationsContext;
-
   constructor(props) {
     super(props);
     this.child = React.createRef();
@@ -82,7 +80,7 @@ class CreateCredentialsModal extends React.Component {
       if (isOpenedModal) {
         this.child.child.handleCloseModal();
       }
-      this.context.open({
+      this.props.notification.open({
         content: `Credentials "${createdBindingName}" created successfully`,
         title: `${createdBindingName}`,
         color: '#359c46',
@@ -227,4 +225,6 @@ class CreateCredentialsModal extends React.Component {
   }
 }
 
-export default CreateCredentialsModal;
+export default function CreateCredentialsModalWithContext(props) {
+  return WithContext(CreateCredentialsModal, props);
+}
