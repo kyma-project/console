@@ -984,7 +984,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     .linkManager()
     .pathExists('/home/cmf-logs')
     .then(exists => {
-      this.showLogs()
+      if(exists){
+        this.showLogs();
+      }
     });
   }
 
