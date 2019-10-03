@@ -9,7 +9,7 @@ import InfoButton from '../InfoButton/InfoButton.component';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import WithContext from '../WithContext/WithContext';
+import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
 class CreateCredentialsModal extends React.Component {
   constructor(props) {
@@ -226,5 +226,5 @@ class CreateCredentialsModal extends React.Component {
 }
 
 export default function CreateCredentialsModalWithContext(props) {
-  return WithContext(CreateCredentialsModal, props);
+  return WithNotificationContext(CreateCredentialsModal, props);
 }
