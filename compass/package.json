@@ -11,7 +11,7 @@
     "xml-js": "^1.6.11"
   },
   "scripts": {
-    "start-live-server": "../node_modules/.bin/live-server --quiet --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
+    "start-live-server": "../node_modules/.bin/live-server --host=compass-dev.kyma.local --quiet --entry-file=index.html --mount=/luigi-core:./node_modules/@kyma-project/luigi-core public-luigi/",
     "start": "../node_modules/.bin/concurrently \"PORT=8888 ../node_modules/.bin/react-scripts start\" \"npm run buildConfig:watch\" \"../node_modules/.bin/wait-on http://localhost:8888/ && npm run start-live-server\" ",
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "start:kyma:api": "echo 'This component is not ready yet to be served together with Console.'",
