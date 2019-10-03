@@ -44,13 +44,17 @@ if (localStorage.getItem('luigi.auth')) {
 }
 
 const consoleViewGroupName = '_console_';
+const coreUIViewGroupName = '_core_ui_';
 const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
 let navigation = {
   viewGroupSettings: {
     _console_: {
       preloadUrl: '/consoleapp.html#/home/preload'
-    }
+    },
+    _core_ui_: {
+      preloadUrl: config.coreModuleUrl + '/preload'
+    },
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
   contextSwitcher: {
@@ -671,7 +675,8 @@ Promise.all(initPromises)
               pathSegment: 'workspace',
               label: 'Namespaces',
               viewUrl: config.coreModuleUrl,
-              icon: 'dimension'
+              icon: 'dimension',
+              viewGroup: coreUIViewGroupName,
             },
             {
               pathSegment: 'namespaces',
