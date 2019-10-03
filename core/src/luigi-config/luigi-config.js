@@ -665,20 +665,19 @@ Promise.all(initPromises)
           backendModules,
           systemNamespaces
         },
-        viewGroup: consoleViewGroupName,
         children: function() {
           var staticNodes = [
             {
               pathSegment: 'workspace',
               label: 'Namespaces',
-              viewUrl:
-                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
+              viewUrl: config.coreModuleUrl,
               icon: 'dimension'
             },
             {
               pathSegment: 'namespaces',
               viewUrl: '/consoleapp.html#/home/namespaces/workspace',
               hideFromNav: true,
+              viewGroup: consoleViewGroupName,
               children: [
                 {
                   pathSegment: ':namespaceId',
@@ -702,7 +701,8 @@ Promise.all(initPromises)
               navigationContext: 'settings',
               label: 'General Settings',
               category: { label: 'Settings', icon: 'settings' },
-              viewUrl: '/consoleapp.html#/home/settings/organisation'
+              viewUrl: '/consoleapp.html#/home/settings/organisation',
+              viewGroup: consoleViewGroupName,
             },
             {
               pathSegment: 'global-permissions',
@@ -711,6 +711,7 @@ Promise.all(initPromises)
               category: 'Settings',
               viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
               keepSelectedForChildren: true,
+              viewGroup: consoleViewGroupName,
               children: [
                 {
                   pathSegment: 'roles',
