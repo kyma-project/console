@@ -984,7 +984,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     .linkManager()
     .pathExists('/home/cmf-logs')
     .then(exists => {
-      this.showLogs()
+      if(exists){
+        this.showLogs();
+      }
     });
   }
 
@@ -1416,11 +1418,15 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   collapseSplitView(){
-    this.logsViewHandle.collapse();
+    if(this.logsViewHandle){
+      this.logsViewHandle.collapse();
+    }
   }
 
   expandSplitView(){
-    this.logsViewHandle.expand();
+    if(this.logsViewHandle){
+      this.logsViewHandle.expand();
+    }
   }
 
   showNotification(notificationData: INotificationData, timeout?: number) {
