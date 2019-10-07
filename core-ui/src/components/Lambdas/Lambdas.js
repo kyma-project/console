@@ -1,16 +1,16 @@
 import React from 'react';
-import { FormItem, FormLabel, FormMessage } from 'fundamental-react';
 
-import LabelsInput from '../Labels/Labels';
+import ModalWithForm from '../Shared/ModalWithForm';
+import CreateLambdaModal from './CreateLambdaModal/CreateLambdaModal';
 
-export default function LambdasComponent() {
-  const [labels, setLabels] = React.useState({ test: 'sss' });
-
-  function updateLabels(newLabels) {
-    setLabels(newLabels);
-  }
-
+export default function Lambdas() {
   return (
-    <LabelsInput labels={labels} updateLabels={updateLabels}></LabelsInput>
+    <ModalWithForm
+      title="Create new lambda"
+      button={{ text: 'Create lambda', glyph: 'add' }}
+      performRefetch={() => console.log('refetch')} // to be removed after subscriptions are done
+    >
+      <CreateLambdaModal />
+    </ModalWithForm>
   );
 }
