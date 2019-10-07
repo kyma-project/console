@@ -17,6 +17,7 @@ describe('labelRegexp', () => {
     'my-domain/label=value',
     'my_domain/label=value',
     'my.domain/label=value',
+    'label=',
   ].forEach(label => {
     it(`matches: '${label}`, () => {
       expect(labelRegexp.test(label)).toBe(true);
