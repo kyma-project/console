@@ -20,6 +20,7 @@ import { SubSectionTitle } from './styled';
 
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
+import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -105,12 +106,7 @@ class BindApplicationModal extends React.Component {
 
   create = async params => {
     const { checkbox } = this.state;
-    const {
-      serviceInstance,
-      createBinding,
-      createBindingUsage,
-      sendNotification,
-    } = this.props;
+    const { serviceInstance, createBinding, createBindingUsage } = this.props;
 
     let success = true;
 
@@ -150,17 +146,14 @@ class BindApplicationModal extends React.Component {
           createdBindingUsage.data.createServiceBindingUsage.name;
       }
 
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            content: `Application binding "${createdBindingUsageName}" created successfully`,
-            title: `${createdBindingUsageName}`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: createdBindingUsageName,
-          },
-        });
-      }
+      this.props.notification.open({
+        content: `Application binding "${createdBindingUsageName}" created successfully`,
+        title: `${createdBindingUsageName}`,
+        color: '#359c46',
+        icon: 'accept',
+        instanceName: createdBindingUsageName,
+        visible: true,
+      });
     } catch (e) {
       success = false;
       this.setState({
@@ -355,4 +348,6 @@ class BindApplicationModal extends React.Component {
   }
 }
 
-export default BindApplicationModal;
+export default function BindApplicationModalWithContext(props) {
+  return WithNotificationContext(BindApplicationModal, props);
+}

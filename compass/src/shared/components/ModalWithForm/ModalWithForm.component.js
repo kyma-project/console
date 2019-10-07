@@ -51,6 +51,7 @@ const ModalWithForm = ({
         icon: 'accept',
       },
     });
+
     performRefetch();
   };
   return (
@@ -66,7 +67,7 @@ const ModalWithForm = ({
       <Modal
         show={isOpen}
         actions={
-          <>
+          <React.Fragment>
             <Button
               onClick={() => {
                 setOpenStatus(false);
@@ -92,7 +93,7 @@ const ModalWithForm = ({
             >
               Create
             </Button>
-          </>
+          </React.Fragment>
         }
         onClose={() => {
           setOpenStatus(false);
@@ -121,6 +122,10 @@ ModalWithForm.propTypes = {
     glyph: PropTypes.string,
   }).isRequired,
   children: PropTypes.node.isRequired,
+};
+ModalWithForm.defaultProps = {
+  sendNotification: () => {},
+  performRefetch: () => {},
 };
 
 export default ModalWithForm;
