@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash.clonedeep';
+
 export const handleInstanceEvent = (obj = {}, event = {}) => {
   const currentItems = obj.serviceInstances || [];
   const instance = event.serviceInstance;
@@ -41,148 +43,116 @@ export const handleInstanceEvent = (obj = {}, event = {}) => {
 };
 
 export const handleServiceBindingUsageEvent = (
-  instancesObj = {},
+  instanceObj = {},
   event = {},
 ) => {
-  const currentItems = instancesObj.serviceInstances || [];
-  if (currentItems.length === 0) {
-    return instancesObj;
-  }
+  if (!instanceObj.serviceInstance) return instanceObj;
 
   const bindingUsage = event.serviceBindingUsage;
   if (!bindingUsage) {
-    return instancesObj;
+    return instanceObj;
   }
 
-  let idx = -1;
-  if (bindingUsage.serviceBinding) {
-    idx = currentItems.findIndex(
-      instance =>
-        instance.name === bindingUsage.serviceBinding.serviceInstanceName,
-    );
-  }
-
-  /* eslint-disable no-unused-vars */
-  if (idx === -1) {
-    // Try to search in another way
-    /* eslint-disable no-unused-vars */
-    idx = currentItems.findIndex(instance => {
-      for (const instanceBindingUsage of instance.serviceBindingUsages) {
-        if (instanceBindingUsage.name === bindingUsage.name) {
-          return true;
-        }
-      }
-
-      return false;
-    });
-
-    if (idx === -1) {
-      return instancesObj;
-    }
-    /* eslint-enable no-unused-vars */
-  }
-  /* eslint-enable no-unused-vars */
+  const serviceInstance = instanceObj.serviceInstance;
 
   const currentInstanceServiceBindingUsages =
-    currentItems[idx].serviceBindingUsages || [];
+    serviceInstance.serviceBindingUsages || [];
 
-  let result = [...currentItems];
+  let result = cloneDeep(serviceInstance);
+
   switch (event.type) {
     case 'ADD':
-      result[idx].serviceBindingUsages = [
+      if (
+        currentInstanceServiceBindingUsages.find(
+          serviceBindingUsage => serviceBindingUsage.name === bindingUsage.name,
+        )
+      )
+        break;
+      result.serviceBindingUsages = [
         ...currentInstanceServiceBindingUsages,
         bindingUsage,
       ];
       break;
     case 'UPDATE':
-      const instance = result[idx];
-      const bindingUsageIdx = instance.serviceBindingUsages.findIndex(
+      const bindingUsageIdx = result.serviceBindingUsages.findIndex(
         b => b.name === bindingUsage.name,
       );
       if (bindingUsageIdx === -1) {
         // if the `ADD` event hasn't been received
-        result[idx].serviceBindingUsages = [
+        result.serviceBindingUsages = [
           ...currentInstanceServiceBindingUsages,
           bindingUsage,
         ];
         break;
       }
-      result[idx].serviceBindingUsages[bindingUsageIdx] = bindingUsage;
+      result.serviceBindingUsages[bindingUsageIdx] = bindingUsage;
       break;
     case 'DELETE':
-      result[
-        idx
-      ].serviceBindingUsages = currentInstanceServiceBindingUsages.filter(
+      result.serviceBindingUsages = currentInstanceServiceBindingUsages.filter(
         b => b.name !== bindingUsage.name,
       );
       break;
     default:
-      result = currentItems;
+      result = { ...serviceInstance };
       break;
   }
 
-  if (
-    result[idx].serviceBindingUsages &&
-    result[idx].serviceBindingUsages.length > 0
-  ) {
-    result[idx].serviceBindingUsages.sort((a, b) => {
+  if (result.serviceBindingUsages && result.serviceBindingUsages.length > 0) {
+    result.serviceBindingUsages.sort((a, b) => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
   }
 
-  return { ...instancesObj, serviceInstances: result };
+  return { serviceInstance: result };
 };
 
-export const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
-  const currentItems = instancesObj.serviceInstances || [];
-  if (currentItems.length === 0) {
-    return instancesObj;
-  }
+export const handleServiceBindingEvent = (instanceObj = {}, event = {}) => {
+  if (!instanceObj.serviceInstance) return instanceObj;
 
   const binding = event.serviceBinding;
   if (!binding) {
-    return instancesObj;
+    return instanceObj;
   }
 
-  const idx = currentItems.findIndex(
-    instance => instance.name === binding.serviceInstanceName,
-  );
-
-  if (idx === -1) {
-    return instancesObj;
-  }
+  const serviceInstance = instanceObj.serviceInstance;
 
   const currentInstanceServiceBindings =
-    (currentItems[idx].serviceBindings &&
-      currentItems[idx].serviceBindings.items) ||
+    (serviceInstance.serviceBindings &&
+      serviceInstance.serviceBindings.items) ||
     [];
 
-  let result = [...currentItems];
-  const instance = result[idx];
+  let result = cloneDeep(serviceInstance);
+
   switch (event.type) {
     case 'ADD':
-      result[idx].serviceBindings.items = [
+      if (
+        currentInstanceServiceBindings.find(
+          serviceBinding => serviceBinding.name === binding.name,
+        )
+      )
+        break;
+      result.serviceBindings.items = [
         ...currentInstanceServiceBindings,
         binding,
       ];
       break;
     case 'UPDATE':
-      const bindingIdx = result[idx].serviceBindings.items.findIndex(
+      const bindingIdx = result.serviceBindings.items.findIndex(
         b => b.name === binding.name,
       );
       if (bindingIdx === -1) {
         // if the `ADD` event hasn't been received
-        result[idx].serviceBindings.items = [
+        result.serviceBindings.items = [
           ...currentInstanceServiceBindings,
           binding,
         ];
         break;
       }
-      result[idx].serviceBindings.items[bindingIdx] = binding;
-      if (instance.serviceBindingUsages) {
-        result[idx].serviceBindingUsages = instance.serviceBindingUsages.map(
+      result.serviceBindings.items[bindingIdx] = binding;
+      if (serviceInstance.serviceBindingUsages) {
+        result.serviceBindingUsages = serviceInstance.serviceBindingUsages.map(
           usage => {
             if (
               usage &&
@@ -197,11 +167,11 @@ export const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
       }
       break;
     case 'DELETE':
-      result[idx].serviceBindings.items = currentInstanceServiceBindings.filter(
+      result.serviceBindings.items = currentInstanceServiceBindings.filter(
         b => b.name !== binding.name,
       );
-      if (instance.serviceBindingUsages) {
-        result[idx].serviceBindingUsages = instance.serviceBindingUsages.map(
+      if (serviceInstance.serviceBindingUsages) {
+        result.serviceBindingUsages = serviceInstance.serviceBindingUsages.map(
           usage => {
             if (
               usage &&
@@ -217,26 +187,23 @@ export const handleServiceBindingEvent = (instancesObj = {}, event = {}) => {
       }
       break;
     default:
-      result = currentItems;
+      result = { ...serviceInstance };
       break;
   }
 
-  if (
-    result[idx].serviceBindings.items &&
-    result[idx].serviceBindings.items.length > 0
-  ) {
-    result[idx].serviceBindings.items.sort((a, b) => {
+  if (result.serviceBindings.items && result.serviceBindings.items.length > 0) {
+    result.serviceBindings.items.sort((a, b) => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
   }
 
-  result[idx].serviceBindings.stats = recalculateServiceBindingStats(
-    result[idx].serviceBindings.items,
+  result.serviceBindings.stats = recalculateServiceBindingStats(
+    result.serviceBindings.items,
   );
 
-  return { ...instancesObj, serviceInstances: result };
+  return { serviceInstance: result };
 };
 
 function recalculateServiceBindingStats(items = []) {
