@@ -3,12 +3,14 @@ import { Route, Switch } from 'react-router-dom';
 
 import { NotificationProvider } from '../../contexts/notifications';
 import NamespaceList from '../NamespaceList/NamespaceList';
+import LambdasComponent from '../Lambdas/Lambdas';
 
 export default function App() {
   return (
     <NotificationProvider>
       <Switch>
-        <Route path="/" component={NamespaceList} />
+        <Route path="/" exact component={NamespaceList} />
+        <Route path="/lambdas" exact component={LambdasComponent} />
       </Switch>
     </NotificationProvider>
   );
