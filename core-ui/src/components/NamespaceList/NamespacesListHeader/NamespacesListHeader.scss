@@ -1,16 +1,25 @@
 .namespace-list-header {
-    
-    @media (min-width: 320px) {
-        display: flex;
-        justify-content: space-between;
-    }
+  @media (min-width: 320px) {
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .namespace-list-actions > * {
-        margin-left: 16px;
-        display: inline-flex;
-    }
+  .namespace-list-actions > * {
+    margin-left: 16px;
+    display: inline-flex;
+  }
 }
 
 .remove-after::after {
-    content: unset;
+  content: unset;
+}
+
+#add-namespace-modal {
+  .fd-modal {
+    max-width: 90%;
+  }
+  .fd-modal__content {
+    width: 50em;
+    min-width: 460px;
+  }
 }

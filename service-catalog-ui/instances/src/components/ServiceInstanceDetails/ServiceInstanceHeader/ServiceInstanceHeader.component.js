@@ -9,6 +9,7 @@ import {
   Toolbar,
 } from '@kyma-project/react-components';
 import { BreadcrumbWrapper, ToolbarWrapper } from './styled';
+import builder from '../../../commons/builder';
 
 const ServiceInstanceHeader = ({
   serviceInstance,
@@ -22,7 +23,12 @@ const ServiceInstanceHeader = ({
   };
 
   const handleDelete = async () => {
-    await deleteServiceInstance(serviceInstance.name);
+    await deleteServiceInstance({
+      variables: {
+        namespace: builder.getCurrentEnvironmentId(),
+        name: serviceInstance.name,
+      },
+    });
     setTimeout(() => {
       history.goBack();
     }, 100);
