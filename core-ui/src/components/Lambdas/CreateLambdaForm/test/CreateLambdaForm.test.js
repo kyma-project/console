@@ -12,28 +12,29 @@ describe('CreateLambdaForm', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Shows lambda name input and size and runtime dropdowns', () => {
+  it('Shows empty lambda name input, predefined dropdowns and does not allow to submit form', () => {
     const component = mount(
       <CreateLambdaForm formElementRef={{ current: null }} />,
     );
 
-    const lambdaName = '#lambdaName';
-    expect(component.find(lambdaName).exists()).toEqual(true);
-    expect(component.find(lambdaName).props().value).toEqual(undefined);
+    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameInput = component.find(lambdaNameSelector);
+    expect(lambdaNameInput.exists()).toEqual(true);
+    expect(lambdaNameInput.instance().value).toEqual('');
 
-    const lambdaSize = '#lambdaSize';
-    expect(component.find(lambdaSize).exists()).toEqual(true);
-    expect(component.find(lambdaSize).props().value).toEqual(undefined);
-    expect(component.find(lambdaSize).props().defaultValue).toEqual('S');
-    expect(component.find(lambdaSize).props().children.length).toEqual(3);
+    const lambdaSizeSelector = '#lambdaSize';
+    const lamndaSizeInput = component.find(lambdaSizeSelector);
+    expect(lamndaSizeInput.exists()).toEqual(true);
+    expect(lamndaSizeInput.instance().value).toEqual('S');
+    expect(lamndaSizeInput.props().defaultValue).toEqual('S');
+    expect(lamndaSizeInput.props().children.length).toEqual(3);
 
-    const lambdaRuntime = '#lambdaRuntime';
-    expect(component.find(lambdaRuntime).exists()).toEqual(true);
-    expect(component.find(lambdaRuntime).props().value).toEqual(undefined);
-    expect(component.find(lambdaRuntime).props().defaultValue).toEqual(
-      'nodejs6',
-    );
-    expect(component.find(lambdaRuntime).props().children.length).toEqual(2);
+    const lambdaRuntimeSelector = '#lambdaRuntime';
+    const lambdaRuntimeInput = component.find(lambdaRuntimeSelector);
+    expect(lambdaRuntimeInput.exists()).toEqual(true);
+    expect(lambdaRuntimeInput.instance().value).toEqual('nodejs6');
+    expect(lambdaRuntimeInput.props().defaultValue).toEqual('nodejs6');
+    expect(lambdaRuntimeInput.props().children.length).toEqual(2);
 
     expect(
       component
@@ -43,32 +44,45 @@ describe('CreateLambdaForm', () => {
     ).toEqual(false);
   });
 
-  // it('Shows and hides Container limits section', () => {
-  //   const component = mount(
-  //     <CreateLambdaForm formElementRef={{ current: null }} />,
-  //   );
+  it('Allows to submit form with valid lambda name', () => {
+    const component = mount(
+      <CreateLambdaForm formElementRef={{ current: null }} />,
+    );
 
-  //   const containerLimitsCheckbox = '#container-limits';
-  //   const containerLimitsSection = `[data-test-id="container-limits-section"]`;
+    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameInput = component.find(lambdaNameSelector);
+    expect(lambdaNameInput.exists()).toEqual(true);
+    expect(lambdaNameInput.instance().value).toEqual('');
 
-  //   expect(component.find(containerLimitsSection).exists()).toEqual(false);
+    lambdaNameInput.instance().value = 'validName';
+    expect(lambdaNameInput.instance().value).toEqual('validName');
 
-  //   component
-  //     .find(containerLimitsCheckbox)
-  //     .simulate('change', { target: { checked: true } });
+    expect(
+      component
+        .find('form')
+        .instance()
+        .checkValidity(),
+    ).toEqual(true);
+  });
 
-  //   expect(component.find(containerLimitsSection).exists()).toEqual(true);
+  it('Does not allow to submit form with invalid lambda name', () => {
+    const component = mount(
+      <CreateLambdaForm formElementRef={{ current: null }} />,
+    );
 
-  //   component
-  //     .find(containerLimitsCheckbox)
-  //     .simulate('change', { target: { checked: false } });
-  //   expect(component.find(containerLimitsSection).exists()).toEqual(false);
+    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameInput = component.find(lambdaNameSelector);
+    expect(lambdaNameInput.exists()).toEqual(true);
+    expect(lambdaNameInput.instance().value).toEqual('');
 
-  //   expect(
-  //     component
-  //       .find('form')
-  //       .instance()
-  //       .checkValidity(),
-  //   ).toEqual(false);
-  // });
+    lambdaNameInput.instance().value = '1invalidName';
+    expect(lambdaNameInput.instance().value).toEqual('1invalidName');
+
+    expect(
+      component
+        .find('form')
+        .instance()
+        .checkValidity(),
+    ).toEqual(false);
+  });
 });
