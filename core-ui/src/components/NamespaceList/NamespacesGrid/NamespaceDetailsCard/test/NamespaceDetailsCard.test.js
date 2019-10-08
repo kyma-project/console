@@ -40,9 +40,6 @@ describe('NamespaceDetailsCard', () => {
   });
 
   it('Displays overlay when status is "Terminating"', () => {
-    // catch "Warning: componentWillMount has been renamed" from Spinner
-    console.warn = jest.fn();
-
     const component = renderer.create(
       <MockedProvider>
         <NamespaceDetailsCard
@@ -57,7 +54,5 @@ describe('NamespaceDetailsCard', () => {
     );
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-
-    expect(console.warn.mock.calls).toMatchSnapshot();
   });
 });
