@@ -8,8 +8,10 @@ import { CREATE_LAMBDA } from '../../../gql/mutations';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
 CreateLambdaForm.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  formElementRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  onCompleted: PropTypes.func,
+  onError: PropTypes.func,
+  formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
 };
 
 export default function CreateLambdaForm({
@@ -18,7 +20,7 @@ export default function CreateLambdaForm({
   onError,
   formElementRef,
 }) {
-  const [labels, setLabels] = React.useState({ test: 'tets' });
+  const [labels, setLabels] = React.useState({});
   const [createLambda] = useMutation(CREATE_LAMBDA);
 
   const formValues = {
@@ -80,10 +82,8 @@ export default function CreateLambdaForm({
         <FormLabel htmlFor="lambdaSize" required={true}>
           Size
         </FormLabel>
-        <select id="lambdaSize" ref={formValues.size}>
-          <option value="S" selected>
-            S
-          </option>
+        <select id="lambdaSize" defaultValue="S" ref={formValues.size}>
+          <option value="S">S</option>
           <option value="M">M</option>
           <option value="L">L</option>
         </select>
@@ -93,10 +93,12 @@ export default function CreateLambdaForm({
         <FormLabel htmlFor="lambdaRuntime" required={true}>
           Runtime
         </FormLabel>
-        <select id="lambdaRuntime" ref={formValues.runtime}>
-          <option value="nodejs6" selected>
-            Nodejs 6
-          </option>
+        <select
+          id="lambdaRuntime"
+          defaultValue="nodejs6"
+          ref={formValues.runtime}
+        >
+          <option value="nodejs6">Nodejs 6</option>
           <option value="nodejs8">Nodejs 8</option>
         </select>
       </FormItem>
