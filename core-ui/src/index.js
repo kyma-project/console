@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES } from './shared/constants';
+import {
+  LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES,
+  SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
+} from './shared/constants';
 
 import { ApolloProvider } from '@apollo/react-hooks';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,12 +18,9 @@ import builder from './commons/builder';
 
 import { createApolloClient } from './apollo';
 
-preloadingStrategy(async () => {
-  await builder.init();
-  const client = createApolloClient();
-
+function setupLocalStorageVariables() {
   LuigiClient.addCustomMessageListener(
-    'showSystemNamespacesChangedEvent',
+    SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
     msg =>
       localStorage.setItem(
         LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES,
@@ -32,6 +32,13 @@ preloadingStrategy(async () => {
     LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES,
     LuigiClient.getContext().showSystemNamespaces,
   );
+}
+
+preloadingStrategy(async () => {
+  await builder.init();
+  const client = createApolloClient();
+
+  setupLocalStorageVariables();
 
   ReactDOM.render(
     <ApolloProvider client={client}>

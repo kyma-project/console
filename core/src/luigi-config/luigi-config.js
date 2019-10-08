@@ -519,12 +519,14 @@ function getConsoleInitData() {
 }
 
 window.addEventListener('message', e => {
+  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT = 'showSystemNamespacesChangedEvent';
+
   if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
     window.Luigi.cachedNamespaces = null;
   }
-  else if (e.data && e.data.msg === 'showSystemNamespacesChangedEvent') {
+  else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
     Luigi.customMessages().sendToAll({
-      id: 'showSystemNamespacesChangedEvent', 
+      id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT, 
       showSystemNamespaces: e.data.showSystemNamespaces,
     });
   }
