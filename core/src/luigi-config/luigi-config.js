@@ -522,6 +522,12 @@ window.addEventListener('message', e => {
   if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
     window.Luigi.cachedNamespaces = null;
   }
+  else if (e.data && e.data.msg === 'showSystemNamespacesChangedEvent') {
+    Luigi.customMessages().sendToAll({
+      id: 'showSystemNamespacesChangedEvent', 
+      showSystemNamespaces: e.data.showSystemNamespaces,
+    });
+  }
 });
 
 function getNamespaces() {
@@ -667,7 +673,8 @@ Promise.all(initPromises)
         context: {
           idToken: token,
           backendModules,
-          systemNamespaces
+          systemNamespaces,
+          showSystemNamespaces: localStorage.getItem('console.showSystemNamespaces') === 'true',
         },
         children: function() {
           var staticNodes = [
