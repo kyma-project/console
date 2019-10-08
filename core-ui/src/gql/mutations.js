@@ -7,3 +7,11 @@ export const DELETE_NAMESPACE = gql`
     }
   }
 `;
+
+export const DELETE_LAMBDA = gql`
+  mutation DeleteFunction($name: String!, $namespace: String!) {
+    deleteFunction(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;
