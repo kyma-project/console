@@ -6,7 +6,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { preloadingStrategy } from '@kyma-project/common';
 
-import './index.css';
 import './index.scss';
 import App from './components/App/App';
 import builder from './commons/builder';
