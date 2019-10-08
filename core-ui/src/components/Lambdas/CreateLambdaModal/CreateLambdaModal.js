@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   FormItem,
   FormLabel,
@@ -7,10 +8,15 @@ import {
   InlineHelp,
 } from 'fundamental-react';
 
-import LabelsInput from '../../Shared/Labels';
+import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
-export default function LambdasComponent({ onChange, formElementRef }) {
-  const [labels, setLabels] = React.useState({ test: 'sss' });
+CreateLambdaModal.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  formElementRef: PropTypes.func.isRequired,
+};
+
+export default function CreateLambdaModal({ onChange, formElementRef }) {
+  const [labels, setLabels] = React.useState({ test: 'tets' });
 
   function updateLabels(newLabels) {
     setLabels(newLabels);
@@ -28,26 +34,26 @@ export default function LambdasComponent({ onChange, formElementRef }) {
       onSubmit={handleFormSubmit}
     >
       <FormItem>
-        <FormLabel htmlFor="lambdaName" required="true">
+        <FormLabel htmlFor="lambdaName" required={true}>
           Name
           <InlineHelp
             placement="bottom-right"
-            text="Name must be no longer than 63 characters, must start and end with a lowercase letter, and may contain lowercase letters, numbers, and dashes."
+            text="Name must be no longer than 63 characters, must start with a lowercase letter, and may contain lowercase letters, numbers, and dashes."
           />
         </FormLabel>
         <FormInput
           pattern="^[a-z]([-a-z0-9]*[a-z0-9])?"
-          required="true"
+          required={true}
           id="lambdaName"
           type="text"
           placeholder="Lambda name"
         />
       </FormItem>
 
-      <LabelsInput labels={labels} updateLabels={updateLabels}></LabelsInput>
+      <LabelSelectorInput labels={labels} onChange={updateLabels} />
 
       <FormItem>
-        <FormLabel htmlFor="lambdaRuntime" required="true">
+        <FormLabel htmlFor="lambdaRuntime" required={true}>
           Runtime
         </FormLabel>
         <FormSelect id="lambdaRuntime">
@@ -57,7 +63,7 @@ export default function LambdasComponent({ onChange, formElementRef }) {
       </FormItem>
 
       <FormItem>
-        <FormLabel htmlFor="lambdaSize" required="true">
+        <FormLabel htmlFor="lambdaSize" required={true}>
           Size
         </FormLabel>
         <FormSelect id="lambdaSize">

@@ -185,8 +185,8 @@ const CreateNamespaceForm = ({
   onCompleted,
   onError,
 }) => {
-  const [labels, setLabels] = useState([]);
-  const [readonlyLabels, setReadonlyLabels] = useState([]);
+  const [labels, setLabels] = useState({});
+  const [readonlyLabels, setReadonlyLabels] = useState({});
   const formValues = {
     name: useRef(null),
     memoryQuotas: {
@@ -222,7 +222,7 @@ const CreateNamespaceForm = ({
     /* eslint-disable no-unused-vars */
     const namespaceData = {
       name: formValues.name.current.value,
-      labels: [...labels, ...readonlyLabels],
+      labels: { ...labels, ...readonlyLabels },
     };
 
     const memoryQuotas = formValues.memoryQuotas.enableMemoryQuotas.current
@@ -264,14 +264,11 @@ const CreateNamespaceForm = ({
             kind="Namespace"
           />
         </div>
-        <div className="fd-form__item">
-          <label className="fd-form__label">Labels</label>
-          <LabelSelectorInput
-            labels={labels}
-            readonlyLabels={readonlyLabels}
-            onChange={handleLabelsChanged}
-          />
-        </div>
+        <LabelSelectorInput
+          labels={labels}
+          readonlyLabels={readonlyLabels}
+          onChange={handleLabelsChanged}
+        />
         <div className="fd-form__item">
           <DisableSidecarField onChange={handleIstioChange} />
         </div>

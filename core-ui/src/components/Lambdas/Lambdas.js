@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ModalWithForm from '../Shared/ModalWithForm';
+import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import CreateLambdaModal from './CreateLambdaModal/CreateLambdaModal';
 
 export default function Lambdas() {
@@ -8,9 +8,8 @@ export default function Lambdas() {
     <ModalWithForm
       title="Create new lambda"
       button={{ text: 'Create lambda', glyph: 'add' }}
-      performRefetch={() => console.log('refetch')} // to be removed after subscriptions are done
-    >
-      <CreateLambdaModal />
-    </ModalWithForm>
+      id="add-lambda-modal"
+      renderForm={props => <CreateLambdaModal {...props} />}
+    ></ModalWithForm>
   );
 }
