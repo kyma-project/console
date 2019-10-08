@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalWithForm Renders child component 1`] = `
+<div>
+  <button
+    className="fd-button"
+    onClick={[Function]}
+  >
+    
+  </button>
+</div>
+`;
+
+exports[`ModalWithForm Renders with minimal props 1`] = `
+<div>
+  <button
+    className="fd-button"
+    onClick={[Function]}
+  >
+    
+  </button>
+</div>
+`;

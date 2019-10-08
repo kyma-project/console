@@ -107,6 +107,7 @@ const apps = [
   'compass',
   'content',
   'core',
+  'core-ui',
   'lambda',
   'logging',
   'service-catalog-ui/brokers',

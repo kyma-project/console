@@ -6,7 +6,7 @@ import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
 import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
-import { CustomPropTypes } from '../../../shared/typechecking/CustomPropTypes';
+import CustomPropTypes from '../../../shared/typechecking/CustomPropTypes';
 
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
   const rawApisForApplication = apiId

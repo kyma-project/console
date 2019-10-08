@@ -9,6 +9,8 @@ import InfoButton from '../InfoButton/InfoButton.component';
 import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
 
+import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
+
 class CreateCredentialsModal extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +56,7 @@ class CreateCredentialsModal extends React.Component {
   };
 
   create = async isOpenedModal => {
-    const { serviceInstance, createBinding, sendNotification } = this.props;
+    const { serviceInstance, createBinding } = this.props;
     const { bindingCreateParameters } = this.state;
 
     let success = true;
@@ -65,7 +67,6 @@ class CreateCredentialsModal extends React.Component {
         serviceInstance.name,
         bindingCreateParameters,
       );
-
       let createdBindingName;
       if (
         createdBinding &&
@@ -79,24 +80,20 @@ class CreateCredentialsModal extends React.Component {
       if (isOpenedModal) {
         this.child.child.handleCloseModal();
       }
-
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            content: `Credentials "${createdBindingName}" created successfully`,
-            title: `${createdBindingName}`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: createdBindingName,
-          },
-        });
-      }
+      this.props.notification.open({
+        content: `Credentials "${createdBindingName}" created successfully`,
+        title: `${createdBindingName}`,
+        color: '#359c46',
+        icon: 'accept',
+        instanceName: createdBindingName,
+        visible: true,
+      });
     } catch (e) {
       success = false;
       this.setState({
         tooltipData: {
           type: 'error',
-          title: 'Error occored during creation',
+          title: 'Error occurred during creation',
           content: e.message,
           show: true,
           minWidth: '261px',
@@ -228,4 +225,6 @@ class CreateCredentialsModal extends React.Component {
   }
 }
 
-export default CreateCredentialsModal;
+export default function CreateCredentialsModalWithContext(props) {
+  return WithNotificationContext(CreateCredentialsModal, props);
+}
