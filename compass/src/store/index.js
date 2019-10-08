@@ -16,7 +16,7 @@ const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
 function handleUnauthorized() {
   window.parent.postMessage('unauthorized', '*');
 }
-
+console.log(COMPASS_GRAPHQL_ENDPOINT);
 export function createApolloClient() {
   const httpLink = createHttpLink({
     uri: COMPASS_GRAPHQL_ENDPOINT,

@@ -1,0 +1,16 @@
+#scenario-details__panel {
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width: 400px) {
+        display: block;
+    }
+    
+    :first-child() {
+        flex: 2;
+    }
+    
+    :nth-child(1) {
+        flex: 1;
+    }
+}

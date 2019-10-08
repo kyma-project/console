@@ -9,6 +9,7 @@ import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.
 import Applications from './components/Applications/Applications.container';
 import EditApi from './components/Api/EditApi/EditApi.container';
 import Scenarios from './components/Scenarios/Scenarios.container';
+import ScenarioDetails from './components/Scenarios/ScenarioDetails/ScenarioDetails';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
@@ -109,6 +110,13 @@ class App extends React.Component {
             />
 
             <Route path="/scenarios" exact component={Scenarios} />
+            <Route
+              path="/scenarios/:scenarioName"
+              exact
+              render={({ match }) => (
+                <ScenarioDetails scenarioName={match.params.scenarioName} />
+              )}
+            />
             <Route
               path="/metadata-definitions"
               exact

@@ -3,8 +3,8 @@ import {
   UPDATE_SCENARIOS,
   GET_SCENARIOS_LABEL_SCHEMA,
   CREATE_SCENARIOS_LABEL,
-  SET_APPLICATION_SCENARIOS,
-  SET_RUNTIME_SCENARIOS,
+  SET_APPLICATION_SCENARIO,
+  SET_RUNTIME_SCENARIO,
 } from '../../gql';
 import { SEND_NOTIFICATION } from '../../../../gql';
 
@@ -44,7 +44,7 @@ export default compose(
       },
     }),
   }),
-  graphql(SET_APPLICATION_SCENARIOS, {
+  graphql(SET_APPLICATION_SCENARIO, {
     props: props => ({
       setApplicationScenarios: async (applicationId, scenarios) => {
         await props.mutate({
@@ -56,7 +56,7 @@ export default compose(
       },
     }),
   }),
-  graphql(SET_RUNTIME_SCENARIOS, {
+  graphql(SET_RUNTIME_SCENARIO, {
     props: props => ({
       setRuntimeScenarios: async (runtimeId, scenarios) => {
         await props.mutate({
