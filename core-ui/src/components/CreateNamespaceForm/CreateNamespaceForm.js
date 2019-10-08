@@ -186,7 +186,9 @@ const CreateNamespaceForm = ({
   onError,
 }) => {
   const [labels, setLabels] = useState({});
-  const [readonlyLabels, setReadonlyLabels] = useState({});
+  const [readonlyLabels, setReadonlyLabels] = useState({
+    'istio-injection': 'enabled',
+  });
   const formValues = {
     name: useRef(null),
     memoryQuotas: {
@@ -207,11 +209,8 @@ const CreateNamespaceForm = ({
   }
 
   function handleIstioChange(disableSidecar) {
-    let newLabels = readonlyLabels.filter(l => l !== ISTIO_INJECTION_LABEL);
-
-    if (disableSidecar) {
-      newLabels.push(ISTIO_INJECTION_LABEL);
-    }
+    const newLabels = readonlyLabels;
+    newLabels['istio-injection'] = disableSidecar ? 'disabled' : 'enabled';
 
     setReadonlyLabels(newLabels);
   }
