@@ -43,7 +43,7 @@ export default function CreateLambdaForm({
       await createLambda({
         variables,
       });
-      onCompleted(name, `Lambda created succesfully`);
+      onCompleted(variables.name, `Lambda created succesfully`);
     } catch (e) {
       onError(`The lambda could not be created succesfully`, e.message || ``);
     }
