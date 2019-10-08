@@ -1,82 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NamespacesListHeader UI Renders with minimal props 1`] = `
-<div
-  className="fd-panel namespace-list-header fd-has-padding-medium remove-after"
->
-  <span
-    className="fd-has-type-4"
-  >
-    Namespaces
-  </span>
+<div>
+   
   <div
-    className="namespace-list-actions"
+    className="fd-panel namespace-list-header fd-has-padding-medium"
   >
+    <span
+      className="fd-has-type-4"
+    >
+      Namespaces
+    </span>
     <div
-      className="fd-search-input"
-      data-test-id="namespace-seach-input"
+      className="namespace-list-actions"
     >
       <div
-        className="fd-popover"
+        className="fd-search-input"
+        data-test-id="namespace-seach-input"
       >
         <div
-          className="fd-popover__control"
+          className="fd-popover"
         >
           <div
-            aria-expanded={false}
-            aria-haspopup="true"
-            className="fd-combobox-control"
+            className="fd-popover__control"
           >
             <div
-              className="fd-input-group fd-input-group--after"
+              aria-expanded={false}
+              aria-haspopup="true"
+              className="fd-combobox-control"
             >
-              <input
-                className="fd-input"
-                onChange={[Function]}
-                onClick={[Function]}
-                onKeyPress={[Function]}
-                style={Object {}}
-                type="text"
-                value=""
-              />
-              <span
-                className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+              <div
+                className="fd-input-group fd-input-group--after"
               >
-                <button
-                  className="fd-button--light sap-icon--search"
+                <input
+                  className="fd-input"
+                  onChange={[Function]}
                   onClick={[Function]}
+                  onKeyPress={[Function]}
+                  style={Object {}}
+                  type="text"
+                  value=""
                 />
-              </span>
+                <span
+                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+                >
+                  <button
+                    className="fd-button--light sap-icon--search"
+                    onClick={[Function]}
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div
-      className="fd-popover"
-    >
       <div
-        onFocus={[Function]}
-        onMouseDown={[Function]}
-        onTouchStart={[Function]}
+        className="fd-popover"
       >
         <div
-          className="fd-popover__control"
+          onFocus={[Function]}
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
         >
-          <button
-            className="fd-button--light sap-icon--filter"
-            onClick={[Function]}
-          />
+          <div
+            className="fd-popover__control"
+          >
+            <button
+              className="fd-button--light sap-icon--filter"
+              onClick={[Function]}
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <button
-        className="fd-button sap-icon--add"
-        onClick={[Function]}
-      >
-        Add new namespace
-      </button>
+      <div>
+        <button
+          className="fd-button sap-icon--add"
+          onClick={[Function]}
+        >
+          Add new namespace
+        </button>
+      </div>
     </div>
   </div>
 </div>
