@@ -7,14 +7,13 @@ import {
   FormLabel,
   FormSet,
 } from 'fundamental-react';
+
 import './CreateNamespaceForm.scss';
 import LabelSelectorInput from '../LabelSelectorInput/LabelSelectorInput';
 import { K8sNameField } from './K8sNameField';
 
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';
-
-const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
 
 const DisableSidecarField = ({ onChange }) => {
   return (
@@ -59,7 +58,7 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
           <InlineHelp
             placement="bottom-right"
             text="
-                 Define constraints that limit total memory consumption in your
+                  Define constraints that limit total memory consumption in your
                   namespace. 
                   Use plain value in bytes, or suffix equivalents. For example:
                   128974848, 129e6, 129M, 123Mi.

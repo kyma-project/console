@@ -10,12 +10,12 @@ import {
 
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
-CreateLambdaModal.propTypes = {
+CreateLambdaForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   formElementRef: PropTypes.func.isRequired,
 };
 
-export default function CreateLambdaModal({ onChange, formElementRef }) {
+export default function CreateLambdaForm({ onChange, formElementRef }) {
   const [labels, setLabels] = React.useState({ test: 'tets' });
 
   function updateLabels(newLabels) {

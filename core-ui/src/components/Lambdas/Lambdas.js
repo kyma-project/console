@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
-import CreateLambdaModal from './CreateLambdaModal/CreateLambdaModal';
+import CreateLambdaForm from './CreateLambdaForm/CreateLambdaForm';
 
 export default function Lambdas() {
   return (
@@ -9,7 +9,7 @@ export default function Lambdas() {
       title="Create new lambda"
       button={{ text: 'Create lambda', glyph: 'add' }}
       id="add-lambda-modal"
-      renderForm={props => <CreateLambdaModal {...props} />}
+      renderForm={props => <CreateLambdaForm {...props} />}
     ></ModalWithForm>
   );
 }
