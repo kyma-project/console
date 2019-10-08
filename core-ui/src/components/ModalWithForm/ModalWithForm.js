@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
+import { useNotification } from '../../contexts/notifications';
 
 //TODO: move this component to a shared "place"
 
@@ -14,9 +15,9 @@ const ModalWithForm = ({
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
-
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
+  const notificationManager = useNotification();
 
   const setOpenStatus = status => {
     if (status) {
@@ -35,28 +36,27 @@ const ModalWithForm = ({
     }
   };
 
-  const handleFormError = (title, message) => {
-    sendNotification({
-      variables: {
-        content: message,
-        title: title,
-        color: '#BB0000',
-        icon: 'decline',
-      },
+  const handleFormError = (title, message, isWarning) => {
+    notificationManager.notify({
+      content: message,
+      title: title,
+      color: isWarning ? '#E9730C' : '#BB0000',
+      icon: 'decline',
+      autoClose: false,
     });
   };
   const handleFormSuccess = (title, message) => {
-    sendNotification({
-      variables: {
-        content: message,
-        title: title,
-        color: '#107E3E',
-        icon: 'accept',
-      },
+    notificationManager.notify({
+      content: message,
+      title: title,
+      color: '#107E3E',
+      icon: 'accept',
+      autoClose: true,
     });
 
     performRefetch();
   };
+
   return (
     <div>
       <Button
@@ -85,11 +85,9 @@ const ModalWithForm = ({
               onClick={() => {
                 const form = formElementRef.current;
                 if (
-                  form &&
-                  form.reportValidity &&
-                  (typeof form.reportValidity === 'function'
+                  typeof form.reportValidity === 'function'
                     ? form.reportValidity()
-                    : form.checkValidity()) // IE workaround; HTML validation tooltips won't be visible
+                    : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
                 ) {
                   form.dispatchEvent(new Event('submit'));
                   setOpenStatus(false);
@@ -120,7 +118,6 @@ const ModalWithForm = ({
 
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
-  sendNotification: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
@@ -129,7 +126,6 @@ ModalWithForm.propTypes = {
   renderForm: PropTypes.func.isRequired,
 };
 ModalWithForm.defaultProps = {
-  sendNotification: () => {},
   performRefetch: () => {},
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import LabelSelectorInput, { labelRegexp } from '../LabelSelectorInput';
-import { Label, NonRemovableLabel } from '../LabelSelectorInput';
 import renderer from 'react-test-renderer';
 import { shallow, mount } from 'enzyme';
-import { descriptions } from 'jest-config';
+
+import LabelSelectorInput from '../LabelSelectorInput';
+import { Label, NonRemovableLabel } from '../LabelSelectorInput';
 
 describe('LabelSelectorInput', () => {
   const mockChange = jest.fn();

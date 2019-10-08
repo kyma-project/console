@@ -1,7 +1,20 @@
 import React from 'react';
-import CreateLambdaForm from '../CreateLambdaForm';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
+import { MockedProvider } from '@apollo/react-testing';
+import { act } from 'react-dom/test-utils';
+import wait from 'waait';
+
+import CreateLambdaForm from '../CreateLambdaForm';
+import { createLambdaSuccessfulMock, createLambdaErrorMock } from './gqlMocks';
+
+jest.mock('@kyma-project/luigi-client', () => {
+  return {
+    getEventData: function() {
+      return 'testNamespace';
+    },
+  };
+});
 
 describe('CreateLambdaForm', () => {
   it('Renders with minimal props', () => {
@@ -84,5 +97,40 @@ describe('CreateLambdaForm', () => {
         .instance()
         .checkValidity(),
     ).toEqual(false);
+  });
+
+  it('Creates lambda properly', async () => {
+    const onError = jest.fn();
+    const onCompleted = jest.fn();
+    const ref = React.createRef();
+
+    const gqlMock = [createLambdaSuccessfulMock(), createLambdaErrorMock()];
+
+    const component = mount(
+      <MockedProvider mocks={gqlMock} addTypename={false}>
+        <CreateLambdaForm
+          onError={onError}
+          onCompleted={onCompleted}
+          formElementRef={ref}
+        />
+      </MockedProvider>,
+    );
+
+    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameInput = component.find(lambdaNameSelector);
+    lambdaNameInput.instance().value = 'validName';
+
+    const form = component.find('form');
+    form.simulate('submit');
+
+    await act(async () => {
+      await wait();
+    });
+
+    // expect(gqlMock[0].result).toHaveBeenCalled();
+    // expect(gqlMock[1].result).not.toHaveBeenCalled();
+
+    // expect(onCompleted).toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
   });
 });
