@@ -61,12 +61,13 @@ export default function Lambdas() {
   ];
 
   const createLabels = labels => {
-    console.log('labels', labels);
     const separatedLabels = [];
+    /* eslint-disable no-unused-vars */
     for (const key in labels) {
       separatedLabels.push(key + '=' + labels[key]);
     }
 
+    /* eslint-enable no-unused-vars */
     return separatedLabels.map((label, id) => (
       <Token
         key={id}
@@ -77,14 +78,15 @@ export default function Lambdas() {
     ));
   };
 
-  const headerRenderer = () => ['Name', 'Status', 'Labels'];
+  const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
 
   const rowRenderer = item => [
     <span className="link">{item.name}</span>,
-    <LambdaStatusBadge status={item.status} />,
+    <span>{item.runtime}</span>,
     item.labels && Object.keys(item.labels).length
       ? createLabels(item.labels)
       : EMPTY_TEXT_PLACEHOLDER,
+    <LambdaStatusBadge status={item.status} />,
   ];
 
   if (error) {
