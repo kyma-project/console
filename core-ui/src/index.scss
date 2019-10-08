@@ -58,7 +58,15 @@ body {
       all: unset;
     }
     &--gap:not(:last-of-type) {
-      margin-right: 8px;
+      margin-right: 8px;    
+    }
+  }
+}
+
+.fd-modal {
+  &__actions {
+    .fd-button:not(:last-child) {
+      margin-right: 5px;
     }
   }
 }

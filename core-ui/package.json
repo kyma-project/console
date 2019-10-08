@@ -3,30 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.0",
-    "@apollo/react-testing": "^3.1.0",
-    "@kyma-project/luigi-client": "0.4.12",
-    "@kyma-project/luigi-core": "0.4.12",
-    "apollo-boost": "^0.4.4",
-    "apollo-cache-inmemory": "^1.6.3",
-    "apollo-client": "^2.6.4",
-    "apollo-link": "^1.2.13",
-    "apollo-link-error": "^1.1.12",
-    "apollo-link-http": "^1.5.16",
-    "fiori-fundamentals": "^1.7.0",
-    "fundamental-react": "^0.6.1",
-    "fundamental-styles": "^0.1.0",
-    "graphql-tag": "^2.10.1",
-    "jsoneditor": "^6.2.1",
-    "npm": "^6.11.3",
-    "react-ace": "^7.0.4",
-    "react-apollo": "^3.0.0",
-    "react-router-dom": "^5.0.1",
-    "recompose": "^0.30.0",
-    "styled-components": "^3.4.10",
-    "uuid": "^3.3.2",
-    "uuid-validate": "0.0.3",
-    "xml-js": "^1.6.11"
+    "@kyma-project/luigi-core": "^0.6.4"
   },
   "scripts": {
     "start": "PORT=8889 ../node_modules/.bin/react-scripts start",
@@ -50,19 +27,14 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^4.1.1",
-    "core-js": "^3.1.4",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "jsdom-worker-fix": "^0.1.8",
-    "ncp": "^2.0.0",
-    "node-fetch": "^2.6.0",
-    "react-test-renderer": "^16.8.6",
-    "waait": "^1.0.5",
-    "live-server": "^1.2.1",
-    "wait-on": "^3.2.0"
+    "core-js": "^3.1.4"
   },
   "config": {
     "unsafe-perm": true
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

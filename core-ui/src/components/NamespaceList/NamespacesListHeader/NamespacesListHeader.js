@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Panel, Button, Search } from '@kyma-project/react-components';
+import { Panel, Search } from '@kyma-project/react-components';
 import NamespaceFilters from './NamespaceFilters/NamespaceFilters';
 import './NamespacesListHeader.scss';
+
+import ModalWithForm from '../../ModalWithForm/ModalWithForm';
+import CreateNamespaceForm from '../../CreateNamespaceForm/CreateNamespaceForm';
 
 NamespacesListHeader.propTypes = {
   labelFilters: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
@@ -28,7 +31,12 @@ export default function NamespacesListHeader({
           filters={labelFilters}
           updateFilters={setLabelFilters}
         />
-        <Button glyph="add">Create Namespace</Button>
+        <ModalWithForm
+          title="Add new namespace"
+          button={{ text: 'Add new namespace', glyph: 'add' }}
+          id="add-namespace-modal"
+          renderForm={props => <CreateNamespaceForm {...props} />}
+        />
       </div>
     </Panel>
   );
