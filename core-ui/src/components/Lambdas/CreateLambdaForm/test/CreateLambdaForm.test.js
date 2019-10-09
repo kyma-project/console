@@ -10,9 +10,16 @@ import { createLambdaSuccessfulMock, createLambdaErrorMock } from './gqlMocks';
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
-    getEventData: function() {
+    getEventData: () => {
       return {
         environmentId: 'testnamespace',
+      };
+    },
+    linkManager: () => {
+      return {
+        navigate: () => {
+          return;
+        },
       };
     },
   };
