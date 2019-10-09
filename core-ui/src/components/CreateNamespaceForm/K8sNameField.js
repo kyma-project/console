@@ -32,7 +32,7 @@ export const K8sNameField = ({ _ref, id, kind, onKeyDown }) => (
 );
 
 K8sNameField.propTypes = {
-  _ref: CustomPropTypes.elementRef,
+  _ref: CustomPropTypes.ref,
   id: PropTypes.string,
   kind: PropTypes.string,
   onKeyDown: PropTypes.func,
