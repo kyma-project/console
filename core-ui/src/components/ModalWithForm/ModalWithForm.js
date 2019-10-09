@@ -28,10 +28,16 @@ const ModalWithForm = ({
   }
 
   function handleFormChanged(e) {
-    setValid(formElementRef.current.checkValidity());
+    const isElementValid = formElementRef.current.checkValidity();
+    setValid(isElementValid);
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
+    }
+    if (isElementValid) {
+      e.target.classList.remove('is-invalid');
+    } else {
+      e.target.classList.add('is-invalid');
     }
   }
 
