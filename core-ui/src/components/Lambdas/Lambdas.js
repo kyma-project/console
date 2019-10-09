@@ -5,6 +5,8 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { GET_LAMBDAS } from '../../gql/queries';
 import { DELETE_LAMBDA } from '../../gql/mutations';
 
+import builder from '../../commons/builder';
+
 import {
   POLL_INTERVAL,
   EMPTY_TEXT_PLACEHOLDER,
@@ -18,7 +20,7 @@ import LambdaStatusBadge from '../../shared/components/StatusBadge/LambdaStatusB
 export default function Lambdas() {
   const { data, error, loading } = useQuery(GET_LAMBDAS, {
     variables: {
-      namespace: 'functions',
+      namespace: builder.getCurrentEnvironmentId(),
     },
     pollInterval: POLL_INTERVAL,
   });
@@ -54,7 +56,6 @@ export default function Lambdas() {
     {
       name: 'Delete',
       handler: entry => {
-        console.log('delete');
         handleLambdaDelete(entry.name, entry.namespace);
       },
     },
@@ -81,7 +82,9 @@ export default function Lambdas() {
   const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
 
   const rowRenderer = item => [
-    <span className="link">{item.name}</span>,
+    <span className="link" data-test-id="lambda-name">
+      {item.name}
+    </span>,
     <span>{item.runtime}</span>,
     item.labels && Object.keys(item.labels).length
       ? createLabels(item.labels)
@@ -96,7 +99,6 @@ export default function Lambdas() {
   if (loading) {
     return <Spinner />;
   }
-  console.log('data', data);
 
   return (
     <GenericList

@@ -3,7 +3,7 @@ import { Badge } from 'fundamental-react/Badge';
 
 const LambdaStatusBadge = ({ status }) => {
   let type;
-  console.log(status);
+
   switch (status) {
     case 'Building':
     case 'Deploying':

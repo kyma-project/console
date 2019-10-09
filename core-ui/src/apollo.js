@@ -10,6 +10,14 @@ import { getURL } from './commons/api-url';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
+export function isSubscriptionOperation({ query }) {
+  const definition = getMainDefinition(query);
+  return (
+    definition.kind === 'OperationDefinition' &&
+    definition.operation === 'subscription'
+  );
+}
+
 export function createApolloClient() {
   const graphqlApiUrl = getURL(
     process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
@@ -45,17 +53,7 @@ export function createApolloClient() {
     },
   );
 
-  const link = split(
-    ({ query }) => {
-      const definition = getMainDefinition(query);
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      );
-    },
-    wsLink,
-    httpLink,
-  );
+  const link = split(isSubscriptionOperation, wsLink, httpLink);
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, link]),

@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@kyma-project/luigi-core": "^0.6.4"
+    "@kyma-project/luigi-core": "^0.6.4",
+    "@apollo/react-hooks": "^3.1.2",
+    "@apollo/react-testing": "^3.1.2",
+    "react-apollo": "^3.1.2"
   },
   "scripts": {
     "start": "PORT=8889 ../node_modules/.bin/react-scripts start",

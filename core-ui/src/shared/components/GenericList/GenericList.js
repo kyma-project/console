@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import SearchInput from './SearchInput';
 
+// TODO Coppied from compass
 import { Panel } from 'fundamental-react/Panel';
 
 import {
