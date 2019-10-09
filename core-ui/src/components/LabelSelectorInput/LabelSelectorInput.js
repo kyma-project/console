@@ -30,9 +30,11 @@ export const NonRemovableLabel = ({ text }) => (
 const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
   function handleLabelEntered(e) {
     const value = e.target.value;
-    if (e.keyCode !== 13 || !labelRegexp.test(value)) return;
-    e.target.value = '';
+    if ((e.key !== 'Enter' && e.key !== ',') || !labelRegexp.test(value))
+      return;
     onChange([...labels, value]);
+    e.preventDefault();
+    e.target.value = '';
   }
   function handleLabelRemoved(label) {
     onChange(labels.filter(l => l !== label));
