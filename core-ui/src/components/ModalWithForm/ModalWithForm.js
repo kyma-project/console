@@ -18,24 +18,24 @@ const ModalWithForm = ({
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
 
-  const setOpenStatus = status => {
+  function setOpenStatus(status) {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
     } else {
       LuigiClient.uxManager().removeBackdrop();
     }
     setOpen(status);
-  };
+  }
 
-  const handleFormChanged = e => {
+  function handleFormChanged(e) {
     setValid(formElementRef.current.checkValidity());
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
     }
-  };
+  }
 
-  const handleFormError = (title, message) => {
+  function handleFormError(title, message) {
     sendNotification({
       variables: {
         content: message,
@@ -44,8 +44,8 @@ const ModalWithForm = ({
         icon: 'decline',
       },
     });
-  };
-  const handleFormSuccess = (title, message) => {
+  }
+  function handleFormSuccess(title, message) {
     sendNotification({
       variables: {
         content: message,
@@ -56,7 +56,20 @@ const ModalWithForm = ({
     });
 
     performRefetch();
-  };
+  }
+
+  function handleFormSubmit() {
+    const form = formElementRef.current;
+    if (
+      typeof form.reportValidity === 'function'
+        ? form.reportValidity()
+        : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
+    ) {
+      form.dispatchEvent(new Event('submit'));
+      setTimeout(() => setOpenStatus(false));
+    }
+  }
+
   return (
     <div>
       <Button
@@ -82,17 +95,7 @@ const ModalWithForm = ({
             </Button>
             <Button
               aria-disabled={!isValid}
-              onClick={() => {
-                const form = formElementRef.current;
-                if (
-                  typeof form.reportValidity === 'function'
-                    ? form.reportValidity()
-                    : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
-                ) {
-                  form.dispatchEvent(new Event('submit'));
-                  setOpenStatus(false);
-                }
-              }}
+              onClick={handleFormSubmit}
               option="emphasized"
             >
               Create
@@ -110,6 +113,7 @@ const ModalWithForm = ({
           onChange: handleFormChanged,
           onError: handleFormError,
           onCompleted: handleFormSuccess,
+          performManualSubmit: handleFormSubmit,
         })}
       </Modal>
     </div>

@@ -184,6 +184,7 @@ const CreateNamespaceForm = ({
   onChange,
   onCompleted,
   onError,
+  performManualSubmit,
 }) => {
   const [labels, setLabels] = useState([]);
   const [readonlyLabels, setReadonlyLabels] = useState([]);
@@ -218,7 +219,6 @@ const CreateNamespaceForm = ({
 
   async function handleFormSubmit(e) {
     e.preventDefault();
-
     /* eslint-disable no-unused-vars */
     const namespaceData = {
       name: formValues.name.current.value,
@@ -262,6 +262,11 @@ const CreateNamespaceForm = ({
             _ref={formValues.name}
             id="runtime-name"
             kind="Namespace"
+            onKeyDown={e => {
+              if (e.keyCode === 13) {
+                performManualSubmit();
+              }
+            }}
           />
         </div>
         <div className="fd-form__item">
@@ -306,6 +311,7 @@ CreateNamespaceForm.propTypes = {
   onChange: PropTypes.func,
   onError: PropTypes.func, // args: title(string), message(string)
   onCompleted: PropTypes.func, // args: title(string), message(string)
+  performManualSubmit: PropTypes.func, // no args
 };
 
 export default CreateNamespaceForm;
