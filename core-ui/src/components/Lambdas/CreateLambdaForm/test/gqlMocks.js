@@ -1,30 +1,27 @@
 import { CREATE_LAMBDA } from '../../../../gql/mutations';
 
-const variables = {
+const lambda = {
   name: 'testname',
-  namespace: 'testNamespace',
-  labels: {
-    testKey: 'testValue',
-  },
-  size: 'M',
-  runtime: 'nodejs8',
+  namespace: 'testnamespace',
+  labels: {},
+  size: 'S',
+  runtime: 'nodejs6',
 };
 
 export const createLambdaSuccessfulMock = () => {
   return {
     request: {
       query: CREATE_LAMBDA,
-      variables,
+      variables: lambda,
     },
-    result: jest.fn().mockReturnValue({ data: variables }),
+    result: jest.fn().mockReturnValue({ data: { createFunction: lambda } }),
   };
 };
 
 export const createLambdaErrorMock = () => ({
   request: {
     query: CREATE_LAMBDA,
-    variables,
+    variables: lambda,
   },
-  result: jest.fn().mockReturnValue({ data: {} }),
-  error: new Error(':('),
+  error: new Error('Lambda already exists'),
 });

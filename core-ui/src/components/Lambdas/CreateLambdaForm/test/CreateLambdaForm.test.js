@@ -11,7 +11,9 @@ import { createLambdaSuccessfulMock, createLambdaErrorMock } from './gqlMocks';
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     getEventData: function() {
-      return 'testNamespace';
+      return {
+        environmentId: 'testnamespace',
+      };
     },
   };
 });
@@ -104,7 +106,7 @@ describe('CreateLambdaForm', () => {
     const onCompleted = jest.fn();
     const ref = React.createRef();
 
-    const gqlMock = [createLambdaSuccessfulMock(), createLambdaErrorMock()];
+    const gqlMock = [createLambdaSuccessfulMock()];
 
     const component = mount(
       <MockedProvider mocks={gqlMock} addTypename={false}>
@@ -118,7 +120,7 @@ describe('CreateLambdaForm', () => {
 
     const lambdaNameSelector = '#lambdaName';
     const lambdaNameInput = component.find(lambdaNameSelector);
-    lambdaNameInput.instance().value = 'validName';
+    lambdaNameInput.instance().value = 'testname';
 
     const form = component.find('form');
     form.simulate('submit');
@@ -127,10 +129,41 @@ describe('CreateLambdaForm', () => {
       await wait();
     });
 
-    // expect(gqlMock[0].result).toHaveBeenCalled();
-    // expect(gqlMock[1].result).not.toHaveBeenCalled();
+    expect(gqlMock[0].result).toHaveBeenCalled();
 
-    // expect(onCompleted).toHaveBeenCalled();
+    expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
+  });
+
+  it('Errr', async () => {
+    const onError = jest.fn();
+    const onCompleted = jest.fn();
+    const ref = React.createRef();
+
+    const gqlMock = [createLambdaErrorMock()];
+
+    const component = mount(
+      <MockedProvider mocks={gqlMock} addTypename={false}>
+        <CreateLambdaForm
+          onError={onError}
+          onCompleted={onCompleted}
+          formElementRef={ref}
+        />
+      </MockedProvider>,
+    );
+
+    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameInput = component.find(lambdaNameSelector);
+    lambdaNameInput.instance().value = 'testname';
+
+    const form = component.find('form');
+    form.simulate('submit');
+
+    await act(async () => {
+      await wait();
+    });
+
+    expect(onCompleted).not.toHaveBeenCalled();
+    expect(onError).toHaveBeenCalled();
   });
 });
