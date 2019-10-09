@@ -55,6 +55,7 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
           type="text"
           placeholder="Enter label key=value"
           onKeyDown={handleLabelEntered}
+          data-ignore-visual-validation
         />
       </div>
     </div>

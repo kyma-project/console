@@ -34,6 +34,11 @@ const ModalWithForm = ({
       // for IE
       e.target.reportValidity();
     }
+
+    if (e.target.getAttribute('data-ignore-visual-validation')) {
+      return;
+    }
+
     if (isElementValid) {
       e.target.classList.remove('is-invalid');
     } else {
