@@ -53,7 +53,7 @@ let navigation = {
       preloadUrl: '/consoleapp.html#/home/preload'
     },
     _core_ui_: {
-      preloadUrl: config.coreModuleUrl + '/preload'
+      preloadUrl: config.coreModuleUrl + '/preload',
     },
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
@@ -683,7 +683,7 @@ Promise.all(initPromises)
             {
               pathSegment: 'workspace',
               label: 'Namespaces',
-              viewUrl: config.coreModuleUrl,
+              viewUrl: config.coreModuleUrl + '/namespaces',
               icon: 'dimension',
               viewGroup: coreUIViewGroupName,
             },

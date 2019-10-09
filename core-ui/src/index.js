@@ -35,17 +35,18 @@ function setupLocalStorageVariables() {
 }
 
 preloadingStrategy(async () => {
-  await builder.init();
-  const client = createApolloClient();
+  builder.initOrContextUpdate(() => {
+    const client = createApolloClient();
 
-  setupLocalStorageVariables();
+    setupLocalStorageVariables();
 
-  ReactDOM.render(
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ApolloProvider>,
-    document.getElementById('root'),
-  );
+    ReactDOM.render(
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ApolloProvider>,
+      document.getElementById('root'),
+    );
+  });
 });
