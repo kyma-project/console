@@ -142,7 +142,7 @@ describe('CreateLambdaForm', () => {
     expect(onError).not.toHaveBeenCalled();
   });
 
-  it('Errr', async () => {
+  it('Shows error notification if an error occured', async () => {
     const onError = jest.fn();
     const onCompleted = jest.fn();
     const ref = React.createRef();
