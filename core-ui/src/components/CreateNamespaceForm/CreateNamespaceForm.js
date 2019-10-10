@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import {
@@ -240,6 +240,13 @@ const CreateNamespaceForm = ({
       defaultRequest: useRef(null),
     },
   };
+
+  useEffect(() => {
+    const element = formValues.name.current;
+    setTimeout(() => {
+      if (typeof element.focus === 'function') element.focus();
+    });
+  }, [formValues.name]);
 
   const [createNamespaceMutation] = useMutation(CREATE_NAMESPACE);
   const [createLimitRangeMutation] = useMutation(CREATE_LIMIT_RANGE);
