@@ -8,11 +8,15 @@ export const NotificationContext = createContext({
 
 export const NotificationProvider = ({
   children,
-  defaultVisibilityTime = 35000,
+  defaultVisibilityTime = 5000,
 }) => {
   const [state, setState] = useState({
     isOpen: false,
   });
+
+  const closeNotification = () => {
+    setState({ isOpen: false });
+  };
 
   return (
     <NotificationContext.Provider
@@ -23,9 +27,11 @@ export const NotificationProvider = ({
           visibilityTime = defaultVisibilityTime,
         ) {
           setState({ isOpen: true, notificationProps });
-          setTimeout(() => {
-            setState({ isOpen: false });
-          }, visibilityTime);
+          if (notificationProps.autoClose) {
+            setTimeout(() => {
+              closeNotification();
+            }, visibilityTime);
+          }
         },
       }}
     >
@@ -33,7 +39,7 @@ export const NotificationProvider = ({
         <Notification
           visible={true}
           {...state.notificationProps}
-          onClick={setState({ isOpen: false })}
+          onClick={closeNotification}
         />
       )}
       {children}
