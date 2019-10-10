@@ -38,7 +38,7 @@ export default function Lambdas() {
       .then(async () => {
         try {
           await deleteLambda({
-            variables: { name: name, namespace: namespace },
+            variables: { name, namespace },
           });
         } catch (e) {
           console.warn(e);
