@@ -47,24 +47,22 @@ const ModalWithForm = ({
     }
   }
 
-  function handleFormError(title, message) {
-    sendNotification({
-      variables: {
-        content: message,
-        title: title,
-        color: '#BB0000',
-        icon: 'decline',
-      },
+  function handleFormError(title, message, isWarning) {
+    notificationManager.notify({
+      content: message,
+      title: title,
+      color: isWarning ? '#E9730C' : '#BB0000',
+      icon: 'decline',
+      autoClose: false,
     });
   }
   function handleFormSuccess(title, message) {
-    sendNotification({
-      variables: {
-        content: message,
-        title: title,
-        color: '#107E3E',
-        icon: 'accept',
-      },
+    notificationManager.notify({
+      content: message,
+      title: title,
+      color: '#107E3E',
+      icon: 'accept',
+      autoClose: true,
     });
 
     performRefetch();
