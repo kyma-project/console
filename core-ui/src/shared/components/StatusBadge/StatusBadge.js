@@ -1,6 +1,7 @@
 import React from 'react';
 import { Badge } from 'fundamental-react/Badge';
 
+// TODO Coppied from compass
 const StatusBadge = ({ status }) => {
   let type;
 

@@ -35,14 +35,6 @@ describe('CustomPropTypes', () => {
       });
     });
 
-    it('Fails on non element ref', () => {
-      const ref = createRef();
-      ref.current = 'string';
-      assertFails(CustomPropTypes.elementRef, {
-        testprop: ref,
-      });
-    });
-
     it('Fails on string', () => {
       assertFails(CustomPropTypes.elementRef, {
         testprop: 'somestring',
