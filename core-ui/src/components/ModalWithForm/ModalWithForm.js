@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
+import { useNotification } from '../../contexts/notifications';
 
 //TODO: move this component to a shared "place"
 
@@ -14,9 +15,9 @@ const ModalWithForm = ({
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
-
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
+  const notificationManager = useNotification();
 
   function setOpenStatus(status) {
     if (status) {
@@ -133,7 +134,6 @@ const ModalWithForm = ({
 
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
-  sendNotification: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
@@ -142,7 +142,6 @@ ModalWithForm.propTypes = {
   renderForm: PropTypes.func.isRequired,
 };
 ModalWithForm.defaultProps = {
-  sendNotification: () => {},
   performRefetch: () => {},
 };
 
