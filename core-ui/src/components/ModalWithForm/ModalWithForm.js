@@ -29,8 +29,7 @@ const ModalWithForm = ({
   }
 
   function handleFormChanged(e) {
-    const isElementValid = formElementRef.current.checkValidity();
-    setValid(isElementValid);
+    setValid(formElementRef.current.checkValidity()); // general form validity
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
@@ -40,7 +39,8 @@ const ModalWithForm = ({
       return;
     }
 
-    if (isElementValid) {
+    // current element validity
+    if (e.target.checkValidity()) {
       e.target.classList.remove('is-invalid');
     } else {
       e.target.classList.add('is-invalid');
