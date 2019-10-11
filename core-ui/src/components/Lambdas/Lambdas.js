@@ -6,16 +6,13 @@ import { GET_LAMBDAS } from '../../gql/queries';
 import { DELETE_LAMBDA } from '../../gql/mutations';
 
 import builder from '../../commons/builder';
+import { POLL_INTERVAL } from './../../shared/constants';
 
-import {
-  POLL_INTERVAL,
-  EMPTY_TEXT_PLACEHOLDER,
-} from './../../shared/constants';
-
-import { Token } from 'fundamental-react/Token';
+import { useNotification } from '../../contexts/notifications';
 import { Spinner } from '@kyma-project/react-components';
 import GenericList from '../../shared/components/GenericList/GenericList';
-import LambdaStatusBadge from '../../shared/components/StatusBadge/LambdaStatusBadge';
+import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
+import Labels from '../../shared/components/Labels/Labels';
 
 export default function Lambdas() {
   const { data, error, loading } = useQuery(GET_LAMBDAS, {
@@ -26,6 +23,15 @@ export default function Lambdas() {
   });
 
   const [deleteLambda] = useMutation(DELETE_LAMBDA);
+  const notificationManager = useNotification();
+
+  if (error) {
+    return `Error! ${error.message}`;
+  }
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   const handleLambdaDelete = (name, namespace) => {
     LuigiClient.uxManager()
@@ -37,15 +43,30 @@ export default function Lambdas() {
       })
       .then(async () => {
         try {
-          await deleteLambda({
+          const deletedLambda = await deleteLambda({
             variables: { name, namespace },
           });
+          const isSuccess =
+            deletedLambda.data &&
+            deletedLambda.data.deleteFunction &&
+            deletedLambda.data.deleteFunction.name === name;
+          if (isSuccess) {
+            notificationManager.notify({
+              content: `Lambda ${name} deleted`,
+              title: 'Success',
+              color: '#107E3E',
+              icon: 'accept',
+              autoClose: true,
+            });
+          }
         } catch (e) {
           console.warn(e);
-          LuigiClient.uxManager().showAlert({
-            text: e.message,
-            type: 'error',
-            closeAfter: 10000,
+          notificationManager.notify({
+            content: `Error while removing lambda ${name}: ${e.message}`,
+            title: 'Error',
+            color: '#BB0000',
+            icon: 'decline',
+            autoClose: false,
           });
         }
       })
@@ -61,24 +82,6 @@ export default function Lambdas() {
     },
   ];
 
-  const createLabels = labels => {
-    const separatedLabels = [];
-    /* eslint-disable no-unused-vars */
-    for (const key in labels) {
-      separatedLabels.push(key + '=' + labels[key]);
-    }
-
-    /* eslint-enable no-unused-vars */
-    return separatedLabels.map((label, id) => (
-      <Token
-        key={id}
-        className="y-fd-token y-fd-token--no-button y-fd-token--gap"
-      >
-        {label}
-      </Token>
-    ));
-  };
-
   const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
 
   const rowRenderer = item => [
@@ -86,19 +89,9 @@ export default function Lambdas() {
       {item.name}
     </span>,
     <span>{item.runtime}</span>,
-    item.labels && Object.keys(item.labels).length
-      ? createLabels(item.labels)
-      : EMPTY_TEXT_PLACEHOLDER,
+    Labels(item.labels),
     <LambdaStatusBadge status={item.status} />,
   ];
-
-  if (error) {
-    return `Error! ${error.message}`;
-  }
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <GenericList

@@ -7,11 +7,3 @@ exports[`LambdaStatusBadge LambdaStatusBadge should render with status building 
   Building
 </span>
 `;
-
-exports[`StatusBadge should render loading state initially 1`] = `
-<span
-  className="fd-badge"
->
-  INITIAL
-</span>
-`;
