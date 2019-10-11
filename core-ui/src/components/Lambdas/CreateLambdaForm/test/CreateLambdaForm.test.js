@@ -76,8 +76,8 @@ describe('CreateLambdaForm', () => {
     expect(lambdaNameInput.exists()).toEqual(true);
     expect(lambdaNameInput.instance().value).toEqual('');
 
-    lambdaNameInput.instance().value = 'validName';
-    expect(lambdaNameInput.instance().value).toEqual('validName');
+    lambdaNameInput.instance().value = 'validname';
+    expect(lambdaNameInput.instance().value).toEqual('validname');
 
     expect(
       component

@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel, InlineHelp } from 'fundamental-react';
+import { FormItem, FormLabel } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
 import { CREATE_LAMBDA } from '../../../gql/mutations';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+import { K8sNameField } from '../../CreateNamespaceForm/K8sNameField';
 
 CreateLambdaForm.propTypes = {
   onChange: PropTypes.func,
@@ -60,20 +61,10 @@ export default function CreateLambdaForm({
       onSubmit={handleFormSubmit}
     >
       <FormItem>
-        <FormLabel htmlFor="lambdaName" required={true}>
-          Name
-          <InlineHelp
-            placement="bottom-right"
-            text="Name must be no longer than 63 characters, must start with a lowercase letter, and may contain lowercase letters, numbers, and dashes."
-          />
-        </FormLabel>
-        <input
-          pattern="^[a-z]([-a-z0-9]*[a-z0-9])?"
-          required={true}
-          id="lambdaName"
-          type="text"
-          placeholder="Lambda name"
-          ref={formValues.name}
+        <K8sNameField
+          _ref={formValues.name}
+          fieldId="lambdaName"
+          kind="Lambda"
         />
       </FormItem>
 
