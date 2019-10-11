@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useReducer, useRef, useEffect } from 'react';
+import classNames from 'classnames';
 import './LabelSelectorInput.scss';
 import { Token } from 'fundamental-react/Token';
 
@@ -28,13 +29,39 @@ export const NonRemovableLabel = ({ text }) => (
 );
 
 const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
-  function handleLabelEntered(e) {
-    const value = e.target.value;
-    if ((e.key !== 'Enter' && e.key !== ',') || !labelRegexp.test(value))
+  const [isValid, setValid] = useState(true);
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+    inputRef.current.setCustomValidity(
+      isValid ? '' : `Please use the label format key=value`,
+    );
+    if (typeof inputRef.current.reportValidity === 'function')
+      inputRef.current.reportValidity();
+  }, [isValid]);
+
+  function handleKeyDown(e) {
+    if (!isValid) {
+      setValid(true);
+    }
+    if (e.key !== 'Enter' && e.key !== ',') return;
+    handleLabelEntered(e.target.value, e);
+  }
+
+  function handleOutOfFocus(e) {
+    handleLabelEntered(e.target.value, e);
+  }
+
+  function handleLabelEntered(value, sourceEvent) {
+    if (!labelRegexp.test(value)) {
+      setValid(false);
       return;
+    }
+    sourceEvent.preventDefault();
+    sourceEvent.target.value = '';
     onChange([...labels, value]);
-    e.preventDefault();
-    e.target.value = '';
   }
   function handleLabelRemoved(label) {
     onChange(labels.filter(l => l !== label));
@@ -42,7 +69,9 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
 
   return (
     <div className="fd-form__set">
-      <div className="label-selector">
+      <div
+        className={classNames(['label-selector', { 'is-invalid': !isValid }])}
+      >
         {readonlyLabels.map(l => (
           <NonRemovableLabel key={l} text={l} />
         ))}
@@ -51,10 +80,12 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
           <Label key={l} text={l} onClick={() => handleLabelRemoved(l)} />
         ))}
         <input
+          ref={inputRef}
           className="fd-form__control label-selector__input"
           type="text"
           placeholder="Enter label key=value"
-          onKeyDown={handleLabelEntered}
+          onKeyDown={handleKeyDown}
+          onBlur={handleOutOfFocus}
           data-ignore-visual-validation
         />
       </div>

@@ -22,7 +22,13 @@
     box-shadow: 0 0 0 1px var(--fd-color-action-focus);
   }
 
-  input[type="text"] {
+  &.is-invalid {
+    box-shadow: 0 0 0 1px #b00;
+    --fd-forms-border-color: var(--fd-color-negative);
+    border-width: 2px;
+  }
+
+  input[type='text'] {
     height: calc(var(--fd-forms-height) - 2px);
     width: auto;
     padding-left: 12px;
