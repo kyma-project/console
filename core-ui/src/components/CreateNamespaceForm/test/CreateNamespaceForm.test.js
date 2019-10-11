@@ -5,8 +5,8 @@ import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
 import wait from 'waait';
 
+import { expectToSolveWithin } from '../../../setupTests';
 import CreateNamespaceForm from '../CreateNamespaceForm';
-
 import {
   createNamespaceSuccessfulMock,
   createResourceQuotaSuccessfulMock,
@@ -146,12 +146,13 @@ describe('CreateNamespaceForm', () => {
     form.simulate('submit');
 
     await act(async () => {
-      await wait();
+      await expectToSolveWithin(() => {
+        expect(gqlMock[0].result).toHaveBeenCalled();
+        expect(gqlMock[1].result).toHaveBeenCalled();
+        expect(gqlMock[2].result).toHaveBeenCalled();
+      }, 500);
     });
 
-    expect(gqlMock[0].result).toHaveBeenCalled();
-    expect(gqlMock[1].result).toHaveBeenCalled();
-    expect(gqlMock[2].result).toHaveBeenCalled();
     expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
   });

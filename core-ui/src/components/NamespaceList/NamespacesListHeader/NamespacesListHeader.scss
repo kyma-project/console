@@ -10,6 +10,10 @@
   }
 }
 
+.remove-after::after {
+  content: unset !important;
+}
+
 #add-namespace-modal {
   .fd-modal {
     max-width: 90%;

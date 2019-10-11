@@ -42,7 +42,7 @@ describe('LabelSelectorInput', () => {
     const input = component.find('input');
 
     input.instance().value = 'abc=def';
-    input.simulate('keydown', { keyCode: 13 });
+    input.simulate('keydown', { key: 'Enter' });
 
     expect(mockChange.mock.calls).toMatchSnapshot();
   });

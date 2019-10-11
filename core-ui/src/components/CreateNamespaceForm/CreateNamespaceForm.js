@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import {
@@ -221,6 +221,7 @@ const CreateNamespaceForm = ({
   onChange,
   onCompleted,
   onError,
+  performManualSubmit,
 }) => {
   const [labels, setLabels] = useState([]);
   const [readonlyLabels, setReadonlyLabels] = useState([]);
@@ -239,6 +240,13 @@ const CreateNamespaceForm = ({
       defaultRequest: useRef(null),
     },
   };
+
+  useEffect(() => {
+    const element = formValues.name.current;
+    setTimeout(() => {
+      if (element && typeof element.focus === 'function') element.focus();
+    });
+  }, [formValues.name]);
 
   const [createNamespaceMutation] = useMutation(CREATE_NAMESPACE);
   const [createLimitRangeMutation] = useMutation(CREATE_LIMIT_RANGE);
@@ -355,6 +363,11 @@ const CreateNamespaceForm = ({
             _ref={formValues.name}
             id="runtime-name"
             kind="Namespace"
+            onKeyDown={e => {
+              if (e.keyCode === 13) {
+                performManualSubmit();
+              }
+            }}
           />
         </div>
         <div className="fd-form__item">
@@ -399,6 +412,7 @@ CreateNamespaceForm.propTypes = {
   onChange: PropTypes.func,
   onError: PropTypes.func, // args: title(string), message(string)
   onCompleted: PropTypes.func, // args: title(string), message(string)
+  performManualSubmit: PropTypes.func, // no args
 };
 
 export default CreateNamespaceForm;
