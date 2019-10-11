@@ -5,7 +5,6 @@ import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
 import wait from 'waait';
 
-import { createMockLink } from '../../../testing/apollo';
 import CreateNamespaceForm from '../CreateNamespaceForm';
 
 import {
@@ -18,9 +17,8 @@ import {
 
 describe('CreateNamespaceForm', () => {
   it('Renders with minimal props', () => {
-    const { link } = createMockLink([]);
     const component = renderer.create(
-      <MockedProvider link={link}>
+      <MockedProvider>
         <CreateNamespaceForm formElementRef={{ current: null }} />
       </MockedProvider>,
     );
@@ -29,9 +27,8 @@ describe('CreateNamespaceForm', () => {
   });
 
   it('Shows and hides Memory quotas section', () => {
-    const { link } = createMockLink([]);
     const component = mount(
-      <MockedProvider link={link}>
+      <MockedProvider>
         <CreateNamespaceForm formElementRef={{ current: null }} />
       </MockedProvider>,
     );
@@ -53,9 +50,8 @@ describe('CreateNamespaceForm', () => {
   });
 
   it('Shows and hides Container limits section', () => {
-    const { link } = createMockLink([]);
     const component = mount(
-      <MockedProvider link={link}>
+      <MockedProvider>
         <CreateNamespaceForm formElementRef={{ current: null }} />
       </MockedProvider>,
     );

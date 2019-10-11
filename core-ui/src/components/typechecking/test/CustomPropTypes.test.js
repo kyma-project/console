@@ -20,29 +20,21 @@ function assertFails(validator, props) {
 }
 
 describe('CustomPropTypes', () => {
-  describe('elementRef', () => {
+  describe('ref', () => {
     it('Passes on empty ref', () => {
-      assertPasses(CustomPropTypes.elementRef, {
+      assertPasses(CustomPropTypes.ref, {
         testprop: createRef(),
       });
     });
 
-    it('Passes on element ref', () => {
-      const ref = createRef();
-      ref.current = <div />;
-      assertPasses(CustomPropTypes.elementRef, {
-        testprop: ref,
-      });
-    });
-
     it('Fails on string', () => {
-      assertFails(CustomPropTypes.elementRef, {
+      assertFails(CustomPropTypes.ref, {
         testprop: 'somestring',
       });
     });
 
     it('Fails on null if required', () => {
-      assertFails(CustomPropTypes.elementRef.isRequired, {
+      assertFails(CustomPropTypes.ref.isRequired, {
         testprop: 'somestring',
       });
     });

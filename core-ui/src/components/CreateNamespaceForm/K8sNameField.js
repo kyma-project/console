@@ -31,7 +31,7 @@ export const K8sNameField = ({ _ref, id, kind }) => (
 );
 
 K8sNameField.propTypes = {
-  _ref: CustomPropTypes.elementRef,
+  _ref: CustomPropTypes.ref,
   id: PropTypes.string,
   kind: PropTypes.string,
 };

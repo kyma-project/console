@@ -18,7 +18,6 @@ import GenericList from '../../../shared/components/GenericList/GenericList';
 describe('Lambdas', () => {
   it('Renders with error in no query is mocked', async () => {
     let component;
-
     await renderer.act(async () => {
       component = renderer.create(
         <MockedProvider>
@@ -31,11 +30,8 @@ describe('Lambdas', () => {
   });
 
   it('Shows loading indicator only when data is not yet loaded', async () => {
-    const { link } = createMockLink([]);
-    let component;
-
-    component = mount(
-      <MockedProvider link={link}>
+    const component = mount(
+      <MockedProvider>
         <Lambdas />
       </MockedProvider>,
     );
