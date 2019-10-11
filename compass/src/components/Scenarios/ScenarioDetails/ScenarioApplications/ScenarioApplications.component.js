@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GenericList from '../../../../shared/components/GenericList/GenericList';
 import { Panel } from '@kyma-project/react-components';
-import UnassignScenario from './../UnassignScenario/UnassignScenario';
+import unassignScenarioHandler from './../shared/unassignScenarioHandler';
 
 ScenarioApplications.propTypes = {
   scenarioName: PropTypes.string.isRequired,
@@ -33,13 +33,13 @@ export default function ScenarioApplications({
 
   const headerRenderer = () => ['Name', 'APIs'];
 
-  const rowRenderer = application => [application.name, 'todo'];
+  const rowRenderer = application => [application.name, countApis(application)];
 
   const actions = [
     {
       name: 'Delete',
       handler: application =>
-        UnassignScenario(
+        unassignScenarioHandler(
           application.name,
           application.id,
           removeApplicationFromScenario,
@@ -47,6 +47,15 @@ export default function ScenarioApplications({
         ),
     },
   ];
+
+  // todo use gql filter!
+  const unassignedApplications = [];
+  applications.forEach(app => {
+    if (!scenarioApplications.filter(a => a.id === app.id).length) {
+      unassignedApplications.push(app);
+    }
+  });
+  console.log('unassignedApplications', unassignedApplications);
 
   return (
     <Panel>
