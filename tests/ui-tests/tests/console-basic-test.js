@@ -7,20 +7,26 @@ import dex from '../utils/dex';
 import address from '../utils/address';
 import { retry, retryInterval } from '../utils/retry';
 import { testPluggable } from '../setup/test-pluggable';
-import {
-  k8sApiNamespace,
-  k8sApiDeployment,
-  k8sApiService,
-} from './../setup/k8s-api';
+import { NamespaceManager } from '../setup/namespace-manager';
+import { k8sApiDeployment, k8sApiService } from './../setup/k8s-api';
 
 let page, browser, namespace;
 let token = ''; // eslint-disable-line no-unused-vars
 
 // TODO: Move application tests to a separate file
 const REQUIRED_MODULE = 'application';
+const namespaceUnderTest = 'test-expose-api';
+const namespaceInstaller = new NamespaceManager(namespaceUnderTest);
 
 describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   beforeAll(async () => {
+    try {
+      await namespaceInstaller.createIfDoesntExist();
+    } catch (err) {
+      await namespaceInstaller.deleteIfExists();
+      throw new Error('Failed to create a namespace:', err);
+    }
+
     await retry(async () => {
       const data = await common.beforeAll(t => (token = t));
       browser = data.browser;
@@ -29,7 +35,7 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
   });
 
   afterAll(async () => {
-    await namespace.delete();
+    await namespaceInstaller.deleteIfExists();
     if (browser) {
       await browser.close();
     }
@@ -84,14 +90,12 @@ describeIf(dex.isStaticUser(), 'Console basic tests', () => {
     }
 
     // Create k8s resources
-    const namespaceUnderTest = 'test-expose-api';
-    namespace = await new k8sApiNamespace(namespaceUnderTest);
     const deploymentApi = await new k8sApiDeployment(namespaceUnderTest);
     service = await new k8sApiService(namespaceUnderTest);
     await deploymentApi.waitUntilCreated(40000);
 
     serviceUrl = address.console.getService(
-      namespace.definition.metadata.name,
+      namespaceUnderTest,
       service.definition.metadata.name,
     );
 
