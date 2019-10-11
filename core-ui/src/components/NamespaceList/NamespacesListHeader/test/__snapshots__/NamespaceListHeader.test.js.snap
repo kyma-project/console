@@ -2,7 +2,6 @@
 
 exports[`NamespacesListHeader UI Renders with minimal props 1`] = `
 <div>
-   
   <div
     className="fd-panel namespace-list-header fd-has-padding-medium"
   >

@@ -7,7 +7,7 @@ class Builder {
   token = null;
   backendModules = [];
 
-  initOrContextUpdate(callback) {
+  addEventListeners(callback) {
     LuigiClient.addInitListener(e => {
       this.setCurrentContext(e);
       callback();
@@ -19,12 +19,8 @@ class Builder {
       }
       if (e.namespaceId !== this.currentEnvironmentId) {
         this.setCurrentContext(e);
-        LuigiClient.linkManager()
-          .fromContext('namespaces')
-          .navigate('cmf-service-catalog');
-        return callback();
+        callback();
       }
-      this.setCurrentContext(e);
     });
   }
 

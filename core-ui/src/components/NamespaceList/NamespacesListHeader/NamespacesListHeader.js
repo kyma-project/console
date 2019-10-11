@@ -21,7 +21,6 @@ export default function NamespacesListHeader({
 }) {
   return (
     <div>
-      {' '}
       {/* wrap in div to remove .fd-panel::after */}
       <Panel className="namespace-list-header fd-has-padding-medium">
         <span className="fd-has-type-4">Namespaces</span>

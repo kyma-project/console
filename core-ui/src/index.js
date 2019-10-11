@@ -35,7 +35,7 @@ function setupLocalStorageVariables() {
 }
 
 preloadingStrategy(async () => {
-  builder.initOrContextUpdate(() => {
+  builder.addEventListeners(() => {
     const client = createApolloClient();
 
     setupLocalStorageVariables();
