@@ -5,9 +5,9 @@ import { InlineHelp } from 'fundamental-react';
 
 // TODO move to some shared place
 
-export const K8sNameField = ({ _ref, id, kind }) => (
+export const K8sNameField = ({ _ref, fieldId, kind }) => (
   <>
-    <label className="fd-form__label" htmlFor={id}>
+    <label className="fd-form__label" htmlFor={fieldId}>
       Name *
       <InlineHelp
         placement="bottom-right"
@@ -21,7 +21,7 @@ export const K8sNameField = ({ _ref, id, kind }) => (
       className="fd-form__control"
       ref={_ref}
       type="text"
-      id={id}
+      id={fieldId}
       placeholder={kind + ' name'}
       aria-required="true"
       required
