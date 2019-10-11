@@ -244,7 +244,7 @@ const CreateNamespaceForm = ({
   useEffect(() => {
     const element = formValues.name.current;
     setTimeout(() => {
-      if (typeof element.focus === 'function') element.focus();
+      if (element && typeof element.focus === 'function') element.focus();
     });
   }, [formValues.name]);
 
