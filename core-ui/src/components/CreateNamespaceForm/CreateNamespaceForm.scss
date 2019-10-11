@@ -4,7 +4,7 @@
 
 .input-fields {
   display: grid;
-  grid-template-columns: max-content auto;
+  grid-template-columns: auto max-content;
   grid-gap: 0.8em;
   margin-left: 3em;
   justify-items: right;

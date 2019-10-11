@@ -11,7 +11,7 @@
 }
 
 .remove-after::after {
-  content: unset;
+  content: unset !important;
 }
 
 #add-namespace-modal {

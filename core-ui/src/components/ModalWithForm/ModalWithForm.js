@@ -19,24 +19,35 @@ const ModalWithForm = ({
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
 
-  const setOpenStatus = status => {
+  function setOpenStatus(status) {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
     } else {
       LuigiClient.uxManager().removeBackdrop();
     }
     setOpen(status);
-  };
+  }
 
-  const handleFormChanged = e => {
-    setValid(formElementRef.current.checkValidity());
+  function handleFormChanged(e) {
+    setValid(formElementRef.current.checkValidity()); // general form validity
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
     }
-  };
 
-  const handleFormError = (title, message, isWarning) => {
+    if (e.target.getAttribute('data-ignore-visual-validation')) {
+      return;
+    }
+
+    // current element validity
+    if (e.target.checkValidity()) {
+      e.target.classList.remove('is-invalid');
+    } else {
+      e.target.classList.add('is-invalid');
+    }
+  }
+
+  function handleFormError(title, message, isWarning) {
     notificationManager.notify({
       content: message,
       title: title,
@@ -44,8 +55,8 @@ const ModalWithForm = ({
       icon: 'decline',
       autoClose: false,
     });
-  };
-  const handleFormSuccess = (title, message) => {
+  }
+  function handleFormSuccess(title, message) {
     notificationManager.notify({
       content: message,
       title: title,
@@ -55,7 +66,19 @@ const ModalWithForm = ({
     });
 
     performRefetch();
-  };
+  }
+
+  function handleFormSubmit() {
+    const form = formElementRef.current;
+    if (
+      typeof form.reportValidity === 'function'
+        ? form.reportValidity()
+        : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
+    ) {
+      form.dispatchEvent(new Event('submit'));
+      setTimeout(() => setOpenStatus(false));
+    }
+  }
 
   return (
     <div>
@@ -82,17 +105,7 @@ const ModalWithForm = ({
             </Button>
             <Button
               aria-disabled={!isValid}
-              onClick={() => {
-                const form = formElementRef.current;
-                if (
-                  typeof form.reportValidity === 'function'
-                    ? form.reportValidity()
-                    : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
-                ) {
-                  form.dispatchEvent(new Event('submit'));
-                  setOpenStatus(false);
-                }
-              }}
+              onClick={handleFormSubmit}
               option="emphasized"
             >
               Create
@@ -110,6 +123,7 @@ const ModalWithForm = ({
           onChange: handleFormChanged,
           onError: handleFormError,
           onCompleted: handleFormSuccess,
+          performManualSubmit: handleFormSubmit,
         })}
       </Modal>
     </div>

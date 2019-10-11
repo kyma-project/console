@@ -27,6 +27,14 @@ describe('CustomPropTypes', () => {
       });
     });
 
+    it('Passes on element ref', () => {
+      const ref = createRef();
+      ref.current = <div />;
+      assertPasses(CustomPropTypes.ref, {
+        testprop: ref,
+      });
+    });
+
     it('Fails on string', () => {
       assertFails(CustomPropTypes.ref, {
         testprop: 'somestring',
