@@ -1,16 +1,16 @@
 # Default owners of the repository
-* @akucharska @dariadomagala @y-kkamil @antiheld @parostatkiem
+* @akucharska @dariadomagala @y-kkamil @antiheld @parostatkiem @kwiatekus @Wawrzyn321
 
-/catalog/ @akucharska @dariadomagala @y-kkamil @parostatkiem
-/instances/ @akucharska @dariadomagala @y-kkamil @parostatkiem
-/brokers/ @akucharska @dariadomagala @y-kkamil @parostatkiem
+/catalog/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
+/instances/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
+/brokers/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
 /content/ @michal-hudy @aerfio @m00g3n @magicmatatjahu
-/compass/ @dariadomagala @y-kkamil @akucharska @parostatkiem
-/components/angular/ @dariadomagala @y-kkamil @akucharska @parostatkiem
-/components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem
-/core/ @dariadomagala @y-kkamil @parostatkiem @akucharska
-/tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem
-/lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska
+/compass/ @dariadomagala @y-kkamil @akucharska @parostatkiem @kwiatekus @Wawrzyn321
+/components/angular/ @dariadomagala @y-kkamil @akucharska @parostatkiem @kwiatekus @Wawrzyn321
+/components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
+/core/ @dariadomagala @y-kkamil @parostatkiem @akucharska @kwiatekus @Wawrzyn321
+/tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
+/lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska @kwiatekus @Wawrzyn321
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj @majakurcius @alexandra-simeonova
