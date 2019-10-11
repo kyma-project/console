@@ -7,19 +7,27 @@ class Builder {
   token = null;
   backendModules = [];
 
-  init() {
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(resolve, 1000);
-
-      LuigiClient.addInitListener(e => {
-        this.currentEnvironmentId = e.namespaceId;
-        this.token = e.idToken;
-        this.backendModules = e.backendModules;
-
-        clearTimeout(timeout);
-        resolve();
-      });
+  addEventListeners(callback) {
+    LuigiClient.addInitListener(e => {
+      this.setCurrentContext(e);
+      callback();
     });
+
+    LuigiClient.addContextUpdateListener(e => {
+      if (!e.namespaceId) {
+        return;
+      }
+      if (e.namespaceId !== this.currentEnvironmentId) {
+        this.setCurrentContext(e);
+        callback();
+      }
+    });
+  }
+
+  setCurrentContext(ctx) {
+    this.currentEnvironmentId = ctx.namespaceId;
+    this.token = ctx.idToken;
+    this.backendModules = ctx.backendModules;
   }
 
   getBearerToken() {

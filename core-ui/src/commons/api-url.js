@@ -4,7 +4,6 @@ const CURRENT_ENV_TAG = '{CURRENT_ENV}';
 
 export function getURL(endpoint) {
   let config = {
-    catalogUrl: 'http://localhost:8000',
     graphqlApiUrl: 'http://localhost:3000/graphql',
     subscriptionsApiUrl: 'ws://localhost:3000/graphql',
   };

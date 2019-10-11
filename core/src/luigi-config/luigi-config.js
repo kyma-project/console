@@ -44,13 +44,17 @@ if (localStorage.getItem('luigi.auth')) {
 }
 
 const consoleViewGroupName = '_console_';
+const coreUIViewGroupName = '_core_ui_';
 const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
 let navigation = {
   viewGroupSettings: {
     _console_: {
       preloadUrl: '/consoleapp.html#/home/preload'
-    }
+    },
+    _core_ui_: {
+      preloadUrl: config.coreModuleUrl + '/preload',
+    },
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
   contextSwitcher: {
@@ -515,8 +519,16 @@ function getConsoleInitData() {
 }
 
 window.addEventListener('message', e => {
+  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT = 'showSystemNamespacesChangedEvent';
+
   if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
     window.Luigi.cachedNamespaces = null;
+  }
+  else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
+    Luigi.customMessages().sendToAll({
+      id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT, 
+      showSystemNamespaces: e.data.showSystemNamespaces,
+    });
   }
 });
 
@@ -663,22 +675,23 @@ Promise.all(initPromises)
         context: {
           idToken: token,
           backendModules,
-          systemNamespaces
+          systemNamespaces,
+          showSystemNamespaces: localStorage.getItem('console.showSystemNamespaces') === 'true',
         },
-        viewGroup: consoleViewGroupName,
         children: function() {
           var staticNodes = [
             {
               pathSegment: 'workspace',
               label: 'Namespaces',
-              viewUrl:
-                '/consoleapp.html#/home/namespaces/workspace?showModal={nodeParams.showModal}',
-              icon: 'dimension'
+              viewUrl: config.coreModuleUrl + '/namespaces',
+              icon: 'dimension',
+              viewGroup: coreUIViewGroupName,
             },
             {
               pathSegment: 'namespaces',
               viewUrl: '/consoleapp.html#/home/namespaces/workspace',
               hideFromNav: true,
+              viewGroup: consoleViewGroupName,
               children: [
                 {
                   pathSegment: ':namespaceId',
@@ -702,7 +715,8 @@ Promise.all(initPromises)
               navigationContext: 'settings',
               label: 'General Settings',
               category: { label: 'Settings', icon: 'settings' },
-              viewUrl: '/consoleapp.html#/home/settings/organisation'
+              viewUrl: '/consoleapp.html#/home/settings/organisation',
+              viewGroup: consoleViewGroupName,
             },
             {
               pathSegment: 'global-permissions',
@@ -711,6 +725,7 @@ Promise.all(initPromises)
               category: 'Settings',
               viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
               keepSelectedForChildren: true,
+              viewGroup: consoleViewGroupName,
               children: [
                 {
                   pathSegment: 'roles',

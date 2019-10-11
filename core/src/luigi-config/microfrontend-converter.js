@@ -64,6 +64,7 @@ function getDirectChildren(parentNodeSegments, spec, config) {
     });
 }
 
+// todo add coreUIViewGroupName handling
 export default function convertToNavigationTree(
   name,
   spec,
