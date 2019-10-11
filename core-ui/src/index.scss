@@ -49,17 +49,15 @@ body {
   background-color: transparent;
 }
 
-.y-fd-token{
-  &.y-fd-token{
-    &--no-button {
-      cursor: default;
-    }
-    &--no-button:after {
-      all: unset;
-    }
-    &--gap:not(:last-of-type) {
-      margin-right: 8px;    
-    }
+.y-fd-token {
+  &--no-button {
+    cursor: default;
+  }
+  &--no-button:after {
+    all: unset;
+  }
+  &--gap:not(:last-of-type) {
+    margin-right: 8px;    
   }
 }
 

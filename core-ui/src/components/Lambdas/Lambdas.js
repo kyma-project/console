@@ -9,7 +9,7 @@ import builder from '../../commons/builder';
 import { POLL_INTERVAL } from './../../shared/constants';
 
 import { useNotification } from '../../contexts/notifications';
-import { Spinner } from '@kyma-project/react-components';
+import Spinner from '../../shared/components/Spinner/Spinner';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
 import Labels from '../../shared/components/Labels/Labels';

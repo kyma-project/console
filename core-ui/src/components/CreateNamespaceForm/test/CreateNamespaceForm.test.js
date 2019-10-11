@@ -18,9 +18,7 @@ import {
 describe('CreateNamespaceForm', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <MockedProvider>
-        <CreateNamespaceForm formElementRef={{ current: null }} />
-      </MockedProvider>,
+      <CreateNamespaceForm formElementRef={{ current: null }} />,
     );
 
     expect(component).toBeTruthy();
@@ -28,9 +26,7 @@ describe('CreateNamespaceForm', () => {
 
   it('Shows and hides Memory quotas section', () => {
     const component = mount(
-      <MockedProvider>
-        <CreateNamespaceForm formElementRef={{ current: null }} />
-      </MockedProvider>,
+      <CreateNamespaceForm formElementRef={{ current: null }} />,
     );
 
     const memoryQuotasCheckbox = '#memory-quotas';
@@ -51,9 +47,7 @@ describe('CreateNamespaceForm', () => {
 
   it('Shows and hides Container limits section', () => {
     const component = mount(
-      <MockedProvider>
-        <CreateNamespaceForm formElementRef={{ current: null }} />
-      </MockedProvider>,
+      <CreateNamespaceForm formElementRef={{ current: null }} />,
     );
 
     const containerLimitsCheckbox = '#container-limits';

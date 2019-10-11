@@ -3,17 +3,10 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { allLambdasQuery } from '../../../testing/queriesMocks';
 import { MockedProvider } from '@apollo/react-testing';
-import { createMockLink } from '../../../testing/apollo';
 import { componentUpdate } from '../../../testing';
-import { act } from 'react-dom/test-utils';
 
 import Lambdas from './../Lambdas';
-import {
-  Button,
-  Spinner,
-  TableWithActionsList,
-} from '@kyma-project/react-components';
-import GenericList from '../../../shared/components/GenericList/GenericList';
+import Spinner from '../../../shared/components/Spinner/Spinner';
 
 describe('Lambdas', () => {
   it('Renders with error in no query is mocked', async () => {
@@ -43,21 +36,15 @@ describe('Lambdas', () => {
   });
 
   it('Displays lambdas with their corresponding names in the table', async () => {
-    const { link } = createMockLink([allLambdasQuery]);
     const component = mount(
-      <MockedProvider link={link}>
+      <MockedProvider mocks={[allLambdasQuery]}>
         <Lambdas />
       </MockedProvider>,
     );
 
     await componentUpdate(component);
-    const table = component.find(TableWithActionsList);
-    expect(table.exists()).toBe(true);
 
-    const rowData = table.prop('entries');
-    expect(rowData).toHaveLength(2);
-
-    const displayedLambdaNames = table.find('[data-test-id="lambda-name"]');
+    const displayedLambdaNames = component.find('[data-test-id="lambda-name"]');
 
     expect(displayedLambdaNames).toHaveLength(2);
     expect(displayedLambdaNames.at(0).exists()).toBe(true);

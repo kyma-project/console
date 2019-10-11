@@ -9,7 +9,7 @@ const Labels = labels => {
   const separatedLabels = [];
   /* eslint-disable no-unused-vars */
   for (const key in labels) {
-    separatedLabels.push(key + '=' + labels[key]);
+    separatedLabels.push(`${key}=${labels[key]}`);
   }
 
   /* eslint-enable no-unused-vars */
