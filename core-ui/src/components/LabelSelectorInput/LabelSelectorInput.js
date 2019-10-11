@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './LabelSelectorInput.scss';
 import { Token } from 'fundamental-react/Token';
