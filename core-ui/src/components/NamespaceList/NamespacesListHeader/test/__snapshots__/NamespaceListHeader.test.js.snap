@@ -1,84 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NamespacesListHeader UI Renders with minimal props 1`] = `
-<div>
-  <div
-    className="fd-panel namespace-list-header fd-has-padding-medium"
+<div
+  className="fd-panel namespace-list-header fd-has-padding-medium remove-after"
+>
+  <span
+    className="fd-has-type-4"
   >
-    <span
-      className="fd-has-type-4"
-    >
-      Namespaces
-    </span>
+    Namespaces
+  </span>
+  <div
+    className="namespace-list-actions"
+  >
     <div
-      className="namespace-list-actions"
+      className="fd-search-input"
+      data-test-id="namespace-seach-input"
     >
-      <div
-        className="fd-search-input"
-        data-test-id="namespace-seach-input"
-      >
-        <div
-          className="fd-popover"
-        >
-          <div
-            className="fd-popover__control"
-          >
-            <div
-              aria-expanded={false}
-              aria-haspopup="true"
-              className="fd-combobox-control"
-            >
-              <div
-                className="fd-input-group fd-input-group--after"
-              >
-                <input
-                  className="fd-input"
-                  onChange={[Function]}
-                  onClick={[Function]}
-                  onKeyPress={[Function]}
-                  style={Object {}}
-                  type="text"
-                  value=""
-                />
-                <span
-                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
-                >
-                  <button
-                    className="fd-button--light sap-icon--search"
-                    onClick={[Function]}
-                  />
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div
         className="fd-popover"
       >
         <div
-          onFocus={[Function]}
-          onMouseDown={[Function]}
-          onTouchStart={[Function]}
+          className="fd-popover__control"
         >
           <div
-            className="fd-popover__control"
+            aria-expanded={false}
+            aria-haspopup="true"
+            className="fd-combobox-control"
           >
-            <button
-              className="fd-button--light sap-icon--filter"
-              onClick={[Function]}
-            />
+            <div
+              className="fd-input-group fd-input-group--after"
+            >
+              <input
+                className="fd-input"
+                onChange={[Function]}
+                onClick={[Function]}
+                onKeyPress={[Function]}
+                style={Object {}}
+                type="text"
+                value=""
+              />
+              <span
+                className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
+              >
+                <button
+                  className="fd-button--light sap-icon--search"
+                  onClick={[Function]}
+                />
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div>
-        <button
-          className="fd-button sap-icon--add"
-          onClick={[Function]}
+    </div>
+    <div
+      className="fd-popover"
+    >
+      <div
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+      >
+        <div
+          className="fd-popover__control"
         >
-          Add new namespace
-        </button>
+          <button
+            className="fd-button--light sap-icon--filter"
+            onClick={[Function]}
+          />
+        </div>
       </div>
+    </div>
+    <div>
+      <button
+        className="fd-button sap-icon--add"
+        onClick={[Function]}
+      >
+        Add new namespace
+      </button>
     </div>
   </div>
 </div>

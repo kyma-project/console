@@ -20,27 +20,24 @@ export default function NamespacesListHeader({
   setLabelFilters,
 }) {
   return (
-    <div>
-      {/* wrap in div to remove .fd-panel::after */}
-      <Panel className="namespace-list-header fd-has-padding-medium">
-        <span className="fd-has-type-4">Namespaces</span>
-        <div className="namespace-list-actions">
-          <Search
-            onChange={e => updateSearchPhrase(e.target.value)}
-            data-test-id="namespace-seach-input"
-          />
-          <NamespaceFilters
-            filters={labelFilters}
-            updateFilters={setLabelFilters}
-          />
-          <ModalWithForm
-            title="Add new namespace"
-            button={{ text: 'Add new namespace', glyph: 'add' }}
-            id="add-namespace-modal"
-            renderForm={props => <CreateNamespaceForm {...props} />}
-          />
-        </div>
-      </Panel>
-    </div>
+    <Panel className="namespace-list-header fd-has-padding-medium remove-after">
+      <span className="fd-has-type-4">Namespaces</span>
+      <div className="namespace-list-actions">
+        <Search
+          onChange={e => updateSearchPhrase(e.target.value)}
+          data-test-id="namespace-seach-input"
+        />
+        <NamespaceFilters
+          filters={labelFilters}
+          updateFilters={setLabelFilters}
+        />
+        <ModalWithForm
+          title="Add new namespace"
+          button={{ text: 'Add new namespace', glyph: 'add' }}
+          id="add-namespace-modal"
+          renderForm={props => <CreateNamespaceForm {...props} />}
+        />
+      </div>
+    </Panel>
   );
 }
