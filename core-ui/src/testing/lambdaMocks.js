@@ -23,4 +23,9 @@ const lambda2 = {
   __typename: 'Function',
 };
 
-export { lambda1, lambda2 };
+const deletedLambda1 = {
+  name: 'demo',
+  __typename: 'Function',
+};
+
+export { lambda1, lambda2, deletedLambda1 };
