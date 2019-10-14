@@ -48,3 +48,5 @@ licenses
 
 #**/src/assets/config/config.js
 #**/public/config/config.js
+
+scripts/clusterRegistry.txt
