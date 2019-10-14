@@ -37,3 +37,11 @@ body {
   src: local('72-Bold'), url('/fonts/72-Bold.woff2') format('woff2'),
     url('/fonts/72-Bold.woff') format('woff');
 }
+
+.fd-modal {
+  &__actions {
+    .fd-button:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}

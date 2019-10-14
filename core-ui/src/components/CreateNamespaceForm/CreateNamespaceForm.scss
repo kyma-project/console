@@ -1,0 +1,22 @@
+.fd-inline-help {
+  margin-left: 0.4em;
+}
+
+.input-fields {
+  display: grid;
+  grid-template-columns: auto max-content;
+  grid-gap: 0.8em;
+  margin-left: 3em;
+  justify-items: right;
+  margin-top: 1em;
+
+  .fd-form__label {
+    text-align: right;
+  }
+}
+
+.fd-form__item--check {
+  .fd-inline-help {
+    top: 0;
+  }
+}

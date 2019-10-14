@@ -1,4 +1,4 @@
-import { CustomPropTypes } from './CustomPropTypes';
+import CustomPropTypes from '../CustomPropTypes';
 import { createRef } from 'react';
 
 describe('CustomPropTypes', () => {

@@ -20,5 +20,5 @@ export function saveStoredFilterLabels(filters) {
 }
 
 export function shouldShowSystemNamespaces() {
-  return localStorage.getItem(LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES) || false;
+  return localStorage.getItem(LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES) === 'true';
 }

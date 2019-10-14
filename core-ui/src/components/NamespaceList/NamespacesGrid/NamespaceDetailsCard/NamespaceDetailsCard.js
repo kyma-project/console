@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { DELETE_NAMESPACE } from './../../../../gql/mutations';
 import { useMutation } from '@apollo/react-hooks';
 
-import { Button, Menu, Panel, Spinner } from '@kyma-project/react-components';
+import { Button, Menu, Panel } from '@kyma-project/react-components';
 import { Badge, Popover } from 'fundamental-react';
 import './NamespaceDetailsCard.scss';
 
@@ -107,6 +107,14 @@ export default function NamespaceDetailsCard({
     'namespace-details-card--terminating': isTerminating,
   });
 
+  const Spinner = () => (
+    <div className="fd-loading-dots" aria-hidden="false" aria-label="Loading">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  );
+
   return (
     <Panel
       className={panelClass}
@@ -152,7 +160,8 @@ export default function NamespaceDetailsCard({
       </Panel.Body>
       {isTerminating && (
         <div className="overlay">
-          <div className="overlay-spinner">
+          <div className="overlay-caption fd-has-type-3">
+            Terminating...
             <Spinner />
           </div>
         </div>

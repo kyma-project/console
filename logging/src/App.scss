@@ -1,4 +1,4 @@
-@import '~fundamental-styles/dist/fundamental-styles-ie11.min.css';
+@import '~fundamental-styles/dist/fundamental-styles.css';
 
 .link-button {
   color: var(--fd-color-action-1);
@@ -54,4 +54,8 @@
 }
 .fd-table tr {
   cursor: default;
+}
+
+.fd-input-group--after {
+  margin-right: 32px;
 }
