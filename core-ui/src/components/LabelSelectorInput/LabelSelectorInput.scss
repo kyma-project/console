@@ -42,7 +42,7 @@
     }
   }
 
-  &__label {
+  .fd-token.label-selector__label {
     height: calc(var(--fd-forms-height) - 2 * 6px);
     margin: 4px 0;
     flex-shrink: 0;
