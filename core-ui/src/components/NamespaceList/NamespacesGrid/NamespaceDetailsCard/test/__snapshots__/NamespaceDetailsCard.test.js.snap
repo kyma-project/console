@@ -148,7 +148,7 @@ exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 1`] 
       <div
         aria-hidden="false"
         aria-label="Loading"
-        class="fd-loading-dots"
+        className="fd-loading-dots"
       >
         <div />
         <div />

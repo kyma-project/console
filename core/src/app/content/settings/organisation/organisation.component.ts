@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
+import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from './../../../shared/constants/constants';
 
 @Component({
   selector: 'app-organisation',
@@ -35,8 +36,13 @@ export class OrganisationComponent implements OnInit {
   }
 
   public toggleSystemNamespaceVisibility() {
-    localStorage.setItem('console.showSystemNamespaces', (!this.showSystemNamespaces).toString());
+    localStorage.setItem('console.showSystemNamespaces', (this.showSystemNamespaces).toString());
     this.refreshContextSwitcher();
+
+    window.parent.postMessage({
+      msg: SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT,
+      showSystemNamespaces: this.showSystemNamespaces,
+    }, '*');
   }
 
   private refreshContextSwitcher() {

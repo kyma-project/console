@@ -13,7 +13,7 @@ export default function NamespacesGrid({ namespaces }) {
   const getPodsCounts = pods => {
     const allPodsCount = pods.length;
     const healthyPodsCount = pods.filter(
-      pod => pod.status === 'RUNNING' || pod.status === 'TERMINATING',
+      pod => pod.status === 'RUNNING' || pod.status === 'SUCCEEDED',
     ).length;
 
     return [allPodsCount, healthyPodsCount];

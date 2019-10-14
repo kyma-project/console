@@ -8,3 +8,5 @@ export const DEFAULT_MODAL_CONFIG: ModalConfig = {
   maxHeight: '95%',
   minHeight: '5em'
 };
+
+export const SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT = 'showSystemNamespacesChangedEvent';
