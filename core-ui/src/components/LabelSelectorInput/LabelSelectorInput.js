@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './LabelSelectorInput.scss';
-import { Token, InlineHelp } from 'fundamental-react';
+import { Token } from 'fundamental-react';
 
 //TODO: move this component to a shared "place"
 

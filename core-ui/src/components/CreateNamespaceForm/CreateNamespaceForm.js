@@ -24,8 +24,6 @@ import { K8sNameField } from './K8sNameField';
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';
 
-const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
-
 function convertLabelsArrayToObject(labelsArray) {
   return Object.fromEntries(labelsArray.map(label => label.split('=')));
 }
