@@ -30,7 +30,6 @@ export const NonRemovableLabel = ({ text }) => (
 
 const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
   const [isValid, setValid] = useState(true);
-
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +55,7 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
 
   function handleLabelEntered(value, sourceEvent) {
     if (!labelRegexp.test(value)) {
-      setValid(false);
+      if (value) setValid(false);
       return;
     }
     sourceEvent.preventDefault();
