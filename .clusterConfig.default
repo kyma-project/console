@@ -1,0 +1,28 @@
+REACT_APP_DOMAIN="kyma.local"
+REACT_APP_LOCAL_DOMAIN="console-dev.kyma.local"
+
+REACT_APP_graphqlApiUrl="https://console-backend.$REACT_APP_DOMAIN/graphql"
+REACT_APP_graphqlApiUrlLocal="http://$REACT_APP_LOCAL_DOMAIN:3000/graphql"
+
+REACT_APP_subscriptionsApiUrl"wss://console-backend.$REACT_APP_DOMAIN/graphql",
+REACT_APP_subscriptionsApiUrlLocal="ws://$REACT_APP_LOCAL_DOMAIN:3000/graphql",
+
+REACT_APP_authRedirectUri="http://$REACT_APP_LOCAL_DOMAIN:4200"
+REACT_APP_consoleClientId="console"
+REACT_APP_orgId="my-org-123"
+REACT_APP_orgName="My Organization"
+REACT_APP_scope:"audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups"
+REACT_APP_gateway_kyma_project_io_version="v1alpha2"
+
+REACT_APP_serviceCatalogModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8000"
+REACT_APP_serviceInstancesModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8001"
+REACT_APP_serviceBrokersModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8002"
+REACT_APP_docsModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8003"
+REACT_APP_addOnsModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8004"
+REACT_APP_lambdasModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:4201"
+REACT_APP_coreModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8889"
+REACT_APP_logsModuleUrl="http://$REACT_APP_LOCAL_DOMAIN:8005"
+
+REACT_APP_HELM_BROKER_REPO_URL_PREFIXES="https://|git::|github.com/|bitbucket.org/|http://"
+
+
