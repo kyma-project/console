@@ -20,7 +20,6 @@ export default function ScenarioDetails({ scenarioName }) {
         className="fd-section fd-has-margin-top-small"
       >
         <ScenarioApplications scenarioName={scenarioName} />
-        <ScenarioApplications scenarioName={scenarioName} />
         {/* <ScenarioRuntimes scenarioName={scenarioName} /> */}
       </section>
     </>

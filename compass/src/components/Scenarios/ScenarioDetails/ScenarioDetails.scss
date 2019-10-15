@@ -2,15 +2,19 @@
     display: flex;
     justify-content: space-between;
 
-    @media (max-width: 400px) {
+    @media (max-width: 860px) {
         display: block;
+        
+        > :first-child {
+          margin-bottom: 16px;  
+        }
     }
     
-    :first-child() {
+    > :first-child {
         flex: 2;
     }
     
-    :nth-child(1) {
+    > :nth-child(2) {
         flex: 1;
     }
 }

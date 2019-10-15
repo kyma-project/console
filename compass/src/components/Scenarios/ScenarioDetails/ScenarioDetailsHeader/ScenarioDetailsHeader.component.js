@@ -10,7 +10,7 @@ import { nonDeletableScenarioNames } from '../../../../shared/constants';
 
 ScenarioDetailsHeader.propTypes = {
   scenarioName: PropTypes.string.isRequired,
-  getScenariosSchema: PropTypes.func.isRequired,
+  getScenariosSchema: PropTypes.object.isRequired, // meeded for delete mutation
   deleteScenarioMutation: PropTypes.func.isRequired,
 };
 
@@ -59,7 +59,6 @@ export default function ScenarioDetailsHeader({
           <ActionBar.Header title={scenarioName} />
         </section>
         <ActionBar.Actions>
-          <Button onClick={() => console.log('todo')}>Edit</Button>
           <Button
             disabled={canDelete()}
             onClick={deleteScenario}

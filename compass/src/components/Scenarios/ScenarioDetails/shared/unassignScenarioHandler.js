@@ -1,11 +1,12 @@
 import LuigiClient from '@kyma-project/luigi-client';
 
-export default async function(
+export default async function unassignScenarioHandler(
   entityName,
   entityId,
   currentEntityScenarios,
   unassignMutation,
-  scenarioKey,
+  scenarioName,
+  successCallback,
 ) {
   LuigiClient.uxManager()
     .showConfirmationModal({
@@ -16,20 +17,18 @@ export default async function(
     })
     .then(async () => {
       try {
-        await unassignMutation(
-          entityId,
-          currentEntityScenarios.filter(scenario => scenario !== scenarioKey),
+        const scenarios = currentEntityScenarios.filter(
+          scenario => scenario !== scenarioName,
         );
-        //applicationQuery.refetch();
-        // sendNotification({
-        //   variables: {
-        //     content: `Scenario "${scenarioName}" removed from ${entityName}.`,
-        //     title: `${entityName}`,
-        //     color: '#359c46',
-        //     icon: 'accept',
-        //     instanceName: scenarioName,
-        //   },
-        // });
+
+        if (!scenarios.length) {
+          throw Error('At least one scenario is required.');
+        }
+
+        await unassignMutation(entityId, scenarios);
+        if (successCallback) {
+          successCallback();
+        }
       } catch (error) {
         console.warn(error);
         LuigiClient.uxManager().showAlert({

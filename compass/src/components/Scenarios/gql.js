@@ -72,62 +72,33 @@ export const SET_RUNTIME_SCENARIO = gql`
   }
 `;
 
-// todo https://stackoverflow.com/questions/52366794/apollo-client-how-to-insert-a-fragment-in-a-gql-template
-// todo https://www.apollographql.com/docs/react/data/fragments/
-export const GET_APPLICATIONS_AND_SCENARIO_APPLICATIONS = gql`
-  query getApplicationsAndScenarioApplications($filter: [LabelFilter!]) {
-    scenarioApplications: applications(filter: $filter) {
+export const GET_APPLICATIONS_FOR_SCENARIO = gql`
+  query applicationsForScenario($filter: [LabelFilter!]) {
+    applications(filter: $filter) {
       data {
         name
         id
-        apis {
-          totalCount
-        }
-        eventAPIs {
-          totalCount
-        }
-      }
-    }
-    applications: applications {
-      data {
-        name
-        id
-        apis {
-          totalCount
-        }
-        eventAPIs {
-          totalCount
-        }
         labels
+        apis {
+          totalCount
+        }
+        eventAPIs {
+          totalCount
+        }
       }
     }
   }
 `;
 
-// export const GET_RUNTIMES_AND_SCENARIO_RUNTIMES = gql`
-// query {
-//   runtimes {
-//     data {
-//       name
-//       id
-//       labels
-//     }
-//   }
-// }
-// `;
-
-// export const REMOVE_APPLICATION_FROM_SCENARIO = gql`{
-//   mutation removeApplicationFromScenario($applicationId: ID!, $scenarioName: String!) {
-//     deleteApplicationLabel(id: $applicationId, key: $scenarioName) {
-//       name
-//     }
-//   }
-// }`;
-
-// export const REMOVE_RUNTIME_FROM_SCENARIO = gql`{
-//   mutation removeRuntimeFromScenario($runtimeId: ID!, $scenarioName: String!) {
-//     deleteRuntimeLabel(id: $runtimeId, key: $scenarioName) {
-//       name
-//     }
-//   }
-// }`;
+export const SET_APPLICATION_SCENARIOS = gql`
+  mutation setApplicationLabels($applicationID: ID!, $scenarios: Any!) {
+    setApplicationLabel(
+      applicationID: $applicationID
+      key: "scenarios"
+      value: $scenarios
+    ) {
+      key
+      value
+    }
+  }
+`;
