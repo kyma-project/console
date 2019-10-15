@@ -4,16 +4,15 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "echo `` > src/assets/config/config.js && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
-    "start:kyma": "npm run copy-config && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
-    "start:kyma:api": "npm run copy-config && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
+    "start": "../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
+    "start:kyma:api": "../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
     "build": "npm run buildConfig && ng build --prod",
     "test": "../node_modules/.bin/jest && ng test",
     "test:single": "../node_modules/.bin/jest && ng test --watch=false",
     "lint": "ng lint --tslint-config tslint.json",
-    "copy-config": "cp ../config.js src/assets/config/config.js",
-    "buildConfig": "webpack --mode production --config webpack-generateConfig.config",
-    "buildConfig:watch": "webpack -d --config webpack-generateConfig.config --watch"
+
+    "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack-generateConfig.config",
+    "buildConfig:watch": ". ../scripts/load-cluster-config.sh  && webpack -d --config webpack-generateConfig.config --watch"
   },
   "private": true,
   "dependencies": {
