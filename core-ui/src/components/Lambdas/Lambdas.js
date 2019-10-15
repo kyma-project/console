@@ -113,6 +113,7 @@ export default function Lambdas() {
       entries={data.functions}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
+      extraHeaderContent={<CreateLambdaModal />}
     />
   );
 }
