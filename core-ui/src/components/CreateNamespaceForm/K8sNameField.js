@@ -5,9 +5,9 @@ import { InlineHelp } from 'fundamental-react';
 
 // TODO move to some shared place
 
-export const K8sNameField = ({ _ref, fieldId, kind }) => (
+export const K8sNameField = ({ _ref, id, kind, onKeyDown }) => (
   <>
-    <label className="fd-form__label" htmlFor={fieldId}>
+    <label className="fd-form__label" htmlFor={id}>
       Name *
       <InlineHelp
         placement="bottom-right"
@@ -21,17 +21,19 @@ export const K8sNameField = ({ _ref, fieldId, kind }) => (
       className="fd-form__control"
       ref={_ref}
       type="text"
-      id={fieldId}
+      id={id}
       placeholder={kind + ' name'}
       aria-required="true"
       required
       pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+      onKeyDown={onKeyDown}
     />
   </>
 );
 
 K8sNameField.propTypes = {
-  _ref: CustomPropTypes.elementRef,
+  _ref: CustomPropTypes.ref,
   id: PropTypes.string,
   kind: PropTypes.string,
+  onKeyDown: PropTypes.func,
 };

@@ -10,8 +10,9 @@ export default function App() {
   return (
     <NotificationProvider>
       <Switch>
-        <Route path="/" exact component={NamespaceList} />
         <Route path="/lambdas" exact component={Lambdas} />
+        <Route path="/preload" component={() => null} />
+        <Route path="/namespaces" component={NamespaceList} />
         <Route
           path="/lambdas/:id"
           exact

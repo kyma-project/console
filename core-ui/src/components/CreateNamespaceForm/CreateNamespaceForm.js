@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import {
@@ -23,6 +23,12 @@ import { K8sNameField } from './K8sNameField';
 
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';
+
+const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
+
+function convertLabelsArrayToObject(labelsArray) {
+  return Object.fromEntries(labelsArray.map(label => label.split('=')));
+}
 
 const DisableSidecarField = ({ onChange }) => {
   return (
@@ -216,11 +222,11 @@ const CreateNamespaceForm = ({
   onChange,
   onCompleted,
   onError,
+  performManualSubmit,
 }) => {
-  const [labels, setLabels] = useState({});
-  const [readonlyLabels, setReadonlyLabels] = useState({
-    'istio-injection': 'enabled',
-  });
+  const [labels, setLabels] = useState([]);
+  const [readonlyLabels, setReadonlyLabels] = useState([]);
+
   const formValues = {
     name: useRef(null),
     memoryQuotas: {
@@ -235,6 +241,13 @@ const CreateNamespaceForm = ({
       defaultRequest: useRef(null),
     },
   };
+
+  useEffect(() => {
+    const element = formValues.name.current;
+    setTimeout(() => {
+      if (element && typeof element.focus === 'function') element.focus();
+    });
+  }, [formValues.name]);
 
   const [createNamespaceMutation] = useMutation(CREATE_NAMESPACE);
   const [createLimitRangeMutation] = useMutation(CREATE_LIMIT_RANGE);
@@ -254,7 +267,10 @@ const CreateNamespaceForm = ({
   async function handleFormSubmit(e) {
     e.preventDefault();
 
-    const k8sLabels = { ...labels, ...readonlyLabels };
+    const k8sLabels = convertLabelsArrayToObject([
+      ...labels,
+      ...readonlyLabels,
+    ]);
     const namespaceData = {
       name: formValues.name.current.value,
       labels: k8sLabels,
@@ -345,6 +361,11 @@ const CreateNamespaceForm = ({
             _ref={formValues.name}
             fieldId="namespace-name"
             kind="Namespace"
+            onKeyDown={e => {
+              if (e.keyCode === 13) {
+                performManualSubmit();
+              }
+            }}
           />
         </div>
         <LabelSelectorInput
@@ -386,6 +407,7 @@ CreateNamespaceForm.propTypes = {
   onChange: PropTypes.func,
   onError: PropTypes.func, // args: title(string), message(string)
   onCompleted: PropTypes.func, // args: title(string), message(string)
+  performManualSubmit: PropTypes.func, // no args
 };
 
 export default CreateNamespaceForm;

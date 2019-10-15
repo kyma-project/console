@@ -5,8 +5,8 @@ import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
 import wait from 'waait';
 
+import { expectToSolveWithin } from '../../../setupTests';
 import CreateNamespaceForm from '../CreateNamespaceForm';
-
 import {
   createNamespaceSuccessfulMock,
   createResourceQuotaSuccessfulMock,
@@ -18,7 +18,9 @@ import {
 describe('CreateNamespaceForm', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <CreateNamespaceForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateNamespaceForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     expect(component).toBeTruthy();
@@ -26,7 +28,9 @@ describe('CreateNamespaceForm', () => {
 
   it('Shows and hides Memory quotas section', () => {
     const component = mount(
-      <CreateNamespaceForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateNamespaceForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     const memoryQuotasCheckbox = '#memory-quotas';
@@ -47,7 +51,9 @@ describe('CreateNamespaceForm', () => {
 
   it('Shows and hides Container limits section', () => {
     const component = mount(
-      <CreateNamespaceForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateNamespaceForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     const containerLimitsCheckbox = '#container-limits';
@@ -146,12 +152,13 @@ describe('CreateNamespaceForm', () => {
     form.simulate('submit');
 
     await act(async () => {
-      await wait();
+      await expectToSolveWithin(() => {
+        expect(gqlMock[0].result).toHaveBeenCalled();
+        expect(gqlMock[1].result).toHaveBeenCalled();
+        expect(gqlMock[2].result).toHaveBeenCalled();
+      }, 500);
     });
 
-    expect(gqlMock[0].result).toHaveBeenCalled();
-    expect(gqlMock[1].result).toHaveBeenCalled();
-    expect(gqlMock[2].result).toHaveBeenCalled();
     expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
   });

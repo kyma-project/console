@@ -17,15 +17,13 @@ describe('LabelSelectorInput', () => {
 
   it('Renders readonly labels', () => {
     const component = shallow(
-      <LabelSelectorInput readonlyLabels={{ a: 'a', b: 'b' }} />,
+      <LabelSelectorInput readonlyLabels={['a', 'b']} />,
     );
     expect(component.find(NonRemovableLabel)).toMatchSnapshot();
   });
 
   it('Renders labels', () => {
-    const component = shallow(
-      <LabelSelectorInput labels={{ a: 'a', b: 'b' }} />,
-    );
+    const component = shallow(<LabelSelectorInput labels={['a', 'b']} />);
     expect(component.find(Label)).toMatchSnapshot();
   });
 
@@ -39,29 +37,19 @@ describe('LabelSelectorInput', () => {
     expect(mockChange.mock.calls.length).toBe(0);
   });
 
-  it(`Fires onChange when valid label is entered and space button is clicked`, () => {
+  it(`Fires onChange when valid label is entered`, () => {
     const component = mount(<LabelSelectorInput onChange={mockChange} />);
     const input = component.find('input');
 
     input.instance().value = 'abc=def';
-    input.simulate('keydown', { keyCode: 13 });
-
-    expect(mockChange.mock.calls).toMatchSnapshot();
-  });
-
-  it(`Fires onChange when valid label is entered and component is blurred`, () => {
-    const component = mount(<LabelSelectorInput onChange={mockChange} />);
-    const input = component.find('input');
-
-    input.instance().value = 'abc=def';
-    input.simulate('keydown', { type: 'blur' });
+    input.simulate('keydown', { key: 'Enter' });
 
     expect(mockChange.mock.calls).toMatchSnapshot();
   });
 
   it(`Allows to remove labels`, () => {
     const component = mount(
-      <LabelSelectorInput labels={{ a: 'a', b: 'b' }} onChange={mockChange} />,
+      <LabelSelectorInput labels={['a=b', 'c=d']} onChange={mockChange} />,
     );
 
     component
@@ -75,7 +63,7 @@ describe('LabelSelectorInput', () => {
   it(`Doesn' allow to remove readonly labels`, () => {
     const component = mount(
       <LabelSelectorInput
-        readonlyLabels={{ a: 'a', b: 'b' }}
+        readonlyLabels={['a=b', 'c=d']}
         onChange={mockChange}
       />,
     );

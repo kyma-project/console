@@ -15,13 +15,17 @@ CreateLambdaForm.propTypes = {
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
 };
 
+function convertLabelsArrayToObject(labelsArray) {
+  return Object.fromEntries(labelsArray.map(label => label.split('=')));
+}
+
 export default function CreateLambdaForm({
   onChange,
   onCompleted,
   onError,
   formElementRef,
 }) {
-  const [labels, setLabels] = React.useState({});
+  const [labels, setLabels] = React.useState([]);
   const [createLambda] = useMutation(CREATE_LAMBDA);
 
   const formValues = {
@@ -41,7 +45,7 @@ export default function CreateLambdaForm({
         size: formValues.size.current.value,
         runtime: formValues.runtime.current.value,
         namespace: LuigiClient.getEventData().environmentId,
-        labels,
+        labels: convertLabelsArrayToObject(labels),
       };
       await createLambda({
         variables,
@@ -61,11 +65,7 @@ export default function CreateLambdaForm({
       onSubmit={handleFormSubmit}
     >
       <FormItem>
-        <K8sNameField
-          _ref={formValues.name}
-          fieldId="lambdaName"
-          kind="Lambda"
-        />
+        <K8sNameField _ref={formValues.name} id="lambdaName" kind="Lambda" />
       </FormItem>
 
       <LabelSelectorInput labels={labels} onChange={updateLabels} />

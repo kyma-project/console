@@ -84,86 +84,7 @@ module.exports = {
       throw e;
     }
   },
-  createCredentials: async (page, additionalData) => {
-    try {
-      const createCredentialsButton = `[${config.catalogTestingAtribute}="create-credentials"]`;
-      const modal = '.fd-modal';
-      const additionalDataInput = '#root_exampleField';
-      const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
-
-      const frame = await kymaConsole.waitForAppFrameAttached(
-        page,
-        address.console.getInstancesFrameUrl(),
-      );
-      await frame.waitForSelector(createCredentialsButton);
-      await frame.click(createCredentialsButton);
-      await frame.waitForSelector(modal, { visible: true });
-
-      if (additionalData) {
-        const additionalDataField = await frame.$(additionalDataInput);
-        await additionalDataField.focus();
-        await additionalDataField.type(additionalData);
-      }
-
-      const create = await frame.waitForSelector(modalCreate);
-      await create.click();
-    } catch (e) {
-      console.log('Create credentials failed');
-      throw e;
-    }
-  },
-  bindApplication: async (page, resource, prefix, additionalData) => {
-    try {
-      const bindAplicationButton = `[${config.catalogTestingAtribute}="create-service-binding"]`;
-      const modal = '.fd-modal';
-      const resourcesInput = `[name="selectedResource"]`;
-      const prefixInput = `[name="prefixEnvironmentValue"]`;
-      const existingBindingInput = `[name="selectedExistingBinding"]`;
-      const additionalDataInput = '#root_exampleField';
-
-      const setPrefixButton = `[${config.catalogTestingAtribute}="set-prefix"]`;
-      const selectExistingCredButton = `[${config.catalogTestingAtribute}="select-existing-cred"]`;
-
-      const modalCreate = `[${config.catalogTestingAtribute}="modal-confirmation-button"]`;
-
-      const frame = await kymaConsole.waitForAppFrameAttached(
-        page,
-        address.console.getInstancesFrameUrl(),
-      );
-      await frame.click(bindAplicationButton);
-      await frame.waitForSelector(modal, { visible: true });
-
-      await select(frame, resourcesInput, resource, true);
-
-      if (prefix) {
-        const prefixButton = await frame.$(setPrefixButton);
-        await prefixButton.click();
-
-        const bindingPrefix = await frame.$(prefixInput);
-        await bindingPrefix.focus();
-        await bindingPrefix.type(prefix);
-      }
-
-      if (additionalData) {
-        const dataButton = await frame.$(additionalDataInput);
-        await dataButton.focus();
-        await dataButton.type(additionalData);
-      } else {
-        const selectButton = await frame.$(selectExistingCredButton);
-        await selectButton.click();
-
-        await select(frame, existingBindingInput, '-', true);
-      }
-
-      const create = await frame.waitForSelector(modalCreate);
-      await create.click();
-    } catch (e) {
-      console.log('Bind application failed');
-      throw e;
-    }
-  },
   deleteBinding: async page => await confirmModal(page),
-  deleteCredentials: async page => await confirmModal(page),
   feelInInput: async (frame, searchByText, searchId) => {
     try {
       const searchSelector = `[${config.catalogTestingAtribute}=${searchId}]`;
@@ -182,12 +103,7 @@ module.exports = {
   getFilters: async page => await getElements(page, 'filter-item'),
   getLabels: async page => await getElements(page, 'service-label'),
   getActiveFilters: async page => await getElements(page, 'active-filter'),
-  getCredentials: async page => await getElements(page, 'credential-name'),
   getBindings: async page => await getElements(page, 'binding-name'),
-  getCredentialsStatus: async page =>
-    await getElements(page, 'status-service-binding'),
-  getBindingsStatus: async page =>
-    await getElements(page, 'status-service-binding-usage'),
   getNumberOfInstancesStatus: async page =>
     await getElements(page, 'instances-provisioned-testing-addon'),
   prepareSelector: name => `[${config.catalogTestingAtribute}="${name}"]`,

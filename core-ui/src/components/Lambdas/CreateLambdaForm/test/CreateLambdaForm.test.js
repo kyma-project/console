@@ -28,7 +28,9 @@ jest.mock('@kyma-project/luigi-client', () => {
 describe('CreateLambdaForm', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <CreateLambdaForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateLambdaForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     expect(component).toBeTruthy();
@@ -36,10 +38,12 @@ describe('CreateLambdaForm', () => {
 
   it('Shows empty lambda name input, predefined dropdowns and does not allow to submit form', () => {
     const component = mount(
-      <CreateLambdaForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateLambdaForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
-    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameSelector = 'input#lambdaName';
     const lambdaNameInput = component.find(lambdaNameSelector);
     expect(lambdaNameInput.exists()).toEqual(true);
     expect(lambdaNameInput.instance().value).toEqual('');
@@ -68,10 +72,12 @@ describe('CreateLambdaForm', () => {
 
   it('Allows to submit form with valid lambda name', () => {
     const component = mount(
-      <CreateLambdaForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateLambdaForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
-    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameSelector = 'input#lambdaName';
     const lambdaNameInput = component.find(lambdaNameSelector);
     expect(lambdaNameInput.exists()).toEqual(true);
     expect(lambdaNameInput.instance().value).toEqual('');
@@ -89,10 +95,12 @@ describe('CreateLambdaForm', () => {
 
   it('Does not allow to submit form with invalid lambda name', () => {
     const component = mount(
-      <CreateLambdaForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateLambdaForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
-    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameSelector = 'input#lambdaName';
     const lambdaNameInput = component.find(lambdaNameSelector);
     expect(lambdaNameInput.exists()).toEqual(true);
     expect(lambdaNameInput.instance().value).toEqual('');
@@ -125,7 +133,7 @@ describe('CreateLambdaForm', () => {
       </MockedProvider>,
     );
 
-    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameSelector = 'input#lambdaName';
     const lambdaNameInput = component.find(lambdaNameSelector);
     lambdaNameInput.instance().value = 'testname';
 
@@ -159,7 +167,7 @@ describe('CreateLambdaForm', () => {
       </MockedProvider>,
     );
 
-    const lambdaNameSelector = '#lambdaName';
+    const lambdaNameSelector = 'input#lambdaName';
     const lambdaNameInput = component.find(lambdaNameSelector);
     lambdaNameInput.instance().value = 'testname';
 

@@ -4,8 +4,6 @@ import {
   CREATE_RESOURCE_QUOTA,
 } from '../../../gql/mutations';
 
-const labels = { 'istio-injection': 'enabled' };
-
 const createLimitRangeSuccessfulMock = () => ({
   request: {
     query: CREATE_LIMIT_RANGE,
@@ -63,7 +61,7 @@ const createResourceQuotaSuccessfulMock = () => ({
 const createNamespaceSuccessfulMock = () => ({
   request: {
     query: CREATE_NAMESPACE,
-    variables: { name: '', labels },
+    variables: { name: '', labels: {} },
   },
   result: jest.fn().mockReturnValue({
     data: {
@@ -77,7 +75,7 @@ const createNamespaceSuccessfulMock = () => ({
 const createNamespaceErrorMock = () => ({
   request: {
     query: CREATE_NAMESPACE,
-    variables: { name: '', labels },
+    variables: { name: '', labels: {} },
   },
   error: new Error(':('),
 });

@@ -1,3 +1,4 @@
+@import '~fundamental-styles/dist/root.css';
 html {
   font-size: 10px;
 }
@@ -36,6 +37,34 @@ body {
   font-weight: 700;
   src: local('72-Bold'), url('/fonts/72-Bold.woff2') format('woff2'),
     url('/fonts/72-Bold.woff') format('woff');
+}
+
+.link {
+  color: var(--fd-color-action-1);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fd-panel.fd-panel--no-background {
+  background-color: transparent;
+}
+
+.y-fd-token {
+  &.y-fd-token {
+    border: 1px solid var(--fd-color-neutral-3);
+    
+    &--no-button {
+      cursor: default;
+    }
+
+    &--no-button:after {
+      all: unset;
+    }
+
+    &--gap:not(:last-of-type) {
+      margin-right: 8px;    
+    }
+  }
 }
 
 .fd-modal {

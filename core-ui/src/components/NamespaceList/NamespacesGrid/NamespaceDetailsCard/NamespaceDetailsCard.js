@@ -108,7 +108,7 @@ export default function NamespaceDetailsCard({
   });
 
   const Spinner = () => (
-    <div class="fd-loading-dots" aria-hidden="false" aria-label="Loading">
+    <div className="fd-loading-dots" aria-hidden="false" aria-label="Loading">
       <div></div>
       <div></div>
       <div></div>
