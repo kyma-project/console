@@ -10,15 +10,15 @@ export default function App() {
   return (
     <NotificationProvider>
       <Switch>
+        <Route path="/lambda/:id" component={RoutedLambdaDetails} />
         <Route path="/lambdas" exact component={Lambdas} />
         <Route path="/preload" component={() => null} />
         <Route path="/namespaces" component={NamespaceList} />
-        <Route
-          path="/lambdas/:id"
-          exact
-          render={({ match }) => <LambdaDetails lambdaId={match.params.id} />}
-        />
       </Switch>
     </NotificationProvider>
   );
+}
+
+function RoutedLambdaDetails({ match }) {
+  return <LambdaDetails lambdaId={match.params.id} />;
 }
