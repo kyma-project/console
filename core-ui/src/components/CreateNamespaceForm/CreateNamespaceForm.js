@@ -24,6 +24,8 @@ import { K8sNameField } from './K8sNameField';
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';
 
+const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
+
 function convertLabelsArrayToObject(labelsArray) {
   return Object.fromEntries(labelsArray.map(label => label.split('=')));
 }
@@ -256,8 +258,11 @@ const CreateNamespaceForm = ({
   }
 
   function handleIstioChange(disableSidecar) {
-    const newLabels = readonlyLabels;
-    newLabels['istio-injection'] = disableSidecar ? 'disabled' : 'enabled';
+    let newLabels = readonlyLabels.filter(l => l !== ISTIO_INJECTION_LABEL);
+
+    if (disableSidecar) {
+      newLabels.push(ISTIO_INJECTION_LABEL);
+    }
 
     setReadonlyLabels(newLabels);
   }
@@ -357,7 +362,7 @@ const CreateNamespaceForm = ({
         <div className="fd-form__item">
           <K8sNameField
             _ref={formValues.name}
-            fieldId="namespace-name"
+            id="namespace-name"
             kind="Namespace"
             onKeyDown={e => {
               if (e.keyCode === 13) {
