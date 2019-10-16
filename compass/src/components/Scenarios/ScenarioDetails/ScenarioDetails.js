@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import ScenarioDetailsHeader from './ScenarioDetailsHeader/ScenarioDetailsHeader.container';
 import ScenarioApplications from './ScenarioApplications/ScenarioApplications.container';
-//import ScenarioRuntimes from './ScenarioRuntimes/ScenarioRuntimes';
-
+import ScenarioRuntimes from './ScenarioRuntimes/ScenarioRuntimes.container';
 import './ScenarioDetails.scss';
+
+import ScenarioNameContext from './ScenarioNameContext';
 
 ScenarioDetails.propTypes = {
   scenarioName: PropTypes.string.isRequired,
@@ -13,15 +14,12 @@ ScenarioDetails.propTypes = {
 
 export default function ScenarioDetails({ scenarioName }) {
   return (
-    <>
-      <ScenarioDetailsHeader scenarioName={scenarioName} />
-      <section
-        id="scenario-details__panel"
-        className="fd-section fd-has-margin-top-small"
-      >
-        <ScenarioApplications scenarioName={scenarioName} />
-        {/* <ScenarioRuntimes scenarioName={scenarioName} /> */}
+    <ScenarioNameContext.Provider value={scenarioName}>
+      <ScenarioDetailsHeader />
+      <section className="scenario-details__panel fd-section fd-has-margin-top-small">
+        <ScenarioApplications />
+        <ScenarioRuntimes />
       </section>
-    </>
+    </ScenarioNameContext.Provider>
   );
 }

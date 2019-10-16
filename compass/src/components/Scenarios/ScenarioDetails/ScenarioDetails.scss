@@ -1,20 +1,33 @@
-#scenario-details__panel {
-    display: flex;
-    justify-content: space-between;
-
+.scenario-details__panel {
     @media (max-width: 860px) {
         display: block;
-        
         > :first-child {
-          margin-bottom: 16px;  
+          margin-bottom: 16px;
         }
     }
+
+    @media (min-width: 861px) {
+        display: flex;
+        justify-content: space-between;
     
+        > :first-child {
+          margin-right: 16px;
+        }
+    }
+        
+    > * {
+        height: min-content;
+    }
+
     > :first-child {
         flex: 2;
     }
     
     > :nth-child(2) {
         flex: 1;
+    }
+
+    .fd-action-bar__title {
+        width: 100%;
     }
 }

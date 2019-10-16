@@ -113,9 +113,7 @@ class App extends React.Component {
             <Route
               path="/scenarios/:scenarioName"
               exact
-              render={({ match }) => (
-                <ScenarioDetails scenarioName={match.params.scenarioName} />
-              )}
+              render={RoutedScenarioDetails}
             />
             <Route
               path="/metadata-definitions"
@@ -136,6 +134,10 @@ class App extends React.Component {
       </div>
     );
   }
+}
+
+function RoutedScenarioDetails({ match }) {
+  return <ScenarioDetails scenarioName={match.params.scenarioName} />;
 }
 
 export default App;

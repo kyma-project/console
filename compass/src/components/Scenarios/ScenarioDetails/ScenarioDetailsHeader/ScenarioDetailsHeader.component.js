@@ -5,11 +5,12 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { ActionBar } from 'fundamental-react';
 import { Breadcrumb, Button } from '@kyma-project/react-components';
 
-import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
-import { nonDeletableScenarioNames } from '../../../../shared/constants';
+import handleDelete from './../../../../shared/components/GenericList/actionHandlers/simpleDelete';
+import ScenarioNameContext from './../ScenarioNameContext';
+
+import { nonDeletableScenarioNames } from './../../../../shared/constants';
 
 ScenarioDetailsHeader.propTypes = {
-  scenarioName: PropTypes.string.isRequired,
   getScenariosSchema: PropTypes.object.isRequired, // meeded for delete mutation
   deleteScenarioMutation: PropTypes.func.isRequired,
 };
@@ -21,10 +22,11 @@ function navigateToList() {
 }
 
 export default function ScenarioDetailsHeader({
-  scenarioName,
   getScenariosSchema,
   deleteScenarioMutation,
 }) {
+  const scenarioName = React.useContext(ScenarioNameContext);
+
   if (getScenariosSchema.loading) {
     return <p>Loading...</p>;
   }
@@ -36,7 +38,7 @@ export default function ScenarioDetailsHeader({
 
   const deleteScenario = () => {
     handleDelete(
-      'Metadata Definition',
+      'Scenario',
       scenarioName,
       scenarioName,
       name => deleteScenarioMutation(name, getScenariosSchema.labelDefinition),

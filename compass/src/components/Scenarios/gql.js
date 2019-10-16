@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+export const createEqualityQuery = name => `$[*] ? (@ == "${name}" )`;
+
 export const GET_SCENARIOS_LABEL_SCHEMA = gql`
   query {
     labelDefinition(key: "scenarios") {
@@ -28,7 +30,7 @@ export const UPDATE_SCENARIOS = gql`
 
 export const GET_APPLICATIONS = gql`
   query {
-    applications {
+    entities: applications {
       data {
         name
         id
@@ -40,7 +42,7 @@ export const GET_APPLICATIONS = gql`
 
 export const GET_RUNTIMES = gql`
   query {
-    runtimes {
+    entities: runtimes {
       data {
         name
         id
@@ -50,7 +52,7 @@ export const GET_RUNTIMES = gql`
   }
 `;
 
-export const SET_APPLICATION_SCENARIO = gql`
+export const SET_APPLICATION_SCENARIOS = gql`
   mutation setApplicationLabel($id: ID!, $scenarios: Any!) {
     setApplicationLabel(
       applicationID: $id
@@ -63,7 +65,7 @@ export const SET_APPLICATION_SCENARIO = gql`
   }
 `;
 
-export const SET_RUNTIME_SCENARIO = gql`
+export const SET_RUNTIME_SCENARIOS = gql`
   mutation setRuntimeLabel($id: ID!, $scenarios: Any!) {
     setRuntimeLabel(runtimeID: $id, key: "scenarios", value: $scenarios) {
       key
@@ -90,15 +92,14 @@ export const GET_APPLICATIONS_FOR_SCENARIO = gql`
   }
 `;
 
-export const SET_APPLICATION_SCENARIOS = gql`
-  mutation setApplicationLabels($applicationID: ID!, $scenarios: Any!) {
-    setApplicationLabel(
-      applicationID: $applicationID
-      key: "scenarios"
-      value: $scenarios
-    ) {
-      key
-      value
+export const GET_RUNTIMES_FOR_SCENARIO = gql`
+  query runtimesForScenario($filter: [LabelFilter!]) {
+    runtimes(filter: $filter) {
+      data {
+        name
+        id
+        labels
+      }
     }
   }
 `;

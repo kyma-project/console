@@ -8,35 +8,35 @@ export default async function unassignScenarioHandler(
   scenarioName,
   successCallback,
 ) {
-  LuigiClient.uxManager()
-    .showConfirmationModal({
-      header: 'Unassign Application',
+  const showConfirmation = () =>
+    LuigiClient.uxManager().showConfirmationModal({
+      header: `Unassign ${entityName}`,
       body: `Are you sure you want to unassign ${entityName}?`,
       buttonConfirm: 'Confirm',
       buttonDismiss: 'Cancel',
-    })
-    .then(async () => {
-      try {
-        const scenarios = currentEntityScenarios.filter(
-          scenario => scenario !== scenarioName,
-        );
+    });
 
-        if (!scenarios.length) {
-          throw Error('At least one scenario is required.');
-        }
+  const tryDeleteScenario = async () => {
+    try {
+      const scenarios = currentEntityScenarios.filter(
+        scenario => scenario !== scenarioName,
+      );
 
-        await unassignMutation(entityId, scenarios);
-        if (successCallback) {
-          successCallback();
-        }
-      } catch (error) {
-        console.warn(error);
-        LuigiClient.uxManager().showAlert({
-          text: error.message,
-          type: 'error',
-          closeAfter: 10000,
-        });
+      await unassignMutation(entityId, scenarios);
+      if (successCallback) {
+        successCallback();
       }
-    })
+    } catch (error) {
+      console.warn(error);
+      LuigiClient.uxManager().showAlert({
+        text: error.message,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    }
+  };
+
+  showConfirmation()
+    .then(tryDeleteScenario)
     .catch(() => {});
 }
