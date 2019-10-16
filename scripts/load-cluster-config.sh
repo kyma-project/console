@@ -1,3 +1,3 @@
 set -o allexport
-source $(dirname $0)/../.clusterConfig.default
+source "${BASH_SOURCE%/*}/../.clusterConfig.default"
 set +o allexport
