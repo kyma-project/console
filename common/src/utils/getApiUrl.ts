@@ -2,14 +2,16 @@ interface StringMap {
   [s: string]: string;
 }
 
+const defaultPrefix = 'REACT_APP_';
+
 export function processConfigEnvVariables(
   sourceObject: StringMap,
-  prefix: string,
+  prefix?: string,
 ): StringMap {
   const result: StringMap = {};
   for (var prop in sourceObject) {
-    if (prop.startsWith(prefix)) {
-      result[prop.replace(prefix, '')] = sourceObject[prop];
+    if (prop.startsWith(prefix || defaultPrefix)) {
+      result[prop.replace(prefix || defaultPrefix, '')] = sourceObject[prop];
     }
   }
   return result;
@@ -18,7 +20,7 @@ export function processConfigEnvVariables(
 export function getApiUrl(endpoint: string): string {
   const clusterConfig = processConfigEnvVariables(
     process.env as StringMap,
-    'REACT_APP_',
+    defaultPrefix,
   );
   return clusterConfig[endpoint];
 }
