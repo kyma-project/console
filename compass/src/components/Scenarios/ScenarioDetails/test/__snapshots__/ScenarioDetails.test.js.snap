@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScenarioDetailsHeader Renders with minimal props 1`] = `
+<ContextProvider
+  value="scenario"
+>
+  <Apollo(Apollo(Apollo(ScenarioDetailsHeader))) />
+  <section
+    className="scenario-details__panel fd-section fd-has-margin-top-small"
+  >
+    <fromRenderProps(Apollo(Apollo(Apollo(ScenarioApplications)))) />
+    <fromRenderProps(Apollo(Apollo(Apollo(ScenarioRuntimes)))) />
+  </section>
+</ContextProvider>
+`;
