@@ -97,7 +97,11 @@ export default function Lambdas() {
   const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
 
   const rowRenderer = item => [
-    <span className="link" data-test-id="lambda-name">
+    <span
+      className="link"
+      data-test-id="lambda-name"
+      onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+    >
       {item.name}
     </span>,
     <span>{item.runtime}</span>,
