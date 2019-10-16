@@ -1,10 +1,6 @@
-const defaultDomain = 'kyma.local';
-let domain = defaultDomain;
+import { getApiUrl } from '@kyma-project/common';
 
-const clusterConfig = window['clusterConfig'];
-if (clusterConfig && clusterConfig['domain']) {
-  domain = clusterConfig['domain'];
-}
+const domain = getApiUrl('domain');
 
 const config = {
   queryEndpoint: `https://loki.${domain}/api/prom/query`,
