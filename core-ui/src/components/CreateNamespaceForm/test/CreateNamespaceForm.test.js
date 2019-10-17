@@ -2,6 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
+import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
 import wait from 'waait';
 
@@ -104,9 +105,7 @@ describe('CreateNamespaceForm', () => {
     const form = component.find('form');
     form.simulate('submit');
 
-    await act(async () => {
-      await wait();
-    });
+    await componentUpdate(component);
 
     expect(gqlMock[0].result).toHaveBeenCalled();
     expect(gqlMock[1].result).not.toHaveBeenCalled();
@@ -192,9 +191,7 @@ describe('CreateNamespaceForm', () => {
 
     form.simulate('submit');
 
-    await act(async () => {
-      await wait(100);
-    });
+    await componentUpdate(component, 100);
 
     expect(gqlMock[0].result).toHaveBeenCalled();
     expect(onCompleted).not.toHaveBeenCalled();
@@ -234,9 +231,7 @@ describe('CreateNamespaceForm', () => {
 
     form.simulate('submit');
 
-    await act(async () => {
-      await wait(100);
-    });
+    await componentUpdate(component, 100);
 
     expect(onCompleted).not.toHaveBeenCalled();
     expect(gqlMock[1].result).not.toHaveBeenCalled();

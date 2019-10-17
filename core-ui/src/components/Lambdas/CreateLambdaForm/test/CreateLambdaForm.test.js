@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
+import { componentUpdate } from '../../../../testing';
 import wait from 'waait';
 
 import CreateLambdaForm from '../CreateLambdaForm';
@@ -140,9 +141,7 @@ describe('CreateLambdaForm', () => {
     const form = component.find('form');
     form.simulate('submit');
 
-    await act(async () => {
-      await wait();
-    });
+    await componentUpdate(component);
 
     expect(gqlMock[0].result).toHaveBeenCalled();
 
@@ -174,9 +173,7 @@ describe('CreateLambdaForm', () => {
     const form = component.find('form');
     form.simulate('submit');
 
-    await act(async () => {
-      await wait();
-    });
+    await componentUpdate(component);
 
     expect(onCompleted).not.toHaveBeenCalled();
     expect(onError).toHaveBeenCalled();
