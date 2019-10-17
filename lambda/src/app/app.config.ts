@@ -53,10 +53,7 @@ const defaultSubscriptionConfSpec = {
   eventTypeVersion: '',
 };
 
-
-const clusterConfig = (window as any).clusterConfig;
-
-
+const clusterConfig = (window as any).clusterConfig || { domain: 'kyma.local', graphqlApiUrl: `https://console-backend.kyma.local/graphql`, };
 
 const domain = clusterConfig.domain;
 const gateway_kyma_project_io_version = clusterConfig.gateway_kyma_project_io_version;
@@ -65,6 +62,7 @@ const k8sServerUrl = `https://apiserver.${domain}`;
 const config = {
   authIssuer: `https://dex.${domain}`,
   kubelessApiUrl: `${k8sServerUrl}/apis/kubeless.io/v1beta1`,
+
   k8sServerUrl,
   k8sApiUrl: `${k8sServerUrl}/apis/apps/v1`,
   k8sApiServerUrl: `${k8sServerUrl}/api/v1`,
@@ -80,10 +78,10 @@ const config = {
   serviceCatalogApiUrl: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1`,
   autoscalingUrl: `${k8sServerUrl}/apis/autoscaling/v1`,
 
-  functionSizes: clusterConfig.functionSizes ||defaultFunctionSizesConf['functionSizes'] ,
-  functionResourceRequest:clusterConfig.functionResources || defaultFunctionSizesConf.functionResources,
-  targetAverageUtilization:clusterConfig.hpaCpuTargetAverageUtilization||defaultFunctionSizesConf.hpaCpuTargetAverageUtilization,
-  subscriptionConfigSpec:clusterConfig.subscriptionConfig ||defaultSubscriptionConfSpec,
+  functionSizes: clusterConfig.functionSizes || defaultFunctionSizesConf['functionSizes'],
+  functionResourceRequest: clusterConfig.functionResources || defaultFunctionSizesConf.functionResources,
+  targetAverageUtilization: clusterConfig.hpaCpuTargetAverageUtilization || defaultFunctionSizesConf.hpaCpuTargetAverageUtilization,
+  subscriptionConfigSpec: clusterConfig.subscriptionConfig || defaultSubscriptionConfSpec,
 
   headerTitle: '',
   headerLogoUrl: '',
@@ -93,10 +91,9 @@ const config = {
   dexFQDNUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
 
   ...clusterConfig,
-  graphqlApiUrl: environment.localApi ? clusterConfig.graphqlApiUrlLocal:clusterConfig.graphqlApiUrl,
-    subscriptionApiUrl: `${k8sServerUrl}/apis/eventing.kyma-project.io/v1alpha1`,
+  graphqlApiUrl: environment.localApi ? clusterConfig.graphqlApiUrlLocal : clusterConfig.graphqlApiUrl,
+  subscriptionApiUrl: `${k8sServerUrl}/apis/eventing.kyma-project.io/v1alpha1`,
 };
-
 
 export const AppConfig = { ...config } as any;
 
