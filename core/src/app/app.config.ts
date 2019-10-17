@@ -1,6 +1,6 @@
 import { environment } from '../environments/environment';
 
-const clusterConfig = (window as any).clusterConfig;
+const clusterConfig = (<any>window).clusterConfig || { domain: 'kyma.local' };
 
 const domain = clusterConfig.domain;
 const gateway_kyma_project_io_version = clusterConfig.gateway_kyma_project_io_version;
@@ -14,6 +14,7 @@ const config = {
   k8sApiServerUrl_applications: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_rbac: `${k8sServerUrl}/apis/rbac.authorization.k8s.io/v1/`,
+  subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
 
   headerTitle: '',
   headerLogoUrl: '',
@@ -22,7 +23,7 @@ const config = {
   idpLogoutUrl: null,
   dexFQDNUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
   ...clusterConfig,
-  graphqlApiUrl: environment.localApi ? clusterConfig.graphqlApiUrlLocal:clusterConfig.graphqlApiUrl
+  graphqlApiUrl: environment.localApi ? clusterConfig.graphqlApiUrlLocal : clusterConfig.graphqlApiUrl
 };
 
 export const AppConfig = { ...config } as any;
