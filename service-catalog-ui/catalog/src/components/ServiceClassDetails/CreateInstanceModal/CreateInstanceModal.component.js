@@ -230,14 +230,16 @@ class CreateInstanceModal extends Component {
     const schema = plans.find(e => e.name === formData.plan) || plans[0];
 
     const instanceCreateParameterSchema =
-      (schema && schema.instanceCreateParameterSchema) || null;
+      (schema && schema.instanceCreateParameterSchema) || {};
 
     const instanceCreateParameterSchemaExists =
       instanceCreateParameterSchema &&
       (instanceCreateParameterSchema.$ref ||
         instanceCreateParameterSchema.properties);
 
-    const disabled = !firstStepFilled || errors.length > 0;
+    const disabled =
+      !firstStepFilled ||
+      (instanceCreateParameterSchemaExists && errors.length > 0);
 
     const firstStepData = {
       formData: formData,

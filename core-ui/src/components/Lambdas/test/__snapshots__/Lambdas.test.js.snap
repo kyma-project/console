@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lambdas Renders with error in no query is mocked 1`] = `
+"Error! Network error: No more mocked responses for the query: query Functions($namespace: String!) {
+  functions(namespace: $namespace) {
+    name
+    namespace
+    labels
+    runtime
+    size
+    status
+    __typename
+  }
+}
+, variables: {\\"namespace\\":\\"production\\"}"
+`;

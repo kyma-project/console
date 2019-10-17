@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Labels Labels should render with labels 1`] = `
+<span
+  className="fd-token y-fd-token y-fd-token--no-button y-fd-token--gap"
+  role="button"
+>
+  labels=[object Object]
+</span>
+`;
+
+exports[`Labels Labels should render with no labels 1`] = `
+<span>
+  -
+</span>
+`;

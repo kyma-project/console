@@ -12,6 +12,15 @@ global.URL.createObjectURL = jest.fn();
 
 global.wait = require('waait');
 
+global.document.createRange = () => ({
+  setStart: () => {},
+  setEnd: () => {},
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
+
 window.postMessage = jest.fn();
 
 Enzyme.configure({ adapter: new Adapter() });
