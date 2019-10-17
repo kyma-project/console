@@ -26,10 +26,6 @@ const LIMIT_REGEX =
 
 const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
 
-function convertLabelsArrayToObject(labelsArray) {
-  return Object.fromEntries(labelsArray.map(label => label.split('=')));
-}
-
 const DisableSidecarField = ({ onChange }) => {
   return (
     <FormFieldset>
@@ -270,10 +266,7 @@ const CreateNamespaceForm = ({
   async function handleFormSubmit(e) {
     e.preventDefault();
 
-    const k8sLabels = convertLabelsArrayToObject([
-      ...labels,
-      ...readonlyLabels,
-    ]);
+    const k8sLabels = { ...labels, ...readonlyLabels };
     const namespaceData = {
       name: formValues.name.current.value,
       labels: k8sLabels,

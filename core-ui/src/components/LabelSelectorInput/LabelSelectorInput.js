@@ -27,7 +27,7 @@ export const NonRemovableLabel = ({ text }) => (
   <Token className="label-selector__label--non-removable">{text}</Token>
 );
 
-const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
+const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
   const [isValid, setValid] = useState(true);
   const inputRef = useRef(null);
 
@@ -53,17 +53,38 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
   }
 
   function handleLabelEntered(value, sourceEvent) {
+    const newLabel = sourceEvent.target.value;
     if (!labelRegexp.test(value)) {
       if (value) setValid(false);
       return;
     }
     sourceEvent.preventDefault();
     sourceEvent.target.value = '';
-    onChange([...labels, value]);
+
+    const key = value.split('=')[0];
+    const newValue = value.split('=')[1];
+    console.log(key, newValue);
+    const newLabels = { ...labels };
+    newLabels[key] = newValue;
+    onChange(newLabels);
   }
 
-  function handleLabelRemoved(label) {
-    onChange(labels.filter(l => l !== label));
+  function createLabelsToDisplay(labels) {
+    const labelsArray = [];
+    for (const key in labels) {
+      const value = labels[key];
+      console.log(key, value);
+      const labelToDisplay = `${key}=${value}`;
+      labelsArray.push(labelToDisplay);
+    }
+    return labelsArray;
+  }
+
+  function deleteLabel(labelToDisplay) {
+    const key = labelToDisplay.split('=')[0];
+    const newLabels = { ...labels };
+    delete newLabels[key];
+    onChange(newLabels);
   }
 
   return (
@@ -80,12 +101,12 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
         <div
           className={classNames(['label-selector', { 'is-invalid': !isValid }])}
         >
-          {readonlyLabels.map(l => (
+          {createLabelsToDisplay(readonlyLabels).map(l => (
             <NonRemovableLabel key={l} text={l} />
           ))}
 
-          {labels.map(l => (
-            <Label key={l} text={l} onClick={() => handleLabelRemoved(l)} />
+          {createLabelsToDisplay(labels).map(l => (
+            <Label key={l} text={l} onClick={() => deleteLabel(l)} />
           ))}
           <input
             ref={inputRef}

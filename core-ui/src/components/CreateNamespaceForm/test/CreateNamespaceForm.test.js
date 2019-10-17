@@ -4,7 +4,6 @@ import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
-import wait from 'waait';
 
 import { expectToSolveWithin } from '../../../setupTests';
 import CreateNamespaceForm from '../CreateNamespaceForm';

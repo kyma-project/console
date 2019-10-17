@@ -2,9 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
-import { act } from 'react-dom/test-utils';
 import { componentUpdate } from '../../../../testing';
-import wait from 'waait';
 
 import CreateLambdaForm from '../CreateLambdaForm';
 import { createLambdaSuccessfulMock, createLambdaErrorMock } from './gqlMocks';

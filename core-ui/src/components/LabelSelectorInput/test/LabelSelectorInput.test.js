@@ -19,13 +19,15 @@ describe('LabelSelectorInput', () => {
 
   it('Renders readonly labels', () => {
     const component = shallow(
-      <LabelSelectorInput readonlyLabels={['a', 'b']} />,
+      <LabelSelectorInput readonlyLabels={{ a: 'a', b: 'b' }} />,
     );
     expect(component.find(NonRemovableLabel)).toMatchSnapshot();
   });
 
   it('Renders labels', () => {
-    const component = shallow(<LabelSelectorInput labels={['a', 'b']} />);
+    const component = shallow(
+      <LabelSelectorInput labels={{ a: 'a', b: 'b' }} />,
+    );
     expect(component.find(Label)).toMatchSnapshot();
   });
 
@@ -51,7 +53,7 @@ describe('LabelSelectorInput', () => {
 
   it(`Allows to remove labels`, () => {
     const component = mount(
-      <LabelSelectorInput labels={['a=b', 'c=d']} onChange={mockChange} />,
+      <LabelSelectorInput labels={{ a: 'a', b: 'b' }} onChange={mockChange} />,
     );
 
     component
@@ -65,7 +67,7 @@ describe('LabelSelectorInput', () => {
   it(`Doesn' allow to remove readonly labels`, () => {
     const component = mount(
       <LabelSelectorInput
-        readonlyLabels={['a=b', 'c=d']}
+        readonlyLabels={{ a: 'a', b: 'b' }}
         onChange={mockChange}
       />,
     );
