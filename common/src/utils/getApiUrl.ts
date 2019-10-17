@@ -9,7 +9,7 @@ export function processConfigEnvVariables(
   prefix?: string,
 ): StringMap {
   const result: StringMap = {};
-  for (var prop in sourceObject) {
+  for (const prop in sourceObject) {
     if (prop.startsWith(prefix || defaultPrefix)) {
       result[prop.replace(prefix || defaultPrefix, '')] = sourceObject[prop];
     }
