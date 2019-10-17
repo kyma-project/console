@@ -371,14 +371,13 @@ const CreateNamespaceForm = ({
             }}
           />
         </div>
-        <div className="fd-form__item">
-          <label className="fd-form__label">Labels</label>
-          <LabelSelectorInput
-            labels={labels}
-            readonlyLabels={readonlyLabels}
-            onChange={handleLabelsChanged}
-          />
-        </div>
+
+        <LabelSelectorInput
+          labels={labels}
+          readonlyLabels={readonlyLabels}
+          onChange={handleLabelsChanged}
+        />
+
         <div className="fd-form__item">
           <DisableSidecarField onChange={handleIstioChange} />
         </div>

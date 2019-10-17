@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './LabelSelectorInput.scss';
-import { Token } from 'fundamental-react';
+import { Token, InlineHelp } from 'fundamental-react';
 
 //TODO: move this component to a shared "place"
 
@@ -67,26 +67,36 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
   }
 
   return (
-    <div className="fd-form__set">
-      <div
-        className={classNames(['label-selector', { 'is-invalid': !isValid }])}
-      >
-        {readonlyLabels.map(l => (
-          <NonRemovableLabel key={l} text={l} />
-        ))}
-
-        {labels.map(l => (
-          <Label key={l} text={l} onClick={() => handleLabelRemoved(l)} />
-        ))}
-        <input
-          ref={inputRef}
-          className="fd-form__control label-selector__input"
-          type="text"
-          placeholder="Enter label key=value"
-          onKeyDown={handleKeyDown}
-          onBlur={handleOutOfFocus}
-          data-ignore-visual-validation
+    <div className="fd-form__item">
+      <label className="fd-form__label">
+        Labels
+        <InlineHelp
+          placement="bottom-right"
+          text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
         />
+      </label>
+
+      <div className="fd-form__set">
+        <div
+          className={classNames(['label-selector', { 'is-invalid': !isValid }])}
+        >
+          {readonlyLabels.map(l => (
+            <NonRemovableLabel key={l} text={l} />
+          ))}
+
+          {labels.map(l => (
+            <Label key={l} text={l} onClick={() => handleLabelRemoved(l)} />
+          ))}
+          <input
+            ref={inputRef}
+            className="fd-form__control label-selector__input"
+            type="text"
+            placeholder="Enter label key=value"
+            onKeyDown={handleKeyDown}
+            onBlur={handleOutOfFocus}
+            data-ignore-visual-validation
+          />
+        </div>
       </div>
     </div>
   );
