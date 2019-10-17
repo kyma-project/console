@@ -4,14 +4,14 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "npm run load-config && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
-    "start:kyma": "npm run load-config && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
-    "start:kyma:api": "npm run load-config && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
-    "build": "npm run load-config && npm run buildConfig && ng build --prod",
+    "start": "../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
+    "start:kyma": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
+    "start:kyma:api": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
+    "build": "npm run buildConfig && ng build --prod",
     "test": "../node_modules/.bin/jest && ng test",
     "test:single": "../node_modules/.bin/jest && ng test --watch=false",
     "lint": "ng lint --tslint-config tslint.json",
-    "load-config": ". ../scripts/load-cluster-config.sh",
+
     "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": ". ../scripts/load-cluster-config.sh  && webpack -d --config webpack-generateConfig.config --watch"
   },
