@@ -46,3 +46,4 @@ licenses
 **/licenses
 
 scripts/clusterRegistry.txt
+.clusterConfig.gen
