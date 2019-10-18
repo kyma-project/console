@@ -70,8 +70,8 @@ fi
 cp -rf $CLUSTER_CONFIG_ORIGINAL $CLUSTER_CONFIG_GEN
 
 # replace variables in .clusterConfig.gen
-sed -i '' "s/REACT_APP_localDomain.*/REACT_APP_localDomain=\"$LOCALDOMAIN\"/" $CLUSTER_CONFIG_GEN
-sed -i '' "s/REACT_APP_domain.*/REACT_APP_domain=\"$DOMAIN\"/" $CLUSTER_CONFIG_GEN
+sed -i '' "s/REACT_APP_localDomain=.*/REACT_APP_localDomain=\"$LOCALDOMAIN\"/" $CLUSTER_CONFIG_GEN
+sed -i '' "s/REACT_APP_domain=.*/REACT_APP_domain=\"$DOMAIN\"/" $CLUSTER_CONFIG_GEN
 
 
 echo "Root permissions needed to remove previous cluster->localhost bindings in /etc/hosts"
