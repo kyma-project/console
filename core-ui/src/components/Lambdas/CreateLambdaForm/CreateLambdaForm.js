@@ -67,9 +67,7 @@ export default function CreateLambdaForm({
       <LabelSelectorInput labels={labels} onChange={updateLabels} />
 
       <FormItem>
-        <FormLabel htmlFor="lambdaSize" required={true}>
-          Size
-        </FormLabel>
+        <FormLabel htmlFor="lambdaSize">Size*</FormLabel>
         <select id="lambdaSize" defaultValue="S" ref={formValues.size}>
           <option value="S">S</option>
           <option value="M">M</option>
@@ -78,9 +76,7 @@ export default function CreateLambdaForm({
       </FormItem>
 
       <FormItem>
-        <FormLabel htmlFor="lambdaRuntime" required={true}>
-          Runtime
-        </FormLabel>
+        <FormLabel htmlFor="lambdaRuntime">Runtime*</FormLabel>
         <select
           id="lambdaRuntime"
           defaultValue="nodejs6"

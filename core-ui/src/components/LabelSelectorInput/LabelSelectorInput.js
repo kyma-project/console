@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './LabelSelectorInput.scss';
-import { Token, InlineHelp } from 'fundamental-react';
+import { Token, InlineHelp, FormItem, FormLabel } from 'fundamental-react';
 
 //TODO: move this component to a shared "place"
 
@@ -34,7 +34,7 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
   useEffect(() => {
     if (!inputRef.current) return;
     inputRef.current.setCustomValidity(
-      isValid ? '' : `Please use the label format key=value`,
+      isValid ? '' : `Please match the requested format`,
     );
     if (typeof inputRef.current.reportValidity === 'function')
       inputRef.current.reportValidity();
@@ -45,27 +45,26 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
       setValid(true);
     }
     if (e.key !== 'Enter' && e.key !== ',') return;
-    handleLabelEntered(e.target.value, e);
+    handleLabelEntered(e);
   }
 
   function handleOutOfFocus(e) {
-    handleLabelEntered(e.target.value, e);
+    handleLabelEntered(e);
   }
 
-  function handleLabelEntered(value, sourceEvent) {
-    const newLabel = sourceEvent.target.value;
-    if (!labelRegexp.test(value)) {
-      if (value) setValid(false);
+  function handleLabelEntered(sourceEvent) {
+    const inputValue = sourceEvent.target.value;
+    if (!labelRegexp.test(inputValue)) {
+      if (inputValue) setValid(false);
       return;
     }
     sourceEvent.preventDefault();
     sourceEvent.target.value = '';
 
-    const key = value.split('=')[0];
-    const newValue = value.split('=')[1];
-    console.log(key, newValue);
+    const key = inputValue.split('=')[0];
+    const value = inputValue.split('=')[1];
     const newLabels = { ...labels };
-    newLabels[key] = newValue;
+    newLabels[key] = value;
     onChange(newLabels);
   }
 
@@ -73,7 +72,6 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
     const labelsArray = [];
     for (const key in labels) {
       const value = labels[key];
-      console.log(key, value);
       const labelToDisplay = `${key}=${value}`;
       labelsArray.push(labelToDisplay);
     }
@@ -88,14 +86,14 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
   }
 
   return (
-    <div className="fd-form__item">
-      <label className="fd-form__label">
+    <FormItem>
+      <FormLabel>
         Labels
         <InlineHelp
           placement="bottom-right"
           text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
         />
-      </label>
+      </FormLabel>
 
       <div className="fd-form__set">
         <div
@@ -119,7 +117,7 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
           />
         </div>
       </div>
-    </div>
+    </FormItem>
   );
 };
 
