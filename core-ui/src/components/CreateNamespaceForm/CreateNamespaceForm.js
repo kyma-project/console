@@ -19,7 +19,7 @@ import {
 } from '../../gql/mutations';
 import extractGraphQlErrors from '../../shared/graphqlErrorExtractor';
 
-import { K8sNameField } from './K8sNameField';
+import { K8sNameField } from '../K8sNameInput/K8sNameInput';
 
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';

@@ -6,7 +6,7 @@ import * as LuigiClient from '@kyma-project/luigi-client';
 
 import { CREATE_LAMBDA } from '../../../gql/mutations';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
-import { K8sNameField } from '../../CreateNamespaceForm/K8sNameField';
+import { K8sNameField } from '../../K8sNameInput/K8sNameInput';
 
 CreateLambdaForm.propTypes = {
   onChange: PropTypes.func,
