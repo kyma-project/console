@@ -15,9 +15,9 @@ export function processConfigEnvVariables(
     }
   }
   /* tslint:disable */
-  console.error('processConfigEnvVariables: ', result);
+  console.log('processConfigEnvVariables: ', result);
 
-  console.error('window.clusterConfig: ', (window as any).clusterConfig);
+  console.log('window.clusterConfig: ', (window as any).clusterConfig);
   /* tslint:enable */
   return result;
 }
