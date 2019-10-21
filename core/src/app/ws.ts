@@ -6,7 +6,7 @@ export class WebSocketLink extends ApolloLink {
   subscriptionClient: SubscriptionClient;
   constructor(paramsOrClient) {
     super();
-
+    console.log('core ws setup url', paramsOrClient.uri)
     const token = LuigiClient.getEventData().idToken;
     const protocols = ['graphql-ws', token];
 
@@ -20,9 +20,9 @@ export class WebSocketLink extends ApolloLink {
         protocols
       );
     }
-    
+
   }
-  request(operation: Operation) : Observable<FetchResult> | null { 
+  request(operation: Operation): Observable<FetchResult> | null {
     return this.subscriptionClient.request(operation) as Observable<FetchResult>
   }
 }

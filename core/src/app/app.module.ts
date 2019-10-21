@@ -282,6 +282,8 @@ import { UrlLinkComponent } from 'shared/components/url-link/url-link.component'
 })
 export class AppModule {
   constructor(private apollo: Apollo, private httpLink: HttpLink) {
+
+    console.log('core app config: ', AppConfig)
     // Create an http link:
     const http = httpLink.create({
       uri: AppConfig.graphqlApiUrl
