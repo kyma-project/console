@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import createContainer from 'constate';
 import { useMutation, MutationTuple } from '@apollo/react-hooks';
 import { MutationFunctionOptions, ExecutionResult } from '@apollo/react-common';
-import { GlobalService } from '@kyma-project/common';
+import { LuigiContext } from './LuigiContext.service';
 
 import { ConfigurationLabels } from '../types';
 
@@ -224,7 +224,7 @@ const mutation = (namespace?: string) => <TData, TVariables>(
 };
 
 const useMutations = () => {
-  const { currentNamespace } = useContext(GlobalService);
+  const { namespaceId: currentNamespace } = useContext(LuigiContext);
   const mutationFactory = mutation(currentNamespace);
 
   const createAddonsConfiguration = mutationFactory<
