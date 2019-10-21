@@ -22,5 +22,7 @@ export function getApiUrl(endpoint: string): string {
     process.env as StringMap,
     defaultPrefix,
   );
-  return clusterConfig[endpoint];
+  return !clusterConfig || clusterConfig === {}
+    ? (window as any).clusterConfig[endpoint]
+    : clusterConfig[endpoint];
 }
