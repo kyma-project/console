@@ -10,6 +10,10 @@ body {
   background-color: #f3f4f5;
 }
 
+.fd-action-bar__actions .fd-popover {
+  top: 0 !important;
+}
+
 .ReactModal__Overlay {
   background-color: rgba(74, 80, 92, 0.3) !important;
   z-index: 200;

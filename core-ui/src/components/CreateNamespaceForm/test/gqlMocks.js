@@ -24,7 +24,13 @@ const createLimitRangeSuccessfulMock = () => ({
       name: '',
     },
   },
-  result: jest.fn().mockReturnValue({ data: {} }),
+  result: jest.fn().mockReturnValue({
+    data: {
+      createLimitRange: {
+        name: '',
+      },
+    },
+  }),
 });
 
 const createResourceQuotaSuccessfulMock = () => ({
@@ -43,7 +49,13 @@ const createResourceQuotaSuccessfulMock = () => ({
       namespace: '',
     },
   },
-  result: jest.fn().mockReturnValue({ data: {} }),
+  result: jest.fn().mockReturnValue({
+    data: {
+      createResourceQuota: {
+        name: '',
+      },
+    },
+  }),
 });
 
 const createNamespaceSuccessfulMock = () => ({
@@ -51,7 +63,13 @@ const createNamespaceSuccessfulMock = () => ({
     query: CREATE_NAMESPACE,
     variables: { name: '', labels: {} },
   },
-  result: jest.fn().mockReturnValue({ data: {} }),
+  result: jest.fn().mockReturnValue({
+    data: {
+      createNamespace: {
+        name: '',
+      },
+    },
+  }),
 });
 
 const createNamespaceErrorMock = () => ({

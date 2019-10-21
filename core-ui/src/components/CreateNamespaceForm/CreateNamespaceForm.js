@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormSet,
 } from 'fundamental-react';
+
 import './CreateNamespaceForm.scss';
 import LabelSelectorInput from '../LabelSelectorInput/LabelSelectorInput';
 
@@ -18,16 +19,12 @@ import {
 } from '../../gql/mutations';
 import extractGraphQlErrors from '../../shared/graphqlErrorExtractor';
 
-import { K8sNameField } from './K8sNameField';
+import { K8sNameField } from '../K8sNameInput/K8sNameInput';
 
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';
 
 const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
-
-function convertLabelsArrayToObject(labelsArray) {
-  return Object.fromEntries(labelsArray.map(label => label.split('=')));
-}
 
 const DisableSidecarField = ({ onChange }) => {
   return (
@@ -72,7 +69,7 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
           <InlineHelp
             placement="bottom-right"
             text="
-                 Define constraints that limit total memory consumption in your
+                  Define constraints that limit total memory consumption in your
                   namespace. 
                   Use plain value in bytes, or suffix equivalents. For example:
                   128974848, 129e6, 129M, 123Mi.
@@ -269,10 +266,7 @@ const CreateNamespaceForm = ({
   async function handleFormSubmit(e) {
     e.preventDefault();
 
-    const k8sLabels = convertLabelsArrayToObject([
-      ...labels,
-      ...readonlyLabels,
-    ]);
+    const k8sLabels = { ...labels, ...readonlyLabels };
     const namespaceData = {
       name: formValues.name.current.value,
       labels: k8sLabels,
@@ -361,7 +355,7 @@ const CreateNamespaceForm = ({
         <div className="fd-form__item">
           <K8sNameField
             _ref={formValues.name}
-            id="runtime-name"
+            id="namespace-name"
             kind="Namespace"
             onKeyDown={e => {
               if (e.keyCode === 13) {
@@ -370,14 +364,13 @@ const CreateNamespaceForm = ({
             }}
           />
         </div>
-        <div className="fd-form__item">
-          <label className="fd-form__label">Labels</label>
-          <LabelSelectorInput
-            labels={labels}
-            readonlyLabels={readonlyLabels}
-            onChange={handleLabelsChanged}
-          />
-        </div>
+
+        <LabelSelectorInput
+          labels={labels}
+          readonlyLabels={readonlyLabels}
+          onChange={handleLabelsChanged}
+        />
+
         <div className="fd-form__item">
           <DisableSidecarField onChange={handleIstioChange} />
         </div>

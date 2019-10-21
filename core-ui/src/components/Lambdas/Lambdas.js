@@ -1,5 +1,6 @@
 import React from 'react';
-
+import ModalWithForm from '../ModalWithForm/ModalWithForm';
+import CreateLambdaForm from './CreateLambdaForm/CreateLambdaForm';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { GET_LAMBDAS } from '../../gql/queries';
@@ -13,6 +14,17 @@ import Spinner from '../../shared/components/Spinner/Spinner';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
 import Labels from '../../shared/components/Labels/Labels';
+
+function CreateLambdaModal() {
+  return (
+    <ModalWithForm
+      title="Create new lambda"
+      button={{ text: 'Create lambda', glyph: 'add' }}
+      id="add-lambda-modal"
+      renderForm={props => <CreateLambdaForm {...props} />}
+    />
+  );
+}
 
 export default function Lambdas() {
   const { data, error, loading } = useQuery(GET_LAMBDAS, {
@@ -85,7 +97,11 @@ export default function Lambdas() {
   const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
 
   const rowRenderer = item => [
-    <span className="link" data-test-id="lambda-name">
+    <span
+      className="link"
+      data-test-id="lambda-name"
+      onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+    >
       {item.name}
     </span>,
     <span>{item.runtime}</span>,
@@ -101,6 +117,7 @@ export default function Lambdas() {
       entries={data.functions}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
+      extraHeaderContent={<CreateLambdaModal />}
     />
   );
 }
