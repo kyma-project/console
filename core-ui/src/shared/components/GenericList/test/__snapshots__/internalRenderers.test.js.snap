@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GenericList > internalRenderers renderActionElement() Renders nothing if no args provided 1`] = `null`;
+
+exports[`GenericList > internalRenderers renderActionElement() Renders the popover if correct args are provided 1`] = `
+<Popover
+  body={
+    <Menu>
+      <Menu.List>
+        <Menu.Item
+          onClick={[Function]}
+        >
+          action1
+        </Menu.Item>
+      </Menu.List>
+    </Menu>
+  }
+  control={
+    <Button
+      glyph="vertical-grip"
+      option="light"
+    />
+  }
+  onClickOutside={[Function]}
+  onEscapeKey={[Function]}
+  placement="bottom-end"
+/>
+`;

@@ -2,8 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
+import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
-import wait from 'waait';
 
 import { expectToSolveWithin } from '../../../setupTests';
 import CreateNamespaceForm from '../CreateNamespaceForm';
@@ -18,7 +18,9 @@ import {
 describe('CreateNamespaceForm', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
-      <CreateNamespaceForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateNamespaceForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     expect(component).toBeTruthy();
@@ -26,7 +28,9 @@ describe('CreateNamespaceForm', () => {
 
   it('Shows and hides Memory quotas section', () => {
     const component = mount(
-      <CreateNamespaceForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateNamespaceForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     const memoryQuotasCheckbox = '#memory-quotas';
@@ -47,7 +51,9 @@ describe('CreateNamespaceForm', () => {
 
   it('Shows and hides Container limits section', () => {
     const component = mount(
-      <CreateNamespaceForm formElementRef={{ current: null }} />,
+      <MockedProvider>
+        <CreateNamespaceForm formElementRef={{ current: null }} />
+      </MockedProvider>,
     );
 
     const containerLimitsCheckbox = '#container-limits';
@@ -98,9 +104,7 @@ describe('CreateNamespaceForm', () => {
     const form = component.find('form');
     form.simulate('submit');
 
-    await act(async () => {
-      await wait();
-    });
+    await componentUpdate(component);
 
     expect(gqlMock[0].result).toHaveBeenCalled();
     expect(gqlMock[1].result).not.toHaveBeenCalled();
@@ -186,9 +190,7 @@ describe('CreateNamespaceForm', () => {
 
     form.simulate('submit');
 
-    await act(async () => {
-      await wait(100);
-    });
+    await componentUpdate(component, 100);
 
     expect(gqlMock[0].result).toHaveBeenCalled();
     expect(onCompleted).not.toHaveBeenCalled();
@@ -228,9 +230,7 @@ describe('CreateNamespaceForm', () => {
 
     form.simulate('submit');
 
-    await act(async () => {
-      await wait(100);
-    });
+    await componentUpdate(component, 100);
 
     expect(onCompleted).not.toHaveBeenCalled();
     expect(gqlMock[1].result).not.toHaveBeenCalled();

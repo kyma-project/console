@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LambdaStatusBadge LambdaStatusBadge should render with status building 1`] = `
+<span
+  className="fd-badge"
+>
+  Building
+</span>
+`;

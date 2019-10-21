@@ -3,9 +3,9 @@
 exports[`LabelSelectorInput Allows to remove labels 1`] = `
 Array [
   Array [
-    Array [
-      "c=d",
-    ],
+    Object {
+      "b": "b",
+    },
   ],
 ]
 `;
@@ -13,9 +13,9 @@ Array [
 exports[`LabelSelectorInput Fires onChange when valid label is entered 1`] = `
 Array [
   Array [
-    Array [
-      "abc=def",
-    ],
+    Object {
+      "abc": "def",
+    },
   ],
 ]
 `;
@@ -23,14 +23,14 @@ Array [
 exports[`LabelSelectorInput Renders labels 1`] = `
 Array [
   <Label
-    key="a"
+    key="a=a"
     onClick={[Function]}
-    text="a"
+    text="a=a"
   />,
   <Label
-    key="b"
+    key="b=b"
     onClick={[Function]}
-    text="b"
+    text="b=b"
   />,
 ]
 `;
@@ -38,12 +38,12 @@ Array [
 exports[`LabelSelectorInput Renders readonly labels 1`] = `
 Array [
   <NonRemovableLabel
-    key="a"
-    text="a"
+    key="a=a"
+    text="a=a"
   />,
   <NonRemovableLabel
-    key="b"
-    text="b"
+    key="b=b"
+    text="b=b"
   />,
 ]
 `;

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACES } from '../../gql/queries';
 
-import { Spinner } from '@kyma-project/react-components';
+import Spinner from '../../shared/components/Spinner/Spinner';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 

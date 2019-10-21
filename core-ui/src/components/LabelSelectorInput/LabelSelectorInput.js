@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './LabelSelectorInput.scss';
-import { Token } from 'fundamental-react/Token';
+import { Token, InlineHelp, FormItem, FormLabel } from 'fundamental-react';
 
 //TODO: move this component to a shared "place"
 
@@ -10,9 +10,8 @@ const domainSegmentRegexp = '([a-z0-9]([a-z0-9-_]{0,61}[a-z0-9])?)';
 // Dot needs to be escaped for regexp
 const domainRegexp = `(${domainSegmentRegexp}\\.)*${domainSegmentRegexp}`;
 const nameAndValueRegexp = '[a-z0-9A-Z]([a-z0-9A-Z-_\\.]{0,61}[a-z0-9A-Z])?';
-export const labelRegexp = new RegExp(
-  `^((${domainRegexp})/)?${nameAndValueRegexp}=(${nameAndValueRegexp})?$`,
-);
+const pattern = `^((${domainRegexp})/)?${nameAndValueRegexp}=(${nameAndValueRegexp})?$`;
+export const labelRegexp = new RegExp(pattern);
 
 export const Label = ({ text, onClick }) => (
   <Token
@@ -28,15 +27,14 @@ export const NonRemovableLabel = ({ text }) => (
   <Token className="label-selector__label--non-removable">{text}</Token>
 );
 
-const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
+const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
   const [isValid, setValid] = useState(true);
-
   const inputRef = useRef(null);
 
   useEffect(() => {
     if (!inputRef.current) return;
     inputRef.current.setCustomValidity(
-      isValid ? '' : `Please use the label format key=value`,
+      isValid ? '' : `Please match the requested format`,
     );
     if (typeof inputRef.current.reportValidity === 'function')
       inputRef.current.reportValidity();
@@ -47,49 +45,79 @@ const LabelSelectorInput = ({ labels = [], readonlyLabels = [], onChange }) => {
       setValid(true);
     }
     if (e.key !== 'Enter' && e.key !== ',') return;
-    handleLabelEntered(e.target.value, e);
+    handleLabelEntered(e);
   }
 
   function handleOutOfFocus(e) {
-    handleLabelEntered(e.target.value, e);
+    handleLabelEntered(e);
   }
 
-  function handleLabelEntered(value, sourceEvent) {
-    if (!labelRegexp.test(value)) {
-      setValid(false);
+  function handleLabelEntered(sourceEvent) {
+    const inputValue = sourceEvent.target.value;
+    if (!labelRegexp.test(inputValue)) {
+      if (inputValue) setValid(false);
       return;
     }
     sourceEvent.preventDefault();
     sourceEvent.target.value = '';
-    onChange([...labels, value]);
+
+    const key = inputValue.split('=')[0];
+    const value = inputValue.split('=')[1];
+    const newLabels = { ...labels };
+    newLabels[key] = value;
+    onChange(newLabels);
   }
-  function handleLabelRemoved(label) {
-    onChange(labels.filter(l => l !== label));
+
+  function createLabelsToDisplay(labels) {
+    const labelsArray = [];
+    for (const key in labels) {
+      const value = labels[key];
+      const labelToDisplay = `${key}=${value}`;
+      labelsArray.push(labelToDisplay);
+    }
+    return labelsArray;
+  }
+
+  function deleteLabel(labelToDisplay) {
+    const key = labelToDisplay.split('=')[0];
+    const newLabels = { ...labels };
+    delete newLabels[key];
+    onChange(newLabels);
   }
 
   return (
-    <div className="fd-form__set">
-      <div
-        className={classNames(['label-selector', { 'is-invalid': !isValid }])}
-      >
-        {readonlyLabels.map(l => (
-          <NonRemovableLabel key={l} text={l} />
-        ))}
-
-        {labels.map(l => (
-          <Label key={l} text={l} onClick={() => handleLabelRemoved(l)} />
-        ))}
-        <input
-          ref={inputRef}
-          className="fd-form__control label-selector__input"
-          type="text"
-          placeholder="Enter label key=value"
-          onKeyDown={handleKeyDown}
-          onBlur={handleOutOfFocus}
-          data-ignore-visual-validation
+    <FormItem>
+      <FormLabel>
+        Labels
+        <InlineHelp
+          placement="bottom-right"
+          text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
         />
+      </FormLabel>
+
+      <div className="fd-form__set">
+        <div
+          className={classNames(['label-selector', { 'is-invalid': !isValid }])}
+        >
+          {createLabelsToDisplay(readonlyLabels).map(l => (
+            <NonRemovableLabel key={l} text={l} />
+          ))}
+
+          {createLabelsToDisplay(labels).map(l => (
+            <Label key={l} text={l} onClick={() => deleteLabel(l)} />
+          ))}
+          <input
+            ref={inputRef}
+            className="fd-form__control label-selector__input"
+            type="text"
+            placeholder="Enter label key=value"
+            onKeyDown={handleKeyDown}
+            onBlur={handleOutOfFocus}
+            data-ignore-visual-validation
+          />
+        </div>
       </div>
-    </div>
+    </FormItem>
   );
 };
 
