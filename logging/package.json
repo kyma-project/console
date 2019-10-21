@@ -7,7 +7,7 @@
     "start": "PORT=8005 react-scripts start",
     "start:kyma": ". ../scripts/load-cluster-config.sh && BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
     "start:kyma:api": ". ../scripts/load-cluster-config.sh && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
-    "build": "../node_modules/.bin/react-scripts build",
+    "build": ". ../scripts/load-cluster-config.sh && ../node_modules/.bin/react-scripts build",
     "test": "../node_modules/.bin/react-scripts test",
     "test:single": "CI=true ../node_modules/.bin/react-scripts test --env=jsdom",
     "eject": "../node_modules/.bin/react-scripts eject"
