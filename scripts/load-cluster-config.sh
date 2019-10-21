@@ -1,6 +1,6 @@
-CLUSTER_CONFIG_ORIGINAL="${BASH_SOURCE%/*}/../.clusterConfig.default"
-CLUSTER_CONFIG_GEN="${BASH_SOURCE%/*}/../.clusterConfig.gen"
-
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+CLUSTER_CONFIG_ORIGINAL="$SCRIPT_DIR/../.clusterConfig.default"
+CLUSTER_CONFIG_GEN="$SCRIPT_DIR/../.clusterConfig.gen"
 
 if [ -r $CLUSTER_CONFIG_GEN ]; then
     CURRENT_CONFIG_FILE=$CLUSTER_CONFIG_GEN
