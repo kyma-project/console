@@ -1,8 +1,6 @@
 import { environment } from '../environments/environment';
 
-const clusterConfig = (window as any).clusterConfig || { domain: 'kyma.local' };
-
-
+const clusterConfig = (window as any).clusterConfig !== {} && (window as any).clusterConfig || { domain: 'kyma.local' };
 
 const domain = clusterConfig.domain;
 const gateway_kyma_project_io_version = clusterConfig.gateway_kyma_project_io_version;
