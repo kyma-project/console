@@ -2,6 +2,8 @@ import { environment } from '../environments/environment';
 
 const clusterConfig = (window as any).clusterConfig || { domain: 'kyma.local' };
 
+
+
 const domain = clusterConfig.domain;
 const gateway_kyma_project_io_version = clusterConfig.gateway_kyma_project_io_version;
 const k8sServerUrl = `https://apiserver.${domain}`;
@@ -25,5 +27,11 @@ const config = {
   ...clusterConfig,
   graphqlApiUrl: environment.localApi ? clusterConfig.graphqlApiUrlLocal : clusterConfig.graphqlApiUrl
 };
+
+/* tslint:disable */
+console.log('Core app.config.js clusterConfig', clusterConfig);
+console.log('Core app.config.js config', config);
+
+/* tslint:enable */
 
 export const AppConfig = { ...config } as any;

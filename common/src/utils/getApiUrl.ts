@@ -14,6 +14,13 @@ export function processConfigEnvVariables(
       result[prop.replace(prefix || defaultPrefix, '')] = sourceObject[prop];
     }
   }
+  /* tslint:disable */
+  console.log(
+    'processConfigEnvVariables clusterConfig',
+    (window as any).clusterConfig,
+  );
+  console.log('processConfigEnvVariables result', result);
+  /* tslint:enable */
   return result;
 }
 
