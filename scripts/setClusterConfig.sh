@@ -5,11 +5,17 @@
 # 'setClusterConfig.sh example.that.has.dot' will generate clusterConfig.gen file for domain example.that.has.dot
 # in both cases, the full domain will also be added to clusterRegistry.txt file
 
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+if [ -z "${BASH_SOURCE}" ]; then
+    SCRIPTPATH=$0
+else
+    SCRIPTPATH=${BASH_SOURCE[0]}
+fi
+
+SCRIPT_DIR="$( cd "$( dirname "${SCRIPTPATH}" )" >/dev/null 2>&1 && pwd )"
 HOST="$(echo $CLUSTER_HOST)"
 CLUSTER_HISTORY_REGISTRY_FILE=clusterRegistry.txt
-CLUSTER_CONFIG_ORIGINAL="$SCRIPTPATH/../.clusterConfig.default"
-CLUSTER_CONFIG_GEN="$SCRIPTPATH/../.clusterConfig.gen"
+CLUSTER_CONFIG_ORIGINAL="$SCRIPT_DIR/../.clusterConfig.default"
+CLUSTER_CONFIG_GEN="$SCRIPT_DIR/../.clusterConfig.gen"
 
 if [  -z "$HOST"  ]
 then
@@ -32,8 +38,7 @@ else
 fi
 
 LOCALDOMAIN=console-dev.$DOMAIN
-
-./checkClusterAvailability.sh -s $DOMAIN
+$SCRIPT_DIR/checkClusterAvailability.sh -s $DOMAIN
 
 if [ $? != 0 ]
 then
