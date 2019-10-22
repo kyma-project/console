@@ -11,7 +11,7 @@ export default compose(
       updateEntitiesLabels: (runtimeID, scenarios) =>
         mutate({
           variables: {
-            runtimeID,
+            id: runtimeID,
             scenarios,
           },
         }),

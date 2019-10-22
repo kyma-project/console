@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import { Modal } from '@kyma-project/react-components';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
-import { getActualChanges } from './../getActualChanges';
+import { getActualChanges } from '../../../../../shared/utility/getActualChanges';
 import ScenarioNameContext from '../../ScenarioNameContext';
 
-AssignApplicationsToScenarioModal.propTypes = {
+AssignEntityToScenarioModal.propTypes = {
   originalEntities: PropTypes.array.isRequired,
   getEntitiesForScenario: PropTypes.object.isRequired,
 
@@ -18,7 +18,7 @@ AssignApplicationsToScenarioModal.propTypes = {
   sendNotification: PropTypes.func.isRequired,
 };
 
-export default function AssignApplicationsToScenarioModal({
+export default function AssignEntityToScenarioModal({
   originalEntities,
   getEntitiesForScenario,
   entityName,
@@ -62,7 +62,7 @@ export default function AssignApplicationsToScenarioModal({
   }, [originalEntities, allEntitiesQuery]);
 
   if (allEntitiesQuery.loading) {
-    return <p>Add {uppercaseEntityName}(Loading...)</p>;
+    return <p>{`Add ${entityName} (Loading...)`}</p>;
   }
   if (allEntitiesQuery.error) {
     return `Error! ${allEntitiesQuery.error.message}`;
@@ -74,7 +74,7 @@ export default function AssignApplicationsToScenarioModal({
     );
   };
 
-  const updateApplications = async () => {
+  const updateEntities = async () => {
     try {
       const [entitiesToAssign, entitiesToUnassign] = getActualChanges(
         originalEntities,
@@ -83,7 +83,7 @@ export default function AssignApplicationsToScenarioModal({
       );
 
       const assignUpdates = entitiesToAssign.map(entity => {
-        const scenarios = [scenarioName, ...entity.labels.scenarios];
+        const scenarios = [scenarioName, ...(entity.labels.scenarios || [])];
         return updateEntitiesLabels(entity.id, scenarios);
       });
 
@@ -133,7 +133,7 @@ export default function AssignApplicationsToScenarioModal({
       cancelText="Cancel"
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
-      onConfirm={updateApplications}
+      onConfirm={updateEntities}
       onShow={LuigiClient.uxManager().addBackdrop}
       onHide={LuigiClient.uxManager().removeBackdrop}
     >

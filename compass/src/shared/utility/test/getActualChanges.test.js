@@ -21,13 +21,13 @@ describe('getActualChanges', () => {
 
   for (const testCase of testCases) {
     it('Returns valid results', () => {
-      const [actualToAssign, actualToDeassign] = getActualChanges(
+      const [actualToAssign, actualToUnassign] = getActualChanges(
         testCase.original,
         testCase.actualToAssign,
         testCase.actualToDeasign,
       );
       expect(_.isEqual(actualToAssign, testCase.actualToAssign)).toBe(true);
-      expect(_.isEqual(actualToDeassign, testCase.actualToDeasign)).toBe(true);
+      expect(_.isEqual(actualToUnassign, testCase.actualToDeasign)).toBe(true);
     });
   }
 });
