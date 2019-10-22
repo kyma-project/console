@@ -53,7 +53,7 @@ const defaultSubscriptionConfSpec = {
   eventTypeVersion: '',
 };
 
-const clusterConfig = (window as any).clusterConfig || { domain: 'kyma.local', graphqlApiUrl: `https://console-backend.kyma.local/graphql`, };
+const clusterConfig = (window as any).clusterConfig !== {} && (window as any).clusterConfig || { domain: 'kyma.local' };
 
 const domain = clusterConfig.domain;
 const gateway_kyma_project_io_version = clusterConfig.gateway_kyma_project_io_version;
