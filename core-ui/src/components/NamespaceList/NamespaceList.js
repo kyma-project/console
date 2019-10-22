@@ -1,14 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-
 import { useQuery } from '@apollo/react-hooks';
-import { GET_NAMESPACES } from '../../gql/queries';
 
 import Spinner from '../../shared/components/Spinner/Spinner';
+import { GET_NAMESPACES } from '../../gql/queries';
+import { POLL_INTERVAL } from './../../shared/constants';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
-
-import { POLL_INTERVAL } from './../../shared/constants';
 import * as storage from './storage';
 
 function sortByName(array) {

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -12,12 +12,17 @@ const ModalWithForm = ({
   title,
   button,
   renderForm,
+  opened,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
+
+  useEffect(() => {
+    setOpenStatus(opened);
+  }, [opened]);
 
   function setOpenStatus(status) {
     if (status) {
@@ -141,6 +146,7 @@ ModalWithForm.propTypes = {
     glyph: PropTypes.string,
   }).isRequired,
   renderForm: PropTypes.func.isRequired,
+  opened: PropTypes.bool,
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
