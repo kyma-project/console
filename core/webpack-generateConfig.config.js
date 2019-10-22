@@ -31,7 +31,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.ProvidePlugin({ 'window.clusterConfig': processConfigEnvVariables(process.env, 'REACT_APP_') })
+    new webpack.DefinePlugin({ 'window.clusterConfig': processConfigEnvVariables(process.env, 'REACT_APP_') })
   ],
 };
 
