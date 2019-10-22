@@ -4,10 +4,9 @@ function processConfigEnvVariables(sourceObject, prefix) {
   const result = {}
   for (var prop in sourceObject) {
     if (prop.startsWith(prefix)) {
-      result[prop.replace(prefix, '')] = JSON.stringify(sourceObject[prop]);
+      result['window.clusterConfig.' + prop.replace(prefix, '')] = sourceObject[prop];
     }
   }
-  // console.log('webpack cluster config: ', result)
   return result;
 }
 
@@ -18,6 +17,6 @@ module.exports = {
     }
   },
   plugins: [
-    new webpack.DefinePlugin({ 'window.clusterConfig': processConfigEnvVariables(process.env, 'REACT_APP_') })
+    new webpack.DefinePlugin(processConfigEnvVariables(process.env, 'REACT_APP_'))
   ],
 };
