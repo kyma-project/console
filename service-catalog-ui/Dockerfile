@@ -18,6 +18,9 @@ RUN apk update && apk upgrade && \
 COPY ./temp /app
 RUN npm run bootstrap:prod
 
+COPY scripts/load-cluster-config.sh /app/scripts/
+COPY .clusterConfig.default /app/
+
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
 COPY catalog/package.json catalog/package-lock.json catalog/config-overrides.js catalog/.env catalog/postinstall.js /app/service-catalog/catalog/
