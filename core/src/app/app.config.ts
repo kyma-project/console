@@ -1,9 +1,15 @@
 import { environment } from '../environments/environment';
+interface StringMap {
+  [s: string]: string;
+}
 
-const clusterConfig = (window as any).clusterConfig !== {} && (window as any).clusterConfig || { domain: 'kyma.local' };
+declare const INJECTED_CLUSTER_CONFIG: StringMap; // injected by webpack
 
-const domain = clusterConfig.domain;
-const gateway_kyma_project_io_version = clusterConfig.gateway_kyma_project_io_version;
+const clusterConfig = (window as any).clusterConfig;
+const configToRead: StringMap = clusterConfig || typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }; // fallback for tests
+
+const domain = configToRead.domain;
+const gateway_kyma_project_io_version = configToRead.gateway_kyma_project_io_version;
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
@@ -22,12 +28,12 @@ const config = {
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl: null,
   dexFQDNUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
-  ...clusterConfig,
-  graphqlApiUrl: environment.localApi ? clusterConfig.graphqlApiUrlLocal : clusterConfig.graphqlApiUrl
+  ...configToRead,
+  graphqlApiUrl: environment.localApi ? configToRead.graphqlApiUrlLocal : configToRead.graphqlApiUrl
 };
 
 /* tslint:disable */
-console.log('Core app.config.js clusterConfig', clusterConfig);
+console.log('Core app.config.js configToRead', configToRead);
 console.log('Core app.config.js config', config);
 
 /* tslint:enable */
