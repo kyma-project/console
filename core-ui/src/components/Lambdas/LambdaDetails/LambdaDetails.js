@@ -1,22 +1,41 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { TabGroup, Tab, Panel, FormItem, FormLabel } from 'fundamental-react';
 
-import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
-import Spinner from '../../../shared/components/Spinner/Spinner';
 import { GET_LAMBDA } from '../../../gql/queries';
+import { UPDATE_LAMBDA } from '../../../gql/mutations';
+import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+import Spinner from '../../../shared/components/Spinner/Spinner';
+import { useNotification } from '../../../contexts/notifications';
 
 export default function LambdaDetails({ lambdaId }) {
+  const [labels, setLabels] = React.useState({});
+  const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
+  const notificationManager = useNotification();
+
+  const formValues = {
+    size: useRef(null),
+    runtime: useRef(null),
+  };
+
   const namespace = LuigiClient.getEventData().environmentId;
 
   const { data, error, loading } = useQuery(GET_LAMBDA, {
     variables: {
       name: lambdaId,
-      namespace: namespace,
+      namespace,
     },
   });
+
+  useEffect(() => {
+    if (data && data.function) {
+      setLabels(data.function.labels);
+    }
+  }, [data]);
+
   if (error) {
     return `Error! ${error.message}`;
   }
@@ -26,10 +45,58 @@ export default function LambdaDetails({ lambdaId }) {
 
   const lambda = data.function;
 
+  function updateLabels(newLabels) {
+    setLabels(newLabels);
+  }
+
+  //move it to header ?
+  async function updateLambda() {
+    try {
+      const updatedFunction = await updateLambdaMutation({
+        variables: {
+          name: lambdaId,
+          namespace,
+          params: {
+            labels,
+            size: formValues.size.current.value,
+            runtime: formValues.runtime.current.value,
+            content: '',
+            dependencies: '',
+          },
+        },
+      });
+
+      const isSuccess =
+        updatedFunction.data &&
+        updatedFunction.data.updateFunction &&
+        updatedFunction.data.updateFunction.name === lambdaId;
+      if (isSuccess) {
+        notificationManager.notify({
+          content: `Lambda ${lambdaId} updated successfully`,
+          title: 'Success',
+          color: '#107E3E',
+          icon: 'accept',
+          autoClose: true,
+        });
+      }
+    } catch (e) {
+      notificationManager.notify({
+        content: `Error while removing lambda ${lambdaId}: ${e.message}`,
+        title: 'Error',
+        color: '#BB0000',
+        icon: 'decline',
+        autoClose: false,
+      });
+    }
+  }
+
   return (
     <>
       {/* pass only info that is needed */}
-      <LambdaDetailsHeader lambda={lambda}></LambdaDetailsHeader>
+      <LambdaDetailsHeader
+        lambda={lambda}
+        handleUpdate={updateLambda}
+      ></LambdaDetailsHeader>
       <TabGroup>
         <Tab
           key={'lambda-configuration'}
@@ -41,10 +108,14 @@ export default function LambdaDetails({ lambdaId }) {
               <Panel.Head title="General Configuration" />
             </Panel.Header>
             <Panel.Body>
-              <LabelSelectorInput labels={lambda.labels} />
+              <LabelSelectorInput labels={labels} onChange={updateLabels} />
               <FormItem>
                 <FormLabel htmlFor="lambdaSize">Size*</FormLabel>
-                <select id="lambdaSize" value={lambda.size}>
+                <select
+                  id="lambdaSize"
+                  defaultValue={lambda.size}
+                  ref={formValues.size}
+                >
                   <option value="S">S</option>
                   <option value="M">M</option>
                   <option value="L">L</option>
@@ -53,7 +124,11 @@ export default function LambdaDetails({ lambdaId }) {
 
               <FormItem>
                 <FormLabel htmlFor="lambdaRuntime">Runtime*</FormLabel>
-                <select id="lambdaRuntime" value={lambda.runtime}>
+                <select
+                  id="lambdaRuntime"
+                  defaultValue={lambda.runtime}
+                  ref={formValues.runtime}
+                >
                   <option value="nodejs6">Nodejs 6</option>
                   <option value="nodejs8">Nodejs 8</option>
                 </select>
@@ -73,3 +148,7 @@ export default function LambdaDetails({ lambdaId }) {
     </>
   );
 }
+
+LambdaDetails.propTypes = {
+  lambdaId: PropTypes.string.isRequired,
+};

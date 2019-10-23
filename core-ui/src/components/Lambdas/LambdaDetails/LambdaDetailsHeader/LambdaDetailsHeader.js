@@ -7,7 +7,7 @@ import handleDelete from '../../../../shared/components/GenericList/actionHandle
 import { DELETE_LAMBDA } from '../../../../gql/mutations';
 import { useNotification } from '../../../../contexts/notifications';
 
-export default function LambdaDetailsHeader({ lambda }) {
+export default function LambdaDetailsHeader({ lambda, handleUpdate }) {
   const { name, namespace } = lambda;
   const [deleteLambda] = useMutation(DELETE_LAMBDA);
   const notificationManager = useNotification();
@@ -31,7 +31,6 @@ export default function LambdaDetailsHeader({ lambda }) {
         });
       }
     } catch (e) {
-      console.warn(e);
       notificationManager.notify({
         content: `Error while removing lambda ${name}: ${e.message}`,
         title: 'Error',
@@ -64,6 +63,7 @@ export default function LambdaDetailsHeader({ lambda }) {
             <ActionBar.Header title={name || 'Loading name...'} />
           </section>
           <ActionBar.Actions>
+            <Button onClick={handleUpdate}>Save</Button>
             <Button
               onClick={() => {
                 handleDelete(
