@@ -4,7 +4,7 @@ function processConfigEnvVariables(sourceObject, prefix) {
   const result = {}
   for (var prop in sourceObject) {
     if (prop.startsWith(prefix)) {
-      result['window.clusterConfig.' + prop.replace(prefix, '')] = sourceObject[prop];
+      result[prop.replace(prefix, '')] = sourceObject[prop];
     }
   }
   return result;
@@ -17,6 +17,6 @@ module.exports = {
     }
   },
   plugins: [
-    new webpack.DefinePlugin(processConfigEnvVariables(process.env, 'REACT_APP_'))
+    new webpack.DefinePlugin({ INJECTED_CLUSTER_CONFIG: JSON.stringify(processConfigEnvVariables(process.env, 'REACT_APP_')) })
   ],
 };

@@ -8,7 +8,7 @@
     "start:kyma": ". ../scripts/load-cluster-config.sh && ng serve --disable-host-check --host console-dev.kyma.local --port 4201",
     "start:kyma:api": ". ../scripts/load-cluster-config.sh && ng serve --disable-host-check --host console-dev.kyma.local --port 4201 --env api-local",
     "build": ". ../scripts/load-cluster-config.sh && ng build --prod",
-    "test": "ng test",
+    "test": ". ../scripts/load-cluster-config.sh && ng test",
     "lint": "ng lint lambdas --tslint-config tslint.json",
     "e2e": "ng e2e"
   },
