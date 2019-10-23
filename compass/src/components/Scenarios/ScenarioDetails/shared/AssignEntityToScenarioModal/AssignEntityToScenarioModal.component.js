@@ -13,7 +13,7 @@ AssignEntityToScenarioModal.propTypes = {
 
   entityName: PropTypes.oneOf(['applications', 'runtimes']),
 
-  allEntitiesQuery: PropTypes.func.isRequired,
+  allEntitiesQuery: PropTypes.object.isRequired,
   updateEntitiesLabels: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
@@ -62,7 +62,11 @@ export default function AssignEntityToScenarioModal({
   }, [originalEntities, allEntitiesQuery]);
 
   if (allEntitiesQuery.loading) {
-    return <p>{`Add ${entityName} (Loading...)`}</p>;
+    return (
+      <button className="fd-button--light" disabled>
+        Add {uppercaseEntityName}
+      </button>
+    );
   }
   if (allEntitiesQuery.error) {
     return `Error! ${allEntitiesQuery.error.message}`;

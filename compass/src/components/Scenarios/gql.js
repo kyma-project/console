@@ -65,6 +65,15 @@ export const SET_APPLICATION_SCENARIOS = gql`
   }
 `;
 
+export const DELETE_RUNTIME_SCENARIOS_LABEL = gql`
+  mutation deleteRuntimeLabel($id: ID!) {
+    deleteRuntimeLabel(runtimeID: $id, key: "scenarios") {
+      key
+      value
+    }
+  }
+`;
+
 export const SET_RUNTIME_SCENARIOS = gql`
   mutation setRuntimeLabel($id: ID!, $scenarios: Any!) {
     setRuntimeLabel(runtimeID: $id, key: "scenarios", value: $scenarios) {

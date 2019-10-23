@@ -5,6 +5,7 @@ export default async function unassignScenarioHandler(
   entityId,
   currentEntityScenarios,
   unassignMutation,
+  deleteScenarioMutation,
   scenarioName,
   successCallback,
 ) {
@@ -22,7 +23,12 @@ export default async function unassignScenarioHandler(
         scenario => scenario !== scenarioName,
       );
 
-      await unassignMutation(entityId, scenarios);
+      if (scenarios.length) {
+        await unassignMutation(entityId, scenarios);
+      } else {
+        await deleteScenarioMutation(entityId);
+      }
+
       if (successCallback) {
         successCallback();
       }

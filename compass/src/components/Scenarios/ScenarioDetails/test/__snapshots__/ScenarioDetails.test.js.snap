@@ -9,7 +9,7 @@ exports[`ScenarioDetailsHeader Renders with minimal props 1`] = `
     className="scenario-details__panel fd-section fd-has-margin-top-small"
   >
     <fromRenderProps(Apollo(Apollo(Apollo(ScenarioApplications)))) />
-    <fromRenderProps(Apollo(Apollo(Apollo(ScenarioRuntimes)))) />
+    <fromRenderProps(Apollo(Apollo(Apollo(Apollo(ScenarioRuntimes))))) />
   </section>
 </ContextProvider>
 `;

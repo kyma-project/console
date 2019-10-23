@@ -8,14 +8,16 @@ import unassignScenarioHandler from '../shared/unassignScenarioHandler';
 ScenarioRuntimes.propTypes = {
   scenarioName: PropTypes.string.isRequired,
   getRuntimesForScenario: PropTypes.object.isRequired,
-  removeRuntimeFromScenario: PropTypes.func.isRequired,
+  setRuntimeScenarios: PropTypes.func.isRequired,
+  deleteRuntimeScenarios: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
 
 export default function ScenarioRuntimes({
   scenarioName,
   getRuntimesForScenario,
-  removeRuntimeFromScenario,
+  setRuntimeScenarios,
+  deleteRuntimeScenarios,
   sendNotification,
 }) {
   if (getRuntimesForScenario.loading) {
@@ -45,7 +47,8 @@ export default function ScenarioRuntimes({
           runtime.name,
           runtime.id,
           runtime.labels.scenarios,
-          removeRuntimeFromScenario,
+          setRuntimeScenarios,
+          deleteRuntimeScenarios,
           scenarioName,
           async () => {
             showSuccessNotification(runtime.name);

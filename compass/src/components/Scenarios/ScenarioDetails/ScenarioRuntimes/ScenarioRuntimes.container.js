@@ -4,6 +4,7 @@ import {
   GET_RUNTIMES_FOR_SCENARIO,
   SET_RUNTIME_SCENARIOS,
   createEqualityQuery,
+  DELETE_RUNTIME_SCENARIOS_LABEL,
 } from '../../gql';
 import { SEND_NOTIFICATION } from '../../../../gql';
 
@@ -16,12 +17,20 @@ export default compose(
   })),
   graphql(SET_RUNTIME_SCENARIOS, {
     props: ({ mutate }) => ({
-      removeRuntimeFromScenario: async (id, scenarios) =>
+      setRuntimeScenarios: async (id, scenarios) =>
         await mutate({
           variables: {
             id,
             scenarios,
           },
+        }),
+    }),
+  }),
+  graphql(DELETE_RUNTIME_SCENARIOS_LABEL, {
+    props: ({ mutate }) => ({
+      deleteRuntimeScenarios: async id =>
+        await mutate({
+          variables: { id },
         }),
     }),
   }),
