@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Modal } from '@kyma-project/react-components';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
-import { getActualChanges } from '../../../../../shared/utility/getActualChanges';
+import { getActualChangesBy } from '../../../../../shared/utility/getActualChangesBy';
 import ScenarioNameContext from '../../ScenarioNameContext';
 
 AssignEntityToScenarioModal.propTypes = {
@@ -80,7 +80,8 @@ export default function AssignEntityToScenarioModal({
 
   const updateEntities = async () => {
     try {
-      const [entitiesToAssign, entitiesToUnassign] = getActualChanges(
+      const [entitiesToAssign, entitiesToUnassign] = getActualChangesBy(
+        'id',
         originalEntities,
         assignedEntities,
         getUnassignedEntities(),
