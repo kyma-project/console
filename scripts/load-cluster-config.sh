@@ -16,5 +16,5 @@ else
 fi
 
 set -o allexport
-source $CURRENT_CONFIG_FILE
+. $CURRENT_CONFIG_FILE
 set +o allexport
