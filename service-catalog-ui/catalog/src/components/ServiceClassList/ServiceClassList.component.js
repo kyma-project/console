@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import equal from 'deep-equal';
 
 import {
   NotificationMessage,
@@ -19,8 +18,6 @@ import { StatusWrapper, StatusesList } from './styled';
 import { Counter } from 'fundamental-react';
 
 import { serviceClassConstants } from '../../variables';
-import FilterList from './FilterList/FilterList.component';
-import ActiveFiltersList from './ActiveFiltersList/ActiveFiltersList.component';
 import Cards from './Cards/Cards.component';
 
 import {
@@ -31,16 +28,76 @@ import {
   ServiceClassDescription,
 } from './styled';
 
+const determineDisplayedServiceClasses = (
+  serviceClasses,
+  tabIndex,
+  searchQuery,
+  activeLabels,
+) => {
+  console.log(
+    'determineDisplayedServiceClasses serviceClasses',
+    serviceClasses,
+  );
+
+  const searched = serviceClasses.filter(item =>
+    new RegExp(searchQuery, 'i').test(item.name),
+  );
+
+  const filteredByLabels = searched.filter(item =>
+    activeLabels.every(activeLabel => item.labels.includes(activeLabel)),
+  );
+
+  let filteredByTab = [];
+  if (tabIndex === serviceClassConstants.addonsIndex) {
+    filteredByTab = filteredByLabels.filter(item => {
+      if (item.labels) {
+        return item.labels.local === 'true';
+      }
+      return false;
+    });
+  }
+  if (tabIndex === serviceClassConstants.servicesIndex) {
+    filteredByTab = filteredByLabels.filter(item => {
+      if (item.labels) {
+        return item.labels.local !== 'true';
+      }
+      return true;
+    });
+  }
+
+  return filteredByTab;
+};
+
+const determineSelectedTab = () => {
+  const selectedTabName = LuigiClient.getNodeParams().selectedTab;
+  return instancesTabUtils.convertTabNameToIndex(selectedTabName);
+};
+
+const handleTabChange = ({ defaultActiveTabIndex }) => {
+  const selectedTabName = instancesTabUtils.convertIndexToTabName(
+    defaultActiveTabIndex,
+  );
+
+  LuigiClient.linkManager()
+    .withParams({ selectedTab: selectedTabName })
+    .navigate('');
+};
+
+const status = (data, id) => {
+  return (
+    <StatusesList>
+      <StatusWrapper key={id}>
+        <Counter data-e2e-id={id}>{data}</Counter>
+      </StatusWrapper>
+    </StatusesList>
+  );
+};
+
 class ServiceClassList extends React.Component {
   static propTypes = {
-    activeClassFilters: PropTypes.object.isRequired,
     classList: PropTypes.object.isRequired,
-    classFilters: PropTypes.object.isRequired,
     serviceClasses: PropTypes.array.isRequired,
     history: PropTypes.object.isRequired,
-    filterServiceClasses: PropTypes.func.isRequired,
-    clearAllActiveFilters: PropTypes.func.isRequired,
-    setServiceClassesFilter: PropTypes.func.isRequired,
     errorMessage: PropTypes.string,
   };
 
@@ -48,12 +105,6 @@ class ServiceClassList extends React.Component {
     super(props);
     this.state = {
       classFiltersLoaded: false,
-      filtersExists: {
-        basic: false,
-        tag: false,
-        provider: false,
-        connectedApplication: false,
-      },
     };
   }
 
@@ -61,79 +112,17 @@ class ServiceClassList extends React.Component {
     this.props.setServiceClassesFilter('local', currentTabIndex === 0);
   };
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setTabFilter(true);
-    }, 100);
-  }
-
-  componentWillReceiveProps(newProps) {
-    const { classFiltersLoaded } = this.state;
-    if (equal(this.props, newProps)) return;
-
-    if (
-      newProps.serviceClasses &&
-      newProps.serviceClasses.length &&
-      typeof newProps.filterServiceClasses === 'function'
-    ) {
-      newProps.filterServiceClasses();
-    }
-
-    if (
-      !classFiltersLoaded &&
-      newProps.classFilters &&
-      newProps.classFilters.serviceClassFilters &&
-      newProps.classFilters.serviceClassFilters.length
-    ) {
-      this.checkExistsOfFilters(newProps.classFilters.serviceClassFilters);
-    }
-  }
-
-  checkExistsOfFilters = filters => {
-    let filtersExists = {
-      basic: false,
-      tag: false,
-      provider: false,
-      connectedApplication: false,
-    };
-
-    filters.forEach(element => {
-      if (element.values.length > 1) filtersExists[element.name] = true;
-    });
-
-    this.setState({
-      classFiltersLoaded: true,
-      filtersExists: filtersExists,
-    });
-  };
-
-  status = (data, id) => {
-    return (
-      <StatusesList>
-        <StatusWrapper key={id}>
-          <Counter data-e2e-id={id}>{data}</Counter>
-        </StatusWrapper>
-      </StatusesList>
-    );
-  };
-
   render() {
     const {
       classList,
-      activeClassFilters,
-      activeTagsFilters,
-      classFilters,
-      clearAllActiveFilters,
       serviceClasses,
-      setServiceClassesFilter,
       history,
       searchFn,
-      filterTagsAndSetActiveFilters,
       errorMessage,
     } = this.props;
     const filteredClassesCounts =
       this.props.filteredClassesCounts.filteredClassesCounts || {};
-    const { filtersExists } = this.state;
+    console.log('filteredClassesCounts', filteredClassesCounts);
 
     const determineSelectedTab = () => {
       const selectedTabName = LuigiClient.getNodeParams().selectedTab;
@@ -157,22 +146,6 @@ class ServiceClassList extends React.Component {
         .navigate('');
     };
 
-    const filterFn = e => {
-      filterTagsAndSetActiveFilters('search', e.target.value);
-    };
-
-    const seeMoreFn = (key, value) => {
-      filterTagsAndSetActiveFilters(key, value);
-      filterTagsAndSetActiveFilters('offset', 0);
-    };
-
-    const activeFilters = activeClassFilters.activeServiceClassFilters || {};
-    const activeCategoriesFilters = activeTagsFilters.activeTagsFilters || {};
-    const activeFiltersCount =
-      activeFilters.basic.length +
-      activeFilters.provider.length +
-      activeFilters.tag.length +
-      activeFilters.connectedApplication.length;
     let items = classList.filteredServiceClasses || [];
 
     // TODO: Remove this nasty workaround for apparent bug
@@ -196,17 +169,28 @@ class ServiceClassList extends React.Component {
     //its used for filtering class which does not have any name in it (either externalName, displayName or name).
     items = items.filter(e => e.displayName || e.externalName || e.name);
 
-    const renderFilters = () => {
-      if (!activeFiltersCount) return null;
+    const newServices = determineDisplayedServiceClasses(
+      items,
+      serviceClassConstants.servicesIndex,
+      '',
+      [],
+    );
 
-      return (
-        <ActiveFiltersList
-          activeFilters={activeFilters}
-          clearAllActiveFilters={clearAllActiveFilters}
-          onCancel={(key, value) => setServiceClassesFilter(key, value)}
-        />
-      );
-    };
+    const newAddons = determineDisplayedServiceClasses(
+      items,
+      serviceClassConstants.addonsIndex,
+      '',
+      [],
+    );
+
+    console.log(
+      'items',
+      items,
+      'newServices',
+      newServices,
+      'newAddons',
+      newAddons,
+    );
 
     const renderCards = () => {
       if (errorMessage) {
@@ -246,20 +230,6 @@ class ServiceClassList extends React.Component {
               data-e2e-id="search"
             />
           </SearchWrapper>
-
-          {!classFilters.loading && (
-            <FilterList
-              filters={classFilters.serviceClassFilters}
-              filtersExists={filtersExists}
-              active={activeFilters}
-              activeFiltersCount={activeFiltersCount}
-              activeTagsFilters={activeCategoriesFilters}
-              clearAllActiveFilters={clearAllActiveFilters}
-              onChange={(key, value) => setServiceClassesFilter(key, value)}
-              onSearch={filterFn}
-              onSeeMore={seeMoreFn}
-            />
-          )}
         </Toolbar>
 
         <Tabs
@@ -273,7 +243,7 @@ class ServiceClassList extends React.Component {
           <Tab
             noMargin
             key="catalog-addons-tab"
-            status={this.status(filteredClassesCounts.local, 'addons-status')}
+            status={status(filteredClassesCounts.local, 'addons-status')}
             title={
               <Tooltip
                 content={serviceClassConstants.addonsTooltipDescription}
@@ -288,7 +258,7 @@ class ServiceClassList extends React.Component {
             <>
               <ServiceClassDescription>
                 {serviceClassConstants.addonsDescription}
-                {renderFilters()}
+                {/* {renderFilters()} */}
               </ServiceClassDescription>
               <ServiceClassListWrapper>
                 <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>
@@ -298,10 +268,7 @@ class ServiceClassList extends React.Component {
           <Tab
             noMargin
             key="catalog-services-tab"
-            status={this.status(
-              filteredClassesCounts.notLocal,
-              'services-status',
-            )}
+            status={status(filteredClassesCounts.notLocal, 'services-status')}
             title={
               <Tooltip
                 content={serviceClassConstants.servicesTooltipDescription}
@@ -316,7 +283,7 @@ class ServiceClassList extends React.Component {
             <>
               <ServiceClassDescription>
                 {serviceClassConstants.servicesDescription}
-                {renderFilters()}
+                {/* {renderFilters()} */}
               </ServiceClassDescription>
               <ServiceClassListWrapper>
                 <CardsWrapper data-e2e-id="cards">{renderCards()}</CardsWrapper>

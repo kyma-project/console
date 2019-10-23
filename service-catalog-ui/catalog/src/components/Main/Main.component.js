@@ -30,7 +30,7 @@ const MainPage = ({
                   ]
                 : []
             }
-            filterServiceClasses={filterClasses}
+            // filterServiceClasses={filterClasses}
             setServiceClassesFilter={filterClassesAndSetActiveFilters}
             history={history}
             searchFn={searchFn}

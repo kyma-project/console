@@ -13,6 +13,10 @@ export const serviceClassConstants = {
     'Enrich your experience with additional services that are installed outside the cluster.',
   servicesTooltipDescription: 'Enrich your experience with additional services',
   title: 'Service Catalog',
+
+  //service class list tabs indices
+  addonsIndex: 0,
+  servicesIndex: 1,
 };
 
 export const serviceClassTabs = {

@@ -137,6 +137,7 @@ export default function ServiceInstancesList() {
     }
   };
 
+  console.log('activeLabelFilters', activeLabelFilters);
   return (
     <ThemeWrapper>
       <ServiceInstancesToolbar

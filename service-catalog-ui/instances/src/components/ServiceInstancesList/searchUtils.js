@@ -6,6 +6,7 @@ const determineDisplayedInstances = (
   searchQuery,
   activeLabels,
 ) => {
+  console.log('determineDisplayedInstances serviceInstances', serviceInstances);
   const searched = serviceInstances.filter(instance =>
     new RegExp(searchQuery, 'i').test(instance.name),
   );

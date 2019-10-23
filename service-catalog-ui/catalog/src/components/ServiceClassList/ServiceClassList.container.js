@@ -42,30 +42,4 @@ export default compose(
       fetchPolicy: 'cache-and-network',
     },
   }),
-  graphql(CLASS_FILTERS_QUERY, {
-    name: 'classFilters',
-    options: {
-      fetchPolicy: 'cache-and-network',
-    },
-  }),
-
-  graphql(CLASS_ACTIVE_TAGS_FILTERS_QUERY, {
-    name: 'activeTagsFilters',
-    options: {
-      fetchPolicy: 'cache-and-network',
-    },
-  }),
-  graphql(CLEAR_ACTIVE_FILTERS_MUTATION, {
-    name: 'clearAllActiveFilters',
-  }),
-  graphql(SET_ACTIVE_TAGS_FILTERS_MUTATION, {
-    name: 'setActiveTagsFilters',
-  }),
-)(props => (
-  <ServiceClassList
-    {...props}
-    filterTagsAndSetActiveFilters={(key, value) => {
-      props.setActiveTagsFilters({ variables: { key, value } });
-    }}
-  />
-));
+)(props => <ServiceClassList {...props} />);
