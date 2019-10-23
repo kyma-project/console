@@ -19,6 +19,7 @@ export const GET_APPLICATION = gql`
       description
       name
       labels
+      healthCheckURL
       status {
         condition
       }
@@ -117,6 +118,54 @@ export const SET_APPLICATION_SCENARIOS = gql`
     ) {
       key
       value
+    }
+  }
+`;
+
+export const UPDATE_APPLICATION = gql`
+  mutation updateApplication($id: ID!, $in: ApplicationUpdateInput!) {
+    updateApplication(id: $id, in: $in) {
+      name
+      id
+    }
+  }
+`;
+
+export const SET_APPLICATION_LABEL = gql`
+  mutation setApplicationLabel(
+    $applicationID: ID!
+    $key: String!
+    $value: Any!
+  ) {
+    setApplicationLabel(
+      applicationID: $applicationID
+      key: $key
+      value: $value
+    ) {
+      key
+      value
+    }
+  }
+`;
+
+export const REMOVE_APPLICATION_LABEL = gql`
+  mutation deleteApplicationLabel($applicationID: ID!, $key: String!) {
+    deleteApplicationLabel(applicationID: $applicationID, key: $key) {
+      key
+      value
+    }
+  }
+`;
+
+export const GET_APPLICATIONS_AND_LABELS = gql`
+  query {
+    applications {
+      data {
+        name
+      }
+    }
+    labels: labelDefinitions {
+      key
     }
   }
 `;

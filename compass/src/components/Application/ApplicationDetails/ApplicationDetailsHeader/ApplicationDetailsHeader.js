@@ -8,6 +8,7 @@ import { Button, Breadcrumb, PanelGrid } from '@kyma-project/react-components';
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
+import UpdateApplicationModal from '../UpdateApplication/UpdateApplicationModal.container';
 
 function navigateToApplications() {
   LuigiClient.linkManager()
@@ -17,10 +18,6 @@ function navigateToApplications() {
 
 function connectApplication(applicationId) {
   console.log('todo connect (#1042)', applicationId);
-}
-
-function editApplication(applicationId) {
-  console.log('todo edit (#1042)', applicationId);
 }
 
 class ApplicationDetailsHeader extends React.Component {
@@ -56,9 +53,7 @@ class ApplicationDetailsHeader extends React.Component {
                 Connect Application
               </Button>
             )}
-            <Button onClick={() => editApplication(id)} option="light">
-              Edit
-            </Button>
+            <UpdateApplicationModal application={this.props.application} />
             <Button
               onClick={() => {
                 handleDelete(
