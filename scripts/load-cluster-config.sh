@@ -1,8 +1,10 @@
 #!/bin/bash
 if [ -z "${BASH_SOURCE}" ]; then
     SCRIPTPATH=$0
+    echo "bash source is not defined. SCRIPTPATH=$SCRIPTPATH"
 else
     SCRIPTPATH=${BASH_SOURCE[0]}
+    echo "bash source is defined. SCRIPTPATH=$SCRIPTPATH"
 fi
 
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPTPATH}" )" >/dev/null 2>&1 && pwd )"
