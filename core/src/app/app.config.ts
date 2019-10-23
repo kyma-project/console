@@ -6,7 +6,7 @@ interface StringMap {
 declare const INJECTED_CLUSTER_CONFIG: StringMap; // injected by webpack
 
 const clusterConfig = (window as any).clusterConfig;
-const configToRead: StringMap = clusterConfig || typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }; // fallback for tests
+const configToRead: StringMap = clusterConfig !== {} && clusterConfig || typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }; // fallback for tests
 
 const domain = configToRead.domain;
 const gateway_kyma_project_io_version = configToRead.gateway_kyma_project_io_version;
