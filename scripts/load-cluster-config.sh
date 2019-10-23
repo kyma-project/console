@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ -z "${BASH_SOURCE}" ]; then
-    SCRIPTPATH=$0
+    SCRIPTPATH=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
     echo "bash source is not defined. SCRIPTPATH=$SCRIPTPATH"
 else
     SCRIPTPATH=${BASH_SOURCE[0]}
