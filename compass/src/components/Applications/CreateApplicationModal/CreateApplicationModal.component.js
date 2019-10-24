@@ -247,9 +247,11 @@ class CreateApplicationModal extends React.Component {
     if (scenariosQuery.error) {
       content = `Error! ${scenariosQuery.error.message}`;
     } else {
-      const availableScenarios = JSON.parse(
-        scenariosQuery.labelDefinition.schema,
-      ).items.enum;
+      let availableScenarios = [];
+      if (scenariosQuery.labelDefinition) {
+        availableScenarios = JSON.parse(scenariosQuery.labelDefinition.schema)
+          .items.enum;
+      }
 
       content = (
         <>
