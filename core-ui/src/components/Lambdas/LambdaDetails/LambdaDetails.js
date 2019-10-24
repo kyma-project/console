@@ -10,7 +10,7 @@ import {
   Tab,
   Toggle,
 } from 'fundamental-react';
-import MonacoEditor from 'react-monaco-editor';
+import Editor from '@monaco-editor/react';
 
 import { GET_LAMBDA } from '../../../gql/queries';
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
@@ -23,6 +23,7 @@ export default function LambdaDetails({ lambdaId }) {
   const [labels, setLabels] = useState({});
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
   const [isEditorShown, setIsEditorShown] = useState(false);
+  const [lambdaCode, setLambdaCode] = useState("console.log('Hello World!)");
   const notificationManager = useNotification();
 
   const formValues = {
@@ -42,6 +43,7 @@ export default function LambdaDetails({ lambdaId }) {
   useEffect(() => {
     if (data && data.function) {
       setLabels(data.function.labels);
+      setLambdaCode(data.function.content);
     }
   }, [data]);
 
@@ -99,8 +101,8 @@ export default function LambdaDetails({ lambdaId }) {
     setLabels(newLabels);
   }
 
-  function handleSchemaToggle() {
-    setIsEditorShown(!isEditorShown);
+  function handleEditorDidMount(_valueGetter) {
+    setInterval(() => console.log(_valueGetter), 1000);
   }
 
   return (
@@ -148,29 +150,21 @@ export default function LambdaDetails({ lambdaId }) {
               </FormItem>
             </Panel.Body>
           </Panel>
-          <Panel className="fd-has-margin-medium">
-            <Panel.Header>
-              <Panel.Head title="Dependencies" />
-              <Panel.Actions>
-                <Toggle checked={isEditorShown} onChange={handleSchemaToggle} />
-              </Panel.Actions>
-            </Panel.Header>
-            <Panel.Body hidden={!isEditorShown}>
-              <MonacoEditor
-                width="800px"
-                height="600px"
-                language="javascript"
-                theme="vs-dark"
-                value="console.log('tetetetetetetetet')"
-              />
-            </Panel.Body>
-          </Panel>
         </Tab>
 
         <Tab key={'lambda-code'} id={'lambda-code'} title={'Code'}>
           <Panel className="fd-has-margin-medium">
+            <Panel.Header>
+              <Panel.Head title="Function Code" />
+            </Panel.Header>
             <Panel.Body>
-              <p className="fd-has-type-1">Code</p>
+              <Editor
+                height="500px"
+                language="javascript"
+                theme="vs-light"
+                value={lambdaCode}
+                editorDidMount={handleEditorDidMount}
+              />
             </Panel.Body>
           </Panel>
         </Tab>
