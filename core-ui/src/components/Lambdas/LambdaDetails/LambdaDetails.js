@@ -16,7 +16,7 @@ export default function LambdaDetails({ lambdaId }) {
   const [labels, setLabels] = useState({});
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
   const [lambdaCode, setLambdaCode] = useState("console.log('Hello World!)");
-  const [selectedTab, setSelectedTab] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
   const notificationManager = useNotification();
 
   const formValues = {
