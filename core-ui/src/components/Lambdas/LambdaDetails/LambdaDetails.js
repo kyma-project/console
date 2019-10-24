@@ -14,9 +14,9 @@ import { useNotification } from '../../../contexts/notifications';
 
 export default function LambdaDetails({ lambdaId }) {
   const [labels, setLabels] = useState({});
+  const [lambdaCode, setLambdaCode] = useState("console.log('Hello World!');");
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
-  const [lambdaCode, setLambdaCode] = useState("console.log('Hello World!)");
-  const [selectedTab, setSelectedTab] = useState(0);
   const notificationManager = useNotification();
 
   const formValues = {
@@ -26,14 +26,12 @@ export default function LambdaDetails({ lambdaId }) {
   };
 
   const namespace = LuigiClient.getEventData().environmentId;
-
-  const selectedTabName = LuigiClient.getNodeParams().selectedTab;
-  if (selectedTabName) {
+  const selectedTabName =
+    LuigiClient.getNodeParams().selectedTab || 'Configuration';
+  useEffect(() => {
     const selectedTabIndex = selectedTabName === 'Configuration' ? 0 : 1;
-
-    // TODO: do something, infinite loop here :)
-    // setSelectedTab(selectedTabIndex);
-  }
+    setSelectedTabIndex(selectedTabIndex);
+  }, [selectedTabName]);
 
   const { data, error, loading } = useQuery(GET_LAMBDA, {
     variables: {
@@ -45,7 +43,9 @@ export default function LambdaDetails({ lambdaId }) {
   useEffect(() => {
     if (data && data.function) {
       setLabels(data.function.labels);
-      setLambdaCode(data.function.content);
+      if (data.function.content) {
+        setLambdaCode(data.function.content);
+      }
     }
   }, [data]);
 
@@ -124,7 +124,7 @@ export default function LambdaDetails({ lambdaId }) {
         lambda={lambda}
         handleUpdate={updateLambda}
       ></LambdaDetailsHeader>
-      <TabGroup selectedIndex={selectedTab} onTabClick={onChangeTab}>
+      <TabGroup selectedIndex={selectedTabIndex} onTabClick={onChangeTab}>
         <Tab
           key={'lambda-configuration'}
           id={'lambda-configuration'}
