@@ -1,8 +1,16 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { TabGroup, Tab, Panel, FormItem, FormLabel } from 'fundamental-react';
+import {
+  FormItem,
+  FormLabel,
+  Panel,
+  TabGroup,
+  Tab,
+  Toggle,
+} from 'fundamental-react';
+import MonacoEditor from 'react-monaco-editor';
 
 import { GET_LAMBDA } from '../../../gql/queries';
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
@@ -12,8 +20,9 @@ import Spinner from '../../../shared/components/Spinner/Spinner';
 import { useNotification } from '../../../contexts/notifications';
 
 export default function LambdaDetails({ lambdaId }) {
-  const [labels, setLabels] = React.useState({});
+  const [labels, setLabels] = useState({});
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
+  const [isEditorShown, setIsEditorShown] = useState(false);
   const notificationManager = useNotification();
 
   const formValues = {
@@ -44,10 +53,6 @@ export default function LambdaDetails({ lambdaId }) {
   }
 
   const lambda = data.function;
-
-  function updateLabels(newLabels) {
-    setLabels(newLabels);
-  }
 
   //move it to header ?
   async function updateLambda() {
@@ -88,6 +93,14 @@ export default function LambdaDetails({ lambdaId }) {
         autoClose: false,
       });
     }
+  }
+
+  function updateLabels(newLabels) {
+    setLabels(newLabels);
+  }
+
+  function handleSchemaToggle() {
+    setIsEditorShown(!isEditorShown);
   }
 
   return (
@@ -133,6 +146,23 @@ export default function LambdaDetails({ lambdaId }) {
                   <option value="nodejs8">Nodejs 8</option>
                 </select>
               </FormItem>
+            </Panel.Body>
+          </Panel>
+          <Panel className="fd-has-margin-medium">
+            <Panel.Header>
+              <Panel.Head title="Dependencies" />
+              <Panel.Actions>
+                <Toggle checked={isEditorShown} onChange={handleSchemaToggle} />
+              </Panel.Actions>
+            </Panel.Header>
+            <Panel.Body hidden={!isEditorShown}>
+              <MonacoEditor
+                width="800px"
+                height="600px"
+                language="javascript"
+                theme="vs-dark"
+                value="console.log('tetetetetetetetet')"
+              />
             </Panel.Body>
           </Panel>
         </Tab>
