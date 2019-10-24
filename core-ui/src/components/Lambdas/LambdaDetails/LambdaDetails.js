@@ -2,14 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import {
-  FormItem,
-  FormLabel,
-  Panel,
-  TabGroup,
-  Tab,
-  Toggle,
-} from 'fundamental-react';
+import { FormItem, FormLabel, Panel, TabGroup, Tab } from 'fundamental-react';
 import Editor from '@monaco-editor/react';
 
 import { GET_LAMBDA } from '../../../gql/queries';
@@ -22,16 +15,25 @@ import { useNotification } from '../../../contexts/notifications';
 export default function LambdaDetails({ lambdaId }) {
   const [labels, setLabels] = useState({});
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
-  const [isEditorShown, setIsEditorShown] = useState(false);
   const [lambdaCode, setLambdaCode] = useState("console.log('Hello World!)");
+  const [selectedTab, setSelectedTab] = useState(null);
   const notificationManager = useNotification();
 
   const formValues = {
     size: useRef(null),
     runtime: useRef(null),
+    content: useRef(null),
   };
 
   const namespace = LuigiClient.getEventData().environmentId;
+
+  const selectedTabName = LuigiClient.getNodeParams().selectedTab;
+  if (selectedTabName) {
+    const selectedTabIndex = selectedTabName === 'Configuration' ? 0 : 1;
+
+    // TODO: do something, infinite loop here :)
+    // setSelectedTab(selectedTabIndex);
+  }
 
   const { data, error, loading } = useQuery(GET_LAMBDA, {
     variables: {
@@ -67,7 +69,7 @@ export default function LambdaDetails({ lambdaId }) {
             labels,
             size: formValues.size.current.value,
             runtime: formValues.runtime.current.value,
-            content: '',
+            content: formValues.content.current(),
             dependencies: '',
           },
         },
@@ -101,18 +103,28 @@ export default function LambdaDetails({ lambdaId }) {
     setLabels(newLabels);
   }
 
-  function handleEditorDidMount(_valueGetter) {
-    setInterval(() => console.log(_valueGetter), 1000);
+  function handleEditorDidMount(valueGetter) {
+    formValues.content.current = valueGetter;
   }
+
+  const onChangeTab = (_, id) => {
+    const selectedTab = id === 0 ? 'Configuration' : 'Code';
+    try {
+      LuigiClient.linkManager()
+        .withParams({ selectedTab })
+        .navigate('');
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <>
-      {/* pass only info that is needed */}
       <LambdaDetailsHeader
         lambda={lambda}
         handleUpdate={updateLambda}
       ></LambdaDetailsHeader>
-      <TabGroup>
+      <TabGroup selectedIndex={selectedTab} onTabClick={onChangeTab}>
         <Tab
           key={'lambda-configuration'}
           id={'lambda-configuration'}
