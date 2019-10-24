@@ -15,8 +15,8 @@ root-master:
 
 .PHONY: resolve
 resolve:
-	mkdir -p script
-	cp ../scripts/load-cluster-config.sh scripts/
+	mkdir -p scripts
+	cp ../scripts/load-cluster-config.sh scripts
 	cp ../.clusterConfig.default .
 	npm install --unsafe-perm
 
