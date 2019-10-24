@@ -35,7 +35,7 @@ pre-build-image:
 .PHONY: pull-licenses
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
-	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,brokers,catalog,instances,../common,../components/react,../components/shared,../components/generic-documentation"
+	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,brokers,catalog,instances,../common,../components/react,../components/shared,../components/generic-documentation"  > /dev/null
 else
 	mkdir -p licenses
 endif
