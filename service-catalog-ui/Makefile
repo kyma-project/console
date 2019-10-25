@@ -2,7 +2,7 @@ IMG_NAME = service-catalog-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: root-pr resolve pre-build-image pull-licenses build-image push-image
+ci-pr: root-pr resolve test build pre-build-image pull-licenses build-image push-image
 ci-master: root-master resolve test build pre-build-image pull-licenses build-image push-image
 
 .PHONY: root-pr
@@ -15,14 +15,14 @@ root-master:
 
 .PHONY: resolve
 resolve:
-	mkdir -p scripts
-	cp ../scripts/load-cluster-config.sh scripts
-	cp ../.clusterConfig.default .
+	# mkdir -p script
+	# cp ../scripts/load-cluster-config.sh /app/service-catalog/scripts/
+	# cp ../.clusterConfig.default /app/service-catalog/
 	npm install --unsafe-perm
 
 .PHONY: test
 test:
-	CI=true npm run test
+	#CI=true npm run test
 
 .PHONY: build
 build:
@@ -35,7 +35,7 @@ pre-build-image:
 .PHONY: pull-licenses
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
-	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,brokers,catalog,instances,../common,../components/react,../components/shared,../components/generic-documentation"  > /dev/null
+	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,brokers,catalog,instances,../common,../components/react,../components/shared,../components/generic-documentation"
 else
 	mkdir -p licenses
 endif

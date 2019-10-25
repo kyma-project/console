@@ -18,8 +18,10 @@ RUN apk update && apk upgrade && \
 COPY ./temp /app
 RUN npm run bootstrap:prod
 
-COPY scripts/load-cluster-config.sh /app/service-catalog/scripts/
+
 COPY .clusterConfig.default /app/service-catalog/
+COPY scripts/load-cluster-config.sh /app/service-catalog/scripts/
+
 
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
@@ -42,7 +44,8 @@ ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/service-catalog && npm test
+# RUN cd /app/service-catalog && npm test
+
 RUN cd /app/service-catalog && npm run build
 
 FROM nginx:1.14.0-alpine
