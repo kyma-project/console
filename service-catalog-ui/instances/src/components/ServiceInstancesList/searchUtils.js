@@ -43,7 +43,7 @@ const determineAvailableLabels = (serviceInstances, tabName, searchQuery) => {
     searchQuery,
     [],
   );
-
+  console.log('serviceInstances', serviceInstances);
   const allLabels = serviceInstances.reduce(
     (labelsCombined, instance) => [...labelsCombined, ...instance.labels],
     [],

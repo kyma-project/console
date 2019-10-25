@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import {
   Modal,
   Notification,
@@ -8,7 +8,7 @@ import {
 } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import MainPage from '../Main/Main.container';
+import ServiceClassList from '../ServiceClassList/ServiceClassList.component';
 import InstanceDetails from '../ServiceClassDetails/ServiceClassDetails.container';
 
 import { NotificationLink } from './styled';
@@ -78,10 +78,16 @@ class App extends React.Component {
         )}
         <div className="ph3 pv1 background-gray">
           {backendModuleExists('servicecatalog') ? (
-            <Switch>
-              <Route exact path="/" component={MainPage} />
-              <Route exact path="/details/:name" component={InstanceDetails} />
-            </Switch>
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/" component={ServiceClassList} />
+                <Route
+                  exact
+                  path="/details/:name"
+                  component={InstanceDetails}
+                />
+              </Switch>
+            </BrowserRouter>
           ) : (
             <BackendModuleDisabled mod="Service Catalog" />
           )}

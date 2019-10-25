@@ -6,7 +6,7 @@ import Card from './Card.component';
 
 import { getResourceDisplayName } from '../../../commons/helpers';
 
-const Cards = ({ items, history }) => {
+const Cards = ({ items }) => {
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
       .fromClosestContext()
@@ -29,7 +29,6 @@ const Cards = ({ items, history }) => {
 
 Cards.propTypes = {
   items: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 export default Cards;

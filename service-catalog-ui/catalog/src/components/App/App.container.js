@@ -1,11 +1,12 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
+import { compose } from 'recompose';
 
 import { GET_NOTIFICATION } from './queries';
 import { CLEAR_NOTIFICATION } from './mutations';
 
 import App from './App.component';
 
-export default compose(
+const AppWithCompose = compose(
   graphql(GET_NOTIFICATION, {
     name: 'notification',
   }),
@@ -13,3 +14,5 @@ export default compose(
     name: 'clearNotification',
   }),
 )(App);
+
+export default withApollo(AppWithCompose);

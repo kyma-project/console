@@ -1,4 +1,5 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
+import { compose } from 'recompose';
 
 import { GET_SERVICE_CLASS } from './queries';
 import { CREATE_SERVICE_INSTANCE } from './mutations';
@@ -7,7 +8,8 @@ import ServiceClassDetails from './ServiceClassDetails.component';
 
 import builder from '../../commons/builder';
 const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
-export default compose(
+
+const ServiceClassDetailsWithCompose = compose(
   graphql(GET_SERVICE_CLASS, {
     options: props => {
       return {
@@ -26,3 +28,5 @@ export default compose(
     name: 'createServiceInstance',
   }),
 )(ServiceClassDetails);
+
+export default withApollo(ServiceClassDetailsWithCompose);

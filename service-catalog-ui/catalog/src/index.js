@@ -19,9 +19,7 @@ preloadingStrategy(async () => {
     const client = createApolloClient();
     ReactDOM.render(
       <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
       </ApolloProvider>,
       document.getElementById('root'),
     );

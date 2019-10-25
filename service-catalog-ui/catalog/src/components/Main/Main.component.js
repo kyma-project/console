@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ThemeWrapper } from '@kyma-project/react-components';
 
-import ServiceClassList from '../ServiceClassList/ServiceClassList.container';
+import ServiceClassList from '../ServiceClassList/ServiceClassList.component';
 
 import { MainWrapper } from './styled';
 
@@ -20,23 +20,23 @@ const MainPage = ({
   return (
     <ThemeWrapper>
       <MainWrapper>
-        {!serviceClasses.loading && (
-          <ServiceClassList
-            serviceClasses={
-              !serviceClasses.error
-                ? [
-                    ...serviceClasses.clusterServiceClasses,
-                    ...serviceClasses.serviceClasses,
-                  ]
-                : []
-            }
-            // filterServiceClasses={filterClasses}
-            setServiceClassesFilter={filterClassesAndSetActiveFilters}
-            history={history}
-            searchFn={searchFn}
-            errorMessage={serviceClasses.error && serviceClasses.error.message}
-          />
-        )}
+        {/* {!serviceClasses.loading && ( */}
+        <ServiceClassList
+        // serviceClasses={
+        //   !serviceClasses.error
+        //     ? [
+        //         ...serviceClasses.clusterServiceClasses,
+        //         ...serviceClasses.serviceClasses,
+        //       ]
+        //     : []
+        // }
+        // // filterServiceClasses={filterClasses}
+        // setServiceClassesFilter={filterClassesAndSetActiveFilters}
+        // history={history}
+        // searchFn={searchFn}
+        // errorMessage={serviceClasses.error && serviceClasses.error.message}
+        />
+        {/* )} */}
       </MainWrapper>
     </ThemeWrapper>
   );

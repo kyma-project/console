@@ -1,5 +1,6 @@
 import React from 'react';
-import { graphql, withApollo, compose } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
+import { compose } from 'recompose';
 
 import { CHECK_INSTANCE_EXISTS } from './queries';
 import { SEND_NOTIFICATION } from './mutations';
