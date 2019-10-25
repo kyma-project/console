@@ -15,9 +15,9 @@ root-master:
 
 .PHONY: resolve
 resolve:
-	# mkdir -p script
-	# cp ../scripts/load-cluster-config.sh /app/service-catalog/scripts/
-	# cp ../.clusterConfig.default /app/service-catalog/
+	mkdir -p script
+	cp ../scripts/load-cluster-config.sh /app/service-catalog/scripts/
+	cp ../.clusterConfig.default /app/service-catalog/
 	npm install --unsafe-perm
 
 .PHONY: test
