@@ -9,13 +9,12 @@ COPY licenses/ /app/licenses/
 
 # Install global dependencies
 RUN apk update && apk upgrade && \
-    apk add --no-cache curl
+    apk add --no-cache curl && \
+    apk add --no-cache bash
 
 # Install root and app dependencies
 COPY ./temp /app
 RUN npm run bootstrap:prod
-COPY scripts/load-cluster-config.sh /app/scripts/
-COPY .clusterConfig.default /app/
 COPY package.json package-lock.json /app/logging/
 RUN cd /app/logging && npm install --no-optional
 
