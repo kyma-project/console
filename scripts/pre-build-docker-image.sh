@@ -15,7 +15,7 @@ function read_arguments() {
             --copy-root-node-modules)
                 COPY_ROOT_NODE_MODULES=true
                 shift # past argument with no value
-                ;;
+            ;;
             *)
                 # unknown option
             ;;
@@ -25,26 +25,28 @@ function read_arguments() {
 }
 
 function copyFiles() {
-  mkdir -p "${PWD}/${TEMP_DIR}" 
-
-  echo "Copying files"
-  if [ "${COPY_ROOT_NODE_MODULES}" == true ]; then
-    cp -R  "${ROOT_DIR}/node_modules" "${PWD}/${TEMP_DIR}/node_modules/"
-  fi
-
-  local files="package.json package-lock.json gulpfile.js tsconfig.base.json"
-  local filesArray=(${files})
-
-  for f in "${filesArray[@]}"; do
-    cp "${ROOT_DIR}/${f}" "${PWD}/${TEMP_DIR}/"
-  done
-
-  local dirs="common components"
-  local dirsArray=(${dirs})
-
-  for d in "${dirsArray[@]}"; do
-    cp -R "${ROOT_DIR}/${d}" "${PWD}/${TEMP_DIR}/${d}/"
-  done
+    mkdir -p "${PWD}/${TEMP_DIR}"
+    
+    echo "Copying files"
+    if [ "${COPY_ROOT_NODE_MODULES}" == true ]; then
+        cp -R  "${ROOT_DIR}/node_modules" "${PWD}/${TEMP_DIR}/node_modules/"
+    fi
+    
+    local files="package.json package-lock.json gulpfile.js tsconfig.base.json .clusterConfig.default"
+    local filesArray=(${files})
+    
+    for f in "${filesArray[@]}"; do
+        cp "${ROOT_DIR}/${f}" "${PWD}/${TEMP_DIR}/"
+    done
+    
+    local dirs="common components"
+    local dirsArray=(${dirs})
+    
+    for d in "${dirsArray[@]}"; do
+        cp -R "${ROOT_DIR}/${d}" "${PWD}/${TEMP_DIR}/${d}/"
+    done
+    mkdir -p "${PWD}/${TEMP_DIR}/scripts/"
+    cp -R "${ROOT_DIR}/scripts/load-cluster-config.sh" "${PWD}/${TEMP_DIR}/scripts/"
 }
 
 function main() {
