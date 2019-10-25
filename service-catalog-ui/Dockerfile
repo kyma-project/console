@@ -7,7 +7,7 @@ FROM node:10.11.0-alpine as ui-generator
 
 WORKDIR /app
 
-RUN apk update && apk upgrade && apk add --no-cache curl
+RUN apk update && apk upgrade && apk add --no-cache curl && apk add --no-cache bash
 # Copy licenses
 COPY licenses/ /app/licenses/
 
