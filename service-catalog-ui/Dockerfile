@@ -10,10 +10,6 @@ WORKDIR /app
 # Copy licenses
 COPY licenses/ /app/licenses/
 
-# Install global dependencies
-RUN apk update && apk upgrade && \
-    apk add --no-cache curl && \
-    apk add --no-cache bash
 
 # Install root and app dependencies
 COPY ./temp /app
@@ -23,6 +19,7 @@ RUN npm run bootstrap:prod
 COPY .clusterConfig.default /app/service-catalog/
 COPY scripts/load-cluster-config.sh /app/service-catalog/scripts/
 
+RUN /app/service-catalog/scripts/load-cluster-config.sh
 
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
@@ -39,6 +36,8 @@ COPY catalog/public /app/service-catalog/catalog/public
 
 COPY instances/src /app/service-catalog/instances/src
 COPY instances/public /app/service-catalog/instances/public
+
+RUN apk update && apk upgrade &&     apk add --no-cache curl &&     apk add --no-cache bash
 
 # Set env variables 
 ENV PRODUCTION true

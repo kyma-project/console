@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "load cluster config"
 if [ false ]; then
     SCRIPTPATH=$0
 else
