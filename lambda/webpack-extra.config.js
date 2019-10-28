@@ -7,7 +7,7 @@ function processConfigEnvVariables(sourceObject, prefix) {
       result[prop.replace(prefix, '')] = sourceObject[prop];
     }
   }
-  return result;
+  return Object.keys(result).length ? result : undefined;
 }
 
 module.exports = {

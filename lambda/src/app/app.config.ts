@@ -2,8 +2,10 @@ import { environment } from '../environments/environment';
 interface StringMap {
   [s: string]: string;
 }
-
+/* tslint:disable */
 declare const INJECTED_CLUSTER_CONFIG: StringMap; // injected by webpack
+
+alert();
 
 
 const defaultFunctionSizesConf = {
@@ -60,8 +62,11 @@ const defaultSubscriptionConfSpec = {
 };
 
 const windowClusterConfig = (window as any).clusterConfig;
+console.log('LAmbda app.config.js windowClusterConfig', windowClusterConfig);
 const clusterConfig = Object.keys(windowClusterConfig || {}).length ? windowClusterConfig : undefined;
-const configToRead: StringMap = clusterConfig || typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }; // fallback for tests
+
+console.log('LAmbda app.config.js clusterConfig', clusterConfig);
+const configToRead: StringMap = clusterConfig || (typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }); // fallback for tests
 
 const domain = configToRead.domain;
 const gateway_kyma_project_io_version = configToRead.gateway_kyma_project_io_version;
@@ -103,5 +108,9 @@ const config = {
   subscriptionApiUrl: `${k8sServerUrl}/apis/eventing.kyma-project.io/v1alpha1`,
 };
 
+console.log('LAmbda app.config.js configToRead', configToRead);
+console.log('LAmbda app.config.js config', config);
+
 export const AppConfig = { ...config } as any;
 
+/* tslint:enable */
