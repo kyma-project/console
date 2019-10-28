@@ -23,7 +23,7 @@ export const GET_APPLICATIONS = gql`
 `;
 
 export const CREATE_APPLICATION_MUTATION = gql`
-  mutation createApplication($in: ApplicationInput!) {
+  mutation createApplication($in: ApplicationCreateInput!) {
     createApplication(in: $in) {
       name
       description

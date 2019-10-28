@@ -1,12 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
 
 class Scenarios extends React.Component {
+  navigateToScenario(scenarioName) {
+    LuigiClient.linkManager().navigate(`details/${scenarioName}`);
+  }
+
   headerRenderer = () => ['Name'];
 
-  rowRenderer = scenario => [<span className="link">{scenario.name}</span>];
+  rowRenderer = scenario => [
+    <span
+      className="link"
+      onClick={() => this.navigateToScenario(scenario.name)}
+    >
+      {scenario.name}
+    </span>,
+  ];
 
   render() {
     const scenarioLabelDefinitionSchemaQuery = this.props.scenarioLabelSchema;
