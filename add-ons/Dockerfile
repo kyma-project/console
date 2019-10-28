@@ -13,7 +13,7 @@ RUN apk update && apk upgrade && \
 # Install root and app dependencies
 COPY ./temp /app
 RUN npm run bootstrap:prod
-COPY package.json package-lock.json config-overrides.js /app/addons/
+COPY package.json package-lock.json config-overrides.js tsconfig.json /app/addons/
 RUN cd /app/addons && npm install --no-optional
 
 # Copy sources
