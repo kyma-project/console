@@ -12,8 +12,8 @@ import {
   LabelsProvider,
   UrlsProvider,
   SubscriptionsProvider,
+  LuigiContextProvider,
 } from './services';
-import { LuigiContextProvider } from './services/LuigiContext.service';
 
 (async () => {
   const services = [
