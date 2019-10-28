@@ -31,7 +31,7 @@ export function getApiUrl(endpoint: string): string {
     process.env as StringMap,
     defaultPrefix,
   );
-
+  /* tslint:disable */
   console.log(
     'getApiUrl asked for',
     endpoint,
@@ -40,7 +40,7 @@ export function getApiUrl(endpoint: string): string {
       ? (window as any).clusterConfig[endpoint]
       : clusterConfig[endpoint],
   );
-
+  /* tslint:enable */
   return !clusterConfig || clusterConfig === {}
     ? (window as any).clusterConfig[endpoint]
     : clusterConfig[endpoint];
