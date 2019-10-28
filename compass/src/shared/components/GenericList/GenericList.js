@@ -69,16 +69,18 @@ class GenericList extends React.Component {
 
   render() {
     const { filteredEntries, searchQuery } = this.state;
-    const { extraHeaderContent, notFoundMessage } = this.props;
+    const { extraHeaderContent, notFoundMessage, showSearchField } = this.props;
 
     const headerActions = (
       <>
         {extraHeaderContent}
-        <SearchInput
-          searchQuery={searchQuery}
-          filteredEntries={filteredEntries}
-          handleQueryChange={this.handleQueryChange}
-        />
+        {showSearchField && (
+          <SearchInput
+            searchQuery={searchQuery}
+            filteredEntries={filteredEntries}
+            handleQueryChange={this.handleQueryChange}
+          />
+        )}
       </>
     );
 
@@ -114,4 +116,9 @@ GenericList.propTypes = {
     PropTypes.shape({ name: PropTypes.string, handler: PropTypes.func }),
   ),
   extraHeaderContent: PropTypes.node,
+  showSearchField: PropTypes.bool,
+};
+
+GenericList.defaultProps = {
+  showSearchField: true,
 };
