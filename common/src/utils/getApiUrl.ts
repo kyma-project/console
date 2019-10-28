@@ -36,12 +36,12 @@ export function getApiUrl(endpoint: string): string {
     'getApiUrl asked for',
     endpoint,
     'returning',
-    !clusterConfig || clusterConfig === {}
-      ? (window as any).clusterConfig[endpoint]
-      : clusterConfig[endpoint],
+    clusterConfig && clusterConfig[endpoint]
+      ? clusterConfig[endpoint]
+      : (window as any).clusterConfig[endpoint],
   );
   /* tslint:enable */
-  return !clusterConfig || clusterConfig === {}
-    ? (window as any).clusterConfig[endpoint]
-    : clusterConfig[endpoint];
+  return clusterConfig && clusterConfig[endpoint]
+    ? clusterConfig[endpoint]
+    : (window as any).clusterConfig[endpoint];
 }
