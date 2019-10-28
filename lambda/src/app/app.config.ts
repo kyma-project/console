@@ -59,7 +59,8 @@ const defaultSubscriptionConfSpec = {
   eventTypeVersion: '',
 };
 
-const clusterConfig = (window as any).clusterConfig;
+const windowClusterConfig = (window as any).clusterConfig;
+const clusterConfig = Object.keys(windowClusterConfig || {}).length ? windowClusterConfig : undefined;
 const configToRead: StringMap = clusterConfig || typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }; // fallback for tests
 
 const domain = configToRead.domain;

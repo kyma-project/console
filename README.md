@@ -47,7 +47,7 @@ The Console also includes React and Angular libraries:
     > - builds all the libraries
     > - installs dependencies for all the [components](#components)
     > - updates your `/etc/hosts` with the `127.0.0.1 console-dev.kyma.local` host
-    > - ignores all `config.js` files in git
+    > - creates `.clusterConfig.gen` file if it doesn't exist (pointing at `kyma.local` domain)
 
 ## Usage
 

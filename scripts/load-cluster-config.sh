@@ -6,15 +6,13 @@ else
 fi
 
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPTPATH}" )" >/dev/null 2>&1 && pwd )$1"
-CLUSTER_CONFIG_ORIGINAL="$SCRIPT_DIR/../.clusterConfig.default"
 CLUSTER_CONFIG_GEN="$SCRIPT_DIR/../.clusterConfig.gen"
 
 if [ -r $CLUSTER_CONFIG_GEN ]; then
-    CURRENT_CONFIG_FILE=$CLUSTER_CONFIG_GEN
+    set -o allexport
+    source $CURRENT_CONFIG_FILE
+    set +o allexport
 else
-    CURRENT_CONFIG_FILE=$CLUSTER_CONFIG_ORIGINAL
+    echo "INFO: Could not find .clusterConfig.gen file. No env variables will be injected."
 fi
 
-set -o allexport
-source $CURRENT_CONFIG_FILE
-set +o allexport
