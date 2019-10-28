@@ -19,6 +19,8 @@ export function processConfigEnvVariables(
     'processConfigEnvVariables clusterConfig',
     (window as any).clusterConfig,
   );
+
+  console.log('processConfigEnvVariables sourceObject', sourceObject);
   console.log('processConfigEnvVariables result', result);
   /* tslint:enable */
   return result;
@@ -29,6 +31,16 @@ export function getApiUrl(endpoint: string): string {
     process.env as StringMap,
     defaultPrefix,
   );
+
+  console.log(
+    'getApiUrl asked for',
+    endpoint,
+    'returning',
+    !clusterConfig || clusterConfig === {}
+      ? (window as any).clusterConfig[endpoint]
+      : clusterConfig[endpoint],
+  );
+
   return !clusterConfig || clusterConfig === {}
     ? (window as any).clusterConfig[endpoint]
     : clusterConfig[endpoint];
