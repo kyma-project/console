@@ -63,7 +63,9 @@ export default function LambdaDetailsHeader({ lambda, handleUpdate }) {
             <ActionBar.Header title={name || 'Loading name...'} />
           </section>
           <ActionBar.Actions>
-            <Button onClick={handleUpdate}>Save</Button>
+            <Button onClick={handleUpdate} data-test-id="lambda-save-button">
+              Save
+            </Button>
             <Button
               onClick={() => {
                 handleDelete(

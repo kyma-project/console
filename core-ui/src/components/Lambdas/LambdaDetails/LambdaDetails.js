@@ -58,7 +58,6 @@ export default function LambdaDetails({ lambdaId }) {
 
   const lambda = data.function;
 
-  //move it to header ?
   async function updateLambda() {
     try {
       const updatedFunction = await updateLambdaMutation({
