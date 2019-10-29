@@ -7,7 +7,7 @@ const defaultPrefix = 'REACT_APP_';
 export function processConfigEnvVariables(
   sourceObject: StringMap,
   prefix?: string,
-): StringMap {
+): StringMap | undefined {
   const result: StringMap = {};
   for (const prop in sourceObject) {
     if (prop.startsWith(prefix || defaultPrefix)) {
@@ -23,7 +23,7 @@ export function processConfigEnvVariables(
   console.log('processConfigEnvVariables sourceObject', sourceObject);
   console.log('processConfigEnvVariables result', result);
   /* tslint:enable */
-  return result;
+  return Object.keys(result).length ? result : undefined;
 }
 
 export function getApiUrl(endpoint: string): string {

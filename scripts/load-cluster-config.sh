@@ -7,12 +7,14 @@ fi
 
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPTPATH}" )" >/dev/null 2>&1 && pwd )$1"
 CLUSTER_CONFIG_GEN="$SCRIPT_DIR/../.clusterConfig.gen"
-
+echo "CLUSTER_CONFIG_GEN=$CLUSTER_CONFIG_GEN"
 if [ -r $CLUSTER_CONFIG_GEN ]; then
     set -o allexport
-    source $CURRENT_CONFIG_FILE
+    source $CLUSTER_CONFIG_GEN
+    echo "ustawione $REACT_APP_domain"
     set +o allexport
 else
     echo "INFO: Could not find .clusterConfig.gen file. No env variables will be injected."
 fi
 
+echo "koniec $REACT_APP_domain"
