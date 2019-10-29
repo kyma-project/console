@@ -254,8 +254,9 @@ const CreateNamespaceForm = ({
   }
 
   function handleIstioChange(disableSidecar) {
-    const istioInjLabelKey = ISTIO_INJECTION_LABEL.split('=')[0];
-    const istioInjLabelValue = ISTIO_INJECTION_LABEL.split('=')[1];
+    const [istioInjLabelKey, istioInjLabelValue] = ISTIO_INJECTION_LABEL.split(
+      '=',
+    );
 
     if (disableSidecar) {
       setReadonlyLabels({
