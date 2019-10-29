@@ -19,5 +19,5 @@ exports[`LambdaDetails Renders with an error in no lambdaId is provided 1`] = `
 
 exports[`LambdaDetails Renders with an error in no lambdaId is provided 2`] = `
 "Warning: Failed prop type: The prop \`lambdaId\` is marked as required in \`LambdaDetails\`, but its value is \`undefined\`.
-    in LambdaDetails (at LambdaDetails.test.js:29)"
+    in LambdaDetails (at LambdaDetails.ui.test.js:29)"
 `;
