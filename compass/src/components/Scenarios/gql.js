@@ -97,6 +97,7 @@ export const GET_APPLICATIONS_FOR_SCENARIO = gql`
           totalCount
         }
       }
+      totalCount
     }
   }
 `;
@@ -109,6 +110,7 @@ export const GET_RUNTIMES_FOR_SCENARIO = gql`
         id
         labels
       }
+      totalCount
     }
   }
 `;

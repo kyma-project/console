@@ -28,7 +28,11 @@ class Runtimes extends React.Component {
       {runtime.name}
     </span>,
     runtime.description ? runtime.description : EMPTY_TEXT_PLACEHOLDER,
-    runtime.labels && <LabelsDisplay labels={runtime.labels} />,
+    runtime.labels && Object.keys(runtime.labels).length ? (
+      <LabelsDisplay labels={runtime.labels} />
+    ) : (
+      EMPTY_TEXT_PLACEHOLDER
+    ),
     <StatusBadge
       status={
         runtime.status && runtime.status.condition
