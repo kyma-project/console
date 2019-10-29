@@ -1,9 +1,6 @@
 import React from 'react';
-import { graphql, withApollo } from 'react-apollo';
-import { compose } from 'recompose';
 
 import { CHECK_INSTANCE_EXISTS } from './queries';
-import { SEND_NOTIFICATION } from './mutations';
 
 import builder from '../../../commons/builder';
 import CreateInstanceModal from './CreateInstanceModal.component';
@@ -23,10 +20,4 @@ const CreateInstanceContainer = ({ client, ...props }) => {
   return <CreateInstanceModal instanceExists={instanceExists} {...props} />;
 };
 
-const CreateInstanceContainerWithCompose = compose(
-  graphql(SEND_NOTIFICATION, {
-    name: 'sendNotification',
-  }),
-)(CreateInstanceContainer);
-
-export default withApollo(CreateInstanceContainerWithCompose);
+export default CreateInstanceContainer;

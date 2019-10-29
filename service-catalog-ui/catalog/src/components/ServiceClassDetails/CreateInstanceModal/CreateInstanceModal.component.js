@@ -11,13 +11,13 @@ import { Bold } from './styled';
 
 import builder from '../../../commons/builder';
 import { clearEmptyPropertiesInObject } from '../../../commons/helpers';
+import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
 class CreateInstanceModal extends Component {
   static propTypes = {
     serviceClass: PropTypes.object.isRequired,
     createServiceInstance: PropTypes.func.isRequired,
     instanceExists: PropTypes.func.isRequired,
-    sendNotification: PropTypes.func.isRequired,
     modalOpeningComponent: PropTypes.element.isRequired,
   };
 
@@ -165,7 +165,7 @@ class CreateInstanceModal extends Component {
       return;
     }
 
-    const { createServiceInstance, sendNotification } = this.props;
+    const { createServiceInstance } = this.props;
     const variables = this.prepareDataToCreateServiceInstance(params);
 
     let success = true;
@@ -178,17 +178,15 @@ class CreateInstanceModal extends Component {
           variables,
         });
       }
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            type: 'success',
-            title: `Instance "${variables.name}" created successfully`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: variables.name,
-          },
-        });
-      }
+
+      this.props.notification.open({
+        content: `Instance "${variables.name}" created successfully`,
+        title: variables.name,
+        color: '#359c46',
+        icon: 'accept',
+        instanceName: variables.name,
+        visible: true,
+      });
     } catch (err) {
       success = false;
       this.setState({
@@ -308,4 +306,6 @@ class CreateInstanceModal extends Component {
   }
 }
 
-export default CreateInstanceModal;
+export default function CreateInstanceModalWithContext(props) {
+  return WithNotificationContext(CreateInstanceModal, props);
+}

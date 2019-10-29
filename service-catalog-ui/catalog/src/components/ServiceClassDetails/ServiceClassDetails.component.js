@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
-import {
-  Button,
-  Spinner,
-  Panel,
-  PanelBody,
-} from '@kyma-project/react-components';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { GET_SERVICE_CLASS } from './queries';
+import { CREATE_SERVICE_INSTANCE } from './mutations';
+import { Button, Spinner } from '@kyma-project/react-components';
+
+import builder from '../../commons/builder';
+import { serviceClassConstants } from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
@@ -22,113 +22,119 @@ import {
 } from '../../commons/helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
-class ServiceClassDetails extends React.Component {
-  static propTypes = {
-    serviceClass: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    createServiceInstance: PropTypes.func.isRequired,
-  };
+export default function ServiceClassDetails({ match }) {
+  const [serviceClass, setServiceClass] = useState(null);
+  const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
 
-  render() {
-    const { createServiceInstance } = this.props;
-    const serviceClass =
-      this.props.serviceClass.clusterServiceClass ||
-      this.props.serviceClass.serviceClass;
+  const {
+    data: queryData,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_SERVICE_CLASS, {
+    variables: {
+      namespace: builder.getCurrentEnvironmentId(),
+      name: match.params.name,
+      fileExtensions: filterExtensions,
+    },
+  });
 
-    const serviceClassDisplayName = getResourceDisplayName(serviceClass);
+  const [createServiceInstanceMutation] = useMutation(CREATE_SERVICE_INSTANCE);
 
-    const serviceClassDescription = getDescription(serviceClass);
-
-    const isProvisionedOnlyOnce =
-      serviceClass &&
-      serviceClass.labels &&
-      serviceClass.labels.provisionOnlyOnce &&
-      isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
-
-    const buttonText = {
-      provisionOnlyOnce: 'Add once',
-      provisionOnlyOnceActive: 'Added once',
-      standard: 'Add',
-    };
-    const noClassText = "Such a Service Class doesn't exist in this Namespace";
-
-    const modalOpeningComponent = (
-      <Button
-        option="emphasized"
-        data-e2e-id="add-to-env"
-        disabled={Boolean(isProvisionedOnlyOnce && serviceClass.activated)}
-      >
-        {isProvisionedOnlyOnce
-          ? serviceClass.activated
-            ? buttonText.provisionOnlyOnceActive
-            : buttonText.provisionOnlyOnce
-          : buttonText.standard}
-      </Button>
-    );
-
-    if (this.props.serviceClass.loading) {
-      return (
-        <EmptyList>
-          <Spinner />
-        </EmptyList>
-      );
+  useEffect(() => {
+    if (queryData && !queryLoading && !queryError) {
+      setServiceClass(queryData.clusterServiceClass || queryData.serviceClass);
     }
-    if (!this.props.serviceClass.loading && !serviceClass) {
-      return (
-        <EmptyList>
-          <Panel>
-            <PanelBody>{noClassText}</PanelBody>
-          </Panel>
-        </EmptyList>
-      );
-    }
+  }, [queryData, queryLoading, queryError]);
 
-    const {
-      providerDisplayName,
-      creationTimestamp,
-      documentationUrl,
-      supportUrl,
-      imageUrl,
-      tags,
-      labels,
-    } = serviceClass ? serviceClass : {};
-
+  if (queryLoading) {
     return (
-      <div>
-        {serviceClass && (
-          <div>
-            <div> {this.arrayOfJsx} </div>
-            {this.renObjData}
-            <ServiceClassDetailsHeader
-              serviceClassDisplayName={serviceClassDisplayName}
-              providerDisplayName={providerDisplayName}
-              creationTimestamp={creationTimestamp}
-              documentationUrl={documentationUrl}
-              supportUrl={supportUrl}
-              imageUrl={imageUrl}
-              tags={tags}
-              labels={labels}
-              description={serviceClassDescription}
-              isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-            >
-              <CreateInstanceModal
-                serviceClass={serviceClass}
-                modalOpeningComponent={modalOpeningComponent}
-                createServiceInstance={createServiceInstance}
-              />
-            </ServiceClassDetailsHeader>
-
-            <ServiceClassDetailsWrapper phoneRows>
-              {backendModuleExists('cms') &&
-              backendModuleExists('assetstore') ? (
-                <ServiceClassTabs serviceClass={serviceClass} />
-              ) : null}
-            </ServiceClassDetailsWrapper>
-          </div>
-        )}
-      </div>
+      <EmptyList>
+        <Spinner />
+      </EmptyList>
     );
   }
-}
 
-export default ServiceClassDetails;
+  if (queryError) {
+    return (
+      <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
+    );
+  }
+  if (!serviceClass) {
+    return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
+  }
+
+  console.log('serviceClass', serviceClass, queryData);
+
+  const serviceClassDisplayName = getResourceDisplayName(serviceClass);
+
+  const serviceClassDescription = getDescription(serviceClass);
+
+  const isProvisionedOnlyOnce =
+    serviceClass &&
+    serviceClass.labels &&
+    serviceClass.labels.provisionOnlyOnce &&
+    isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
+
+  const buttonText = {
+    provisionOnlyOnce: 'Add once',
+    provisionOnlyOnceActive: 'Added once',
+    standard: 'Add',
+  };
+
+  const modalOpeningComponent = (
+    <Button
+      option="emphasized"
+      data-e2e-id="add-to-env"
+      disabled={Boolean(isProvisionedOnlyOnce && serviceClass.activated)}
+    >
+      {isProvisionedOnlyOnce
+        ? serviceClass.activated
+          ? buttonText.provisionOnlyOnceActive
+          : buttonText.provisionOnlyOnce
+        : buttonText.standard}
+    </Button>
+  );
+
+  const {
+    providerDisplayName,
+    creationTimestamp,
+    documentationUrl,
+    supportUrl,
+    imageUrl,
+    tags,
+    labels,
+  } = serviceClass ? serviceClass : {};
+
+  return (
+    <div>
+      {serviceClass && (
+        <div>
+          <ServiceClassDetailsHeader
+            serviceClassDisplayName={serviceClassDisplayName}
+            providerDisplayName={providerDisplayName}
+            creationTimestamp={creationTimestamp}
+            documentationUrl={documentationUrl}
+            supportUrl={supportUrl}
+            imageUrl={imageUrl}
+            tags={tags}
+            labels={labels}
+            description={serviceClassDescription}
+            isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+          >
+            <CreateInstanceModal
+              serviceClass={serviceClass}
+              modalOpeningComponent={modalOpeningComponent}
+              createServiceInstance={createServiceInstanceMutation}
+            />
+          </ServiceClassDetailsHeader>
+
+          <ServiceClassDetailsWrapper phoneRows>
+            {backendModuleExists('cms') && backendModuleExists('assetstore') ? (
+              <ServiceClassTabs serviceClass={serviceClass} />
+            ) : null}
+          </ServiceClassDetailsWrapper>
+        </div>
+      )}
+    </div>
+  );
+}

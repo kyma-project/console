@@ -14,6 +14,12 @@ export const serviceClassConstants = {
   servicesTooltipDescription: 'Enrich your experience with additional services',
   title: 'Service Catalog',
 
+  noClassText: "Such a Service Class doesn't exist in this Namespace",
+  errorServiceClassesList:
+    'An error occurred while loading Service Classes List',
+  errorServiceClassDetails:
+    'An error occurred while loading Service Classes List',
+
   //service class list tabs indices
   addonsIndex: 0,
   servicesIndex: 1,

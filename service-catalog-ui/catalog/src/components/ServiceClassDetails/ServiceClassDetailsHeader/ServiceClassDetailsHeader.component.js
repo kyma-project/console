@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Breadcrumb, BreadcrumbItem } from '@kyma-project/react-components';
+import { Breadcrumb } from '@kyma-project/react-components';
 
 import ServiceClassToolbar from '../ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from '../ServiceClassInfo/ServiceClassInfo.component';
@@ -27,7 +27,7 @@ const ServiceClassDetailsHeader = ({
   tags,
   children,
 }) => {
-  const goToServiceInstanceList = () => {
+  const goToServiceDetailsList = () => {
     LuigiClient.linkManager()
       .fromClosestContext()
       .navigate('/');
@@ -36,12 +36,13 @@ const ServiceClassDetailsHeader = ({
     <HeaderWrapper>
       <BreadcrumbWrapper>
         <Breadcrumb>
-          <BreadcrumbItem
+          <Breadcrumb.Item
             name={serviceClassConstants.title}
             url="#"
-            onClick={goToServiceInstanceList}
+            onClick={goToServiceDetailsList}
           />
-          <BreadcrumbItem name={serviceClassDisplayName} url="#" />
+          <Breadcrumb.Item />
+          {/* <BreadcrumbItem name={serviceClassDisplayName} url="#" /> */}
         </Breadcrumb>
       </BreadcrumbWrapper>
       <ServiceClassToolbarWrapper>
