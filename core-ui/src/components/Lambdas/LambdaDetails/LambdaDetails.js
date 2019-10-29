@@ -170,6 +170,7 @@ export default function LambdaDetails({ lambdaId }) {
             </Panel.Header>
             <Panel.Body>
               <Editor
+                id="lambdaContent"
                 height="500px"
                 language="javascript"
                 theme="vs-light"
