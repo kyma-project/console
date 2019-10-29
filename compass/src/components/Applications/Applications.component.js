@@ -65,13 +65,6 @@ class Applications extends React.Component {
     },
   ];
 
-  // console.log(applications[0].labels)
-  // applications[0].labels = {
-  //   ...applications[0].labels,
-  //   test: []
-  // }
-  // console.log(applications[0].labels)
-
   render() {
     const applicationsQuery = this.props.applications;
 
