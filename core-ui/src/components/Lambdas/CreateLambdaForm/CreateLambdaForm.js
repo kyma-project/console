@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import { CREATE_LAMBDA } from '../../../gql/mutations';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';

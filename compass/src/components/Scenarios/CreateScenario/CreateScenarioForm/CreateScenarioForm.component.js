@@ -45,7 +45,7 @@ export default function CreateScenarioForm({
           placeholder="Choose runtime"
           updateItems={updateRuntimes}
           currentlySelectedItems={[]}
-          currentlyNonSelectedItems={runtimesQuery.runtimes.data}
+          currentlyNonSelectedItems={runtimesQuery.entities.data}
           notSelectedMessage=""
           noEntitiesAvailableMessage="No Runtimes available"
           itemSelector="runtimes"
@@ -58,7 +58,7 @@ export default function CreateScenarioForm({
           placeholder="Choose application"
           updateItems={updateApplications}
           currentlySelectedItems={[]}
-          currentlyNonSelectedItems={applicationsQuery.applications.data}
+          currentlyNonSelectedItems={applicationsQuery.entities.data}
           notSelectedMessage=""
           noEntitiesAvailableMessage="No Applications available"
           itemSelector="applications"
