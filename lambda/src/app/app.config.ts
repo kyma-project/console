@@ -5,7 +5,7 @@ interface StringMap {
 /* tslint:disable */
 declare const INJECTED_CLUSTER_CONFIG: StringMap; // injected by webpack
 
-alert();
+//alert("lambdy");
 
 
 const defaultFunctionSizesConf = {
