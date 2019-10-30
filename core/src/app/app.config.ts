@@ -33,10 +33,5 @@ const config = {
   graphqlApiUrl: environment.localApi ? configToRead.graphqlApiUrlLocal : configToRead.graphqlApiUrl
 };
 
-/* tslint:disable */
-console.log('Core app.config.js configToRead', configToRead);
-console.log('Core app.config.js config', config);
-
-/* tslint:enable */
 
 export const AppConfig = { ...config } as any;

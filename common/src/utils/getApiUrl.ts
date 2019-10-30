@@ -14,15 +14,7 @@ export function processConfigEnvVariables(
       result[prop.replace(prefix || defaultPrefix, '')] = sourceObject[prop];
     }
   }
-  /* tslint:disable */
-  console.log(
-    'processConfigEnvVariables clusterConfig',
-    (window as any).clusterConfig,
-  );
 
-  console.log('processConfigEnvVariables sourceObject', sourceObject);
-  console.log('processConfigEnvVariables result', result);
-  /* tslint:enable */
   return Object.keys(result).length ? result : undefined;
 }
 
@@ -31,16 +23,7 @@ export function getApiUrl(endpoint: string): string {
     process.env as StringMap,
     defaultPrefix,
   );
-  /* tslint:disable */
-  console.log(
-    'getApiUrl asked for',
-    endpoint,
-    'returning',
-    clusterConfig && clusterConfig[endpoint]
-      ? clusterConfig[endpoint]
-      : (window as any).clusterConfig[endpoint],
-  );
-  /* tslint:enable */
+
   return clusterConfig && clusterConfig[endpoint]
     ? clusterConfig[endpoint]
     : (window as any).clusterConfig[endpoint];

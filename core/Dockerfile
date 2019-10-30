@@ -1,7 +1,6 @@
 ### Main image ###
 FROM nginx:1.14.0-alpine
 
-
 COPY ./licenses/ /app/licenses/
 
 ### Copy the dist and nginx config into nginx ###

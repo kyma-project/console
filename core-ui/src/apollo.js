@@ -14,7 +14,6 @@ export function createApolloClient() {
   const graphqlApiUrl = getURL(
     process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
   );
-  console.log('Core-UI graphqglApiUrl', graphqlApiUrl);
 
   const httpLink = new HttpLink({
     uri: graphqlApiUrl,
