@@ -14,7 +14,13 @@ import { useNotification } from '../../../contexts/notifications';
 
 export default function LambdaDetails({ lambdaId }) {
   const [labels, setLabels] = useState({});
-  const [lambdaCode, setLambdaCode] = useState("console.log('Hello World!');");
+  const [lambdaCode, setLambdaCode] = useState(
+    `module.exports = { 
+  main: function (event, context) {
+
+  }
+}`,
+  );
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
   const notificationManager = useNotification();
@@ -166,7 +172,7 @@ export default function LambdaDetails({ lambdaId }) {
         <Tab key={'lambda-code'} id={'lambda-code'} title={'Code'}>
           <Panel className="fd-has-margin-medium">
             <Panel.Header>
-              <Panel.Head title="Function Code" />
+              <Panel.Head title="Lambda Code" />
             </Panel.Header>
             <Panel.Body>
               <Editor
