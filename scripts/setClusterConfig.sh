@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # USAGE:
 # 'setClusterConfig.sh example' will generate clusterConfig.gen file for domain example.$CLUSTER_HOST (CLUSTER_HOST is taken from your environment)

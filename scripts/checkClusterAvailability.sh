@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # USAGE:
 # `checkClusterAvailability.sh` will check availability of all addresses listed in clusterRegistry.txt file
