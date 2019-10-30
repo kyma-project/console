@@ -65,7 +65,7 @@ export default function LambdaDetails({ lambdaId }) {
           name: lambdaId,
           namespace,
           params: {
-            labels,
+            labels: labels || {},
             size: formValues.size.current.value,
             runtime: formValues.runtime.current.value,
             content: formValues.content.current(),
