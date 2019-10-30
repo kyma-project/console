@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Modal } from '@kyma-project/react-components';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
-import { getActualChangesBy } from '../../../../../shared/utility/getActualChangesBy';
+import { getActualChangesBy } from '../../../../../shared/utility';
 import ScenarioNameContext from '../../ScenarioNameContext';
 
 AssignEntityToScenarioModal.propTypes = {

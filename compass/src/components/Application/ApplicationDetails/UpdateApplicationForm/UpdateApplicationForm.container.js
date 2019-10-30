@@ -6,9 +6,8 @@ import {
   SET_APPLICATION_LABEL,
   REMOVE_APPLICATION_LABEL,
 } from '../../gql';
-import { SEND_NOTIFICATION } from '../../../../gql';
 
-import UpdateApplicationModal from './UpdateApplicationModal.component';
+import UpdateApplicationForm from './UpdateApplicationForm.component';
 
 export default compose(
   graphql(GET_APPLICATIONS_AND_LABELS, {
@@ -16,7 +15,7 @@ export default compose(
   }),
   graphql(UPDATE_APPLICATION, {
     props: ({ mutate }) => ({
-      updateApplicationMutation: (id, input) =>
+      updateApplication: (id, input) =>
         mutate({
           variables: {
             id,
@@ -48,7 +47,4 @@ export default compose(
         }),
     }),
   }),
-  graphql(SEND_NOTIFICATION, {
-    name: 'sendNotification',
-  }),
-)(UpdateApplicationModal);
+)(UpdateApplicationForm);

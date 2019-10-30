@@ -76,6 +76,7 @@ class Runtimes extends React.Component {
           <ModalWithForm
             title="Create new runtime"
             button={{ text: 'Create runtime', glyph: 'add' }}
+            confirmText="Create"
             performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
           >
             <CreateRuntimeForm />

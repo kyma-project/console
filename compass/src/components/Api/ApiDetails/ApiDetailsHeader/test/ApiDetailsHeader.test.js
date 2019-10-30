@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import ApiDetailsHeader from '../ApiDetailsHeader';
 
-describe('ModalWithForm', () => {
+describe('ApiDetailsHeader', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
       <ApiDetailsHeader
