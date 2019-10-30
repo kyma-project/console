@@ -4,8 +4,9 @@
 # `checkClusterAvailability.sh` will check availability of all addresses listed in clusterRegistry.txt file
 # `checkClusterAvailability.sh <url>` will check availability of the <url> provided and display the result
 # `checkClusterAvailability.sh -s <url>` will check availability of the <url> provided, not display anything and return 0 or 1 (available/unavailable)
+SCRIPT_DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
 
-CLUSTER_HISTORY_REGISTRY_FILE=clusterRegistry.txt
+CLUSTER_HISTORY_REGISTRY_FILE=$SCRIPT_DIR/clusterRegistry.txt
 SILLENT_MODE=false
 HOST="$(echo $CLUSTER_HOST)"
 

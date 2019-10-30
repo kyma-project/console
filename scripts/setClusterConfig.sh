@@ -88,6 +88,6 @@ echo "127.0.0.1 console-dev.$DOMAIN localhost"| sudo tee -a /etc/hosts
 
 echo "Added ClusterConfig to Console"
 echo ""
-echo -e "Please run \e[91mnpm run bootstrap\e[0m in a root Console folder"
-echo -e "Then you can open \e[93mhttp://console-dev.$DOMAIN:4200\e[0m"
+echo -e "Please run \e[91mnpm run bootstrap\e[0m, then run \e[94mnpm start\e[0m in the root Console folder"
+echo -e "After that you can open \e[93mhttp://console-dev.$DOMAIN:4200\e[0m"
 exit 0
