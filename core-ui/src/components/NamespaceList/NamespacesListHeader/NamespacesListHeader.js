@@ -22,6 +22,10 @@ export default function NamespacesListHeader({
   const queryParameters = LuigiClient.getNodeParams();
   const opened = queryParameters && queryParameters.showModal === 'true';
 
+  const clearQueryParams = () => {
+    LuigiClient.linkManager().navigate('/');
+  };
+
   return (
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
       <span className="fd-has-type-4">Namespaces</span>
@@ -40,6 +44,7 @@ export default function NamespacesListHeader({
           id="add-namespace-modal"
           renderForm={props => <CreateNamespaceForm {...props} />}
           opened={opened}
+          customCloseAction={clearQueryParams}
         />
       </div>
     </Panel>

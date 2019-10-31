@@ -13,6 +13,7 @@ const ModalWithForm = ({
   button,
   renderForm,
   opened,
+  customCloseAction,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -29,6 +30,9 @@ const ModalWithForm = ({
       LuigiClient.uxManager().addBackdrop();
     } else {
       LuigiClient.uxManager().removeBackdrop();
+      if (customCloseAction) {
+        customCloseAction();
+      }
     }
     setOpen(status);
   }
@@ -147,6 +151,7 @@ ModalWithForm.propTypes = {
   }).isRequired,
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
+  customCloseAction: PropTypes.func,
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
