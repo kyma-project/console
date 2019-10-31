@@ -95,7 +95,11 @@ describe('LambdaDetails', () => {
     const lambdaContentInput = component.find('#lambdaContent');
     expect(lambdaContentInput.exists()).toEqual(true);
     expect(lambdaContentInput.props().value).toEqual(
-      "console.log('Hello World!');",
+      `module.exports = { 
+  main: function (event, context) {
+
+  }
+}`,
     );
   });
 });

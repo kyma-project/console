@@ -131,9 +131,9 @@ export default function LambdaDetails({ lambdaId }) {
       ></LambdaDetailsHeader>
       <TabGroup selectedIndex={selectedTabIndex} onTabClick={onChangeTab}>
         <Tab
-          key={'lambda-configuration'}
-          id={'lambda-configuration'}
-          title={'Configuration'}
+          key="lambda-configuration"
+          id="lambda-configuration"
+          title="Configuration"
         >
           <Panel className="fd-has-margin-medium">
             <Panel.Header>
@@ -169,7 +169,7 @@ export default function LambdaDetails({ lambdaId }) {
           </Panel>
         </Tab>
 
-        <Tab key={'lambda-code'} id={'lambda-code'} title={'Code'}>
+        <Tab key="lambda-code" id="lambda-code" title="Code">
           <Panel className="fd-has-margin-medium">
             <Panel.Header>
               <Panel.Head title="Lambda Code" />
@@ -177,7 +177,7 @@ export default function LambdaDetails({ lambdaId }) {
             <Panel.Body>
               <Editor
                 id="lambdaContent"
-                height="500px"
+                height="40em"
                 language="javascript"
                 theme="vs-light"
                 value={lambdaCode}
