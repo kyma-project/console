@@ -48,42 +48,40 @@ export default function LambdaDetailsHeader({ lambda, handleUpdate }) {
   };
 
   return (
-    <>
-      <header className="fd-has-background-color-background-2">
-        <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-          <section>
-            <Breadcrumb>
-              <Breadcrumb.Item
-                name="Lambdas"
-                url="#"
-                onClick={() => navigateToList()}
-              />
-              <Breadcrumb.Item />
-            </Breadcrumb>
-            <ActionBar.Header title={name || 'Loading name...'} />
-          </section>
-          <ActionBar.Actions>
-            <Button onClick={handleUpdate} data-test-id="lambda-save-button">
-              Save
-            </Button>
-            <Button
-              onClick={() => {
-                handleDelete(
-                  'Lambda',
-                  name,
-                  name,
-                  handleLambdaDelete,
-                  navigateToList,
-                );
-              }}
-              option="light"
-              type="negative"
-            >
-              Delete
-            </Button>
-          </ActionBar.Actions>
+    <header className="fd-has-background-color-background-2">
+      <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
+        <section>
+          <Breadcrumb>
+            <Breadcrumb.Item
+              name="Lambdas"
+              url="#"
+              onClick={() => navigateToList()}
+            />
+            <Breadcrumb.Item />
+          </Breadcrumb>
+          <ActionBar.Header title={name || 'Loading name...'} />
         </section>
-      </header>
-    </>
+        <ActionBar.Actions>
+          <Button onClick={handleUpdate} data-test-id="lambda-save-button">
+            Save
+          </Button>
+          <Button
+            onClick={() => {
+              handleDelete(
+                'Lambda',
+                name,
+                name,
+                handleLambdaDelete,
+                navigateToList,
+              );
+            }}
+            option="light"
+            type="negative"
+          >
+            Delete
+          </Button>
+        </ActionBar.Actions>
+      </section>
+    </header>
   );
 }
