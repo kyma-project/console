@@ -9,6 +9,7 @@ import { GET_LAMBDA } from '../../../gql/queries';
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+import EntryNotFound from '../../EntryNotFound/EntryNotFound';
 import Spinner from '../../../shared/components/Spinner/Spinner';
 import { useNotification } from '../../../contexts/notifications';
 
@@ -39,11 +40,12 @@ export default function LambdaDetails({ lambdaId }) {
     setSelectedTabIndex(selectedTabIndex);
   }, [selectedTabName]);
 
-  const { data, error, loading } = useQuery(GET_LAMBDA, {
+  const { data, error, loading, stopPolling } = useQuery(GET_LAMBDA, {
     variables: {
       name: lambdaId,
       namespace,
     },
+    pollInterval: 500,
   });
 
   useEffect(() => {
@@ -58,8 +60,20 @@ export default function LambdaDetails({ lambdaId }) {
   if (error) {
     return `Error! ${error.message}`;
   }
+
   if (loading || !data) {
     return <Spinner />;
+  }
+
+  if (data && !data.function) {
+    setTimeout(() => {
+      stopPolling();
+    }, 3000);
+    return <EntryNotFound entryType="Lambda" entryId={lambdaId} />;
+  }
+
+  if (data && data.function) {
+    stopPolling();
   }
 
   const lambda = data.function;
