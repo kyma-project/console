@@ -23,6 +23,7 @@ const ModalWithForm = ({
 
   useEffect(() => {
     setOpenStatus(opened);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened]);
 
   function setOpenStatus(status) {
