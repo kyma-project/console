@@ -11,10 +11,7 @@ echo "CLUSTER_CONFIG_GEN=$CLUSTER_CONFIG_GEN"
 if [ -r $CLUSTER_CONFIG_GEN ]; then
     set -o allexport
     source $CLUSTER_CONFIG_GEN
-    echo "ustawione $REACT_APP_domain"
     set +o allexport
 else
     echo "INFO: Could not find .clusterConfig.gen file. No env variables will be injected."
 fi
-
-echo "koniec $REACT_APP_domain"

@@ -19,11 +19,11 @@ CLUSTER_CONFIG_GEN="$SCRIPT_DIR/../.clusterConfig.gen"
 
 if [  -z "$HOST"  ]
 then
-    echo "\e[91mIt looks like your \e[92mCLUSTER_HOST\e[91m environment variable is not set.
+    echo -e "\033[91mIt looks like your \033[92mCLUSTER_HOST\033[91m environment variable is not set.
     The script might not work properly.
-    \e[39m"
+    \033[39m"
 else
-    echo "Cluster host read from your environment: \e[92m$HOST\e[91m"
+    echo -e "Cluster host read from your environment: \033[92m$HOST\033[91m"
 fi
 
 if [ $1 = "local" ]
@@ -42,33 +42,32 @@ $SCRIPT_DIR/checkClusterAvailability.sh -s $DOMAIN
 
 if [ $? != 0 ]
 then
-    echo "\e[31mIt looks like the cluster isn't running ✗ \e[39m"
+    echo -e "\033[31mIt looks like the cluster isn't running ✗ \033[39m"
     read "continue?Would you like to continue running the script anyway? (y/n)"
-    if [[ "$continue" =~ ^[Yy]$ ]]
-    then
+    if [[ "$continue" =~ ^[Yy]$ ]]; then :
     else
-        exit 0;
+        exit 0
     fi
     
 else
-    echo "\e[32mIt looks like the cluster is running ✓ \e[39m"
+    echo -e "\033[32mIt looks like the cluster is running ✓ \033[39m"
 fi
 
 
 if grep -Fxq $DOMAIN $CLUSTER_HISTORY_REGISTRY_FILE
 then
-    echo "\e[2mThe cluster address has already been registered.\e[0m"
+    echo -e "\033[2mThe cluster address has already been registered.\033[0m"
 else
-    echo "\e[2mThe cluster address not been registered yet. It is now.\e[0m"
+    echo -e "\033[2mThe cluster address not been registered yet. It is now.\033[0m"
     echo $DOMAIN>>$CLUSTER_HISTORY_REGISTRY_FILE
 fi
 
 
-echo "\e[39mSetting config for: \e[36m$1\e[0m"
+echo -e "\033[39mSetting config for: \033[36m$1\033[0m"
 echo ""
 
 if [ ! -r $CLUSTER_CONFIG_ORIGINAL ]; then
-    echo "\e[91mThe source clusterConfig file is empty or doesn't exist\e[0m"
+    echo -e "\033[91mThe source clusterConfig file is empty or doesn't exist\033[0m"
     exit 1
 fi
 
@@ -88,6 +87,6 @@ echo "127.0.0.1 console-dev.$DOMAIN localhost"| sudo tee -a /etc/hosts
 
 echo "Added ClusterConfig to Console"
 echo ""
-echo -e "Please run \e[91mnpm run bootstrap\e[0m, then run \e[94mnpm start\e[0m in the root Console folder"
-echo -e "After that you can open \e[93mhttp://console-dev.$DOMAIN:4200\e[0m"
+echo -e "Please run \033[91mnpm run bootstrap\033[0m, then run \033[94mnpm start\033[0m in the root Console folder"
+echo -e "After that you can open \033[93mhttp://console-dev.$DOMAIN:4200\033[0m"
 exit 0

@@ -5,20 +5,19 @@
 # `checkClusterAvailability.sh <url>` will check availability of the <url> provided and display the result
 # `checkClusterAvailability.sh -s <url>` will check availability of the <url> provided, not display anything and return 0 or 1 (available/unavailable)
 SCRIPT_DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
-
 CLUSTER_HISTORY_REGISTRY_FILE=$SCRIPT_DIR/clusterRegistry.txt
 SILLENT_MODE=false
 HOST="$(echo $CLUSTER_HOST)"
 
-timeout() { perl -e 'alarm shift; exec @ARGV' "$@" }
+timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 
 displaySingleClusterAvailibility() {
     if timeout 2 nc -z dex.$1 80 2>/dev/null
     then
-        echo "\e[42m\e[30m $1 ✓ \e[39m\e[49m"
+        echo -e "\033[42m\033[30m $1 ✓ \033[39m\033[49m"
         
     else
-        echo "\e[91m\e[2m $1 ✗ \e[0m\e[39m"
+        echo -e "\033[91m\033[2m $1 ✗ \033[0m\033[39m"
     fi
 }
 
@@ -40,7 +39,7 @@ then
             displaySingleClusterAvailibility $i
         done
     else
-        echo "\e[91mThe cluster registry file is empty or doesn't exist\e[0m"
+        echo -e "\033[91mThe cluster registry file is empty or doesn't exist\033[0m"
     fi
 else
     if [ "$SILLENT_MODE" = true ]; then
@@ -54,7 +53,7 @@ else
         if [[ $1 == *"."* ]]; then
             displaySingleClusterAvailibility $1
         else
-            echo "\e[30mAdding domain to registry...\e[39m\e[49m"
+            echo -e "\033[30mAdding domain to registry...\033[39m\033[49m"
             displaySingleClusterAvailibility "$1.$HOST"
         fi
     fi
