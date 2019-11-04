@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { FormLabel } from 'fundamental-react';
-import MultiChoiceList from '../../../Shared/MultiChoiceList/MultiChoiceList.component';
-
-import { getActualChanges } from '../../../../shared/utility';
 import CustomPropTypes from '../../../../shared/typechecking/CustomPropTypes';
 
 const formProps = {
@@ -17,8 +14,6 @@ const formProps = {
 const gqlProps = {
   updateApplication: PropTypes.func.isRequired,
   applicationsAndLabelsQuery: PropTypes.object.isRequired,
-  setApplicationLabel: PropTypes.func.isRequired,
-  removeApplicationLabel: PropTypes.func.isRequired,
 };
 
 UpdateApplicationForm.propTypes = {
@@ -36,45 +31,21 @@ export default function UpdateApplicationForm({
   onError,
 
   updateApplication,
-  applicationsAndLabelsQuery,
-  setApplicationLabel,
-  removeApplicationLabel,
+  applicationsQuery,
 }) {
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
   };
 
-  const withoutScenarios = label => label !== 'scenarios';
-
   const applicationAlreadyExists = name =>
-    applicationsAndLabelsQuery.applications.data
-      .map(app => app.name)
-      .includes(name);
+    applicationsQuery.applications.data.map(app => app.name).includes(name);
 
-  const [currentLabels, setCurrentLabels] = React.useState(
-    Object.keys(application.labels).filter(withoutScenarios),
-  );
-  const [assignedLabels, setAssignedLabels] = React.useState(currentLabels);
-  const [unassignedLabels, setUnassignedLabels] = React.useState([]);
-
-  React.useEffect(() => {
-    const labels = applicationsAndLabelsQuery.labels;
-    if (labels) {
-      setUnassignedLabels(
-        labels
-          .map(l => l.key)
-          .filter(withoutScenarios)
-          .filter(l => !assignedLabels.includes(l)),
-      );
-    }
-  }, [applicationsAndLabelsQuery.labels, assignedLabels]);
-
-  if (applicationsAndLabelsQuery.loading) {
+  if (applicationsQuery.loading) {
     return <p>Loading...</p>;
   }
-  if (applicationsAndLabelsQuery.error) {
-    return <p>`Error! ${applicationsAndLabelsQuery.error.message}`</p>;
+  if (applicationsQuery.error) {
+    return <p>`Error! ${applicationsQuery.error.message}`</p>;
   }
 
   const onFormChange = formEvent => {
@@ -91,44 +62,21 @@ export default function UpdateApplicationForm({
     onChange(formEvent);
   };
 
-  const collectApplicationUpdates = () => {
-    const updates = [];
+  const handleFormSubmit = async e => {
+    e.preventDefault();
 
     const name = formValues.name.current.value;
     const description = formValues.description.current.value;
-    if (name !== application.name || description !== application.description) {
-      updates.push(
-        updateApplication(application.id, {
-          name,
-          description,
-          healthCheckURL: application.healthCheckURL,
-        }),
-      );
-    }
-
-    const [toAssign, toUnassign] = getActualChanges(
-      currentLabels,
-      assignedLabels,
-      unassignedLabels,
-    );
-    return updates.concat(
-      toAssign.map(label => setApplicationLabel(application.id, label, '')),
-      toUnassign.map(label => removeApplicationLabel(application.id, label)),
-    );
-  };
-
-  const handleFormSubmit = async e => {
-    const name = formValues.name.current.value;
-    e.preventDefault();
-    const updates = collectApplicationUpdates();
-
-    if (!updates.length) {
+    if (name === application.name && description === application.description) {
       return;
     }
 
     try {
-      await Promise.all(updates);
-      setCurrentLabels(assignedLabels);
+      await updateApplication(application.id, {
+        name,
+        description,
+        healthCheckURL: application.healthCheckURL,
+      });
       onCompleted(name, 'Application updated successfully');
     } catch (e) {
       console.warn(e);
@@ -161,17 +109,6 @@ export default function UpdateApplicationForm({
         id="application-description"
         defaultValue={application.description}
         placeholder="Application description"
-      />
-      <FormLabel>Labels</FormLabel>
-      <MultiChoiceList
-        updateItems={(assigned, notAssigned) => {
-          setAssignedLabels(assigned);
-          setUnassignedLabels(notAssigned);
-        }}
-        currentlySelectedItems={assignedLabels}
-        currentlyNonSelectedItems={unassignedLabels}
-        noEntitiesAvailableMessage="No more labels available"
-        notSelectedMessage="No labels selected"
       />
     </form>
   );
