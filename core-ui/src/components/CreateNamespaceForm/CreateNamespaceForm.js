@@ -220,8 +220,8 @@ const CreateNamespaceForm = ({
   onError,
   performManualSubmit,
 }) => {
-  const [labels, setLabels] = useState([]);
-  const [readonlyLabels, setReadonlyLabels] = useState([]);
+  const [labels, setLabels] = useState({});
+  const [readonlyLabels, setReadonlyLabels] = useState({});
 
   const formValues = {
     name: useRef(null),
@@ -254,13 +254,20 @@ const CreateNamespaceForm = ({
   }
 
   function handleIstioChange(disableSidecar) {
-    let newLabels = readonlyLabels.filter(l => l !== ISTIO_INJECTION_LABEL);
+    const [istioInjLabelKey, istioInjLabelValue] = ISTIO_INJECTION_LABEL.split(
+      '=',
+    );
 
     if (disableSidecar) {
-      newLabels.push(ISTIO_INJECTION_LABEL);
+      setReadonlyLabels({
+        ...readonlyLabels,
+        [istioInjLabelKey]: istioInjLabelValue,
+      });
+    } else {
+      const newReadonlyLabels = { ...readonlyLabels };
+      delete newReadonlyLabels[istioInjLabelKey];
+      setReadonlyLabels(newReadonlyLabels);
     }
-
-    setReadonlyLabels(newLabels);
   }
 
   async function handleFormSubmit(e) {

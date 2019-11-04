@@ -15,7 +15,9 @@ export default function LabelDisplay(props) {
           key={label}
           className="y-fd-token y-fd-token--no-button fd-has-margin-right-tiny"
         >
-          {label}=[{props.labels[label].join(', ')}]
+          {props.labels[label].length
+            ? `${label}=[${props.labels[label].join(', ')}]`
+            : label}
         </Token>
       ))}
     </span>

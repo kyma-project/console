@@ -72,6 +72,25 @@ const createNamespaceSuccessfulMock = () => ({
   }),
 });
 
+const createNamespaceWithLabelSuccessfulMock = () => ({
+  request: {
+    query: CREATE_NAMESPACE,
+    variables: {
+      name: '',
+      labels: {
+        'istio-injection': 'disabled',
+      },
+    },
+  },
+  result: jest.fn().mockReturnValue({
+    data: {
+      createNamespace: {
+        name: '',
+      },
+    },
+  }),
+});
+
 const createNamespaceErrorMock = () => ({
   request: {
     query: CREATE_NAMESPACE,
@@ -103,6 +122,7 @@ export {
   createLimitRangeSuccessfulMock,
   createResourceQuotaSuccessfulMock,
   createNamespaceSuccessfulMock,
+  createNamespaceWithLabelSuccessfulMock,
   createNamespaceErrorMock,
   createResourceQuotaErrorMock,
 };

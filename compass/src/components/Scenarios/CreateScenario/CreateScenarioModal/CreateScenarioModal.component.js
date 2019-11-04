@@ -17,10 +17,11 @@ export default class CreateScenarioModal extends React.Component {
   checkScenarioAlreadyExists = scenarioName => {
     const scenariosQuery = this.props.scenariosQuery;
     return (
-      !!scenariosQuery.error || // scenariosQuery.error means there were no scenarios yet
-      JSON.parse(scenariosQuery.labelDefinition.schema).items.enum.includes(
-        scenarioName,
-      )
+      !!scenariosQuery.error ||
+      (scenariosQuery.labelDefinition &&
+        JSON.parse(scenariosQuery.labelDefinition.schema).items.enum.includes(
+          scenarioName,
+        ))
     );
   };
 

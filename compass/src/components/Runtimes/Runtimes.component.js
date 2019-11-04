@@ -6,6 +6,7 @@ import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 import handleDelete from '../../shared/components/GenericList/actionHandlers/simpleDelete';
+import LabelsDisplay from './../Shared/LabelDisplay';
 
 import ModalWithForm from '../../shared/components/ModalWithForm/ModalWithForm.container';
 import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm.container';
@@ -15,12 +16,7 @@ class Runtimes extends React.Component {
     deleteRuntime: PropTypes.func.isRequired,
   };
 
-  headerRenderer = runtimes => [
-    'Name',
-    'Description',
-    'Assigned Scenarios',
-    'Status',
-  ];
+  headerRenderer = () => ['Name', 'Description', 'Labels', 'Status'];
 
   rowRenderer = runtime => [
     <span
@@ -32,9 +28,11 @@ class Runtimes extends React.Component {
       {runtime.name}
     </span>,
     runtime.description ? runtime.description : EMPTY_TEXT_PLACEHOLDER,
-    runtime.labels && runtime.labels.scenarios
-      ? runtime.labels.scenarios.length
-      : 0,
+    runtime.labels && Object.keys(runtime.labels).length ? (
+      <LabelsDisplay labels={runtime.labels} />
+    ) : (
+      EMPTY_TEXT_PLACEHOLDER
+    ),
     <StatusBadge
       status={
         runtime.status && runtime.status.condition

@@ -7,13 +7,14 @@ import CustomPropTypes from '../../../../shared/typechecking/CustomPropTypes';
 const formProps = {
   formElementRef: CustomPropTypes.elementRef,
   onChange: PropTypes.func.isRequired,
+  onCompleted: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
 };
 
 const gqlProps = {
   updateApplication: PropTypes.func.isRequired,
-  applicationsAndLabelsQuery: PropTypes.object.isRequired,
+  applicationsQuery: PropTypes.object.isRequired,
 };
 
 UpdateApplicationForm.propTypes = {

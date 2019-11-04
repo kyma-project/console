@@ -3,13 +3,19 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import GenericList from '../../shared/components/GenericList/GenericList';
 import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
+import EnititesForScenarioCount from './EnititesForScenarioCount';
+
+import {
+  GET_APPLICATIONS_FOR_SCENARIO,
+  GET_RUNTIMES_FOR_SCENARIO,
+} from './gql';
 
 class Scenarios extends React.Component {
   navigateToScenario(scenarioName) {
     LuigiClient.linkManager().navigate(`details/${scenarioName}`);
   }
 
-  headerRenderer = () => ['Name'];
+  headerRenderer = () => ['Name', 'Runtimes', 'Applications'];
 
   rowRenderer = scenario => [
     <span
@@ -18,32 +24,33 @@ class Scenarios extends React.Component {
     >
       {scenario.name}
     </span>,
+    <EnititesForScenarioCount
+      scenarioName={scenario.name}
+      entityType="runtimes"
+      query={GET_RUNTIMES_FOR_SCENARIO}
+    />,
+    <EnititesForScenarioCount
+      scenarioName={scenario.name}
+      entityType="applications"
+      query={GET_APPLICATIONS_FOR_SCENARIO}
+    />,
   ];
 
   render() {
-    const scenarioLabelDefinitionSchemaQuery = this.props.scenarioLabelSchema;
+    const scenarioLabelSchema = this.props.scenarioLabelSchema;
     const scenarios =
-      (scenarioLabelDefinitionSchemaQuery &&
-        scenarioLabelDefinitionSchemaQuery.labelDefinition &&
-        scenarioLabelDefinitionSchemaQuery.labelDefinition.schema &&
-        JSON.parse(scenarioLabelDefinitionSchemaQuery.labelDefinition.schema)
-          .items &&
-        JSON.parse(scenarioLabelDefinitionSchemaQuery.labelDefinition.schema)
-          .items.enum) ||
+      (scenarioLabelSchema.labelDefinition &&
+        scenarioLabelSchema.labelDefinition.schema &&
+        JSON.parse(scenarioLabelSchema.labelDefinition.schema).items &&
+        JSON.parse(scenarioLabelSchema.labelDefinition.schema).items.enum) ||
       [];
-    const loading =
-      scenarioLabelDefinitionSchemaQuery &&
-      scenarioLabelDefinitionSchemaQuery.loading;
-    const error =
-      scenarioLabelDefinitionSchemaQuery &&
-      scenarioLabelDefinitionSchemaQuery.error;
-
-    const scenariosObjects = scenarios.map(scenario => {
-      return { name: scenario };
-    });
+    const loading = scenarioLabelSchema.loading;
+    const error = scenarioLabelSchema.error;
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
+
+    const scenariosObjects = scenarios.map(scenario => ({ name: scenario }));
 
     return (
       <GenericList
@@ -53,9 +60,7 @@ class Scenarios extends React.Component {
         headerRenderer={this.headerRenderer}
         rowRenderer={this.rowRenderer}
         extraHeaderContent={
-          <CreateScenarios
-            scenariosQuery={scenarioLabelDefinitionSchemaQuery}
-          />
+          <CreateScenarios scenariosQuery={scenarioLabelSchema} />
         }
       />
     );
