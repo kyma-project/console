@@ -60,18 +60,15 @@ export default function LambdaDetails({ lambdaId }) {
   if (error) {
     return `Error! ${error.message}`;
   }
-
   if (loading || !data) {
     return <Spinner />;
   }
-
   if (data && !data.function) {
     setTimeout(() => {
       stopPolling();
     }, 3000);
     return <EntryNotFound entryType="Lambda" entryId={lambdaId} />;
   }
-
   if (data && data.function) {
     stopPolling();
   }

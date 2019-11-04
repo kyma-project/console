@@ -28,11 +28,9 @@ export default function EntryNotFound({ entryType, entryId, navigate }) {
           </section>
         </section>
       </header>
-      <section className="fd-has-margin-regular">
-        <Panel className="fd-has-padding-regular">
-          {entryType} "{entryId}" doesn't exist.
-        </Panel>
-      </section>
+      <Panel className="fd-has-padding-regular fd-has-margin-regular">
+        {entryType} "{entryId}" doesn't exist.
+      </Panel>
     </>
   );
 }
