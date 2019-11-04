@@ -48,6 +48,7 @@ export class ServiceInstancesTable extends Component {
   goToServiceCatalog = () => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
+      .withParams({ selectedTab: this.props.type })
       .navigate('cmf-service-catalog');
   };
 
