@@ -45,6 +45,7 @@ export default function LambdaDetails({ lambdaId }) {
       name: lambdaId,
       namespace,
     },
+    fetchPolicy: 'no-cache',
     pollInterval: 500,
   });
 
