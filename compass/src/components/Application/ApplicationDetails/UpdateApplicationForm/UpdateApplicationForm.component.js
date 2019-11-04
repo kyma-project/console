@@ -7,7 +7,6 @@ import CustomPropTypes from '../../../../shared/typechecking/CustomPropTypes';
 const formProps = {
   formElementRef: CustomPropTypes.elementRef,
   onChange: PropTypes.func.isRequired,
-  onCompleted: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
 };
@@ -46,7 +45,7 @@ export default function UpdateApplicationForm({
     return <p>Loading...</p>;
   }
   if (applicationsQuery.error) {
-    return <p>`Error! ${applicationsQuery.error.message}`</p>;
+    return <p>{`Error! ${applicationsQuery.error.message}`}</p>;
   }
 
   const onFormChange = formEvent => {
