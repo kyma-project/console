@@ -240,7 +240,7 @@ const CreateNamespaceForm = ({
 
   useEffect(() => {
     const element = formValues.name.current;
-    setTimeout(() => {
+    setImmediate(() => {
       if (element && typeof element.focus === 'function') element.focus();
     });
   }, [formValues.name]);
@@ -340,8 +340,7 @@ const CreateNamespaceForm = ({
         err.additionalRequestFailed = true;
         throw err;
       }
-
-      onCompleted('Success', `Namespace ${namespaceData.name} created.`);
+      onCompleted(namespaceData.name);
     } catch (e) {
       if (e.additionalRequestFailed) {
         onError(
@@ -411,7 +410,7 @@ CreateNamespaceForm.propTypes = {
   isValid: PropTypes.bool,
   onChange: PropTypes.func,
   onError: PropTypes.func, // args: title(string), message(string)
-  onCompleted: PropTypes.func, // args: title(string), message(string)
+  onCompleted: PropTypes.func, // args: namespaceName(string)
   performManualSubmit: PropTypes.func, // no args
 };
 

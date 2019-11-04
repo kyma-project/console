@@ -14,6 +14,12 @@ NamespacesListHeader.propTypes = {
   setLabelFilters: PropTypes.func.isRequired,
 };
 
+function navigateToNamespaceDetails(namespaceName) {
+  LuigiClient.linkManager().navigate(
+    `/home/namespaces/${namespaceName}/details`,
+  );
+}
+
 export default function NamespacesListHeader({
   labelFilters,
   updateSearchPhrase,
@@ -38,7 +44,12 @@ export default function NamespacesListHeader({
           title="Add new namespace"
           button={{ text: 'Add new namespace', glyph: 'add' }}
           id="add-namespace-modal"
-          renderForm={props => <CreateNamespaceForm {...props} />}
+          renderForm={props => (
+            <CreateNamespaceForm
+              {...props}
+              onCompleted={navigateToNamespaceDetails}
+            />
+          )}
           opened={opened}
         />
       </div>
