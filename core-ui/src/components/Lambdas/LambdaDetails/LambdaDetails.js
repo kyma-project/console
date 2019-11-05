@@ -2,16 +2,18 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { FormItem, FormLabel, Panel, TabGroup, Tab } from 'fundamental-react';
-import Editor from '@monaco-editor/react';
+import { TabGroup, Tab } from 'fundamental-react';
+import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
 import { GET_LAMBDA } from '../../../gql/queries';
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
-import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+
 import EntryNotFound from '../../EntryNotFound/EntryNotFound';
 import Spinner from '../../../shared/components/Spinner/Spinner';
 import { useNotification } from '../../../contexts/notifications';
+import CodeTab from './Tabs/Code';
+import ConfigurationTab from './Tabs/Configuration';
 
 export default function LambdaDetails({ lambdaId }) {
   const [labels, setLabels] = useState({});
@@ -120,10 +122,6 @@ export default function LambdaDetails({ lambdaId }) {
     setLabels(newLabels);
   }
 
-  function handleEditorDidMount(valueGetter) {
-    formValues.content.current = valueGetter;
-  }
-
   const onChangeTab = (_, id) => {
     const selectedTab = id === 0 ? 'Configuration' : 'Code';
     try {
@@ -147,56 +145,18 @@ export default function LambdaDetails({ lambdaId }) {
           id="lambda-configuration"
           title="Configuration"
         >
-          <Panel className="fd-has-margin-medium">
-            <Panel.Header>
-              <Panel.Head title="General Configuration" />
-            </Panel.Header>
-            <Panel.Body>
+          <ConfigurationTab
+            lambda={lambda}
+            sizeRef={formValues.size}
+            runtimeRef={formValues.runtime}
+            LabelsEditor={
               <LabelSelectorInput labels={labels} onChange={updateLabels} />
-              <FormItem>
-                <FormLabel htmlFor="lambdaSize">Size*</FormLabel>
-                <select
-                  id="lambdaSize"
-                  defaultValue={lambda.size}
-                  ref={formValues.size}
-                >
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                </select>
-              </FormItem>
-
-              <FormItem>
-                <FormLabel htmlFor="lambdaRuntime">Runtime*</FormLabel>
-                <select
-                  id="lambdaRuntime"
-                  defaultValue={lambda.runtime}
-                  ref={formValues.runtime}
-                >
-                  <option value="nodejs6">Nodejs 6</option>
-                  <option value="nodejs8">Nodejs 8</option>
-                </select>
-              </FormItem>
-            </Panel.Body>
-          </Panel>
+            }
+          />
         </Tab>
 
         <Tab key="lambda-code" id="lambda-code" title="Code">
-          <Panel className="fd-has-margin-medium">
-            <Panel.Header>
-              <Panel.Head title="Lambda Code" />
-            </Panel.Header>
-            <Panel.Body>
-              <Editor
-                id="lambdaContent"
-                height="40em"
-                language="javascript"
-                theme="vs-light"
-                value={lambdaCode}
-                editorDidMount={handleEditorDidMount}
-              />
-            </Panel.Body>
-          </Panel>
+          <CodeTab lambdaCode={lambdaCode} contentRef={formValues.content} />
         </Tab>
       </TabGroup>
     </>
