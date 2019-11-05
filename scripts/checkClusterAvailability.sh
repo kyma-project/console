@@ -43,12 +43,7 @@ then
     fi
 else
     if [ "$SILLENT_MODE" = true ]; then
-        if nc -z dex.$2 80 2>/dev/null
-        then
-            exit 0
-        else
-            exit 1
-        fi
+        exit $(timeout 2 nc -z dex.$2 80)
     else
         if [[ $1 == *"."* ]]; then
             displaySingleClusterAvailibility $1
