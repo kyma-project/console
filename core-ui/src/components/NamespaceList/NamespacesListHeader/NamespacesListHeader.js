@@ -14,6 +14,12 @@ NamespacesListHeader.propTypes = {
   setLabelFilters: PropTypes.func.isRequired,
 };
 
+function navigateToNamespaceDetails(namespaceName) {
+  LuigiClient.linkManager().navigate(
+    `/home/namespaces/${namespaceName}/details`,
+  );
+}
+
 export default function NamespacesListHeader({
   labelFilters,
   updateSearchPhrase,
@@ -21,6 +27,10 @@ export default function NamespacesListHeader({
 }) {
   const queryParameters = LuigiClient.getNodeParams();
   const opened = queryParameters && queryParameters.showModal === 'true';
+
+  const clearQueryParams = () => {
+    LuigiClient.linkManager().navigate('/');
+  };
 
   return (
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
@@ -38,8 +48,14 @@ export default function NamespacesListHeader({
           title="Add new namespace"
           button={{ text: 'Add new namespace', glyph: 'add' }}
           id="add-namespace-modal"
-          renderForm={props => <CreateNamespaceForm {...props} />}
+          renderForm={props => (
+            <CreateNamespaceForm
+              {...props}
+              onCompleted={navigateToNamespaceDetails}
+            />
+          )}
           opened={opened}
+          customCloseAction={clearQueryParams}
         />
       </div>
     </Panel>

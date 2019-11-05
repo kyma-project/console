@@ -11,6 +11,9 @@ jest.mock('@kyma-project/luigi-client', () => ({
     addBackdrop: () => {},
     removeBackdrop: () => {},
   }),
+  linkManager: () => ({
+    navigate: () => {},
+  }),
 }));
 
 describe('NamespacesListHeader UI', () => {
