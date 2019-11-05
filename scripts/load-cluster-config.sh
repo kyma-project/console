@@ -7,7 +7,7 @@ fi
 
 SCRIPT_DIR="$( cd "$( dirname "${SCRIPTPATH}" )" >/dev/null 2>&1 && pwd )$1"
 CLUSTER_CONFIG_GEN="$SCRIPT_DIR/../.clusterConfig.gen"
-echo "CLUSTER_CONFIG_GEN=$CLUSTER_CONFIG_GEN"
+
 if [ -r $CLUSTER_CONFIG_GEN ]; then
     set -o allexport
     source $CLUSTER_CONFIG_GEN
