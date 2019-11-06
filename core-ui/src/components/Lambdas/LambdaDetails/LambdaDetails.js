@@ -13,15 +13,15 @@ import EntryNotFound from '../../EntryNotFound/EntryNotFound';
 import Spinner from '../../../shared/components/Spinner/Spinner';
 import { useNotification } from '../../../contexts/notifications';
 
-export default function LambdaDetails({ lambdaId }) {
-  const [labels, setLabels] = useState({});
-  const [lambdaCode, setLambdaCode] = useState(
-    `module.exports = { 
+const exampleLambdaCode = `module.exports = { 
   main: function (event, context) {
 
   }
-}`,
-  );
+}`;
+
+export default function LambdaDetails({ lambdaId }) {
+  const [labels, setLabels] = useState({});
+  const [lambdaCode, setLambdaCode] = useState(exampleLambdaCode);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
   const notificationManager = useNotification();

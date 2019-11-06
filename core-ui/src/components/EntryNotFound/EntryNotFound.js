@@ -1,6 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ActionBar, Breadcrumb, Panel } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
+
+EntryNotFound.propTypes = {
+  entryType: PropTypes.string.isRequired,
+  entryId: PropTypes.string,
+  navigate: PropTypes.func,
+};
 
 export default function EntryNotFound({ entryType, entryId, navigate }) {
   const navigateToList = () => {

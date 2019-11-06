@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ActionBar, Button, Breadcrumb } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useMutation } from '@apollo/react-hooks';
@@ -6,6 +7,11 @@ import { useMutation } from '@apollo/react-hooks';
 import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 import { DELETE_LAMBDA } from '../../../../gql/mutations';
 import { useNotification } from '../../../../contexts/notifications';
+
+LambdaDetailsHeader.propTypes = {
+  lambda: PropTypes.object.isRequired,
+  handleUpdate: PropTypes.func.isRequired,
+};
 
 export default function LambdaDetailsHeader({ lambda, handleUpdate }) {
   const { name, namespace } = lambda;
