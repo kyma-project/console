@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Panel, Button } from 'fundamental-react';
 import './CollapsiblePanel.scss';
 
-const CollapsiblePanel = ({ content, title, isOpenInitially = true }) => {
+const CollapsiblePanel = ({
+  children,
+  content,
+  title,
+  isOpenInitially = true,
+}) => {
   const [isOpen, setIsOpen] = useState(isOpenInitially);
 
   return (
@@ -18,7 +23,7 @@ const CollapsiblePanel = ({ content, title, isOpenInitially = true }) => {
         </Panel.Actions>
       </Panel.Header>
       <Panel.Body className={isOpen ? 'body body--open' : 'body body--closed'}>
-        {content}
+        {children}
       </Panel.Body>
     </Panel>
   );

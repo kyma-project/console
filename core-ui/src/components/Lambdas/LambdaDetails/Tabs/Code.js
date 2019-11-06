@@ -27,8 +27,18 @@ const CodeTab = ({ lambdaCode, contentRef }) => {
         </Panel.Body>
       </Panel>
       <div className="col-2">
-        <CollapsiblePanel title="testtitle" content="abcd" />
-        <CollapsiblePanel title="aaaaa" content="bbbb" />
+        <CollapsiblePanel title="testtitle" content="abcd">
+          test
+        </CollapsiblePanel>
+        <CollapsiblePanel title="aaaaa">
+          Lorem ipsum <br />
+          costam costama <br />
+          aasdadgdsgs dsg adsg sadg <br />
+          adsg sdg asdg adsg
+          <br />
+          dsg adsg
+          <br />
+        </CollapsiblePanel>
       </div>
     </div>
   );
