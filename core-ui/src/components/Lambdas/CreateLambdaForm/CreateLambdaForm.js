@@ -47,9 +47,7 @@ export default function CreateLambdaForm({
         variables,
       });
       onCompleted(variables.name, `Lambda created succesfully`);
-      setTimeout(() => {
-        LuigiClient.linkManager().navigate(`details/${variables.name}`);
-      }, 200);
+      LuigiClient.linkManager().navigate(`details/${variables.name}`);
     } catch (e) {
       onError(`The lambda could not be created succesfully`, e.message || ``);
     }

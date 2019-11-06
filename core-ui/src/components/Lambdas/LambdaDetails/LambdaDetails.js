@@ -1,16 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { FormItem, FormLabel, Panel, TabGroup, Tab } from 'fundamental-react';
 import Editor from '@monaco-editor/react';
 
-import { GET_LAMBDA } from '../../../gql/queries';
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
-import EntryNotFound from '../../EntryNotFound/EntryNotFound';
-import Spinner from '../../../shared/components/Spinner/Spinner';
 import { useNotification } from '../../../contexts/notifications';
 
 const exampleLambdaCode = `module.exports = { 
@@ -19,9 +16,11 @@ const exampleLambdaCode = `module.exports = {
   }
 }`;
 
-export default function LambdaDetails({ lambdaId }) {
-  const [labels, setLabels] = useState({});
-  const [lambdaCode, setLambdaCode] = useState(exampleLambdaCode);
+export default function LambdaDetails({ lambda }) {
+  const [labels, setLabels] = useState(lambda.labels);
+  const [lambdaCode, setLambdaCode] = useState(
+    lambda.content || exampleLambdaCode,
+  );
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
   const notificationManager = useNotification();
@@ -40,47 +39,11 @@ export default function LambdaDetails({ lambdaId }) {
     setSelectedTabIndex(selectedTabIndex);
   }, [selectedTabName]);
 
-  const { data, error, loading, stopPolling } = useQuery(GET_LAMBDA, {
-    variables: {
-      name: lambdaId,
-      namespace,
-    },
-    fetchPolicy: 'no-cache',
-    pollInterval: 500,
-  });
-
-  useEffect(() => {
-    if (data && data.function) {
-      setLabels(data.function.labels);
-      if (data.function.content) {
-        setLambdaCode(data.function.content);
-      }
-    }
-  }, [data]);
-
-  if (error) {
-    return `Error! ${error.message}`;
-  }
-  if (loading || !data) {
-    return <Spinner />;
-  }
-  if (data && !data.function) {
-    setTimeout(() => {
-      stopPolling();
-    }, 3000);
-    return <EntryNotFound entryType="Lambda" entryId={lambdaId} />;
-  }
-  if (data && data.function) {
-    stopPolling();
-  }
-
-  const lambda = data.function;
-
   async function updateLambda() {
     try {
       const updatedFunction = await updateLambdaMutation({
         variables: {
-          name: lambdaId,
+          name: lambda.name,
           namespace,
           params: {
             labels: labels || {},
@@ -95,10 +58,10 @@ export default function LambdaDetails({ lambdaId }) {
       const isSuccess =
         updatedFunction.data &&
         updatedFunction.data.updateFunction &&
-        updatedFunction.data.updateFunction.name === lambdaId;
+        updatedFunction.data.updateFunction.name === lambda.name;
       if (isSuccess) {
         notificationManager.notify({
-          content: `Lambda ${lambdaId} updated successfully`,
+          content: `Lambda ${lambda.name} updated successfully`,
           title: 'Success',
           color: '#107E3E',
           icon: 'accept',
@@ -107,7 +70,7 @@ export default function LambdaDetails({ lambdaId }) {
       }
     } catch (e) {
       notificationManager.notify({
-        content: `Error while removing lambda ${lambdaId}: ${e.message}`,
+        content: `Error while removing lambda ${lambda.name}: ${e.message}`,
         title: 'Error',
         color: '#BB0000',
         icon: 'decline',
@@ -204,5 +167,5 @@ export default function LambdaDetails({ lambdaId }) {
 }
 
 LambdaDetails.propTypes = {
-  lambdaId: PropTypes.string.isRequired,
+  lambda: PropTypes.object.isRequired,
 };
