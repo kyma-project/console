@@ -3,6 +3,7 @@
     grid-template-columns:2fr minmax(auto, 1fr);
    // grid-template-rows: 50em auto;
     grid-gap: 1em;
+    align-items: baseline;
 
     .col-1{
         max-height: 50em;

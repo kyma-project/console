@@ -3,6 +3,7 @@ import { Panel, LayoutGrid } from 'fundamental-react';
 import Editor from '@monaco-editor/react';
 
 import './Code.scss';
+import CollapsiblePanel from '../CollapsiblePanel/CollapsiblePanel';
 
 const CodeTab = ({ lambdaCode, contentRef }) => {
   function handleEditorDidMount(valueGetter) {
@@ -26,48 +27,8 @@ const CodeTab = ({ lambdaCode, contentRef }) => {
         </Panel.Body>
       </Panel>
       <div className="col-2">
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Header>
-            <Panel.Head title="test" />
-          </Panel.Header>
-          <Panel.Body>test</Panel.Body>
-        </Panel>
+        <CollapsiblePanel title="testtitle" content="abcd" />
+        <CollapsiblePanel title="aaaaa" content="bbbb" />
       </div>
     </div>
   );
