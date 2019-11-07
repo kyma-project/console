@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel } from 'fundamental-react';
-import Editor from '@monaco-editor/react';
+import { ControlledEditor } from '@monaco-editor/react';
 
-const CodeTab = ({ lambdaCode, contentRef }) => {
+const CodeTab = ({ lambdaCode, setLambdaCode }) => {
   function handleEditorDidMount(valueGetter) {
     contentRef.current = valueGetter;
   }
@@ -13,13 +13,13 @@ const CodeTab = ({ lambdaCode, contentRef }) => {
         <Panel.Head title="Lambda Code" />
       </Panel.Header>
       <Panel.Body>
-        <Editor
+        <ControlledEditor
           id="lambdaContent"
           height="40em"
           language="javascript"
           theme="vs-light"
           value={lambdaCode}
-          editorDidMount={handleEditorDidMount}
+          onChange={(_, value) => setLambdaCode(value)}
         />
       </Panel.Body>
     </Panel>
@@ -27,8 +27,8 @@ const CodeTab = ({ lambdaCode, contentRef }) => {
 };
 
 CodeTab.propTypes = {
-  lambdaCode: PropTypes.string,
-  contentRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  lambdaCode: PropTypes.string.isRequired,
+  setLambdaCode: PropTypes.func.isRequired,
 };
 
 export default CodeTab;

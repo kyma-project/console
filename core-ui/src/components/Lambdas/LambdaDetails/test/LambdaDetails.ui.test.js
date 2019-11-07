@@ -27,7 +27,7 @@ describe('LambdaDetails', () => {
     expect(lambdaRuntimeInput.exists()).toEqual(true);
     expect(lambdaRuntimeInput.props().defaultValue).toEqual(lambda.runtime);
 
-    const lambdaContentInput = component.find('#lambdaContent');
+    const lambdaContentInput = component.find('#lambdaContent').first();
     expect(lambdaContentInput.exists()).toEqual(true);
     expect(lambdaContentInput.props().value).toEqual(lambda.content);
   });
@@ -45,7 +45,7 @@ describe('LambdaDetails', () => {
     expect(lambdaRuntimeInput.exists()).toEqual(true);
     expect(lambdaRuntimeInput.props().defaultValue).toEqual(lambda.runtime);
 
-    const lambdaContentInput = component.find('#lambdaContent');
+    const lambdaContentInput = component.find('#lambdaContent').first();
     expect(lambdaContentInput.exists()).toEqual(true);
     expect(lambdaContentInput.props().value).toEqual(
       `module.exports = { 

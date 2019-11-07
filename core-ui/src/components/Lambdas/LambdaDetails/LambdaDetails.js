@@ -30,7 +30,6 @@ export default function LambdaDetails({ lambda }) {
   const formValues = {
     size: useRef(null),
     runtime: useRef(null),
-    content: useRef(null),
   };
 
   const namespace = LuigiClient.getEventData().environmentId;
@@ -51,7 +50,7 @@ export default function LambdaDetails({ lambda }) {
             labels: labels || {},
             size: formValues.size.current.value,
             runtime: formValues.runtime.current.value,
-            content: formValues.content.current(),
+            content: lambdaCode,
             dependencies: '',
           },
         },
@@ -119,7 +118,7 @@ export default function LambdaDetails({ lambda }) {
         </Tab>
 
         <Tab key="lambda-code" id="lambda-code" title="Code">
-          <CodeTab lambdaCode={lambdaCode} contentRef={formValues.content} />
+          <CodeTab lambdaCode={lambdaCode} setLambdaCode={setLambdaCode} />
         </Tab>
       </TabGroup>
     </>

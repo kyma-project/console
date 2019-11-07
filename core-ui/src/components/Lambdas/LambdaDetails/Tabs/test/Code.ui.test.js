@@ -5,13 +5,8 @@ import Code from '../Code';
 
 describe('Lambda Code Tab', () => {
   it('Render with minimal props', () => {
-    const component = renderer.create(<Code contentRef={{ current: null }} />);
-    expect(component.toJSON()).toMatchSnapshot();
-  });
-
-  it('Render example code', () => {
     const component = renderer.create(
-      <Code contentRef={{ current: null }} lambdaCode="echo" />,
+      <Code lambdaCode="code" setLambdaCode={() => {}} />,
     );
     expect(component.toJSON()).toMatchSnapshot();
   });
