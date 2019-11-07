@@ -58,7 +58,7 @@ export default function LambdaDetails({ lambdaId }) {
         setLambdaCode(data.function.content);
       }
     }
-  }, []);
+  }, [data]);
 
   if (error) {
     return `Error! ${error.message}`;

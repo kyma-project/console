@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import classNames from 'classnames';
-import { Panel, LayoutGrid, Button } from 'fundamental-react';
+import { Panel, Button } from 'fundamental-react';
 import Editor from '@monaco-editor/react';
 import './Code.scss';
 import CollapsiblePanel from '../CollapsiblePanel/CollapsiblePanel';
