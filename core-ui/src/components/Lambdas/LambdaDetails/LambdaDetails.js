@@ -52,8 +52,6 @@ export default function LambdaDetails({ lambdaId }) {
   });
 
   useEffect(() => {
-    // setLabels([])
-    // setLambdaCode('dsfadsgasdg')
     if (data && data.function) {
       setLabels(data.function.labels);
       if (data.function.content) {
@@ -68,12 +66,12 @@ export default function LambdaDetails({ lambdaId }) {
   if (loading || !data) {
     return <Spinner />;
   }
-  // if (data && !data.function) {
-  //   setTimeout(() => {
-  //     stopPolling();
-  //   }, 3000);
-  //   return <EntryNotFound entryType="Lambda" entryId={lambdaId} />;
-  // }
+  if (data && !data.function) {
+    setTimeout(() => {
+      stopPolling();
+    }, 3000);
+    return <EntryNotFound entryType="Lambda" entryId={lambdaId} />;
+  }
   if (data && data.function) {
     stopPolling();
   }
@@ -137,24 +135,24 @@ export default function LambdaDetails({ lambdaId }) {
 
   return (
     <>
-      {/* <LambdaDetailsHeader
+      <LambdaDetailsHeader
         lambda={lambda}
         handleUpdate={updateLambda}
-      ></LambdaDetailsHeader> */}
+      ></LambdaDetailsHeader>
       <TabGroup selectedIndex={selectedTabIndex} onTabClick={onChangeTab}>
         <Tab
           key="lambda-configuration"
           id="lambda-configuration"
           title="Configuration"
         >
-          {/* <ConfigurationTab
+          <ConfigurationTab
             lambda={lambda}
             sizeRef={formValues.size}
             runtimeRef={formValues.runtime}
             LabelsEditor={
               <LabelSelectorInput labels={labels} onChange={updateLabels} />
             }
-          /> */}
+          />
         </Tab>
 
         <Tab key="lambda-code" id="lambda-code" title="Code">
