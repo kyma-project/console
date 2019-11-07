@@ -4,7 +4,7 @@ import { ActionBar, Button, Breadcrumb } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useMutation } from '@apollo/react-hooks';
 
-import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
+import { handleDelete } from 'react-shared';
 import { DELETE_LAMBDA } from '../../../../gql/mutations';
 import { useNotification } from '../../../../contexts/notifications';
 
