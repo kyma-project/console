@@ -4,9 +4,6 @@ import { Panel } from 'fundamental-react';
 import { ControlledEditor } from '@monaco-editor/react';
 
 const CodeTab = ({ lambdaCode, setLambdaCode }) => {
-  function handleEditorDidMount(valueGetter) {
-    contentRef.current = valueGetter;
-  }
   return (
     <Panel className="fd-has-margin-medium">
       <Panel.Header>
