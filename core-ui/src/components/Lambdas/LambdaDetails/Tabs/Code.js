@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Panel } from 'fundamental-react';
 import Editor from '@monaco-editor/react';
 
@@ -23,6 +24,11 @@ const CodeTab = ({ lambdaCode, contentRef }) => {
       </Panel.Body>
     </Panel>
   );
+};
+
+CodeTab.propTypes = {
+  lambdaCode: PropTypes.string,
+  contentRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
 };
 
 export default CodeTab;

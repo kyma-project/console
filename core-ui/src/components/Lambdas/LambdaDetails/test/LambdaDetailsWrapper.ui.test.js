@@ -9,8 +9,6 @@ import { componentUpdate } from '../../../../testing';
 import LambdaDetailsWrapper from '../LambdaDetailsWrapper';
 import Spinner from '../../../../shared/components/Spinner/Spinner';
 
-import { getLambdaSuccessMock } from './gqlMocks';
-
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     getEventData: () => ({ environmentId: 'testnamespace' }),
@@ -46,20 +44,5 @@ describe('LambdaDetailsWrapper', () => {
     await componentUpdate(component);
 
     expect(component.find(Spinner)).toHaveLength(0);
-  });
-
-  it('Renders lambda after load', async () => {
-    const gqlMock = [getLambdaSuccessMock()];
-
-    const component = mount(
-      <MockedProvider mocks={gqlMock}>
-        <LambdaDetailsWrapper lambdaName={lambda.name} />
-      </MockedProvider>,
-    );
-
-    await componentUpdate(component);
-
-    const tree = toJson(component);
-    expect(tree).toMatchSnapshot();
   });
 });

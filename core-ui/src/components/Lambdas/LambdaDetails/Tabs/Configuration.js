@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Panel, FormItem, FormLabel } from 'fundamental-react';
 
 const ConfigurationTab = ({ lambda, sizeRef, runtimeRef, LabelsEditor }) => {
@@ -32,6 +33,13 @@ const ConfigurationTab = ({ lambda, sizeRef, runtimeRef, LabelsEditor }) => {
       </Panel.Body>
     </Panel>
   );
+};
+
+ConfigurationTab.propTypes = {
+  lambda: PropTypes.object.isRequired,
+  sizeRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  runtimeRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  LabelsEditor: PropTypes.element.isRequired,
 };
 
 export default ConfigurationTab;
