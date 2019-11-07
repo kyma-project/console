@@ -5,7 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { ActionBar } from 'fundamental-react';
 import { Breadcrumb, Button } from '@kyma-project/react-components';
 
-import handleDelete from './../../../../shared/components/GenericList/actionHandlers/simpleDelete';
+import { handleDelete } from 'react-shared';
 import ScenarioNameContext from './../ScenarioNameContext';
 
 import { nonDeletableScenarioNames } from './../../../../shared/constants';

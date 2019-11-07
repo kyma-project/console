@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import GenericList from '../../../../shared/components/GenericList/GenericList';
+import GenericList from 'react-shared';
 import { Panel } from '@kyma-project/react-components';
 import AssignEntityToScenarioModal from './../shared/AssignEntityToScenarioModal/AssignApplicationsToScenarioModal.container';
 import unassignScenarioHandler from './../shared/unassignScenarioHandler';

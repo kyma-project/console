@@ -6,7 +6,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { CREATE_LAMBDA } from '../../../gql/mutations';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
-import { K8sNameField } from '../../K8sNameInput/K8sNameInput';
+import { K8sNameInput } from 'react-shared';
 
 CreateLambdaForm.propTypes = {
   onChange: PropTypes.func,
@@ -61,7 +61,7 @@ export default function CreateLambdaForm({
       onSubmit={handleFormSubmit}
     >
       <FormItem>
-        <K8sNameField _ref={formValues.name} id="lambdaName" kind="Lambda" />
+        <K8sNameInput _ref={formValues.name} id="lambdaName" kind="Lambda" />
       </FormItem>
 
       <LabelSelectorInput labels={labels} onChange={updateLabels} />

@@ -16,7 +16,7 @@ RUN apk update && apk upgrade && \
 COPY ./temp /app
 RUN npm run bootstrap:prod
 
-COPY package.json package-lock.json webpack-generateConfig.config.js /app/compass/
+COPY package.json package-lock.json webpack-generateConfig.config.js jsconfig.json /app/compass/
 RUN cd /app/compass && npm install --no-optional
 
 # Copy sources

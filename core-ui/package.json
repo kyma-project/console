@@ -24,9 +24,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "core-js": "^3.1.4"
-  },
   "config": {
     "unsafe-perm": true
   },

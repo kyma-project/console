@@ -34,7 +34,6 @@
     ]
   },
   "devDependencies": {
-    "core-js": "^3.1.4",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0"
   },

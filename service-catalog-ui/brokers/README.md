@@ -30,10 +30,10 @@ The build is minified and the filenames include hashes.
 
 1. Run the following command to build and run the Docker image:
 
-``` bash
-sh ../scripts/build-docker-image.sh addons-ui
-docker run --rm -p 8002:80 docs-ui
-```
+    ``` bash
+    sh ../scripts/build-docker-image.sh addons-ui
+    docker run --rm -p 8002:80 docs-ui
+    ```
 
 2. Open `http://localhost:8002` in a browser.
 

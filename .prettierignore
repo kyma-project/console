@@ -76,6 +76,10 @@ yarn-error.log
 stats.html
 .rpt2_cache
 
+# symlinked shared components for react
+shared/build
+**/react-shared
+
 compass/public-luigi/luigi-core
 compass/src/assets/luigiConfig.bundle.js
 compass/src/config/luigi-config/main.js
