@@ -10,7 +10,8 @@ import {
   PanelGrid,
 } from '@kyma-project/react-components';
 
-import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
+import { handleDelete } from 'react-shared';
+
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 

@@ -13,9 +13,11 @@ import {
   UrlsProvider,
   SubscriptionsProvider,
 } from './services';
+import { LuigiContextProvider } from './services/LuigiContext.service';
 
 (async () => {
   const services = [
+    LuigiContextProvider,
     QueriesProvider,
     MutationsProvider,
     FiltersProvider,

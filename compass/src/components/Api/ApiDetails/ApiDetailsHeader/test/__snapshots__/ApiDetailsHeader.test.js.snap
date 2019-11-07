@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModalWithForm Renders with minimal props 1`] = `
+exports[`ApiDetailsHeader Renders with minimal props 1`] = `
 <header
   className="fd-has-background-color-background-2"
 >

@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from '@kyma-project/react-components';
-import GenericList from '../../../../shared/components/GenericList/GenericList';
+
+import { GenericList } from 'react-shared';
+
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
-import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
+import { handleDelete } from 'react-shared';
 
 ApplicationDetailsApis.propTypes = {
   applicationId: PropTypes.string.isRequired,

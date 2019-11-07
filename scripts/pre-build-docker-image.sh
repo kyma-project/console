@@ -39,7 +39,7 @@ function copyFiles() {
     cp "${ROOT_DIR}/${f}" "${PWD}/${TEMP_DIR}/"
   done
 
-  local dirs="common components"
+  local dirs="common components shared"
   local dirsArray=(${dirs})
 
   for d in "${dirsArray[@]}"; do

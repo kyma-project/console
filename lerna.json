@@ -10,6 +10,7 @@
     "add-ons",
     "lambda",
     "logging",
-    "core-ui"
+    "core-ui",
+    "shared"
   ]
 }

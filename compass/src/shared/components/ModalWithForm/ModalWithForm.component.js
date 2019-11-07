@@ -9,10 +9,12 @@ const ModalWithForm = ({
   sendNotification,
   title,
   button,
+  confirmText,
+  initialIsValid,
   children,
 }) => {
   const [isOpen, setOpen] = useState(false);
-  const [isValid, setValid] = useState(false);
+  const [isValid, setValid] = useState(initialIsValid);
   const formElementRef = useRef(null);
 
   const setOpenStatus = status => {
@@ -58,6 +60,7 @@ const ModalWithForm = ({
     <div>
       <Button
         glyph={button.glyph || null}
+        option={button.option}
         onClick={() => {
           setOpenStatus(true);
         }}
@@ -91,7 +94,7 @@ const ModalWithForm = ({
               }}
               option="emphasized"
             >
-              Create
+              {confirmText}
             </Button>
           </React.Fragment>
         }
@@ -117,15 +120,19 @@ ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  confirmText: PropTypes.string.isRequired,
+  initialIsValid: PropTypes.bool,
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
+    option: PropTypes.oneOf(['emphasized', 'light']),
   }).isRequired,
   children: PropTypes.node.isRequired,
 };
 ModalWithForm.defaultProps = {
   sendNotification: () => {},
   performRefetch: () => {},
+  initialIsValid: false,
 };
 
 export default ModalWithForm;

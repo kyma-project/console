@@ -91,6 +91,7 @@ class ServiceClassDetails extends React.Component {
       imageUrl,
       tags,
       labels,
+      __typename,
     } = serviceClass ? serviceClass : {};
 
     return (
@@ -110,6 +111,7 @@ class ServiceClassDetails extends React.Component {
               labels={labels}
               description={serviceClassDescription}
               isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+              typename={__typename}
             >
               <CreateInstanceModal
                 serviceClass={serviceClass}
