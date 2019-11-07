@@ -18,10 +18,19 @@ const exampleLambdaCode = `module.exports = {
   }
 }`;
 
+const exampleDependencies = `{ 
+  "name": "%NAME%",
+  "version": "1.0.0",
+  "dependencies": {}
+}`;
+
 export default function LambdaDetails({ lambda }) {
   const [labels, setLabels] = useState(lambda.labels);
   const [lambdaCode, setLambdaCode] = useState(
     lambda.content || exampleLambdaCode,
+  );
+  const [dependencies, setDependencies] = useState(
+    lambda.dependencies || exampleDependencies.replace('%NAME%', lambda.name),
   );
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
@@ -51,7 +60,7 @@ export default function LambdaDetails({ lambda }) {
             size: formValues.size.current.value,
             runtime: formValues.runtime.current.value,
             content: lambdaCode,
-            dependencies: '',
+            dependencies,
           },
         },
       });
@@ -118,7 +127,12 @@ export default function LambdaDetails({ lambda }) {
         </Tab>
 
         <Tab key="lambda-code" id="lambda-code" title="Code">
-          <CodeTab lambdaCode={lambdaCode} setLambdaCode={setLambdaCode} />
+          <CodeTab
+            lambdaCode={lambdaCode}
+            setLambdaCode={setLambdaCode}
+            dependencies={dependencies}
+            setDependencies={setDependencies}
+          />
         </Tab>
       </TabGroup>
     </>
