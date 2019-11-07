@@ -1,16 +1,20 @@
-.code-tab-grid{
-    display: grid;
-    grid-template-columns:2fr minmax(auto, 1fr);
-   // grid-template-rows: 50em auto;
-    grid-gap: 1em;
-    align-items: baseline;
+.code-tab-grid {
+  $self: &;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 1fr;
+  grid-gap: 1em;
+  align-items: baseline;
 
-    .col-1{
-        max-height: 50em;
+  &--expanded {
+    grid-template-columns: 100%;
+    @at-root #{$self}#{&} .col-2 {
+      display: none;
     }
-    .col-2{
-       grid-column:2;
-       display: grid;
-       grid-gap:1em;
-    }
+  }
+
+  .col-2 {
+    grid-column: 2;
+    display: grid;
+    grid-gap: 1em;
+  }
 }

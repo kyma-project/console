@@ -88,3 +88,7 @@ body {
     flex-grow: 1;
   }
 }
+
+button[class^="fd-button"]+ button[class^="fd-button"]{
+  margin-left: 8px;
+}

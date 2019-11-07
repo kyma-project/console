@@ -4,9 +4,9 @@ import './CollapsiblePanel.scss';
 
 const CollapsiblePanel = ({
   children,
-  content,
   title,
   isOpenInitially = true,
+  addAction,
 }) => {
   const [isOpen, setIsOpen] = useState(isOpenInitially);
 
@@ -15,14 +15,20 @@ const CollapsiblePanel = ({
       <Panel.Header>
         <Panel.Head title={title} />
         <Panel.Actions>
+          {addAction && <Button glyph="add" onClick={addAction} compact />}
           <Button
             glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
             option="light"
             onClick={() => setIsOpen(!isOpen)}
+            compact
           />
         </Panel.Actions>
       </Panel.Header>
-      <Panel.Body className={isOpen ? 'body body--open' : 'body body--closed'}>
+      <Panel.Body
+        className={
+          isOpen ? 'body body--open' : 'body body--closed' /* use classnames*/
+        }
+      >
         {children}
       </Panel.Body>
     </Panel>
