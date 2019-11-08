@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Panel } from 'fundamental-react';
 import { ControlledEditor } from '@monaco-editor/react';
 
-const CodeTab = ({ lambdaCode, setLambdaCode }) => {
+const Code = ({ lambdaCode, setLambdaCode }) => {
   return (
     <Panel className="fd-has-margin-medium">
       <Panel.Header>
@@ -23,9 +23,9 @@ const CodeTab = ({ lambdaCode, setLambdaCode }) => {
   );
 };
 
-CodeTab.propTypes = {
+Code.propTypes = {
   lambdaCode: PropTypes.string.isRequired,
   setLambdaCode: PropTypes.func.isRequired,
 };
 
-export default CodeTab;
+export default Code;

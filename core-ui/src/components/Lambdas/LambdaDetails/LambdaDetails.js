@@ -9,7 +9,7 @@ import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
 import { useNotification } from '../../../contexts/notifications';
-import CodeTab from './Tabs/Code';
+import Code from './Tabs/Code';
 import ConfigurationTab from './Tabs/Configuration';
 
 const exampleLambdaCode = `module.exports = { 
@@ -118,7 +118,7 @@ export default function LambdaDetails({ lambda }) {
         </Tab>
 
         <Tab key="lambda-code" id="lambda-code" title="Code">
-          <CodeTab lambdaCode={lambdaCode} setLambdaCode={setLambdaCode} />
+          <Code lambdaCode={lambdaCode} setLambdaCode={setLambdaCode} />
         </Tab>
       </TabGroup>
     </>
