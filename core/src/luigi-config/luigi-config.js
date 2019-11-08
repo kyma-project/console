@@ -9,8 +9,9 @@ import {
   getPreviousLocation
 } from './navigation-helpers';
 
-var clusterConfig = window['clusterConfig'];
-var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
+var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
+var k8sDomain = clusterConfig && clusterConfig['domain'] || 'kyma.local';
+
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {

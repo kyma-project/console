@@ -32,6 +32,24 @@ export const CREATE_LAMBDA = gql`
   }
 `;
 
+export const UPDATE_LAMBDA = gql`
+  mutation updateFunction(
+    $name: String!
+    $namespace: String!
+    $params: FunctionUpdateInput!
+  ) {
+    updateFunction(name: $name, namespace: $namespace, params: $params) {
+      name
+      namespace
+      labels
+      size
+      runtime
+      content
+      dependencies
+    }
+  }
+`;
+
 export const DELETE_LAMBDA = gql`
   mutation DeleteFunction($name: String!, $namespace: String!) {
     deleteFunction(name: $name, namespace: $namespace) {

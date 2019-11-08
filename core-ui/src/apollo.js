@@ -6,7 +6,7 @@ import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 
-import { getURL } from './commons/api-url';
+import { getApiUrl as getURL } from '@kyma-project/common';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 

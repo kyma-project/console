@@ -10,7 +10,7 @@ import { onError } from 'apollo-link-error';
 import builder from './../commons/builder';
 import resolvers from './resolvers';
 import defaults from './defaults';
-import { getURL } from './../commons/api-url';
+import { getApiUrl as getURL } from '@kyma-project/common';
 import { getLinkTransformers } from './transformers';
 
 export function createApolloClient() {

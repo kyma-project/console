@@ -1,79 +1,37 @@
 import { environment } from '../environments/environment';
-
-let domain = 'kyma.local';
-let localDomain = 'console-dev.kyma.local';
-let gateway_kyma_project_io_version = 'v1alpha2';
-let idpLogoutUrl = null;
-
-const clusterConfig: object = window['clusterConfig'];
-if (clusterConfig) {
-  if (clusterConfig['domain']) {
-    domain = clusterConfig['domain'];
-  }
-  if (clusterConfig['localDomain']) {
-    localDomain = clusterConfig['localDomain'];
-  }
-  if (clusterConfig['gateway_kyma_project_io_version']) {
-    gateway_kyma_project_io_version =
-      clusterConfig['gateway_kyma_project_io_version'];
-  }
-  idpLogoutUrl = clusterConfig['idpLogoutUrl']
-    ? clusterConfig['idpLogoutUrl']
-    : null;
+interface StringMap {
+  [s: string]: string;
 }
 
+declare const INJECTED_CLUSTER_CONFIG: StringMap; // injected by webpack
+const windowClusterConfig = (window as any).clusterConfig;
+const clusterConfig = Object.keys(windowClusterConfig || {}).length ? windowClusterConfig : undefined;
+const configToRead: StringMap = clusterConfig || (typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }); // fallback for tests
+
+const domain = configToRead.domain;
+const gateway_kyma_cx_api_version = configToRead.gateway_kyma_cx_api_version;
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
   authIssuer: `https://dex.${domain}`,
-  authRedirectUri: 'http://console-dev.kyma.local:4200',
-  consoleClientId: 'console',
-  domain,
-  graphqlApiUrl: `https://console-backend.${domain}/graphql`,
-  subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
   k8sApiServerUrl: `${k8sServerUrl}/api/v1/`,
-  gateway_kyma_project_io_version,
-  k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_project_io_version}/`,
+  k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_cx_api_version}/`,
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1/`,
   k8sApiServerUrl_applications: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_rbac: `${k8sServerUrl}/apis/rbac.authorization.k8s.io/v1/`,
-  k8sServerUrl,
-  lambdasModuleUrl: `https://lambdas-ui.${localDomain}`,
-  orgId: 'my-org-123',
-  orgName: 'My Organization',
+  subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
+  gateway_kyma_project_io_version: gateway_kyma_cx_api_version,
+
   headerTitle: '',
   headerLogoUrl: '',
   faviconUrl: 'favicon.ico',
-  scope:
-    'audience:server:client_id:kyma-client audience:server:client_id:console openid profile email groups',
-  serviceCatalogModuleUrl: `https://catalog.${localDomain}`,
-  serviceInstancesModuleUrl: `https://instances.${localDomain}`,
-  serviceBrokersModuleUrl: `https://brokers.${localDomain}`,
-  docsModuleUrl: `https://docs.${localDomain}`,
-  logsModuleUrl: `https://log-ui.${localDomain}`,
-  addOnsConfigurationModuleUrl: `https://addons.${localDomain}`,
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
-  idpLogoutUrl,
-  dexFQDNUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys'
+  idpLogoutUrl: null,
+  dexFQDNUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
+  ...configToRead,
+  graphqlApiUrl: environment.localApi ? configToRead.graphqlApiUrlLocal : configToRead.graphqlApiUrl
 };
 
-// Overwriting values from injected configuration (k8s configMap -> assets/config/config.js)
-if (clusterConfig) {
-  for (const propertyName in config) {
-    if (clusterConfig.hasOwnProperty(propertyName)) {
-      config[propertyName] = clusterConfig[propertyName];
-    }
-  }
-}
 
-if (
-  clusterConfig &&
-  (clusterConfig['graphqlApiUrlLocal'] || clusterConfig['graphqlApiUrl'])
-) {
-  config.graphqlApiUrl = environment.localApi
-    ? clusterConfig['graphqlApiUrlLocal']
-    : clusterConfig['graphqlApiUrl'];
-}
-
-export const AppConfig = { ...config };
+export const AppConfig = { ...config } as any;

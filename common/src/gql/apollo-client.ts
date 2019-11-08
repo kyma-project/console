@@ -8,26 +8,17 @@ import { onError } from 'apollo-link-error';
 
 import { WebSocketLink } from './apollo-client-ws';
 import { appInitializer } from '../core';
+import { getApiUrl } from '../utils';
 
 interface Options {
   enableSubscriptions?: boolean;
 }
 
-function getGraphQLEndpoint(endpoint: string): string {
-  const config = {
-    graphqlApiUrlLocal: 'http://localhost:3000/graphql',
-    subscriptionsApiUrlLocal: 'ws://localhost:3000/graphql',
-  };
-
-  const clusterConfig = (window as any).clusterConfig;
-  return { ...clusterConfig, ...config }[endpoint];
-}
-
 export function createApolloClient({ enableSubscriptions = false }: Options) {
-  const graphqlApiUrl = getGraphQLEndpoint(
+  const graphqlApiUrl = getApiUrl(
     process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
   );
-  const subscriptionsApiUrl = getGraphQLEndpoint(
+  const subscriptionsApiUrl = getApiUrl(
     process.env.REACT_APP_LOCAL_API
       ? 'subscriptionsApiUrlLocal'
       : 'subscriptionsApiUrl',
