@@ -1,14 +1,11 @@
 .collapsible-panel{
     .body{
      transition: height 1s, padding 0.5s, opacity 1s ease-in, transform 0.3s ease-out ;
-   //  transform: scaleY(0.5) translateY(-50%);
-
         &--open{
            
             max-height:1000em;
         }
         &--closed{
-           // opacity:0;
            transform: scaleY(0) translateY(-100%);
             max-height:0px;
             padding-top:0;

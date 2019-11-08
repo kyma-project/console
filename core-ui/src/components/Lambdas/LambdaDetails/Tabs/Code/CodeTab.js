@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CodeTab = ({ codeComponent, dependenciesComponent }) => {
+const CodeTab = ({ codeEditorComponent, dependenciesComponent }) => {
   return (
     <>
-      {codeComponent}
+      {codeEditorComponent}
       {dependenciesComponent}
     </>
   );
 };
 
 CodeTab.propTypes = {
-  codeComponent: PropTypes.element.isRequired,
+  codeEditorComponent: PropTypes.element.isRequired,
   dependenciesComponent: PropTypes.element.isRequired,
 };
 
