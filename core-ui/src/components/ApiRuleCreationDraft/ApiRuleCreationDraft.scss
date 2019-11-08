@@ -1,0 +1,21 @@
+.access-strategy {
+  .fd-panel__header {
+    input {
+      max-width: 30%;
+      //font-weight: bold;
+      font-size: 1.6em;
+      color: var(--fd-color-action-3);
+    }
+  }
+
+  .inline-radio-group {
+    line-height: 2.8;
+    .fd-form-item {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+      line-height: 3;
+      float: none;
+    }
+  }
+}
