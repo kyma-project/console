@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
-import { createServiceInstance } from './mutations';
 import { Button, Spinner } from '@kyma-project/react-components';
 
 import builder from '../../commons/builder';
 import { serviceClassConstants } from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
-import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
-import CreateInstanceModalNew from './CreateInstanceModal/CreateInstanceModal';
+import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal';
 
 import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 import './ServiceClassDetails.scss';
-import { Bold, ServiceClassDetailsWrapper, EmptyList } from './styled';
+import { ServiceClassDetailsWrapper, EmptyList } from './styled';
 
 import {
   getResourceDisplayName,
@@ -39,8 +37,6 @@ export default function ServiceClassDetails({ match }) {
       fileExtensions: filterExtensions,
     },
   });
-
-  const [createServiceInstanceMutation] = useMutation(createServiceInstance);
 
   useEffect(() => {
     if (queryData && !queryLoading && !queryError) {
@@ -124,25 +120,18 @@ export default function ServiceClassDetails({ match }) {
             typename={__typename}
           >
             <>
-              <CreateInstanceModal
-                serviceClass={serviceClass}
-                modalOpeningComponent={modalOpeningComponent}
-                createServiceInstance={createServiceInstanceMutation}
-              />
               <ModalWithForm
-                title={
-                  <p style={{ marginRight: '25px' }}>
-                    Provision the <Bold>{serviceClass.displayName}</Bold>{' '}
-                    {serviceClass.__typename === 'ClusterServiceClass'
-                      ? 'Cluster Service Class'
-                      : 'Service Class'}{' '}
-                    in the <Bold>{environment}</Bold> Namespace
-                  </p>
-                }
+                title={`Provision the ${serviceClass.displayName}${' '}
+                    ${
+                      serviceClass.__typename === 'ClusterServiceClass'
+                        ? 'Cluster Service Class'
+                        : 'Service Class'
+                    }${' '}
+                    in the ${environment} Namespace`}
                 button={{ text: 'Create Instance', glyph: 'add' }}
                 id="add-instance-modal"
                 item={serviceClass}
-                renderForm={props => <CreateInstanceModalNew {...props} />}
+                renderForm={props => <CreateInstanceModal {...props} />}
               />
             </>
           </ServiceClassDetailsHeader>

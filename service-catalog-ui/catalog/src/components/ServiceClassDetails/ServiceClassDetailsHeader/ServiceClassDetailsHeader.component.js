@@ -40,7 +40,7 @@ const ServiceClassDetailsHeader = ({
     <HeaderWrapper>
       <BreadcrumbWrapper>
         <Breadcrumb>
-          <BreadcrumbItem
+          <Breadcrumb.Item
             name={`${serviceClassConstants.title} - ${
               typename === 'ServiceClass' ? 'Services' : 'Add-Ons'
             }`}
@@ -48,7 +48,6 @@ const ServiceClassDetailsHeader = ({
             onClick={goToServiceDetailsList}
           />
           <Breadcrumb.Item />
-          {/* <BreadcrumbItem name={serviceClassDisplayName} url="#" /> */}
         </Breadcrumb>
       </BreadcrumbWrapper>
       <ServiceClassToolbarWrapper>

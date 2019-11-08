@@ -81,7 +81,7 @@ export default function CreateInstanceModal({
     plan: useRef(null),
     labels: useRef(null),
   };
-  console.log('isValid', isValid, 'formElementRef', formElementRef);
+  //   console.log('isValid', isValid, 'formElementRef', formElementRef);
 
   const [createInstance] = useMutation(createServiceInstance);
   const {
@@ -152,7 +152,9 @@ export default function CreateInstanceModal({
         variables,
       });
       onCompleted(variables.name, `Instance created succesfully`);
-      LuigiClient.linkManager().navigate(`details/${variables.name}`);
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-instances/details/${variables.name}`);
     } catch (e) {
       onError(`The lambda could not be created succesfully`, e.message || ``);
     }
@@ -163,6 +165,7 @@ export default function CreateInstanceModal({
       ref={formElementRef}
       style={{ width: '47em' }}
       onChange={onChange}
+      onInit={onChange}
       onSubmit={handleFormSubmit}
     >
       <FormItem>
@@ -180,15 +183,13 @@ export default function CreateInstanceModal({
               required
               pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
             />
-            <FormItem>
-              <input
-                className="fd-form__control"
-                ref={formValues.validName}
-                type="checkbox"
-                id="validName"
-                required
-              />
-            </FormItem>
+            <input
+              className="fd-form__control"
+              ref={formValues.validName}
+              type="checkbox"
+              id="validName"
+              required
+            />
           </div>
           <div className="column">
             <FormLabel htmlFor="plan">Size*</FormLabel>

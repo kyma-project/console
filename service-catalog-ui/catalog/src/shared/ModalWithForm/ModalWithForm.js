@@ -19,7 +19,6 @@ const ModalWithForm = ({
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
-  console.log('formElementRef.current', formElementRef.current);
   function setOpenStatus(status) {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
@@ -27,6 +26,7 @@ const ModalWithForm = ({
       LuigiClient.uxManager().removeBackdrop();
     }
     setOpen(status);
+    console.log('formElementRef.current', formElementRef.current);
   }
 
   function handleFormChanged(e) {
