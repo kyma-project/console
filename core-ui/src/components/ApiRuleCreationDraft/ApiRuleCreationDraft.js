@@ -86,7 +86,9 @@ const ApiRuleCreationDraft = () => {
                 type="text"
                 value="/.*"
               />
-              <Panel.Actions></Panel.Actions>
+              <Panel.Actions>
+                <Button option="light" glyph="delete" />
+              </Panel.Actions>
             </Panel.Header>
 
             <Panel.Body>
