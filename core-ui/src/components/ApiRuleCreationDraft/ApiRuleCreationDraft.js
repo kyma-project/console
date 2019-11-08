@@ -88,7 +88,12 @@ const ApiRuleCreationDraft = () => {
                 value="/.*"
               />
               <Panel.Actions>
-                <Button glyph="delete" />
+                <Button
+                  option="emphasized"
+                  title="Add new mutator"
+                  glyph="add"
+                />
+                <Button title="Delete this access strategy" glyph="delete" />
               </Panel.Actions>
             </Panel.Header>
             <Panel.Filters>
@@ -179,6 +184,105 @@ const ApiRuleCreationDraft = () => {
                       <FormItem>
                         <FormInput id="1" value="King" />
                       </FormItem>,
+                      <Button option="light" glyph="decline" />,
+                    ],
+                  },
+                ]}
+              />
+            </Panel.Body>
+          </Panel>
+
+          <Panel className="access-strategy">
+            <Panel.Header>
+              <Panel.Head title="Access strategy for path " />
+
+              <FormInput
+                placeholder="Field placeholder text"
+                type="text"
+                value="/this/is/another/path"
+              />
+              <Panel.Actions>
+                <Button
+                  option="emphasized"
+                  title="Add new mutator"
+                  glyph="add"
+                />
+                <Button title="Delete this access strategy" glyph="delete" />
+              </Panel.Actions>
+            </Panel.Header>
+            <Panel.Filters>
+              <FormGroup>
+                <LayoutGrid cols={2}>
+                  <FormItem>
+                    <FormLabel htmlFor="select-1">Type</FormLabel>
+                    <FormSelect value="2" id="select-1">
+                      <option value="1">Strategy one</option>
+                      <option value="2">Strategy two</option>
+                      <option value="3">Ask Pamela</option>
+                    </FormSelect>
+                  </FormItem>
+                  <FormFieldset>
+                    <FormLegend>Method:</FormLegend>
+                    <FormRadioGroup inline className="inline-radio-group">
+                      <Checkbox
+                        id="checkbox-4"
+                        name="checkbox-name-4"
+                        value="GET"
+                        checked
+                      />
+                      <Checkbox
+                        id="checkbox-5"
+                        name="checkbox-name-5"
+                        value="POST"
+                      />
+                      <Checkbox
+                        id="checkbox-6"
+                        name="checkbox-name-6"
+                        value="PUT"
+                      />
+                      <Checkbox
+                        id="checkbox-6"
+                        name="checkbox-name-6"
+                        value="DELETE"
+                        checked
+                      />
+                    </FormRadioGroup>
+                  </FormFieldset>
+                </LayoutGrid>
+              </FormGroup>
+            </Panel.Filters>
+
+            <Panel.Body className="mutator-section">
+              <Table
+                headers={['Upstream', 'A param to select', ' ']}
+                tableData={[
+                  {
+                    rowData: [
+                      <FormItem>
+                        <FormInput id="1" value="http://my-backend-service" />
+                      </FormItem>,
+                      <FormSelect id="select-1" value="1">
+                        <option value="1">Yes</option>
+                        <option value="2">No</option>
+                        <option value="3">Well, it's kinda difficult...</option>
+                      </FormSelect>,
+
+                      <Button option="light" glyph="decline" />,
+                    ],
+                  },
+                  {
+                    rowData: [
+                      <FormItem>
+                        <FormInput
+                          id="1"
+                          value="http://can-i-rescue-people.com"
+                        />
+                      </FormItem>,
+                      <FormSelect id="select-1" value="3">
+                        <option value="1">Yes</option>
+                        <option value="2">No</option>
+                        <option value="3">Well, it's kinda difficult...</option>
+                      </FormSelect>,
                       <Button option="light" glyph="decline" />,
                     ],
                   },

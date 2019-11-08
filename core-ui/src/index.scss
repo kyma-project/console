@@ -56,7 +56,7 @@ body {
 .y-fd-token {
   &.y-fd-token {
     border: 1px solid var(--fd-color-neutral-3);
-    
+
     &--no-button {
       cursor: default;
     }
@@ -66,25 +66,26 @@ body {
     }
 
     &--gap:not(:last-of-type) {
-      margin-right: 8px;    
+      margin-right: 8px;
     }
   }
 }
 
-.fd-modal {
+.fd-modal,
+.fd-panel {
   &__actions {
-    .fd-button:not(:last-child) {
+    button[class^='fd-button']:not(:last-child) {
       margin-right: 5px;
     }
   }
 }
 
-.action-bar-wrapper{
+.action-bar-wrapper {
   @media (min-width: 500px) {
     display: flex;
     justify-content: space-between;
   }
-   & > section {
+  & > section {
     flex-grow: 1;
   }
 }
