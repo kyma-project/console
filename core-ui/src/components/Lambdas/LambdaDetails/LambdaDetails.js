@@ -27,6 +27,8 @@ export default function LambdaDetails({ lambda }) {
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
   const notificationManager = useNotification();
 
+  const formRef = useRef(null);
+
   const formValues = {
     size: useRef(null),
     runtime: useRef(null),
@@ -41,6 +43,10 @@ export default function LambdaDetails({ lambda }) {
   }, [selectedTabName]);
 
   async function updateLambda() {
+    if (!formRef.current.checkValidity()) {
+      return;
+    }
+
     try {
       const updatedFunction = await updateLambdaMutation({
         variables: {
@@ -109,6 +115,7 @@ export default function LambdaDetails({ lambda }) {
         >
           <ConfigurationTab
             lambda={lambda}
+            formRef={formRef}
             sizeRef={formValues.size}
             runtimeRef={formValues.runtime}
             LabelsEditor={
