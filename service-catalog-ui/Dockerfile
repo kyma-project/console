@@ -7,12 +7,9 @@ FROM node:10.11.0-alpine as ui-generator
 
 WORKDIR /app
 
+RUN apk update && apk upgrade && apk add --no-cache curl && apk add --no-cache bash
 # Copy licenses
 COPY licenses/ /app/licenses/
-
-# Install global dependencies
-RUN apk update && apk upgrade && \
-    apk add --no-cache curl
 
 # Install root and app dependencies
 COPY ./temp /app
@@ -39,7 +36,8 @@ ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/service-catalog && npm test
+# RUN cd /app/service-catalog && npm test
+
 RUN cd /app/service-catalog && npm run build
 
 FROM nginx:1.14.0-alpine

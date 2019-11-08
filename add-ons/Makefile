@@ -2,8 +2,8 @@ IMG_NAME = add-ons-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: root-pr resolve validate build pre-build-image pull-licenses build-image push-image
-ci-master: root-master resolve validate build pre-build-image pull-licenses build-image push-image
+ci-pr: root-pr resolve validate pre-build-image pull-licenses build-image push-image
+ci-master: root-master resolve validate pre-build-image pull-licenses build-image push-image
 
 .PHONY: root-pr
 root-pr:

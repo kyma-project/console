@@ -1,16 +1,7 @@
 import builder from './builder';
+export { getApiUrl as getURL } from '@kyma-project/common';
 
 const CURRENT_ENV_TAG = '{CURRENT_ENV}';
-
-export function getURL(endpoint) {
-  let config = {
-    graphqlApiUrl: 'http://localhost:3000/graphql',
-    subscriptionsApiUrl: 'ws://localhost:3000/graphql',
-  };
-  const clusterConfig = window['clusterConfig'];
-  config = { ...config, ...clusterConfig };
-  return config[endpoint];
-}
 
 export function openLink(path) {
   if (process.env.REACT_APP_ENV !== 'production') {

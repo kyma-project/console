@@ -7,12 +7,13 @@ COPY licenses/ /app/licenses/
 
 # Install global dependencies
 RUN apk update && apk upgrade && \
-    apk add --no-cache curl
+    apk add --no-cache curl && \
+    apk add --no-cache bash
 
 # Install root and app dependencies
 COPY ./temp /app
 RUN npm run bootstrap:prod
-COPY package.json package-lock.json config-overrides.js /app/addons/
+COPY package.json package-lock.json config-overrides.js tsconfig.json /app/addons/
 RUN cd /app/addons && npm install --no-optional
 
 # Copy sources
@@ -24,7 +25,6 @@ ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/addons && npm test
 RUN cd /app/addons && npm run build
 
 FROM nginx:1.14.0-alpine
