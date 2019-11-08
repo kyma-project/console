@@ -6,6 +6,8 @@ import NamespaceList from '../NamespaceList/NamespaceList';
 import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetails from '../Lambdas/LambdaDetails/LambdaDetails';
 
+import ApiRuleCreationDraft from '../ApiRuleCreationDraft/ApiRuleCreationDraft';
+
 export default function App() {
   return (
     <NotificationProvider>
@@ -14,6 +16,8 @@ export default function App() {
         <Route path="/lambdas" exact component={Lambdas} />
         <Route path="/preload" component={() => null} />
         <Route path="/namespaces" component={NamespaceList} />
+
+        <Route path="/createApiRule" component={ApiRuleCreationDraft} />
       </Switch>
     </NotificationProvider>
   );

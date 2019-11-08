@@ -1,0 +1,28 @@
+.host-with-port {
+  display: flex;
+  align-items: center;
+
+  .host {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+  }
+
+  .separator {
+    line-height: 1.42857;
+    width: 0;
+    font-weight: 400;
+    background-color: var(--fd-forms-background-color);
+    transform: translateX(-4px);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--fd-text-color-4);
+  }
+
+  .port {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+    width: 33%;
+  }
+}
