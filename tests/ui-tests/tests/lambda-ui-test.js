@@ -1,9 +1,6 @@
 import kymaConsole from '../commands/console';
 import lambdas from '../commands/lambdas';
 import common from '../commands/common';
-import { describeIf } from '../utils/skip';
-import dex from '../utils/dex';
-import config from '../config';
 import address from '../utils/address';
 
 import { retry } from '../utils/retry';
@@ -20,7 +17,7 @@ const testLambda = 'testlambda';
 let browser, page;
 let token = '';
 
-describeIf(dex.isStaticUser(), 'Lambda UI tests', () => {
+describe('Lambda UI tests', () => {
   beforeAll(async () => {
     if (!(await isModuleEnabled(REQUIRED_MODULE))) {
       logModuleDisabled(REQUIRED_MODULE, 'beforeAll');
