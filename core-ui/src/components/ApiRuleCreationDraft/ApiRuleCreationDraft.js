@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ActionBar,
   Button,
-  PanelGrid,
+  LayoutGrid,
   FormGroup,
   FormInput,
   FormItem,
@@ -10,7 +10,7 @@ import {
   Panel,
 } from 'fundamental-react';
 import PanelEntry from '../../shared/components/PanelEntry/PanelEntry.component';
-import HostWithPortInput from '../../shared/components/HostWithPortInput/HostWithPortInput';
+import { HostWithPortInput } from 'react-shared';
 
 const ApiRuleCreationDraft = () => {
   return (
@@ -21,7 +21,7 @@ const ApiRuleCreationDraft = () => {
             <ActionBar.Header title="KKtest" />
           </section>
         </section>
-        <PanelGrid nogap cols={4}>
+        <LayoutGrid nogap cols={4}>
           <PanelEntry
             title="Name"
             content={
@@ -36,7 +36,7 @@ const ApiRuleCreationDraft = () => {
             title="Gateway"
             content={<input placeholder="Field placeholder text" type="text" />}
           />
-        </PanelGrid>
+        </LayoutGrid>
       </header>
 
       <section className="fd-section">

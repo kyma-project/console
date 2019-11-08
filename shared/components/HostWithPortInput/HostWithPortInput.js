@@ -2,7 +2,7 @@ import React from 'react';
 import { FormItem, FormInput, FormLabel } from 'fundamental-react';
 import './HostWithPortInput.scss';
 
-const HostWithPortInput = ({ hostInfo = {}, portInfo = {}, label }) => (
+export const HostWithPortInput = ({ hostInfo = {}, portInfo = {}, label }) => (
   <FormItem>
     <FormLabel htmlFor="input-host">{label}</FormLabel>
     <div className="host-with-port">
@@ -24,4 +24,3 @@ const HostWithPortInput = ({ hostInfo = {}, portInfo = {}, label }) => (
     </div>
   </FormItem>
 );
-export default HostWithPortInput;
