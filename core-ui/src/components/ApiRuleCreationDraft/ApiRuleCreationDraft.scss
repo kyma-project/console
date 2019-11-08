@@ -1,3 +1,11 @@
+.fd-panel {
+  .fd-form-item {
+    margin-bottom: 0;
+  }
+  .fd-form-label {
+    line-height: inherit;
+  }
+}
 .access-strategy {
   .fd-panel__header {
     input {
