@@ -6,4 +6,4 @@ export const EMPTY_TEXT_PLACEHOLDER = '-';
 export const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT =
   'showSystemNamespacesChangedEvent';
 
-export const POLL_INTERVAL = 1000;
+export const POLL_INTERVAL = 2000;

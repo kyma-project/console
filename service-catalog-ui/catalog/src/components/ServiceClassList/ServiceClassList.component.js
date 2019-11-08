@@ -13,7 +13,7 @@ import { Counter } from 'fundamental-react';
 
 import builder from '../../commons/builder';
 import { getAllServiceClasses } from './queries';
-import { serviceClassConstants } from '../../variables';
+import { serviceClassConstants, POLL_INTERVAL } from '../../variables';
 import {
   determineAvailableLabels,
   determineDisplayedServiceClasses,
@@ -69,6 +69,7 @@ export default function ServiceClassList() {
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
     },
+    pollInterval: POLL_INTERVAL,
   });
 
   useEffect(() => {
@@ -80,7 +81,6 @@ export default function ServiceClassList() {
       );
     }
   }, [queryData, queryLoading, queryError]);
-
   if (queryLoading) {
     return (
       <EmptyList>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { GET_SERVICE_CLASS } from './queries';
-import { CREATE_SERVICE_INSTANCE } from './mutations';
+import { getServiceClass } from './queries';
+import { createServiceInstance } from './mutations';
 import { Button, Spinner } from '@kyma-project/react-components';
 
 import builder from '../../commons/builder';
@@ -10,10 +10,12 @@ import { serviceClassConstants } from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
+import CreateInstanceModalNew from './CreateInstanceModal/CreateInstanceModal';
 
+import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
-
-import { ServiceClassDetailsWrapper, EmptyList } from './styled';
+import './ServiceClassDetails.scss';
+import { Bold, ServiceClassDetailsWrapper, EmptyList } from './styled';
 
 import {
   getResourceDisplayName,
@@ -30,7 +32,7 @@ export default function ServiceClassDetails({ match }) {
     data: queryData,
     loading: queryLoading,
     error: queryError,
-  } = useQuery(GET_SERVICE_CLASS, {
+  } = useQuery(getServiceClass, {
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
       name: match.params.name,
@@ -38,7 +40,7 @@ export default function ServiceClassDetails({ match }) {
     },
   });
 
-  const [createServiceInstanceMutation] = useMutation(CREATE_SERVICE_INSTANCE);
+  const [createServiceInstanceMutation] = useMutation(createServiceInstance);
 
   useEffect(() => {
     if (queryData && !queryLoading && !queryError) {
@@ -62,8 +64,6 @@ export default function ServiceClassDetails({ match }) {
   if (!serviceClass) {
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
   }
-
-  console.log('serviceClass', serviceClass, queryData);
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
@@ -104,7 +104,7 @@ export default function ServiceClassDetails({ match }) {
     tags,
     labels,
   } = serviceClass ? serviceClass : {};
-
+  const environment = builder.getCurrentEnvironmentId();
   return (
     <div>
       {serviceClass && (
@@ -121,11 +121,28 @@ export default function ServiceClassDetails({ match }) {
             description={serviceClassDescription}
             isProvisionedOnlyOnce={isProvisionedOnlyOnce}
           >
-            <CreateInstanceModal
-              serviceClass={serviceClass}
-              modalOpeningComponent={modalOpeningComponent}
-              createServiceInstance={createServiceInstanceMutation}
-            />
+            <>
+              <CreateInstanceModal
+                serviceClass={serviceClass}
+                modalOpeningComponent={modalOpeningComponent}
+                createServiceInstance={createServiceInstanceMutation}
+              />
+              <ModalWithForm
+                title={
+                  <p style={{ marginRight: '25px' }}>
+                    Provision the <Bold>{serviceClass.displayName}</Bold>{' '}
+                    {serviceClass.__typename === 'ClusterServiceClass'
+                      ? 'Cluster Service Class'
+                      : 'Service Class'}{' '}
+                    in the <Bold>{environment}</Bold> Namespace
+                  </p>
+                }
+                button={{ text: 'Create Instance', glyph: 'add' }}
+                id="add-instance-modal"
+                item={serviceClass}
+                renderForm={props => <CreateInstanceModalNew {...props} />}
+              />
+            </>
           </ServiceClassDetailsHeader>
 
           <ServiceClassDetailsWrapper phoneRows>

@@ -59,3 +59,7 @@ export const EmptyList = styled.div`
   color: #32363a;
   padding: 30px;
 `;
+export const Bold = styled.span`
+  font-weight: 700;
+  padding: 0 3px;
+`;

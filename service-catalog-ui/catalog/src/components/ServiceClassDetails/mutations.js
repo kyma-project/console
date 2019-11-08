@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const CREATE_SERVICE_INSTANCE = gql`
+export const createServiceInstance = gql`
   mutation CreateServiceInstance(
     $name: String!
     $namespace: String!

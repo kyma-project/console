@@ -167,7 +167,7 @@ class CreateInstanceModal extends Component {
 
     const { createServiceInstance } = this.props;
     const variables = this.prepareDataToCreateServiceInstance(params);
-
+    console.log('variables', variables);
     let success = true;
     this.setState({
       creatingInstance: true,

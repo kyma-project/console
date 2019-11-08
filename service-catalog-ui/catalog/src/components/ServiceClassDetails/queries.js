@@ -29,7 +29,7 @@ const docsTopic = `
       description
 `;
 
-export const GET_SERVICE_CLASS = gql`
+export const getServiceClass = gql`
   query getServiceClass($name: String!, $namespace: String!,$filterExtensions: [String!]) {
     clusterServiceClass(name: $name) {
       ${serviceClassQGL}
@@ -98,6 +98,14 @@ export const GET_SERVICE_CLASS = gql`
         } 
       }
  
+    }
+  }
+`;
+
+export const checkInstanceExist = gql`
+  query serviceInstance($name: String!, $namespace: String!) {
+    serviceInstance(name: $name, namespace: $namespace) {
+      name
     }
   }
 `;

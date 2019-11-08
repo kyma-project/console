@@ -6,7 +6,6 @@ const determineDisplayedInstances = (
   searchQuery,
   activeLabels,
 ) => {
-  console.log('determineDisplayedInstances serviceInstances', serviceInstances);
   const searched = serviceInstances.filter(instance =>
     new RegExp(searchQuery, 'i').test(instance.name),
   );
@@ -43,7 +42,7 @@ const determineAvailableLabels = (serviceInstances, tabName, searchQuery) => {
     searchQuery,
     [],
   );
-  console.log('serviceInstances', serviceInstances);
+
   const allLabels = serviceInstances.reduce(
     (labelsCombined, instance) => [...labelsCombined, ...instance.labels],
     [],

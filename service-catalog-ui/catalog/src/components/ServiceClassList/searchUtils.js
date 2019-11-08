@@ -48,24 +48,7 @@ const determineAvailableLabels = (serviceClasses, tabName, searchQuery) => {
     searchQuery,
     [],
   );
-  console.log(displayedInstances);
-  // const allLabels = serviceClasses.reduce(
-  //   (labelsCombined, item) => [...labelsCombined, ...item.labels],
-  //   [],
-  // );
-  // const labelsWithOccurrences = allLabels.reduce(
-  //   (labelsWithOccurrences, label) => ({
-  //     ...labelsWithOccurrences,
-  //     [label]: 0,
-  //   }),
-  //   {},
-  // );
-  // displayedInstances.forEach(item => {
-  //   item.labels.forEach(label => {
-  //     ++labelsWithOccurrences[label];
-  //   });
-  // });
-  // return labelsWithOccurrences;
+  // TODO
   return [];
 };
 
