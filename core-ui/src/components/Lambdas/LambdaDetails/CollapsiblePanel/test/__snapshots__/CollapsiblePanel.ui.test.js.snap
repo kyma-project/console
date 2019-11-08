@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collapsible Panel Renders in closed state 1`] = `
+<div
+  className="fd-panel collapsible-panel"
+>
+  <div
+    className="fd-panel__header"
+  >
+    <div
+      className="fd-panel__head"
+    >
+      <h3
+        className="fd-panel__title"
+      >
+        Collapsible panel test
+      </h3>
+    </div>
+    <div
+      className="fd-panel__actions"
+    >
+      <button
+        className="fd-button--light sap-icon--navigation-down-arrow"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    className="fd-panel__body body body--closed"
+  >
+    <p>
+      test
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Collapsible Panel Renders with minimal props (opened state) 1`] = `
+<div
+  className="fd-panel collapsible-panel"
+>
+  <div
+    className="fd-panel__header"
+  >
+    <div
+      className="fd-panel__head"
+    >
+      <h3
+        className="fd-panel__title"
+      >
+        Collapsible panel test
+      </h3>
+    </div>
+    <div
+      className="fd-panel__actions"
+    >
+      <button
+        className="fd-button--light sap-icon--navigation-up-arrow"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    className="fd-panel__body body body--open"
+  >
+    <p>
+      test
+    </p>
+  </div>
+</div>
+`;

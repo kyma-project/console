@@ -35,6 +35,7 @@ CollapsiblePanel.propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string.isRequired,
   className: PropTypes.string,
+  isOpenInitially: PropTypes.bool,
 };
 
 export default CollapsiblePanel;
