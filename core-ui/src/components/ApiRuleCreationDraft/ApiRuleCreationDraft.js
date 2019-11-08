@@ -15,6 +15,7 @@ import {
   FormSelect,
   FormSet,
   FormRadioGroup,
+  Table,
 } from 'fundamental-react';
 import PanelEntry from '../../shared/components/PanelEntry/PanelEntry.component';
 import { HostWithPortInput } from 'react-shared';
@@ -80,18 +81,17 @@ const ApiRuleCreationDraft = () => {
           <Panel className="access-strategy">
             <Panel.Header>
               <Panel.Head title="Access strategy for path " />
-              &nbsp;
+
               <FormInput
                 placeholder="Field placeholder text"
                 type="text"
                 value="/.*"
               />
               <Panel.Actions>
-                <Button option="light" glyph="delete" />
+                <Button glyph="delete" />
               </Panel.Actions>
             </Panel.Header>
-
-            <Panel.Body>
+            <Panel.Filters>
               <FormGroup>
                 <LayoutGrid cols={2}>
                   <FormItem>
@@ -131,6 +131,59 @@ const ApiRuleCreationDraft = () => {
                   </FormFieldset>
                 </LayoutGrid>
               </FormGroup>
+            </Panel.Filters>
+
+            <Panel.Body className="mutator-section">
+              <Table
+                headers={['Upstream', 'Handler', 'Authorizer', ' ']}
+                tableData={[
+                  {
+                    rowData: [
+                      <FormItem>
+                        <FormInput id="1" value="http://my-backend-service" />
+                      </FormItem>,
+                      <FormItem>
+                        <FormInput id="1" value="anonymous" />
+                      </FormItem>,
+                      <FormItem>
+                        <FormInput id="1" value="allow" />
+                      </FormItem>,
+                      <Button option="light" glyph="decline" />,
+                    ],
+                  },
+                  {
+                    rowData: [
+                      <FormItem>
+                        <FormInput
+                          id="1"
+                          value="http://can-i-rescue-people.com"
+                        />
+                      </FormItem>,
+                      <FormItem>
+                        <FormInput id="1" value="Mitch" />
+                      </FormItem>,
+                      <FormItem>
+                        <FormInput id="1" value="Mitch's boss" />
+                      </FormItem>,
+                      <Button option="light" glyph="decline" />,
+                    ],
+                  },
+                  {
+                    rowData: [
+                      <FormItem>
+                        <FormInput id="1" value="David" />
+                      </FormItem>,
+                      <FormItem>
+                        <FormInput id="1" value="is the" />
+                      </FormItem>,
+                      <FormItem>
+                        <FormInput id="1" value="King" />
+                      </FormItem>,
+                      <Button option="light" glyph="decline" />,
+                    ],
+                  },
+                ]}
+              />
             </Panel.Body>
           </Panel>
         </LayoutGrid>
