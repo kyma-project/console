@@ -5,7 +5,7 @@
             max-height:1000em;
         }
         &--closed {
-           transform: scaleY(0) translateY(-100%);
+            transform: scaleY(0) translateY(-100%);
             max-height:0px;
             padding-top:0;
             padding-bottom:0;

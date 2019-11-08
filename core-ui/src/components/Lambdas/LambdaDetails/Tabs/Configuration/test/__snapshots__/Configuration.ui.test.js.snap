@@ -20,66 +20,70 @@ exports[`Lambda Configuration Tab Render with minimal props 1`] = `
   <div
     className="fd-panel__body"
   >
-    <p>
-      Label Editor Mock
-    </p>
-    <div
-      className="fd-form__item"
+    <form
+      onSubmit={[Function]}
     >
-      <label
-        className="fd-form__label"
-        htmlFor="lambdaSize"
+      <p>
+        Label Editor Mock
+      </p>
+      <div
+        className="fd-form__item"
       >
-        Size*
-        
-      </label>
-      <select
-        defaultValue="S"
-        id="lambdaSize"
+        <label
+          className="fd-form__label"
+          htmlFor="lambdaSize"
+        >
+          Size*
+          
+        </label>
+        <select
+          defaultValue="S"
+          id="lambdaSize"
+        >
+          <option
+            value="S"
+          >
+            S
+          </option>
+          <option
+            value="M"
+          >
+            M
+          </option>
+          <option
+            value="L"
+          >
+            L
+          </option>
+        </select>
+      </div>
+      <div
+        className="fd-form__item"
       >
-        <option
-          value="S"
+        <label
+          className="fd-form__label"
+          htmlFor="lambdaRuntime"
         >
-          S
-        </option>
-        <option
-          value="M"
+          Runtime*
+          
+        </label>
+        <select
+          defaultValue="nodejs6"
+          id="lambdaRuntime"
         >
-          M
-        </option>
-        <option
-          value="L"
-        >
-          L
-        </option>
-      </select>
-    </div>
-    <div
-      className="fd-form__item"
-    >
-      <label
-        className="fd-form__label"
-        htmlFor="lambdaRuntime"
-      >
-        Runtime*
-        
-      </label>
-      <select
-        defaultValue="nodejs6"
-        id="lambdaRuntime"
-      >
-        <option
-          value="nodejs6"
-        >
-          Nodejs 6
-        </option>
-        <option
-          value="nodejs8"
-        >
-          Nodejs 8
-        </option>
-      </select>
-    </div>
+          <option
+            value="nodejs6"
+          >
+            Nodejs 6
+          </option>
+          <option
+            value="nodejs8"
+          >
+            Nodejs 8
+          </option>
+        </select>
+      </div>
+    </form>
   </div>
 </div>
 `;

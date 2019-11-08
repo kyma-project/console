@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Panel, Button } from 'fundamental-react';
 import './CollapsiblePanel.scss';
 
-const CollapsiblePanel = ({
+export const CollapsiblePanel = ({
   children,
   title,
   className,
@@ -37,5 +37,3 @@ CollapsiblePanel.propTypes = {
   className: PropTypes.string,
   isOpenInitially: PropTypes.bool,
 };
-
-export default CollapsiblePanel;

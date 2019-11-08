@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { Button, Panel } from 'fundamental-react';
 import { mount, shallow } from 'enzyme';
 
-import CollapsiblePanel from './../CollapsiblePanel';
+import { CollapsiblePanel } from './../CollapsiblePanel';
 
 describe('Collapsible Panel', () => {
   it('Renders with minimal props (opened state)', () => {

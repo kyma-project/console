@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ControlledEditor } from '@monaco-editor/react';
-import CollapsiblePanel from '../../CollapsiblePanel/CollapsiblePanel';
+import { CollapsiblePanel } from 'react-shared';
 
 const LambdaDependencies = ({ dependencies, setDependencies }) => {
   return (
