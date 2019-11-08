@@ -4,7 +4,7 @@
 
 This project contains an application with the Core UI page for the Kyma Console.
 
-The [create-react-app](https://github.com/facebook/create-react-app) project provides the structure for this application. Read the project's [README](https://github.com/facebook/create-react-app/tree/master/packages/react-scripts/template) document for more information.
+The [create-react-app](https://create-react-app.dev/) project provides the structure for this application. Read the project's [documentation](https://create-react-app.dev/docs/available-scripts) for more information.
 
 ## Installation
 
@@ -34,4 +34,4 @@ If lint errors appear, the console displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode.
 
-See the **npm test** section in the Create React App [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) document for more information.
+See the **npm test** section in the Create React App [documentation](https://create-react-app.dev/docs/available-scripts#npm-test) for more information.

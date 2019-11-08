@@ -34,10 +34,10 @@ The build is minified and the filenames include hashes.
 
 1. Run the following command to build and run the Docker image:
 
-``` bash
-sh ../scripts/build-docker-image.sh addons-ui
-docker run --rm -p 8001:80 docs-ui
-```
+    ``` bash
+    sh ../scripts/build-docker-image.sh addons-ui
+    docker run --rm -p 8001:80 docs-ui
+    ```
 
 2. Open `http://localhost:8001` in a browser.
 
@@ -53,4 +53,4 @@ If lint errors appear, the console displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode.
 
-See the **Running Tests** section in the Create React App [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) document for more information.
+See the **Running Tests** section in the Create React App [documentation](https://create-react-app.dev/docs/running-tests) for more information.

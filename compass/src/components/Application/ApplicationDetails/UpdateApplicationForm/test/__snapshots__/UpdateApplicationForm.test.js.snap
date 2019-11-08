@@ -1,0 +1,2081 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateApplicationForm UI Renders form after load 1`] = `
+<MockedProvider
+  addTypename={false}
+  mocks={
+    Array [
+      Object {
+        "request": Object {
+          "query": Object {
+            "definitions": Array [
+              Object {
+                "directives": Array [],
+                "kind": "OperationDefinition",
+                "name": undefined,
+                "operation": "query",
+                "selectionSet": Object {
+                  "kind": "SelectionSet",
+                  "selections": Array [
+                    Object {
+                      "alias": undefined,
+                      "arguments": Array [],
+                      "directives": Array [],
+                      "kind": "Field",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "applications",
+                      },
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "data",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "description",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+                "variableDefinitions": Array [],
+              },
+            ],
+            "kind": "Document",
+            "loc": Object {
+              "end": 105,
+              "start": 0,
+            },
+          },
+        },
+        "result": Object {
+          "data": Object {
+            "applications": Object {
+              "data": Array [
+                Object {
+                  "description": "desc1",
+                  "id": "1",
+                  "name": "app1",
+                },
+                Object {
+                  "description": "desc2",
+                  "id": "2",
+                  "name": "app2",
+                },
+              ],
+            },
+          },
+        },
+      },
+    ]
+  }
+>
+  <ApolloProvider
+    client={
+      ApolloClient {
+        "__operations_cache__": Map {
+          "data" => Object {
+            "query": Object {
+              "definitions": Array [
+                Object {
+                  "directives": Array [],
+                  "kind": "OperationDefinition",
+                  "name": undefined,
+                  "operation": "query",
+                  "selectionSet": Object {
+                    "kind": "SelectionSet",
+                    "selections": Array [
+                      Object {
+                        "alias": undefined,
+                        "arguments": Array [],
+                        "directives": Array [],
+                        "kind": "Field",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "applications",
+                        },
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "data",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "description",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  "variableDefinitions": Array [],
+                },
+              ],
+              "kind": "Document",
+              "loc": Object {
+                "end": 105,
+                "start": 0,
+              },
+            },
+            "variables": undefined,
+          },
+        },
+        "cache": InMemoryCache {
+          "addTypename": false,
+          "cacheKeyRoot": KeyTrie {
+            "weak": WeakMap {},
+            "weakness": true,
+          },
+          "config": Object {
+            "addTypename": false,
+            "dataIdFromObject": [Function],
+            "fragmentMatcher": HeuristicFragmentMatcher {},
+            "freezeResults": false,
+            "resultCaching": true,
+          },
+          "data": DepTrackingCache {
+            "data": Object {
+              "$ROOT_QUERY.applications": Object {
+                "data": Array [
+                  Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications.data.0",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                  Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications.data.1",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                ],
+              },
+              "$ROOT_QUERY.applications.data.0": Object {
+                "description": "desc1",
+                "id": "1",
+                "name": "app1",
+              },
+              "$ROOT_QUERY.applications.data.1": Object {
+                "description": "desc2",
+                "id": "2",
+                "name": "app2",
+              },
+              "ROOT_QUERY": Object {
+                "applications": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.applications",
+                  "type": "id",
+                  "typename": undefined,
+                },
+              },
+            },
+            "depend": [Function],
+          },
+          "maybeBroadcastWatch": [Function],
+          "optimisticData": DepTrackingCache {
+            "data": Object {
+              "$ROOT_QUERY.applications": Object {
+                "data": Array [
+                  Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications.data.0",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                  Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications.data.1",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                ],
+              },
+              "$ROOT_QUERY.applications.data.0": Object {
+                "description": "desc1",
+                "id": "1",
+                "name": "app1",
+              },
+              "$ROOT_QUERY.applications.data.1": Object {
+                "description": "desc2",
+                "id": "2",
+                "name": "app2",
+              },
+              "ROOT_QUERY": Object {
+                "applications": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.applications",
+                  "type": "id",
+                  "typename": undefined,
+                },
+              },
+            },
+            "depend": [Function],
+          },
+          "silenceBroadcast": false,
+          "storeReader": StoreReader {
+            "executeSelectionSet": [Function],
+            "executeStoreQuery": [Function],
+            "executeSubSelectedArray": [Function],
+            "freezeResults": false,
+          },
+          "storeWriter": StoreWriter {},
+          "typenameDocumentCache": Map {},
+          "watches": Set {
+            Object {
+              "callback": [Function],
+              "optimistic": true,
+              "previousResult": [Function],
+              "query": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": undefined,
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "applications",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "data",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "description",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 105,
+                  "start": 0,
+                },
+              },
+              "variables": Object {},
+            },
+          },
+        },
+        "clearStoreCallbacks": Array [],
+        "defaultOptions": Object {},
+        "disableNetworkFetches": false,
+        "link": MockLink {
+          "addTypename": false,
+          "mockedResponsesByKey": Object {
+            "{\\"query\\":\\"{\\\\n  applications {\\\\n    data {\\\\n      id\\\\n      name\\\\n      description\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+          },
+        },
+        "localState": LocalState {
+          "cache": InMemoryCache {
+            "addTypename": false,
+            "cacheKeyRoot": KeyTrie {
+              "weak": WeakMap {},
+              "weakness": true,
+            },
+            "config": Object {
+              "addTypename": false,
+              "dataIdFromObject": [Function],
+              "fragmentMatcher": HeuristicFragmentMatcher {},
+              "freezeResults": false,
+              "resultCaching": true,
+            },
+            "data": DepTrackingCache {
+              "data": Object {
+                "$ROOT_QUERY.applications": Object {
+                  "data": Array [
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.0",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.1",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  ],
+                },
+                "$ROOT_QUERY.applications.data.0": Object {
+                  "description": "desc1",
+                  "id": "1",
+                  "name": "app1",
+                },
+                "$ROOT_QUERY.applications.data.1": Object {
+                  "description": "desc2",
+                  "id": "2",
+                  "name": "app2",
+                },
+                "ROOT_QUERY": Object {
+                  "applications": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
+              "depend": [Function],
+            },
+            "maybeBroadcastWatch": [Function],
+            "optimisticData": DepTrackingCache {
+              "data": Object {
+                "$ROOT_QUERY.applications": Object {
+                  "data": Array [
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.0",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.1",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  ],
+                },
+                "$ROOT_QUERY.applications.data.0": Object {
+                  "description": "desc1",
+                  "id": "1",
+                  "name": "app1",
+                },
+                "$ROOT_QUERY.applications.data.1": Object {
+                  "description": "desc2",
+                  "id": "2",
+                  "name": "app2",
+                },
+                "ROOT_QUERY": Object {
+                  "applications": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
+              "depend": [Function],
+            },
+            "silenceBroadcast": false,
+            "storeReader": StoreReader {
+              "executeSelectionSet": [Function],
+              "executeStoreQuery": [Function],
+              "executeSubSelectedArray": [Function],
+              "freezeResults": false,
+            },
+            "storeWriter": StoreWriter {},
+            "typenameDocumentCache": Map {},
+            "watches": Set {
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": undefined,
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "applications",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "data",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "description",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 105,
+                    "start": 0,
+                  },
+                },
+                "variables": Object {},
+              },
+            },
+          },
+          "client": [Circular],
+        },
+        "mutate": [Function],
+        "query": [Function],
+        "queryDeduplication": true,
+        "queryManager": QueryManager {
+          "assumeImmutableResults": false,
+          "clientAwareness": Object {
+            "name": undefined,
+            "version": undefined,
+          },
+          "dataStore": DataStore {
+            "cache": InMemoryCache {
+              "addTypename": false,
+              "cacheKeyRoot": KeyTrie {
+                "weak": WeakMap {},
+                "weakness": true,
+              },
+              "config": Object {
+                "addTypename": false,
+                "dataIdFromObject": [Function],
+                "fragmentMatcher": HeuristicFragmentMatcher {},
+                "freezeResults": false,
+                "resultCaching": true,
+              },
+              "data": DepTrackingCache {
+                "data": Object {
+                  "$ROOT_QUERY.applications": Object {
+                    "data": Array [
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.0",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.1",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    ],
+                  },
+                  "$ROOT_QUERY.applications.data.0": Object {
+                    "description": "desc1",
+                    "id": "1",
+                    "name": "app1",
+                  },
+                  "$ROOT_QUERY.applications.data.1": Object {
+                    "description": "desc2",
+                    "id": "2",
+                    "name": "app2",
+                  },
+                  "ROOT_QUERY": Object {
+                    "applications": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
+                "depend": [Function],
+              },
+              "maybeBroadcastWatch": [Function],
+              "optimisticData": DepTrackingCache {
+                "data": Object {
+                  "$ROOT_QUERY.applications": Object {
+                    "data": Array [
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.0",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.1",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    ],
+                  },
+                  "$ROOT_QUERY.applications.data.0": Object {
+                    "description": "desc1",
+                    "id": "1",
+                    "name": "app1",
+                  },
+                  "$ROOT_QUERY.applications.data.1": Object {
+                    "description": "desc2",
+                    "id": "2",
+                    "name": "app2",
+                  },
+                  "ROOT_QUERY": Object {
+                    "applications": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
+                "depend": [Function],
+              },
+              "silenceBroadcast": false,
+              "storeReader": StoreReader {
+                "executeSelectionSet": [Function],
+                "executeStoreQuery": [Function],
+                "executeSubSelectedArray": [Function],
+                "freezeResults": false,
+              },
+              "storeWriter": StoreWriter {},
+              "typenameDocumentCache": Map {},
+              "watches": Set {
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": undefined,
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "applications",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "data",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "description",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 105,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+              },
+            },
+          },
+          "fetchQueryRejectFns": Map {},
+          "idCounter": 3,
+          "inFlightLinkObservables": Map {},
+          "link": MockLink {
+            "addTypename": false,
+            "mockedResponsesByKey": Object {
+              "{\\"query\\":\\"{\\\\n  applications {\\\\n    data {\\\\n      id\\\\n      name\\\\n      description\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+            },
+          },
+          "localState": LocalState {
+            "cache": InMemoryCache {
+              "addTypename": false,
+              "cacheKeyRoot": KeyTrie {
+                "weak": WeakMap {},
+                "weakness": true,
+              },
+              "config": Object {
+                "addTypename": false,
+                "dataIdFromObject": [Function],
+                "fragmentMatcher": HeuristicFragmentMatcher {},
+                "freezeResults": false,
+                "resultCaching": true,
+              },
+              "data": DepTrackingCache {
+                "data": Object {
+                  "$ROOT_QUERY.applications": Object {
+                    "data": Array [
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.0",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.1",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    ],
+                  },
+                  "$ROOT_QUERY.applications.data.0": Object {
+                    "description": "desc1",
+                    "id": "1",
+                    "name": "app1",
+                  },
+                  "$ROOT_QUERY.applications.data.1": Object {
+                    "description": "desc2",
+                    "id": "2",
+                    "name": "app2",
+                  },
+                  "ROOT_QUERY": Object {
+                    "applications": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
+                "depend": [Function],
+              },
+              "maybeBroadcastWatch": [Function],
+              "optimisticData": DepTrackingCache {
+                "data": Object {
+                  "$ROOT_QUERY.applications": Object {
+                    "data": Array [
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.0",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                      Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.applications.data.1",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    ],
+                  },
+                  "$ROOT_QUERY.applications.data.0": Object {
+                    "description": "desc1",
+                    "id": "1",
+                    "name": "app1",
+                  },
+                  "$ROOT_QUERY.applications.data.1": Object {
+                    "description": "desc2",
+                    "id": "2",
+                    "name": "app2",
+                  },
+                  "ROOT_QUERY": Object {
+                    "applications": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
+                "depend": [Function],
+              },
+              "silenceBroadcast": false,
+              "storeReader": StoreReader {
+                "executeSelectionSet": [Function],
+                "executeStoreQuery": [Function],
+                "executeSubSelectedArray": [Function],
+                "freezeResults": false,
+              },
+              "storeWriter": StoreWriter {},
+              "typenameDocumentCache": Map {},
+              "watches": Set {
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": undefined,
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "applications",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "data",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "description",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 105,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+              },
+            },
+            "client": [Circular],
+          },
+          "mutationStore": MutationStore {
+            "store": Object {},
+          },
+          "onBroadcast": [Function],
+          "pollingInfoByQueryId": Map {},
+          "queries": Map {
+            "1" => Object {
+              "cancel": [Function],
+              "document": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": undefined,
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "applications",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "data",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "description",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 105,
+                  "start": 0,
+                },
+              },
+              "invalidated": false,
+              "lastRequestId": 2,
+              "listeners": Set {
+                [Function],
+              },
+              "newData": null,
+              "observableQuery": ObservableQuery {
+                "_subscriber": [Function],
+                "isTornDown": false,
+                "lastResult": Object {
+                  "data": Object {
+                    "applications": Object {
+                      "data": Array [
+                        Object {
+                          "description": "desc1",
+                          "id": "1",
+                          "name": "app1",
+                        },
+                        Object {
+                          "description": "desc2",
+                          "id": "2",
+                          "name": "app2",
+                        },
+                      ],
+                    },
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "lastResultSnapshot": Object {
+                  "data": Object {
+                    "applications": Object {
+                      "data": Array [
+                        Object {
+                          "description": "desc1",
+                          "id": "1",
+                          "name": "app1",
+                        },
+                        Object {
+                          "description": "desc2",
+                          "id": "2",
+                          "name": "app2",
+                        },
+                      ],
+                    },
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "observers": Set {
+                  SubscriptionObserver {
+                    "_subscription": Subscription {
+                      "_cleanup": [Function],
+                      "_observer": Object {
+                        "error": [Function],
+                        "next": [Function],
+                      },
+                      "_queue": undefined,
+                      "_state": "ready",
+                    },
+                  },
+                },
+                "options": Object {
+                  "children": [Function],
+                  "context": Object {},
+                  "displayName": "Apollo(Apollo(UpdateApplicationForm))",
+                  "metadata": Object {
+                    "reactComponent": Object {
+                      "displayName": "Apollo(Apollo(UpdateApplicationForm))",
+                    },
+                  },
+                  "notifyOnNetworkStatusChange": false,
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": undefined,
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "applications",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "data",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "description",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 105,
+                      "start": 0,
+                    },
+                  },
+                  "skip": false,
+                  "variables": Object {},
+                  "warnUnhandledError": true,
+                },
+                "queryId": "1",
+                "queryManager": [Circular],
+                "queryName": undefined,
+                "shouldSubscribe": true,
+                "subscriptions": Set {},
+                "variables": Object {},
+              },
+              "subscriptions": Set {},
+            },
+          },
+          "queryDeduplication": true,
+          "queryStore": QueryStore {
+            "store": Object {
+              "1": Object {
+                "document": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": undefined,
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "applications",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "data",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "description",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 105,
+                    "start": 0,
+                  },
+                },
+                "graphQLErrors": Array [],
+                "metadata": Object {
+                  "reactComponent": Object {
+                    "displayName": "Apollo(Apollo(UpdateApplicationForm))",
+                  },
+                },
+                "networkError": null,
+                "networkStatus": 7,
+                "previousVariables": null,
+                "variables": Object {},
+              },
+            },
+          },
+          "ssrMode": false,
+          "transformCache": WeakMap {},
+        },
+        "reFetchObservableQueries": [Function],
+        "resetStore": [Function],
+        "resetStoreCallbacks": Array [],
+        "store": DataStore {
+          "cache": InMemoryCache {
+            "addTypename": false,
+            "cacheKeyRoot": KeyTrie {
+              "weak": WeakMap {},
+              "weakness": true,
+            },
+            "config": Object {
+              "addTypename": false,
+              "dataIdFromObject": [Function],
+              "fragmentMatcher": HeuristicFragmentMatcher {},
+              "freezeResults": false,
+              "resultCaching": true,
+            },
+            "data": DepTrackingCache {
+              "data": Object {
+                "$ROOT_QUERY.applications": Object {
+                  "data": Array [
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.0",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.1",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  ],
+                },
+                "$ROOT_QUERY.applications.data.0": Object {
+                  "description": "desc1",
+                  "id": "1",
+                  "name": "app1",
+                },
+                "$ROOT_QUERY.applications.data.1": Object {
+                  "description": "desc2",
+                  "id": "2",
+                  "name": "app2",
+                },
+                "ROOT_QUERY": Object {
+                  "applications": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
+              "depend": [Function],
+            },
+            "maybeBroadcastWatch": [Function],
+            "optimisticData": DepTrackingCache {
+              "data": Object {
+                "$ROOT_QUERY.applications": Object {
+                  "data": Array [
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.0",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.applications.data.1",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  ],
+                },
+                "$ROOT_QUERY.applications.data.0": Object {
+                  "description": "desc1",
+                  "id": "1",
+                  "name": "app1",
+                },
+                "$ROOT_QUERY.applications.data.1": Object {
+                  "description": "desc2",
+                  "id": "2",
+                  "name": "app2",
+                },
+                "ROOT_QUERY": Object {
+                  "applications": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.applications",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
+              "depend": [Function],
+            },
+            "silenceBroadcast": false,
+            "storeReader": StoreReader {
+              "executeSelectionSet": [Function],
+              "executeStoreQuery": [Function],
+              "executeSubSelectedArray": [Function],
+              "freezeResults": false,
+            },
+            "storeWriter": StoreWriter {},
+            "typenameDocumentCache": Map {},
+            "watches": Set {
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": undefined,
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "applications",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "data",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "description",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 105,
+                    "start": 0,
+                  },
+                },
+                "variables": Object {},
+              },
+            },
+          },
+        },
+        "typeDefs": undefined,
+        "version": "2.6.4",
+        "watchQuery": [Function],
+      }
+    }
+  >
+    <Apollo(Apollo(UpdateApplicationForm))
+      application={
+        Object {
+          "description": "desc1",
+          "healthCheckURL": "http://healthCheckURL",
+          "name": "app1",
+        }
+      }
+      formElementRef={
+        Object {
+          "current": <form
+            style="width: 30em;"
+          >
+            <label
+              class="fd-form__label"
+              for="application-name"
+            >
+              Name
+              
+            </label>
+            <input
+              class="fd-has-margin-bottom-small"
+              id="application-name"
+              placeholder="Application name"
+              required=""
+              type="text"
+              value="app1"
+            />
+            <label
+              class="fd-form__label"
+              for="application-description"
+            >
+              Description
+              
+            </label>
+            <input
+              class="fd-has-margin-bottom-small"
+              id="application-description"
+              placeholder="Application description"
+              type="text"
+              value="desc1"
+            />
+          </form>,
+        }
+      }
+      onChange={[Function]}
+      onCompleted={[Function]}
+      onError={[Function]}
+    >
+      <Query
+        displayName="Apollo(Apollo(UpdateApplicationForm))"
+        query={
+          Object {
+            "definitions": Array [
+              Object {
+                "directives": Array [],
+                "kind": "OperationDefinition",
+                "name": undefined,
+                "operation": "query",
+                "selectionSet": Object {
+                  "kind": "SelectionSet",
+                  "selections": Array [
+                    Object {
+                      "alias": undefined,
+                      "arguments": Array [],
+                      "directives": Array [],
+                      "kind": "Field",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "applications",
+                      },
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "data",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "description",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+                "variableDefinitions": Array [],
+              },
+            ],
+            "kind": "Document",
+            "loc": Object {
+              "end": 105,
+              "start": 0,
+            },
+          }
+        }
+        skip={false}
+        warnUnhandledError={true}
+      >
+        <Apollo(UpdateApplicationForm)
+          application={
+            Object {
+              "description": "desc1",
+              "healthCheckURL": "http://healthCheckURL",
+              "name": "app1",
+            }
+          }
+          applicationsQuery={
+            Object {
+              "applications": Object {
+                "data": Array [
+                  Object {
+                    "description": "desc1",
+                    "id": "1",
+                    "name": "app1",
+                  },
+                  Object {
+                    "description": "desc2",
+                    "id": "2",
+                    "name": "app2",
+                  },
+                ],
+              },
+              "error": undefined,
+              "fetchMore": [Function],
+              "loading": false,
+              "networkStatus": 7,
+              "refetch": [Function],
+              "startPolling": [Function],
+              "stopPolling": [Function],
+              "subscribeToMore": [Function],
+              "updateQuery": [Function],
+              "variables": Object {},
+            }
+          }
+          formElementRef={
+            Object {
+              "current": <form
+                style="width: 30em;"
+              >
+                <label
+                  class="fd-form__label"
+                  for="application-name"
+                >
+                  Name
+                  
+                </label>
+                <input
+                  class="fd-has-margin-bottom-small"
+                  id="application-name"
+                  placeholder="Application name"
+                  required=""
+                  type="text"
+                  value="app1"
+                />
+                <label
+                  class="fd-form__label"
+                  for="application-description"
+                >
+                  Description
+                  
+                </label>
+                <input
+                  class="fd-has-margin-bottom-small"
+                  id="application-description"
+                  placeholder="Application description"
+                  type="text"
+                  value="desc1"
+                />
+              </form>,
+            }
+          }
+          onChange={[Function]}
+          onCompleted={[Function]}
+          onError={[Function]}
+        >
+          <Mutation
+            ignoreResults={true}
+            mutation={
+              Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "updateApplication",
+                    },
+                    "operation": "mutation",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "id",
+                              },
+                              "value": Object {
+                                "kind": "Variable",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "id",
+                                },
+                              },
+                            },
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "in",
+                              },
+                              "value": Object {
+                                "kind": "Variable",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "in",
+                                },
+                              },
+                            },
+                          ],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "updateApplication",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "name",
+                                },
+                                "selectionSet": undefined,
+                              },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "id",
+                                },
+                                "selectionSet": undefined,
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [
+                      Object {
+                        "defaultValue": undefined,
+                        "directives": Array [],
+                        "kind": "VariableDefinition",
+                        "type": Object {
+                          "kind": "NonNullType",
+                          "type": Object {
+                            "kind": "NamedType",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "ID",
+                            },
+                          },
+                        },
+                        "variable": Object {
+                          "kind": "Variable",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "id",
+                          },
+                        },
+                      },
+                      Object {
+                        "defaultValue": undefined,
+                        "directives": Array [],
+                        "kind": "VariableDefinition",
+                        "type": Object {
+                          "kind": "NonNullType",
+                          "type": Object {
+                            "kind": "NamedType",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "ApplicationUpdateInput",
+                            },
+                          },
+                        },
+                        "variable": Object {
+                          "kind": "Variable",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "in",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 144,
+                  "start": 0,
+                },
+              }
+            }
+            variables={Object {}}
+          >
+            <UpdateApplicationForm
+              application={
+                Object {
+                  "description": "desc1",
+                  "healthCheckURL": "http://healthCheckURL",
+                  "name": "app1",
+                }
+              }
+              applicationsQuery={
+                Object {
+                  "applications": Object {
+                    "data": Array [
+                      Object {
+                        "description": "desc1",
+                        "id": "1",
+                        "name": "app1",
+                      },
+                      Object {
+                        "description": "desc2",
+                        "id": "2",
+                        "name": "app2",
+                      },
+                    ],
+                  },
+                  "error": undefined,
+                  "fetchMore": [Function],
+                  "loading": false,
+                  "networkStatus": 7,
+                  "refetch": [Function],
+                  "startPolling": [Function],
+                  "stopPolling": [Function],
+                  "subscribeToMore": [Function],
+                  "updateQuery": [Function],
+                  "variables": Object {},
+                }
+              }
+              formElementRef={
+                Object {
+                  "current": <form
+                    style="width: 30em;"
+                  >
+                    <label
+                      class="fd-form__label"
+                      for="application-name"
+                    >
+                      Name
+                      
+                    </label>
+                    <input
+                      class="fd-has-margin-bottom-small"
+                      id="application-name"
+                      placeholder="Application name"
+                      required=""
+                      type="text"
+                      value="app1"
+                    />
+                    <label
+                      class="fd-form__label"
+                      for="application-description"
+                    >
+                      Description
+                      
+                    </label>
+                    <input
+                      class="fd-has-margin-bottom-small"
+                      id="application-description"
+                      placeholder="Application description"
+                      type="text"
+                      value="desc1"
+                    />
+                  </form>,
+                }
+              }
+              onChange={[Function]}
+              onCompleted={[Function]}
+              onError={[Function]}
+              updateApplication={[Function]}
+            >
+              <form
+                onChange={[Function]}
+                onSubmit={[Function]}
+                style={
+                  Object {
+                    "width": "30em",
+                  }
+                }
+              >
+                <FormLabel
+                  htmlFor="application-name"
+                >
+                  <label
+                    className="fd-form__label"
+                    htmlFor="application-name"
+                  >
+                    Name
+                  </label>
+                </FormLabel>
+                <input
+                  className="fd-has-margin-bottom-small"
+                  defaultValue="app1"
+                  id="application-name"
+                  placeholder="Application name"
+                  required={true}
+                  type="text"
+                />
+                <FormLabel
+                  htmlFor="application-description"
+                >
+                  <label
+                    className="fd-form__label"
+                    htmlFor="application-description"
+                  >
+                    Description
+                  </label>
+                </FormLabel>
+                <input
+                  className="fd-has-margin-bottom-small"
+                  defaultValue="desc1"
+                  id="application-description"
+                  placeholder="Application description"
+                  type="text"
+                />
+              </form>
+            </UpdateApplicationForm>
+          </Mutation>
+        </Apollo(UpdateApplicationForm)>
+      </Query>
+    </Apollo(Apollo(UpdateApplicationForm))>
+  </ApolloProvider>
+</MockedProvider>
+`;

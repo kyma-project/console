@@ -2,7 +2,8 @@ import { useContext } from 'react';
 import gql from 'graphql-tag';
 import createUseContext from 'constate';
 import { useSubscription } from '@apollo/react-hooks';
-import { GlobalService, NotificationsService } from '@kyma-project/common';
+import { NotificationsService } from '@kyma-project/common';
+import { LuigiContext } from './LuigiContext.service';
 
 import { ConfigurationsService } from '../services';
 import { Configuration } from '../types';
@@ -57,7 +58,7 @@ interface AddonsConfigurationSubscriptionVariables {
 }
 
 const useSubscriptions = () => {
-  const { currentNamespace } = useContext(GlobalService);
+  const { namespaceId: currentNamespace } = useContext(LuigiContext);
   const { setOriginalConfigs } = useContext(ConfigurationsService);
   const { successNotification, errorNotification } = useContext(
     NotificationsService,

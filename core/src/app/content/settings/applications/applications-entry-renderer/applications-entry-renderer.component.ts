@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { AbstractKubernetesEntryRendererComponent } from '../../../namespaces/operation/abstract-kubernetes-entry-renderer.component';
+import { AbstractKubernetesEntryRendererComponent } from 'namespaces/operation/abstract-kubernetes-entry-renderer.component';
 import { ApplicationsService } from '../services/applications.service';
-import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
+import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
 import LuigiClient from '@kyma-project/luigi-client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
@@ -32,6 +32,11 @@ export class ApplicationsEntryRendererComponent
         name: 'Delete'
       }
     ];
+    LuigiClient.addContextUpdateListener(context => {
+      if (context.settings && context.settings.readOnly) {
+        this.actions = this.actions.filter(action => action.name !== 'Delete');
+      }
+    });
   }
   public disabled = false;
   private communicationServiceSubscription: Subscription;

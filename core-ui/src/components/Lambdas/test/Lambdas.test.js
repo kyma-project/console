@@ -12,15 +12,13 @@ import { act } from 'react-dom/test-utils';
 import Lambdas from './../Lambdas';
 import Spinner from '../../../shared/components/Spinner/Spinner';
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    uxManager: function() {
-      return {
-        showConfirmationModal: () => Promise.resolve(),
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  uxManager: () => ({
+    showConfirmationModal: () => Promise.resolve(),
+    addBackdrop: () => {},
+    removeBackdrop: () => {},
+  }),
+}));
 
 jest.mock(
   'popper.js',

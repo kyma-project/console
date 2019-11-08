@@ -197,6 +197,7 @@ export default function ServiceInstancesList() {
                 activeLabelFilters,
               )}
               deleteServiceInstance={handleDelete}
+              type="addons"
             />
           </ServiceInstancesWrapper>
         </Tab>
@@ -231,6 +232,7 @@ export default function ServiceInstancesList() {
                 activeLabelFilters,
               )}
               deleteServiceInstance={handleDelete}
+              type="services"
             />
           </ServiceInstancesWrapper>
         </Tab>

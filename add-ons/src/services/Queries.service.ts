@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import gql from 'graphql-tag';
 import createContainer from 'constate';
 import { useQuery } from '@apollo/react-hooks';
-import { GlobalService } from '@kyma-project/common';
+import { LuigiContext } from './LuigiContext.service';
 
 import { Configuration } from '../types';
 
@@ -37,7 +37,7 @@ interface AddonsConfigurationsVariables {
 }
 
 const useQueries = () => {
-  const { currentNamespace } = useContext(GlobalService);
+  const { namespaceId: currentNamespace } = useContext(LuigiContext);
   const query = currentNamespace
     ? ADDONS_CONFIGURATIONS_QUERY
     : CLUSTER_ADDONS_CONFIGURATIONS_QUERY;

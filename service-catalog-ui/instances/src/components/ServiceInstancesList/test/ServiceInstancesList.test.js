@@ -35,6 +35,11 @@ jest.mock('@kyma-project/luigi-client', () => {
       return {
         fromContext: function() {
           return {
+            withParams: function() {
+              return {
+                navigate: mockNavigate,
+              };
+            },
             navigate: mockNavigate,
           };
         },

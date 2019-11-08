@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -12,6 +12,8 @@ const ModalWithForm = ({
   title,
   button,
   renderForm,
+  opened,
+  customCloseAction,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -19,11 +21,19 @@ const ModalWithForm = ({
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
 
+  useEffect(() => {
+    setOpenStatus(opened);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opened]);
+
   function setOpenStatus(status) {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
     } else {
       LuigiClient.uxManager().removeBackdrop();
+      if (customCloseAction) {
+        customCloseAction();
+      }
     }
     setOpen(status);
   }
@@ -141,6 +151,8 @@ ModalWithForm.propTypes = {
     glyph: PropTypes.string,
   }).isRequired,
   renderForm: PropTypes.func.isRequired,
+  opened: PropTypes.bool,
+  customCloseAction: PropTypes.func,
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},

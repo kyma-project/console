@@ -2,8 +2,8 @@ IMG_NAME = service-catalog-ui
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: root-pr resolve test build pre-build-image pull-licenses build-image push-image
-ci-master: root-master resolve test build pre-build-image pull-licenses build-image push-image
+ci-pr: root-pr resolve test pre-build-image pull-licenses build-image push-image
+ci-master: root-master resolve test pre-build-image pull-licenses build-image push-image
 
 .PHONY: root-pr
 root-pr:
@@ -32,7 +32,7 @@ pre-build-image:
 .PHONY: pull-licenses
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
-	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,brokers,catalog,instances,../common,../components/react,../components/shared,../components/generic-documentation"
+	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,brokers,catalog,instances,../common,../components/react,../components/shared,../components/generic-documentation" > /dev/null
 else
 	mkdir -p licenses
 endif

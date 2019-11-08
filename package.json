@@ -2,7 +2,7 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "bootstrap": "npm install && npm run install:libraries && npm run build:libraries && npm run install:apps && npm run append-hosts && npm run git-ignore-config",
+    "bootstrap": "npm install && npm run install:libraries && npm run build:libraries && npm run install:apps && npm run append-hosts && npm run generate-cluster-config",
     "bootstrap:ci": "npm ci && npm run ci:libraries && npm run build:libraries",
     "bootstrap:prod": "npm ci && npm run ci:libraries && npm run build:libraries",
     "install:libraries": "gulp install:libraries",
@@ -17,11 +17,12 @@
     "conflict-check": "tslint-config-prettier-check ./tslint.json",
     "markdownlint": "markdownlint **/*.md",
     "lint-staged": "lint-staged",
-    "git-ignore-config": "git update-index --assume-unchanged core/src/assets/config/config.js lambda/src/assets/config/config.js service-catalog-ui/catalog/public/config/config.js service-catalog-ui/instances/public/config/config.js service-catalog-ui/brokers/public/config/config.js content/public/config/config.js logging/public/config/config.js add-ons/public/config/config.js core-ui/public/config/config.js",
+    "test-shared-lib": "cd shared && jest",
     "append-host": "grep -qF '127.0.0.1 console-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 console-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 console-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)",
     "append-compass-host": "grep -qF '127.0.0.1 compass-dev.kyma.local' '/etc/hosts' || (echo 'append: 127.0.0.1 compass-dev.kyma.local >> /etc/hosts' && echo '127.0.0.1 compass-dev.kyma.local' | sudo tee -a /etc/hosts > /dev/null)",
     "append-host-ui-test": "sudo sed -i '' \"/ui-test-exposed-api.kyma.local/d\" '/etc/hosts' && (echo 'append: $(minikube ip) ui-test-exposed-api.kyma.local >> /etc/hosts' && echo $(minikube ip) ui-test-exposed-api.kyma.local | sudo tee -a /etc/hosts > /dev/null)",
-    "append-hosts": "npm run append-host && npm run append-host-ui-test && npm run append-compass-host"
+    "append-hosts": "npm run append-host && npm run append-host-ui-test && npm run append-compass-host",
+    "generate-cluster-config": "[ ! -r .clusterConfig.gen ] && ./scripts/setClusterConfig.sh local || :"
   },
   "dependencies": {
     "@apollo/react-hooks": "3.0.0",
@@ -43,6 +44,7 @@
     "apollo-utilities": "^1.3.2",
     "click-outside-hook": "^1.1.0",
     "constate": "^1.2.0",
+    "core-js": "^3.3.6",
     "deep-copy": "^1.4.2",
     "deep-equal": "^1.0.1",
     "enzyme-to-json": "^3.4.0",
