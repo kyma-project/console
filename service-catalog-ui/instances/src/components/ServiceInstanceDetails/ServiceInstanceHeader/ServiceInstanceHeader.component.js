@@ -19,6 +19,9 @@ const ServiceInstanceHeader = ({
   const goToServiceInstances = () => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
+      .withParams({
+        selectedTab: serviceInstance.serviceClass ? 'services' : 'addons',
+      })
       .navigate('cmf-instances');
   };
 
@@ -43,7 +46,9 @@ const ServiceInstanceHeader = ({
       <BreadcrumbWrapper>
         <Breadcrumb>
           <Breadcrumb.Item
-            name={serviceInstanceConstants.instances}
+            name={`${serviceInstanceConstants.instances} - ${
+              serviceInstance.serviceClass ? 'Services' : 'Addons'
+            }`}
             url="#"
             onClick={goToServiceInstances}
           />

@@ -9,8 +9,9 @@ import {
   getPreviousLocation
 } from './navigation-helpers';
 
-var clusterConfig = window['clusterConfig'];
-var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
+var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
+var k8sDomain = clusterConfig && clusterConfig['domain'] || 'kyma.local';
+
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
 var config = {
@@ -27,7 +28,7 @@ var config = {
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   disabledNavigationNodes: '',
   systemNamespaces:
-    'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss'
+    'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system'
 };
 
 if (clusterConfig) {
@@ -526,7 +527,7 @@ window.addEventListener('message', e => {
   }
   else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
     Luigi.customMessages().sendToAll({
-      id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT, 
+      id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
       showSystemNamespaces: e.data.showSystemNamespaces,
     });
   }

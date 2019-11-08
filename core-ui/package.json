@@ -7,12 +7,10 @@
   },
   "scripts": {
     "start": "PORT=8889 ../node_modules/.bin/react-scripts start",
-    "start:kyma": "npm run copy-config && BROWSER=none HOST=console-dev.kyma.local PORT=8889 ../node_modules/.bin/react-scripts start",
-    "start:kyma:api": "npm run copy-config && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8889 ../node_modules/.bin/react-scripts start",
-    "build": "../node_modules/.bin/react-scripts build",
+    "start:kyma": ". ../scripts/load-cluster-config.sh && BROWSER=none HOST=console-dev.kyma.local PORT=8889 ../node_modules/.bin/react-scripts start",
+    "build": ". ../scripts/load-cluster-config.sh && ../node_modules/.bin/react-scripts build",
     "test": "../node_modules/.bin/react-scripts test",
-    "eject": "../node_modules/.bin/react-scripts eject",
-    "copy-config": "cp ../config.js public/config/config.js"
+    "eject": "../node_modules/.bin/react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -25,9 +23,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "core-js": "^3.1.4"
   },
   "config": {
     "unsafe-perm": true

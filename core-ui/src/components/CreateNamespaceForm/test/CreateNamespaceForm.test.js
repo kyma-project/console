@@ -13,6 +13,7 @@ import {
   createLimitRangeSuccessfulMock,
   createResourceQuotaErrorMock,
   createNamespaceErrorMock,
+  createNamespaceWithLabelSuccessfulMock,
 } from './gqlMocks';
 
 describe('CreateNamespaceForm', () => {
@@ -47,6 +48,38 @@ describe('CreateNamespaceForm', () => {
       .find(memoryQuotasCheckbox)
       .simulate('change', { target: { checked: false } });
     expect(component.find(memoryQuotasSection).exists()).toEqual(false);
+  });
+
+  it('Handles side-car injection checkbox properly', async () => {
+    const gqlMock = [createNamespaceWithLabelSuccessfulMock()];
+    const onError = jest.fn();
+    const onCompleted = jest.fn();
+    const ref = React.createRef();
+
+    const component = mount(
+      <MockedProvider mocks={gqlMock} addTypename={false}>
+        <CreateNamespaceForm
+          onError={onError}
+          onCompleted={onCompleted}
+          formElementRef={ref}
+        />
+      </MockedProvider>,
+    );
+
+    const form = component.find('form');
+    const disableIstioCheckboxId = '#disable-istio';
+
+    const disableIstioCheckbox = component.find(disableIstioCheckboxId);
+    disableIstioCheckbox.getDOMNode().checked = true;
+    disableIstioCheckbox.simulate('change', { target: { checked: true } });
+
+    form.simulate('submit');
+
+    await act(async () => {
+      await expectToSolveWithin(() => {
+        expect(gqlMock[0].result).toHaveBeenCalled();
+      }, 5000);
+    });
   });
 
   it('Shows and hides Container limits section', () => {

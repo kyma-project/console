@@ -26,18 +26,24 @@ const ServiceClassDetailsHeader = ({
   supportUrl,
   tags,
   children,
+  typename,
 }) => {
   const goToServiceDetailsList = () => {
     LuigiClient.linkManager()
       .fromClosestContext()
+      .withParams({
+        selectedTab: typename === 'ServiceClass' ? 'services' : 'addons',
+      })
       .navigate('/');
   };
   return (
     <HeaderWrapper>
       <BreadcrumbWrapper>
         <Breadcrumb>
-          <Breadcrumb.Item
-            name={serviceClassConstants.title}
+          <BreadcrumbItem
+            name={`${serviceClassConstants.title} - ${
+              typename === 'ServiceClass' ? 'Services' : 'Add-Ons'
+            }`}
             url="#"
             onClick={goToServiceDetailsList}
           />
@@ -79,6 +85,7 @@ ServiceClassDetailsHeader.propTypes = {
   documentationUrl: PropTypes.string,
   imageUrl: PropTypes.string,
   supportUrl: PropTypes.string,
+  typename: PropTypes.string,
 };
 
 export default ServiceClassDetailsHeader;

@@ -3,6 +3,19 @@ import { mount } from 'enzyme';
 
 import NamespacesListHeader from './../NamespacesListHeader';
 
+jest.mock('@kyma-project/luigi-client', () => ({
+  getNodeParams: () => ({
+    showModal: 'false',
+  }),
+  uxManager: () => ({
+    addBackdrop: () => {},
+    removeBackdrop: () => {},
+  }),
+  linkManager: () => ({
+    navigate: () => {},
+  }),
+}));
+
 describe('NamespacesListHeader', () => {
   it('Renders with minimal props', () => {
     const mockCallback = jest.fn();

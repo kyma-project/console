@@ -4,7 +4,7 @@
 
 The project contains an application with the Docs UI page for the Kyma Console. The view enables you to list documentation.
 
-The [create-react-app](https://github.com/facebook/create-react-app) project provides the structure for this application. Read the project's [README](https://github.com/facebook/create-react-app/tree/next/packages/react-scripts/template) document for more information.
+The [create-react-app](https://create-react-app.dev/) project provides the structure for this application. Read the project's [documentation](https://create-react-app.dev/docs/available-scripts/) for more information.
 
 ## Installation
 
@@ -30,10 +30,10 @@ The build is minified and the filenames include hashes.
 
 1. Run the following command to build and run the Docker image:
 
-``` bash
-sh ../scripts/build-docker-image.sh addons-ui
-docker run --rm -p 8003:80 docs-ui
-```
+    ``` bash
+    sh ../scripts/build-docker-image.sh addons-ui
+    docker run --rm -p 8003:80 docs-ui
+    ```
 
 2. Open `http://localhost:8003` in a browser.
 
@@ -49,4 +49,4 @@ If lint errors appear, the console displays them.
 
 Run the `npm test` command to launch the test runner in the interactive watch mode.
 
-See the **Running Tests** section in the Create React App [README.md](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#npm-test) document for more information.
+See the **Running Tests** section in the Create React App [documentation](https://create-react-app.dev/docs/running-tests) for more information.

@@ -103,6 +103,7 @@ export default function ServiceClassDetails({ match }) {
     imageUrl,
     tags,
     labels,
+    __typename,
   } = serviceClass ? serviceClass : {};
   const environment = builder.getCurrentEnvironmentId();
   return (
@@ -120,6 +121,7 @@ export default function ServiceClassDetails({ match }) {
             labels={labels}
             description={serviceClassDescription}
             isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+            typename={__typename}
           >
             <>
               <CreateInstanceModal

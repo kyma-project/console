@@ -1,17 +1,13 @@
 import { TooltipType } from '@kyma-project/components';
 
+const prefixesFromEnv = process.env.REACT_APP_HELM_BROKER_REPO_URL_PREFIXES;
 export const DEFAULT_CONFIGURATION =
-  (window as any).clusterConfig.DEFAULT_CONFIGURATION_NAME || 'helm-repos-urls';
+  process.env.REACT_APP_DEFAULT_CONFIGURATION_NAME || 'helm-repos-urls';
 export const DEFAULT_CONFIGURATION_DESCRIPTION =
   'This is the default addons configuration. Do not edit or delete it.';
-export const HELM_BROKER_REPO_URL_PREFIXES = (window as any).clusterConfig
-  .HELM_BROKER_REPO_URL_PREFIXES || [
-  'https://',
-  'git::',
-  'github.com/',
-  'bitbucket.org/',
-  'http://',
-];
+export const HELM_BROKER_REPO_URL_PREFIXES = prefixesFromEnv
+  ? prefixesFromEnv.split('|')
+  : ['https://', 'git::', 'github.com/', 'bitbucket.org/', 'http://'];
 
 export const KYMA_SYSTEM_ENV = 'kyma-system';
 export const NOTIFICATION_SHOW_TIME = 5000;

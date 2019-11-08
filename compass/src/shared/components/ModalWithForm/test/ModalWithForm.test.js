@@ -9,6 +9,7 @@ describe('ModalWithForm', () => {
         title=""
         performRefetch={() => {}}
         sendNotification={() => {}}
+        confirmText="Create"
         button={{ text: '' }}
       >
         <span></span>
@@ -25,6 +26,7 @@ describe('ModalWithForm', () => {
         title=""
         performRefetch={() => {}}
         sendNotification={() => {}}
+        confirmText="Create"
         button={{ text: '' }}
       >
         {child}
