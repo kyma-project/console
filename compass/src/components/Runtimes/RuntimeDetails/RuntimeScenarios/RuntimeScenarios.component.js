@@ -5,7 +5,7 @@ import { Panel } from '@kyma-project/react-components';
 import RuntimeScenarioModal from './RuntimeScenarioModal.container';
 import { RuntimeQueryContext } from './../RuntimeDetails.component';
 
-import GenericList from '../../../../shared/components/GenericList/GenericList';
+import { GenericList } from 'react-shared';
 
 RuntimeScenarios.propTypes = {
   runtimeId: PropTypes.string.isRequired,

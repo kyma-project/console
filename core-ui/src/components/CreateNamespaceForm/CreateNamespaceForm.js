@@ -9,6 +9,8 @@ import {
   FormSet,
 } from 'fundamental-react';
 
+import { K8sNameInput } from 'react-shared';
+
 import './CreateNamespaceForm.scss';
 import LabelSelectorInput from '../LabelSelectorInput/LabelSelectorInput';
 
@@ -18,8 +20,6 @@ import {
   CREATE_RESOURCE_QUOTA,
 } from '../../gql/mutations';
 import extractGraphQlErrors from '../../shared/graphqlErrorExtractor';
-
-import { K8sNameField } from '../K8sNameInput/K8sNameInput';
 
 const LIMIT_REGEX =
   '^[+]?[0-9]*(.[0-9]*)?(([eE][-+]?[0-9]+(.[0-9]*)?)?|([MGTPE]i?)|Ki|k|m)?$';
@@ -220,8 +220,8 @@ const CreateNamespaceForm = ({
   onError,
   performManualSubmit,
 }) => {
-  const [labels, setLabels] = useState([]);
-  const [readonlyLabels, setReadonlyLabels] = useState([]);
+  const [labels, setLabels] = useState({});
+  const [readonlyLabels, setReadonlyLabels] = useState({});
 
   const formValues = {
     name: useRef(null),
@@ -240,7 +240,7 @@ const CreateNamespaceForm = ({
 
   useEffect(() => {
     const element = formValues.name.current;
-    setTimeout(() => {
+    setImmediate(() => {
       if (element && typeof element.focus === 'function') element.focus();
     });
   }, [formValues.name]);
@@ -254,13 +254,20 @@ const CreateNamespaceForm = ({
   }
 
   function handleIstioChange(disableSidecar) {
-    let newLabels = readonlyLabels.filter(l => l !== ISTIO_INJECTION_LABEL);
+    const [istioInjLabelKey, istioInjLabelValue] = ISTIO_INJECTION_LABEL.split(
+      '=',
+    );
 
     if (disableSidecar) {
-      newLabels.push(ISTIO_INJECTION_LABEL);
+      setReadonlyLabels({
+        ...readonlyLabels,
+        [istioInjLabelKey]: istioInjLabelValue,
+      });
+    } else {
+      const newReadonlyLabels = { ...readonlyLabels };
+      delete newReadonlyLabels[istioInjLabelKey];
+      setReadonlyLabels(newReadonlyLabels);
     }
-
-    setReadonlyLabels(newLabels);
   }
 
   async function handleFormSubmit(e) {
@@ -333,8 +340,7 @@ const CreateNamespaceForm = ({
         err.additionalRequestFailed = true;
         throw err;
       }
-
-      onCompleted('Success', `Namespace ${namespaceData.name} created.`);
+      onCompleted(namespaceData.name);
     } catch (e) {
       if (e.additionalRequestFailed) {
         onError(
@@ -353,7 +359,7 @@ const CreateNamespaceForm = ({
     <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
       <div className="fd-form__set">
         <div className="fd-form__item">
-          <K8sNameField
+          <K8sNameInput
             _ref={formValues.name}
             id="namespace-name"
             kind="Namespace"
@@ -404,7 +410,7 @@ CreateNamespaceForm.propTypes = {
   isValid: PropTypes.bool,
   onChange: PropTypes.func,
   onError: PropTypes.func, // args: title(string), message(string)
-  onCompleted: PropTypes.func, // args: title(string), message(string)
+  onCompleted: PropTypes.func, // args: namespaceName(string)
   performManualSubmit: PropTypes.func, // no args
 };
 

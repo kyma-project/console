@@ -17,20 +17,27 @@ export default class CreateScenarioModal extends React.Component {
   checkScenarioAlreadyExists = scenarioName => {
     const scenariosQuery = this.props.scenariosQuery;
     return (
-      !!scenariosQuery.error || // scenariosQuery.error means there were no scenarios yet
-      JSON.parse(scenariosQuery.labelDefinition.schema).items.enum.includes(
-        scenarioName,
-      )
+      !!scenariosQuery.error ||
+      (scenariosQuery.labelDefinition &&
+        JSON.parse(scenariosQuery.labelDefinition.schema).items.enum.includes(
+          scenarioName,
+        ))
     );
   };
 
   updateScenarioName = e => {
+    const nameRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
     const scenarioName = e.target.value;
     this.setState({ name: scenarioName });
 
     if (this.checkScenarioAlreadyExists(scenarioName)) {
       this.setState({
         nameError: 'Scenario with this name already exists.',
+      });
+    } else if (!nameRegex.test(scenarioName)) {
+      this.setState({
+        nameError:
+          'The scenario name can only contain lowercase alphanumeric characters or dashes',
       });
     } else {
       this.setState({ nameError: '' });

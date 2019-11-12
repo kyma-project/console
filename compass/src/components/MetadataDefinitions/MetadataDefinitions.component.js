@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import GenericList from '../../shared/components/GenericList/GenericList';
+import { GenericList, handleDelete } from 'react-shared';
 import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.container';
-import handleDelete from '../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 class MetadataDefinitions extends React.Component {
   headerRenderer = () => ['Labels', 'Schema Provided'];

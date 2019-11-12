@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScenariosDisplay Renders custom class name 1`] = `
+<span
+  className="class-name"
+>
+  <span
+    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
+    role="button"
+  >
+    a
+  </span>
+  <span
+    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
+    role="button"
+  >
+    b
+  </span>
+  <span
+    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
+    role="button"
+  >
+    c
+  </span>
+</span>
+`;
+
+exports[`ScenariosDisplay Renders custom placeholder when there are no scenarios 1`] = `
+<span>
+  No scenarios
+</span>
+`;
+
+exports[`ScenariosDisplay Renders default placeholder when there are no scenarios 1`] = `
+<span>
+  -
+</span>
+`;
+
+exports[`ScenariosDisplay Renders scenario list 1`] = `
+<span>
+  <span
+    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
+    role="button"
+  >
+    a
+  </span>
+  <span
+    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
+    role="button"
+  >
+    b
+  </span>
+  <span
+    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
+    role="button"
+  >
+    c
+  </span>
+</span>
+`;

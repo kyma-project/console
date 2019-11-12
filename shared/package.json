@@ -1,0 +1,33 @@
+{
+  "name": "shared",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack --env.production",
+    "start:kyma": "webpack --env.development --watch"
+  },
+  "author": "hasselhoff-team@kyma",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.3",
+    "babel-jest": "^24.9.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
+    "sass-loader": "^8.0.0",
+    "webpack": "^4.41.2"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "fundamental-react": "^0.6.1"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/jestSetup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
+  }
+}

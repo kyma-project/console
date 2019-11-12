@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LambdaDetailsWrapper Renders with an error in no lambdaName is provided 1`] = `
+"Error! Network error: No more mocked responses for the query: query Function($name: String!, $namespace: String!) {
+  function(name: $name, namespace: $namespace) {
+    name
+    namespace
+    labels
+    runtime
+    size
+    status
+    content
+    dependencies
+    __typename
+  }
+}
+, variables: {\\"namespace\\":\\"testnamespace\\"}"
+`;
+
+exports[`LambdaDetailsWrapper Renders with an error in no lambdaName is provided 2`] = `
+"Warning: Failed prop type: The prop \`lambdaName\` is marked as required in \`LambdaDetailsWrapper\`, but its value is \`undefined\`.
+    in LambdaDetailsWrapper (at LambdaDetailsWrapper.ui.test.js:26)"
+`;

@@ -12,10 +12,12 @@ import {
   LabelsProvider,
   UrlsProvider,
   SubscriptionsProvider,
+  LuigiContextProvider,
 } from './services';
 
 (async () => {
   const services = [
+    LuigiContextProvider,
     QueriesProvider,
     MutationsProvider,
     FiltersProvider,

@@ -39,8 +39,12 @@ export default compose(
   graphql(CREATE_SCENARIOS_LABEL, {
     props: props => ({
       createScenarios: async scenarios => {
+        // add reqquired scenario
+        if (!scenarios.includes('DEFAULT')) {
+          scenarios.push('DEFAULT');
+        }
         const input = createLabelDefinitionInput(scenarios);
-        await props.mutate({ variables: { id: input } });
+        await props.mutate({ variables: { in: input } });
       },
     }),
   }),

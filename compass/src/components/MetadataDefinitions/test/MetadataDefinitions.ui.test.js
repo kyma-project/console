@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { mocks } from './mock';
 
 import MetadataDefinitions from '../MetadataDefinitions.container';
-import GenericList from '../../../shared/components/GenericList/GenericList';
+import { GenericList } from 'react-shared';
 
 describe('MetadataDefinitions UI', () => {
   it(`Renders "loading" when there's no GQL response`, async () => {

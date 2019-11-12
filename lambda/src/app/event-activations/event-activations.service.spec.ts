@@ -28,7 +28,7 @@ describe('EventActivationsService', () => {
     },
   ));
 
-  it('should get eventActivations', done => {
+  xit('should get eventActivations', done => {
     const name = 'fakeApiName';
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';
@@ -63,7 +63,7 @@ describe('EventActivationsService', () => {
     httpClientMock.verify();
   });
 
-  it('should handle empty eventActivations list', done => {
+  xit('should handle empty eventActivations list', done => {
     const name = 'fakeApiName';
     const namespace = 'fakeNamespace';
     const token = 'fakeToken';

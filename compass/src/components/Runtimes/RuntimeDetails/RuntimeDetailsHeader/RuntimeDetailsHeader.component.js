@@ -9,10 +9,11 @@ import {
 } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
+import { handleDelete } from 'react-shared';
+
 import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
 import '../../../../shared/styles/header.scss';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../../../shared/constants';
-import handleDelete from '../../../../shared/components/GenericList/actionHandlers/simpleDelete';
 
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {

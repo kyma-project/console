@@ -9,7 +9,8 @@ COPY licenses/ /app/licenses/
 
 # Install global dependencies
 RUN apk update && apk upgrade && \
-    apk add --no-cache curl
+    apk add --no-cache curl && \
+    apk add --no-cache bash
 
 # Install root and app dependencies
 COPY ./temp /app

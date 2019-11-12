@@ -6,7 +6,7 @@ import { WebSocketLink } from './ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 import builder from './../commons/builder';
-import { getURL } from './../commons/api-url';
+import { getApiUrl as getURL } from '@kyma-project/common';
 
 export function isSubscriptionOperation({ query }) {
   const definition = getMainDefinition(query);

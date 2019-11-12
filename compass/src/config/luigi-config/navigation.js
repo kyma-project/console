@@ -119,6 +119,18 @@ const navigation = {
               pathSegment: 'scenarios',
               label: 'Scenarios',
               viewUrl: compassMfUrl + '/scenarios',
+              children: [
+                {
+                  pathSegment: 'details',
+                  children: [
+                    {
+                      pathSegment: ':scenarioName',
+                      label: 'Scenario',
+                      viewUrl: compassMfUrl + '/scenarios/:scenarioName',
+                    },
+                  ],
+                },
+              ],
             },
             {
               keepSelectedForChildren: true,
