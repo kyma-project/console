@@ -1,0 +1,9 @@
+.form-entry--copyable {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+        width: 24em !important; // to override .fd-input
+        margin-right: 16px;
+    }
+}
