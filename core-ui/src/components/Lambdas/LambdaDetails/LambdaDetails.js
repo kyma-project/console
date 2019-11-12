@@ -20,7 +20,7 @@ export default function LambdaDetails({ lambdaId }) {
   const [lambdaCode, setLambdaCode] = useState(
     `module.exports = { 
   main: function (event, context) {
-
+ 
   }
 }`,
   );
