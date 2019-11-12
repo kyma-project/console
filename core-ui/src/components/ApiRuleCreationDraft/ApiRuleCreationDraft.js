@@ -18,7 +18,7 @@ import {
   Table,
 } from 'fundamental-react';
 import PanelEntry from '../../shared/components/PanelEntry/PanelEntry.component';
-import { HostWithPortInput } from 'react-shared';
+import { HostWithPortInput, FloatingControls } from 'react-shared';
 import './ApiRuleCreationDraft.scss';
 
 const ApiRuleCreationDraft = () => {
@@ -29,6 +29,15 @@ const ApiRuleCreationDraft = () => {
           <section>
             <ActionBar.Header title="KKtest" />
           </section>
+          <ActionBar.Actions>
+            <FloatingControls>
+              <Button glyph="add">Add access strategy</Button>
+
+              <Button option="emphasized" glyph="add">
+                Add new API rule
+              </Button>
+            </FloatingControls>
+          </ActionBar.Actions>
         </section>
         <LayoutGrid nogap cols={4}>
           <PanelEntry
@@ -48,7 +57,7 @@ const ApiRuleCreationDraft = () => {
         </LayoutGrid>
       </header>
 
-      <section className="fd-section">
+      <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
           <Panel>
             <Panel.Header>

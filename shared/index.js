@@ -4,6 +4,10 @@ export {
   HostWithPortInput,
 } from './components/HostWithPortInput/HostWithPortInput';
 
+export {
+  FloatingControls,
+} from './components/FloatingControls/FloatingControls';
+
 import { handleDelete } from './components/GenericList/actionHandlers/simpleDelete';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';

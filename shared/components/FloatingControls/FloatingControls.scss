@@ -1,0 +1,15 @@
+.floating-controls {
+  min-width: 1px;
+  min-height: 1px;
+  .movable-container {
+    transition: 0.5s ease-out;
+    position: static;
+    bottom: 100%;
+    &.bottom {
+      position: fixed;
+      bottom: 16px;
+      right: 32px;
+      filter: drop-shadow(-1px -1px 5px rgba(0, 0, 0, 0.3));
+    }
+  }
+}

@@ -72,7 +72,8 @@ body {
 }
 
 .fd-modal,
-.fd-panel {
+.fd-panel,
+.fd-action-bar {
   &__actions {
     button[class^='fd-button']:not(:last-child) {
       margin-right: 5px;
