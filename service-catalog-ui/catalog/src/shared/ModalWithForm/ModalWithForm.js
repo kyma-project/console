@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -19,6 +19,7 @@ const ModalWithForm = ({
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
+
   function setOpenStatus(status) {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
@@ -29,6 +30,19 @@ const ModalWithForm = ({
     console.log('formElementRef.current', formElementRef.current);
   }
 
+  useEffect(() => {
+    console.log('formElementRef', formElementRef);
+    if (formElementRef && formElementRef.current) {
+      formElementRef.current.checkValidity();
+      console.log(
+        'formElementRef',
+        formElementRef.current.checkValidity(),
+        formElementRef.current.reportValidity(),
+        formElementRef,
+        'formValues',
+      );
+    }
+  });
   function handleFormChanged(e) {
     console.log(
       'handleFormChanged formElementRef.current',

@@ -1,17 +1,12 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import {
-  serviceClassQuery,
-  createInstanceMutation,
-  getInstanceName,
-} from '../../../testing/queriesMocks';
+import { serviceClassQuery } from '../../../testing/queriesMocks';
 import { clusterServiceClass1Name } from '../../../testing/serviceClassesMocks';
 import ServiceClassDetails from '../ServiceClassDetails.component';
-import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
+import { Spinner } from '@kyma-project/react-components';
 import { componentUpdate } from '../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-import NotificationContext from '../../../contexts/NotificationContext/NotificationContext';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();

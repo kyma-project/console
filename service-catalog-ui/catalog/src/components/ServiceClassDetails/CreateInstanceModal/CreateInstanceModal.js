@@ -7,7 +7,7 @@ import * as LuigiClient from '@kyma-project/luigi-client';
 import SchemaData from './SchemaData.component';
 import builder from '../../../commons/builder';
 import { checkInstanceExist } from './queries';
-import { createServiceInstance } from '../mutations';
+import { createServiceInstance } from './mutations';
 
 import './CreateInstanceModal.scss';
 import {
@@ -49,26 +49,21 @@ export default function CreateInstanceModal({
   onError,
   formElementRef,
   item,
-  isValid,
 }) {
   const plans = (item && item.plans) || [];
   plans.forEach(plan => {
     parseDefaultIntegerValues(plan);
   });
   const [name, setName] = useState(
-    `${item.externalName}-${randomNameGenerator()}`,
+    `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator(),
   );
   const [plan, setPlan] = useState(plans[0].name);
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
   const [existingInstance, setExistingInstance] = useState('');
-  const [
-    instanceCreateParameterSchema,
-    setInstanceCreateParameterSchema,
-  ] = useState(getInstanceCreateParameterSchema(plans, plan));
-  const [
-    instanceCreateParameterSchemaExists,
-    setInstanceCreateParameterSchemaExists,
-  ] = useState(
+  const [instanceCreateParameterSchema] = useState(
+    getInstanceCreateParameterSchema(plans, plan),
+  );
+  const [instanceCreateParameterSchemaExists] = useState(
     instanceCreateParameterSchema &&
       (instanceCreateParameterSchema.$ref ||
         instanceCreateParameterSchema.properties),
@@ -78,10 +73,9 @@ export default function CreateInstanceModal({
 
   const formValues = {
     validName: useRef(false),
-    plan: useRef(null),
+    plan: useRef(plan),
     labels: useRef(null),
   };
-  //   console.log('isValid', isValid, 'formElementRef', formElementRef);
 
   const [createInstance] = useMutation(createServiceInstance);
   const {
@@ -106,6 +100,21 @@ export default function CreateInstanceModal({
   }, [name]);
 
   useEffect(() => {
+    if (formElementRef && formElementRef.current) {
+      formElementRef.current.checkValidity();
+      console.log(
+        'formElementRef2',
+        formElementRef.current[1].checkValidity(),
+        formElementRef.current[1],
+        formElementRef.current.reportValidity(),
+        formElementRef,
+        'formValues',
+        formValues,
+      );
+    }
+  }, [formElementRef]);
+
+  useEffect(() => {
     if (queryData && !queryLoading && !queryError) {
       const instanceName = document.getElementById('instanceName');
       const validName = document.getElementById('validName');
@@ -127,7 +136,8 @@ export default function CreateInstanceModal({
   async function handleFormSubmit(e) {
     try {
       const currentPlan =
-        plans.find(e => e.name === plan) || (plans.length && plans[0]);
+        plans.find(e => e.name === formValues.plan) ||
+        (plans.length && plans[0]);
       const labels =
         formValues.labels.current.value === ''
           ? []
@@ -148,9 +158,9 @@ export default function CreateInstanceModal({
       };
 
       console.log('variables', variables);
-      await createInstance({
-        variables,
-      });
+      // await createInstance({
+      //     variables,
+      // });
       onCompleted(variables.name, `Instance created succesfully`);
       LuigiClient.linkManager()
         .fromContext('namespaces')
@@ -165,13 +175,13 @@ export default function CreateInstanceModal({
       ref={formElementRef}
       style={{ width: '47em' }}
       onChange={onChange}
-      onInit={onChange}
+      onLoad={onChange}
       onSubmit={handleFormSubmit}
     >
       <FormItem>
         <div className="grid-wrapper">
           <div className="column">
-            <FormLabel htmlFor="labels">Name*</FormLabel>
+            <FormLabel htmlFor="instanceName">Name*</FormLabel>
             <input
               className="fd-form__control"
               value={name}
@@ -192,10 +202,11 @@ export default function CreateInstanceModal({
             />
           </div>
           <div className="column">
-            <FormLabel htmlFor="plan">Size*</FormLabel>
+            <FormLabel htmlFor="plan">Plan*</FormLabel>
             <select
               id="plan"
-              value={plan}
+              ref={formValues.plan}
+              defaultValue={plans[0]}
               onChange={e => {
                 console.log('dd', e.target.value);
                 setPlan(e.target.value);

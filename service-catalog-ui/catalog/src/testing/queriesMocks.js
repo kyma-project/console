@@ -1,7 +1,7 @@
 import { getAllServiceClasses } from '../components/ServiceClassList/queries';
 import { getServiceClass } from '../components/ServiceClassDetails/queries';
 import { serviceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/queries';
-import { createServiceInstance } from '../components/ServiceClassDetails/mutations';
+import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   clusterServiceClass1,
   clusterServiceClass2,
