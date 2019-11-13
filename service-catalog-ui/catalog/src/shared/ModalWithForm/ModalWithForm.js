@@ -7,20 +7,18 @@ import { useNotification } from '../../contexts/NotificationContext'; //contexts
 //TODO: move this component to a shared "place"
 
 const isFormValid = formRef => {
-  console.log('isFormValid()', formRef);
+  //console.log('isFormValid()', formRef);
   if (!formRef || !formRef.current) return true;
 
   if (typeof formRef.current.checkValidity === 'function') {
     // normal HTML form element
+    console.log('checkValidity()', formRef.current.checkValidity());
     return formRef.current.checkValidity();
   }
-
-  return (
-    (formRef.current.state &&
-      formRef.current.state.errors &&
-      !formRef.current.state.errors.length) ||
-    true
-  );
+  console.log('state errors', formRef.current.state.errors.length);
+  return formRef.current.state && formRef.current.state.errors
+    ? !formRef.current.state.errors.length
+    : true;
 };
 
 const ModalWithForm = ({
@@ -63,7 +61,7 @@ const ModalWithForm = ({
     //   }
 
     console.log('useEffect forms');
-    checkAllForms();
+    setTimeout(checkAllForms, 1000);
 
     // if (typeof formElementRef.current.reportValidity === 'function') {
     //   // for IE
@@ -81,6 +79,10 @@ const ModalWithForm = ({
     //   formElementRef.current.classList.add('is-invalid');
     // }
   });
+
+  useEffect(() => {
+    console.log(formElementRefAdditional);
+  }, [formElementRefAdditional]);
 
   function setOpenStatus(status) {
     if (status) {
