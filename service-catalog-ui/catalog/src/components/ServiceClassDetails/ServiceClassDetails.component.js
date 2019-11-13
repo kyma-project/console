@@ -8,7 +8,7 @@ import builder from '../../commons/builder';
 import { serviceClassConstants } from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
-import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal';
+import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 
 import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
@@ -132,6 +132,7 @@ export default function ServiceClassDetails({ match }) {
                 id="add-instance-modal"
                 item={serviceClass}
                 renderForm={props => <CreateInstanceModal {...props} />}
+                numberOfForms={2}
               />
             </>
           </ServiceClassDetailsHeader>

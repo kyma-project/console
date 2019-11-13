@@ -20,7 +20,11 @@ CreateInstanceModal.propTypes = {
   onCompleted: PropTypes.func,
   onError: PropTypes.func,
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  formElementRefAdditional: PropTypes.shape({ current: PropTypes.any })
+    .isRequired,
   item: PropTypes.object,
+
+  checkInstanceExistQuery: PropTypes.object.isRequired,
 };
 
 const parseDefaultIntegerValues = plan => {
@@ -48,7 +52,9 @@ export default function CreateInstanceModal({
   onCompleted,
   onError,
   formElementRef,
+  formElementRefAdditional,
   item,
+  checkInstanceExistQuery,
 }) {
   const plans = (item && item.plans) || [];
   plans.forEach(plan => {
@@ -69,10 +75,10 @@ export default function CreateInstanceModal({
         instanceCreateParameterSchema.properties),
   );
 
-  console.log('instanceCreateParameters', instanceCreateParameters);
-
   const formValues = {
-    validName: useRef(false),
+    name: useRef(
+      `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator(),
+    ),
     plan: useRef(plan),
     labels: useRef(null),
   };
@@ -90,53 +96,38 @@ export default function CreateInstanceModal({
     },
   });
 
-  useEffect(() => {
-    if (name) {
+  // useEffect(() => {
+  //     if (formElementRef && formElementRef.current) {
+  //         formElementRef.current.checkValidity();
+  //     }
+  // }, [formElementRef]);
+
+  const instanceAlreadyExists = name => {
+    return checkInstanceExistQuery.serviceInstances
+      .map(instance => instance.name)
+      .includes(name);
+  };
+
+  const onFormChange = formEvent => {
+    if (formValues.name.current && formValues.name.current.value) {
       refetch({
         namespace: builder.getCurrentEnvironmentId(),
-        name: name,
+        name: formValues.name.current.value,
       });
     }
-  }, [name]);
 
-  useEffect(() => {
-    if (formElementRef && formElementRef.current) {
-      formElementRef.current.checkValidity();
-      console.log(
-        'formElementRef2',
-        formElementRef.current[1].checkValidity(),
-        formElementRef.current[1],
-        formElementRef.current.reportValidity(),
-        formElementRef,
-        'formValues',
-        formValues,
-      );
-    }
-  }, [formElementRef]);
+    formValues.name.current.setCustomValidity(
+      instanceAlreadyExists(formValues.name.current.value)
+        ? 'Instance with this name already exists.'
+        : '',
+    );
 
-  useEffect(() => {
-    if (queryData && !queryLoading && !queryError) {
-      const instanceName = document.getElementById('instanceName');
-      const validName = document.getElementById('validName');
-      if (queryData.serviceInstance && queryData.serviceInstance.name) {
-        setExistingInstance(queryData.serviceInstance.name);
-        instanceName.classList.add('is-invalid');
-        validName.checked = false;
-      } else {
-        setExistingInstance('');
-        instanceName.classList.remove('is-invalid');
-        validName.checked = true;
-      }
-      console.log('existingInstance', existingInstance, 'queryData', queryData);
-    }
-  }, [queryData, queryLoading, queryError]);
-
-  console.log('formValues', formValues);
-
+    onChange(formEvent);
+  };
   async function handleFormSubmit(e) {
     try {
       const currentPlan =
-        plans.find(e => e.name === formValues.plan) ||
+        plans.find(e => e.name === formValues.plan.current.value) ||
         (plans.length && plans[0]);
       const labels =
         formValues.labels.current.value === ''
@@ -157,10 +148,9 @@ export default function CreateInstanceModal({
         parameterSchema: instanceCreateParameters,
       };
 
-      console.log('variables', variables);
-      // await createInstance({
-      //     variables,
-      // });
+      await createInstance({
+        variables,
+      });
       onCompleted(variables.name, `Instance created succesfully`);
       LuigiClient.linkManager()
         .fromContext('namespaces')
@@ -171,74 +161,63 @@ export default function CreateInstanceModal({
   }
 
   return (
-    <form
-      ref={formElementRef}
-      style={{ width: '47em' }}
-      onChange={onChange}
-      onLoad={onChange}
-      onSubmit={handleFormSubmit}
-    >
-      <FormItem>
-        <div className="grid-wrapper">
-          <div className="column">
-            <FormLabel htmlFor="instanceName">Name*</FormLabel>
-            <input
-              className="fd-form__control"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              type="text"
-              id="instanceName"
-              placeholder={'Instance name'}
-              aria-required="true"
-              required
-              pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-            />
-            <input
-              className="fd-form__control"
-              ref={formValues.validName}
-              type="checkbox"
-              id="validName"
-              required
-            />
+    <>
+      <form
+        ref={formElementRef}
+        style={{ width: '47em' }}
+        onChange={onFormChange}
+        onLoad={onFormChange}
+        onSubmit={handleFormSubmit}
+      >
+        <FormItem>
+          <div className="grid-wrapper">
+            <div className="column">
+              <FormLabel htmlFor="instanceName">Name*</FormLabel>
+              <input
+                className="fd-form__control"
+                ref={formValues.name}
+                defaultValue={name}
+                onChange={e => setName(e.target.value)}
+                type="text"
+                id="instanceName"
+                placeholder={'Instance name'}
+                aria-required="true"
+                required
+                pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+              />
+            </div>
+            <div className="column">
+              <FormLabel htmlFor="plan">Plan*</FormLabel>
+              <select id="plan" ref={formValues.plan} defaultValue={plans[0]}>
+                {plans.map((p, i) => (
+                  <option key={['plan', i].join('_')} value={p.name}>
+                    {getResourceDisplayName(p)}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="column">
-            <FormLabel htmlFor="plan">Plan*</FormLabel>
-            <select
-              id="plan"
-              ref={formValues.plan}
-              defaultValue={plans[0]}
-              onChange={e => {
-                console.log('dd', e.target.value);
-                setPlan(e.target.value);
-              }}
-            >
-              {plans.map((p, i) => (
-                <option key={['plan', i].join('_')} value={p.name}>
-                  {getResourceDisplayName(p)}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </FormItem>
-      <FormItem>
-        <FormLabel htmlFor="labels">Labels</FormLabel>
-        <input
-          className="fd-form__control"
-          ref={formValues.labels}
-          type="text"
-          id="labels"
-          placeholder={'Separate labels with comma'}
-          aria-required="false"
-          pattern="^[a-z0-9]([a-z0-9]*)?(,\s?[a-z0-9]+)*$"
-        />
-      </FormItem>
+        </FormItem>
+        <FormItem>
+          <FormLabel htmlFor="labels">Labels</FormLabel>
+          <input
+            className="fd-form__control"
+            ref={formValues.labels}
+            type="text"
+            id="labels"
+            placeholder={'Separate labels with comma'}
+            aria-required="false"
+            pattern="^[a-z0-9]([a-z0-9]*)?(,\s?[a-z0-9]+)*$"
+          />
+        </FormItem>
+      </form>
 
       {instanceCreateParameterSchemaExists && (
         <>
           <div className="separator" />
 
           <SchemaData
+            formRef={formElementRefAdditional}
             data={instanceCreateParameters}
             instanceCreateParameterSchema={instanceCreateParameterSchema}
             onSubmitSchemaForm={(formData, errors) =>
@@ -249,14 +228,17 @@ export default function CreateInstanceModal({
                 errors,
               )
             }
-            planName={plan}
+            planName={
+              formValues.plan &&
+              formValues.plan.current &&
+              formValues.plan.current.value
+            }
             callback={(formData, errors) => {
-              console.log('callback formData', formData, 'errors', errors);
               setInstanceCreateParameters(formData.instanceCreateParameters);
             }}
           />
         </>
       )}
-    </form>
+    </>
   );
 }

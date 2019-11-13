@@ -26,6 +26,7 @@ class SchemaData extends React.Component {
     super(props);
     this.state = {
       loading: false,
+      errors: [],
       instanceCreateParameters: props.data.instanceCreateParameters,
     };
   }
@@ -55,6 +56,7 @@ class SchemaData extends React.Component {
       onSubmitSchemaForm,
       children,
       planName,
+      formRef,
     } = this.props;
     const { instanceCreateParameters } = this.state;
 
@@ -68,6 +70,7 @@ class SchemaData extends React.Component {
         }
       >
         <JsonSchemaForm
+          formRef={formRef}
           schema={instanceCreateParameterSchema}
           additionalMetaSchemas={this.getAdditionalMetaSchemas(
             instanceCreateParameterSchema.$schema,

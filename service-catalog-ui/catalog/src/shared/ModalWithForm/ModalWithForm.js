@@ -6,49 +6,97 @@ import { useNotification } from '../../contexts/NotificationContext'; //contexts
 
 //TODO: move this component to a shared "place"
 
+const isFormValid = formRef => {
+  console.log('isFormValid()', formRef);
+  if (!formRef || !formRef.current) return true;
+
+  if (typeof formRef.current.checkValidity === 'function') {
+    // normal HTML form element
+    return formRef.current.checkValidity();
+  }
+
+  return (
+    (formRef.current.state &&
+      formRef.current.state.errors &&
+      !formRef.current.state.errors.length) ||
+    true
+  );
+};
+
 const ModalWithForm = ({
   performRefetch,
   sendNotification,
   title,
   button,
   renderForm,
+  opened,
+  customCloseAction,
   item,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
+  const formElementRefAdditional = useRef(null);
   const notificationManager = useNotification();
+
+  useEffect(() => {
+    setOpenStatus(opened);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opened]);
+
+  function checkAllForms() {
+    const _isEveryFormValid =
+      isFormValid(formElementRef) && isFormValid(formElementRefAdditional);
+
+    if (isValid !== _isEveryFormValid) {
+      setValid(_isEveryFormValid);
+    }
+  }
+
+  useEffect(() => {
+    //  console.log('formElementRefAdditional',formElementRefAdditional && formElementRefAdditional.current);
+    //   if(formElementRefAdditional && formElementRefAdditional.current){
+    //
+
+    //console.log( formElementRefAdditional.current.checkValidity());
+    //   }
+
+    console.log('useEffect forms');
+    checkAllForms();
+
+    // if (typeof formElementRef.current.reportValidity === 'function') {
+    //   // for IE
+    //   formElementRef.current.reportValidity();
+    // }
+
+    // if (formElementRef.current.getAttribute('data-ignore-visual-validation')) {
+    //   return;
+    // }
+
+    // // current element validity
+    // if (formElementRef.current.checkValidity()) {
+    //   formElementRef.current.classList.remove('is-invalid');
+    // } else {
+    //   formElementRef.current.classList.add('is-invalid');
+    // }
+  });
 
   function setOpenStatus(status) {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
     } else {
       LuigiClient.uxManager().removeBackdrop();
+      if (customCloseAction) {
+        customCloseAction();
+      }
     }
     setOpen(status);
-    console.log('formElementRef.current', formElementRef.current);
   }
 
-  useEffect(() => {
-    console.log('formElementRef', formElementRef);
-    if (formElementRef && formElementRef.current) {
-      formElementRef.current.checkValidity();
-      console.log(
-        'formElementRef',
-        formElementRef.current.checkValidity(),
-        formElementRef.current.reportValidity(),
-        formElementRef,
-        'formValues',
-      );
-    }
-  });
   function handleFormChanged(e) {
-    console.log(
-      'handleFormChanged formElementRef.current',
-      formElementRef.current,
-    );
-    setValid(formElementRef.current.checkValidity()); // general form validity
+    checkAllForms();
+
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
@@ -89,17 +137,17 @@ const ModalWithForm = ({
   }
 
   function handleFormSubmit() {
-    const form = formElementRef.current;
-    if (
-      form &&
-      form.reportValidity &&
-      (typeof form.reportValidity === 'function'
-        ? form.reportValidity()
-        : form.checkValidity()) // IE workaround; HTML validation tooltips won't be visible
-    ) {
-      form.dispatchEvent(new Event('submit'));
-      setTimeout(() => setOpenStatus(false));
-    }
+    //const form = formElementRef.current;
+    // if (
+    //   form &&
+    //   form.reportValidity &&
+    //   (typeof form.reportValidity === 'function'
+    //     ? form.reportValidity()
+    //     : form.checkValidity()) // IE workaround; HTML validation tooltips won't be visible
+    // ) {
+    //   form.dispatchEvent(new Event('submit'));
+    //   setTimeout(() => setOpenStatus(false));
+    // }
   }
 
   return (
@@ -141,6 +189,7 @@ const ModalWithForm = ({
       >
         {renderForm({
           formElementRef,
+          formElementRefAdditional,
           isValid,
           onChange: handleFormChanged,
           onError: handleFormError,
@@ -161,6 +210,8 @@ ModalWithForm.propTypes = {
     glyph: PropTypes.string,
   }).isRequired,
   renderForm: PropTypes.func.isRequired,
+  opened: PropTypes.bool,
+  customCloseAction: PropTypes.func,
   item: PropTypes.object,
 };
 ModalWithForm.defaultProps = {
