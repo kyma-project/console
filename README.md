@@ -119,7 +119,7 @@ If you want to run only a specific UI, follow the instructions in the appropriat
 
 ### Development with local GraphQL API
 
-By default, the [`core`](./core) and all other views are connected to the **GraphQL API** running on the cluster at [this](https://console-backend.kyma.local/graphql) address. If you want to use local **GraphQL API** endpoint, follow the instructions in the **Run a local version** section of [this](https://github.com/kyma-project/kyma/tree/master/components/console-backend-service#run-a-local-version) document and run the following command:
+By default, the [`core`](./core) and all other views are connected to the **GraphQL API** running on the cluster at the `https://console-backend.<kyma_domain>/graphql` address. If you want to use local **GraphQL API** endpoint, follow the instructions in the **Run a local version** section of [this](https://github.com/kyma-project/kyma/tree/master/components/console-backend-service#run-a-local-version) document and run the following command:
 
 ```bash
 npm run start:api
@@ -140,3 +140,27 @@ Remove the `node_modules` folder and the `package-lock.json` file in all librari
 ### Can't access `console.kyma.local` and `console-dev.kyma.local:4200` after hibernating the Minikube cluster
 
 Follow the guidelines from [this](https://kyma-project.io/docs/master/root/kyma/#troubleshooting-basic-troubleshooting-can-t-log-in-to-the-console-after-hibernating-the-minikube-cluster) document to solve the problem.
+
+### I'd like to quickly check if my remote cluster is running
+
+There's a script that let's you do this with one command.
+
+```bash
+./scripts/checkClusterAvailability.sh <cluster_url>
+
+# or
+
+export CLUSTER_HOST=abc.com
+./scripts/checkClusterAvailability.sh <cluster_subdomain>
+# the same as ./scripts/checkClusterAvailability.sh <cluster_subdomain>.abc.com
+
+# or
+
+./scripts/checkClusterAvailability.sh
+# will check every cluster address that has ever been set (via setClusterConfig.sh) or checked (via checkClusterAvailability.sh) on your machine
+
+# or
+
+./scripts/checkClusterAvailability.sh -s <cluster_domain>
+# will sillently return the exit code 0 or another if the cluster is unavailable
+```
