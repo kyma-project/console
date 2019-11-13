@@ -6,6 +6,12 @@ import { mount, shallow } from 'enzyme';
 import { CollapsiblePanel } from './../CollapsiblePanel';
 
 describe('Collapsible Panel', () => {
+  const exceptPanelVisible = (component, isVisible) => {
+    const body = component.find(Panel.Body);
+    expect(body.hasClass('body--closed')).toBe(!isVisible);
+    expect(body.hasClass('body--open')).toBe(isVisible);
+  };
+
   it('Renders with minimal props (opened state)', () => {
     const component = renderer.create(
       <CollapsiblePanel
@@ -51,16 +57,9 @@ describe('Collapsible Panel', () => {
     expect(component.find(Panel.Body).hasClass('body body--open')).toBe(false);
   });
 
-  it('Opens and closes', async () => {
-    const exceptPanelVisible = (component, isVisible) => {
-      const body = component.find(Panel.Body);
-      expect(body.hasClass('body--closed')).toBe(!isVisible);
-      expect(body.hasClass('body--open')).toBe(isVisible);
-    };
-
-    const child = <p>test</p>;
+  it('Opens and closes (chevron)', async () => {
     const component = mount(
-      <CollapsiblePanel children={child} title="Collapsible panel" />,
+      <CollapsiblePanel children={<p>test</p>} title="Collapsible panel" />,
     );
     const button = component.find(Button);
 
@@ -75,6 +74,50 @@ describe('Collapsible Panel', () => {
     // open again
     button.simulate('click');
     await component.update();
+    exceptPanelVisible(component, true);
+  });
+
+  it('Opens and closes (header)', async () => {
+    const component = mount(
+      <CollapsiblePanel children={<p>test</p>} title="Collapsible panel" />,
+    );
+    const header = component.find(Panel.Header);
+
+    // initially opened
+    exceptPanelVisible(component, true);
+
+    // close
+    header.simulate('click');
+    await component.update();
+    exceptPanelVisible(component, false);
+
+    // open again
+    header.simulate('click');
+    await component.update();
+    exceptPanelVisible(component, true);
+  });
+
+  it('Does not open modal when clicking on custom actions', async () => {
+    const child = <p>test</p>;
+    const component = mount(
+      <CollapsiblePanel
+        children={child}
+        title="Collapsible panel"
+        actions={
+          <button id="action-button" onClick={() => {}}>
+            test
+          </button>
+        }
+      />,
+    );
+
+    const button = component.find('#action-button');
+
+    // close
+    button.simulate('click');
+    await component.update();
+
+    // expect it's still opened
     exceptPanelVisible(component, true);
   });
 });

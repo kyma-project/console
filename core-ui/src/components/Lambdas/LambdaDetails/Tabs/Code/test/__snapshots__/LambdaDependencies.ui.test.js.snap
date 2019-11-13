@@ -6,6 +6,7 @@ exports[`Lambda Dependencies Render with minimal props 1`] = `
 >
   <div
     className="fd-panel__header"
+    onClick={[Function]}
   >
     <div
       className="fd-panel__head"
