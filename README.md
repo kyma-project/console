@@ -37,31 +37,66 @@ The Console also includes React and Angular libraries:
 
 2. Install Console dependencies. To install dependencies for the root and all UI projects, and prepare symlinks for local libraries within this repository, run the following command:
 
-    ``` bash
-    npm run bootstrap
-    ```
+   ```bash
+   npm run bootstrap
+   ```
 
-    > **NOTE:** The `npm run bootstrap` command:
-    > - installs root dependencies provided in the [package.json](./package.json) file
-    > - installs dependencies for the [`React common`](./common), [`React components`](./components/react), [`Shared components`](./components/shared) and [`Generic documentation`](./components/generic-documentation) libraries
-    > - builds all the libraries
-    > - installs dependencies for all the [components](#components)
-    > - updates your `/etc/hosts` with the `127.0.0.1 console-dev.kyma.local` host
-    > - creates the `.clusterConfig.gen` file if it doesn't exist, pointing at the `kyma.local` domain
+   > **NOTE:** The `npm run bootstrap` command:
+   >
+   > - installs root dependencies provided in the [package.json](./package.json) file
+   > - installs dependencies for the [`React common`](./common), [`React components`](./components/react), [`Shared components`](./components/shared) and [`Generic documentation`](./components/generic-documentation) libraries
+   > - builds all the libraries
+   > - installs dependencies for all the [components](#components)
+   > - updates your `/etc/hosts` with the `127.0.0.1 console-dev.kyma.local` host
+   > - creates the `.clusterConfig.gen` file if it doesn't exist, pointing at the `kyma.local` domain
 
 ## Usage
 
+### Set the cluster (optional)
+
+By default, the Kyma cluster URL (which the Console communicates with) is set to `kyma.local`. You can set it to any other address by executing
+
+```bash
+./scripts/.setClusterConfig <cluster_url>
+```
+
+To simplify switching clusters hosted on the same domain, you can assign the domain to `CLUSTER_HOST` environment variable, then use any subdomain as a cluster name.
+
+For example, let's assume you have two clusters you want to easily switch between - `foo.abc.com` and `bar.abc.com`. You can do the following:
+
+```bash
+export CLUSTER_HOST=abc.com # setting it permanently in .bashrc would be even better
+
+./scripts/.setClusterConfig foo
+# will do the same as ./scripts/.setClusterConfig foo.abc.com
+
+# and then, to swithch the cluster:
+
+./scripts/.setClusterConfig bar
+# will do the same as ./scripts/.setClusterConfig bar.abc.com
+```
+
+You can always set the domain back to `kyma.local` via
+
+```bash
+./scripts/.setClusterConfig local
+```
+
+### Start all views
+
 Use the following command to run the Console with the [`core`](./core) and all other views locally:
 
-``` bash
+```bash
 npm run start
 ```
 
 To access the local instance of the Console at `http://console-dev.kyma.local:4200`, use credentials from [this](https://kyma-project.io/docs/master/root/kyma#installation-install-kyma-on-a-cluster--provider-installation--aks--access-the-cluster) document - point 3.
 
+### Watch changes in React libraries
+
 If you want to watch changes in the React libraries, run the following command in a new terminal window:
 
-``` bash
+```bash
 npm run watch:libraries
 ```
 
@@ -86,7 +121,7 @@ If you want to run only a specific UI, follow the instructions in the appropriat
 
 By default, the [`core`](./core) and all other views are connected to the **GraphQL API** running on the cluster at [this](https://console-backend.kyma.local/graphql) address. If you want to use local **GraphQL API** endpoint, follow the instructions in the **Run a local version** section of [this](https://github.com/kyma-project/kyma/tree/master/components/console-backend-service#run-a-local-version) document and run the following command:
 
-``` bash
+```bash
 npm run start:api
 ```
 
