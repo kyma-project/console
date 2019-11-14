@@ -115,17 +115,12 @@ const ModalWithForm = ({
   }
 
   function handleFormSubmit() {
-    //const form = formElementRef.current;
-    // if (
-    //   form &&
-    //   form.reportValidity &&
-    //   (typeof form.reportValidity === 'function'
-    //     ? form.reportValidity()
-    //     : form.checkValidity()) // IE workaround; HTML validation tooltips won't be visible
-    // ) {
-    //   form.dispatchEvent(new Event('submit'));
-    //   setTimeout(() => setOpenStatus(false));
-    // }
+    const _isEveryFormValid =
+      isFormValid(formElementRef) && isFormValid(formElementRefAdditional);
+    if (_isEveryFormValid) {
+      formElementRef.current.dispatchEvent(new Event('submit'));
+      setTimeout(() => setOpenStatus(false));
+    }
   }
 
   return (

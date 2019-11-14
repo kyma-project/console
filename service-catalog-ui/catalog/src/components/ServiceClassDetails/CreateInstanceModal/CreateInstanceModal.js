@@ -84,12 +84,6 @@ export default function CreateInstanceModal({
 
   const [createInstance] = useMutation(createServiceInstance);
 
-  // useEffect(() => {
-  //     if (formElementRef && formElementRef.current) {
-  //         formElementRef.current.checkValidity();
-  //     }
-  // }, [formElementRef]);
-
   const instanceAlreadyExists = name => {
     return checkInstanceExistQuery.serviceInstances
       .map(instance => instance.name)
@@ -106,6 +100,7 @@ export default function CreateInstanceModal({
     onChange(formEvent);
   };
   async function handleFormSubmit(e) {
+    e.preventDefault();
     try {
       const currentPlan =
         plans.find(e => e.name === formValues.plan.current.value) ||
@@ -137,7 +132,7 @@ export default function CreateInstanceModal({
         .fromContext('namespaces')
         .navigate(`cmf-instances/details/${variables.name}`);
     } catch (e) {
-      onError(`The lambda could not be created succesfully`, e.message || ``);
+      onError(`The instance could not be created succesfully`, e.message || ``);
     }
   }
 
