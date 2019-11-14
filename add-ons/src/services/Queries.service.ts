@@ -6,28 +6,46 @@ import { LuigiContext } from './LuigiContext.service';
 
 import { Configuration } from '../types';
 
-const queryFields = `
-  name
-  urls
-  labels
-`;
-
+// todo pewnie nie trzeba wszystkich
 export const CLUSTER_ADDONS_CONFIGURATIONS_QUERY = gql`
   query clusterAddonsConfigurations {
     clusterAddonsConfigurations {
-      ${queryFields}
+      name
+      urls
+      labels
+      repositories {
+        url
+        secretRef {
+          name
+          namespace
+        }
+      }
+      status {
+        phase
+        repositories {
+          url
+          status
+          reason
+          message
+          addons {
+            name
+            status
+            version
+            reason
+            message
+          }
+        }
+      }
     }
   }
 `;
 
 export const ADDONS_CONFIGURATIONS_QUERY = gql`
-  query addonsConfigurations(
-    $namespace: String!
-  ) {
-    addonsConfigurations(
-      namespace: $namespace
-    ) {
-      ${queryFields}
+  query addonsConfigurations($namespace: String!) {
+    addonsConfigurations(namespace: $namespace) {
+      name
+      urls
+      labels
     }
   }
 `;

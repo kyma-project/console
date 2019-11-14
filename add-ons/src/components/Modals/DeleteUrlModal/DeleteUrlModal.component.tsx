@@ -16,7 +16,7 @@ const DeleteUrlModalComponent: React.FunctionComponent<Props> = ({
   handleDelete,
 }) => {
   const openingComponentModal = (
-    <Button glyph="decline" option="light" type="negative" compact={true} />
+    <Button glyph="decline" option="light" compact={true} />
   );
 
   return (

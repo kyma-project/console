@@ -1,14 +1,17 @@
 import React from 'react';
 
 import Toolbar from '../components/Toolbar/Toolbar.component';
-import Table from '../components/Table/Table.container';
+import AddonList from './../components/AddonList/AddonList';
+// import Table from '../components/Table/Table.container';
 
 import { Wrapper } from './styled';
+import './App.scss';
 
 const App: React.FunctionComponent = () => (
   <Wrapper>
     <Toolbar />
-    <Table />
+    {/* <Table /> */}
+    <AddonList />
   </Wrapper>
 );
 

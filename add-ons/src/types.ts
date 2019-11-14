@@ -2,10 +2,43 @@ import React from 'react';
 
 export type BackendModule = string;
 
+export interface SecretRef {
+  name: string;
+  namespace: string;
+}
+
+export interface Repository {
+  url: string;
+  secretRef: SecretRef;
+}
+
+export interface RepositoryAddon {
+  name: string;
+  status: string;
+  version: string;
+  reason: string;
+  message: string;
+}
+
+export interface RepositoryStatus {
+  url: string;
+  status: string;
+  reason: string;
+  message: string;
+  addons: RepositoryAddon[];
+}
+
+export interface ConfigurationStatus {
+  phase: string;
+  repositories: RepositoryStatus[];
+}
+
 export interface Configuration {
   name: string;
-  labels?: ConfigurationLabels;
   urls: ConfigurationURL[];
+  labels?: ConfigurationLabels;
+  repositories?: Repository[];
+  status?: ConfigurationStatus;
 }
 
 export interface ConfigurationLabels {
