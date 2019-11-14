@@ -24,6 +24,7 @@ const RepositoryTableHeader: FunctionComponent<RepositoryTableHeaderProps> = ({
         glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
         option="light"
         onClick={() => setIsOpen(!isOpen)}
+        disabled={!repository.addons.length}
       />
     </th>
     <th>{repository.url}</th>

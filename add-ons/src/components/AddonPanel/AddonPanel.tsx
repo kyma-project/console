@@ -47,12 +47,10 @@ interface AddonPanelProps {
 }
 
 const AddonPanel: FunctionComponent<AddonPanelProps> = ({ config }) => {
-  const panelContent = (
-    <>
-      {config.labels && <LabelDisplay readonlyLabels={config.labels} />}
-      <AddonTable config={config} />
-    </>
-  );
+  const panelTitle =
+    config.name === DEFAULT_CONFIGURATION
+      ? `${config.name} (default)`
+      : config.name;
 
   const actions = (
     <>
@@ -64,9 +62,16 @@ const AddonPanel: FunctionComponent<AddonPanelProps> = ({ config }) => {
     </>
   );
 
+  const panelContent = (
+    <>
+      {config.labels && <LabelDisplay readonlyLabels={config.labels} />}
+      <AddonTable config={config} />
+    </>
+  );
+
   return (
     <CollapsiblePanel
-      title={config.name}
+      title={panelTitle}
       actions={actions}
       additionalHeaderContent={
         config.status && (
