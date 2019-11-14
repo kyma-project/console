@@ -45,8 +45,8 @@ const useNotifications = () => {
     setNotification({
       title,
       content,
-      color: '#359c46',
-      icon: 'accept',
+      color: '#bb0000',
+      icon: 'decline',
     });
   };
 

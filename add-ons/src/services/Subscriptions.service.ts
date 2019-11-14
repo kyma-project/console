@@ -9,37 +9,32 @@ import { ConfigurationsService } from '../services';
 import { Configuration } from '../types';
 import { NOTIFICATION, CONFIGURATION_VARIABLE } from '../constants';
 import { SubscriptionType } from './types';
-
-const subscriptionFields = `
-  name
-  urls
-  labels
-`;
+import { ADDONS_CONFIGURATION_FRAGMENT } from './Queries.service';
 
 export const CLUSTER_ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION = gql`
   subscription clusterAddonsConfigurationEvent {
     clusterAddonsConfigurationEvent {
       type
       addonsConfiguration {
-        ${subscriptionFields}
+        ...AddonsConfiguration
       }
     }
   }
+
+  ${ADDONS_CONFIGURATION_FRAGMENT}
 `;
 
 export const ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION = gql`
-  subscription addonsConfigurationEvent(
-    $namespace: String!
-  ) {
-    addonsConfigurationEvent(
-      namespace: $namespace
-    ) {
+  subscription addonsConfigurationEvent($namespace: String!) {
+    addonsConfigurationEvent(namespace: $namespace) {
       type
       addonsConfiguration {
-        ${subscriptionFields}
+        ...AddonsConfiguration
       }
     }
   }
+
+  ${ADDONS_CONFIGURATION_FRAGMENT}
 `;
 
 interface SubscriptionPayload {
