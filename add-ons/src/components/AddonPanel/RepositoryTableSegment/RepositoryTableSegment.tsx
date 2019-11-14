@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { Button, Icon, Popover } from 'fundamental-react';
 import DeleteUrlModal from './../../Modals/DeleteUrlModal/DeleteUrlModal.container';
 import { RepositoryStatus, RepositoryAddon } from '../../../types';
@@ -11,12 +11,9 @@ interface RepositoryTableHeaderProps {
   configName: string;
 }
 
-const RepositoryTableHeader: FunctionComponent<RepositoryTableHeaderProps> = ({
-  isOpen,
-  setIsOpen,
-  repository,
-  configName,
-}) => (
+const RepositoryTableHeader: React.FunctionComponent<
+  RepositoryTableHeaderProps
+> = ({ isOpen, setIsOpen, repository, configName }) => (
   <tr>
     <th>
       <Button
@@ -44,7 +41,7 @@ interface RepositoryTableRowProps {
   addon: RepositoryAddon;
 }
 
-const RepositoryTableRow: FunctionComponent<RepositoryTableRowProps> = ({
+const RepositoryTableRow: React.FunctionComponent<RepositoryTableRowProps> = ({
   addon,
 }) => (
   <tr>
@@ -63,7 +60,7 @@ interface StatusWithMessageProps {
   message: string;
 }
 
-const StatusWithMessage: FunctionComponent<StatusWithMessageProps> = ({
+const StatusWithMessage: React.FunctionComponent<StatusWithMessageProps> = ({
   status,
   message,
 }) => {
@@ -99,7 +96,7 @@ interface RepositoryTableSegmentProps {
   configName: string;
 }
 
-const RepositoryTableSegment: FunctionComponent<
+const RepositoryTableSegment: React.FunctionComponent<
   RepositoryTableSegmentProps
 > = ({ repository, configName }) => {
   const [isOpen, setIsOpen] = React.useState(false);

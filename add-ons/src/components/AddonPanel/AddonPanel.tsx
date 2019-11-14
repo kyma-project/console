@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import CollapsiblePanel from '../CollapsiblePanel/CollapsiblePanel';
 import { Configuration } from '../../types';
 import { Button } from 'fundamental-react';
@@ -16,7 +16,7 @@ interface ResyncButtonProps {
   configurationName: string;
 }
 
-const ResyncButton: FunctionComponent<ResyncButtonProps> = ({
+const ResyncButton: React.FunctionComponent<ResyncButtonProps> = ({
   configurationName,
 }) => {
   const {
@@ -46,7 +46,7 @@ interface AddonPanelProps {
   config: Configuration;
 }
 
-const AddonPanel: FunctionComponent<AddonPanelProps> = ({ config }) => {
+const AddonPanel: React.FunctionComponent<AddonPanelProps> = ({ config }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const panelTitle =

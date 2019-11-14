@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { Badge } from 'fundamental-react';
 import { BadgeTypes } from 'fundamental-react/lib/Badge/Badge';
 
@@ -7,7 +7,7 @@ interface AddonConfigurationBadgeProps {
   className: string;
 }
 
-const AddonConfigurationBadge: FunctionComponent<
+const AddonConfigurationBadge: React.FunctionComponent<
   AddonConfigurationBadgeProps
 > = ({ status, className }) => {
   let type: BadgeTypes;

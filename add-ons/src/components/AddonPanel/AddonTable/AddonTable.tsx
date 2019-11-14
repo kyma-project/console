@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import RepositoryTableSegment from './../RepositoryTableSegment/RepositoryTableSegment';
 import { Configuration } from '../../../types';
 
@@ -6,7 +6,7 @@ interface AddonTableProps {
   config: Configuration;
 }
 
-const AddonTable: FunctionComponent<AddonTableProps> = ({ config }) => {
+const AddonTable: React.FunctionComponent<AddonTableProps> = ({ config }) => {
   const tableSegments = config.status.repositories.map(repository => (
     <RepositoryTableSegment
       key={repository.url}

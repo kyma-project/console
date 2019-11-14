@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { Token } from 'fundamental-react';
 import './LabelDisplay.scss';
 
@@ -7,7 +7,7 @@ interface LabelDisplayProps {
   labels?: { [key: string]: any };
 }
 
-const LabelDisplay: FunctionComponent<LabelDisplayProps> = ({
+const LabelDisplay: React.FunctionComponent<LabelDisplayProps> = ({
   readonlyLabels,
   labels,
 }) => (
