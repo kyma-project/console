@@ -4,6 +4,7 @@ exports[`ModalWithForm Renders child component 1`] = `
 <div>
   <button
     className="fd-button"
+    disabled={false}
     onClick={[Function]}
   >
     
@@ -15,6 +16,7 @@ exports[`ModalWithForm Renders with minimal props 1`] = `
 <div>
   <button
     className="fd-button"
+    disabled={false}
     onClick={[Function]}
   >
     

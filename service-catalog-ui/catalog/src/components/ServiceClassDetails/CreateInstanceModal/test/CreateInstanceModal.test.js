@@ -42,7 +42,7 @@ describe('CreateInstanceModal', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Shows empty lambda name input, predefined dropdowns and does not allow to submit form', () => {
+  it('Shows filled instance name input, predefined dropdowns and does not allow to submit form', () => {
     const component = mount(
       <MockedProvider>
         <CreateInstanceModal
