@@ -1,6 +1,6 @@
 import { getAllServiceClasses } from '../components/ServiceClassList/queries';
 import { getServiceClass } from '../components/ServiceClassDetails/queries';
-import { serviceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/queries';
+import { checkInstanceExist } from '../components/ServiceClassDetails/CreateInstanceModal/queries';
 import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   clusterServiceClass1,
@@ -63,17 +63,15 @@ export const createInstanceMutation = {
   }),
 };
 
-export const getInstanceName = {
+export const getEmptyInstanceList = {
   request: {
-    query: serviceInstance,
+    query: checkInstanceExist,
     variables: {
       name: '',
       namespace: builder.getCurrentEnvironmentId(),
     },
   },
   result: {
-    data: {
-      name: '',
-    },
+    serviceInstances: [],
   },
 };

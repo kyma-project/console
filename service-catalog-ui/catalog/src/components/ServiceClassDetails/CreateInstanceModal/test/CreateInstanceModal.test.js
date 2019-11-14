@@ -3,7 +3,10 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { componentUpdate } from '../../../../testing';
-import { clusterServiceClassDetails } from '../../../../testing/serviceClassesMocks';
+import {
+  clusterServiceClassDetails,
+  getEmptyInstanceList,
+} from '../../../../testing/serviceClassesMocks';
 
 import CreateInstanceModal from '../CreateInstanceModal';
 import {
@@ -33,8 +36,10 @@ describe('CreateInstanceModal', () => {
     const component = renderer.create(
       <MockedProvider>
         <CreateInstanceModal
+          checkInstanceExistQuery={{ serviceInstances: [] }}
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
+          jsonSchemaFormRef={{ current: null }}
         />
       </MockedProvider>,
     );
@@ -42,15 +47,19 @@ describe('CreateInstanceModal', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Shows filled instance name input, predefined dropdowns and does not allow to submit form', () => {
+  it('Shows filled instance name input, predefined dropdowns and does not allow to submit form', async () => {
     const component = mount(
       <MockedProvider>
         <CreateInstanceModal
+          checkInstanceExistQuery={{ serviceInstances: [] }}
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
+          jsonSchemaFormRef={{ current: null }}
         />
       </MockedProvider>,
     );
+
+    await componentUpdate(component);
 
     const instanceNameSelector = 'input#instanceName';
     const instanceNameInput = component.find(instanceNameSelector);
@@ -69,6 +78,10 @@ describe('CreateInstanceModal', () => {
     const instanceImagePullPolicyInput = component.find(
       instanceImagePullPolicySelector,
     );
+    console.log(
+      'instanceImagePullPolicyInput',
+      instanceImagePullPolicyInput.debug(),
+    );
     expect(instanceImagePullPolicyInput.exists()).toEqual(true);
     expect(instanceImagePullPolicyInput.instance().value).toEqual(
       'IfNotPresent',
@@ -81,6 +94,7 @@ describe('CreateInstanceModal', () => {
         .checkValidity(),
     ).toEqual(false);
   });
+  // ---
 
   // it('Allows to submit form with valid lambda name', () => {
   //   const component = mount(

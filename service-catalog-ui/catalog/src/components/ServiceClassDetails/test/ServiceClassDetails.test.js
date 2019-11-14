@@ -7,8 +7,6 @@ import ServiceClassDetails from '../ServiceClassDetails.component';
 import { Spinner } from '@kyma-project/react-components';
 import { componentUpdate } from '../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-import { expectToSolveWithin } from '../../../setupTests';
-import { act } from 'react-dom/test-utils';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -76,10 +74,8 @@ describe('Service Class Details UI', () => {
       </MockedProvider>,
     );
     await componentUpdate(component);
-    await act(async () => {
-      await expectToSolveWithin(() => {
-        expect(component.find(ServiceClassDetailsHeader).exists()).toBe(true);
-      }, 1000);
-    });
+    await componentUpdate(component);
+
+    expect(component.find(ServiceClassDetailsHeader).exists()).toBe(true);
   });
 });
