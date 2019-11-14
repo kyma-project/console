@@ -8,7 +8,7 @@ import { QueriesService, ConfigurationsService } from '../../services';
 
 import { ERRORS } from '../../constants';
 
-const AddonList: React.FunctionComponent = ({}) => {
+const AddonList: React.FunctionComponent = () => {
   const { error, loading = true } = useContext(QueriesService);
   const { configurationsExist, filteredConfigs } = useContext(
     ConfigurationsService,
