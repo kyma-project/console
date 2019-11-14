@@ -130,6 +130,7 @@ const ModalWithForm = ({
         onClick={() => {
           setOpenStatus(true);
         }}
+        disabled={button.disabled}
       >
         {button.text}
       </Button>

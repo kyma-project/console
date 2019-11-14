@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
-import { Button, Spinner } from '@kyma-project/react-components';
+import { Spinner } from '@kyma-project/react-components';
 
 import builder from '../../commons/builder';
 import { serviceClassConstants } from '../../variables';
@@ -71,25 +71,16 @@ export default function ServiceClassDetails({ match }) {
     serviceClass.labels.provisionOnlyOnce &&
     isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
 
-  const buttonText = {
+  const possibleButtonText = {
     provisionOnlyOnce: 'Add once',
     provisionOnlyOnceActive: 'Added once',
     standard: 'Add',
   };
-
-  const modalOpeningComponent = (
-    <Button
-      option="emphasized"
-      data-e2e-id="add-to-env"
-      disabled={Boolean(isProvisionedOnlyOnce && serviceClass.activated)}
-    >
-      {isProvisionedOnlyOnce
-        ? serviceClass.activated
-          ? buttonText.provisionOnlyOnceActive
-          : buttonText.provisionOnlyOnce
-        : buttonText.standard}
-    </Button>
-  );
+  const buttonText = isProvisionedOnlyOnce
+    ? serviceClass.activated
+      ? possibleButtonText.provisionOnlyOnceActive
+      : possibleButtonText.provisionOnlyOnce
+    : possibleButtonText.standard;
 
   const {
     providerDisplayName,
@@ -128,7 +119,13 @@ export default function ServiceClassDetails({ match }) {
                         : 'Service Class'
                     }${' '}
                     in the ${environment} Namespace`}
-                button={{ text: 'Create Instance', glyph: 'add' }}
+                button={{
+                  text: buttonText,
+                  glyph: 'add',
+                  disabled: Boolean(
+                    isProvisionedOnlyOnce && serviceClass.activated,
+                  ),
+                }}
                 id="add-instance-modal"
                 item={serviceClass}
                 renderForm={props => <CreateInstanceModal {...props} />}
