@@ -78,3 +78,13 @@ body {
     }
   }
 }
+
+.action-bar-wrapper{
+  @media (min-width: 500px) {
+    display: flex;
+    justify-content: space-between;
+  }
+   & > section {
+    flex-grow: 1;
+  }
+}

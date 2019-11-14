@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lambda Configuration Tab Render with minimal props 1`] = `
+<div
+  className="fd-panel fd-has-margin-medium"
+>
+  <div
+    className="fd-panel__header"
+  >
+    <div
+      className="fd-panel__head"
+    >
+      <h3
+        className="fd-panel__title"
+      >
+        General Configuration
+      </h3>
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <p>
+        Label Editor Mock
+      </p>
+      <div
+        className="fd-form__item"
+      >
+        <label
+          className="fd-form__label"
+          htmlFor="lambdaSize"
+        >
+          Size*
+          
+        </label>
+        <select
+          defaultValue="S"
+          id="lambdaSize"
+        >
+          <option
+            value="S"
+          >
+            S
+          </option>
+          <option
+            value="M"
+          >
+            M
+          </option>
+          <option
+            value="L"
+          >
+            L
+          </option>
+        </select>
+      </div>
+      <div
+        className="fd-form__item"
+      >
+        <label
+          className="fd-form__label"
+          htmlFor="lambdaRuntime"
+        >
+          Runtime*
+          
+        </label>
+        <select
+          defaultValue="nodejs6"
+          id="lambdaRuntime"
+        >
+          <option
+            value="nodejs6"
+          >
+            Nodejs 6
+          </option>
+          <option
+            value="nodejs8"
+          >
+            Nodejs 8
+          </option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+`;
