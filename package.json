@@ -33,6 +33,7 @@
     "@kyma-project/luigi-client": "^0.6.3",
     "@kyma-project/react-components": "./components/react",
     "@reach/router": "^1.2.1",
+    "@types/classnames": "^2.2.9",
     "ajv": "^6.10.2",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
