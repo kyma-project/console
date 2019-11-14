@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import classNames from 'classnames';
 import { Panel, Button } from 'fundamental-react';
 import './CollapsiblePanel.scss';
@@ -9,7 +9,9 @@ interface CollapsiblePanelProps {
   additionalHeaderContent?: React.ReactNode;
   actions?: React.ReactNode;
   className?: string;
-  isOpenInitially?: boolean;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  collapseDisabled?: boolean;
 }
 
 const CollapsiblePanel: FunctionComponent<CollapsiblePanelProps> = ({
@@ -18,10 +20,10 @@ const CollapsiblePanel: FunctionComponent<CollapsiblePanelProps> = ({
   additionalHeaderContent,
   actions,
   className,
-  isOpenInitially = true,
+  isOpen = true,
+  setIsOpen,
+  collapseDisabled = false,
 }) => {
-  const [isOpen, setIsOpen] = useState(isOpenInitially);
-
   return (
     <Panel className={classNames('collapsible-panel', className)}>
       <Panel.Header>
@@ -29,6 +31,7 @@ const CollapsiblePanel: FunctionComponent<CollapsiblePanelProps> = ({
           glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
           option="light"
           onClick={() => setIsOpen(!isOpen)}
+          disabled={collapseDisabled}
         />
         <Panel.Head title={title} headingLevel={2} />
         {additionalHeaderContent}

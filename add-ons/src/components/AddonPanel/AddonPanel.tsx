@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import CollapsiblePanel from '../CollapsiblePanel/CollapsiblePanel';
 import { Configuration } from '../../types';
 import { Button } from 'fundamental-react';
@@ -47,6 +47,8 @@ interface AddonPanelProps {
 }
 
 const AddonPanel: FunctionComponent<AddonPanelProps> = ({ config }) => {
+  const [isOpen, setIsOpen] = useState(true);
+
   const panelTitle =
     config.name === DEFAULT_CONFIGURATION
       ? `${config.name} (default)`
@@ -69,10 +71,15 @@ const AddonPanel: FunctionComponent<AddonPanelProps> = ({ config }) => {
     </>
   );
 
+  const hasRepositories = config.repositories.length > 0;
+
   return (
     <CollapsiblePanel
       title={panelTitle}
       actions={actions}
+      isOpen={hasRepositories && isOpen}
+      setIsOpen={setIsOpen}
+      collapseDisabled={!hasRepositories}
       additionalHeaderContent={
         config.status && (
           <AddonsConfigurationBadge

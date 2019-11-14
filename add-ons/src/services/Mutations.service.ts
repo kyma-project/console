@@ -155,7 +155,7 @@ export const RESYNC_CLUSTER_ADDONS_CONFIGURATION_MUTATION = gql`
 
 export const RESYNC_ADDONS_CONFIGURATION_MUTATION = gql`
   mutation resyncAddonsConfiguration($name: String!, $namespace: String!) {
-    resyncClusterAddonsConfiguration(name: $name, namespace: $namespace) {
+    resyncAddonsConfiguration(name: $name, namespace: $namespace) {
       name
     }
   }

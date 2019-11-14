@@ -2,7 +2,6 @@ import React, { FunctionComponent } from 'react';
 import { Button, Icon, Popover } from 'fundamental-react';
 import DeleteUrlModal from './../../Modals/DeleteUrlModal/DeleteUrlModal.container';
 import { RepositoryStatus, RepositoryAddon } from '../../../types';
-import './RepositoryTableSegment.scss';
 import classNames from 'classnames';
 
 interface RepositoryTableHeaderProps {

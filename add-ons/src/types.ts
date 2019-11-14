@@ -36,9 +36,9 @@ export interface ConfigurationStatus {
 export interface Configuration {
   name: string;
   urls: ConfigurationURL[];
-  labels?: ConfigurationLabels;
-  repositories?: Repository[];
-  status?: ConfigurationStatus;
+  labels: ConfigurationLabels;
+  repositories: Repository[];
+  status: ConfigurationStatus;
 }
 
 export interface ConfigurationLabels {
