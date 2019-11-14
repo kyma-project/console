@@ -132,7 +132,6 @@ export default function ServiceClassDetails({ match }) {
                 id="add-instance-modal"
                 item={serviceClass}
                 renderForm={props => <CreateInstanceModal {...props} />}
-                numberOfForms={2}
               />
             </>
           </ServiceClassDetailsHeader>

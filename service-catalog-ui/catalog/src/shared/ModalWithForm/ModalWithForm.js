@@ -6,16 +6,22 @@ import { useNotification } from '../../contexts/NotificationContext'; //contexts
 
 //TODO: move this component to a shared "place"
 
-const isFormValid = formRef => {
-  //console.log('isFormValid()', formRef);
+const isFormValid = (formRef, reportValidity = false) => {
   if (!formRef || !formRef.current) return true;
 
   if (typeof formRef.current.checkValidity === 'function') {
     // normal HTML form element
-    console.log('checkValidity()', formRef.current.checkValidity());
+    if (
+      reportValidity &&
+      typeof formRef.current.reportValidity === 'function'
+    ) {
+      // for IE
+      formRef.current.reportValidity();
+    }
+
     return formRef.current.checkValidity();
   }
-  console.log('state errors', formRef.current.state.errors.length);
+
   return formRef.current.state && formRef.current.state.errors
     ? !formRef.current.state.errors.length
     : true;
@@ -43,9 +49,10 @@ const ModalWithForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened]);
 
-  function checkAllForms() {
+  function checkAllForms(reportValidity = false) {
     const _isEveryFormValid =
-      isFormValid(formElementRef) && isFormValid(formElementRefAdditional);
+      isFormValid(formElementRef, reportValidity) &&
+      isFormValid(formElementRefAdditional, reportValidity);
 
     if (isValid !== _isEveryFormValid) {
       setValid(_isEveryFormValid);
@@ -53,36 +60,8 @@ const ModalWithForm = ({
   }
 
   useEffect(() => {
-    //  console.log('formElementRefAdditional',formElementRefAdditional && formElementRefAdditional.current);
-    //   if(formElementRefAdditional && formElementRefAdditional.current){
-    //
-
-    //console.log( formElementRefAdditional.current.checkValidity());
-    //   }
-
-    console.log('useEffect forms');
-    setTimeout(checkAllForms, 1000);
-
-    // if (typeof formElementRef.current.reportValidity === 'function') {
-    //   // for IE
-    //   formElementRef.current.reportValidity();
-    // }
-
-    // if (formElementRef.current.getAttribute('data-ignore-visual-validation')) {
-    //   return;
-    // }
-
-    // // current element validity
-    // if (formElementRef.current.checkValidity()) {
-    //   formElementRef.current.classList.remove('is-invalid');
-    // } else {
-    //   formElementRef.current.classList.add('is-invalid');
-    // }
+    setTimeout(() => checkAllForms(true));
   });
-
-  useEffect(() => {
-    console.log(formElementRefAdditional);
-  }, [formElementRefAdditional]);
 
   function setOpenStatus(status) {
     if (status) {
@@ -99,20 +78,17 @@ const ModalWithForm = ({
   function handleFormChanged(e) {
     checkAllForms();
 
-    if (typeof e.target.reportValidity === 'function') {
-      // for IE
-      e.target.reportValidity();
-    }
+    if (e.target) {
+      if (e.target.getAttribute('data-ignore-visual-validation')) {
+        return;
+      }
 
-    if (e.target.getAttribute('data-ignore-visual-validation')) {
-      return;
-    }
-
-    // current element validity
-    if (e.target.checkValidity()) {
-      e.target.classList.remove('is-invalid');
-    } else {
-      e.target.classList.add('is-invalid');
+      // current element validity
+      if (e.target.checkValidity()) {
+        e.target.classList.remove('is-invalid');
+      } else {
+        e.target.classList.add('is-invalid');
+      }
     }
   }
 

@@ -6,7 +6,6 @@ import * as LuigiClient from '@kyma-project/luigi-client';
 
 import SchemaData from './SchemaData.component';
 import builder from '../../../commons/builder';
-import { checkInstanceExist } from './queries';
 import { createServiceInstance } from './mutations';
 
 import './CreateInstanceModal.scss';
@@ -84,17 +83,6 @@ export default function CreateInstanceModal({
   };
 
   const [createInstance] = useMutation(createServiceInstance);
-  const {
-    data: queryData,
-    loading: queryLoading,
-    error: queryError,
-    refetch,
-  } = useQuery(checkInstanceExist, {
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-      name: name,
-    },
-  });
 
   // useEffect(() => {
   //     if (formElementRef && formElementRef.current) {
@@ -109,13 +97,6 @@ export default function CreateInstanceModal({
   };
 
   const onFormChange = formEvent => {
-    if (formValues.name.current && formValues.name.current.value) {
-      refetch({
-        namespace: builder.getCurrentEnvironmentId(),
-        name: formValues.name.current.value,
-      });
-    }
-
     formValues.name.current.setCustomValidity(
       instanceAlreadyExists(formValues.name.current.value)
         ? 'Instance with this name already exists.'
@@ -184,6 +165,7 @@ export default function CreateInstanceModal({
                 aria-required="true"
                 required
                 pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+                autocomplete="off"
               />
             </div>
             <div className="column">
@@ -234,6 +216,7 @@ export default function CreateInstanceModal({
               formValues.plan.current.value
             }
             callback={(formData, errors) => {
+              onChange(formData);
               setInstanceCreateParameters(formData.instanceCreateParameters);
             }}
           />
