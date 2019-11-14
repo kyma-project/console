@@ -24,7 +24,13 @@ const FormEntry = ({ caption, name, value }) => (
     <FormLabel htmlFor={name}>{caption}</FormLabel>
     <div className="form-entry--copyable">
       <FormInput type="text" id={name} value={value || 'Loading...'} readOnly />
-      {value && <Button glyph="copy" onClick={() => copyToCliboard(value)} />}
+      {value && (
+        <Button
+          option="light"
+          glyph="copy"
+          onClick={() => copyToCliboard(value)}
+        />
+      )}
     </div>
   </FormItem>
 );
@@ -44,7 +50,7 @@ export default function ConnectApplicationModal({
     try {
       const { data } = await connectApplicationMutation(id);
       setConnectionData(data.generateOneTimeTokenForApplication);
-      setModalTitle('Application connected succesfully');
+      setModalTitle('Connect Application');
     } catch (e) {
       console.warn(e);
       setModalTitle('Error');
