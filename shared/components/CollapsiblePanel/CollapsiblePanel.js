@@ -13,7 +13,7 @@ export const CollapsiblePanel = ({
 }) => {
   const [isOpen, setIsOpen] = useState(isOpenInitially);
 
-  const swtichOpen = e => {
+  const switchOpen = e => {
     e.stopPropagation();
     if (e.target === e.currentTarget) {
       setIsOpen(!isOpen);
@@ -22,14 +22,14 @@ export const CollapsiblePanel = ({
 
   return (
     <Panel className={classNames('collapsible-panel', className)}>
-      <Panel.Header onClick={swtichOpen}>
+      <Panel.Header onClick={switchOpen}>
         <Panel.Head title={title} />
         <Panel.Actions>
           {actions}
           <Button
             glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
             option="light"
-            onClick={swtichOpen}
+            onClick={switchOpen}
           />
         </Panel.Actions>
       </Panel.Header>
