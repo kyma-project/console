@@ -81,12 +81,10 @@ const AddonPanel: FunctionComponent<AddonPanelProps> = ({ config }) => {
       setIsOpen={setIsOpen}
       collapseDisabled={!hasRepositories}
       additionalHeaderContent={
-        config.status && (
-          <AddonsConfigurationBadge
-            status={config.status.phase}
-            className="fd-has-margin-left-s"
-          />
-        )
+        <AddonsConfigurationBadge
+          status={config.status.phase}
+          className="fd-has-margin-left-s"
+        />
       }
       className="fd-has-margin-bottom-s"
     >

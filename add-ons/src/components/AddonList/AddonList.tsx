@@ -18,10 +18,14 @@ const AddonList: React.FunctionComponent = () => {
     return <Spinner />;
   }
   if (!configurationsExist()) {
-    return <div className="error-wrapper">{ERRORS.RESOURCES_NOT_FOUND}</div>;
+    return (
+      <div className="addon-list__error-wrapper">
+        {ERRORS.RESOURCES_NOT_FOUND}
+      </div>
+    );
   }
   if (error) {
-    return <div className="error-wrapper">{ERRORS.SERVER}</div>;
+    return <div className="addon-list__error-wrapper">{ERRORS.SERVER}</div>;
   }
   return (
     <section className="fd-has-margin-m" id="addon-list">

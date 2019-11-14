@@ -7,15 +7,13 @@ interface AddonTableProps {
 }
 
 const AddonTable: FunctionComponent<AddonTableProps> = ({ config }) => {
-  const tableSegments =
-    config.status &&
-    config.status.repositories.map(repository => (
-      <RepositoryTableSegment
-        key={repository.url}
-        repository={repository}
-        configName={config.name}
-      />
-    ));
+  const tableSegments = config.status.repositories.map(repository => (
+    <RepositoryTableSegment
+      key={repository.url}
+      repository={repository}
+      configName={config.name}
+    />
+  ));
 
   return (
     <table className="fd-table">
