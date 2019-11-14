@@ -1,7 +1,10 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import { allServiceClassesQuery } from '../../../testing/queriesMocks';
+import {
+  allServiceClassesQuery,
+  mockEnvironmentId,
+} from '../../../testing/queriesMocks';
 import { clusterServiceClass1Name } from '../../../testing/serviceClassesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList.component';
@@ -11,6 +14,11 @@ const mockNavigate = jest.fn();
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
+    getEventData: () => {
+      return {
+        environmentId: mockEnvironmentId,
+      };
+    },
     linkManager: function() {
       return {
         fromClosestContext: function() {

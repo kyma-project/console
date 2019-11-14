@@ -67,7 +67,7 @@ export default function ServiceClassList() {
     error: queryError,
   } = useQuery(getAllServiceClasses, {
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: LuigiClient.getEventData().environmentId,
     },
     pollInterval: POLL_INTERVAL,
   });

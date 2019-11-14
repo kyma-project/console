@@ -14,7 +14,7 @@ import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 import './ServiceClassDetails.scss';
 import { ServiceClassDetailsWrapper, EmptyList } from './styled';
-
+import LuigiClient from '@kyma-project/luigi-client';
 import {
   getResourceDisplayName,
   getDescription,
@@ -32,7 +32,7 @@ export default function ServiceClassDetails({ match }) {
     error: queryError,
   } = useQuery(getServiceClass, {
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: LuigiClient.getEventData().environmentId,
       name: match.params.name,
       fileExtensions: filterExtensions,
     },

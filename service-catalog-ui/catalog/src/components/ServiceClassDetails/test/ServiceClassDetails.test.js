@@ -1,7 +1,10 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import { serviceClassQuery } from '../../../testing/queriesMocks';
+import {
+  serviceClassQuery,
+  mockEnvironmentId,
+} from '../../../testing/queriesMocks';
 import { clusterServiceClass1Name } from '../../../testing/serviceClassesMocks';
 import ServiceClassDetails from '../ServiceClassDetails.component';
 import { Spinner } from '@kyma-project/react-components';
@@ -18,6 +21,11 @@ jest.mock('@kyma-project/generic-documentation', () => {
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
+    getEventData: () => {
+      return {
+        environmentId: mockEnvironmentId,
+      };
+    },
     linkManager: function() {
       return {
         fromContext: function() {

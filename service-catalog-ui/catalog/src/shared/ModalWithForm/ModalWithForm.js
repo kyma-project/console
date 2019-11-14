@@ -74,8 +74,8 @@ const ModalWithForm = ({
   }
 
   function handleFormChanged(e) {
+    console.log('handleFormChanged');
     checkAllForms();
-
     if (e.target) {
       if (e.target.getAttribute('data-ignore-visual-validation')) {
         return;
@@ -114,7 +114,7 @@ const ModalWithForm = ({
 
   function handleFormSubmit() {
     const _isEveryFormValid =
-      isFormValid(formElementRef) && isFormValid(jsonSchemaFormRef);
+      isFormValid(formElementRef) && isJsonSchemaFormValid(jsonSchemaFormRef);
     if (_isEveryFormValid) {
       formElementRef.current.dispatchEvent(new Event('submit'));
       setTimeout(() => setOpenStatus(false));

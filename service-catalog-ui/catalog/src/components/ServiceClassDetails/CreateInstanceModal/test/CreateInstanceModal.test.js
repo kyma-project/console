@@ -5,20 +5,24 @@ import { MockedProvider } from '@apollo/react-testing';
 import { componentUpdate } from '../../../../testing';
 import {
   clusterServiceClassDetails,
-  getEmptyInstanceList,
+  clusterServiceClass1Name,
 } from '../../../../testing/serviceClassesMocks';
 
-import CreateInstanceModal from '../CreateInstanceModal';
 import {
   createServiceInstanceSuccessfulMock,
   createServiceInstanceErrorMock,
-} from './gqlMocks';
+  mockEnvironmentId,
+} from '../../../../testing/queriesMocks';
+
+import CreateInstanceModal from '../CreateInstanceModal';
+
+const dummyFunction = jest.fn();
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     getEventData: () => {
       return {
-        environmentId: 'testnamespace',
+        environmentId: mockEnvironmentId,
       };
     },
     linkManager: () => {
@@ -40,6 +44,9 @@ describe('CreateInstanceModal', () => {
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
+          onChange={dummyFunction}
+          onError={dummyFunction}
+          onCompleted={dummyFunction}
         />
       </MockedProvider>,
     );
@@ -55,10 +62,14 @@ describe('CreateInstanceModal', () => {
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
+          onChange={dummyFunction}
+          onError={dummyFunction}
+          onCompleted={dummyFunction}
         />
       </MockedProvider>,
     );
 
+    await componentUpdate(component);
     await componentUpdate(component);
 
     const instanceNameSelector = 'input#instanceName';
@@ -78,10 +89,7 @@ describe('CreateInstanceModal', () => {
     const instanceImagePullPolicyInput = component.find(
       instanceImagePullPolicySelector,
     );
-    console.log(
-      'instanceImagePullPolicyInput',
-      instanceImagePullPolicyInput.debug(),
-    );
+
     expect(instanceImagePullPolicyInput.exists()).toEqual(true);
     expect(instanceImagePullPolicyInput.instance().value).toEqual(
       'IfNotPresent',
@@ -89,91 +97,81 @@ describe('CreateInstanceModal', () => {
 
     expect(
       component
-        .find('form')
+        .find('form#createInstanceForm')
+        .instance()
+        .checkValidity(),
+    ).toEqual(true);
+  });
+
+  it('Does not allow to submit form with invalid instance name', async () => {
+    const component = mount(
+      <MockedProvider>
+        <CreateInstanceModal
+          checkInstanceExistQuery={{ serviceInstances: [] }}
+          item={clusterServiceClassDetails}
+          formElementRef={{ current: null }}
+          jsonSchemaFormRef={{ current: null }}
+          onChange={dummyFunction}
+          onError={dummyFunction}
+          onCompleted={dummyFunction}
+        />
+      </MockedProvider>,
+    );
+
+    await componentUpdate(component);
+    await componentUpdate(component);
+
+    const instanceNameInput = component.find('input#instanceName');
+    instanceNameInput.instance().value = '';
+    expect(instanceNameInput.instance().value).toEqual('');
+
+    expect(
+      component
+        .find('form#createInstanceForm')
         .instance()
         .checkValidity(),
     ).toEqual(false);
   });
-  // ---
 
-  // it('Allows to submit form with valid lambda name', () => {
-  //   const component = mount(
-  //     <MockedProvider>
-  //       <CreateInstanceModal item={clusterServiceClassDetails} formElementRef={{ current: null }} />
-  //     </MockedProvider>,
-  //   );
+  it('Creates instance properly', async () => {
+    const ref = React.createRef();
 
-  //   const lambdaNameSelector = 'input#lambdaName';
-  //   const lambdaNameInput = component.find(lambdaNameSelector);
-  //   expect(lambdaNameInput.exists()).toEqual(true);
-  //   expect(lambdaNameInput.instance().value).toEqual('');
+    const gqlMock = createServiceInstanceSuccessfulMock();
 
-  //   lambdaNameInput.instance().value = 'validname';
-  //   expect(lambdaNameInput.instance().value).toEqual('validname');
+    const component = mount(
+      <MockedProvider mocks={[gqlMock]} addTypename={false}>
+        <CreateInstanceModal
+          checkInstanceExistQuery={{ serviceInstances: [] }}
+          item={clusterServiceClassDetails}
+          formElementRef={ref}
+          jsonSchemaFormRef={{ current: null }}
+          onChange={dummyFunction}
+          onError={dummyFunction}
+          onCompleted={dummyFunction}
+        />
+      </MockedProvider>,
+    );
 
-  //   expect(
-  //     component
-  //       .find('form')
-  //       .instance()
-  //       .checkValidity(),
-  //   ).toEqual(true);
-  // });
+    await componentUpdate(component);
+    await componentUpdate(component);
 
-  // it('Does not allow to submit form with invalid lambda name', () => {
-  //   const component = mount(
-  //     <MockedProvider>
-  //       <CreateInstanceModal item={clusterServiceClassDetails} formElementRef={{ current: null }} />
-  //     </MockedProvider>,
-  //   );
+    const instanceNameInput = component.find('input#instanceName');
+    instanceNameInput.simulate('change', {
+      target: { value: clusterServiceClass1Name },
+    });
+    // instanceNameInput.instance().value=clusterServiceClass1Name;
+    // expect(instanceNameInput.instance().value).toEqual(clusterServiceClass1Name);
+    await componentUpdate(component);
+    await componentUpdate(component);
+    const form = component.find('form#createInstanceForm');
+    form.simulate('submit');
 
-  //   const lambdaNameSelector = 'input#lambdaName';
-  //   const lambdaNameInput = component.find(lambdaNameSelector);
-  //   expect(lambdaNameInput.exists()).toEqual(true);
-  //   expect(lambdaNameInput.instance().value).toEqual('');
+    await componentUpdate(component);
+    expect(gqlMock.result).toHaveBeenCalled();
 
-  //   lambdaNameInput.instance().value = '1invalidName';
-  //   expect(lambdaNameInput.instance().value).toEqual('1invalidName');
-
-  //   expect(
-  //     component
-  //       .find('form')
-  //       .instance()
-  //       .checkValidity(),
-  //   ).toEqual(false);
-  // });
-
-  // it('Creates lambda properly', async () => {
-  //   const onError = jest.fn();
-  //   const onCompleted = jest.fn();
-  //   const ref = React.createRef();
-
-  //   const gqlMock = [createServiceInstanceSuccessfulMock()];
-
-  //   const component = mount(
-  //     <MockedProvider mocks={gqlMock} addTypename={false}>
-  //       <CreateInstanceModal
-  //         item={clusterServiceClassDetails}
-  //         onError={onError}
-  //         onCompleted={onCompleted}
-  //         formElementRef={ref}
-  //       />
-  //     </MockedProvider>,
-  //   );
-
-  //   const lambdaNameSelector = 'input#lambdaName';
-  //   const lambdaNameInput = component.find(lambdaNameSelector);
-  //   lambdaNameInput.instance().value = 'testname';
-
-  //   const form = component.find('form');
-  //   form.simulate('submit');
-
-  //   await componentUpdate(component);
-
-  //   expect(gqlMock[0].result).toHaveBeenCalled();
-
-  //   expect(onCompleted).toHaveBeenCalled();
-  //   expect(onError).not.toHaveBeenCalled();
-  // });
+    expect(onCompleted).toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+  });
 
   // it('Shows error notification if an error occured', async () => {
   //   const onError = jest.fn();

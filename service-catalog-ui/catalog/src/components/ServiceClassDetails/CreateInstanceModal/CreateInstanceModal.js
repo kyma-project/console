@@ -14,9 +14,9 @@ import {
 } from '../../../commons/helpers';
 
 CreateInstanceModal.propTypes = {
-  onChange: PropTypes.func,
-  onCompleted: PropTypes.func,
-  onError: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  onCompleted: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   jsonSchemaFormRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   item: PropTypes.object,
@@ -49,7 +49,7 @@ export default function CreateInstanceModal({
   onCompleted,
   onError,
   formElementRef,
-  formElementRefAdditional,
+  jsonSchemaFormRef,
   item,
   checkInstanceExistQuery,
 }) {
@@ -119,10 +119,12 @@ export default function CreateInstanceModal({
         labels,
         parameterSchema: instanceCreateParameters,
       };
-
-      await createInstance({
+      //console.log('name:',variables, createServiceInstance)
+      const res = await createInstance({
         variables,
       });
+      //console.log('response:',res)
+
       onCompleted(variables.name, `Instance created succesfully`);
       LuigiClient.linkManager()
         .fromContext('namespaces')
@@ -140,6 +142,7 @@ export default function CreateInstanceModal({
         onChange={onFormChange}
         onLoad={onFormChange}
         onSubmit={handleFormSubmit}
+        id="createInstanceForm"
       >
         <FormItem>
           <div className="grid-wrapper">
@@ -189,13 +192,14 @@ export default function CreateInstanceModal({
         <>
           <div className="separator" />
           <SchemaData
-            formRef={formElementRefAdditional}
+            formRef={jsonSchemaFormRef}
             data={instanceCreateParameters}
             instanceCreateParameterSchema={instanceCreateParameterSchema}
             planName={
-              formValues.plan &&
-              formValues.plan.current &&
-              formValues.plan.current.value
+              (formValues.plan &&
+                formValues.plan.current &&
+                formValues.plan.current.value) ||
+              ''
             }
             onSubmitSchemaForm={() => {}}
             callback={(formData, errors) => {

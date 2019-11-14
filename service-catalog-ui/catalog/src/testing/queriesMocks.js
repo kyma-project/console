@@ -12,12 +12,23 @@ import {
 
 import builder from '../commons/builder';
 
+export const mockEnvironmentId = 'testnamespace';
+
 const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
+const otherParams = {
+  externalServiceClassName: clusterServiceClassDetails.externalName,
+  externalPlanName: clusterServiceClassDetails.plans[0].externalName,
+  classClusterWide: true, //
+  planClusterWide: true,
+  labels: [],
+  parameterSchema: { imagePullPolicy: 'IfNotPresent' },
+};
+
 export const allServiceClassesQuery = {
   request: {
     query: getAllServiceClasses,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: mockEnvironmentId,
     },
   },
   result: {
@@ -32,7 +43,7 @@ export const serviceClassQuery = {
   request: {
     query: getServiceClass,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: mockEnvironmentId,
       name: clusterServiceClass1Name,
       fileExtensions: filterExtensions,
     },
@@ -45,33 +56,35 @@ export const serviceClassQuery = {
   },
 };
 
-export const createInstanceMutation = {
+export const createServiceInstanceSuccessfulMock = () => {
+  return {
+    request: {
+      query: createServiceInstance,
+      variables: {
+        namespace: mockEnvironmentId,
+        name: clusterServiceClass1Name,
+        ...otherParams,
+      },
+    },
+    result: jest.fn().mockReturnValue({
+      data: {
+        createServiceInstance: {
+          namespace: mockEnvironmentId,
+          serviceInstanceName: clusterServiceClass1Name,
+          parameters: {},
+        },
+      },
+    }),
+  };
+};
+
+export const createServiceInstanceErrorMock = () => ({
   request: {
     query: createServiceInstance,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
       serviceInstanceName: 'redis-motherly-deposit',
-      parameters: {},
     },
   },
-  result: jest.fn().mockReturnValue({
-    data: {
-      createServiceBinding: {
-        name: 'mystifying-colden',
-      },
-    },
-  }),
-};
-
-export const getEmptyInstanceList = {
-  request: {
-    query: checkInstanceExist,
-    variables: {
-      name: '',
-      namespace: builder.getCurrentEnvironmentId(),
-    },
-  },
-  result: {
-    serviceInstances: [],
-  },
-};
+  error: new Error('Instace already exists'),
+});

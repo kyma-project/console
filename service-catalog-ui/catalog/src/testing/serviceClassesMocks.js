@@ -1,4 +1,4 @@
-const clusterServiceClass1Name = 'a2257daa-0e26-4c61-a68d-8a7453c1b767';
+const clusterServiceClass1Name = 'agata';
 
 const clusterServiceClass1 = {
   activated: false,
@@ -50,25 +50,22 @@ const clusterServiceClassDetails = {
     assets: [
       {
         name:
-          'a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss',
+          clusterServiceClass1Name + '-markdown-files-markdown-1bh3139cq9rss',
         metadata: {},
         type: 'markdown',
         files: [
           {
-            url:
-              'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/meta.yaml',
+            url: `https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/${clusterServiceClass1Name}-markdown-files-markdown-1bh3139cq9rss/docs/meta.yaml`,
             metadata: null,
             __typename: 'File',
           },
           {
-            url:
-              'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/overview.md',
+            url: `https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/${clusterServiceClass1Name}-markdown-files-markdown-1bh3139cq9rss/docs/overview.md`,
             metadata: { title: 'Overview', type: 'Overview' },
             __typename: 'File',
           },
           {
-            url:
-              'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/plans-details.md',
+            url: `https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/${clusterServiceClass1Name}-markdown-files-markdown-1bh3139cq9rss/docs/plans-details.md`,
             metadata: {
               title: 'Services and Plans',
               type: 'Details',
@@ -82,7 +79,7 @@ const clusterServiceClassDetails = {
     description: 'Overall documentation',
     displayName: 'Documentation for redis',
     groupName: '',
-    name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
+    name: clusterServiceClass1Name,
     __typename: 'ClusterDocsTopic',
   },
   creationTimestamp: 1572525371,
@@ -114,7 +111,7 @@ const clusterServiceClassDetails = {
         type: 'object',
       },
       name: 'a6078798-70a1-4674-af90-aba364dd6a56',
-      relatedClusterServiceClassName: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
+      relatedClusterServiceClassName: clusterServiceClass1Name,
       __typename: 'ClusterServicePlan',
     },
   ],
