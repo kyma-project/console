@@ -8,15 +8,12 @@ exports[`Collapsible Panel Renders in closed state 1`] = `
     className="fd-panel__header"
     onClick={[Function]}
   >
-    <div
-      className="fd-panel__head"
+    <h3
+      className="fd-panel__title"
+      onClick={[Function]}
     >
-      <h3
-        className="fd-panel__title"
-      >
-        Collapsible panel test
-      </h3>
-    </div>
+      Collapsible panel test
+    </h3>
     <div
       className="fd-panel__actions"
     >
@@ -44,15 +41,12 @@ exports[`Collapsible Panel Renders with minimal props (opened state) 1`] = `
     className="fd-panel__header"
     onClick={[Function]}
   >
-    <div
-      className="fd-panel__head"
+    <h3
+      className="fd-panel__title"
+      onClick={[Function]}
     >
-      <h3
-        className="fd-panel__title"
-      >
-        Collapsible panel test
-      </h3>
-    </div>
+      Collapsible panel test
+    </h3>
     <div
       className="fd-panel__actions"
     >

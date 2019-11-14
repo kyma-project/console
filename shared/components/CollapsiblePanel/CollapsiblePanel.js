@@ -15,6 +15,7 @@ export const CollapsiblePanel = ({
 
   const switchOpen = e => {
     e.stopPropagation();
+    // ensure event didn't come from DOM propagation
     if (e.target === e.currentTarget) {
       setIsOpen(!isOpen);
     }
@@ -23,7 +24,9 @@ export const CollapsiblePanel = ({
   return (
     <Panel className={classNames('collapsible-panel', className)}>
       <Panel.Header onClick={switchOpen}>
-        <Panel.Head title={title} />
+        <h3 className="fd-panel__title" onClick={switchOpen}>
+          {title}
+        </h3>
         <Panel.Actions>
           {actions}
           <Button
