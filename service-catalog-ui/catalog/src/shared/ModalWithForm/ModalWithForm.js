@@ -9,18 +9,16 @@ import { useNotification } from '../../contexts/NotificationContext'; //contexts
 const isFormValid = (formRef, reportValidity = false) => {
   if (!formRef || !formRef.current) return true;
 
-  if (typeof formRef.current.checkValidity === 'function') {
-    // normal HTML form element
-    if (
-      reportValidity &&
-      typeof formRef.current.reportValidity === 'function'
-    ) {
-      // for IE
-      formRef.current.reportValidity();
-    }
-
-    return formRef.current.checkValidity();
+  if (reportValidity && typeof formRef.current.reportValidity === 'function') {
+    // for IE
+    formRef.current.reportValidity();
   }
+
+  return formRef.current.checkValidity();
+};
+
+const isJsonSchemaFormValid = formRef => {
+  if (!formRef || !formRef.current) return true;
 
   return formRef.current.state && formRef.current.state.errors
     ? !formRef.current.state.errors.length
@@ -41,7 +39,7 @@ const ModalWithForm = ({
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
   const formElementRef = useRef(null);
-  const formElementRefAdditional = useRef(null);
+  const jsonSchemaFormRef = useRef(null);
   const notificationManager = useNotification();
 
   useEffect(() => {
@@ -52,7 +50,7 @@ const ModalWithForm = ({
   function checkAllForms(reportValidity = false) {
     const _isEveryFormValid =
       isFormValid(formElementRef, reportValidity) &&
-      isFormValid(formElementRefAdditional, reportValidity);
+      isJsonSchemaFormValid(jsonSchemaFormRef);
 
     if (isValid !== _isEveryFormValid) {
       setValid(_isEveryFormValid);
@@ -116,7 +114,7 @@ const ModalWithForm = ({
 
   function handleFormSubmit() {
     const _isEveryFormValid =
-      isFormValid(formElementRef) && isFormValid(formElementRefAdditional);
+      isFormValid(formElementRef) && isFormValid(jsonSchemaFormRef);
     if (_isEveryFormValid) {
       formElementRef.current.dispatchEvent(new Event('submit'));
       setTimeout(() => setOpenStatus(false));
@@ -130,7 +128,7 @@ const ModalWithForm = ({
         onClick={() => {
           setOpenStatus(true);
         }}
-        disabled={button.disabled}
+        disabled={!!button.disabled}
       >
         {button.text}
       </Button>
@@ -163,7 +161,7 @@ const ModalWithForm = ({
       >
         {renderForm({
           formElementRef,
-          formElementRefAdditional,
+          jsonSchemaFormRef,
           isValid,
           onChange: handleFormChanged,
           onError: handleFormError,
@@ -182,6 +180,7 @@ ModalWithForm.propTypes = {
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
+    disabled: PropTypes.bool,
   }).isRequired,
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media, PanelGrid } from '@kyma-project/react-components';
+import { media } from '@kyma-project/react-components';
 
 export const ServiceClassDetailsWrapper = styled.div`
   box-sizing: border-box;

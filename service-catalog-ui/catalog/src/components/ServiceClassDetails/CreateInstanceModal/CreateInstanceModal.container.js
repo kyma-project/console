@@ -1,5 +1,4 @@
-import { graphql, withApollo } from 'react-apollo';
-import React from 'react';
+import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { checkInstanceExist } from './queries';
 
@@ -9,7 +8,7 @@ import CreateInstanceModal from './CreateInstanceModal';
 export default compose(
   graphql(checkInstanceExist, {
     name: 'checkInstanceExistQuery',
-    options: props => {
+    options: () => {
       return {
         variables: {
           namespace: builder.getCurrentEnvironmentId(),

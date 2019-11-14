@@ -1,11 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel } from 'fundamental-react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
 import SchemaData from './SchemaData.component';
-import builder from '../../../commons/builder';
 import { createServiceInstance } from './mutations';
 
 import './CreateInstanceModal.scss';
@@ -19,8 +18,7 @@ CreateInstanceModal.propTypes = {
   onCompleted: PropTypes.func,
   onError: PropTypes.func,
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
-  formElementRefAdditional: PropTypes.shape({ current: PropTypes.any })
-    .isRequired,
+  jsonSchemaFormRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   item: PropTypes.object,
 
   checkInstanceExistQuery: PropTypes.object.isRequired,
@@ -62,9 +60,8 @@ export default function CreateInstanceModal({
   const [name, setName] = useState(
     `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator(),
   );
-  const [plan, setPlan] = useState(plans[0].name);
+  const plan = plans[0].name;
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
-  const [existingInstance, setExistingInstance] = useState('');
   const [instanceCreateParameterSchema] = useState(
     getInstanceCreateParameterSchema(plans, plan),
   );
@@ -73,7 +70,6 @@ export default function CreateInstanceModal({
       (instanceCreateParameterSchema.$ref ||
         instanceCreateParameterSchema.properties),
   );
-
   const formValues = {
     name: useRef(
       `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator(),
@@ -160,7 +156,7 @@ export default function CreateInstanceModal({
                 aria-required="true"
                 required
                 pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-                autocomplete="off"
+                autoComplete="off"
               />
             </div>
             <div className="column">
@@ -192,24 +188,16 @@ export default function CreateInstanceModal({
       {instanceCreateParameterSchemaExists && (
         <>
           <div className="separator" />
-
           <SchemaData
             formRef={formElementRefAdditional}
             data={instanceCreateParameters}
             instanceCreateParameterSchema={instanceCreateParameterSchema}
-            onSubmitSchemaForm={(formData, errors) =>
-              console.log(
-                'onSubmitSchemaForm formData',
-                formData,
-                'errors',
-                errors,
-              )
-            }
             planName={
               formValues.plan &&
               formValues.plan.current &&
               formValues.plan.current.value
             }
+            onSubmitSchemaForm={() => {}}
             callback={(formData, errors) => {
               onChange(formData);
               setInstanceCreateParameters(formData.instanceCreateParameters);

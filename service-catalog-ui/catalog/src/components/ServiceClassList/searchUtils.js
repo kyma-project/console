@@ -42,12 +42,12 @@ const determineDisplayedServiceClasses = (
 };
 
 const determineAvailableLabels = (serviceClasses, tabName, searchQuery) => {
-  const displayedInstances = determineDisplayedServiceClasses(
-    serviceClasses,
-    tabName,
-    searchQuery,
-    [],
-  );
+  // const displayedInstances = determineDisplayedServiceClasses(
+  //   serviceClasses,
+  //   tabName,
+  //   searchQuery,
+  //   [],
+  // );
   // TODO
   return [];
 };
