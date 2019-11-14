@@ -40,9 +40,6 @@ export default function ConnectApplicationModal({
   connectApplicationMutation,
 }) {
   const [isOpen, setOpen] = React.useState(false);
-  const [modalTitle, setModalTitle] = React.useState(
-    'Connecting Application...',
-  );
   const [error, setError] = React.useState('');
   const [connectionData, setConnectionData] = React.useState({});
 
@@ -50,10 +47,8 @@ export default function ConnectApplicationModal({
     try {
       const { data } = await connectApplicationMutation(id);
       setConnectionData(data.generateOneTimeTokenForApplication);
-      setModalTitle('Connect Application');
     } catch (e) {
       console.warn(e);
-      setModalTitle('Error');
       setError(e.message || 'Error!');
     }
   };
@@ -93,7 +88,7 @@ export default function ConnectApplicationModal({
       </Button>
       <Modal
         show={isOpen}
-        title={modalTitle}
+        title="Connect Application"
         onClose={closeModal}
         actions={
           <Button option="emphasized" onClick={closeModal}>
