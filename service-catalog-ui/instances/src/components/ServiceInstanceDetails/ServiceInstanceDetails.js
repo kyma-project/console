@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { createBrowserHistory } from 'history';
@@ -30,8 +30,9 @@ import {
 import { deleteServiceInstance } from '../../queries/mutations';
 
 export default function ServiceInstanceDetails({ match }) {
+  const refetchInterval = useRef(null);
   const history = createBrowserHistory();
-  const { loading, error, data, subscribeToMore } = useQuery(
+  const { loading, error, data, subscribeToMore, refetch } = useQuery(
     getServiceInstanceDetails,
     {
       variables: {
@@ -83,12 +84,11 @@ export default function ServiceInstanceDetails({ match }) {
 
   const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
 
-  if (loading)
-    return (
-      <EmptyList>
-        <Spinner />
-      </EmptyList>
-    );
+  const serviceInstance = data && data.serviceInstance;
+  const serviceClass =
+    serviceInstance &&
+    (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
+
   if (error)
     return (
       <EmptyList>
@@ -96,16 +96,38 @@ export default function ServiceInstanceDetails({ match }) {
       </EmptyList>
     );
 
-  const serviceInstance = data.serviceInstance;
+  if (loading) {
+    return (
+      <EmptyList>
+        <Spinner />
+      </EmptyList>
+    );
+  }
 
-  const serviceClass =
-    serviceInstance &&
-    (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
+  if (!serviceInstance || !serviceClass) {
+    if (refetchInterval.current) {
+      clearInterval(refetchInterval.current);
+    }
+    refetchInterval.current = setInterval(refetch, 100);
+    // in case query is complete but serviceClass and clusterServiceClass are still null
+
+    return (
+      <EmptyList>
+        <Spinner />
+      </EmptyList>
+    );
+  }
+
+  if (refetchInterval.current) {
+    clearInterval(refetchInterval.current);
+    refetchInterval.current = null;
+  }
 
   return (
     <ThemeWrapper>
       <ServiceInstanceHeader
         serviceInstance={serviceInstance}
+        instanceClass={serviceClass}
         deleteServiceInstance={deleteServiceInstanceMutation}
         history={history}
       />

@@ -13,6 +13,7 @@ import builder from '../../../commons/builder';
 
 const ServiceInstanceHeader = ({
   serviceInstance,
+  instanceClass,
   deleteServiceInstance,
   history,
 }) => {
@@ -36,10 +37,6 @@ const ServiceInstanceHeader = ({
       history.goBack();
     }, 100);
   };
-
-  const instanceClass = serviceInstance.clusterServiceClass
-    ? serviceInstance.clusterServiceClass
-    : serviceInstance.serviceClass;
 
   return (
     <ToolbarWrapper>
