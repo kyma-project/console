@@ -8,6 +8,7 @@ import {
   saveCurrentLocation,
   getPreviousLocation
 } from './navigation-helpers';
+import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
 var k8sDomain = clusterConfig && clusterConfig['domain'] || 'kyma.local';
@@ -300,30 +301,9 @@ const getMicrofrontends = async namespace => {
   const cacheKey = segmentPrefix + namespace;
   const fromCache = cache[cacheKey];
 
-  const query = `query MicroFrontends($namespace: String!) {
-    microFrontends(namespace: $namespace){
-      name
-      category
-      viewBaseUrl
-      navigationNodes{
-        label
-        navigationPath
-        viewUrl
-        showInNavigation
-        order
-        settings
-        requiredPermissions{
-          verbs
-          resource
-          apiGroup
-        }
-      }
-    }
-  }`;
-
   return (
     fromCache ||
-    fetchFromGraphQL(query, { namespace }, true)
+    fetchFromGraphQL(GET_MICROFRONTENDS, { namespace }, true)
       .then(result => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
@@ -484,39 +464,8 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
 }
 
 function getConsoleInitData() {
-  const query = `query {
-    selfSubjectRules {
-      verbs
-      resources
-      apiGroups
-		}
-    backendModules{
-      name
-    }
-    clusterMicroFrontends{
-      name
-      category
-      viewBaseUrl
-      preloadUrl
-      placement
-      navigationNodes{
-        label
-        navigationPath
-        viewUrl
-        showInNavigation
-        order
-        settings
-        externalLink
-        requiredPermissions{
-          verbs
-          resource
-          apiGroup
-        }
-      }
-    }
-  }`;
   const gracefully = true;
-  return fetchFromGraphQL(query, undefined, gracefully);
+  return fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, gracefully);
 }
 
 window.addEventListener('message', e => {

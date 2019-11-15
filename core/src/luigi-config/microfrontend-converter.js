@@ -53,15 +53,17 @@ function getDirectChildren(parentNodeSegments, spec, config) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
         parentNodeSegments.length === currentNodeSegments.length - 1 &&
-        parentNodeSegments.filter(function(segment) {
-          return currentNodeSegments.includes(segment);
-        }).length > 0;
+        arraysEqual(parentNodeSegments, currentNodeSegments.slice(0, -1));
       return isDirectChild;
     })
     .map(function mapSecondLevelNodes(node) {
       // map direct children
       return buildNodeWithChildren(node, spec, config);
     });
+}
+
+function arraysEqual(arr1, arr2) {
+  return arr1.every((el, index) => el === arr2[index]);
 }
 
 // todo add coreUIViewGroupName handling
