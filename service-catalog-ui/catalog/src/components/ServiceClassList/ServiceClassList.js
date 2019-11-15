@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -13,10 +13,7 @@ import { Counter } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants, POLL_INTERVAL } from '../../variables';
-import {
-  determineAvailableLabels,
-  determineDisplayedServiceClasses,
-} from './searchUtils';
+import { determineDisplayedServiceClasses } from './searchUtils';
 
 import Cards from './Cards/Cards.component';
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
@@ -56,9 +53,7 @@ const status = (data, id) => {
 };
 
 export default function ServiceClassList() {
-  const [serviceClasses, setServiceClasses] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeLabelFilters, setActiveLabelFilters] = useState([]);
 
   const {
     data: queryData,
@@ -71,15 +66,6 @@ export default function ServiceClassList() {
     pollInterval: POLL_INTERVAL,
   });
 
-  useEffect(() => {
-    if (queryData && queryData.serviceClasses && !queryLoading && !queryError) {
-      setServiceClasses(
-        queryData.serviceClasses
-          .concat(queryData.clusterServiceClasses)
-          .filter(e => e.displayName || e.externalName || e.name),
-      );
-    }
-  }, [queryData, queryLoading, queryError]);
   if (queryLoading) {
     return (
       <EmptyList>
@@ -94,27 +80,14 @@ export default function ServiceClassList() {
     );
   }
 
-  const handleLabelChange = (labelId, checked) => {
-    if (checked) {
-      setActiveLabelFilters([...activeLabelFilters, labelId]);
-    } else {
-      setActiveLabelFilters(
-        [...activeLabelFilters].filter(label => label !== labelId),
-      );
-    }
-  };
+  const serviceClasses = queryData.serviceClasses
+    .concat(queryData.clusterServiceClasses)
+    .filter(e => e.displayName || e.externalName || e.name);
 
   return (
     <>
       <ServiceClassToolbar
         searchFn={setSearchQuery}
-        onLabelChange={handleLabelChange}
-        activeLabelFilters={activeLabelFilters}
-        availableLabels={determineAvailableLabels(
-          serviceClasses,
-          determineSelectedTab(),
-          searchQuery,
-        )}
         serviceClassesExists={serviceClasses.length > 0}
       />
 
@@ -151,7 +124,6 @@ export default function ServiceClassList() {
           <>
             <ServiceClassDescription>
               {serviceClassConstants.addonsDescription}
-              {/* TODO Add selected filters labels eg.: {renderFilters()}*/}
             </ServiceClassDescription>
             <ServiceClassListWrapper>
               <CardsWrapper data-e2e-id="cards">

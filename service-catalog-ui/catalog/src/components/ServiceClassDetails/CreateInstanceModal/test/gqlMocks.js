@@ -3,9 +3,9 @@ import { createServiceInstance } from '../mutations';
 const instanceVariables = {
   classClusterWide: true,
   externalPlanName: 'micro',
-  externalServiceClassName: 'redis',
+  externalServiceClassName: 'externalServiceClassName',
   labels: ['d'],
-  name: 'redis-known-engineering',
+  name: 'name',
   namespace: 'default',
   parameterSchema: {
     imagePullPolicy: 'IfNotPresent',
@@ -16,13 +16,13 @@ const instanceVariables = {
 const instance = {
   namespace: 'default',
   params: {
-    name: 'redis-known-engineering',
+    name: 'name',
     classRef: {
-      externalName: 'redis',
+      externalName: 'externalServiceClassName',
       clusterWide: true,
     },
     planRef: {
-      externalName: 'redis',
+      externalName: 'externalServiceClassName',
       clusterWide: true,
     },
     labels: ['d'],

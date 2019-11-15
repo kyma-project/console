@@ -84,11 +84,6 @@ export default function ServiceInstanceDetails({ match }) {
 
   const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
 
-  const serviceInstance = data && data.serviceInstance;
-  const serviceClass =
-    serviceInstance &&
-    (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
-
   if (error)
     return (
       <EmptyList>
@@ -103,6 +98,11 @@ export default function ServiceInstanceDetails({ match }) {
       </EmptyList>
     );
   }
+
+  const { serviceInstance } = data;
+  const serviceClass =
+    serviceInstance &&
+    (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
 
   if (!serviceInstance || !serviceClass) {
     if (refetchInterval.current) {

@@ -1,4 +1,4 @@
-export const POLL_INTERVAL = 1000;
+export const POLL_INTERVAL = 2000;
 
 export const serviceClassConstants = {
   addons: 'Add-Ons',

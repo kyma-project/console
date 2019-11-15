@@ -53,13 +53,7 @@ describe('Service Class Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(
       <MockedProvider mocks={[serviceClassQuery]}>
-        <ServiceClassDetails
-          match={{
-            params: {
-              name: clusterServiceClass1Name,
-            },
-          }}
-        />
+        <ServiceClassDetails name={clusterServiceClass1Name} />
       </MockedProvider>,
     );
 
@@ -72,13 +66,7 @@ describe('Service Class Details UI', () => {
   it('Displays service class details ', async () => {
     const component = mount(
       <MockedProvider mocks={[serviceClassQuery]}>
-        <ServiceClassDetails
-          match={{
-            params: {
-              name: clusterServiceClass1Name,
-            },
-          }}
-        />
+        <ServiceClassDetails name={clusterServiceClass1Name} />
       </MockedProvider>,
     );
     await componentUpdate(component);

@@ -1,14 +1,11 @@
 import ApolloClient from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
-import { withClientState } from 'apollo-link-state';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 
-import builder from './../commons/builder';
-import resolvers from './resolvers';
-import defaults from './defaults';
+import builder from './commons/builder';
 import { getApiUrl as getURL } from '@kyma-project/common';
 
 export function createApolloClient() {
@@ -45,16 +42,10 @@ export function createApolloClient() {
     },
   );
 
-  const stateLink = withClientState({
-    cache,
-    defaults,
-    resolvers,
-  });
-
   const client = new ApolloClient({
     uri: graphqlApiUrl,
     cache,
-    link: ApolloLink.from([stateLink, errorLink, authHttpLink]),
+    link: ApolloLink.from([errorLink, authHttpLink]),
     connectToDevTools: true,
   });
 

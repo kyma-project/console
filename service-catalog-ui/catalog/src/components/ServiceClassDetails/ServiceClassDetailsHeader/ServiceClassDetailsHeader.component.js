@@ -28,7 +28,7 @@ const ServiceClassDetailsHeader = ({
   children,
   typename,
 }) => {
-  const goToServiceDetailsList = () => {
+  const goToList = () => {
     LuigiClient.linkManager()
       .fromClosestContext()
       .withParams({
@@ -45,7 +45,7 @@ const ServiceClassDetailsHeader = ({
               typename === 'ServiceClass' ? 'Services' : 'Add-Ons'
             }`}
             url="#"
-            onClick={goToServiceDetailsList}
+            onClick={goToList}
           />
           <Breadcrumb.Item />
         </Breadcrumb>

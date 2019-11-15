@@ -20,14 +20,13 @@ class SchemaData extends React.Component {
     instanceCreateParameterSchema: PropTypes.object,
     onSubmitSchemaForm: PropTypes.func.isRequired,
     planName: PropTypes.string,
-    formRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+    schemaFormRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      errors: [],
       instanceCreateParameters: props.data.instanceCreateParameters,
     };
   }
@@ -57,7 +56,7 @@ class SchemaData extends React.Component {
       onSubmitSchemaForm,
       children,
       planName,
-      formRef,
+      schemaFormRef,
     } = this.props;
     const { instanceCreateParameters } = this.state;
 
@@ -71,7 +70,7 @@ class SchemaData extends React.Component {
         }
       >
         <JsonSchemaForm
-          formRef={formRef}
+          schemaFormRef={schemaFormRef}
           schema={instanceCreateParameterSchema}
           additionalMetaSchemas={this.getAdditionalMetaSchemas(
             instanceCreateParameterSchema.$schema,

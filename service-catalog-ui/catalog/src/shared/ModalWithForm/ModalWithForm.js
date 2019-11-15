@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
-import { useNotification } from '../../contexts/NotificationContext'; //contexts/notifications';
+import { useNotification } from '../contexts/NotificationContext';
 
 //TODO: move this component to a shared "place"
 
@@ -100,13 +100,13 @@ const ModalWithForm = ({
   }
 
   function handleFormSuccess(title, message) {
-    notificationManager.notify({
-      content: message,
-      title: title,
-      color: '#107E3E',
-      icon: 'accept',
-      autoClose: true,
-    });
+    // notificationManager.notify({
+    //   content: message,
+    //   title: title,
+    //   color: '#107E3E',
+    //   icon: 'accept',
+    //   autoClose: true,
+    // });
 
     performRefetch();
   }

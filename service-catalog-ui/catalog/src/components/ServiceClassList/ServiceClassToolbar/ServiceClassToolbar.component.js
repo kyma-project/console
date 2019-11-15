@@ -4,26 +4,12 @@ import { serviceClassConstants } from '../../../variables';
 import { Toolbar } from '@kyma-project/react-components';
 
 import SearchDropdown from './SearchDropdown.component';
-import FilterDropdown from './FilterDropdown.component';
 
-const ServiceClassToolbar = ({
-  searchFn,
-  availableLabels,
-  onLabelChange,
-  serviceClassesExists,
-  activeLabelFilters,
-}) => {
+const ServiceClassToolbar = ({ searchFn, serviceClassesExists }) => {
   return (
     <Toolbar background="#fff" title={serviceClassConstants.title}>
       {serviceClassesExists ? (
-        <>
-          <SearchDropdown onChange={e => searchFn(e.target.value)} />
-          <FilterDropdown
-            onLabelChange={onLabelChange}
-            availableLabels={availableLabels}
-            activeLabelFilters={activeLabelFilters}
-          />
-        </>
+        <SearchDropdown onChange={e => searchFn(e.target.value)} />
       ) : null}
     </Toolbar>
   );

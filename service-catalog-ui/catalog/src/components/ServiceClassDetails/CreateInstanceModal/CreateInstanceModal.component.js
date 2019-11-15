@@ -120,7 +120,6 @@ export default function CreateInstanceModal({
       await createInstance({
         variables,
       });
-
       onCompleted(variables.name, `Instance created succesfully`);
       LuigiClient.linkManager()
         .fromContext('namespaces')
@@ -187,7 +186,7 @@ export default function CreateInstanceModal({
         <>
           <div className="separator" />
           <SchemaData
-            formRef={jsonSchemaFormRef}
+            schemaFormRef={jsonSchemaFormRef}
             data={instanceCreateParameters}
             instanceCreateParameterSchema={instanceCreateParameterSchema}
             planName={

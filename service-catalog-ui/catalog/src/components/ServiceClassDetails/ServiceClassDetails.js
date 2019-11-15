@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
 import { Spinner } from '@kyma-project/react-components';
 
-import builder from '../../commons/builder';
 import { serviceClassConstants } from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
@@ -22,28 +21,27 @@ import {
 } from '../../commons/helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
-export default function ServiceClassDetails({ match }) {
-  const [serviceClass, setServiceClass] = useState(null);
-  const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
+const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
+const possibleButtonText = {
+  provisionOnlyOnce: 'Add once',
+  provisionOnlyOnceActive: 'Added once',
+  standard: 'Add',
+};
 
+export default function ServiceClassDetails({ name }) {
+  const namespace = LuigiClient.getEventData().environmentId;
   const {
     data: queryData,
     loading: queryLoading,
     error: queryError,
   } = useQuery(getServiceClass, {
     variables: {
-      namespace: LuigiClient.getEventData().environmentId,
-      name: match.params.name,
+      namespace,
+      name,
       fileExtensions: filterExtensions,
     },
     fetchPolicy: 'no-cache',
   });
-
-  useEffect(() => {
-    if (queryData && !queryLoading && !queryError) {
-      setServiceClass(queryData.clusterServiceClass || queryData.serviceClass);
-    }
-  }, [queryData, queryLoading, queryError]);
 
   if (queryLoading) {
     return (
@@ -58,6 +56,9 @@ export default function ServiceClassDetails({ match }) {
       <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
     );
   }
+
+  const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
+
   if (!serviceClass) {
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
   }
@@ -67,16 +68,10 @@ export default function ServiceClassDetails({ match }) {
   const serviceClassDescription = getDescription(serviceClass);
 
   const isProvisionedOnlyOnce =
-    serviceClass &&
     serviceClass.labels &&
     serviceClass.labels.provisionOnlyOnce &&
     isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
 
-  const possibleButtonText = {
-    provisionOnlyOnce: 'Add once',
-    provisionOnlyOnceActive: 'Added once',
-    standard: 'Add',
-  };
   const buttonText = isProvisionedOnlyOnce
     ? serviceClass.activated
       ? possibleButtonText.provisionOnlyOnceActive
@@ -92,55 +87,47 @@ export default function ServiceClassDetails({ match }) {
     tags,
     labels,
     __typename,
-  } = serviceClass ? serviceClass : {};
-  const environment = builder.getCurrentEnvironmentId();
+  } = serviceClass;
+
   return (
-    <div>
-      {serviceClass && (
-        <div>
-          <ServiceClassDetailsHeader
-            serviceClassDisplayName={serviceClassDisplayName}
-            providerDisplayName={providerDisplayName}
-            creationTimestamp={creationTimestamp}
-            documentationUrl={documentationUrl}
-            supportUrl={supportUrl}
-            imageUrl={imageUrl}
-            tags={tags}
-            labels={labels}
-            description={serviceClassDescription}
-            isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-            typename={__typename}
-          >
-            <>
-              <ModalWithForm
-                title={`Provision the ${serviceClass.displayName}${' '}
+    <>
+      <ServiceClassDetailsHeader
+        serviceClassDisplayName={serviceClassDisplayName}
+        providerDisplayName={providerDisplayName}
+        creationTimestamp={creationTimestamp}
+        documentationUrl={documentationUrl}
+        supportUrl={supportUrl}
+        imageUrl={imageUrl}
+        tags={tags}
+        labels={labels}
+        description={serviceClassDescription}
+        isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+        typename={__typename}
+      >
+        <ModalWithForm
+          title={`Provision the ${serviceClass.displayName}${' '}
                     ${
                       serviceClass.__typename === 'ClusterServiceClass'
                         ? 'Cluster Service Class'
                         : 'Service Class'
                     }${' '}
-                    in the ${environment} Namespace`}
-                button={{
-                  text: buttonText,
-                  glyph: 'add',
-                  disabled: Boolean(
-                    isProvisionedOnlyOnce && serviceClass.activated,
-                  ),
-                }}
-                id="add-instance-modal"
-                item={serviceClass}
-                renderForm={props => <CreateInstanceModal {...props} />}
-              />
-            </>
-          </ServiceClassDetailsHeader>
+                    in the ${namespace} Namespace`}
+          button={{
+            text: buttonText,
+            glyph: 'add',
+            disabled: Boolean(isProvisionedOnlyOnce && serviceClass.activated),
+          }}
+          id="add-instance-modal"
+          item={serviceClass}
+          renderForm={props => <CreateInstanceModal {...props} />}
+        />
+      </ServiceClassDetailsHeader>
 
-          <ServiceClassDetailsWrapper phoneRows>
-            {backendModuleExists('cms') && backendModuleExists('assetstore') ? (
-              <ServiceClassTabs serviceClass={serviceClass} />
-            ) : null}
-          </ServiceClassDetailsWrapper>
-        </div>
-      )}
-    </div>
+      <ServiceClassDetailsWrapper phoneRows>
+        {backendModuleExists('cms') && backendModuleExists('assetstore') ? (
+          <ServiceClassTabs serviceClass={serviceClass} />
+        ) : null}
+      </ServiceClassDetailsWrapper>
+    </>
   );
 }

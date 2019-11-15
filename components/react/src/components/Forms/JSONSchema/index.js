@@ -274,13 +274,13 @@ const StyledForm = styled(Form)`
   }
 `;
 
-const JsonSchemaForm = ({ formRef, ...props }) => {
+const JsonSchemaForm = ({ schemaFormRef, ...props }) => {
   return (
     <StyledForm
       additionalMetaSchemas={[
         require('ajv/lib/refs/json-schema-draft-04.json'),
       ]}
-      innerRef={formRef}
+      innerRef={schemaFormRef}
       {...props}
     />
   );
