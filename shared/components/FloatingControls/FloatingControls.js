@@ -14,22 +14,16 @@ export const FloatingControls = ({ children }) => {
       rect.top >= 0 &&
       rect.left >= 0 &&
       rect.bottom <=
-        (window.innerHeight ||
-          document.documentElement.clientHeight) /*or $(window).height() */ &&
-      rect.right <=
-        (window.innerWidth ||
-          document.documentElement.clientWidth) /*or $(window).width() */
+        (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
   }
 
   useEffect(() => {
     if (controlsRef && controlsRef.current) {
-      // console.log('adding listener');
       document.onscroll = e => {
         const isCurrentlyInViewport = isElementInViewport(controlsRef.current);
-
         if (isCurrentlyInViewport !== isInViewport) {
-          console.log(isCurrentlyInViewport, isInViewport);
           setIsInViewport(isCurrentlyInViewport);
         }
       };

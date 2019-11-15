@@ -83,7 +83,7 @@ const ApiRuleCreationDraft = () => {
                       placeholder: 'Host',
                       value: 'hasselhoff.beach-rescue.california.gov',
                     }}
-                    portInfo={{ placeholder: 'Port', value: 6969 }}
+                    portInfo={{ placeholder: 'Port', value: '6969' }}
                     label="URL"
                   />
                 </LayoutGrid>
