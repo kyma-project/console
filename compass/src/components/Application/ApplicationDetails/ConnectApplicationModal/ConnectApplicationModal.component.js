@@ -59,16 +59,13 @@ export default function ConnectApplicationModal({
   const openModal = () => {
     setOpen(true);
     LuigiClient.uxManager().addBackdrop();
-
-    const isConnected = !Object.keys(connectionData).length;
-    if (isConnected) {
-      connectApplication(applicationId);
-    }
+    connectApplication(applicationId);
   };
 
   const closeModal = () => {
     setOpen(false);
     LuigiClient.uxManager().removeBackdrop();
+    setConnectionData({}); // reset token
   };
 
   const modalContent = error ? (
