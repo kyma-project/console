@@ -1,0 +1,13 @@
+.connect-application__input--copyable {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+        width: 24em !important; // to override .fd-input
+        margin-right: 16px;
+    }
+}
+
+.connect-application__content {
+    width: 370px;
+}

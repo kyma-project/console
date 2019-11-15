@@ -7,9 +7,18 @@ export {
 export {
   FloatingControls,
 } from './components/FloatingControls/FloatingControls';
+import { CollapsiblePanel } from './components/CollapsiblePanel/CollapsiblePanel';
+import { Tooltip } from './components/Tooltip/Tooltip';
 
 import { handleDelete } from './components/GenericList/actionHandlers/simpleDelete';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
-export { CustomPropTypes, GenericList, K8sNameInput, handleDelete };
+export {
+  CustomPropTypes,
+  GenericList,
+  K8sNameInput,
+  CollapsiblePanel,
+  Tooltip,
+  handleDelete,
+};
