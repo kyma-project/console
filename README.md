@@ -65,7 +65,8 @@ To simplify switching clusters hosted on the same domain, you can assign the dom
 For example, let's assume you want to easily switch between two clusters - `foo.abc.com` and `bar.abc.com`. Follow these steps to simplify switching between these clusters: 
 
 ```bash
-export CLUSTER_HOST=abc.com # setting it permanently in .bashrc would be even better
+export CLUSTER_HOST=abc.com 
+# If you use only one domain for your cluster, consider setting it permanently in your shell.
 
 ./scripts/.setClusterConfig foo
 # After setting the CLUSTER_HOST variable this is equal to running ./scripts/.setClusterConfig foo.abc.com
