@@ -68,7 +68,7 @@ For example, let's assume you want to easily switch between two clusters - `foo.
 export CLUSTER_HOST=abc.com # setting it permanently in .bashrc would be even better
 
 ./scripts/.setClusterConfig foo
-# will do the same as ./scripts/.setClusterConfig foo.abc.com
+# After setting the CLUSTER_HOST variable this is equal to running ./scripts/.setClusterConfig foo.abc.com
 
 # and then, to swithch the cluster:
 
