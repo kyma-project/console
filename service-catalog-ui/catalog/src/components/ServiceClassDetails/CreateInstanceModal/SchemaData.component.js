@@ -20,6 +20,7 @@ class SchemaData extends React.Component {
     instanceCreateParameterSchema: PropTypes.object,
     onSubmitSchemaForm: PropTypes.func.isRequired,
     planName: PropTypes.string,
+    formRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   };
 
   constructor(props) {

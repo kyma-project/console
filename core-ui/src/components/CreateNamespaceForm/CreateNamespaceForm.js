@@ -237,7 +237,6 @@ const CreateNamespaceForm = ({
       defaultRequest: useRef(null),
     },
   };
-  console.log(formValues);
   useEffect(() => {
     const element = formValues.name.current;
     setImmediate(() => {
