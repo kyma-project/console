@@ -1,6 +1,5 @@
 import { getAllServiceClasses } from '../components/ServiceClassList/queries';
 import { getServiceClass } from '../components/ServiceClassDetails/queries';
-import { checkInstanceExist } from '../components/ServiceClassDetails/CreateInstanceModal/queries';
 import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   clusterServiceClass1,
@@ -10,16 +9,14 @@ import {
   clusterServiceClassDetails,
 } from './serviceClassesMocks';
 
-import builder from '../commons/builder';
-
 export const mockEnvironmentId = 'testnamespace';
 
 const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
 const otherParams = {
   externalServiceClassName: clusterServiceClassDetails.externalName,
   externalPlanName: clusterServiceClassDetails.plans[0].externalName,
-  classClusterWide: true, //
-  planClusterWide: true,
+  classClusterWide: true, // is calculated by component
+  planClusterWide: true, // is calculated by component
   labels: [],
   parameterSchema: { imagePullPolicy: 'IfNotPresent' },
 };

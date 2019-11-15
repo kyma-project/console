@@ -90,7 +90,7 @@ describe('CreateInstanceModal', () => {
     const instancePlanInput = component.find(instancePlanSelector);
     expect(instancePlanInput.exists()).toEqual(true);
     expect(instancePlanInput.instance().value).toEqual(
-      'a6078798-70a1-4674-af90-aba364dd6a56',
+      clusterServiceClassDetails.plans[0].name,
     );
     expect(instancePlanInput.props().children.length).toEqual(1);
 
