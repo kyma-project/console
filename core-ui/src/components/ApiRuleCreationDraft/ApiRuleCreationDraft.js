@@ -18,7 +18,11 @@ import {
   Table,
 } from 'fundamental-react';
 import PanelEntry from '../../shared/components/PanelEntry/PanelEntry.component';
-import { HostWithPortInput, FloatingControls } from 'react-shared';
+import {
+  HostWithPortInput,
+  FloatingControls,
+  LabelSelectorInput,
+} from 'react-shared';
 import './ApiRuleCreationDraft.scss';
 
 const ApiRuleCreationDraft = () => {
@@ -111,9 +115,9 @@ const ApiRuleCreationDraft = () => {
                   <FormItem>
                     <FormLabel htmlFor="select-1">Type</FormLabel>
                     <FormSelect id="select-1">
-                      <option value="1">Strategy one</option>
-                      <option value="2">Strategy two</option>
-                      <option value="3">Ask Pamela</option>
+                      <option value="1">Pass-all</option>
+                      <option value="2">JWT</option>
+                      <option value="3">OAuth2</option>
                     </FormSelect>
                   </FormItem>
                   <FormFieldset>
@@ -146,61 +150,7 @@ const ApiRuleCreationDraft = () => {
                 </LayoutGrid>
               </FormGroup>
             </Panel.Filters>
-
-            <Panel.Body className="mutator-section">
-              <Table
-                headers={['Upstream', 'Handler', 'Authorizer', ' ']}
-                tableData={[
-                  {
-                    rowData: [
-                      <FormItem>
-                        <FormInput id="1" value="http://my-backend-service" />
-                      </FormItem>,
-                      <FormItem>
-                        <FormInput id="1" value="anonymous" />
-                      </FormItem>,
-                      <FormItem>
-                        <FormInput id="1" value="allow" />
-                      </FormItem>,
-                      <Button option="light" glyph="decline" />,
-                    ],
-                  },
-                  {
-                    rowData: [
-                      <FormItem>
-                        <FormInput
-                          id="1"
-                          value="http://can-i-rescue-people.com"
-                        />
-                      </FormItem>,
-                      <FormItem>
-                        <FormInput id="1" value="Mitch" />
-                      </FormItem>,
-                      <FormItem>
-                        <FormInput id="1" value="Mitch's boss" />
-                      </FormItem>,
-                      <Button option="light" glyph="decline" />,
-                    ],
-                  },
-                  {
-                    rowData: [
-                      <FormItem>
-                        <FormInput id="1" value="David" />
-                      </FormItem>,
-                      <FormItem>
-                        <FormInput id="1" value="is the" />
-                      </FormItem>,
-                      <FormItem>
-                        <FormInput id="1" value="King" />
-                      </FormItem>,
-                      <Button option="light" glyph="decline" />,
-                    ],
-                  },
-                ]}
-              />
-            </Panel.Body>
           </Panel>
-
           <Panel className="access-strategy">
             <Panel.Header>
               <Panel.Head title="Access strategy for path " />
@@ -208,7 +158,7 @@ const ApiRuleCreationDraft = () => {
               <FormInput
                 placeholder="Field placeholder text"
                 type="text"
-                value="/this/is/another/path"
+                value="/.*"
               />
               <Panel.Actions>
                 <Button
@@ -224,10 +174,10 @@ const ApiRuleCreationDraft = () => {
                 <LayoutGrid cols={2}>
                   <FormItem>
                     <FormLabel htmlFor="select-1">Type</FormLabel>
-                    <FormSelect value="2" id="select-1">
-                      <option value="1">Strategy one</option>
-                      <option value="2">Strategy two</option>
-                      <option value="3">Ask Pamela</option>
+                    <FormSelect id="select-1" value={2}>
+                      <option value="1">Pass-all</option>
+                      <option value="2">JWT</option>
+                      <option value="3">OAuth2</option>
                     </FormSelect>
                   </FormItem>
                   <FormFieldset>
@@ -261,42 +211,13 @@ const ApiRuleCreationDraft = () => {
               </FormGroup>
             </Panel.Filters>
 
-            <Panel.Body className="mutator-section">
-              <Table
-                headers={['Upstream', 'A param to select', ' ']}
-                tableData={[
-                  {
-                    rowData: [
-                      <FormItem>
-                        <FormInput id="1" value="http://my-backend-service" />
-                      </FormItem>,
-                      <FormSelect id="select-1" value="1">
-                        <option value="1">Yes</option>
-                        <option value="2">No</option>
-                        <option value="3">Well, it's kinda difficult...</option>
-                      </FormSelect>,
-
-                      <Button option="light" glyph="decline" />,
-                    ],
-                  },
-                  {
-                    rowData: [
-                      <FormItem>
-                        <FormInput
-                          id="1"
-                          value="http://can-i-rescue-people.com"
-                        />
-                      </FormItem>,
-                      <FormSelect id="select-1" value="3">
-                        <option value="1">Yes</option>
-                        <option value="2">No</option>
-                        <option value="3">Well, it's kinda difficult...</option>
-                      </FormSelect>,
-                      <Button option="light" glyph="decline" />,
-                    ],
-                  },
-                ]}
-              />
+            <Panel.Body>
+              <FormGroup>
+                <FormItem>
+                  <FormLabel htmlFor="select-1">trusted_issuers</FormLabel>
+                  <LabelSelectorInput />
+                </FormItem>
+              </FormGroup>
             </Panel.Body>
           </Panel>
         </LayoutGrid>

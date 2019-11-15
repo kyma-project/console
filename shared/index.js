@@ -7,6 +7,10 @@ export {
 export {
   FloatingControls,
 } from './components/FloatingControls/FloatingControls';
+
+export {
+  LabelSelectorInput,
+} from './components/LabelSelectorInput/LabelSelectorInput';
 import { CollapsiblePanel } from './components/CollapsiblePanel/CollapsiblePanel';
 import { Tooltip } from './components/Tooltip/Tooltip';
 

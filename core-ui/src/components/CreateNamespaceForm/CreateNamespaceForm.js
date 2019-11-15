@@ -9,10 +9,9 @@ import {
   FormSet,
 } from 'fundamental-react';
 
-import { K8sNameInput } from 'react-shared';
+import { K8sNameInput, LabelSelectorInput } from 'react-shared';
 
 import './CreateNamespaceForm.scss';
-import LabelSelectorInput from '../LabelSelectorInput/LabelSelectorInput';
 
 import {
   CREATE_LIMIT_RANGE,

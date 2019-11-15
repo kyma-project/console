@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useMutation } from '@apollo/react-hooks';
 import { TabGroup, Tab } from 'fundamental-react';
-import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+import { LabelSelectorInput } from 'react-shared';
 
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
