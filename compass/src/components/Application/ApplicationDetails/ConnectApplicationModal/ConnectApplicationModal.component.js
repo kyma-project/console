@@ -2,6 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 import copyToCliboard from 'copy-to-clipboard';
+import { Tooltip } from 'react-shared';
 
 import {
   Button,
@@ -25,11 +26,13 @@ const FormEntry = ({ caption, name, value }) => (
     <div className="connect-application__input--copyable">
       <FormInput type="text" id={name} value={value || 'Loading...'} readOnly />
       {value && (
-        <Button
-          option="light"
-          glyph="copy"
-          onClick={() => copyToCliboard(value)}
-        />
+        <Tooltip title="Copy to clipboard" position="top">
+          <Button
+            option="light"
+            glyph="copy"
+            onClick={() => copyToCliboard(value)}
+          />
+        </Tooltip>
       )}
     </div>
   </FormItem>
