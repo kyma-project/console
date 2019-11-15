@@ -36,6 +36,7 @@ export default function ServiceClassDetails({ match }) {
       name: match.params.name,
       fileExtensions: filterExtensions,
     },
+    fetchPolicy: 'no-cache',
   });
 
   useEffect(() => {

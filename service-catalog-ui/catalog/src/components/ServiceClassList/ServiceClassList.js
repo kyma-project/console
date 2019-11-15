@@ -11,7 +11,6 @@ import {
 } from '@kyma-project/react-components';
 import { Counter } from 'fundamental-react';
 
-import builder from '../../commons/builder';
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants, POLL_INTERVAL } from '../../variables';
 import {

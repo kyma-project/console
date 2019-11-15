@@ -60,7 +60,7 @@ const Card = ({
 
   return (
     <CardWrapper data-e2e-id="card">
-      <CardContent onClick={onClick} data-e2e-id={`go-to-details-${itemId}`}>
+      <CardContent onClick={onClick} data-e2e-id={`go-to-details`}>
         <CardTop>
           <CardHeader>
             <CardThumbnail>

@@ -69,8 +69,12 @@ describe('ServiceClassList UI', () => {
 
     expect(addonsCards.exists()).toBe(true);
     expect(addonsCards).toHaveLength(2);
-    expect(addonsCards.at(0).text()).toEqual('[Experimental] Redis');
-    expect(addonsCards.at(1).text()).toEqual('GCP Service Broker');
+    expect(addonsCards.at(0).text()).toEqual(
+      allServiceClassesQuery.result.data.clusterServiceClasses[0].displayName,
+    );
+    expect(addonsCards.at(1).text()).toEqual(
+      allServiceClassesQuery.result.data.clusterServiceClasses[1].displayName,
+    );
 
     component
       .find(Tab)
@@ -86,7 +90,9 @@ describe('ServiceClassList UI', () => {
     expect(servicesCards.exists()).toBe(true);
     expect(servicesCards).toHaveLength(1);
 
-    expect(servicesCards.at(0).text()).toEqual('Orders');
+    expect(servicesCards.at(0).text()).toEqual(
+      allServiceClassesQuery.result.data.serviceClasses[0].displayName,
+    );
   });
 
   it('Navigates to Service Catalog details', async () => {
@@ -98,9 +104,9 @@ describe('ServiceClassList UI', () => {
 
     await componentUpdate(component);
 
-    const goToDetails = component.find(
-      '[data-e2e-id="go-to-details-[experimental]-redis"]>div',
-    );
+    const goToDetails = component
+      .find('[data-e2e-id="go-to-details"]>div')
+      .at(0);
 
     expect(goToDetails.exists()).toBe(true);
     goToDetails.simulate('click');

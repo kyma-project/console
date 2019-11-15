@@ -4,14 +4,12 @@ import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createTransformerLink } from 'apollo-client-transform';
 import { onError } from 'apollo-link-error';
 
 import builder from './../commons/builder';
 import resolvers from './resolvers';
 import defaults from './defaults';
 import { getApiUrl as getURL } from '@kyma-project/common';
-import { getLinkTransformers } from './transformers';
 
 export function createApolloClient() {
   const graphqlApiUrl = getURL(
@@ -53,14 +51,10 @@ export function createApolloClient() {
     resolvers,
   });
 
-  const linkTransformers = getLinkTransformers();
-  const transformerLink = createTransformerLink(linkTransformers);
-  const enhancedAuthHttpLink = transformerLink.concat(authHttpLink);
-
   const client = new ApolloClient({
     uri: graphqlApiUrl,
     cache,
-    link: ApolloLink.from([stateLink, errorLink, enhancedAuthHttpLink]),
+    link: ApolloLink.from([stateLink, errorLink, authHttpLink]),
     connectToDevTools: true,
   });
 
