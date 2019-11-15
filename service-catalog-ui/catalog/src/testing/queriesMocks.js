@@ -70,7 +70,7 @@ export const createServiceInstanceSuccessfulMock = () => {
       data: {
         createServiceInstance: {
           namespace: mockEnvironmentId,
-          serviceInstanceName: clusterServiceClass1Name,
+          name: clusterServiceClass1Name,
           parameters: {},
         },
       },
@@ -82,8 +82,9 @@ export const createServiceInstanceErrorMock = () => ({
   request: {
     query: createServiceInstance,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-      serviceInstanceName: 'redis-motherly-deposit',
+      namespace: mockEnvironmentId,
+      name: clusterServiceClass1Name,
+      ...otherParams,
     },
   },
   error: new Error('Instace already exists'),

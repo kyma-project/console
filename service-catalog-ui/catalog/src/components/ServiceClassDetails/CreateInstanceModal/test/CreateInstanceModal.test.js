@@ -176,34 +176,41 @@ describe('CreateInstanceModal', () => {
     expect(onError).not.toHaveBeenCalled();
   });
 
-  // it('Shows error notification if an error occured', async () => {
-  //   const onError = jest.fn();
-  //   const onCompleted = jest.fn();
-  //   const ref = React.createRef();
+  it('Shows error notification if an error occured', async () => {
+    const ref = React.createRef();
 
-  //   const gqlMock = [createServiceInstanceErrorMock()];
+    const gqlMock = createServiceInstanceErrorMock();
 
-  //   const component = mount(
-  //     <MockedProvider mocks={gqlMock} addTypename={false}>
-  //       <CreateInstanceModal
-  //         item={clusterServiceClassDetails}
-  //         onError={onError}
-  //         onCompleted={onCompleted}
-  //         formElementRef={ref}
-  //       />
-  //     </MockedProvider>,
-  //   );
+    const component = mount(
+      <MockedProvider mocks={[gqlMock]} addTypename={false}>
+        <CreateInstanceModal
+          checkInstanceExistQuery={{ serviceInstances: [] }}
+          item={clusterServiceClassDetails}
+          formElementRef={ref}
+          jsonSchemaFormRef={{ current: null }}
+          onChange={onChange}
+          onError={onError}
+          onCompleted={onCompleted}
+        />
+      </MockedProvider>,
+    );
 
-  //   const lambdaNameSelector = 'input#lambdaName';
-  //   const lambdaNameInput = component.find(lambdaNameSelector);
-  //   lambdaNameInput.instance().value = 'testname';
+    await componentUpdate(component);
+    await componentUpdate(component);
 
-  //   const form = component.find('form');
-  //   form.simulate('submit');
+    const instanceNameInput = component.find('input#instanceName');
+    instanceNameInput.simulate('change', {
+      target: { value: clusterServiceClass1Name },
+    });
 
-  //   await componentUpdate(component);
+    await componentUpdate(component);
+    await componentUpdate(component);
+    const form = component.find('form#createInstanceForm');
+    form.simulate('submit');
 
-  //   expect(onCompleted).not.toHaveBeenCalled();
-  //   expect(onError).toHaveBeenCalled();
-  // });
+    await componentUpdate(component);
+
+    expect(onCompleted).toHaveBeenCalled();
+    expect(onError).toHaveBeenCalled();
+  });
 });
