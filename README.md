@@ -54,7 +54,7 @@ The Console also includes React and Angular libraries:
 
 ### Set the cluster (optional)
 
-By default, the Kyma cluster URL (which the Console communicates with) is set to `kyma.local`. You can set it to any other address by executing
+By default, the Kyma cluster URL with which the Console communicates is set to `kyma.local`. To change the address of the cluster, run: 
 
 ```bash
 ./scripts/.setClusterConfig {CLUSTER_URL}
