@@ -91,7 +91,7 @@ Use the following command to run the Console with the [`core`](./core) and all o
 npm run start
 ```
 
-To access the local instance of the Console at `http://console-dev.kyma.local:4200`, use credentials from [this](https://kyma-project.io/docs/master/root/kyma#installation-install-kyma-on-a-cluster--provider-installation--aks--access-the-cluster) document - point 3.
+To get the credentials required to access the local instance of the Kyma Console at `http://console-dev.kyma.local:4200`, follow the instructions from [this](https://kyma-project.io/docs/master/root/kyma#installation-install-kyma-on-a-cluster-access-the-cluster) document.
 
 ### Watch changes in React libraries
 
