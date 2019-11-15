@@ -158,7 +158,7 @@ export CLUSTER_HOST=abc.com
 # or
 
 ./scripts/checkClusterAvailability.sh
-# will check every cluster address that has ever been set (via setClusterConfig.sh) or checked (via checkClusterAvailability.sh) on your machine
+# Checks the availability of every cluster that has ever been set through setClusterConfig.sh or checked with checkClusterAvailability.sh on your machine.
 
 # or
 
