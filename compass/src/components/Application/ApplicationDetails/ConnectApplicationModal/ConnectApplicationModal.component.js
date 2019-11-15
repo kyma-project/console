@@ -22,7 +22,7 @@ ConnectApplicationModal.propTypes = {
 const FormEntry = ({ caption, name, value }) => (
   <FormItem>
     <FormLabel htmlFor={name}>{caption}</FormLabel>
-    <div className="form-entry--copyable">
+    <div className="connect-application__input--copyable">
       <FormInput type="text" id={name} value={value || 'Loading...'} readOnly />
       {value && (
         <Button
@@ -96,7 +96,9 @@ export default function ConnectApplicationModal({
           </Button>
         }
       >
-        {modalContent}
+        <section className="connect-application__content">
+          {modalContent}
+        </section>
       </Modal>
     </>
   );
