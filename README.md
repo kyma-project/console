@@ -54,7 +54,7 @@ The Console also includes React and Angular libraries:
 
 ### Set the cluster (optional)
 
-By default, the Kyma cluster URL with which the Console communicates is set to `kyma.local`. To change the address of the cluster, run: 
+By default, the Kyma cluster URL with which the Console communicates is set to `kyma.local`. To change the address of the cluster, run:
 
 ```bash
 ./scripts/.setClusterConfig {CLUSTER_URL}
@@ -62,22 +62,20 @@ By default, the Kyma cluster URL with which the Console communicates is set to `
 
 To simplify switching clusters hosted on the same domain, you can assign the domain to `CLUSTER_HOST` environment variable, then use any subdomain as a cluster name.
 
-For example, let's assume you want to easily switch between two clusters - `foo.abc.com` and `bar.abc.com`. Follow these steps to simplify switching between these clusters: 
+For example, let's assume you want to easily switch between two clusters - `foo.abc.com` and `bar.abc.com`. Follow these steps to simplify switching between these clusters:
 
 ```bash
-export CLUSTER_HOST=abc.com 
+export CLUSTER_HOST=abc.com
 # If you use only one domain for your cluster, consider setting it permanently in your shell.
 
 ./scripts/.setClusterConfig foo
 # After setting the CLUSTER_HOST variable this is equal to running ./scripts/.setClusterConfig foo.abc.com
 
-# and then, to swithch the cluster:
-
 ./scripts/.setClusterConfig bar
 # Switch to a different cluster on the same domain
 ```
 
-You can always set the domain back to `kyma.local` via
+To reset the domain to the default kyma.local setting, run:
 
 ```bash
 ./scripts/.setClusterConfig local
@@ -142,7 +140,7 @@ Remove the `node_modules` folder and the `package-lock.json` file in all librari
 
 Follow the guidelines from [this](https://kyma-project.io/docs/master/root/kyma/#troubleshooting-basic-troubleshooting-can-t-log-in-to-the-console-after-hibernating-the-minikube-cluster) document to solve the problem.
 
-### I'd like to quickly check if my remote cluster is running
+### Check the availability of a remote cluster
 
 Use the `checkClusterAvailability.sh` script to quickly check the availability of remote clusters.
 
