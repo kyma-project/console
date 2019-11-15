@@ -144,7 +144,7 @@ Follow the guidelines from [this](https://kyma-project.io/docs/master/root/kyma/
 
 ### I'd like to quickly check if my remote cluster is running
 
-There's a script that let's you do this with one command.
+Use the `checkClusterAvailability.sh` script to quickly check the availability of remote clusters.
 
 ```bash
 ./scripts/checkClusterAvailability.sh {CLUSTER_URL}
