@@ -161,5 +161,5 @@ export CLUSTER_HOST=abc.com
 # or
 
 ./scripts/checkClusterAvailability.sh -s <cluster_domain>
-# will sillently return the exit code 0 or another if the cluster is unavailable
+# Returns an appropriate exit code if the cluster is unavailable.
 ```
