@@ -33,6 +33,7 @@ import { ServiceInstancesService } from './service-instances/service-instances.s
 import { EventActivationsService } from './event-activations/event-activations.service';
 import { GraphqlClientService } from './graphql-client/graphql-client.service';
 import { SubscriptionsService } from './subscriptions/subscriptions.service';
+import { TriggersService } from './triggers/triggers.service';
 import { EventTriggerChooserComponent } from './lambdas/lambda-details/event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './lambdas/lambda-details/http-trigger/http-trigger.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
@@ -97,6 +98,7 @@ const routes: Routes = [
     EventActivationsService,
     GraphqlClientService,
     SubscriptionsService,
+    TriggersService,
     LuigiClientService,
   ],
   bootstrap: [AppComponent],

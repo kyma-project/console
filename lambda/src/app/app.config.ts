@@ -100,6 +100,7 @@ const config = {
   ...configToRead,
   graphqlApiUrl: environment.localApi ? configToRead.graphqlApiUrlLocal : configToRead.graphqlApiUrl,
   subscriptionApiUrl: `${k8sServerUrl}/apis/eventing.kyma-project.io/v1alpha1`,
+  triggerApiUrl: `${k8sServerUrl}/apis/eventing.knative.dev/v1alpha1`,
 };
 
 export const AppConfig = { ...config } as any;
