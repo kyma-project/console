@@ -21,6 +21,8 @@ import PanelEntry from '../../shared/components/PanelEntry/PanelEntry.component'
 import { HostWithPortInput, FloatingControls } from 'react-shared';
 import './ApiRuleCreationDraft.scss';
 
+import AccessStrategy from './AccessStrategy';
+
 const ApiRuleCreationDraft = () => {
   return (
     <>
@@ -86,130 +88,8 @@ const ApiRuleCreationDraft = () => {
               </FormGroup>
             </Panel.Body>
           </Panel>
-
-          <Panel className="access-strategy">
-            <Panel.Header>
-              <Panel.Head title="Access strategy for path " />
-
-              <FormInput
-                placeholder="Field placeholder text"
-                type="text"
-                value="/.*"
-              />
-              <Panel.Actions>
-                <Button
-                  option="emphasized"
-                  title="Add new mutator"
-                  glyph="add"
-                />
-                <Button title="Delete this access strategy" glyph="delete" />
-              </Panel.Actions>
-            </Panel.Header>
-            <Panel.Filters>
-              <FormGroup>
-                <LayoutGrid cols={2}>
-                  <FormItem>
-                    <FormLabel htmlFor="select-1">Type</FormLabel>
-                    <FormSelect id="select-1">
-                      <option value="1">Pass-all</option>
-                      <option value="2">JWT</option>
-                      <option value="3">OAuth2</option>
-                    </FormSelect>
-                  </FormItem>
-                  <FormFieldset>
-                    <FormLegend>Method:</FormLegend>
-                    <FormRadioGroup inline className="inline-radio-group">
-                      <Checkbox
-                        id="checkbox-4"
-                        name="checkbox-name-4"
-                        value="GET"
-                        checked
-                      />
-                      <Checkbox
-                        id="checkbox-5"
-                        name="checkbox-name-5"
-                        value="POST"
-                        checked
-                      />
-                      <Checkbox
-                        id="checkbox-6"
-                        name="checkbox-name-6"
-                        value="PUT"
-                      />
-                      <Checkbox
-                        id="checkbox-6"
-                        name="checkbox-name-6"
-                        value="DELETE"
-                      />
-                    </FormRadioGroup>
-                  </FormFieldset>
-                </LayoutGrid>
-              </FormGroup>
-            </Panel.Filters>
-          </Panel>
-
-          <Panel className="access-strategy">
-            <Panel.Header>
-              <Panel.Head title="Access strategy for path " />
-
-              <FormInput
-                placeholder="Field placeholder text"
-                type="text"
-                value="/.*"
-              />
-              <Panel.Actions>
-                <Button
-                  option="emphasized"
-                  title="Add new mutator"
-                  glyph="add"
-                />
-                <Button title="Delete this access strategy" glyph="delete" />
-              </Panel.Actions>
-            </Panel.Header>
-            <Panel.Filters>
-              <FormGroup>
-                <LayoutGrid cols={2}>
-                  <FormItem>
-                    <FormLabel htmlFor="select-1">Type</FormLabel>
-                    <FormSelect value={2} id="select-1">
-                      <option value="1">Pass-all</option>
-                      <option value="2">JWT</option>
-                      <option value="3">OAuth2</option>
-                    </FormSelect>
-                  </FormItem>
-                  <FormFieldset>
-                    <FormLegend>Method:</FormLegend>
-                    <FormRadioGroup inline className="inline-radio-group">
-                      <Checkbox
-                        id="checkbox-4"
-                        name="checkbox-name-4"
-                        value="GET"
-                        checked
-                      />
-                      <Checkbox
-                        id="checkbox-5"
-                        name="checkbox-name-5"
-                        value="POST"
-                      />
-                      <Checkbox
-                        id="checkbox-6"
-                        name="checkbox-name-6"
-                        value="PUT"
-                      />
-                      <Checkbox
-                        id="checkbox-6"
-                        name="checkbox-name-6"
-                        value="DELETE"
-                        checked
-                      />
-                    </FormRadioGroup>
-                  </FormFieldset>
-                </LayoutGrid>
-              </FormGroup>
-            </Panel.Filters>
-
-            <Panel.Body></Panel.Body>
-          </Panel>
+          <AccessStrategy selectedType={1} />
+          <AccessStrategy selectedType={2} />
         </LayoutGrid>
       </section>
     </>
