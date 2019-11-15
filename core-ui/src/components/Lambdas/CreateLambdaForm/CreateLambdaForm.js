@@ -5,7 +5,8 @@ import { useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { CREATE_LAMBDA } from '../../../gql/mutations';
-import { K8sNameInput, LabelSelectorInput } from 'react-shared';
+import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+import { K8sNameInput } from 'react-shared';
 
 CreateLambdaForm.propTypes = {
   onChange: PropTypes.func,
