@@ -95,7 +95,7 @@ To get the credentials required to access the local instance of the Kyma Console
 
 ### Watch changes in React libraries
 
-If you want to watch changes in the React libraries, run the following command in a new terminal window:
+If you want to watch changes in the React libraries, run this command in a new terminal window:
 
 ```bash
 npm run watch:libraries
