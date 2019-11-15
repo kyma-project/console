@@ -62,7 +62,7 @@ By default, the Kyma cluster URL with which the Console communicates is set to `
 
 To simplify switching clusters hosted on the same domain, you can assign the domain to `CLUSTER_HOST` environment variable, then use any subdomain as a cluster name.
 
-For example, let's assume you have two clusters you want to easily switch between - `foo.abc.com` and `bar.abc.com`. You can do the following:
+For example, let's assume you want to easily switch between two clusters - `foo.abc.com` and `bar.abc.com`. Follow these steps to simplify switching between these clusters: 
 
 ```bash
 export CLUSTER_HOST=abc.com # setting it permanently in .bashrc would be even better
