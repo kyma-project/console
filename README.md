@@ -147,7 +147,7 @@ Follow the guidelines from [this](https://kyma-project.io/docs/master/root/kyma/
 There's a script that let's you do this with one command.
 
 ```bash
-./scripts/checkClusterAvailability.sh <cluster_url>
+./scripts/checkClusterAvailability.sh {CLUSTER_URL}
 
 # or
 
