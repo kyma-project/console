@@ -14,7 +14,7 @@ import {
   mockEnvironmentId,
 } from '../../../../testing/queriesMocks';
 
-import CreateInstanceModal from '../CreateInstanceModal';
+import CreateInstanceModal from '../CreateInstanceModal.component';
 
 const onCompleted = jest.fn();
 const onError = jest.fn();
@@ -162,10 +162,10 @@ describe('CreateInstanceModal', () => {
     instanceNameInput.simulate('change', {
       target: { value: clusterServiceClass1Name },
     });
-    // instanceNameInput.instance().value=clusterServiceClass1Name;
-    // expect(instanceNameInput.instance().value).toEqual(clusterServiceClass1Name);
+
     await componentUpdate(component);
     await componentUpdate(component);
+
     const form = component.find('form#createInstanceForm');
     form.simulate('submit');
 

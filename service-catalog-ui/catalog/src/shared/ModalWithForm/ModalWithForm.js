@@ -74,7 +74,6 @@ const ModalWithForm = ({
   }
 
   function handleFormChanged(e) {
-    console.log('handleFormChanged');
     checkAllForms();
     if (e.target) {
       if (e.target.getAttribute('data-ignore-visual-validation')) {

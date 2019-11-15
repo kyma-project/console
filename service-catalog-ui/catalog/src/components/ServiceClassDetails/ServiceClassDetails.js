@@ -7,7 +7,7 @@ import { Spinner } from '@kyma-project/react-components';
 import builder from '../../commons/builder';
 import { serviceClassConstants } from '../../variables';
 
-import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs.component';
+import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 
 import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';

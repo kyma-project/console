@@ -7,7 +7,7 @@ import {
 } from '../../../testing/queriesMocks';
 import { clusterServiceClass1Name } from '../../../testing/serviceClassesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
-import ServiceClassList from '../ServiceClassList.component';
+import ServiceClassList from '../ServiceClassList';
 import { componentUpdate } from '../../../testing';
 
 const mockNavigate = jest.fn();

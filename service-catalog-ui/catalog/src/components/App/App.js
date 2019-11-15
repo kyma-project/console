@@ -2,8 +2,8 @@ import React from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { Modal, BackendModuleDisabled } from '@kyma-project/react-components';
 
-import ServiceClassList from '../ServiceClassList/ServiceClassList.component';
-import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails.component';
+import ServiceClassList from '../ServiceClassList/ServiceClassList';
+import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 
 import { backendModuleExists } from '../../commons/helpers';
 

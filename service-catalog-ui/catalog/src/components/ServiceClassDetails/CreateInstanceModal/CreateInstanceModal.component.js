@@ -57,9 +57,7 @@ export default function CreateInstanceModal({
   plans.forEach(plan => {
     parseDefaultIntegerValues(plan);
   });
-  const [name, setName] = useState(
-    `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator(),
-  );
+
   const plan = plans[0].name;
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
   const [instanceCreateParameterSchema] = useState(
@@ -81,12 +79,14 @@ export default function CreateInstanceModal({
   const [createInstance] = useMutation(createServiceInstance);
 
   const instanceAlreadyExists = name => {
+    console.log(checkInstanceExistQuery.serviceInstances);
     return checkInstanceExistQuery.serviceInstances
       .map(instance => instance.name)
       .includes(name);
   };
 
   const onFormChange = formEvent => {
+    console.log('dd', formValues.name.current.value);
     formValues.name.current.setCustomValidity(
       instanceAlreadyExists(formValues.name.current.value)
         ? 'Instance with this name already exists.'
@@ -110,7 +110,7 @@ export default function CreateInstanceModal({
               .split(',');
       const isClusterServiceClass = item.__typename === 'ClusterServiceClass';
       const variables = {
-        name,
+        name: formValues.name.current.value,
         namespace: LuigiClient.getEventData().environmentId,
         externalServiceClassName: item.externalName,
         externalPlanName: currentPlan && currentPlan.externalName,
@@ -119,11 +119,10 @@ export default function CreateInstanceModal({
         labels,
         parameterSchema: instanceCreateParameters,
       };
-      //console.log('name:',variables, createServiceInstance)
-      const res = await createInstance({
+
+      await createInstance({
         variables,
       });
-      //console.log('response:',res)
 
       onCompleted(variables.name, `Instance created succesfully`);
       LuigiClient.linkManager()
@@ -152,7 +151,6 @@ export default function CreateInstanceModal({
                 className="fd-form__control"
                 ref={formValues.name}
                 defaultValue={name}
-                onChange={e => setName(e.target.value)}
                 type="text"
                 id="instanceName"
                 placeholder={'Instance name'}
