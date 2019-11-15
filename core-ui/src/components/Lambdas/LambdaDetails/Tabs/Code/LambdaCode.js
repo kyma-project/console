@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Panel } from 'fundamental-react';
 import { ControlledEditor } from '@monaco-editor/react';
 
-const Code = ({ lambdaCode, setLambdaCode }) => {
+const LambdaCode = ({ code, setCode }) => {
   return (
     <Panel className="fd-has-margin-medium">
       <Panel.Header>
@@ -12,20 +12,20 @@ const Code = ({ lambdaCode, setLambdaCode }) => {
       <Panel.Body>
         <ControlledEditor
           id="lambdaContent"
-          height="40em"
+          height="30em"
           language="javascript"
           theme="vs-light"
-          value={lambdaCode}
-          onChange={(_, value) => setLambdaCode(value)}
+          value={code}
+          onChange={(_, value) => setCode(value)}
         />
       </Panel.Body>
     </Panel>
   );
 };
 
-Code.propTypes = {
-  lambdaCode: PropTypes.string.isRequired,
-  setLambdaCode: PropTypes.func.isRequired,
+LambdaCode.propTypes = {
+  code: PropTypes.string.isRequired,
+  setCode: PropTypes.func.isRequired,
 };
 
-export default Code;
+export default LambdaCode;

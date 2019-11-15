@@ -2,8 +2,6 @@ import request from 'request';
 import config from '../config';
 import kymaConsole from '../commands/console';
 import common from '../commands/common';
-import { describeIf } from '../utils/skip';
-import dex from '../utils/dex';
 import address from '../utils/address';
 import { retry, retryInterval } from '../utils/retry';
 import { testPluggable } from '../setup/test-pluggable';
@@ -18,7 +16,7 @@ const REQUIRED_MODULE = 'application';
 const namespaceUnderTest = 'test-expose-api';
 const namespaceInstaller = new NamespaceManager(namespaceUnderTest);
 
-describeIf(dex.isStaticUser(), 'Console basic tests', () => {
+describe('Console basic tests', () => {
   beforeAll(async () => {
     try {
       await namespaceInstaller.createIfDoesntExist();

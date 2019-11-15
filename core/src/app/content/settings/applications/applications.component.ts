@@ -14,7 +14,6 @@ import { CreateApplicationModalComponent } from './create-application-modal/crea
 import LuigiClient from '@kyma-project/luigi-client';
 import { IEmptyListData } from 'shared/datamodel';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
-import { AppConfig } from '../../../app.config';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 @Component({
