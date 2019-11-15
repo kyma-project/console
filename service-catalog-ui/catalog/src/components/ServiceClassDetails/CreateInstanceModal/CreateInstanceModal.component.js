@@ -57,7 +57,8 @@ export default function CreateInstanceModal({
   plans.forEach(plan => {
     parseDefaultIntegerValues(plan);
   });
-
+  const defaultName =
+    `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator();
   const plan = plans[0].name;
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
   const [instanceCreateParameterSchema] = useState(
@@ -69,9 +70,7 @@ export default function CreateInstanceModal({
         instanceCreateParameterSchema.properties),
   );
   const formValues = {
-    name: useRef(
-      `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator(),
-    ),
+    name: useRef(null),
     plan: useRef(plan),
     labels: useRef(null),
   };
@@ -79,14 +78,12 @@ export default function CreateInstanceModal({
   const [createInstance] = useMutation(createServiceInstance);
 
   const instanceAlreadyExists = name => {
-    console.log(checkInstanceExistQuery.serviceInstances);
     return checkInstanceExistQuery.serviceInstances
       .map(instance => instance.name)
       .includes(name);
   };
 
   const onFormChange = formEvent => {
-    console.log('dd', formValues.name.current.value);
     formValues.name.current.setCustomValidity(
       instanceAlreadyExists(formValues.name.current.value)
         ? 'Instance with this name already exists.'
@@ -150,7 +147,7 @@ export default function CreateInstanceModal({
               <input
                 className="fd-form__control"
                 ref={formValues.name}
-                defaultValue={name}
+                defaultValue={defaultName}
                 type="text"
                 id="instanceName"
                 placeholder={'Instance name'}

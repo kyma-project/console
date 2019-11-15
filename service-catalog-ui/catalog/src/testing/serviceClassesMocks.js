@@ -1,4 +1,4 @@
-const clusterServiceClass1Name = 'agata';
+const clusterServiceClass1Name = 'testName';
 
 const clusterServiceClass1 = {
   activated: false,

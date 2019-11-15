@@ -38,6 +38,12 @@ jest.mock('@kyma-project/luigi-client', () => {
   };
 });
 
+beforeEach(() => {
+  onCompleted.mockReset();
+  onError.mockReset();
+  onChange.mockReset();
+});
+
 describe('CreateInstanceModal', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
@@ -159,9 +165,10 @@ describe('CreateInstanceModal', () => {
     await componentUpdate(component);
 
     const instanceNameInput = component.find('input#instanceName');
-    instanceNameInput.simulate('change', {
-      target: { value: clusterServiceClass1Name },
-    });
+    instanceNameInput.instance().value = clusterServiceClass1Name;
+    expect(instanceNameInput.instance().value).toEqual(
+      clusterServiceClass1Name,
+    );
 
     await componentUpdate(component);
     await componentUpdate(component);
@@ -169,6 +176,7 @@ describe('CreateInstanceModal', () => {
     const form = component.find('form#createInstanceForm');
     form.simulate('submit');
 
+    await componentUpdate(component);
     await componentUpdate(component);
     expect(gqlMock.result).toHaveBeenCalled();
 
@@ -199,9 +207,10 @@ describe('CreateInstanceModal', () => {
     await componentUpdate(component);
 
     const instanceNameInput = component.find('input#instanceName');
-    instanceNameInput.simulate('change', {
-      target: { value: clusterServiceClass1Name },
-    });
+    instanceNameInput.instance().value = clusterServiceClass1Name;
+    expect(instanceNameInput.instance().value).toEqual(
+      clusterServiceClass1Name,
+    );
 
     await componentUpdate(component);
     await componentUpdate(component);
@@ -210,7 +219,7 @@ describe('CreateInstanceModal', () => {
 
     await componentUpdate(component);
 
-    expect(onCompleted).toHaveBeenCalled();
+    expect(onCompleted).not.toHaveBeenCalled();
     expect(onError).toHaveBeenCalled();
   });
 });
