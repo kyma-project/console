@@ -16,7 +16,9 @@ import {
 
 import CreateInstanceModal from '../CreateInstanceModal';
 
-const dummyFunction = jest.fn();
+const onCompleted = jest.fn();
+const onError = jest.fn();
+const onChange = jest.fn();
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
@@ -27,6 +29,7 @@ jest.mock('@kyma-project/luigi-client', () => {
     },
     linkManager: () => {
       return {
+        fromContext: () => ({ navigate: () => {} }),
         navigate: () => {
           return;
         },
@@ -44,9 +47,9 @@ describe('CreateInstanceModal', () => {
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
-          onChange={dummyFunction}
-          onError={dummyFunction}
-          onCompleted={dummyFunction}
+          onChange={onChange}
+          onError={onError}
+          onCompleted={onCompleted}
         />
       </MockedProvider>,
     );
@@ -62,9 +65,9 @@ describe('CreateInstanceModal', () => {
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
-          onChange={dummyFunction}
-          onError={dummyFunction}
-          onCompleted={dummyFunction}
+          onChange={onChange}
+          onError={onError}
+          onCompleted={onCompleted}
         />
       </MockedProvider>,
     );
@@ -111,9 +114,9 @@ describe('CreateInstanceModal', () => {
           item={clusterServiceClassDetails}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
-          onChange={dummyFunction}
-          onError={dummyFunction}
-          onCompleted={dummyFunction}
+          onChange={onChange}
+          onError={onError}
+          onCompleted={onCompleted}
         />
       </MockedProvider>,
     );
@@ -145,9 +148,9 @@ describe('CreateInstanceModal', () => {
           item={clusterServiceClassDetails}
           formElementRef={ref}
           jsonSchemaFormRef={{ current: null }}
-          onChange={dummyFunction}
-          onError={dummyFunction}
-          onCompleted={dummyFunction}
+          onChange={onChange}
+          onError={onError}
+          onCompleted={onCompleted}
         />
       </MockedProvider>,
     );
