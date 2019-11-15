@@ -74,7 +74,7 @@ export CLUSTER_HOST=abc.com
 # and then, to swithch the cluster:
 
 ./scripts/.setClusterConfig bar
-# will do the same as ./scripts/.setClusterConfig bar.abc.com
+# Switch to a different cluster on the same domain
 ```
 
 You can always set the domain back to `kyma.local` via
