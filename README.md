@@ -153,7 +153,7 @@ There's a script that let's you do this with one command.
 
 export CLUSTER_HOST=abc.com
 ./scripts/checkClusterAvailability.sh <cluster_subdomain>
-# the same as ./scripts/checkClusterAvailability.sh <cluster_subdomain>.abc.com
+# the same as ./scripts/checkClusterAvailability.sh {CLUSTER_SUBDOMAIN}.abc.com
 
 # or
 
