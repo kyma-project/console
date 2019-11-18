@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddonList Renders "resource not found" when configuration does not exist after load 1`] = `
+<div
+  className="addon-list__error-wrapper"
+>
+  Resources not found.
+</div>
+`;
+
+exports[`AddonList Renders addon list 1`] = `
+<section
+  className="fd-has-margin-m"
+  id="addon-list"
+>
+  <AddonPanel
+    config={
+      Object {
+        "labels": Object {},
+        "name": "configuration",
+        "repositories": Array [],
+        "status": Object {
+          "phase": "ready",
+          "repositories": Array [],
+        },
+        "urls": Array [],
+      }
+    }
+    key="configuration"
+  />
+</section>
+`;
+
+exports[`AddonList Renders empty list when there are no configs 1`] = `
+<section
+  className="fd-has-margin-m"
+  id="addon-list"
+/>
+`;
+
+exports[`AddonList Renders error there is a query error 1`] = `
+<div
+  className="addon-list__error-wrapper"
+>
+  Server error. Please contact the admin of the cluster.
+</div>
+`;
+
+exports[`AddonList Renders loading state 1`] = `<Spinner />`;

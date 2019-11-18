@@ -4,7 +4,7 @@ import { BadgeTypes } from 'fundamental-react/lib/Badge/Badge';
 
 interface AddonConfigurationBadgeProps {
   status: string;
-  className: string;
+  className?: string;
 }
 
 const AddonConfigurationBadge: React.FunctionComponent<

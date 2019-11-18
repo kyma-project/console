@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollapsiblePanel Renders with minimal props 1`] = `
+<Panel
+  className="collapsible-panel"
+>
+  <Panel.Header>
+    <Button
+      disabled={false}
+      glyph="navigation-up-arrow"
+      onClick={[Function]}
+      option="light"
+    />
+    <Panel.Head
+      headingLevel={2}
+      title="Collapsible Panel"
+    />
+  </Panel.Header>
+  <Panel.Body
+    className="body body--open"
+  >
+    <p>
+      child
+    </p>
+  </Panel.Body>
+</Panel>
+`;

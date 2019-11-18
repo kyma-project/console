@@ -1,6 +1,7 @@
-.tets {
-    top: 2px;
-    position: relative;
+.addon-collapsible-panel {
+    > * {
+        padding: 8px;
+    }
 }
 
 .addon-panel__error {

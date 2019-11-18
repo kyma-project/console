@@ -86,7 +86,7 @@ const AddonPanel: React.FunctionComponent<AddonPanelProps> = ({ config }) => {
           className="fd-has-margin-left-s"
         />
       }
-      className="fd-has-margin-bottom-s"
+      className="fd-has-margin-bottom-s addon-collapsible-panel"
     >
       {panelContent}
     </CollapsiblePanel>

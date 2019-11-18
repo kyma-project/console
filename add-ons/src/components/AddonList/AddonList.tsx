@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Spinner } from '@kyma-project/components';
 import './AddonList.scss';
 
@@ -9,8 +9,8 @@ import { QueriesService, ConfigurationsService } from '../../services';
 import { ERRORS } from '../../constants';
 
 const AddonList: React.FunctionComponent = () => {
-  const { error, loading = true } = useContext(QueriesService);
-  const { configurationsExist, filteredConfigs } = useContext(
+  const { error, loading = true } = React.useContext(QueriesService);
+  const { configurationsExist, filteredConfigs } = React.useContext(
     ConfigurationsService,
   );
 

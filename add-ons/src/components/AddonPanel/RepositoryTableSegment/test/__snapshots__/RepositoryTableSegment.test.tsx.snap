@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RepositoryTableSegment Renders with minimal props 1`] = `
+<tbody>
+  <RepositoryTableHeader
+    configName="config name"
+    isOpen={false}
+    repository={
+      Object {
+        "addons": Array [],
+        "message": "",
+        "reason": "",
+        "status": "ready",
+        "url": "url",
+      }
+    }
+    setIsOpen={[Function]}
+  />
+</tbody>
+`;

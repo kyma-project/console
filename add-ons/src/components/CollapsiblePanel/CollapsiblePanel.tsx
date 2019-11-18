@@ -9,7 +9,7 @@ interface CollapsiblePanelProps {
   additionalHeaderContent?: React.ReactNode;
   actions?: React.ReactNode;
   className?: string;
-  isOpen: boolean;
+  isOpen?: boolean;
   setIsOpen: (isOpen: boolean) => void;
   collapseDisabled?: boolean;
 }

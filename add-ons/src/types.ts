@@ -9,7 +9,7 @@ export interface SecretRef {
 
 export interface Repository {
   url: string;
-  secretRef: SecretRef;
+  secretRef?: SecretRef;
 }
 
 export interface RepositoryAddon {

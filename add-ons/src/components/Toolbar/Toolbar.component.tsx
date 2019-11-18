@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ActionBar } from 'fundamental-react';
 import { LuigiContext } from './../../services/LuigiContext.service';
 
@@ -8,7 +8,7 @@ import { CORE } from '../../constants';
 import { StyledActionBar } from './styled';
 
 const Toolbar: React.FunctionComponent = () => {
-  const { namespaceId: currentNamespace } = useContext(LuigiContext);
+  const { namespaceId: currentNamespace } = React.useContext(LuigiContext);
   const title = currentNamespace
     ? CORE.ADD_ONS_CONFIGURATION_TITLE
     : CORE.CLUSTER_ADD_ONS_CONFIGURATION_TITLE;

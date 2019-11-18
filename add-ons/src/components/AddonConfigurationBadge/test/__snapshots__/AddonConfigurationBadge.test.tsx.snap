@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddonConfigurationBadge Renders in error state for status "failed" 1`] = `
+<AddonConfigurationBadge
+  status="failed"
+>
+  <Badge
+    type="error"
+  >
+    <span
+      className="fd-badge fd-badge--error"
+    >
+      failed
+    </span>
+  </Badge>
+</AddonConfigurationBadge>
+`;
+
+exports[`AddonConfigurationBadge Renders in success state for "ready" status 1`] = `
+<AddonConfigurationBadge
+  status="ready"
+>
+  <Badge
+    type="success"
+  >
+    <span
+      className="fd-badge fd-badge--success"
+    >
+      ready
+    </span>
+  </Badge>
+</AddonConfigurationBadge>
+`;
+
+exports[`AddonConfigurationBadge Renders in warning state for custom status 1`] = `
+<AddonConfigurationBadge
+  status="other"
+>
+  <Badge
+    type="warning"
+  >
+    <span
+      className="fd-badge fd-badge--warning"
+    >
+      other
+    </span>
+  </Badge>
+</AddonConfigurationBadge>
+`;
