@@ -7,13 +7,28 @@
   }
 }
 .access-strategy {
+  .fd-panel__head {
+    margin-right: 8px;
+  }
   .fd-panel__header {
     input {
       max-width: 30%;
       //font-weight: bold;
-      font-size: 1.45em;
+      font-size: 1.3em;
       color: var(--fd-color-action-3);
+      //  margin-left: 8px;
+    }
+    strong {
+      font-size: 1.3em;
+      color: var(--fd-color-action-3);
+    }
+    .fd-badge {
       margin-left: 8px;
+    }
+
+    .methods {
+      display: inline;
+      margin-right: 16px;
     }
   }
 

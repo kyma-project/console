@@ -51,7 +51,7 @@ const ApiRuleCreationDraft = () => {
             </Panel.Header>
             <Panel.Body>
               <FormGroup>
-                <LayoutGrid cols="2">
+                <LayoutGrid cols="3">
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <input
@@ -61,10 +61,22 @@ const ApiRuleCreationDraft = () => {
                     />
                   </FormItem>
                   <FormItem>
+                    <FormLabel>Gateway</FormLabel>
+                    <FormSelect value="1" id="select-1">
+                      <option value="1">
+                        kyma-gateway.kyma-system.svc.cluster.local
+                      </option>
+                    </FormSelect>
+                  </FormItem>
+                  <FormItem>
                     <FormLabel>Service</FormLabel>
                     <FormSelect value="1" id="select-1">
-                      <option value="1">foo-service</option>
-                      <option value="2">bar-service</option>
+                      <option value="1">
+                        foo-service (foo4.kyma.local:8080)
+                      </option>
+                      <option value="2">
+                        bar-service (bar.kyma.local:8080)
+                      </option>
                     </FormSelect>
                   </FormItem>
                 </LayoutGrid>
