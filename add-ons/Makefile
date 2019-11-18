@@ -18,7 +18,7 @@ resolve:
 	npm install
 
 .PHONY: validate
-resolve:
+validate:
 	npm run type-check
 
 .PHONY: build
