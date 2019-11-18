@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import {
-//   Subscription,
-//   ISubscriptionList,
-//   ISubscription,
-//   ISubscriptionSpec,
-// } from '../shared/datamodel/k8s/subscription';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../app.config';
-// import { IMetaData } from '../shared/datamodel/k8s/generic/meta-data';
 
 @Injectable()
 export class TriggersService {
