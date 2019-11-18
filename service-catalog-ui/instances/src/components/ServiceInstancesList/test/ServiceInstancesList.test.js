@@ -102,7 +102,7 @@ describe('InstancesList UI', () => {
 
     expect(firstInstanceAnchor.exists()).toBe(true);
     expect(secondInstanceAnchor.exists()).toBe(true);
-    expect(firstInstanceAnchor.text()).toEqual('redis-motherly-deposit');
+    expect(firstInstanceAnchor.text()).toEqual('sth-motherly-deposit');
     expect(secondInstanceAnchor.text()).toEqual('testing-curly-tax');
   });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import Grid from 'styled-components-grid';
 import { getResourceDisplayName } from '../../../commons/helpers';
-import { serviceInstanceConstants } from './../../../variables';
+import { serviceInstanceConstants } from '../../../variables';
 
 import {
   Icon,
@@ -32,8 +32,6 @@ const INFORMATION_CELL_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.5 };
 const ServiceInstanceInfo = ({ serviceInstance }) => {
   const statusIcon = statusType => {
     switch (statusType) {
-      case ('PROVISIONING', 'DEPROVISIONING', 'PENDING'):
-        return 'sys-help';
       case 'FAILED':
         return 'sys-cancel';
       case 'RUNNING':

@@ -1,5 +1,5 @@
 const serviceInstance1 = {
-  name: 'redis-motherly-deposit',
+  name: 'sth-motherly-deposit',
   namespace: 'default',
   planSpec: { imagePullPolicy: 'IfNotPresent' },
   labels: [],
@@ -12,17 +12,17 @@ const serviceInstance1 = {
   serviceClass: null,
   clusterServiceClass: {
     name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
-    displayName: '[Experimental] Redis',
-    externalName: 'redis',
+    displayName: 'Sth.',
+    externalName: 'sth',
     description:
-      '[Experimental] Redis by Helm Broker. This is an example add-on. It is not recommended for production scenarios.',
-    documentationUrl: 'https://github.com/bitnami/bitnami-docker-redis',
-    supportUrl: 'https://bitnami.com/support',
+      'Sth by Helm Broker. This is an example add-on. It is not recommended for production scenarios.',
+    documentationUrl: 'https://example.com/docs',
+    supportUrl: 'https://example.com/support',
     labels: { experimental: 'true', local: 'true' },
     clusterDocsTopic: {
       name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
       groupName: '',
-      displayName: 'Documentation for redis',
+      displayName: 'Documentation for sth',
       description: 'Overall documentation',
       assets: [
         {
@@ -32,24 +32,8 @@ const serviceInstance1 = {
           type: 'markdown',
           files: [
             {
-              url:
-                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/meta.yaml',
+              url: 'https://example.com/docs.yaml',
               metadata: null,
-              __typename: 'File',
-            },
-            {
-              url:
-                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/overview.md',
-              metadata: { title: 'Overview', type: 'Overview' },
-              __typename: 'File',
-            },
-            {
-              url:
-                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/plans-details.md',
-              metadata: {
-                title: 'Services and Plans',
-                type: 'Details',
-              },
               __typename: 'File',
             },
           ],
@@ -92,14 +76,13 @@ const serviceInstance1 = {
           name: 'eloquent-visvesvaraya',
           data: {
             HOST:
-              'hb-redis-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-redis.default.svc.cluster.local',
+              'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth.default.svc.cluster.local',
             PORT: '6379',
-            REDIS_PASSWORD: 'JdZVEax5Hr',
           },
           namespace: 'default',
           __typename: 'Secret',
         },
-        serviceInstanceName: 'redis-motherly-deposit',
+        serviceInstanceName: 'sth-motherly-deposit',
         status: {
           type: 'READY',
           reason: 'InjectedBindResult',
@@ -124,14 +107,13 @@ const serviceInstance1 = {
       namespace: 'default',
       serviceBinding: {
         name: 'eloquent-visvesvaraya',
-        serviceInstanceName: 'redis-motherly-deposit',
+        serviceInstanceName: 'sth-motherly-deposit',
         secret: {
           name: 'eloquent-visvesvaraya',
           data: {
             HOST:
-              'hb-redis-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-redis.default.svc.cluster.local',
+              'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth.default.svc.cluster.local',
             PORT: '6379',
-            REDIS_PASSWORD: 'JdZVEax5Hr',
           },
           __typename: 'Secret',
         },
@@ -144,7 +126,7 @@ const serviceInstance1 = {
         __typename: 'ServiceBindingUsageStatus',
       },
       usedBy: {
-        name: 'hb-redis-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-redis',
+        name: 'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth',
         kind: 'deployment',
         __typename: 'LocalObjectReference',
       },

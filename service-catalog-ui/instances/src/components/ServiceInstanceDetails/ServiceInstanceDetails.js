@@ -9,7 +9,7 @@ import {
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
-import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader.component';
+import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 

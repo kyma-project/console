@@ -1,7 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo.component';
-import { serviceInstanceConstants } from './../../../variables';
+import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo';
+import { serviceInstanceConstants } from '../../../variables';
 import {
   Button,
   Modal,

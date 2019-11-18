@@ -27,7 +27,7 @@ export const serviceInstanceQuery = {
     query: getServiceInstanceDetails,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
-      name: 'redis-motherly-deposit',
+      name: 'sth-motherly-deposit',
     },
   },
   result: {
@@ -42,7 +42,7 @@ export const serviceInstanceDeleteMutation = {
     query: deleteServiceInstance,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
-      name: 'redis-motherly-deposit',
+      name: 'sth-motherly-deposit',
     },
   },
   result: jest.fn().mockReturnValue({
@@ -59,7 +59,7 @@ export const createBindingMutation = {
     query: BINDING_CREATE_MUTATION,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
-      serviceInstanceName: 'redis-motherly-deposit',
+      serviceInstanceName: 'sth-motherly-deposit',
       parameters: {},
     },
   },
