@@ -46,15 +46,21 @@ const ApiRuleCreationDraft = () => {
             title="Name"
             content={
               <input
-                placeholder="Field placeholder text"
-                value="KKtest"
+                placeholder="Enter the name"
+                value="multiple-rules"
                 type="text"
               />
             }
           />
           <PanelEntry
             title="Gateway"
-            content={<input placeholder="Field placeholder text" type="text" />}
+            content={
+              <input
+                placeholder="Enter the gateway"
+                type="text"
+                value="kyma-gateway.kyma-system.svc.cluster.local"
+              />
+            }
           />
         </LayoutGrid>
       </header>
@@ -73,23 +79,24 @@ const ApiRuleCreationDraft = () => {
                     <FormInput
                       placeholder="Field placeholder text"
                       type="text"
-                      value="hasselhoff-beach-rescue-service"
+                      value="foo-service"
                     />
                   </FormItem>
                   <HostWithPortInput
                     hostInfo={{
                       placeholder: 'Host',
-                      value: 'hasselhoff.beach-rescue.california.gov',
+                      value: 'foo4.kyma.local',
                     }}
-                    portInfo={{ placeholder: 'Port', value: '6969' }}
+                    portInfo={{ placeholder: 'Port', value: '8080' }}
                     label="URL"
                   />
                 </LayoutGrid>
               </FormGroup>
             </Panel.Body>
           </Panel>
-          <AccessStrategy selectedType={1} />
-          <AccessStrategy selectedType={2} />
+          <AccessStrategy selectedType={1} path="/favicon" />
+          <AccessStrategy selectedType={2} path="/img" />
+          <AccessStrategy selectedType={3} path="/headers" />
         </LayoutGrid>
       </section>
     </>

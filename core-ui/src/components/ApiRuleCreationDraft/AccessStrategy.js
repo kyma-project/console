@@ -19,8 +19,11 @@ import {
 } from 'fundamental-react';
 import { StringInput } from 'react-shared';
 
-const AccessStrategy = ({ selectedType }) => {
-  const [requiredScopeList, setRequiredScopeList] = useState([]);
+const AccessStrategy = ({ selectedType, path }) => {
+  const [requiredScopeList, setRequiredScopes] = useState(['foo', 'bar']);
+  const [trustedIssuesList, setTrustedIssues] = useState([
+    'http://dex.kyma.local',
+  ]);
   return (
     <Panel className="access-strategy">
       <Panel.Header>
@@ -29,7 +32,7 @@ const AccessStrategy = ({ selectedType }) => {
         <FormInput
           placeholder="Field placeholder text"
           type="text"
-          value="/.*"
+          value={path}
         />
         <Panel.Actions>
           <Button option="emphasized" title="Add new mutator" glyph="add" />
@@ -62,7 +65,6 @@ const AccessStrategy = ({ selectedType }) => {
                   id="checkbox-6"
                   name="checkbox-name-6"
                   value="DELETE"
-                  checked
                 />
               </FormRadioGroup>
             </FormFieldset>
@@ -73,12 +75,22 @@ const AccessStrategy = ({ selectedType }) => {
       {selectedType !== 1 && (
         <Panel.Body>
           <FormGroup>
+            <FormItem>
+              <FormLabel>trusted_issuers</FormLabel>
+              <StringInput
+                stringList={trustedIssuesList}
+                onChange={setTrustedIssues}
+                regexp={new RegExp('(?=.*[A-z])')}
+              />
+            </FormItem>
+          </FormGroup>
+          <FormGroup>
             {selectedType === 2 && (
               <FormItem>
-                <FormLabel htmlFor="select-1">trusted_issuers</FormLabel>
+                <FormLabel>reguired_scope</FormLabel>
                 <StringInput
                   stringList={requiredScopeList}
-                  onChange={strings => setRequiredScopeList(strings)}
+                  onChange={setRequiredScopes}
                   regexp={
                     new RegExp(
                       '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
@@ -87,16 +99,6 @@ const AccessStrategy = ({ selectedType }) => {
                 />
               </FormItem>
             )}
-          </FormGroup>
-          <FormGroup>
-            <FormItem>
-              <FormLabel htmlFor="select-1">reguired_scope</FormLabel>
-              <StringInput
-                stringList={requiredScopeList}
-                onChange={strings => setRequiredScopeList(strings)}
-                regexp={new RegExp('(?=.*[A-z])')}
-              />
-            </FormItem>
           </FormGroup>
         </Panel.Body>
       )}

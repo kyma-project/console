@@ -90,3 +90,11 @@ body {
     flex-grow: 1;
   }
 }
+
+header .fd-panel {
+  box-shadow: none;
+  .fd-panel__body {
+    padding-top: 0;
+    padding-right: 0;
+  }
+}
