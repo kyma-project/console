@@ -47,18 +47,29 @@ interface AddonPanelProps {
 }
 
 const AddonPanel: React.FunctionComponent<AddonPanelProps> = ({ config }) => {
+  const isConfigManaged = () => {
+    if (!config.labels) {
+      return;
+    }
+    // find keys ending with 'managed' - DNS prefix can be omitted
+    return Object.keys(config.labels)
+      .filter(label => label.endsWith('managed'))
+      .some(label => config.labels[label] === 'true');
+  };
+
+  const isConfigDefault = () => config.name === DEFAULT_CONFIGURATION;
+
   const [isOpen, setIsOpen] = useState(true);
 
-  const panelTitle =
-    config.name === DEFAULT_CONFIGURATION
-      ? `${config.name} (default)`
-      : config.name;
+  const panelTitle = isConfigDefault()
+    ? `${config.name} (default)`
+    : config.name;
+
+  const showAddUrlButton = !isConfigManaged() && !isConfigDefault();
 
   const actions = (
     <>
-      {config.name !== DEFAULT_CONFIGURATION ? (
-        <AddUrlModal configurationName={config.name} />
-      ) : null}
+      {showAddUrlButton && <AddUrlModal configurationName={config.name} />}
       <ResyncButton configurationName={config.name} />
       <DeleteConfigurationModal configurationName={config.name} />
     </>
