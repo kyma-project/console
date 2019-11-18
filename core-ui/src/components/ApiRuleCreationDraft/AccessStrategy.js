@@ -35,7 +35,7 @@ const AccessStrategy = ({ selectedType, path }) => {
           value={path}
         />
         <Panel.Actions>
-          <Button option="emphasized" title="Add new mutator" glyph="add" />
+          {/* <Button option="emphasized" title="Add new mutator" glyph="add" /> */}
           <Button title="Delete this access strategy" glyph="delete" />
         </Panel.Actions>
       </Panel.Header>

@@ -4,7 +4,7 @@ import './HostWithPortInput.scss';
 
 export const HostWithPortInput = ({ hostInfo = {}, portInfo = {}, label }) => (
   <FormItem>
-    <FormLabel htmlFor="input-host">{label}</FormLabel>
+    {label && <FormLabel htmlFor="input-host">{label}</FormLabel>}
     <div className="host-with-port">
       <FormInput
         className="host"

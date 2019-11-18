@@ -41,7 +41,7 @@ const ApiRuleCreationDraft = () => {
             </FloatingControls>
           </ActionBar.Actions>
         </section>
-        <LayoutGrid nogap cols={4}>
+        <LayoutGrid nogap cols={4} className="header-properties">
           <PanelEntry
             title="Name"
             content={
@@ -62,38 +62,35 @@ const ApiRuleCreationDraft = () => {
               />
             }
           />
+
+          <PanelEntry
+            title="Service name"
+            content={
+              <input
+                placeholder="Enter the service name"
+                type="text"
+                value="foo-service"
+              />
+            }
+          />
+
+          <PanelEntry
+            title="Service URL"
+            content={
+              <HostWithPortInput
+                hostInfo={{
+                  placeholder: 'Host',
+                  value: 'foo4.kyma.local',
+                }}
+                portInfo={{ placeholder: 'Port', value: '8080' }}
+              />
+            }
+          />
         </LayoutGrid>
       </header>
 
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
-          <Panel>
-            <Panel.Header>
-              <Panel.Head title="Service" />
-            </Panel.Header>
-            <Panel.Body>
-              <FormGroup>
-                <LayoutGrid cols={2}>
-                  <FormItem>
-                    <FormLabel htmlFor="input-1">Name</FormLabel>
-                    <FormInput
-                      placeholder="Field placeholder text"
-                      type="text"
-                      value="foo-service"
-                    />
-                  </FormItem>
-                  <HostWithPortInput
-                    hostInfo={{
-                      placeholder: 'Host',
-                      value: 'foo4.kyma.local',
-                    }}
-                    portInfo={{ placeholder: 'Port', value: '8080' }}
-                    label="URL"
-                  />
-                </LayoutGrid>
-              </FormGroup>
-            </Panel.Body>
-          </Panel>
           <AccessStrategy selectedType={1} path="/favicon" />
           <AccessStrategy selectedType={2} path="/img" />
           <AccessStrategy selectedType={3} path="/headers" />
