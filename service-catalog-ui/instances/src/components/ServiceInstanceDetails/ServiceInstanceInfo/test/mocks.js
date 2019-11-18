@@ -1,8 +1,8 @@
-const instanceAllAttributes = {
+export const instanceAllAttributes = {
   name: 'sth-motherly-deposit',
   namespace: 'default',
   planSpec: { imagePullPolicy: 'IfNotPresent' },
-  labels: [],
+  labels: ['tets', 'sth'],
   bindable: true,
   status: {
     type: 'RUNNING',

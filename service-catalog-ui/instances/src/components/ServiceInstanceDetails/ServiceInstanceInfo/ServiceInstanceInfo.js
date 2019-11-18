@@ -29,6 +29,12 @@ import {
 
 const INFORMATION_CELL_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.5 };
 
+const TempElement = ({ children, ...props }) => (
+  <div className="service-instance-info--element" {...props}>
+    {children}
+  </div>
+);
+
 const ServiceInstanceInfo = ({ serviceInstance }) => {
   const statusIcon = statusType => {
     switch (statusType) {
@@ -117,11 +123,13 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 <DescriptionKey>
                   {serviceInstanceConstants.documentationHeader}
                 </DescriptionKey>
-                <Element margin="0">
+                <Element
+                  margin="0"
+                  data-e2e-id="instance-service-documentation-link"
+                >
                   <ExternalLink
                     href={instanceClass.documentationUrl}
                     target="_blank"
-                    data-e2e-id="instance-service-documentation-link"
                   >
                     {serviceInstanceConstants.link}
                   </ExternalLink>
@@ -134,12 +142,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 <DescriptionKey>
                   {serviceInstanceConstants.supportHeader}
                 </DescriptionKey>
-                <Element margin="0">
-                  <ExternalLink
-                    href={instanceClass.supportUrl}
-                    target="_blank"
-                    data-e2e-id="instance-service-support-link"
-                  >
+                <Element margin="0" data-e2e-id="instance-service-support-link">
+                  <ExternalLink href={instanceClass.supportUrl} target="_blank">
                     {serviceInstanceConstants.link}
                   </ExternalLink>
                 </Element>
@@ -152,14 +156,10 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                 <DescriptionKey>
                   {serviceInstanceConstants.labelsHeader}
                 </DescriptionKey>
-                <Element margin="1px 0 0 0">
+                <Element margin="0" data-e2e-id="instance-label">
                   {serviceInstance.labels.map((label, index) => (
                     <LabelWrapper key={`${label}-${index}`}>
-                      <Label
-                        key={label}
-                        cursorType="auto"
-                        data-e2e-id="service-label"
-                      >
+                      <Label key={label} cursorType="auto">
                         {label}
                       </Label>
                     </LabelWrapper>
