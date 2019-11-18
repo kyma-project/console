@@ -218,4 +218,9 @@ describe('InstancesList UI', () => {
     expect(component.find(deleteButtonSelector).exists()).toBe(false);
     expect(serviceInstanceDeleteMutation.result).toHaveBeenCalled();
   });
+
+  test.todo('Open modal for plan with non-empty spec');
+  test.todo('No modal for plan with empty spec');
+  test.todo('Search instances');
+  test.todo('Filter instances by labels');
 });
