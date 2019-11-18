@@ -4,21 +4,13 @@ import {
   Button,
   LayoutGrid,
   FormGroup,
-  FormInput,
   FormItem,
   FormLabel,
   Panel,
-  Checkbox,
-  FormFieldset,
-  FormLegend,
-  Badge,
   FormSelect,
-  FormSet,
-  FormRadioGroup,
-  Table,
 } from 'fundamental-react';
-import PanelEntry from '../../shared/components/PanelEntry/PanelEntry.component';
-import { HostWithPortInput, FloatingControls } from 'react-shared';
+
+import { FloatingControls } from 'react-shared';
 import './ApiRuleCreationDraft.scss';
 
 import AccessStrategy from './AccessStrategy';
@@ -26,19 +18,15 @@ import AccessStrategy from './AccessStrategy';
 const ApiRuleCreationDraft = () => {
   return (
     <>
-      <header className="fd-has-background-color-background-2">
+      <header className="fd-has-background-color-background-2 sticky">
         <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
           <section>
             <ActionBar.Header title="multiple-rules" />
           </section>
           <ActionBar.Actions>
-            <FloatingControls>
-              <Button glyph="add">Add access strategy</Button>
+            <Button glyph="add">Add access strategy</Button>
 
-              <Button option="emphasized" glyph="add">
-                Add new API rule
-              </Button>
-            </FloatingControls>
+            <Button option="emphasized">Save</Button>
           </ActionBar.Actions>
         </section>
       </header>
