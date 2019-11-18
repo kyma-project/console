@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render info with status FAILED 1`] = `
+<div
+  className="fd-panel fd-has-grid-column-span-1 sc-bwzfXH sPJOf"
+  color="#ee0000"
+  data-e2e-id="instance-status"
+>
+  <div
+    className="fd-panel__header sc-htpNat fsNzZS"
+  >
+    Status
+    <div
+      className="fd-panel__actions"
+    >
+      <span
+        className="sap-icon--sys-cancel"
+        style={
+          Object {
+            "color": "#ee0000",
+          }
+        }
+      />
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <div
+      className="sc-bxivhb cvfAWp"
+      style={
+        Object {
+          "color": "#ee0000",
+        }
+      }
+    >
+      FAILED
+    </div>
+    <div
+      className="sc-bxivhb EDakJ"
+      style={
+        Object {
+          "padding": "0",
+        }
+      }
+    >
+      The instance was provisioned successfully
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Render info with status PROVISIONING 1`] = `
+<div
+  className="fd-panel fd-has-grid-column-span-1 sc-bwzfXH bKkzNl"
+  color="#ffb600"
+  data-e2e-id="instance-status"
+>
+  <div
+    className="fd-panel__header sc-htpNat fsNzZS"
+  >
+    Status
+    <div
+      className="fd-panel__actions"
+    >
+      <span
+        className="sap-icon--sys-help"
+        style={
+          Object {
+            "color": "#ffb600",
+          }
+        }
+      />
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <div
+      className="sc-bxivhb cvfAWp"
+      style={
+        Object {
+          "color": "#ffb600",
+        }
+      }
+    >
+      PROVISIONING
+    </div>
+    <div
+      className="sc-bxivhb EDakJ"
+      style={
+        Object {
+          "padding": "0",
+        }
+      }
+    >
+      The instance was provisioned successfully
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Render info with status RUNNING 1`] = `
+<div
+  className="fd-panel fd-has-grid-column-span-1 sc-bwzfXH iEwrcE"
+  color="#3db350"
+  data-e2e-id="instance-status"
+>
+  <div
+    className="fd-panel__header sc-htpNat fsNzZS"
+  >
+    Status
+    <div
+      className="fd-panel__actions"
+    >
+      <span
+        className="sap-icon--sys-enter"
+        style={
+          Object {
+            "color": "#3db350",
+          }
+        }
+      />
+    </div>
+  </div>
+  <div
+    className="fd-panel__body"
+  >
+    <div
+      className="sc-bxivhb cvfAWp"
+      style={
+        Object {
+          "color": "#3db350",
+        }
+      }
+    >
+      RUNNING
+    </div>
+    <div
+      className="sc-bxivhb EDakJ"
+      style={
+        Object {
+          "padding": "0",
+        }
+      }
+    >
+      The instance was provisioned successfully
+    </div>
+  </div>
+</div>
+`;

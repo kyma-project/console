@@ -4,49 +4,23 @@ import Grid from 'styled-components-grid';
 import { getResourceDisplayName } from '../../../commons/helpers';
 import { serviceInstanceConstants } from '../../../variables';
 
-import {
-  Icon,
-  instanceStatusColor,
-  Modal,
-  PanelBody,
-  PanelActions,
-  Label,
-  Panel,
-} from '@kyma-project/react-components';
+import { Modal, PanelBody, Label, Panel } from '@kyma-project/react-components';
 
 import {
   ServiceInstanceInfoWrapper,
-  ContentHeader,
   Element,
   PlanModalButton,
   ServiceClassButton,
   ExternalLink,
   JSONCode,
   DescriptionKey,
-  StatusWrapper,
   LabelWrapper,
 } from './styled';
+import { StatusPanel } from './StatusPanel';
 
 const INFORMATION_CELL_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.5 };
 
-const TempElement = ({ children, ...props }) => (
-  <div className="service-instance-info--element" {...props}>
-    {children}
-  </div>
-);
-
 const ServiceInstanceInfo = ({ serviceInstance }) => {
-  const statusIcon = statusType => {
-    switch (statusType) {
-      case 'FAILED':
-        return 'sys-cancel';
-      case 'RUNNING':
-        return 'sys-enter';
-      default:
-        return 'sys-help';
-    }
-  };
-
   const goToServiceClassDetails = name => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
@@ -170,38 +144,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
           </Grid>
         </PanelBody>
       </Panel>
-      <StatusWrapper
-        colSpan={1}
-        color={instanceStatusColor(serviceInstance.status.type)}
-      >
-        <ContentHeader>
-          {serviceInstanceConstants.statusHeader}
-          <PanelActions>
-            <Icon
-              glyph={statusIcon(serviceInstance.status.type)}
-              style={{
-                color: instanceStatusColor(serviceInstance.status.type),
-              }}
-            />
-          </PanelActions>
-        </ContentHeader>
-
-        <PanelBody>
-          <Element
-            margin="0"
-            data-e2e-id="instance-status-type"
-            style={{ color: instanceStatusColor(serviceInstance.status.type) }}
-          >
-            {serviceInstance.status.type}
-          </Element>
-          <Element
-            style={{ padding: '0' }}
-            data-e2e-id="instance-status-message"
-          >
-            {serviceInstance.status.message}
-          </Element>
-        </PanelBody>
-      </StatusWrapper>
+      <StatusPanel serviceInstance={serviceInstance} />
     </ServiceInstanceInfoWrapper>
   );
 };

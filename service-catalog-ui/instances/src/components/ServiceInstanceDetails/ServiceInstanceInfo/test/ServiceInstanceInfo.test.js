@@ -114,12 +114,4 @@ describe('ServiceInstanceInfo', () => {
   it('Render info without support', () => {});
   it('Render info without documentation link', () => {});
   it('Render info without plan parameters', () => {});
-
-  [
-    { status: 'PROVISIONING', class: 'sys-help' },
-    { status: 'FAILED', class: 'sys-cancel' },
-    { status: 'RUNNING', class: 'sys-enter' },
-  ].map(testCase => {
-    it(`Render info with status ${testCase.status}`, () => {});
-  });
 });
