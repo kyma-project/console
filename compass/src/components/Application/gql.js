@@ -130,3 +130,12 @@ export const UPDATE_APPLICATION = gql`
     }
   }
 `;
+
+export const CONNECT_APPLICATION = gql`
+  mutation generateOneTimeTokenForApplication($id: ID!) {
+    generateOneTimeTokenForApplication(id: $id) {
+      token
+      connectorURL
+    }
+  }
+`;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Lambda Code Tab Render with minimal props 1`] = `
+exports[`Lambda Code Render with minimal props 1`] = `
 <div
   className="fd-panel fd-has-margin-medium"
 >
@@ -24,7 +24,7 @@ exports[`Lambda Code Tab Render with minimal props 1`] = `
       style={
         Object {
           "display": "flex",
-          "height": "40em",
+          "height": "30em",
           "position": "relative",
           "textAlign": "initial",
           "width": "100%",

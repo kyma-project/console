@@ -29,8 +29,7 @@ export class GraphQLClientService {
   }
 
   gqlWatchQuery (query, variables = {}, cache?): QueryRef<any> {
-    return this.apollo
-    .watchQuery({query: gql`${query}`, variables, fetchPolicy: cache ? 'cache-first' : 'network-only'});
+    return this.apollo.watchQuery({query: gql`${query}`, variables, fetchPolicy: 'network-only'});
   }
 
   processResponse(res) {

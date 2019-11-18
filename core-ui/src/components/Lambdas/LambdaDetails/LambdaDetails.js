@@ -9,8 +9,10 @@ import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
 import { useNotification } from '../../../contexts/notifications';
-import Code from './Tabs/Code';
-import ConfigurationTab from './Tabs/Configuration';
+import CodeTab from './Tabs/Code/CodeTab';
+import LambdaCode from './Tabs/Code/LambdaCode';
+import LambdaDependencies from './Tabs/Code/LambdaDependencies';
+import ConfigurationTab from './Tabs/Configuration/Configuration';
 
 const exampleLambdaCode = `module.exports = { 
   main: function (event, context) {
@@ -18,10 +20,19 @@ const exampleLambdaCode = `module.exports = {
   }
 }`;
 
+const exampleDependencies = `{ 
+  "name": "%NAME%",
+  "version": "1.0.0",
+  "dependencies": {}
+}`;
+
 export default function LambdaDetails({ lambda }) {
   const [labels, setLabels] = useState(lambda.labels);
   const [lambdaCode, setLambdaCode] = useState(
     lambda.content || exampleLambdaCode,
+  );
+  const [dependencies, setDependencies] = useState(
+    lambda.dependencies || exampleDependencies.replace('%NAME%', lambda.name),
   );
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
@@ -57,7 +68,7 @@ export default function LambdaDetails({ lambda }) {
             size: formValues.size.current.value,
             runtime: formValues.runtime.current.value,
             content: lambdaCode,
-            dependencies: '',
+            dependencies,
           },
         },
       });
@@ -125,7 +136,17 @@ export default function LambdaDetails({ lambda }) {
         </Tab>
 
         <Tab key="lambda-code" id="lambda-code" title="Code">
-          <Code lambdaCode={lambdaCode} setLambdaCode={setLambdaCode} />
+          <CodeTab
+            codeEditorComponent={
+              <LambdaCode code={lambdaCode} setCode={setLambdaCode} />
+            }
+            dependenciesComponent={
+              <LambdaDependencies
+                dependencies={dependencies}
+                setDependencies={setDependencies}
+              />
+            }
+          />
         </Tab>
       </TabGroup>
     </>
