@@ -8,9 +8,7 @@ import {
   PlanModalButton,
   JSONCode,
 } from '../styled';
-import { Label } from '@kyma-project/react-components';
-import { componentUpdate } from 'testing';
-import { act } from 'react-dom/test-utils';
+import { Label, Modal } from '@kyma-project/react-components';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -110,8 +108,42 @@ describe('ServiceInstanceInfo', () => {
       );
     });
   });
-  it('Render info without labels', () => {});
-  it('Render info without support', () => {});
-  it('Render info without documentation link', () => {});
-  it('Render info without plan parameters', () => {});
+
+  it('Render info without labels', () => {
+    const instance = instanceAllAttributes;
+    instance.labels = [];
+    const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
+    expect(component.find(Label).exists()).toBe(false);
+  });
+
+  it('Render info without support', () => {
+    const instance = instanceAllAttributes;
+    instance.clusterServiceClass.supportUrl = null;
+    const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
+    expect(
+      component
+        .find('div[data-e2e-id="instance-service-support-link"]')
+        .exists(),
+    ).toBe(false);
+  });
+
+  it('Render info without documentation link', () => {
+    const instance = instanceAllAttributes;
+    instance.clusterServiceClass.documentationUrl = null;
+    const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
+    expect(
+      component
+        .find('div[data-e2e-id="instance-service-documentation-link"]')
+        .exists(),
+    ).toBe(false);
+  });
+
+  it('Render info without plan parameters', () => {
+    const instance = instanceAllAttributes;
+    instance.planSpec = {};
+    const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
+    const field = component.find('div[data-e2e-id="instance-service-plan"]');
+    expect(field.find(Modal).exists()).toBe(false);
+    expect(field.text()).toEqual(instance.clusterServicePlan.displayName);
+  });
 });
