@@ -104,22 +104,12 @@ const AccessStrategy = ({ selectedType, path, isOpenInitially = false }) => {
       {isOpen && selectedType !== 1 && (
         <Panel.Body>
           <FormGroup>
-            <FormItem>
-              <FormLabel>trusted_issuers</FormLabel>
-              <StringInput
-                stringList={trustedIssuesList}
-                onChange={setTrustedIssues}
-                regexp={new RegExp('(?=.*[A-z])')}
-              />
-            </FormItem>
-          </FormGroup>
-          <FormGroup>
             {selectedType === 2 && (
               <FormItem>
-                <FormLabel>reguired_scope</FormLabel>
+                <FormLabel>trusted_issuers</FormLabel>
                 <StringInput
-                  stringList={requiredScopeList}
-                  onChange={setRequiredScopes}
+                  stringList={trustedIssuesList}
+                  onChange={setTrustedIssues}
                   regexp={
                     new RegExp(
                       '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
@@ -128,6 +118,16 @@ const AccessStrategy = ({ selectedType, path, isOpenInitially = false }) => {
                 />
               </FormItem>
             )}
+          </FormGroup>
+          <FormGroup>
+            <FormItem>
+              <FormLabel>reguired_scope</FormLabel>
+              <StringInput
+                stringList={requiredScopeList}
+                onChange={setRequiredScopes}
+                regexp={new RegExp('(?=.*[A-z])')}
+              />
+            </FormItem>
           </FormGroup>
         </Panel.Body>
       )}
