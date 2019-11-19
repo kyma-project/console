@@ -1,24 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Label, Icon, Tooltip } from '@kyma-project/react-components';
-
+import { Icon } from '@kyma-project/react-components';
+import { InstancesIndicator } from './InstancesIndicator';
+import { Labels } from './Labels';
 import {
   CardWrapper,
   CardContent,
   CardTop,
   CardHeader,
   CardHeaderContent,
-  CardIndicator,
-  CardIndicatorGeneral,
   CardThumbnail,
   CardImage,
   CardDescription,
-  CardFooter,
-  CardLabelWrapper,
 } from './styled';
-
-import { isStringValueEqualToTrue } from '../../../commons/helpers';
 
 const Card = ({
   title,
@@ -29,35 +24,6 @@ const Card = ({
   labels,
   onClick,
 }) => {
-  const itemId = title
-    ? title
-        .split(' ')
-        .join('-')
-        .toLowerCase()
-    : '';
-
-  const labelsDescription = {
-    'connected-app':
-      'This Service Class is connected to a given application by Application Connector.',
-    showcase:
-      'This Service Class presents a specific functionality. Do not use it on the production cluster.',
-  };
-
-  const tooltipDescription = {
-    provisionOnlyOnce:
-      'You can provision this Service Class only once in a given Namespace.',
-    provisionOnlyOnceActive:
-      'You can provision this Service Class only once in a given Namespace. It is already provisioned in this Namespace.',
-    instancesTooltipInfo: 'This Service Class is provisioned',
-    instancesTooltipSingle: 'time.',
-    instancesTooltipPlural: 'times.',
-  };
-
-  const isProvisionedOnlyOnce =
-    labels &&
-    labels.provisionOnlyOnce &&
-    isStringValueEqualToTrue(labels.provisionOnlyOnce);
-
   return (
     <CardWrapper data-e2e-id="card">
       <CardContent onClick={onClick} data-e2e-id={`go-to-details`}>
@@ -75,78 +41,18 @@ const Card = ({
             </CardThumbnail>
 
             <CardHeaderContent data-e2e-id="card-title" title={title}>
-              {company}
+              <span data-e2e-id="card-company">{company}</span>
             </CardHeaderContent>
 
-            <CardIndicator>
-              {isProvisionedOnlyOnce && (
-                <Tooltip
-                  content={
-                    numberOfInstances > 0
-                      ? tooltipDescription.provisionOnlyOnceActive
-                      : tooltipDescription.provisionOnlyOnce
-                  }
-                >
-                  <CardIndicatorGeneral
-                    data-e2e-id="card-indicator"
-                    provisionOnce
-                    active={numberOfInstances ? 'true' : 'false'}
-                  >
-                    1
-                  </CardIndicatorGeneral>
-                </Tooltip>
-              )}
-              {!isProvisionedOnlyOnce && numberOfInstances > 0 && (
-                <Tooltip
-                  content={`${
-                    tooltipDescription.instancesTooltipInfo
-                  } ${numberOfInstances} ${
-                    numberOfInstances > 1
-                      ? tooltipDescription.instancesTooltipPlural
-                      : tooltipDescription.instancesTooltipSingle
-                  }`}
-                >
-                  <CardIndicatorGeneral
-                    data-e2e-id={`instances-provisioned-${itemId}`}
-                    active={numberOfInstances ? 'true' : 'false'}
-                  >
-                    {numberOfInstances}
-                  </CardIndicatorGeneral>
-                </Tooltip>
-              )}
-            </CardIndicator>
+            <InstancesIndicator
+              numberOfInstances={numberOfInstances}
+              labels={labels}
+            />
           </CardHeader>
         </CardTop>
 
         <CardDescription>{description}</CardDescription>
-        <CardFooter>
-          {labels &&
-            Object.keys(labels).length &&
-            Object.keys(labels).map(label => {
-              if (label === 'local' || label === 'provisionOnlyOnce') {
-                return null;
-              }
-              if (
-                (label === 'showcase' &&
-                  !isStringValueEqualToTrue(labels[label])) ||
-                (label === 'connected-app' && !labels[label])
-              ) {
-                return null;
-              }
-
-              return (
-                <CardLabelWrapper key={label}>
-                  <Tooltip content={labelsDescription[label]}>
-                    <Label cursorType="help">
-                      {label === 'connected-app'
-                        ? labels['connected-app']
-                        : label}
-                    </Label>
-                  </Tooltip>
-                </CardLabelWrapper>
-              );
-            })}
-        </CardFooter>
+        <Labels labels={labels} />
       </CardContent>
     </CardWrapper>
   );
