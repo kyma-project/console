@@ -56,6 +56,7 @@ class MetadataDefinitions extends React.Component {
         rowRenderer={this.rowRenderer}
         extraHeaderContent={<CreateLabelModal />}
         actions={this.actions}
+        textSearchProperties={['key']}
       />
     );
   }

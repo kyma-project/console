@@ -1,17 +1,20 @@
-export const filterEntries = (entries, query) => {
-  // TEMP
-  if (
-    entries[0] &&
-    (entries[0].hasOwnProperty('name') ||
-      entries[0].hasOwnProperty('description'))
-  ) {
-    return entries.filter(entry => {
-      return (
-        (entry.name && entry.name.indexOf(query) > -1) ||
-        (entry.description && entry.description.indexOf(query) > -1)
-      );
-    });
-  } else {
-    return entries;
+const filterEntry = (entry, query, searchProperties) => {
+  if (!query) {
+    return true;
   }
+
+  for (const property of searchProperties) {
+    if (entry.hasOwnProperty(property)) {
+      const value = entry[property];
+      // apply to string to include numbers
+      if (value && value.toString().indexOf(query) !== -1) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+export const filterEntries = (entries, query, searchProperties) => {
+  return entries.filter(entry => filterEntry(entry, query, searchProperties));
 };

@@ -49,7 +49,11 @@ export class GenericList extends React.Component {
 
   handleQueryChange = searchQuery => {
     this.setState(prevState => ({
-      filteredEntries: filterEntries(prevState.entries, searchQuery),
+      filteredEntries: filterEntries(
+        prevState.entries,
+        searchQuery,
+        this.props.textSearchProperties,
+      ),
       searchQuery,
     }));
   };
@@ -60,6 +64,7 @@ export class GenericList extends React.Component {
         filteredEntries: filterEntries(
           nextProps.entries,
           prevState.searchQuery,
+          nextProps.textSearchProperties,
         ),
         entries: nextProps.entries,
       };
@@ -69,7 +74,12 @@ export class GenericList extends React.Component {
 
   render() {
     const { filteredEntries, searchQuery } = this.state;
-    const { extraHeaderContent, notFoundMessage, showSearchField } = this.props;
+    const {
+      extraHeaderContent,
+      notFoundMessage,
+      showSearchField,
+      textSearchProperties,
+    } = this.props;
 
     const headerActions = (
       <>
@@ -79,6 +89,7 @@ export class GenericList extends React.Component {
             searchQuery={searchQuery}
             filteredEntries={filteredEntries}
             handleQueryChange={this.handleQueryChange}
+            suggestionProperties={textSearchProperties}
           />
         )}
       </>
@@ -116,8 +127,10 @@ GenericList.propTypes = {
   ),
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
+  textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
 GenericList.defaultProps = {
   showSearchField: true,
+  textSearchProperties: ['name', 'description'],
 };

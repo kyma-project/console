@@ -7,12 +7,15 @@ SearchInput.propTypes = {
   searchQuery: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object.isRequired),
   handleQueryChange: PropTypes.func.isRequired,
+  suggestionProperties: PropTypes.arrayOf(PropTypes.string.isRequired)
+    .isRequired,
 };
 
 export default function SearchInput({
   searchQuery,
   filteredEntries,
   handleQueryChange,
+  suggestionProperties,
 }) {
   const [isSearchHidden, setSearchHidden] = React.useState(true);
   const searchInputRef = React.useRef();
@@ -45,10 +48,9 @@ export default function SearchInput({
   const getSearchSuggestions = entries => {
     const suggestions = entries
       .flatMap(entry => {
-        const headers = ['name', 'description'];
-        return headers.map(header => {
-          const entryValue = entry[header];
-          if (entryValue && entryValue.includes(searchQuery)) {
+        return suggestionProperties.map(property => {
+          const entryValue = entry[property];
+          if (entryValue && entryValue.toString().includes(searchQuery)) {
             return entryValue;
           }
           return null;

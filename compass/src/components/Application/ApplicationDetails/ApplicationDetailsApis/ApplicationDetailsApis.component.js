@@ -74,6 +74,7 @@ export default function ApplicationDetailsApis({
         entries={apis.data}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
+        textSearchProperties={['name', 'description', 'targetURL']}
       />
     </Panel>
   );

@@ -84,9 +84,7 @@ export default function ApplicationDetailsScenarios({
     </header>
   );
 
-  const entries = scenarios.map(scenario => {
-    return { name: scenario };
-  }); // list requires a list of objects
+  const entries = scenarios.map(scenario => ({ scenario })); // list requires a list of objects
 
   return (
     <Panel>
@@ -98,6 +96,7 @@ export default function ApplicationDetailsScenarios({
         entries={entries}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
+        textSearchProperties={['scenario']}
       />
     </Panel>
   );
