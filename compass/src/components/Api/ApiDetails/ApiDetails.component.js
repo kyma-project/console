@@ -5,8 +5,51 @@ import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
-import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
 import CustomPropTypes from 'react-shared';
+
+import { Panel } from '@kyma-project/react-components';
+import AceEditor from 'react-ace';
+import 'brace/mode/yaml';
+import 'brace/mode/json';
+import 'brace/theme/github';
+
+function getApiType(api) {
+  switch (api.spec.type) {
+    case 'OPEN_API':
+      return 'openapi';
+    case 'ODATA':
+      return 'odata';
+    case 'ASYNC_API':
+      return 'asyncapi';
+    default:
+      return null;
+  }
+}
+
+// temporary component, remove after GenericDocumentation for Open API is fixed.
+const OpenAPIEditor = ({ api }) => {
+  const editorMode = api.spec.format.toLowerCase();
+  const spec = api.spec.data;
+  return (
+    <Panel className="fd-has-margin-s">
+      <Panel.Body>
+        <AceEditor
+          style={{ border: '1px solid var(--fd-color-status-3)' }}
+          className="fd-has-margin-m"
+          mode={editorMode}
+          theme="github"
+          value={spec}
+          width="95%"
+          readOnly={true}
+          minLines={14}
+          maxLines={40}
+          name="open-api-text-editor"
+          editorProps={{ $blockScrolling: true }}
+        />
+      </Panel.Body>
+    </Panel>
+  );
+};
 
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
   const rawApisForApplication = apiId
@@ -59,6 +102,7 @@ const ApiDetails = ({
     return <ResourceNotFound resource="Api" />;
   }
 
+  const apiType = getApiType(api);
   return (
     <>
       <ApiDetailsHeader
@@ -68,13 +112,10 @@ const ApiDetails = ({
         deleteMutation={apiId ? deleteApi : deleteEventApi}
       ></ApiDetailsHeader>
 
-      {apiId ? (
-        <InProgressMessage />
+      {apiType === 'openapi' ? (
+        <OpenAPIEditor api={api} />
       ) : (
-        <DocumentationComponent
-          type={apiId ? 'openapi' : 'asyncapi'}
-          content={api.spec.data}
-        ></DocumentationComponent>
+        <DocumentationComponent type={apiType} content={api.spec.data} />
       )}
     </>
   );
