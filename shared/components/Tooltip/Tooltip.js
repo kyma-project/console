@@ -19,8 +19,8 @@ export const Tooltip = ({ children, title, position, trigger, tippyProps }) => {
 
 Tooltip.propTypes = {
   title: PropTypes.string.isRequired,
-  position: PropTypes.oneOf('top', 'bottom', 'left', 'right'),
-  trigger: PropTypes.oneOf('mouseenter', 'focus', 'click', 'manual'),
+  position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
+  trigger: PropTypes.oneOf(['mouseenter', 'focus', 'click', 'manual']),
   children: PropTypes.node.isRequired,
 };
 
