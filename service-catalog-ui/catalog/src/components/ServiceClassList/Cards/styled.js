@@ -107,16 +107,3 @@ export const CardDescription = styled(PanelBody)`
     margin-bottom: 20px;
   }
 `;
-
-export const CardFooter = styled(PanelFooter)`
-  && {
-    border-top: none;
-    justify-content: flex-start;
-    padding: 0;
-  }
-`;
-
-export const CardLabelWrapper = styled.div`
-  display: inline-block;
-  margin: 8px 8px 0 0;
-`;

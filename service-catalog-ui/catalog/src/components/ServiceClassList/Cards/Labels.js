@@ -1,7 +1,6 @@
 import React from 'react';
-import { Label, Tooltip } from '@kyma-project/react-components';
-import { CardFooter, CardLabelWrapper } from './styled';
-
+import { Label, Tooltip, PanelFooter } from '@kyma-project/react-components';
+import './Labels.scss';
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
 const labelsDescription = {
   'connected-app':
@@ -11,7 +10,7 @@ const labelsDescription = {
 };
 export function Labels({ labels }) {
   return (
-    <CardFooter>
+    <PanelFooter className="service-list__card__footer">
       {labels &&
         Object.keys(labels).length > 0 &&
         Object.keys(labels).map(label => {
@@ -27,15 +26,15 @@ export function Labels({ labels }) {
           }
 
           return (
-            <CardLabelWrapper key={label}>
+            <div className="service-list__card__footer__labels" key={label}>
               <Tooltip content={labelsDescription[label]}>
                 <Label cursorType="help">
                   {label === 'connected-app' ? labels['connected-app'] : label}
                 </Label>
               </Tooltip>
-            </CardLabelWrapper>
+            </div>
           );
         })}
-    </CardFooter>
+    </PanelFooter>
   );
 }

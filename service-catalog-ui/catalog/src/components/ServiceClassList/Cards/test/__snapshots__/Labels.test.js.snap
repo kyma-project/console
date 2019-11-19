@@ -2,16 +2,16 @@
 
 exports[`Labels Render empty labels 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 />
 `;
 
 exports[`Labels Render keeps "TrUe" "showcase 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -32,7 +32,7 @@ exports[`Labels Render keeps "TrUe" "showcase 1`] = `
     </div>
   </div>
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -57,10 +57,10 @@ exports[`Labels Render keeps "TrUe" "showcase 1`] = `
 
 exports[`Labels Render keeps "true" "showcase 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -81,7 +81,7 @@ exports[`Labels Render keeps "true" "showcase 1`] = `
     </div>
   </div>
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -106,16 +106,16 @@ exports[`Labels Render keeps "true" "showcase 1`] = `
 
 exports[`Labels Render no labels 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 />
 `;
 
 exports[`Labels Render skips "local" 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -140,10 +140,10 @@ exports[`Labels Render skips "local" 1`] = `
 
 exports[`Labels Render skips "provisionOnlyOnce" 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -168,10 +168,10 @@ exports[`Labels Render skips "provisionOnlyOnce" 1`] = `
 
 exports[`Labels Render skips empty "connected-app" 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -196,10 +196,10 @@ exports[`Labels Render skips empty "connected-app" 1`] = `
 
 exports[`Labels Render skips with not "true" "showcase 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -224,10 +224,10 @@ exports[`Labels Render skips with not "true" "showcase 1`] = `
 
 exports[`Labels Render value of "connected-app" 1`] = `
 <div
-  className="fd-panel__footer sc-htoDjs ccWrTY"
+  className="fd-panel__footer service-list__card__footer"
 >
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
@@ -248,7 +248,7 @@ exports[`Labels Render value of "connected-app" 1`] = `
     </div>
   </div>
   <div
-    className="sc-dnqmqq brTGWo"
+    className="service-list__card__footer__labels"
   >
     <div
       className="sc-jqCOkK fzAxWh"
