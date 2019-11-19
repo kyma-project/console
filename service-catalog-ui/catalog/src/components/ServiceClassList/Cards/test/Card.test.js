@@ -1,10 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Card from '../Card.component';
 
-import { CardImage, CardHeaderContent } from '../styled';
+import { Icon } from '@kyma-project/react-components';
+import Card from '../Card.component';
 import { InstancesIndicator } from '../InstancesIndicator';
 import { Labels } from '../Labels';
+import { CardImage, CardContent } from '../styled';
+
 const mock = {
   title: 'Some title',
   company: 'turururu',
@@ -16,6 +18,7 @@ const mock = {
     sth: 'ping',
   },
 };
+
 describe('Card.component', () => {
   describe('Render card with full data', () => {
     const onCLick = jest.fn();
@@ -52,10 +55,45 @@ describe('Card.component', () => {
       );
     });
 
-    test.todo('has labels');
-    test.todo('has instances indicator');
-    test.todo('clicking triggers onClick');
+    it('has labels', () => {
+      const labels = component.find(Labels);
+      expect(labels.exists()).toBe(true);
+      expect(labels.prop('labels')).toBe(mock.labels);
+    });
+
+    it('has instances indicator', () => {
+      const indicator = component.find(InstancesIndicator);
+      expect(indicator.exists()).toBe(true);
+      expect(indicator.prop('numberOfInstances')).toBe(mock.numberOfInstances);
+      expect(indicator.prop('labels')).toBe(mock.labels);
+    });
+
+    it('clicking triggers onClick', () => {
+      const link = component.find(CardContent);
+      expect(link.exists()).toBe(true);
+      link.simulate('click');
+      expect(onCLick).toHaveBeenCalled();
+    });
   });
 
-  it('Render card without imageUrl', () => {});
+  it('Render card without imageUrl', () => {
+    const onCLick = jest.fn();
+    const component = mount(
+      <Card
+        title={mock.title}
+        company={mock.company}
+        description={mock.description}
+        imageUrl={''}
+        numberOfInstances={mock.numberOfInstances}
+        labels={mock.labels}
+        onClick={onCLick}
+      />,
+    );
+
+    const image = component.find(CardImage);
+    expect(image.exists()).toBe(false);
+
+    const placeholder = component.find(Icon);
+    expect(placeholder.exists()).toBe(true);
+  });
 });

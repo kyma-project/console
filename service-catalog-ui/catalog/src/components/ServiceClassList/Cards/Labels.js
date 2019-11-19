@@ -13,7 +13,7 @@ export function Labels({ labels }) {
   return (
     <CardFooter>
       {labels &&
-        Object.keys(labels).length &&
+        Object.keys(labels).length > 0 &&
         Object.keys(labels).map(label => {
           if (label === 'local' || label === 'provisionOnlyOnce') {
             return null;

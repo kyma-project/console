@@ -1,7 +1,9 @@
 import React from 'react';
-import { isStringValueEqualToTrue } from '../../../commons/helpers';
+import classnames from 'classnames';
 import { Tooltip } from '@kyma-project/react-components';
-import { CardIndicator, CardIndicatorGeneral } from './styled';
+import { PanelActions } from '@kyma-project/react-components';
+import { isStringValueEqualToTrue } from '../../../commons/helpers';
+import './InstancesIndicator.scss';
 
 const tooltipDescription = {
   provisionOnlyOnce:
@@ -13,13 +15,21 @@ const tooltipDescription = {
   instancesTooltipPlural: 'times.',
 };
 
+const CardIndicatorGeneral = ({ active, provisionOnce, children }) => {
+  const className = classnames('instances-indicator--general', {
+    active,
+    'provision-once': provisionOnce,
+  });
+  return <div className={className}>{children}</div>;
+};
+
 export function InstancesIndicator({ numberOfInstances, labels }) {
   const isProvisionedOnlyOnce =
     labels &&
     labels.provisionOnlyOnce &&
     isStringValueEqualToTrue(labels.provisionOnlyOnce);
   return (
-    <CardIndicator>
+    <PanelActions className="instances-indicator">
       {isProvisionedOnlyOnce && (
         <Tooltip
           content={
@@ -31,7 +41,7 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
           <CardIndicatorGeneral
             data-e2e-id="card-indicator"
             provisionOnce
-            active={numberOfInstances ? 'true' : 'false'}
+            active={numberOfInstances > 0}
           >
             1
           </CardIndicatorGeneral>
@@ -49,12 +59,12 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
         >
           <CardIndicatorGeneral
             data-e2e-id={`instances-provisioned`}
-            active={numberOfInstances ? 'true' : 'false'}
+            active={numberOfInstances > 0}
           >
             {numberOfInstances}
           </CardIndicatorGeneral>
         </Tooltip>
       )}
-    </CardIndicator>
+    </PanelActions>
   );
 }

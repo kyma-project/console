@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Labels Render empty labels 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+/>
+`;
+
+exports[`Labels Render keeps "TrUe" "showcase 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          showcase
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Labels Render keeps "true" "showcase 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          showcase
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Labels Render no labels 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+/>
+`;
+
+exports[`Labels Render skips "local" 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Labels Render skips "provisionOnlyOnce" 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Labels Render skips empty "connected-app" 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Labels Render skips with not "true" "showcase 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Labels Render value of "connected-app" 1`] = `
+<div
+  className="fd-panel__footer sc-htoDjs ccWrTY"
+>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          application
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-dnqmqq brTGWo"
+  >
+    <div
+      className="sc-jqCOkK fzAxWh"
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+      type="default"
+    >
+      <div
+        className="sc-ckVGcZ fRGHMA"
+      >
+        <span
+          className="fd-token sc-jKJlTe fEwmSA"
+          role="button"
+        >
+          random
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
