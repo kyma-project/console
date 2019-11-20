@@ -3,7 +3,6 @@ import {
   Panel,
   PanelHeader,
   PanelBody,
-  PanelFooter,
   Tile,
   TileMedia,
   TileContent,
