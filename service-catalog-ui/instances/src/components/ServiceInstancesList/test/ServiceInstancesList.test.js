@@ -344,14 +344,21 @@ describe('filter instances by labels', () => {
     expect(labelsSelectors).toHaveLength(3);
   });
 
-  // it('Select filter', async () => {
+  it('Select filter', async () => {
+    const firstLabelSelector = component
+      .find(FilterDropdown)
+      .find(FormInput)
+      .find('input')
+      .at(0);
+    // firstLabelSelector.simulate('click');
 
-  //   const firstLabelSelector = component.find(FilterDropdown).find(FormInput).find('input').at(0);
-  //   firstLabelSelector.simulate('click');
-  //   await componentUpdate(component);
-  //   expect(component.find(FilterDropdown).prop('activeLabelFilters')).toEqual({});
-  //   console.log('lolo', firstLabelSelector.debug())
-  //   const addOnsTab = component.find(Tab).at(0);
-  //   expect(addOnsTab.find(Counter).text()).toEqual('1');
-  // })
+    firstLabelSelector.simulate('change', { target: { checked: true } });
+    await componentUpdate(component);
+    expect(component.find(FilterDropdown).prop('activeLabelFilters')).toEqual(
+      [],
+    );
+    console.log('lolo', firstLabelSelector.debug());
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('1');
+  });
 });
