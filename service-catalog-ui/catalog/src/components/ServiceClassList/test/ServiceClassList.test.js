@@ -117,4 +117,6 @@ describe('ServiceClassList UI', () => {
       `details/${clusterServiceClass1Name}`,
     );
   });
+
+  test.todo('Search classes');
 });

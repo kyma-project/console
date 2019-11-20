@@ -223,4 +223,5 @@ describe('InstancesList UI', () => {
   test.todo('No modal for plan with empty spec');
   test.todo('Search instances');
   test.todo('Filter instances by labels');
+  test.todo('Navigate catalog');
 });

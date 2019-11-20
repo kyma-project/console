@@ -222,4 +222,7 @@ describe('CreateInstanceModal', () => {
     expect(onCompleted).not.toHaveBeenCalled();
     expect(onError).toHaveBeenCalled();
   });
+
+  test.todo('Navigate to instance details on completed');
+  test.todo('Create instance with empty plan spec');
 });
