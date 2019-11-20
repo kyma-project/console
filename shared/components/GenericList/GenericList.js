@@ -114,7 +114,7 @@ export class GenericList extends React.Component {
 }
 
 GenericList.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object),
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,

@@ -37,4 +37,19 @@
             font-style: italic;
         }
     }
+
+    .control {
+        &--open {
+            width: unset;
+            transition: 0.4s;
+        }
+
+        &--close {
+            transition: 0.4s;
+            width: 0;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+    }
 }

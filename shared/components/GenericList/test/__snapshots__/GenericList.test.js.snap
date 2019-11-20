@@ -23,65 +23,20 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
             <div
               className="fd-combobox-control"
             >
-              <div
-                className="fd-input-group fd-input-group--after"
-              >
-                <input
-                  className="fd-input"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
-                  placeholder="Search..."
-                  type="text"
-                  value=""
-                />
-                <span
-                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
-                >
-                  <button
-                    className="fd-button--light sap-icon--search"
-                    onClick={[Function]}
-                  />
-                </span>
-              </div>
+              <input
+                className="control--close"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Search..."
+                type="text"
+                value=""
+              />
+              <button
+                className="fd-button--light sap-icon--search"
+                onClick={[Function]}
+              />
             </div>
-          </div>
-          <div
-            aria-hidden={true}
-            className="fd-popover__body fd-popover__body--no-arrow"
-          >
-            <nav
-              className="fd-menu"
-            >
-              <ul
-                className="fd-menu__list"
-              >
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  first_entry
-                </li>
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  testdescription1
-                </li>
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  second_entry
-                </li>
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  testdescription2
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>
@@ -197,46 +152,20 @@ exports[`GenericList Renders title and description 1`] = `
             <div
               className="fd-combobox-control"
             >
-              <div
-                className="fd-input-group fd-input-group--after"
-              >
-                <input
-                  className="fd-input"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
-                  placeholder="Search..."
-                  type="text"
-                  value=""
-                />
-                <span
-                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
-                >
-                  <button
-                    className="fd-button--light sap-icon--search"
-                    onClick={[Function]}
-                  />
-                </span>
-              </div>
+              <input
+                className="control--close"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Search..."
+                type="text"
+                value=""
+              />
+              <button
+                className="fd-button--light sap-icon--search"
+                onClick={[Function]}
+              />
             </div>
-          </div>
-          <div
-            aria-hidden={true}
-            className="fd-popover__body fd-popover__body--no-arrow"
-          >
-            <nav
-              className="fd-menu"
-            >
-              <ul
-                className="fd-menu__list"
-              >
-                <li
-                  className="fd-menu__item fd-menu__item--no-entries"
-                >
-                  No entries found
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>
@@ -293,46 +222,20 @@ exports[`GenericList Renders with minimal props 1`] = `
             <div
               className="fd-combobox-control"
             >
-              <div
-                className="fd-input-group fd-input-group--after"
-              >
-                <input
-                  className="fd-input"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
-                  placeholder="Search..."
-                  type="text"
-                  value=""
-                />
-                <span
-                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
-                >
-                  <button
-                    className="fd-button--light sap-icon--search"
-                    onClick={[Function]}
-                  />
-                </span>
-              </div>
+              <input
+                className="control--close"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Search..."
+                type="text"
+                value=""
+              />
+              <button
+                className="fd-button--light sap-icon--search"
+                onClick={[Function]}
+              />
             </div>
-          </div>
-          <div
-            aria-hidden={true}
-            className="fd-popover__body fd-popover__body--no-arrow"
-          >
-            <nav
-              className="fd-menu"
-            >
-              <ul
-                className="fd-menu__list"
-              >
-                <li
-                  className="fd-menu__item fd-menu__item--no-entries"
-                >
-                  No entries found
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>
@@ -389,65 +292,20 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
             <div
               className="fd-combobox-control"
             >
-              <div
-                className="fd-input-group fd-input-group--after"
-              >
-                <input
-                  className="fd-input"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
-                  placeholder="Search..."
-                  type="text"
-                  value=""
-                />
-                <span
-                  className="fd-input-group__addon fd-input-group__addon--after fd-input-group__addon--button"
-                >
-                  <button
-                    className="fd-button--light sap-icon--search"
-                    onClick={[Function]}
-                  />
-                </span>
-              </div>
+              <input
+                className="control--close"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Search..."
+                type="text"
+                value=""
+              />
+              <button
+                className="fd-button--light sap-icon--search"
+                onClick={[Function]}
+              />
             </div>
-          </div>
-          <div
-            aria-hidden={true}
-            className="fd-popover__body fd-popover__body--no-arrow"
-          >
-            <nav
-              className="fd-menu"
-            >
-              <ul
-                className="fd-menu__list"
-              >
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  first_entry
-                </li>
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  testdescription1
-                </li>
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  second_entry
-                </li>
-                <li
-                  className="fd-menu__item"
-                  onClick={[Function]}
-                >
-                  testdescription2
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>
