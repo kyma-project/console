@@ -117,10 +117,75 @@ const clusterServiceClassDetails = {
   __typename: 'ClusterServiceClass',
 };
 
+const clusterServiceClassDetailsNoPlanSpec = {
+  activated: false,
+  clusterDocsTopic: {
+    assets: [
+      {
+        name:
+          clusterServiceClass1Name + '-markdown-files-markdown-1bh3139cq9rss',
+        metadata: {},
+        type: 'markdown',
+        files: [
+          {
+            url: 'https://sth.co/sth.yaml',
+            metadata: null,
+            __typename: 'File',
+          },
+          {
+            url: 'https://sth.co/sth.yaml',
+            metadata: { title: 'Overview', type: 'Overview' },
+            __typename: 'File',
+          },
+          {
+            url: 'https://sth.co/sth.yaml',
+            metadata: {
+              title: 'Services and Plans',
+              type: 'Details',
+            },
+            __typename: 'File',
+          },
+        ],
+        __typename: 'ClusterAsset',
+      },
+    ],
+    description: 'Description clusterDocsTopic',
+    displayName: clusterServiceClass1Name,
+    groupName: '',
+    name: clusterServiceClass1Name,
+    __typename: 'ClusterDocsTopic',
+  },
+  creationTimestamp: 1572525371,
+  description: 'Description',
+  displayName: 'displayName',
+  documentationUrl: 'https://sth.co',
+  externalName: 'cluster-service-class-external-name',
+  imageUrl: 'https://sth.co/sth.png',
+  instances: [],
+  labels: { experimental: 'true', local: 'true' },
+  longDescription: 'Long description',
+  name: clusterServiceClass1Name,
+  plans: [
+    {
+      displayName: 'Plan1',
+      externalName: 'plan1',
+      instanceCreateParameterSchema: null,
+      name: '1235456',
+      relatedClusterServiceClassName: clusterServiceClass1Name,
+      __typename: 'ClusterServicePlan',
+    },
+  ],
+  providerDisplayName: 'provider',
+  supportUrl: 'https://sth.com/support',
+  tags: ['database', 'cache', 'experimental'],
+  __typename: 'ClusterServiceClass',
+};
+
 export {
   clusterServiceClass1,
   clusterServiceClass2,
   serviceClass1,
   clusterServiceClass1Name,
   clusterServiceClassDetails,
+  clusterServiceClassDetailsNoPlanSpec,
 };

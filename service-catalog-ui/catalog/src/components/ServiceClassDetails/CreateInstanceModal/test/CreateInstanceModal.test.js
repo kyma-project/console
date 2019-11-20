@@ -6,12 +6,14 @@ import { componentUpdate } from '../../../../testing';
 import {
   clusterServiceClassDetails,
   clusterServiceClass1Name,
+  clusterServiceClassDetailsNoPlanSpec,
 } from '../../../../testing/serviceClassesMocks';
 
 import {
   createServiceInstanceSuccessfulMock,
   createServiceInstanceErrorMock,
   mockEnvironmentId,
+  createServiceInstanceNoPlanSpecSuccessfulMock,
 } from '../../../../testing/queriesMocks';
 
 import CreateInstanceModal from '../CreateInstanceModal.component';
@@ -19,6 +21,7 @@ import CreateInstanceModal from '../CreateInstanceModal.component';
 const onCompleted = jest.fn();
 const onError = jest.fn();
 const onChange = jest.fn();
+const mockNavigate = jest.fn();
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
@@ -29,10 +32,7 @@ jest.mock('@kyma-project/luigi-client', () => {
     },
     linkManager: () => {
       return {
-        fromContext: () => ({ navigate: () => {} }),
-        navigate: () => {
-          return;
-        },
+        fromContext: () => ({ navigate: mockNavigate }),
       };
     },
   };
@@ -42,6 +42,7 @@ beforeEach(() => {
   onCompleted.mockReset();
   onError.mockReset();
   onChange.mockReset();
+  mockNavigate.mockReset();
 });
 
 describe('CreateInstanceModal', () => {
@@ -142,7 +143,7 @@ describe('CreateInstanceModal', () => {
     ).toEqual(false);
   });
 
-  it('Creates instance properly', async () => {
+  it('Creates instance with plan spec', async () => {
     const ref = React.createRef();
 
     const gqlMock = createServiceInstanceSuccessfulMock();
@@ -182,6 +183,9 @@ describe('CreateInstanceModal', () => {
 
     expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `cmf-instances/details/${clusterServiceClass1Name}`,
+    );
   });
 
   it('Shows error notification if an error occured', async () => {
@@ -221,8 +225,51 @@ describe('CreateInstanceModal', () => {
 
     expect(onCompleted).not.toHaveBeenCalled();
     expect(onError).toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  test.todo('Navigate to instance details on completed');
-  test.todo('Create instance with empty plan spec');
+  it('Create instance with empty plan spec', async () => {
+    const ref = React.createRef();
+
+    const gqlMock = createServiceInstanceNoPlanSpecSuccessfulMock();
+
+    const component = mount(
+      <MockedProvider mocks={[gqlMock]} addTypename={false}>
+        <CreateInstanceModal
+          checkInstanceExistQuery={{ serviceInstances: [] }}
+          item={clusterServiceClassDetailsNoPlanSpec}
+          formElementRef={ref}
+          jsonSchemaFormRef={{ current: null }}
+          onChange={onChange}
+          onError={onError}
+          onCompleted={onCompleted}
+        />
+      </MockedProvider>,
+    );
+
+    await componentUpdate(component);
+    await componentUpdate(component);
+
+    const instanceNameInput = component.find('input#instanceName');
+    instanceNameInput.instance().value = clusterServiceClass1Name;
+    expect(instanceNameInput.instance().value).toEqual(
+      clusterServiceClass1Name,
+    );
+
+    await componentUpdate(component);
+    await componentUpdate(component);
+
+    const form = component.find('form#createInstanceForm');
+    form.simulate('submit');
+
+    await componentUpdate(component);
+    await componentUpdate(component);
+    expect(gqlMock.result).toHaveBeenCalled();
+
+    expect(onCompleted).toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `cmf-instances/details/${clusterServiceClass1Name}`,
+    );
+  });
 });

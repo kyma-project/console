@@ -75,6 +75,30 @@ export const createServiceInstanceSuccessfulMock = () => {
   };
 };
 
+export const createServiceInstanceNoPlanSpecSuccessfulMock = () => {
+  const { parameterSchema, ...params } = otherParams;
+  return {
+    request: {
+      query: createServiceInstance,
+      variables: {
+        namespace: mockEnvironmentId,
+        name: clusterServiceClass1Name,
+        parameterSchema: {},
+        ...params,
+      },
+    },
+    result: jest.fn().mockReturnValue({
+      data: {
+        createServiceInstance: {
+          namespace: mockEnvironmentId,
+          name: clusterServiceClass1Name,
+          parameters: {},
+        },
+      },
+    }),
+  };
+};
+
 export const createServiceInstanceErrorMock = () => ({
   request: {
     query: createServiceInstance,
