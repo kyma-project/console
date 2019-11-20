@@ -10,7 +10,6 @@ import {
   FormSelect,
 } from 'fundamental-react';
 
-import { FloatingControls } from 'react-shared';
 import './ApiRuleCreationDraft.scss';
 
 import AccessStrategy from './AccessStrategy';
@@ -24,8 +23,6 @@ const ApiRuleCreationDraft = () => {
             <ActionBar.Header title="multiple-rules" />
           </section>
           <ActionBar.Actions>
-            <Button glyph="add">Add access strategy</Button>
-
             <Button option="emphasized">Save</Button>
           </ActionBar.Actions>
         </section>
@@ -71,9 +68,20 @@ const ApiRuleCreationDraft = () => {
               </FormGroup>
             </Panel.Body>
           </Panel>
-          <AccessStrategy selectedType={1} path="/favicon" />
-          <AccessStrategy selectedType={2} path="/img" />
-          <AccessStrategy selectedType={3} path="/headers" />
+
+          <Panel>
+            <Panel.Header>
+              <Panel.Head title="Access strategies" />
+              <Panel.Actions>
+                <Button glyph="add">Add access strategy</Button>
+              </Panel.Actions>
+            </Panel.Header>
+            <Panel.Body>
+              <AccessStrategy selectedType={'Pass-all'} path="/favicon" />
+              <AccessStrategy selectedType={'JWT'} path="/img" />
+              <AccessStrategy selectedType={'OAuth2'} path="/headers" />
+            </Panel.Body>
+          </Panel>
         </LayoutGrid>
       </section>
     </>

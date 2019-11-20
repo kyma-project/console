@@ -1,74 +1,108 @@
 import React, { useState } from 'react';
 import {
-  ActionBar,
   Button,
   LayoutGrid,
   FormGroup,
   FormInput,
   FormItem,
   FormLabel,
-  Panel,
   Checkbox,
   FormFieldset,
   FormLegend,
   Badge,
   FormSelect,
-  FormSet,
   FormRadioGroup,
-  Table,
+  Status,
+  Icon,
 } from 'fundamental-react';
 import { StringInput } from 'react-shared';
 
-const AccessStrategy = ({ selectedType, path, isOpenInitially = false }) => {
+const URLregexp = new RegExp(
+  '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
+);
+const StringListInput = ({
+  typesFilter,
+  selectedType,
+  label,
+  list,
+  onChange,
+  regexp,
+  isEditMode,
+}) => {
+  if (typesFilter && !typesFilter.includes(selectedType)) {
+    return null;
+  }
+  return (
+    <FormGroup>
+      <FormItem>
+        <FormLabel>{label}</FormLabel>
+        {isEditMode ? (
+          <StringInput stringList={list} onChange={onChange} regexp={regexp} />
+        ) : (
+          (list && list.length && (
+            <FormInput readOnly value={list.join(', ')} />
+          )) ||
+          'None'
+        )}
+      </FormItem>
+    </FormGroup>
+  );
+};
+
+const AccessStrategy = ({
+  selectedType,
+  path,
+  isOpenInitially = false,
+  isEditModeInitially = false,
+}) => {
   const [requiredScopeList, setRequiredScopes] = useState(['foo', 'bar']);
   const [trustedIssuesList, setTrustedIssues] = useState([
     'http://dex.kyma.local',
   ]);
 
   const [isOpen, setOpen] = useState(isOpenInitially);
+  const [isEditMode, setEditMode] = useState(isEditModeInitially);
   return (
-    <Panel className="access-strategy">
-      <Panel.Header>
-        <Panel.Head title="Access strategy for path " />
-        {isOpen ? (
-          <FormInput
-            placeholder="Field placeholder text"
-            type="text"
-            value={path}
-          />
-        ) : (
-          <strong className="fd-has-font-weight-bold">{path}</strong>
-        )}
+    <div className="access-strategy">
+      <div className="header">
+        <strong className="path">{path}</strong>
 
-        <Panel.Actions>
-          {/* <Button option="emphasized" title="Add new mutator" glyph="add" /> */}
-          {!isOpen && (
-            <div className="methods">
-              <Badge>GET</Badge>
-              {selectedType === 3 && <Badge type="error">DELETE</Badge>}
-            </div>
+        <Badge modifier="filled" className="type">
+          <Icon
+            glyph={selectedType === 'Pass-all' ? 'unlocked' : 'locked'}
+            size="s"
+          />{' '}
+          {selectedType}
+        </Badge>
+
+        <div className="methods">
+          {!isEditMode && <Badge>GET</Badge>}
+          {!isEditMode && selectedType === 'OAuth2' && (
+            <Badge type="error">DELETE</Badge>
           )}
-
+        </div>
+        <div className="actions">
           <Button
+            compact
             title="Expand"
-            glyph={isOpen ? 'navigation-up-arrow' : 'edit'}
+            glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
             onClick={() => setOpen(!isOpen)}
           />
-          <Button title="Delete this access strategy" glyph="delete" />
-        </Panel.Actions>
-      </Panel.Header>
-      {isOpen && (
-        <Panel.Filters>
-          <FormGroup>
-            <LayoutGrid cols={2}>
-              <FormItem>
-                <FormLabel htmlFor="select-1">Type</FormLabel>
-                <FormSelect value={selectedType} id="select-1">
-                  <option value="1">Pass-all</option>
-                  <option value="2">JWT</option>
-                  <option value="3">OAuth2</option>
-                </FormSelect>
-              </FormItem>
+          <Button compact title="Delete this access strategy" glyph="delete" />
+        </div>
+      </div>
+      {isOpen && isEditMode && (
+        <FormGroup>
+          <LayoutGrid cols={3}>
+            <FormItem>
+              <FormLabel htmlFor="select-1">Path</FormLabel>
+              <FormInput
+                placeholder="Field placeholder text"
+                type="text"
+                value={path}
+              />
+            </FormItem>
+            {isEditMode && (
               <FormFieldset>
                 <FormLegend>Method:</FormLegend>
                 <FormRadioGroup inline className="inline-radio-group">
@@ -96,42 +130,45 @@ const AccessStrategy = ({ selectedType, path, isOpenInitially = false }) => {
                   />
                 </FormRadioGroup>
               </FormFieldset>
-            </LayoutGrid>
-          </FormGroup>
-        </Panel.Filters>
+            )}
+            <FormItem>
+              <FormLabel htmlFor="select-1">Type</FormLabel>
+              {isEditMode ? (
+                <FormSelect value={selectedType} id="select-1">
+                  <option value="Pass-all">Pass-all</option>
+                  <option value="JWT">JWT</option>
+                  <option value="OAuth2">OAuth2</option>
+                </FormSelect>
+              ) : (
+                <Status>{selectedType}</Status>
+              )}
+            </FormItem>
+          </LayoutGrid>
+        </FormGroup>
       )}
 
-      {isOpen && selectedType !== 1 && (
-        <Panel.Body>
-          <FormGroup>
-            {selectedType === 2 && (
-              <FormItem>
-                <FormLabel>trusted_issuers</FormLabel>
-                <StringInput
-                  stringList={trustedIssuesList}
-                  onChange={setTrustedIssues}
-                  regexp={
-                    new RegExp(
-                      '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
-                    )
-                  }
-                />
-              </FormItem>
-            )}
-          </FormGroup>
-          <FormGroup>
-            <FormItem>
-              <FormLabel>reguired_scope</FormLabel>
-              <StringInput
-                stringList={requiredScopeList}
-                onChange={setRequiredScopes}
-                regexp={new RegExp('(?=.*[A-z])')}
-              />
-            </FormItem>
-          </FormGroup>
-        </Panel.Body>
+      {isOpen && selectedType !== 'Pass-all' && (
+        <>
+          <StringListInput
+            list={trustedIssuesList}
+            onChange={setTrustedIssues}
+            isEditMode={isEditMode}
+            typesFilter={['JWT']}
+            selectedType={selectedType}
+            regexp={URLregexp}
+            label={'Trusted issuers'}
+          />
+
+          <StringListInput
+            list={requiredScopeList}
+            onChange={setRequiredScopes}
+            isEditMode={isEditMode}
+            regexp={new RegExp('(?=.*[A-z])')}
+            label={'Required scope'}
+          />
+        </>
       )}
-    </Panel>
+    </div>
   );
 };
 
