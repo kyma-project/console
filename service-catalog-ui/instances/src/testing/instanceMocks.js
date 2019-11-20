@@ -2,7 +2,7 @@ const serviceInstance1 = {
   name: 'sth-motherly-deposit',
   namespace: 'default',
   planSpec: { imagePullPolicy: 'IfNotPresent' },
-  labels: [],
+  labels: ['label1', 'label2'],
   bindable: true,
   status: {
     type: 'RUNNING',
@@ -144,7 +144,7 @@ const serviceInstance2 = {
   name: 'testing-curly-tax',
   namespace: 'default',
   planSpec: {},
-  labels: [],
+  labels: ['label2'],
   bindable: false,
   status: {
     type: 'RUNNING',
@@ -289,7 +289,7 @@ const serviceInstance3 = {
   name: 'going-fishing',
   namespace: 'default',
   planSpec: {},
-  labels: [],
+  labels: ['label3'],
   bindable: false,
   status: {
     type: 'RUNNING',

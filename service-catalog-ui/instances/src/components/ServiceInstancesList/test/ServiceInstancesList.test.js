@@ -16,6 +16,8 @@ import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
 import { Counter } from 'fundamental-react';
 import { serviceInstance1, serviceInstance3 } from 'testing/instanceMocks';
+import FilterDropdown from '../ServiceInstancesToolbar/FilterDropdown.component';
+import { FormInput } from '../ServiceInstancesToolbar/styled';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -228,9 +230,8 @@ describe('InstancesList UI', () => {
 
   test.todo('Open modal for plan with non-empty spec');
   test.todo('No modal for plan with empty spec');
-  test.todo('Search instances');
   test.todo('Filter instances by labels');
-  test.todo('Navigate catalog');
+  // test.todo('Navigate catalog');
 });
 
 describe('Search instances by name', () => {
@@ -310,4 +311,47 @@ describe('Search instances by name', () => {
       serviceInstance3,
     ]);
   });
+});
+
+describe('filter instances by labels', () => {
+  const { link } = createMockLink([allServiceInstancesQuery]);
+  const component = mount(
+    <MockedProvider link={link}>
+      <ServiceInstancesList />
+    </MockedProvider>,
+  );
+
+  it('Initial instances', async () => {
+    await componentUpdate(component);
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('2');
+  });
+
+  it('Filter dropdown is filled with labels', async () => {
+    const filter = component.find(FilterDropdown);
+    expect(filter.prop('availableLabels')).toEqual({
+      label1: 1,
+      label2: 2,
+      label3: 0,
+    });
+
+    const filterButton = filter.find('button[data-e2e-id="toggle-filter"]');
+    filterButton.simulate('click');
+    const labelsSelectors = component
+      .find(FilterDropdown)
+      .find(FormInput)
+      .find('input');
+    expect(labelsSelectors).toHaveLength(3);
+  });
+
+  // it('Select filter', async () => {
+
+  //   const firstLabelSelector = component.find(FilterDropdown).find(FormInput).find('input').at(0);
+  //   firstLabelSelector.simulate('click');
+  //   await componentUpdate(component);
+  //   expect(component.find(FilterDropdown).prop('activeLabelFilters')).toEqual({});
+  //   console.log('lolo', firstLabelSelector.debug())
+  //   const addOnsTab = component.find(Tab).at(0);
+  //   expect(addOnsTab.find(Counter).text()).toEqual('1');
+  // })
 });
