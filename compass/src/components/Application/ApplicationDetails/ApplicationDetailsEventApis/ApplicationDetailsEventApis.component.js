@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Panel } from '@kyma-project/react-components';
 import { GenericList } from 'react-shared';
 import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
 import { handleDelete } from 'react-shared';
@@ -63,16 +62,14 @@ export default function ApplicationDetailsEventApis({
   ];
 
   return (
-    <Panel className="fd-has-margin-top-medium">
-      <GenericList
-        extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
-        title="Event APIs"
-        notFoundMessage="There are no Event APIs available for this Application"
-        actions={actions}
-        entries={eventApis.data}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
+      title="Event APIs"
+      notFoundMessage="There are no Event APIs available for this Application"
+      actions={actions}
+      entries={eventApis.data}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+    />
   );
 }

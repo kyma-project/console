@@ -9,6 +9,7 @@ import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
 
 import ModalWithForm from '../../shared/components/ModalWithForm/ModalWithForm.container';
 import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm.container';
+import { PageHeader } from 'react-shared';
 
 class Runtimes extends React.Component {
   static propTypes = {
@@ -65,24 +66,25 @@ class Runtimes extends React.Component {
     if (error) return `Error! ${error.message}`;
 
     return (
-      <GenericList
-        extraHeaderContent={
-          <ModalWithForm
-            title="Create new runtime"
-            button={{ text: 'Create runtime', glyph: 'add' }}
-            confirmText="Create"
-            performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
-          >
-            <CreateRuntimeForm />
-          </ModalWithForm>
-        }
-        title="Runtimes"
-        description="List of all runtimes"
-        actions={this.actions}
-        entries={runtimes}
-        headerRenderer={this.headerRenderer}
-        rowRenderer={this.rowRenderer}
-      />
+      <>
+        <PageHeader title="Runtimes" />
+        <GenericList
+          extraHeaderContent={
+            <ModalWithForm
+              title="Create new runtime"
+              button={{ text: 'Create runtime', option: 'light' }}
+              confirmText="Create"
+              performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
+            >
+              <CreateRuntimeForm />
+            </ModalWithForm>
+          }
+          actions={this.actions}
+          entries={runtimes}
+          headerRenderer={this.headerRenderer}
+          rowRenderer={this.rowRenderer}
+        />
+      </>
     );
   }
 }

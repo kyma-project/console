@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import SearchInput from './SearchInput';
+import './style.scss';
 
 import { Panel } from 'fundamental-react/Panel';
 
-import {
-  TableWithActionsToolbar,
-  TableWithActionsList,
-} from '@kyma-project/react-components';
+import { TableWithActionsList } from '@kyma-project/react-components';
 
 import { filterEntries } from './helpers';
 import { renderActionElement } from './internalRenderers';
@@ -82,8 +80,7 @@ export class GenericList extends React.Component {
     } = this.props;
 
     const headerActions = (
-      <>
-        {extraHeaderContent}
+      <section>
         {showSearchField && (
           <SearchInput
             searchQuery={searchQuery}
@@ -92,16 +89,16 @@ export class GenericList extends React.Component {
             suggestionProperties={textSearchProperties}
           />
         )}
-      </>
+        {extraHeaderContent}
+      </section>
     );
 
     return (
-      <Panel className="fd-panel--no-background">
-        <TableWithActionsToolbar
-          title={this.props.title}
-          description={this.props.description}
-          children={headerActions}
-        />
+      <Panel className="fd-has-margin-m generic-list">
+        <Panel.Header className="fd-has-padding-xs">
+          <Panel.Head title={this.props.title} />
+          {headerActions}
+        </Panel.Header>
 
         <Panel.Body>
           <TableWithActionsList
@@ -118,7 +115,6 @@ export class GenericList extends React.Component {
 
 GenericList.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object),
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,

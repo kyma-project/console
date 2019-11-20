@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageHeader Renders with minimal props 1`] = `
+<Panel
+  className="page-header"
+>
+  <Panel.Header
+    className="fd-has-padding-m"
+  >
+    <Panel.Head
+      headingLevel={3}
+      title="page title"
+    />
+  </Panel.Header>
+</Panel>
+`;

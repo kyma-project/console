@@ -15,12 +15,13 @@ import { useNotification } from '../../contexts/notifications';
 import Spinner from '../../shared/components/Spinner/Spinner';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
 import Labels from '../../shared/components/Labels/Labels';
+import { PageHeader } from 'react-shared';
 
 function CreateLambdaModal() {
   return (
     <ModalWithForm
       title="Create new lambda"
-      button={{ text: 'Create lambda', glyph: 'add' }}
+      button={{ text: 'Create lambda', option: 'light' }}
       id="add-lambda-modal"
       renderForm={props => <CreateLambdaForm {...props} />}
     />
@@ -111,14 +112,15 @@ export default function Lambdas() {
   ];
 
   return (
-    <GenericList
-      title="Lambdas"
-      description="List of lambdas"
-      actions={actions}
-      entries={data.functions}
-      headerRenderer={headerRenderer}
-      rowRenderer={rowRenderer}
-      extraHeaderContent={<CreateLambdaModal />}
-    />
+    <>
+      <PageHeader title="Lambdas" />
+      <GenericList
+        actions={actions}
+        entries={data.functions}
+        headerRenderer={headerRenderer}
+        rowRenderer={rowRenderer}
+        extraHeaderContent={<CreateLambdaModal />}
+      />
+    </>
   );
 }

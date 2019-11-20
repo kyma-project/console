@@ -148,7 +148,9 @@ export default class CreateScenarioModal extends React.Component {
   };
 
   render() {
-    const modalOpeningComponent = <Button glyph="add">Create Scenario</Button>;
+    const modalOpeningComponent = (
+      <Button option="light">Create Scenario</Button>
+    );
 
     return (
       <Modal

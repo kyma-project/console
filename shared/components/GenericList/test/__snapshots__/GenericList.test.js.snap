@@ -2,26 +2,15 @@
 
 exports[`GenericList Renders actions button when 'actions' prop is provided 1`] = `
 <div
-  className="fd-panel fd-panel--no-background"
+  className="fd-panel fd-has-margin-m generic-list"
 >
   <div
-    className="fd-action-bar sc-ksYbfQ bYVodr"
-    data-e2e-id="toolbar"
+    className="fd-panel__header fd-has-padding-xs"
   >
     <div
-      className="fd-action-bar__header sc-frDJqD dkgsYC"
-      data-e2e-id="toolbar-header"
-    >
-      <h1
-        className="fd-action-bar__title"
-      >
-        
-      </h1>
-    </div>
-    <div
-      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
-      data-e2e-id="toolbar-actions"
-    >
+      className="fd-panel__head"
+    />
+    <section>
       <div
         className="fd-search-input generic-list-search"
       >
@@ -96,7 +85,7 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
   <div
     className="fd-panel__body"
@@ -181,31 +170,21 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
 
 exports[`GenericList Renders title and description 1`] = `
 <div
-  className="fd-panel fd-panel--no-background"
+  className="fd-panel fd-has-margin-m generic-list"
 >
   <div
-    className="fd-action-bar sc-ksYbfQ bYVodr"
-    data-e2e-id="toolbar"
+    className="fd-panel__header fd-has-padding-xs"
   >
     <div
-      className="fd-action-bar__header sc-frDJqD dkgsYC"
-      data-e2e-id="toolbar-header"
+      className="fd-panel__head"
     >
-      <h1
-        className="fd-action-bar__title"
+      <h3
+        className="fd-panel__title"
       >
         title
-      </h1>
-      <p
-        className="fd-action-bar__description"
-      >
-        description
-      </p>
+      </h3>
     </div>
-    <div
-      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
-      data-e2e-id="toolbar-actions"
-    >
+    <section>
       <div
         className="fd-search-input generic-list-search"
       >
@@ -261,7 +240,7 @@ exports[`GenericList Renders title and description 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
   <div
     className="fd-panel__body"
@@ -293,26 +272,15 @@ exports[`GenericList Renders title and description 1`] = `
 
 exports[`GenericList Renders with minimal props 1`] = `
 <div
-  className="fd-panel fd-panel--no-background"
+  className="fd-panel fd-has-margin-m generic-list"
 >
   <div
-    className="fd-action-bar sc-ksYbfQ bYVodr"
-    data-e2e-id="toolbar"
+    className="fd-panel__header fd-has-padding-xs"
   >
     <div
-      className="fd-action-bar__header sc-frDJqD dkgsYC"
-      data-e2e-id="toolbar-header"
-    >
-      <h1
-        className="fd-action-bar__title"
-      >
-        
-      </h1>
-    </div>
-    <div
-      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
-      data-e2e-id="toolbar-actions"
-    >
+      className="fd-panel__head"
+    />
+    <section>
       <div
         className="fd-search-input generic-list-search"
       >
@@ -368,7 +336,7 @@ exports[`GenericList Renders with minimal props 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
   <div
     className="fd-panel__body"
@@ -400,26 +368,15 @@ exports[`GenericList Renders with minimal props 1`] = `
 
 exports[`GenericList Skips rendering actions when 'actions' prop passes skipAction() call 1`] = `
 <div
-  className="fd-panel fd-panel--no-background"
+  className="fd-panel fd-has-margin-m generic-list"
 >
   <div
-    className="fd-action-bar sc-ksYbfQ bYVodr"
-    data-e2e-id="toolbar"
+    className="fd-panel__header fd-has-padding-xs"
   >
     <div
-      className="fd-action-bar__header sc-frDJqD dkgsYC"
-      data-e2e-id="toolbar-header"
-    >
-      <h1
-        className="fd-action-bar__title"
-      >
-        
-      </h1>
-    </div>
-    <div
-      className="fd-action-bar__actions sc-kvZOFW cMNfXb"
-      data-e2e-id="toolbar-actions"
-    >
+      className="fd-panel__head"
+    />
+    <section>
       <div
         className="fd-search-input generic-list-search"
       >
@@ -494,7 +451,7 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
   <div
     className="fd-panel__body"

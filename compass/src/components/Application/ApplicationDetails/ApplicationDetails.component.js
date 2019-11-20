@@ -39,7 +39,7 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
         application={application}
         deleteApplication={deleteApplicationMutation}
       />
-      <section className="fd-section">
+      <section>
         <ScenariosList scenarios={scenarios} applicationId={application.id} />
         <ApisList apis={application.apis} applicationId={application.id} />
         <EventApisList

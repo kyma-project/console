@@ -4,8 +4,18 @@ import renderer from 'react-test-renderer';
 import 'core-js/es/array/flat-map';
 
 describe('GenericList', () => {
+  // for "Warning: componentWillMount has been renamed"
+  console.error = jest.fn();
+  console.warn = jest.fn();
+
+  afterEach(() => {
+    console.error.mockReset();
+    console.warn.mockReset();
+  });
+
   const mockHeaderRenderer = entries => ['Name'];
   const mockEntryRenderer = entry => [entry.name];
+
   const mockEntries = [
     { name: 'first_entry', description: 'testdescription1' },
     { name: 'second_entry', description: 'testdescription2' },

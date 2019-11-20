@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Panel } from '@kyma-project/react-components';
 
 import { GenericList } from 'react-shared';
 
@@ -65,17 +64,15 @@ export default function ApplicationDetailsApis({
   ];
 
   return (
-    <Panel className="fd-has-margin-top-small">
-      <GenericList
-        extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
-        title="APIs"
-        notFoundMessage="There are no APIs available for this Application"
-        actions={actions}
-        entries={apis.data}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-        textSearchProperties={['name', 'description', 'targetURL']}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
+      title="APIs"
+      notFoundMessage="There are no APIs available for this Application"
+      actions={actions}
+      entries={apis.data}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+      textSearchProperties={['name', 'description', 'targetURL']}
+    />
   );
 }

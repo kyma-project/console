@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import _ from 'lodash';
 
-import { Modal, Button, Icon } from '@kyma-project/react-components';
+import { Modal, Button } from '@kyma-project/react-components';
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 
 AssignScenarioModal.propTypes = {
@@ -69,11 +69,7 @@ export default function AssignScenarioModal(props) {
     }
   }
 
-  const modalOpeningComponent = (
-    <Button>
-      <Icon glyph="add" />
-    </Button>
-  );
+  const modalOpeningComponent = <Button option="light">Edit</Button>;
 
   const { loading, error, scenarios } = props.availableScenariosQuery;
 

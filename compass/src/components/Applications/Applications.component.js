@@ -8,6 +8,7 @@ import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import { GenericList, handleDelete } from 'react-shared';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
+import { PageHeader } from 'react-shared';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -75,17 +76,18 @@ class Applications extends React.Component {
     if (error) return `Error! ${error.message}`;
 
     return (
-      <GenericList
-        extraHeaderContent={
-          <CreateApplicationModal applicationsQuery={applicationsQuery} />
-        }
-        title="Applications"
-        description="List of all aplications"
-        actions={this.actions}
-        entries={applications}
-        headerRenderer={this.headerRenderer}
-        rowRenderer={this.rowRenderer}
-      />
+      <>
+        <PageHeader title="Applications" />
+        <GenericList
+          extraHeaderContent={
+            <CreateApplicationModal applicationsQuery={applicationsQuery} />
+          }
+          actions={this.actions}
+          entries={applications}
+          headerRenderer={this.headerRenderer}
+          rowRenderer={this.rowRenderer}
+        />
+      </>
     );
   }
 }

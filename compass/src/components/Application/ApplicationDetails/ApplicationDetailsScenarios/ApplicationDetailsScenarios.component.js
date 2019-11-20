@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Panel } from '@kyma-project/react-components';
 import { GenericList } from 'react-shared';
 import ApplicationScenarioModal from './ApplicationScenarioModal.container';
 import { ApplicationQueryContext } from './../../ApplicationDetails/ApplicationDetails.component';
@@ -61,7 +60,7 @@ export default function ApplicationDetailsScenarios({
 
   const headerRenderer = () => ['Name'];
 
-  const rowRenderer = label => [label.name];
+  const rowRenderer = label => [label.scenario];
 
   const actions = [
     {
@@ -87,17 +86,15 @@ export default function ApplicationDetailsScenarios({
   const entries = scenarios.map(scenario => ({ scenario })); // list requires a list of objects
 
   return (
-    <Panel>
-      <GenericList
-        extraHeaderContent={extraHeaderContent}
-        title="Assigned to Scenario"
-        notFoundMessage="This Applications isn't assigned to any scenario"
-        actions={actions}
-        entries={entries}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-        textSearchProperties={['scenario']}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={extraHeaderContent}
+      title="Assigned to Scenario"
+      notFoundMessage="This Applications isn't assigned to any scenario"
+      actions={actions}
+      entries={entries}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+      textSearchProperties={['scenario']}
+    />
   );
 }
