@@ -321,13 +321,8 @@ describe('filter instances by labels', () => {
     </MockedProvider>,
   );
 
-  it('Initial instances', async () => {
-    await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('2');
-  });
-
   it('Filter dropdown is filled with labels', async () => {
+    await componentUpdate(component);
     const filter = component.find(FilterDropdown);
     expect(filter.prop('availableLabels')).toEqual({
       label1: 1,
@@ -362,5 +357,24 @@ describe('filter instances by labels', () => {
 
     const addOnsTab = component.find(Tab).at(0);
     expect(addOnsTab.find(Counter).text()).toEqual('1');
+
+    addOnsTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
+      serviceInstance1,
+    ]);
+
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('0');
+
+    servicesTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
   });
 });

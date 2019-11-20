@@ -24,7 +24,6 @@ const FilterDropdown = ({
   );
 
   const handleLabelClick = ev => {
-    console.log('dupa');
     onLabelChange(ev.target.id, ev.target.checked);
   };
 
