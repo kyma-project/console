@@ -24,6 +24,7 @@ const FilterDropdown = ({
   );
 
   const handleLabelClick = ev => {
+    console.log('dupa');
     onLabelChange(ev.target.id, ev.target.checked);
   };
 
@@ -42,7 +43,7 @@ const FilterDropdown = ({
                         type="checkbox"
                         id={label}
                         name={`checkbox-name-${index}`}
-                        onClick={handleLabelClick}
+                        onChange={handleLabelClick}
                         checked={activeLabelFilters.includes(label)}
                       />
                       <FormLabel htmlFor={`checkbox-${index}`}>

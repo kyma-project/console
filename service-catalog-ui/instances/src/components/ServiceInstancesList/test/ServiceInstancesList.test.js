@@ -337,6 +337,7 @@ describe('filter instances by labels', () => {
 
     const filterButton = filter.find('button[data-e2e-id="toggle-filter"]');
     filterButton.simulate('click');
+    await componentUpdate(component);
     const labelsSelectors = component
       .find(FilterDropdown)
       .find(FormInput)
@@ -350,14 +351,15 @@ describe('filter instances by labels', () => {
       .find(FormInput)
       .find('input')
       .at(0);
-    // firstLabelSelector.simulate('click');
 
-    firstLabelSelector.simulate('change', { target: { checked: true } });
+    firstLabelSelector.simulate('change', {
+      target: { checked: true, id: 'label1' },
+    });
     await componentUpdate(component);
-    expect(component.find(FilterDropdown).prop('activeLabelFilters')).toEqual(
-      [],
-    );
-    console.log('lolo', firstLabelSelector.debug());
+    expect(component.find(FilterDropdown).prop('activeLabelFilters')).toEqual([
+      'label1',
+    ]);
+
     const addOnsTab = component.find(Tab).at(0);
     expect(addOnsTab.find(Counter).text()).toEqual('1');
   });
