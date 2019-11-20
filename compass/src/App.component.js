@@ -123,17 +123,21 @@ class App extends React.Component {
             <Route
               path="/metadatadefinition/:definitionKey"
               exact
-              render={({ match }) => (
-                <MetadataDefinitionDetails
-                  definitionKey={match.params.definitionKey}
-                />
-              )}
+              render={RoutedMetadataDefinitionDetails}
             />
           </Switch>
         </Router>
       </div>
     );
   }
+}
+
+function RoutedMetadataDefinitionDetails({ match }) {
+  return (
+    <MetadataDefinitionDetails
+      definitionKey={decodeURIComponent(match.params.definitionKey)}
+    />
+  );
 }
 
 function RoutedScenarioDetails({ match }) {
