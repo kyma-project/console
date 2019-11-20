@@ -29,7 +29,13 @@ function getApiType(api) {
 // temporary component, remove after GenericDocumentation for Open API is fixed.
 const OpenAPIEditor = ({ api }) => {
   const editorMode = api.spec.format.toLowerCase();
-  const spec = api.spec.data;
+  let spec = '';
+  try {
+    spec = JSON.stringify(JSON.parse(api.spec.data), null, 2);
+  } catch (e) {
+    console.error('An error occurred while parsing API spec: ', e);
+    spec = api.spec.data;
+  }
   return (
     <Panel className="fd-has-margin-s">
       <Panel.Body>
