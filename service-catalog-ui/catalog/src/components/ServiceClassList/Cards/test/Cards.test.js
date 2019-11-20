@@ -99,10 +99,10 @@ describe('Cards.component', () => {
   });
 
   it('clicking triggers onClick ', () => {
-    const component = shallow(<Cards items={[mock[0]]} />);
-    const card = component.find(Card);
+    const component = shallow(<Cards items={mock} />);
+    const card = component.find(Card).at(0);
     expect(card.exists()).toBe(true);
-    card.simulate('click');
+    card.prop('onClick')();
     expect(mockNavigate).toHaveBeenCalledWith(`details/${mock[0].name}`);
   });
 });
