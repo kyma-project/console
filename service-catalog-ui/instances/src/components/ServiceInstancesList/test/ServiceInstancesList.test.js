@@ -8,12 +8,14 @@ import {
 } from '../../../testing/queriesMocks';
 import ServiceInstancesTable from '../ServiceInstancesTable/ServiceInstancesTable.component';
 
-import { Button, Spinner } from '@kyma-project/react-components';
+import { Button, Spinner, Tab, Search } from '@kyma-project/react-components';
 import ServiceInstancesList from '../ServiceInstancesList';
 import { Link } from '../ServiceInstancesTable/styled.js';
 import { createMockLink } from '../../../testing/apollo';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
+import { Counter } from 'fundamental-react';
+import { serviceInstance1, serviceInstance3 } from 'testing/instanceMocks';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -40,6 +42,11 @@ jest.mock('@kyma-project/luigi-client', () => {
                 navigate: mockNavigate,
               };
             },
+            navigate: mockNavigate,
+          };
+        },
+        withParams: function() {
+          return {
             navigate: mockNavigate,
           };
         },
@@ -224,4 +231,83 @@ describe('InstancesList UI', () => {
   test.todo('Search instances');
   test.todo('Filter instances by labels');
   test.todo('Navigate catalog');
+});
+
+describe('Search instances by name', () => {
+  const { link } = createMockLink([allServiceInstancesQuery]);
+  const component = mount(
+    <MockedProvider link={link}>
+      <ServiceInstancesList />
+    </MockedProvider>,
+  );
+
+  it('Shows all instances initially', async () => {
+    await componentUpdate(component);
+
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('2');
+
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('1');
+  });
+
+  it('Search addon', async () => {
+    await componentUpdate(component);
+
+    const search = component.find(Search).find('input');
+    expect(search.exists()).toBe(true);
+    search.simulate('change', { target: { value: 'motherly' } });
+
+    await componentUpdate(component);
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('1');
+    addOnsTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
+      serviceInstance1,
+    ]);
+
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('0');
+
+    servicesTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+  });
+
+  it('Search service', async () => {
+    await componentUpdate(component);
+
+    const search = component.find(Search).find('input');
+    expect(search.exists()).toBe(true);
+    search.simulate('change', { target: { value: 'fishing' } });
+
+    await componentUpdate(component);
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('0');
+    addOnsTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('1');
+
+    servicesTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
+      serviceInstance3,
+    ]);
+  });
 });

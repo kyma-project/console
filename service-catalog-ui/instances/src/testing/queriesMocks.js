@@ -4,7 +4,11 @@ import {
 } from '../queries/queries';
 import { deleteServiceInstance } from '../queries/mutations';
 import { BINDING_CREATE_MUTATION } from '../components/ServiceInstanceDetails/ServiceInstanceBindings/mutations';
-import { serviceInstance1, serviceInstance2 } from './instanceMocks';
+import {
+  serviceInstance1,
+  serviceInstance2,
+  serviceInstance3,
+} from './instanceMocks';
 
 import builder from '../commons/builder';
 
@@ -17,7 +21,7 @@ export const allServiceInstancesQuery = {
   },
   result: {
     data: {
-      serviceInstances: [serviceInstance1, serviceInstance2],
+      serviceInstances: [serviceInstance1, serviceInstance2, serviceInstance3],
     },
   },
 };
