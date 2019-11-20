@@ -61,11 +61,11 @@ const mock = [
   },
 ];
 describe('Cards.component', () => {
-  it('Renders correctly', () => {
-    const component = shallow(<Cards items={mock} />);
-    const cards = component.find(Card);
-    expect(cards).toHaveLength(3);
+  const component = shallow(<Cards items={mock} />);
+  const cards = component.find(Card);
+  expect(cards).toHaveLength(3);
 
+  it('Renders first card correctly', () => {
     expect(cards.at(0).prop('title')).toEqual(mock[0].displayName);
     expect(cards.at(0).prop('company')).toEqual(mock[0].providerDisplayName);
     expect(cards.at(0).prop('description')).toEqual(mock[0].description);
@@ -74,7 +74,9 @@ describe('Cards.component', () => {
     expect(cards.at(0).prop('numberOfInstances')).toEqual(
       mock[0].instances.length,
     );
+  });
 
+  it('Renders second card correctly', () => {
     expect(cards.at(1).prop('title')).toEqual(mock[1].externalName);
     expect(cards.at(1).prop('company')).toEqual(mock[1].providerDisplayName);
     expect(cards.at(1).prop('description')).toEqual(mock[1].description);
@@ -83,7 +85,9 @@ describe('Cards.component', () => {
     expect(cards.at(1).prop('numberOfInstances')).toEqual(
       mock[1].instances.length,
     );
+  });
 
+  it('Renders third card correctly', () => {
     expect(cards.at(2).prop('title')).toEqual(mock[2].name);
     expect(cards.at(2).prop('company')).toEqual(mock[2].providerDisplayName);
     expect(cards.at(2).prop('description')).toEqual(mock[2].description);
