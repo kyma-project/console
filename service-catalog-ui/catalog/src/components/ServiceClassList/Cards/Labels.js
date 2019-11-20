@@ -10,7 +10,7 @@ const labelsDescription = {
 };
 export function Labels({ labels }) {
   return (
-    <PanelFooter className="service-list__card__footer">
+    <PanelFooter className="service-list--card__footer">
       {labels &&
         Object.keys(labels).length > 0 &&
         Object.keys(labels).map(label => {
@@ -26,7 +26,7 @@ export function Labels({ labels }) {
           }
 
           return (
-            <div className="service-list__card__footer__labels" key={label}>
+            <div className="service-list--card__footer__labels" key={label}>
               <Tooltip content={labelsDescription[label]}>
                 <Label cursorType="help">
                   {label === 'connected-app' ? labels['connected-app'] : label}
