@@ -4,11 +4,22 @@ import { mount } from 'enzyme';
 import {
   allServiceClassesQuery,
   mockEnvironmentId,
+  moreThanAllServiceClassesQuery,
 } from '../../../testing/queriesMocks';
-import { clusterServiceClass1Name } from '../../../testing/serviceClassesMocks';
+import {
+  clusterServiceClass1Name,
+  serviceClass2,
+  clusterServiceClass3,
+  clusterServiceClass1,
+  clusterServiceClass2,
+  serviceClass1,
+} from '../../../testing/serviceClassesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate } from '../../../testing';
+import { Search } from '@kyma-project/react-components';
+import { Counter } from 'fundamental-react';
+import Cards from '../Cards/Cards.component';
 
 const mockNavigate = jest.fn();
 
@@ -65,6 +76,21 @@ describe('ServiceClassList UI', () => {
 
     await componentUpdate(component);
 
+    expect(
+      component
+        .find(Tab)
+        .at(0)
+        .find(Counter)
+        .text(),
+    ).toEqual('2');
+    expect(
+      component
+        .find(Tab)
+        .at(1)
+        .find(Counter)
+        .text(),
+    ).toEqual('1');
+
     const addonsCards = component.find('.fd-tile__title');
 
     expect(addonsCards.exists()).toBe(true);
@@ -117,6 +143,87 @@ describe('ServiceClassList UI', () => {
       `details/${clusterServiceClass1Name}`,
     );
   });
+});
 
-  test.todo('Search classes');
+describe('Search classes by name', () => {
+  const component = mount(
+    <MockedProvider mocks={[moreThanAllServiceClassesQuery]}>
+      <ServiceClassList />
+    </MockedProvider>,
+  );
+
+  it('Set search text', async () => {
+    await componentUpdate(component);
+    const search = component.find(Search).find('input');
+    expect(search.exists()).toBe(true);
+    search.simulate('change', { target: { value: 'displayName1' } });
+  });
+
+  it('Add-Ons tab has proper counter', async () => {
+    await componentUpdate(component);
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('2');
+  });
+
+  it('Add-Ons tab shows only matching items', async () => {
+    const addOnsTab = component.find(Tab).at(0);
+    addOnsTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(Cards).prop('items')).toEqual([
+      clusterServiceClass1,
+      clusterServiceClass3,
+    ]);
+  });
+
+  it('Services tab has proper counter', () => {
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('1');
+  });
+
+  it('Services tab shows only matching items', async () => {
+    const servicesTab = component.find(Tab).at(1);
+    servicesTab
+      .find('div')
+      .first()
+      .simulate('click');
+    await componentUpdate(component);
+    expect(component.find(Cards).prop('items')).toEqual([serviceClass1]);
+  });
+});
+
+describe('Search classes by other attributes', () => {
+  const component = mount(
+    <MockedProvider mocks={[moreThanAllServiceClassesQuery]}>
+      <ServiceClassList />
+    </MockedProvider>,
+  );
+
+  it('By provider', async () => {
+    await componentUpdate(component);
+    const search = component.find(Search).find('input');
+    search.simulate('change', { target: { value: 'provider1' } });
+    await componentUpdate(component);
+
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('1');
+
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('1');
+  });
+
+  it('By description', async () => {
+    await componentUpdate(component);
+    const search = component.find(Search).find('input');
+    search.simulate('change', { target: { value: 'description 1' } });
+    await componentUpdate(component);
+
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Counter).text()).toEqual('2');
+
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Counter).text()).toEqual('1');
+  });
 });

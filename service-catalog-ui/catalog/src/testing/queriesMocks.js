@@ -7,6 +7,8 @@ import {
   serviceClass1,
   clusterServiceClass1Name,
   clusterServiceClassDetails,
+  clusterServiceClass3,
+  serviceClass2,
 } from './serviceClassesMocks';
 
 export const mockEnvironmentId = 'testnamespace';
@@ -32,6 +34,25 @@ export const allServiceClassesQuery = {
     data: {
       clusterServiceClasses: [clusterServiceClass1, clusterServiceClass2],
       serviceClasses: [serviceClass1],
+    },
+  },
+};
+
+export const moreThanAllServiceClassesQuery = {
+  request: {
+    query: getAllServiceClasses,
+    variables: {
+      namespace: mockEnvironmentId,
+    },
+  },
+  result: {
+    data: {
+      clusterServiceClasses: [
+        clusterServiceClass1,
+        clusterServiceClass2,
+        clusterServiceClass3,
+      ],
+      serviceClasses: [serviceClass1, serviceClass2],
     },
   },
 };

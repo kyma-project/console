@@ -2,8 +2,8 @@ const clusterServiceClass1Name = 'testName';
 
 const clusterServiceClass1 = {
   activated: false,
-  description: 'Test description',
-  displayName: 'displayName1',
+  description: 'Test description 1',
+  displayName: 'cluster displayName1',
   externalName: 'cluster-service-class-name-1',
   imageUrl: 'https://sth.co/sth.png',
   instances: [],
@@ -17,7 +17,7 @@ const clusterServiceClass1 = {
 const clusterServiceClass2 = {
   activated: false,
   description: 'Test description 2',
-  displayName: 'displayName2',
+  displayName: 'cluster displayName2',
   externalName: 'cluster-service-class-name-2',
   imageUrl: 'https://sth.co/sth.png',
   instances: [],
@@ -28,16 +28,44 @@ const clusterServiceClass2 = {
   __typename: 'ClusterServiceClass',
 };
 
+const clusterServiceClass3 = {
+  activated: false,
+  description: 'Test description 1',
+  displayName: 'cluster3 displayName1',
+  externalName: 'cluster-service-class-name-3',
+  imageUrl: 'https://sth.co/sth.png',
+  instances: [],
+  labels: { local: 'true', provisionOnlyOnce: 'true' },
+  name: '123',
+  providerDisplayName: 'provider3',
+  tags: ['tag1', 'tag2', 'tag3'],
+  __typename: 'ClusterServiceClass',
+};
+
 const serviceClass1 = {
   activated: false,
-  description: 'Description',
-  displayName: 'serviceClass displayName',
+  description: 'Description 1',
+  displayName: 'serviceClass displayName1',
   externalName: 'service-class-name-1',
   imageUrl: '',
   instances: [],
   labels: { provisionOnlyOnce: 'true' },
   name: '4123',
-  providerDisplayName: 'HakunaMatata',
+  providerDisplayName: 'HakunaMatataprovider1',
+  tags: [],
+  __typename: 'ServiceClass',
+};
+
+const serviceClass2 = {
+  activated: false,
+  description: 'Description 2',
+  displayName: 'serviceClass displayName2',
+  externalName: 'service-class-name-1',
+  imageUrl: '',
+  instances: [],
+  labels: { provisionOnlyOnce: 'true' },
+  name: '4123',
+  providerDisplayName: 'HakunaMatataprovider2',
   tags: [],
   __typename: 'ServiceClass',
 };
@@ -184,7 +212,9 @@ const clusterServiceClassDetailsNoPlanSpec = {
 export {
   clusterServiceClass1,
   clusterServiceClass2,
+  clusterServiceClass3,
   serviceClass1,
+  serviceClass2,
   clusterServiceClass1Name,
   clusterServiceClassDetails,
   clusterServiceClassDetailsNoPlanSpec,
