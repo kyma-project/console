@@ -5,12 +5,6 @@ import { Token, InlineHelp, FormItem, FormLabel } from 'fundamental-react';
 
 const domainSegmentRegexp = '([a-z0-9]([a-z0-9-_]{0,61}[a-z0-9])?)';
 
-// Dot needs to be escaped for regexp
-const domainRegexp = `(${domainSegmentRegexp}\\.)*${domainSegmentRegexp}`;
-const nameAndValueRegexp = '[a-z0-9A-Z]([a-z0-9A-Z-_\\.]{0,61}[a-z0-9A-Z])?';
-const pattern = `^((${domainRegexp})/)?${nameAndValueRegexp}=(${nameAndValueRegexp})?$`;
-export const labelRegexp = new RegExp(pattern);
-
 export const SingleString = ({ text, onClick }) => (
   <Token
     title="Click to remove"
@@ -24,7 +18,7 @@ export const SingleString = ({ text, onClick }) => (
 export const StringInput = ({
   stringList = {},
   onChange,
-  regexp = labelRegexp,
+  regexp = /^\S*$/,
   placeholder = 'Enter multiple values separated by comma',
 }) => {
   const [isValid, setValid] = useState(true);

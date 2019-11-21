@@ -32,19 +32,17 @@ const StringListInput = ({
     return null;
   }
   return (
-    <FormGroup>
-      <FormItem>
-        <FormLabel>{label}</FormLabel>
-        {isEditMode ? (
-          <StringInput stringList={list} onChange={onChange} regexp={regexp} />
-        ) : (
-          (list && list.length && (
-            <FormInput readOnly value={list.join(', ')} />
-          )) ||
-          'None'
-        )}
-      </FormItem>
-    </FormGroup>
+    <div className="string-list-input">
+      <FormLabel>{label}:</FormLabel>
+      {isEditMode ? (
+        <StringInput stringList={list} onChange={onChange} regexp={regexp} />
+      ) : (
+        (list && list.length && (
+          <FormInput readOnly value={list.join(', ')} />
+        )) ||
+        'None'
+      )}
+    </div>
   );
 };
 
@@ -183,7 +181,6 @@ const AccessStrategy = ({
               list={requiredScopeList}
               onChange={setRequiredScopes}
               isEditMode={isEditMode}
-              regexp={new RegExp('(?=.*[A-z])')}
               label={'Required scope'}
             />
           </>

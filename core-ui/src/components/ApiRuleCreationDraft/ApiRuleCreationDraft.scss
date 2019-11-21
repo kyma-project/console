@@ -107,12 +107,12 @@
   }
 
   .inline-radio-group {
-    line-height: 2.8;
+    line-height: 2;
     .fd-form-item {
       display: inline-block;
       vertical-align: middle;
       margin-right: 16px;
-      line-height: 3;
+      line-height: inherit;
       float: none;
     }
   }
@@ -123,4 +123,26 @@
 
 .api-rule-container {
   padding-bottom: 71px;
+}
+
+.string-list-input {
+  display: grid;
+  grid-template-columns: minmax(8em, min-content) auto;
+  align-items: baseline;
+
+  grid-gap: 12px;
+  .fd-form-label,
+  .fd-input {
+    display: inline-block;
+  }
+  .fd-form-label {
+    justify-self: flex-end;
+  }
+  .fd-input {
+    width: auto;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
 }
