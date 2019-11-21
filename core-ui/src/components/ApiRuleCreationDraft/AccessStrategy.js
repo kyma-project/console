@@ -27,6 +27,7 @@ const StringListInput = ({
   onChange,
   regexp,
   isEditMode,
+  placeholder,
 }) => {
   if (typesFilter && !typesFilter.includes(selectedType)) {
     return null;
@@ -35,7 +36,12 @@ const StringListInput = ({
     <div className="string-list-input">
       <FormLabel>{label}:</FormLabel>
       {isEditMode ? (
-        <StringInput stringList={list} onChange={onChange} regexp={regexp} />
+        <StringInput
+          stringList={list}
+          onChange={onChange}
+          regexp={regexp}
+          placeholder={placeholder}
+        />
       ) : (
         (list && list.length && (
           <FormInput readOnly value={list.join(', ')} />
@@ -57,14 +63,14 @@ const AccessStrategy = ({
     'http://dex.kyma.local',
   ]);
 
-  const [isEditMode, setEditMode] = useState(isEditModeInitially);
+  const [editMode, setEditMode] = useState(isEditModeInitially);
 
   return (
     <div className="access-strategy">
       <div className="header">
         <strong className="path">{path}</strong>
         <div className="type">
-          {!isEditMode && (
+          {!editMode && (
             <Badge modifier="filled">
               <Icon
                 glyph={selectedType === 'Pass-all' ? 'unlocked' : 'locked'}
@@ -75,27 +81,29 @@ const AccessStrategy = ({
           )}
         </div>
         <div className="methods">
-          {!isEditMode && <Badge>GET</Badge>}
-          {!isEditMode && selectedType === 'OAuth2' && (
+          {!editMode && <Badge>GET</Badge>}
+          {!editMode && selectedType === 'OAuth2' && (
             <Badge type="error">DELETE</Badge>
           )}
         </div>
         <div className="actions">
-          <label class="fd-form__label edit-toggle" for={`check-${path}`}>
+          <label
+            title="Edit mode"
+            class="fd-form__label edit-toggle"
+            for={`check-${path}`}
+          >
             <Icon
               glyph="edit"
               size="l"
               style={{
-                color: isEditMode
-                  ? 'var(--fd-color-action,#0a6ed1)'
-                  : 'inherit',
+                color: editMode ? 'var(--fd-color-action,#0a6ed1)' : 'inherit',
               }}
             />
             <span class="fd-toggle fd-toggle--s fd-form__control">
               <input
                 type="checkbox"
                 id={`check-${path}`}
-                checked={isEditMode}
+                checked={editMode}
                 onChange={e => setEditMode(e.target.checked)}
               />
               <span class="fd-toggle__switch" role="presentation"></span>
@@ -112,7 +120,7 @@ const AccessStrategy = ({
       </div>
 
       <div className="content">
-        {isEditMode && (
+        {editMode && (
           <FormGroup>
             <LayoutGrid cols={3}>
               <FormItem>
@@ -122,7 +130,7 @@ const AccessStrategy = ({
                   value={path}
                 />
               </FormItem>
-              {isEditMode && (
+              {editMode && (
                 <FormFieldset>
                   <FormRadioGroup inline className="inline-radio-group">
                     <Checkbox
@@ -151,7 +159,7 @@ const AccessStrategy = ({
                 </FormFieldset>
               )}
               <FormItem>
-                {isEditMode ? (
+                {editMode ? (
                   <FormSelect value={selectedType} id="select-1">
                     <option value="Pass-all">Pass-all</option>
                     <option value="JWT">JWT</option>
@@ -170,18 +178,19 @@ const AccessStrategy = ({
             <StringListInput
               list={trustedIssuesList}
               onChange={setTrustedIssues}
-              isEditMode={isEditMode}
+              isEditMode={editMode}
               typesFilter={['JWT']}
               selectedType={selectedType}
               regexp={URLregexp}
-              label={'Trusted issuers'}
+              label="Trusted issuers"
+              placeholder="Enter issuer URL, e.g. https://myissuer.com"
             />
 
             <StringListInput
               list={requiredScopeList}
               onChange={setRequiredScopes}
-              isEditMode={isEditMode}
-              label={'Required scope'}
+              isEditMode={editMode}
+              label="Required scope"
             />
           </>
         )}

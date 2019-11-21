@@ -18,7 +18,7 @@ export const SingleString = ({ text, onClick }) => (
 export const StringInput = ({
   stringList = {},
   onChange,
-  regexp = /^\S*$/,
+  regexp = /^\S+$/,
   placeholder = 'Enter multiple values separated by comma',
 }) => {
   const [isValid, setValid] = useState(true);
