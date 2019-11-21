@@ -34,5 +34,10 @@
   },
   "config": {
     "unsafe-perm": true
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

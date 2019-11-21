@@ -2,28 +2,26 @@
 
 exports[`Labels Render empty labels 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 />
 `;
 
 exports[`Labels Render keeps "TrUe" "showcase 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           showcase
@@ -32,19 +30,17 @@ exports[`Labels Render keeps "TrUe" "showcase 1`] = `
     </div>
   </div>
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
@@ -57,22 +53,20 @@ exports[`Labels Render keeps "TrUe" "showcase 1`] = `
 
 exports[`Labels Render keeps "true" "showcase 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           showcase
@@ -81,19 +75,17 @@ exports[`Labels Render keeps "true" "showcase 1`] = `
     </div>
   </div>
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
@@ -106,28 +98,26 @@ exports[`Labels Render keeps "true" "showcase 1`] = `
 
 exports[`Labels Render no labels 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 />
 `;
 
 exports[`Labels Render skips "local" 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
@@ -140,22 +130,20 @@ exports[`Labels Render skips "local" 1`] = `
 
 exports[`Labels Render skips "provisionOnlyOnce" 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
@@ -168,22 +156,20 @@ exports[`Labels Render skips "provisionOnlyOnce" 1`] = `
 
 exports[`Labels Render skips empty "connected-app" 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
@@ -196,22 +182,20 @@ exports[`Labels Render skips empty "connected-app" 1`] = `
 
 exports[`Labels Render skips with not "true" "showcase 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
@@ -224,22 +208,20 @@ exports[`Labels Render skips with not "true" "showcase 1`] = `
 
 exports[`Labels Render value of "connected-app" 1`] = `
 <div
-  className="fd-panel__footer service-list--card__footer"
+  class="fd-panel__footer service-list--card__footer"
 >
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           application
@@ -248,19 +230,17 @@ exports[`Labels Render value of "connected-app" 1`] = `
     </div>
   </div>
   <div
-    className="service-list--card__footer__labels"
+    class="service-list--card__footer__labels"
   >
     <div
-      className="sc-jqCOkK fzAxWh"
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      class="sc-jqCOkK fzAxWh"
       type="default"
     >
       <div
-        className="sc-ckVGcZ fRGHMA"
+        class="sc-ckVGcZ fRGHMA"
       >
         <span
-          className="fd-token sc-jKJlTe fEwmSA"
+          class="fd-token sc-jKJlTe fEwmSA"
           role="button"
         >
           random
