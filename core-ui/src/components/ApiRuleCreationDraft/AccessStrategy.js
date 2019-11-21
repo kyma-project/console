@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   LayoutGrid,
@@ -8,7 +8,6 @@ import {
   FormLabel,
   Checkbox,
   FormFieldset,
-  FormLegend,
   Badge,
   FormSelect,
   FormRadioGroup,
@@ -16,7 +15,6 @@ import {
   Icon,
 } from 'fundamental-react';
 import { StringInput } from 'react-shared';
-import classNames from 'classnames';
 
 const URLregexp = new RegExp(
   '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
@@ -61,48 +59,23 @@ const AccessStrategy = ({
     'http://dex.kyma.local',
   ]);
 
-  const [isOpen, setOpen] = useState(isOpenInitially);
   const [isEditMode, setEditMode] = useState(isEditModeInitially);
-
-  useEffect(() => {
-    if (isEditMode) {
-      setOpen(true);
-    }
-  }, [isEditMode, setOpen]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setEditMode(false);
-    }
-  }, [isOpen, setEditMode]);
 
   return (
     <div className="access-strategy">
       <div className="header">
-        <div className="expand-button">
-          {(selectedType !== 'Pass-all' || isEditMode) && (
-            <Button
-              // option="light"
-              title={isOpen ? 'Collapse' : 'Expand'}
-              aria-label={isOpen ? 'collapse' : 'expand'}
-              aria-pressed={isOpen}
-              onClick={() => setOpen(!isOpen)}
-              className={classNames('fd-tree__control', {
-                'is-pressed': isOpen,
-              })}
-            />
+        <strong className="path">{path}</strong>
+        <div className="type">
+          {!isEditMode && (
+            <Badge modifier="filled">
+              <Icon
+                glyph={selectedType === 'Pass-all' ? 'unlocked' : 'locked'}
+                size="s"
+              />
+              {selectedType}
+            </Badge>
           )}
         </div>
-        <strong className="path">{path}</strong>
-
-        <Badge modifier="filled" className="type">
-          <Icon
-            glyph={selectedType === 'Pass-all' ? 'unlocked' : 'locked'}
-            size="s"
-          />
-          {selectedType}
-        </Badge>
-
         <div className="methods">
           {!isEditMode && <Badge>GET</Badge>}
           {!isEditMode && selectedType === 'OAuth2' && (
@@ -110,14 +83,26 @@ const AccessStrategy = ({
           )}
         </div>
         <div className="actions">
-          {!isEditMode && (
-            <Button
-              compact
-              title="Edit"
+          <label class="fd-form__label edit-toggle" for={`check-${path}`}>
+            <Icon
               glyph="edit"
-              onClick={() => setEditMode(true)}
+              size="l"
+              style={{
+                color: isEditMode
+                  ? 'var(--fd-color-action,#0a6ed1)'
+                  : 'inherit',
+              }}
             />
-          )}
+            <span class="fd-toggle fd-toggle--s fd-form__control">
+              <input
+                type="checkbox"
+                id={`check-${path}`}
+                checked={isEditMode}
+                onChange={e => setEditMode(e.target.checked)}
+              />
+              <span class="fd-toggle__switch" role="presentation"></span>
+            </span>
+          </label>
 
           <Button
             type="negative"
@@ -129,11 +114,10 @@ const AccessStrategy = ({
       </div>
 
       <div className="content">
-        {isOpen && isEditMode && (
+        {isEditMode && (
           <FormGroup>
             <LayoutGrid cols={3}>
               <FormItem>
-                <FormLabel htmlFor="select-1">Path</FormLabel>
                 <FormInput
                   placeholder="Field placeholder text"
                   type="text"
@@ -142,7 +126,6 @@ const AccessStrategy = ({
               </FormItem>
               {isEditMode && (
                 <FormFieldset>
-                  <FormLegend>Method:</FormLegend>
                   <FormRadioGroup inline className="inline-radio-group">
                     <Checkbox
                       id="checkbox-4"
@@ -170,7 +153,6 @@ const AccessStrategy = ({
                 </FormFieldset>
               )}
               <FormItem>
-                <FormLabel htmlFor="select-1">Type</FormLabel>
                 {isEditMode ? (
                   <FormSelect value={selectedType} id="select-1">
                     <option value="Pass-all">Pass-all</option>
@@ -185,7 +167,7 @@ const AccessStrategy = ({
           </FormGroup>
         )}
 
-        {isOpen && selectedType !== 'Pass-all' && (
+        {selectedType !== 'Pass-all' && (
           <>
             <StringListInput
               list={trustedIssuesList}

@@ -27,7 +27,7 @@
 
   .header {
     display: grid;
-    grid-template-columns: 3em minmax(max-content, 20em) 14em auto max-content;
+    grid-template-columns: minmax(max-content, 20em) 14em auto max-content;
     align-items: center;
 
     .fd-badge:not(:last-child),
@@ -75,11 +75,35 @@
       display: inline;
       margin-right: 16px;
     }
+
+    .actions {
+      .edit-toggle {
+        user-select: none;
+        display: inline-block;
+        margin: 0 1em;
+        vertical-align: text-top;
+
+        span[class^='sap-icon'] {
+          vertical-align: middle;
+        }
+
+        input[type='checkbox']:checked + .fd-toggle__switch:before {
+          left: -10px;
+        }
+
+        .fd-toggle {
+          margin-left: 4px;
+
+          &__switch:before {
+            left: -1px;
+          }
+        }
+      }
+    }
   }
 
   .content:not(:empty) {
-    padding-top: 16px;
-    margin-left: calc(#{$row-expand-button-size} + 0.8em);
+    padding-top: 12px;
   }
 
   .inline-radio-group {
