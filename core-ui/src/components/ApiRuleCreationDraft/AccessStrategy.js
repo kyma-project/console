@@ -16,6 +16,7 @@ import {
   Icon,
 } from 'fundamental-react';
 import { StringInput } from 'react-shared';
+import classNames from 'classnames';
 
 const URLregexp = new RegExp(
   '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
@@ -78,6 +79,20 @@ const AccessStrategy = ({
   return (
     <div className="access-strategy">
       <div className="header">
+        <div className="expand-button">
+          {(selectedType !== 'Pass-all' || isEditMode) && (
+            <Button
+              // option="light"
+              title={isOpen ? 'Collapse' : 'Expand'}
+              aria-label={isOpen ? 'collapse' : 'expand'}
+              aria-pressed={isOpen}
+              onClick={() => setOpen(!isOpen)}
+              className={classNames('fd-tree__control', {
+                'is-pressed': isOpen,
+              })}
+            />
+          )}
+        </div>
         <strong className="path">{path}</strong>
 
         <Badge modifier="filled" className="type">
@@ -103,95 +118,95 @@ const AccessStrategy = ({
               onClick={() => setEditMode(true)}
             />
           )}
-          {(selectedType !== 'Pass-all' || isEditMode) && (
-            <Button
-              compact
-              title={isOpen ? 'Collapse' : 'Expand'}
-              glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
-              onClick={() => setOpen(!isOpen)}
-            />
-          )}
 
-          <Button compact title="Delete this access strategy" glyph="delete" />
+          <Button
+            type="negative"
+            compact
+            title="Delete this access strategy"
+            glyph="delete"
+          />
         </div>
       </div>
-      {isOpen && isEditMode && (
-        <FormGroup>
-          <LayoutGrid cols={3}>
-            <FormItem>
-              <FormLabel htmlFor="select-1">Path</FormLabel>
-              <FormInput
-                placeholder="Field placeholder text"
-                type="text"
-                value={path}
-              />
-            </FormItem>
-            {isEditMode && (
-              <FormFieldset>
-                <FormLegend>Method:</FormLegend>
-                <FormRadioGroup inline className="inline-radio-group">
-                  <Checkbox
-                    id="checkbox-4"
-                    name="checkbox-name-4"
-                    value="GET"
-                    checked
-                  />
-                  <Checkbox
-                    id="checkbox-5"
-                    name="checkbox-name-5"
-                    value="POST"
-                  />
-                  <Checkbox
-                    id="checkbox-6"
-                    name="checkbox-name-6"
-                    value="PUT"
-                  />
-                  <Checkbox
-                    id="checkbox-6"
-                    name="checkbox-name-6"
-                    value="DELETE"
-                    checked={selectedType === 3}
-                  />
-                </FormRadioGroup>
-              </FormFieldset>
-            )}
-            <FormItem>
-              <FormLabel htmlFor="select-1">Type</FormLabel>
-              {isEditMode ? (
-                <FormSelect value={selectedType} id="select-1">
-                  <option value="Pass-all">Pass-all</option>
-                  <option value="JWT">JWT</option>
-                  <option value="OAuth2">OAuth2</option>
-                </FormSelect>
-              ) : (
-                <Status>{selectedType}</Status>
+
+      <div className="content">
+        {isOpen && isEditMode && (
+          <FormGroup>
+            <LayoutGrid cols={3}>
+              <FormItem>
+                <FormLabel htmlFor="select-1">Path</FormLabel>
+                <FormInput
+                  placeholder="Field placeholder text"
+                  type="text"
+                  value={path}
+                />
+              </FormItem>
+              {isEditMode && (
+                <FormFieldset>
+                  <FormLegend>Method:</FormLegend>
+                  <FormRadioGroup inline className="inline-radio-group">
+                    <Checkbox
+                      id="checkbox-4"
+                      name="checkbox-name-4"
+                      value="GET"
+                      checked
+                    />
+                    <Checkbox
+                      id="checkbox-5"
+                      name="checkbox-name-5"
+                      value="POST"
+                    />
+                    <Checkbox
+                      id="checkbox-6"
+                      name="checkbox-name-6"
+                      value="PUT"
+                    />
+                    <Checkbox
+                      id="checkbox-6"
+                      name="checkbox-name-6"
+                      value="DELETE"
+                      checked={selectedType === 3}
+                    />
+                  </FormRadioGroup>
+                </FormFieldset>
               )}
-            </FormItem>
-          </LayoutGrid>
-        </FormGroup>
-      )}
+              <FormItem>
+                <FormLabel htmlFor="select-1">Type</FormLabel>
+                {isEditMode ? (
+                  <FormSelect value={selectedType} id="select-1">
+                    <option value="Pass-all">Pass-all</option>
+                    <option value="JWT">JWT</option>
+                    <option value="OAuth2">OAuth2</option>
+                  </FormSelect>
+                ) : (
+                  <Status>{selectedType}</Status>
+                )}
+              </FormItem>
+            </LayoutGrid>
+          </FormGroup>
+        )}
 
-      {isOpen && selectedType !== 'Pass-all' && (
-        <>
-          <StringListInput
-            list={trustedIssuesList}
-            onChange={setTrustedIssues}
-            isEditMode={isEditMode}
-            typesFilter={['JWT']}
-            selectedType={selectedType}
-            regexp={URLregexp}
-            label={'Trusted issuers'}
-          />
+        {isOpen && selectedType !== 'Pass-all' && (
+          <>
+            <StringListInput
+              list={trustedIssuesList}
+              onChange={setTrustedIssues}
+              isEditMode={isEditMode}
+              typesFilter={['JWT']}
+              selectedType={selectedType}
+              regexp={URLregexp}
+              label={'Trusted issuers'}
+            />
 
-          <StringListInput
-            list={requiredScopeList}
-            onChange={setRequiredScopes}
-            isEditMode={isEditMode}
-            regexp={new RegExp('(?=.*[A-z])')}
-            label={'Required scope'}
-          />
-        </>
-      )}
+            <StringListInput
+              list={requiredScopeList}
+              onChange={setRequiredScopes}
+              isEditMode={isEditMode}
+              regexp={new RegExp('(?=.*[A-z])')}
+              label={'Required scope'}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };

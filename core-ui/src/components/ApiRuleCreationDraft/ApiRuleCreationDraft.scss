@@ -8,6 +8,8 @@
 }
 
 .access-strategy {
+  $row-expand-button-size: 28px;
+
   .fd-fieldset {
     margin-bottom: 0;
   }
@@ -25,12 +27,37 @@
 
   .header {
     display: grid;
-    grid-template-columns: minmax(max-content, 25em) 10em 1fr max-content;
+    grid-template-columns: 3em minmax(max-content, 20em) 14em auto max-content;
     align-items: center;
 
-    &:not(:last-child) {
-      margin-bottom: 10px;
+    .fd-badge:not(:last-child),
+    .fd-button:not(:last-child) {
+      margin-right: 6px;
     }
+
+    .expand-button button {
+      position: static;
+      border: none;
+      width: $row-expand-button-size;
+      height: $row-expand-button-size;
+      min-width: 0;
+      font-size: 14px;
+      line-height: 1.42857;
+
+      &:hover,
+      &:active,
+      &:focus,
+      &.is-pressed,
+      &[aria-pressed='true'] {
+        background-color: initial;
+        color: var(--fd-color-action-1, #0a6ed1);
+      }
+
+      &:active {
+        background-color: initial;
+      }
+    }
+
     .path {
       font-size: 1.2em;
       color: var(--fd-color-action-3);
@@ -39,16 +66,20 @@
 
     .type {
       justify-self: start;
+      span::before {
+        margin-right: 6px;
+      }
     }
 
-    .fd-badge:not(:last-child),
-    .fd-button:not(:last-child) {
-      margin-right: 6px;
-    }
     .methods {
       display: inline;
       margin-right: 16px;
     }
+  }
+
+  .content:not(:empty) {
+    padding-top: 16px;
+    margin-left: calc(#{$row-expand-button-size} + 0.8em);
   }
 
   .inline-radio-group {
