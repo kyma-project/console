@@ -124,9 +124,9 @@ export default function ServiceClassDetails({ name }) {
       </ServiceClassDetailsHeader>
 
       <ServiceClassDetailsWrapper phoneRows>
-        {backendModuleExists('cms') && backendModuleExists('assetstore') ? (
+        {backendModuleExists('cms') && backendModuleExists('assetstore') && (
           <ServiceClassTabs serviceClass={serviceClass} />
-        ) : null}
+        )}
       </ServiceClassDetailsWrapper>
     </>
   );

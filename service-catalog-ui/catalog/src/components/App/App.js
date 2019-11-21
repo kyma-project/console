@@ -16,7 +16,7 @@ const ServiceDetails = ({ match }) => (
 
 export default function App() {
   return (
-    <div className="ph3 pv1 background-gray">
+    <>
       {backendModuleExists('servicecatalog') ? (
         <NotificationProvider>
           <BrowserRouter>
@@ -29,6 +29,6 @@ export default function App() {
       ) : (
         <BackendModuleDisabled mod="Service Catalog" />
       )}
-    </div>
+    </>
   );
 }

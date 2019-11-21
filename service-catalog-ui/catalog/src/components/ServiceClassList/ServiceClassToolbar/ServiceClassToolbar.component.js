@@ -8,9 +8,9 @@ import SearchDropdown from './SearchDropdown.component';
 const ServiceClassToolbar = ({ searchFn, serviceClassesExists }) => {
   return (
     <Toolbar background="#fff" title={serviceClassConstants.title}>
-      {serviceClassesExists ? (
+      {serviceClassesExists && (
         <SearchDropdown onChange={e => searchFn(e.target.value)} />
-      ) : null}
+      )}
     </Toolbar>
   );
 };
