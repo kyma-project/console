@@ -7,6 +7,8 @@ import LuigiClient from '@kyma-project/luigi-client';
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 import './styles.scss';
 
+const DEFAULT_SCENARIO_LABEL = 'DEFAULT';
+
 class CreateApplicationModal extends React.Component {
   constructor(props) {
     super(props);
@@ -35,15 +37,22 @@ class CreateApplicationModal extends React.Component {
       requiredFieldsFilled: false,
       tooltipData: null,
       enableCheckNameExists: false,
+      scenariosToSelect: null,
+      selectedScenarios: [DEFAULT_SCENARIO_LABEL],
     };
   };
 
-  updateCurrentScenarios = scenarios => {
+  updateCurrentScenarios = (selectedScenarios, scenariosToSelect) => {
     this.setState({
       formData: {
         ...this.state.formData,
-        labels: scenarios && scenarios.length ? { scenarios } : {},
+        labels:
+          selectedScenarios && selectedScenarios.length
+            ? { scenarios: selectedScenarios }
+            : {},
       },
+      scenariosToSelect,
+      selectedScenarios,
     });
   };
 
@@ -251,6 +260,9 @@ class CreateApplicationModal extends React.Component {
       if (scenariosQuery.labelDefinition) {
         availableScenarios = JSON.parse(scenariosQuery.labelDefinition.schema)
           .items.enum;
+        availableScenarios = availableScenarios.filter(
+          el => el !== DEFAULT_SCENARIO_LABEL,
+        );
       }
 
       content = (
@@ -282,9 +294,11 @@ class CreateApplicationModal extends React.Component {
           <MultiChoiceList
             placeholder="Choose scenarios..."
             notSelectedMessage=""
-            currentlySelectedItems={[]}
+            currentlySelectedItems={this.state.selectedScenarios}
             updateItems={this.updateCurrentScenarios}
-            currentlyNonSelectedItems={availableScenarios}
+            currentlyNonSelectedItems={
+              this.state.scenariosToSelect || availableScenarios
+            }
             noEntitiesAvailableMessage="No more scenarios available"
           />
         </>

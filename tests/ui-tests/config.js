@@ -19,7 +19,6 @@ module.exports = {
   testLambda: process.env.TEST_LAMBDA || 'testlambda',
   catalogTestingAtribute: 'data-e2e-id',
   verbose: process.env.VERBOSE || false,
-  dexConfig: process.env.DEX_CONFIG || '/etc/dex/cfg/config.yaml',
   throttleNetwork: process.env.THROTTLE_NETWORK || false,
   throttledNetworkConditions: {
     offline: false,

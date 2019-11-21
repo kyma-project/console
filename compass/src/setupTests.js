@@ -5,7 +5,7 @@ import 'jsdom-worker-fix';
 var nodeCrypto = require('crypto');
 global.crypto = {
   getRandomValues: function(buffer) {
-    return nodeCrypto.randomFillSync(new Buffer(buffer));
+    return nodeCrypto.randomFillSync(Buffer.from(buffer));
   },
 };
 global.URL.createObjectURL = jest.fn();

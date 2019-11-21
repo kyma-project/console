@@ -12,6 +12,7 @@ import '../../../../shared/styles/header.scss';
 
 import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
+import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal.container';
 
 import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
@@ -19,10 +20,6 @@ function navigateToApplications() {
   LuigiClient.linkManager()
     .fromContext('tenant')
     .navigate(`/applications`);
-}
-
-function connectApplication(applicationId) {
-  console.log('todo connect', applicationId);
 }
 
 class ApplicationDetailsHeader extends React.Component {
@@ -51,12 +48,9 @@ class ApplicationDetailsHeader extends React.Component {
           <ActionBar.Actions>
             {/* todo can be readonly */}
             {!isReadOnly && (
-              <Button
-                onClick={() => connectApplication(id)}
-                option="emphasized"
-              >
-                Connect Application
-              </Button>
+              <ConnectApplicationModal
+                applicationId={this.props.application.id}
+              />
             )}
             <ApplicationQueryContext.Consumer>
               {applicationQuery => (

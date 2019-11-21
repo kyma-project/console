@@ -12,7 +12,6 @@ describe('Lambda Configuration Tab', () => {
     const component = renderer.create(
       <Configuration
         lambda={lambda}
-        formRef={emptyRef}
         sizeRef={emptyRef}
         runtimeRef={emptyRef}
         LabelsEditor={labelEditorMock}

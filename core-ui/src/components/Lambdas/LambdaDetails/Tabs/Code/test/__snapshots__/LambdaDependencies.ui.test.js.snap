@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lambda Dependencies Render with minimal props 1`] = `
+<div
+  className="fd-panel collapsible-panel fd-has-margin-medium"
+>
+  <div
+    className="fd-panel__header"
+    onClick={[Function]}
+  >
+    <h3
+      className="fd-panel__title"
+      onClick={[Function]}
+    >
+      Dependencies
+    </h3>
+    <div
+      className="fd-panel__actions"
+    >
+      <button
+        className="fd-button--light sap-icon--navigation-down-arrow"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    className="fd-panel__body body body--closed"
+  >
+    <section
+      style={
+        Object {
+          "display": "flex",
+          "height": "10em",
+          "position": "relative",
+          "textAlign": "initial",
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+            "height": "100%",
+            "justifyContent": "center",
+            "width": "100%",
+          }
+        }
+      >
+        Loading...
+      </div>
+      <div
+        style={
+          Object {
+            "display": "none",
+            "width": "100%",
+          }
+        }
+      />
+    </section>
+  </div>
+</div>
+`;

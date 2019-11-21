@@ -19,8 +19,6 @@ import kymaConsole from '../commands/console';
 import catalog from '../commands/catalog';
 import common from '../commands/common';
 import address from '../utils/address';
-import { describeIf } from '../utils/skip';
-import dex from '../utils/dex';
 import { NamespaceManager } from '../setup/namespace-manager';
 
 import { retry } from '../utils/retry';
@@ -53,7 +51,7 @@ const waitForInstancesFrame = (page, waitForLoaded) => {
   }
 };
 
-describeIf(dex.isStaticUser(), 'Catalog basic tests', () => {
+describe('Catalog basic tests', () => {
   beforeAll(async () => {
     if (!(await isModuleEnabled(REQUIRED_MODULE))) {
       logModuleDisabled(REQUIRED_MODULE, 'beforeAll');

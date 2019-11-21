@@ -1,0 +1,21 @@
+.collapsible-panel {
+    .body{
+        transition: height 1s, padding 0.5s, opacity 1s ease-in, transform 0.3s ease-out;
+
+        &--open {
+            max-height:1000em;
+        }
+
+        &--closed {
+            transform: scaleY(0) translateY(-100%);
+            max-height:0px;
+            padding-top:0;
+            padding-bottom:0;
+            overflow: hidden;
+        }
+    }
+
+    .fd-panel__header {
+        cursor: pointer;
+    }
+}

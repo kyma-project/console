@@ -1,12 +1,15 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Code from '../Code';
+import LambdaDependencies from '../LambdaDependencies';
 
-describe('Lambda Code Tab', () => {
+describe('Lambda Dependencies', () => {
   it('Render with minimal props', () => {
     const component = renderer.create(
-      <Code lambdaCode="code" setLambdaCode={() => {}} />,
+      <LambdaDependencies
+        dependencies="dependencies"
+        setDependencies={() => {}}
+      />,
     );
     expect(component.toJSON()).toMatchSnapshot();
   });

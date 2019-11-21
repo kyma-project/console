@@ -78,7 +78,7 @@ export class GraphQLDataProvider implements DataProvider {
           );
           const index = pageSize * (pageNumber - 1);
           const pagedData = facetedData.slice(index, index + pageSize);
-          
+
           observer.next(
             new DataProviderResult(
               pagedData,
@@ -121,8 +121,8 @@ export class GraphQLDataProvider implements DataProvider {
   updateSubscriptions(prev, subscriptionData) {
     if (!subscriptionData || !subscriptionData.data) {
       return prev;
-    };
-    
+    }
+
     const lowerCaseResourceKind = this.resourceKind.charAt(0).toLowerCase() + this.resourceKind.slice(1);
     const currentItems = prev[`${lowerCaseResourceKind}s`];
     const item = subscriptionData.data[`${lowerCaseResourceKind}Event`][lowerCaseResourceKind];
@@ -143,7 +143,7 @@ export class GraphQLDataProvider implements DataProvider {
     } else {
       result = currentItems;
     }
-    
+
     return {
       ...prev,
       [`${lowerCaseResourceKind}s`]: result

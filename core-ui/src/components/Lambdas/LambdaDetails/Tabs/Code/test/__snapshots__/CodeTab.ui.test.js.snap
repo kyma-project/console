@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lambda Code Tab Render with minimal props 1`] = `
+Array [
+  <p>
+    Code
+  </p>,
+  <p>
+    Dependencies
+  </p>,
+]
+`;
