@@ -167,7 +167,9 @@ export default class CreateScenarioModal extends React.Component {
           updateScenarioName={this.updateScenarioName}
           nameError={this.state.nameError}
           updateApplications={this.updateApplications}
+          applicationsToAssign={this.state.applicationsToAssign}
           updateRuntimes={this.updateRuntimes}
+          runtimesToAssign={this.state.runtimesToAssign}
         />
       </Modal>
     );
