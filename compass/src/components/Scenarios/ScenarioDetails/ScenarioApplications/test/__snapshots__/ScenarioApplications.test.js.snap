@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScenarioApplications Renders with minimal props 1`] = `
+<Panel>
+  <t
+    actions={
+      Array [
+        Object {
+          "handler": [Function],
+          "name": "Unassign",
+        },
+      ]
+    }
+    entries={
+      Array [
+        Object {
+          "apis": Object {
+            "totalCount": 3,
+          },
+          "eventAPIs": Object {
+            "totalCount": 5,
+          },
+          "id": "id 1",
+          "labels": Object {},
+          "name": "Application 1",
+        },
+      ]
+    }
+    extraHeaderContent={
+      <Apollo(Apollo(Apollo(withProps(AssignEntityToScenarioModal))))
+        getEntitiesForScenario={
+          Object {
+            "applications": Object {
+              "data": Array [
+                Object {
+                  "apis": Object {
+                    "totalCount": 3,
+                  },
+                  "eventAPIs": Object {
+                    "totalCount": 5,
+                  },
+                  "id": "id 1",
+                  "labels": Object {},
+                  "name": "Application 1",
+                },
+              ],
+              "totalCount": 1,
+            },
+            "error": null,
+            "loading": false,
+          }
+        }
+        originalEntities={
+          Array [
+            Object {
+              "apis": Object {
+                "totalCount": 3,
+              },
+              "eventAPIs": Object {
+                "totalCount": 5,
+              },
+              "id": "id 1",
+              "labels": Object {},
+              "name": "Application 1",
+            },
+          ]
+        }
+      />
+    }
+    headerRenderer={[Function]}
+    notFoundMessage="No Applications for this Scenario"
+    rowRenderer={[Function]}
+    showSearchField={false}
+    title="Applications"
+  />
+</Panel>
+`;
