@@ -11,7 +11,9 @@ class MetadataDefinitions extends React.Component {
   rowRenderer = labelDef => [
     <span
       onClick={() =>
-        LuigiClient.linkManager().navigate(`details/${labelDef.key}`)
+        LuigiClient.linkManager().navigate(
+          `details/${encodeURIComponent(labelDef.key)}`,
+        )
       }
       className="link"
     >
