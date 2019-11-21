@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   LayoutGrid,
@@ -62,6 +62,19 @@ const AccessStrategy = ({
 
   const [isOpen, setOpen] = useState(isOpenInitially);
   const [isEditMode, setEditMode] = useState(isEditModeInitially);
+
+  useEffect(() => {
+    if (isEditMode) {
+      setOpen(true);
+    }
+  }, [isEditMode, setOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setEditMode(false);
+    }
+  }, [isOpen, setEditMode]);
+
   return (
     <div className="access-strategy">
       <div className="header">
@@ -71,7 +84,7 @@ const AccessStrategy = ({
           <Icon
             glyph={selectedType === 'Pass-all' ? 'unlocked' : 'locked'}
             size="s"
-          />{' '}
+          />
           {selectedType}
         </Badge>
 
@@ -82,12 +95,23 @@ const AccessStrategy = ({
           )}
         </div>
         <div className="actions">
-          <Button
-            compact
-            title="Expand"
-            glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
-            onClick={() => setOpen(!isOpen)}
-          />
+          {!isEditMode && (
+            <Button
+              compact
+              title="Edit"
+              glyph="edit"
+              onClick={() => setEditMode(true)}
+            />
+          )}
+          {(selectedType !== 'Pass-all' || isEditMode) && (
+            <Button
+              compact
+              title={isOpen ? 'Collapse' : 'Expand'}
+              glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
+              onClick={() => setOpen(!isOpen)}
+            />
+          )}
+
           <Button compact title="Delete this access strategy" glyph="delete" />
         </div>
       </div>

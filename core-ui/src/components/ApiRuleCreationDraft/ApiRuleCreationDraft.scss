@@ -25,9 +25,12 @@
 
   .header {
     display: grid;
-    grid-template-columns: minmax(max-content, 1fr) 1fr 2fr max-content;
+    grid-template-columns: minmax(max-content, 25em) 10em 1fr max-content;
     align-items: center;
 
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
     .path {
       font-size: 1.2em;
       color: var(--fd-color-action-3);
@@ -35,7 +38,7 @@
     }
 
     .type {
-      place-self: start;
+      justify-self: start;
     }
 
     .fd-badge:not(:last-child),
