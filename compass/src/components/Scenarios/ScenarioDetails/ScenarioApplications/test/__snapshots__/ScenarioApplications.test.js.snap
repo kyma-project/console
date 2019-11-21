@@ -71,6 +71,12 @@ exports[`ScenarioApplications Renders with minimal props 1`] = `
     notFoundMessage="No Applications for this Scenario"
     rowRenderer={[Function]}
     showSearchField={false}
+    textSearchProperties={
+      Array [
+        "name",
+        "description",
+      ]
+    }
     title="Applications"
   />
 </Panel>
