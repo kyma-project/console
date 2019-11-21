@@ -1,5 +1,11 @@
-export const POLL_INTERVAL = 2000;
+export const POLL_INTERVAL = 4000;
 
+export const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
+export const createInstanceButtonText = {
+  provisionOnlyOnce: 'Add once',
+  provisionOnlyOnceActive: 'Added once',
+  standard: 'Add',
+};
 export const serviceClassConstants = {
   addons: 'Add-Ons',
   addonsDescription:

@@ -23,20 +23,16 @@ const onError = jest.fn();
 const onChange = jest.fn();
 const mockNavigate = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    getEventData: () => {
-      return {
-        environmentId: mockEnvironmentId,
-      };
-    },
-    linkManager: () => {
-      return {
-        fromContext: () => ({ navigate: mockNavigate }),
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  getEventData: () => ({
+    environmentId: mockEnvironmentId,
+  }),
+  linkManager: () => ({
+    fromContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+}));
 
 beforeEach(() => {
   onCompleted.mockReset();

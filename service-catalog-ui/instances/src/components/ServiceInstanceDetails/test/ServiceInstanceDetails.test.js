@@ -24,30 +24,20 @@ jest.mock('@kyma-project/generic-documentation', () => {
   return <div>GENERIC DOCUMENTATION COMPONENT</div>;
 });
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    linkManager: function() {
-      return {
-        fromContext: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-    getNodeParams: function() {
-      return {
-        selectedTab: 'addons',
-      };
-    },
-    uxManager: function() {
-      return {
-        addBackdrop: mockAddBackdrop,
-        removeBackdrop: mockRemoveBackdrop,
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  linkManager: () => ({
+    fromContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  getNodeParams: () => ({
+    selectedTab: 'addons',
+  }),
+  uxManager: () => ({
+    addBackdrop: mockAddBackdrop,
+    removeBackdrop: mockRemoveBackdrop,
+  }),
+}));
 
 describe('Instance Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {

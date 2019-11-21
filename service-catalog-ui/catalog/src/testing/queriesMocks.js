@@ -11,9 +11,10 @@ import {
   serviceClass2,
 } from './serviceClassesMocks';
 
+import { filterExtensions } from '../variables';
+
 export const mockEnvironmentId = 'testnamespace';
 
-const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
 const otherParams = {
   externalServiceClassName: clusterServiceClassDetails.externalName,
   externalPlanName: clusterServiceClassDetails.plans[0].externalName,

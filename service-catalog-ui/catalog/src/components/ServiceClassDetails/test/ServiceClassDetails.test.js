@@ -19,35 +19,23 @@ jest.mock('@kyma-project/generic-documentation', () => {
   return <div>GENERIC DOCUMENTATION COMPONENT</div>;
 });
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    getEventData: () => {
-      return {
-        environmentId: mockEnvironmentId,
-      };
-    },
-    linkManager: function() {
-      return {
-        fromContext: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-    getNodeParams: function() {
-      return {
-        selectedTab: 'addons',
-      };
-    },
-    uxManager: function() {
-      return {
-        addBackdrop: mockAddBackdrop,
-        removeBackdrop: mockRemoveBackdrop,
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  getEventData: () => ({
+    environmentId: mockEnvironmentId,
+  }),
+  linkManager: () => ({
+    fromContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  getNodeParams: () => ({
+    selectedTab: 'addons',
+  }),
+  uxManager: () => ({
+    addBackdrop: mockAddBackdrop,
+    removeBackdrop: mockRemoveBackdrop,
+  }),
+}));
 
 describe('Service Class Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {

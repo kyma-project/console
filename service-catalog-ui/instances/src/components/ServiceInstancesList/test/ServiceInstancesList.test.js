@@ -33,40 +33,26 @@ function mountWithModalBg(component) {
   );
 }
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    linkManager: function() {
-      return {
-        fromContext: function() {
-          return {
-            withParams: function() {
-              return {
-                navigate: mockNavigate,
-              };
-            },
-            navigate: mockNavigate,
-          };
-        },
-        withParams: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-    getNodeParams: function() {
-      return {
-        selectedTab: 'addons',
-      };
-    },
-    uxManager: function() {
-      return {
-        addBackdrop: mockAddBackdrop,
-        removeBackdrop: mockRemoveBackdrop,
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  linkManager: () => ({
+    fromContext: () => ({
+      navigate: mockNavigate,
+      withParams: () => ({
+        navigate: mockNavigate,
+      }),
+    }),
+    withParams: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  getNodeParams: () => ({
+    selectedTab: 'addons',
+  }),
+  uxManager: () => ({
+    addBackdrop: mockAddBackdrop,
+    removeBackdrop: mockRemoveBackdrop,
+  }),
+}));
 
 describe('InstancesList UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
@@ -230,8 +216,6 @@ describe('InstancesList UI', () => {
 
   test.todo('Open modal for plan with non-empty spec');
   test.todo('No modal for plan with empty spec');
-  test.todo('Filter instances by labels');
-  // test.todo('Navigate catalog');
 });
 
 describe('Search instances by name', () => {

@@ -23,34 +23,22 @@ import Cards from '../Cards/Cards.component';
 
 const mockNavigate = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    getEventData: () => {
-      return {
-        environmentId: mockEnvironmentId,
-      };
-    },
-    linkManager: function() {
-      return {
-        fromClosestContext: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-        withParams: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-    getNodeParams: function() {
-      return {
-        selectedTab: 'addons',
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  getEventData: () => ({
+    environmentId: mockEnvironmentId,
+  }),
+  linkManager: () => ({
+    fromClosestContext: () => ({
+      navigate: mockNavigate,
+    }),
+    withParams: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  getNodeParams: () => ({
+    selectedTab: 'addons',
+  }),
+}));
 
 describe('ServiceClassList UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {

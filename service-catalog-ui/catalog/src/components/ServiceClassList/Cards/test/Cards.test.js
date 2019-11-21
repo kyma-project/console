@@ -5,19 +5,13 @@ import { shallow } from 'enzyme';
 import Card from '../Card.component';
 
 const mockNavigate = jest.fn();
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    linkManager: function() {
-      return {
-        fromClosestContext: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  linkManager: () => ({
+    fromClosestContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+}));
 
 const mock = [
   {

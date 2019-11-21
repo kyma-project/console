@@ -4,7 +4,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
 import { Spinner } from '@kyma-project/react-components';
 
-import { serviceClassConstants } from '../../variables';
+import {
+  serviceClassConstants,
+  createInstanceButtonText,
+  filterExtensions,
+} from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
@@ -20,13 +24,6 @@ import {
   backendModuleExists,
 } from '../../commons/helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-
-const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
-const possibleButtonText = {
-  provisionOnlyOnce: 'Add once',
-  provisionOnlyOnceActive: 'Added once',
-  standard: 'Add',
-};
 
 export default function ServiceClassDetails({ name }) {
   const namespace = LuigiClient.getEventData().environmentId;
@@ -74,9 +71,9 @@ export default function ServiceClassDetails({ name }) {
 
   const buttonText = isProvisionedOnlyOnce
     ? serviceClass.activated
-      ? possibleButtonText.provisionOnlyOnceActive
-      : possibleButtonText.provisionOnlyOnce
-    : possibleButtonText.standard;
+      ? createInstanceButtonText.provisionOnlyOnceActive
+      : createInstanceButtonText.provisionOnlyOnce
+    : createInstanceButtonText.standard;
 
   const {
     providerDisplayName,

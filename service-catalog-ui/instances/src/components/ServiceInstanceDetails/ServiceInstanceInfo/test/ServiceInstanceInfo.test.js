@@ -14,25 +14,17 @@ const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
 const mockRemoveBackdrop = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    linkManager: function() {
-      return {
-        fromContext: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-    uxManager: function() {
-      return {
-        addBackdrop: mockAddBackdrop,
-        removeBackdrop: mockRemoveBackdrop,
-      };
-    },
-  };
-});
+jest.mock('@kyma-project/luigi-client', () => ({
+  linkManager: () => ({
+    fromContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  uxManager: () => ({
+    addBackdrop: mockAddBackdrop,
+    removeBackdrop: mockRemoveBackdrop,
+  }),
+}));
 
 describe('ServiceInstanceInfo', () => {
   describe('Render info with all attributes', () => {
