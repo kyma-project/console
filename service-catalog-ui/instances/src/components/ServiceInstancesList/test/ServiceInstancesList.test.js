@@ -15,7 +15,11 @@ import { createMockLink } from '../../../testing/apollo';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
 import { Counter } from 'fundamental-react';
-import { serviceInstance1, serviceInstance3 } from 'testing/instanceMocks';
+import {
+  serviceInstance1,
+  serviceInstance3,
+  serviceInstance2,
+} from 'testing/instanceMocks';
 import FilterDropdown from '../ServiceInstancesToolbar/FilterDropdown.component';
 import { FormInput } from '../ServiceInstancesToolbar/styled';
 
@@ -54,7 +58,19 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+const planSpecCode = `{
+  "imagePullPolicy": "IfNotPresent"
+}`;
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('InstancesList UI', () => {
+  beforeEach(() => {
+    consoleWarn.mockClear();
+  });
+
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const { link } = createMockLink([]);
 
@@ -69,6 +85,8 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
 
     expect(component.find(Spinner)).toHaveLength(0);
+
+    expectKnownConsoleWarnings();
   });
 
   it('Displays instances with their corresponding names in the table', async () => {
@@ -99,6 +117,7 @@ describe('InstancesList UI', () => {
     expect(secondInstanceAnchor.exists()).toBe(true);
     expect(firstInstanceAnchor.text()).toEqual('sth-motherly-deposit');
     expect(secondInstanceAnchor.text()).toEqual('testing-curly-tax');
+    expectKnownConsoleWarnings();
   });
 
   it('Navigates to Service Catalog when clicked on "Add instance" button', async () => {
@@ -119,6 +138,7 @@ describe('InstancesList UI', () => {
     addInstanceButton.simulate('click');
 
     expect(mockNavigate).toHaveBeenCalledWith('cmf-service-catalog');
+    expectKnownConsoleWarnings();
   });
 
   it('Navigates to Instance details when clicked on Instance link', async () => {
@@ -141,6 +161,7 @@ describe('InstancesList UI', () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       'cmf-instances/details/testing-curly-tax',
     );
+    expectKnownConsoleWarnings();
   });
 
   it(`Test deleting instances via subscription`, async () => {
@@ -157,6 +178,7 @@ describe('InstancesList UI', () => {
     const table = component.find(ServiceInstancesTable);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(1);
+    expectKnownConsoleWarnings();
   });
 
   it(`Test adding instances via subscription`, async () => {
@@ -173,6 +195,7 @@ describe('InstancesList UI', () => {
     const table = component.find(ServiceInstancesTable);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(3);
+    expectKnownConsoleWarnings();
   });
 
   it(`Validate if modal delete button fires deleteMutation`, async () => {
@@ -212,10 +235,68 @@ describe('InstancesList UI', () => {
 
     expect(component.find(deleteButtonSelector).exists()).toBe(false);
     expect(serviceInstanceDeleteMutation.result).toHaveBeenCalled();
+    expectKnownConsoleWarnings();
   });
 
-  test.todo('Open modal for plan with non-empty spec');
-  test.todo('No modal for plan with empty spec');
+  it('Open modal for plan with non-empty spec', async () => {
+    const { link } = createMockLink([allServiceInstancesQuery]);
+    const component = mount(
+      <MockedProvider link={link}>
+        <ServiceInstancesList />
+      </MockedProvider>,
+    );
+
+    await componentUpdate(component);
+
+    let row = component.find('tbody > tr').at(0);
+
+    const planLink = row.find('[data-e2e-id="service-plan"]').last();
+    expect(planLink.exists()).toBe(true);
+    expect(planLink.text()).toEqual(
+      serviceInstance1.clusterServicePlan.displayName,
+    );
+
+    let planContent = row.find('code[data-e2e-id="service-plan-content"]');
+    expect(planContent.exists()).toBe(false);
+
+    planLink.simulate('click');
+    await componentUpdate(component);
+    row = component.find('tbody > tr').at(0);
+
+    planContent = row.find('code[data-e2e-id="service-plan-content"]');
+    expect(planContent.exists()).toBe(true);
+    expect(planContent.text()).toBe(planSpecCode);
+    expectKnownConsoleWarnings();
+  });
+
+  it('No modal for plan with empty spec', async () => {
+    const { link } = createMockLink([allServiceInstancesQuery]);
+    const component = mount(
+      <MockedProvider link={link}>
+        <ServiceInstancesList />
+      </MockedProvider>,
+    );
+
+    await componentUpdate(component);
+
+    let row = component.find('tbody > tr').at(1);
+    const planLink = row.find('[data-e2e-id="service-plan"]');
+    expect(planLink.exists()).toBe(true);
+    expect(planLink.text()).toEqual(
+      serviceInstance2.clusterServicePlan.displayName,
+    );
+
+    let planContent = row.find('code[data-e2e-id="service-plan-content"]');
+    expect(planContent.exists()).toBe(false);
+
+    planLink.simulate('click');
+    await componentUpdate(component);
+    row = component.find('tbody > tr').at(1);
+
+    planContent = component.find('code[data-e2e-id="service-plan-content"]');
+    expect(planContent.exists()).toBe(false);
+    expectKnownConsoleWarnings();
+  });
 });
 
 describe('Search instances by name', () => {
@@ -362,3 +443,7 @@ describe('filter instances by labels', () => {
     expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
   });
 });
+
+function expectKnownConsoleWarnings() {
+  expect(consoleWarn.mock.calls).toMatchSnapshot();
+}

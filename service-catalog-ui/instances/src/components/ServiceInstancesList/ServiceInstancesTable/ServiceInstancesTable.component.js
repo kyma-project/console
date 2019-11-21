@@ -142,7 +142,7 @@ export class ServiceInstancesTable extends Component {
               }
               return (
                 <TextOverflowWrapper>
-                  <span>{planDisplayName}</span>
+                  <span data-e2e-id="service-plan">{planDisplayName}</span>
                 </TextOverflowWrapper>
               );
             })(),
