@@ -45,6 +45,7 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
       </span>
       <button
         className="fd-button--light fd-button--negative"
+        data-test-id="unselect-button-choosen 1"
         onClick={[Function]}
       >
         <span
@@ -60,6 +61,7 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
       </span>
       <button
         className="fd-button--light fd-button--negative"
+        data-test-id="unselect-button-choosen 2"
         onClick={[Function]}
       >
         <span
@@ -107,6 +109,7 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
       </span>
       <button
         className="fd-button--light fd-button--negative"
+        data-test-id="unselect-button-choosen 1"
         onClick={[Function]}
       >
         <span
@@ -122,6 +125,7 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
       </span>
       <button
         className="fd-button--light fd-button--negative"
+        data-test-id="unselect-button-choosen 2"
         onClick={[Function]}
       >
         <span
@@ -137,6 +141,7 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
       </span>
       <button
         className="fd-button--light fd-button--negative"
+        data-test-id="unselect-button-choosen 3"
         onClick={[Function]}
       >
         <span

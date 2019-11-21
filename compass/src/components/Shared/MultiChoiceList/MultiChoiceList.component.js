@@ -63,6 +63,7 @@ export default function MultiChoiceList({
           >
             <span>{getDisplayName(item)}</span>
             <Button
+              data-test-id={`unselect-button-${getDisplayName(item)}`}
               option="light"
               type="negative"
               onClick={() => unselectItem(item)}
@@ -88,7 +89,9 @@ export default function MultiChoiceList({
           selectItem(item);
         }}
       >
-        {getDisplayName(item)}
+        <span data-test-id={`select-button-${getDisplayName(item)}`}>
+          {getDisplayName(item)}
+        </span>
       </Menu.Item>
     ));
 
