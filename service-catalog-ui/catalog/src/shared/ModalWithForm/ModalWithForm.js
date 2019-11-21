@@ -51,7 +51,6 @@ const ModalWithForm = ({
     const _isEveryFormValid =
       isFormValid(formElementRef, reportValidity) &&
       isJsonSchemaFormValid(jsonSchemaFormRef);
-
     if (isValid !== _isEveryFormValid) {
       setValid(_isEveryFormValid);
     }
@@ -74,18 +73,15 @@ const ModalWithForm = ({
   }
 
   function handleFormChanged(e) {
-    checkAllForms();
+    setTimeout(() => checkAllForms());
     if (e.target) {
       if (e.target.getAttribute('data-ignore-visual-validation')) {
         return;
       }
 
       // current element validity
-      if (e.target.checkValidity()) {
-        e.target.classList.remove('is-invalid');
-      } else {
-        e.target.classList.add('is-invalid');
-      }
+      const isValidFormElement = e.target.checkValidity();
+      e.target.classList.toggle('is-invalid', !isValidFormElement);
     }
   }
 

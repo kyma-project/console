@@ -36,7 +36,6 @@ class SchemaData extends React.Component {
       instanceCreateParameters: formData,
     });
     this.props.callback({
-      errors,
       instanceCreateParameters: formData,
     });
   };

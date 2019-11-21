@@ -61,14 +61,15 @@ export default function CreateInstanceModal({
     `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator();
   const plan = plans[0].name;
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
-  const [instanceCreateParameterSchema] = useState(
-    getInstanceCreateParameterSchema(plans, plan),
-  );
-  const [instanceCreateParameterSchemaExists] = useState(
+  const [
+    instanceCreateParameterSchema,
+    setInstanceCreateParameterSchema,
+  ] = useState(getInstanceCreateParameterSchema(plans, plan));
+
+  const instanceCreateParameterSchemaExists =
     instanceCreateParameterSchema &&
-      (instanceCreateParameterSchema.$ref ||
-        instanceCreateParameterSchema.properties),
-  );
+    (instanceCreateParameterSchema.$ref ||
+      instanceCreateParameterSchema.properties);
   const formValues = {
     name: useRef(null),
     plan: useRef(plan),
@@ -89,9 +90,20 @@ export default function CreateInstanceModal({
         ? 'Instance with this name already exists.'
         : '',
     );
-
     onChange(formEvent);
   };
+  const handleChangePlan = e => {
+    const newParametersSchema = getInstanceCreateParameterSchema(
+      plans,
+      e.target.value,
+    );
+    setInstanceCreateParameterSchema(newParametersSchema);
+    setInstanceCreateParameters({});
+    if (!newParametersSchema || !newParametersSchema.length) {
+      jsonSchemaFormRef.current = null;
+    }
+  };
+
   async function handleFormSubmit(e) {
     e.preventDefault();
     try {
@@ -158,7 +170,12 @@ export default function CreateInstanceModal({
             </div>
             <div className="column">
               <FormLabel htmlFor="plan">Plan*</FormLabel>
-              <select id="plan" ref={formValues.plan} defaultValue={plans[0]}>
+              <select
+                id="plan"
+                ref={formValues.plan}
+                defaultValue={plans[0]}
+                onChange={handleChangePlan}
+              >
                 {plans.map((p, i) => (
                   <option key={['plan', i].join('_')} value={p.name}>
                     {getResourceDisplayName(p)}
@@ -184,7 +201,7 @@ export default function CreateInstanceModal({
 
       {instanceCreateParameterSchemaExists && (
         <>
-          <div className="separator" />
+          <div className="json-schemaform-separator" />
           <SchemaData
             schemaFormRef={jsonSchemaFormRef}
             data={instanceCreateParameters}
@@ -196,7 +213,7 @@ export default function CreateInstanceModal({
               ''
             }
             onSubmitSchemaForm={() => {}}
-            callback={(formData, errors) => {
+            callback={formData => {
               onChange(formData);
               setInstanceCreateParameters(formData.instanceCreateParameters);
             }}
