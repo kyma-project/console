@@ -37,7 +37,7 @@ const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = ({
       {additionalHeaderContent}
       {actions && <Panel.Actions>{actions}</Panel.Actions>}
     </Panel.Header>
-    <Panel.Body className={isOpen ? 'body body--open' : 'body body--closed'}>
+    <Panel.Body className={classNames('body', { 'body--closed': !isOpen })}>
       {children}
     </Panel.Body>
   </Panel>
