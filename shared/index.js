@@ -4,10 +4,6 @@ export {
   HostWithPortInput,
 } from './components/HostWithPortInput/HostWithPortInput';
 
-export {
-  FloatingControls,
-} from './components/FloatingControls/FloatingControls';
-
 export { StringInput } from './components/StringInput/StringInput';
 import { CollapsiblePanel } from './components/CollapsiblePanel/CollapsiblePanel';
 import { Tooltip } from './components/Tooltip/Tooltip';
