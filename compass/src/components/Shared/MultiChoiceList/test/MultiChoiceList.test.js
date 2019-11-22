@@ -91,9 +91,11 @@ describe('MultiChoiceList', () => {
       />,
     );
 
-    const removeItemButton = component.find(
-      'button[data-test-id="unselect-button-a"]',
-    );
+    const removeItemButton = component
+      .find('.multi-choice-list__list-element')
+      .filterWhere(n => n.text() === 'a')
+      .find('button[data-test-id="unselect-button"]');
+
     removeItemButton.simulate('click');
 
     expect(updateItems).toHaveBeenCalledWith(['b'], ['a']);
@@ -116,10 +118,11 @@ describe('MultiChoiceList', () => {
 
     component.update();
 
-    const removeItemButton = component.find(
-      'span[data-test-id="select-button-a"]',
-    );
-    removeItemButton.simulate('click');
+    const addItemButton = component
+      .find('span[data-test-id="select-button"]')
+      .filterWhere(n => n.text() === 'a');
+
+    addItemButton.simulate('click');
 
     expect(updateItems).toHaveBeenCalledWith(['a'], ['b']);
   });

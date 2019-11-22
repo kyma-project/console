@@ -2,7 +2,7 @@
 
 exports[`ScenarioRuntimes Renders with minimal props 1`] = `
 <Panel>
-  <t
+  <GenericList
     actions={
       Array [
         Object {
