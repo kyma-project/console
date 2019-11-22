@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './StringInput.scss';
-import { Token, InlineHelp, FormItem, FormLabel } from 'fundamental-react';
-
-const domainSegmentRegexp = '([a-z0-9]([a-z0-9-_]{0,61}[a-z0-9])?)';
+import { Token } from 'fundamental-react';
 
 export const SingleString = ({ text, onClick }) => (
   <Token
@@ -18,7 +16,7 @@ export const SingleString = ({ text, onClick }) => (
 export const StringInput = ({
   stringList = {},
   onChange,
-  regexp = /^\S+$/,
+  regexp = /^[A-z_-]+$/,
   placeholder = 'Enter multiple values separated by comma',
 }) => {
   const [isValid, setValid] = useState(true);
