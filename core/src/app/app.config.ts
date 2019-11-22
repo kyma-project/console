@@ -14,6 +14,7 @@ const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
   authIssuer: `https://dex.${domain}`,
+  k8sServerUrl,
   k8sApiServerUrl: `${k8sServerUrl}/api/v1/`,
   k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_cx_api_version}/`,
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1/`,
