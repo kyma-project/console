@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddonPanel Renders with minimal props 1`] = `
+<CollapsiblePanel
+  actions={
+    <React.Fragment>
+      <AddUrlModalContainer
+        configurationName="configuration"
+      />
+      <ResyncButton
+        configurationName="configuration"
+      />
+      <DeleteConfigurationModalContainer
+        configurationName="configuration"
+      />
+    </React.Fragment>
+  }
+  additionalHeaderContent={
+    <AddonConfigurationBadge
+      className="fd-has-margin-left-s"
+      status="ready"
+    />
+  }
+  className="fd-has-margin-bottom-s addon-collapsible-panel"
+  collapseDisabled={true}
+  isOpen={false}
+  setIsOpen={[Function]}
+  title="configuration"
+>
+  <LabelDisplay
+    readonlyLabels={Object {}}
+  />
+  <AddonTable
+    config={
+      Object {
+        "labels": Object {},
+        "name": "configuration",
+        "repositories": Array [],
+        "status": Object {
+          "phase": "ready",
+          "repositories": Array [],
+        },
+        "urls": Array [],
+      }
+    }
+  />
+</CollapsiblePanel>
+`;

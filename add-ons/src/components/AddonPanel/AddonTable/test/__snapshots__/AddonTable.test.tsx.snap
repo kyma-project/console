@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddonTable Renders with minimal props 1`] = `
+<table
+  className="fd-table"
+>
+  <thead>
+    <tr>
+      <th />
+      <th>
+        URL
+      </th>
+      <th>
+        Version
+      </th>
+      <th>
+        Status
+      </th>
+      <th />
+    </tr>
+  </thead>
+  <RepositoryTableSegment
+    configName="configuration"
+    key="url"
+    repository={
+      Object {
+        "addons": Array [],
+        "message": "",
+        "reason": "",
+        "status": "ready",
+        "url": "url",
+      }
+    }
+  />
+</table>
+`;

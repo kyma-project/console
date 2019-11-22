@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelDisplay Renders labels 1`] = `
+<LabelDisplay
+  labels={
+    Object {
+      "a": 1,
+      "b": 2,
+    }
+  }
+  readonlyLabels={
+    Object {
+      "aR": "a",
+      "bR": "b",
+    }
+  }
+>
+  <section
+    className="labels-display"
+  >
+    <ul>
+      <li
+        key="aR"
+      >
+        <Token
+          className="caption-muted caption--no-button"
+        >
+          <span
+            className="fd-token caption-muted caption--no-button"
+            role="button"
+          >
+            aR=a
+          </span>
+        </Token>
+      </li>
+      <li
+        key="bR"
+      >
+        <Token
+          className="caption-muted caption--no-button"
+        >
+          <span
+            className="fd-token caption-muted caption--no-button"
+            role="button"
+          >
+            bR=b
+          </span>
+        </Token>
+      </li>
+      <li
+        key="a"
+      >
+        <Token
+          className="caption-muted"
+        >
+          <span
+            className="fd-token caption-muted"
+            role="button"
+          >
+            a=1
+          </span>
+        </Token>
+      </li>
+      <li
+        key="b"
+      >
+        <Token
+          className="caption-muted"
+        >
+          <span
+            className="fd-token caption-muted"
+            role="button"
+          >
+            b=2
+          </span>
+        </Token>
+      </li>
+    </ul>
+  </section>
+</LabelDisplay>
+`;
+
+exports[`LabelDisplay Renders with minimal props 1`] = `
+<LabelDisplay>
+  <section
+    className="labels-display"
+  >
+    <ul />
+  </section>
+</LabelDisplay>
+`;

@@ -27,7 +27,7 @@ export class PodsEntryRendererComponent
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
-    const lokiInstalled = this.luigiClientService.hasBackendModule('loki');
+    const lokiInstalled = this.luigiClientService.hasBackendModule('logging-loki');
     if (lokiInstalled) {
       {
         this.actions.push({
