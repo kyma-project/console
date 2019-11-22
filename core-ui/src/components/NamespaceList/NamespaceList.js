@@ -106,9 +106,7 @@ export default function NamespaceList() {
       showSystemNamespaces: storage.shouldShowSystemNamespaces(),
       withInactiveStatus: true,
     },
-    options: {
-      fetchPolicy: 'network-only',
-    },
+    fetchPolicy: 'network-only',
   });
 
   useEffect(() => {
