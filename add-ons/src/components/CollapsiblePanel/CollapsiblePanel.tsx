@@ -27,6 +27,7 @@ const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = ({
   <Panel className={classNames('collapsible-panel', className)}>
     <Panel.Header>
       <Button
+        className="fd-has-margin-right-xs"
         glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
         option="light"
         onClick={() => setIsOpen(!isOpen)}
