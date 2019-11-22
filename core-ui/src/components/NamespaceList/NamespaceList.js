@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useQuery } from '@apollo/react-hooks';
 
-import Spinner from '../../shared/components/Spinner/Spinner';
 import { GET_NAMESPACES } from '../../gql/queries';
-import { POLL_INTERVAL } from './../../shared/constants';
+import { NAMESPACES_EVENT_SUBSCRIPTION } from '../../gql/subscriptions';
+
+import Spinner from '../../shared/components/Spinner/Spinner';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
+import { handleNamespaceWsEvent } from './wsHandler';
 
 function sortByName(array) {
   array.sort((a, b) => {
@@ -18,8 +20,8 @@ function sortByName(array) {
 }
 
 export default function NamespaceList() {
-  const [searchPhrase, setSearchPhrase] = React.useState('');
-  const [labelFilters, setLabelFilters] = React.useState([]);
+  const [searchPhrase, setSearchPhrase] = useState('');
+  const [labelFilters, setLabelFilters] = useState([]);
 
   const createFilters = namespaces => {
     const storedFilterLabels = storage.readStoredFilterLabels();
@@ -99,15 +101,37 @@ export default function NamespaceList() {
     setLabelFilters(createFilters(namespaces));
   };
 
-  const { data, error, loading } = useQuery(GET_NAMESPACES, {
+  const { data, error, loading, subscribeToMore } = useQuery(GET_NAMESPACES, {
     variables: {
       showSystemNamespaces: storage.shouldShowSystemNamespaces(),
       withInactiveStatus: true,
     },
-    pollInterval: POLL_INTERVAL,
+    options: {
+      fetchPolicy: 'network-only',
+    },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
+    subscribeToMore({
+      variables: {
+        showSystemNamespaces: storage.shouldShowSystemNamespaces(),
+        withInactiveStatus: true,
+      },
+      document: NAMESPACES_EVENT_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data || !subscriptionData.data.namespaceEvent) {
+          //needed?
+          return prev;
+        }
+
+        const namespaceEvent = subscriptionData.data.namespaceEvent;
+
+        return handleNamespaceWsEvent(namespaceEvent, prev);
+      },
+    });
+  }, [subscribeToMore]);
+
+  useEffect(() => {
     if (data && data.namespaces) {
       setLabelFilters(createFilters(data.namespaces));
     }
