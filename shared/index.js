@@ -1,8 +1,5 @@
 import { K8sNameInput } from './components/K8sNameInput/K8sNameInput';
 import { GenericList } from './components/GenericList/GenericList';
-export {
-  HostWithPortInput,
-} from './components/HostWithPortInput/HostWithPortInput';
 
 export { StringInput } from './components/StringInput/StringInput';
 import { CollapsiblePanel } from './components/CollapsiblePanel/CollapsiblePanel';
