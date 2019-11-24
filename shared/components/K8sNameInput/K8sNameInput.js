@@ -29,6 +29,8 @@ export const K8sNameInput = ({ _ref, id, kind, onKeyDown }) => (
   </>
 );
 
+K8sNameInput.displayName = 'K8sNameInput';
+
 K8sNameInput.propTypes = {
   _ref: CustomPropTypes.ref,
   id: PropTypes.string,

@@ -105,6 +105,8 @@ export class GenericList extends React.Component {
   }
 }
 
+GenericList.displayName = 'GenericList';
+
 GenericList.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,

@@ -17,6 +17,8 @@ export const Tooltip = ({ children, title, position, trigger, tippyProps }) => {
   );
 };
 
+Tooltip.displayName = 'Tooltip';
+
 Tooltip.propTypes = {
   title: PropTypes.string.isRequired,
   position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),

@@ -43,6 +43,8 @@ export const CollapsiblePanel = ({
   );
 };
 
+CollapsiblePanel.displayName = 'CollapsiblePanel';
+
 CollapsiblePanel.propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string.isRequired,

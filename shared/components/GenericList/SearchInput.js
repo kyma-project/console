@@ -9,6 +9,8 @@ SearchInput.propTypes = {
   handleQueryChange: PropTypes.func.isRequired,
 };
 
+SearchInput.displayName = 'SearchInput';
+
 export default function SearchInput({
   searchQuery,
   filteredEntries,
