@@ -21,7 +21,7 @@ const config = {
   k8sApiServerUrl_applications: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_rbac: `${k8sServerUrl}/apis/rbac.authorization.k8s.io/v1/`,
-  subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
+  subscriptionsApiUrl: `ws://console-backend.${domain}/graphql`,
   gateway_kyma_project_io_version: gateway_kyma_cx_api_version,
 
   headerTitle: '',

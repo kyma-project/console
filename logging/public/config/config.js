@@ -5,7 +5,7 @@ window.clusterConfig = {
   graphqlApiUrl: 'https://console-backend.' + domain + '/graphql',
   graphqlApiUrlLocal: 'http://' + localDomain + ':3000/graphql',
 
-  subscriptionsApiUrl: 'wss://console-backend.' + domain + '/graphql',
+  subscriptionsApiUrl: 'ws://console-backend.' + domain + '/graphql',
   subscriptionsApiUrlLocal: 'ws://' + localDomain + ':3000/graphql',
 
   authRedirectUri: 'http://' + localDomain + ':4200',

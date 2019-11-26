@@ -4,7 +4,7 @@ REACT_APP_localDomain="console-dev.kyma.local"
 REACT_APP_graphqlApiUrl="https://console-backend.$REACT_APP_domain/graphql"
 REACT_APP_graphqlApiUrlLocal="http://$REACT_APP_localDomain:3000/graphql"
 
-REACT_APP_subscriptionsApiUrl="wss://console-backend.$REACT_APP_domain/graphql"
+REACT_APP_subscriptionsApiUrl="ws://console-backend.$REACT_APP_domain/graphql"
 REACT_APP_subscriptionsApiUrlLocal="ws://$REACT_APP_localDomain:3000/graphql"
 
 REACT_APP_authRedirectUri="http://$REACT_APP_localDomain:4200"
