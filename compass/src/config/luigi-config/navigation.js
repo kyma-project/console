@@ -161,7 +161,7 @@ const navigation = {
   contextSwitcher: {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
-    lazyloadOptions: false,
+    lazyloadOptions: true,
     options: getTenants,
   },
 };
