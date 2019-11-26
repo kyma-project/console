@@ -89,7 +89,7 @@ const AccessStrategy = ({
         <div className="actions">
           <label
             title="Edit mode"
-            class="fd-form__label edit-toggle"
+            className="fd-form__label edit-toggle"
             for={`check-${path}`}
           >
             <Icon
@@ -99,14 +99,14 @@ const AccessStrategy = ({
                 color: editMode ? 'var(--fd-color-action,#0a6ed1)' : 'inherit',
               }}
             />
-            <span class="fd-toggle fd-toggle--s fd-form__control">
+            <span className="fd-toggle fd-toggle--s fd-form__control">
               <input
                 type="checkbox"
                 id={`check-${path}`}
                 checked={editMode}
                 onChange={e => setEditMode(e.target.checked)}
               />
-              <span class="fd-toggle__switch" role="presentation"></span>
+              <span className="fd-toggle__switch" role="presentation"></span>
             </span>
           </label>
 
