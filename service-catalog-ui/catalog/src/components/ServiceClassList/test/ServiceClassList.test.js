@@ -8,10 +8,8 @@ import {
 } from '../../../testing/queriesMocks';
 import {
   clusterServiceClass1Name,
-  serviceClass2,
   clusterServiceClass3,
   clusterServiceClass1,
-  clusterServiceClass2,
   serviceClass1,
 } from '../../../testing/serviceClassesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
@@ -40,6 +38,10 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
 describe('ServiceClassList UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(
@@ -53,6 +55,8 @@ describe('ServiceClassList UI', () => {
     await componentUpdate(component);
 
     expect(component.find(Spinner)).toHaveLength(0);
+
+    expectKnownConsoleWarnings();
   });
 
   it('Displays classes with their corresponding names on the add-ons/services list', async () => {
@@ -107,6 +111,8 @@ describe('ServiceClassList UI', () => {
     expect(servicesCards.at(0).text()).toEqual(
       allServiceClassesQuery.result.data.serviceClasses[0].displayName,
     );
+
+    expectKnownConsoleWarnings();
   });
 
   it('Navigates to Service Catalog details', async () => {
@@ -130,6 +136,8 @@ describe('ServiceClassList UI', () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       `details/${clusterServiceClass1Name}`,
     );
+
+    expectKnownConsoleWarnings();
   });
 });
 
@@ -145,12 +153,16 @@ describe('Search classes by name', () => {
     const search = component.find(Search).find('input');
     expect(search.exists()).toBe(true);
     search.simulate('change', { target: { value: 'displayName1' } });
+
+    expectKnownConsoleWarnings();
   });
 
   it('Add-Ons tab has proper counter', async () => {
     await componentUpdate(component);
     const addOnsTab = component.find(Tab).at(0);
     expect(addOnsTab.find(Counter).text()).toEqual('2');
+
+    expectKnownConsoleWarnings();
   });
 
   it('Add-Ons tab shows only matching items', async () => {
@@ -164,11 +176,15 @@ describe('Search classes by name', () => {
       clusterServiceClass1,
       clusterServiceClass3,
     ]);
+
+    expectKnownConsoleWarnings();
   });
 
   it('Services tab has proper counter', () => {
     const servicesTab = component.find(Tab).at(1);
     expect(servicesTab.find(Counter).text()).toEqual('1');
+
+    expectKnownConsoleWarnings();
   });
 
   it('Services tab shows only matching items', async () => {
@@ -179,6 +195,8 @@ describe('Search classes by name', () => {
       .simulate('click');
     await componentUpdate(component);
     expect(component.find(Cards).prop('items')).toEqual([serviceClass1]);
+
+    expectKnownConsoleWarnings();
   });
 });
 
@@ -200,6 +218,8 @@ describe('Search classes by other attributes', () => {
 
     const servicesTab = component.find(Tab).at(1);
     expect(servicesTab.find(Counter).text()).toEqual('1');
+
+    expectKnownConsoleWarnings();
   });
 
   it('By description', async () => {
@@ -213,5 +233,11 @@ describe('Search classes by other attributes', () => {
 
     const servicesTab = component.find(Tab).at(1);
     expect(servicesTab.find(Counter).text()).toEqual('1');
+
+    expectKnownConsoleWarnings();
   });
 });
+
+function expectKnownConsoleWarnings() {
+  expect(consoleWarn.mock.calls).toMatchSnapshot();
+}

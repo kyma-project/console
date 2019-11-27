@@ -48,12 +48,15 @@ const mock = [
     description: 'This is awsome3',
     imageUrl: 'https://example.com/3',
     instances: [],
-    labels: {
-      local: 'true',
-      sth: 'three',
-    },
+    labels: {},
   },
 ];
+
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('Cards.component', () => {
   const component = shallow(<Cards items={mock} />);
   const cards = component.find(Card);

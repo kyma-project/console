@@ -2,6 +2,11 @@ import { render } from 'enzyme';
 import React from 'react';
 import { InstancesIndicator } from '../InstancesIndicator';
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('InstancesIndicator', () => {
   it('Renders without instances and provision only once', () => {
     const component = render(

@@ -6,3 +6,7 @@ export async function componentUpdate(component) {
     component.update();
   });
 }
+
+export function expectKnownConsoleWarnings(consoleWarn) {
+  expect(consoleWarn.mock.calls).toMatchSnapshot();
+}

@@ -74,3 +74,53 @@ exports[`InstancesList UI Test adding instances via subscription 1`] = `Array []
 exports[`InstancesList UI Test deleting instances via subscription 1`] = `Array []`;
 
 exports[`InstancesList UI Validate if modal delete button fires deleteMutation 1`] = `Array []`;
+
+exports[`Search instances by name Search addon 1`] = `Array []`;
+
+exports[`Search instances by name Search service 1`] = `Array []`;
+
+exports[`Search instances by name Shows all instances initially 1`] = `Array []`;
+
+exports[`filter instances by labels Filter dropdown is filled with labels 1`] = `
+Array [
+  Array [
+    "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move code with side effects to componentDidMount, and set initial state in the constructor.
+* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(FormInput), Styled(FormItem), Styled(FormLabel), Styled(Panel), Styled(Panel.Body)",
+  ],
+  Array [
+    "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move data fetching code or side effects to componentDidUpdate.
+* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(FormInput), Styled(FormItem), Styled(FormLabel), Styled(Panel), Styled(Panel.Body)",
+  ],
+]
+`;
+
+exports[`filter instances by labels Select filter 1`] = `
+Array [
+  Array [
+    "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move code with side effects to componentDidMount, and set initial state in the constructor.
+* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(FormInput), Styled(FormItem), Styled(FormLabel), Styled(Panel), Styled(Panel.Body)",
+  ],
+  Array [
+    "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move data fetching code or side effects to componentDidUpdate.
+* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(FormInput), Styled(FormItem), Styled(FormLabel), Styled(Panel), Styled(Panel.Body)",
+  ],
+]
+`;

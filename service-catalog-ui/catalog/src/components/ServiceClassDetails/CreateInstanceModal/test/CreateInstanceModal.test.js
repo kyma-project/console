@@ -41,6 +41,11 @@ beforeEach(() => {
   mockNavigate.mockReset();
 });
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('CreateInstanceModal', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(

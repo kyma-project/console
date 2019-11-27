@@ -37,6 +37,11 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('Service Class Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(

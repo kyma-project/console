@@ -19,6 +19,11 @@ const mock = {
   },
 };
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('Card.component', () => {
   describe('Render card with full data', () => {
     const onCLick = jest.fn();

@@ -315,6 +315,8 @@ describe('Search instances by name', () => {
 
     const servicesTab = component.find(Tab).at(1);
     expect(servicesTab.find(Counter).text()).toEqual('1');
+
+    expectKnownConsoleWarnings();
   });
 
   it('Search addon', async () => {
@@ -345,6 +347,8 @@ describe('Search instances by name', () => {
       .simulate('click');
     await componentUpdate(component);
     expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+
+    expectKnownConsoleWarnings();
   });
 
   it('Search service', async () => {
@@ -375,6 +379,8 @@ describe('Search instances by name', () => {
     expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
       serviceInstance3,
     ]);
+
+    expectKnownConsoleWarnings();
   });
 });
 
@@ -403,6 +409,8 @@ describe('filter instances by labels', () => {
       .find(FormInput)
       .find('input');
     expect(labelsSelectors).toHaveLength(3);
+
+    expectKnownConsoleWarnings();
   });
 
   it('Select filter', async () => {
@@ -441,6 +449,8 @@ describe('filter instances by labels', () => {
       .simulate('click');
     await componentUpdate(component);
     expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+
+    expectKnownConsoleWarnings();
   });
 });
 

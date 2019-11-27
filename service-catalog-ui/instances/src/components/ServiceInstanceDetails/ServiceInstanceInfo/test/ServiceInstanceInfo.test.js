@@ -26,6 +26,11 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
+});
+
 describe('ServiceInstanceInfo', () => {
   describe('Render info with all attributes', () => {
     const component = mount(
