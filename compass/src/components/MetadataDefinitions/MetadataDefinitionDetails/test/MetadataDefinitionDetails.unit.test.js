@@ -9,13 +9,8 @@ import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
 const wait = require('waait');
 
 describe('MetadataDefinitionDetails', () => {
-  const originalConsoleError = console.error;
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
   it('Renders null schema', async () => {
-    console.error = jest.fn();
+    console.warn = jest.fn();
     const component = renderer.create(
       <MockedProvider mocks={mocks} addTypename={false}>
         <MetadataDefinitionDetails definitionKey="noschemalabel" />
@@ -25,8 +20,8 @@ describe('MetadataDefinitionDetails', () => {
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
 
-    // catch "Warning: Each child in a list should have a unique \"key\" prop." comming from Fundamental
-    expect(console.error.mock.calls.length).toBe(1);
-    expect(console.error.mock.calls[0][0]).toMatchSnapshot();
+    // catch "Warning: componentWillReceiveProps has been renamed
+    expect(console.warn.mock.calls.length).toBe(1);
+    expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
   });
 });

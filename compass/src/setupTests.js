@@ -14,4 +14,14 @@ global.wait = require('waait');
 
 window.postMessage = jest.fn();
 
+// fix UnhandledPromiseRejectionWarning: TypeError: document.createRange is not a function
+global.document.createRange = () => ({
+  setStart: () => {},
+  setEnd: () => {},
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
+
 Enzyme.configure({ adapter: new Adapter() });

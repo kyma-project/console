@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Panel } from '@kyma-project/react-components';
 import RuntimeScenarioModal from './RuntimeScenarioModal.container';
 import { RuntimeQueryContext } from './../RuntimeDetails.component';
 
@@ -86,16 +85,14 @@ export default function RuntimeScenarios({
   }); // list requires a list of objects
 
   return (
-    <Panel>
-      <GenericList
-        extraHeaderContent={extraHeaderContent}
-        title="Active scenarios"
-        notFoundMessage="This Runtime doesn't have any active scenarios."
-        actions={actions}
-        entries={entries}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={extraHeaderContent}
+      title="Active scenarios"
+      notFoundMessage="This Runtime doesn't have any active scenarios."
+      actions={actions}
+      entries={entries}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+    />
   );
 }

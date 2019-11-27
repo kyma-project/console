@@ -33,7 +33,10 @@ export default function CredentialsForm({ updateState, credentials }) {
     <Menu>
       <Menu.List>
         {availableCredentialTypes.map(credentialType => (
-          <Menu.Item onClick={() => updateState({ type: credentialType })}>
+          <Menu.Item
+            onClick={() => updateState({ type: credentialType })}
+            key={credentialType}
+          >
             {credentialType}
           </Menu.Item>
         ))}

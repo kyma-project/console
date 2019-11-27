@@ -85,6 +85,7 @@ export default function MultiChoiceList({
 
     const nonChoosenItemsList = currentlyNonSelectedItems.map(item => (
       <Menu.Item
+        key={getDisplayName(item)}
         onClick={() => {
           selectItem(item);
         }}

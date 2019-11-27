@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GenericList } from 'react-shared';
-import { Panel } from '@kyma-project/react-components';
 import AssignEntityToScenarioModal from '../shared/AssignEntityToScenarioModal/AssignRuntimesToScenarioModal.container';
 import unassignScenarioHandler from '../shared/unassignScenarioHandler';
 
@@ -69,17 +68,15 @@ export default function ScenarioRuntimes({
   );
 
   return (
-    <Panel>
-      <GenericList
-        extraHeaderContent={extraHeaderContent}
-        title="Runtimes"
-        notFoundMessage="No Runtimes for this Scenario"
-        entries={assignedRuntimes}
-        headerRenderer={() => ['Name']}
-        actions={actions}
-        rowRenderer={runtime => [runtime.name]}
-        showSearchField={false}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={extraHeaderContent}
+      title="Runtimes"
+      notFoundMessage="No Runtimes for this Scenario"
+      entries={assignedRuntimes}
+      headerRenderer={() => ['Name']}
+      actions={actions}
+      rowRenderer={runtime => [runtime.name]}
+      showSearchField={false}
+    />
   );
 }

@@ -175,5 +175,3 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
   </div>
 </section>
 `;
-
-exports[`MultiChoiceList Renders two lists of simple items 2`] = `"Warning: Each child in a list should have a unique \\"key\\" prop.%s%s See https://fb.me/react-warning-keys for more information.%s"`;

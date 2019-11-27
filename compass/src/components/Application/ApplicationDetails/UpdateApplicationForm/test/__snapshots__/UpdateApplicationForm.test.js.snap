@@ -1604,7 +1604,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
             style="width: 30em;"
           >
             <label
-              class="fd-form__label"
+              class="fd-form-label"
               for="application-name"
             >
               Name
@@ -1619,7 +1619,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
               value="app1"
             />
             <label
-              class="fd-form__label"
+              class="fd-form-label"
               for="application-description"
             >
               Description
@@ -1772,7 +1772,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
                 style="width: 30em;"
               >
                 <label
-                  class="fd-form__label"
+                  class="fd-form-label"
                   for="application-name"
                 >
                   Name
@@ -1787,7 +1787,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
                   value="app1"
                 />
                 <label
-                  class="fd-form__label"
+                  class="fd-form-label"
                   for="application-description"
                 >
                   Description
@@ -1990,7 +1990,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
                     style="width: 30em;"
                   >
                     <label
-                      class="fd-form__label"
+                      class="fd-form-label"
                       for="application-name"
                     >
                       Name
@@ -2005,7 +2005,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
                       value="app1"
                     />
                     <label
-                      class="fd-form__label"
+                      class="fd-form-label"
                       for="application-description"
                     >
                       Description
@@ -2038,12 +2038,22 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
                 <FormLabel
                   htmlFor="application-name"
                 >
-                  <label
-                    className="fd-form__label"
+                  <FormLabel
+                    forwardedRef={null}
                     htmlFor="application-name"
                   >
-                    Name
-                  </label>
+                    <FormLabel
+                      disableStyles={false}
+                      htmlFor="application-name"
+                    >
+                      <label
+                        className="fd-form-label"
+                        htmlFor="application-name"
+                      >
+                        Name
+                      </label>
+                    </FormLabel>
+                  </FormLabel>
                 </FormLabel>
                 <input
                   className="fd-has-margin-bottom-small"
@@ -2056,12 +2066,22 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
                 <FormLabel
                   htmlFor="application-description"
                 >
-                  <label
-                    className="fd-form__label"
+                  <FormLabel
+                    forwardedRef={null}
                     htmlFor="application-description"
                   >
-                    Description
-                  </label>
+                    <FormLabel
+                      disableStyles={false}
+                      htmlFor="application-description"
+                    >
+                      <label
+                        className="fd-form-label"
+                        htmlFor="application-description"
+                      >
+                        Description
+                      </label>
+                    </FormLabel>
+                  </FormLabel>
                 </FormLabel>
                 <input
                   className="fd-has-margin-bottom-small"
