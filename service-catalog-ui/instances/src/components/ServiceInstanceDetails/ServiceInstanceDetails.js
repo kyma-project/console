@@ -38,6 +38,7 @@ export default function ServiceInstanceDetails({ match }) {
         namespace: builder.getCurrentEnvironmentId(),
         name: match.params.name,
       },
+      fetchPolicy: 'no-cache',
     },
   );
 

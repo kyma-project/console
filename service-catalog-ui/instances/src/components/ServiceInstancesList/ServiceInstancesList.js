@@ -75,6 +75,7 @@ export default function ServiceInstancesList() {
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
     },
+    fetchPolicy: 'no-cache',
   });
 
   useEffect(() => {
