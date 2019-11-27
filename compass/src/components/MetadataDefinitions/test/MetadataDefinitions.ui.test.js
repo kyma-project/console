@@ -7,6 +7,22 @@ import MetadataDefinitions from '../MetadataDefinitions.container';
 import { GenericList } from 'react-shared';
 
 describe('MetadataDefinitions UI', () => {
+  // for "Warning: componentWillReceiveProps has been renamed"
+  console.error = jest.fn();
+  console.warn = jest.fn();
+
+  afterEach(() => {
+    console.error.mockReset();
+    console.warn.mockReset();
+  });
+
+  afterAll(() => {
+    expect(console.error.mock.calls[0][0]).toMatchSnapshot();
+    if (console.warn.mock.calls.length) {
+      expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
+    }
+  });
+
   it(`Renders "loading" when there's no GQL response`, async () => {
     const component = mount(
       <MockedProvider addTypename={false}>

@@ -5,6 +5,9 @@ import CreateRuntimeForm from '../CreateRuntimeForm.container';
 import { MockedProvider } from 'react-apollo/test-utils';
 
 describe('CreateRuntimeForm', () => {
+  // for "Warning: componentWillReceiveProps has been renamed"
+  console.warn = jest.fn();
+
   const emptyFn = () => {};
   const emptyRef = { current: null };
 
@@ -22,5 +25,7 @@ describe('CreateRuntimeForm', () => {
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
+
+    expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
   });
 });

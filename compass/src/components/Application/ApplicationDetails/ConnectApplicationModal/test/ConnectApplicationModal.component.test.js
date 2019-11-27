@@ -29,7 +29,7 @@ describe('ConnectApplicationModal Component', () => {
 
     await act(async () => {
       await component
-        .find('.fd-button--emphasized')
+        .find('[data-test-id="open-modal"]')
         .first()
         .simulate('click');
       component.update();

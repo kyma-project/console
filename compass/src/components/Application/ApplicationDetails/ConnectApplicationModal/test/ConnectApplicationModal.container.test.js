@@ -4,6 +4,8 @@ import { mount } from 'enzyme';
 import { validMock, errorMock } from './mock';
 import { act } from 'react-dom/test-utils';
 
+import { FormMessage } from 'fundamental-react';
+
 import ConnectApplicationModal from '../ConnectApplicationModal.container';
 
 describe('ConnectApplicationModal Container', () => {
@@ -80,9 +82,7 @@ describe('ConnectApplicationModal Container', () => {
     await wait(0); // wait for gql response
     component.update();
 
-    const errorMessage = component.find(
-      '.fd-form__message.fd-form__message--error',
-    );
+    const errorMessage = component.find(FormMessage);
     expect(errorMessage).toBeTruthy();
     expect(errorMessage.text()).toEqual('Network error: sample error');
   });
