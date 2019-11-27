@@ -51,12 +51,12 @@ const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
 let navigation = {
   viewGroupSettings: {
-    _console_: {
-      preloadUrl: '/consoleapp.html#/home/preload'
-    },
-    _core_ui_: {
-      preloadUrl: config.coreModuleUrl + '/preload',
-    },
+    // _console_: {
+    //   preloadUrl: '/consoleapp.html#/home/preload'
+    // },
+    // _core_ui_: {
+    //   preloadUrl: config.coreModuleUrl + '/preload',
+    // },
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
   contextSwitcher: {
