@@ -1,4 +1,5 @@
 import { serviceClassConstants } from '../../variables';
+import { isAddon, isService } from '../../commons/helpers';
 
 const determineDisplayedServiceClasses = (
   serviceClasses,
@@ -20,23 +21,10 @@ const determineDisplayedServiceClasses = (
     activeLabels.every(activeLabel => item.labels.includes(activeLabel)),
   );
 
-  let filteredByTab = [];
-  if (tabIndex === serviceClassConstants.addonsIndex) {
-    filteredByTab = filteredByLabels.filter(item => {
-      if (item.labels) {
-        return item.labels.local === 'true';
-      }
-      return false;
-    });
-  }
-  if (tabIndex === serviceClassConstants.servicesIndex) {
-    filteredByTab = filteredByLabels.filter(item => {
-      if (item.labels) {
-        return item.labels.local !== 'true';
-      }
-      return true;
-    });
-  }
+  const filterFunction =
+    tabIndex === serviceClassConstants.addonsIndex ? isAddon : isService;
+
+  const filteredByTab = filteredByLabels.filter(filterFunction);
 
   return filteredByTab;
 };

@@ -140,3 +140,19 @@ export class DocsProcessor {
     return this.docs;
   }
 }
+
+function getServiceClass(instance) {
+  return instance.serviceClass
+    ? instance.serviceClass
+    : instance.clusterServiceClass;
+}
+
+export function isAddon(instance) {
+  const serviceClass = getServiceClass(instance);
+  return serviceClass.labels && serviceClass.labels.local === 'true';
+}
+
+export function isService(instance) {
+  const serviceClass = getServiceClass(instance);
+  return !serviceClass.labels || serviceClass.labels.local !== 'true';
+}

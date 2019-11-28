@@ -10,6 +10,7 @@ import {
 } from '@kyma-project/react-components';
 import { BreadcrumbWrapper, ToolbarWrapper } from './styled';
 import builder from '../../../commons/builder';
+import { isService } from '../../../commons/helpers';
 
 const ServiceInstanceHeader = ({
   serviceInstance,
@@ -21,7 +22,7 @@ const ServiceInstanceHeader = ({
     LuigiClient.linkManager()
       .fromContext('namespaces')
       .withParams({
-        selectedTab: serviceInstance.serviceClass ? 'services' : 'addons',
+        selectedTab: isService(serviceInstance) ? 'services' : 'addons',
       })
       .navigate('cmf-instances');
   };
@@ -44,7 +45,7 @@ const ServiceInstanceHeader = ({
         <Breadcrumb>
           <Breadcrumb.Item
             name={`${serviceInstanceConstants.instances} - ${
-              serviceInstance.serviceClass ? 'Services' : 'Addons'
+              isService(serviceInstance) ? 'Services' : 'Addons'
             }`}
             url="#"
             onClick={goToServiceInstances}

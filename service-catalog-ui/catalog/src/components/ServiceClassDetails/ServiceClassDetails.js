@@ -83,7 +83,6 @@ export default function ServiceClassDetails({ name }) {
     imageUrl,
     tags,
     labels,
-    __typename,
   } = serviceClass;
 
   return (
@@ -99,7 +98,6 @@ export default function ServiceClassDetails({ name }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-        typename={__typename}
       >
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}

@@ -1,20 +1,5 @@
 import { serviceInstanceConstants } from '../../variables';
-
-function getServiceClass(instance) {
-  return instance.serviceClass
-    ? instance.serviceClass
-    : instance.clusterServiceClass;
-}
-
-function isAddon(instance) {
-  const serviceClass = getServiceClass(instance);
-  return serviceClass.labels && serviceClass.labels.local === 'true';
-}
-
-function isService(instance) {
-  const serviceClass = getServiceClass(instance);
-  return !serviceClass.labels || serviceClass.labels.local !== 'true';
-}
+import { isAddon, isService } from '../../commons/helpers';
 
 function determineDisplayedInstances(
   serviceInstances,

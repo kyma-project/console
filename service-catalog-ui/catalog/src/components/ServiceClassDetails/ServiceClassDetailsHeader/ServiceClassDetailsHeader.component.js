@@ -13,6 +13,7 @@ import {
 } from './styled';
 
 import { serviceClassConstants } from '../../../variables';
+import { isService } from '../../../commons/helpers';
 
 const ServiceClassDetailsHeader = ({
   creationTimestamp,
@@ -26,13 +27,12 @@ const ServiceClassDetailsHeader = ({
   supportUrl,
   tags,
   children,
-  typename,
 }) => {
   const goToList = () => {
     LuigiClient.linkManager()
       .fromClosestContext()
       .withParams({
-        selectedTab: typename === 'ServiceClass' ? 'services' : 'addons',
+        selectedTab: isService({ labels }) ? 'services' : 'addons',
       })
       .navigate('/');
   };
@@ -42,7 +42,7 @@ const ServiceClassDetailsHeader = ({
         <Breadcrumb>
           <Breadcrumb.Item
             name={`${serviceClassConstants.title} - ${
-              typename === 'ServiceClass' ? 'Services' : 'Add-Ons'
+              isService({ labels }) ? 'Services' : 'Add-Ons'
             }`}
             url="#"
             onClick={goToList}
@@ -84,7 +84,6 @@ ServiceClassDetailsHeader.propTypes = {
   documentationUrl: PropTypes.string,
   imageUrl: PropTypes.string,
   supportUrl: PropTypes.string,
-  typename: PropTypes.string,
 };
 
 export default ServiceClassDetailsHeader;
