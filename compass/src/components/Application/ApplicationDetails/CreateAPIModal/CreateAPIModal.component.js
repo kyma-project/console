@@ -174,11 +174,7 @@ export default class CreateAPIModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addSpecification}
         disabledConfirm={!this.state.isReadyToUpload}
-        onShow={() => {
-          this.setState(this.createInitialState());
-          LuigiClient.uxManager().addBackdrop();
-        }}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
+        onShow={() => this.setState(this.createInitialState())}
       >
         <Dropdown>
           <Popover

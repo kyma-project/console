@@ -320,13 +320,7 @@ class CreateApplicationModal extends React.Component {
         tooltipData={tooltipData}
         onConfirm={this.createApplication}
         handleClose={this.clearState}
-        onShow={() => {
-          return LuigiClient.uxManager().addBackdrop();
-        }}
-        onHide={() => {
-          this.clearState();
-          LuigiClient.uxManager().removeBackdrop();
-        }}
+        onHide={() => this.clearState()}
       >
         {content}
       </Modal>

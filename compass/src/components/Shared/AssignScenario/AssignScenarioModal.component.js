@@ -90,11 +90,7 @@ export default function AssignScenarioModal(props) {
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateLabels}
-      onShow={() => {
-        reinitializeState();
-        LuigiClient.uxManager().addBackdrop();
-      }}
-      onHide={() => LuigiClient.uxManager().removeBackdrop()}
+      onShow={reinitializeState}
     >
       <MultiChoiceList
         currentlySelectedItems={currentScenarios}

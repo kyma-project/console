@@ -73,25 +73,32 @@ exports[`MultiChoiceList Renders two lists of object items 1`] = `
   <div
     className="fd-dropdown"
   >
-    <span
-      onFocus={[Function]}
-      onMouseDown={[Function]}
-      onTouchStart={[Function]}
+    <div
+      className="fd-popover"
     >
       <div
-        className="fd-popper__control fd-popover"
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
       >
-        <button
-          className="fd-button fd-dropdown__control"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="fd-popover__control"
         >
-          <span>
+          <button
+            aria-controls="fd-xIqNeL0E"
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="fd-button sap-icon--navigation-down-arrow fd-dropdown__control"
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            role="button"
+            tabIndex={0}
+          >
             Choose items...
-          </span>
-        </button>
+          </button>
+        </div>
       </div>
-    </span>
+    </div>
   </div>
 </section>
 `;
@@ -153,25 +160,32 @@ exports[`MultiChoiceList Renders two lists of simple items 1`] = `
   <div
     className="fd-dropdown"
   >
-    <span
-      onFocus={[Function]}
-      onMouseDown={[Function]}
-      onTouchStart={[Function]}
+    <div
+      className="fd-popover"
     >
       <div
-        className="fd-popper__control fd-popover"
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
       >
-        <button
-          className="fd-button fd-dropdown__control"
-          onClick={[Function]}
-          type="button"
+        <div
+          className="fd-popover__control"
         >
-          <span>
+          <button
+            aria-controls="fd-T5Izb7lB"
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="fd-button sap-icon--navigation-down-arrow fd-dropdown__control"
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            role="button"
+            tabIndex={0}
+          >
             Choose items...
-          </span>
-        </button>
+          </button>
+        </div>
       </div>
-    </span>
+    </div>
   </div>
 </section>
 `;

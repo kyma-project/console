@@ -152,11 +152,7 @@ export default class CreateLabelModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addLabel}
         disabledConfirm={!this.isReadyToUpload()}
-        onShow={() => {
-          this.setState(this.createInitialState());
-          LuigiClient.uxManager().addBackdrop();
-        }}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
+        onShow={() => this.setState(this.createInitialState())}
       >
         {this.props.labelNamesQuery.loading ? (
           <p>Loading existing labels...</p>

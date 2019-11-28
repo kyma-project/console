@@ -163,8 +163,6 @@ export default class CreateScenarioModal extends React.Component {
         disabledConfirm={this.disabledConfirm()}
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addScenarioAndAssignEntries}
-        onShow={() => LuigiClient.uxManager().addBackdrop()}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       >
         <CreateScenarioForm
           updateScenarioName={this.updateScenarioName}

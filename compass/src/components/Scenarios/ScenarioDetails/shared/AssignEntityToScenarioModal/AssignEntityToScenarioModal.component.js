@@ -139,8 +139,6 @@ export default function AssignEntityToScenarioModal({
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateEntities}
-      onShow={LuigiClient.uxManager().addBackdrop}
-      onHide={LuigiClient.uxManager().removeBackdrop}
     >
       <MultiChoiceList
         currentlySelectedItems={assignedEntities}
