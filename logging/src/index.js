@@ -20,7 +20,6 @@ import App from './App';
         <App />
       </>
     ),
-    requiredBackendModules: [BackendModules.GRAFANA],
     enableNotifications: false,
     enableSubscriptions: false,
     services,
