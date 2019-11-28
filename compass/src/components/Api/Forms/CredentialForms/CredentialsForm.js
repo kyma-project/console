@@ -29,16 +29,24 @@ CredentialsForm.defaultProps = {
 
 export default function CredentialsForm({ updateState, credentials }) {
   const credentialTypesList = (
-    <Menu.List>
-      {availableCredentialTypes.map(credentialType => (
-        <Menu.Item
-          onClick={() => updateState({ type: credentialType })}
-          key={credentialType}
-        >
-          {credentialType}
-        </Menu.Item>
-      ))}
-    </Menu.List>
+    <Menu>
+      <Menu.List>
+        {availableCredentialTypes.map(credentialType => (
+          <Menu.Item
+            onClick={() => updateState({ type: credentialType })}
+            key={credentialType}
+          >
+            {credentialType}
+          </Menu.Item>
+        ))}
+      </Menu.List>
+    </Menu>
+  );
+
+  const dropdownControl = (
+    <Button className="fd-dropdown__control" glyph="navigation-down-arrow">
+      {credentials.type}
+    </Button>
   );
 
   return (
@@ -46,19 +54,12 @@ export default function CredentialsForm({ updateState, credentials }) {
       <p>Credentials type</p>
       <Dropdown>
         <Popover
-          body={<Menu>{credentialTypesList}</Menu>}
-          control={
-            <Button
-              className="fd-dropdown__control"
-              glyph="navigation-down-arrow"
-            >
-              {credentials.type}
-            </Button>
-          }
-          noArrow
+          body={credentialTypesList}
+          control={dropdownControl}
           widthSizingType="matchTarget"
         />
       </Dropdown>
+
       {credentials.type === CREDENTIAL_TYPE_OAUTH && (
         <OAuthCredentialsForm
           updateState={updateState}

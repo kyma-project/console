@@ -106,7 +106,6 @@ export default function MultiChoiceList({
               {placeholder}
             </Button>
           }
-          noArrow
           widthSizingType="matchTarget"
         />
       </Dropdown>

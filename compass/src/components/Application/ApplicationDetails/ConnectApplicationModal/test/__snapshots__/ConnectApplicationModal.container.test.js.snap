@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectApplicationModal Container Modal is in "loading" state after open 1`] = `
+Array [
+  "Loading...",
+  "Loading...",
+]
+`;
+
+exports[`ConnectApplicationModal Container Modal renders valid state after loading data 1`] = `
+Array [
+  "sample token",
+  "sample connector url",
+]
+`;
