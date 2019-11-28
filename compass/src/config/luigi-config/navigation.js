@@ -29,11 +29,13 @@ const navigation = {
       children: [
         {
           hideSideNav: true,
-          pathSegment: ':tenantId',
+          pathSegment: ':tenantName',
           navigationContext: 'tenant',
           context: {
             idToken: token,
-            tenantId: ':tenantId',
+            tenantName: ':tenantName',
+            defaultTenatnId: window.clusterConfig.defaultTenant,
+            tenants: window.clusterConfig.tenants,
           },
           children: [
             {

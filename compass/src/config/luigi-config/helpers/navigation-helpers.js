@@ -1,35 +1,32 @@
-const getAlternativePath = tenantUId => {
+const getAlternativePath = tenantName => {
   const currentPath = window.location.pathname;
   const regex = new RegExp('^/tenant/(.*?)/(.*)(?:/.*)?');
   const match = currentPath.match(regex);
   if (match) {
     const tenant = match[1];
     const path = match[2];
-    if (tenant == tenantUId) {
+    if (tenant == tenantName) {
       // the same tenant, leave path as it is
-      return `${tenantUId}/${path}`;
+      return `${tenantName}/${path}`;
     } else {
       // other tenant, get back to context as applications or runtimes
       const contextOnlyPath = path.split('/')[0];
-      return `${tenantUId}/${contextOnlyPath}`;
+      return `${tenantName}/${contextOnlyPath}`;
     }
   }
   return null;
 };
 
 const getTenants = () => {
-  const tenantsString = window.clusterConfig.tenants || '';
-  const defaultTenant = window.clusterConfig.defaultTenant || '';
-  const tenantsUIDs = tenantsString.split(' ');
-
-  const tenants = tenantsUIDs.map(tenantUId => {
-    const alternativePath = getAlternativePath(tenantUId);
+  const tenants = window.clusterConfig.tenants || [];
+  const tenantNames = tenants.map(tenant => {
+    const alternativePath = getAlternativePath(tenant.name);
     return {
-      label: tenantUId === defaultTenant ? 'default' : tenantUId,
-      pathValue: alternativePath || tenantUId,
+      label: tenant.name,
+      pathValue: alternativePath || tenant.name,
     };
   });
-  return tenants;
+  return tenantNames;
 };
 
 module.exports = {
