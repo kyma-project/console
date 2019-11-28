@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Dropdown, Icon } from '@kyma-project/react-components';
-import { Menu } from 'fundamental-react';
+import { Icon } from '@kyma-project/react-components';
+import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
 import './style.scss';
 
 MultiChoiceList.propTypes = {
@@ -95,15 +95,20 @@ export default function MultiChoiceList({
     ));
 
     return (
-      <Dropdown
-        control={
-          <Button dropdown typeAttr="button">
-            <span>{placeholder}</span>
-          </Button>
-        }
-        placement="bottom"
-      >
-        {nonChoosenItemsList}
+      <Dropdown>
+        <Popover
+          body={<Menu>{nonChoosenItemsList}</Menu>}
+          control={
+            <Button
+              className="fd-dropdown__control"
+              glyph="navigation-down-arrow"
+            >
+              {placeholder}
+            </Button>
+          }
+          noArrow
+          widthSizingType="matchTarget"
+        />
       </Dropdown>
     );
   }

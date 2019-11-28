@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu } from 'fundamental-react';
-import { Button, Dropdown } from '@kyma-project/react-components';
+import { Menu, Dropdown, Popover } from 'fundamental-react';
+import { Button } from '@kyma-project/react-components';
 import './style.scss';
 
 import OAuthCredentialsForm, {
@@ -30,33 +30,36 @@ CredentialsForm.defaultProps = {
 
 export default function CredentialsForm({ updateState, credentials }) {
   const credentialTypesList = (
-    <Menu>
-      <Menu.List>
-        {availableCredentialTypes.map(credentialType => (
-          <Menu.Item
-            onClick={() => updateState({ type: credentialType })}
-            key={credentialType}
-          >
-            {credentialType}
-          </Menu.Item>
-        ))}
-      </Menu.List>
-    </Menu>
+    <Menu.List>
+      {availableCredentialTypes.map(credentialType => (
+        <Menu.Item
+          onClick={() => updateState({ type: credentialType })}
+          key={credentialType}
+        >
+          {credentialType}
+        </Menu.Item>
+      ))}
+    </Menu.List>
   );
 
   return (
     <section className="credentials-form">
       <p>Credentials type</p>
-      <Dropdown
-        control={
-          <Button dropdown>
-            <span>{credentials.type}</span>
-          </Button>
-        }
-        placement="bottom"
-      >
-        {credentialTypesList}
-      </Dropdown>
+      {/* <Dropdown>
+        <Popover
+          body={<Menu>{credentialTypesList}</Menu>}
+          control={
+            <Button
+              className="fd-dropdown__control"
+              glyph="navigation-down-arrow"
+            >
+              {credentials.type}
+            </Button>
+          }
+          noArrow
+          widthSizingType="matchTarget"
+        />
+      </Dropdown> */}
 
       {credentials.type === CREDENTIAL_TYPE_OAUTH && (
         <OAuthCredentialsForm

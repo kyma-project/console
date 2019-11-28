@@ -35,8 +35,16 @@
       &::after {
         margin-top: -2px;
       }
+
+      &::before {
+        content: unset;
+      }
+
     }
   }
 }
 
-
+// todo na obrazie
+// li {
+//   list-style-type: none;
+// }
