@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { Modal } from './../../../../shared/components/Modal/Modal';
-import { Button } from '@kyma-project/react-components';
+import { Button, TabGroup, Tab, InlineHelp } from 'fundamental-react';
+
 import './style.scss';
 
 import { createAPI, createEventAPI } from './../../../Api/APICreationHelper';
-import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
-import { Popover, Menu, Dropdown } from 'fundamental-react';
 
 import APIDataForm from './../../../Api/Forms/ApiDataForm';
 import CredentialsForm, {
@@ -176,31 +175,7 @@ export default class CreateAPIModal extends React.Component {
         disabledConfirm={!this.state.isReadyToUpload}
         onShow={() => this.setState(this.createInitialState())}
       >
-        <Dropdown>
-          <Popover
-            body={
-              <Menu>
-                <Menu.List>
-                  <Menu.Item url="#">Option 1</Menu.Item>
-                  <Menu.Item url="#">Option 2</Menu.Item>
-                  <Menu.Item url="#">Option 3</Menu.Item>
-                  <Menu.Item url="#">Option 4</Menu.Item>
-                </Menu.List>
-              </Menu>
-            }
-            control={
-              <Button
-                className="fd-dropdown__control"
-                glyph="navigation-down-arrow"
-              >
-                Open the dropdown
-              </Button>
-            }
-            id="jhqD0561"
-            noArrow
-            widthSizingType="matchTarget"
-          />
-        </Dropdown>
+        {content}
       </Modal>
     );
   }

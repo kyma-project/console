@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Popover } from 'fundamental-react';
-import { Button } from '@kyma-project/react-components';
+import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
 import './style.scss';
 
 import OAuthCredentialsForm, {
@@ -45,7 +44,7 @@ export default function CredentialsForm({ updateState, credentials }) {
   return (
     <section className="credentials-form">
       <p>Credentials type</p>
-      {/* <Dropdown>
+      <Dropdown>
         <Popover
           body={<Menu>{credentialTypesList}</Menu>}
           control={
@@ -59,8 +58,7 @@ export default function CredentialsForm({ updateState, credentials }) {
           noArrow
           widthSizingType="matchTarget"
         />
-      </Dropdown> */}
-
+      </Dropdown>
       {credentials.type === CREDENTIAL_TYPE_OAUTH && (
         <OAuthCredentialsForm
           updateState={updateState}
