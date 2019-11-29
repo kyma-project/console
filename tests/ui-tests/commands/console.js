@@ -13,8 +13,7 @@ async function testLogin(page) {
 
 async function _selectAuthMethod(page, config) {
   //const loginButtonSelector = '.dex-btn.theme-btn-provider';
-  const authButton =
-    '//button[contains(., "Email") and contains(@class."theme-btn-provider")]';
+  const authButton = "//buttn[contains(text(), 'Email')]";
   console.log(`Trying to select auth method in dex`);
   try {
     await page.reload({
