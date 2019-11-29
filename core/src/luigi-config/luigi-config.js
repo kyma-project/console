@@ -761,6 +761,7 @@ Promise.all(initPromises)
               viewUrl: config.coreModuleUrl + '/createApiRule',
               icon: 'sonography',
               viewGroup: coreUIViewGroupName,
+              hideFromNav: true
             }
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
