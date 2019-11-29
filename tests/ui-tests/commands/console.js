@@ -61,7 +61,7 @@ async function login(page, config) {
   let hasMultipleAuthProviders = false;
   try {
     await page.waitForSelector('#login');
-  } catch {
+  } catch (e) {
     await _selectAuthMethod(page, config);
   }
 
