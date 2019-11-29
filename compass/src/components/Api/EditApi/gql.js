@@ -5,7 +5,7 @@ export const GET_API_DATA = gql`
     application(id: $id) {
       id
       name
-      apis {
+      apiDefinitions {
         data {
           id
           name
@@ -29,7 +29,7 @@ export const GET_API_DATA = gql`
         }
         totalCount
       }
-      eventAPIs {
+      eventDefinitions {
         data {
           id
           name
@@ -47,18 +47,18 @@ export const GET_API_DATA = gql`
   }
 `;
 
-export const UPDATE_API = gql`
-  mutation updateAPI($id: ID!, $in: APIDefinitionInput!) {
-    updateAPI(id: $id, in: $in) {
+export const UPDATE_API_DEFINITION = gql`
+  mutation updateAPIDefinition($id: ID!, $in: APIDefinitionInput!) {
+    updateAPIDefinition(id: $id, in: $in) {
       id
       name
     }
   }
 `;
 
-export const UPDATE_EVENT_API = gql`
-  mutation updateEventAPI($id: ID!, $in: EventAPIDefinitionInput!) {
-    updateEventAPI(id: $id, in: $in) {
+export const UPDATE_EVENT_DEFINITION = gql`
+  mutation updateEventDefinition($id: ID!, $in: EventDefinitionInput!) {
+    updateEventDefinition(id: $id, in: $in) {
       id
       name
     }

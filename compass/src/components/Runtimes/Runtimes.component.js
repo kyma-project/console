@@ -8,13 +8,13 @@ import { handleDelete, GenericList } from 'react-shared';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
 
 import ModalWithForm from '../../shared/components/ModalWithForm/ModalWithForm.container';
-import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm.container';
+import RegisterRuntimeForm from './RegisterRuntimeForm/RegisterRuntimeForm.container';
 import { PageHeader } from 'react-shared';
 
 class Runtimes extends React.Component {
   static propTypes = {
     runtimes: PropTypes.object.isRequired,
-    deleteRuntime: PropTypes.func.isRequired,
+    unregisterRuntime: PropTypes.func.isRequired,
   };
 
   headerRenderer = () => ['Name', 'Description', 'Scenarios', 'Status'];
@@ -47,7 +47,7 @@ class Runtimes extends React.Component {
           'Runtime',
           entry.id,
           entry.name,
-          this.props.deleteRuntime,
+          this.props.unregisterRuntime,
           this.props.runtimes.refetch,
         );
       },
@@ -76,7 +76,7 @@ class Runtimes extends React.Component {
               confirmText="Create"
               performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
             >
-              <CreateRuntimeForm />
+              <RegisterRuntimeForm />
             </ModalWithForm>
           }
           actions={this.actions}

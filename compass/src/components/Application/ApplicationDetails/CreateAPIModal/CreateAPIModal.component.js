@@ -7,7 +7,10 @@ import { Button, TabGroup, Tab, InlineHelp } from 'fundamental-react';
 
 import './style.scss';
 
-import { createAPI, createEventAPI } from './../../../Api/APICreationHelper';
+import {
+  createAPIDefinition,
+  createEventDefinition,
+} from './../../../Api/APICreationHelper';
 
 import APIDataForm from './../../../Api/Forms/ApiDataForm';
 import CredentialsForm, {
@@ -100,9 +103,13 @@ export default class CreateAPIModal extends React.Component {
     const { props, state } = this;
 
     const isAsyncAPI = state.apiData.mainAPIType === 'ASYNC_API';
-    const mutation = isAsyncAPI ? props.addEventAPI : props.addAPI;
+    const mutation = isAsyncAPI
+      ? props.addEventDefinition
+      : props.addAPIDefinition;
 
-    const data = isAsyncAPI ? createEventAPI(state) : createAPI(state);
+    const data = isAsyncAPI
+      ? createEventDefinition(state)
+      : createAPIDefinition(state);
     try {
       await mutation(data, props.applicationId);
       this.showCreateSuccessNotification(state.apiData.name, isAsyncAPI);
@@ -125,7 +132,7 @@ export default class CreateAPIModal extends React.Component {
     const mainAPIType = this.state.apiData.mainAPIType;
     const credentials = this.state.credentials;
 
-    const modalOpeningComponent = <Button option="light">Add API</Button>;
+    const modalOpeningComponent = <Button option="light">Add</Button>;
     const isAPI = mainAPIType === 'API';
 
     let credentialsTabText;
@@ -185,6 +192,6 @@ export default class CreateAPIModal extends React.Component {
 CreateAPIModal.propTypes = {
   applicationId: PropTypes.string.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  addAPI: PropTypes.func.isRequired,
-  addEventAPI: PropTypes.func.isRequired,
+  addAPIDefinition: PropTypes.func.isRequired,
+  addEventDefinition: PropTypes.func.isRequired,
 };

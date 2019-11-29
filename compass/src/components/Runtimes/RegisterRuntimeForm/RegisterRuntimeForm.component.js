@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import './CreateRuntimeForm.scss';
+import './RegisterRuntimeForm.scss';
 import { InlineHelp } from 'fundamental-react/InlineHelp';
 import { CustomPropTypes } from 'react-shared';
 
-const CreateRuntimeForm = ({
+const RegisterRuntimeForm = ({
   formElementRef,
   onChange,
   onCompleted,
@@ -53,12 +53,7 @@ const CreateRuntimeForm = ({
   );
 
   return (
-    <form
-      onChange={onChange}
-      ref={formElementRef}
-      onSubmit={handleFormSubmit}
-      className="create-runtime-form"
-    >
+    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit} className="register-runtime-form">
       <div className="fd-form__set">
         <div className="fd-form__item">{nameField()}</div>
         <div className="fd-form__item">
@@ -78,7 +73,7 @@ const CreateRuntimeForm = ({
     </form>
   );
 };
-CreateRuntimeForm.propTypes = {
+RegisterRuntimeForm.propTypes = {
   formElementRef: CustomPropTypes.ref, // used to store <form> element reference
   isValid: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -86,4 +81,4 @@ CreateRuntimeForm.propTypes = {
   onCompleted: PropTypes.func.isRequired, // args: title(string), message(string)
 };
 
-export default CreateRuntimeForm;
+export default RegisterRuntimeForm;

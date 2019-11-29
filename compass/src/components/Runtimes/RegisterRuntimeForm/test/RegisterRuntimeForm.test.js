@@ -1,10 +1,10 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import CreateRuntimeForm from '../CreateRuntimeForm.container';
+import RegisterRuntimeForm from '../RegisterRuntimeForm.container';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-describe('CreateRuntimeForm', () => {
+describe('RegisterRuntimeForm', () => {
   // for "Warning: componentWillReceiveProps has been renamed"
   console.warn = jest.fn();
 
@@ -14,7 +14,7 @@ describe('CreateRuntimeForm', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
       <MockedProvider addTypename={false}>
-        <CreateRuntimeForm
+        <RegisterRuntimeForm
           formElementRef={emptyRef}
           isValid={false}
           onChange={emptyFn}

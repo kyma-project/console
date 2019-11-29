@@ -9,16 +9,16 @@ import { handleDelete } from 'react-shared';
 
 ApplicationDetailsApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  apis: PropTypes.object.isRequired,
+  apiDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  deleteAPI: PropTypes.func.isRequired,
+  deleteAPIDefinition: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsApis({
   applicationId,
-  apis,
+  apiDefinitions,
   sendNotification,
-  deleteAPI,
+  deleteAPIDefinition,
 }) {
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
@@ -57,7 +57,7 @@ export default function ApplicationDetailsApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('API', entry.id, entry.name, deleteAPI, () => {
+        handleDelete('API', entry.id, entry.name, deleteAPIDefinition, () => {
           showDeleteSuccessNotification(entry.name);
         }),
     },
@@ -66,10 +66,10 @@ export default function ApplicationDetailsApis({
   return (
     <GenericList
       extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
-      title="APIs"
-      notFoundMessage="There are no APIs available for this Application"
+      title="API Definitions"
+      notFoundMessage="There are no API Definitions available for this Application"
       actions={actions}
-      entries={apis.data}
+      entries={apiDefinitions.data}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={['name', 'description', 'targetURL']}

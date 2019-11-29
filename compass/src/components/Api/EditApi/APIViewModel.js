@@ -30,7 +30,7 @@ export function toEventAPI({ generalInformation, spec }) {
     spec: {
       data: spec.data,
       format: spec.format,
-      eventSpecType: spec.type,
+      type: spec.type,
     },
   };
 }

@@ -7,7 +7,7 @@ import CreateAPIModal from './CreateAPIModal.component';
 export default compose(
   graphql(ADD_API, {
     props: props => ({
-      addAPI: async (apiData, applicationID) => {
+      addAPIDefinition: async (apiData, applicationID) => {
         await props.mutate({
           variables: { applicationID, in: apiData },
         });
@@ -17,7 +17,7 @@ export default compose(
   }),
   graphql(ADD_EVENT_API, {
     props: props => ({
-      addEventAPI: async (apiData, applicationID) => {
+      addEventDefinition: async (apiData, applicationID) => {
         await props.mutate({
           variables: { applicationID, in: apiData },
         });

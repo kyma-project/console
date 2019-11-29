@@ -2,16 +2,16 @@ import { graphql, compose } from 'react-apollo';
 import { withProps } from 'recompose';
 
 import {
-  GET_APPLICATION_WITH_APIS,
-  DELETE_API,
-  DELETE_EVENT_API,
-  GET_APPLICATION_WITH_EVENT_APIS,
+  GET_APPLICATION_WITH_API_DEFINITIONS,
+  DELETE_API_DEFINITION,
+  DELETE_EVENT_DEFINITION,
+  GET_APPLICATION_WITH_EVENT_DEFINITIONS,
 } from './../gql';
 import ApiDetails from './ApiDetails.component';
 
 export default compose(
-  graphql(GET_APPLICATION_WITH_APIS, {
-    name: 'getApisForApplication',
+  graphql(GET_APPLICATION_WITH_API_DEFINITIONS, {
+    name: 'getApiDefinitionsForApplication',
     options: props => {
       return {
         fetchPolicy: 'cache-and-network',
@@ -22,8 +22,8 @@ export default compose(
       };
     },
   }),
-  graphql(GET_APPLICATION_WITH_EVENT_APIS, {
-    name: 'getEventApisForApplication',
+  graphql(GET_APPLICATION_WITH_EVENT_DEFINITIONS, {
+    name: 'getEventDefinitionsForApplication',
     options: props => {
       return {
         fetchPolicy: 'cache-and-network',
@@ -34,9 +34,9 @@ export default compose(
       };
     },
   }),
-  graphql(DELETE_EVENT_API, {
+  graphql(DELETE_EVENT_DEFINITION, {
     props: ({ mutate }) => ({
-      deleteEventApi: id =>
+      deleteEventDefinition: id =>
         mutate({
           variables: {
             id: id,
@@ -44,9 +44,9 @@ export default compose(
         }),
     }),
   }),
-  graphql(DELETE_API, {
+  graphql(DELETE_API_DEFINITION, {
     props: ({ mutate }) => ({
-      deleteApi: id =>
+      deleteAPIDefinition: id =>
         mutate({
           variables: {
             id: id,

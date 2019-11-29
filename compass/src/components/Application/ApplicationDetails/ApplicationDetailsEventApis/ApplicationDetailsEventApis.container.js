@@ -7,7 +7,7 @@ import ApplicationDetailsEventApis from './ApplicationDetailsEventApis.component
 export default compose(
   graphql(DELETE_EVENT_API, {
     props: props => ({
-      deleteEventAPI: apiId => {
+      deleteEventDefinition: apiId => {
         props.mutate({ variables: { id: apiId } });
         props.result.client.reFetchObservableQueries();
       },

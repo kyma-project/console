@@ -7,7 +7,7 @@ import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
 export const RuntimeQueryContext = React.createContext(null);
 
-const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
+const RuntimeDetails = ({ runtimeQuery, unregisterRuntime }) => {
   const { runtime, loading, error } = runtimeQuery;
 
   if (loading) return 'Loading...';
@@ -26,7 +26,10 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
 
   return (
     <RuntimeQueryContext.Provider value={runtimeQuery}>
-      <RuntimeDetailsHeader runtime={runtime} deleteRuntime={deleteRuntime} />
+      <RuntimeDetailsHeader
+        runtime={runtime}
+        unregisterRuntime={unregisterRuntime}
+      />
       <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
     </RuntimeQueryContext.Provider>
   );
@@ -34,7 +37,7 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
 
 RuntimeDetails.propTypes = {
   runtimeQuery: PropTypes.object.isRequired,
-  deleteRuntime: PropTypes.func.isRequired,
+  unregisterRuntime: PropTypes.func.isRequired,
 };
 
 export default RuntimeDetails;

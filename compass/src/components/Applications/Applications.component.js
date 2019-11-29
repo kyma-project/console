@@ -19,8 +19,8 @@ class Applications extends React.Component {
     'Name',
     'Description',
     'Scenarios',
-    'APIs',
-    'EventAPIs',
+    'API Definitions',
+    'Event Definitions',
     'Status',
   ];
 
@@ -35,8 +35,8 @@ class Applications extends React.Component {
     </span>,
     application.description ? application.description : EMPTY_TEXT_PLACEHOLDER,
     <ScenariosDisplay scenarios={application.labels.scenarios || []} />,
-    <Counter>{application.apis.totalCount}</Counter>,
-    <Counter>{application.eventAPIs.totalCount}</Counter>,
+    <Counter>{application.apiDefinitions.totalCount}</Counter>,
+    <Counter>{application.eventDefinitions.totalCount}</Counter>,
     <StatusBadge
       status={
         application.status && application.status.condition

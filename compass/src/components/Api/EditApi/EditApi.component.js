@@ -18,8 +18,8 @@ export default class EditApi extends React.Component {
 
     apiDataQuery: PropTypes.object.isRequired,
     sendNotification: PropTypes.func.isRequired,
-    updateAPI: PropTypes.func.isRequired,
-    updateEventAPI: PropTypes.func.isRequired,
+    updateAPIDefinition: PropTypes.func.isRequired,
+    updateEventDefinition: PropTypes.func.isRequired,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -47,14 +47,14 @@ export default class EditApi extends React.Component {
     // https://github.com/kyma-incubator/compass/issues/234
     const { apiDataQuery, apiId } = nextProps;
     const query = apiDataQuery.application;
-    const api = query.apis.data.find(api => api.id === apiId);
+    const api = query.apiDefinitions.data.find(api => api.id === apiId);
     if (api) {
       return {
         type: 'API',
         entry: api,
       };
     }
-    const eventApi = query.eventAPIs.data.find(api => api.id === apiId);
+    const eventApi = query.eventDefinitions.data.find(api => api.id === apiId);
     if (eventApi) {
       return {
         type: 'Event API',
@@ -77,16 +77,20 @@ export default class EditApi extends React.Component {
 
   saveChanges = async () => {
     const { editedApi, apiId } = this.state;
-    const { updateAPI, updateEventAPI, sendNotification } = this.props;
+    const {
+      updateAPIDefinition,
+      updateEventDefinition,
+      sendNotification,
+    } = this.props;
     const apiName = editedApi.generalInformation.name;
 
     try {
       if (editedApi.apiType === 'API') {
         const newApi = toAPI(editedApi);
-        await updateAPI(apiId, newApi);
+        await updateAPIDefinition(apiId, newApi);
       } else {
         const newApi = toEventAPI(editedApi);
-        await updateEventAPI(apiId, newApi);
+        await updateEventDefinition(apiId, newApi);
       }
       this.setState({ originalApi: editedApi });
       sendNotification({

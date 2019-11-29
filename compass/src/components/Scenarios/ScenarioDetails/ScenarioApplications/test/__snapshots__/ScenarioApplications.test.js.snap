@@ -13,10 +13,10 @@ exports[`ScenarioApplications Renders with minimal props 1`] = `
   entries={
     Array [
       Object {
-        "apis": Object {
+        "apiDefinitions": Object {
           "totalCount": 3,
         },
-        "eventAPIs": Object {
+        "eventDefinitions": Object {
           "totalCount": 5,
         },
         "id": "id 1",
@@ -32,10 +32,10 @@ exports[`ScenarioApplications Renders with minimal props 1`] = `
           "applications": Object {
             "data": Array [
               Object {
-                "apis": Object {
+                "apiDefinitions": Object {
                   "totalCount": 3,
                 },
-                "eventAPIs": Object {
+                "eventDefinitions": Object {
                   "totalCount": 5,
                 },
                 "id": "id 1",
@@ -52,10 +52,10 @@ exports[`ScenarioApplications Renders with minimal props 1`] = `
       originalEntities={
         Array [
           Object {
-            "apis": Object {
+            "apiDefinitions": Object {
               "totalCount": 3,
             },
-            "eventAPIs": Object {
+            "eventDefinitions": Object {
               "totalCount": 5,
             },
             "id": "id 1",
