@@ -11,8 +11,8 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
       className="fd-panel__head"
     />
     <section>
-      <div
-        className="fd-search-input generic-list-search"
+      <section
+        className="generic-list-search"
       >
         <div
           className="fd-popover"
@@ -24,22 +24,26 @@ exports[`GenericList Renders actions button when 'actions' prop is provided 1`] 
               className="fd-combobox-control"
             >
               <input
-                className="control--close"
                 onBlur={[Function]}
                 onChange={[Function]}
                 onFocus={[Function]}
-                placeholder="Search..."
+                onKeyPress={[Function]}
+                style={
+                  Object {
+                    "display": "none",
+                  }
+                }
                 type="text"
                 value=""
-              />
-              <button
-                className="fd-button--light sap-icon--search"
-                onClick={[Function]}
               />
             </div>
           </div>
         </div>
-      </div>
+        <button
+          className="fd-button--light sap-icon--search"
+          onClick={[Function]}
+        />
+      </section>
     </section>
   </div>
   <div
@@ -140,8 +144,8 @@ exports[`GenericList Renders title and description 1`] = `
       </h3>
     </div>
     <section>
-      <div
-        className="fd-search-input generic-list-search"
+      <section
+        className="generic-list-search"
       >
         <div
           className="fd-popover"
@@ -153,22 +157,26 @@ exports[`GenericList Renders title and description 1`] = `
               className="fd-combobox-control"
             >
               <input
-                className="control--close"
                 onBlur={[Function]}
                 onChange={[Function]}
                 onFocus={[Function]}
-                placeholder="Search..."
+                onKeyPress={[Function]}
+                style={
+                  Object {
+                    "display": "none",
+                  }
+                }
                 type="text"
                 value=""
-              />
-              <button
-                className="fd-button--light sap-icon--search"
-                onClick={[Function]}
               />
             </div>
           </div>
         </div>
-      </div>
+        <button
+          className="fd-button--light sap-icon--search"
+          onClick={[Function]}
+        />
+      </section>
     </section>
   </div>
   <div
@@ -210,8 +218,8 @@ exports[`GenericList Renders with minimal props 1`] = `
       className="fd-panel__head"
     />
     <section>
-      <div
-        className="fd-search-input generic-list-search"
+      <section
+        className="generic-list-search"
       >
         <div
           className="fd-popover"
@@ -223,22 +231,26 @@ exports[`GenericList Renders with minimal props 1`] = `
               className="fd-combobox-control"
             >
               <input
-                className="control--close"
                 onBlur={[Function]}
                 onChange={[Function]}
                 onFocus={[Function]}
-                placeholder="Search..."
+                onKeyPress={[Function]}
+                style={
+                  Object {
+                    "display": "none",
+                  }
+                }
                 type="text"
                 value=""
-              />
-              <button
-                className="fd-button--light sap-icon--search"
-                onClick={[Function]}
               />
             </div>
           </div>
         </div>
-      </div>
+        <button
+          className="fd-button--light sap-icon--search"
+          onClick={[Function]}
+        />
+      </section>
     </section>
   </div>
   <div
@@ -280,8 +292,8 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
       className="fd-panel__head"
     />
     <section>
-      <div
-        className="fd-search-input generic-list-search"
+      <section
+        className="generic-list-search"
       >
         <div
           className="fd-popover"
@@ -293,22 +305,26 @@ exports[`GenericList Skips rendering actions when 'actions' prop passes skipActi
               className="fd-combobox-control"
             >
               <input
-                className="control--close"
                 onBlur={[Function]}
                 onChange={[Function]}
                 onFocus={[Function]}
-                placeholder="Search..."
+                onKeyPress={[Function]}
+                style={
+                  Object {
+                    "display": "none",
+                  }
+                }
                 type="text"
                 value=""
-              />
-              <button
-                className="fd-button--light sap-icon--search"
-                onClick={[Function]}
               />
             </div>
           </div>
         </div>
-      </div>
+        <button
+          className="fd-button--light sap-icon--search"
+          onClick={[Function]}
+        />
+      </section>
     </section>
   </div>
   <div
