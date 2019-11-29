@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericList } from 'react-shared';
-import { Panel } from '@kyma-project/react-components';
 import AssignEntityToScenarioModal from './../shared/AssignEntityToScenarioModal/AssignApplicationsToScenarioModal.container';
 import unassignScenarioHandler from './../shared/unassignScenarioHandler';
 
@@ -85,17 +84,15 @@ export default function ScenarioApplications({
   );
 
   return (
-    <Panel>
-      <GenericList
-        extraHeaderContent={extraHeaderContent}
-        title="Applications"
-        notFoundMessage="No Applications for this Scenario"
-        entries={assignedApplications}
-        headerRenderer={headerRenderer}
-        actions={actions}
-        rowRenderer={rowRenderer}
-        showSearchField={false}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={extraHeaderContent}
+      title="Applications"
+      notFoundMessage="No Applications for this Scenario"
+      entries={assignedApplications}
+      headerRenderer={headerRenderer}
+      actions={actions}
+      rowRenderer={rowRenderer}
+      showSearchField={false}
+    />
   );
 }
