@@ -11,7 +11,30 @@ async function testLogin(page) {
   await page.waitForSelector('.fd-shellbar', { visible: true });
 }
 
-async function _loginViaDex(page, config) {
+async function _selectAuthMethod(page, config) {
+  //const loginButtonSelector = '.dex-btn.theme-btn-provider';
+  const authButton =
+    '//button[contains(., "Email") and contains(@class."theme-btn-provider")]';
+  console.log(`Trying to select auth method in dex`);
+  try {
+    await page.reload({
+      waitUntil: ['domcontentloaded', 'networkidle0'],
+    });
+    const [button] = await page.$x(authButton);
+    await button.click();
+
+    return Promise.all([
+      page.click(loginButtonSelector),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
+    ]);
+  } catch (err) {
+    throw new Error(`Couldn't select the 'Email' auth method`, err);
+  }
+}
+
+async function _loginViaDexEmail(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   try {
@@ -35,7 +58,15 @@ async function _loginViaDex(page, config) {
 }
 
 async function login(page, config) {
-  await _loginViaDex(page, config);
+  let hasMultipleAuthProviders = false;
+  try {
+    await page.waitForSelector('#login');
+  } catch {
+    await _selectAuthMethod(page, config);
+  }
+
+  await _loginViaDexEmail(page, config);
+
   const headerSelector = '.fd-shellbar';
   try {
     await page.waitForSelector(headerSelector);
