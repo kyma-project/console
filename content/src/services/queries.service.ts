@@ -1,13 +1,14 @@
 import gql from 'graphql-tag';
 import createContainer from 'constate';
 import { useQuery } from '@apollo/react-hooks';
+import { ClusterAssetGroup } from '@kyma-project/common';
 
-import { ClusterDocsTopic, ClusterDocsTopics } from './types';
+import { ClusterAssetGroups } from './types';
 import { FILTER_EXTENSIONS, VIEW_CONTEXT, ROOT_GROUP } from '../constants';
 
-const extractGroups = (clusterDocsTopics: ClusterDocsTopic[]): string[] => {
+const extractGroups = (clusterAssetGroups: ClusterAssetGroup[]): string[] => {
   const groupNames: Set<string> = new Set<string>();
-  clusterDocsTopics.forEach(cdt => groupNames.add(cdt.groupName));
+  clusterAssetGroups.forEach(cdt => groupNames.add(cdt.groupName));
   return Array.from(groupNames).sort((a, b) => {
     const nameA = a.toString().toLowerCase();
     const nameB = b.toString().toLowerCase();
@@ -22,19 +23,19 @@ const extractGroups = (clusterDocsTopics: ClusterDocsTopic[]): string[] => {
   });
 };
 
-const extractDocsTopics = (
-  clusterDocsTopics?: ClusterDocsTopic[],
-): ClusterDocsTopics | undefined => {
-  if (!clusterDocsTopics) {
+const extractAssetGroups = (
+  clusterAssetGroups?: ClusterAssetGroup[],
+): ClusterAssetGroups | undefined => {
+  if (!clusterAssetGroups) {
     return undefined;
   }
 
-  const cdts: ClusterDocsTopics = {};
-  const groups = extractGroups(clusterDocsTopics);
+  const cdts: ClusterAssetGroups = {};
+  const groups = extractGroups(clusterAssetGroups);
 
   groups.forEach(group => {
-    const items: ClusterDocsTopic[] = [];
-    clusterDocsTopics.forEach(cdt => {
+    const items: ClusterAssetGroup[] = [];
+    clusterAssetGroups.forEach(cdt => {
       if (cdt.groupName === group) {
         items.push(cdt);
       }
@@ -45,12 +46,12 @@ const extractDocsTopics = (
 };
 
 const CLUSTER_DOCS_TOPICS = gql`
-  query clusterDocsTopics(
+  query clusterAssetGroups(
     $viewContext: String
     $groupName: String
     $filterExtensions: [String!]
   ) {
-    clusterDocsTopics(viewContext: $viewContext, groupName: $groupName) {
+    clusterAssetGroups(viewContext: $viewContext, groupName: $groupName) {
       name
       displayName
       description
@@ -69,7 +70,7 @@ const CLUSTER_DOCS_TOPICS = gql`
 `;
 
 interface QData {
-  clusterDocsTopics: ClusterDocsTopic[];
+  clusterAssetGroups: ClusterAssetGroup[];
 }
 
 interface QVars {
@@ -84,10 +85,12 @@ const useQueries = () => {
       viewContext: VIEW_CONTEXT,
     },
   });
-  const docsTopics = extractDocsTopics(data && data.clusterDocsTopics);
+  const clusterAssetGroups = extractAssetGroups(
+    data && data.clusterAssetGroups,
+  );
 
   return {
-    docsTopics,
+    clusterAssetGroups,
     error,
     loading,
   };

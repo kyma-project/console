@@ -22,11 +22,11 @@ const plansQGL = `
   externalName
 `;
 
-const docsTopic = `
-      name
-      groupName
-      displayName
-      description
+const assetGroupQGL = `
+  name
+  groupName
+  displayName
+  description
 `;
 
 export const getServiceClass = gql`
@@ -45,7 +45,7 @@ export const getServiceClass = gql`
       }
       activated(namespace: $namespace)
       clusterDocsTopic {
-        ${docsTopic}
+        ${clusterAssetGroup}
           assets {
              name
              metadata
@@ -73,8 +73,8 @@ export const getServiceClass = gql`
         }
       }
       activated
-      docsTopic {
-         ${docsTopic}
+      assetGroup {
+         ${assetGroupQGL}
           assets {
              name
              metadata
@@ -85,8 +85,8 @@ export const getServiceClass = gql`
           }
         } 
       }
-      clusterDocsTopic{
-        ${docsTopic}
+      clusterAssetGroup {
+        ${assetGroupQGL}
           assets {
              name
              metadata
