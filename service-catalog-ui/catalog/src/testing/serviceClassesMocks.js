@@ -72,7 +72,7 @@ const serviceClass2 = {
 
 const clusterServiceClassDetails = {
   activated: false,
-  clusterDocsTopic: {
+  clusterAssetGroup: {
     assets: [
       {
         name:
@@ -102,11 +102,11 @@ const clusterServiceClassDetails = {
         __typename: 'ClusterAsset',
       },
     ],
-    description: 'Description clusterDocsTopic',
+    description: 'Description clusterAssetGroup',
     displayName: clusterServiceClass1Name,
     groupName: '',
     name: clusterServiceClass1Name,
-    __typename: 'ClusterDocsTopic',
+    __typename: 'ClusterAssetGroup',
   },
   creationTimestamp: 1572525371,
   description: 'Description',
@@ -147,7 +147,7 @@ const clusterServiceClassDetails = {
 
 const clusterServiceClassDetailsNoPlanSpec = {
   activated: false,
-  clusterDocsTopic: {
+  clusterAssetGroup: {
     assets: [
       {
         name:
@@ -177,11 +177,11 @@ const clusterServiceClassDetailsNoPlanSpec = {
         __typename: 'ClusterAsset',
       },
     ],
-    description: 'Description clusterDocsTopic',
+    description: 'Description clusterAssetGroup',
     displayName: clusterServiceClass1Name,
     groupName: '',
     name: clusterServiceClass1Name,
-    __typename: 'ClusterDocsTopic',
+    __typename: 'ClusterAssetGroup',
   },
   creationTimestamp: 1572525371,
   description: 'Description',

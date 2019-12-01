@@ -19,7 +19,7 @@ const serviceInstance1 = {
     documentationUrl: 'https://example.com/docs',
     supportUrl: 'https://example.com/support',
     labels: { experimental: 'true', local: 'true' },
-    clusterDocsTopic: {
+    clusterAssetGroup: {
       name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
       groupName: '',
       displayName: 'Documentation for sth',
@@ -40,7 +40,7 @@ const serviceInstance1 = {
           __typename: 'ClusterAsset',
         },
       ],
-      __typename: 'ClusterDocsTopic',
+      __typename: 'ClusterAssetGroup',
     },
     __typename: 'ClusterServiceClass',
   },
@@ -161,7 +161,7 @@ const serviceInstance2 = {
     documentationUrl: '',
     supportUrl: '',
     labels: { local: 'true', showcase: 'true' },
-    clusterDocsTopic: {
+    clusterAssetGroup: {
       name: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
       groupName: '',
       displayName: 'Documentation for testing-0.0.1',
@@ -255,7 +255,7 @@ const serviceInstance2 = {
           __typename: 'ClusterAsset',
         },
       ],
-      __typename: 'ClusterDocsTopic',
+      __typename: 'ClusterAssetGroup',
     },
     __typename: 'ClusterServiceClass',
   },
@@ -306,7 +306,7 @@ const serviceInstance3 = {
     documentationUrl: '',
     supportUrl: '',
     labels: { showcase: 'true' },
-    clusterDocsTopic: {
+    clusterAssetGroup: {
       name: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
       groupName: '',
       displayName: 'Documentation for testing-0.0.1',
@@ -400,7 +400,7 @@ const serviceInstance3 = {
           __typename: 'ClusterAsset',
         },
       ],
-      __typename: 'ClusterDocsTopic',
+      __typename: 'ClusterAssetGroup',
     },
     __typename: 'ClusterServiceClass',
   },

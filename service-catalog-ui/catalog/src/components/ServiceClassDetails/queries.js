@@ -27,6 +27,15 @@ const assetGroupQGL = `
   groupName
   displayName
   description
+  assets {
+    name
+    metadata
+    type
+    files(filterExtensions: $filterExtensions) {
+      url
+      metadata
+    }
+  }
 `;
 
 export const getServiceClass = gql`
@@ -44,19 +53,9 @@ export const getServiceClass = gql`
         }
       }
       activated(namespace: $namespace)
-      clusterDocsTopic {
-        ${clusterAssetGroup}
-          assets {
-             name
-             metadata
-             type
-             files(filterExtensions: $filterExtensions){
-              url
-              metadata
-          }
-        } 
+      clusterAssetGroup {
+        ${assetGroupQGL} 
       }
-     
     }
     serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
@@ -74,30 +73,11 @@ export const getServiceClass = gql`
       }
       activated
       assetGroup {
-         ${assetGroupQGL}
-          assets {
-             name
-             metadata
-             type
-             files(filterExtensions: $filterExtensions){
-              url
-              metadata
-          }
-        } 
+        ${assetGroupQGL} 
       }
       clusterAssetGroup {
-        ${assetGroupQGL}
-          assets {
-             name
-             metadata
-             type
-             files(filterExtensions: $filterExtensions){
-              url
-              metadata
-          }
-        } 
+        ${assetGroupQGL} 
       }
- 
     }
   }
 `;
