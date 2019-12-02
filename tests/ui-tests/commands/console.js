@@ -21,6 +21,8 @@ async function _selectAuthMethod(page, config) {
     });
     const [button] = await page.$x(authButton);
 
+    console.log('button:', button);
+
     return Promise.all([
       await button.click(),
       page.waitForNavigation({
@@ -28,6 +30,7 @@ async function _selectAuthMethod(page, config) {
       }),
     ]);
   } catch (err) {
+    console.error(err);
     throw new Error(`Couldn't select the 'Email' auth method`, err);
   }
 }
