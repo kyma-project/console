@@ -20,10 +20,9 @@ async function _selectAuthMethod(page, config) {
       waitUntil: ['domcontentloaded', 'networkidle0'],
     });
     const [button] = await page.$x(authButton);
-    await button.click();
 
     return Promise.all([
-      page.click(loginButtonSelector),
+      await button.click(),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
