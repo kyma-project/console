@@ -13,25 +13,31 @@ async function testLogin(page) {
 
 async function _selectAuthMethod(page, config) {
   //const loginButtonSelector = '.dex-btn.theme-btn-provider';
-  const authButton = "//button[contains(text(), 'Email')]";
+  //const authButton = "//button[contains(text(), 'Email')]";
+  const authButton = '.dex-btn-icon--local';
   console.log(`Trying to select auth method in dex`);
   try {
     await page.reload({
       waitUntil: ['domcontentloaded', 'networkidle0'],
     });
-    const [button] = await page.$x(authButton);
 
-    console.log('button:', button);
+    const example = await page.$(authButton); // Element
+    const example_parent = (await example.$x('..'))[0]; // Element Parent
+    //const [button] = await page.$x(authButton);
+
+    console.log('button:', example_parent);
 
     return Promise.all([
-      await button.click(),
+      //  await button.click(),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
     ]);
   } catch (err) {
     console.error(err);
-    throw new Error(`Couldn't select the 'Email' auth method`, err);
+    throw new Error(
+      `Couldn't select the 'Email' auth method. The error is above ^`,
+    );
   }
 }
 
