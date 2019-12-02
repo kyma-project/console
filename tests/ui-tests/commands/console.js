@@ -28,7 +28,7 @@ async function _selectAuthMethod(page, config) {
     console.log('button:', example_parent);
 
     return Promise.all([
-      //  await button.click(),
+      await example_parent.click(),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
