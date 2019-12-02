@@ -1,11 +1,12 @@
 import { serviceInstanceConstants } from '../../variables';
+import { isAddon, isService } from '../../commons/helpers';
 
-const determineDisplayedInstances = (
+function determineDisplayedInstances(
   serviceInstances,
   tabIndex,
   searchQuery,
   activeLabels,
-) => {
+) {
   const searched = serviceInstances.filter(instance =>
     new RegExp(searchQuery, 'i').test(instance.name),
   );
@@ -14,28 +15,15 @@ const determineDisplayedInstances = (
     activeLabels.every(activeLabel => instance.labels.includes(activeLabel)),
   );
 
-  let filteredByTab = [];
-  if (tabIndex === serviceInstanceConstants.addonsIndex) {
-    filteredByTab = filteredByLabels.filter(instance => {
-      if (instance.clusterServiceClass && instance.clusterServiceClass.labels) {
-        return instance.clusterServiceClass.labels.local === 'true';
-      }
-      return false;
-    });
-  }
-  if (tabIndex === serviceInstanceConstants.servicesIndex) {
-    filteredByTab = filteredByLabels.filter(instance => {
-      if (instance.clusterServiceClass && instance.clusterServiceClass.labels) {
-        return instance.clusterServiceClass.labels.local !== 'true';
-      }
-      return true;
-    });
-  }
+  const filterFunction =
+    tabIndex === serviceInstanceConstants.addonsIndex ? isAddon : isService;
+
+  const filteredByTab = filteredByLabels.filter(filterFunction);
 
   return filteredByTab;
-};
+}
 
-const determineAvailableLabels = (serviceInstances, tabName, searchQuery) => {
+function determineAvailableLabels(serviceInstances, tabName, searchQuery) {
   const displayedInstances = determineDisplayedInstances(
     serviceInstances,
     tabName,
@@ -63,6 +51,6 @@ const determineAvailableLabels = (serviceInstances, tabName, searchQuery) => {
   });
 
   return labelsWithOccurrences;
-};
+}
 
 export { determineAvailableLabels, determineDisplayedInstances };

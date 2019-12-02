@@ -12,7 +12,7 @@ import { createMockLink } from '../../../testing/apollo';
 import { componentUpdate } from '../../../testing';
 import { serviceInstanceConstants } from '../../../variables';
 
-import ServiceInstanceHeader from '../ServiceInstanceHeader/ServiceInstanceHeader.component';
+import ServiceInstanceHeader from '../ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceBindings from '../ServiceInstanceBindings/ServiceInstanceBindings.container';
 import NotificationContext from '../../../contexts/NotificationContext/NotificationContext';
 
@@ -24,29 +24,24 @@ jest.mock('@kyma-project/generic-documentation', () => {
   return <div>GENERIC DOCUMENTATION COMPONENT</div>;
 });
 
-jest.mock('@kyma-project/luigi-client', () => {
-  return {
-    linkManager: function() {
-      return {
-        fromContext: function() {
-          return {
-            navigate: mockNavigate,
-          };
-        },
-      };
-    },
-    getNodeParams: function() {
-      return {
-        selectedTab: 'addons',
-      };
-    },
-    uxManager: function() {
-      return {
-        addBackdrop: mockAddBackdrop,
-        removeBackdrop: mockRemoveBackdrop,
-      };
-    },
-  };
+jest.mock('@kyma-project/luigi-client', () => ({
+  linkManager: () => ({
+    fromContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  getNodeParams: () => ({
+    selectedTab: 'addons',
+  }),
+  uxManager: () => ({
+    addBackdrop: mockAddBackdrop,
+    removeBackdrop: mockRemoveBackdrop,
+  }),
+}));
+
+const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
+afterAll(() => {
+  consoleWarn.mockReset();
 });
 
 describe('Instance Details UI', () => {
@@ -58,7 +53,7 @@ describe('Instance Details UI', () => {
         <ServiceInstanceDetails
           match={{
             params: {
-              name: 'redis-motherly-deposit',
+              name: 'sth-motherly-deposit',
             },
           }}
         />
@@ -80,7 +75,7 @@ describe('Instance Details UI', () => {
         <ServiceInstanceDetails
           match={{
             params: {
-              name: 'redis-motherly-deposit',
+              name: 'sth-motherly-deposit',
             },
           }}
         />
@@ -93,7 +88,7 @@ describe('Instance Details UI', () => {
     expect(component.find(ServiceInstanceBindings).exists()).toBe(true);
 
     const toolbar = component.find(Toolbar);
-    expect(toolbar.text()).toMatch(/redis-motherly-deposit/);
+    expect(toolbar.text()).toMatch(/sth-motherly-deposit/);
   });
 
   it('Deletes instance using delete button', async () => {
@@ -107,7 +102,7 @@ describe('Instance Details UI', () => {
         <ServiceInstanceDetails
           match={{
             params: {
-              name: 'redis-motherly-deposit',
+              name: 'sth-motherly-deposit',
             },
           }}
         />
@@ -157,7 +152,7 @@ describe('Instance Details UI', () => {
           <ServiceInstanceDetails
             match={{
               params: {
-                name: 'redis-motherly-deposit',
+                name: 'sth-motherly-deposit',
               },
             }}
           />

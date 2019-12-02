@@ -4,7 +4,11 @@ import {
 } from '../queries/queries';
 import { deleteServiceInstance } from '../queries/mutations';
 import { BINDING_CREATE_MUTATION } from '../components/ServiceInstanceDetails/ServiceInstanceBindings/mutations';
-import { serviceInstance1, serviceInstance2 } from './instanceMocks';
+import {
+  serviceInstance1,
+  serviceInstance2,
+  serviceInstance3,
+} from './instanceMocks';
 
 import builder from '../commons/builder';
 
@@ -17,7 +21,7 @@ export const allServiceInstancesQuery = {
   },
   result: {
     data: {
-      serviceInstances: [serviceInstance1, serviceInstance2],
+      serviceInstances: [serviceInstance1, serviceInstance2, serviceInstance3],
     },
   },
 };
@@ -27,7 +31,7 @@ export const serviceInstanceQuery = {
     query: getServiceInstanceDetails,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
-      name: 'redis-motherly-deposit',
+      name: 'sth-motherly-deposit',
     },
   },
   result: {
@@ -42,7 +46,7 @@ export const serviceInstanceDeleteMutation = {
     query: deleteServiceInstance,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
-      name: 'redis-motherly-deposit',
+      name: 'sth-motherly-deposit',
     },
   },
   result: jest.fn().mockReturnValue({
@@ -59,7 +63,7 @@ export const createBindingMutation = {
     query: BINDING_CREATE_MUTATION,
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
-      serviceInstanceName: 'redis-motherly-deposit',
+      serviceInstanceName: 'sth-motherly-deposit',
       parameters: {},
     },
   },

@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import {
   Panel,
-  PanelActions,
   PanelHeader,
   PanelBody,
-  PanelFooter,
   Tile,
   TileMedia,
   TileContent,
@@ -99,56 +97,6 @@ export const CardHeaderContent = styled(TileContent)`
   }
 `;
 
-export const CardIndicator = styled(PanelActions)`
-  && {
-    margin: 0;
-    margin-left: 10px;
-    align-self: flex-start;
-    font-family: '72';
-    position: relative;
-  }
-`;
-
-export const CardIndicatorGeneral = styled.div`
-  && {
-    padding: 2px 6px;
-    background-color: ${props =>
-      props.active === 'true' ? '#0a6ed1' : '#eeeeef'};
-    color: ${props => (props.active === 'true' ? '#ffffff' : '#515559')};
-    border-radius: 2px;
-    font-size: 12px;
-
-    ${props =>
-      props.provisionOnce &&
-      `
-      padding: 0;
-      width: 28px;
-      height: 28px;
-      line-height: 28px;
-      font-size: 10px;
-      text-align: center;
-      border-radius: 4px;
-
-      :before {
-        position: absolute;
-        top: 55%;
-        left: 50%;
-        font-size:16px;
-        content: '\uE010';
-        font-family: SAP-icons;
-        font-style: normal;
-        font-weight: 400;
-        text-align: center;
-        display: inline-block;
-        text-transform: none;
-        speak: none;
-        transform: scaleY(-1) translate(-50%, 50%);
-        filter: flipv;
-      }
-    `};
-  }
-`;
-
 export const CardDescription = styled(PanelBody)`
   && {
     flex: 1;
@@ -157,17 +105,4 @@ export const CardDescription = styled(PanelBody)`
     text-align: left;
     margin-bottom: 20px;
   }
-`;
-
-export const CardFooter = styled(PanelFooter)`
-  && {
-    border-top: none;
-    justify-content: flex-start;
-    padding: 0;
-  }
-`;
-
-export const CardLabelWrapper = styled.div`
-  display: inline-block;
-  margin: 8px 8px 0 0;
 `;
