@@ -6,10 +6,3 @@ Array [
   "Loading...",
 ]
 `;
-
-exports[`ConnectApplicationModal Container Modal renders valid state after loading data 1`] = `
-Array [
-  "sample token",
-  "sample connector url",
-]
-`;
