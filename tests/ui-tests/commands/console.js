@@ -11,24 +11,19 @@ async function testLogin(page) {
   await page.waitForSelector('.fd-shellbar', { visible: true });
 }
 
-async function _selectAuthMethod(page, config) {
-  //const loginButtonSelector = '.dex-btn.theme-btn-provider';
-  //const authButton = "//button[contains(text(), 'Email')]";
-  const authButton = '.dex-btn-icon--local';
+async function _selectAuthMethod(page) {
+  const authTextSelector = '.dex-btn-icon--local';
   console.log(`Trying to select auth method in dex`);
   try {
     await page.reload({
       waitUntil: ['domcontentloaded', 'networkidle0'],
     });
 
-    const example = await page.$(authButton); // Element
-    const example_parent = (await example.$x('..'))[0]; // Element Parent
-    //const [button] = await page.$x(authButton);
-
-    console.log('button:', example_parent);
+    const authText = await page.$(authTextSelector);
+    const authButton = (await authText.$x('..'))[0]; // parent of authText
 
     return Promise.all([
-      await example_parent.click(),
+      await authButton.click(),
       page.waitForNavigation({
         waitUntil: ['domcontentloaded', 'networkidle0'],
       }),
@@ -67,9 +62,10 @@ async function _loginViaDexEmail(page, config) {
 async function login(page, config) {
   try {
     await page.waitForSelector('#login');
-    console.log();
+    console.log('One auth method detected. Fill form and continue logging-in.');
   } catch (e) {
-    await _selectAuthMethod(page, config);
+    console.log('Multiple auth methods detected.');
+    await _selectAuthMethod(page);
   }
 
   await _loginViaDexEmail(page, config);
