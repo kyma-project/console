@@ -21,8 +21,6 @@ export default function SearchInput({
   const searchInputRef = React.useRef();
 
   const renderSearchList = entries => {
-    console.log('SearchInput entries:', entries);
-    return null;
     const suggestions = getSearchSuggestions(entries);
 
     if (!suggestions.length) {

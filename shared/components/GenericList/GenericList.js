@@ -109,7 +109,7 @@ export const GenericList = ({
 };
 
 GenericList.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   description: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object),
   headerRenderer: PropTypes.func.isRequired,
@@ -125,4 +125,5 @@ GenericList.propTypes = {
 
 GenericList.defaultProps = {
   showSearchField: true,
+  textSearchProperties: ['name', 'description'],
 };
