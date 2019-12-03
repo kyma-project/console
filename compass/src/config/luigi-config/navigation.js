@@ -34,7 +34,7 @@ const navigation = {
           context: {
             idToken: token,
             tenantName: ':tenantName',
-            defaultTenatnId: window.clusterConfig.defaultTenant,
+            defaultTenantId: window.clusterConfig.defaultTenant,
             tenants: window.clusterConfig.tenants,
           },
           children: [
