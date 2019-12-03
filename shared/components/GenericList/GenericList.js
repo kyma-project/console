@@ -64,8 +64,7 @@ export const GenericList = ({
   }, [searchQuery, setFilteredEntries, entries]);
 
   const headerActions = (
-    <>
-      {extraHeaderContent}
+    <section className="generic-list__search">
       {showSearchField && (
         <SearchInput
           searchQuery={searchQuery}
@@ -74,7 +73,8 @@ export const GenericList = ({
           suggestionProperties={textSearchProperties}
         />
       )}
-    </>
+      {extraHeaderContent}
+    </section>
   );
 
   return (

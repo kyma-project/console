@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from '@kyma-project/react-components';
 
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
 import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.container';
@@ -28,12 +27,7 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
   return (
     <RuntimeQueryContext.Provider value={runtimeQuery}>
       <RuntimeDetailsHeader runtime={runtime} deleteRuntime={deleteRuntime} />
-
-      <section className="fd-section">
-        <Panel>
-          <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
-        </Panel>
-      </section>
+      <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
     </RuntimeQueryContext.Provider>
   );
 };
