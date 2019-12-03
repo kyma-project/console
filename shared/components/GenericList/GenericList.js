@@ -13,6 +13,7 @@ import {
 
 import { filterEntries } from './helpers';
 import { renderActionElement } from './internalRenderers';
+import ListActions from './ListActions/ListActions';
 
 export const GenericList = ({
   entries,
@@ -47,6 +48,7 @@ export const GenericList = ({
       return [
         ...rowRenderer(entry),
         // renderActionElement(actions, entry),
+        <ListActions actions={actions} entry={entry} />,
       ];
     } else {
       return rowRenderer(entry);
@@ -60,19 +62,6 @@ export const GenericList = ({
       );
     }
   }, [searchQuery, setFilteredEntries, entries]);
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (!_.isEqual(nextProps.entries, prevState.entries)) {
-  //     return {
-  //       filteredEntries: filterEntries(
-  //         nextProps.entries,
-  //         prevState.searchQuery,
-  //       ),
-  //       entries: nextProps.entries,
-  //     };
-  //   }
-  //   return null;
-  // }
 
   const headerActions = (
     <>
@@ -107,6 +96,8 @@ export const GenericList = ({
     </Panel>
   );
 };
+
+GenericList.Actions = ListActions;
 
 GenericList.propTypes = {
   title: PropTypes.string,
