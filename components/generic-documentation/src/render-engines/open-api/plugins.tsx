@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   ModelsExtended,
-  ModelCollapseExtended,
-  OperationTagExtended,
-  SchemesWrapperExtended,
+  // ModelCollapseExtended,
+  // OperationTagExtended,
+  // SchemesWrapperExtended,
 } from './components';
 
 const plugin = {
@@ -17,10 +17,10 @@ const plugin = {
     authorizeBtn: () => () => null,
     authorizeOperationBtn: () => () => null,
     info: () => () => null,
-    Col: SchemesWrapperExtended,
+    // Col: SchemesWrapperExtended,
     Models: ModelsExtended,
-    ModelCollapse: ModelCollapseExtended,
-    OperationTag: OperationTagExtended,
+    // ModelCollapse: ModelCollapseExtended,
+    // OperationTag: OperationTagExtended,
   },
 };
 
