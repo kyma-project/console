@@ -71,9 +71,13 @@ describe('MultiChoiceList', () => {
     const dropdownControl = component.findWhere(
       t => t.text() === 'Choose items...' && t.type() == 'button',
     );
+
     dropdownControl.simulate('click');
 
-    const nonSelectedItemTexts = component.find(Menu).text();
+    const nonSelectedItemTexts = component
+      .find(Menu)
+      .find('li')
+      .map(node => node.text());
     expect(nonSelectedItemTexts).toMatchSnapshot();
   });
 
@@ -98,7 +102,10 @@ describe('MultiChoiceList', () => {
     );
     dropdownControl.simulate('click');
 
-    const nonSelectedItemTexts = component.find(Menu).text();
+    const nonSelectedItemTexts = component
+      .find(Menu)
+      .find('li')
+      .map(node => node.text());
     expect(nonSelectedItemTexts).toMatchSnapshot();
   });
 

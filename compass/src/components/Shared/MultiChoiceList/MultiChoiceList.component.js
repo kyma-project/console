@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon } from '@kyma-project/react-components';
 import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
 import './style.scss';
 
@@ -67,9 +66,9 @@ export default function MultiChoiceList({
               option="light"
               type="negative"
               onClick={() => unselectItem(item)}
-            >
-              <Icon size="l" glyph="decline" />
-            </Button>
+              size="l"
+              glyph="decline"
+            />
           </li>
         ))}
       </ul>
@@ -84,20 +83,17 @@ export default function MultiChoiceList({
     }
 
     const nonChoosenItemsList = currentlyNonSelectedItems.map(item => (
-      <Menu.Item
-        key={getDisplayName(item)}
-        onClick={() => {
-          selectItem(item);
-        }}
-      >
-        <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
-      </Menu.Item>
+      <Menu className="multi-choice-list__non-selected">
+        <Menu.Item key={getDisplayName(item)} onClick={() => selectItem(item)}>
+          <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
+        </Menu.Item>
+      </Menu>
     ));
 
     return (
       <Dropdown>
         <Popover
-          body={<Menu>{nonChoosenItemsList}</Menu>}
+          body={nonChoosenItemsList}
           control={
             <Button
               className="fd-dropdown__control"

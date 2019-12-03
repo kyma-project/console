@@ -11,16 +11,8 @@
 }
 
 .multi-choice-list-modal__body {
-  .fd-popover {
+  .fd-popover, .fd-popper__body {
     width: 100%;
-  }
-  
-  .fd-popper__body {
-    width: 100%;
-  
-    & > li {
-      list-style-type: none;
-    }
   }
   
   .fd-dropdown {
@@ -44,7 +36,6 @@
   }
 }
 
-// todo na obrazie
-// li {
-//   list-style-type: none;
-// }
+.multi-choice-list__non-selected {
+  list-style-type: none;
+}

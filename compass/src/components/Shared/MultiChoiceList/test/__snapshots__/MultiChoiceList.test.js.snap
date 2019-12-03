@@ -34,8 +34,17 @@ exports[`MultiChoiceList Renders empty list with default caption props 1`] = `
 
 exports[`MultiChoiceList Renders two lists of object items 1`] = `"choosen 1choosen 2"`;
 
-exports[`MultiChoiceList Renders two lists of object items 2`] = `"non-choosen 1"`;
+exports[`MultiChoiceList Renders two lists of object items 2`] = `
+Array [
+  "non-choosen 1",
+]
+`;
 
 exports[`MultiChoiceList Renders two lists of simple items 1`] = `"choosen 1choosen 2choosen 3"`;
 
-exports[`MultiChoiceList Renders two lists of simple items 2`] = `"non-choosen 1non-choosen 2"`;
+exports[`MultiChoiceList Renders two lists of simple items 2`] = `
+Array [
+  "non-choosen 1",
+  "non-choosen 2",
+]
+`;
