@@ -1,17 +1,21 @@
 import React from 'react';
 import { Popover, Menu, Button, Icon } from 'fundamental-react';
 
-const StandaloneAction = ({ action }) => {
-  const props = {
-    handler: entry => action.handler(entry),
-    className: 'generic-list-actions__standalone',
-  };
+const AUTO_ICONS_BY_NAME = new Map([['Edit', 'edit'], ['Delete', 'delete']]);
 
-  if (action.icon) {
-    return <Button glyph={action.icon} {...props} />;
-  } else {
-    return <Button {...props}>{action.name}</Button>;
-  }
+const StandaloneAction = ({ action }) => {
+  const icon = action.icon || AUTO_ICONS_BY_NAME.get(action.name);
+
+  return (
+    <Button
+      onClick={entry => action.handler(entry)}
+      className="generic-list-actions__standalone"
+      option="light"
+      glyph={icon}
+    >
+      {icon ? '' : action.name}
+    </Button>
+  );
 };
 
 const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
@@ -19,11 +23,30 @@ const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
     return null;
   }
 
+  const listItems = actions.slice(standaloneItems, actions.length);
+
   return (
     <div className="generic-list-actions">
-      {actions.map(a => (
-        <StandaloneAction action={a} entry={entry} />
+      {actions.slice(0, standaloneItems).map(a => (
+        <StandaloneAction key={a.name} action={a} entry={entry} />
       ))}
+      {listItems.length ? (
+        <Popover
+          body={
+            <Menu>
+              <Menu.List>
+                {listItems.map(a => (
+                  <Menu.Item onClick={() => a.handler(entry)} key={a.name}>
+                    {a.name}
+                  </Menu.Item>
+                ))}
+              </Menu.List>
+            </Menu>
+          }
+          control={<Button glyph="vertical-grip" option="light" />}
+          placement="bottom-end"
+        />
+      ) : null}
     </div>
   );
 };
