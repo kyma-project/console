@@ -12,7 +12,7 @@ import {
 } from '@kyma-project/react-components';
 
 import { filterEntries } from './helpers';
-import { renderActionElement } from './internalRenderers';
+
 import ListActions from './ListActions/ListActions';
 
 export const GenericList = ({
@@ -78,12 +78,11 @@ export const GenericList = ({
   );
 
   return (
-    <Panel className="fd-panel--no-background">
-      <TableWithActionsToolbar
-        title={title}
-        description={description}
-        children={headerActions}
-      />
+    <Panel className="fd-has-margin-m generic-list">
+      <Panel.Header className="fd-has-padding-xs">
+        <Panel.Head title={title} />
+        {headerActions}
+      </Panel.Header>
 
       <Panel.Body>
         <TableWithActionsList
