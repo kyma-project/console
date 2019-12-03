@@ -1,5 +1,5 @@
 import React from 'react';
-import { bootstrap, BackendModules } from '@kyma-project/common';
+import { bootstrap } from '@kyma-project/common';
 
 import { HttpServiceProvider } from './services/httpService';
 import { QueryTransformServiceProvider } from './services/queryTransformService';
