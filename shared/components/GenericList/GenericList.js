@@ -82,6 +82,7 @@ export const GenericList = ({
           searchQuery={searchQuery}
           filteredEntries={filteredEntries}
           handleQueryChange={setSearchQuery}
+          suggestionProperties={textSearchProperties}
         />
       )}
     </>
