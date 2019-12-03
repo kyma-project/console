@@ -24,6 +24,7 @@ export const GenericList = ({
   notFoundMessage,
   extraHeaderContent,
   showSearchField,
+  textSearchProperties,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,8 +54,12 @@ export const GenericList = ({
   };
 
   useEffect(() => {
-    setFilteredEntries(filterEntries, searchQuery);
-  }, [searchQuery, setFilteredEntries]);
+    if (entries && entries.length) {
+      setFilteredEntries(
+        filterEntries([...entries], searchQuery, textSearchProperties),
+      );
+    }
+  }, [searchQuery, setFilteredEntries, entries]);
 
   // static getDerivedStateFromProps(nextProps, prevState) {
   //   if (!_.isEqual(nextProps.entries, prevState.entries)) {
@@ -114,6 +119,7 @@ GenericList.propTypes = {
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
   notFoundMessage: PropTypes.string,
+  textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
 GenericList.defaultProps = {
