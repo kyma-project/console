@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import 'brace/mode/yaml';
-import 'brace/mode/json';
-import 'brace/theme/github';
-
 import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
@@ -89,8 +85,8 @@ const ApiDetails = ({
 };
 
 ApiDetails.propTypes = {
-  apiId: PropTypes.string.isRequired,
-  eventApiId: PropTypes.string.isRequired,
+  apiId: PropTypes.string,
+  eventApiId: PropTypes.string,
   applicationId: PropTypes.string.isRequired,
 };
 
