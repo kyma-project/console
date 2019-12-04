@@ -1,3 +1,11 @@
+export const POLL_INTERVAL = 4000;
+
+export const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
+export const createInstanceButtonText = {
+  provisionOnlyOnce: 'Add once',
+  provisionOnlyOnceActive: 'Added once',
+  standard: 'Add',
+};
 export const serviceClassConstants = {
   addons: 'Add-Ons',
   addonsDescription:
@@ -13,6 +21,16 @@ export const serviceClassConstants = {
     'Enrich your experience with additional services that are installed outside the cluster.',
   servicesTooltipDescription: 'Enrich your experience with additional services',
   title: 'Service Catalog',
+
+  noClassText: "Such a Service Class doesn't exist in this Namespace",
+  errorServiceClassesList:
+    'An error occurred while loading Service Classes List',
+  errorServiceClassDetails:
+    'An error occurred while loading Service Classes List',
+
+  //service class list tabs indices
+  addonsIndex: 0,
+  servicesIndex: 1,
 };
 
 export const serviceClassTabs = {

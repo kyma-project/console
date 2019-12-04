@@ -1,8 +1,8 @@
 const serviceInstance1 = {
-  name: 'redis-motherly-deposit',
+  name: 'sth-motherly-deposit',
   namespace: 'default',
   planSpec: { imagePullPolicy: 'IfNotPresent' },
-  labels: [],
+  labels: ['label1', 'label2'],
   bindable: true,
   status: {
     type: 'RUNNING',
@@ -12,17 +12,17 @@ const serviceInstance1 = {
   serviceClass: null,
   clusterServiceClass: {
     name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
-    displayName: '[Experimental] Redis',
-    externalName: 'redis',
+    displayName: 'Sth.',
+    externalName: 'sth',
     description:
-      '[Experimental] Redis by Helm Broker. This is an example add-on. It is not recommended for production scenarios.',
-    documentationUrl: 'https://github.com/bitnami/bitnami-docker-redis',
-    supportUrl: 'https://bitnami.com/support',
+      'Sth by Helm Broker. This is an example add-on. It is not recommended for production scenarios.',
+    documentationUrl: 'https://example.com/docs',
+    supportUrl: 'https://example.com/support',
     labels: { experimental: 'true', local: 'true' },
     clusterDocsTopic: {
       name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
       groupName: '',
-      displayName: 'Documentation for redis',
+      displayName: 'Documentation for sth',
       description: 'Overall documentation',
       assets: [
         {
@@ -32,24 +32,8 @@ const serviceInstance1 = {
           type: 'markdown',
           files: [
             {
-              url:
-                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/meta.yaml',
+              url: 'https://example.com/docs.yaml',
               metadata: null,
-              __typename: 'File',
-            },
-            {
-              url:
-                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/overview.md',
-              metadata: { title: 'Overview', type: 'Overview' },
-              __typename: 'File',
-            },
-            {
-              url:
-                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss/docs/plans-details.md',
-              metadata: {
-                title: 'Services and Plans',
-                type: 'Details',
-              },
               __typename: 'File',
             },
           ],
@@ -92,14 +76,13 @@ const serviceInstance1 = {
           name: 'eloquent-visvesvaraya',
           data: {
             HOST:
-              'hb-redis-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-redis.default.svc.cluster.local',
+              'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth.default.svc.cluster.local',
             PORT: '6379',
-            REDIS_PASSWORD: 'JdZVEax5Hr',
           },
           namespace: 'default',
           __typename: 'Secret',
         },
-        serviceInstanceName: 'redis-motherly-deposit',
+        serviceInstanceName: 'sth-motherly-deposit',
         status: {
           type: 'READY',
           reason: 'InjectedBindResult',
@@ -124,14 +107,13 @@ const serviceInstance1 = {
       namespace: 'default',
       serviceBinding: {
         name: 'eloquent-visvesvaraya',
-        serviceInstanceName: 'redis-motherly-deposit',
+        serviceInstanceName: 'sth-motherly-deposit',
         secret: {
           name: 'eloquent-visvesvaraya',
           data: {
             HOST:
-              'hb-redis-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-redis.default.svc.cluster.local',
+              'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth.default.svc.cluster.local',
             PORT: '6379',
-            REDIS_PASSWORD: 'JdZVEax5Hr',
           },
           __typename: 'Secret',
         },
@@ -144,7 +126,7 @@ const serviceInstance1 = {
         __typename: 'ServiceBindingUsageStatus',
       },
       usedBy: {
-        name: 'hb-redis-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-redis',
+        name: 'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth',
         kind: 'deployment',
         __typename: 'LocalObjectReference',
       },
@@ -162,7 +144,7 @@ const serviceInstance2 = {
   name: 'testing-curly-tax',
   namespace: 'default',
   planSpec: {},
-  labels: [],
+  labels: ['label2'],
   bindable: false,
   status: {
     type: 'RUNNING',
@@ -303,4 +285,149 @@ const serviceInstance2 = {
   __typename: 'ServiceInstance',
 };
 
-export { serviceInstance1, serviceInstance2 };
+const serviceInstance3 = {
+  name: 'going-fishing',
+  namespace: 'default',
+  planSpec: {},
+  labels: ['label3'],
+  bindable: false,
+  status: {
+    type: 'RUNNING',
+    message: 'The instance was provisioned successfully',
+    __typename: 'ServiceInstanceStatus',
+  },
+  serviceClass: null,
+  clusterServiceClass: {
+    name: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
+    displayName: 'Testing addon',
+    externalName: 'testing',
+    description:
+      'A simple addon which contains a ConfigMap and a Deployment. Binding returns one value with the ConfigMap name.',
+    documentationUrl: '',
+    supportUrl: '',
+    labels: { showcase: 'true' },
+    clusterDocsTopic: {
+      name: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
+      groupName: '',
+      displayName: 'Documentation for testing-0.0.1',
+      description: 'Overall documentation',
+      assets: [
+        {
+          name:
+            'faebbe18-0a84-11e9-ab14-d663bd873d94-asyncapi-asyncapi-1bh3139eumhm1',
+          metadata: {},
+          type: 'asyncapi',
+          files: [
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-asyncapi-asyncapi-1bh3139eumhm1/docs/streetlights.yml',
+              metadata: null,
+              __typename: 'File',
+            },
+          ],
+          __typename: 'ClusterAsset',
+        },
+        {
+          name:
+            'faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75',
+          metadata: {},
+          type: 'markdown',
+          files: [
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/assets/hodor.png',
+              metadata: null,
+              __typename: 'File',
+            },
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/configuration.md',
+              metadata: { title: 'Configuration' },
+              __typename: 'File',
+            },
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/overview.md',
+              metadata: { title: 'Overview' },
+              __typename: 'File',
+            },
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/plans-details.md',
+              metadata: { title: 'Services and Plans' },
+              __typename: 'File',
+            },
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/tutorial-deployment.md',
+              metadata: {
+                title: 'Sample Hodor deployment',
+                type: 'Tutorials',
+              },
+              __typename: 'File',
+            },
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/tutorial-publish.md',
+              metadata: {
+                title: 'Publish Hodor image',
+                type: 'Tutorials',
+              },
+              __typename: 'File',
+            },
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75/docs/tutorial.md',
+              metadata: { title: 'Tutorial', type: 'Details' },
+              __typename: 'File',
+            },
+          ],
+          __typename: 'ClusterAsset',
+        },
+        {
+          name:
+            'faebbe18-0a84-11e9-ab14-d663bd873d94-openapi-openapi-1bh3139gtjqs4',
+          metadata: {},
+          type: 'openapi',
+          files: [
+            {
+              url:
+                'https://minio.kyma.local/cms-public-1bh0bsi3h986i-1bh0bsi4uv44e/faebbe18-0a84-11e9-ab14-d663bd873d94-openapi-openapi-1bh3139gtjqs4/docs/swagger.json',
+              metadata: null,
+              __typename: 'File',
+            },
+          ],
+          __typename: 'ClusterAsset',
+        },
+      ],
+      __typename: 'ClusterDocsTopic',
+    },
+    __typename: 'ClusterServiceClass',
+  },
+  servicePlan: null,
+  clusterServicePlan: {
+    name: '631dae68-98e1-4e45-b79f-1036ca5b29cb',
+    displayName: 'Minimal',
+    externalName: 'minimal',
+    description: 'Minimal plan which contains only necessary parameters.',
+    instanceCreateParameterSchema: null,
+    bindingCreateParameterSchema: null,
+    relatedClusterServiceClassName: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
+    __typename: 'ClusterServicePlan',
+  },
+  serviceBindings: {
+    items: [],
+    stats: {
+      ready: 0,
+      failed: 0,
+      pending: 0,
+      unknown: 0,
+      __typename: 'ServiceBindingsStats',
+    },
+    __typename: 'ServiceBindings',
+  },
+  serviceBindingUsages: [],
+  __typename: 'ServiceInstance',
+};
+
+export { serviceInstance1, serviceInstance2, serviceInstance3 };

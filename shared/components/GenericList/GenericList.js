@@ -80,7 +80,7 @@ export class GenericList extends React.Component {
     } = this.props;
 
     const headerActions = (
-      <section>
+      <section className="generic-list__search">
         {showSearchField && (
           <SearchInput
             searchQuery={searchQuery}

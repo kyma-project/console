@@ -2,17 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App.container';
-import { ApolloProvider } from 'react-apollo';
-import builder from './commons/builder';
-import { createApolloClient } from './store';
+import { ApplicationContextProvider } from 'react-shared';
+import { ApolloClientProvider } from './ApolloClientProvider';
 
 (async () => {
-  await builder.init();
-  const client = createApolloClient();
   ReactDOM.render(
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>,
+    <ApplicationContextProvider>
+      <ApolloClientProvider>
+        <App />
+      </ApolloClientProvider>
+    </ApplicationContextProvider>,
     document.getElementById('root'),
   );
 })();

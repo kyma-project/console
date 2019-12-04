@@ -42,7 +42,7 @@ export class LambdasEntryRendererComponent extends AbstractTableEntryRendererCom
 
   ngOnInit() {
     this.showMetricsColumn = this.luigiClientService.hasBackendModule('grafana');
-    const lokiInstalled = this.luigiClientService.hasBackendModule('loki');
+    const lokiInstalled = this.luigiClientService.hasBackendModule('logging-loki');
 
     if (lokiInstalled) {
       this.actions.push({

@@ -61,49 +61,57 @@ export default function SearchInput({
   };
 
   const openSearchList = () => {
-    const inputField = searchInputRef.current;
-    if (inputField !== document.activeElement) {
+    setSearchHidden(false);
+    setImmediate(() => {
+      const inputField = searchInputRef.current;
       inputField.focus();
+    });
+  };
+
+  const checkForEscapeKey = e => {
+    const ESCAPE_KEY_CODE = 27;
+    if (e.keyCode === ESCAPE_KEY_CODE) {
+      setSearchHidden(true);
     }
   };
 
   const showControl = isSearchHidden && !searchQuery;
-
   return (
-    <div className="fd-search-input generic-list-search">
+    <section className="generic-list-search">
       <div className="fd-popover">
         <div className="fd-popover__control">
           <div className="fd-combobox-control">
             <input
               ref={searchInputRef}
               type="text"
-              className="fd-input"
-              placeholder="Search..."
               value={searchQuery}
-              onChange={e => handleQueryChange(e.target.value)}
-              onFocus={() => setSearchHidden(false)}
               onBlur={() => setSearchHidden(true)}
-              className={showControl ? 'control--close' : 'control--open'}
+              onFocus={() => setSearchHidden(false)}
+              onChange={e => handleQueryChange(e.target.value)}
+              onKeyPress={checkForEscapeKey}
+              style={{ display: showControl ? 'none' : 'initial' }}
             />
-            <button
-              className="fd-button--light sap-icon--search"
-              onClick={openSearchList}
-            />
+            {!!searchQuery && (
+              <div
+                className="fd-popover__body fd-popover__body--no-arrow"
+                aria-hidden={isSearchHidden}
+              >
+                <nav className="fd-menu">
+                  <ul className="fd-menu__list">
+                    {renderSearchList(filteredEntries)}
+                  </ul>
+                </nav>
+              </div>
+            )}
           </div>
         </div>
-        {!!searchQuery && (
-          <div
-            className="fd-popover__body fd-popover__body--no-arrow"
-            aria-hidden={isSearchHidden}
-          >
-            <nav className="fd-menu">
-              <ul className="fd-menu__list">
-                {renderSearchList(filteredEntries)}
-              </ul>
-            </nav>
-          </div>
-        )}
       </div>
-    </div>
+      {showControl && (
+        <button
+          className="fd-button--light sap-icon--search"
+          onClick={openSearchList}
+        />
+      )}
+    </section>
   );
 }

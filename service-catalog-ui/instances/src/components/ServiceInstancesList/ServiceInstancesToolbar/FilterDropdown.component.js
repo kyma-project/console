@@ -42,7 +42,7 @@ const FilterDropdown = ({
                         type="checkbox"
                         id={label}
                         name={`checkbox-name-${index}`}
-                        onClick={handleLabelClick}
+                        onChange={handleLabelClick}
                         checked={activeLabelFilters.includes(label)}
                       />
                       <FormLabel htmlFor={`checkbox-${index}`}>

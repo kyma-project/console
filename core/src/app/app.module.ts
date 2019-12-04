@@ -124,6 +124,8 @@ import { WebSocketLink } from './ws';
 import { GenericHelpersService } from './shared/services/generic-helpers.service';
 import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
 
+import * as LuigiClient from '@kyma-project/luigi-client';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -282,32 +284,41 @@ import { UrlLinkComponent } from 'shared/components/url-link/url-link.component'
 })
 export class AppModule {
   constructor(private apollo: Apollo, private httpLink: HttpLink) {
-    // Create an http link:
-    const http = httpLink.create({
-      uri: AppConfig.graphqlApiUrl
-    });
 
-    // Create a WebSocket link:
-    const ws = new WebSocketLink({
-      uri: AppConfig.subscriptionsApiUrl,
-      options: {
-        reconnect: true
+    let apolloClientInitialized = false;
+
+    LuigiClient.addContextUpdateListener(e => {
+      if(e.idToken && !apolloClientInitialized){
+        // Create an http link:
+        const http = httpLink.create({
+          uri: AppConfig.graphqlApiUrl
+        });
+
+        // Create a WebSocket link:
+        const ws = new WebSocketLink({
+          uri: AppConfig.subscriptionsApiUrl,
+          options: {
+            reconnect: true
+          }
+        });
+
+        const link = split(
+          // split based on operation type
+          ({ query }) => {
+            const definition = getMainDefinition(query);
+            return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+          },
+          ws,
+          http
+        );
+
+        apollo.create({
+          link,
+          cache: new InMemoryCache()
+        });
+
+        apolloClientInitialized = true;
       }
-    });
-
-    const link = split(
-      // split based on operation type
-      ({ query }) => {
-        const definition = getMainDefinition(query);
-        return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
-      },
-      ws,
-      http
-    );
-
-    apollo.create({
-      link,
-      cache: new InMemoryCache()
     });
   }
 }

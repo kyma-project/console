@@ -8,8 +8,6 @@
     "fundamental-react": "0.8.0-rc.4",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
-    "uuid": "^3.3.2",
-    "uuid-validate": "0.0.3",
     "xml-js": "^1.6.11"
   },
   "scripts": {

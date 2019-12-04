@@ -1,311 +1,225 @@
-import React, { Component, Fragment } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FormItem, FormLabel } from 'fundamental-react';
+import { useMutation } from '@apollo/react-hooks';
+import * as LuigiClient from '@kyma-project/luigi-client';
 
-import { Separator, Modal } from '@kyma-project/react-components';
-import LuigiClient from '@kyma-project/luigi-client';
-
-import BasicData from './BasicData.component';
 import SchemaData from './SchemaData.component';
+import { createServiceInstance } from './mutations';
 
-import { Bold } from './styled';
+import './CreateInstanceModal.scss';
+import {
+  getResourceDisplayName,
+  randomNameGenerator,
+} from '../../../commons/helpers';
 
-import builder from '../../../commons/builder';
-import { clearEmptyPropertiesInObject } from '../../../commons/helpers';
+CreateInstanceModal.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onCompleted: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
+  formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  jsonSchemaFormRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  item: PropTypes.object,
 
-class CreateInstanceModal extends Component {
-  static propTypes = {
-    serviceClass: PropTypes.object.isRequired,
-    createServiceInstance: PropTypes.func.isRequired,
-    instanceExists: PropTypes.func.isRequired,
-    sendNotification: PropTypes.func.isRequired,
-    modalOpeningComponent: PropTypes.element.isRequired,
-  };
+  checkInstanceExistQuery: PropTypes.object.isRequired,
+};
 
-  constructor(props) {
-    super(props);
-    this.state = this.getInitialState();
-
-    const { serviceClass } = props;
-
-    const plans = (serviceClass && serviceClass.plans) || [];
-    plans.forEach(plan => {
-      this.parseDefaultIntegerValues(plan);
+const parseDefaultIntegerValues = plan => {
+  const schema = (plan && plan.instanceCreateParameterSchema) || null;
+  if (schema && schema.properties) {
+    const schemaProps = schema.properties;
+    Object.keys(schemaProps).forEach(key => {
+      if (
+        schemaProps[key].default !== undefined &&
+        schemaProps[key].type === 'integer'
+      ) {
+        schemaProps[key].default = Number(schemaProps[key].default);
+      }
     });
   }
+};
 
-  parseDefaultIntegerValues = plan => {
-    const schema = (plan && plan.instanceCreateParameterSchema) || null;
-    if (schema && schema.properties) {
-      const schemaProps = schema.properties;
-      Object.keys(schemaProps).forEach(key => {
-        if (
-          schemaProps[key].default !== undefined &&
-          schemaProps[key].type === 'integer'
-        ) {
-          schemaProps[key].default = Number(schemaProps[key].default);
-        }
-      });
+const getInstanceCreateParameterSchema = (plans, currentPlan) => {
+  const schema = plans.find(e => e.name === currentPlan) || plans[0].name;
+
+  return (schema && schema.instanceCreateParameterSchema) || {};
+};
+export default function CreateInstanceModal({
+  onChange,
+  onCompleted,
+  onError,
+  formElementRef,
+  jsonSchemaFormRef,
+  item,
+  checkInstanceExistQuery,
+}) {
+  const plans = (item && item.plans) || [];
+  plans.forEach(plan => {
+    parseDefaultIntegerValues(plan);
+  });
+  const defaultName =
+    `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator();
+  const plan = plans[0].name;
+  const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
+  const [
+    instanceCreateParameterSchema,
+    setInstanceCreateParameterSchema,
+  ] = useState(getInstanceCreateParameterSchema(plans, plan));
+
+  const instanceCreateParameterSchemaExists =
+    instanceCreateParameterSchema &&
+    (instanceCreateParameterSchema.$ref ||
+      instanceCreateParameterSchema.properties);
+  const formValues = {
+    name: useRef(null),
+    plan: useRef(plan),
+    labels: useRef(null),
+  };
+
+  const [createInstance] = useMutation(createServiceInstance);
+
+  const instanceAlreadyExists = name => {
+    return checkInstanceExistQuery.serviceInstances
+      .map(instance => instance.name)
+      .includes(name);
+  };
+
+  const onFormChange = formEvent => {
+    formValues.name.current.setCustomValidity(
+      instanceAlreadyExists(formValues.name.current.value)
+        ? 'Instance with this name already exists.'
+        : '',
+    );
+    onChange(formEvent);
+  };
+  const handleChangePlan = e => {
+    const newParametersSchema = getInstanceCreateParameterSchema(
+      plans,
+      e.target.value,
+    );
+    setInstanceCreateParameterSchema(newParametersSchema);
+    setInstanceCreateParameters({});
+    if (!newParametersSchema || !newParametersSchema.length) {
+      jsonSchemaFormRef.current = null;
     }
   };
 
-  getInitialState = () => {
-    return {
-      formData: {
-        name: '',
-        label: '',
-        plan: {},
-      },
-      firstStepFilled: false,
-      creatingInstance: false,
-      instanceCreateParameters: {},
-      tooltipData: {},
-      errors: [],
-      serviceClass: this.props.serviceClass,
-    };
-  };
-
-  clearState = () => {
-    this.setState(this.getInitialState());
-  };
-
-  prepareFormData = () => {
-    const { serviceClass } = this.props;
-
-    if (!serviceClass) return;
-
-    const planName =
-      serviceClass &&
-      serviceClass.plans &&
-      serviceClass.plans[0] &&
-      serviceClass.plans[0].name;
-    this.setState({
-      formData: {
-        ...this.state.formData,
-        name: '',
-        plan: planName,
-      },
-    });
-  };
-
-  componentDidUpdate(nextProps, nextState) {
-    if (nextState && nextState.tooltipData && nextState.tooltipData.show) {
-      this.setState({
-        tooltipData: null,
-      });
-    }
-  }
-
-  refetchInstanceExists = async name => {
-    return await this.props.instanceExists(name);
-  };
-
-  onShow = () => {
-    this.prepareFormData();
-    LuigiClient.uxManager().addBackdrop();
-  };
-
-  onHide = () => {
-    LuigiClient.uxManager().removeBackdrop();
-  };
-
-  callback = data => {
-    this.setState({ ...data });
-  };
-
-  handleConfirmation = () => {
-    this.onSubmitSchemaForm();
-  };
-
-  prepareDataToCreateServiceInstance = params => {
-    const { serviceClass } = this.props;
-    const { formData, instanceCreateParameters } = this.state;
-
-    const instanceName = formData.name;
-    const currentPlan =
-      serviceClass.plans.find(e => e.name === formData.plan) ||
-      (serviceClass.plans.length && serviceClass.plans[0]);
-    const labels =
-      formData.label === ''
-        ? []
-        : formData.label
-            .replace(/\s+/g, '')
-            .toLowerCase()
-            .split(',');
-
-    clearEmptyPropertiesInObject(instanceCreateParameters);
-
-    const isClusterServiceClass =
-      serviceClass.__typename === 'ClusterServiceClass';
-
-    return {
-      name: instanceName,
-      namespace: builder.getCurrentEnvironmentId(),
-      externalServiceClassName: serviceClass.externalName,
-      externalPlanName: currentPlan && currentPlan.externalName,
-      classClusterWide: isClusterServiceClass,
-      planClusterWide: isClusterServiceClass,
-      labels,
-      parameterSchema: instanceCreateParameters,
-    };
-  };
-
-  onSubmitSchemaForm = async (params = {}) => {
-    const errors = params.errors;
-
-    if (errors && errors.length > 0) {
-      this.setState({
-        tooltipData: {
-          type: 'error',
-          title: 'Form is not valid',
-          content: errors.join(', '),
-          show: true,
-          minWidth: '261px',
-        },
-      });
-      return;
-    }
-
-    const { createServiceInstance, sendNotification } = this.props;
-    const variables = this.prepareDataToCreateServiceInstance(params);
-
-    let success = true;
-    this.setState({
-      creatingInstance: true,
-    });
+  async function handleFormSubmit(e) {
+    e.preventDefault();
     try {
-      if (typeof createServiceInstance === 'function') {
-        await createServiceInstance({
-          variables,
-        });
-      }
-      if (typeof sendNotification === 'function') {
-        sendNotification({
-          variables: {
-            type: 'success',
-            title: `Instance "${variables.name}" created successfully`,
-            color: '#359c46',
-            icon: 'accept',
-            instanceName: variables.name,
-          },
-        });
-      }
-    } catch (err) {
-      success = false;
-      this.setState({
-        tooltipData: {
-          type: 'error',
-          content: "Couldn't create an instance",
-          show: true,
-          minWidth: '261px',
-        },
+      const currentPlan =
+        plans.find(e => e.name === formValues.plan.current.value) ||
+        (plans.length && plans[0]);
+      const labels =
+        formValues.labels.current.value === ''
+          ? []
+          : formValues.labels.current.value
+              .replace(/\s+/g, '')
+              .toLowerCase()
+              .split(',');
+      const isClusterServiceClass = item.__typename === 'ClusterServiceClass';
+      const variables = {
+        name: formValues.name.current.value,
+        namespace: LuigiClient.getEventData().environmentId,
+        externalServiceClassName: item.externalName,
+        externalPlanName: currentPlan && currentPlan.externalName,
+        classClusterWide: isClusterServiceClass,
+        planClusterWide: isClusterServiceClass,
+        labels,
+        parameterSchema: instanceCreateParameters,
+      };
+
+      await createInstance({
+        variables,
       });
+      onCompleted(variables.name, `Instance created succesfully`);
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-instances/details/${variables.name}`);
+    } catch (e) {
+      onError(`The instance could not be created succesfully`, e.message || ``);
     }
-
-    this.setState({
-      creatingInstance: true,
-    });
-    if (success) {
-      this.clearState();
-      LuigiClient.uxManager().removeBackdrop();
-    }
-  };
-
-  render() {
-    const { modalOpeningComponent } = this.props;
-    const {
-      serviceClass,
-      formData,
-      firstStepFilled,
-      creatingInstance,
-      tooltipData,
-      instanceCreateParameters,
-      errors,
-    } = this.state;
-
-    const externalName = (serviceClass && serviceClass.externalName) || '';
-    const environment = builder.getCurrentEnvironmentId();
-
-    const plans = (serviceClass && serviceClass.plans) || [];
-
-    const schema = plans.find(e => e.name === formData.plan) || plans[0];
-
-    const instanceCreateParameterSchema =
-      (schema && schema.instanceCreateParameterSchema) || {};
-
-    const instanceCreateParameterSchemaExists =
-      instanceCreateParameterSchema &&
-      (instanceCreateParameterSchema.$ref ||
-        instanceCreateParameterSchema.properties);
-
-    const disabled =
-      !firstStepFilled ||
-      (instanceCreateParameterSchemaExists && errors.length > 0);
-
-    const firstStepData = {
-      formData: formData,
-      firstStepFilled: firstStepFilled,
-    };
-
-    const SecondStepData = {
-      instanceCreateParameters: instanceCreateParameters,
-    };
-
-    const content = (
-      <Fragment>
-        <BasicData
-          data={firstStepData}
-          serviceClassExternalName={externalName}
-          serviceClassPlans={plans}
-          refetchInstanceExists={this.refetchInstanceExists}
-          formData={formData}
-          serviceClass={serviceClass}
-          callback={this.callback}
-        />
-        {instanceCreateParameterSchemaExists && (
-          <Fragment>
-            <Separator margin="16px -16px" />
-            <SchemaData
-              data={SecondStepData}
-              instanceCreateParameterSchema={instanceCreateParameterSchema}
-              onSubmitSchemaForm={this.onSubmitSchemaForm}
-              planName={schema.displayName}
-              callback={this.callback}
-            />
-          </Fragment>
-        )}
-      </Fragment>
-    );
-
-    return (
-      <Modal
-        width={'681px'}
-        title={
-          <p style={{ marginRight: '25px' }}>
-            Provision the <Bold>{serviceClass.displayName}</Bold>{' '}
-            {serviceClass.__typename === 'ClusterServiceClass'
-              ? 'Cluster Service Class'
-              : 'Service Class'}{' '}
-            in the <Bold>{environment}</Bold> Namespace
-          </p>
-        }
-        type={'emphasized'}
-        modalOpeningComponent={modalOpeningComponent}
-        confirmText="Create Instance"
-        cancelText="Cancel"
-        tooltipData={tooltipData}
-        disabledConfirm={disabled}
-        onConfirm={this.handleConfirmation}
-        waiting={creatingInstance}
-        onShow={this.onShow}
-        onHide={() => {
-          this.clearState();
-          this.onHide();
-        }}
-      >
-        {content}
-      </Modal>
-    );
   }
-}
 
-export default CreateInstanceModal;
+  return (
+    <>
+      <form
+        ref={formElementRef}
+        style={{ width: '47em' }}
+        onChange={onFormChange}
+        onLoad={onFormChange}
+        onSubmit={handleFormSubmit}
+        id="createInstanceForm"
+      >
+        <FormItem>
+          <div className="grid-wrapper">
+            <div className="column">
+              <FormLabel htmlFor="instanceName">Name*</FormLabel>
+              <input
+                className="fd-form__control"
+                ref={formValues.name}
+                defaultValue={defaultName}
+                type="text"
+                id="instanceName"
+                placeholder={'Instance name'}
+                aria-required="true"
+                required
+                pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+                autoComplete="off"
+              />
+            </div>
+            <div className="column">
+              <FormLabel htmlFor="plan">Plan*</FormLabel>
+              <select
+                id="plan"
+                ref={formValues.plan}
+                defaultValue={plans[0]}
+                onChange={handleChangePlan}
+              >
+                {plans.map((p, i) => (
+                  <option key={['plan', i].join('_')} value={p.name}>
+                    {getResourceDisplayName(p)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </FormItem>
+        <FormItem>
+          <FormLabel htmlFor="labels">Labels</FormLabel>
+          <input
+            className="fd-form__control"
+            ref={formValues.labels}
+            type="text"
+            id="labels"
+            placeholder={'Separate labels with comma'}
+            aria-required="false"
+            pattern="^[a-z0-9]([a-z0-9]*)?(,\s?[a-z0-9]+)*$"
+          />
+        </FormItem>
+      </form>
+
+      {instanceCreateParameterSchemaExists && (
+        <>
+          <div className="json-schemaform-separator" />
+          <SchemaData
+            schemaFormRef={jsonSchemaFormRef}
+            data={instanceCreateParameters}
+            instanceCreateParameterSchema={instanceCreateParameterSchema}
+            planName={
+              (formValues.plan &&
+                formValues.plan.current &&
+                formValues.plan.current.value) ||
+              ''
+            }
+            onSubmitSchemaForm={() => {}}
+            callback={formData => {
+              onChange(formData);
+              setInstanceCreateParameters(formData.instanceCreateParameters);
+            }}
+          />
+        </>
+      )}
+    </>
+  );
+}

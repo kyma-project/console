@@ -8,6 +8,7 @@ import { handleDelete } from './components/GenericList/actionHandlers/simpleDele
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
+export * from './contexts/ApplicationContext';
 export {
   CustomPropTypes,
   GenericList,
