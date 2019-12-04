@@ -82,13 +82,18 @@ export default function MultiChoiceList({
       );
     }
 
-    const nonChoosenItemsList = currentlyNonSelectedItems.map(item => (
+    const nonChoosenItemsList = (
       <Menu className="multi-choice-list__non-selected">
-        <Menu.Item key={getDisplayName(item)} onClick={() => selectItem(item)}>
-          <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
-        </Menu.Item>
+        {currentlyNonSelectedItems.map(item => (
+          <Menu.Item
+            key={getDisplayName(item)}
+            onClick={() => selectItem(item)}
+          >
+            <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
+          </Menu.Item>
+        ))}
       </Menu>
-    ));
+    );
 
     return (
       <Dropdown>

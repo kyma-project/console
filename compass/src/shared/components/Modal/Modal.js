@@ -17,6 +17,7 @@ Modal.propTypes = {
   disabledConfirm: PropTypes.bool,
   waiting: PropTypes.bool,
   tooltipData: PropTypes.object,
+  className: PropTypes.string,
 };
 
 Modal.defaultProps = {
@@ -41,6 +42,7 @@ export function Modal({
   waiting,
   tooltipData,
   children,
+  className,
 }) {
   const [show, setShow] = React.useState(false);
   const onOpen = () => {
@@ -120,6 +122,7 @@ export function Modal({
     <>
       <div onClick={onOpen}>{modalOpeningComponent}</div>
       <FdModal
+        className={className}
         type={type}
         title={title}
         show={show}

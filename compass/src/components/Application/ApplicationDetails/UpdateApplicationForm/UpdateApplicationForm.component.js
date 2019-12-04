@@ -88,7 +88,6 @@ export default function UpdateApplicationForm({
     <form
       onChange={onFormChange}
       ref={formElementRef}
-      style={{ width: '30em' }}
       onSubmit={handleFormSubmit}
     >
       <FormLabel htmlFor="application-name">Name</FormLabel>

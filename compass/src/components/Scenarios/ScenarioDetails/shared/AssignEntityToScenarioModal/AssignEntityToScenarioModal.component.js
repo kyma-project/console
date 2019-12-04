@@ -1,6 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
+import './AssignEntityToScenarioModal.scss';
 
 import { Modal } from './../../../../../shared/components/Modal/Modal';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
@@ -132,7 +133,7 @@ export default function AssignEntityToScenarioModal({
 
   return (
     <Modal
-      width={'400px'}
+      className="assign-entity-to-scenario-modal"
       title={`Assign ${entityName} to scenario`}
       confirmText="Save"
       cancelText="Cancel"

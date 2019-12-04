@@ -12,6 +12,7 @@ const ModalWithForm = ({
   confirmText,
   initialIsValid,
   children,
+  className,
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(initialIsValid);
@@ -68,6 +69,7 @@ const ModalWithForm = ({
         {button.text}
       </Button>
       <Modal
+        className={className}
         show={isOpen}
         actions={
           <React.Fragment>
@@ -128,6 +130,7 @@ ModalWithForm.propTypes = {
     option: PropTypes.oneOf(['emphasized', 'light']),
   }).isRequired,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 ModalWithForm.defaultProps = {
   sendNotification: () => {},

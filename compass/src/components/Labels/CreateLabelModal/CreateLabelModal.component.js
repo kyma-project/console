@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+import './CreateLabelModal.scss';
 
 import {
   isFileTypeValid,
@@ -12,10 +13,10 @@ import {
   FormItem,
   FormInput,
   FormLabel,
-  Modal,
   Button,
 } from '@kyma-project/react-components';
 import FileInput from './../../Shared/FileInput/FileInput';
+import { Modal } from './../../../shared/components/Modal/Modal';
 
 export default class CreateLabelModal extends React.Component {
   state = this.createInitialState();
@@ -144,7 +145,7 @@ export default class CreateLabelModal extends React.Component {
 
     return (
       <Modal
-        width={'480px'}
+        className="create-label-modal"
         title="Create Label"
         confirmText="Save"
         cancelText="Cancel"

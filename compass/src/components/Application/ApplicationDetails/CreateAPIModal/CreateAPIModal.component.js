@@ -155,7 +155,9 @@ export default class CreateAPIModal extends React.Component {
               credentials={credentials}
             />
           </Tab>
-          {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
+          {!isAPI && (
+            <InlineHelp placement="bottom-left" text={credentialsTabText} />
+          )}
           {this.shouldShowCredentialsPrompt() && (
             <p className="credentials-tab__prompt-dot"></p>
           )}
@@ -165,6 +167,7 @@ export default class CreateAPIModal extends React.Component {
 
     return (
       <Modal
+        className="create-api-modal"
         width={'480px'}
         title="Add Specification"
         confirmText="Add"

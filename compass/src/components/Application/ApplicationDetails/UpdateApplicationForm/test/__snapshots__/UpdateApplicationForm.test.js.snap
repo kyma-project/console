@@ -1600,9 +1600,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
       }
       formElementRef={
         Object {
-          "current": <form
-            style="width: 30em;"
-          >
+          "current": <form>
             <label
               class="fd-form-label"
               for="application-name"
@@ -1768,9 +1766,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
           }
           formElementRef={
             Object {
-              "current": <form
-                style="width: 30em;"
-              >
+              "current": <form>
                 <label
                   class="fd-form-label"
                   for="application-name"
@@ -1986,9 +1982,7 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
               }
               formElementRef={
                 Object {
-                  "current": <form
-                    style="width: 30em;"
-                  >
+                  "current": <form>
                     <label
                       class="fd-form-label"
                       for="application-name"
@@ -2029,11 +2023,6 @@ exports[`UpdateApplicationForm UI Renders form after load 1`] = `
               <form
                 onChange={[Function]}
                 onSubmit={[Function]}
-                style={
-                  Object {
-                    "width": "30em",
-                  }
-                }
               >
                 <FormLabel
                   htmlFor="application-name"

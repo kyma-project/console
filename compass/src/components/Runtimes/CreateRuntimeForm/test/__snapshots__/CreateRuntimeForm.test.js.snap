@@ -4,11 +4,6 @@ exports[`CreateRuntimeForm Renders with minimal props 1`] = `
 <form
   onChange={[Function]}
   onSubmit={[Function]}
-  style={
-    Object {
-      "width": "30em",
-    }
-  }
 >
   <div
     className="fd-form__set"
