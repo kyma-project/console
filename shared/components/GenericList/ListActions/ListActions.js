@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Menu, Button, Icon } from 'fundamental-react';
+import { Popover, Menu, Button } from 'fundamental-react';
 
 const AUTO_ICONS_BY_NAME = new Map([['Edit', 'edit'], ['Delete', 'delete']]);
 
