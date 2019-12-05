@@ -5,6 +5,12 @@ import { Panel } from 'fundamental-react/Panel';
 import { filterEntries } from './helpers';
 import ListActions from './ListActions/ListActions';
 
+const NotFoundMessage = ({ children }) => (
+  <td colspan="100%">
+    <p className="not-found-message">{children}</p>
+  </td>
+);
+
 export const GenericList = ({
   entries,
   actions,
@@ -84,11 +90,15 @@ export const GenericList = ({
             </tr>
           </thead>
           <tbody>
-            {filteredEntries.map(e => (
-              <tr key={e.id}>
-                <RowRenderer entry={e} />
-              </tr>
-            ))}
+            {filteredEntries.length ? (
+              filteredEntries.map(e => (
+                <tr key={e.id}>
+                  <RowRenderer entry={e} />
+                </tr>
+              ))
+            ) : (
+              <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
+            )}
           </tbody>
         </table>
       </Panel.Body>
@@ -113,6 +123,7 @@ GenericList.propTypes = {
 };
 
 GenericList.defaultProps = {
+  notFoundMessage: 'No entries found',
   actions: [],
   showSearchField: true,
   textSearchProperties: ['name', 'description'],
