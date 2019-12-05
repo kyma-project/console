@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import SearchInput from './SearchInput';
-
 import { Panel } from 'fundamental-react/Panel';
-
-import {
-  TableWithActionsToolbar,
-  TableWithActionsList,
-  TabsHeader,
-} from '@kyma-project/react-components';
-
+import { TableWithActionsList } from '@kyma-project/react-components';
 import { filterEntries } from './helpers';
-
 import ListActions from './ListActions/ListActions';
 
 export const GenericList = ({
   entries,
   actions,
   title,
-  description,
   headerRenderer,
   rowRenderer,
   notFoundMessage,
@@ -100,7 +90,7 @@ GenericList.Actions = ListActions;
 
 GenericList.propTypes = {
   title: PropTypes.string,
-  description: PropTypes.string,
+
   entries: PropTypes.arrayOf(PropTypes.object),
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
