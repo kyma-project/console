@@ -3,15 +3,16 @@ import { Popover, Menu, Button } from 'fundamental-react';
 
 const AUTO_ICONS_BY_NAME = new Map([['Edit', 'edit'], ['Delete', 'delete']]);
 
-const StandaloneAction = ({ action }) => {
+const StandaloneAction = ({ action, entry }) => {
   const icon = action.icon || AUTO_ICONS_BY_NAME.get(action.name);
 
   return (
     <Button
-      onClick={entry => action.handler(entry)}
+      onClick={() => action.handler(entry)}
       className="generic-list-actions__standalone"
       option="light"
       glyph={icon}
+      aria-label={action.name}
     >
       {icon ? '' : action.name}
     </Button>

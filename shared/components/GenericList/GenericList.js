@@ -92,7 +92,7 @@ export const GenericList = ({
           <tbody>
             {filteredEntries.length ? (
               filteredEntries.map(e => (
-                <tr key={e.id}>
+                <tr role="row" key={e.id}>
                   <RowRenderer entry={e} />
                 </tr>
               ))
