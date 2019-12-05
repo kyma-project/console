@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import './ApplicationDetailsHeader.scss';
 
 import { ActionBar, Badge } from 'fundamental-react';
 import { Button, Breadcrumb, PanelGrid } from '@kyma-project/react-components';
@@ -56,7 +55,6 @@ class ApplicationDetailsHeader extends React.Component {
             <ApplicationQueryContext.Consumer>
               {applicationQuery => (
                 <ModalWithForm
-                  className="application-details-header"
                   title="Update Application"
                   button={{ text: 'Edit', option: 'light' }}
                   confirmText="Update"

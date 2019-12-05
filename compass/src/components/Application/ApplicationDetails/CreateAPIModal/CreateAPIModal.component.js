@@ -167,8 +167,6 @@ export default class CreateAPIModal extends React.Component {
 
     return (
       <Modal
-        className="create-api-modal"
-        width={'480px'}
         title="Add Specification"
         confirmText="Add"
         cancelText="Cancel"

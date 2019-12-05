@@ -66,3 +66,8 @@
 .fd-toggle input:checked + .fd-toggle__switch::before {
   left: -2px !important;
 }
+
+/* default modal width */
+.modal-demo-bg {
+  width: 400px;
+}

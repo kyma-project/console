@@ -44,7 +44,11 @@ export default function CredentialsForm({ updateState, credentials }) {
   );
 
   const dropdownControl = (
-    <Button className="fd-dropdown__control" glyph="navigation-down-arrow">
+    <Button
+      className="fd-dropdown__control"
+      glyph="navigation-down-arrow"
+      typeAttr="button"
+    >
       {credentials.type}
     </Button>
   );

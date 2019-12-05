@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import './CreateLabelModal.scss';
 
 import {
   isFileTypeValid,
@@ -145,7 +144,6 @@ export default class CreateLabelModal extends React.Component {
 
     return (
       <Modal
-        className="create-label-modal"
         title="Create Label"
         confirmText="Save"
         cancelText="Cancel"

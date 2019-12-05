@@ -71,7 +71,6 @@ class Runtimes extends React.Component {
         <GenericList
           extraHeaderContent={
             <ModalWithForm
-              className="create-runtime-modal"
               title="Create new runtime"
               button={{ text: 'Create runtime', option: 'light' }}
               confirmText="Create"

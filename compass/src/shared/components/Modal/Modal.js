@@ -9,6 +9,7 @@ Modal.propTypes = {
   title: PropTypes.any,
   modalOpeningComponent: PropTypes.any.isRequired,
   onShow: PropTypes.func,
+  actions: PropTypes.any,
   onHide: PropTypes.func,
   onConfirm: PropTypes.func,
   confirmText: PropTypes.string,
@@ -31,6 +32,7 @@ Modal.defaultProps = {
 
 export function Modal({
   title,
+  actions,
   modalOpeningComponent,
   onShow,
   onHide,
@@ -127,7 +129,7 @@ export function Modal({
         title={title}
         show={show}
         onClose={onClose}
-        actions={createActions()}
+        actions={actions || createActions()}
       >
         {children}
       </FdModal>

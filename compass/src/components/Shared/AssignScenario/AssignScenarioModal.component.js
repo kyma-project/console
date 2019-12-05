@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import _ from 'lodash';
-import './AssignScenarioModal.scss';
 
 import { Button } from '@kyma-project/react-components';
 import { Modal } from './../../../shared/components/Modal/Modal';
@@ -84,7 +83,6 @@ export default function AssignScenarioModal(props) {
 
   return (
     <Modal
-      className="assign-scenario-modal"
       title={props.title}
       confirmText="Save"
       cancelText="Close"

@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'fundamental-react/Modal';
+import { Modal } from './../Modal/Modal';
 import { Button } from 'fundamental-react/Button';
-import LuigiClient from '@kyma-project/luigi-client';
 
 const ModalWithForm = ({
   performRefetch,
@@ -14,18 +13,8 @@ const ModalWithForm = ({
   children,
   className,
 }) => {
-  const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(initialIsValid);
   const formElementRef = useRef(null);
-
-  const setOpenStatus = status => {
-    if (status) {
-      LuigiClient.uxManager().addBackdrop();
-    } else {
-      LuigiClient.uxManager().removeBackdrop();
-    }
-    setOpen(status);
-  };
 
   const handleFormChanged = e => {
     setValid(formElementRef.current.checkValidity());
@@ -45,6 +34,7 @@ const ModalWithForm = ({
       },
     });
   };
+
   const handleFormSuccess = (title, message) => {
     sendNotification({
       variables: {
@@ -57,64 +47,52 @@ const ModalWithForm = ({
 
     performRefetch();
   };
-  return (
-    <div>
-      <Button
-        glyph={button.glyph || null}
-        option={button.option}
-        onClick={() => {
-          setOpenStatus(true);
-        }}
-      >
-        {button.text}
+
+  const onConfirm = () => {
+    const form = formElementRef.current;
+    if (
+      typeof form.reportValidity === 'function'
+        ? form.reportValidity()
+        : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
+    ) {
+      form.dispatchEvent(new Event('submit'));
+    } else {
+      // explicitly prevent closing modal
+      return false;
+    }
+  };
+
+  const actions = (
+    <>
+      <Button option="light">Cancel</Button>
+      <Button aria-disabled={!isValid} onClick={onConfirm} option="emphasized">
+        {confirmText}
       </Button>
-      <Modal
-        className={className}
-        show={isOpen}
-        actions={
-          <React.Fragment>
-            <Button
-              onClick={() => {
-                setOpenStatus(false);
-              }}
-              option="light"
-            >
-              Cancel
-            </Button>
-            <Button
-              aria-disabled={!isValid}
-              onClick={() => {
-                const form = formElementRef.current;
-                if (
-                  typeof form.reportValidity === 'function'
-                    ? form.reportValidity()
-                    : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
-                ) {
-                  form.dispatchEvent(new Event('submit'));
-                  setOpenStatus(false);
-                }
-              }}
-              option="emphasized"
-            >
-              {confirmText}
-            </Button>
-          </React.Fragment>
-        }
-        onClose={() => {
-          setOpenStatus(false);
-        }}
-        title={title}
-      >
-        {React.createElement(children.type, {
-          formElementRef,
-          isValid,
-          onChange: handleFormChanged,
-          onError: handleFormError,
-          onCompleted: handleFormSuccess,
-          ...children.props,
-        })}
-      </Modal>
-    </div>
+    </>
+  );
+
+  const modalOpeningComponent = (
+    <Button glyph={button.glyph || null} option={button.option}>
+      {button.text}
+    </Button>
+  );
+
+  return (
+    <Modal
+      modalOpeningComponent={modalOpeningComponent}
+      className={className}
+      actions={actions}
+      title={title}
+    >
+      {React.createElement(children.type, {
+        formElementRef,
+        isValid,
+        onChange: handleFormChanged,
+        onError: handleFormError,
+        onCompleted: handleFormSuccess,
+        ...children.props,
+      })}
+    </Modal>
   );
 };
 

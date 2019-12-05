@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import './CreateScenarioModal.scss';
 
 import { Button } from '@kyma-project/react-components';
 import { Modal } from './../../../../shared/components/Modal/Modal';
@@ -156,7 +155,6 @@ export default class CreateScenarioModal extends React.Component {
 
     return (
       <Modal
-        className="create-scenario-modal"
         title="Create scenario"
         confirmText="Save"
         cancelText="Close"
