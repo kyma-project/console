@@ -12,6 +12,34 @@ const NotFoundMessage = ({ children }) => (
   </td>
 );
 
+const HeaderRenderer = ({ entries, actions, headerRenderer }) => {
+  let headerElements = [];
+  if (actions) {
+    headerElements = [...headerRenderer(entries), ''];
+  } else {
+    headerElements = headerRenderer(entries);
+  }
+
+  return headerElements.map(h => <th key={h}>{h}</th>);
+};
+
+const RowRenderer = ({ entry, actions, rowRenderer }) => {
+  const filteredActions = actions.filter(a =>
+    a.skipAction ? !a.skipAction(entry) : true,
+  );
+  let rowElement = [];
+
+  if (filteredActions.length) {
+    rowElement = [
+      ...rowRenderer(entry),
+      <ListActions actions={filteredActions} entry={entry} />,
+    ];
+  } else {
+    rowElement = rowRenderer(entry);
+  }
+  return rowElement.map((cell, id) => <td key={id}>{cell}</td>);
+};
+
 export const GenericList = ({
   entries,
   actions,
@@ -25,34 +53,6 @@ export const GenericList = ({
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const HeaderRenderer = ({ entries }) => {
-    let headerElements = [];
-    if (actions) {
-      headerElements = [...headerRenderer(entries), ''];
-    } else {
-      headerElements = headerRenderer(entries);
-    }
-
-    return headerElements.map(h => <th key={h}>{h}</th>);
-  };
-
-  const RowRenderer = ({ entry }) => {
-    const filteredActions = actions.filter(a =>
-      a.skipAction ? !a.skipAction(entry) : true,
-    );
-    let rowElement = [];
-
-    if (filteredActions.length) {
-      rowElement = [
-        ...rowRenderer(entry),
-        <ListActions actions={filteredActions} entry={entry} />,
-      ];
-    } else {
-      rowElement = rowRenderer(entry);
-    }
-    return rowElement.map((cell, id) => <td key={id}>{cell}</td>);
-  };
 
   useEffect(() => {
     if (entries && entries.length) {
@@ -87,14 +87,22 @@ export const GenericList = ({
         <table className="fd-table">
           <thead>
             <tr>
-              <HeaderRenderer entries={entries} />
+              <HeaderRenderer
+                entries={entries}
+                actions={actions}
+                headerRenderer={headerRenderer}
+              />
             </tr>
           </thead>
           <tbody>
             {filteredEntries.length ? (
               filteredEntries.map(e => (
                 <tr role="row" key={e.id}>
-                  <RowRenderer entry={e} />
+                  <RowRenderer
+                    entry={e}
+                    actions={actions}
+                    rowRenderer={rowRenderer}
+                  />
                 </tr>
               ))
             ) : (
@@ -113,7 +121,7 @@ GenericList.Actions = ListActions;
 
 GenericList.propTypes = {
   title: PropTypes.string,
-  entries: PropTypes.arrayOf(PropTypes.object),
+  entries: PropTypes.arrayOf(PropTypes.object).isRequired,
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
   actions: PropTypes.arrayOf(

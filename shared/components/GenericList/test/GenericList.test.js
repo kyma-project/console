@@ -55,21 +55,44 @@ describe('GenericList', () => {
     await getByText(title);
   });
 
-  it("Renders actions button when 'actions' prop is provided", async () => {
-    const actions = [{ name: 'testaction', handler: () => {} }];
-    const { getAllByLabelText } = render(
-      <GenericList
-        actions={actions}
-        entries={mockEntries}
-        headerRenderer={() => []}
-        rowRenderer={() => []}
-      />,
-    );
-    const actionButtons = await getAllByLabelText(actions[0].name);
-    expect(actionButtons.length).toBe(mockEntries.length);
+  describe('Actions', () => {
+    it("Renders actions button when 'actions' prop is provided", () => {
+      const actions = [{ name: 'testaction', handler: () => {} }];
+      const { getAllByLabelText } = render(
+        <GenericList
+          headerRenderer={() => []}
+          rowRenderer={() => []}
+          actions={actions}
+          entries={mockEntries}
+        />,
+      );
+      const actionButtons = getAllByLabelText(actions[0].name);
+      expect(actionButtons.length).toBe(mockEntries.length);
+    });
+
+    it("Skips rendering actions when 'actions' prop passes skipAction() call", () => {
+      const actions = [
+        { name: 'skip it', handler: () => {}, skipAction: () => true },
+        {
+          name: 'no skipping here',
+          handler: () => {},
+          skipAction: () => false,
+        },
+      ];
+      const { queryByLabelText } = render(
+        <GenericList
+          headerRenderer={() => []}
+          rowRenderer={() => []}
+          actions={actions}
+          entries={[{ id: '23' }]}
+        />,
+      );
+      expect(queryByLabelText(actions[0].name)).toBeNull();
+      expect(queryByLabelText(actions[1].name)).toBeTruthy();
+    });
   });
 
-  fit('Renders entries', async () => {
+  it('Renders entries', async () => {
     const { getByText } = render(
       <GenericList
         entries={mockEntries}
