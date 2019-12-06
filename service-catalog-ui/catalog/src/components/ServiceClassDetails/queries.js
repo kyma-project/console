@@ -29,7 +29,7 @@ const assetGroupQGL = `
   description
   assets {
     name
-    metadata
+    parameters
     type
     files(filterExtensions: $filterExtensions) {
       url

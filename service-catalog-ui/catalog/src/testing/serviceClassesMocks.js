@@ -77,7 +77,7 @@ const clusterServiceClassDetails = {
       {
         name:
           clusterServiceClass1Name + '-markdown-files-markdown-1bh3139cq9rss',
-        metadata: {},
+        parameters: {},
         type: 'markdown',
         files: [
           {
@@ -152,7 +152,7 @@ const clusterServiceClassDetailsNoPlanSpec = {
       {
         name:
           clusterServiceClass1Name + '-markdown-files-markdown-1bh3139cq9rss',
-        metadata: {},
+        parameters: {},
         type: 'markdown',
         files: [
           {

@@ -45,7 +45,7 @@ const extractAssetGroups = (
   return cdts;
 };
 
-const CLUSTER_DOCS_TOPICS = gql`
+const CLUSTER_ASSET_GROUPS = gql`
   query clusterAssetGroups(
     $viewContext: String
     $groupName: String
@@ -58,7 +58,7 @@ const CLUSTER_DOCS_TOPICS = gql`
       groupName
       assets {
         name
-        metadata
+        parameters
         type
         files(filterExtensions: $filterExtensions) {
           url
@@ -79,12 +79,15 @@ interface QVars {
 }
 
 const useQueries = () => {
-  const { data, error, loading } = useQuery<QData, QVars>(CLUSTER_DOCS_TOPICS, {
-    variables: {
-      filterExtensions: FILTER_EXTENSIONS,
-      viewContext: VIEW_CONTEXT,
+  const { data, error, loading } = useQuery<QData, QVars>(
+    CLUSTER_ASSET_GROUPS,
+    {
+      variables: {
+        filterExtensions: FILTER_EXTENSIONS,
+        viewContext: VIEW_CONTEXT,
+      },
     },
-  });
+  );
   const clusterAssetGroups = extractAssetGroups(
     data && data.clusterAssetGroups,
   );

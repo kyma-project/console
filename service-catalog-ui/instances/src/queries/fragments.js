@@ -26,7 +26,7 @@ export const assetGroupGql = `
   description
   assets {
     name
-    metadata
+    parameters
     type
     files {
       url

@@ -13,7 +13,7 @@ export interface File {
 
 export interface ClusterAsset {
   name: string;
-  metadata: Metadata;
+  parameters: Metadata;
   type: string;
   files: File[];
   status: AssetStatus;
