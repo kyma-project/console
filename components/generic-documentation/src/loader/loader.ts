@@ -167,7 +167,7 @@ export class DocsLoader {
                   ...el,
                   parameters: {
                     disableRelativeLinks:
-                      asset.metadata && asset.metadata.disableRelativeLinks,
+                      asset.parameters && asset.parameters.disableRelativeLinks,
                   },
                 } as File),
             );
