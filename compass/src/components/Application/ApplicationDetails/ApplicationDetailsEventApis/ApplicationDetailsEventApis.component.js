@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+
+import { ApplicationQueryContext } from './../ApplicationDetails.component';
+
+import CreateEventApiForm from './../../../Apis/CreateEventApiForm/CreateEventApiForm.container';
+
 import { GenericList } from 'react-shared';
-import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
 import { handleDelete } from 'react-shared';
+import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
 
 ApplicationDetailsEventApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -18,6 +23,8 @@ export default function ApplicationDetailsEventApis({
   sendNotification,
   deleteEventAPI,
 }) {
+  const applicationQuery = React.useContext(ApplicationQueryContext);
+
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
@@ -61,9 +68,20 @@ export default function ApplicationDetailsEventApis({
     },
   ];
 
+  const extraHeaderContent = (
+    <ModalWithForm
+      title="Add Event API"
+      button={{ text: 'Add Event API', option: 'light' }}
+      confirmText="Create"
+      performRefetch={applicationQuery.refetch}
+    >
+      <CreateEventApiForm applicationId={applicationId} />
+    </ModalWithForm>
+  );
+
   return (
     <GenericList
-      extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
+      extraHeaderContent={extraHeaderContent}
       title="Event APIs"
       notFoundMessage="There are no Event APIs available for this Application"
       actions={actions}
