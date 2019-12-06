@@ -6,7 +6,7 @@ import { filterEntries } from './helpers';
 import ListActions from './ListActions/ListActions';
 
 const NotFoundMessage = ({ children }) => (
-  <td colspan="100%">
+  <td colSpan="100%">
     <p className="not-found-message">{children}</p>
   </td>
 );
@@ -97,7 +97,9 @@ export const GenericList = ({
                 </tr>
               ))
             ) : (
-              <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
+              <tr>
+                <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
+              </tr>
             )}
           </tbody>
         </table>
