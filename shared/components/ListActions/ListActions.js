@@ -1,5 +1,7 @@
 import React from 'react';
 import { Popover, Menu, Button } from 'fundamental-react';
+import './ListActions.scss';
+import PropTypes from 'prop-types';
 
 const AUTO_ICONS_BY_NAME = new Map([['Edit', 'edit'], ['Delete', 'delete']]);
 
@@ -9,7 +11,7 @@ const StandaloneAction = ({ action, entry }) => {
   return (
     <Button
       onClick={() => action.handler(entry)}
-      className="generic-list-actions__standalone"
+      className="list-actions__standalone"
       option="light"
       glyph={icon}
       aria-label={action.name}
@@ -27,7 +29,7 @@ const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
   const listItems = actions.slice(standaloneItems, actions.length);
 
   return (
-    <div className="generic-list-actions">
+    <div className="list-actions">
       {actions.slice(0, standaloneItems).map(a => (
         <StandaloneAction key={a.name} action={a} entry={entry} />
       ))}
@@ -50,6 +52,17 @@ const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
       ) : null}
     </div>
   );
+};
+
+ListActions.propTypes = {
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      handler: PropTypes.func.isRequired,
+    }),
+  ).isRequired,
+  entry: PropTypes.any.isRequired,
+  standaloneItems: PropTypes.number,
 };
 
 export default ListActions;

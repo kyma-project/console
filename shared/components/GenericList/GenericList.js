@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import SearchInput from './SearchInput';
 import { Panel } from 'fundamental-react/Panel';
 import { filterEntries } from './helpers';
-import ListActions from './ListActions/ListActions';
+import ListActions from '../ListActions/ListActions';
+import './GenericList.scss';
 
 const NotFoundMessage = ({ children }) => (
   <td colSpan="100%">
@@ -116,8 +117,12 @@ GenericList.propTypes = {
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
   actions: PropTypes.arrayOf(
-    PropTypes.shape({ name: PropTypes.string, handler: PropTypes.func }),
-  ),
+    PropTypes.shape({
+      name: PropTypes.string,
+      handler: PropTypes.func.isRequired,
+      skipAction: PropTypes.func,
+    }),
+  ).isRequired,
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
   notFoundMessage: PropTypes.string,
