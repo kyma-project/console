@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectApplicationModal Container Modal is in "loading" state after open 1`] = `
+Array [
+  "Loading...",
+  "Loading...",
+]
+`;

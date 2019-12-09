@@ -5,7 +5,7 @@ import { FormLabel } from 'fundamental-react';
 import { CustomPropTypes } from 'react-shared';
 
 const formProps = {
-  formElementRef: CustomPropTypes.elementRef,
+  formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
@@ -88,7 +88,6 @@ export default function UpdateApplicationForm({
     <form
       onChange={onFormChange}
       ref={formElementRef}
-      style={{ width: '30em' }}
       onSubmit={handleFormSubmit}
     >
       <FormLabel htmlFor="application-name">Name</FormLabel>

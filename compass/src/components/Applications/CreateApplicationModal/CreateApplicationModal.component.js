@@ -1,7 +1,8 @@
 import React from 'react';
 import equal from 'deep-equal';
 import PropTypes from 'prop-types';
-import { Button, Input, Modal } from '@kyma-project/react-components';
+import { Modal } from './../../../shared/components/Modal/Modal';
+import { Button, Input } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
@@ -278,7 +279,6 @@ class CreateApplicationModal extends React.Component {
             required={true}
             type="text"
           />
-
           <Input
             label="Description"
             placeholder="Description of the Application"
@@ -307,7 +307,6 @@ class CreateApplicationModal extends React.Component {
 
     return (
       <Modal
-        width={'681px'}
         title="Create application"
         type={'emphasized'}
         modalOpeningComponent={createApplicationButton}
@@ -320,13 +319,7 @@ class CreateApplicationModal extends React.Component {
         tooltipData={tooltipData}
         onConfirm={this.createApplication}
         handleClose={this.clearState}
-        onShow={() => {
-          return LuigiClient.uxManager().addBackdrop();
-        }}
-        onHide={() => {
-          this.clearState();
-          LuigiClient.uxManager().removeBackdrop();
-        }}
+        onHide={() => this.clearState()}
       >
         {content}
       </Modal>

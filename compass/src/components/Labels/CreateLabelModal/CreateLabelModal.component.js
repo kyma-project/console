@@ -12,10 +12,10 @@ import {
   FormItem,
   FormInput,
   FormLabel,
-  Modal,
   Button,
 } from '@kyma-project/react-components';
 import FileInput from './../../Shared/FileInput/FileInput';
+import { Modal } from './../../../shared/components/Modal/Modal';
 
 export default class CreateLabelModal extends React.Component {
   state = this.createInitialState();
@@ -144,7 +144,6 @@ export default class CreateLabelModal extends React.Component {
 
     return (
       <Modal
-        width={'480px'}
         title="Create Label"
         confirmText="Save"
         cancelText="Cancel"
@@ -152,11 +151,7 @@ export default class CreateLabelModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addLabel}
         disabledConfirm={!this.isReadyToUpload()}
-        onShow={() => {
-          this.setState(this.createInitialState());
-          LuigiClient.uxManager().addBackdrop();
-        }}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
+        onShow={() => this.setState(this.createInitialState())}
       >
         {this.props.labelNamesQuery.loading ? (
           <p>Loading existing labels...</p>

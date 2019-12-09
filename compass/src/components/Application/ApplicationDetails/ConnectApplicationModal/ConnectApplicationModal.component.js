@@ -1,5 +1,4 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 import copyToCliboard from 'copy-to-clipboard';
 import { Tooltip } from 'react-shared';
@@ -11,9 +10,9 @@ import {
   FormLabel,
   FormInput,
   FormMessage,
-  Modal,
 } from 'fundamental-react';
 import './ConnectApplicationModal.scss';
+import { Modal } from 'shared/components/Modal/Modal';
 
 ConnectApplicationModal.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -42,7 +41,6 @@ export default function ConnectApplicationModal({
   applicationId,
   connectApplicationMutation,
 }) {
-  const [isOpen, setOpen] = React.useState(false);
   const [error, setError] = React.useState('');
   const [connectionData, setConnectionData] = React.useState({});
 
@@ -56,15 +54,7 @@ export default function ConnectApplicationModal({
     }
   };
 
-  const openModal = () => {
-    setOpen(true);
-    LuigiClient.uxManager().addBackdrop();
-    connectApplication(applicationId);
-  };
-
-  const closeModal = () => {
-    setOpen(false);
-    LuigiClient.uxManager().removeBackdrop();
+  const clearConnectionData = () => {
     setConnectionData({}); // reset token
   };
 
@@ -83,18 +73,19 @@ export default function ConnectApplicationModal({
 
   return (
     <>
-      <Button option="emphasized" onClick={openModal} data-test-id="open-modal">
-        Connect Application
-      </Button>
       <Modal
-        show={isOpen}
-        title="Connect Application"
-        onClose={closeModal}
-        actions={
-          <Button option="emphasized" onClick={closeModal}>
-            Close
+        modalOpeningComponent={
+          <Button
+            option="emphasized"
+            onClick={() => connectApplication(applicationId)}
+            data-test-id="open-modal"
+          >
+            Connect Application
           </Button>
         }
+        title="Connect Application"
+        confirmText="Close"
+        onHide={clearConnectionData}
       >
         <section className="connect-application__content">
           {modalContent}

@@ -99,7 +99,7 @@ export default function APIDataForm({ mainAPIType, updateState }) {
         <FormLabel
           htmlFor="targetURL"
           required
-          className="target-url__label--info"
+          className="target-url__label--info fd-display-l-inline"
         >
           Target URL
         </FormLabel>
