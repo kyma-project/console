@@ -25,6 +25,7 @@ const ModalWithForm = ({
       });
       return () => observer.disconnect();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formElementRef.current]);
 
   const handleFormChanged = e => {
@@ -91,7 +92,7 @@ const ModalWithForm = ({
   return (
     <Modal
       modalOpeningComponent={modalOpeningComponent}
-      className={className}
+      modalClassName={className}
       actions={actions}
       title={title}
     >

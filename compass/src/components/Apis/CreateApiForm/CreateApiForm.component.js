@@ -5,6 +5,7 @@ import { TabGroup, Tab, FormSet, FormItem } from 'fundamental-react';
 import CredentialsForm, {
   CREDENTIAL_TYPE_NONE,
 } from 'components/Api/Forms/CredentialForms/CredentialsForm';
+
 import {
   createApiData,
   isYAML,
@@ -76,13 +77,6 @@ export default function CreateApiForm({
   const handleFormSubmit = async e => {
     e.preventDefault();
 
-    // const mainApiData = {
-    //   name: formValues.name.current.value,
-    //   description: formValues.description.current.value,
-    //   group: formValues.group.current.value,
-    //   targetUrl: formValues.targetUrl.current.value,
-    //   type: formValues.type.current.value,
-    // };
     const name = formValues.name.current.value;
     const basicApiData = getRefsValues(formValues);
     const specData = (({ data, format }) => ({ data, format }))(spec);
@@ -96,6 +90,7 @@ export default function CreateApiForm({
       await addAPI(apiData, applicationId);
       onCompleted(name, 'Event API created successfully');
     } catch (error) {
+      console.warn(error);
       onError('Cannot create Event API');
     }
   };

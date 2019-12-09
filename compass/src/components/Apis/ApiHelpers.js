@@ -4,7 +4,7 @@ import { CREDENTIAL_TYPE_OAUTH } from 'components/Api/Forms/CredentialForms/OAut
 // import xmlJS from 'xml-js';
 
 export function createApiData(basicApiData, specData, credentials) {
-  const { name, description, group, targetURL, type } = basicApiData;
+  const { name, description, group, targetUrl, type } = basicApiData;
 
   let defaultAuth = null;
   if (credentials.type === CREDENTIAL_TYPE_OAUTH) {
@@ -19,7 +19,7 @@ export function createApiData(basicApiData, specData, credentials) {
     name,
     description,
     group: group ? group : null, // if group is '', just write null
-    targetUrl: targetURL,
+    targetURL: targetUrl,
     spec: {
       ...specData,
       type,

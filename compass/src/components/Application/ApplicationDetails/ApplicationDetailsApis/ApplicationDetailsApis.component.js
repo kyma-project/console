@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+import './ApplicationDetailsApis.scss';
 
 import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
@@ -74,6 +75,7 @@ export default function ApplicationDetailsApis({
       button={{ text: 'Add API', option: 'light' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
+      className="create-api-modal"
     >
       <CreateApiForm applicationId={applicationId} />
     </ModalWithForm>

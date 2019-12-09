@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Button } from 'fundamental-react';
+import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
 import './style.scss';
 
 import OAuthCredentialsForm, {
@@ -43,28 +43,24 @@ export default function CredentialsForm({
     </Menu>
   );
 
-  const dropdownControl = (
-    <Button
-      className="fd-dropdown__control"
-      glyph="navigation-down-arrow"
-      typeAttr="button"
-    >
-      {credentials.type}
-    </Button>
-  );
-
   return (
     <section className="credentials-form">
       <p>Credentials type</p>
-      <Dropdown
-        control={
-          <Button dropdown typeAttr="button">
-            <span>{credentialType}</span>
-          </Button>
-        }
-        placement="bottom"
-      >
-        {credentialTypesList}
+      <Dropdown>
+        <Popover
+          body={credentialTypesList}
+          control={
+            <Button
+              className="fd-dropdown__control"
+              glyph="navigation-down-arrow"
+              typeAttr="button"
+            >
+              {credentialType}
+            </Button>
+          }
+          widthSizingType="matchTarget"
+          placement="bottom"
+        />
       </Dropdown>
 
       {credentialType === CREDENTIAL_TYPE_OAUTH && (
