@@ -23,7 +23,7 @@
     "fundamental-react": "^0.6.1"
   },
   "jest": {
-    "setupFiles": [
+    "setupFilesAfterEnv": [
       "<rootDir>/jestSetup.js"
     ],
     "moduleNameMapper": {
