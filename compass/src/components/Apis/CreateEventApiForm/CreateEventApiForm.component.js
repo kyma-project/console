@@ -7,6 +7,7 @@ import FileInput from './../../Shared/FileInput/FileInput';
 
 import { createEventAPIData, isYAML, isJSON, readFile } from './../ApiHelpers';
 import EventApiForm from 'components/Api/Forms/EventApiForm';
+import { getRefsValues } from 'react-shared';
 
 CreateEventApiForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -52,11 +53,10 @@ export default function CreateEventApiForm({
     e.preventDefault();
 
     const name = formValues.name.current.value;
-    const description = formValues.description.current.value;
-    const group = formValues.group.current.value;
+    const basicApiData = getRefsValues(formValues);
     const specData = (({ data, format }) => ({ data, format }))(spec);
 
-    const apiData = createEventAPIData(name, description, group, specData);
+    const apiData = createEventAPIData(basicApiData, specData);
 
     try {
       await addEventAPI(apiData, applicationId);

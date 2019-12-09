@@ -1,39 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
+import { Menu, Dropdown, Button } from 'fundamental-react';
 import './style.scss';
 
 import OAuthCredentialsForm, {
   CREDENTIAL_TYPE_OAUTH,
+  oAuthRefs,
 } from './OAuthCredentialsForm';
 export const CREDENTIAL_TYPE_NONE = 'None';
-export const CREDENTIAL_TYPE_PLACEHOLDER = 'Choose credentials type';
 
 const availableCredentialTypes = [CREDENTIAL_TYPE_OAUTH, CREDENTIAL_TYPE_NONE];
 
 CredentialsForm.propTypes = {
-  updateState: PropTypes.func.isRequired,
-  credentials: PropTypes.object.isRequired,
+  credentialType: PropTypes.string.isRequired,
+  setCredentialType: PropTypes.func.isRequired,
+  credentialRefs: PropTypes.shape({
+    oAuth: oAuthRefs,
+  }).isRequired,
+  defaultValues: PropTypes.shape({
+    oAuth: PropTypes.object,
+  }),
 };
 
-CredentialsForm.defaultProps = {
-  defaultApiData: {
-    oAuth: {
-      clientId: '',
-      clientSecret: '',
-      url: '',
-    },
-    type: CREDENTIAL_TYPE_NONE,
-  },
-};
-
-export default function CredentialsForm({ updateState, credentials }) {
+export default function CredentialsForm({
+  credentialRefs,
+  credentialType,
+  setCredentialType,
+  defaultValues,
+}) {
   const credentialTypesList = (
     <Menu>
       <Menu.List>
         {availableCredentialTypes.map(credentialType => (
           <Menu.Item
-            onClick={() => updateState({ type: credentialType })}
+            onClick={() => setCredentialType(credentialType)}
             key={credentialType}
           >
             {credentialType}
@@ -56,18 +56,21 @@ export default function CredentialsForm({ updateState, credentials }) {
   return (
     <section className="credentials-form">
       <p>Credentials type</p>
-      <Dropdown>
-        <Popover
-          body={credentialTypesList}
-          control={dropdownControl}
-          widthSizingType="matchTarget"
-        />
+      <Dropdown
+        control={
+          <Button dropdown typeAttr="button">
+            <span>{credentialType}</span>
+          </Button>
+        }
+        placement="bottom"
+      >
+        {credentialTypesList}
       </Dropdown>
 
-      {credentials.type === CREDENTIAL_TYPE_OAUTH && (
+      {credentialType === CREDENTIAL_TYPE_OAUTH && (
         <OAuthCredentialsForm
-          updateState={updateState}
-          oAuthData={credentials.oAuth}
+          refs={credentialRefs.oAuth}
+          defaultValues={defaultValues && defaultValues.oAuth}
         />
       )}
     </section>

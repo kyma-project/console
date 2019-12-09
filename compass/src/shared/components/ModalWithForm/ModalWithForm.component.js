@@ -16,6 +16,17 @@ const ModalWithForm = ({
   const [isValid, setValid] = useState(initialIsValid);
   const formElementRef = useRef(null);
 
+  React.useEffect(() => {
+    if (formElementRef.current) {
+      const observer = new MutationObserver((a, b) => console.log(a, b));
+      observer.observe(formElementRef.current, {
+        childList: true,
+        subtree: true,
+      });
+      return () => observer.disconnect();
+    }
+  }, [formElementRef.current]);
+
   const handleFormChanged = e => {
     setValid(formElementRef.current.checkValidity());
     if (typeof e.target.reportValidity === 'function') {

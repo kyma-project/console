@@ -1,7 +1,35 @@
-import jsyaml from 'js-yaml';
-import xmlJS from 'xml-js';
+import { CREDENTIAL_TYPE_OAUTH } from 'components/Api/Forms/CredentialForms/OAuthCredentialsForm';
 
-export function createEventAPIData(name, description, group, specData) {
+// import jsyaml from 'js-yaml';
+// import xmlJS from 'xml-js';
+
+export function createApiData(basicApiData, specData, credentials) {
+  const { name, description, group, targetURL, type } = basicApiData;
+
+  let defaultAuth = null;
+  if (credentials.type === CREDENTIAL_TYPE_OAUTH) {
+    defaultAuth = {
+      credential: {
+        oauth: credentials.oAuth,
+      },
+    };
+  }
+
+  return {
+    name,
+    description,
+    group: group ? group : null, // if group is '', just write null
+    targetUrl: targetURL,
+    spec: {
+      ...specData,
+      type,
+    },
+    defaultAuth,
+  };
+}
+
+export function createEventAPIData(basicApiData, specData) {
+  const { name, description, group } = basicApiData;
   const spec = specData
     ? {
         ...specData,
