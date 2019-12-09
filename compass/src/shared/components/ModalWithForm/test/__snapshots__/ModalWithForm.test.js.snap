@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalWithForm Renders child component 1`] = `
-<div
-  onClick={[Function]}
->
+<div>
   <button
     className="fd-button"
+    onClick={[Function]}
   >
     
   </button>
@@ -13,11 +12,10 @@ exports[`ModalWithForm Renders child component 1`] = `
 `;
 
 exports[`ModalWithForm Renders with minimal props 1`] = `
-<div
-  onClick={[Function]}
->
+<div>
   <button
     className="fd-button"
+    onClick={[Function]}
   >
     
   </button>

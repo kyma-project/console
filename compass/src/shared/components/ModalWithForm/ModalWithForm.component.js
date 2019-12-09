@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from './../Modal/Modal';
+import { ControlledModal } from './../Modal/ControlledModal';
 import { Button } from 'fundamental-react/Button';
+import LuigiClient from '@kyma-project/luigi-client';
 
 const ModalWithForm = ({
   performRefetch,
@@ -11,8 +12,9 @@ const ModalWithForm = ({
   confirmText,
   initialIsValid,
   children,
-  className,
+  modalClassName,
 }) => {
+  const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(initialIsValid);
   const formElementRef = useRef(null);
 
@@ -27,6 +29,15 @@ const ModalWithForm = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formElementRef.current]);
+
+  const setOpenStatus = status => {
+    if (status) {
+      LuigiClient.uxManager().addBackdrop();
+    } else {
+      LuigiClient.uxManager().removeBackdrop();
+    }
+    setOpen(status);
+  };
 
   const handleFormChanged = e => {
     setValid(formElementRef.current.checkValidity());
@@ -60,40 +71,53 @@ const ModalWithForm = ({
     performRefetch();
   };
 
-  const onConfirm = () => {
-    const form = formElementRef.current;
-    if (
-      typeof form.reportValidity === 'function'
-        ? form.reportValidity()
-        : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
-    ) {
-      form.dispatchEvent(new Event('submit'));
-    } else {
-      // explicitly prevent closing modal
-      return false;
-    }
-  };
-
-  const actions = (
-    <>
-      <Button option="light">Cancel</Button>
-      <Button aria-disabled={!isValid} onClick={onConfirm} option="emphasized">
-        {confirmText}
-      </Button>
-    </>
-  );
-
-  const modalOpeningComponent = (
-    <Button glyph={button.glyph || null} option={button.option}>
-      {button.text}
-    </Button>
-  );
-
   return (
-    <Modal
-      modalOpeningComponent={modalOpeningComponent}
-      modalClassName={className}
-      actions={actions}
+    <ControlledModal
+      modalOpeningComponent={
+        <Button
+          glyph={button.glyph || null}
+          option={button.option}
+          onClick={() => {
+            setOpenStatus(true);
+          }}
+        >
+          {button.text}
+        </Button>
+      }
+      modalClassName={modalClassName}
+      show={isOpen}
+      actions={
+        <React.Fragment>
+          <Button
+            onClick={() => {
+              setOpenStatus(false);
+            }}
+            option="light"
+          >
+            Cancel
+          </Button>
+          <Button
+            aria-disabled={!isValid}
+            onClick={() => {
+              const form = formElementRef.current;
+              if (
+                typeof form.reportValidity === 'function'
+                  ? form.reportValidity()
+                  : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
+              ) {
+                form.dispatchEvent(new Event('submit'));
+                setOpenStatus(false);
+              }
+            }}
+            option="emphasized"
+          >
+            {confirmText}
+          </Button>
+        </React.Fragment>
+      }
+      onClose={() => {
+        setOpenStatus(false);
+      }}
       title={title}
     >
       {React.createElement(children.type, {
@@ -104,7 +128,7 @@ const ModalWithForm = ({
         onCompleted: handleFormSuccess,
         ...children.props,
       })}
-    </Modal>
+    </ControlledModal>
   );
 };
 
@@ -120,7 +144,7 @@ ModalWithForm.propTypes = {
     option: PropTypes.oneOf(['emphasized', 'light']),
   }).isRequired,
   children: PropTypes.node.isRequired,
-  className: PropTypes.string,
+  modalClassName: PropTypes.string,
 };
 ModalWithForm.defaultProps = {
   sendNotification: () => {},

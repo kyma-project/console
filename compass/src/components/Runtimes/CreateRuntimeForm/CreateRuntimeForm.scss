@@ -19,3 +19,11 @@
 .fd-inline-help {
   margin-left: 3px;
 }
+
+
+.create-runtime-form {
+  .fd-inline-help__content {
+    width: 300px;
+    min-width: unset;
+  }
+}

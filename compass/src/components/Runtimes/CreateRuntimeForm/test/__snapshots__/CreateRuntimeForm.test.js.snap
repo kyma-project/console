@@ -2,6 +2,7 @@
 
 exports[`CreateRuntimeForm Renders with minimal props 1`] = `
 <form
+  className="create-runtime-form"
   onChange={[Function]}
   onSubmit={[Function]}
 >
