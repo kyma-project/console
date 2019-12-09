@@ -8,27 +8,16 @@ import CredentialsForm, {
 
 import {
   createApiData,
-  isYAML,
-  isJSON,
-  isXML,
+  getApiFormat,
   readFile,
+  isOpenApi,
+  parseApi,
+  isOData,
 } from './../ApiHelpers';
 
 import FileInput from './../../Shared/FileInput/FileInput';
 import ApiForm from 'components/Api/Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
-
-const getFormat = file => {
-  if (isYAML(file)) {
-    return 'YAML';
-  } else if (isJSON(file)) {
-    return 'JSON';
-  } else if (isXML(file)) {
-    return 'XML';
-  } else {
-    return null;
-  }
-};
 
 CreateApiForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -100,24 +89,42 @@ export default function CreateApiForm({
       return;
     }
 
-    const format = getFormat(file);
-    if (format === null) {
-      setSpec({ file, error: 'Error: Invalid file type' });
+    const fileFormat = getApiFormat(file);
+    if (fileFormat === null) {
+      setSpec({ error: 'Error: Invalid file type' });
       return;
     }
 
     const data = await readFile(file);
-    // todo moze walidacja ej
+
+    const parseResult = parseApi(data);
+
+    if (!parseResult) {
+      setSpec({ error: 'Spec file is invalid' });
+      return;
+    }
+
+    const { spec, format } = parseResult;
+    const type = formValues.type.current.value;
+
+    if (!isOpenApi(spec) && type === 'OPEN_API') {
+      setSpec({
+        error: 'Supplied spec does not have required "openapi" property',
+      });
+      return;
+    }
+    if (!isOData(spec) && type === 'ODATA') {
+      setSpec({
+        error: 'Supplied spec does not have required "edmx:Edmx" property',
+      });
+      return;
+    }
+
     setSpec({ file, format, data });
   };
 
   return (
-    <form
-      onChange={onChange}
-      ref={formElementRef}
-      style={{ width: '30em' }}
-      onSubmit={handleFormSubmit}
-    >
+    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
       <TabGroup>
         <Tab key="api-data" id="api-data" title="API data">
           <FormSet>

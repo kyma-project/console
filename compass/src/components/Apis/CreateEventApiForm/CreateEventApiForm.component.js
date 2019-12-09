@@ -5,7 +5,13 @@ import { CustomPropTypes } from 'react-shared';
 import { FormSet, FormItem } from 'fundamental-react';
 import FileInput from './../../Shared/FileInput/FileInput';
 
-import { createEventAPIData, isYAML, isJSON, readFile } from './../ApiHelpers';
+import {
+  createEventAPIData,
+  getEventApiFormat,
+  readFile,
+  parseEventApi,
+  isAsyncApi,
+} from './../ApiHelpers';
 import EventApiForm from 'components/Api/Forms/EventApiForm';
 import { getRefsValues } from 'react-shared';
 
@@ -16,16 +22,6 @@ CreateEventApiForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
-};
-
-const getFormat = file => {
-  if (isYAML(file)) {
-    return 'YAML';
-  } else if (isJSON(file)) {
-    return 'JSON';
-  } else {
-    return null;
-  }
 };
 
 export default function CreateEventApiForm({
@@ -71,24 +67,34 @@ export default function CreateEventApiForm({
       return;
     }
 
-    const format = getFormat(file);
-    if (format === null) {
-      setSpec({ file, error: 'Error: Invalid file type' });
+    const fileFormat = getEventApiFormat(file);
+    if (fileFormat === null) {
+      setSpec({ error: 'Error: Invalid file type' });
       return;
     }
 
     const data = await readFile(file);
-    // todo moze walidacja ej
+
+    const parseResult = parseEventApi(data);
+
+    if (!parseResult) {
+      setSpec({ error: 'Spec file is invalid' });
+      return;
+    }
+
+    const { spec, format } = parseResult;
+    if (!isAsyncApi(spec)) {
+      setSpec({
+        error: 'Supplied spec does not have required "asyncapi" property',
+      });
+      return;
+    }
+
     setSpec({ file, format, data });
   };
 
   return (
-    <form
-      onChange={onChange}
-      ref={formElementRef}
-      style={{ width: '30em' }} // todo
-      onSubmit={handleFormSubmit}
-    >
+    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
       <FormSet>
         <EventApiForm formValues={formValues} />
         <FormItem>
