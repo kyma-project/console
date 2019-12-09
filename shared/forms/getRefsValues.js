@@ -5,6 +5,7 @@ export function getRefsValues(objectWithRefs) {
         if (objectWithRefs[key].current) {
           return [key, objectWithRefs[key].current.value];
         }
+        return null;
       })
       .filter(Boolean),
   );
