@@ -15,6 +15,7 @@ describe('Lambda Configuration Tab', () => {
         sizeRef={emptyRef}
         runtimeRef={emptyRef}
         LabelsEditor={labelEditorMock}
+        formRef={{ current: null }}
       />,
     );
     expect(component.toJSON()).toMatchSnapshot();

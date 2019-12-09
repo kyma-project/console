@@ -11,7 +11,32 @@ async function testLogin(page) {
   await page.waitForSelector('.fd-shellbar', { visible: true });
 }
 
-async function _loginViaDex(page, config) {
+async function _selectAuthMethod(page) {
+  const authTextSelector = '.dex-btn-icon--local';
+  console.log(`Trying to select auth method in dex`);
+  try {
+    await page.reload({
+      waitUntil: ['domcontentloaded', 'networkidle0'],
+    });
+
+    const authText = await page.$(authTextSelector);
+    const authButton = (await authText.$x('..'))[0]; // parent of authText
+
+    return Promise.all([
+      await authButton.click(),
+      page.waitForNavigation({
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+      }),
+    ]);
+  } catch (err) {
+    console.error(err);
+    throw new Error(
+      `Couldn't select the 'Email' auth method. The error is above ^`,
+    );
+  }
+}
+
+async function _loginViaDexEmail(page, config) {
   const loginButtonSelector = '.dex-btn';
   console.log(`Trying to log in ${config.login} via dex`);
   try {
@@ -35,7 +60,16 @@ async function _loginViaDex(page, config) {
 }
 
 async function login(page, config) {
-  await _loginViaDex(page, config);
+  try {
+    await page.waitForSelector('#login');
+    console.log('One auth method detected. Fill form and continue logging-in.');
+  } catch (e) {
+    console.log('Multiple auth methods detected.');
+    await _selectAuthMethod(page);
+  }
+
+  await _loginViaDexEmail(page, config);
+
   const headerSelector = '.fd-shellbar';
   try {
     await page.waitForSelector(headerSelector);

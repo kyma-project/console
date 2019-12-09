@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { createBrowserHistory } from 'history';
@@ -22,17 +22,18 @@ import { getServiceInstanceDetails } from '../../queries/queries';
 import {
   SERVICE_BINDING_EVENT_SUBSCRIPTION,
   SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
+  SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
 } from '../../queries/subscriptions';
 import {
+  handleInstanceEventOnDetails,
   handleServiceBindingEvent,
   handleServiceBindingUsageEvent,
 } from '../../store/ServiceInstances/events';
 import { deleteServiceInstance } from '../../queries/mutations';
 
 export default function ServiceInstanceDetails({ match }) {
-  const refetchInterval = useRef(null);
   const history = createBrowserHistory();
-  const { loading, error, data, subscribeToMore, refetch } = useQuery(
+  const { loading, error, data, subscribeToMore } = useQuery(
     getServiceInstanceDetails,
     {
       variables: {
@@ -82,6 +83,26 @@ export default function ServiceInstanceDetails({ match }) {
     },
   });
 
+  subscribeToMore({
+    variables: {
+      namespace: builder.getCurrentEnvironmentId(),
+    },
+    document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (
+        !subscriptionData.data ||
+        !subscriptionData.data.serviceInstanceEvent
+      ) {
+        return prev;
+      }
+
+      return handleInstanceEventOnDetails(
+        prev,
+        subscriptionData.data.serviceInstanceEvent,
+      );
+    },
+  });
+
   const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
 
   if (error)
@@ -103,25 +124,6 @@ export default function ServiceInstanceDetails({ match }) {
   const serviceClass =
     serviceInstance &&
     (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
-
-  if (!serviceInstance || !serviceClass) {
-    if (refetchInterval.current) {
-      clearInterval(refetchInterval.current);
-    }
-    refetchInterval.current = setInterval(refetch, 100);
-    // in case query is complete but serviceClass and clusterServiceClass are still null
-
-    return (
-      <EmptyList>
-        <Spinner />
-      </EmptyList>
-    );
-  }
-
-  if (refetchInterval.current) {
-    clearInterval(refetchInterval.current);
-    refetchInterval.current = null;
-  }
 
   return (
     <ThemeWrapper>

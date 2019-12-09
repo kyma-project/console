@@ -5,6 +5,7 @@ export const instanceStatusColor = statusType => {
     case 'PENDING':
       return '#ffb600';
     case 'FAILED':
+    case 'DELETED':
       return '#ee0000';
     case 'RUNNING':
     case 'READY':

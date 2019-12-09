@@ -149,10 +149,16 @@ function getServiceClass(instance) {
 
 export function isAddon(instance) {
   const serviceClass = getServiceClass(instance);
+  if (!serviceClass) {
+    return true;
+  }
   return serviceClass.labels && serviceClass.labels.local === 'true';
 }
 
 export function isService(instance) {
   const serviceClass = getServiceClass(instance);
+  if (!serviceClass) {
+    return false;
+  }
   return !serviceClass.labels || serviceClass.labels.local !== 'true';
 }
