@@ -71,54 +71,46 @@ const ModalWithForm = ({
     performRefetch();
   };
 
+  const onConfirm = () => {
+    const form = formElementRef.current;
+    if (
+      typeof form.reportValidity === 'function'
+        ? form.reportValidity()
+        : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
+    ) {
+      form.dispatchEvent(new Event('submit'));
+    }
+  };
+
+  const actions = (
+    <>
+      <Button option="light" onClick={() => setOpenStatus(false)}>
+        Cancel
+      </Button>
+      <Button aria-disabled={!isValid} onClick={onConfirm} option="emphasized">
+        {confirmText}
+      </Button>
+    </>
+  );
+
+  const modalOpeningComponent = (
+    <Button
+      glyph={button.glyph || null}
+      option={button.option}
+      onClick={() => setOpenStatus(true)}
+    >
+      {button.text}
+    </Button>
+  );
+
   return (
     <ControlledModal
-      modalOpeningComponent={
-        <Button
-          glyph={button.glyph || null}
-          option={button.option}
-          onClick={() => {
-            setOpenStatus(true);
-          }}
-        >
-          {button.text}
-        </Button>
-      }
+      modalOpeningComponent={modalOpeningComponent}
       modalClassName={modalClassName}
       show={isOpen}
-      actions={
-        <React.Fragment>
-          <Button
-            onClick={() => {
-              setOpenStatus(false);
-            }}
-            option="light"
-          >
-            Cancel
-          </Button>
-          <Button
-            aria-disabled={!isValid}
-            onClick={() => {
-              const form = formElementRef.current;
-              if (
-                typeof form.reportValidity === 'function'
-                  ? form.reportValidity()
-                  : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
-              ) {
-                form.dispatchEvent(new Event('submit'));
-                setOpenStatus(false);
-              }
-            }}
-            option="emphasized"
-          >
-            {confirmText}
-          </Button>
-        </React.Fragment>
-      }
-      onClose={() => {
-        setOpenStatus(false);
-      }}
+      actions={actions}
       title={title}
+      onClose={() => setOpenStatus(false)}
     >
       {React.createElement(children.type, {
         formElementRef,
