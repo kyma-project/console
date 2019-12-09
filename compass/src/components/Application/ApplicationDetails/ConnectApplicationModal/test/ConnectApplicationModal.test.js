@@ -56,44 +56,4 @@ describe('ConnectApplicationModal Container', () => {
       .map(i => i.instance().value);
     expect(inputs).toMatchSnapshot();
   });
-
-  // Timeout - Async callback was not invoked within the 5000ms timeout specified by jest.setTimeout.Timeout
-  // it('Modal renders valid state after loading data', async () => {
-  //   const component = mount(
-  //     <MockedProvider mocks={validMock} addTypename={false}>
-  //       <ConnectApplicationModal applicationId="app-id" />
-  //     </MockedProvider>,
-  //   );
-
-  //   await act(async () => {
-  //     await openModal(component);
-  //     await wait(0);
-  //     component.update();
-  //   });
-  //   const inputs = component
-  //     .findWhere(t => t.type() === 'input')
-  //     .map(i => i.instance().value);
-  //   expect(inputs).toMatchSnapshot();
-  // });
-
-  // it('Modal renders error state', async () => {
-  //   const component = mount(
-  //     <MockedProvider mocks={errorMock} addTypename={false}>
-  //       <ConnectApplicationModal applicationId="app-id" />
-  //     </MockedProvider>,
-  //   );
-
-  //   await act(async () => {
-  //     await openModal(component);
-  //     await wait(0);
-  //     component.update();
-  //   });
-
-  //   const inputs = component.findWhere(t => t.type() === 'input'); // inputs should be hidden
-  //   expect(inputs.length).toBe(0);
-  //   const errors = component.findWhere(
-  //     t => t.text() === 'Network error: sample error',
-  //   );
-  //   expect(errors.length).not.toBe(0);
-  // });
 });
