@@ -90,6 +90,30 @@ describe('GenericList', () => {
       expect(queryByLabelText(actions[0].name)).toBeNull();
       expect(queryByLabelText(actions[1].name)).toBeTruthy();
     });
+
+    it('Renders extra column in header when only actions are set', () => {
+      const actions = [{ name: 'testaction', handler: () => {} }];
+      const { queryByLabelText, rerender } = render(
+        <GenericList
+          headerRenderer={() => []}
+          rowRenderer={() => []}
+          actions={actions}
+          entries={mockEntries}
+        />,
+      );
+
+      expect(queryByLabelText('actions-column')).toBeInTheDocument();
+
+      rerender(
+        <GenericList
+          headerRenderer={() => []}
+          rowRenderer={() => []}
+          entries={mockEntries}
+        />,
+      );
+
+      expect(queryByLabelText('actions-column')).not.toBeInTheDocument();
+    });
   });
 
   it('Renders entries', async () => {

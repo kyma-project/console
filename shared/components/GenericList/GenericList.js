@@ -13,14 +13,11 @@ const NotFoundMessage = ({ children }) => (
 );
 
 const HeaderRenderer = ({ entries, actions, headerRenderer }) => {
-  let headerElements = [];
-  if (actions) {
-    headerElements = [...headerRenderer(entries), ''];
-  } else {
-    headerElements = headerRenderer(entries);
+  let emptyColumn = [];
+  if (actions.length) {
+    emptyColumn = [<th key="actions-column" aria-label="actions-column"></th>];
   }
-
-  return headerElements.map(h => <th key={h}>{h}</th>);
+  return [headerRenderer().map(h => <th key={h}>{h}</th>), ...emptyColumn];
 };
 
 const RowRenderer = ({ entry, actions, rowRenderer }) => {
@@ -96,8 +93,8 @@ export const GenericList = ({
           </thead>
           <tbody>
             {filteredEntries.length ? (
-              filteredEntries.map(e => (
-                <tr role="row" key={e.id}>
+              filteredEntries.map((e, index) => (
+                <tr role="row" key={e.id || e.name || index}>
                   <RowRenderer
                     entry={e}
                     actions={actions}
