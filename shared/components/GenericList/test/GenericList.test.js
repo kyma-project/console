@@ -28,7 +28,7 @@ describe('GenericList', () => {
     await getByText(defaultNotFoundText);
   });
 
-  it('Renders custon notFoundMessage props', async () => {
+  it('Renders custom notFoundMessage props', async () => {
     const notFoundMessage = 'abcd';
     const { getByText } = render(
       <GenericList
@@ -118,8 +118,6 @@ describe('GenericList', () => {
     );
 
     expect(await queryByText(mockEntries[0].name)).toBeTruthy();
-    // expect(await queryByText('maskopatol')).toBeTruthy();
-    // expect(await queryByText(mockEntries[0].description)).toBeNull();
   });
 
   it('Renders headers', async () => {
@@ -159,19 +157,6 @@ describe('GenericList', () => {
       );
 
       await getByRole('search');
-    });
-
-    it("Desn't show search field when showSearchField is set to false", async () => {
-      const { queryByRole } = render(
-        <GenericList
-          entries={mockEntries}
-          headerRenderer={mockHeaderRenderer}
-          rowRenderer={mockEntryRenderer}
-          showSearchField={false}
-        />,
-      );
-
-      expect(await queryByRole('search')).toBeNull();
     });
 
     it("Desn't show search field when showSearchField is set to false", async () => {
