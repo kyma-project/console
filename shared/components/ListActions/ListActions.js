@@ -46,7 +46,13 @@ const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
               </Menu.List>
             </Menu>
           }
-          control={<Button glyph="vertical-grip" option="light" />}
+          control={
+            <Button
+              glyph="vertical-grip"
+              option="light"
+              aria-label="more-actions"
+            />
+          }
           placement="bottom-end"
         />
       ) : null}
