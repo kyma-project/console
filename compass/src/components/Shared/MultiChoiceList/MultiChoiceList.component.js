@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Dropdown, Icon } from '@kyma-project/react-components';
-import { Menu } from 'fundamental-react';
+import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
 import './style.scss';
 
 MultiChoiceList.propTypes = {
@@ -67,9 +66,9 @@ export default function MultiChoiceList({
               option="light"
               type="negative"
               onClick={() => unselectItem(item)}
-            >
-              <Icon size="l" glyph="decline" />
-            </Button>
+              size="l"
+              glyph="decline"
+            />
           </li>
         ))}
       </ul>
@@ -83,26 +82,33 @@ export default function MultiChoiceList({
       );
     }
 
-    const nonChoosenItemsList = currentlyNonSelectedItems.map(item => (
-      <Menu.Item
-        onClick={() => {
-          selectItem(item);
-        }}
-      >
-        <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
-      </Menu.Item>
-    ));
+    const nonChoosenItemsList = (
+      <Menu className="multi-choice-list__non-selected">
+        {currentlyNonSelectedItems.map(item => (
+          <Menu.Item
+            key={getDisplayName(item)}
+            onClick={() => selectItem(item)}
+          >
+            <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
 
     return (
-      <Dropdown
-        control={
-          <Button dropdown typeAttr="button">
-            <span>{placeholder}</span>
-          </Button>
-        }
-        placement="bottom"
-      >
-        {nonChoosenItemsList}
+      <Dropdown>
+        <Popover
+          body={nonChoosenItemsList}
+          control={
+            <Button
+              className="fd-dropdown__control"
+              glyph="navigation-down-arrow"
+            >
+              {placeholder}
+            </Button>
+          }
+          widthSizingType="matchTarget"
+        />
       </Dropdown>
     );
   }

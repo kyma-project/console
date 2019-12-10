@@ -1,6 +1,26 @@
 .credentials-form {
-    & .fd-dropdown__control::after {
+
+    .fd-popover, .fd-popper__body {
+      width: 100%;
+    }
+    
+    .fd-dropdown {
+      width: 100%;
+    
+      .fd-dropdown__control {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        justify-items: center;
+      }
+    }
+
+    .fd-dropdown__control::after {
         position: relative;
-        top: -2px;
+        top: 1px;
+    }
+
+    .fd-dropdown__control::before {
+        content: unset;
     }
 }

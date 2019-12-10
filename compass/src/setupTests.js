@@ -14,6 +14,7 @@ global.wait = require('waait');
 
 window.postMessage = jest.fn();
 
+// fix UnhandledPromiseRejectionWarning: TypeError: document.createRange is not a function
 global.document.createRange = () => ({
   setStart: () => {},
   setEnd: () => {},

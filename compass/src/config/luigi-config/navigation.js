@@ -29,11 +29,13 @@ const navigation = {
       children: [
         {
           hideSideNav: true,
-          pathSegment: ':tenantId',
+          pathSegment: ':tenantName',
           navigationContext: 'tenant',
           context: {
             idToken: token,
-            tenantId: ':tenantId',
+            tenantName: ':tenantName',
+            defaultTenantId: window.clusterConfig.defaultTenant,
+            tenants: window.clusterConfig.tenants,
           },
           children: [
             {
@@ -161,7 +163,7 @@ const navigation = {
   contextSwitcher: {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
-    lazyloadOptions: false,
+    lazyloadOptions: true,
     options: getTenants,
   },
 };

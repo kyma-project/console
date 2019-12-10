@@ -25,7 +25,7 @@ import {
 
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
-import { handleInstanceEvent } from '../../store/ServiceInstances/events';
+import { handleInstanceEventOnList } from '../../store/ServiceInstances/events';
 
 import {
   EmptyList,
@@ -91,7 +91,7 @@ export default function ServiceInstancesList() {
           return prev;
         }
 
-        return handleInstanceEvent(
+        return handleInstanceEventOnList(
           prev,
           subscriptionData.data.serviceInstanceEvent,
         );

@@ -27,10 +27,10 @@ exports[`Lambda Configuration Tab Render with minimal props 1`] = `
         Label Editor Mock
       </p>
       <div
-        className="fd-form__item"
+        className="fd-form-item"
       >
         <label
-          className="fd-form__label"
+          className="fd-form-label"
           htmlFor="lambdaSize"
         >
           Size*
@@ -58,10 +58,10 @@ exports[`Lambda Configuration Tab Render with minimal props 1`] = `
         </select>
       </div>
       <div
-        className="fd-form__item"
+        className="fd-form-item"
       >
         <label
-          className="fd-form__label"
+          className="fd-form-label"
           htmlFor="lambdaRuntime"
         >
           Runtime*

@@ -703,6 +703,14 @@ Promise.all(initPromises)
               },
               pathSegment: '_integration_category_placeholder_',
               hideFromNav: true
+            },
+             {
+              pathSegment: 'apirulecreation',
+              label: 'Create API rule',
+              viewUrl: config.coreModuleUrl + '/createApiRule',
+              icon: 'sonography',
+              viewGroup: coreUIViewGroupName,
+              hideFromNav: true
             }
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);

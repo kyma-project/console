@@ -40,7 +40,6 @@ describe('MetadataDefinitionDetails UI', () => {
     expect(component.find(ActionBar.Header).text()).toEqual(
       mocks[0].result.data.labelDefinition.key,
     );
-    expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
   });
 
   describe('The schema is provided', () => {
@@ -70,6 +69,7 @@ describe('MetadataDefinitionDetails UI', () => {
         component
           .find(Panel)
           .find('Toggle')
+          .first()
           .prop('checked'),
       ).toEqual(true);
     });
@@ -119,13 +119,14 @@ describe('MetadataDefinitionDetails UI', () => {
 
     it(`Renders panel with toggle set to off`, () => {
       component.update();
+
       expect(
         component
           .find(Panel)
           .find('Toggle')
+          .first()
           .prop('checked'),
       ).toBeUndefined();
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
     });
 
     it(`Doesn't render JSON editor`, () => {

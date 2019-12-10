@@ -6,8 +6,6 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 
-import builder from '../commons/builder';
-
 import resolvers from './resolvers';
 import defaults from './defaults';
 
@@ -17,7 +15,7 @@ function handleUnauthorized() {
   window.parent.postMessage('unauthorized', '*');
 }
 
-export function createApolloClient() {
+export function createApolloClient(tenant, token) {
   const httpLink = createHttpLink({
     uri: COMPASS_GRAPHQL_ENDPOINT,
   });
@@ -25,8 +23,8 @@ export function createApolloClient() {
     return {
       headers: {
         ...headers,
-        tenant: builder.getTenant(),
-        authorization: builder.getToken(),
+        tenant,
+        authorization: token,
       },
     };
   });

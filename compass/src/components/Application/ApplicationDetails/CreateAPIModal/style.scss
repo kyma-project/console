@@ -8,8 +8,10 @@
     margin-top: 13px;
 }
 
-.fd-inline-help__content {
-    min-width: 230px;
+.fd-inline-help__content { 
+    // override fd-styles
+    min-width: unset !important;
+    width: 205px !important;
 }
 
 .credentials-tab__prompt-dot {
@@ -20,5 +22,4 @@
     position: relative;
     left: -10px;
     top: 12px;
-  }
-  
+}

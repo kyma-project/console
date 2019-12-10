@@ -34,7 +34,7 @@ export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
 
         const shouldBeDisabled = element =>
           element && (element === categoryId || element === nodeId);
-        node.hideFromNav = disabledNavNodesArray.some(shouldBeDisabled);
+        node.hideFromNav = disabledNavNodesArray.some(shouldBeDisabled) || node.hideFromNav;
       });
     }
   }

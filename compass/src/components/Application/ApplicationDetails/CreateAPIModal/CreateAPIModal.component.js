@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Modal, Button } from '@kyma-project/react-components';
+import { Modal } from './../../../../shared/components/Modal/Modal';
+import { Button, TabGroup, Tab, InlineHelp } from 'fundamental-react';
+
 import './style.scss';
 
 import { createAPI, createEventAPI } from './../../../Api/APICreationHelper';
-import { TabGroup, Tab, InlineHelp } from 'fundamental-react';
 
 import APIDataForm from './../../../Api/Forms/ApiDataForm';
 import CredentialsForm, {
@@ -154,7 +155,9 @@ export default class CreateAPIModal extends React.Component {
               credentials={credentials}
             />
           </Tab>
-          {!isAPI && <InlineHelp placement="right" text={credentialsTabText} />}
+          {!isAPI && (
+            <InlineHelp placement="bottom-left" text={credentialsTabText} />
+          )}
           {this.shouldShowCredentialsPrompt() && (
             <p className="credentials-tab__prompt-dot"></p>
           )}
@@ -164,7 +167,6 @@ export default class CreateAPIModal extends React.Component {
 
     return (
       <Modal
-        width={'480px'}
         title="Add Specification"
         confirmText="Add"
         cancelText="Cancel"
@@ -172,11 +174,7 @@ export default class CreateAPIModal extends React.Component {
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addSpecification}
         disabledConfirm={!this.state.isReadyToUpload}
-        onShow={() => {
-          this.setState(this.createInitialState());
-          LuigiClient.uxManager().addBackdrop();
-        }}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
+        onShow={() => this.setState(this.createInitialState())}
       >
         {content}
       </Modal>

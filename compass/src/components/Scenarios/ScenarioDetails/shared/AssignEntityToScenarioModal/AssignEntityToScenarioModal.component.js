@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { Modal } from '@kyma-project/react-components';
+import { Modal } from './../../../../../shared/components/Modal/Modal';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
 import { getActualChangesBy } from '../../../../../shared/utility';
 import ScenarioNameContext from '../../ScenarioNameContext';
@@ -132,15 +132,12 @@ export default function AssignEntityToScenarioModal({
 
   return (
     <Modal
-      width={'400px'}
       title={`Assign ${entityName} to scenario`}
       confirmText="Save"
       cancelText="Cancel"
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateEntities}
-      onShow={LuigiClient.uxManager().addBackdrop}
-      onHide={LuigiClient.uxManager().removeBackdrop}
     >
       <MultiChoiceList
         currentlySelectedItems={assignedEntities}
