@@ -24,8 +24,7 @@ export default function ApiForm({ formValues, defaultValues }) {
         inputKey="api-name"
         required
         inputRef={formValues.name}
-        // defaultValue={defaultValues && defaultValues.name}
-        defaultValue={'domek'}
+        defaultValue={defaultValues && defaultValues.name}
       />
       <TextFormItem
         label="Description"
@@ -45,8 +44,7 @@ export default function ApiForm({ formValues, defaultValues }) {
         required
         type="url"
         inputRef={formValues.targetUrl}
-        // defaultValue={defaultValues && defaultValues.targetUrl}
-        defaultValue={'http://1'}
+        defaultValue={defaultValues && defaultValues.targetUrl}
       />
       <FormItem>
         <FormLabel htmlFor="api-type">Type</FormLabel>

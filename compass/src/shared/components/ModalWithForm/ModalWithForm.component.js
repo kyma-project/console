@@ -20,7 +20,7 @@ const ModalWithForm = ({
 
   React.useEffect(() => {
     if (formElementRef.current) {
-      const observer = new MutationObserver((a, b) => console.log(a, b));
+      const observer = new MutationObserver(() => null);
       observer.observe(formElementRef.current, {
         childList: true,
         subtree: true,

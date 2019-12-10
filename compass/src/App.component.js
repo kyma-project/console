@@ -8,6 +8,7 @@ import Runtimes from './components/Runtimes/Runtimes.container';
 import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.container';
 import Applications from './components/Applications/Applications.container';
 import EditApi from './components/Api/EditApi/EditApi.container';
+import EditEventApi from './components/Api/EditEventApi/EditEventApi.container';
 import Scenarios from './components/Scenarios/Scenarios.container';
 import ScenarioDetails from './components/Scenarios/ScenarioDetails/ScenarioDetails';
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
@@ -84,6 +85,16 @@ class App extends React.Component {
               render={({ match }) => (
                 <EditApi
                   apiId={match.params.apiId}
+                  applicationId={match.params.applicationId}
+                />
+              )}
+            />
+            <Route
+              path="/application/:applicationId/event-api/:eventApiId/edit"
+              exact
+              render={({ match }) => (
+                <EditEventApi
+                  apiId={match.params.eventApiId}
                   applicationId={match.params.applicationId}
                 />
               )}

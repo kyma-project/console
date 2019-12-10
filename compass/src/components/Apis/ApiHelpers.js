@@ -36,15 +36,20 @@ export function createApiData(basicApiData, specData, credentials) {
     };
   }
 
+  let spec = null;
+  if (!specData.data) {
+    spec = {
+      ...specData,
+      type,
+    };
+  }
+
   return {
     name,
     description,
     group,
     targetURL,
-    spec: {
-      ...specData,
-      type,
-    },
+    spec,
     defaultAuth,
   };
 }
@@ -104,7 +109,7 @@ export function parseApi(textData) {
   for (const format of Object.keys(parsers)) {
     try {
       return {
-        spec: parsers[format](textData) || {},
+        data: parsers[format](textData) || {},
         format,
       };
     } catch (e) {
@@ -122,9 +127,9 @@ export function parseApi(textData) {
 
 export function parseEventApi(textData) {
   try {
-    const spec = jsyaml.safeLoad(textData) || {};
+    const data = jsyaml.safeLoad(textData) || {};
     const format = textData.trim()[0] === '{' ? 'JSON' : 'YAML';
-    return { spec, format };
+    return { data, format };
   } catch (e) {
     console.warn(e);
     return null;
@@ -141,7 +146,64 @@ export function isOpenApi(spec) {
   return !!spec.openapi;
 }
 
-export function isOData(spec) {
+function isOData(spec) {
   // OData should be in EDMX format
   return !!spec['edmx:Edmx'];
+}
+
+export async function verifyEventApiFile(file) {
+  const fileFormat = getEventApiFormat(file);
+  if (fileFormat === null) {
+    return { error: 'Error: Invalid file type' };
+  }
+
+  const data = await readFile(file);
+  const parseResult = parseEventApi(data);
+
+  if (!parseResult) {
+    return { error: 'Spec file is invalid' };
+  }
+
+  if (fileFormat !== parseResult.format) {
+    return { error: 'File type and content mismatch' };
+  }
+
+  if (!isAsyncApi(parseResult.data)) {
+    return {
+      error: 'Supplied spec does not have required "asyncapi" property',
+    };
+  }
+
+  return { error: null, ...parseResult };
+}
+
+export async function verifyApiFile(file, expectedType) {
+  const fileFormat = getApiFormat(file);
+  if (fileFormat === null) {
+    return { error: 'Error: Invalid file type' };
+  }
+
+  const data = await readFile(file);
+  const parseResult = parseApi(data);
+
+  if (!parseResult) {
+    return { error: 'Spec file is invalid' };
+  }
+
+  if (fileFormat !== parseResult.format) {
+    return { error: 'File type and content mismatch' };
+  }
+
+  if (!isOpenApi(fileFormat.data) && expectedType === 'OPEN_API') {
+    return {
+      error: 'Supplied spec does not have required "openapi" property',
+    };
+  }
+  if (!isOData(fileFormat.data) && expectedType === 'ODATA') {
+    return {
+      error: 'Supplied spec does not have required "edmx:Edmx" property',
+    };
+  }
+
+  return { error: null, ...parseResult };
 }

@@ -6,14 +6,7 @@ import CredentialsForm, {
   CREDENTIAL_TYPE_NONE,
 } from 'components/Api/Forms/CredentialForms/CredentialsForm';
 
-import {
-  createApiData,
-  getApiFormat,
-  readFile,
-  isOpenApi,
-  parseApi,
-  isOData,
-} from './../ApiHelpers';
+import { createApiData, verifyApiFile } from './../ApiHelpers';
 
 import FileInput from './../../Shared/FileInput/FileInput';
 import ApiForm from 'components/Api/Forms/ApiForm';
@@ -48,6 +41,13 @@ export default function CreateApiForm({
     type: React.useRef(null),
   };
 
+  const fileRef = React.useRef(null);
+
+  const [spec, setSpec] = React.useState({
+    data: '',
+    format: null,
+  });
+
   const credentialRefs = {
     oAuth: {
       clientId: React.useRef(null),
@@ -56,25 +56,35 @@ export default function CreateApiForm({
     },
   };
 
-  const [spec, setSpec] = React.useState({
-    file: null,
-    data: '',
-    format: null,
-    error: '',
-  });
+  const verifyFile = async file => {
+    const form = formElementRef.current;
+    const input = fileRef.current;
+    input.setCustomValidity('');
+    if (!file) {
+      return;
+    }
+
+    const expectedType = formValues.type.current.value;
+    const { data, format, error } = await verifyApiFile(file, expectedType);
+    if (error) {
+      input.setCustomValidity(error);
+      form.reportValidity();
+    } else {
+      setSpec({ data, format });
+    }
+  };
 
   const handleFormSubmit = async e => {
     e.preventDefault();
 
     const name = formValues.name.current.value;
     const basicApiData = getRefsValues(formValues);
-    const specData = (({ data, format }) => ({ data, format }))(spec);
     const credentials = {
       type: credentialsType,
       oAuth: getRefsValues(credentialRefs.oAuth),
     };
 
-    const apiData = createApiData(basicApiData, specData, credentials);
+    const apiData = createApiData(basicApiData, spec, credentials);
     try {
       await addAPI(apiData, applicationId);
       onCompleted(name, 'Event API created successfully');
@@ -82,45 +92,6 @@ export default function CreateApiForm({
       console.warn(error);
       onError('Cannot create Event API');
     }
-  };
-
-  const updateSpecFile = async file => {
-    if (!file) {
-      return;
-    }
-
-    const fileFormat = getApiFormat(file);
-    if (fileFormat === null) {
-      setSpec({ error: 'Error: Invalid file type' });
-      return;
-    }
-
-    const data = await readFile(file);
-
-    const parseResult = parseApi(data);
-
-    if (!parseResult) {
-      setSpec({ error: 'Spec file is invalid' });
-      return;
-    }
-
-    const { spec, format } = parseResult;
-    const type = formValues.type.current.value;
-
-    if (!isOpenApi(spec) && type === 'OPEN_API') {
-      setSpec({
-        error: 'Supplied spec does not have required "openapi" property',
-      });
-      return;
-    }
-    if (!isOData(spec) && type === 'ODATA') {
-      setSpec({
-        error: 'Supplied spec does not have required "edmx:Edmx" property',
-      });
-      return;
-    }
-
-    setSpec({ file, format, data });
   };
 
   return (
@@ -131,9 +102,8 @@ export default function CreateApiForm({
             <ApiForm formValues={formValues} />
             <FormItem>
               <FileInput
-                file={spec.file}
-                error={spec.error}
-                fileInputChanged={updateSpecFile}
+                inputRef={fileRef}
+                fileInputChanged={verifyFile}
                 availableFormatsMessage={
                   'Available file types: JSON, YAML, XML'
                 }

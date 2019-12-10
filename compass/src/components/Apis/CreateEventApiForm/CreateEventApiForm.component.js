@@ -2,16 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
-import { FormSet, FormItem } from 'fundamental-react';
-import FileInput from './../../Shared/FileInput/FileInput';
+import { FormSet } from 'fundamental-react';
+import FileInput from './../../Shared/FileInput/FileInput.1';
 
-import {
-  createEventAPIData,
-  getEventApiFormat,
-  readFile,
-  parseEventApi,
-  isAsyncApi,
-} from './../ApiHelpers';
+import { createEventAPIData, verifyEventApiFile } from './../ApiHelpers';
 import EventApiForm from 'components/Api/Forms/EventApiForm';
 import { getRefsValues } from 'react-shared';
 
@@ -38,21 +32,36 @@ export default function CreateEventApiForm({
     group: React.useRef(null),
   };
 
+  const fileRef = React.useRef(null);
+
   const [spec, setSpec] = React.useState({
-    file: null,
     data: '',
     format: null,
-    error: '',
   });
+
+  const verifyFile = async file => {
+    const form = formElementRef.current;
+    const input = fileRef.current;
+    input.setCustomValidity('');
+    if (!file) {
+      return;
+    }
+
+    const { spec, format, error } = await verifyEventApiFile(file);
+    if (error) {
+      input.setCustomValidity(error);
+      form.reportValidity();
+    } else {
+      setSpec({ spec, format });
+    }
+  };
 
   const handleFormSubmit = async e => {
     e.preventDefault();
 
     const name = formValues.name.current.value;
     const basicApiData = getRefsValues(formValues);
-    const specData = (({ data, format }) => ({ data, format }))(spec);
-
-    const apiData = createEventAPIData(basicApiData, specData);
+    const apiData = createEventAPIData(basicApiData, spec);
 
     try {
       await addEventAPI(apiData, applicationId);
@@ -62,50 +71,16 @@ export default function CreateEventApiForm({
     }
   };
 
-  const updateSpecFile = async file => {
-    if (!file) {
-      return;
-    }
-
-    const fileFormat = getEventApiFormat(file);
-    if (fileFormat === null) {
-      setSpec({ error: 'Error: Invalid file type' });
-      return;
-    }
-
-    const data = await readFile(file);
-
-    const parseResult = parseEventApi(data);
-
-    if (!parseResult) {
-      setSpec({ error: 'Spec file is invalid' });
-      return;
-    }
-
-    const { spec, format } = parseResult;
-    if (!isAsyncApi(spec)) {
-      setSpec({
-        error: 'Supplied spec does not have required "asyncapi" property',
-      });
-      return;
-    }
-
-    setSpec({ file, format, data });
-  };
-
   return (
     <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
       <FormSet>
         <EventApiForm formValues={formValues} />
-        <FormItem>
-          <FileInput
-            file={spec.file}
-            error={spec.error}
-            fileInputChanged={updateSpecFile}
-            availableFormatsMessage={'Available file types: JSON, YAML'}
-            acceptedFileFormats=".yml,.yaml,.json"
-          />
-        </FormItem>
+        <FileInput
+          inputRef={fileRef}
+          fileInputChanged={verifyFile}
+          availableFormatsMessage={'Available file types: JSON, YAML'}
+          acceptedFileFormats=".yml,.yaml,.json"
+        />
       </FormSet>
     </form>
   );
