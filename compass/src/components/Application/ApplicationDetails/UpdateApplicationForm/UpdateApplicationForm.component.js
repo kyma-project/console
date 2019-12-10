@@ -5,7 +5,7 @@ import { FormLabel } from 'fundamental-react';
 import { CustomPropTypes } from 'react-shared';
 
 const formProps = {
-  formElementRef: CustomPropTypes.elementRef,
+  formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
