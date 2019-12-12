@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Spinner = () => {
+export const Spinner = () => {
   return (
     <div className="fd-loading-dots" aria-hidden="false" aria-label="Loading">
       <div></div>
@@ -9,5 +9,3 @@ const Spinner = () => {
     </div>
   );
 };
-
-export default Spinner;

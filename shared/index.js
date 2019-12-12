@@ -6,6 +6,7 @@ export { InputWithSuffix } from './components/InputWithSuffix/InputWithSuffix';
 import { CollapsiblePanel } from './components/CollapsiblePanel/CollapsiblePanel';
 import { Tooltip } from './components/Tooltip/Tooltip';
 import { PageHeader } from './components/PageHeader/PageHeader';
+export { Spinner } from './components/Spinner/Spinner';
 
 import { handleDelete } from './components/GenericList/actionHandlers/simpleDelete';
 

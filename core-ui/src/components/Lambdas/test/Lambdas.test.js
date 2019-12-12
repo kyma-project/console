@@ -10,7 +10,7 @@ import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
 
 import Lambdas from './../Lambdas';
-import Spinner from '../../../shared/components/Spinner/Spinner';
+import Spinner from 'react-shared';
 
 jest.mock('@kyma-project/luigi-client', () => ({
   uxManager: () => ({
