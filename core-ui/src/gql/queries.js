@@ -48,3 +48,11 @@ export const GET_LAMBDA = gql`
     }
   }
 `;
+
+export const GET_API_RULES = gql`
+  query APIRules($namespace: String!) {
+    APIRules(namespace: $namespace) {
+      name
+    }
+  }
+`;

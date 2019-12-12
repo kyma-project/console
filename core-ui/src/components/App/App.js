@@ -7,6 +7,7 @@ import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetailsWrapper from '../Lambdas/LambdaDetails/LambdaDetailsWrapper';
 
 import ApiRuleCreationDraft from '../ApiRuleCreationDraft/ApiRuleCreationDraft';
+import ApiRules from 'components/ApiRules/ApiRules';
 
 export default function App() {
   return (
@@ -16,7 +17,7 @@ export default function App() {
         <Route path="/lambdas" exact component={Lambdas} />
         <Route path="/preload" component={() => null} />
         <Route path="/namespaces" component={NamespaceList} />
-
+        <Route path="/apirules" component={ApiRules} />
         <Route path="/createApiRule" component={ApiRuleCreationDraft} />
       </Switch>
     </NotificationProvider>
