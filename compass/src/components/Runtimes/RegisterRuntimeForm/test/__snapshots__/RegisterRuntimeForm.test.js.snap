@@ -2,9 +2,9 @@
 
 exports[`RegisterRuntimeForm Renders with minimal props 1`] = `
 <form
+  className="register-runtime-form"
   onChange={[Function]}
   onSubmit={[Function]}
-  className="register-runtime-form"
 >
   <div
     className="fd-form__set"
