@@ -49,7 +49,13 @@ export default function SearchInput({
       .flatMap(entry => {
         return suggestionProperties.map(property => {
           const entryValue = entry[property];
-          if (entryValue && entryValue.toString().includes(searchQuery)) {
+          if (
+            entryValue &&
+            entryValue
+              .toString()
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+          ) {
             return entryValue;
           }
           return null;
