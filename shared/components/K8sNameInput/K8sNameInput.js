@@ -3,17 +3,25 @@ import PropTypes from 'prop-types';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 import { InlineHelp } from 'fundamental-react';
 
-export const K8sNameInput = ({ _ref, id, kind, onKeyDown }) => (
+export const K8sNameInput = ({
+  _ref,
+  id,
+  kind,
+  onKeyDown,
+  showHelp = true,
+}) => (
   <>
     <label className="fd-form__label" htmlFor={id}>
       Name *
-      <InlineHelp
-        placement="bottom-right"
-        text="
+      {showHelp && (
+        <InlineHelp
+          placement="bottom-right"
+          text="
               The name must consist of lower case alphanumeric characters or dashes, 
               and must start and end with an alphanumeric character (e.g. 'my-name1').
               "
-      />
+        />
+      )}
     </label>
     <input
       className="fd-form__control"
@@ -34,4 +42,5 @@ K8sNameInput.propTypes = {
   id: PropTypes.string,
   kind: PropTypes.string,
   onKeyDown: PropTypes.func,
+  showHelp: PropTypes.bool,
 };

@@ -48,3 +48,14 @@ export const GET_LAMBDA = gql`
     }
   }
 `;
+
+export const GET_SERVICES = gql`
+  query Services($namespace: String!) {
+    services(namespace: $namespace) {
+      name
+      ports {
+        port
+      }
+    }
+  }
+`;

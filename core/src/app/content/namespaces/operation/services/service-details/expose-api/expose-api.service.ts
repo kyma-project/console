@@ -4,9 +4,10 @@ import { AppConfig } from '../../../../../../app.config';
 
 @Injectable()
 export class ExposeApiService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   createApiDefinition(url, data) {
+    console.log('AppConfig.k8sApiServerUrl_apimanagement', AppConfig.k8sApiServerUrl_apimanagement)
     return this.httpClient.post<any>(
       `${AppConfig.k8sApiServerUrl_apimanagement}${url}`,
       data,
@@ -41,7 +42,7 @@ export class ExposeApiService {
   getService(namespace: string, serviceName: string) {
     return this.httpClient.get<any>(
       `${
-        AppConfig.k8sApiServerUrl
+      AppConfig.k8sApiServerUrl
       }namespaces/${namespace}/services/${serviceName}`
     );
   }
@@ -55,12 +56,13 @@ export class ExposeApiService {
   getPodsByLabelSelector(namespace: string, labels: string) {
     return this.httpClient.get<any>(
       `${
-        AppConfig.k8sApiServerUrl
+      AppConfig.k8sApiServerUrl
       }namespaces/${namespace}/pods?labelSelector=${labels}`
     );
   }
 
   prepareApiDefinitionToCreate(data) {
+    console.log('AppConfig.gateway_kyma_project_io_version', AppConfig.gateway_kyma_project_io_version)
     const result = {
       kind: 'Api',
       metadata: {
@@ -68,7 +70,7 @@ export class ExposeApiService {
       },
       apiVersion: `gateway.kyma-project.io/${
         AppConfig.gateway_kyma_project_io_version
-      }`,
+        }`,
       spec: {
         service: {
           name: data.serviceName,

@@ -19,6 +19,21 @@ import { StringInput } from 'react-shared';
 const URLregexp = new RegExp(
   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
 );
+
+const passAll = {
+  value: 'allow',
+  displayName: 'Allow',
+};
+const jwt = {
+  value: 'jwt',
+  displayName: 'JWT',
+};
+const oauth2 = {
+  value: 'oauth2_introspection',
+  displayName: 'OAuth2',
+};
+const accessStrategiesList = [passAll, jwt, oauth2];
+
 const StringListInput = ({
   typesFilter,
   selectedType,
@@ -53,8 +68,8 @@ const StringListInput = ({
 };
 
 const AccessStrategy = ({
-  selectedType,
   path,
+  strategy,
   isOpenInitially = false,
   isEditModeInitially = false,
 }) => {
@@ -62,6 +77,7 @@ const AccessStrategy = ({
   const [trustedIssuesList, setTrustedIssues] = useState([
     'http://dex.kyma.local',
   ]);
+  const selectedType = strategy.accessStrategies[0].name;
 
   const [editMode, setEditMode] = useState(isEditModeInitially);
 
@@ -73,24 +89,35 @@ const AccessStrategy = ({
           {!editMode && (
             <Badge modifier="filled">
               <Icon
-                glyph={selectedType === 'Pass-all' ? 'unlocked' : 'locked'}
+                glyph={selectedType === passAll.value ? 'unlocked' : 'locked'}
                 size="s"
               />
-              {selectedType}
+              {
+                accessStrategiesList.find(item => item.value === selectedType)
+                  .displayName
+              }
             </Badge>
           )}
         </div>
         <div className="methods">
-          {!editMode && <Badge>GET</Badge>}
-          {!editMode && selectedType === 'OAuth2' && (
+          {!editMode &&
+            strategy.methods &&
+            strategy.methods.length &&
+            strategy.methods.sort().map(method => {
+              if (method === 'DELETE') return null;
+              return <Badge>{method}</Badge>;
+            })}
+
+          {!editMode && strategy.methods.includes('DELETE') && (
             <Badge type="error">DELETE</Badge>
           )}
         </div>
+        {/*  TODO Uncoment for updating access strategies
         <div className="actions">
           <label
             title="Edit mode"
             className="fd-form__label edit-toggle"
-            for={`check-${path}`}
+            htmlFor={`check-${path}`}
           >
             <Icon
               glyph="edit"
@@ -116,7 +143,7 @@ const AccessStrategy = ({
             title="Delete this access strategy"
             glyph="delete"
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="content">
@@ -127,7 +154,7 @@ const AccessStrategy = ({
                 <FormInput
                   placeholder="Field placeholder text"
                   type="text"
-                  value={path}
+                  defaultValue={path}
                 />
               </FormItem>
               {editMode && (
@@ -153,17 +180,19 @@ const AccessStrategy = ({
                       id="checkbox-6"
                       name="checkbox-name-6"
                       value="DELETE"
-                      checked={selectedType === 3}
+                      checked={strategy.methods.includes('DELETE')}
                     />
                   </FormRadioGroup>
                 </FormFieldset>
               )}
               <FormItem>
                 {editMode ? (
-                  <FormSelect value={selectedType} id="select-1">
-                    <option value="Pass-all">Pass-all</option>
-                    <option value="JWT">JWT</option>
-                    <option value="OAuth2">OAuth2</option>
+                  <FormSelect defaultValue={selectedType} id="select-1">
+                    {accessStrategiesList.map(ac => (
+                      <option key={ac.value} value={ac.value}>
+                        {ac.displayName}
+                      </option>
+                    ))}
                   </FormSelect>
                 ) : (
                   <Status>{selectedType}</Status>
@@ -173,13 +202,13 @@ const AccessStrategy = ({
           </FormGroup>
         )}
 
-        {selectedType !== 'Pass-all' && (
+        {selectedType !== passAll.value && (
           <>
             <StringListInput
               list={trustedIssuesList}
               onChange={setTrustedIssues}
               isEditMode={editMode}
-              typesFilter={['JWT']}
+              typesFilter={[jwt.value]}
               selectedType={selectedType}
               regexp={URLregexp}
               label="Trusted issuers"
