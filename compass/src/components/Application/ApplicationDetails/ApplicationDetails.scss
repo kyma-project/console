@@ -1,0 +1,17 @@
+.application-items {
+    @media (min-width: 861px) {
+        display: flex;
+
+        // override margins on bigger displays
+        >:first-child {
+            flex: 2;
+            margin-right: -16px !important;
+        }
+
+        >:last-child {
+            flex: 1;
+            margin-left: 16px !important;
+            height: fit-content;
+        }
+    }
+}

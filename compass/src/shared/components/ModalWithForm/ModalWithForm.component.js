@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ControlledModal } from './../Modal/ControlledModal';
 import { Button } from 'fundamental-react/Button';
 import LuigiClient from '@kyma-project/luigi-client';
+// import { useMutationObserver } from 'react-shared';
 
 const ModalWithForm = ({
   performRefetch,
@@ -20,8 +21,12 @@ const ModalWithForm = ({
 
   React.useEffect(() => {
     if (formElementRef.current) {
-      const observer = new MutationObserver(() => null);
+      const observer = new MutationObserver(() => {
+        console.log('!');
+        handleFormChanged(formElementRef.current);
+      });
       observer.observe(formElementRef.current, {
+        attributes: true,
         childList: true,
         subtree: true,
       });
@@ -30,6 +35,16 @@ const ModalWithForm = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formElementRef.current]);
 
+  const handleFormChanged = e => {
+    setValid(formElementRef.current.checkValidity());
+    if (typeof e.target.reportValidity === 'function') {
+      // for IE
+      e.target.reportValidity();
+    }
+  };
+
+  // useMutationObserver(formElementRef, handleFormChanged);
+
   const setOpenStatus = status => {
     if (status) {
       LuigiClient.uxManager().addBackdrop();
@@ -37,14 +52,6 @@ const ModalWithForm = ({
       LuigiClient.uxManager().removeBackdrop();
     }
     setOpen(status);
-  };
-
-  const handleFormChanged = e => {
-    setValid(formElementRef.current.checkValidity());
-    if (typeof e.target.reportValidity === 'function') {
-      // for IE
-      e.target.reportValidity();
-    }
   };
 
   const handleFormError = (title, message) => {

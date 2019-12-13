@@ -1,15 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
-import { TabGroup, Tab, FormSet, FormItem } from 'fundamental-react';
+import {
+  TabGroup,
+  Tab,
+  FormSet,
+  FormItem,
+  FormLabel,
+  FormSelect,
+} from 'fundamental-react';
 import CredentialsForm, {
   CREDENTIAL_TYPE_NONE,
-} from 'components/Api/Forms/CredentialForms/CredentialsForm';
+} from './../Forms/CredentialForms/CredentialsForm';
 
-import { createApiData, verifyApiFile } from './../ApiHelpers';
+import { createApiData, verifyApiFile } from '../ApiHelpers';
 
-import FileInput from './../../Shared/FileInput/FileInput';
-import ApiForm from 'components/Api/Forms/ApiForm';
+import FileInput from '../../Shared/FileInput/FileInput.1';
+import ApiForm from './../Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
 
 CreateApiForm.propTypes = {
@@ -29,6 +36,8 @@ export default function CreateApiForm({
   onCompleted,
   onError,
 }) {
+  const [specProvided, setSpecProvided] = React.useState(false);
+
   const [credentialsType, setCredentialsType] = React.useState(
     CREDENTIAL_TYPE_NONE,
   );
@@ -37,11 +46,11 @@ export default function CreateApiForm({
     name: React.useRef(null),
     description: React.useRef(null),
     group: React.useRef(null),
-    targetUrl: React.useRef(null),
-    type: React.useRef(null),
+    targetURL: React.useRef(null),
   };
 
   const fileRef = React.useRef(null);
+  const apiTypeRef = React.useRef(null);
 
   const [spec, setSpec] = React.useState({
     data: '',
@@ -71,26 +80,32 @@ export default function CreateApiForm({
       form.reportValidity();
     } else {
       setSpec({ data, format });
+
+      onChange(formElementRef.current);
     }
   };
 
   const handleFormSubmit = async e => {
     e.preventDefault();
 
-    const name = formValues.name.current.value;
     const basicApiData = getRefsValues(formValues);
     const credentials = {
       type: credentialsType,
       oAuth: getRefsValues(credentialRefs.oAuth),
     };
+    const specData = specProvided
+      ? { ...spec, type: apiTypeRef.current.value }
+      : null;
 
-    const apiData = createApiData(basicApiData, spec, credentials);
+    const apiData = createApiData(basicApiData, specData, credentials);
+    console.log(apiData);
+
     try {
       await addAPI(apiData, applicationId);
-      onCompleted(name, 'Event API created successfully');
+      onCompleted(basicApiData.name, 'Async API created successfully');
     } catch (error) {
       console.warn(error);
-      onError('Cannot create Event API');
+      onError('Cannot create Rest API');
     }
   };
 
@@ -100,16 +115,38 @@ export default function CreateApiForm({
         <Tab key="api-data" id="api-data" title="API data">
           <FormSet>
             <ApiForm formValues={formValues} />
-            <FormItem>
-              <FileInput
-                inputRef={fileRef}
-                fileInputChanged={verifyFile}
-                availableFormatsMessage={
-                  'Available file types: JSON, YAML, XML'
-                }
-                acceptedFileFormats=".yml,.yaml,.json,.xml"
-              />
-            </FormItem>
+            <p
+              className="link fd-has-margin-bottom-s"
+              onClick={() => setSpecProvided(!specProvided)}
+            >
+              {specProvided ? 'Remove specification' : 'Add specification'}
+            </p>
+            {specProvided && (
+              <>
+                <FormItem>
+                  <FormLabel htmlFor="api-type">Type</FormLabel>
+                  <FormSelect
+                    id="api-type"
+                    ref={apiTypeRef}
+                    defaultValue="OPEN_API"
+                  >
+                    <option value="OPEN_API">Open API</option>
+                    <option value="ODATA">OData</option>
+                  </FormSelect>
+                </FormItem>
+                <FormItem>
+                  <FileInput
+                    inputRef={fileRef}
+                    fileInputChanged={verifyFile}
+                    availableFormatsMessage={
+                      'Available file types: JSON, YAML, XML'
+                    }
+                    required
+                    acceptedFileFormats=".yml,.yaml,.json,.xml"
+                  />
+                </FormItem>
+              </>
+            )}
           </FormSet>
         </Tab>
         <Tab key="credentials" id="credentials" title="Credentials">

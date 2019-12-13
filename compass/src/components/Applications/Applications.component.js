@@ -19,8 +19,8 @@ class Applications extends React.Component {
     'Name',
     'Description',
     'Scenarios',
-    'APIs',
-    'EventAPIs',
+    'Rest APIs',
+    'Async APIs',
     'Status',
   ];
 

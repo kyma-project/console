@@ -11,6 +11,15 @@ export const GET_APPLICATION_WITH_APIS = gql`
           name
           description
           targetURL
+          defaultAuth {
+            credential {
+              ... on OAuthCredentialData {
+                clientId
+                clientSecret
+                url
+              }
+            }
+          }
           spec {
             data
             format

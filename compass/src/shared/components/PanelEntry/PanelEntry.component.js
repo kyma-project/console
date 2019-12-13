@@ -1,14 +1,12 @@
-import { Panel } from '@kyma-project/react-components';
+import { Panel } from 'fundamental-react';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 const PanelEntry = ({ title, content }) => (
-  <Panel>
-    <Panel.Body>
-      <p className="fd-has-color-text-4 fd-has-margin-bottom-none">{title}</p>
-      {content}
-    </Panel.Body>
-  </Panel>
+  <Panel.Body>
+    <p className="fd-has-color-text-4 fd-has-margin-bottom-none">{title}</p>
+    {content}
+  </Panel.Body>
 );
 
 PanelEntry.propTypes = {

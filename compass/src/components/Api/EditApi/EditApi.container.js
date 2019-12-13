@@ -1,38 +1,28 @@
 import { graphql, compose } from 'react-apollo';
 import { SEND_NOTIFICATION } from './../../../gql';
+import { GET_APPLICATION_WITH_APIS } from '../gql';
+import { UPDATE_API } from './gql';
 
 import EditApi from './EditApi.component';
-import { GET_API_DATA, UPDATE_API, UPDATE_EVENT_API } from './gql';
+
 export default compose(
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
-  graphql(GET_API_DATA, {
+  graphql(GET_APPLICATION_WITH_APIS, {
     name: 'apiDataQuery',
-    options: props => {
+    options: ({ applicationId }) => {
       return {
         variables: {
-          id: props.applicationId,
+          applicationId,
         },
       };
     },
   }),
   graphql(UPDATE_API, {
     props: ({ mutate }) => ({
-      updateAPI: async (id, input) => {
-        mutate({
-          variables: {
-            id,
-            in: input,
-          },
-        });
-      },
-    }),
-  }),
-  graphql(UPDATE_EVENT_API, {
-    props: ({ mutate }) => ({
-      updateEventAPI: async (id, input) => {
-        mutate({
+      updateApi: async (id, input) => {
+        return mutate({
           variables: {
             id,
             in: input,

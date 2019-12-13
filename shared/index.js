@@ -11,6 +11,7 @@ import { handleDelete } from './components/GenericList/actionHandlers/simpleDele
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
 export * from './forms';
+export * from './hooks';
 export * from './contexts/ApplicationContext';
 export {
   CustomPropTypes,

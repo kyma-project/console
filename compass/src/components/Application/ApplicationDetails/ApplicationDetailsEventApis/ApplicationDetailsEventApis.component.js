@@ -5,7 +5,7 @@ import './ApplicationDetailsEventApis.scss';
 
 import { ApplicationQueryContext } from '../ApplicationDetails.component';
 
-import CreateEventApiForm from '../../../Apis/CreateEventApiForm/CreateEventApiForm.container';
+import CreateEventApiForm from '../../../Api/CreateEventApiForm/CreateEventApiForm.container';
 
 import { GenericList, handleDelete } from 'react-shared';
 import ModalWithForm from '../../../../shared/components/ModalWithForm/ModalWithForm.container';
@@ -28,7 +28,7 @@ export default function ApplicationDetailsEventApis({
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
-        content: `Deleted Event API "${apiName}".`,
+        content: `Deleted API "${apiName}".`,
         title: `${apiName}`,
         color: '#359c46',
         icon: 'accept',
@@ -62,7 +62,7 @@ export default function ApplicationDetailsEventApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('Event API', entry.id, entry.name, deleteEventAPI, () => {
+        handleDelete('API', entry.id, entry.name, deleteEventAPI, () => {
           showDeleteSuccessNotification(entry.name);
         }),
     },
@@ -70,8 +70,8 @@ export default function ApplicationDetailsEventApis({
 
   const extraHeaderContent = (
     <ModalWithForm
-      title="Add Event API"
-      button={{ text: 'Add Event API', option: 'light' }}
+      title="Add Async API"
+      button={{ text: 'Add Async API', option: 'light' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
       className="create-event-api-modal"
@@ -83,8 +83,8 @@ export default function ApplicationDetailsEventApis({
   return (
     <GenericList
       extraHeaderContent={extraHeaderContent}
-      title="Event APIs"
-      notFoundMessage="There are no Event APIs available for this Application"
+      title="Async APIs"
+      notFoundMessage="There are no Async APIs available for this Application"
       actions={actions}
       entries={eventApis.data}
       headerRenderer={headerRenderer}

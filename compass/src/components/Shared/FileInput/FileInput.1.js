@@ -7,6 +7,7 @@ FileInput.propTypes = {
   fileInputChanged: PropTypes.func.isRequired,
   availableFormatsMessage: PropTypes.string,
   acceptedFileFormats: PropTypes.string.isRequired,
+  required: PropTypes.bool,
 };
 
 export default function FileInput({
@@ -14,6 +15,7 @@ export default function FileInput({
   availableFormatsMessage,
   acceptedFileFormats,
   inputRef,
+  required,
 }) {
   const [fileName, setFileName] = useState('');
   const [draggingOverCounter, setDraggingCounter] = useState(0);
@@ -56,6 +58,7 @@ export default function FileInput({
         onChange={e => fileChanged(e.target.files[0])}
         className="fd-asset-upload__input"
         accept={acceptedFileFormats}
+        required
       />
       <label htmlFor="file-upload" className={labelClass}>
         <span className="fd-asset-upload__text">Browse</span>

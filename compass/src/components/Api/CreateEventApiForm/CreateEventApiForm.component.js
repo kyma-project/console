@@ -6,7 +6,7 @@ import { FormSet } from 'fundamental-react';
 import FileInput from './../../Shared/FileInput/FileInput.1';
 
 import { createEventAPIData, verifyEventApiFile } from './../ApiHelpers';
-import EventApiForm from 'components/Api/Forms/EventApiForm';
+import EventApiForm from './../Forms/EventApiForm';
 import { getRefsValues } from 'react-shared';
 
 CreateEventApiForm.propTypes = {
@@ -26,6 +26,8 @@ export default function CreateEventApiForm({
   onCompleted,
   onError,
 }) {
+  const [specProvided, setSpecProvided] = React.useState(false);
+
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
@@ -47,27 +49,30 @@ export default function CreateEventApiForm({
       return;
     }
 
-    const { spec, format, error } = await verifyEventApiFile(file);
+    const { data, format, error } = await verifyEventApiFile(file);
     if (error) {
       input.setCustomValidity(error);
       form.reportValidity();
     } else {
-      setSpec({ spec, format });
+      setSpec({ data, format });
     }
+
+    onChange(formElementRef.current);
   };
 
   const handleFormSubmit = async e => {
     e.preventDefault();
 
-    const name = formValues.name.current.value;
     const basicApiData = getRefsValues(formValues);
-    const apiData = createEventAPIData(basicApiData, spec);
-
+    const specData = specProvided ? spec : null;
+    const eventApiData = createEventAPIData(basicApiData, specData);
+    console.log(eventApiData);
+    // debugger
     try {
-      await addEventAPI(apiData, applicationId);
-      onCompleted(name, 'Event API created successfully');
+      await addEventAPI(eventApiData, applicationId);
+      onCompleted(basicApiData.name, 'Async API created successfully');
     } catch (error) {
-      onError('Cannot create Event API');
+      onError('Cannot create Async API');
     }
   };
 
@@ -75,12 +80,21 @@ export default function CreateEventApiForm({
     <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
       <FormSet>
         <EventApiForm formValues={formValues} />
-        <FileInput
-          inputRef={fileRef}
-          fileInputChanged={verifyFile}
-          availableFormatsMessage={'Available file types: JSON, YAML'}
-          acceptedFileFormats=".yml,.yaml,.json"
-        />
+        <p
+          className="link fd-has-margin-bottom-s"
+          onClick={() => setSpecProvided(!specProvided)}
+        >
+          {specProvided ? 'Remove specification' : 'Add specification'}
+        </p>
+        {specProvided && (
+          <FileInput
+            inputRef={fileRef}
+            fileInputChanged={verifyFile}
+            availableFormatsMessage={'Available file types: JSON, YAML'}
+            acceptedFileFormats=".yml,.yaml,.json"
+            required
+          />
+        )}
       </FormSet>
     </form>
   );

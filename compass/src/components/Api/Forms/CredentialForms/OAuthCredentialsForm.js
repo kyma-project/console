@@ -40,7 +40,7 @@ export default function OAuthCredentialsForm({ refs, defaultValues }) {
         required
         type="url"
         label="Url"
-        inputRef={refs.clientSecret}
+        inputRef={refs.url}
         defaultValue={defaultValues && defaultValues.url}
       />
     </section>

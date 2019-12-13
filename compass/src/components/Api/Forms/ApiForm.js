@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
-import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
+// import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
 import TextFormItem from './../../Shared/TextFormItem';
 
 ApiForm.propTypes = {
@@ -10,8 +10,7 @@ ApiForm.propTypes = {
     name: CustomPropTypes.ref,
     description: CustomPropTypes.ref,
     group: CustomPropTypes.ref,
-    targetUrl: CustomPropTypes.ref,
-    type: CustomPropTypes.ref,
+    targetURL: CustomPropTypes.ref,
   }),
   defaultValues: PropTypes.object,
 };
@@ -43,19 +42,9 @@ export default function ApiForm({ formValues, defaultValues }) {
         inputKey="api-target-url"
         required
         type="url"
-        inputRef={formValues.targetUrl}
-        defaultValue={defaultValues && defaultValues.targetUrl}
+        inputRef={formValues.targetURL}
+        defaultValue={defaultValues && defaultValues.targetURL}
       />
-      <FormItem>
-        <FormLabel htmlFor="api-type">Type</FormLabel>
-        <FormSelect id="api-type" ref={formValues.type} defaultValue="OPEN_API">
-          <option value="OPEN_API">
-            {/* TODO selected? */}
-            Open API
-          </option>
-          <option value="ODATA">OData</option>
-        </FormSelect>
-      </FormItem>
     </>
   );
 }

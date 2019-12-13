@@ -2,162 +2,231 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { toAPI, toEventAPI, fromAPI, areApisEqual } from './APIViewModel';
+import { Panel, TabGroup, Tab, Toggle } from 'fundamental-react';
+import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
+import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
+import ApiForm from '../Forms/ApiForm';
+import TextDropdown from '../shared/TextDropdown/TextDropdown';
+import CredentialsForm from './../Forms/CredentialForms/CredentialsForm';
+import './EditApi.scss';
 
-import EditApiHeader from './Header/EditApiHeader.container';
-import EditApiTabs from './EditApiTabs.component';
-import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+import { getRefsValues /*, useMutationObserver*/ } from 'react-shared';
+import {
+  createApiData,
+  inferCredentialType,
+  verifyApiInput,
+} from './../ApiHelpers';
+import ApiEditorForm from '../Forms/ApiEditorForm';
 
-export default class EditApi extends React.Component {
-  state = { canSaveChanges: false };
-  formRef = React.createRef();
+EditApi.propTypes = {
+  apiId: PropTypes.string.isRequired,
+  applicationId: PropTypes.string.isRequired, // used in container file
+  apiDataQuery: PropTypes.object.isRequired,
+  updateApi: PropTypes.func.isRequired,
+  sendNotification: PropTypes.func.isRequired,
+};
 
-  static propTypes = {
-    apiId: PropTypes.string.isRequired,
-    applicationId: PropTypes.string.isRequired,
+export default function EditApi({
+  apiId,
+  apiDataQuery,
+  updateApi,
+  sendNotification,
+}) {
+  const formRef = React.useRef(null);
+  const [formValid, setFormValid] = React.useState(true);
+  const [specProvided, setSpecProvided] = React.useState();
+  const [originalApi, setOriginalApi] = React.useState(null);
+  const [format, setFormat] = React.useState('');
+  const [apiType, setApiType] = React.useState('');
+  const [specText, setSpecText] = React.useState('');
 
-    apiDataQuery: PropTypes.object.isRequired,
-    sendNotification: PropTypes.func.isRequired,
-    updateAPI: PropTypes.func.isRequired,
-    updateEventAPI: PropTypes.func.isRequired,
+  const [credentialsType, setCredentialsType] = React.useState();
+
+  const formValues = {
+    name: React.useRef(null),
+    description: React.useRef(null),
+    group: React.useRef(null),
+    targetURL: React.useRef(null),
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.apiDataQuery.loading || nextProps.apiDataQuery.error) {
-      return null;
-    }
-    if (!prevState.originalApi) {
-      const originalApiData = EditApi.getOriginalApiData(nextProps);
-      if (!originalApiData) {
-        return null;
+  const credentialRefs = {
+    oAuth: {
+      clientId: React.useRef(null),
+      clientSecret: React.useRef(null),
+      url: React.useRef(null),
+    },
+  };
+
+  React.useEffect(() => {
+    if (apiDataQuery.application) {
+      const originalApi = apiDataQuery.application.apis.data.find(
+        api => api.id === apiId,
+      );
+
+      setOriginalApi(originalApi);
+
+      setCredentialsType(inferCredentialType(originalApi.defaultAuth));
+
+      setSpecProvided(!!originalApi.spec);
+      if (originalApi.spec) {
+        setFormat(originalApi.spec.format);
+        setSpecText(originalApi.spec.data);
+        setApiType(originalApi.spec.type);
+      } else {
+        // default values
+        setFormat('YAML');
+        setApiType('OPEN_API');
       }
-      const apiViewModel = fromAPI(originalApiData);
-
-      return {
-        apiId: originalApiData.entry.id,
-        originalApi: apiViewModel,
-        editedApi: apiViewModel,
-      };
     }
-    return null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiDataQuery.application]);
+
+  const revalidateForm = () =>
+    setFormValid(!!formRef.current && formRef.current.checkValidity());
+
+  // useMutationObserver(formRef, console.log);
+
+  if (apiDataQuery.loading) {
+    return <p>Loading...</p>;
+  }
+  if (apiDataQuery.error) {
+    return <p>`Error! ${apiDataQuery.error.message}`</p>;
   }
 
-  static getOriginalApiData(nextProps) {
-    // we have to filter apis manuallly for now
-    // https://github.com/kyma-incubator/compass/issues/234
-    const { apiDataQuery, apiId } = nextProps;
-    const query = apiDataQuery.application;
-    const api = query.apis.data.find(api => api.id === apiId);
-    if (api) {
-      return {
-        type: 'API',
-        entry: api,
-      };
-    }
-    const eventApi = query.eventAPIs.data.find(api => api.id === apiId);
-    if (eventApi) {
-      return {
-        type: 'Event API',
-        entry: eventApi,
-      };
-    }
-    return null;
+  if (!originalApi) {
+    return <ResourceNotFound resource="Rest API" breadcrumb="Applications" />;
   }
 
-  updateApiData = key => values => {
-    const updatedApiData = { ...this.state.editedApi };
-    updatedApiData[key] = { ...updatedApiData[key], ...values };
-
-    this.setState({ editedApi: updatedApiData }, () => {
-      this.setState({
-        canSaveChanges: this.checkCanSaveChanges(),
-      });
-    });
-  };
-
-  saveChanges = async () => {
-    const { editedApi, apiId } = this.state;
-    const { updateAPI, updateEventAPI, sendNotification } = this.props;
-    const apiName = editedApi.generalInformation.name;
+  const saveChanges = async () => {
+    const basicData = getRefsValues(formValues);
+    const specData = specProvided
+      ? { data: specText, format, type: apiType }
+      : null;
+    const credentialsData = { oAuth: getRefsValues(credentialRefs.oAuth) };
+    const apiData = createApiData(
+      basicData,
+      specData,
+      credentialsData,
+      credentialsType,
+    );
 
     try {
-      if (editedApi.apiType === 'API') {
-        const newApi = toAPI(editedApi);
-        await updateAPI(apiId, newApi);
-      } else {
-        const newApi = toEventAPI(editedApi);
-        await updateEventAPI(apiId, newApi);
-      }
-      this.setState({ originalApi: editedApi });
+      await updateApi(apiId, apiData);
+
+      const name = basicData.name;
       sendNotification({
         variables: {
-          content: `Updated API "${apiName}".`,
-          title: `${apiName}`,
+          content: `Updated API "${name}".`,
+          title: name,
           color: '#359c46',
           icon: 'accept',
-          instanceName: apiName,
+          instanceName: name,
         },
       });
-      LuigiClient.uxManager().setDirtyStatus(false);
     } catch (e) {
       console.warn(e);
       LuigiClient.uxManager().showAlert({
-        text: `Error occured while updating the api: ${e.message}`,
+        text: `Cannot update API: ${e.message}`,
         type: 'error',
         closeAfter: 10000,
       });
     }
   };
 
-  checkCanSaveChanges = () => {
-    const { originalApi, editedApi } = this.state;
-
-    const form = this.formRef.current;
-    const isFormValid = form && form.checkValidity();
-
-    const dataChanged = !areApisEqual(editedApi, originalApi);
-    const isSpecValid = editedApi.spec.isSpecValid;
-
-    LuigiClient.uxManager().setDirtyStatus(dataChanged);
-
-    return dataChanged && isFormValid && isSpecValid;
+  const updateSpecText = text => {
+    setSpecText(text);
+    revalidateForm();
   };
 
-  // prevent submit when user clicks on dropdown (or any other button inside form)
-  overrideSubmit = e => {
-    e.preventDefault();
-  };
+  const defaultCredentials = originalApi.defaultAuth
+    ? { oAuth: { ...originalApi.defaultAuth.credential } }
+    : null;
 
-  render() {
-    const apiDataQuery = this.props.apiDataQuery;
-    if (apiDataQuery.loading) {
-      return <p>Loading...</p>;
-    }
-    if (apiDataQuery.error) {
-      return <p>`Error! ${apiDataQuery.error.message}`</p>;
-    }
-
-    const { originalApi, editedApi } = this.state;
-    if (!originalApi) {
-      return <ResourceNotFound resource="API" breadcrumb="Applications" />;
-    }
-
-    return (
-      <>
-        <EditApiHeader
-          apiData={originalApi}
-          applicationName={apiDataQuery.application.name}
-          saveChanges={this.saveChanges}
-          canSaveChanges={this.state.canSaveChanges}
-        />
-        <form
-          ref={this.formRef}
-          className="edit-api-tabs"
-          onSubmit={this.overrideSubmit}
-        >
-          <EditApiTabs editedApi={editedApi} updateState={this.updateApiData} />
-        </form>
-      </>
-    );
-  }
+  return (
+    <>
+      <EditApiHeader
+        api={originalApi}
+        applicationName={apiDataQuery.application.name}
+        saveChanges={saveChanges}
+        canSaveChanges={formValid}
+      />
+      <form ref={formRef} onChange={revalidateForm}>
+        <TabGroup className="edit-api-tabs">
+          <Tab
+            key={'general-information'}
+            id={'general-information'}
+            title={'General Information'}
+          >
+            <Panel>
+              <Panel.Header>
+                <p className="fd-has-type-1">General Information</p>
+              </Panel.Header>
+              <Panel.Body>
+                <ApiForm
+                  formValues={formValues}
+                  defaultValues={{ ...originalApi }}
+                />
+              </Panel.Body>
+            </Panel>
+          </Tab>
+          <Tab key={'api'} id={'api'} title={'Rest API'}>
+            <Panel className="spec-editor-panel">
+              <Panel.Header>
+                <p className="fd-has-type-1">Rest API</p>
+                <Panel.Actions>
+                  <TextDropdown
+                    options={{ JSON: 'JSON', YAML: 'YAML', XML: 'XML' }}
+                    selectedOption={format}
+                    selectOption={setFormat}
+                    disabled={!specProvided}
+                  />
+                  <TextDropdown
+                    options={{ OPEN_API: 'Open API', ODATA: 'OData' }}
+                    selectedOption={apiType}
+                    selectOption={setApiType}
+                    disabled={!specProvided}
+                    className="fd-has-margin-left-m"
+                  />
+                  <Toggle
+                    checked={specProvided}
+                    onChange={() => setSpecProvided(!specProvided)}
+                    className="fd-has-margin-left-m fd-display-l-inline-block"
+                  >
+                    <span className="fd-has-display-inline-block fd-has-margin-left-s">
+                      Provide schema
+                    </span>
+                  </Toggle>
+                </Panel.Actions>
+              </Panel.Header>
+              <Panel.Body>
+                <ApiEditorForm
+                  specText={specText}
+                  setSpecText={updateSpecText}
+                  specProvided={specProvided}
+                  apiType={apiType}
+                  format={format}
+                  verifyApi={verifyApiInput}
+                />
+              </Panel.Body>
+            </Panel>
+          </Tab>
+          <Tab key={'credentials'} id={'credentials'} title={'Credentials'}>
+            <Panel>
+              <Panel.Header>
+                <p className="fd-has-type-1">Credentials</p>
+              </Panel.Header>
+              <Panel.Body>
+                <CredentialsForm
+                  credentialRefs={credentialRefs}
+                  credentialType={credentialsType}
+                  setCredentialType={setCredentialsType}
+                  defaultValues={defaultCredentials}
+                />
+              </Panel.Body>
+            </Panel>
+          </Tab>
+        </TabGroup>
+      </form>
+    </>
+  );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel } from '@kyma-project/react-components';
+import { FormItem, FormLabel } from 'fundamental-react';
+import { CustomPropTypes } from 'react-shared';
 
 TextFormItem.propTypes = {
   inputKey: PropTypes.string.isRequired,
@@ -9,6 +10,7 @@ TextFormItem.propTypes = {
   type: PropTypes.string,
   onChange: PropTypes.func,
   defaultValue: PropTypes.any,
+  inputRef: CustomPropTypes.ref,
 };
 
 TextFormItem.defaultProps = {

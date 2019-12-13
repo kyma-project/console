@@ -14,6 +14,7 @@ import { handleDelete } from 'react-shared';
 
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
+import { getApiDisplayName } from './../../ApiHelpers';
 
 function navigateToApplication() {
   LuigiClient.linkManager()
@@ -62,7 +63,7 @@ class ApiDetailsHeader extends React.Component {
             <Button
               onClick={() =>
                 handleDelete(
-                  this.props.apiType,
+                  'API',
                   this.props.api.id,
                   this.props.api.name,
                   this.props.deleteMutation,
@@ -79,11 +80,13 @@ class ApiDetailsHeader extends React.Component {
           </ActionBar.Actions>
         </section>
         <PanelGrid nogap cols={4}>
-          <PanelEntry title="Type" content={<p>{this.props.apiType}</p>} />
+          <PanelEntry
+            title="Type"
+            content={<p>{getApiDisplayName(this.props.api)}</p>}
+          />
         </PanelGrid>
       </header>
     );
   }
 }
-
 export default ApiDetailsHeader;

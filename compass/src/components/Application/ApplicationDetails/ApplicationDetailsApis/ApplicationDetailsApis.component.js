@@ -5,10 +5,9 @@ import './ApplicationDetailsApis.scss';
 
 import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
-import CreateApiForm from './../../../Apis/CreateApiForm/CreateApiForm.container';
+import CreateApiForm from '../../../Api/CreateApiForm/CreateApiForm.container';
 
-import { GenericList } from 'react-shared';
-import { handleDelete } from 'react-shared';
+import { GenericList, handleDelete } from 'react-shared';
 import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
 
 ApplicationDetailsApis.propTypes = {
@@ -71,8 +70,8 @@ export default function ApplicationDetailsApis({
 
   const extraHeaderContent = (
     <ModalWithForm
-      title="Add API"
-      button={{ text: 'Add API', option: 'light' }}
+      title="Add Rest API"
+      button={{ text: 'Add Rest API', option: 'light' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
       className="create-api-modal"
@@ -84,7 +83,7 @@ export default function ApplicationDetailsApis({
   return (
     <GenericList
       extraHeaderContent={extraHeaderContent}
-      title="APIs"
+      title="Rest APIs"
       notFoundMessage="There are no APIs available for this Application"
       actions={actions}
       entries={apis.data}

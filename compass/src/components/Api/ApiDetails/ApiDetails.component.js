@@ -5,19 +5,8 @@ import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
-
-function getApiType(api) {
-  switch (api.spec.type) {
-    case 'OPEN_API':
-      return 'openapi';
-    case 'ODATA':
-      return 'odata';
-    case 'ASYNC_API':
-      return 'asyncapi';
-    default:
-      return null;
-  }
-}
+import Panel from 'fundamental-react/Panel/Panel';
+import { getApiType } from './../ApiHelpers';
 
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
   const rawApisForApplication = apiId
@@ -67,19 +56,28 @@ const ApiDetails = ({
   const api = getApiDataFromQuery(application, apiId, eventApiId);
 
   if (!api) {
-    return <ResourceNotFound resource="Api" />;
+    return <ResourceNotFound resource="Rest API" />;
   }
 
-  const apiType = getApiType(api);
   return (
     <>
       <ApiDetailsHeader
         application={application}
         api={api}
-        apiType={apiId ? 'OpenAPI' : 'AsyncAPI'}
         deleteMutation={apiId ? deleteApi : deleteEventApi}
       ></ApiDetailsHeader>
-      <DocumentationComponent type={apiType} content={api.spec.data} />
+      {api.spec ? (
+        <DocumentationComponent
+          type={getApiType(api)}
+          content={api.spec.data}
+        />
+      ) : (
+        <Panel className="fd-has-margin-large">
+          <Panel.Body className="fd-has-text-align-center fd-has-type-4">
+            No specification provided.
+          </Panel.Body>
+        </Panel>
+      )}
     </>
   );
 };
