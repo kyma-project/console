@@ -119,7 +119,7 @@ const CreateApiRule = () => {
   const formRef = useRef(null);
   const formValues = {
     name: useRef(null),
-    gateway: useRef(null),
+    host: useRef(null),
     runtime: useRef(null),
   };
   function handleFormChanged(e) {
@@ -156,10 +156,10 @@ const CreateApiRule = () => {
       name: formValues.name.current.value,
       namespace: LuigiClient.getEventData().environmentId,
       params: {
-        host: 'host',
+        host: formValues.host.current.value,
         serviceName: 'serviceName',
         servicePort: 443,
-        gateway: formValues.gateway.current.value,
+        gateway: defaultGateway,
         rules: accessStrategies,
       },
     };
@@ -233,11 +233,13 @@ const CreateApiRule = () => {
                       />
                     </FormItem>
                     <FormItem>
-                      <FormLabel>Gateway</FormLabel>
-                      <input
-                        defaultValue={defaultGateway}
-                        ref={formValues.gateway}
-                        type="text"
+                      <K8sNameInput
+                        _ref={formValues.host}
+                        id="host"
+                        kind="Host"
+                        showHelp={false}
+                        label="Host *"
+                        className={classNames([{ 'is-invalid': !isValid }])}
                       />
                     </FormItem>
                     <ServicesDropdown {...servicesQueryResult} />

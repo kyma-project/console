@@ -9,10 +9,11 @@ export const K8sNameInput = ({
   kind,
   onKeyDown,
   showHelp = true,
+  label = 'Name *',
 }) => (
   <>
     <label className="fd-form__label" htmlFor={id}>
-      Name *
+      {label}
       {showHelp && (
         <InlineHelp
           placement="bottom-right"
