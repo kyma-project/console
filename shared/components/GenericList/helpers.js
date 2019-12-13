@@ -14,7 +14,7 @@ const filterEntry = (entry, query, searchProperties) => {
         value &&
         value
           .toString()
-          .toLocaleLowerCase()
+          .toLowerCase()
           .indexOf(query.toLowerCase()) !== -1
       ) {
         return true;
