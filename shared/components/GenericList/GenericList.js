@@ -1,132 +1,142 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import SearchInput from './SearchInput';
-import './style.scss';
-
 import { Panel } from 'fundamental-react/Panel';
-
-import { TableWithActionsList } from '@kyma-project/react-components';
-
 import { filterEntries } from './helpers';
-import { renderActionElement } from './internalRenderers';
+import ListActions from '../ListActions/ListActions';
+import './GenericList.scss';
 
-export class GenericList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entries: props.entries,
-      filteredEntries: props.entries,
-      searchQuery: '',
-    };
+const NotFoundMessage = ({ children }) => (
+  <td colSpan="100%">
+    <p className="not-found-message">{children}</p>
+  </td>
+);
+
+const HeaderRenderer = ({ entries, actions, headerRenderer }) => {
+  let emptyColumn = [];
+  if (actions.length) {
+    emptyColumn = [<th key="actions-column" aria-label="actions-column"></th>];
   }
+  return [headerRenderer().map(h => <th key={h}>{h}</th>), ...emptyColumn];
+};
 
-  headerRenderer = entries => {
-    if (this.props.actions) {
-      return [...this.props.headerRenderer(entries), ''];
-    } else {
-      return this.props.headerRenderer(entries);
-    }
-  };
+const RowRenderer = ({ entry, actions, rowRenderer }) => {
+  const filteredActions = actions.filter(a =>
+    a.skipAction ? !a.skipAction(entry) : true,
+  );
+  let rowElement = [];
 
-  rowRenderer = entry => {
-    const actions = this.props.actions
-      ? this.props.actions.filter(action =>
-          action.skipAction ? !action.skipAction(entry) : true,
-        )
-      : [];
-    if (actions.length > 0) {
-      return [
-        ...this.props.rowRenderer(entry),
-        renderActionElement(actions, entry),
-      ];
-    } else {
-      return this.props.rowRenderer(entry);
-    }
-  };
-
-  handleQueryChange = searchQuery => {
-    this.setState(prevState => ({
-      filteredEntries: filterEntries(
-        prevState.entries,
-        searchQuery,
-        this.props.textSearchProperties,
-      ),
-      searchQuery,
-    }));
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (!_.isEqual(nextProps.entries, prevState.entries)) {
-      return {
-        filteredEntries: filterEntries(
-          nextProps.entries,
-          prevState.searchQuery,
-          nextProps.textSearchProperties,
-        ),
-        entries: nextProps.entries,
-      };
-    }
-    return null;
+  if (filteredActions.length) {
+    rowElement = [
+      ...rowRenderer(entry),
+      <ListActions actions={filteredActions} entry={entry} />,
+    ];
+  } else {
+    rowElement = rowRenderer(entry);
   }
+  return rowElement.map((cell, id) => <td key={id}>{cell}</td>);
+};
 
-  render() {
-    const { filteredEntries, searchQuery } = this.state;
-    const {
-      extraHeaderContent,
-      notFoundMessage,
-      showSearchField,
-      textSearchProperties,
-    } = this.props;
+export const GenericList = ({
+  entries,
+  actions,
+  title,
+  headerRenderer,
+  rowRenderer,
+  notFoundMessage,
+  extraHeaderContent,
+  showSearchField,
+  textSearchProperties,
+}) => {
+  const [filteredEntries, setFilteredEntries] = useState(entries);
+  const [searchQuery, setSearchQuery] = useState('');
 
-    const headerActions = (
-      <section className="generic-list__search">
-        {showSearchField && (
-          <SearchInput
-            searchQuery={searchQuery}
-            filteredEntries={filteredEntries}
-            handleQueryChange={this.handleQueryChange}
-            suggestionProperties={textSearchProperties}
-          />
-        )}
-        {extraHeaderContent}
-      </section>
-    );
+  useEffect(() => {
+    if (entries && entries.length) {
+      setFilteredEntries(
+        filterEntries([...entries], searchQuery, textSearchProperties),
+      );
+    }
+  }, [searchQuery, setFilteredEntries, entries]);
 
-    return (
-      <Panel className="fd-has-margin-m generic-list">
-        <Panel.Header className="fd-has-padding-xs">
-          <Panel.Head title={this.props.title} />
-          {headerActions}
-        </Panel.Header>
+  const headerActions = (
+    <section className="generic-list__search">
+      {showSearchField && (
+        <SearchInput
+          searchQuery={searchQuery}
+          filteredEntries={filteredEntries}
+          handleQueryChange={setSearchQuery}
+          suggestionProperties={textSearchProperties}
+        />
+      )}
+      {extraHeaderContent}
+    </section>
+  );
 
-        <Panel.Body>
-          <TableWithActionsList
-            notFoundMessage={notFoundMessage || 'There are no items to show'}
-            entries={filteredEntries}
-            headerRenderer={this.headerRenderer}
-            rowRenderer={this.rowRenderer}
-          />
-        </Panel.Body>
-      </Panel>
-    );
-  }
-}
+  return (
+    <Panel className="fd-has-margin-m generic-list">
+      <Panel.Header className="fd-has-padding-xs">
+        <Panel.Head title={title} />
+        {headerActions}
+      </Panel.Header>
+
+      <Panel.Body>
+        <table className="fd-table">
+          <thead>
+            <tr>
+              <HeaderRenderer
+                entries={entries}
+                actions={actions}
+                headerRenderer={headerRenderer}
+              />
+            </tr>
+          </thead>
+          <tbody>
+            {filteredEntries.length ? (
+              filteredEntries.map((e, index) => (
+                <tr role="row" key={e.id || e.name || index}>
+                  <RowRenderer
+                    entry={e}
+                    actions={actions}
+                    rowRenderer={rowRenderer}
+                  />
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </Panel.Body>
+    </Panel>
+  );
+};
+
+GenericList.Actions = ListActions;
 
 GenericList.propTypes = {
   title: PropTypes.string,
-  entries: PropTypes.arrayOf(PropTypes.object),
+  entries: PropTypes.arrayOf(PropTypes.object).isRequired,
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
   actions: PropTypes.arrayOf(
-    PropTypes.shape({ name: PropTypes.string, handler: PropTypes.func }),
-  ),
+    PropTypes.shape({
+      name: PropTypes.string,
+      handler: PropTypes.func.isRequired,
+      skipAction: PropTypes.func,
+    }),
+  ).isRequired,
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
+  notFoundMessage: PropTypes.string,
   textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
 GenericList.defaultProps = {
+  notFoundMessage: 'No entries found',
+  actions: [],
   showSearchField: true,
   textSearchProperties: ['name', 'description'],
 };

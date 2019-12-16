@@ -62,7 +62,7 @@ export function createEventAPIData(basicApiData, specData) {
   const spec = specData
     ? {
         ...specData,
-        eventSpecType: 'ASYNC_API',
+        type: 'ASYNC_API',
       }
     : null;
 

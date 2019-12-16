@@ -42,9 +42,12 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
       />
       <section className="application-items">
         <div>
-          <ApisList apis={application.apis} applicationId={application.id} />
+          <ApisList
+            apiDefinitions={application.apiDefinitions}
+            applicationId={application.id}
+          />
           <EventApisList
-            eventApis={application.eventAPIs}
+            eventDefinitions={application.eventDefinitions}
             applicationId={application.id}
           />
         </div>

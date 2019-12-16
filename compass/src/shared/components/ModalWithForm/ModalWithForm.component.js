@@ -72,6 +72,7 @@ const ModalWithForm = ({
         ? form.reportValidity()
         : form.checkValidity() // IE workaround; HTML validation tooltips won't be visible
     ) {
+      setOpenStatus(false);
       form.dispatchEvent(new Event('submit'));
     }
   };

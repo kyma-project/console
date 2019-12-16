@@ -18,7 +18,7 @@ import { EMPTY_TEXT_PLACEHOLDER } from '../../../../shared/constants';
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {
     runtime: PropTypes.object.isRequired,
-    deleteRuntime: PropTypes.func.isRequired,
+    unregisterRuntime: PropTypes.func.isRequired,
   };
 
   navigateToRuntimesList = () => {
@@ -65,7 +65,7 @@ class RuntimeDetailsHeader extends React.Component {
                     'Runtime',
                     id,
                     name,
-                    this.props.deleteRuntime,
+                    this.props.unregisterRuntime,
                     this.navigateToRuntimesList,
                   )
                 }

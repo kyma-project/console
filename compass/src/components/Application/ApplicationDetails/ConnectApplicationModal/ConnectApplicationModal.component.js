@@ -47,7 +47,7 @@ export default function ConnectApplicationModal({
   const connectApplication = async id => {
     try {
       const { data } = await connectApplicationMutation(id);
-      setConnectionData(data.generateOneTimeTokenForApplication);
+      setConnectionData(data.requestOneTimeTokenForApplication);
     } catch (e) {
       console.warn(e);
       setError(e.message || 'Error!');

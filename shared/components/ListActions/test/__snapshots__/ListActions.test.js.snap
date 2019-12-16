@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListActions Renders only dropdown actions 1`] = `
+Array [
+  Array [
+    "Warning: Each child in a list should have a unique \\"key\\" prop. See https://fb.me/react-warning-keys for more information.%s",
+    "
+    in Menu.Item (created by ListActions)
+    in ul (created by Menu.List)
+    in Menu.List (created by ListActions)
+    in nav (created by Menu)
+    in Menu (created by ListActions)
+    in div (created by InnerPopper)
+    in InnerPopper (created by Context.Consumer)
+    in Popper
+    in div (created by Foco)
+    in Foco
+    in Manager
+    in Popper
+    in div (created by Popover)
+    in Popover (created by ListActions)
+    in div (created by ListActions)
+    in ListActions",
+  ],
+]
+`;

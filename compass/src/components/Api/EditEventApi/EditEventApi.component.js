@@ -17,14 +17,14 @@ EditEventApi.propTypes = {
   eventApiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
   eventApiDataQuery: PropTypes.object.isRequired,
-  updateEventApi: PropTypes.func.isRequired,
+  updateEventDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
 
 export default function EditEventApi({
   eventApiId,
   eventApiDataQuery,
-  updateEventApi,
+  updateEventDefinition,
   sendNotification,
 }) {
   const formRef = React.useRef(null);
@@ -42,7 +42,7 @@ export default function EditEventApi({
 
   React.useEffect(() => {
     if (eventApiDataQuery.application) {
-      const originalEventApi = eventApiDataQuery.application.eventAPIs.data.find(
+      const originalEventApi = eventApiDataQuery.application.eventDefinitions.data.find(
         eventApi => eventApi.id === eventApiId,
       );
 
@@ -75,7 +75,7 @@ export default function EditEventApi({
     const specData = specProvided ? { data: specText, format } : null;
     const eventApiData = createEventAPIData(basicData, specData);
     try {
-      await updateEventApi(eventApiId, eventApiData);
+      await updateEventDefinition(eventApiId, eventApiData);
 
       const name = basicData.name;
       sendNotification({

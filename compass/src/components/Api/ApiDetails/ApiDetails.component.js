@@ -10,8 +10,8 @@ import { getApiType } from './../ApiHelpers';
 
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
   const rawApisForApplication = apiId
-    ? applicationQuery.apis
-    : applicationQuery.eventAPIs;
+    ? applicationQuery.apiDefinitions
+    : applicationQuery.eventDefinitions;
 
   if (
     rawApisForApplication &&
@@ -28,15 +28,17 @@ export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
 };
 
 const ApiDetails = ({
-  getApisForApplication,
-  getEventApisForApplication,
-  deleteApi,
-  deleteEventApi,
+  getApiDefinitionsForApplication,
+  getEventDefinitionsForApplication,
+  deleteAPIDefinition,
+  deleteEventDefinition,
   apiId,
   eventApiId,
   applicationId,
 }) => {
-  const query = apiId ? getApisForApplication : getEventApisForApplication;
+  const query = apiId
+    ? getApiDefinitionsForApplication
+    : getEventDefinitionsForApplication;
 
   const { loading, error, application } = query;
 
@@ -64,7 +66,7 @@ const ApiDetails = ({
       <ApiDetailsHeader
         application={application}
         api={api}
-        deleteMutation={apiId ? deleteApi : deleteEventApi}
+        deleteMutation={apiId ? deleteAPIDefinition : deleteEventDefinition}
       ></ApiDetailsHeader>
       {api.spec ? (
         <DocumentationComponent

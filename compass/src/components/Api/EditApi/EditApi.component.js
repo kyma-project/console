@@ -22,14 +22,14 @@ EditApi.propTypes = {
   apiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
   apiDataQuery: PropTypes.object.isRequired,
-  updateApi: PropTypes.func.isRequired,
+  updateApiDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
 
 export default function EditApi({
   apiId,
   apiDataQuery,
-  updateApi,
+  updateApiDefinition,
   sendNotification,
 }) {
   const formRef = React.useRef(null);
@@ -59,7 +59,7 @@ export default function EditApi({
 
   React.useEffect(() => {
     if (apiDataQuery.application) {
-      const originalApi = apiDataQuery.application.apis.data.find(
+      const originalApi = apiDataQuery.application.apiDefinitions.data.find(
         api => api.id === apiId,
       );
 
@@ -114,7 +114,7 @@ export default function EditApi({
     );
 
     try {
-      await updateApi(apiId, apiData);
+      await updateApiDefinition(apiId, apiData);
 
       const name = basicData.name;
       sendNotification({

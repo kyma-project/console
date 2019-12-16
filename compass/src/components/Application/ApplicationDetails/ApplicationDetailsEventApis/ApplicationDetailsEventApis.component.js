@@ -12,16 +12,16 @@ import ModalWithForm from '../../../../shared/components/ModalWithForm/ModalWith
 
 ApplicationDetailsEventApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  eventApis: PropTypes.object.isRequired,
+  eventDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  deleteEventAPI: PropTypes.func.isRequired,
+  deleteEventDefinition: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsEventApis({
   applicationId,
-  eventApis,
+  eventDefinitions,
   sendNotification,
-  deleteEventAPI,
+  deleteEventDefinition,
 }) {
   const applicationQuery = React.useContext(ApplicationQueryContext);
 
@@ -62,7 +62,7 @@ export default function ApplicationDetailsEventApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('API', entry.id, entry.name, deleteEventAPI, () => {
+        handleDelete('API', entry.id, entry.name, deleteEventDefinition, () => {
           showDeleteSuccessNotification(entry.name);
         }),
     },
@@ -83,10 +83,10 @@ export default function ApplicationDetailsEventApis({
   return (
     <GenericList
       extraHeaderContent={extraHeaderContent}
-      title="Async APIs"
-      notFoundMessage="There are no Async APIs available for this Application"
+      title="Event Definitions"
+      notFoundMessage="There are no Async API Definitions available for this Application"
       actions={actions}
-      entries={eventApis.data}
+      entries={eventDefinitions.data}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
     />

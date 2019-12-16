@@ -68,20 +68,16 @@ exports[`ApiDetailsHeader Renders with minimal props 1`] = `
     className="fd-panel-grid fd-panel-grid--nogap fd-panel-grid--4col"
   >
     <div
-      className="fd-panel"
+      className="fd-panel__body"
     >
-      <div
-        className="fd-panel__body"
+      <p
+        className="fd-has-color-text-4 fd-has-margin-bottom-none"
       >
-        <p
-          className="fd-has-color-text-4 fd-has-margin-bottom-none"
-        >
-          Type
-        </p>
-        <p>
-          openapi
-        </p>
-      </div>
+        Type
+      </p>
+      <p>
+        -
+      </p>
     </div>
   </div>
 </header>

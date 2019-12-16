@@ -1,17 +1,17 @@
 import { graphql, compose } from 'react-apollo';
-import { DELETE_API, DELETE_EVENT_API } from './../gql';
+import { DELETE_API_DEFINITION, DELETE_EVENT_DEFINITION } from './../gql';
 
 import EditApiHeader from './EditApiHeader.component';
 
 export default compose(
-  graphql(DELETE_API, {
+  graphql(DELETE_API_DEFINITION, {
     props: props => ({
       deleteApi: async apiId => {
         await props.mutate({ variables: { id: apiId } });
       },
     }),
   }),
-  graphql(DELETE_EVENT_API, {
+  graphql(DELETE_EVENT_DEFINITION, {
     props: props => ({
       deleteEventApi: async eventApiId => {
         await props.mutate({ variables: { id: eventApiId } });
