@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import classNames from 'classnames';
 import { useNotification } from '../../../contexts/notifications';
 import LuigiClient from '@kyma-project/luigi-client';
-import { K8sNameInput } from 'react-shared';
+import { K8sNameInput, InputWithSuffix } from 'react-shared';
 import {
   ActionBar,
   Button,
@@ -35,55 +34,42 @@ const defaultAccessStrategy = {
 };
 
 const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
-
-const createAPIRuleSample = {
-  name: 'sth',
-  namespace: 'default',
-  params: {
-    host: 'host',
-    serviceName: 'serviceName',
-    servicePort: 443,
-    gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
-    rules: [defaultAccessStrategy],
-  },
-};
-
-const templateAccessStrategies = [
-  {
-    path: '/favicon',
-    methods: ['GET', 'POST'],
-    accessStrategies: [
-      {
-        name: 'allow',
-        config: {},
-      },
-    ],
-  },
-  {
-    path: '/img',
-    methods: ['PUT', 'GET'],
-    accessStrategies: [
-      {
-        name: 'jwt',
-        config: {},
-      },
-    ],
-  },
-  {
-    path: '/headers',
-    methods: ['GET', 'DELETE'],
-    accessStrategies: [
-      {
-        name: 'oauth2_introspection',
-        config: {},
-      },
-    ],
-  },
-];
-
 const DOMAIN = getApiUrl('domain');
-const ServicesDropdown = function({ loading, data, error }) {
-  console.log('data', loading, data, error);
+
+// const templateAccessStrategies = [
+//   {
+//     path: '/favicon',
+//     methods: ['GET', 'POST'],
+//     accessStrategies: [
+//       {
+//         name: 'allow',
+//         config: {},
+//       },
+//     ],
+//   },
+//   {
+//     path: '/img',
+//     methods: ['PUT', 'GET'],
+//     accessStrategies: [
+//       {
+//         name: 'jwt',
+//         config: {},
+//       },
+//     ],
+//   },
+//   {
+//     path: '/headers',
+//     methods: ['GET', 'DELETE'],
+//     accessStrategies: [
+//       {
+//         name: 'oauth2_introspection',
+//         config: {},
+//       },
+//     ],
+//   },
+// ];
+
+const ServicesDropdown = function({ _ref, loading, data, error }) {
   if (loading) {
     return 'Loading...';
   }
@@ -92,18 +78,20 @@ const ServicesDropdown = function({ loading, data, error }) {
   }
   return (
     <FormItem>
-      <FormLabel>Service</FormLabel>
-      <FormSelect defaultValue="1" id="select-1">
-        {data.services.map(service => (
-          <option value="1">
-            {service.name}({DOMAIN}:{service.ports.port})
-          </option>
-        ))}
-        foo-service (foo4.kyma.local:8080)
+      <FormLabel htmlFor="service">Service</FormLabel>
+      <FormSelect ref={_ref} id="service">
+        {data.services.map(service =>
+          service.ports.map(port => (
+            <option value={service.name + ':' + port.port}>
+              {service.name} (port: {port.port})
+            </option>
+          )),
+        )}
       </FormSelect>
     </FormItem>
   );
 };
+
 const CreateApiRule = () => {
   const [accessStrategies, setAccessStrategies] = useState([
     defaultAccessStrategy,
@@ -119,9 +107,11 @@ const CreateApiRule = () => {
   const formRef = useRef(null);
   const formValues = {
     name: useRef(null),
-    host: useRef(null),
+    hostname: useRef(null),
     runtime: useRef(null),
+    service: useRef(null),
   };
+
   function handleFormChanged(e) {
     setValid(formRef.current.checkValidity()); // general form validity
     if (typeof e.target.reportValidity === 'function') {
@@ -144,36 +134,37 @@ const CreateApiRule = () => {
   // function addAccessStrategy() {
   //   addDefaultAccessStrategy();
   // }
-  function addDefaultAccessStrategy() {
-    setAccessStrategies([...accessStrategies, defaultAccessStrategy]);
-  }
+  // function addDefaultAccessStrategy() {
+  //   setAccessStrategies([...accessStrategies, defaultAccessStrategy]);
+  // }
   async function handleCreate() {
     if (!formRef.current.checkValidity()) {
       return;
     }
+    const [serviceName, servicePort] = formValues.service.current.value.split(
+      ':',
+    );
 
     const variables = {
       name: formValues.name.current.value,
       namespace: LuigiClient.getEventData().environmentId,
       params: {
-        host: formValues.host.current.value,
-        serviceName: 'serviceName',
-        servicePort: 443,
+        host: formValues.hostname.current.value,
+        serviceName,
+        servicePort,
         gateway: defaultGateway,
         rules: accessStrategies,
       },
     };
-    console.log('variables', variables);
+
     try {
-      const updatedApiRule = '';
-      await createApiRuleMutation({ variables });
-      const isSuccess =
-        updatedApiRule.data &&
-        updatedApiRule.data.updateAPIRule &&
-        updatedApiRule.data.updateAPIRule.name === createAPIRuleSample.name;
-      if (isSuccess) {
+      const createdApiRule = await createApiRuleMutation({ variables });
+      const createdApiRuleData =
+        createdApiRule.data && createdApiRule.data.createAPIRule;
+
+      if (createdApiRuleData) {
         notificationManager.notify({
-          content: `ApiRule ${createAPIRuleSample.name} updated successfully`,
+          content: `ApiRule ${createdApiRuleData.name} created successfully`,
           title: 'Success',
           color: '#107E3E',
           icon: 'accept',
@@ -182,7 +173,7 @@ const CreateApiRule = () => {
       }
     } catch (e) {
       notificationManager.notify({
-        content: `Error while updating API Rule ${createAPIRuleSample.name}: ${e.message}`,
+        content: `Error while creating API Rule ${variables.name}: ${e.message}`,
         title: 'Error',
         color: '#BB0000',
         icon: 'decline',
@@ -190,6 +181,7 @@ const CreateApiRule = () => {
       });
     }
   }
+
   return (
     <>
       <header className="fd-has-background-color-background-2 sticky">
@@ -229,20 +221,25 @@ const CreateApiRule = () => {
                         id="apiRuleName"
                         kind="API Rule"
                         showHelp={false}
-                        className={classNames([{ 'is-invalid': !isValid }])}
                       />
                     </FormItem>
                     <FormItem>
-                      <K8sNameInput
-                        _ref={formValues.host}
-                        id="host"
-                        kind="Host"
-                        showHelp={false}
-                        label="Host *"
-                        className={classNames([{ 'is-invalid': !isValid }])}
+                      <FormLabel htmlFor="hostname" required>
+                        Hostname
+                      </FormLabel>
+                      <InputWithSuffix
+                        id="hostname"
+                        suffix={DOMAIN}
+                        placeholder="Enter the hostname"
+                        required
+                        pattern="^[a-zA-Z][a-zA-Z_-]*[a-zA-Z]$"
+                        _ref={formValues.hostname}
                       />
                     </FormItem>
-                    <ServicesDropdown {...servicesQueryResult} />
+                    <ServicesDropdown
+                      _ref={formValues.service}
+                      {...servicesQueryResult}
+                    />
                   </LayoutGrid>
                 </FormGroup>
               </form>
@@ -258,7 +255,6 @@ const CreateApiRule = () => {
             </Panel.Header>
             <Panel.Body>
               {accessStrategies.map(strategy => {
-                console.log('strategy', strategy);
                 return (
                   <AccessStrategy
                     strategy={strategy}
