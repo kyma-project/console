@@ -11,7 +11,6 @@ import {
   FormItem,
   FormLabel,
   Panel,
-  FormSelect,
 } from 'fundamental-react';
 
 import './CreateApiRule.scss';
@@ -20,6 +19,7 @@ import AccessStrategy from './AccessStrategy';
 import { GET_SERVICES } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
+import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 
 const defaultAccessStrategy = {
   path: '/.*',
@@ -35,62 +35,6 @@ const defaultAccessStrategy = {
 
 const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
-
-// const templateAccessStrategies = [
-//   {
-//     path: '/favicon',
-//     methods: ['GET', 'POST'],
-//     accessStrategies: [
-//       {
-//         name: 'allow',
-//         config: {},
-//       },
-//     ],
-//   },
-//   {
-//     path: '/img',
-//     methods: ['PUT', 'GET'],
-//     accessStrategies: [
-//       {
-//         name: 'jwt',
-//         config: {},
-//       },
-//     ],
-//   },
-//   {
-//     path: '/headers',
-//     methods: ['GET', 'DELETE'],
-//     accessStrategies: [
-//       {
-//         name: 'oauth2_introspection',
-//         config: {},
-//       },
-//     ],
-//   },
-// ];
-
-const ServicesDropdown = function({ _ref, loading, data, error }) {
-  if (loading) {
-    return 'Loading...';
-  }
-  if (error) {
-    return error.message;
-  }
-  return (
-    <FormItem>
-      <FormLabel htmlFor="service">Service</FormLabel>
-      <FormSelect ref={_ref} id="service">
-        {data.services.map(service =>
-          service.ports.map(port => (
-            <option value={service.name + ':' + port.port}>
-              {service.name} (port: {port.port})
-            </option>
-          )),
-        )}
-      </FormSelect>
-    </FormItem>
-  );
-};
 
 const CreateApiRule = () => {
   const [accessStrategies, setAccessStrategies] = useState([
@@ -131,12 +75,6 @@ const CreateApiRule = () => {
     }
   }
 
-  // function addAccessStrategy() {
-  //   addDefaultAccessStrategy();
-  // }
-  // function addDefaultAccessStrategy() {
-  //   setAccessStrategies([...accessStrategies, defaultAccessStrategy]);
-  // }
   async function handleCreate() {
     if (!formRef.current.checkValidity()) {
       return;
