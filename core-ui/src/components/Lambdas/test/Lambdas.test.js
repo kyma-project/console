@@ -89,14 +89,9 @@ describe('Lambdas', () => {
 
     await componentUpdate(component);
 
-    const actionsListButton = component
-      .find('.fd-button--light.sap-icon--vertical-grip')
-      .first();
-    actionsListButton.simulate('click');
-
     const deleteButton = component
-      .find('.fd-menu__item')
-      .filterWhere(item => item.contains('Delete'));
+      .find('.fd-button--light.sap-icon--delete')
+      .first();
 
     await act(async () => {
       await deleteButton.simulate('click');
