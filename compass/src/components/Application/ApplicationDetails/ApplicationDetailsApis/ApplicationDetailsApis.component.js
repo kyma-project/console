@@ -71,7 +71,7 @@ export default function ApplicationDetailsApis({
   const extraHeaderContent = (
     <ModalWithForm
       title="Add API Definition"
-      button={{ text: 'Add API Definition', option: 'light' }}
+      button={{ glyph: 'add', text: '' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
       className="create-api-modal"

@@ -82,7 +82,7 @@ class ApiDetailsHeader extends React.Component {
         <PanelGrid nogap cols={4}>
           <PanelEntry
             title="Type"
-            content={<p>{getApiDisplayName(this.props.api)}</p>}
+            content={getApiDisplayName(this.props.api) || <em>Not provided</em>}
           />
         </PanelGrid>
       </header>

@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { Panel, TabGroup, Tab, Toggle } from 'fundamental-react';
+import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
 import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
 import ApiEditorForm from '../Forms/ApiEditorForm';
@@ -131,34 +131,48 @@ export default function EditEventApi({
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key="event-api" id="event-api" title="Event Definition">
+          <Tab
+            key="event-documentation"
+            id="event-documentation"
+            title="Event Documentation"
+          >
             <Panel className="spec-editor-panel">
               <Panel.Header>
-                <p className="fd-has-type-1">Event Definition</p>
+                <p className="fd-has-type-1">Event Documentation</p>
                 <Panel.Actions>
-                  <TextDropdown
-                    options={{ JSON: 'JSON', YAML: 'YAML' }}
-                    selectedOption={format}
-                    selectOption={setFormat}
-                    disabled={!specProvided}
-                  />
-                  <Toggle
-                    checked={specProvided}
-                    onChange={() => setSpecProvided(!specProvided)}
-                    className="fd-has-margin-left-m fd-display-l-inline-block"
-                  >
-                    Provide schema
-                  </Toggle>
+                  {specProvided && (
+                    <>
+                      <TextDropdown
+                        options={{ JSON: 'JSON', YAML: 'YAML' }}
+                        selectedOption={format}
+                        selectOption={setFormat}
+                        disabled={!specProvided}
+                      />
+                      <Button
+                        type="negative"
+                        onClick={() => setSpecProvided(false)}
+                      >
+                        No documentation
+                      </Button>
+                    </>
+                  )}
+                  {!specProvided && (
+                    <Button onClick={() => setSpecProvided(true)}>
+                      Provide documentation
+                    </Button>
+                  )}
                 </Panel.Actions>
               </Panel.Header>
               <Panel.Body>
-                <ApiEditorForm
-                  specText={specText}
-                  setSpecText={updateSpecText}
-                  specProvided={specProvided}
-                  format={format}
-                  verifyApi={verifyEventApiInput}
-                />
+                {specProvided && (
+                  <ApiEditorForm
+                    specText={specText}
+                    setSpecText={updateSpecText}
+                    specProvided={specProvided}
+                    format={format}
+                    verifyApi={verifyEventApiInput}
+                  />
+                )}
               </Panel.Body>
             </Panel>
           </Tab>

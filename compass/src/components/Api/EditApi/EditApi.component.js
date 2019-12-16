@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Panel, TabGroup, Tab, Toggle } from 'fundamental-react';
+import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
 import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
 import ApiForm from '../Forms/ApiForm';
@@ -171,44 +171,54 @@ export default function EditApi({
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key="api" id="api" title="API Definition">
+          <Tab
+            key="api-documentation"
+            id="api-documentation"
+            title="API Documentation"
+          >
             <Panel className="spec-editor-panel">
               <Panel.Header>
-                <p className="fd-has-type-1">API Definition</p>
+                <p className="fd-has-type-1">API Documentation</p>
                 <Panel.Actions>
-                  <TextDropdown
-                    options={{ JSON: 'JSON', YAML: 'YAML', XML: 'XML' }}
-                    selectedOption={format}
-                    selectOption={setFormat}
-                    disabled={!specProvided}
-                  />
-                  <TextDropdown
-                    options={{ OPEN_API: 'Open API', ODATA: 'OData' }}
-                    selectedOption={apiType}
-                    selectOption={setApiType}
-                    disabled={!specProvided}
-                    className="fd-has-margin-left-m"
-                  />
-                  <Toggle
-                    checked={specProvided}
-                    onChange={() => setSpecProvided(!specProvided)}
-                    className="fd-has-margin-left-m fd-display-l-inline-block"
-                  >
-                    <span className="fd-has-display-inline-block fd-has-margin-left-s">
-                      Provide schema
-                    </span>
-                  </Toggle>
+                  {specProvided && (
+                    <>
+                      <TextDropdown
+                        options={{ JSON: 'JSON', YAML: 'YAML', XML: 'XML' }}
+                        selectedOption={format}
+                        selectOption={setFormat}
+                      />
+                      <TextDropdown
+                        options={{ OPEN_API: 'Open API', ODATA: 'OData' }}
+                        selectedOption={apiType}
+                        selectOption={setApiType}
+                        className="fd-has-margin-x-small"
+                      />
+                      <Button
+                        type="negative"
+                        onClick={() => setSpecProvided(false)}
+                      >
+                        No documentation
+                      </Button>
+                    </>
+                  )}
+                  {!specProvided && (
+                    <Button onClick={() => setSpecProvided(true)}>
+                      Provide documentation
+                    </Button>
+                  )}
                 </Panel.Actions>
               </Panel.Header>
               <Panel.Body>
-                <ApiEditorForm
-                  specText={specText}
-                  setSpecText={updateSpecText}
-                  specProvided={specProvided}
-                  apiType={apiType}
-                  format={format}
-                  verifyApi={verifyApiInput}
-                />
+                {specProvided && (
+                  <ApiEditorForm
+                    specText={specText}
+                    setSpecText={updateSpecText}
+                    specProvided={specProvided}
+                    apiType={apiType}
+                    format={format}
+                    verifyApi={verifyApiInput}
+                  />
+                )}
               </Panel.Body>
             </Panel>
           </Tab>

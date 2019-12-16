@@ -75,9 +75,9 @@ exports[`ApiDetailsHeader Renders with minimal props 1`] = `
       >
         Type
       </p>
-      <p>
-        -
-      </p>
+      <em>
+        Not provided
+      </em>
     </div>
   </div>
 </header>

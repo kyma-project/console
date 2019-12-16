@@ -71,7 +71,7 @@ export default function ApplicationDetailsEventApis({
   const extraHeaderContent = (
     <ModalWithForm
       title="Add Event Definition"
-      button={{ text: 'Add Event Definition', option: 'light' }}
+      button={{ glyph: 'add', text: '' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
       className="create-event-api-modal"

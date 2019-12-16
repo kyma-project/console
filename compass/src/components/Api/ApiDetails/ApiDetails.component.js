@@ -76,7 +76,7 @@ const ApiDetails = ({
       ) : (
         <Panel className="fd-has-margin-large">
           <Panel.Body className="fd-has-text-align-center fd-has-type-4">
-            No specification provided.
+            No definition provided.
           </Panel.Body>
         </Panel>
       )}

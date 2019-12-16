@@ -77,7 +77,10 @@ export default function EditApiHeader({
         </ActionBar.Actions>
       </section>
       <PanelGrid nogap cols={4}>
-        <PanelEntry title="Type" content={getApiDisplayName(api)} />
+        <PanelEntry
+          title="Type"
+          content={getApiDisplayName(api) || <em>Not provided</em>}
+        />
       </PanelGrid>
     </header>
   );

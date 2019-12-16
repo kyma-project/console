@@ -80,7 +80,7 @@ export default function CreateEventApiForm({
       <FormSet>
         <EventApiForm formValues={formValues} />
         <p
-          className="link fd-has-margin-bottom-s"
+          className="link fd-has-margin-bottom-s clear-underline"
           onClick={() => setSpecProvided(!specProvided)}
         >
           {specProvided ? 'Remove specification' : 'Add specification'}

@@ -1,6 +1,5 @@
 import jsyaml from 'js-yaml';
 import xmlJS from 'xml-js';
-import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
 import { CREDENTIAL_TYPE_NONE } from './Forms/CredentialForms/CredentialsForm';
 import { CREDENTIAL_TYPE_OAUTH } from './Forms/CredentialForms/OAuthCredentialsForm';
 
@@ -199,7 +198,7 @@ export function getApiType(api) {
     case 'ASYNC_API':
       return 'asyncapi';
     default:
-      return EMPTY_TEXT_PLACEHOLDER;
+      return null;
   }
 }
 
@@ -212,7 +211,7 @@ export function getApiDisplayName(api) {
     case 'ASYNC_API':
       return 'Events API';
     default:
-      return EMPTY_TEXT_PLACEHOLDER;
+      return null;
   }
 }
 

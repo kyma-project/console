@@ -73,7 +73,7 @@ export default function CreateApiForm({
       return;
     }
 
-    const expectedType = formValues.type.current.value;
+    const expectedType = apiTypeRef.current.value;
     const { data, format, error } = await verifyApiFile(file, expectedType);
     if (error) {
       input.setCustomValidity(error);
@@ -115,7 +115,7 @@ export default function CreateApiForm({
           <FormSet>
             <ApiForm formValues={formValues} />
             <p
-              className="link fd-has-margin-bottom-s"
+              className="link fd-has-margin-bottom-s clear-underline"
               onClick={() => setSpecProvided(!specProvided)}
             >
               {specProvided ? 'Remove specification' : 'Add specification'}
