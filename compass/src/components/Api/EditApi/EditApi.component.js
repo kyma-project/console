@@ -10,7 +10,7 @@ import TextDropdown from '../shared/TextDropdown/TextDropdown';
 import CredentialsForm from './../Forms/CredentialForms/CredentialsForm';
 import './EditApi.scss';
 
-import { getRefsValues /*, useMutationObserver*/ } from 'react-shared';
+import { getRefsValues, useMutationObserver } from 'react-shared';
 import {
   createApiData,
   inferCredentialType,
@@ -84,7 +84,10 @@ export default function EditApi({
   const revalidateForm = () =>
     setFormValid(!!formRef.current && formRef.current.checkValidity());
 
-  // useMutationObserver(formRef, console.log);
+  useMutationObserver(formRef, () => {
+    console.log('halo');
+    revalidateForm();
+  });
 
   if (apiDataQuery.loading) {
     return <p>Loading...</p>;
@@ -219,7 +222,12 @@ export default function EditApi({
                 <CredentialsForm
                   credentialRefs={credentialRefs}
                   credentialType={credentialsType}
-                  setCredentialType={setCredentialsType}
+                  setCredentialType={type => {
+                    setCredentialsType(type);
+                    setTimeout(() => {
+                      revalidateForm();
+                    });
+                  }}
                   defaultValues={defaultCredentials}
                 />
               </Panel.Body>

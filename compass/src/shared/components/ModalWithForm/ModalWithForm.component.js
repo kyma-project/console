@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ControlledModal } from './../Modal/ControlledModal';
 import { Button } from 'fundamental-react/Button';
 import LuigiClient from '@kyma-project/luigi-client';
-// import { useMutationObserver } from 'react-shared';
+import { useMutationObserver } from 'react-shared';
 
 const ModalWithForm = ({
   performRefetch,
@@ -19,22 +19,6 @@ const ModalWithForm = ({
   const [isValid, setValid] = useState(initialIsValid);
   const formElementRef = useRef(null);
 
-  React.useEffect(() => {
-    if (formElementRef.current) {
-      const observer = new MutationObserver(() => {
-        console.log('!');
-        handleFormChanged(formElementRef.current);
-      });
-      observer.observe(formElementRef.current, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-      return () => observer.disconnect();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formElementRef.current]);
-
   const handleFormChanged = e => {
     setValid(formElementRef.current.checkValidity());
     if (typeof e.target.reportValidity === 'function') {
@@ -43,7 +27,10 @@ const ModalWithForm = ({
     }
   };
 
-  // useMutationObserver(formElementRef, handleFormChanged);
+  useMutationObserver(formElementRef, () => {
+    console.log('no tutaj działa');
+    handleFormChanged({ target: formElementRef.current });
+  });
 
   const setOpenStatus = status => {
     if (status) {

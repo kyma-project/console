@@ -10,7 +10,7 @@ import EventApiForm from '../Forms/EventApiForm';
 import TextDropdown from '../shared/TextDropdown/TextDropdown';
 import './EditEventApi.scss';
 
-import { getRefsValues, useMutationObserver } from 'react-shared';
+import { getRefsValues } from 'react-shared';
 import { createEventAPIData, verifyEventApiInput } from './../ApiHelpers';
 
 EditEventApi.propTypes = {
@@ -59,8 +59,6 @@ export default function EditEventApi({
   const revalidateForm = () =>
     setFormValid(!!formRef.current && formRef.current.checkValidity());
 
-  useMutationObserver(formRef, revalidateForm);
-
   if (eventApiDataQuery.loading) {
     return <p>Loading...</p>;
   }
@@ -76,8 +74,6 @@ export default function EditEventApi({
     const basicData = getRefsValues(formValues);
     const specData = specProvided ? { data: specText, format } : null;
     const eventApiData = createEventAPIData(basicData, specData);
-    console.log(eventApiData);
-    // debugger
     try {
       await updateEventApi(eventApiId, eventApiData);
 
