@@ -67,7 +67,9 @@ export default function EditEventApi({
   }
 
   if (!originalEventApi) {
-    return <ResourceNotFound resource="Async API" breadcrumb="Applications" />;
+    return (
+      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
+    );
   }
 
   const saveChanges = async () => {
@@ -113,9 +115,9 @@ export default function EditEventApi({
       <form ref={formRef} onChange={revalidateForm}>
         <TabGroup className="edit-event-api-tabs">
           <Tab
-            key={'general-information'}
-            id={'general-information'}
-            title={'General Information'}
+            key="general-information"
+            id="general-information"
+            title="General Information"
           >
             <Panel>
               <Panel.Header>
@@ -129,10 +131,10 @@ export default function EditEventApi({
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key={'event-api'} id={'event-api'} title={'Async API'}>
+          <Tab key="event-api" id="event-api" title="Event Definition">
             <Panel className="spec-editor-panel">
               <Panel.Header>
-                <p className="fd-has-type-1">Async API</p>
+                <p className="fd-has-type-1">Event Definition</p>
                 <Panel.Actions>
                   <TextDropdown
                     options={{ JSON: 'JSON', YAML: 'YAML' }}

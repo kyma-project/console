@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
 import { FormSet } from 'fundamental-react';
-import FileInput from './../../Shared/FileInput/FileInput.1';
+import FileInput from '../../Shared/FileInput/FileInputWithRef';
 
 import { createEventAPIData, verifyEventApiFile } from './../ApiHelpers';
 import EventApiForm from './../Forms/EventApiForm';
@@ -66,13 +66,12 @@ export default function CreateEventApiForm({
     const basicApiData = getRefsValues(formValues);
     const specData = specProvided ? spec : null;
     const eventApiData = createEventAPIData(basicApiData, specData);
-    console.log(eventApiData);
-    // debugger
+
     try {
       await addEventAPI(eventApiData, applicationId);
-      onCompleted(basicApiData.name, 'Async API created successfully');
+      onCompleted(basicApiData.name, 'Event Definition created successfully');
     } catch (error) {
-      onError('Cannot create Async API');
+      onError('Cannot create Event Definition');
     }
   };
 

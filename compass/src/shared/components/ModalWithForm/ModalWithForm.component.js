@@ -28,7 +28,6 @@ const ModalWithForm = ({
   };
 
   useMutationObserver(formElementRef, () => {
-    console.log('no tutaj działa');
     handleFormChanged({ target: formElementRef.current });
   });
 

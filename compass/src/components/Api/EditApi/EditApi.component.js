@@ -84,10 +84,7 @@ export default function EditApi({
   const revalidateForm = () =>
     setFormValid(!!formRef.current && formRef.current.checkValidity());
 
-  useMutationObserver(formRef, () => {
-    console.log('halo');
-    revalidateForm();
-  });
+  useMutationObserver(formRef, revalidateForm);
 
   if (apiDataQuery.loading) {
     return <p>Loading...</p>;
@@ -97,7 +94,9 @@ export default function EditApi({
   }
 
   if (!originalApi) {
-    return <ResourceNotFound resource="Rest API" breadcrumb="Applications" />;
+    return (
+      <ResourceNotFound resource="API Definition" breadcrumb="Applications" />
+    );
   }
 
   const saveChanges = async () => {
@@ -156,9 +155,9 @@ export default function EditApi({
       <form ref={formRef} onChange={revalidateForm}>
         <TabGroup className="edit-api-tabs">
           <Tab
-            key={'general-information'}
-            id={'general-information'}
-            title={'General Information'}
+            key="general-information"
+            id="general-information"
+            title="General Information"
           >
             <Panel>
               <Panel.Header>
@@ -172,10 +171,10 @@ export default function EditApi({
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key={'api'} id={'api'} title={'Rest API'}>
+          <Tab key="api" id="api" title="API Definition">
             <Panel className="spec-editor-panel">
               <Panel.Header>
-                <p className="fd-has-type-1">Rest API</p>
+                <p className="fd-has-type-1">API Definition</p>
                 <Panel.Actions>
                   <TextDropdown
                     options={{ JSON: 'JSON', YAML: 'YAML', XML: 'XML' }}
@@ -213,7 +212,7 @@ export default function EditApi({
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key={'credentials'} id={'credentials'} title={'Credentials'}>
+          <Tab key="credentials" id="credentials" title="Credentials">
             <Panel>
               <Panel.Header>
                 <p className="fd-has-type-1">Credentials</p>

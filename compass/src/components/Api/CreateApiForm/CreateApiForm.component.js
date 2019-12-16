@@ -15,7 +15,7 @@ import CredentialsForm, {
 
 import { createApiData, verifyApiFile } from '../ApiHelpers';
 
-import FileInput from '../../Shared/FileInput/FileInput.1';
+import FileInput from '../../Shared/FileInput/FileInputWithRef';
 import ApiForm from './../Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
 
@@ -98,14 +98,13 @@ export default function CreateApiForm({
       : null;
 
     const apiData = createApiData(basicApiData, specData, credentials);
-    console.log(apiData);
 
     try {
       await addAPI(apiData, applicationId);
-      onCompleted(basicApiData.name, 'Async API created successfully');
+      onCompleted(basicApiData.name, 'API Definition created successfully');
     } catch (error) {
       console.warn(error);
-      onError('Cannot create Rest API');
+      onError('Cannot create API Definition');
     }
   };
 

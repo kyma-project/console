@@ -70,8 +70,8 @@ export default function ApplicationDetailsEventApis({
 
   const extraHeaderContent = (
     <ModalWithForm
-      title="Add Async API"
-      button={{ text: 'Add Async API', option: 'light' }}
+      title="Add Event Definition"
+      button={{ text: 'Add Event Definition', option: 'light' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
       className="create-event-api-modal"
@@ -84,7 +84,7 @@ export default function ApplicationDetailsEventApis({
     <GenericList
       extraHeaderContent={extraHeaderContent}
       title="Event Definitions"
-      notFoundMessage="There are no Async API Definitions available for this Application"
+      notFoundMessage="There are no Event Definition available for this Application"
       actions={actions}
       entries={eventDefinitions.data}
       headerRenderer={headerRenderer}
