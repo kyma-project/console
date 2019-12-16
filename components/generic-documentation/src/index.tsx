@@ -140,3 +140,4 @@ export const GenericDocumentation: React.FunctionComponent<
     </DC.Provider>
   );
 };
+export const GenericComponent = GenericDocumentation;

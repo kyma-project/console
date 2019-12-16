@@ -1,9 +1,9 @@
 import React from 'react';
-import { GenericDocumentation } from '@kyma-project/generic-documentation';
+import { GenericComponent } from '@kyma-project/generic-documentation';
 
 function DocumentationComponent({ content, type }) {
   return (
-    <GenericDocumentation
+    <GenericComponent
       layout="compass-ui"
       sources={[
         {
