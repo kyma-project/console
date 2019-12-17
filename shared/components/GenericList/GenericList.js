@@ -24,17 +24,22 @@ const RowRenderer = ({ entry, actions, rowRenderer }) => {
   const filteredActions = actions.filter(a =>
     a.skipAction ? !a.skipAction(entry) : true,
   );
-  let rowElement = [];
 
-  if (filteredActions.length) {
-    rowElement = [
-      ...rowRenderer(entry),
-      <ListActions actions={filteredActions} entry={entry} />,
-    ];
-  } else {
-    rowElement = rowRenderer(entry);
-  }
-  return rowElement.map((cell, id) => <td key={id}>{cell}</td>);
+  const cells = rowRenderer(entry).map((cell, id) => <td key={id}>{cell}</td>);
+  const actionsCell = (
+    <td>
+      {!!filteredActions.length && (
+        <ListActions actions={filteredActions} entry={entry} />
+      )}
+    </td>
+  );
+
+  return (
+    <>
+      {cells}
+      {actionsCell}
+    </>
+  );
 };
 
 export const GenericList = ({

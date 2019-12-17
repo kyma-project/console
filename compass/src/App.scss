@@ -75,3 +75,8 @@
 .clear-underline {
   text-decoration: none;
 }
+
+// override fd rule
+.fd-table tr {
+  cursor: unset;
+}
