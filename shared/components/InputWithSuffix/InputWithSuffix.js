@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormInput } from 'fundamental-react';
 import './InputWithSuffix.scss';
 
 export const InputWithSuffix = ({
@@ -13,6 +12,7 @@ export const InputWithSuffix = ({
   return (
     <div className="input-with-suffix">
       <input
+        role="input"
         className="fd-form__control"
         id={id}
         placeholder={placeholder}

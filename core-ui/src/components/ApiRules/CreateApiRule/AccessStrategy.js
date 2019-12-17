@@ -82,7 +82,7 @@ const AccessStrategy = ({
   const [editMode, setEditMode] = useState(isEditModeInitially);
 
   return (
-    <div className="access-strategy">
+    <div className="access-strategy" role="row">
       <div className="header">
         <strong className="path">{path}</strong>
         <div className="type">

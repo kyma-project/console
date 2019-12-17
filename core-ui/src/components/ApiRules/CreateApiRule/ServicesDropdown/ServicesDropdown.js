@@ -7,15 +7,17 @@ const ServicesDropdown = ({ _ref, loading, data, error }) => {
     return 'Loading services...';
   }
   if (error) {
-    return "Couldn't load services list";
+    return "Couldn't load services list" + error.message;
   }
+
   return (
     <FormItem>
       <FormLabel htmlFor="service">Service</FormLabel>
-      <FormSelect ref={_ref} id="service">
+      <FormSelect ref={_ref} id="service" role="select">
         {data.services.map(service =>
           service.ports.map(port => (
             <option
+              role="select-option"
               key={service.name + port.port}
               value={service.name + ':' + port.port}
             >

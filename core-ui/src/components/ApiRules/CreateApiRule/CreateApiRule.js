@@ -132,6 +132,7 @@ const CreateApiRule = () => {
               onClick={handleCreate}
               disabled={!isValid}
               option="emphasized"
+              role="button"
             >
               Create
             </Button>
