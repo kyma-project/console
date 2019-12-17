@@ -1,14 +1,9 @@
 import React from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { ActionBar } from 'fundamental-react';
-import LuigiClient from '@kyma-project/luigi-client';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  PanelGrid,
-} from '@kyma-project/react-components';
+import { ActionBar, Breadcrumb, Button } from 'fundamental-react';
+import { PanelGrid } from '@kyma-project/react-components';
 
 import { handleDelete } from 'react-shared';
 
@@ -42,17 +37,17 @@ class ApiDetailsHeader extends React.Component {
         <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
           <section>
             <Breadcrumb>
-              <BreadcrumbItem
+              <Breadcrumb.Item
                 name="Applications"
                 url="#"
                 onClick={navigateToApplications}
               />
-              <BreadcrumbItem
+              <Breadcrumb.Item
                 name={this.props.application.name}
                 url="#"
                 onClick={navigateToApplication}
               />
-              <BreadcrumbItem />
+              <Breadcrumb.Item name={this.props.api.name} url="#" />
             </Breadcrumb>
             <ActionBar.Header title={this.props.api.name} />
           </section>
@@ -82,7 +77,9 @@ class ApiDetailsHeader extends React.Component {
         <PanelGrid nogap cols={4}>
           <PanelEntry
             title="Type"
-            content={getApiDisplayName(this.props.api) || <em>Not provided</em>}
+            children={
+              getApiDisplayName(this.props.api) || <em>Not provided</em>
+            }
           />
         </PanelGrid>
       </header>

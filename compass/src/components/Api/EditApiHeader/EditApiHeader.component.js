@@ -30,6 +30,12 @@ function navigateToApplications() {
     .navigate('/applications');
 }
 
+function navigateToApiDetails() {
+  LuigiClient.linkManager()
+    .fromClosestContext()
+    .navigate('');
+}
+
 export default function EditApiHeader({
   api,
   applicationName,
@@ -59,7 +65,11 @@ export default function EditApiHeader({
               url="#"
               onClick={navigateToApplication}
             />
-            <Breadcrumb.Item />
+            <Breadcrumb.Item
+              name={api.name}
+              url="#"
+              onClick={navigateToApiDetails}
+            />
           </Breadcrumb>
           <ActionBar.Header title={`Edit ${api.name}`} />
         </section>
@@ -79,7 +89,7 @@ export default function EditApiHeader({
       <PanelGrid nogap cols={4}>
         <PanelEntry
           title="Type"
-          content={getApiDisplayName(api) || <em>Not provided</em>}
+          children={getApiDisplayName(api) || <em>Not provided</em>}
         />
       </PanelGrid>
     </header>

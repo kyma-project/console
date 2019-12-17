@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PanelEntry Renders title and content 1`] = `
+exports[`PanelEntry Renders title and children 1`] = `
 <div
   className="fd-panel__body"
 >

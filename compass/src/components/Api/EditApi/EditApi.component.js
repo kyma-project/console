@@ -6,8 +6,8 @@ import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
 import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
 import ApiForm from '../Forms/ApiForm';
-import TextDropdown from '../shared/TextDropdown/TextDropdown';
 import CredentialsForm from './../Forms/CredentialForms/CredentialsForm';
+import { Dropdown } from 'components/Shared/Dropdown/Dropdown';
 import './EditApi.scss';
 
 import { getRefsValues, useMutationObserver } from 'react-shared';
@@ -182,16 +182,18 @@ export default function EditApi({
                 <Panel.Actions>
                   {specProvided && (
                     <>
-                      <TextDropdown
+                      <Dropdown
                         options={{ JSON: 'JSON', YAML: 'YAML', XML: 'XML' }}
                         selectedOption={format}
-                        selectOption={setFormat}
+                        onSelect={setFormat}
+                        width="90px"
                       />
-                      <TextDropdown
+                      <Dropdown
                         options={{ OPEN_API: 'Open API', ODATA: 'OData' }}
                         selectedOption={apiType}
-                        selectOption={setApiType}
+                        onSelect={setApiType}
                         className="fd-has-margin-x-small"
+                        width="120px"
                       />
                       <Button
                         type="negative"

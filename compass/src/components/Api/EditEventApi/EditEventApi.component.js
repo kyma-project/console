@@ -7,7 +7,7 @@ import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
 import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
 import ApiEditorForm from '../Forms/ApiEditorForm';
 import EventApiForm from '../Forms/EventApiForm';
-import TextDropdown from '../shared/TextDropdown/TextDropdown';
+import { Dropdown } from 'components/Shared/Dropdown/Dropdown';
 import './EditEventApi.scss';
 
 import { getRefsValues } from 'react-shared';
@@ -142,12 +142,13 @@ export default function EditEventApi({
                 <Panel.Actions>
                   {specProvided && (
                     <>
-                      <TextDropdown
+                      <Dropdown
                         options={{ JSON: 'JSON', YAML: 'YAML' }}
                         selectedOption={format}
-                        selectOption={setFormat}
+                        onSelect={setFormat}
                         disabled={!specProvided}
                         className="fd-has-margin-right-s"
+                        width="90px"
                       />
                       <Button
                         type="negative"

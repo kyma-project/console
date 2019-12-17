@@ -5,14 +5,14 @@ import TextFormItem from './../../../Shared/TextFormItem';
 
 export const CREDENTIAL_TYPE_OAUTH = 'OAuth';
 
-export const oAuthRefs = PropTypes.shape({
+export const oAuthRefPropTypes = PropTypes.shape({
   clientId: CustomPropTypes.ref,
   clientSecret: CustomPropTypes.ref,
   url: CustomPropTypes.ref,
 });
 
 OAuthCredentialsForm.propTypes = {
-  refs: oAuthRefs,
+  refs: oAuthRefPropTypes,
   defaultValues: PropTypes.object,
 };
 

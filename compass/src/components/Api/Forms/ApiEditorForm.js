@@ -30,22 +30,17 @@ export default function ApiEditorForm({
   const [specError, setSpecError] = React.useState('');
   const specValidityInput = React.useRef();
 
-  React.useEffect(
-    () => updateSpecText(specText),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [format, specProvided, apiType],
-  );
-
-  const updateSpecText = text => {
+  const revalidateSpec = () => {
     if (specProvided) {
-      const { error } = verifyApi(text, format, apiType);
+      const { error } = verifyApi(specText, format, apiType);
       specValidityInput.current.setCustomValidity(error || '');
       setSpecError(error);
     } else {
       specValidityInput.current.setCustomValidity('');
     }
-    setSpecText(text);
   };
+
+  React.useEffect(revalidateSpec, [format, specProvided, apiType, specText]);
 
   return (
     <>
@@ -68,7 +63,7 @@ export default function ApiEditorForm({
         })}
         mode={format.toLowerCase()}
         theme="github"
-        onChange={updateSpecText}
+        onChange={setSpecText}
         value={specText}
         width="100%"
         minLines={14}

@@ -94,24 +94,26 @@ export function readFile(file) {
 }
 
 export function checkApiFormat(file) {
-  if (isYAML(file)) {
-    return 'YAML';
-  } else if (isJSON(file)) {
-    return 'JSON';
-  } else if (isXML(file)) {
-    return 'XML';
-  } else {
-    return null;
+  switch (true) {
+    case isYAML(file):
+      return 'YAML';
+    case isJSON(file):
+      return 'JSON';
+    case isXML(file):
+      return 'XML';
+    default:
+      return false;
   }
 }
 
 export function checkEventApiFormat(file) {
-  if (isYAML(file)) {
-    return 'YAML';
-  } else if (isJSON(file)) {
-    return 'JSON';
-  } else {
-    return null;
+  switch (true) {
+    case isYAML(file):
+      return 'YAML';
+    case isJSON(file):
+      return 'JSON';
+    default:
+      return false;
   }
 }
 
@@ -135,6 +137,7 @@ export async function verifyEventApiFile(file) {
 
 export async function verifyApiFile(file, expectedType) {
   const format = checkApiFormat(file);
+  console.log(format);
   if (format === null) {
     return { error: 'Error: Invalid file type' };
   }
