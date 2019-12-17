@@ -106,45 +106,6 @@ export const CREATE_API_RULE = gql`
   ) {
     createAPIRule(name: $name, namespace: $namespace, params: $params) {
       name
-      gateway
-      service {
-        host
-        name
-        port
-      }
-      rules {
-        path
-        methods
-        accessStrategies {
-          name
-          config
-        }
-      }
-    }
-  }
-`;
-export const UPDATE_API_RULE = gql`
-  mutation updateAPIRule(
-    $name: String!
-    $namespace: String!
-    $params: APIRuleInput!
-  ) {
-    updateAPIRule(name: $name, namespace: $namespace, params: $params) {
-      name
-      gateway
-      service {
-        host
-        name
-        port
-      }
-      rules {
-        path
-        methods
-        accessStrategies {
-          name
-          config
-        }
-      }
     }
   }
 `;

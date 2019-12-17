@@ -19,6 +19,21 @@ export const allLambdasQuery = {
   },
 };
 
+export const deleteLambdaMutation = {
+  request: {
+    query: DELETE_LAMBDA,
+    variables: {
+      namespace: builder.getCurrentEnvironmentId(),
+      name: 'demo',
+    },
+  },
+  result: jest.fn().mockReturnValue({
+    data: {
+      deleteFunction: deletedLambda1,
+    },
+  }),
+};
+
 export const servicesQuery = {
   request: {
     query: GET_SERVICES,
@@ -33,17 +48,42 @@ export const servicesQuery = {
   },
 };
 
-export const deleteLambdaMutation = {
+const createdAPIRule = {
+  name: 'test',
+  __typename: 'Function',
+};
+
+const sampleAPIRule = {
+  name: 'test',
+  namespace: 'test',
+  params: {
+    host: 'host.kyma.local',
+    serviceName: 'test',
+    servicePort: '80',
+    gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
+    rules: [
+      {
+        path: '/.*',
+        methods: ['DELETE', 'GET', 'POST', 'PUT'],
+        accessStrategies: [
+          {
+            name: 'allow',
+            config: {},
+          },
+        ],
+        mutators: [],
+      },
+    ],
+  },
+};
+export const createApiRuleMutation = {
   request: {
-    query: DELETE_LAMBDA,
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-      name: 'demo',
-    },
+    query: CREATE_API_RULE,
+    variables: sampleAPIRule,
   },
   result: jest.fn().mockReturnValue({
     data: {
-      deleteFunction: deletedLambda1,
+      createAPIRule: createdAPIRule,
     },
   }),
 };

@@ -15,7 +15,7 @@ import {
 
 import './CreateApiRule.scss';
 
-import AccessStrategy from './AccessStrategy';
+import AccessStrategy from './AccessStrategy/AccessStrategy';
 import { GET_SERVICES } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
@@ -87,7 +87,7 @@ const CreateApiRule = () => {
       name: formValues.name.current.value,
       namespace: LuigiClient.getEventData().environmentId,
       params: {
-        host: formValues.hostname.current.value,
+        host: formValues.hostname.current.value + '.' + DOMAIN,
         serviceName,
         servicePort,
         gateway: defaultGateway,
@@ -132,7 +132,7 @@ const CreateApiRule = () => {
               onClick={handleCreate}
               disabled={!isValid}
               option="emphasized"
-              role="button"
+              role="submit-button"
             >
               Create
             </Button>
@@ -194,13 +194,7 @@ const CreateApiRule = () => {
             </Panel.Header>
             <Panel.Body>
               {accessStrategies.map(strategy => {
-                return (
-                  <AccessStrategy
-                    strategy={strategy}
-                    selectedType={strategy.accessStrategies[0].name}
-                    path={strategy.path}
-                  />
-                );
+                return <AccessStrategy strategy={strategy} />;
               })}
             </Panel.Body>
           </Panel>

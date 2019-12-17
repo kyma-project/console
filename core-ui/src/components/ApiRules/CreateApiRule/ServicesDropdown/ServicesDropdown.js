@@ -6,8 +6,9 @@ const ServicesDropdown = ({ _ref, loading, data, error }) => {
   if (loading) {
     return 'Loading services...';
   }
+
   if (error) {
-    return "Couldn't load services list" + error.message;
+    return "Couldn't load services list " + error.message;
   }
 
   return (

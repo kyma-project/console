@@ -68,7 +68,6 @@ const StringListInput = ({
 };
 
 const AccessStrategy = ({
-  path,
   strategy,
   isOpenInitially = false,
   isEditModeInitially = false,
@@ -84,7 +83,7 @@ const AccessStrategy = ({
   return (
     <div className="access-strategy" role="row">
       <div className="header">
-        <strong className="path">{path}</strong>
+        <strong className="path">{strategy.path}</strong>
         <div className="type">
           {!editMode && (
             <Badge modifier="filled">
@@ -105,11 +104,13 @@ const AccessStrategy = ({
             strategy.methods.length &&
             strategy.methods.sort().map(method => {
               if (method === 'DELETE') return null;
-              return <Badge>{method}</Badge>;
+              return <Badge role="method">{method}</Badge>;
             })}
 
           {!editMode && strategy.methods.includes('DELETE') && (
-            <Badge type="error">DELETE</Badge>
+            <Badge role="method" type="error">
+              DELETE
+            </Badge>
           )}
         </div>
         {/*  TODO Uncoment for updating access strategies
@@ -117,7 +118,7 @@ const AccessStrategy = ({
           <label
             title="Edit mode"
             className="fd-form__label edit-toggle"
-            htmlFor={`check-${path}`}
+            htmlFor={`check-${strategy.path}`}
           >
             <Icon
               glyph="edit"
@@ -129,7 +130,7 @@ const AccessStrategy = ({
             <span className="fd-toggle fd-toggle--s fd-form__control">
               <input
                 type="checkbox"
-                id={`check-${path}`}
+                id={`check-${strategy.path}`}
                 checked={editMode}
                 onChange={e => setEditMode(e.target.checked)}
               />
@@ -154,7 +155,7 @@ const AccessStrategy = ({
                 <FormInput
                   placeholder="Field placeholder text"
                   type="text"
-                  defaultValue={path}
+                  defaultValue={strategy.path}
                 />
               </FormItem>
               {editMode && (
