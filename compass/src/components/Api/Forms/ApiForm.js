@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
-// import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
 import TextFormItem from './../../Shared/TextFormItem';
 
 ApiForm.propTypes = {
