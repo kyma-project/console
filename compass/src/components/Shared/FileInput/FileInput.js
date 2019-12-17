@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FormMessage } from 'fundamental-react';
-import './style.scss';
+import './FileInput.scss';
 
 FileInput.propTypes = {
   fileInputChanged: PropTypes.func.isRequired,
@@ -41,7 +41,7 @@ export default function FileInput({
 
   return (
     <div
-      className="fd-asset-upload"
+      className="fd-asset-upload file-input"
       onDrop={drop}
       onDragEnter={() => setDraggingCounter(draggingOverCounter + 1)}
       onDragLeave={() => setDraggingCounter(draggingOverCounter - 1)}

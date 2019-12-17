@@ -74,7 +74,7 @@ export default function ApplicationDetailsEventApis({
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
       performRefetch={applicationQuery.refetch}
-      className="create-event-api-modal"
+      modalClassName="create-event-api-modal"
     >
       <CreateEventApiForm applicationId={applicationId} />
     </ModalWithForm>

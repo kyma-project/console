@@ -147,6 +147,7 @@ export default function EditEventApi({
                         selectedOption={format}
                         selectOption={setFormat}
                         disabled={!specProvided}
+                        className="fd-has-margin-right-s"
                       />
                       <Button
                         type="negative"

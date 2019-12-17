@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
-import './style.scss';
+import './CredentialsForm.scss';
 
 import OAuthCredentialsForm, {
   CREDENTIAL_TYPE_OAUTH,

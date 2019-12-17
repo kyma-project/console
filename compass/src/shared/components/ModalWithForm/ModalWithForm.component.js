@@ -78,7 +78,11 @@ const ModalWithForm = ({
 
   const actions = (
     <>
-      <Button option="light" onClick={() => setOpenStatus(false)}>
+      <Button
+        option="light"
+        onClick={() => setOpenStatus(false)}
+        className="fd-has-margin-right-s"
+      >
         Cancel
       </Button>
       <Button aria-disabled={!isValid} onClick={onConfirm} option="emphasized">

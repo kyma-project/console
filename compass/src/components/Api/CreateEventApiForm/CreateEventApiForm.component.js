@@ -76,7 +76,12 @@ export default function CreateEventApiForm({
   };
 
   return (
-    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
+    <form
+      onChange={onChange}
+      ref={formElementRef}
+      onSubmit={handleFormSubmit}
+      style={{ height: '375px' }}
+    >
       <FormSet>
         <EventApiForm formValues={formValues} />
         <p

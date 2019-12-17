@@ -8,9 +8,7 @@ export default function useMutationObserver(ref, changeCallback, options) {
   };
 
   const callback = (mutationsList, observer) => {
-    if (typeof changeCallback === 'function') {
-      changeCallback(ref.current, mutationsList, observer);
-    }
+    changeCallback(ref.current, mutationsList, observer);
   };
 
   React.useEffect(() => {

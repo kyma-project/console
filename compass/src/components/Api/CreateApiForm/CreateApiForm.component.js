@@ -109,7 +109,12 @@ export default function CreateApiForm({
   };
 
   return (
-    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
+    <form
+      onChange={onChange}
+      ref={formElementRef}
+      onSubmit={handleFormSubmit}
+      style={{ height: '600px' }}
+    >
       <TabGroup>
         <Tab key="api-data" id="api-data" title="API data">
           <FormSet>

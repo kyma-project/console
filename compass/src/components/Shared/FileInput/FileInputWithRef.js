@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import './style.scss';
+import './FileInput.scss';
 
 FileInput.propTypes = {
   fileInputChanged: PropTypes.func.isRequired,
@@ -44,7 +44,7 @@ export default function FileInput({
 
   return (
     <div
-      className="fd-asset-upload"
+      className="fd-asset-upload file-input"
       onDrop={drop}
       onDragEnter={() => setDraggingCounter(draggingOverCounter + 1)}
       onDragLeave={() => setDraggingCounter(draggingOverCounter - 1)}
@@ -58,7 +58,7 @@ export default function FileInput({
         onChange={e => fileChanged(e.target.files[0])}
         className="fd-asset-upload__input"
         accept={acceptedFileFormats}
-        required
+        required={required}
       />
       <label htmlFor="file-upload" className={labelClass}>
         <span className="fd-asset-upload__text">Browse</span>
