@@ -13,26 +13,37 @@ import './EditEventApi.scss';
 import { getRefsValues } from 'react-shared';
 import { createEventAPIData, verifyEventApiInput } from './../ApiHelpers';
 
-EditEventApi.propTypes = {
+const commonPropTypes = {
   eventApiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
-  eventApiDataQuery: PropTypes.object.isRequired,
   updateEventDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
 
-export default function EditEventApi({
+EditEventApi.propTypes = {
+  originalEventApi: PropTypes.object.isRequired,
+  applicationName: PropTypes.string.isRequired,
+  ...commonPropTypes,
+};
+
+function EditEventApi({
+  originalEventApi,
+  applicationName,
   eventApiId,
-  eventApiDataQuery,
   updateEventDefinition,
   sendNotification,
 }) {
   const formRef = React.useRef(null);
   const [formValid, setFormValid] = React.useState(true);
-  const [specProvided, setSpecProvided] = React.useState();
-  const [originalEventApi, setOriginalEventApi] = React.useState(null);
-  const [format, setFormat] = React.useState('');
-  const [specText, setSpecText] = React.useState('');
+  const [specProvided, setSpecProvided] = React.useState(
+    !!originalEventApi.spec,
+  );
+  const [format, setFormat] = React.useState(
+    specProvided ? originalEventApi.spec.format : 'YAML',
+  );
+  const [specText, setSpecText] = React.useState(
+    specProvided && originalEventApi.spec.data,
+  );
 
   const formValues = {
     name: React.useRef(null),
@@ -40,37 +51,8 @@ export default function EditEventApi({
     group: React.useRef(null),
   };
 
-  React.useEffect(() => {
-    if (eventApiDataQuery.application) {
-      const originalEventApi = eventApiDataQuery.application.eventDefinitions.data.find(
-        eventApi => eventApi.id === eventApiId,
-      );
-
-      setOriginalEventApi(originalEventApi);
-      setSpecProvided(!!originalEventApi.spec);
-      if (originalEventApi.spec) {
-        setFormat(originalEventApi.spec.format);
-        setSpecText(originalEventApi.spec.data);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventApiDataQuery.application]);
-
   const revalidateForm = () =>
     setFormValid(!!formRef.current && formRef.current.checkValidity());
-
-  if (eventApiDataQuery.loading) {
-    return <p>Loading...</p>;
-  }
-  if (eventApiDataQuery.error) {
-    return <p>`Error! ${eventApiDataQuery.error.message}`</p>;
-  }
-
-  if (!originalEventApi) {
-    return (
-      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
-    );
-  }
 
   const saveChanges = async () => {
     const basicData = getRefsValues(formValues);
@@ -108,7 +90,7 @@ export default function EditEventApi({
     <>
       <EditApiHeader
         api={originalEventApi}
-        applicationName={eventApiDataQuery.application.name}
+        applicationName={applicationName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -181,5 +163,40 @@ export default function EditEventApi({
         </TabGroup>
       </form>
     </>
+  );
+}
+
+EditEventApiWrapper.propTypes = {
+  eventApiDataQuery: PropTypes.object.isRequired,
+  ...commonPropTypes,
+};
+
+export default function EditEventApiWrapper(props) {
+  const dataQuery = props.eventApiDataQuery;
+
+  if (dataQuery.loading) {
+    return <p>Loading...</p>;
+  }
+  if (dataQuery.error) {
+    return <p>`Error! ${dataQuery.error.message}`</p>;
+  }
+
+  // there's no getEventApiById query
+  const originalEventApi = dataQuery.application.eventDefinitions.data.find(
+    eventApi => eventApi.id === props.eventApiId,
+  );
+
+  if (!originalEventApi) {
+    return (
+      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
+    );
+  }
+
+  return (
+    <EditEventApi
+      {...props}
+      originalEventApi={originalEventApi}
+      applicationName={dataQuery.application.name}
+    />
   );
 }

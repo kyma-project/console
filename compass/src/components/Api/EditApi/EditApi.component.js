@@ -18,29 +18,42 @@ import {
 } from './../ApiHelpers';
 import ApiEditorForm from '../Forms/ApiEditorForm';
 
-EditApi.propTypes = {
+const commonPropTypes = {
   apiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
-  apiDataQuery: PropTypes.object.isRequired,
   updateApiDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
 
-export default function EditApi({
+EditApi.propTypes = {
+  originalApi: PropTypes.object.isRequired,
+  applicationName: PropTypes.string.isRequired,
+  ...commonPropTypes,
+};
+
+function EditApi({
+  originalApi,
+  applicationName,
   apiId,
-  apiDataQuery,
   updateApiDefinition,
   sendNotification,
 }) {
   const formRef = React.useRef(null);
   const [formValid, setFormValid] = React.useState(true);
-  const [specProvided, setSpecProvided] = React.useState();
-  const [originalApi, setOriginalApi] = React.useState(null);
-  const [format, setFormat] = React.useState('');
-  const [apiType, setApiType] = React.useState('');
-  const [specText, setSpecText] = React.useState('');
+  const [specProvided, setSpecProvided] = React.useState(!!originalApi.spec);
+  const [format, setFormat] = React.useState(
+    specProvided ? originalApi.spec.format : 'YAML',
+  );
+  const [apiType, setApiType] = React.useState(
+    specProvided ? originalApi.spec.type : 'OPEN_API',
+  );
+  const [specText, setSpecText] = React.useState(
+    specProvided && originalApi.spec.data,
+  );
 
-  const [credentialsType, setCredentialsType] = React.useState();
+  const [credentialsType, setCredentialsType] = React.useState(
+    inferCredentialType(originalApi.defaultAuth),
+  );
 
   const formValues = {
     name: React.useRef(null),
@@ -57,47 +70,10 @@ export default function EditApi({
     },
   };
 
-  React.useEffect(() => {
-    if (apiDataQuery.application) {
-      const originalApi = apiDataQuery.application.apiDefinitions.data.find(
-        api => api.id === apiId,
-      );
-
-      setOriginalApi(originalApi);
-
-      setCredentialsType(inferCredentialType(originalApi.defaultAuth));
-
-      setSpecProvided(!!originalApi.spec);
-      if (originalApi.spec) {
-        setFormat(originalApi.spec.format);
-        setSpecText(originalApi.spec.data);
-        setApiType(originalApi.spec.type);
-      } else {
-        // default values
-        setFormat('YAML');
-        setApiType('OPEN_API');
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiDataQuery.application]);
-
   const revalidateForm = () =>
     setFormValid(!!formRef.current && formRef.current.checkValidity());
 
   useMutationObserver(formRef, revalidateForm);
-
-  if (apiDataQuery.loading) {
-    return <p>Loading...</p>;
-  }
-  if (apiDataQuery.error) {
-    return <p>`Error! ${apiDataQuery.error.message}`</p>;
-  }
-
-  if (!originalApi) {
-    return (
-      <ResourceNotFound resource="API Definition" breadcrumb="Applications" />
-    );
-  }
 
   const saveChanges = async () => {
     const basicData = getRefsValues(formValues);
@@ -148,7 +124,7 @@ export default function EditApi({
     <>
       <EditApiHeader
         api={originalApi}
-        applicationName={apiDataQuery.application.name}
+        applicationName={applicationName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -247,5 +223,40 @@ export default function EditApi({
         </TabGroup>
       </form>
     </>
+  );
+}
+
+EditApiWrapper.propTypes = {
+  apiDataQuery: PropTypes.object.isRequired,
+  ...commonPropTypes,
+};
+
+export default function EditApiWrapper(props) {
+  const dataQuery = props.apiDataQuery;
+
+  if (dataQuery.loading) {
+    return <p>Loading...</p>;
+  }
+  if (dataQuery.error) {
+    return <p>`Error! ${dataQuery.error.message}`</p>;
+  }
+
+  // there's no getApiById query
+  const originalApi = dataQuery.application.apiDefinitions.data.find(
+    api => api.id === props.apiId,
+  );
+
+  if (!originalApi) {
+    return (
+      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
+    );
+  }
+
+  return (
+    <EditApi
+      {...props}
+      originalApi={originalApi}
+      applicationName={dataQuery.application.name}
+    />
   );
 }
