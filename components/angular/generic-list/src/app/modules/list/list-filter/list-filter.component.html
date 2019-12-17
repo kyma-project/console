@@ -1,7 +1,9 @@
 <fd-popover
-  [placement]="'bottom'"
+  [placement]="'bottom-end'"
   [noArrow]="false"
   *ngIf="filterState.availableFacets.length"
+  [options]="{modifiers: {preventOverflow: {enabled:false}}}"
+  class="y-fd-popover"
 >
   <fd-popover-control>
     <button
