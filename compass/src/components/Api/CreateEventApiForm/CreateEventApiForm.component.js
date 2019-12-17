@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
 import { FormSet } from 'fundamental-react';
-import FileInput from '../../Shared/FileInput/FileInputWithRef';
+import FileInput from '../../Shared/FileInput/FileInput';
 
 import { createEventAPIData, verifyEventApiFile } from './../ApiHelpers';
 import EventApiForm from './../Forms/EventApiForm';

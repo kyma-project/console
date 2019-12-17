@@ -15,7 +15,7 @@ import CredentialsForm, {
 
 import { createApiData, verifyApiFile } from '../ApiHelpers';
 
-import FileInput from '../../Shared/FileInput/FileInputWithRef';
+import FileInput from '../../Shared/FileInput/FileInput';
 import ApiForm from './../Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
 
