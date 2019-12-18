@@ -16,12 +16,9 @@ describe('InputWithSuffix', () => {
       pattern: '^[a-zA-Z][a-zA-Z_-]*[a-zA-Z]$',
     };
 
-    const {
-      queryByText,
-      queryAllByRole,
-      queryByPlaceholderText,
-      debug,
-    } = render(<InputWithSuffix {...props} />);
+    const { queryByText, queryAllByRole, queryByPlaceholderText } = render(
+      <InputWithSuffix {...props} />,
+    );
 
     expect(queryAllByRole('input')).toHaveLength(1);
     expect(queryByPlaceholderText(props.placeholder)).toBeTruthy();

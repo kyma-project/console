@@ -23,7 +23,7 @@ describe('CreateApiRule', () => {
   const consoleError = jest.spyOn(console, 'error').mockImplementation();
 
   it('Renders basic component', async () => {
-    const { queryByText, queryAllByRole, debug } = render(
+    const { queryByText, queryAllByRole, getAllByLabelText } = render(
       <MockedProvider mocks={[servicesQuery]}>
         <CreateApiRule />
       </MockedProvider>,
@@ -35,7 +35,7 @@ describe('CreateApiRule', () => {
     expect(queryByText('General settings')).toBeTruthy();
     expect(queryAllByRole('input')).toHaveLength(2);
     expect(queryAllByRole('select')).toHaveLength(1);
-    expect(queryAllByRole('menuitem')).toHaveLength(3);
+    expect(getAllByLabelText('option')).toHaveLength(3);
 
     expect(queryByText('Access strategies')).toBeTruthy();
     expect(queryAllByRole('row')).toHaveLength(1);

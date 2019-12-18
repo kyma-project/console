@@ -41,7 +41,7 @@ describe('ServicesDropdown', () => {
   });
 
   it('Show service with one port', async () => {
-    const { queryByText, queryAllByRole, debug } = render(
+    const { queryByText, getAllByLabelText } = render(
       <ServicesDropdown
         _ref={ref}
         error={undefined}
@@ -49,15 +49,15 @@ describe('ServicesDropdown', () => {
         data={{ services: [service1] }}
       />,
     );
-    debug();
-    expect(queryAllByRole('menuitem')).toHaveLength(service1.ports.length);
+
+    expect(getAllByLabelText('option')).toHaveLength(service1.ports.length);
     expect(
       queryByText(service1.name + ' (port: ' + service1.ports[0].port) + ')',
     ).toBeTruthy();
   });
 
   it('Show service with multiple ports', async () => {
-    const { queryByText, queryAllByRole, debug } = render(
+    const { queryByText, getAllByLabelText } = render(
       <ServicesDropdown
         _ref={ref}
         error={undefined}
@@ -65,8 +65,7 @@ describe('ServicesDropdown', () => {
         data={{ services: [service2] }}
       />,
     );
-    debug();
-    expect(queryAllByRole('menuitem')).toHaveLength(service2.ports.length);
+    expect(getAllByLabelText('option')).toHaveLength(service2.ports.length);
     expect(
       queryByText(service2.name + ' (port: ' + service2.ports[0].port) + ')',
     ).toBeTruthy();
@@ -76,7 +75,7 @@ describe('ServicesDropdown', () => {
   });
 
   it('Show multiple services', async () => {
-    const { queryByText, queryAllByRole, debug } = render(
+    const { queryByText, getAllByLabelText } = render(
       <ServicesDropdown
         _ref={ref}
         error={undefined}
@@ -84,8 +83,7 @@ describe('ServicesDropdown', () => {
         data={{ services: [service1, service2] }}
       />,
     );
-    debug();
-    expect(queryAllByRole('menuitem')).toHaveLength(
+    expect(getAllByLabelText('option')).toHaveLength(
       service1.ports.length + service2.ports.length,
     );
     expect(

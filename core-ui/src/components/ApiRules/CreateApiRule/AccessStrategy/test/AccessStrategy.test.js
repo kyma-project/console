@@ -19,7 +19,7 @@ describe('AccessStrategy', () => {
   const consoleError = jest.spyOn(console, 'error').mockImplementation();
 
   it('Renders default AccessStrategy', async () => {
-    const { queryByText, queryAllByRole, debug } = render(
+    const { queryByText, queryAllByRole } = render(
       <AccessStrategy strategy={defaultAccessStrategy} />,
     );
 
