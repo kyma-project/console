@@ -35,7 +35,7 @@ describe('CreateApiRule', () => {
     expect(queryByText('General settings')).toBeTruthy();
     expect(queryAllByRole('input')).toHaveLength(2);
     expect(queryAllByRole('select')).toHaveLength(1);
-    expect(queryAllByRole('select-option')).toHaveLength(3);
+    expect(queryAllByRole('menuitem')).toHaveLength(3);
 
     expect(queryByText('Access strategies')).toBeTruthy();
     expect(queryAllByRole('row')).toHaveLength(1);

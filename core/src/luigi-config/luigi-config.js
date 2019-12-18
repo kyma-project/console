@@ -101,7 +101,7 @@ function getNodes(context) {
       viewUrl: config.coreModuleUrl + '/createApiRule',
       icon: 'sonography',
       viewGroup: coreUIViewGroupName,
-      // hideFromNav: true
+      hideFromNav: true
     },
     {
       category: { label: 'Service Management', icon: 'add-coursebook' },

@@ -7,7 +7,6 @@ export class ExposeApiService {
   constructor(private httpClient: HttpClient) { }
 
   createApiDefinition(url, data) {
-    console.log('AppConfig.k8sApiServerUrl_apimanagement', AppConfig.k8sApiServerUrl_apimanagement)
     return this.httpClient.post<any>(
       `${AppConfig.k8sApiServerUrl_apimanagement}${url}`,
       data,
@@ -62,7 +61,6 @@ export class ExposeApiService {
   }
 
   prepareApiDefinitionToCreate(data) {
-    console.log('AppConfig.gateway_kyma_project_io_version', AppConfig.gateway_kyma_project_io_version)
     const result = {
       kind: 'Api',
       metadata: {
