@@ -50,7 +50,7 @@ describe('ServicesDropdown', () => {
       />,
     );
     debug();
-    expect(queryAllByRole('select-option')).toHaveLength(service1.ports.length);
+    expect(queryAllByRole('menuitem')).toHaveLength(service1.ports.length);
     expect(
       queryByText(service1.name + ' (port: ' + service1.ports[0].port) + ')',
     ).toBeTruthy();
@@ -66,7 +66,7 @@ describe('ServicesDropdown', () => {
       />,
     );
     debug();
-    expect(queryAllByRole('select-option')).toHaveLength(service2.ports.length);
+    expect(queryAllByRole('menuitem')).toHaveLength(service2.ports.length);
     expect(
       queryByText(service2.name + ' (port: ' + service2.ports[0].port) + ')',
     ).toBeTruthy();
@@ -85,7 +85,7 @@ describe('ServicesDropdown', () => {
       />,
     );
     debug();
-    expect(queryAllByRole('select-option')).toHaveLength(
+    expect(queryAllByRole('menuitem')).toHaveLength(
       service1.ports.length + service2.ports.length,
     );
     expect(

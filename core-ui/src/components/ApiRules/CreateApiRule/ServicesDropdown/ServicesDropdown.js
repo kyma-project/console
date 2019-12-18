@@ -18,7 +18,7 @@ const ServicesDropdown = ({ _ref, loading, data, error }) => {
         {data.services.map(service =>
           service.ports.map(port => (
             <option
-              role="select-option"
+              role="menuitem"
               key={service.name + port.port}
               value={service.name + ':' + port.port}
             >

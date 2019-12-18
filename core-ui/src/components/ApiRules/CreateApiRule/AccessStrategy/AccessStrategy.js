@@ -78,7 +78,7 @@ const AccessStrategy = ({
   ]);
   const selectedType = strategy.accessStrategies[0].name;
 
-  const [editMode, setEditMode] = useState(isEditModeInitially);
+  const [editMode /*setEditMode*/] = useState(isEditModeInitially);
 
   return (
     <div className="access-strategy" role="row">

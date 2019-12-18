@@ -37,7 +37,7 @@ const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
 const CreateApiRule = () => {
-  const [accessStrategies, setAccessStrategies] = useState([
+  const [accessStrategies /*setAccessStrategies*/] = useState([
     defaultAccessStrategy,
   ]);
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE);
