@@ -79,6 +79,7 @@ const CreateApiRule = () => {
     if (!formRef.current.checkValidity()) {
       return;
     }
+
     const [serviceName, servicePort] = formValues.service.current.value.split(
       ':',
     );

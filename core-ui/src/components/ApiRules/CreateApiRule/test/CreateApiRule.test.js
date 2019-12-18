@@ -1,13 +1,12 @@
 import React from 'react';
 import CreateApiRule from '../CreateApiRule';
-import { render, act } from '@testing-library/react';
-import { mount } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 import {
   servicesQuery,
   createApiRuleMutation,
 } from '../../../../testing/queriesMocks';
-import { componentUpdate } from '../../../../testing';
+
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
 }));
@@ -19,8 +18,6 @@ jest.mock('@kyma-project/luigi-client', () => ({
 }));
 
 describe('CreateApiRule', () => {
-  // const consoleError = jest.spyOn(console, 'error').mockImplementation();
-
   it('Renders basic component', async () => {
     const { queryByText, queryAllByRole, getAllByLabelText } = render(
       <MockedProvider mocks={[servicesQuery]}>
@@ -41,126 +38,63 @@ describe('CreateApiRule', () => {
   });
 
   describe('Form validation', () => {
-    let queryByPlaceholderText;
+    let queryByPlaceholderText, queryByLabelText;
+    let nameInput, hostnameInput;
 
-    beforeAll(() => {
+    beforeEach(async () => {
       const renderResult = render(
-        <MockedProvider mocks={[servicesQuery]}>
+        <MockedProvider
+          addTypename={false}
+          mocks={[servicesQuery, createApiRuleMutation]}
+        >
           <CreateApiRule />
         </MockedProvider>,
       );
+      await wait();
+
       queryByPlaceholderText = renderResult.queryByPlaceholderText;
+      queryByLabelText = renderResult.queryByLabelText;
+
+      nameInput = queryByPlaceholderText('API Rule name');
+      hostnameInput = queryByPlaceholderText('Enter the hostname');
     });
 
-    const nameInput = queryByPlaceholderText('API Rule name');
+    it('Form inputs are rendered', () => {
+      expect(nameInput).toBeInTheDocument();
+      expect(hostnameInput).toBeInTheDocument();
+    });
 
-    const hostnameInput = queryByPlaceholderText('Enter the hostname');
+    it('Does not allow to create if no name or hostname', () => {
+      expect(nameInput.value).toBe('');
+      expect(hostnameInput.value).toBe('');
+      expect(queryByLabelText('submit-form')).toBeDisabled();
+    });
 
-    // it('Form inputs are rendered', () => {
-    //   expect(nameInput).toBeInTheDocument();
-    //   expect(hostnameInput).toBeInTheDocument();
-    // });
+    it('Does not allow to create if invalid name', () => {
+      fireEvent.change(nameInput, { target: { value: 'test-' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host' } });
+
+      expect(queryByLabelText('submit-form')).toBeDisabled();
+    });
+
+    it('Does not allow to create if invalid host', () => {
+      fireEvent.change(nameInput, { target: { value: 'test' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host123-' } });
+
+      expect(queryByLabelText('submit-form')).toBeDisabled();
+    });
+
+    it('Create button fires createApiRuleMutation', async () => {
+      fireEvent.change(nameInput, { target: { value: 'test' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host' } });
+      const createButton = queryByLabelText('submit-form');
+
+      expect(createButton).not.toBeDisabled();
+
+      createButton.click();
+      await wait();
+
+      expect(createApiRuleMutation.result).toHaveBeenCalled();
+    });
   });
-
-  xit('Does not allow to create if no name or hostname', async () => {
-    const nameInput = queryByPlaceholderText('API Rule name');
-    expect(nameInput).toBeInTheDocument();
-    expect(nameInput.value).toBe('');
-
-    const hostnameInput = queryByPlaceholderText('Enter the hostname');
-    expect(hostnameInput).toBeInTheDocument();
-    expect(hostnameInput.value).toBe('');
-
-    expect(queryByLabelText('submit-form')).toBeDisabled();
-  });
-
-  xit('Does not allow to create if invalid name', async () => {
-    const component = mount(
-      <MockedProvider mocks={[servicesQuery]}>
-        <CreateApiRule />
-      </MockedProvider>,
-    );
-
-    const nameInput = component.find('input#apiRuleName');
-    nameInput.instance().value = 'test-';
-    expect(nameInput.instance().value).toEqual('test-');
-
-    const hostname = component.find('input#hostname');
-    hostname.instance().value = 'host';
-    expect(hostname.instance().value).toEqual('host');
-
-    expect(
-      component
-        .find('form')
-        .instance()
-        .checkValidity(),
-    ).toEqual(false);
-  });
-
-  xit('Does not allow to create if invalid host', async () => {
-    const component = mount(
-      <MockedProvider mocks={[servicesQuery]}>
-        <CreateApiRule />
-      </MockedProvider>,
-    );
-
-    const nameInput = component.find('input#apiRuleName');
-    nameInput.instance().value = 'test';
-    expect(nameInput.instance().value).toEqual('test');
-
-    const hostname = component.find('input#hostname');
-    hostname.instance().value = 'host123';
-    expect(hostname.instance().value).toEqual('host123');
-
-    expect(
-      component
-        .find('form')
-        .instance()
-        .checkValidity(),
-    ).toEqual(false);
-  });
-
-  xit('Create button fires createApiRuleMutation', async () => {
-    const component = mount(
-      <MockedProvider mocks={[servicesQuery, createApiRuleMutation]}>
-        <CreateApiRule />
-      </MockedProvider>,
-    );
-
-    await componentUpdate(component);
-
-    const nameInput = component.find('input#apiRuleName');
-    nameInput.instance().value = 'test';
-    nameInput.simulate('change');
-    expect(nameInput.instance().value).toEqual('test');
-
-    const hostname = component.find('input#hostname');
-    hostname.instance().value = 'host';
-    hostname.simulate('change');
-    expect(hostname.instance().value).toEqual('host');
-
-    expect(
-      component
-        .find('form')
-        .instance()
-        .checkValidity(),
-    ).toEqual(true);
-
-    const createButton = component.findWhere(
-      t => t.type() == 'button' && t.text() === 'Create',
-    );
-
-    await createButton.simulate('click');
-    await componentUpdate(component);
-
-    expect(createApiRuleMutation.result).toHaveBeenCalled();
-  });
-
-  // afterEach(() => {
-  //   consoleError.mockClear();
-  // });
-
-  // afterAll(() => {
-  //   consoleError.mockRestore();
-  // });
 });

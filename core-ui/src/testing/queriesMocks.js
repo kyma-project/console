@@ -50,7 +50,6 @@ export const servicesQuery = {
 
 const createdAPIRule = {
   name: 'test',
-  __typename: 'Function',
 };
 
 const sampleAPIRule = {
@@ -64,7 +63,7 @@ const sampleAPIRule = {
     rules: [
       {
         path: '/.*',
-        methods: ['DELETE', 'GET', 'POST', 'PUT'],
+        methods: ['PUT', 'POST', 'GET', 'DELETE'],
         accessStrategies: [
           {
             name: 'allow',
