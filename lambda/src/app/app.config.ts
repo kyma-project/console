@@ -63,7 +63,7 @@ const clusterConfig = Object.keys(windowClusterConfig || {}).length ? windowClus
 const configToRead: StringMap = clusterConfig || (typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }); // fallback for tests
 
 const domain = configToRead.domain;
-const gateway_kyma_project_io_version = configToRead.gateway_kyma_project_io_version;
+const gateway_kyma_cx_api_version = configToRead.gateway_kyma_cx_api_version;
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
@@ -73,7 +73,7 @@ const config = {
   k8sServerUrl,
   k8sApiUrl: `${k8sServerUrl}/apis/apps/v1`,
   k8sApiServerUrl: `${k8sServerUrl}/api/v1`,
-  k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_project_io_version}/`,
+  k8sApiServerUrl_apimanagement: `${k8sServerUrl}/apis/gateway.kyma-project.io/${gateway_kyma_cx_api_version}/`,
   k8sApiServerUrl_apps: `${k8sServerUrl}/apis/apps/v1/`,
   k8sApiServerUrl_applications: `${k8sServerUrl}/apis/applicationconnector.kyma-project.io/v1alpha1/applications/`,
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
