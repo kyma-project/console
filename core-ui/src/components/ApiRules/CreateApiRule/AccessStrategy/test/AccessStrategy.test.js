@@ -1,6 +1,5 @@
 import React from 'react';
 import AccessStrategy from '../AccessStrategy';
-import wait from 'waait';
 import { render } from '@testing-library/react';
 
 const defaultAccessStrategy = {
@@ -16,8 +15,6 @@ const defaultAccessStrategy = {
 };
 
 describe('AccessStrategy', () => {
-  //const consoleError = jest.spyOn(console, 'error').mockImplementation();
-
   it('Renders default AccessStrategy', async () => {
     const { queryByText, queryAllByLabelText } = render(
       <AccessStrategy strategy={defaultAccessStrategy} />,
@@ -28,13 +25,5 @@ describe('AccessStrategy', () => {
       defaultAccessStrategy.methods.length,
     );
     expect(queryByText('Allow')).toBeTruthy();
-  });
-
-  afterEach(() => {
-    //consoleError.mockClear();
-  });
-
-  afterAll(() => {
-    //consoleError.mockRestore();
   });
 });

@@ -102,7 +102,7 @@ const CreateApiRule = () => {
 
       if (createdApiRuleData) {
         notificationManager.notify({
-          content: `ApiRule ${createdApiRuleData.name} created successfully`,
+          content: `API Rule ${createdApiRuleData.name} created successfully`,
           title: 'Success',
           color: '#107E3E',
           icon: 'accept',
@@ -132,7 +132,7 @@ const CreateApiRule = () => {
               onClick={handleCreate}
               disabled={!isValid}
               option="emphasized"
-              role="submit-button"
+              aria-label="submit-form"
             >
               Create
             </Button>
@@ -194,7 +194,12 @@ const CreateApiRule = () => {
             </Panel.Header>
             <Panel.Body>
               {accessStrategies.map(strategy => {
-                return <AccessStrategy strategy={strategy} />;
+                return (
+                  <AccessStrategy
+                    key={strategy.path + strategy.accessStrategies[0].name}
+                    strategy={strategy}
+                  />
+                );
               })}
             </Panel.Body>
           </Panel>
