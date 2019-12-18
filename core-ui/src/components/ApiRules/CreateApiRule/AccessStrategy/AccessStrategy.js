@@ -16,6 +16,8 @@ import {
 } from 'fundamental-react';
 import { StringInput } from 'react-shared';
 
+const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
+
 const URLregexp = new RegExp(
   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
 );
@@ -102,16 +104,18 @@ const AccessStrategy = ({
           {!editMode &&
             strategy.methods &&
             strategy.methods.length &&
-            strategy.methods.sort().map(method => {
-              if (method === 'DELETE') return null;
-              return <Badge role="method">{method}</Badge>;
-            })}
-
-          {!editMode && strategy.methods.includes('DELETE') && (
-            <Badge role="method" type="error">
-              DELETE
-            </Badge>
-          )}
+            strategy.methods
+              .sort()
+              .reverse()
+              .map(method => (
+                <Badge
+                  key={method}
+                  aria-label="method"
+                  type={method === 'DELETE' ? 'error' : null}
+                >
+                  {method}
+                </Badge>
+              ))}
         </div>
         {/*  TODO Uncoment for updating access strategies
         <div className="actions">
@@ -153,7 +157,7 @@ const AccessStrategy = ({
             <LayoutGrid cols={3}>
               <FormItem>
                 <FormInput
-                  placeholder="Field placeholder text"
+                  placeholder="Enter the path"
                   type="text"
                   defaultValue={strategy.path}
                 />
@@ -161,28 +165,13 @@ const AccessStrategy = ({
               {editMode && (
                 <FormFieldset>
                   <FormRadioGroup inline className="inline-radio-group">
-                    <Checkbox
-                      id="checkbox-4"
-                      name="checkbox-name-4"
-                      value="GET"
-                      checked
-                    />
-                    <Checkbox
-                      id="checkbox-5"
-                      name="checkbox-name-5"
-                      value="POST"
-                    />
-                    <Checkbox
-                      id="checkbox-6"
-                      name="checkbox-name-6"
-                      value="PUT"
-                    />
-                    <Checkbox
-                      id="checkbox-6"
-                      name="checkbox-name-6"
-                      value="DELETE"
-                      checked={strategy.methods.includes('DELETE')}
-                    />
+                    {AVAILABLE_METHODS.map(m => (
+                      <Checkbox
+                        key={m}
+                        value={m}
+                        checked={strategy.methods.includes(m)}
+                      />
+                    ))}
                   </FormRadioGroup>
                 </FormFieldset>
               )}
@@ -203,7 +192,7 @@ const AccessStrategy = ({
           </FormGroup>
         )}
 
-        {selectedType !== passAll.value && (
+        {/* {selectedType !== passAll.value && (
           <>
             <StringListInput
               list={trustedIssuesList}
@@ -223,7 +212,7 @@ const AccessStrategy = ({
               label="Required scope"
             />
           </>
-        )}
+        )} */}
       </div>
     </div>
   );

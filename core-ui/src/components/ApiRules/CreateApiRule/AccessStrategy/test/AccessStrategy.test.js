@@ -16,25 +16,25 @@ const defaultAccessStrategy = {
 };
 
 describe('AccessStrategy', () => {
-  const consoleError = jest.spyOn(console, 'error').mockImplementation();
+  //const consoleError = jest.spyOn(console, 'error').mockImplementation();
 
   it('Renders default AccessStrategy', async () => {
-    const { queryByText, queryAllByRole } = render(
+    const { queryByText, queryAllByLabelText } = render(
       <AccessStrategy strategy={defaultAccessStrategy} />,
     );
 
     expect(queryByText(defaultAccessStrategy.path)).toBeTruthy();
-    expect(await queryAllByRole('method')).toHaveLength(
+    expect(await queryAllByLabelText('method')).toHaveLength(
       defaultAccessStrategy.methods.length,
     );
     expect(queryByText('Allow')).toBeTruthy();
   });
 
   afterEach(() => {
-    consoleError.mockClear();
+    //consoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleError.mockRestore();
+    //consoleError.mockRestore();
   });
 });
