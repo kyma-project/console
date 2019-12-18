@@ -9,7 +9,7 @@ const clusterConfig = Object.keys(windowClusterConfig || {}).length ? windowClus
 const configToRead: StringMap = clusterConfig || (typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }); // fallback for tests
 
 const domain = configToRead.domain;
-const gateway_kyma_cx_api_version = configToRead.gateway_kyma_cx_api_version;
+const gateway_kyma_cx_api_version = configToRead.gateway_kyma_project_io_version;
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
