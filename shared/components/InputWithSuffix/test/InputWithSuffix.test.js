@@ -5,8 +5,6 @@ import 'core-js/es/array/flat-map';
 import { render } from '@testing-library/react';
 
 describe('InputWithSuffix', () => {
-  const consoleError = jest.spyOn(console, 'error').mockImplementation();
-
   it('Renders input with placeholder and suffix', () => {
     const props = {
       id: '123',
@@ -21,17 +19,7 @@ describe('InputWithSuffix', () => {
     );
 
     expect(queryAllByRole('input')).toHaveLength(1);
-    expect(queryByPlaceholderText(props.placeholder)).toBeTruthy();
-    expect(queryByText(props.suffix)).toBeTruthy();
-
-    expect(consoleError).not.toHaveBeenCalled();
-  });
-
-  afterEach(() => {
-    consoleError.mockClear();
-  });
-
-  afterAll(() => {
-    consoleError.mockRestore();
+    expect(queryByPlaceholderText(props.placeholder)).toBeInTheDocument();
+    expect(queryByText(props.suffix)).toBeInTheDocument();
   });
 });
