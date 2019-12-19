@@ -8,6 +8,8 @@ import LambdaDetailsWrapper from '../Lambdas/LambdaDetails/LambdaDetailsWrapper'
 
 import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
 
+import ApiRules from 'components/ApiRules/ApiRules';
+
 export default function App() {
   return (
     <NotificationProvider>
@@ -18,6 +20,7 @@ export default function App() {
         <Route path="/namespaces" component={NamespaceList} />
 
         <Route path="/createApiRule" component={CreateApiRule} />
+        <Route path="/apirules" component={ApiRules} />
       </Switch>
     </NotificationProvider>
   );
