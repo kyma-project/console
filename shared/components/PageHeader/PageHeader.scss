@@ -25,15 +25,3 @@
     color: var(--fd-color-text-4);
   }
 }
-
-.copiable-url {
-  div {
-    position: relative;
-    button {
-      position: absolute;
-      transform: translateY(-50%);
-      top: 50%;
-      margin-left: 4px;
-    }
-  }
-}
