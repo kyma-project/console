@@ -3,7 +3,7 @@ import createContainer from 'constate';
 import { GlobalService, useLocation } from '@kyma-project/common';
 
 import { QueriesService } from './queries.service';
-import { ClusterDocsTopics, Navigation, NavigationItem } from './types';
+import { ClusterAssetGroups, Navigation, NavigationItem } from './types';
 import { ROOT_GROUP, KYMA_TOPIC } from '../constants';
 
 export interface ActiveNavNode {
@@ -12,21 +12,21 @@ export interface ActiveNavNode {
 }
 
 const extractNavigation = (
-  docsTopics?: ClusterDocsTopics,
+  clusterAssetGroups?: ClusterAssetGroups,
 ): Navigation | undefined => {
-  if (!docsTopics) {
+  if (!clusterAssetGroups) {
     return undefined;
   }
 
   const navigation: Navigation = {};
 
-  Object.keys(docsTopics).forEach(group => {
+  Object.keys(clusterAssetGroups).forEach(group => {
     const items: NavigationItem[] = [];
-    docsTopics[group].forEach(dt => {
+    clusterAssetGroups[group].forEach(cag => {
       items.push({
-        name: dt.name,
-        group: dt.groupName,
-        displayName: dt.displayName,
+        name: cag.name,
+        group: cag.groupName,
+        displayName: cag.displayName,
       });
     });
     navigation[group] = items;
@@ -36,7 +36,7 @@ const extractNavigation = (
 
 const useNavigation = () => {
   const globalContext = useContext(GlobalService) as any;
-  const { docsTopics } = useContext(QueriesService);
+  const { clusterAssetGroups } = useContext(QueriesService);
   const { location } = useLocation();
 
   const [navigation, setNavigation] = useState<Navigation>();
@@ -57,8 +57,8 @@ const useNavigation = () => {
   }, [location.state]);
 
   useEffect(() => {
-    setNavigation(extractNavigation(docsTopics));
-  }, [docsTopics]);
+    setNavigation(extractNavigation(clusterAssetGroups));
+  }, [clusterAssetGroups]);
 
   return {
     activeNavNode,

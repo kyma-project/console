@@ -1,8 +1,13 @@
 import {
+  Asset,
+  File,
+  ClusterAssetGroup,
+  AssetGroup,
+} from '@kyma-project/common';
+import {
   SourceWithOptions,
   Sources,
 } from '@kyma-project/documentation-component';
-import { Asset, File, DT } from './types';
 import {
   markdownTypes,
   openApiTypes,
@@ -10,13 +15,15 @@ import {
   odataTypes,
 } from '../constants';
 
+type AG = ClusterAssetGroup | AssetGroup;
+
 export class DocsLoader {
   private sources: SourceWithOptions[] = [];
-  private docsTopic: DT = {} as DT;
+  private assetGroup: AG = {} as AG;
   private sortServiceClassDocumentation: boolean = false;
 
-  setDocsTopic(docsTopic: DT): void {
-    this.docsTopic = docsTopic;
+  setAssetGroup(assetGroup: AG): void {
+    this.assetGroup = assetGroup;
     this.clear();
   }
 
@@ -160,7 +167,7 @@ export class DocsLoader {
                   ...el,
                   parameters: {
                     disableRelativeLinks:
-                      asset.metadata && asset.metadata.disableRelativeLinks,
+                      asset.parameters && asset.parameters.disableRelativeLinks,
                   },
                 } as File),
             );
@@ -207,8 +214,7 @@ export class DocsLoader {
   }
 
   private extractAssets(types: string[]): Asset[] | undefined {
-    const assets = this.docsTopic && (this.docsTopic.assets as Asset[]);
-
+    const assets = this.assetGroup && (this.assetGroup.assets as Asset[]);
     return assets.filter(asset => types.includes(asset.type));
   }
 

@@ -21,6 +21,7 @@ const navigation = {
       context: {
         idToken: token,
       },
+      viewGroup: 'compass',
     },
     {
       hideSideNav: true,
@@ -159,6 +160,7 @@ const navigation = {
           ],
         },
       ],
+      viewGroup: 'compass',
     },
   ],
 

@@ -19,20 +19,20 @@ export const servicePlanGql = `
   bindingCreateParameterSchema
 `;
 
-export const docsTopicGql = `
-      name
-      groupName
-      displayName
-      description
-      assets {
-          name
-          metadata
-          type
-          files {
-            url
-            metadata
-          }
-      }
+export const assetGroupGql = `
+  name
+  groupName
+  displayName
+  description
+  assets {
+    name
+    parameters
+    type
+    files {
+      url
+      metadata
+    }
+  }
 `;
 
 export const SERVICE_BINDING_DETAILS_FRAGMENT = gql`
@@ -97,17 +97,17 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
       serviceClass {
         ${serviceClassGql}
         namespace
-        docsTopic{
-          ${docsTopicGql}
+        assetGroup {
+          ${assetGroupGql}
         }
-        clusterDocsTopic {
-          ${docsTopicGql}
+        clusterAssetGroup {
+          ${assetGroupGql}
         }
       }
       clusterServiceClass {
         ${serviceClassGql}
-        clusterDocsTopic {
-          ${docsTopicGql}
+        clusterAssetGroup {
+          ${assetGroupGql}
         }
       }
       servicePlan {

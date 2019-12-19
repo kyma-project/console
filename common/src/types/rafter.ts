@@ -1,10 +1,3 @@
-// Service Catalog
-export interface ServiceClass {
-  clusterDocsTopic: ClusterDocsTopic;
-  docsTopic: DocsTopic;
-}
-
-// Asset Store
 export interface Metadata {
   disableRelativeLinks?: boolean;
   [key: string]: any;
@@ -20,7 +13,7 @@ export interface File {
 
 export interface ClusterAsset {
   name: string;
-  metadata: Metadata;
+  parameters: Metadata;
   type: string;
   files: File[];
   status: AssetStatus;
@@ -43,30 +36,28 @@ export enum AssetPhaseType {
 }
 
 // Headless CMS
-export interface ClusterDocsTopic {
+export interface ClusterAssetGroup {
   name: string;
   groupName: string;
   assets: ClusterAsset[];
   displayName: string;
   description: string;
-  status: DocsTopicStatus;
+  status: AssetGroupStatus;
 }
 
-export interface DocsTopic extends ClusterDocsTopic {
+export interface AssetGroup extends ClusterAssetGroup {
   namespace: string;
   assets: Asset[];
 }
 
-export interface DocsTopicStatus {
-  phase: DocsTopicPhaseType;
+export interface AssetGroupStatus {
+  phase: AssetGroupPhaseType;
   reason: string;
   message: string;
 }
 
-export enum DocsTopicPhaseType {
+export enum AssetGroupPhaseType {
   READY = 'READY',
   PENDING = 'PENDING',
   FAILED = 'FAILED',
 }
-
-export type DT = DocsTopic | ClusterDocsTopic;
