@@ -1,5 +1,5 @@
 import React from 'react';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
 import { mocks } from './mock';
 import { ActionBar } from 'fundamental-react';

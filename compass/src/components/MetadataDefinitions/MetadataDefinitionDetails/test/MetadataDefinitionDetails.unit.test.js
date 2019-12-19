@@ -1,27 +1,20 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { MockedProvider } from 'react-apollo/test-utils';
-
+import { render } from '@testing-library/react';
+import { MockedProvider } from '@apollo/react-testing';
 import { mocks } from './mock';
 
 import MetadataDefinitionDetails from '../MetadataDefinitionDetails.container';
 
-const wait = require('waait');
-
 describe('MetadataDefinitionDetails', () => {
   it('Renders null schema', async () => {
-    console.warn = jest.fn();
-    const component = renderer.create(
+    const { queryByText, queryByLabelText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <MetadataDefinitionDetails definitionKey="noschemalabel" />
       </MockedProvider>,
     );
-    await wait(0); // wait for response
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
 
-    // catch "Warning: componentWillReceiveProps has been renamed
-    expect(console.warn.mock.calls.length).toBe(1);
-    expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
+    await wait(0); // wait  response
+    expect(queryByText('Schema')).toBeInTheDocument();
+    expect(queryByLabelText('schema-editor')).not.toBeInTheDocument();
   });
 });

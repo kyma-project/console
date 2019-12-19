@@ -189,6 +189,7 @@ const MetadataDefinitionDetails = ({
             {isEditorShown && (
               <PanelBody>
                 <JSONEditorComponent
+                  aria-label="schema-editor"
                   onChangeText={handleSchemaChange}
                   text={JSON.stringify(
                     metadataDefinition.schema || defaultSchema,

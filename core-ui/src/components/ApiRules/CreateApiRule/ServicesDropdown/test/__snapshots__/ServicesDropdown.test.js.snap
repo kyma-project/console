@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicesDropdown Show multiple services 1`] = `
+Array [
+  <option
+    aria-label="option"
+    value="test:80"
+  >
+    test (port: 80)
+  </option>,
+  <option
+    aria-label="option"
+    value="another:80"
+  >
+    another (port: 80)
+  </option>,
+  <option
+    aria-label="option"
+    value="another:8080"
+  >
+    another (port: 8080)
+  </option>,
+]
+`;
+
+exports[`ServicesDropdown Show service with multiple ports 1`] = `
+Array [
+  <option
+    aria-label="option"
+    value="another:80"
+  >
+    another (port: 80)
+  </option>,
+  <option
+    aria-label="option"
+    value="another:8080"
+  >
+    another (port: 8080)
+  </option>,
+]
+`;
+
+exports[`ServicesDropdown Show service with one port 1`] = `
+Array [
+  <option
+    aria-label="option"
+    value="test:80"
+  >
+    test (port: 80)
+  </option>,
+]
+`;

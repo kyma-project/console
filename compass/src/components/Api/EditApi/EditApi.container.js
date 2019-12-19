@@ -1,4 +1,6 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import { SEND_NOTIFICATION } from './../../../gql';
 
 import EditApi from './EditApi.component';

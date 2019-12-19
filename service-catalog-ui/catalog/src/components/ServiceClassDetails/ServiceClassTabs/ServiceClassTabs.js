@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Status, StatusWrapper } from '@kyma-project/react-components';
-import { GenericComponent } from '@kyma-project/generic-documentation';
+import { GenericDocumentation } from '@kyma-project/generic-documentation';
 
 import { ServiceClassInstancesTable } from '../ServiceClassInstancesTable/ServiceClassInstancesTable.component';
 import { serviceClassConstants } from '../../../variables';
@@ -20,8 +20,8 @@ function getTabElementsIndicator(instancesCount) {
 }
 
 const ServiceClassTabs = ({ serviceClass }) => {
-  const docsTopic =
-    serviceClass && (serviceClass.docsTopic || serviceClass.clusterDocsTopic);
+  const assetGroup =
+    serviceClass && (serviceClass.assetGroup || serviceClass.clusterAssetGroup);
 
   const additionalTabs = serviceClass.instances.length
     ? [
@@ -41,8 +41,8 @@ const ServiceClassTabs = ({ serviceClass }) => {
     : [];
 
   return (
-    <GenericComponent
-      docsTopic={docsTopic}
+    <GenericDocumentation
+      assetGroup={assetGroup}
       additionalTabs={additionalTabs}
       layout="catalog-ui"
     />

@@ -1,4 +1,5 @@
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
 import { BROKERS_QUERY } from './queries';
 import ServiceBrokers from './ServiceBrokers.component';
 

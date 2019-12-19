@@ -9,7 +9,7 @@ import ScenarioNameContext from '../../ScenarioNameContext';
 
 AssignEntityToScenarioModal.propTypes = {
   originalEntities: PropTypes.array.isRequired,
-  getEntitiesForScenario: PropTypes.object.isRequired,
+  entitiesForScenarioRefetchFn: PropTypes.func.isRequired,
 
   entityName: PropTypes.oneOf(['applications', 'runtimes']),
 
@@ -20,7 +20,7 @@ AssignEntityToScenarioModal.propTypes = {
 
 export default function AssignEntityToScenarioModal({
   originalEntities,
-  getEntitiesForScenario,
+  entitiesForScenarioRefetchFn,
   entityName,
   allEntitiesQuery,
   updateEntitiesLabels,
@@ -107,7 +107,7 @@ export default function AssignEntityToScenarioModal({
 
       const result = await Promise.allSettled(allUpdates);
 
-      await getEntitiesForScenario.refetch();
+      await entitiesForScenarioRefetchFn();
       await allEntitiesQuery.refetch();
 
       const rejected = result.filter(r => r.status === 'rejected');

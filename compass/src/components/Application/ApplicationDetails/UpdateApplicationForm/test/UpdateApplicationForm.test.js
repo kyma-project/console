@@ -1,17 +1,15 @@
 import React from 'react';
-import { MockedProvider } from 'react-apollo/test-utils';
-import { mount } from 'enzyme';
+import { MockedProvider } from '@apollo/react-testing';
 import {
   validApplicationsQueryMock,
   invalidApplicationsQueryMock,
   applicationMock,
 } from './mock';
-import toJson from 'enzyme-to-json';
-
+import { render, fireEvent } from '@testing-library/react';
 import UpdateApplicationForm from '../UpdateApplicationForm.container';
 
 describe('UpdateApplicationForm UI', () => {
-  // for "Warning: componentWillReceiveProps has been renamed"
+  //for "Warning: componentWillReceiveProps has been renamed"
   console.warn = jest.fn();
 
   afterEach(() => {
@@ -23,12 +21,11 @@ describe('UpdateApplicationForm UI', () => {
       expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
     }
   });
-
   const emptyRef = { current: null };
 
   it('Displays "loading" when there is no gql response', async () => {
-    const component = mount(
-      <MockedProvider addTypename={false} mocks={[]}>
+    const { container } = render(
+      <MockedProvider addTypename={false}>
         <UpdateApplicationForm
           formElementRef={emptyRef}
           onChange={() => {}}
@@ -38,12 +35,12 @@ describe('UpdateApplicationForm UI', () => {
         />
       </MockedProvider>,
     );
-
-    expect(component.text()).toEqual('Loading...');
+    expect(container.textContent).toBe('Loading...');
+    await wait(0); // just to shut up the infamous act() warning
   });
 
   it('Displays error in error state', async () => {
-    const component = mount(
+    const { container } = render(
       <MockedProvider
         addTypename={false}
         mocks={[invalidApplicationsQueryMock]}
@@ -57,14 +54,15 @@ describe('UpdateApplicationForm UI', () => {
         />
       </MockedProvider>,
     );
+    expect(container.textContent).toBe('Loading...');
 
     await wait(0); // wait for response
 
-    expect(component.text()).toEqual('Error! Network error: Query error');
+    expect(container.textContent).toBe('Error! Network error: Query error');
   });
 
   it('Renders form after load', async () => {
-    const component = mount(
+    const { queryByPlaceholderText } = render(
       <MockedProvider addTypename={false} mocks={[validApplicationsQueryMock]}>
         <UpdateApplicationForm
           formElementRef={emptyRef}
@@ -77,14 +75,15 @@ describe('UpdateApplicationForm UI', () => {
     );
 
     await wait(0); // wait for response
-    component.update();
 
-    const tree = toJson(component);
-    expect(tree).toMatchSnapshot();
+    expect(queryByPlaceholderText('Application name')).toBeInTheDocument();
+    expect(
+      queryByPlaceholderText('Application description'),
+    ).toBeInTheDocument();
   });
 
   it('Displays validation messages', async () => {
-    const component = mount(
+    const { queryByPlaceholderText } = render(
       <MockedProvider addTypename={false} mocks={[validApplicationsQueryMock]}>
         <UpdateApplicationForm
           formElementRef={emptyRef}
@@ -97,30 +96,39 @@ describe('UpdateApplicationForm UI', () => {
     );
 
     await wait(0); // wait for response
-    component.update();
 
-    const nameInput = component.find('#application-name');
+    const nameInput = queryByPlaceholderText('Application name');
 
     // initial state
-    expect(nameInput.instance().validationMessage).toEqual('');
+    expect(nameInput.validationMessage).toBeFalsy();
 
     // duplicate app name
-    nameInput.instance().value = 'app2';
-    nameInput.simulate('change');
-    expect(nameInput.instance().validationMessage).toEqual(
+    fireEvent.change(nameInput, {
+      target: {
+        value: 'app2',
+      },
+    });
+
+    expect(nameInput.validationMessage).toEqual(
       'Application with this name already exists.',
     );
 
     // empty
-    nameInput.instance().value = '';
-    nameInput.simulate('change');
-    expect(nameInput.instance().validationMessage).toEqual(
-      'Constraints not satisfied',
-    );
+
+    fireEvent.change(nameInput, {
+      target: {
+        value: '',
+      },
+    });
+
+    expect(nameInput.validationMessage).toEqual('Constraints not satisfied');
 
     // valid name
-    nameInput.instance().value = 'app3';
-    nameInput.simulate('change');
-    expect(nameInput.instance().validationMessage).toEqual('');
+    fireEvent.change(nameInput, {
+      target: {
+        value: 'app3',
+      },
+    });
+    expect(nameInput.validationMessage).toBeFalsy();
   });
 });

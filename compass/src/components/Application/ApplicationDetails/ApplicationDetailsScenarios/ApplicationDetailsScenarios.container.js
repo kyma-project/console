@@ -1,5 +1,7 @@
 import ApplicationDetailsScenarios from './ApplicationDetailsScenarios.component';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import { SET_APPLICATION_SCENARIOS } from './../../gql';
 import { SEND_NOTIFICATION } from '../../../../gql';
 

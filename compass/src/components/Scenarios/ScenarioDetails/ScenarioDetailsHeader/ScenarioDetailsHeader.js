@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { ActionBar } from 'fundamental-react';
 import { Breadcrumb, Button } from '@kyma-project/react-components';
@@ -8,12 +8,8 @@ import { Breadcrumb, Button } from '@kyma-project/react-components';
 import { handleDelete } from 'react-shared';
 import ScenarioNameContext from './../ScenarioNameContext';
 
+import { GET_SCENARIOS_LABEL_SCHEMA, UPDATE_SCENARIOS } from '../../gql';
 import { nonDeletableScenarioNames } from './../../../../shared/constants';
-
-ScenarioDetailsHeader.propTypes = {
-  getScenariosSchema: PropTypes.object.isRequired, // meeded for delete mutation
-  deleteScenarioMutation: PropTypes.func.isRequired,
-};
 
 function navigateToList() {
   LuigiClient.linkManager()
@@ -21,27 +17,61 @@ function navigateToList() {
     .navigate('scenarios');
 }
 
-export default function ScenarioDetailsHeader({
-  getScenariosSchema,
-  deleteScenarioMutation,
-}) {
-  const scenarioName = React.useContext(ScenarioNameContext);
+function removeScenario(schema, scenarioName) {
+  const schemaObject = JSON.parse(schema);
+  schemaObject.items.enum = schemaObject.items.enum.filter(
+    s => s !== scenarioName,
+  );
+  return JSON.stringify(schemaObject);
+}
 
-  if (getScenariosSchema.loading) {
+function createNewInputForDeleteScenarioMutation(
+  labelDefinition,
+  scenarioName,
+) {
+  const newSchema = removeScenario(labelDefinition.schema, scenarioName);
+  return {
+    key: 'scenarios',
+    schema: newSchema,
+  };
+}
+
+export default function ScenarioDetailsHeader({ applicationsCount }) {
+  const scenarioName = useContext(ScenarioNameContext);
+
+  const { data: scenariosLabelSchema, error, loading } = useQuery(
+    GET_SCENARIOS_LABEL_SCHEMA,
+  );
+  const [deleteScenarioMutation] = useMutation(UPDATE_SCENARIOS);
+
+  if (loading) {
     return <p>Loading...</p>;
   }
-  if (getScenariosSchema.error) {
-    return `Error! ${getScenariosSchema.error.message}`;
+  if (error) {
+    return <p>`Error! ${error.message}`</p>;
   }
 
-  const canDelete = () => nonDeletableScenarioNames.includes(scenarioName);
+  const canDelete = () => {
+    return (
+      nonDeletableScenarioNames.includes(scenarioName) ||
+      applicationsCount !== 0
+    );
+  };
 
   const deleteScenario = () => {
     handleDelete(
       'Scenario',
       scenarioName,
       scenarioName,
-      name => deleteScenarioMutation(name, getScenariosSchema.labelDefinition),
+      name =>
+        deleteScenarioMutation({
+          variables: {
+            in: createNewInputForDeleteScenarioMutation(
+              scenariosLabelSchema.labelDefinition,
+              name,
+            ),
+          },
+        }),
       navigateToList,
     );
   };
