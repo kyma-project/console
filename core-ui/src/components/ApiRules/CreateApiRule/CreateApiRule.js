@@ -2,7 +2,12 @@ import React, { useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useNotification } from '../../../contexts/notifications';
 import LuigiClient from '@kyma-project/luigi-client';
-import { K8sNameInput, InputWithSuffix, PageHeader } from 'react-shared';
+import {
+  K8sNameInput,
+  InputWithSuffix,
+  PageHeader,
+  Tooltip,
+} from 'react-shared';
 import {
   Button,
   LayoutGrid,
@@ -11,6 +16,7 @@ import {
   FormLabel,
   Panel,
 } from 'fundamental-react';
+import copyToCliboard from 'copy-to-clipboard';
 
 import './CreateApiRule.scss';
 
@@ -39,6 +45,20 @@ const breadcrumbItems = [
 
 const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
+
+const CopiableURL = ({ url }) => (
+  <div className="copiable-url">
+    {url}
+    <Tooltip title="Copy to clipboard" position="top">
+      <Button
+        option="light"
+        compact
+        glyph="copy"
+        onClick={() => copyToCliboard(url)}
+      />
+    </Tooltip>
+  </div>
+);
 
 const CreateApiRule = ({ apiName }) => {
   const [accessStrategies /*setAccessStrategies*/] = useState([
@@ -161,9 +181,11 @@ const CreateApiRule = ({ apiName }) => {
         {apiName && (
           <>
             <PageHeader.Column title="Host">
-              {(apiData &&
-                apiData.service &&
-                `${apiData.service.host}:${apiData.service.port}`) ||
+              {(apiData && apiData.service && (
+                <CopiableURL
+                  url={`${apiData.service.host}:${apiData.service.port}`}
+                />
+              )) ||
                 'Loading host...'}
             </PageHeader.Column>
             <PageHeader.Column title="Service">
