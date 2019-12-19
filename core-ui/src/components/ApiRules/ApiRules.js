@@ -65,28 +65,28 @@ const ApiRules = () => {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: `Remove ${name}`,
-        body: `Are you sure you want to delete API "${name}"?`,
+        body: `Are you sure you want to delete rule "${name}"?`,
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
       .then(async () => {
         try {
-          const deletedAPI = await deleteAPIRule({
+          const deletedAPIRule = await deleteAPIRule({
             variables: { name, namespace },
           });
           const isSuccess =
-            deletedAPI.data &&
-            deletedAPI.data.deleteAPIRule &&
-            deletedAPI.data.deleteAPIRule.name === name;
+            deletedAPIRule.data &&
+            deletedAPIRule.data.deleteAPIRule &&
+            deletedAPIRule.data.deleteAPIRule.name === name;
           if (isSuccess) {
-            showNotification('Success', `API ${name} deleted`);
+            showNotification('Success', `API rule ${name} deleted`);
             try {
               refetch();
             } catch (e) {
               console.warn(e);
               showNotification(
                 'Error',
-                `Error while getting an updated list of APIs: ${e.message}`,
+                `Error while getting an updated list of API rules: ${e.message}`,
               );
             }
           }
@@ -94,7 +94,7 @@ const ApiRules = () => {
           console.warn(e);
           showNotification(
             'Error',
-            `Error while removing API ${name}: ${e.message}`,
+            `Error while removing API rule ${name}: ${e.message}`,
           );
         }
       })
