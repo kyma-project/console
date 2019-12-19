@@ -1,11 +1,30 @@
 import React from 'react';
 import { PageHeader, GenericList, Spinner } from 'react-shared';
-import { GET_API_RULES } from 'gql/queries';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Button } from 'fundamental-react';
 
+import { GET_API_RULES } from 'gql/queries';
+import { DELETE_API_RULE } from 'gql/mutations';
+import { useNotification } from 'contexts/notifications';
+
 const ApiRules = () => {
+  const [deleteAPIRule] = useMutation(DELETE_API_RULE);
+  const notificationManager = useNotification();
+  const namespace = LuigiClient.getContext().namespaceId;
+
+  const { loading, error, data, refetch } = useQuery(GET_API_RULES, {
+    variables: { namespace },
+  });
+
+  if (error) {
+    return `Error! ${error.message}`;
+  }
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   const headerRenderer = () => ['Name'];
 
   const rowRenderer = rule => [
@@ -17,10 +36,6 @@ const ApiRules = () => {
     </span>,
   ];
 
-  const { loading, error, data } = useQuery(GET_API_RULES, {
-    variables: { namespace: LuigiClient.getContext().namespaceId },
-  });
-
   const actions = [
     {
       name: 'Edit',
@@ -31,18 +46,60 @@ const ApiRules = () => {
     {
       name: 'Delete',
       handler: entry => {
-        console.log('delete', entry);
+        handleAPIDelete(entry.name, namespace);
       },
     },
   ];
 
-  if (error) {
-    return `Error! ${error.message}`;
-  }
+  const showNotification = (type, message) => {
+    notificationManager.notify({
+      content: message,
+      title: type,
+      color: type === 'Error' ? '#BB0000' : '#107E3E',
+      icon: 'decline',
+      autoClose: false,
+    });
+  };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  const handleAPIDelete = (name, namespace) => {
+    LuigiClient.uxManager()
+      .showConfirmationModal({
+        header: `Remove ${name}`,
+        body: `Are you sure you want to delete API "${name}"?`,
+        buttonConfirm: 'Delete',
+        buttonDismiss: 'Cancel',
+      })
+      .then(async () => {
+        try {
+          const deletedAPI = await deleteAPIRule({
+            variables: { name, namespace },
+          });
+          const isSuccess =
+            deletedAPI.data &&
+            deletedAPI.data.deleteAPIRule &&
+            deletedAPI.data.deleteAPIRule.name === name;
+          if (isSuccess) {
+            showNotification('Success', `API ${name} deleted`);
+            try {
+              refetch();
+            } catch (e) {
+              console.warn(e);
+              showNotification(
+                'Error',
+                `Error while getting an updated list of APIs: ${e.message}`,
+              );
+            }
+          }
+        } catch (e) {
+          console.warn(e);
+          showNotification(
+            'Error',
+            `Error while removing API ${name}: ${e.message}`,
+          );
+        }
+      })
+      .catch(() => {});
+  };
 
   return (
     <>
