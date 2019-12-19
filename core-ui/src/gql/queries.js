@@ -59,3 +59,11 @@ export const GET_SERVICES = gql`
     }
   }
 `;
+
+export const GET_API_RULES = gql`
+  query APIrules($namespace: String!) {
+    APIRules(namespace: $namespace) {
+      name
+    }
+  }
+`;
