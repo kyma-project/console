@@ -1,4 +1,6 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import {
   UPDATE_SCENARIOS,
   GET_SCENARIOS_LABEL_SCHEMA,

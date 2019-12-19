@@ -17,6 +17,7 @@ ApiEditorForm.propTypes = {
   apiType: PropTypes.string,
   format: PropTypes.string.isRequired,
   verifyApi: PropTypes.func.isRequired,
+  revalidateForm: PropTypes.func,
 };
 
 export default function ApiEditorForm({
@@ -26,6 +27,7 @@ export default function ApiEditorForm({
   apiType,
   specProvided,
   verifyApi,
+  revalidateForm,
 }) {
   const [specError, setSpecError] = React.useState('');
   const specValidityInput = React.useRef();
@@ -38,6 +40,7 @@ export default function ApiEditorForm({
     } else {
       specValidityInput.current.setCustomValidity('');
     }
+    revalidateForm && revalidateForm();
   };
 
   React.useEffect(revalidateSpec, [format, specProvided, apiType, specText]);

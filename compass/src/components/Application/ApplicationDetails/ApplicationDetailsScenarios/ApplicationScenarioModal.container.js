@@ -1,4 +1,6 @@
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import AssignScenarioModal from '../../../Shared/AssignScenario/AssignScenarioModal.container';
 import { SET_APPLICATION_SCENARIOS } from './../../gql';
 

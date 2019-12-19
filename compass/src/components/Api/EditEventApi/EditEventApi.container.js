@@ -1,4 +1,5 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
 import { SEND_NOTIFICATION } from './../../../gql';
 import { GET_APPLICATION_WITH_EVENT_DEFINITIONS } from './../gql';
 import { UPDATE_EVENT_DEFINITION } from './gql';

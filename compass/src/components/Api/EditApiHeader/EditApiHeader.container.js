@@ -1,4 +1,5 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
 import { DELETE_API_DEFINITION, DELETE_EVENT_DEFINITION } from './../gql';
 
 import EditApiHeader from './EditApiHeader.component';

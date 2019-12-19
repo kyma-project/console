@@ -4,8 +4,12 @@ exports[`ScenarioDetailsHeader Renders with minimal props 1`] = `
 <ContextProvider
   value="scenario"
 >
-  <Apollo(Apollo(Apollo(ScenarioDetailsHeader))) />
-  <fromRenderProps(Apollo(Apollo(Apollo(ScenarioApplications)))) />
+  <ScenarioDetailsHeader
+    applicationsCount={0}
+  />
+  <ScenarioApplications
+    updateApplicationsCount={[Function]}
+  />
   <fromRenderProps(Apollo(Apollo(Apollo(Apollo(ScenarioRuntimes))))) />
 </ContextProvider>
 `;

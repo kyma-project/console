@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { MockedProvider } from '@apollo/react-testing';
 
 import RegisterRuntimeForm from '../RegisterRuntimeForm.container';
-import { MockedProvider } from 'react-apollo/test-utils';
 
 describe('RegisterRuntimeForm', () => {
   // for "Warning: componentWillReceiveProps has been renamed"
@@ -25,7 +25,6 @@ describe('RegisterRuntimeForm', () => {
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-
-    expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
+    expect(console.warn).not.toHaveBeenCalled();
   });
 });

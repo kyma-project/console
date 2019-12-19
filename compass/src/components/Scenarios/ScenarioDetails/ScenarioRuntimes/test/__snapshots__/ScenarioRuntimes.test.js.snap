@@ -21,22 +21,6 @@ exports[`ScenarioRuntimes Renders with minimal props 1`] = `
   }
   extraHeaderContent={
     <Apollo(Apollo(Apollo(withProps(AssignEntityToScenarioModal))))
-      getEntitiesForScenario={
-        Object {
-          "error": null,
-          "loading": false,
-          "runtimes": Object {
-            "data": Array [
-              Object {
-                "id": "id 1",
-                "labels": Object {},
-                "name": "Runtime 1",
-              },
-            ],
-            "totalCount": 1,
-          },
-        }
-      }
       originalEntities={
         Array [
           Object {

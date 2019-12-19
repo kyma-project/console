@@ -39,10 +39,10 @@ function EditEventApi({
     !!originalEventApi.spec,
   );
   const [format, setFormat] = React.useState(
-    specProvided ? originalEventApi.spec.format : 'YAML',
+    originalEventApi.spec ? originalEventApi.spec.format : 'YAML',
   );
   const [specText, setSpecText] = React.useState(
-    specProvided && originalEventApi.spec.data,
+    originalEventApi.spec ? originalEventApi.spec.data : '',
   );
 
   const formValues = {
@@ -155,6 +155,7 @@ function EditEventApi({
                     specProvided={specProvided}
                     format={format}
                     verifyApi={verifyEventApiInput}
+                    revalidateForm={revalidateForm}
                   />
                 )}
               </Panel.Body>

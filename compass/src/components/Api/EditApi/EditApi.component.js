@@ -42,13 +42,13 @@ function EditApi({
   const [formValid, setFormValid] = React.useState(true);
   const [specProvided, setSpecProvided] = React.useState(!!originalApi.spec);
   const [format, setFormat] = React.useState(
-    specProvided ? originalApi.spec.format : 'YAML',
+    originalApi.spec ? originalApi.spec.format : 'YAML',
   );
   const [apiType, setApiType] = React.useState(
-    specProvided ? originalApi.spec.type : 'OPEN_API',
+    originalApi.spec ? originalApi.spec.type : 'OPEN_API',
   );
   const [specText, setSpecText] = React.useState(
-    specProvided && originalApi.spec.data,
+    originalApi.spec ? originalApi.spec.data : '',
   );
 
   const [credentialsType, setCredentialsType] = React.useState(
@@ -195,6 +195,7 @@ function EditApi({
                     apiType={apiType}
                     format={format}
                     verifyApi={verifyApiInput}
+                    revalidateForm={revalidateForm}
                   />
                 )}
               </Panel.Body>

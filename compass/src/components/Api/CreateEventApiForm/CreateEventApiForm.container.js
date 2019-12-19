@@ -1,4 +1,5 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
 import { ADD_EVENT_API } from 'components/Application/gql';
 
 import CreateEventApiForm from './CreateEventApiForm.component';
