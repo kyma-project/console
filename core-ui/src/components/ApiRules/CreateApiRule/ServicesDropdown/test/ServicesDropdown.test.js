@@ -1,18 +1,9 @@
 import React from 'react';
 import ServicesDropdown from '../ServicesDropdown';
 import { service1, service2 } from '../../../../../testing/servicesMocks';
-import { render, queryAllByRole } from '@testing-library/react';
-
-const services = [
-  {
-    name: 'addon-controller-metrics',
-    ports: { port: 8080, __typename: 'ServicePort' },
-    __typename: 'Service',
-  },
-];
+import { render } from '@testing-library/react';
 
 describe('ServicesDropdown', () => {
-  const consoleError = jest.spyOn(console, 'error').mockImplementation();
   const ref = React.createRef();
 
   it('Show loading', async () => {
@@ -25,7 +16,7 @@ describe('ServicesDropdown', () => {
       />,
     );
 
-    expect(queryByText('Loading services...')).toBeTruthy();
+    expect(queryByText('Loading services...')).toBeInTheDocument();
   });
 
   it('Show error', async () => {
@@ -37,71 +28,44 @@ describe('ServicesDropdown', () => {
         data={[]}
       />,
     );
-    expect(queryByText("Couldn't load services list Error")).toBeTruthy();
+    expect(
+      queryByText("Couldn't load services list Error"),
+    ).toBeInTheDocument();
   });
 
   it('Show service with one port', async () => {
-    const { queryByText, getAllByLabelText } = render(
+    const { getAllByLabelText } = render(
       <ServicesDropdown
         _ref={ref}
-        error={undefined}
         loading={false}
         data={{ services: [service1] }}
       />,
     );
 
-    expect(getAllByLabelText('option')).toHaveLength(service1.ports.length);
-    expect(
-      queryByText(service1.name + ' (port: ' + service1.ports[0].port) + ')',
-    ).toBeTruthy();
+    expect(getAllByLabelText('option')).toMatchSnapshot();
   });
 
   it('Show service with multiple ports', async () => {
-    const { queryByText, getAllByLabelText } = render(
+    const { getAllByLabelText } = render(
       <ServicesDropdown
         _ref={ref}
-        error={undefined}
         loading={false}
         data={{ services: [service2] }}
       />,
     );
-    expect(getAllByLabelText('option')).toHaveLength(service2.ports.length);
-    expect(
-      queryByText(service2.name + ' (port: ' + service2.ports[0].port) + ')',
-    ).toBeTruthy();
-    expect(
-      queryByText(service2.name + ' (port: ' + service2.ports[1].port) + ')',
-    ).toBeTruthy();
+    expect(getAllByLabelText('option')).toMatchSnapshot();
   });
 
   it('Show multiple services', async () => {
-    const { queryByText, getAllByLabelText } = render(
+    const { getAllByLabelText } = render(
       <ServicesDropdown
         _ref={ref}
-        error={undefined}
         loading={false}
-        data={{ services: [service1, service2] }}
+        data={{
+          services: [service1, service2],
+        }}
       />,
     );
-    expect(getAllByLabelText('option')).toHaveLength(
-      service1.ports.length + service2.ports.length,
-    );
-    expect(
-      queryByText(service1.name + ' (port: ' + service1.ports[0].port) + ')',
-    ).toBeTruthy();
-    expect(
-      queryByText(service2.name + ' (port: ' + service2.ports[0].port) + ')',
-    ).toBeTruthy();
-    expect(
-      queryByText(service2.name + ' (port: ' + service2.ports[1].port) + ')',
-    ).toBeTruthy();
-  });
-
-  afterEach(() => {
-    consoleError.mockClear();
-  });
-
-  afterAll(() => {
-    consoleError.mockRestore();
+    expect(getAllByLabelText('option')).toMatchSnapshot();
   });
 });
