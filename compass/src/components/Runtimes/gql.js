@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-export const ADD_RUNTIME = gql`
-  mutation CreateRuntime($in: RuntimeInput!) {
-    createRuntime(in: $in) {
+export const REGISTER_RUNTIME = gql`
+  mutation RegisterRuntime($in: RuntimeInput!) {
+    registerRuntime(in: $in) {
       id
       name
       labels
@@ -10,9 +10,9 @@ export const ADD_RUNTIME = gql`
   }
 `;
 
-export const DELETE_RUNTIME = gql`
-  mutation DeleteRuntime($id: ID!) {
-    deleteRuntime(id: $id) {
+export const UNREGISTER_RUNTIME = gql`
+  mutation UnregisterRuntime($id: ID!) {
+    unregisterRuntime(id: $id) {
       id
       name
       labels

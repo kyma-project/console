@@ -14,6 +14,7 @@ describe('GenericList', () => {
   const mockEntries = [
     { id: '1', name: 'first_entry', description: 'testdescription1' },
     { id: '2', name: 'second_entry', description: 'testdescription2' },
+    { id: '3', name: 'THIRD_ENTRY', description: 'testdescription3' },
   ];
 
   it('Renders with minimal props', async () => {
@@ -207,9 +208,34 @@ describe('GenericList', () => {
         />,
       );
 
-      expect(await queryAllByRole('row')).toHaveLength(3); // header + {mockEntries.length} rows
+      expect(await queryAllByRole('row')).toHaveLength(mockEntries.length + 1); // header + {mockEntries.length} rows
 
       const searchInput = await getByLabelText('search-input');
+      fireEvent.change(searchInput, { target: { value: searchText } });
+
+      expect(await queryAllByRole('row')).toHaveLength(2); // header + one row
+    });
+
+    it('Search is case insensitive', async () => {
+      let searchText = 'third';
+
+      const { queryAllByRole, getByLabelText } = render(
+        <GenericList
+          entries={mockEntries}
+          headerRenderer={mockHeaderRenderer}
+          rowRenderer={mockEntryRenderer}
+        />,
+      );
+
+      expect(await queryAllByRole('row')).toHaveLength(mockEntries.length + 1); // header + {mockEntries.length} rows
+
+      let searchInput = await getByLabelText('search-input');
+      fireEvent.change(searchInput, { target: { value: searchText } });
+
+      expect(await queryAllByRole('row')).toHaveLength(2); // header + one row
+
+      searchText = 'THIRD';
+      searchInput = await getByLabelText('search-input');
       fireEvent.change(searchInput, { target: { value: searchText } });
 
       expect(await queryAllByRole('row')).toHaveLength(2); // header + one row
@@ -228,7 +254,7 @@ describe('GenericList', () => {
         />,
       );
 
-      expect(await queryAllByRole('row')).toHaveLength(3); // header + {mockEntries.length} rows
+      expect(await queryAllByRole('row')).toHaveLength(mockEntries.length + 1); // header + {mockEntries.length} rows
 
       const searchInput = await getByLabelText('search-input');
       fireEvent.change(searchInput, { target: { value: searchText } });

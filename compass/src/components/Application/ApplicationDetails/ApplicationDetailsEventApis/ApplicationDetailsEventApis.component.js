@@ -7,16 +7,16 @@ import { handleDelete } from 'react-shared';
 
 ApplicationDetailsEventApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  eventApis: PropTypes.object.isRequired,
+  eventDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  deleteEventAPI: PropTypes.func.isRequired,
+  deleteEventDefinition: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsEventApis({
   applicationId,
-  eventApis,
+  eventDefinitions,
   sendNotification,
-  deleteEventAPI,
+  deleteEventDefinition,
 }) {
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
@@ -55,19 +55,25 @@ export default function ApplicationDetailsEventApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('Event API', entry.id, entry.name, deleteEventAPI, () => {
-          showDeleteSuccessNotification(entry.name);
-        }),
+        handleDelete(
+          'Event API',
+          entry.id,
+          entry.name,
+          deleteEventDefinition,
+          () => {
+            showDeleteSuccessNotification(entry.name);
+          },
+        ),
     },
   ];
 
   return (
     <GenericList
       extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
-      title="Event APIs"
-      notFoundMessage="There are no Event APIs available for this Application"
+      title="Event Definitions"
+      notFoundMessage="There are no Event Definitions available for this Application"
       actions={actions}
-      entries={eventApis.data}
+      entries={eventDefinitions.data}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
     />

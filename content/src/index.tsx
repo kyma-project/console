@@ -5,19 +5,20 @@ import { App } from './core/App';
 import {
   QueriesProvider,
   NavigationProvider,
-  DocsTopicsProvider,
+  ClusterAssetGroupsProvider,
 } from './services';
 
 (async () => {
-  const services = [QueriesProvider, NavigationProvider, DocsTopicsProvider];
+  const services = [
+    QueriesProvider,
+    NavigationProvider,
+    ClusterAssetGroupsProvider,
+  ];
 
   await bootstrap({
     app: <App />,
     services,
-    requiredBackendModules: [
-      BackendModules.ASSET_STORE,
-      BackendModules.HEADLESS_CMS,
-    ],
+    requiredBackendModules: [BackendModules.RAFTER],
     enableNotifications: false,
     enableSubscriptions: false,
   });

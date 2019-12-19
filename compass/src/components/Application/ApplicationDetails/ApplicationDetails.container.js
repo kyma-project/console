@@ -1,6 +1,6 @@
 import { graphql, compose } from 'react-apollo';
 
-import { DELETE_APPLICATION_MUTATION } from './../../Applications/gql';
+import { UNREGISTER_APPLICATION_MUTATION } from './../../Applications/gql';
 import { GET_APPLICATION } from './../gql';
 
 import ApplicationDetails from './ApplicationDetails.component';
@@ -17,7 +17,7 @@ export default compose(
       };
     },
   }),
-  graphql(DELETE_APPLICATION_MUTATION, {
+  graphql(UNREGISTER_APPLICATION_MUTATION, {
     props: ({ mutate }) => ({
       deleteApplicationMutation: id =>
         mutate({

@@ -41,9 +41,12 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
       />
       <section>
         <ScenariosList scenarios={scenarios} applicationId={application.id} />
-        <ApisList apis={application.apis} applicationId={application.id} />
+        <ApisList
+          apiDefinitions={application.apiDefinitions}
+          applicationId={application.id}
+        />
         <EventApisList
-          eventApis={application.eventAPIs}
+          eventDefinitions={application.eventDefinitions}
           applicationId={application.id}
         />
       </section>

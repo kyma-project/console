@@ -7,7 +7,7 @@ import ApplicationDetailsApis from './ApplicationDetailsApis.component';
 export default compose(
   graphql(DELETE_API, {
     props: props => ({
-      deleteAPI: async apiId => {
+      deleteAPIDefinition: async apiId => {
         await props.mutate({ variables: { id: apiId } });
         props.result.client.reFetchObservableQueries();
       },

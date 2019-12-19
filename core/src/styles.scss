@@ -32,3 +32,10 @@ fd-icon.clickable {
 .display-inline {
   display: inline;
 }
+.y-fd-popover {
+  .fd-popover-container-custom {        
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100% - 7em);
+  }
+}

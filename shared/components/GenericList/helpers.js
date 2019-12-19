@@ -10,7 +10,13 @@ const filterEntry = (entry, query, searchProperties) => {
     if (entry.hasOwnProperty(property)) {
       const value = entry[property];
       // apply to string to include numbers
-      if (value && value.toString().indexOf(query) !== -1) {
+      if (
+        value &&
+        value
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toLowerCase()) !== -1
+      ) {
         return true;
       }
     }

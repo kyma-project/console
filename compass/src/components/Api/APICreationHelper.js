@@ -1,7 +1,7 @@
 import { CREDENTIAL_TYPE_OAUTH } from './Forms/CredentialForms/OAuthCredentialsForm';
 
 // create graphql-ready form of API
-export function createAPI({ apiData, credentials }) {
+export function createAPIDefinition({ apiData, credentials }) {
   const {
     name,
     description,
@@ -36,7 +36,7 @@ export function createAPI({ apiData, credentials }) {
 }
 
 // create graphql-ready form of Event API
-export function createEventAPI({ apiData }) {
+export function createEventDefinition({ apiData }) {
   const {
     name,
     description,
@@ -53,7 +53,7 @@ export function createEventAPI({ apiData }) {
     spec: {
       data: loadedFileContent,
       format: actualFileType,
-      eventSpecType: apiSubType,
+      type: apiSubType,
     },
   };
 }

@@ -19,7 +19,7 @@ export const instanceAllAttributes = {
     documentationUrl: 'https://example.com/docs',
     supportUrl: 'https://example.com/support',
     labels: { experimental: 'true', local: 'true' },
-    clusterDocsTopic: {
+    clusterAssetGroup: {
       name: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
       groupName: '',
       displayName: 'Documentation for sth',
@@ -40,7 +40,7 @@ export const instanceAllAttributes = {
           __typename: 'ClusterAsset',
         },
       ],
-      __typename: 'ClusterDocsTopic',
+      __typename: 'ClusterAssetGroup',
     },
     __typename: 'ClusterServiceClass',
   },

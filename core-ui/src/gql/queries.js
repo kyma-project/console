@@ -49,8 +49,19 @@ export const GET_LAMBDA = gql`
   }
 `;
 
+export const GET_SERVICES = gql`
+  query Services($namespace: String!) {
+    services(namespace: $namespace) {
+      name
+      ports {
+        port
+      }
+    }
+  }
+`;
+
 export const GET_API_RULES = gql`
-  query APIRules($namespace: String!) {
+  query APIrules($namespace: String!) {
     APIRules(namespace: $namespace) {
       name
     }

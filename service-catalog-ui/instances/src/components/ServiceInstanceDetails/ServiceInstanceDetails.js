@@ -138,11 +138,9 @@ export default function ServiceInstanceDetails({ match }) {
           defaultActiveTabIndex={serviceInstanceConstants.addonsIndex}
           serviceInstance={serviceInstance}
         />
-        {serviceClass &&
-        backendModuleExists('cms') &&
-        backendModuleExists('assetstore') ? (
+        {serviceClass && backendModuleExists('rafter') && (
           <ServiceInstanceTabs serviceClass={serviceClass} />
-        ) : null}
+        )}
       </ServiceInstanceWrapper>
       <NotificationMessage
         type="error"
