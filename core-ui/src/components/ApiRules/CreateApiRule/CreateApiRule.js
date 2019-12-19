@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useNotification } from '../../../contexts/notifications';
 import LuigiClient from '@kyma-project/luigi-client';
-import { K8sNameInput, InputWithSuffix } from 'react-shared';
+import { K8sNameInput, InputWithSuffix, PageHeader } from 'react-shared';
 import {
   ActionBar,
   Button,
@@ -32,6 +32,11 @@ const defaultAccessStrategy = {
   ],
   mutators: [],
 };
+
+const breadcrumbItems = [
+  { name: 'API Rules', path: '/apirules' },
+  { name: '' },
+];
 
 const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
@@ -123,23 +128,16 @@ const CreateApiRule = () => {
 
   return (
     <>
-      <header className="fd-has-background-color-background-2 sticky">
-        <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-          <section>
-            <ActionBar.Header title="Create API Rule" />
-          </section>
-          <ActionBar.Actions>
-            <Button
-              onClick={handleCreate}
-              disabled={!isValid}
-              option="emphasized"
-              aria-label="submit-form"
-            >
-              Create
-            </Button>
-          </ActionBar.Actions>
-        </section>
-      </header>
+      <PageHeader title="Create API Rule" breadcrumbItems={breadcrumbItems}>
+        <Button
+          onClick={handleCreate}
+          disabled={!isValid}
+          option="emphasized"
+          aria-label="submit-form"
+        >
+          Create
+        </Button>
+      </PageHeader>
 
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>

@@ -56,7 +56,11 @@ const ApiRules = () => {
           <Button
             glyph="add"
             option="light"
-            onClick={() => LuigiClient.linkManager().navigate(`create`)}
+            onClick={() =>
+              LuigiClient.linkManager()
+                .fromClosestContext()
+                .navigate(`/apirules/create`)
+            }
           >
             Add new API rule
           </Button>
