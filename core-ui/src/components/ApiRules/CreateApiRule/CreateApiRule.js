@@ -172,7 +172,7 @@ const CreateApiRule = () => {
                         suffix={DOMAIN}
                         placeholder="Enter the hostname"
                         required
-                        pattern="^[a-zA-Z][a-zA-Z_-]*[a-zA-Z]$"
+                        pattern="^[a-z][a-z0-9_-]*[a-z]$"
                         _ref={formValues.hostname}
                       />
                     </FormItem>
