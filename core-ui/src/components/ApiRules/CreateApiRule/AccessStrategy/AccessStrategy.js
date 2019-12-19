@@ -5,7 +5,7 @@ import {
   FormGroup,
   FormInput,
   FormItem,
-  FormLabel,
+  // FormLabel,
   Checkbox,
   FormFieldset,
   Badge,
@@ -14,13 +14,13 @@ import {
   Status,
   Icon,
 } from 'fundamental-react';
-import { StringInput } from 'react-shared';
+// import { StringInput } from 'react-shared';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
-const URLregexp = new RegExp(
-  '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
-);
+// const URLregexp = new RegExp(
+//   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
+// );
 
 const passAll = {
   value: 'allow',
@@ -36,48 +36,48 @@ const oauth2 = {
 };
 const accessStrategiesList = [passAll, jwt, oauth2];
 
-const StringListInput = ({
-  typesFilter,
-  selectedType,
-  label,
-  list,
-  onChange,
-  regexp,
-  isEditMode,
-  placeholder,
-}) => {
-  if (typesFilter && !typesFilter.includes(selectedType)) {
-    return null;
-  }
-  return (
-    <div className="string-list-input">
-      <FormLabel>{label}:</FormLabel>
-      {isEditMode ? (
-        <StringInput
-          stringList={list}
-          onChange={onChange}
-          regexp={regexp}
-          placeholder={placeholder}
-        />
-      ) : (
-        (list && list.length && (
-          <FormInput readOnly value={list.join(', ')} />
-        )) ||
-        'None'
-      )}
-    </div>
-  );
-};
+// const StringListInput = ({
+//   typesFilter,
+//   selectedType,
+//   label,
+//   list,
+//   onChange,
+//   regexp,
+//   isEditMode,
+//   placeholder,
+// }) => {
+//   if (typesFilter && !typesFilter.includes(selectedType)) {
+//     return null;
+//   }
+//   return (
+//     <div className="string-list-input">
+//       <FormLabel>{label}:</FormLabel>
+//       {isEditMode ? (
+//         <StringInput
+//           stringList={list}
+//           onChange={onChange}
+//           regexp={regexp}
+//           placeholder={placeholder}
+//         />
+//       ) : (
+//         (list && list.length && (
+//           <FormInput readOnly value={list.join(', ')} />
+//         )) ||
+//         'None'
+//       )}
+//     </div>
+//   );
+// };
 
 const AccessStrategy = ({
   strategy,
-  isOpenInitially = false,
+  // isOpenInitially = false,
   isEditModeInitially = false,
 }) => {
-  const [requiredScopeList, setRequiredScopes] = useState(['foo', 'bar']);
-  const [trustedIssuesList, setTrustedIssues] = useState([
-    'http://dex.kyma.local',
-  ]);
+  // const [requiredScopeList, setRequiredScopes] = useState(['foo', 'bar']);
+  // const [trustedIssuesList, setTrustedIssues] = useState([
+  //   'http://dex.kyma.local',
+  // ]);
   const selectedType = strategy.accessStrategies[0].name;
 
   const [editMode /*setEditMode*/] = useState(isEditModeInitially);
