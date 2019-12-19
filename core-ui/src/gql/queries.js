@@ -67,3 +67,15 @@ export const GET_API_RULES = gql`
     }
   }
 `;
+export const GET_API_RULE = gql`
+  query APIrule($name: String!, $namespace: String!) {
+    APIRule(name: $name, namespace: $namespace) {
+      name
+      service {
+        name
+        host
+        port
+      }
+    }
+  }
+`;

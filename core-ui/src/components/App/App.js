@@ -19,8 +19,13 @@ export default function App() {
         <Route path="/preload" component={() => null} />
         <Route path="/namespaces" component={NamespaceList} />
 
-        <Route path="/createApiRule" component={CreateApiRule} />
-        <Route path="/apirules" component={ApiRules} />
+        <Route exact path="/apirules" component={ApiRules}></Route>
+        <Route exact path="/apirules/create" component={CreateApiRule} />
+        <Route
+          exact
+          path="/apirules/details/:apiName"
+          component={RoutedApiDetails}
+        />
       </Switch>
     </NotificationProvider>
   );
@@ -28,4 +33,8 @@ export default function App() {
 
 function RoutedLambdaDetails({ match }) {
   return <LambdaDetailsWrapper lambdaName={match.params.name} />;
+}
+
+function RoutedApiDetails({ match }) {
+  return <CreateApiRule apiName={match.params.apiName} />;
 }

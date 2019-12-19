@@ -2,9 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useNotification } from '../../../contexts/notifications';
 import LuigiClient from '@kyma-project/luigi-client';
-import { K8sNameInput, InputWithSuffix } from 'react-shared';
+import { K8sNameInput, InputWithSuffix, PageHeader } from 'react-shared';
 import {
-  ActionBar,
   Button,
   LayoutGrid,
   FormGroup,
@@ -16,7 +15,7 @@ import {
 import './CreateApiRule.scss';
 
 import AccessStrategy from './AccessStrategy/AccessStrategy';
-import { GET_SERVICES } from '../../../gql/queries';
+import { GET_SERVICES, GET_API_RULE } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
@@ -33,10 +32,15 @@ const defaultAccessStrategy = {
   mutators: [],
 };
 
+const breadcrumbItems = [
+  { name: 'API Rules', path: '/apirules' },
+  { name: '' },
+];
+
 const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
-const CreateApiRule = () => {
+const CreateApiRule = ({ apiName }) => {
   const [accessStrategies /*setAccessStrategies*/] = useState([
     defaultAccessStrategy,
   ]);
@@ -56,6 +60,17 @@ const CreateApiRule = () => {
     service: useRef(null),
   };
 
+  const apiQuery = useQuery(GET_API_RULE, {
+    variables: {
+      namespace: LuigiClient.getEventData().environmentId,
+      name: apiName,
+    },
+  });
+
+  const apiData =
+    apiQuery.data && apiQuery.data.APIRule ? apiQuery.data.APIRule : null;
+
+  console.log(apiData);
   function handleFormChanged(e) {
     setValid(formRef.current.checkValidity()); // general form validity
     if (typeof e.target.reportValidity === 'function') {
@@ -123,12 +138,15 @@ const CreateApiRule = () => {
 
   return (
     <>
-      <header className="fd-has-background-color-background-2 sticky">
-        <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-          <section>
-            <ActionBar.Header title="Create API Rule" />
-          </section>
-          <ActionBar.Actions>
+      <PageHeader
+        title={
+          apiName
+            ? (apiData && apiData.name) || 'Loading name...'
+            : 'Create API Rule'
+        }
+        breadcrumbItems={breadcrumbItems}
+        actions={
+          !apiName ? (
             <Button
               onClick={handleCreate}
               disabled={!isValid}
@@ -137,54 +155,73 @@ const CreateApiRule = () => {
             >
               Create
             </Button>
-          </ActionBar.Actions>
-        </section>
-      </header>
+          ) : null
+        }
+      >
+        {apiName && (
+          <>
+            <PageHeader.Column title="Host">
+              {(apiData &&
+                apiData.service &&
+                `${apiData.service.host}:${apiData.service.port}`) ||
+                'Loading host...'}
+            </PageHeader.Column>
+            <PageHeader.Column title="Service">
+              {(apiData &&
+                apiData.service &&
+                `${apiData.service.name} (port: ${apiData.service.port})`) ||
+                'Loading service...'}
+            </PageHeader.Column>
+          </>
+        )}
+      </PageHeader>
 
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
-          <Panel>
-            <Panel.Header>
-              <Panel.Head title="General settings" />
-            </Panel.Header>
-            <Panel.Body>
-              <form
-                onSubmit={e => e.preventDefault()}
-                onChange={e => handleFormChanged(e)}
-                ref={formRef}
-              >
-                <FormGroup>
-                  <LayoutGrid cols="3">
-                    <FormItem>
-                      <K8sNameInput
-                        _ref={formValues.name}
-                        id="apiRuleName"
-                        kind="API Rule"
-                        showHelp={false}
+          {!apiName && (
+            <Panel>
+              <Panel.Header>
+                <Panel.Head title="General settings" />
+              </Panel.Header>
+              <Panel.Body>
+                <form
+                  onSubmit={e => e.preventDefault()}
+                  onChange={e => handleFormChanged(e)}
+                  ref={formRef}
+                >
+                  <FormGroup>
+                    <LayoutGrid cols="3">
+                      <FormItem>
+                        <K8sNameInput
+                          _ref={formValues.name}
+                          id="apiRuleName"
+                          kind="API Rule"
+                          showHelp={false}
+                        />
+                      </FormItem>
+                      <FormItem>
+                        <FormLabel htmlFor="hostname" required>
+                          Hostname
+                        </FormLabel>
+                        <InputWithSuffix
+                          id="hostname"
+                          suffix={DOMAIN}
+                          placeholder="Enter the hostname"
+                          required
+                          pattern="^[a-z][a-z0-9_-]*[a-z]$"
+                          _ref={formValues.hostname}
+                        />
+                      </FormItem>
+                      <ServicesDropdown
+                        _ref={formValues.service}
+                        {...servicesQueryResult}
                       />
-                    </FormItem>
-                    <FormItem>
-                      <FormLabel htmlFor="hostname" required>
-                        Hostname
-                      </FormLabel>
-                      <InputWithSuffix
-                        id="hostname"
-                        suffix={DOMAIN}
-                        placeholder="Enter the hostname"
-                        required
-                        pattern="^[a-z][a-z0-9_-]*[a-z]$"
-                        _ref={formValues.hostname}
-                      />
-                    </FormItem>
-                    <ServicesDropdown
-                      _ref={formValues.service}
-                      {...servicesQueryResult}
-                    />
-                  </LayoutGrid>
-                </FormGroup>
-              </form>
-            </Panel.Body>
-          </Panel>
+                    </LayoutGrid>
+                  </FormGroup>
+                </form>
+              </Panel.Body>
+            </Panel>
+          )}
 
           <Panel>
             <Panel.Header>

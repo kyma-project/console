@@ -102,7 +102,31 @@ function getNodes(context) {
       viewUrl: config.coreModuleUrl + '/apirules',
       icon: 'sonography',
       viewGroup: coreUIViewGroupName,
-      keepSelectedForChildren: true
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'create',
+          label: 'Create API rule',
+          viewUrl: config.coreModuleUrl + '/apirules/create',
+          viewGroup: coreUIViewGroupName,
+          hideFromNav: true
+        },
+        {
+          pathSegment: 'details',
+          // label: 'Create API rule',
+          viewUrl: config.coreModuleUrl + '/apirules/create',
+          viewGroup: coreUIViewGroupName,
+          hideFromNav: true,
+          children: [
+            {
+              pathSegment: ':apiName',
+              viewUrl: config.coreModuleUrl + '/apirules/details/:apiName',
+              viewGroup: coreUIViewGroupName,
+              hideFromNav: true
+            }
+          ]
+        }
+      ]
     },
     {
       category: { label: 'Service Management', icon: 'add-coursebook' },
@@ -711,14 +735,6 @@ Promise.all(initPromises)
                 icon: 'electrocardiogram'
               },
               pathSegment: '_integration_category_placeholder_',
-              hideFromNav: true
-            },
-            {
-              pathSegment: 'apirulecreation',
-              label: 'Create API rule',
-              viewUrl: config.coreModuleUrl + '/createApiRule',
-              icon: 'sonography',
-              viewGroup: coreUIViewGroupName,
               hideFromNav: true
             }
           ];
