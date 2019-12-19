@@ -1,13 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, Breadcrumb } from 'fundamental-react';
+import { Panel, Breadcrumb, PanelGrid } from 'fundamental-react';
 import './PageHeader.scss';
 import LuigiClient from '@kyma-project/luigi-client';
 
-export const PageHeader = ({ title, breadcrumbItems, children }) => (
+const Column = ({ title, children }) => (
+  <div className="page-header__column ">
+    <p className="title fd-has-type-0 fd-has-color-text-4 fd-has-margin-bottom-none">
+      {title}
+    </p>
+    <span className="content fd-has-type-0 fd-has-color-text-1">
+      {children}
+    </span>
+  </div>
+);
+
+export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
   <Panel className="page-header">
-    <Panel.Header className="fd-has-padding-m">
-      <section>
+    <Panel.Header>
+      <section className="header-wrapper">
         {breadcrumbItems.length ? (
           <section className="fd-has-margin-bottom-s">
             <Breadcrumb>
@@ -29,11 +40,14 @@ export const PageHeader = ({ title, breadcrumbItems, children }) => (
         ) : null}
 
         <Panel.Head title={title} />
+        <section className="column-wrapper"> {children}</section>
       </section>
-      {children && <Panel.Actions>{children}</Panel.Actions>}
+
+      {actions && <Panel.Actions>{actions}</Panel.Actions>}
     </Panel.Header>
   </Panel>
 );
+PageHeader.Column = Column;
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
