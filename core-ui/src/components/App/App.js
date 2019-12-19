@@ -19,8 +19,8 @@ export default function App() {
         <Route path="/preload" component={() => null} />
         <Route path="/namespaces" component={NamespaceList} />
 
-        <Route path="/createApiRule" component={CreateApiRule} />
-        <Route path="/apirules" component={ApiRules} />
+        <Route exact path="/apirules" component={ApiRules}></Route>
+        <Route exact path="/apirules/create" component={CreateApiRule} />
       </Switch>
     </NotificationProvider>
   );
