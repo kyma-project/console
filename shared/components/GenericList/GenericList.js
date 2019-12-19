@@ -28,16 +28,14 @@ const RowRenderer = ({ entry, actions, rowRenderer }) => {
   const cells = rowRenderer(entry).map((cell, id) => <td key={id}>{cell}</td>);
   const actionsCell = (
     <td>
-      {!!filteredActions.length && (
-        <ListActions actions={filteredActions} entry={entry} />
-      )}
+      <ListActions actions={filteredActions} entry={entry} />
     </td>
   );
 
   return (
     <>
       {cells}
-      {actionsCell}
+      {!!filteredActions.length && actionsCell}
     </>
   );
 };
