@@ -4,10 +4,7 @@ import copyToCliboard from 'copy-to-clipboard';
 import { PageHeader, Tooltip } from 'react-shared';
 import './CreateApiRuleHeader.scss';
 
-const breadcrumbItems = [
-  { name: 'API Rules', path: '/apirules' },
-  { name: '' },
-];
+const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
 const CopiableURL = ({ url }) => (
   <div className="copiable-url">
@@ -54,9 +51,7 @@ const CreateApiRuleHeader = ({
         <>
           <PageHeader.Column key="host" title="Host">
             {(apiData && apiData.service && (
-              <CopiableURL
-                url={`${apiData.service.host}:${apiData.service.port}`}
-              />
+              <CopiableURL url={`https://${apiData.service.host}`} />
             )) ||
               'Loading host...'}
           </PageHeader.Column>

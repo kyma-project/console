@@ -103,6 +103,8 @@ function getNodes(context) {
       icon: 'sonography',
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
+      navigationContext: 'apirules',
+      hideFromNav: true,
       children: [
         {
           pathSegment: 'create',
