@@ -134,6 +134,7 @@ const CreateApiRule = ({ apiName }) => {
         apiData={apiData}
         isValid={isValid}
         handleCreate={handleCreate}
+        isInViewMode={!!apiName}
       />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>

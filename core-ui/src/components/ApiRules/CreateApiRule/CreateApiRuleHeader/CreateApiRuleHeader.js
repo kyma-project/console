@@ -23,17 +23,22 @@ const CopiableURL = ({ url }) => (
   </div>
 );
 
-const CreateApiRuleHeader = ({ handleCreate, apiData, isValid }) => {
+const CreateApiRuleHeader = ({
+  handleCreate,
+  apiData,
+  isValid,
+  isInViewMode,
+}) => {
   return (
     <PageHeader
       title={
-        apiData
+        isInViewMode
           ? (apiData && apiData.name) || 'Loading name...'
           : 'Create API Rule'
       }
       breadcrumbItems={breadcrumbItems}
       actions={
-        !apiData ? (
+        !isInViewMode ? (
           <Button
             onClick={handleCreate}
             disabled={!isValid}
@@ -45,9 +50,9 @@ const CreateApiRuleHeader = ({ handleCreate, apiData, isValid }) => {
         ) : null
       }
     >
-      {apiData && (
+      {isInViewMode && (
         <>
-          <PageHeader.Column title="Host">
+          <PageHeader.Column key="host" title="Host">
             {(apiData && apiData.service && (
               <CopiableURL
                 url={`${apiData.service.host}:${apiData.service.port}`}
@@ -55,7 +60,7 @@ const CreateApiRuleHeader = ({ handleCreate, apiData, isValid }) => {
             )) ||
               'Loading host...'}
           </PageHeader.Column>
-          <PageHeader.Column title="Service">
+          <PageHeader.Column key="service" title="Service">
             {(apiData &&
               apiData.service &&
               `${apiData.service.name} (port: ${apiData.service.port})`) ||
