@@ -5,6 +5,7 @@
   "dependencies": {
     "@kyma-project/luigi-core": "^0.6.4",
     "@monaco-editor/react": "^2.0.0",
+    "copy-to-clipboard": "^3.2.0",
     "fundamental-react": "^0.7.1"
   },
   "scripts": {

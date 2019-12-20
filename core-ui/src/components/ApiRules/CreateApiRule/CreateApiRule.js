@@ -2,9 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useNotification } from '../../../contexts/notifications';
 import LuigiClient from '@kyma-project/luigi-client';
-import { K8sNameInput, InputWithSuffix, PageHeader } from 'react-shared';
+import { K8sNameInput, InputWithSuffix } from 'react-shared';
 import {
-  Button,
   LayoutGrid,
   FormGroup,
   FormItem,
@@ -13,14 +12,14 @@ import {
 } from 'fundamental-react';
 
 import './CreateApiRule.scss';
-
+import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
 import AccessStrategy from './AccessStrategy/AccessStrategy';
 import { GET_SERVICES, GET_API_RULE } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 
-const defaultAccessStrategy = {
+const DEFAULT_ACCESS_STRATEGY = {
   path: '/.*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   accessStrategies: [
@@ -32,17 +31,12 @@ const defaultAccessStrategy = {
   mutators: [],
 };
 
-const breadcrumbItems = [
-  { name: 'API Rules', path: '/apirules' },
-  { name: '' },
-];
-
-const defaultGateway = 'kyma-gateway.kyma-system.svc.cluster.local';
+const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
 const CreateApiRule = ({ apiName }) => {
   const [accessStrategies /*setAccessStrategies*/] = useState([
-    defaultAccessStrategy,
+    DEFAULT_ACCESS_STRATEGY,
   ]);
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE);
   const notificationManager = useNotification();
@@ -70,7 +64,6 @@ const CreateApiRule = ({ apiName }) => {
   const apiData =
     apiQuery.data && apiQuery.data.APIRule ? apiQuery.data.APIRule : null;
 
-  console.log(apiData);
   function handleFormChanged(e) {
     setValid(formRef.current.checkValidity()); // general form validity
     if (typeof e.target.reportValidity === 'function') {
@@ -94,7 +87,6 @@ const CreateApiRule = ({ apiName }) => {
     if (!formRef.current.checkValidity()) {
       return;
     }
-
     const [serviceName, servicePort] = formValues.service.current.value.split(
       ':',
     );
@@ -106,7 +98,7 @@ const CreateApiRule = ({ apiName }) => {
         host: formValues.hostname.current.value + '.' + DOMAIN,
         serviceName,
         servicePort,
-        gateway: defaultGateway,
+        gateway: DEFAULT_GATEWAY,
         rules: accessStrategies,
       },
     };
@@ -138,44 +130,11 @@ const CreateApiRule = ({ apiName }) => {
 
   return (
     <>
-      <PageHeader
-        title={
-          apiName
-            ? (apiData && apiData.name) || 'Loading name...'
-            : 'Create API Rule'
-        }
-        breadcrumbItems={breadcrumbItems}
-        actions={
-          !apiName ? (
-            <Button
-              onClick={handleCreate}
-              disabled={!isValid}
-              option="emphasized"
-              aria-label="submit-form"
-            >
-              Create
-            </Button>
-          ) : null
-        }
-      >
-        {apiName && (
-          <>
-            <PageHeader.Column title="Host">
-              {(apiData &&
-                apiData.service &&
-                `${apiData.service.host}:${apiData.service.port}`) ||
-                'Loading host...'}
-            </PageHeader.Column>
-            <PageHeader.Column title="Service">
-              {(apiData &&
-                apiData.service &&
-                `${apiData.service.name} (port: ${apiData.service.port})`) ||
-                'Loading service...'}
-            </PageHeader.Column>
-          </>
-        )}
-      </PageHeader>
-
+      <CreateApiRuleHeader
+        apiData={apiData}
+        isValid={isValid}
+        handleCreate={handleCreate}
+      />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
           {!apiName && (
