@@ -12,3 +12,11 @@ global.document.createRange = () => ({
     ownerDocument: document,
   },
 });
+
+var nodeCrypto = require('crypto');
+global.crypto = {
+  getRandomValues: function(buffer) {
+    return nodeCrypto.randomFillSync(Buffer.from(buffer));
+  },
+};
+global.URL.createObjectURL = jest.fn();
