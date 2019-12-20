@@ -23,7 +23,12 @@ const CopiableURL = ({ url }) => (
   </div>
 );
 
-const CreateApiRuleHeader = ({ handleCreate, apiData, isValid }) => {
+const CreateApiRuleHeader = ({
+  handleCreate,
+  handleDelete,
+  apiData,
+  isValid,
+}) => {
   return (
     <PageHeader
       title={
@@ -42,7 +47,16 @@ const CreateApiRuleHeader = ({ handleCreate, apiData, isValid }) => {
           >
             Create
           </Button>
-        ) : null
+        ) : (
+          <Button
+            onClick={handleDelete}
+            option="light"
+            type="negative"
+            aria-label="delete-api-rule"
+          >
+            Delete
+          </Button>
+        )
       }
     >
       {apiData && (

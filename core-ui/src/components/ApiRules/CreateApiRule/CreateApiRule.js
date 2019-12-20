@@ -18,6 +18,7 @@ import { GET_SERVICES, GET_API_RULE } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
+import { DELETE_API_RULE } from 'gql/mutations';
 
 const DEFAULT_ACCESS_STRATEGY = {
   path: '/.*',
@@ -39,11 +40,13 @@ const CreateApiRule = ({ apiName }) => {
     DEFAULT_ACCESS_STRATEGY,
   ]);
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE);
+  const [deleteAPIRule] = useMutation(DELETE_API_RULE);
   const notificationManager = useNotification();
   const [isValid, setValid] = useState(false);
+  const namespace = LuigiClient.getEventData().environmentId;
 
   const servicesQueryResult = useQuery(GET_SERVICES, {
-    variables: { namespace: LuigiClient.getEventData().environmentId },
+    variables: { namespace },
   });
 
   const formRef = useRef(null);
@@ -56,7 +59,7 @@ const CreateApiRule = ({ apiName }) => {
 
   const apiQuery = useQuery(GET_API_RULE, {
     variables: {
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace,
       name: apiName,
     },
   });
@@ -83,6 +86,50 @@ const CreateApiRule = ({ apiName }) => {
     }
   }
 
+  const showNotification = (type, message) => {
+    notificationManager.notify({
+      content: message,
+      title: type,
+      color: type === 'Error' ? '#BB0000' : '#107E3E',
+      icon: type === 'Error' ? 'decline' : 'accept',
+      autoClose: false,
+    });
+  };
+
+  const handleDelete = () => {
+    LuigiClient.uxManager()
+      .showConfirmationModal({
+        header: `Remove ${apiName}`,
+        body: `Are you sure you want to delete rule "${apiName}"?`,
+        buttonConfirm: 'Delete',
+        buttonDismiss: 'Cancel',
+      })
+      .then(async () => {
+        try {
+          const deletedAPIRule = await deleteAPIRule({
+            variables: { name: apiName, namespace },
+          });
+          const isSuccess =
+            deletedAPIRule.data &&
+            deletedAPIRule.data.deleteAPIRule &&
+            deletedAPIRule.data.deleteAPIRule.name === apiName;
+          if (isSuccess) {
+            showNotification('Success', `API rule ${apiName} deleted`);
+            LuigiClient.linkManager()
+              .fromClosestContext()
+              .navigate('');
+          }
+        } catch (e) {
+          console.warn(e);
+          showNotification(
+            'Error',
+            `Error while removing API rule ${apiName}: ${e.message}`,
+          );
+        }
+      })
+      .catch(() => {});
+  };
+
   async function handleCreate() {
     if (!formRef.current.checkValidity()) {
       return;
@@ -93,7 +140,7 @@ const CreateApiRule = ({ apiName }) => {
 
     const variables = {
       name: formValues.name.current.value,
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace,
       params: {
         host: formValues.hostname.current.value + '.' + DOMAIN,
         serviceName,
@@ -109,22 +156,16 @@ const CreateApiRule = ({ apiName }) => {
         createdApiRule.data && createdApiRule.data.createAPIRule;
 
       if (createdApiRuleData) {
-        notificationManager.notify({
-          content: `API Rule ${createdApiRuleData.name} created successfully`,
-          title: 'Success',
-          color: '#107E3E',
-          icon: 'accept',
-          autoClose: true,
-        });
+        showNotification(
+          'Success',
+          `API Rule ${createdApiRuleData.name} created successfully`,
+        );
       }
     } catch (e) {
-      notificationManager.notify({
-        content: `Error while creating API Rule ${variables.name}: ${e.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
-        autoClose: false,
-      });
+      showNotification(
+        'Error',
+        `Error while creating API Rule ${variables.name}: ${e.message}`,
+      );
     }
   }
 
@@ -134,6 +175,7 @@ const CreateApiRule = ({ apiName }) => {
         apiData={apiData}
         isValid={isValid}
         handleCreate={handleCreate}
+        handleDelete={handleDelete}
       />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
