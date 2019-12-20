@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "build": "webpack --env.production",
     "start:kyma": "webpack --env.development --watch"
   },
