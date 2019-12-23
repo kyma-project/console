@@ -92,7 +92,7 @@ const CreateApiRule = ({ apiName }) => {
       title: type,
       color: type === 'Error' ? '#BB0000' : '#107E3E',
       icon: type === 'Error' ? 'decline' : 'accept',
-      autoClose: false,
+      autoClose: !(type === 'Error'),
     });
   };
 
@@ -176,6 +176,7 @@ const CreateApiRule = ({ apiName }) => {
         isValid={isValid}
         handleCreate={handleCreate}
         handleDelete={handleDelete}
+        isInViewMode={!!apiName}
       />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
