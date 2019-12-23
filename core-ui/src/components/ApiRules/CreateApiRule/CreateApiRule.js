@@ -61,16 +61,6 @@ export default function CreateApiRule({ apiName }) {
     service: useRef(null),
   };
 
-  const apiQuery = useQuery(GET_API_RULE, {
-    variables: {
-      namespace,
-      name: apiName,
-    },
-  });
-
-  const apiData =
-    apiQuery.data && apiQuery.data.APIRule ? apiQuery.data.APIRule : null;
-
   function handleFormChanged(e) {
     setValid(formRef.current.checkValidity()); // general form validity
     if (typeof e.target.reportValidity === 'function') {
@@ -137,12 +127,7 @@ export default function CreateApiRule({ apiName }) {
 
   return (
     <>
-      <CreateApiRuleHeader
-        apiData={apiData}
-        isValid={isValid}
-        handleCreate={handleCreate}
-        isInViewMode={!!apiName}
-      />
+      <CreateApiRuleHeader isValid={isValid} handleCreate={handleCreate} />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
           {!apiName && (
