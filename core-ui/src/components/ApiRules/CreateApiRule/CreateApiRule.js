@@ -13,7 +13,7 @@ import {
 
 import './CreateApiRule.scss';
 import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
-import AccessStrategy from './AccessStrategy/AccessStrategy';
+import AccessStrategy from '../AccessStrategy/AccessStrategy';
 import {
   GET_SERVICES,
   GET_API_RULE,

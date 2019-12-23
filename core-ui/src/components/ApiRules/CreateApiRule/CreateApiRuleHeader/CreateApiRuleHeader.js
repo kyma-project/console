@@ -1,24 +1,8 @@
 import React from 'react';
 import { Button } from 'fundamental-react';
-import copyToCliboard from 'copy-to-clipboard';
-import { PageHeader, Tooltip } from 'react-shared';
-import './CreateApiRuleHeader.scss';
+import { PageHeader, CopiableText } from 'react-shared';
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
-
-const CopiableURL = ({ url }) => (
-  <div className="copiable-url">
-    {url}
-    <Tooltip title="Copy to clipboard" position="top">
-      <Button
-        option="light"
-        compact
-        glyph="copy"
-        onClick={() => copyToCliboard(url)}
-      />
-    </Tooltip>
-  </div>
-);
 
 const CreateApiRuleHeader = ({
   handleCreate,
@@ -51,7 +35,7 @@ const CreateApiRuleHeader = ({
         <>
           <PageHeader.Column key="host" title="Host">
             {(apiData && apiData.service && (
-              <CopiableURL url={`https://${apiData.service.host}`} />
+              <CopiableText text={`https://${apiData.service.host}`} />
             )) ||
               'Loading host...'}
           </PageHeader.Column>
