@@ -1,21 +1,23 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import LuigiClient from '@kyma-project/luigi-client';
+// import LuigiClient from '@kyma-project/luigi-client';
 
 import { PageHeader } from '../PageHeader';
 
-// const luigiNavigateMock = jest.fn();
+const mockNavigate = jest.fn();
+
 jest.mock('@kyma-project/luigi-client', () => ({
   linkManager: () => ({
     fromClosestContext: () => ({
-      navigate: jest.fn(),
+      navigate: mockNavigate,
     }),
   }),
 }));
+
 describe('PageHeader', () => {
-  // afterEach(() => {
-  //   luigiNavigateMock.mockReset();
-  // });
+  afterEach(() => {
+    mockNavigate.mockReset();
+  });
 
   it('Renders title', () => {
     const { getByText } = render(<PageHeader title="page title" />);
@@ -33,23 +35,19 @@ describe('PageHeader', () => {
 
     expect(getByLabelText('abc')).toBeInTheDocument();
   });
-  it('Renders one breadcrumbItem with link', async () => {
+
+  it('Renders one breadcrumbItem with link', () => {
+    const breadcrumbItems = [{ name: 'item1', path: 'path1' }];
     const { getByText } = render(
-      <PageHeader
-        title="page title"
-        breadcrumbItems={[{ name: 'item1', path: 'path1' }]}
-      />,
+      <PageHeader title="page title" breadcrumbItems={breadcrumbItems} />,
     );
 
     const item = getByText('item1');
 
     expect(item).toBeInTheDocument();
 
-    await wait();
-
     item.click();
-    expect(
-      LuigiClient.linkManager().fromClosestContext().navigate,
-    ).toHaveBeenCalled();
+
+    expect(mockNavigate).toHaveBeenCalledWith(breadcrumbItems[0].path);
   });
 });
