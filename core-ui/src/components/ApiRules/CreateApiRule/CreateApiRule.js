@@ -13,8 +13,8 @@ import {
 
 import './CreateApiRule.scss';
 import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
-import AccessStrategy from './AccessStrategy/AccessStrategy';
-import { GET_SERVICES, GET_API_RULE } from '../../../gql/queries';
+import AccessStrategy from '../AccessStrategy/AccessStrategy';
+import { GET_SERVICES, GET_API_RULES } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
@@ -34,16 +34,21 @@ const DEFAULT_ACCESS_STRATEGY = {
 const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
-const CreateApiRule = ({ apiName }) => {
+export default function CreateApiRule({ apiName }) {
+  const namespace = LuigiClient.getEventData().environmentId;
   const [accessStrategies /*setAccessStrategies*/] = useState([
     DEFAULT_ACCESS_STRATEGY,
   ]);
-  const [createApiRuleMutation] = useMutation(CREATE_API_RULE);
+  const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
+    refetchQueries: [{ query: GET_API_RULES, variables: { namespace } }],
+    onError: handleCreateError,
+    onCompleted: handleCreateSuccess,
+  });
   const notificationManager = useNotification();
   const [isValid, setValid] = useState(false);
 
   const servicesQueryResult = useQuery(GET_SERVICES, {
-    variables: { namespace: LuigiClient.getEventData().environmentId },
+    variables: { namespace },
   });
 
   const formRef = useRef(null);
@@ -53,16 +58,6 @@ const CreateApiRule = ({ apiName }) => {
     runtime: useRef(null),
     service: useRef(null),
   };
-
-  const apiQuery = useQuery(GET_API_RULE, {
-    variables: {
-      namespace: LuigiClient.getEventData().environmentId,
-      name: apiName,
-    },
-  });
-
-  const apiData =
-    apiQuery.data && apiQuery.data.APIRule ? apiQuery.data.APIRule : null;
 
   function handleFormChanged(e) {
     setValid(formRef.current.checkValidity()); // general form validity
@@ -83,7 +78,31 @@ const CreateApiRule = ({ apiName }) => {
     }
   }
 
-  async function handleCreate() {
+  function handleCreateError(error) {
+    notificationManager.notify({
+      content: `Could not create API Rule ${formValues.name.current.value}: ${error.message}`,
+      title: 'Error',
+      color: '#BB0000',
+      icon: 'decline',
+      autoClose: false,
+    });
+  }
+
+  function handleCreateSuccess(data) {
+    const createdApiRuleData = data.createAPIRule;
+
+    if (createdApiRuleData) {
+      notificationManager.notify({
+        content: `API Rule ${createdApiRuleData.name} created successfully`,
+        title: 'Success',
+        color: '#107E3E',
+        icon: 'accept',
+        autoClose: true,
+      });
+    }
+  }
+
+  function handleCreate() {
     if (!formRef.current.checkValidity()) {
       return;
     }
@@ -93,7 +112,7 @@ const CreateApiRule = ({ apiName }) => {
 
     const variables = {
       name: formValues.name.current.value,
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace,
       params: {
         host: formValues.hostname.current.value + '.' + DOMAIN,
         serviceName,
@@ -103,39 +122,12 @@ const CreateApiRule = ({ apiName }) => {
       },
     };
 
-    try {
-      const createdApiRule = await createApiRuleMutation({ variables });
-      const createdApiRuleData =
-        createdApiRule.data && createdApiRule.data.createAPIRule;
-
-      if (createdApiRuleData) {
-        notificationManager.notify({
-          content: `API Rule ${createdApiRuleData.name} created successfully`,
-          title: 'Success',
-          color: '#107E3E',
-          icon: 'accept',
-          autoClose: true,
-        });
-      }
-    } catch (e) {
-      notificationManager.notify({
-        content: `Error while creating API Rule ${variables.name}: ${e.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
-        autoClose: false,
-      });
-    }
+    createApiRuleMutation({ variables });
   }
 
   return (
     <>
-      <CreateApiRuleHeader
-        apiData={apiData}
-        isValid={isValid}
-        handleCreate={handleCreate}
-        isInViewMode={!!apiName}
-      />
+      <CreateApiRuleHeader isValid={isValid} handleCreate={handleCreate} />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
           {!apiName && (
@@ -205,6 +197,4 @@ const CreateApiRule = ({ apiName }) => {
       </section>
     </>
   );
-};
-
-export default CreateApiRule;
+}
