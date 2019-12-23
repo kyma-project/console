@@ -30,7 +30,11 @@ const ApiRules = () => {
   const rowRenderer = rule => [
     <span
       className="link"
-      onClick={() => LuigiClient.linkManager().navigate(`details/${rule.name}`)}
+      onClick={() =>
+        LuigiClient.linkManager()
+          .fromClosestContext()
+          .navigate(`details/${rule.name}`)
+      }
     >
       {rule.name}
     </span>,
@@ -116,7 +120,7 @@ const ApiRules = () => {
             onClick={() =>
               LuigiClient.linkManager()
                 .fromClosestContext()
-                .navigate(`/apirules/create`)
+                .navigate(`/create`)
             }
           >
             Add new API rule

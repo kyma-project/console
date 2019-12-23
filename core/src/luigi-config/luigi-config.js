@@ -104,6 +104,7 @@ function getNodes(context) {
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
       navigationContext: 'apirules',
+      hideFromNav: true,
       children: [
         {
           pathSegment: 'create',
