@@ -60,8 +60,8 @@ const ApiRules = () => {
       content: message,
       title: type,
       color: type === 'Error' ? '#BB0000' : '#107E3E',
-      icon: 'decline',
-      autoClose: false,
+      icon: type === 'Error' ? 'decline' : 'accept',
+      autoClose: !(type === 'Error'),
     });
   };
 
