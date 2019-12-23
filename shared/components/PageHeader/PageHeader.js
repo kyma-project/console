@@ -22,19 +22,23 @@ export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
         {breadcrumbItems.length ? (
           <section className="fd-has-margin-bottom-s">
             <Breadcrumb>
-              {breadcrumbItems.map(item => (
-                <Breadcrumb.Item
-                  name={item.name}
-                  url="#"
-                  onClick={() =>
-                    item.path
-                      ? LuigiClient.linkManager()
-                          .fromClosestContext()
-                          .navigate(item.path)
-                      : null
-                  }
-                />
-              ))}
+              {breadcrumbItems.map(item => {
+                return (
+                  <Breadcrumb.Item
+                    aria-label="breadcrumb-item"
+                    key={item.name}
+                    name={item.name}
+                    url="#"
+                    onClick={() =>
+                      item.path
+                        ? LuigiClient.linkManager()
+                            .fromClosestContext()
+                            .navigate(item.path)
+                        : null
+                    }
+                  />
+                );
+              })}
             </Breadcrumb>
           </section>
         ) : null}
