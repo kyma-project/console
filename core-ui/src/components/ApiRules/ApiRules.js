@@ -15,6 +15,7 @@ const ApiRules = () => {
 
   const { loading, error, data, refetch } = useQuery(GET_API_RULES, {
     variables: { namespace },
+    fetchPolicy: 'no-cache',
   });
 
   if (error) {
