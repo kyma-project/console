@@ -20,7 +20,7 @@ const ApiRuleDetails = ({ apiName }) => {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <h1>Couldn't fetch API rule data</h1>;
   }
 
   return (
@@ -32,7 +32,7 @@ const ApiRuleDetails = ({ apiName }) => {
             <Panel.Header>
               <Panel.Head title="Access strategies" />
             </Panel.Header>
-            <Panel.Body>
+            <Panel.Body aria-label="Access strategies">
               {data.APIRule.rules.map(rule => {
                 return (
                   <AccessStrategy
@@ -56,10 +56,10 @@ const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 const ApiRuleDetailsHeader = ({ data }) => {
   return (
     <PageHeader title={data.name} breadcrumbItems={breadcrumbItems}>
-      <PageHeader.Column key="host" title="Host">
+      <PageHeader.Column title="Host">
         <CopiableText text={`https://${data.service.host}`} />
       </PageHeader.Column>
-      <PageHeader.Column key="service" title="Service">
+      <PageHeader.Column title="Service">
         {`${data.service.name} (port: ${data.service.port})`}
       </PageHeader.Column>
     </PageHeader>
