@@ -14,7 +14,11 @@ import {
 import './CreateApiRule.scss';
 import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
 import AccessStrategy from './AccessStrategy/AccessStrategy';
-import { GET_SERVICES, GET_API_RULE } from '../../../gql/queries';
+import {
+  GET_SERVICES,
+  GET_API_RULE,
+  GET_API_RULES,
+} from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
@@ -34,16 +38,19 @@ const DEFAULT_ACCESS_STRATEGY = {
 const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
-const CreateApiRule = ({ apiName }) => {
+export default function CreateApiRule({ apiName }) {
+  const namespace = LuigiClient.getEventData().environmentId;
   const [accessStrategies /*setAccessStrategies*/] = useState([
     DEFAULT_ACCESS_STRATEGY,
   ]);
-  const [createApiRuleMutation] = useMutation(CREATE_API_RULE);
+  const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
+    refetchQueries: [{ query: GET_API_RULES, variables: { namespace } }],
+  });
   const notificationManager = useNotification();
   const [isValid, setValid] = useState(false);
 
   const servicesQueryResult = useQuery(GET_SERVICES, {
-    variables: { namespace: LuigiClient.getEventData().environmentId },
+    variables: { namespace },
   });
 
   const formRef = useRef(null);
@@ -56,7 +63,7 @@ const CreateApiRule = ({ apiName }) => {
 
   const apiQuery = useQuery(GET_API_RULE, {
     variables: {
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace,
       name: apiName,
     },
   });
@@ -205,6 +212,4 @@ const CreateApiRule = ({ apiName }) => {
       </section>
     </>
   );
-};
-
-export default CreateApiRule;
+}
