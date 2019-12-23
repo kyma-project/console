@@ -7,7 +7,7 @@ const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 const CreateApiRuleHeader = ({ handleCreate, isValid }) => {
   return (
     <PageHeader
-      title={'Create API Rule'}
+      title="Create API Rule"
       breadcrumbItems={breadcrumbItems}
       actions={
         <Button

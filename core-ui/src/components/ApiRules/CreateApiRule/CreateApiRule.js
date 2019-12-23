@@ -14,11 +14,7 @@ import {
 import './CreateApiRule.scss';
 import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
 import AccessStrategy from '../AccessStrategy/AccessStrategy';
-import {
-  GET_SERVICES,
-  GET_API_RULE,
-  GET_API_RULES,
-} from '../../../gql/queries';
+import { GET_SERVICES, GET_API_RULES } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
@@ -45,6 +41,8 @@ export default function CreateApiRule({ apiName }) {
   ]);
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
     refetchQueries: [{ query: GET_API_RULES, variables: { namespace } }],
+    onError: handleCreateError,
+    onCompleted: handleCreateSuccess,
   });
   const notificationManager = useNotification();
   const [isValid, setValid] = useState(false);
@@ -80,7 +78,31 @@ export default function CreateApiRule({ apiName }) {
     }
   }
 
-  async function handleCreate() {
+  function handleCreateError(error) {
+    notificationManager.notify({
+      content: `Could not create API Rule ${formValues.name.current.value}: ${error.message}`,
+      title: 'Error',
+      color: '#BB0000',
+      icon: 'decline',
+      autoClose: false,
+    });
+  }
+
+  function handleCreateSuccess(data) {
+    const createdApiRuleData = data.createAPIRule;
+
+    if (createdApiRuleData) {
+      notificationManager.notify({
+        content: `API Rule ${createdApiRuleData.name} created successfully`,
+        title: 'Success',
+        color: '#107E3E',
+        icon: 'accept',
+        autoClose: true,
+      });
+    }
+  }
+
+  function handleCreate() {
     if (!formRef.current.checkValidity()) {
       return;
     }
@@ -90,7 +112,7 @@ export default function CreateApiRule({ apiName }) {
 
     const variables = {
       name: formValues.name.current.value,
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace,
       params: {
         host: formValues.hostname.current.value + '.' + DOMAIN,
         serviceName,
@@ -100,29 +122,7 @@ export default function CreateApiRule({ apiName }) {
       },
     };
 
-    try {
-      const createdApiRule = await createApiRuleMutation({ variables });
-      const createdApiRuleData =
-        createdApiRule.data && createdApiRule.data.createAPIRule;
-
-      if (createdApiRuleData) {
-        notificationManager.notify({
-          content: `API Rule ${createdApiRuleData.name} created successfully`,
-          title: 'Success',
-          color: '#107E3E',
-          icon: 'accept',
-          autoClose: true,
-        });
-      }
-    } catch (e) {
-      notificationManager.notify({
-        content: `Error while creating API Rule ${variables.name}: ${e.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
-        autoClose: false,
-      });
-    }
+    createApiRuleMutation({ variables });
   }
 
   return (
