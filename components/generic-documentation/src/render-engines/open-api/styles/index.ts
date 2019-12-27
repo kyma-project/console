@@ -223,7 +223,7 @@ const modelTableInnerStyling = css`
       &:after {
         display: none;
       }
-      a {
+      & > a {
         font-family: '72';
         font-size: 14px;
 
@@ -302,8 +302,11 @@ const paramTable = css`
         }
       }
     }
+    td.parameters-col_description {
+      padding-left: 14px;
+    }
 
-    td.col.parameters-col_description div.markdown {
+    td.parameters-col_description div.markdown {
       font-family: '72';
       font-size: 14px;
 
@@ -313,7 +316,7 @@ const paramTable = css`
       margin-bottom: 15px;
     }
 
-    td.col.parameters-col_description div:not(.markdown) {
+    td.parameters-col_description div:not(.markdown) {
       ${modelTableInnerStyling}
     }
   }
@@ -328,7 +331,8 @@ const paramTable = css`
       border-top: none;
       background-color: #fafafa;
       width: 100%;
-      & > span {
+      & > span,
+      & {
         font-family: Courier;
         font-size: 14px;
         font-weight: normal;
@@ -369,13 +373,14 @@ const responsesTable = css`
         }
         tbody {
           tr.response {
-            td.col {
-              padding-left: 16px;
+            & > td.col,
+            td.response-col_status {
+              padding: 30px;
             }
             td.response-col_status {
               padding-left: 16px;
             }
-            td.response-col_links {
+            &&&& td.response-col_links {
               padding-left: 16px;
             }
             td.col:first-child {
@@ -527,7 +532,7 @@ const modelSectionStyles = css`
 `;
 
 export const StyledSwagger = styled.section`
-  background: #fff;
+  /* background: #fff;
   padding: 16px;
   border-style: solid;
   border-color: rgba(151, 151, 151, 0.26);
@@ -586,6 +591,10 @@ export const StyledSwagger = styled.section`
     ${responsesTable};
     ${modelSectionStyles};
 
+    div.model-example {
+      ${modelTableInnerStyling};
+    }
+
     .models h4 {
       padding: 10px 20px;
     }
@@ -593,5 +602,5 @@ export const StyledSwagger = styled.section`
     .opblock-tag-section > div > span:last-child > div {
       margin: 0;
     }
-  }
+  } */
 `;
