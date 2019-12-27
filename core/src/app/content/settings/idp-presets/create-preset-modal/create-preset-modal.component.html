@@ -56,6 +56,7 @@
                 name="jwks"
                 placeholder="Specify JSON Web Key Set URI"
                 [(ngModel)]="jwks"
+                (ngModelChange)="validateJWKSPrefix()"
               />
             </div>
           </div>

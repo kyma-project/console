@@ -1,30 +1,50 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { GenericList } from 'react-shared';
 import AssignEntityToScenarioModal from './../shared/AssignEntityToScenarioModal/AssignApplicationsToScenarioModal.container';
 import unassignScenarioHandler from './../shared/unassignScenarioHandler';
+import {
+  createEqualityQuery,
+  GET_APPLICATIONS_FOR_SCENARIO,
+  SET_APPLICATION_SCENARIOS,
+} from '../../gql';
+import ScenarioNameContext from '../ScenarioNameContext';
+import { SEND_NOTIFICATION } from '../../../../gql';
 
-ScenarioApplications.propTypes = {
-  scenarioName: PropTypes.string.isRequired,
-  getApplicationsForScenario: PropTypes.object.isRequired,
-  removeApplicationFromScenario: PropTypes.func.isRequired,
-  sendNotification: PropTypes.func.isRequired,
-};
+export default function ScenarioApplications({ updateApplicationsCount }) {
+  const scenarioName = useContext(ScenarioNameContext);
+  const [sendNotification] = useMutation(SEND_NOTIFICATION);
 
-export default function ScenarioApplications({
-  scenarioName,
-  getApplicationsForScenario,
-  removeApplicationFromScenario,
-  sendNotification,
-}) {
-  if (getApplicationsForScenario.loading) {
+  let {
+    data: applicationsForScenario,
+    error,
+    loading,
+    refetch: refetchApplications,
+  } = useQuery(GET_APPLICATIONS_FOR_SCENARIO, {
+    variables: {
+      filter: [
+        {
+          key: 'scenarios',
+          query: createEqualityQuery(scenarioName),
+        },
+      ],
+    },
+  });
+
+  const [removeApplicationFromScenario] = useMutation(
+    SET_APPLICATION_SCENARIOS,
+  );
+
+  if (loading) {
     return <p>Loading...</p>;
   }
-  if (getApplicationsForScenario.error) {
-    return `Error! ${getApplicationsForScenario.error.message}`;
+  if (error) {
+    return <p>`Error! ${error.message}`;</p>;
   }
+
+  updateApplicationsCount(applicationsForScenario.applications.totalCount);
 
   const deleteHandler = async application => {
     const showSuccessNotification = applicationName => {
@@ -52,10 +72,14 @@ export default function ScenarioApplications({
       application.id,
       application.labels.scenarios,
       removeApplicationFromScenario,
+      undefined,
       scenarioName,
       async () => {
+        await refetchApplications();
+        updateApplicationsCount(
+          applicationsForScenario.applications.totalCount,
+        );
         showSuccessNotification(application.name);
-        await getApplicationsForScenario.refetch();
       },
     );
   };
@@ -75,12 +99,12 @@ export default function ScenarioApplications({
     },
   ];
 
-  const assignedApplications = getApplicationsForScenario.applications.data;
+  const assignedApplications = applicationsForScenario.applications.data;
 
   const extraHeaderContent = (
     <AssignEntityToScenarioModal
       originalEntities={assignedApplications}
-      getEntitiesForScenario={getApplicationsForScenario}
+      entitiesForScenarioRefetchFn={refetchApplications}
     />
   );
 

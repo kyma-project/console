@@ -2,166 +2,262 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { toAPI, toEventAPI, fromAPI, areApisEqual } from './APIViewModel';
+import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
+import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
+import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
+import ApiForm from '../Forms/ApiForm';
+import CredentialsForm from './../Forms/CredentialForms/CredentialsForm';
+import { Dropdown } from 'components/Shared/Dropdown/Dropdown';
+import './EditApi.scss';
 
-import EditApiHeader from './Header/EditApiHeader.container';
-import EditApiTabs from './EditApiTabs.component';
-import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+import { getRefsValues, useMutationObserver } from 'react-shared';
+import {
+  createApiData,
+  inferCredentialType,
+  verifyApiInput,
+} from './../ApiHelpers';
+import ApiEditorForm from '../Forms/ApiEditorForm';
 
-export default class EditApi extends React.Component {
-  state = { canSaveChanges: false };
-  formRef = React.createRef();
+const commonPropTypes = {
+  apiId: PropTypes.string.isRequired,
+  applicationId: PropTypes.string.isRequired, // used in container file
+  updateApiDefinition: PropTypes.func.isRequired,
+  sendNotification: PropTypes.func.isRequired,
+};
 
-  static propTypes = {
-    apiId: PropTypes.string.isRequired,
-    applicationId: PropTypes.string.isRequired,
+EditApi.propTypes = {
+  originalApi: PropTypes.object.isRequired,
+  applicationName: PropTypes.string.isRequired,
+  ...commonPropTypes,
+};
 
-    apiDataQuery: PropTypes.object.isRequired,
-    sendNotification: PropTypes.func.isRequired,
-    updateAPIDefinition: PropTypes.func.isRequired,
-    updateEventDefinition: PropTypes.func.isRequired,
+function EditApi({
+  originalApi,
+  applicationName,
+  apiId,
+  updateApiDefinition,
+  sendNotification,
+}) {
+  const formRef = React.useRef(null);
+  const [formValid, setFormValid] = React.useState(true);
+  const [specProvided, setSpecProvided] = React.useState(!!originalApi.spec);
+  const [format, setFormat] = React.useState(
+    originalApi.spec ? originalApi.spec.format : 'YAML',
+  );
+  const [apiType, setApiType] = React.useState(
+    originalApi.spec ? originalApi.spec.type : 'OPEN_API',
+  );
+  const [specText, setSpecText] = React.useState(
+    originalApi.spec ? originalApi.spec.data : '',
+  );
+
+  const [credentialsType, setCredentialsType] = React.useState(
+    inferCredentialType(originalApi.defaultAuth),
+  );
+
+  const formValues = {
+    name: React.useRef(null),
+    description: React.useRef(null),
+    group: React.useRef(null),
+    targetURL: React.useRef(null),
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.apiDataQuery.loading || nextProps.apiDataQuery.error) {
-      return null;
-    }
-    if (!prevState.originalApi) {
-      const originalApiData = EditApi.getOriginalApiData(nextProps);
-      if (!originalApiData) {
-        return null;
-      }
-      const apiViewModel = fromAPI(originalApiData);
-
-      return {
-        apiId: originalApiData.entry.id,
-        originalApi: apiViewModel,
-        editedApi: apiViewModel,
-      };
-    }
-    return null;
-  }
-
-  static getOriginalApiData(nextProps) {
-    // we have to filter apis manuallly for now
-    // https://github.com/kyma-incubator/compass/issues/234
-    const { apiDataQuery, apiId } = nextProps;
-    const query = apiDataQuery.application;
-    const api = query.apiDefinitions.data.find(api => api.id === apiId);
-    if (api) {
-      return {
-        type: 'API',
-        entry: api,
-      };
-    }
-    const eventApi = query.eventDefinitions.data.find(api => api.id === apiId);
-    if (eventApi) {
-      return {
-        type: 'Event API',
-        entry: eventApi,
-      };
-    }
-    return null;
-  }
-
-  updateApiData = key => values => {
-    const updatedApiData = { ...this.state.editedApi };
-    updatedApiData[key] = { ...updatedApiData[key], ...values };
-
-    this.setState({ editedApi: updatedApiData }, () => {
-      this.setState({
-        canSaveChanges: this.checkCanSaveChanges(),
-      });
-    });
+  const credentialRefs = {
+    oAuth: {
+      clientId: React.useRef(null),
+      clientSecret: React.useRef(null),
+      url: React.useRef(null),
+    },
   };
 
-  saveChanges = async () => {
-    const { editedApi, apiId } = this.state;
-    const {
-      updateAPIDefinition,
-      updateEventDefinition,
-      sendNotification,
-    } = this.props;
-    const apiName = editedApi.generalInformation.name;
+  const revalidateForm = () =>
+    setFormValid(!!formRef.current && formRef.current.checkValidity());
+
+  useMutationObserver(formRef, revalidateForm);
+
+  const saveChanges = async () => {
+    const basicData = getRefsValues(formValues);
+    const specData = specProvided
+      ? { data: specText, format, type: apiType }
+      : null;
+    const credentialsData = { oAuth: getRefsValues(credentialRefs.oAuth) };
+    const apiData = createApiData(
+      basicData,
+      specData,
+      credentialsData,
+      credentialsType,
+    );
 
     try {
-      if (editedApi.apiType === 'API') {
-        const newApi = toAPI(editedApi);
-        await updateAPIDefinition(apiId, newApi);
-      } else {
-        const newApi = toEventAPI(editedApi);
-        await updateEventDefinition(apiId, newApi);
-      }
-      this.setState({ originalApi: editedApi });
+      await updateApiDefinition(apiId, apiData);
+
+      const name = basicData.name;
       sendNotification({
         variables: {
-          content: `Updated API "${apiName}".`,
-          title: `${apiName}`,
+          content: `Updated API "${name}".`,
+          title: name,
           color: '#359c46',
           icon: 'accept',
-          instanceName: apiName,
+          instanceName: name,
         },
       });
-      LuigiClient.uxManager().setDirtyStatus(false);
     } catch (e) {
       console.warn(e);
       LuigiClient.uxManager().showAlert({
-        text: `Error occured while updating the api: ${e.message}`,
+        text: `Cannot update API: ${e.message}`,
         type: 'error',
         closeAfter: 10000,
       });
     }
   };
 
-  checkCanSaveChanges = () => {
-    const { originalApi, editedApi } = this.state;
-
-    const form = this.formRef.current;
-    const isFormValid = form && form.checkValidity();
-
-    const dataChanged = !areApisEqual(editedApi, originalApi);
-    const isSpecValid = editedApi.spec.isSpecValid;
-
-    LuigiClient.uxManager().setDirtyStatus(dataChanged);
-
-    return dataChanged && isFormValid && isSpecValid;
+  const updateSpecText = text => {
+    setSpecText(text);
+    revalidateForm();
   };
 
-  // prevent submit when user clicks on dropdown (or any other button inside form)
-  overrideSubmit = e => {
-    e.preventDefault();
-  };
+  const defaultCredentials = originalApi.defaultAuth
+    ? { oAuth: { ...originalApi.defaultAuth.credential } }
+    : null;
 
-  render() {
-    const apiDataQuery = this.props.apiDataQuery;
-    if (apiDataQuery.loading) {
-      return <p>Loading...</p>;
-    }
-    if (apiDataQuery.error) {
-      return <p>`Error! ${apiDataQuery.error.message}`</p>;
-    }
+  return (
+    <>
+      <EditApiHeader
+        api={originalApi}
+        applicationName={applicationName}
+        saveChanges={saveChanges}
+        canSaveChanges={formValid}
+      />
+      <form ref={formRef} onChange={revalidateForm}>
+        <TabGroup className="edit-api-tabs">
+          <Tab
+            key="general-information"
+            id="general-information"
+            title="General Information"
+          >
+            <Panel>
+              <Panel.Header>
+                <p className="fd-has-type-1">General Information</p>
+              </Panel.Header>
+              <Panel.Body>
+                <ApiForm
+                  formValues={formValues}
+                  defaultValues={{ ...originalApi }}
+                />
+              </Panel.Body>
+            </Panel>
+          </Tab>
+          <Tab
+            key="api-documentation"
+            id="api-documentation"
+            title="API Documentation"
+          >
+            <Panel className="spec-editor-panel">
+              <Panel.Header>
+                <p className="fd-has-type-1">API Documentation</p>
+                <Panel.Actions>
+                  {specProvided && (
+                    <>
+                      <Dropdown
+                        options={{ JSON: 'JSON', YAML: 'YAML', XML: 'XML' }}
+                        selectedOption={format}
+                        onSelect={setFormat}
+                        width="90px"
+                      />
+                      <Dropdown
+                        options={{ OPEN_API: 'Open API', ODATA: 'OData' }}
+                        selectedOption={apiType}
+                        onSelect={setApiType}
+                        className="fd-has-margin-x-small"
+                        width="120px"
+                      />
+                      <Button
+                        type="negative"
+                        onClick={() => setSpecProvided(false)}
+                      >
+                        No documentation
+                      </Button>
+                    </>
+                  )}
+                  {!specProvided && (
+                    <Button onClick={() => setSpecProvided(true)}>
+                      Provide documentation
+                    </Button>
+                  )}
+                </Panel.Actions>
+              </Panel.Header>
+              <Panel.Body>
+                {specProvided && (
+                  <ApiEditorForm
+                    specText={specText}
+                    setSpecText={updateSpecText}
+                    specProvided={specProvided}
+                    apiType={apiType}
+                    format={format}
+                    verifyApi={verifyApiInput}
+                    revalidateForm={revalidateForm}
+                  />
+                )}
+              </Panel.Body>
+            </Panel>
+          </Tab>
+          <Tab key="credentials" id="credentials" title="Credentials">
+            <Panel>
+              <Panel.Header>
+                <p className="fd-has-type-1">Credentials</p>
+              </Panel.Header>
+              <Panel.Body>
+                <CredentialsForm
+                  credentialRefs={credentialRefs}
+                  credentialType={credentialsType}
+                  setCredentialType={type => {
+                    setCredentialsType(type);
+                    setTimeout(() => {
+                      revalidateForm();
+                    });
+                  }}
+                  defaultValues={defaultCredentials}
+                />
+              </Panel.Body>
+            </Panel>
+          </Tab>
+        </TabGroup>
+      </form>
+    </>
+  );
+}
 
-    const { originalApi, editedApi } = this.state;
-    if (!originalApi) {
-      return <ResourceNotFound resource="API" breadcrumb="Applications" />;
-    }
+EditApiWrapper.propTypes = {
+  apiDataQuery: PropTypes.object.isRequired,
+  ...commonPropTypes,
+};
 
+export default function EditApiWrapper(props) {
+  const dataQuery = props.apiDataQuery;
+
+  if (dataQuery.loading) {
+    return <p>Loading...</p>;
+  }
+  if (dataQuery.error) {
+    return <p>`Error! ${dataQuery.error.message}`</p>;
+  }
+
+  // there's no getApiById query
+  const originalApi = dataQuery.application.apiDefinitions.data.find(
+    api => api.id === props.apiId,
+  );
+
+  if (!originalApi) {
     return (
-      <>
-        <EditApiHeader
-          apiData={originalApi}
-          applicationName={apiDataQuery.application.name}
-          saveChanges={this.saveChanges}
-          canSaveChanges={this.state.canSaveChanges}
-        />
-        <form
-          ref={this.formRef}
-          className="edit-api-tabs"
-          onSubmit={this.overrideSubmit}
-        >
-          <EditApiTabs editedApi={editedApi} updateState={this.updateApiData} />
-        </form>
-      </>
+      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
     );
   }
+
+  return (
+    <EditApi
+      {...props}
+      originalApi={originalApi}
+      applicationName={dataQuery.application.name}
+    />
+  );
 }

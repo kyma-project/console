@@ -259,6 +259,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                   this.isHTTPTriggerAdded = true;
                   this.isHTTPTriggerAuthenticated = httpEndPoint.isAuthEnabled;
                   if (this.isHTTPTriggerAuthenticated  && httpEndPoint.authentication){
+                        this.issuer = httpEndPoint.authentication.jwt.issuer;
                         this.jwksUri = httpEndPoint.authentication.jwt.jwksUri;
                         this.authType = httpEndPoint.authentication.type;
                   }

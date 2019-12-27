@@ -64,6 +64,10 @@ export class CreatePresetModalComponent {
       : false;
   }
 
+  validateJWKSPrefix() {
+    this.jwks = (this.jwks && this.jwks.startsWith('https://')) ? this.jwks.replace('https://', '') : this.jwks;
+  }
+
   save() {
     const data = {
       name: this.presetName,

@@ -1,4 +1,6 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import { CREATE_LABEL } from './../gql';
 import { GET_LABEL_DEFINITIONS } from '../../MetadataDefinitions/gql';
 import { SEND_NOTIFICATION } from '../../../gql';

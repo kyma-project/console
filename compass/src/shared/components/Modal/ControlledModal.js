@@ -17,6 +17,7 @@ ControlledModal.propTypes = {
 
 ControlledModal.defaultProps = {
   title: 'Modal',
+  actions: null,
   type: 'default',
 };
 

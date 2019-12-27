@@ -24,17 +24,20 @@ const RowRenderer = ({ entry, actions, rowRenderer }) => {
   const filteredActions = actions.filter(a =>
     a.skipAction ? !a.skipAction(entry) : true,
   );
-  let rowElement = [];
 
-  if (filteredActions.length) {
-    rowElement = [
-      ...rowRenderer(entry),
-      <ListActions actions={filteredActions} entry={entry} />,
-    ];
-  } else {
-    rowElement = rowRenderer(entry);
-  }
-  return rowElement.map((cell, id) => <td key={id}>{cell}</td>);
+  const cells = rowRenderer(entry).map((cell, id) => <td key={id}>{cell}</td>);
+  const actionsCell = (
+    <td>
+      <ListActions actions={filteredActions} entry={entry} />
+    </td>
+  );
+
+  return (
+    <>
+      {cells}
+      {!!filteredActions.length && actionsCell}
+    </>
+  );
 };
 
 export const GenericList = ({
@@ -52,11 +55,9 @@ export const GenericList = ({
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    if (entries && entries.length) {
-      setFilteredEntries(
-        filterEntries([...entries], searchQuery, textSearchProperties),
-      );
-    }
+    setFilteredEntries(
+      filterEntries([...entries], searchQuery, textSearchProperties),
+    );
   }, [searchQuery, setFilteredEntries, entries]);
 
   const headerActions = (

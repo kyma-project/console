@@ -1,19 +1,15 @@
 import React from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { ActionBar } from 'fundamental-react';
-import LuigiClient from '@kyma-project/luigi-client';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  PanelGrid,
-} from '@kyma-project/react-components';
+import { ActionBar, Breadcrumb, Button } from 'fundamental-react';
+import { PanelGrid } from '@kyma-project/react-components';
 
 import { handleDelete } from 'react-shared';
 
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
+import { getApiDisplayName } from './../../ApiHelpers';
 
 function navigateToApplication() {
   LuigiClient.linkManager()
@@ -41,17 +37,17 @@ class ApiDetailsHeader extends React.Component {
         <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
           <section>
             <Breadcrumb>
-              <BreadcrumbItem
+              <Breadcrumb.Item
                 name="Applications"
                 url="#"
                 onClick={navigateToApplications}
               />
-              <BreadcrumbItem
+              <Breadcrumb.Item
                 name={this.props.application.name}
                 url="#"
                 onClick={navigateToApplication}
               />
-              <BreadcrumbItem />
+              <Breadcrumb.Item name={this.props.api.name} url="#" />
             </Breadcrumb>
             <ActionBar.Header title={this.props.api.name} />
           </section>
@@ -62,7 +58,7 @@ class ApiDetailsHeader extends React.Component {
             <Button
               onClick={() =>
                 handleDelete(
-                  this.props.apiType,
+                  'API',
                   this.props.api.id,
                   this.props.api.name,
                   this.props.deleteMutation,
@@ -79,11 +75,15 @@ class ApiDetailsHeader extends React.Component {
           </ActionBar.Actions>
         </section>
         <PanelGrid nogap cols={4}>
-          <PanelEntry title="Type" content={<p>{this.props.apiType}</p>} />
+          <PanelEntry
+            title="Type"
+            children={
+              getApiDisplayName(this.props.api) || <em>Not provided</em>
+            }
+          />
         </PanelGrid>
       </header>
     );
   }
 }
-
 export default ApiDetailsHeader;

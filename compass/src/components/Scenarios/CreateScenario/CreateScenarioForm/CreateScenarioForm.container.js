@@ -1,4 +1,6 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import { GET_APPLICATIONS, GET_RUNTIMES } from './../../gql';
 
 import CreateScenarioForm from './CreateScenarioForm.component';

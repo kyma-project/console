@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
+import './ApplicationDetailsApis.scss';
 
-import { GenericList } from 'react-shared';
+import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
-import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
-import { handleDelete } from 'react-shared';
+import CreateApiForm from '../../../Api/CreateApiForm/CreateApiForm.container';
+
+import { GenericList, handleDelete } from 'react-shared';
+import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
 
 ApplicationDetailsApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -20,6 +23,8 @@ export default function ApplicationDetailsApis({
   sendNotification,
   deleteAPIDefinition,
 }) {
+  const applicationQuery = React.useContext(ApplicationQueryContext);
+
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
@@ -63,9 +68,21 @@ export default function ApplicationDetailsApis({
     },
   ];
 
+  const extraHeaderContent = (
+    <ModalWithForm
+      title="Add API Definition"
+      button={{ glyph: 'add', text: '' }}
+      confirmText="Create"
+      performRefetch={applicationQuery.refetch}
+      modalClassName="create-api-modal"
+    >
+      <CreateApiForm applicationId={applicationId} />
+    </ModalWithForm>
+  );
+
   return (
     <GenericList
-      extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
+      extraHeaderContent={extraHeaderContent}
       title="API Definitions"
       notFoundMessage="There are no API Definitions available for this Application"
       actions={actions}

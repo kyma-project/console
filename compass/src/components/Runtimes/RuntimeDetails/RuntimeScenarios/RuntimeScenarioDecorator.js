@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
 
 import { SET_RUNTIME_SCENARIOS, DELETE_SCENARIO_LABEL } from '../../gql';
 

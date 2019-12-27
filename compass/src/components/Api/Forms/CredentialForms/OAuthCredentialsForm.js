@@ -1,35 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CustomPropTypes } from 'react-shared';
 import TextFormItem from './../../../Shared/TextFormItem';
 
 export const CREDENTIAL_TYPE_OAUTH = 'OAuth';
 
+export const oAuthRefPropTypes = PropTypes.shape({
+  clientId: CustomPropTypes.ref,
+  clientSecret: CustomPropTypes.ref,
+  url: CustomPropTypes.ref,
+});
+
 OAuthCredentialsForm.propTypes = {
-  updateState: PropTypes.func.isRequired,
-  oAuthData: PropTypes.object,
+  refs: oAuthRefPropTypes,
+  defaultValues: PropTypes.object,
 };
 
-OAuthCredentialsForm.defaultProps = {
-  defaultApiData: {
-    clientId: '',
-    clientSecret: '',
-    url: '',
-  },
-};
-
-export default function OAuthCredentialsForm({ updateState, oAuthData }) {
-  const [oAuthCredentials, setOAuthCredentials] = React.useState(oAuthData);
-
-  function updateOAuth(key, value) {
-    const updatedCredentials = {
-      ...oAuthCredentials,
-      [key]: value,
-    };
-    setOAuthCredentials(updatedCredentials);
-
-    updateState({ oAuth: updatedCredentials });
-  }
-
+export default function OAuthCredentialsForm({ refs, defaultValues }) {
   return (
     <section className="fd-has-margin-top-medium">
       <TextFormItem
@@ -37,24 +24,24 @@ export default function OAuthCredentialsForm({ updateState, oAuthData }) {
         required
         type="password"
         label="Client ID"
-        onChange={e => updateOAuth('clientId', e.target.value)}
-        defaultValue={oAuthData.clientId}
+        inputRef={refs.clientId}
+        defaultValue={defaultValues && defaultValues.clientId}
       />
       <TextFormItem
         inputKey="client-secret"
         required
         type="password"
         label="Client Secret"
-        onChange={e => updateOAuth('clientSecret', e.target.value)}
-        defaultValue={oAuthData.clientSecret}
+        inputRef={refs.clientSecret}
+        defaultValue={defaultValues && defaultValues.clientSecret}
       />
       <TextFormItem
         inputKey="url"
         required
         type="url"
         label="Url"
-        onChange={e => updateOAuth('url', e.target.value)}
-        defaultValue={oAuthData.url}
+        inputRef={refs.url}
+        defaultValue={defaultValues && defaultValues.url}
       />
     </section>
   );

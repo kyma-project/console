@@ -5,6 +5,7 @@ import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container'
 import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
 import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
+import './ApplicationDetails.scss';
 
 ApplicationDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -39,16 +40,18 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
         application={application}
         deleteApplication={deleteApplicationMutation}
       />
-      <section>
+      <section className="application-items">
+        <div>
+          <ApisList
+            apiDefinitions={application.apiDefinitions}
+            applicationId={application.id}
+          />
+          <EventApisList
+            eventDefinitions={application.eventDefinitions}
+            applicationId={application.id}
+          />
+        </div>
         <ScenariosList scenarios={scenarios} applicationId={application.id} />
-        <ApisList
-          apiDefinitions={application.apiDefinitions}
-          applicationId={application.id}
-        />
-        <EventApisList
-          eventDefinitions={application.eventDefinitions}
-          applicationId={application.id}
-        />
       </section>
     </ApplicationQueryContext.Provider>
   );
