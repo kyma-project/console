@@ -157,11 +157,15 @@ describe('ApiRules', () => {
 
   it('Clicking on "Delete" deletes element', async () => {
     const apis = [apiRule(1), apiRule(2)];
-    const deleteApi1 = gqlDeleteRequest(apis[1]);
-    const { container, getAllByLabelText } = render(
+    const deleteApi1 = gqlDeleteRequest(apis[1].name);
+    const { container, getAllByLabelText, queryByText } = render(
       <MockedProvider
         addTypename={false}
-        mocks={[gqlApiRulesRequest(apis), deleteApi1]}
+        mocks={[
+          gqlApiRulesRequest(apis),
+          deleteApi1,
+          gqlApiRulesRequest([apis[0]]),
+        ]}
       >
         <ApiRules />
       </MockedProvider>,
@@ -171,10 +175,10 @@ describe('ApiRules', () => {
 
     getAllByLabelText('Delete')[1].click();
 
-    await wait(0);
     await waitForDomChange(container);
 
     expect(mockShowConfirmationModal).toHaveBeenCalled();
     expect(deleteApi1.result).toHaveBeenCalled();
+    expect(queryByText(apis[1].name)).not.toBeInTheDocument();
   });
 });

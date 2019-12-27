@@ -11,7 +11,7 @@ import { useDeleteApiRule } from '../useDeleteApiRule';
 const ApiRuleDetails = ({ apiName }) => {
   const { error, loading, data } = useQuery(GET_API_RULE, {
     variables: {
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace: LuigiClient.getContext().namespaceId,
       name: apiName,
     },
   });

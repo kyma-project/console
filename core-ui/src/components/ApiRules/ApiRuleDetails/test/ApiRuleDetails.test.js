@@ -46,8 +46,8 @@ const validResponseMock = {
 };
 
 jest.mock('@kyma-project/luigi-client', () => ({
-  getEventData: () => ({
-    environmentId: mockNamespace,
+  getContext: () => ({
+    namespaceId: mockNamespace,
   }),
 }));
 
