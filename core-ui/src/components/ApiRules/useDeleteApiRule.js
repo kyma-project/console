@@ -1,8 +1,8 @@
-import { useNotification } from 'contexts/notifications';
-import { DELETE_API_RULE } from 'gql/mutations';
 import { useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
-import { GET_API_RULES } from 'gql/queries';
+
+import { useNotification } from 'contexts/notifications';
+import { DELETE_API_RULE } from 'gql/mutations';
 
 export function useDeleteApiRule(onCompleted) {
   const namespace = LuigiClient.getContext().namespaceId;

@@ -4,7 +4,7 @@ import { Tooltip } from '../Tooltip/Tooltip';
 import { Button } from 'fundamental-react';
 import copyToCliboard from 'copy-to-clipboard';
 
-export default function CopiableText({ text }) {
+export function CopiableText({ text }) {
   return (
     <div className="copiable-text">
       {text}

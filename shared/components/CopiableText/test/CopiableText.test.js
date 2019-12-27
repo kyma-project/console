@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import CopiableText from '../CopiableText';
+import { CopiableText } from '../CopiableText';
 import React from 'react';
 
 jest.mock('copy-to-clipboard');

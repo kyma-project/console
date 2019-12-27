@@ -7,13 +7,15 @@ import {
   createApiRuleMutation,
 } from '../../../../testing/queriesMocks';
 
+const mockNamespace = 'test';
+
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
 }));
 
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
-    environmentId: 'test',
+    environmentId: mockNamespace,
   }),
 }));
 
@@ -72,21 +74,21 @@ describe('CreateApiRule', () => {
 
     it('Does not allow to create if invalid name', () => {
       fireEvent.change(nameInput, { target: { value: 'test-' } });
-      fireEvent.change(hostnameInput, { target: { value: 'host' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host-1.2.3' } });
 
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
     it('Does not allow to create if invalid host', () => {
-      fireEvent.change(nameInput, { target: { value: 'test' } });
+      fireEvent.change(nameInput, { target: { value: 'test-123' } });
       fireEvent.change(hostnameInput, { target: { value: 'host123-' } });
 
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
     it('Create button fires createApiRuleMutation', async () => {
-      fireEvent.change(nameInput, { target: { value: 'test' } });
-      fireEvent.change(hostnameInput, { target: { value: 'host' } });
+      fireEvent.change(nameInput, { target: { value: 'test-123' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host-1.2.3' } });
       const createButton = queryByLabelText('submit-form');
 
       expect(createButton).not.toBeDisabled();

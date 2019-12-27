@@ -9,12 +9,13 @@ import {
   FormItem,
   FormLabel,
   Panel,
+  InlineHelp,
 } from 'fundamental-react';
 
 import './CreateApiRule.scss';
 import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
 import AccessStrategy from '../AccessStrategy/AccessStrategy';
-import { GET_SERVICES, GET_API_RULES } from '../../../gql/queries';
+import { GET_SERVICES } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
@@ -147,19 +148,24 @@ export default function CreateApiRule({ apiName }) {
                           _ref={formValues.name}
                           id="apiRuleName"
                           kind="API Rule"
-                          showHelp={false}
+                          showHelp={true}
                         />
                       </FormItem>
                       <FormItem>
                         <FormLabel htmlFor="hostname" required>
                           Hostname
+                          <InlineHelp
+                            placement="bottom-right"
+                            text="The hostname must consist of alphanumeric characters, dots or dashes, 
+                            and must start and end with an alphanumeric character (e.g. 'my-name1')."
+                          />
                         </FormLabel>
                         <InputWithSuffix
                           id="hostname"
                           suffix={DOMAIN}
                           placeholder="Enter the hostname"
                           required
-                          pattern="^[a-z][a-z0-9_-]*[a-z]$"
+                          pattern="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
                           _ref={formValues.hostname}
                         />
                       </FormItem>
