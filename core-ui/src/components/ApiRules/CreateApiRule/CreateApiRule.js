@@ -9,6 +9,7 @@ import {
   FormItem,
   FormLabel,
   Panel,
+  InlineHelp,
 } from 'fundamental-react';
 
 import './CreateApiRule.scss';
@@ -148,19 +149,24 @@ export default function CreateApiRule({ apiName }) {
                           _ref={formValues.name}
                           id="apiRuleName"
                           kind="API Rule"
-                          showHelp={false}
+                          showHelp={true}
                         />
                       </FormItem>
                       <FormItem>
                         <FormLabel htmlFor="hostname" required>
                           Hostname
+                          <InlineHelp
+                            placement="bottom-right"
+                            text="The hostname must consist of alphanumeric characters, dots or dashes, 
+                            and must start and end with an alphanumeric character (e.g. 'my-name1')."
+                          />
                         </FormLabel>
                         <InputWithSuffix
                           id="hostname"
                           suffix={DOMAIN}
                           placeholder="Enter the hostname"
                           required
-                          pattern="^[a-z][a-z0-9_-]*[a-z]$"
+                          pattern="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
                           _ref={formValues.hostname}
                         />
                       </FormItem>
