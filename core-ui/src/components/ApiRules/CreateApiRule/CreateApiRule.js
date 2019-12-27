@@ -15,7 +15,7 @@ import {
 import './CreateApiRule.scss';
 import CreateApiRuleHeader from './CreateApiRuleHeader/CreateApiRuleHeader';
 import AccessStrategy from '../AccessStrategy/AccessStrategy';
-import { GET_SERVICES, GET_API_RULES } from '../../../gql/queries';
+import { GET_SERVICES } from '../../../gql/queries';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
@@ -40,8 +40,8 @@ export default function CreateApiRule({ apiName }) {
   const [accessStrategies /*setAccessStrategies*/] = useState([
     DEFAULT_ACCESS_STRATEGY,
   ]);
+
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
-    refetchQueries: [{ query: GET_API_RULES, variables: { namespace } }],
     onError: handleCreateError,
     onCompleted: handleCreateSuccess,
   });
@@ -122,7 +122,6 @@ export default function CreateApiRule({ apiName }) {
         rules: accessStrategies,
       },
     };
-
     createApiRuleMutation({ variables });
   }
 

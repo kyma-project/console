@@ -1,16 +1,17 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
-import { LayoutGrid, Panel } from 'fundamental-react';
+import { LayoutGrid, Panel, Button } from 'fundamental-react';
 
 import AccessStrategy from '../AccessStrategy/AccessStrategy';
 import { GET_API_RULE } from '../../../gql/queries';
 import { Spinner, PageHeader, CopiableText } from 'react-shared';
+import { useDeleteApiRule } from '../useDeleteApiRule';
 
 const ApiRuleDetails = ({ apiName }) => {
   const { error, loading, data } = useQuery(GET_API_RULE, {
     variables: {
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace: LuigiClient.getContext().namespaceId,
       name: apiName,
     },
   });
@@ -53,9 +54,27 @@ export default ApiRuleDetails;
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-const ApiRuleDetailsHeader = ({ data }) => {
+function DeleteButton({ apiRuleName }) {
+  const [handleAPIRuleDelete] = useDeleteApiRule();
   return (
-    <PageHeader title={data.name} breadcrumbItems={breadcrumbItems}>
+    <Button
+      onClick={() => handleAPIRuleDelete(apiRuleName)}
+      option="light"
+      type="negative"
+      aria-label="delete-api-rule"
+    >
+      Delete
+    </Button>
+  );
+}
+
+function ApiRuleDetailsHeader({ data }) {
+  return (
+    <PageHeader
+      title={data.name}
+      breadcrumbItems={breadcrumbItems}
+      actions={<DeleteButton apiRuleName={data.name} />}
+    >
       <PageHeader.Column title="Host">
         <CopiableText text={`https://${data.service.host}`} />
       </PageHeader.Column>
@@ -64,4 +83,4 @@ const ApiRuleDetailsHeader = ({ data }) => {
       </PageHeader.Column>
     </PageHeader>
   );
-};
+}

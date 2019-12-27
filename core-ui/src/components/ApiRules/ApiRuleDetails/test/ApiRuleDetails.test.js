@@ -3,6 +3,10 @@ import { GET_API_RULE } from 'gql/queries';
 import { render, waitForDomChange, queryByText } from '@testing-library/react';
 import ApiRuleDetails from '../ApiRuleDetails';
 import { MockedProvider } from '@apollo/react-testing';
+import { DELETE_API_RULE } from 'gql/mutations';
+
+const mockNavigate = jest.fn();
+const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
 const apiRule = {
   name: 'tets',
@@ -45,9 +49,31 @@ const validResponseMock = {
   },
 };
 
+const gqlDeleteRequest = {
+  request: {
+    query: DELETE_API_RULE,
+    variables: { namespace: mockNamespace, name: apiRule.name },
+  },
+  result: jest.fn(() => ({
+    data: {
+      deleteAPIRule: {
+        name: apiRule.name,
+      },
+    },
+  })),
+};
+
 jest.mock('@kyma-project/luigi-client', () => ({
-  getEventData: () => ({
-    environmentId: mockNamespace,
+  getContext: () => ({
+    namespaceId: mockNamespace,
+  }),
+  linkManager: () => ({
+    fromClosestContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+  uxManager: () => ({
+    showConfirmationModal: mockShowConfirmationModal,
   }),
 }));
 
@@ -142,5 +168,26 @@ describe('ApiRuleDetails', () => {
     await waitForDomChange(container);
 
     expect(queryAllByLabelText('breadcrumb-item')).toMatchSnapshot();
+  });
+
+  it('Clicking on "Delete" deletes element', async () => {
+    const { container, getByText } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[validResponseMock, gqlDeleteRequest]}
+      >
+        <ApiRuleDetails apiName={apiRule.name} />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange(container);
+
+    getByText('Delete').click();
+
+    await waitForDomChange(container);
+
+    expect(mockShowConfirmationModal).toHaveBeenCalled();
+    expect(gqlDeleteRequest.result).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith('');
   });
 });

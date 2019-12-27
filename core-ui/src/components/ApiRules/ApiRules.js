@@ -1,11 +1,29 @@
 import React from 'react';
 import { PageHeader, GenericList, Spinner } from 'react-shared';
-import { GET_API_RULES } from 'gql/queries';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Button } from 'fundamental-react';
 
-const ApiRules = () => {
+import { GET_API_RULES } from 'gql/queries';
+import { useDeleteApiRule } from './useDeleteApiRule';
+
+export default function ApiRules() {
+  const namespace = LuigiClient.getContext().namespaceId;
+
+  const { loading, error, data, refetch } = useQuery(GET_API_RULES, {
+    variables: { namespace },
+    fetchPolicy: 'no-cache',
+  });
+  const [handleAPIRuleDelete] = useDeleteApiRule(refetch);
+
+  if (error) {
+    return `Error! ${error.message}`;
+  }
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   const headerRenderer = () => ['Name'];
 
   const rowRenderer = rule => [
@@ -21,10 +39,6 @@ const ApiRules = () => {
     </span>,
   ];
 
-  const { loading, error, data } = useQuery(GET_API_RULES, {
-    variables: { namespace: LuigiClient.getContext().namespaceId },
-  });
-
   const actions = [
     {
       name: 'Edit',
@@ -35,18 +49,10 @@ const ApiRules = () => {
     {
       name: 'Delete',
       handler: entry => {
-        console.log('delete', entry);
+        handleAPIRuleDelete(entry.name);
       },
     },
   ];
-
-  if (error) {
-    return `Error! ${error.message}`;
-  }
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <>
@@ -72,6 +78,4 @@ const ApiRules = () => {
       />
     </>
   );
-};
-
-export default ApiRules;
+}
