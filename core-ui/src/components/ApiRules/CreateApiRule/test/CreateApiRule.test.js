@@ -6,9 +6,6 @@ import {
   servicesQuery,
   createApiRuleMutation,
 } from '../../../../testing/queriesMocks';
-import { GET_API_RULES } from 'gql/queries';
-
-const mockNamespace = 'test';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
@@ -19,14 +16,6 @@ jest.mock('@kyma-project/luigi-client', () => ({
     environmentId: 'test',
   }),
 }));
-
-const queryApiRules = {
-  request: {
-    query: GET_API_RULES,
-    variables: { namespace: mockNamespace },
-  },
-  result: jest.fn(() => ({ data: { APIRules: [] } })),
-};
 
 describe('CreateApiRule', () => {
   it('Renders basic component', async () => {
@@ -56,7 +45,7 @@ describe('CreateApiRule', () => {
       const renderResult = render(
         <MockedProvider
           addTypename={false}
-          mocks={[servicesQuery, createApiRuleMutation, queryApiRules]}
+          mocks={[servicesQuery, createApiRuleMutation]}
         >
           <CreateApiRule />
         </MockedProvider>,
@@ -106,7 +95,6 @@ describe('CreateApiRule', () => {
       await wait();
 
       expect(createApiRuleMutation.result).toHaveBeenCalled();
-      expect(queryApiRules.result).toHaveBeenCalled();
     });
   });
 });

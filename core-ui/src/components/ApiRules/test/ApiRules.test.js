@@ -4,13 +4,17 @@ import {
   waitForDomChange,
   queryAllByRole,
   queryByText,
+  getByLabelText,
 } from '@testing-library/react';
 import ApiRules from '../ApiRules';
 import { MockedProvider } from '@apollo/react-testing';
 import { GET_API_RULES } from 'gql/queries';
+import { DELETE_API_RULE } from 'gql/mutations';
 
 const mockNamespace = 'nsp';
 const mockNavigate = jest.fn();
+const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
+
 const gqlApiRulesRequest = APIRules => ({
   request: {
     query: GET_API_RULES,
@@ -22,6 +26,21 @@ const gqlApiRulesRequest = APIRules => ({
     },
   },
 });
+
+const gqlDeleteRequest = name => ({
+  request: {
+    query: DELETE_API_RULE,
+    variables: { namespace: mockNamespace, name },
+  },
+  result: jest.fn(() => ({
+    data: {
+      deleteAPIRule: {
+        name,
+      },
+    },
+  })),
+});
+
 const apiRule = id => ({
   name: 'tets-api-rule' + id,
 });
@@ -34,6 +53,9 @@ jest.mock('@kyma-project/luigi-client', () => ({
     fromClosestContext: () => ({
       navigate: mockNavigate,
     }),
+  }),
+  uxManager: () => ({
+    showConfirmationModal: mockShowConfirmationModal,
   }),
 }));
 
@@ -132,5 +154,27 @@ describe('ApiRules', () => {
   });
 
   test.todo('Clicking on "Edit" navigate to edit page');
-  test.todo('Clicking on "Delete" deletes element');
+
+  it('Clicking on "Delete" deletes element', async () => {
+    const apis = [apiRule(1), apiRule(2)];
+    const deleteApi1 = gqlDeleteRequest(apis[1]);
+    const { container, getAllByLabelText } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[gqlApiRulesRequest(apis), deleteApi1]}
+      >
+        <ApiRules />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange(container);
+
+    getAllByLabelText('Delete')[1].click();
+
+    await wait(0);
+    await waitForDomChange(container);
+
+    expect(mockShowConfirmationModal).toHaveBeenCalled();
+    expect(deleteApi1.result).toHaveBeenCalled();
+  });
 });
