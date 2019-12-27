@@ -4,23 +4,23 @@ import { PageHeader } from 'react-shared';
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-const CreateApiRuleHeader = ({ handleCreate, isValid }) => {
+const ApiRuleFormHeader = ({ handleSave, isValid, title, saveButtonText }) => {
   return (
     <PageHeader
-      title="Create API Rule"
+      title={title}
       breadcrumbItems={breadcrumbItems}
       actions={
         <Button
-          onClick={handleCreate}
+          onClick={handleSave}
           disabled={!isValid}
           option="emphasized"
           aria-label="submit-form"
         >
-          Create
+          {saveButtonText}
         </Button>
       }
     />
   );
 };
 
-export default CreateApiRuleHeader;
+export default ApiRuleFormHeader;

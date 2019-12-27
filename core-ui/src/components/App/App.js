@@ -10,6 +10,7 @@ import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
 
 import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
+import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
 export default function App() {
   return (
@@ -27,6 +28,11 @@ export default function App() {
           path="/apirules/details/:apiName"
           component={RoutedApiDetails}
         />
+        <Route
+          exact
+          path="/apirules/edit/:apiName"
+          component={RoutedEditApiRule}
+        />
       </Switch>
     </NotificationProvider>
   );
@@ -38,4 +44,8 @@ function RoutedLambdaDetails({ match }) {
 
 function RoutedApiDetails({ match }) {
   return <ApiRuleDetails apiName={match.params.apiName} />;
+}
+
+function RoutedEditApiRule({ match }) {
+  return <EditApiRule apiName={match.params.apiName} />;
 }

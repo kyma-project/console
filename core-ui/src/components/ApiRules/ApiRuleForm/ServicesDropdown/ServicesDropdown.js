@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
 
-const ServicesDropdown = ({ _ref, loading, data, error }) => {
+const ServicesDropdown = ({ _ref, loading, data, error, defaultValue }) => {
   if (loading) {
     return 'Loading services...';
   }
@@ -21,6 +21,10 @@ const ServicesDropdown = ({ _ref, loading, data, error }) => {
               aria-label="option"
               key={service.name + port.port}
               value={service.name + ':' + port.port}
+              selected={
+                service.name === defaultValue.name &&
+                port.port === defaultValue.port
+              }
             >
               {service.name} (port: {port.port})
             </option>

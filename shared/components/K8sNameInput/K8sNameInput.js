@@ -7,9 +7,9 @@ export const K8sNameInput = ({
   _ref,
   id,
   kind,
-  onKeyDown,
   showHelp = true,
   label = 'Name*',
+  ...props
 }) => (
   <>
     <label className="fd-form__label" htmlFor={id}>
@@ -34,7 +34,7 @@ export const K8sNameInput = ({
       aria-required="true"
       required
       pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-      onKeyDown={onKeyDown}
+      {...props}
     />
   </>
 );
@@ -43,6 +43,5 @@ K8sNameInput.propTypes = {
   _ref: CustomPropTypes.ref,
   id: PropTypes.string,
   kind: PropTypes.string,
-  onKeyDown: PropTypes.func,
   showHelp: PropTypes.bool,
 };

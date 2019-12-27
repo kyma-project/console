@@ -68,12 +68,35 @@ function DeleteButton({ apiRuleName }) {
   );
 }
 
+function EditButton({ apiRuleName }) {
+  return (
+    <Button
+      onClick={() => navigateToEditView(apiRuleName)}
+      option="light"
+      aria-label="edit-api-rule"
+    >
+      Edit
+    </Button>
+  );
+}
+
+function navigateToEditView(apiRuleName) {
+  LuigiClient.linkManager()
+    .fromClosestContext()
+    .navigate(`/edit/${apiRuleName}`);
+}
+
 function ApiRuleDetailsHeader({ data }) {
   return (
     <PageHeader
       title={data.name}
       breadcrumbItems={breadcrumbItems}
-      actions={<DeleteButton apiRuleName={data.name} />}
+      actions={
+        <>
+          <DeleteButton apiRuleName={data.name} />{' '}
+          <EditButton apiRuleName={data.name} />
+        </>
+      }
     >
       <PageHeader.Column title="Host">
         <CopiableText text={`https://${data.service.host}`} />
