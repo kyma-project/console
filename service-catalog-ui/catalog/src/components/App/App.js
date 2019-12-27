@@ -9,7 +9,7 @@ import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import { backendModuleExists } from '../../commons/helpers';
 
 Modal.MODAL_APP_REF = '#root';
-
+// app
 const ServiceDetails = ({ match }) => (
   <ServiceClassDetails name={match.params.name} />
 );
