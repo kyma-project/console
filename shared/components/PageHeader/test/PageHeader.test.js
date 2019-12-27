@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-// import LuigiClient from '@kyma-project/luigi-client';
 
 import { PageHeader } from '../PageHeader';
 
