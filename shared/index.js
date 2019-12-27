@@ -9,6 +9,7 @@ import { Tooltip } from './components/Tooltip/Tooltip';
 import { PageHeader } from './components/PageHeader/PageHeader';
 export { Spinner } from './components/Spinner/Spinner';
 export { CopiableText } from './components/CopiableText/CopiableText';
+
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
 export * from './forms';

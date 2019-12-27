@@ -26,7 +26,7 @@ const ApiRuleDetails = ({ apiName }) => {
 
   return (
     <>
-      <ApiRuleDetailsHeader apiRule={data.APIRule} data={data.APIRule} />
+      <ApiRuleDetailsHeader data={data.APIRule} />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
           <Panel>
@@ -68,12 +68,12 @@ function DeleteButton({ apiRuleName }) {
   );
 }
 
-function ApiRuleDetailsHeader({ apiRule, data }) {
+function ApiRuleDetailsHeader({ data }) {
   return (
     <PageHeader
       title={data.name}
       breadcrumbItems={breadcrumbItems}
-      actions={<DeleteButton apiRuleName={apiRule.name} />}
+      actions={<DeleteButton apiRuleName={data.name} />}
     >
       <PageHeader.Column title="Host">
         <CopiableText text={`https://${data.service.host}`} />
