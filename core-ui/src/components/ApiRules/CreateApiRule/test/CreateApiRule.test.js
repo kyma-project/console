@@ -6,6 +6,9 @@ import {
   servicesQuery,
   createApiRuleMutation,
 } from '../../../../testing/queriesMocks';
+import { GET_API_RULES } from 'gql/queries';
+
+const mockNamespace = 'test';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
@@ -16,6 +19,14 @@ jest.mock('@kyma-project/luigi-client', () => ({
     environmentId: 'test',
   }),
 }));
+
+const queryApiRules = {
+  request: {
+    query: GET_API_RULES,
+    variables: { namespace: mockNamespace },
+  },
+  result: jest.fn(() => ({ data: { APIRules: [] } })),
+};
 
 describe('CreateApiRule', () => {
   it('Renders basic component', async () => {
@@ -45,7 +56,7 @@ describe('CreateApiRule', () => {
       const renderResult = render(
         <MockedProvider
           addTypename={false}
-          mocks={[servicesQuery, createApiRuleMutation]}
+          mocks={[servicesQuery, createApiRuleMutation, queryApiRules]}
         >
           <CreateApiRule />
         </MockedProvider>,
@@ -72,21 +83,21 @@ describe('CreateApiRule', () => {
 
     it('Does not allow to create if invalid name', () => {
       fireEvent.change(nameInput, { target: { value: 'test-' } });
-      fireEvent.change(hostnameInput, { target: { value: 'host' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host-1.2.3' } });
 
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
     it('Does not allow to create if invalid host', () => {
-      fireEvent.change(nameInput, { target: { value: 'test' } });
+      fireEvent.change(nameInput, { target: { value: 'test-123' } });
       fireEvent.change(hostnameInput, { target: { value: 'host123-' } });
 
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
     it('Create button fires createApiRuleMutation', async () => {
-      fireEvent.change(nameInput, { target: { value: 'test' } });
-      fireEvent.change(hostnameInput, { target: { value: 'host' } });
+      fireEvent.change(nameInput, { target: { value: 'test-123' } });
+      fireEvent.change(hostnameInput, { target: { value: 'host-1.2.3' } });
       const createButton = queryByLabelText('submit-form');
 
       expect(createButton).not.toBeDisabled();
@@ -95,6 +106,7 @@ describe('CreateApiRule', () => {
       await wait();
 
       expect(createApiRuleMutation.result).toHaveBeenCalled();
+      expect(queryApiRules.result).toHaveBeenCalled();
     });
   });
 });

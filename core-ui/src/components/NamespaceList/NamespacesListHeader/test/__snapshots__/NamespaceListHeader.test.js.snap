@@ -13,7 +13,7 @@ exports[`NamespacesListHeader UI Renders with minimal props 1`] = `
     className="namespace-list-actions"
   >
     <div
-      className="fd-search-input"
+      className="fd-search-input search--white"
       data-test-id="namespace-seach-input"
     >
       <div

@@ -39,6 +39,7 @@ export default function NamespacesListHeader({
         <Search
           onChange={e => updateSearchPhrase(e.target.value)}
           data-test-id="namespace-seach-input"
+          className="search--white"
         />
         <NamespaceFilters
           filters={labelFilters}

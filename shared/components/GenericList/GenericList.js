@@ -78,7 +78,7 @@ export const GenericList = ({
     <Panel className="fd-has-margin-m generic-list">
       <Panel.Header className="fd-has-padding-xs">
         <Panel.Head title={title} />
-        {headerActions}
+        <Panel.Actions>{headerActions}</Panel.Actions>
       </Panel.Header>
 
       <Panel.Body>

@@ -1,5 +1,27 @@
 .page-header {
-    .fd-panel__title {
-        font-size: 24px;
-    }
+  .fd-panel__title {
+    font-size: 24px;
+  }
+}
+
+.header-wrapper {
+  flex-grow: 1;
+}
+.column-wrapper {
+  display: grid;
+  grid-gap: 8px;
+  margin-top: 8px;
+
+  grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+}
+.page-header__column {
+  display: inline-block;
+  .title,
+  .content {
+    display: block;
+  }
+
+  .title {
+    color: var(--fd-color-text-4);
+  }
 }

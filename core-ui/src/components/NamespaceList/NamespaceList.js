@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACES } from '../../gql/queries';
 import { NAMESPACES_EVENT_SUBSCRIPTION } from '../../gql/subscriptions';
 
-import Spinner from '../../shared/components/Spinner/Spinner';
+import { Spinner } from 'react-shared';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';

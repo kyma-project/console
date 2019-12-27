@@ -14,6 +14,19 @@
   content: unset !important;
 }
 
+// TODO Delete after upgrading search
+.search--white.fd-search-input {
+  .fd-input {
+    color: var(--fd-color-text-1);
+    background-color: var(--fd-forms-background-color);
+    border-color: var(--fd-forms-border-color);
+  }
+  .fd-input-group__addon{
+    border-color: var(--fd-forms-border-color);
+    background-color: var(--fd-color-neutral-1);
+  }
+}
+
 #add-namespace-modal {
   .fd-modal {
     max-width: 90%;

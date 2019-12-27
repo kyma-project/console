@@ -59,3 +59,30 @@ export const GET_SERVICES = gql`
     }
   }
 `;
+
+export const GET_API_RULES = gql`
+  query APIrules($namespace: String!) {
+    APIRules(namespace: $namespace) {
+      name
+    }
+  }
+`;
+export const GET_API_RULE = gql`
+  query APIrule($name: String!, $namespace: String!) {
+    APIRule(name: $name, namespace: $namespace) {
+      name
+      rules {
+        path
+        methods
+        accessStrategies {
+          name
+        }
+      }
+      service {
+        name
+        host
+        port
+      }
+    }
+  }
+`;

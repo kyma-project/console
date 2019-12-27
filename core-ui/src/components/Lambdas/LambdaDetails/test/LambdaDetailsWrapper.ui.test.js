@@ -7,7 +7,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import { lambda } from './gqlMocks';
 import { componentUpdate } from '../../../../testing';
 import LambdaDetailsWrapper from '../LambdaDetailsWrapper';
-import Spinner from '../../../../shared/components/Spinner/Spinner';
+import { Spinner } from 'react-shared';
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
