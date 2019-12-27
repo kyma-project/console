@@ -14,7 +14,7 @@ const ApiRules = () => {
       onClick={() =>
         LuigiClient.linkManager()
           .fromClosestContext()
-          .navigate(`details/${rule.name}`)
+          .navigate(`/details/${rule.name}`)
       }
     >
       {rule.name}
