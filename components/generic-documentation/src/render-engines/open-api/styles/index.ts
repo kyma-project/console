@@ -321,9 +321,10 @@ const paramTable = css`
     }
   }
 
-  td.col.response-col_description div:not(.markdown) {
+  td.response-col_description div:not(.markdown) {
     ${modelTableInnerStyling}
   }
+
   div.highlight-code {
     & > pre {
       border-radius: 0 0 4px 4px;
@@ -591,12 +592,11 @@ export const StyledSwagger = styled.section`
     ${responsesTable};
     ${modelSectionStyles};
 
-    div.model-example {
-      ${modelTableInnerStyling};
-    }
-
     .models h4 {
       padding: 10px 20px;
+    }
+    div.model-example {
+      ${modelTableInnerStyling};
     }
 
     .opblock-tag-section > div > span:last-child > div {
