@@ -29,7 +29,7 @@ const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
 const DisableSidecarField = ({ onChange }) => {
   return (
     <FormFieldset>
-      <FormItem isCheck>
+      <FormItem>
         <input
           className="fd-form__control"
           type="checkbox"
@@ -56,7 +56,7 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <FormFieldset>
-      <FormItem isCheck>
+      <FormItem>
         <input
           className="fd-form__control"
           ref={checkboxRef}
@@ -132,7 +132,7 @@ const ContainerLimitsCheckbox = ({ checkboxRef, children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <FormFieldset>
-      <FormItem isCheck>
+      <FormItem>
         <input
           className="fd-form__control"
           ref={checkboxRef}
