@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GenericList } from 'react-shared';
+import { useMutation } from '@apollo/react-hooks';
+
 import AssignEntityToScenarioModal from '../shared/AssignEntityToScenarioModal/AssignRuntimesToScenarioModal.container';
 import unassignScenarioHandler from '../shared/unassignScenarioHandler';
+import { SEND_NOTIFICATION } from '../../../../gql';
 
 ScenarioRuntimes.propTypes = {
   scenarioName: PropTypes.string.isRequired,
   getRuntimesForScenario: PropTypes.object.isRequired,
   setRuntimeScenarios: PropTypes.func.isRequired,
   deleteRuntimeScenarios: PropTypes.func.isRequired,
-  sendNotification: PropTypes.func.isRequired,
 };
 
 export default function ScenarioRuntimes({
@@ -17,8 +19,9 @@ export default function ScenarioRuntimes({
   getRuntimesForScenario,
   setRuntimeScenarios,
   deleteRuntimeScenarios,
-  sendNotification,
 }) {
+  const [sendNotification] = useMutation(SEND_NOTIFICATION);
+
   if (getRuntimesForScenario.loading) {
     return <p>Loading...</p>;
   }
@@ -63,7 +66,7 @@ export default function ScenarioRuntimes({
   const extraHeaderContent = (
     <AssignEntityToScenarioModal
       originalEntities={assignedRuntimes}
-      getEntitiesForScenario={getRuntimesForScenario}
+      entitiesForScenarioRefetchFn={getRuntimesForScenario.refetch}
     />
   );
 

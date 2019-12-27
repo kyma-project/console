@@ -55,7 +55,7 @@ class BindApplicationModal extends React.Component {
         bindableResources,
       });
     } catch (e) {
-      console.err(e);
+      console.error(e);
       this.setState({
         bindableResourcesError: e,
       });

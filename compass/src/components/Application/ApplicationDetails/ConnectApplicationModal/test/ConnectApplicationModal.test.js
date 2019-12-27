@@ -1,59 +1,64 @@
 import React from 'react';
-import { MockedProvider } from 'react-apollo/test-utils';
-import { mount } from 'enzyme';
-import { validMock, errorMock } from './mock';
-import { Modal } from 'fundamental-react';
-import { act } from 'react-dom/test-utils';
-
+import { MockedProvider } from '@apollo/react-testing';
+import { validMock } from './mock';
+import { render, waitForDomChange } from '@testing-library/react';
 import ConnectApplicationModal from '../ConnectApplicationModal.container';
 
 describe('ConnectApplicationModal Container', () => {
-  //for "Warning: componentWillReceiveProps has been renamed"
-  console.warn = jest.fn();
-
-  afterEach(() => {
-    console.warn.mockReset();
-  });
-
-  afterAll(() => {
-    if (console.warn.mock.calls.length) {
-      expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
-    }
-  });
-
-  const openModal = async component =>
-    await component
-      .findWhere(
-        t => t.type() == 'button' && t.text() === 'Connect Application',
-      )
-      .simulate('click');
+  const openModal = async getByRoleFn => {
+    const modalOpeningButton = getByRoleFn('button'); //get the only button around
+    expect(modalOpeningButton.textContent).toBe('Connect Application'); // make sure this is the right one
+    modalOpeningButton.click();
+  };
 
   it('Modal is initially closed and opens after button click', async () => {
-    const component = mount(
+    const { queryByLabelText, getByRole, container } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
 
-    expect(component.find(Modal).getDOMNode()).toBeFalsy();
+    expect(queryByLabelText('Connect Application')).not.toBeInTheDocument();
+    await openModal(getByRole);
+    await waitForDomChange(container);
 
-    await openModal(component);
-
-    expect(component.find(Modal).getDOMNode()).toBeTruthy();
+    expect(queryByLabelText('Connect Application')).toBeInTheDocument();
   });
 
-  it('Modal is in "loading" state after open', async () => {
-    const component = mount(
+  it('Modal handles "loading" state after open', async () => {
+    const { queryAllByRole, getByRole, container } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
 
-    await openModal(component);
+    await openModal(getByRole);
 
-    const inputs = component
-      .findWhere(t => t.type() === 'input')
-      .map(i => i.instance().value);
-    expect(inputs).toMatchSnapshot();
+    const loadings = queryAllByRole('textbox');
+    expect(loadings).toHaveLength(2);
+
+    expect(loadings[0]).toHaveValue('Loading...');
+    expect(loadings[1]).toHaveValue('Loading...');
+
+    await waitForDomChange(container);
+  });
+
+  it('Modal displays values got in response', async () => {
+    const { getByLabelText, getByRole, container } = render(
+      <MockedProvider addTypename={false} mocks={validMock}>
+        <ConnectApplicationModal applicationId="app-id" />
+      </MockedProvider>,
+    );
+
+    await openModal(getByRole);
+    await waitForDomChange(container);
+
+    const {
+      token,
+      connectorURL,
+    } = validMock[0].result.data.requestOneTimeTokenForApplication;
+
+    expect(getByLabelText('Token')).toHaveValue(token);
+    expect(getByLabelText('Connector URL')).toHaveValue(connectorURL);
   });
 });

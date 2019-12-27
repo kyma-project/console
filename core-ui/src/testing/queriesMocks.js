@@ -75,6 +75,7 @@ const sampleAPIRule = {
     ],
   },
 };
+
 export const createApiRuleMutation = {
   request: {
     query: CREATE_API_RULE,

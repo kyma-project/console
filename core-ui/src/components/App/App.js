@@ -9,6 +9,7 @@ import LambdaDetailsWrapper from '../Lambdas/LambdaDetails/LambdaDetailsWrapper'
 import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
 
 import ApiRules from 'components/ApiRules/ApiRules';
+import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 
 export default function App() {
   return (
@@ -36,5 +37,5 @@ function RoutedLambdaDetails({ match }) {
 }
 
 function RoutedApiDetails({ match }) {
-  return <CreateApiRule apiName={match.params.apiName} />;
+  return <ApiRuleDetails apiName={match.params.apiName} />;
 }

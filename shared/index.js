@@ -11,7 +11,12 @@ export { Spinner } from './components/Spinner/Spinner';
 import { handleDelete } from './components/GenericList/actionHandlers/simpleDelete';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
+export {
+  default as CopiableText,
+} from './components/CopiableText/CopiableText';
 
+export * from './forms';
+export * from './hooks';
 export * from './contexts/ApplicationContext';
 export {
   CustomPropTypes,

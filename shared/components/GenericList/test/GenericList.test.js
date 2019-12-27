@@ -3,7 +3,6 @@ import { GenericList } from '../GenericList';
 
 import 'core-js/es/array/flat-map';
 import { render, fireEvent } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 
 describe('GenericList', () => {
   const defaultNotFoundText = 'No entries found';

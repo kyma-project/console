@@ -24,7 +24,7 @@ export default async function unassignScenarioHandler(
       );
 
       if (scenarios.length) {
-        await unassignMutation(entityId, scenarios);
+        await unassignMutation({ variables: { id: entityId, scenarios } });
       } else {
         await deleteScenarioMutation(entityId);
       }

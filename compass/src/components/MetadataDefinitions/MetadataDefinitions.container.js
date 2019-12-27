@@ -1,4 +1,6 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+
 import { GET_LABEL_DEFINITIONS, DELETE_LABEL_DEFINITION } from './gql';
 
 import MetadataDefinitions from './MetadataDefinitions.component';

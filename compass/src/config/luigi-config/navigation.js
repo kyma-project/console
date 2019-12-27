@@ -21,6 +21,7 @@ const navigation = {
       context: {
         idToken: token,
       },
+      viewGroup: 'compass',
     },
     {
       hideSideNav: true,
@@ -78,6 +79,7 @@ const navigation = {
                               viewUrl:
                                 compassMfUrl +
                                 '/application/:applicationId/api/:apiId',
+                              navigationContext: 'api',
                               children: [
                                 {
                                   pathSegment: 'edit',
@@ -98,6 +100,7 @@ const navigation = {
                               viewUrl:
                                 compassMfUrl +
                                 '/application/:applicationId/eventApi/:eventApiId',
+                              navigationContext: 'eventApi',
                               children: [
                                 {
                                   pathSegment: 'edit',
@@ -157,6 +160,7 @@ const navigation = {
           ],
         },
       ],
+      viewGroup: 'compass',
     },
   ],
 
