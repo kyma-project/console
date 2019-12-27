@@ -532,7 +532,7 @@ const modelSectionStyles = css`
 `;
 
 export const StyledSwagger = styled.section`
-  /* background: #fff;
+  background: #fff;
   padding: 16px;
   border-style: solid;
   border-color: rgba(151, 151, 151, 0.26);
@@ -602,5 +602,5 @@ export const StyledSwagger = styled.section`
     .opblock-tag-section > div > span:last-child > div {
       margin: 0;
     }
-  } */
+  }
 `;
