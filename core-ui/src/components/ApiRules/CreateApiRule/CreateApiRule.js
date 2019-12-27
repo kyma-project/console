@@ -43,12 +43,6 @@ export default function CreateApiRule({ apiName }) {
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
     onError: handleCreateError,
     onCompleted: handleCreateSuccess,
-    refetchQueries: [
-      {
-        query: GET_API_RULES,
-        variables: { namespace },
-      },
-    ],
   });
   const notificationManager = useNotification();
   const [isValid, setValid] = useState(false);

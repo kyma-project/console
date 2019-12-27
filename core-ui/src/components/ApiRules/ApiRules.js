@@ -10,11 +10,11 @@ import { useDeleteApiRule } from './useDeleteApiRule';
 export default function ApiRules() {
   const namespace = LuigiClient.getContext().namespaceId;
 
-  const [handleAPIRuleDelete] = useDeleteApiRule();
-
-  const { loading, error, data } = useQuery(GET_API_RULES, {
+  const { loading, error, data, refetch } = useQuery(GET_API_RULES, {
     variables: { namespace },
+    fetchPolicy: 'no-cache',
   });
+  const [handleAPIRuleDelete] = useDeleteApiRule(refetch);
 
   if (error) {
     return `Error! ${error.message}`;

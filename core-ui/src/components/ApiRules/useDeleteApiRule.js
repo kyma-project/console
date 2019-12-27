@@ -4,19 +4,13 @@ import { useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { GET_API_RULES } from 'gql/queries';
 
-export function useDeleteApiRule() {
+export function useDeleteApiRule(onCompleted) {
   const namespace = LuigiClient.getContext().namespaceId;
 
   const notificationManager = useNotification();
   const [deleteAPIRule, opts] = useMutation(DELETE_API_RULE, {
     onError: handleDeleteError,
     onCompleted: handleDeleteSuccess,
-    refetchQueries: [
-      {
-        query: GET_API_RULES,
-        variables: { namespace },
-      },
-    ],
   });
 
   function handleDeleteError(error) {
@@ -30,6 +24,9 @@ export function useDeleteApiRule() {
   }
 
   function handleDeleteSuccess(data) {
+    if (onCompleted) {
+      onCompleted();
+    }
     notificationManager.notify({
       content: `API Rule ${data.deleteAPIRule.name} deleted successfully`,
       title: 'Success',
