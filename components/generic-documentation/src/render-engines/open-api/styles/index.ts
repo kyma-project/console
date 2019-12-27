@@ -595,7 +595,7 @@ export const StyledSwagger = styled.section`
     .models h4 {
       padding: 10px 20px;
     }
-    div.model-example {
+    div:not([class]) > div.model-example {
       ${modelTableInnerStyling};
     }
 
