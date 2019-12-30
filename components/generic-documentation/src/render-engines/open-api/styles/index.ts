@@ -595,9 +595,6 @@ export const StyledSwagger = styled.section`
     .models h4 {
       padding: 10px 20px;
     }
-    div:not([class]) > div.model-example {
-      ${modelTableInnerStyling};
-    }
 
     .opblock-tag-section > div > span:last-child > div {
       margin: 0;
