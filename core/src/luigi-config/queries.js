@@ -34,6 +34,7 @@ export const CONSOLE_INIT_DATA = `query {
       viewBaseUrl
       preloadUrl
       placement
+      experimental
       navigationNodes{
         label
         navigationPath
