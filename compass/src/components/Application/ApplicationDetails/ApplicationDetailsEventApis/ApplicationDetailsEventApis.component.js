@@ -1,27 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { GenericList } from 'react-shared';
-import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
-import { handleDelete } from 'react-shared';
+import './ApplicationDetailsEventApis.scss';
+
+import { ApplicationQueryContext } from '../ApplicationDetails.component';
+
+import CreateEventApiForm from '../../../Api/CreateEventApiForm/CreateEventApiForm.container';
+
+import { GenericList, handleDelete } from 'react-shared';
+import ModalWithForm from '../../../../shared/components/ModalWithForm/ModalWithForm.container';
 
 ApplicationDetailsEventApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  eventApis: PropTypes.object.isRequired,
+  eventDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  deleteEventAPI: PropTypes.func.isRequired,
+  deleteEventDefinition: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsEventApis({
   applicationId,
-  eventApis,
+  eventDefinitions,
   sendNotification,
-  deleteEventAPI,
+  deleteEventDefinition,
 }) {
+  const applicationQuery = React.useContext(ApplicationQueryContext);
+
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
-        content: `Deleted Event API "${apiName}".`,
+        content: `Deleted API "${apiName}".`,
         title: `${apiName}`,
         color: '#359c46',
         icon: 'accept',
@@ -55,19 +62,31 @@ export default function ApplicationDetailsEventApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('Event API', entry.id, entry.name, deleteEventAPI, () => {
+        handleDelete('API', entry.id, entry.name, deleteEventDefinition, () => {
           showDeleteSuccessNotification(entry.name);
         }),
     },
   ];
 
+  const extraHeaderContent = (
+    <ModalWithForm
+      title="Add Event Definition"
+      button={{ glyph: 'add', text: '' }}
+      confirmText="Create"
+      performRefetch={applicationQuery.refetch}
+      modalClassName="create-event-api-modal"
+    >
+      <CreateEventApiForm applicationId={applicationId} />
+    </ModalWithForm>
+  );
+
   return (
     <GenericList
-      extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
-      title="Event APIs"
-      notFoundMessage="There are no Event APIs available for this Application"
+      extraHeaderContent={extraHeaderContent}
+      title="Event Definitions"
+      notFoundMessage="There are no Event Definition available for this Application"
       actions={actions}
-      entries={eventApis.data}
+      entries={eventDefinitions.data}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
     />

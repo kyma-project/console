@@ -7,25 +7,26 @@ import {
   parseSpecification,
 } from './LabelSpecificationUploadHelper';
 
-import { FormMessage } from 'fundamental-react';
 import {
+  FormMessage,
   FormItem,
   FormInput,
   FormLabel,
   Button,
-} from '@kyma-project/react-components';
+} from 'fundamental-react';
 import FileInput from './../../Shared/FileInput/FileInput';
 import { Modal } from './../../../shared/components/Modal/Modal';
+import { readFile } from 'components/Api/ApiHelpers';
 
 export default class CreateLabelModal extends React.Component {
   state = this.createInitialState();
+  inputRef = React.createRef();
 
   createInitialState() {
     return {
       name: '',
       nameError: '',
 
-      specFile: null,
       specError: '',
       parsedSpec: null,
     };
@@ -80,25 +81,22 @@ export default class CreateLabelModal extends React.Component {
     return name.trim() !== '' && !nameError && spec !== null && !specError;
   };
 
-  fileInputChanged = newFile => {
-    if (!newFile) {
+  fileInputChanged = async file => {
+    if (!file) {
       return;
     }
 
-    this.setState({ specFile: newFile, specError: '' });
+    this.setState({ specError: '' });
 
-    if (!isFileTypeValid(newFile.name)) {
+    if (!isFileTypeValid(file.name)) {
       this.setState({ specError: 'Error: Invalid file type.' });
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = this.processFile.bind(this);
-    reader.readAsText(newFile);
+    this.processSpec(await readFile(file));
   };
 
-  processFile(e) {
-    const fileContent = e.target.result;
+  processSpec(fileContent) {
     const parsedSpec = parseSpecification(fileContent);
 
     this.setState({
@@ -108,7 +106,7 @@ export default class CreateLabelModal extends React.Component {
   }
 
   render() {
-    const { nameError, specFile, specError } = this.state;
+    const { specError, nameError } = this.state;
 
     const modalOpeningComponent = (
       <Button option="light">Add definition</Button>
@@ -126,6 +124,7 @@ export default class CreateLabelModal extends React.Component {
             type="text"
             onChange={this.updateLabelName}
             autoComplete="off"
+            required
           />
           {nameError && <FormMessage type="error">{nameError}</FormMessage>}
         </FormItem>
@@ -133,12 +132,12 @@ export default class CreateLabelModal extends React.Component {
           <FormLabel htmlFor="label-schema">Specification</FormLabel>
           <FileInput
             fileInputChanged={this.fileInputChanged}
-            file={specFile}
-            error={specError}
             availableFormatsMessage={'File type: JSON, YAML.'}
             acceptedFileFormats=".json,.yml,.yaml"
+            inputRef={this.inputRef}
           />
         </FormItem>
+        {specError && <FormMessage type="error">{specError}</FormMessage>}
       </form>
     );
 

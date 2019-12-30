@@ -1,6 +1,10 @@
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
 
-import { CREATE_APPLICATION_MUTATION, CHECK_APPLICATION_EXISTS } from '../gql';
+import {
+  REGISTER_APPLICATION_MUTATION,
+  CHECK_APPLICATION_EXISTS,
+} from '../gql';
 import { SEND_NOTIFICATION } from '../../../gql';
 import { GET_SCENARIOS_LABEL_SCHEMA } from '../../Scenarios/gql';
 
@@ -16,9 +20,9 @@ export default compose(
       };
     },
   }),
-  graphql(CREATE_APPLICATION_MUTATION, {
+  graphql(REGISTER_APPLICATION_MUTATION, {
     props: ({ mutate }) => ({
-      addApplication: data =>
+      registerApplication: data =>
         mutate({
           variables: {
             in: data,

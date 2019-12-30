@@ -18,7 +18,7 @@ import { EMPTY_TEXT_PLACEHOLDER } from '../../../../shared/constants';
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {
     runtime: PropTypes.object.isRequired,
-    deleteRuntime: PropTypes.func.isRequired,
+    unregisterRuntime: PropTypes.func.isRequired,
   };
 
   navigateToRuntimesList = () => {
@@ -65,7 +65,7 @@ class RuntimeDetailsHeader extends React.Component {
                     'Runtime',
                     id,
                     name,
-                    this.props.deleteRuntime,
+                    this.props.unregisterRuntime,
                     this.navigateToRuntimesList,
                   )
                 }
@@ -80,14 +80,14 @@ class RuntimeDetailsHeader extends React.Component {
             {status && (
               <PanelEntry
                 title="Status"
-                content={<StatusBadge status={status.condition} />}
+                children={<StatusBadge status={status.condition} />}
               />
             )}
             <PanelEntry
               title="Description"
-              content={description ? description : EMPTY_TEXT_PLACEHOLDER}
+              children={description ? description : EMPTY_TEXT_PLACEHOLDER}
             />
-            <PanelEntry title="ID" content={id} />
+            <PanelEntry title="ID" children={id} />
           </PanelGrid>
         </header>
       </>

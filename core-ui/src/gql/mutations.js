@@ -97,3 +97,23 @@ export const CREATE_RESOURCE_QUOTA = gql`
     }
   }
 `;
+
+export const CREATE_API_RULE = gql`
+  mutation createAPIRule(
+    $name: String!
+    $namespace: String!
+    $params: APIRuleInput!
+  ) {
+    createAPIRule(name: $name, namespace: $namespace, params: $params) {
+      name
+    }
+  }
+`;
+
+export const DELETE_API_RULE = gql`
+  mutation deleteAPIRule($name: String!, $namespace: String!) {
+    deleteAPIRule(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;

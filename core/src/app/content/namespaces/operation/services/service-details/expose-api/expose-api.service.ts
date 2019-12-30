@@ -4,7 +4,7 @@ import { AppConfig } from '../../../../../../app.config';
 
 @Injectable()
 export class ExposeApiService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   createApiDefinition(url, data) {
     return this.httpClient.post<any>(
@@ -41,7 +41,7 @@ export class ExposeApiService {
   getService(namespace: string, serviceName: string) {
     return this.httpClient.get<any>(
       `${
-        AppConfig.k8sApiServerUrl
+      AppConfig.k8sApiServerUrl
       }namespaces/${namespace}/services/${serviceName}`
     );
   }
@@ -55,7 +55,7 @@ export class ExposeApiService {
   getPodsByLabelSelector(namespace: string, labels: string) {
     return this.httpClient.get<any>(
       `${
-        AppConfig.k8sApiServerUrl
+      AppConfig.k8sApiServerUrl
       }namespaces/${namespace}/pods?labelSelector=${labels}`
     );
   }
@@ -67,7 +67,7 @@ export class ExposeApiService {
         name: data.apiName
       },
       apiVersion: `gateway.kyma-project.io/${
-        AppConfig.gateway_kyma_project_io_version
+        AppConfig.gateway_kyma_cx_api_version
       }`,
       spec: {
         service: {

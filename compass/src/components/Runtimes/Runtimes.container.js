@@ -1,5 +1,6 @@
-import { graphql, compose } from 'react-apollo';
-import { GET_RUNTIMES, ADD_RUNTIME, DELETE_RUNTIME } from './gql';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+import { GET_RUNTIMES, REGISTER_RUNTIME, UNREGISTER_RUNTIME } from './gql';
 
 import Runtimes from './Runtimes.component';
 
@@ -10,9 +11,9 @@ export default compose(
       fetchPolicy: 'cache-and-network',
     },
   }),
-  graphql(ADD_RUNTIME, {
+  graphql(REGISTER_RUNTIME, {
     props: ({ mutate }) => ({
-      addRuntime: data =>
+      registerRuntime: data =>
         mutate({
           variables: {
             in: data,
@@ -20,9 +21,9 @@ export default compose(
         }),
     }),
   }),
-  graphql(DELETE_RUNTIME, {
+  graphql(UNREGISTER_RUNTIME, {
     props: ({ mutate }) => ({
-      deleteRuntime: id =>
+      unregisterRuntime: id =>
         mutate({
           variables: {
             id: id,

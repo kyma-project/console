@@ -23,7 +23,7 @@ export const GET_APPLICATION = gql`
       status {
         condition
       }
-      apis {
+      apiDefinitions {
         data {
           id
           name
@@ -38,7 +38,7 @@ export const GET_APPLICATION = gql`
         }
         totalCount
       }
-      eventAPIs {
+      eventDefinitions {
         data {
           id
           name
@@ -58,7 +58,7 @@ export const GET_APPLICATION = gql`
 
 export const ADD_API = gql`
   mutation addAPI($applicationID: ID!, $in: APIDefinitionInput!) {
-    addAPI(applicationID: $applicationID, in: $in) {
+    addAPIDefinition(applicationID: $applicationID, in: $in) {
       id
       name
       description
@@ -74,8 +74,8 @@ export const ADD_API = gql`
 `;
 
 export const ADD_EVENT_API = gql`
-  mutation addEventAPI($applicationID: ID!, $in: EventAPIDefinitionInput!) {
-    addEventAPI(applicationID: $applicationID, in: $in) {
+  mutation addEventDefinition($applicationID: ID!, $in: EventDefinitionInput!) {
+    addEventDefinition(applicationID: $applicationID, in: $in) {
       id
       name
       description
@@ -91,7 +91,7 @@ export const ADD_EVENT_API = gql`
 
 export const DELETE_API = gql`
   mutation deleteAPI($id: ID!) {
-    deleteAPI(id: $id) {
+    deleteAPIDefinition(id: $id) {
       id
       name
       description
@@ -101,7 +101,7 @@ export const DELETE_API = gql`
 
 export const DELETE_EVENT_API = gql`
   mutation deleteEventAPI($id: ID!) {
-    deleteEventAPI(id: $id) {
+    deleteEventDefinition(id: $id) {
       id
       name
       description
@@ -132,8 +132,8 @@ export const UPDATE_APPLICATION = gql`
 `;
 
 export const CONNECT_APPLICATION = gql`
-  mutation generateOneTimeTokenForApplication($id: ID!) {
-    generateOneTimeTokenForApplication(id: $id) {
+  mutation requestOneTimeTokenForApplication($id: ID!) {
+    requestOneTimeTokenForApplication(id: $id) {
       token
       connectorURL
     }

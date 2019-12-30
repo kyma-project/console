@@ -1,0 +1,11 @@
+.list-actions {
+  float: right;
+  &__standalone:not(:last-child) {
+    margin-right: 4px;
+  }
+
+  button[class^='fd-button']:hover {
+    background: var(--fd-color-neutral-6);
+    border: 1px solid var(--fd-color-shell-5);
+  }
+}

@@ -20,7 +20,7 @@ class CreateApplicationModal extends React.Component {
   PropTypes = {
     existingApplications: PropTypes.array.isRequired,
     applicationsQuery: PropTypes.object.isRequired,
-    addApplication: PropTypes.func.isRequired,
+    registerApplication: PropTypes.func.isRequired,
     sendNotification: PropTypes.func.isRequired,
     scenariosQuery: PropTypes.object.isRequired,
   };
@@ -195,17 +195,18 @@ class CreateApplicationModal extends React.Component {
     let success = true;
 
     const { formData } = this.state;
-    const { addApplication, sendNotification } = this.props;
+    const { registerApplication, sendNotification } = this.props;
 
     try {
       let createdApplicationName;
-      const createdApplication = await addApplication(formData);
+      const registeredApplication = await registerApplication(formData);
       if (
-        createdApplication &&
-        createdApplication.data &&
-        createdApplication.data.createApplication
+        registeredApplication &&
+        registeredApplication.data &&
+        registeredApplication.data.registerApplication
       ) {
-        createdApplicationName = createdApplication.data.createApplication.name;
+        createdApplicationName =
+          registeredApplication.data.registerApplication.name;
       }
 
       sendNotification({

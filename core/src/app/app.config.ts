@@ -9,7 +9,7 @@ const clusterConfig = Object.keys(windowClusterConfig || {}).length ? windowClus
 const configToRead: StringMap = clusterConfig || (typeof INJECTED_CLUSTER_CONFIG !== 'undefined' ? INJECTED_CLUSTER_CONFIG : { domain: 'kyma.local' }); // fallback for tests
 
 const domain = configToRead.domain;
-const gateway_kyma_cx_api_version = configToRead.gateway_kyma_cx_api_version;
+const gateway_kyma_cx_api_version = configToRead.gateway_kyma_cx_api_version || configToRead.gateway_kyma_project_io_version;
 const k8sServerUrl = `https://apiserver.${domain}`;
 
 const config = {
@@ -22,7 +22,7 @@ const config = {
   k8sApiServerUrl_servicecatalog: `${k8sServerUrl}/apis/servicecatalog.k8s.io/v1beta1/`,
   k8sApiServerUrl_rbac: `${k8sServerUrl}/apis/rbac.authorization.k8s.io/v1/`,
   subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
-  gateway_kyma_project_io_version: gateway_kyma_cx_api_version,
+  gateway_kyma_cx_api_version,
 
   headerTitle: '',
   headerLogoUrl: '',
@@ -33,6 +33,5 @@ const config = {
   ...configToRead,
   graphqlApiUrl: environment.localApi ? configToRead.graphqlApiUrlLocal : configToRead.graphqlApiUrl
 };
-
 
 export const AppConfig = { ...config } as any;

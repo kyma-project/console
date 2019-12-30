@@ -5,7 +5,6 @@ export enum BackendModules {
   KUBELESS = 'kubeless',
   SERVICE_CATALOG = 'servicecatalog',
   SERVICE_CATALOG_ADDONS = 'servicecatalogaddons',
-  ASSET_STORE = 'assetstore',
-  HEADLESS_CMS = 'cms',
+  RAFTER = 'rafter',
   GRAFANA = 'grafana',
 }

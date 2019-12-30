@@ -1,7 +1,7 @@
 import { CONNECT_APPLICATION } from './../../../gql';
 
 export const sampleData = {
-  generateOneTimeTokenForApplication: {
+  requestOneTimeTokenForApplication: {
     token: 'sample token',
     connectorURL: 'sample connector url',
   },

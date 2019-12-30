@@ -11,7 +11,7 @@ import {
 
 let page, browser;
 
-const REQUIRED_MODULE = 'cms';
+const REQUIRED_MODULE = 'rafter';
 
 describe('Docs basic tests', () => {
   beforeAll(async () => {

@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "build": "webpack --env.production",
     "start:kyma": "webpack --env.development --watch"
   },
@@ -23,7 +24,7 @@
     "fundamental-react": "^0.6.1"
   },
   "jest": {
-    "setupFiles": [
+    "setupFilesAfterEnv": [
       "<rootDir>/jestSetup.js"
     ],
     "moduleNameMapper": {

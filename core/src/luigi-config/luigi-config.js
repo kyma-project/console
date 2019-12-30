@@ -11,7 +11,7 @@ import {
 import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
-var k8sDomain = clusterConfig && clusterConfig['domain'] || 'kyma.local';
+var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
@@ -55,8 +55,8 @@ let navigation = {
       preloadUrl: '/consoleapp.html#/home/preload'
     },
     _core_ui_: {
-      preloadUrl: config.coreModuleUrl + '/preload',
-    },
+      preloadUrl: config.coreModuleUrl + '/preload'
+    }
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
   contextSwitcher: {
@@ -95,6 +95,40 @@ function getNodes(context) {
       label: 'Overview',
       viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/details',
       icon: 'product'
+    },
+    {
+      pathSegment: 'apirules',
+      label: 'API rules',
+      viewUrl: config.coreModuleUrl + '/apirules',
+      icon: 'sonography',
+      viewGroup: coreUIViewGroupName,
+      keepSelectedForChildren: true,
+      navigationContext: 'apirules',
+      hideFromNav: true,
+      children: [
+        {
+          pathSegment: 'create',
+          label: 'Create API rule',
+          viewUrl: config.coreModuleUrl + '/apirules/create',
+          viewGroup: coreUIViewGroupName,
+          hideFromNav: true
+        },
+        {
+          pathSegment: 'details',
+          // label: 'Create API rule',
+          viewUrl: config.coreModuleUrl + '/apirules/create',
+          viewGroup: coreUIViewGroupName,
+          hideFromNav: true,
+          children: [
+            {
+              pathSegment: ':apiName',
+              viewUrl: config.coreModuleUrl + '/apirules/details/:apiName',
+              viewGroup: coreUIViewGroupName,
+              hideFromNav: true
+            }
+          ]
+        }
+      ]
     },
     {
       category: { label: 'Service Management', icon: 'add-coursebook' },
@@ -469,15 +503,15 @@ function getConsoleInitData() {
 }
 
 window.addEventListener('message', e => {
-  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT = 'showSystemNamespacesChangedEvent';
+  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT =
+    'showSystemNamespacesChangedEvent';
 
   if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
     window.Luigi.cachedNamespaces = null;
-  }
-  else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
+  } else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
     Luigi.customMessages().sendToAll({
       id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
-      showSystemNamespaces: e.data.showSystemNamespaces,
+      showSystemNamespaces: e.data.showSystemNamespaces
     });
   }
 });
@@ -626,7 +660,8 @@ Promise.all(initPromises)
           idToken: token,
           backendModules,
           systemNamespaces,
-          showSystemNamespaces: localStorage.getItem('console.showSystemNamespaces') === 'true',
+          showSystemNamespaces:
+            localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
         children: function() {
           var staticNodes = [
@@ -635,7 +670,7 @@ Promise.all(initPromises)
               label: 'Namespaces',
               viewUrl: config.coreModuleUrl + '/namespaces',
               icon: 'dimension',
-              viewGroup: coreUIViewGroupName,
+              viewGroup: coreUIViewGroupName
             },
             {
               pathSegment: 'namespaces',
@@ -666,7 +701,7 @@ Promise.all(initPromises)
               label: 'General Settings',
               category: { label: 'Settings', icon: 'settings' },
               viewUrl: '/consoleapp.html#/home/settings/organisation',
-              viewGroup: consoleViewGroupName,
+              viewGroup: consoleViewGroupName
             },
             {
               pathSegment: 'global-permissions',
@@ -703,14 +738,6 @@ Promise.all(initPromises)
               },
               pathSegment: '_integration_category_placeholder_',
               hideFromNav: true
-            },
-             {
-              pathSegment: 'apirulecreation',
-              label: 'Create API rule',
-              viewUrl: config.coreModuleUrl + '/createApiRule',
-              icon: 'sonography',
-              viewGroup: coreUIViewGroupName,
-              hideFromNav: true
             }
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
@@ -735,7 +762,7 @@ Promise.all(initPromises)
             viewUrl: config.docsModuleUrl,
             hideSideNav: true,
             context: {
-              group: ":group",
+              group: ':group'
             },
             children: [
               {
@@ -743,9 +770,9 @@ Promise.all(initPromises)
                 viewUrl: config.docsModuleUrl,
                 hideSideNav: true,
                 context: {
-                  group: ":group",
-                  topic: ":topic",
-                },
+                  group: ':group',
+                  topic: ':topic'
+                }
               }
             ]
           }
