@@ -1,13 +1,17 @@
 import React from 'react';
-import CreateApiRule from '../CreateApiRule';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitForDomChange } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
-import {
-  servicesQuery,
-  createApiRuleMutation,
-} from '../../../../testing/queriesMocks';
 
-const mockNamespace = 'test';
+import EditApiRule from '../EditApiRule';
+import {
+  getApiRuleQuery,
+  servicesQuery,
+  apiRule,
+  updateApiRuleMutation,
+  mockNamespace,
+  oldHostname,
+  newHostname,
+} from './mocks';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
@@ -19,17 +23,17 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
-describe('CreateApiRule', () => {
+describe('EditApiRule', () => {
   it('Renders basic component', async () => {
     const { queryByText, queryAllByRole, getAllByLabelText } = render(
-      <MockedProvider mocks={[servicesQuery]}>
-        <CreateApiRule />
+      <MockedProvider mocks={[getApiRuleQuery, servicesQuery]}>
+        <EditApiRule apiName={apiRule.name} />
       </MockedProvider>,
     );
 
-    await wait();
+    await waitForDomChange();
 
-    expect(queryByText('Create API Rule')).toBeInTheDocument();
+    expect(queryByText(`Edit ${apiRule.name}`)).toBeInTheDocument();
     expect(queryByText('General settings')).toBeInTheDocument();
     expect(queryAllByRole('input')).toHaveLength(2);
     expect(queryAllByRole('select')).toHaveLength(1);
@@ -47,12 +51,12 @@ describe('CreateApiRule', () => {
       const renderResult = render(
         <MockedProvider
           addTypename={false}
-          mocks={[servicesQuery, createApiRuleMutation]}
+          mocks={[getApiRuleQuery, servicesQuery, updateApiRuleMutation]}
         >
-          <CreateApiRule />
+          <EditApiRule apiName={apiRule.name} />
         </MockedProvider>,
       );
-      await wait();
+      await waitForDomChange();
 
       queryByPlaceholderText = renderResult.queryByPlaceholderText;
       queryByLabelText = renderResult.queryByLabelText;
@@ -63,40 +67,38 @@ describe('CreateApiRule', () => {
 
     it('Form inputs are rendered', () => {
       expect(nameInput).toBeInTheDocument();
+      expect(nameInput).toHaveValue(apiRule.name);
+      expect(nameInput).toBeDisabled();
+
       expect(hostnameInput).toBeInTheDocument();
+      expect(hostnameInput).toHaveValue(oldHostname);
+
+      expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
-    it('Does not allow to create if no name or hostname', () => {
-      expect(nameInput).toHaveValue('');
+    it('Does not allow to update if no hostname', () => {
+      fireEvent.change(hostnameInput, { target: { value: '' } });
+
       expect(hostnameInput).toHaveValue('');
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
-    it('Does not allow to create if invalid name', () => {
-      fireEvent.change(nameInput, { target: { value: 'test-' } });
-      fireEvent.change(hostnameInput, { target: { value: 'host-1.2.3' } });
-
-      expect(queryByLabelText('submit-form')).toBeDisabled();
-    });
-
-    it('Does not allow to create if invalid host', () => {
-      fireEvent.change(nameInput, { target: { value: 'test-123' } });
+    it('Does not allow to update if invalid host', () => {
       fireEvent.change(hostnameInput, { target: { value: 'host123-' } });
 
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
-    it('Create button fires createApiRuleMutation', async () => {
-      fireEvent.change(nameInput, { target: { value: 'test-123' } });
-      fireEvent.change(hostnameInput, { target: { value: 'host-1.2.3' } });
-      const createButton = queryByLabelText('submit-form');
+    it('Update button fires updateApiRuleMutation', async () => {
+      fireEvent.change(hostnameInput, { target: { value: newHostname } });
+      const updateButton = queryByLabelText('submit-form');
 
-      expect(createButton).not.toBeDisabled();
+      expect(updateButton).not.toBeDisabled();
 
-      createButton.click();
-      await wait();
+      updateButton.click();
+      await waitForDomChange();
 
-      expect(createApiRuleMutation.result).toHaveBeenCalled();
+      expect(updateApiRuleMutation.result).toHaveBeenCalled();
     });
   });
 });

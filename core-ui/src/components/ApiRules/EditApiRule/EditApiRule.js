@@ -18,7 +18,7 @@ export default function EditApiRule({ apiName }) {
 
   const { error, loading, data } = useQuery(GET_API_RULE, {
     variables: {
-      namespace: LuigiClient.getContext().namespaceId,
+      namespace: LuigiClient.getEventData().environmentId,
       name: apiName,
     },
     fetchPolicy: 'no-cache',
