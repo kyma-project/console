@@ -43,7 +43,9 @@ export default function ApiRules() {
     {
       name: 'Edit',
       handler: entry => {
-        console.log('edit', entry);
+        LuigiClient.linkManager()
+          .fromClosestContext()
+          .navigate(`/edit/${entry.name}`);
       },
     },
     {

@@ -26,6 +26,7 @@ export default function ApiRuleForm({
   mutation,
   saveButtonText,
   headerTitle,
+  breadcrumbItems,
 }) {
   const namespace = LuigiClient.getEventData().environmentId;
   const [rules /*setrules*/] = useState(apiRule.rules);
@@ -92,6 +93,7 @@ export default function ApiRuleForm({
         handleSave={save}
         title={headerTitle}
         saveButtonText={saveButtonText}
+        breadcrumbItems={breadcrumbItems}
       />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>

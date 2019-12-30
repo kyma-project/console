@@ -11,20 +11,24 @@ const ServicesDropdown = ({ _ref, loading, data, error, defaultValue }) => {
     return "Couldn't load services list " + error.message;
   }
 
+  const defaultService = defaultValue
+    ? `${defaultValue.name}:${defaultValue.port}`
+    : null;
   return (
     <FormItem>
       <FormLabel htmlFor="service">Service</FormLabel>
-      <FormSelect ref={_ref} id="service" role="select">
+      <FormSelect
+        ref={_ref}
+        id="service"
+        role="select"
+        defaultValue={defaultService}
+      >
         {data.services.map(service =>
           service.ports.map(port => (
             <option
               aria-label="option"
               key={service.name + port.port}
-              value={service.name + ':' + port.port}
-              selected={
-                service.name === defaultValue.name &&
-                port.port === defaultValue.port
-              }
+              value={`${service.name}:${port.port}`}
             >
               {service.name} (port: {port.port})
             </option>

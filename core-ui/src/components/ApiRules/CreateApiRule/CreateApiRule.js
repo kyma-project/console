@@ -58,12 +58,15 @@ export default function CreateApiRule() {
     }
   }
 
+  const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
+
   return (
     <ApiRuleForm
       apiRule={emptyApiRule}
       mutation={createApiRuleMutation}
       saveButtonText="Create"
       headerTitle="Create API Rule"
+      breadcrumbItems={breadcrumbItems}
     />
   );
 }

@@ -7,6 +7,7 @@ import { useNotification } from '../../../contexts/notifications';
 import { UPDATE_API_RULE } from '../../../gql/mutations';
 import { GET_API_RULE } from '../../../gql/queries';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
+import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 
 export default function EditApiRule({ apiName }) {
   const [updateApiRuleMutation] = useMutation(UPDATE_API_RULE, {
@@ -20,6 +21,7 @@ export default function EditApiRule({ apiName }) {
       namespace: LuigiClient.getContext().namespaceId,
       name: apiName,
     },
+    fetchPolicy: 'no-cache',
   });
 
   if (loading) {
@@ -28,6 +30,10 @@ export default function EditApiRule({ apiName }) {
 
   if (error) {
     return <h1>Couldn't fetch API rule data</h1>;
+  }
+
+  if (!data.APIRule) {
+    return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
   data.APIRule.rules.forEach(rule => {
@@ -61,12 +67,19 @@ export default function EditApiRule({ apiName }) {
     }
   }
 
+  const breadcrumbItems = [
+    { name: 'API Rules', path: '/' },
+    { name: apiName, path: `/details/${apiName}` },
+    { name: '' },
+  ];
+
   return (
     <ApiRuleForm
       apiRule={data.APIRule}
       mutation={updateApiRuleMutation}
       saveButtonText="Save"
       headerTitle={`Edit ${apiName}`}
+      breadcrumbItems={breadcrumbItems}
     />
   );
 }

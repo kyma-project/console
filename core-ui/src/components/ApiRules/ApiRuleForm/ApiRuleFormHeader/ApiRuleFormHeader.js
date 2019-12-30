@@ -2,9 +2,13 @@ import React from 'react';
 import { Button } from 'fundamental-react';
 import { PageHeader } from 'react-shared';
 
-const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
-
-const ApiRuleFormHeader = ({ handleSave, isValid, title, saveButtonText }) => {
+const ApiRuleFormHeader = ({
+  handleSave,
+  isValid,
+  title,
+  saveButtonText,
+  breadcrumbItems,
+}) => {
   return (
     <PageHeader
       title={title}

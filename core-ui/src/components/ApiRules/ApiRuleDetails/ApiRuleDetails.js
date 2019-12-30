@@ -7,6 +7,7 @@ import AccessStrategy from '../AccessStrategy/AccessStrategy';
 import { GET_API_RULE } from '../../../gql/queries';
 import { Spinner, PageHeader, CopiableText } from 'react-shared';
 import { useDeleteApiRule } from '../useDeleteApiRule';
+import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 
 const ApiRuleDetails = ({ apiName }) => {
   const { error, loading, data } = useQuery(GET_API_RULE, {
@@ -14,6 +15,7 @@ const ApiRuleDetails = ({ apiName }) => {
       namespace: LuigiClient.getContext().namespaceId,
       name: apiName,
     },
+    fetchPolicy: 'no-cache',
   });
 
   if (loading) {
@@ -22,6 +24,10 @@ const ApiRuleDetails = ({ apiName }) => {
 
   if (error) {
     return <h1>Couldn't fetch API rule data</h1>;
+  }
+
+  if (!data.APIRule) {
+    return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
   return (
