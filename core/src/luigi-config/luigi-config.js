@@ -114,7 +114,6 @@ function getNodes(context) {
         },
         {
           pathSegment: 'details',
-          viewUrl: config.coreModuleUrl + '/apirules/create',
           hideFromNav: true,
           children: [
             {
@@ -126,7 +125,6 @@ function getNodes(context) {
         },
         {
           pathSegment: 'edit',
-          viewUrl: config.coreModuleUrl + '/apirules/edit',
           hideFromNav: true,
           children: [
             {
