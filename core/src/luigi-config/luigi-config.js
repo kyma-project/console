@@ -97,40 +97,6 @@ function getNodes(context) {
       icon: 'product'
     },
     {
-      pathSegment: 'apirules',
-      label: 'API rules',
-      viewUrl: config.coreModuleUrl + '/apirules',
-      icon: 'sonography',
-      viewGroup: coreUIViewGroupName,
-      keepSelectedForChildren: true,
-      navigationContext: 'apirules',
-      hideFromNav: true,
-      children: [
-        {
-          pathSegment: 'create',
-          label: 'Create API rule',
-          viewUrl: config.coreModuleUrl + '/apirules/create',
-          viewGroup: coreUIViewGroupName,
-          hideFromNav: true
-        },
-        {
-          pathSegment: 'details',
-          // label: 'Create API rule',
-          viewUrl: config.coreModuleUrl + '/apirules/create',
-          viewGroup: coreUIViewGroupName,
-          hideFromNav: true,
-          children: [
-            {
-              pathSegment: ':apiName',
-              viewUrl: config.coreModuleUrl + '/apirules/details/:apiName',
-              viewGroup: coreUIViewGroupName,
-              hideFromNav: true
-            }
-          ]
-        }
-      ]
-    },
-    {
       category: { label: 'Service Management', icon: 'add-coursebook' },
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
