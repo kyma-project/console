@@ -81,12 +81,11 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
       setStrategy({ ...strategy, methods: [...strategy.methods, method] });
     } else {
       const removeIdx = strategy.methods.indexOf(method);
-      console.log(method, checked, strategy, removeIdx);
       setStrategy({
         ...strategy,
         methods: [
           ...strategy.methods.slice(0, removeIdx),
-          ...strategy.methods.slice(removeIdx + 1, strategy.methods),
+          ...strategy.methods.slice(removeIdx + 1, strategy.methods.length),
         ],
       });
     }
