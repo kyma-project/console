@@ -34,7 +34,8 @@ export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
 
         const shouldBeDisabled = element =>
           element && (element === categoryId || element === nodeId);
-        node.hideFromNav = disabledNavNodesArray.some(shouldBeDisabled) || node.hideFromNav;
+        node.hideFromNav =
+          disabledNavNodesArray.some(shouldBeDisabled) || node.hideFromNav;
       });
     }
   }
@@ -58,12 +59,20 @@ export const saveCurrentLocation = () => {
     const location = window.location.href;
     localStorage.setItem('console.location', location);
   }
-}
+};
 
 export const getPreviousLocation = () => {
   const prevLocation = localStorage.getItem('console.location');
   if (prevLocation) {
-    localStorage.removeItem('console.location'); 
+    localStorage.removeItem('console.location');
   }
   return prevLocation;
+};
+
+export function hideExperimentalNode(node, isVisible) {
+  if (node.experimental) {
+    return { ...node, hideFromNav: !isVisible };
+  } else {
+    return node;
+  }
 }

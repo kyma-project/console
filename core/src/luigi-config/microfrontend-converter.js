@@ -1,11 +1,13 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
+import { hideExperimentalNode } from './navigation-helpers';
 
 function buildNode(node, spec, config) {
   var n = {
     label: node.label,
     pathSegment: node.navigationPath.split('/').pop(),
     viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : node.viewUrl,
-    hideFromNav: node.showInNavigation === false || undefined,
+    hideFromNav:
+      node.showInNavigation !== undefined ? !node.showInNavigation : false,
     order: node.order,
     context: {
       settings: node.settings
@@ -80,10 +82,12 @@ export default function convertToNavigationTree(
       var segments = node.navigationPath.split('/');
       return segments.length === 1;
     })
+
     .map(function processTopLevelNodes(node) {
       return buildNodeWithChildren(node, spec, config);
     })
     .map(function addSettingsForTopLevelNodes(node) {
+      node.experimental = spec.experimental;
       if (spec.category) {
         node.category = spec.category;
       }
@@ -111,7 +115,11 @@ export default function convertToNavigationTree(
 
         node.keepSelectedForChildren = true;
       }
-
       return node;
+    })
+    .map(n => {
+      const showExperimentalViews =
+        localStorage.getItem('console.showExperimentalViews') === 'true';
+      return hideExperimentalNode(n, showExperimentalViews);
     });
 }

@@ -6,8 +6,10 @@ import {
   getSystemNamespaces,
   shouldShowSystemNamespaces,
   saveCurrentLocation,
-  getPreviousLocation
+  getPreviousLocation,
+  hideExperimentalNode
 } from './navigation-helpers';
+import { communication } from './communication';
 import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
@@ -82,7 +84,7 @@ let navigation = {
   }
 };
 
-function getNodes(context) {
+function getNodes(context, showExperimental) {
   var namespace = context.namespaceId;
   var staticNodes = [
     {
@@ -241,7 +243,7 @@ function getNodes(context) {
     }
   ];
   return Promise.all([
-    getMicrofrontends(namespace),
+    getMicrofrontends(namespace, showExperimental),
     Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
   ])
     .then(function(values) {
@@ -262,28 +264,6 @@ function getNodes(context) {
       };
       LuigiClient.uxManager().showAlert(settings);
     });
-}
-
-/**
- * We're using Promise based caching approach, since we often
- * execute getNamespace twice at the same time and we only
- * want to do one rest call.
- *
- * @param {string} namespaceName
- * @returns {Promise} nsPromise
- */
-async function getNamespace(namespaceName) {
-  const cacheName = '_console_namespace_promise_cache_';
-  if (!window[cacheName]) {
-    window[cacheName] = {};
-  }
-  const cache = window[cacheName];
-  if (!cache[namespaceName]) {
-    cache[namespaceName] = fetchFromKyma(
-      `${k8sServerUrl}/api/v1/namespaces/${namespaceName}`
-    );
-  }
-  return await cache[namespaceName];
 }
 
 /**
@@ -387,41 +367,6 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(JSON.stringify({ query, variables }));
-  });
-}
-
-function postToKyma(url, body) {
-  return new Promise(function(resolve, reject) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-      if (
-        xmlHttp.readyState == 4 &&
-        (xmlHttp.status == 200 || xmlHttp.status == 201)
-      ) {
-        try {
-          const response = JSON.parse(xmlHttp.response);
-          resolve(response);
-        } catch {
-          reject(xmlHttp.response);
-        }
-      } else if (
-        xmlHttp.readyState == 4 &&
-        xmlHttp.status != 200 &&
-        xmlHttp.status != 201
-      ) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        // relogin();
-        // }
-        // console.log(xmlHttp);
-        reject(xmlHttp.response);
-      }
-    };
-
-    xmlHttp.open('POST', url, true);
-    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify(body));
   });
 }
 
@@ -597,6 +542,7 @@ Promise.all(initPromises)
                 cmf.placement === 'namespace' || cmf.placement === 'environment'
             )
             .map(cmf => {
+              // console.log(cmf.name, cmf);
               if (cmf.navigationNodes) {
                 return convertToNavigationTree(
                   cmf.name,
@@ -777,6 +723,7 @@ Promise.all(initPromises)
             }
           }
         },
+        communication,
         navigation,
         routing: {
           nodeParamPrefix: '~',
