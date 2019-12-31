@@ -16,11 +16,13 @@ export const validApplicationsQueryMock = {
         data: [
           {
             id: '1',
+            providerName: 'provider',
             name: 'app1',
             description: 'desc1',
           },
           {
             id: '2',
+            providerName: 'provider',
             name: 'app2',
             description: 'desc2',
           },
