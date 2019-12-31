@@ -5,7 +5,6 @@ import {
   FormGroup,
   FormInput,
   FormItem,
-  // FormLabel,
   Checkbox,
   FormFieldset,
   Badge,
@@ -13,14 +12,15 @@ import {
   FormRadioGroup,
   Status,
   Icon,
+  FormLabel,
 } from 'fundamental-react';
-// import { StringInput } from 'react-shared';
+import { StringInput } from 'react-shared';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
-// const URLregexp = new RegExp(
-//   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
-// );
+const URLregexp = new RegExp(
+  '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
+);
 
 const passAll = {
   value: 'allow',
@@ -34,46 +34,42 @@ const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [passAll, jwt, oauth2];
+const accessStrategiesList = [passAll, oauth2];
 
-// const StringListInput = ({
-//   typesFilter,
-//   selectedType,
-//   label,
-//   list,
-//   onChange,
-//   regexp,
-//   isEditMode,
-//   placeholder,
-// }) => {
-//   if (typesFilter && !typesFilter.includes(selectedType)) {
-//     return null;
-//   }
-//   return (
-//     <div className="string-list-input">
-//       <FormLabel>{label}:</FormLabel>
-//       {isEditMode ? (
-//         <StringInput
-//           stringList={list}
-//           onChange={onChange}
-//           regexp={regexp}
-//           placeholder={placeholder}
-//         />
-//       ) : (
-//         (list && list.length && (
-//           <FormInput readOnly value={list.join(', ')} />
-//         )) ||
-//         'None'
-//       )}
-//     </div>
-//   );
-// };
+const StringListInput = ({
+  typesFilter,
+  selectedType,
+  label,
+  list,
+  onChange,
+  regexp,
+  isEditMode,
+  placeholder,
+}) => {
+  if (typesFilter && !typesFilter.includes(selectedType)) {
+    return null;
+  }
+  return (
+    <div className="string-list-input">
+      <FormLabel>{label}:</FormLabel>
+      {isEditMode ? (
+        <StringInput
+          stringList={list}
+          onChange={onChange}
+          regexp={regexp}
+          placeholder={placeholder}
+        />
+      ) : (
+        (list && list.length && (
+          <FormInput readOnly value={list.join(', ')} />
+        )) ||
+        'None'
+      )}
+    </div>
+  );
+};
 
 export default function AccessStrategyForm({ strategy, setStrategy }) {
-  // const [requiredScopeList, setRequiredScopes] = useState(['foo', 'bar']);
-  // const [trustedIssuesList, setTrustedIssues] = useState([
-  //   'http://dex.kyma.local',
-  // ]);
   const selectedType = strategy.accessStrategies[0].name;
 
   function toggleMethod(method, checked) {
@@ -101,6 +97,7 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
                 placeholder="Enter the path"
                 type="text"
                 value={strategy.path}
+                required
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
                 }
@@ -119,7 +116,18 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
               </FormRadioGroup>
             </FormFieldset>
             <FormItem>
-              <FormSelect defaultValue={selectedType} id="select-1">
+              <FormSelect
+                defaultValue={selectedType}
+                id="select-1"
+                onChange={e =>
+                  setStrategy({
+                    ...strategy,
+                    accessStrategies: [
+                      { ...strategy.accessStrategies[0], name: e.target.value },
+                    ],
+                  })
+                }
+              >
                 {accessStrategiesList.map(ac => (
                   <option key={ac.value} value={ac.value}>
                     {ac.displayName}
@@ -130,28 +138,36 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
           </LayoutGrid>
         </FormGroup>
 
-        {/* {selectedType !== passAll.value && (
-          <>
-            <StringListInput
-              list={trustedIssuesList}
-              onChange={setTrustedIssues}
-              isEditMode={editMode}
-              typesFilter={[jwt.value]}
-              selectedType={selectedType}
-              regexp={URLregexp}
-              label="Trusted issuers"
-              placeholder="Enter issuer URL, e.g. https://myissuer.com"
-            />
-
-            <StringListInput
-              list={requiredScopeList}
-              onChange={setRequiredScopes}
-              isEditMode={editMode}
-              label="Required scope"
-            />
-          </>
-        )} */}
+        <Details
+          {...strategy.accessStrategies[0]}
+          setConfig={config =>
+            setStrategy({
+              ...strategy,
+              accessStrategies: [{ ...strategy.accessStrategies[0], config }],
+            })
+          }
+        />
       </div>
     </div>
+  );
+}
+
+function Details({ name, ...props }) {
+  switch (name) {
+    case oauth2.value:
+      return <OAuth2Details {...props} />;
+    default:
+      return null;
+  }
+}
+
+function OAuth2Details({ config, setConfig }) {
+  return (
+    <StringListInput
+      list={config.required_scope || []}
+      onChange={scopes => setConfig({ required_scope: scopes })}
+      isEditMode={true}
+      label="Required scope"
+    />
   );
 }
