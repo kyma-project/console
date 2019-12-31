@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useNotification } from '../../../contexts/notifications';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
+import LuigiClient from '@kyma-project/luigi-client';
 
 const DEFAULT_ACCESS_STRATEGY = {
   path: '/.*',
@@ -34,6 +35,12 @@ export default function CreateApiRule() {
   });
   const notificationManager = useNotification();
 
+  function navigateToDetails(name) {
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/details/${name}`);
+  }
+
   function handleCreateError(error) {
     notificationManager.notify({
       content: `Could not create API Rule: ${error.message}`,
@@ -55,6 +62,8 @@ export default function CreateApiRule() {
         icon: 'accept',
         autoClose: true,
       });
+
+      navigateToDetails(createdApiRuleData.name);
     }
   }
 
