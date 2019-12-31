@@ -29,7 +29,13 @@ class ApplicationDetailsHeader extends React.Component {
 
   render() {
     const isReadOnly = false; //todo
-    const { id, name, status, description } = this.props.application;
+    const {
+      id,
+      name,
+      status,
+      description,
+      providerName,
+    } = this.props.application;
 
     return (
       <header className="fd-has-background-color-background-2">
@@ -84,6 +90,7 @@ class ApplicationDetailsHeader extends React.Component {
         </section>
         <PanelGrid nogap cols={4}>
           <PanelEntry title="Description" children={<p>{description}</p>} />
+          <PanelEntry title="Provider Name" children={<p>{providerName}</p>} />
           <PanelEntry
             title="Status"
             children={<Badge>{status.condition}</Badge>}

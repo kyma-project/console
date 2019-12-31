@@ -29,6 +29,7 @@ class CreateApplicationModal extends React.Component {
     return {
       formData: {
         name: '',
+        providerName: '',
         description: '',
         labels: {},
       },
@@ -182,6 +183,15 @@ class CreateApplicationModal extends React.Component {
     });
   };
 
+  onChangeProviderName = value => {
+    this.setState({
+      formData: {
+        ...this.state.formData,
+        providerName: value,
+      },
+    });
+  };
+
   onChangeDescription = value => {
     this.setState({
       formData: {
@@ -276,6 +286,17 @@ class CreateApplicationModal extends React.Component {
             name="applicationName"
             handleChange={this.onChangeName}
             isError={invalidApplicationName || applicationWithNameAlreadyExists}
+            message={this.getApplicationNameErrorMessage()}
+            required={true}
+            type="text"
+          />
+          <Input
+            label="Provider Name"
+            placeholder="Name of the provider of application"
+            value={formData.providerName}
+            name="providerName"
+            handleChange={this.onChangeProviderName}
+            // isError={applicationWithNameAlreadyExists}
             message={this.getApplicationNameErrorMessage()}
             required={true}
             type="text"

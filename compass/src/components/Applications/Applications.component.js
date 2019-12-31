@@ -17,6 +17,7 @@ class Applications extends React.Component {
 
   headerRenderer = applications => [
     'Name',
+    'Provider name',
     'Description',
     'Scenarios',
     'API Definitions',
@@ -33,6 +34,7 @@ class Applications extends React.Component {
     >
       {application.name}
     </span>,
+    application.providerName,
     application.description ? application.description : EMPTY_TEXT_PLACEHOLDER,
     <ScenariosDisplay scenarios={application.labels.scenarios || []} />,
     <Counter>{application.apiDefinitions.totalCount}</Counter>,
