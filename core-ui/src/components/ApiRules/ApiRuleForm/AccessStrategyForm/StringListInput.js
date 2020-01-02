@@ -37,7 +37,7 @@ StringListInput.propTypes = {
   label: PropTypes.string,
   list: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   onChange: PropTypes.func.isRequired,
-  regexp: PropTypes.string,
+  regexp: PropTypes.instanceOf(RegExp),
   isEditMode: PropTypes.bool.isRequired,
   placeholder: PropTypes.string,
 };
