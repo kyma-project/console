@@ -19,7 +19,7 @@ import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 
-const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
+export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
 const EMPTY_ACCESS_STRATEGY = {
@@ -176,6 +176,7 @@ export default function ApiRuleForm({
                     onClick={addAccessStrategy}
                     option="light"
                     glyph="add"
+                    typeAttr="button"
                   >
                     Add access strategy
                   </Button>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, waitForDomChange } from '@testing-library/react';
-import ApiRuleForm from '../ApiRuleForm';
+import { render, waitForDomChange, fireEvent } from '@testing-library/react';
+import ApiRuleForm, { DEFAULT_GATEWAY } from '../ApiRuleForm';
 import { MockedProvider } from '@apollo/react-testing';
 import { mockNamespace, apiRule, servicesQuery } from './mocks';
 
 jest.mock('@kyma-project/common', () => ({
-  getApiUrl: () => 'kyma.local',
+  getApiUrl: () => 'kyma.cluster.com',
 }));
 
 jest.mock('@kyma-project/luigi-client', () => ({
@@ -15,8 +15,13 @@ jest.mock('@kyma-project/luigi-client', () => ({
 }));
 
 describe('ApiRuleForm', () => {
+  const mutation = jest.fn();
+
+  beforeEach(() => {
+    mutation.mockReset();
+  });
+
   it('renders exisitng access strategies', async () => {
-    const mutation = jest.fn();
     const {
       queryAllByPlaceholderText,
       queryAllByLabelText,
@@ -55,7 +60,59 @@ describe('ApiRuleForm', () => {
     });
   });
 
-  test.todo('allows to add new allow access strategy');
+  it('allows to add new allow access strategy', async () => {
+    const mutation = jest.fn();
+    const {
+      queryAllByPlaceholderText,
+      queryAllByLabelText,
+      getByText,
+      container,
+    } = render(
+      <MockedProvider mocks={[servicesQuery]}>
+        <ApiRuleForm
+          apiRule={apiRule}
+          mutation={mutation}
+          saveButtonText="Save"
+          headerTitle="Form"
+          breadcrumbItems={[]}
+        />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange({ container });
+
+    getByText('Add access strategy').click();
+
+    const paths = queryAllByPlaceholderText('Enter the path');
+    expect(paths).toHaveLength(apiRule.rules.length + 1);
+
+    fireEvent.change(paths[apiRule.rules.length], {
+      target: { value: '/path' },
+    });
+
+    getByText('Save').click();
+    expect(mutation).toHaveBeenCalledWith({
+      variables: {
+        name: apiRule.name,
+        namespace: mockNamespace,
+        params: {
+          gateway: DEFAULT_GATEWAY,
+          host: apiRule.service.host,
+          serviceName: apiRule.service.name,
+          servicePort: `${apiRule.service.port}`,
+          rules: [
+            ...apiRule.rules,
+            {
+              methods: [],
+              mutators: [],
+              path: '/path',
+              accessStrategies: [{ name: 'allow', config: {} }],
+            },
+          ],
+        },
+      },
+    });
+  });
   test.todo('allows to add new oauth2 access strategy');
   test.todo('allows to modify exisitng access strategy');
 });
