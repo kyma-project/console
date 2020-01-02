@@ -6,8 +6,7 @@ import {
   getSystemNamespaces,
   shouldShowSystemNamespaces,
   saveCurrentLocation,
-  getPreviousLocation,
-  hideExperimentalNode
+  getPreviousLocation
 } from './navigation-helpers';
 import { communication } from './communication';
 import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
@@ -84,7 +83,7 @@ let navigation = {
   }
 };
 
-function getNodes(context, showExperimental) {
+function getNodes(context) {
   var namespace = context.namespaceId;
   var staticNodes = [
     {
@@ -240,10 +239,14 @@ function getNodes(context, showExperimental) {
           ]
         }
       ]
-    }
+    },
+    {
+      category: { label: 'Experimental', icon: 'lab' },
+      hideFromNav : true
+    },
   ];
   return Promise.all([
-    getMicrofrontends(namespace, showExperimental),
+    getMicrofrontends(namespace),
     Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
   ])
     .then(function(values) {

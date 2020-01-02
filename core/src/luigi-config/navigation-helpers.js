@@ -70,7 +70,7 @@ export const getPreviousLocation = () => {
 };
 
 export function hideExperimentalNode(node, isVisible) {
-  if (node.experimental) {
+  if (node.category === "Experimental") {
     return { ...node, hideFromNav: !isVisible };
   } else {
     return node;

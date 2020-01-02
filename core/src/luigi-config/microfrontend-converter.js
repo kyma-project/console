@@ -87,7 +87,6 @@ export default function convertToNavigationTree(
       return buildNodeWithChildren(node, spec, config);
     })
     .map(function addSettingsForTopLevelNodes(node) {
-      node.experimental = spec.experimental;
       if (spec.category) {
         node.category = spec.category;
       }
