@@ -82,11 +82,12 @@ class CreateApplicationModal extends React.Component {
       invalidApplicationName,
       enableCheckNameExists,
       nameFilled,
+      providerNameFilled,
     } = this.state;
 
     if (equal(this.state, prevState)) return;
 
-    const requiredFieldsFilled = nameFilled;
+    const requiredFieldsFilled = nameFilled && providerNameFilled;
 
     const tooltipData = !requiredFieldsFilled
       ? {
@@ -160,10 +161,9 @@ class CreateApplicationModal extends React.Component {
   invalidProviderNameMessage = () => {
     const name = this.state.formData.providerName;
 
-    if (name.length > 256) {
-      return 'The maximum length of application provider name is 256 characters';
-    }
-    return null;
+    return name.length > 256
+      ? 'The maximum length of the application provider name is 256 characters'
+      : null;
   };
 
   getApplicationNameErrorMessage = () => {
@@ -200,6 +200,7 @@ class CreateApplicationModal extends React.Component {
   onChangeProviderName = value => {
     this.setState({
       invalidProviderName: this.validateProviderName(value),
+      providerNameFilled: Boolean(value),
       formData: {
         ...this.state.formData,
         providerName: value,
