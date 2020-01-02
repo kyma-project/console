@@ -56,7 +56,6 @@ export const handleInstanceEventOnDetails = (prevState = {}, event = {}) => {
   }
 
   if (event.type === 'DELETE') {
-    debugger;
     return {
       serviceInstance: {
         ...eventInstance,

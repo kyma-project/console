@@ -21,7 +21,7 @@ export default function ApplicationDetailsScenarios({
   const applicationQuery = React.useContext(ApplicationQueryContext);
 
   async function unassignScenario(entry) {
-    const scenarioName = entry.name;
+    const scenarioName = entry.scenario;
 
     LuigiClient.uxManager()
       .showConfirmationModal({

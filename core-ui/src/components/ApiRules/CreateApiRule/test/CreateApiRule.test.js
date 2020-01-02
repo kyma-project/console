@@ -99,7 +99,6 @@ describe('CreateApiRule', () => {
     it('Create button fires createApiRuleMutation', async () => {
       fireEvent.change(nameInput, { target: { value: apiRuleName } });
       fireEvent.change(hostnameInput, { target: { value: hostname } });
-
       const createButton = queryByLabelText('submit-form');
 
       expect(createButton).not.toBeDisabled();
