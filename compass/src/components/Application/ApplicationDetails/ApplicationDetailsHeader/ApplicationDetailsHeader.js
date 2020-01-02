@@ -89,8 +89,8 @@ class ApplicationDetailsHeader extends React.Component {
           </ActionBar.Actions>
         </section>
         <PanelGrid nogap cols={4}>
-          <PanelEntry title="Description" children={<p>{description}</p>} />
           <PanelEntry title="Provider Name" children={<p>{providerName}</p>} />
+          <PanelEntry title="Description" children={<p>{description}</p>} />
           <PanelEntry
             title="Status"
             children={<Badge>{status.condition}</Badge>}

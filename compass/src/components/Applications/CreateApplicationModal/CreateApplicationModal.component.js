@@ -35,6 +35,7 @@ class CreateApplicationModal extends React.Component {
       },
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: false,
+      invalidProviderName: false,
       nameFilled: false,
       requiredFieldsFilled: false,
       tooltipData: null,
@@ -116,8 +117,12 @@ class CreateApplicationModal extends React.Component {
   validateApplicationName = value => {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
     const wrongApplicationName =
-      value && (!Boolean(regex.test(value || '')) || value.length > 253);
+      value && (!Boolean(regex.test(value || '')) || value.length > 36);
     return wrongApplicationName;
+  };
+
+  validateProviderName = value => {
+    return value && value.length > 256;
   };
 
   checkNameExists = async name => {
@@ -146,10 +151,19 @@ class CreateApplicationModal extends React.Component {
     if (name[0] === '-' || name[name.length - 1] === '-') {
       return 'The application name cannot begin or end with a dash';
     }
-    if (name.length > 253) {
-      return 'The maximum length of service name is 63 characters';
+    if (name.length > 36) {
+      return 'The maximum length of application name is 36 characters';
     }
     return 'The application name can only contain lowercase alphanumeric characters or dashes';
+  };
+
+  invalidProviderNameMessage = () => {
+    const name = this.state.formData.providerName;
+
+    if (name.length > 256) {
+      return 'The maximum length of application provider name is 256 characters';
+    }
+    return null;
   };
 
   getApplicationNameErrorMessage = () => {
@@ -185,6 +199,7 @@ class CreateApplicationModal extends React.Component {
 
   onChangeProviderName = value => {
     this.setState({
+      invalidProviderName: this.validateProviderName(value),
       formData: {
         ...this.state.formData,
         providerName: value,
@@ -251,6 +266,7 @@ class CreateApplicationModal extends React.Component {
       requiredFieldsFilled,
       tooltipData,
       invalidApplicationName,
+      invalidProviderName,
       applicationWithNameAlreadyExists,
     } = this.state;
     const createApplicationButton = (
@@ -292,12 +308,12 @@ class CreateApplicationModal extends React.Component {
           />
           <Input
             label="Provider Name"
-            placeholder="Name of the provider of application"
+            placeholder="Name of the application provider"
             value={formData.providerName}
             name="providerName"
             handleChange={this.onChangeProviderName}
-            // isError={applicationWithNameAlreadyExists}
-            message={this.getApplicationNameErrorMessage()}
+            isError={invalidProviderName}
+            message={this.invalidProviderNameMessage()}
             required={true}
             type="text"
           />
@@ -336,7 +352,8 @@ class CreateApplicationModal extends React.Component {
         disabledConfirm={
           !requiredFieldsFilled ||
           applicationWithNameAlreadyExists ||
-          invalidApplicationName
+          invalidApplicationName ||
+          invalidProviderName
         }
         tooltipData={tooltipData}
         onConfirm={this.createApplication}
