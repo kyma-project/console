@@ -17,7 +17,7 @@ import ApiRuleFormHeader from './ApiRuleFormHeader/ApiRuleFormHeader';
 import { GET_SERVICES } from '../../../gql/queries';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
-import AccessStrategyForm from '../AccessStrategyForm/AccessStrategyForm';
+import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 
 const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
