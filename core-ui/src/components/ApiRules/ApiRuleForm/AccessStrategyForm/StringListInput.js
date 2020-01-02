@@ -14,7 +14,7 @@ const StringListInput = ({
 }) => {
   return (
     <div className="string-list-input">
-      <FormLabel>{label}:</FormLabel>
+      <FormLabel>{label}</FormLabel>
       {isEditMode ? (
         <StringInput
           stringList={list}

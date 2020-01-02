@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button,
   LayoutGrid,
   FormGroup,
   FormInput,
@@ -62,6 +61,9 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
                 type="text"
                 value={strategy.path}
                 required
+                aria-label="Access strategy path"
+                pattern="^\/.*.{1,}"
+                title="Path must start with '/' and consist of at least one additional character."
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
                 }
@@ -137,7 +139,7 @@ function OAuth2Details({ config, setConfig }) {
       list={config.required_scope || []}
       onChange={scopes => setConfig({ required_scope: scopes })}
       isEditMode={true}
-      label="Required scope"
+      label="Required scope:"
     />
   );
 }
