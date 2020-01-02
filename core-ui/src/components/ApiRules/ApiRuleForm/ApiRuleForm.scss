@@ -58,12 +58,6 @@
       }
     }
 
-    .path {
-      font-size: 1.2em;
-      color: var(--fd-color-action-3);
-      font-weight: bold;
-    }
-
     .type {
       justify-self: start;
       span::before {
@@ -76,30 +70,6 @@
       margin-right: 16px;
     }
 
-    .actions {
-      .edit-toggle {
-        user-select: none;
-        display: inline-block;
-        margin: 0 1em;
-        vertical-align: text-top;
-
-        span[class^='sap-icon'] {
-          vertical-align: middle;
-        }
-
-        input[type='checkbox']:checked + .fd-toggle__switch:before {
-          left: -10px;
-        }
-
-        .fd-toggle {
-          margin-left: 4px;
-
-          &__switch:before {
-            left: -1px;
-          }
-        }
-      }
-    }
   }
 
   .content:not(:empty) {

@@ -115,6 +115,7 @@ export default function ApiRuleForm({
 
   function addAccessStrategy() {
     setRules(rules => [...rules, EMPTY_ACCESS_STRATEGY]);
+    setValid(false);
   }
 
   return (

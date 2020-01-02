@@ -48,6 +48,12 @@ export default function EditApiRule({ apiName }) {
     });
   });
 
+  function navigateToDetails() {
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/details/${apiName}`);
+  }
+
   function handleError(error) {
     notificationManager.notify({
       content: `Could not update API Rule: ${error.message}`,
@@ -70,6 +76,8 @@ export default function EditApiRule({ apiName }) {
         autoClose: true,
       });
     }
+
+    navigateToDetails();
   }
 
   const breadcrumbItems = [

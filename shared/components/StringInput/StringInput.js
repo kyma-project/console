@@ -53,7 +53,10 @@ export const StringInput = ({
     sourceEvent.preventDefault();
     sourceEvent.target.value = '';
 
-    onChange([...stringList, inputValue]);
+    const stringListWithoutDuplicates = stringList.filter(
+      s => s !== inputValue,
+    );
+    onChange([...stringListWithoutDuplicates, inputValue]);
   }
 
   function deleteString(string) {
