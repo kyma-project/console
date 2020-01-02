@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { LayoutGrid, Panel, Button } from 'fundamental-react';
@@ -56,6 +57,10 @@ const ApiRuleDetails = ({ apiName }) => {
   );
 };
 
+ApiRuleDetails.propTypes = {
+  apiName: PropTypes.string.isRequired,
+};
+
 export default ApiRuleDetails;
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
@@ -99,7 +104,7 @@ function ApiRuleDetailsHeader({ data }) {
       breadcrumbItems={breadcrumbItems}
       actions={
         <>
-          <DeleteButton apiRuleName={data.name} />{' '}
+          <DeleteButton apiRuleName={data.name} />
           <EditButton apiRuleName={data.name} />
         </>
       }

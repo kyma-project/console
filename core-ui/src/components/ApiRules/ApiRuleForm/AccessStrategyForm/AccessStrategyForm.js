@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
+  Button,
   LayoutGrid,
   FormGroup,
   FormInput,
@@ -8,9 +10,8 @@ import {
   FormFieldset,
   FormSelect,
   FormRadioGroup,
-  FormLabel,
 } from 'fundamental-react';
-import { StringInput } from 'react-shared';
+import StringListInput from './StringListInput';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
@@ -31,39 +32,6 @@ const oauth2 = {
   displayName: 'OAuth2',
 };
 const accessStrategiesList = [passAll, oauth2];
-
-const StringListInput = ({
-  typesFilter,
-  selectedType,
-  label,
-  list,
-  onChange,
-  regexp,
-  isEditMode,
-  placeholder,
-}) => {
-  if (typesFilter && !typesFilter.includes(selectedType)) {
-    return null;
-  }
-  return (
-    <div className="string-list-input">
-      <FormLabel>{label}:</FormLabel>
-      {isEditMode ? (
-        <StringInput
-          stringList={list}
-          onChange={onChange}
-          regexp={regexp}
-          placeholder={placeholder}
-        />
-      ) : (
-        (list && list.length && (
-          <FormInput readOnly value={list.join(', ')} />
-        )) ||
-        'None'
-      )}
-    </div>
-  );
-};
 
 export default function AccessStrategyForm({ strategy, setStrategy }) {
   const selectedType = strategy.accessStrategies[0].name;
@@ -148,6 +116,11 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
     </div>
   );
 }
+
+AccessStrategyForm.propTypes = {
+  strategy: PropTypes.object.isRequired,
+  setStrategy: PropTypes.func.isRequired,
+};
 
 function Details({ name, ...props }) {
   switch (name) {

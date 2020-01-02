@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 
@@ -8,6 +9,10 @@ import { UPDATE_API_RULE } from '../../../gql/mutations';
 import { GET_API_RULE } from '../../../gql/queries';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
+
+EditApiRule.propTypes = {
+  apiName: PropTypes.string.isRequired,
+};
 
 export default function EditApiRule({ apiName }) {
   const [updateApiRuleMutation] = useMutation(UPDATE_API_RULE, {

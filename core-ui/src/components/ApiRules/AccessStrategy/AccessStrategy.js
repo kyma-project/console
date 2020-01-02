@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Badge, Icon } from 'fundamental-react';
 
 const passAll = {
@@ -51,6 +52,10 @@ const AccessStrategy = ({ strategy }) => {
       </div>
     </div>
   );
+};
+
+AccessStrategy.propTypes = {
+  strategy: PropTypes.object.isRequired,
 };
 
 export default AccessStrategy;

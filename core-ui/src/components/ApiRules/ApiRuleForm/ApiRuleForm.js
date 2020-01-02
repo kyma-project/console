@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { K8sNameInput, InputWithSuffix } from 'react-shared';
@@ -32,6 +33,19 @@ const EMPTY_ACCESS_STRATEGY = {
     },
   ],
   mutators: [],
+};
+
+ApiRuleForm.propTypes = {
+  apiRule: PropTypes.object.isRequired,
+  mutation: PropTypes.func.isRequired,
+  saveButtonText: PropTypes.string.isRequired,
+  headerTitle: PropTypes.string.isRequired,
+  breadcrumbItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      path: PropTypes.string,
+    }),
+  ),
 };
 
 export default function ApiRuleForm({
