@@ -74,7 +74,7 @@ export default function ApiRules() {
                 .navigate(`/create`)
             }
           >
-            Add new API rule
+            Add API rule
           </Button>
         }
       />

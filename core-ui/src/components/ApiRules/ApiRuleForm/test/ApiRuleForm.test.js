@@ -29,7 +29,7 @@ describe('ApiRuleForm', () => {
     } = render(
       <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
-          apiRule={apiRule}
+          apiRule={apiRule()}
           mutation={mutation}
           saveButtonText="Save"
           headerTitle="Form"
@@ -41,9 +41,9 @@ describe('ApiRuleForm', () => {
     await waitForDomChange({ container });
 
     const inputs = queryAllByPlaceholderText('Enter the path');
-    expect(inputs).toHaveLength(apiRule.rules.length);
+    expect(inputs).toHaveLength(apiRule().rules.length);
     inputs.forEach((input, idx) => {
-      expect(input).toHaveValue(apiRule.rules[idx].path);
+      expect(input).toHaveValue(apiRule().rules[idx].path);
     });
 
     verifyMethodCheckboxes(queryAllByLabelText, 'GET');
@@ -52,10 +52,10 @@ describe('ApiRuleForm', () => {
     verifyMethodCheckboxes(queryAllByLabelText, 'DELETE');
 
     const typeSelects = queryAllByLabelText('Access strategy type');
-    expect(typeSelects).toHaveLength(apiRule.rules.length);
+    expect(typeSelects).toHaveLength(apiRule().rules.length);
     typeSelects.forEach((typeSelect, idx) => {
       expect(typeSelect).toHaveValue(
-        apiRule.rules[idx].accessStrategies[0].name,
+        apiRule().rules[idx].accessStrategies[0].name,
       );
     });
   });
@@ -65,7 +65,7 @@ describe('ApiRuleForm', () => {
     const { queryAllByPlaceholderText, getByText, container } = render(
       <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
-          apiRule={apiRule}
+          apiRule={apiRule()}
           mutation={mutation}
           saveButtonText="Save"
           headerTitle="Form"
@@ -79,24 +79,24 @@ describe('ApiRuleForm', () => {
     getByText('Add access strategy').click();
 
     const paths = queryAllByPlaceholderText('Enter the path');
-    expect(paths).toHaveLength(apiRule.rules.length + 1);
+    expect(paths).toHaveLength(apiRule().rules.length + 1);
 
-    fireEvent.change(paths[apiRule.rules.length], {
+    fireEvent.change(paths[apiRule().rules.length], {
       target: { value: '/path' },
     });
 
     getByText('Save').click();
     expect(mutation).toHaveBeenCalledWith({
       variables: {
-        name: apiRule.name,
+        name: apiRule().name,
         namespace: mockNamespace,
         params: {
           gateway: DEFAULT_GATEWAY,
-          host: apiRule.service.host,
-          serviceName: apiRule.service.name,
-          servicePort: `${apiRule.service.port}`,
+          host: apiRule().service.host,
+          serviceName: apiRule().service.name,
+          servicePort: `${apiRule().service.port}`,
           rules: [
-            ...apiRule.rules,
+            ...apiRule().rules,
             {
               methods: [],
               mutators: [],
@@ -109,12 +109,48 @@ describe('ApiRuleForm', () => {
     });
   });
 
-  it('allows to modify exisitng access strategy', async () => {
+  it('allows to remove access strategy', async () => {
     const mutation = jest.fn();
-    const { getAllByLabelText, getByText, container, debug } = render(
+    const { getAllByLabelText, getByText, container } = render(
       <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
-          apiRule={apiRule}
+          apiRule={apiRule()}
+          mutation={mutation}
+          saveButtonText="Save"
+          headerTitle="Form"
+          breadcrumbItems={[]}
+        />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange({ container });
+
+    getAllByLabelText('remove-access-strategy')[0].click();
+
+    await waitForDomChange({ container });
+
+    getByText('Save').click();
+    expect(mutation).toHaveBeenCalledWith({
+      variables: {
+        name: apiRule().name,
+        namespace: mockNamespace,
+        params: {
+          gateway: DEFAULT_GATEWAY,
+          host: apiRule().service.host,
+          serviceName: apiRule().service.name,
+          servicePort: `${apiRule().service.port}`,
+          rules: [apiRule().rules[1]],
+        },
+      },
+    });
+  });
+
+  it('allows to modify exisitng access strategy', async () => {
+    const mutation = jest.fn();
+    const { getAllByLabelText, getByText, container } = render(
+      <MockedProvider mocks={[servicesQuery]}>
+        <ApiRuleForm
+          apiRule={apiRule()}
           mutation={mutation}
           saveButtonText="Save"
           headerTitle="Form"
@@ -134,19 +170,19 @@ describe('ApiRuleForm', () => {
     getByText('Save').click();
     expect(mutation).toHaveBeenCalledWith({
       variables: {
-        name: apiRule.name,
+        name: apiRule().name,
         namespace: mockNamespace,
         params: {
           gateway: DEFAULT_GATEWAY,
-          host: apiRule.service.host,
-          serviceName: apiRule.service.name,
-          servicePort: `${apiRule.service.port}`,
+          host: apiRule().service.host,
+          serviceName: apiRule().service.name,
+          servicePort: `${apiRule().service.port}`,
           rules: [
             {
-              ...apiRule.rules[0],
+              ...apiRule().rules[0],
               path: '/path',
             },
-            apiRule.rules[1],
+            apiRule().rules[1],
           ],
         },
       },
@@ -156,9 +192,9 @@ describe('ApiRuleForm', () => {
 
 function verifyMethodCheckboxes(queryAllByLabelText, method) {
   const checkboxes = queryAllByLabelText(method);
-  expect(checkboxes).toHaveLength(apiRule.rules.length);
+  expect(checkboxes).toHaveLength(apiRule().rules.length);
   checkboxes.forEach((checkboxe, idx) => {
-    if (apiRule.rules[idx].methods.indexOf(method) !== -1)
+    if (apiRule().rules[idx].methods.indexOf(method) !== -1)
       expect(checkboxe).toBeChecked();
     else expect(checkboxe).not.toBeChecked();
   });

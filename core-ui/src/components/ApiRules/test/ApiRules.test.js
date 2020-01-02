@@ -148,7 +148,7 @@ describe('ApiRules', () => {
 
     await waitForDomChange(container);
 
-    getByText('Add new API rule').click();
+    getByText('Add API rule').click();
 
     expect(mockNavigate).toHaveBeenCalledWith('/create');
   });

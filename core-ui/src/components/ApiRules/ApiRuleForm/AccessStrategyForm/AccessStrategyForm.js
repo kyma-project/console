@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Button,
   LayoutGrid,
   FormGroup,
   FormInput,
@@ -11,6 +12,7 @@ import {
   FormRadioGroup,
 } from 'fundamental-react';
 import StringListInput from './StringListInput';
+import { Tooltip } from 'react-shared';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
@@ -32,7 +34,12 @@ const oauth2 = {
 };
 const accessStrategiesList = [passAll, oauth2];
 
-export default function AccessStrategyForm({ strategy, setStrategy }) {
+export default function AccessStrategyForm({
+  strategy,
+  setStrategy,
+  removeStrategy,
+  canDelete,
+}) {
   const selectedType = strategy.accessStrategies[0].name;
 
   function toggleMethod(method, checked) {
@@ -49,6 +56,14 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
       });
     }
   }
+
+  const deleteButtonWrapper = canDelete
+    ? component => component
+    : component => (
+        <Tooltip title="API rule requires at least one access strategy.">
+          {component}
+        </Tooltip>
+      );
 
   return (
     <div className="access-strategy" role="row">
@@ -75,7 +90,7 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
                   <Checkbox
                     key={m}
                     value={m}
-                    checked={strategy.methods.includes(m)}
+                    defaultChecked={strategy.methods.includes(m)}
                     onChange={e => toggleMethod(m, e.target.checked)}
                   />
                 ))}
@@ -115,6 +130,17 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
           }
         />
       </div>
+      {deleteButtonWrapper(
+        <Button
+          glyph="delete"
+          type="negative"
+          typeAttr="button"
+          className="remove-access-strategy fd-has-margin-left-m"
+          aria-label="remove-access-strategy"
+          onClick={removeStrategy}
+          disabled={!canDelete}
+        />,
+      )}
     </div>
   );
 }
@@ -122,6 +148,8 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
 AccessStrategyForm.propTypes = {
   strategy: PropTypes.object.isRequired,
   setStrategy: PropTypes.func.isRequired,
+  removeStrategy: PropTypes.func.isRequired,
+  canDelete: PropTypes.bool.isRequired,
 };
 
 function Details({ name, ...props }) {

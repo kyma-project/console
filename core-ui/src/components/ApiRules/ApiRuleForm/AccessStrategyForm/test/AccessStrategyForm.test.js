@@ -33,15 +33,22 @@ const oauthStrategy = {
 };
 
 const setStrategy = jest.fn();
+const removeStrategy = jest.fn();
 
 describe('AccessStrategyForm', () => {
   beforeEach(() => {
     setStrategy.mockReset();
+    removeStrategy.mockReset();
   });
 
   it('renders basic rule info', () => {
     const { getByLabelText } = render(
-      <AccessStrategyForm strategy={allowStrategy} setStrategy={setStrategy} />,
+      <AccessStrategyForm
+        strategy={allowStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={false}
+      />,
     );
 
     expect(getByLabelText('Access strategy path')).toHaveValue(
@@ -55,7 +62,12 @@ describe('AccessStrategyForm', () => {
 
   it('renders OAuth2 strategy', () => {
     const { getByLabelText, queryByLabelText } = render(
-      <AccessStrategyForm strategy={oauthStrategy} setStrategy={setStrategy} />,
+      <AccessStrategyForm
+        strategy={oauthStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={false}
+      />,
     );
 
     expect(getByLabelText('Access strategy type')).toHaveValue(
@@ -72,7 +84,12 @@ describe('AccessStrategyForm', () => {
 
   it('allows to change OAuth2 strategy scopes', () => {
     const { queryByLabelText } = render(
-      <AccessStrategyForm strategy={oauthStrategy} setStrategy={setStrategy} />,
+      <AccessStrategyForm
+        strategy={oauthStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={false}
+      />,
     );
 
     const requiredScope = queryByLabelText('Required scope');
@@ -97,5 +114,53 @@ describe('AccessStrategyForm', () => {
         },
       ],
     });
+  });
+
+  it('disables delete button when there is one access strategy', () => {
+    const { queryByLabelText } = render(
+      <AccessStrategyForm
+        strategy={oauthStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={false}
+      />,
+    );
+
+    const deleteButton = queryByLabelText('remove-access-strategy');
+    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).toBeDisabled();
+  });
+
+  it('disables delete button when there is more than one access strategy', () => {
+    const { queryByLabelText } = render(
+      <AccessStrategyForm
+        strategy={oauthStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={true}
+      />,
+    );
+
+    const deleteButton = queryByLabelText('remove-access-strategy');
+    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).not.toBeDisabled();
+  });
+
+  it('fires callback when user deletes strategy', () => {
+    const { queryByLabelText } = render(
+      <AccessStrategyForm
+        strategy={oauthStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={true}
+      />,
+    );
+
+    const deleteButton = queryByLabelText('remove-access-strategy');
+    expect(deleteButton).toBeInTheDocument();
+
+    deleteButton.click();
+
+    expect(removeStrategy).toHaveBeenCalled();
   });
 });

@@ -74,6 +74,10 @@ export default function ApiRuleForm({
 
   function handleFormChanged(e) {
     setValid(formRef.current.checkValidity()); // general form validity
+    if (!e) {
+      return;
+    }
+
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
@@ -116,6 +120,11 @@ export default function ApiRuleForm({
   function addAccessStrategy() {
     setRules(rules => [...rules, EMPTY_ACCESS_STRATEGY]);
     setValid(false);
+  }
+
+  function removeAccessStrategy(index) {
+    setRules(rules => [...rules.splice(0, index), ...rules.splice(index + 1)]);
+    setTimeout(handleFormChanged);
   }
 
   return (
@@ -197,23 +206,27 @@ export default function ApiRuleForm({
                   </Button>
                 </Panel.Actions>
               </Panel.Header>
-              <Panel.Body>
-                {rules.map((rule, idx) => {
-                  return (
-                    <AccessStrategyForm
-                      key={idx}
-                      strategy={rule}
-                      setStrategy={newStrategy =>
-                        setRules(rules => [
-                          ...rules.slice(0, idx),
-                          newStrategy,
-                          ...rules.slice(idx + 1, rules.length),
-                        ])
-                      }
-                    />
-                  );
-                })}
-              </Panel.Body>
+              {!!rules.length && (
+                <Panel.Body>
+                  {rules.map((rule, idx) => {
+                    return (
+                      <AccessStrategyForm
+                        key={idx}
+                        strategy={rule}
+                        setStrategy={newStrategy =>
+                          setRules(rules => [
+                            ...rules.slice(0, idx),
+                            newStrategy,
+                            ...rules.slice(idx + 1, rules.length),
+                          ])
+                        }
+                        removeStrategy={() => removeAccessStrategy(idx)}
+                        canDelete={rules.length > 1}
+                      />
+                    );
+                  })}
+                </Panel.Body>
+              )}
             </Panel>
           </LayoutGrid>
         </form>
