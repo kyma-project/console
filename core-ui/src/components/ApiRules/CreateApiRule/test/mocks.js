@@ -21,7 +21,7 @@ export const sampleAPIRule = {
     rules: [
       {
         path: '/.*',
-        methods: ['PUT', 'POST', 'GET', 'DELETE'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
         accessStrategies: [
           {
             name: 'allow',

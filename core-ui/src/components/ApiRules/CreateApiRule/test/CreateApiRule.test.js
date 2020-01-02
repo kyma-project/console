@@ -49,7 +49,7 @@ describe('CreateApiRule', () => {
 
   describe('Form validation', () => {
     let queryByPlaceholderText, queryByLabelText;
-    let nameInput, hostnameInput;
+    let nameInput, hostnameInput, pathInput;
 
     beforeEach(async () => {
       const renderResult = render(
@@ -67,11 +67,13 @@ describe('CreateApiRule', () => {
 
       nameInput = queryByPlaceholderText('API Rule name');
       hostnameInput = queryByPlaceholderText('Enter the hostname');
+      pathInput = queryByPlaceholderText('Enter the path');
     });
 
     it('Form inputs are rendered', () => {
       expect(nameInput).toBeInTheDocument();
       expect(hostnameInput).toBeInTheDocument();
+      expect(pathInput).toBeInTheDocument();
     });
 
     it('Does not allow to create if no name or hostname', () => {
@@ -97,6 +99,7 @@ describe('CreateApiRule', () => {
     it('Create button fires createApiRuleMutation', async () => {
       fireEvent.change(nameInput, { target: { value: apiRuleName } });
       fireEvent.change(hostnameInput, { target: { value: hostname } });
+
       const createButton = queryByLabelText('submit-form');
 
       expect(createButton).not.toBeDisabled();

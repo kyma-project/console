@@ -114,6 +114,7 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
             <FormItem>
               <FormSelect
                 defaultValue={selectedType}
+                aria-label="Access strategy type"
                 id="select-1"
                 onChange={e =>
                   setStrategy({
