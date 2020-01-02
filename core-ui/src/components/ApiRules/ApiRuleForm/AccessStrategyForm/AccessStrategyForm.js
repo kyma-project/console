@@ -139,7 +139,7 @@ function OAuth2Details({ config, setConfig }) {
       list={config.required_scope || []}
       onChange={scopes => setConfig({ required_scope: scopes })}
       isEditMode={true}
-      label="Required scope:"
+      label="Required scope"
     />
   );
 }

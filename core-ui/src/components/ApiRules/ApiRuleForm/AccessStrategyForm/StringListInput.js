@@ -14,13 +14,14 @@ const StringListInput = ({
 }) => {
   return (
     <div className="string-list-input">
-      <FormLabel>{label}</FormLabel>
+      <FormLabel htmlFor={label}>{label}</FormLabel>
       {isEditMode ? (
         <StringInput
           stringList={list}
           onChange={onChange}
           regexp={regexp}
           placeholder={placeholder}
+          id={label}
         />
       ) : (
         (list && list.length && (
