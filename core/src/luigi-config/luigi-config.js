@@ -8,6 +8,7 @@ import {
   saveCurrentLocation,
   getPreviousLocation
 } from './navigation-helpers';
+import { communication } from './communication';
 import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
@@ -95,46 +96,6 @@ function getNodes(context) {
       label: 'Overview',
       viewUrl: '/consoleapp.html#/home/namespaces/' + namespace + '/details',
       icon: 'product'
-    },
-    {
-      pathSegment: 'apirules',
-      label: 'API rules',
-      viewUrl: config.coreModuleUrl + '/apirules',
-      icon: 'sonography',
-      viewGroup: coreUIViewGroupName,
-      keepSelectedForChildren: true,
-      navigationContext: 'apirules',
-      hideFromNav: true,
-      children: [
-        {
-          pathSegment: 'create',
-          label: 'Create API rule',
-          viewUrl: config.coreModuleUrl + '/apirules/create',
-          hideFromNav: true
-        },
-        {
-          pathSegment: 'details',
-          hideFromNav: true,
-          children: [
-            {
-              pathSegment: ':apiName',
-              viewUrl: config.coreModuleUrl + '/apirules/details/:apiName',
-              hideFromNav: true
-            }
-          ]
-        },
-        {
-          pathSegment: 'edit',
-          hideFromNav: true,
-          children: [
-            {
-              pathSegment: ':apiName',
-              viewUrl: config.coreModuleUrl + '/apirules/edit/:apiName',
-              hideFromNav: true
-            }
-          ]
-        }
-      ]
     },
     {
       category: { label: 'Service Management', icon: 'add-coursebook' },
@@ -278,7 +239,11 @@ function getNodes(context) {
           ]
         }
       ]
-    }
+    },
+    {
+      category: { label: 'Experimental', icon: 'lab' },
+      hideFromNav : true
+    },
   ];
   return Promise.all([
     getMicrofrontends(namespace),
@@ -302,28 +267,6 @@ function getNodes(context) {
       };
       LuigiClient.uxManager().showAlert(settings);
     });
-}
-
-/**
- * We're using Promise based caching approach, since we often
- * execute getNamespace twice at the same time and we only
- * want to do one rest call.
- *
- * @param {string} namespaceName
- * @returns {Promise} nsPromise
- */
-async function getNamespace(namespaceName) {
-  const cacheName = '_console_namespace_promise_cache_';
-  if (!window[cacheName]) {
-    window[cacheName] = {};
-  }
-  const cache = window[cacheName];
-  if (!cache[namespaceName]) {
-    cache[namespaceName] = fetchFromKyma(
-      `${k8sServerUrl}/api/v1/namespaces/${namespaceName}`
-    );
-  }
-  return await cache[namespaceName];
 }
 
 /**
@@ -427,41 +370,6 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(JSON.stringify({ query, variables }));
-  });
-}
-
-function postToKyma(url, body) {
-  return new Promise(function(resolve, reject) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-      if (
-        xmlHttp.readyState == 4 &&
-        (xmlHttp.status == 200 || xmlHttp.status == 201)
-      ) {
-        try {
-          const response = JSON.parse(xmlHttp.response);
-          resolve(response);
-        } catch {
-          reject(xmlHttp.response);
-        }
-      } else if (
-        xmlHttp.readyState == 4 &&
-        xmlHttp.status != 200 &&
-        xmlHttp.status != 201
-      ) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        // relogin();
-        // }
-        // console.log(xmlHttp);
-        reject(xmlHttp.response);
-      }
-    };
-
-    xmlHttp.open('POST', url, true);
-    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify(body));
   });
 }
 
@@ -637,6 +545,7 @@ Promise.all(initPromises)
                 cmf.placement === 'namespace' || cmf.placement === 'environment'
             )
             .map(cmf => {
+              // console.log(cmf.name, cmf);
               if (cmf.navigationNodes) {
                 return convertToNavigationTree(
                   cmf.name,
@@ -817,6 +726,7 @@ Promise.all(initPromises)
             }
           }
         },
+        communication,
         navigation,
         routing: {
           nodeParamPrefix: '~',
