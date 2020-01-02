@@ -1,35 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  // Button,
   LayoutGrid,
   FormGroup,
   FormInput,
   FormItem,
   Checkbox,
   FormFieldset,
-  Badge,
   FormSelect,
   FormRadioGroup,
-  Status,
-  Icon,
   FormLabel,
 } from 'fundamental-react';
 import { StringInput } from 'react-shared';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
-const URLregexp = new RegExp(
-  '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
-);
+// const URLregexp = new RegExp(
+//   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
+// );
 
 const passAll = {
   value: 'allow',
   displayName: 'Allow',
 };
-const jwt = {
-  value: 'jwt',
-  displayName: 'JWT',
-};
+// const jwt = {
+//   value: 'jwt',
+//   displayName: 'JWT',
+// };
 const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
