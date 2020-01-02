@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
-import { InlineHelp } from 'fundamental-react';
+import { InlineHelp, FormLabel } from 'fundamental-react';
 
 export const K8sNameInput = ({
   _ref,
   id,
   kind,
-  onKeyDown,
   showHelp = true,
-  label = 'Name*',
+  label = 'Name',
+  ...props
 }) => (
   <>
-    <label className="fd-form__label" htmlFor={id}>
+    <FormLabel required htmlFor={id}>
       {label}
       {showHelp && (
         <InlineHelp
@@ -23,7 +23,7 @@ export const K8sNameInput = ({
               "
         />
       )}
-    </label>
+    </FormLabel>
     <input
       role="input"
       className="fd-form__control"
@@ -34,7 +34,7 @@ export const K8sNameInput = ({
       aria-required="true"
       required
       pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-      onKeyDown={onKeyDown}
+      {...props}
     />
   </>
 );
@@ -43,6 +43,5 @@ K8sNameInput.propTypes = {
   _ref: CustomPropTypes.ref,
   id: PropTypes.string,
   kind: PropTypes.string,
-  onKeyDown: PropTypes.func,
   showHelp: PropTypes.bool,
 };

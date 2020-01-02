@@ -76,6 +76,7 @@ export const GET_API_RULE = gql`
         methods
         accessStrategies {
           name
+          config
         }
       }
       service {

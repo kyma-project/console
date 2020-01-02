@@ -153,7 +153,23 @@ describe('ApiRules', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/create');
   });
 
-  test.todo('Clicking on "Edit" navigate to edit page');
+  it('Clicking on "Edit" navigate to edit page', async () => {
+    const apis = [apiRule(1), apiRule(2)];
+    const { container, queryAllByLabelText } = render(
+      <MockedProvider addTypename={false} mocks={[gqlApiRulesRequest(apis)]}>
+        <ApiRules />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange(container);
+
+    const editButtons = queryAllByLabelText('Edit');
+    expect(editButtons).toHaveLength(2);
+
+    editButtons[0].click();
+
+    expect(mockNavigate).toHaveBeenCalledWith(`/edit/${apis[0].name}`);
+  });
 
   it('Clicking on "Delete" deletes element', async () => {
     const apis = [apiRule(1), apiRule(2)];
