@@ -13,6 +13,8 @@ import {
   newHostname,
 } from './mocks';
 
+const mockNavigate = jest.fn();
+
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
 }));
@@ -20,6 +22,11 @@ jest.mock('@kyma-project/common', () => ({
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
     environmentId: mockNamespace,
+  }),
+  linkManager: () => ({
+    fromClosestContext: () => ({
+      navigate: mockNavigate,
+    }),
   }),
 }));
 
@@ -99,6 +106,7 @@ describe('EditApiRule', () => {
       await waitForDomChange();
 
       expect(updateApiRuleMutation.result).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRule.name}`);
     });
   });
 });
