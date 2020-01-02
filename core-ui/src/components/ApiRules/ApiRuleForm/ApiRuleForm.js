@@ -131,7 +131,7 @@ export default function ApiRuleForm({
                         _ref={formValues.name}
                         id="apiRuleName"
                         kind="API Rule"
-                        showHelp={true}
+                        showHelp={!apiRule.name}
                         defaultValue={apiRule.name}
                         disabled={!!apiRule.name}
                       />
