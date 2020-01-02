@@ -40,13 +40,8 @@ const ApiRuleDetails = ({ apiName }) => {
               <Panel.Head title="Access strategies" />
             </Panel.Header>
             <Panel.Body aria-label="Access strategies">
-              {data.APIRule.rules.map(rule => {
-                return (
-                  <AccessStrategy
-                    key={rule.path + rule.accessStrategies[0].name}
-                    strategy={rule}
-                  />
-                );
+              {data.APIRule.rules.map((rule, idx) => {
+                return <AccessStrategy strategy={rule} key={idx} />;
               })}
             </Panel.Body>
           </Panel>

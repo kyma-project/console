@@ -21,7 +21,7 @@ const AccessStrategy = ({ strategy }) => {
   return (
     <div className="access-strategy" role="row">
       <div className="header">
-        <strong className="path">{strategy.path}</strong>
+        {strategy.path}
         <div className="type">
           <Badge modifier="filled">
             <Icon

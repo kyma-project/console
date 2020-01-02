@@ -169,6 +169,7 @@ function OAuth2Details({ config, setConfig }) {
       onChange={scopes => setConfig({ required_scope: scopes })}
       isEditMode={true}
       label="Required scope"
+      regexp={/^[^, ]+$/}
     />
   );
 }
