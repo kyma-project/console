@@ -123,7 +123,7 @@ export default function ApiRuleForm({
   }
 
   function removeAccessStrategy(index) {
-    setRules(rules => [...rules.splice(0, index), ...rules.splice(index + 1)]);
+    setRules(rules => [...rules.slice(0, index), ...rules.slice(index + 1)]);
     setTimeout(handleFormChanged);
   }
 
