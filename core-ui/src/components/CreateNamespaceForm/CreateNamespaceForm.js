@@ -37,7 +37,10 @@ const DisableSidecarField = ({ onChange }) => {
           placeholder="disable side-car"
           onChange={e => onChange(e.target.checked)}
         />
-        <FormLabel htmlFor="disable-istio">
+        <FormLabel
+          htmlFor="disable-istio"
+          className="fd-display-l-inline fd-has-margin-left-tiny"
+        >
           Disable side-car injection
           <InlineHelp
             placement="bottom-right"
@@ -64,7 +67,10 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
           id="memory-quotas"
           onChange={e => setIsExpanded(e.target.checked)}
         />
-        <FormLabel htmlFor="memory-quotas">
+        <FormLabel
+          htmlFor="memory-quotas"
+          className="fd-display-l-inline fd-has-margin-left-tiny"
+        >
           Apply Total Memory Quotas
           <InlineHelp
             placement="bottom-right"
@@ -140,7 +146,10 @@ const ContainerLimitsCheckbox = ({ checkboxRef, children }) => {
           id="container-limits"
           onChange={e => setIsExpanded(e.target.checked)}
         />
-        <FormLabel htmlFor="container-limits">
+        <FormLabel
+          htmlFor="container-limits"
+          className="fd-display-l-inline fd-has-margin-left-tiny"
+        >
           Apply limits per container
           <InlineHelp
             placement="bottom-right"
