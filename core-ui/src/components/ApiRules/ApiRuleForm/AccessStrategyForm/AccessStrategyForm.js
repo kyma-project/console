@@ -47,13 +47,14 @@ const StringListInput = ({
   }
   return (
     <div className="string-list-input">
-      <FormLabel>{label}:</FormLabel>
+      <FormLabel htmlFor={label}>{label}</FormLabel>
       {isEditMode ? (
         <StringInput
           stringList={list}
           onChange={onChange}
           regexp={regexp}
           placeholder={placeholder}
+          id={label}
         />
       ) : (
         (list && list.length && (
@@ -94,6 +95,7 @@ export default function AccessStrategyForm({ strategy, setStrategy }) {
                 type="text"
                 value={strategy.path}
                 required
+                aria-label="Access strategy path"
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
                 }

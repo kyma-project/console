@@ -60,14 +60,9 @@ describe('ApiRuleForm', () => {
     });
   });
 
-  it('allows to add new allow access strategy', async () => {
+  it('allows to add new access strategy', async () => {
     const mutation = jest.fn();
-    const {
-      queryAllByPlaceholderText,
-      queryAllByLabelText,
-      getByText,
-      container,
-    } = render(
+    const { queryAllByPlaceholderText, getByText, container } = render(
       <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
           apiRule={apiRule}
@@ -113,8 +108,50 @@ describe('ApiRuleForm', () => {
       },
     });
   });
-  test.todo('allows to add new oauth2 access strategy');
-  test.todo('allows to modify exisitng access strategy');
+
+  it('allows to modify exisitng access strategy', async () => {
+    const mutation = jest.fn();
+    const { getAllByLabelText, getByText, container, debug } = render(
+      <MockedProvider mocks={[servicesQuery]}>
+        <ApiRuleForm
+          apiRule={apiRule}
+          mutation={mutation}
+          saveButtonText="Save"
+          headerTitle="Form"
+          breadcrumbItems={[]}
+        />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange({ container });
+
+    const paths = getAllByLabelText('Access strategy path');
+
+    fireEvent.change(paths[0], {
+      target: { value: '/path' },
+    });
+
+    getByText('Save').click();
+    expect(mutation).toHaveBeenCalledWith({
+      variables: {
+        name: apiRule.name,
+        namespace: mockNamespace,
+        params: {
+          gateway: DEFAULT_GATEWAY,
+          host: apiRule.service.host,
+          serviceName: apiRule.service.name,
+          servicePort: `${apiRule.service.port}`,
+          rules: [
+            {
+              ...apiRule.rules[0],
+              path: '/path',
+            },
+            apiRule.rules[1],
+          ],
+        },
+      },
+    });
+  });
 });
 
 function verifyMethodCheckboxes(queryAllByLabelText, method) {

@@ -18,6 +18,7 @@ export const StringInput = ({
   onChange,
   regexp = /^[A-z_-]+$/,
   placeholder = 'Enter multiple values separated by comma',
+  ...props
 }) => {
   const [isValid, setValid] = useState(true);
   const inputRef = useRef(null);
@@ -76,6 +77,7 @@ export const StringInput = ({
           onKeyDown={handleKeyDown}
           onBlur={handleOutOfFocus}
           data-ignore-visual-validation
+          {...props}
         />
       </div>
     </div>
