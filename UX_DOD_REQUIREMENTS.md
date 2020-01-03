@@ -8,7 +8,7 @@ UI developed within the Console and Compass UI should be compliant with [Fiori D
 
 * User should be able to close the modal (without saving changes, if any) by clicking anywhere outside of it.
 * Modal should support keyboard control:
-    * If modal contains input fields, first of them should be automatically focused on opening the modal. In some cases, we can focus the most important element insted (e.g. invalid one).
+    * If modal contains input fields, first of them should be automatically focused on opening the modal. In some cases, we can focus the most important element instead (e.g. invalid one).
     * If there is no input fields, user still should be able to navigate the modal by the means of keyboard only. Until modal is opened, focus should be trapped inside.
     * User should be able to close the modal by hitting the escape key (equivalent to clicking the `X` or `Cancel` button).
     * User should be able to confirm introduced changes (if any) by pressing the `enter`/`return` key (equivalent to clicking the `Confirm` button).
