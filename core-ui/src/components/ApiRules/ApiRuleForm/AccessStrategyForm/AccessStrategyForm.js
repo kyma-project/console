@@ -66,7 +66,7 @@ export default function AccessStrategyForm({
       );
 
   return (
-    <div className="access-strategy" role="row">
+    <div className="access-strategy access-strategy--form" role="row">
       <div className="content">
         <FormGroup>
           <LayoutGrid cols={3}>

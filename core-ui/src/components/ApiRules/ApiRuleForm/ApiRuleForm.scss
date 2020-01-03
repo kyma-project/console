@@ -7,9 +7,12 @@
   }
 }
 
-.access-strategy {
+.access-strategy--form {
   display: flex;
   justify-content: space-around;
+}
+
+.access-strategy {
   margin-top: 12px;
 
   $row-expand-button-size: 28px;
