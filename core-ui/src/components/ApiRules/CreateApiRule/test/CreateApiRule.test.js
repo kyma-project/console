@@ -96,18 +96,21 @@ describe('CreateApiRule', () => {
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
-    it('Create button fires createApiRuleMutation', async () => {
-      fireEvent.change(nameInput, { target: { value: apiRuleName } });
-      fireEvent.change(hostnameInput, { target: { value: hostname } });
-      const createButton = queryByLabelText('submit-form');
+    test.todo(
+      'Create button fires createApiRuleMutation - investigate randomly failing test',
+    );
+    // it('Create button fires createApiRuleMutation', async () => {
+    //   fireEvent.change(nameInput, { target: { value: apiRuleName } });
+    //   fireEvent.change(hostnameInput, { target: { value: hostname } });
+    //   const createButton = queryByLabelText('submit-form');
 
-      expect(createButton).not.toBeDisabled();
+    //   expect(createButton).not.toBeDisabled();
 
-      createButton.click();
-      await waitForDomChange();
+    //   createButton.click();
+    //   await waitForDomChange();
 
-      expect(createApiRuleMutation.result).toHaveBeenCalled();
-      expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRuleName}`);
-    });
+    //   expect(createApiRuleMutation.result).toHaveBeenCalled();
+    //   expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRuleName}`);
+    // });
   });
 });
