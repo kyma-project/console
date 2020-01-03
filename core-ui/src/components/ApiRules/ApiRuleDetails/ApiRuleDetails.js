@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
-import { LayoutGrid, Panel, Button } from 'fundamental-react';
+import { LayoutGrid, Panel, Button, Icon } from 'fundamental-react';
 
 import AccessStrategy from '../AccessStrategy/AccessStrategy';
 import { GET_API_RULE } from '../../../gql/queries';
@@ -93,6 +93,14 @@ function navigateToEditView(apiRuleName) {
 }
 
 function ApiRuleDetailsHeader({ data }) {
+  const host = `https://${data.service.host}`;
+  const hostCaption = (
+    <a href={host} target="_blank" rel="noopener noreferrer">
+      {host}
+      <Icon glyph="inspect" size="s" className="fd-has-margin-left-tiny" />
+    </a>
+  );
+
   return (
     <PageHeader
       title={data.name}
@@ -104,11 +112,11 @@ function ApiRuleDetailsHeader({ data }) {
         </>
       }
     >
-      <PageHeader.Column title="Host">
-        <CopiableText text={`https://${data.service.host}`} />
-      </PageHeader.Column>
       <PageHeader.Column title="Service">
         {`${data.service.name} (port: ${data.service.port})`}
+      </PageHeader.Column>
+      <PageHeader.Column title="Host" columnSpan="2 / 4">
+        <CopiableText textToCopy={host} caption={hostCaption} />
       </PageHeader.Column>
     </PageHeader>
   );

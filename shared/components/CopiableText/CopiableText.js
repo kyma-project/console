@@ -1,19 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './CopiableText.scss';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { Button } from 'fundamental-react';
 import copyToCliboard from 'copy-to-clipboard';
 
-export function CopiableText({ text }) {
+CopiableText.propTypes = {
+  textToCopy: PropTypes.string.isRequired,
+  caption: PropTypes.node,
+};
+
+export function CopiableText({ textToCopy, caption }) {
   return (
     <div className="copiable-text">
-      {text}
+      {caption || textToCopy}
       <Tooltip title="Copy to clipboard" position="top">
         <Button
           option="light"
           compact
           glyph="copy"
-          onClick={() => copyToCliboard(text)}
+          onClick={() => copyToCliboard(textToCopy)}
         />
       </Tooltip>
     </div>

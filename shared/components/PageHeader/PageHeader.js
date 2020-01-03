@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, Breadcrumb, PanelGrid } from 'fundamental-react';
+import { Panel, Breadcrumb } from 'fundamental-react';
 import './PageHeader.scss';
 import LuigiClient from '@kyma-project/luigi-client';
 
-const Column = ({ title, children }) => (
-  <div className="page-header__column ">
+const Column = ({ title, children, columnSpan = 1 }) => (
+  <div className="page-header__column" style={{ gridColumn: columnSpan }}>
     <p className="title fd-has-type-0 fd-has-color-text-4 fd-has-margin-bottom-none">
       {title}
     </p>
