@@ -84,11 +84,8 @@ export default function ApiRuleForm({
     }
 
     // current element validity
-    if (e.target.checkValidity()) {
-      e.target.classList.remove('is-invalid');
-    } else {
-      e.target.classList.add('is-invalid');
-    }
+    const isValid = e.target.checkValidity();
+    e.target.classList.toggle('is-invalid', !isValid);
   }
 
   function save() {
