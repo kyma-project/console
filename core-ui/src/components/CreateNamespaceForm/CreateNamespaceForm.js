@@ -29,7 +29,7 @@ const ISTIO_INJECTION_LABEL = 'istio-injection=disabled';
 const DisableSidecarField = ({ onChange }) => {
   return (
     <FormFieldset>
-      <FormItem isCheck>
+      <FormItem>
         <input
           className="fd-form__control"
           type="checkbox"
@@ -37,7 +37,10 @@ const DisableSidecarField = ({ onChange }) => {
           placeholder="disable side-car"
           onChange={e => onChange(e.target.checked)}
         />
-        <FormLabel htmlFor="disable-istio">
+        <FormLabel
+          htmlFor="disable-istio"
+          className="fd-display-l-inline fd-has-margin-left-tiny"
+        >
           Disable side-car injection
           <InlineHelp
             placement="bottom-right"
@@ -56,7 +59,7 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <FormFieldset>
-      <FormItem isCheck>
+      <FormItem>
         <input
           className="fd-form__control"
           ref={checkboxRef}
@@ -64,7 +67,10 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
           id="memory-quotas"
           onChange={e => setIsExpanded(e.target.checked)}
         />
-        <FormLabel htmlFor="memory-quotas">
+        <FormLabel
+          htmlFor="memory-quotas"
+          className="fd-display-l-inline fd-has-margin-left-tiny"
+        >
           Apply Total Memory Quotas
           <InlineHelp
             placement="bottom-right"
@@ -132,7 +138,7 @@ const ContainerLimitsCheckbox = ({ checkboxRef, children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <FormFieldset>
-      <FormItem isCheck>
+      <FormItem>
         <input
           className="fd-form__control"
           ref={checkboxRef}
@@ -140,7 +146,10 @@ const ContainerLimitsCheckbox = ({ checkboxRef, children }) => {
           id="container-limits"
           onChange={e => setIsExpanded(e.target.checked)}
         />
-        <FormLabel htmlFor="container-limits">
+        <FormLabel
+          htmlFor="container-limits"
+          className="fd-display-l-inline fd-has-margin-left-tiny"
+        >
           Apply limits per container
           <InlineHelp
             placement="bottom-right"

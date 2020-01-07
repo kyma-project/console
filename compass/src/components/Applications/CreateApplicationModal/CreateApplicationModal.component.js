@@ -29,11 +29,13 @@ class CreateApplicationModal extends React.Component {
     return {
       formData: {
         name: '',
+        providerName: '',
         description: '',
         labels: {},
       },
       applicationWithNameAlreadyExists: false,
       invalidApplicationName: false,
+      invalidProviderName: false,
       nameFilled: false,
       requiredFieldsFilled: false,
       tooltipData: null,
@@ -80,11 +82,12 @@ class CreateApplicationModal extends React.Component {
       invalidApplicationName,
       enableCheckNameExists,
       nameFilled,
+      providerNameFilled,
     } = this.state;
 
     if (equal(this.state, prevState)) return;
 
-    const requiredFieldsFilled = nameFilled;
+    const requiredFieldsFilled = nameFilled && providerNameFilled;
 
     const tooltipData = !requiredFieldsFilled
       ? {
@@ -115,8 +118,12 @@ class CreateApplicationModal extends React.Component {
   validateApplicationName = value => {
     const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
     const wrongApplicationName =
-      value && (!Boolean(regex.test(value || '')) || value.length > 253);
+      value && (!Boolean(regex.test(value || '')) || value.length > 36);
     return wrongApplicationName;
+  };
+
+  validateProviderName = value => {
+    return value && value.length > 256;
   };
 
   checkNameExists = async name => {
@@ -145,10 +152,18 @@ class CreateApplicationModal extends React.Component {
     if (name[0] === '-' || name[name.length - 1] === '-') {
       return 'The application name cannot begin or end with a dash';
     }
-    if (name.length > 253) {
-      return 'The maximum length of service name is 63 characters';
+    if (name.length > 36) {
+      return 'The maximum length of application name is 36 characters';
     }
     return 'The application name can only contain lowercase alphanumeric characters or dashes';
+  };
+
+  invalidProviderNameMessage = () => {
+    const name = this.state.formData.providerName;
+
+    return name.length > 256
+      ? 'The maximum length of the application provider name is 256 characters'
+      : null;
   };
 
   getApplicationNameErrorMessage = () => {
@@ -178,6 +193,17 @@ class CreateApplicationModal extends React.Component {
       formData: {
         ...this.state.formData,
         name: value,
+      },
+    });
+  };
+
+  onChangeProviderName = value => {
+    this.setState({
+      invalidProviderName: this.validateProviderName(value),
+      providerNameFilled: Boolean(value),
+      formData: {
+        ...this.state.formData,
+        providerName: value,
       },
     });
   };
@@ -241,6 +267,7 @@ class CreateApplicationModal extends React.Component {
       requiredFieldsFilled,
       tooltipData,
       invalidApplicationName,
+      invalidProviderName,
       applicationWithNameAlreadyExists,
     } = this.state;
     const createApplicationButton = (
@@ -281,6 +308,17 @@ class CreateApplicationModal extends React.Component {
             type="text"
           />
           <Input
+            label="Provider Name"
+            placeholder="Name of the application provider"
+            value={formData.providerName}
+            name="providerName"
+            handleChange={this.onChangeProviderName}
+            isError={invalidProviderName}
+            message={this.invalidProviderNameMessage()}
+            required={true}
+            type="text"
+          />
+          <Input
             label="Description"
             placeholder="Description of the Application"
             value={formData.description}
@@ -315,7 +353,8 @@ class CreateApplicationModal extends React.Component {
         disabledConfirm={
           !requiredFieldsFilled ||
           applicationWithNameAlreadyExists ||
-          invalidApplicationName
+          invalidApplicationName ||
+          invalidProviderName
         }
         tooltipData={tooltipData}
         onConfirm={this.createApplication}

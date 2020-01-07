@@ -53,10 +53,10 @@ const createdAPIRule = {
 };
 
 const sampleAPIRule = {
-  name: 'test',
+  name: 'test-123',
   namespace: 'test',
   params: {
-    host: 'host.kyma.local',
+    host: 'host-1.2.3.kyma.local',
     serviceName: 'test',
     servicePort: '80',
     gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
@@ -75,6 +75,7 @@ const sampleAPIRule = {
     ],
   },
 };
+
 export const createApiRuleMutation = {
   request: {
     query: CREATE_API_RULE,

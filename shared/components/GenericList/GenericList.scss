@@ -14,6 +14,16 @@
     > section > * {
       display: inline-block;
     }
+
+    .fd-panel__actions {
+      *:not(:last-child) {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  td {
+    vertical-align: middle;
   }
 
   &__search {

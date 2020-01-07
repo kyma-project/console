@@ -6,6 +6,7 @@ export const GET_APPLICATIONS = gql`
       data {
         id
         name
+        providerName
         description
       }
     }
@@ -16,6 +17,7 @@ export const GET_APPLICATION = gql`
   query Application($id: ID!) {
     application(id: $id) {
       id
+      providerName
       description
       name
       labels
@@ -126,6 +128,7 @@ export const UPDATE_APPLICATION = gql`
   mutation updateApplication($id: ID!, $in: ApplicationUpdateInput!) {
     updateApplication(id: $id, in: $in) {
       name
+      providerName
       id
     }
   }

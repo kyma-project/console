@@ -1,28 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import CustomPropTypes from './../../typechecking/CustomPropTypes';
 import './InputWithSuffix.scss';
 
-export const InputWithSuffix = ({
-  suffix,
-  id,
-  placeholder,
-  required,
-  pattern,
-  _ref,
-}) => {
+export const InputWithSuffix = ({ suffix, required, _ref, ...props }) => {
   return (
     <div className="input-with-suffix">
       <input
         role="input"
         className="fd-form__control"
-        id={id}
-        placeholder={placeholder}
         required={required}
-        pattern={pattern}
         type="text"
         ref={_ref}
         aria-required={required}
+        {...props}
       />
       <span className="input-with-suffix__suffix">{suffix}</span>
     </div>
   );
+};
+
+InputWithSuffix.propTypes = {
+  suffix: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  _ref: CustomPropTypes.ref,
+};
+
+InputWithSuffix.defaultProps = {
+  required: false,
 };

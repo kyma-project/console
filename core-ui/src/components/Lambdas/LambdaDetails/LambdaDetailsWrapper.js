@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_LAMBDA } from '../../../gql/queries';
 
 import EntryNotFound from '../../EntryNotFound/EntryNotFound';
-import Spinner from '../../../shared/components/Spinner/Spinner';
+import { Spinner } from 'react-shared';
 import LambdaDetails from './LambdaDetails';
 
 LambdaDetailsWrapper.propTypes = {

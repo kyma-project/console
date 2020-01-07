@@ -12,7 +12,7 @@ import builder from '../../commons/builder';
 import { POLL_INTERVAL } from './../../shared/constants';
 
 import { useNotification } from '../../contexts/notifications';
-import Spinner from '../../shared/components/Spinner/Spinner';
+import { Spinner } from 'react-shared';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
 import Labels from '../../shared/components/Labels/Labels';
 import { PageHeader } from 'react-shared';

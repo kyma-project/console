@@ -5,6 +5,7 @@ export const GET_APPLICATIONS = gql`
     applications {
       data {
         id
+        providerName
         name
         description
         labels
@@ -26,6 +27,7 @@ export const REGISTER_APPLICATION_MUTATION = gql`
   mutation registerApplication($in: ApplicationRegisterInput!) {
     registerApplication(in: $in) {
       name
+      providerName
       description
       labels
       id
@@ -37,6 +39,7 @@ export const UNREGISTER_APPLICATION_MUTATION = gql`
   mutation unregisterApplication($id: ID!) {
     unregisterApplication(id: $id) {
       name
+      providerName
       description
       labels
       id
