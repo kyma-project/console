@@ -1,5 +1,3 @@
-export const POLL_INTERVAL = 4000;
-
 export const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
 export const createInstanceButtonText = {
   provisionOnlyOnce: 'Add once',
