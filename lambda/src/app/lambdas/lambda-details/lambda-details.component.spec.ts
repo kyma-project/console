@@ -15,6 +15,7 @@ import { SubscriptionsService } from '../../subscriptions/subscriptions.service'
 import { RouterTestingModule } from '@angular/router/testing';
 import { LambdasComponent } from '../list/lambdas.component';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { TriggersService } from '../../triggers/triggers.service';
 
 describe('LambdaDetailsComponent', () => {
   let component: LambdaDetailsComponent;
@@ -40,7 +41,8 @@ describe('LambdaDetailsComponent', () => {
         LambdaDetailsService,
         ServiceBindingsService,
         ServiceBindingUsagesService,
-        SubscriptionsService
+        SubscriptionsService,
+        TriggersService
       ]
     })
       .compileComponents();

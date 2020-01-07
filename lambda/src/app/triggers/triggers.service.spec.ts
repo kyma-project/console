@@ -7,9 +7,9 @@ import { AppConfig } from '../app.config';
 describe('TriggersService', () => {
   let triggersService: TriggersService;
   let httpClientMock: HttpTestingController;
-  // const name = 'fakesub';
-  // const namespace = 'fakeNamespace';
-  // const token = 'fakeToken';
+  const name = 'fakeTrigger';
+  const namespace = 'fakeNamespace';
+  const token = 'fakeToken';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -26,33 +26,35 @@ describe('TriggersService', () => {
 
   const response = {};
 
-  // it('should get subscriptions', (done) => {
-  //   const params = {};
-  //   subscriptionsService.getSubscriptions(namespace, token, params).subscribe((res) => {
-  //     done();
-  //   });
-  //   const request = httpClientMock.expectOne(
-  //     `${AppConfig.subscriptionApiUrl}/namespaces/${namespace}/subscriptions`
-  //   );
-  //   request.flush(response);
-  //   expect(request.request.method).toEqual('GET');
-  //   expect(request.request.headers.get('Content-type')).toEqual('application/json');
-  //   expect(request.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
-  //   httpClientMock.verify();
-  // });
+  it('should create trigger', (done) => {
+    const trigger = triggersService.initializeTrigger()
+    trigger.metadata['name'] = name;
+    trigger.metadata['namespace'] = namespace;    
+    triggersService.createTrigger(trigger, token).subscribe((res) => {
+      done();
+    });
+    const request = httpClientMock.expectOne(
+      `${AppConfig.triggerApiUrl}/namespaces/${namespace}/triggers`
+    );
+    request.flush(response);
+    expect(request.request.method).toEqual('POST');
+    expect(request.request.headers.get('Content-type')).toEqual('application/json');
+    expect(request.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
+    expect(request.request.body).toEqual(trigger)
+    httpClientMock.verify();
+  });
 
-  // it('should delete subscriptions', (done) => {
-  //   const params = {};
-  //   subscriptionsService.deleteSubscription(name, namespace, token).subscribe((res) => {
-  //     done();
-  //   });
-  //   const request = httpClientMock.expectOne(
-  //     `${AppConfig.subscriptionApiUrl}/namespaces/${namespace}/subscriptions/${name}`
-  //   );
-  //   request.flush(response);
-  //   expect(request.request.method).toEqual('DELETE');
-  //   expect(request.request.headers.get('Content-type')).toEqual('application/json');
-  //   expect(request.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
-  //   httpClientMock.verify();
-  // });
+  it('should delete trigger', (done) => {
+    triggersService.deleteTrigger(name, namespace, token).subscribe((res) => {
+      done();
+    });
+    const request = httpClientMock.expectOne(
+      `${AppConfig.triggerApiUrl}/namespaces/${namespace}/triggers/${name}`
+    );
+    request.flush(response);
+    expect(request.request.method).toEqual('DELETE');
+    expect(request.request.headers.get('Content-type')).toEqual('application/json');
+    expect(request.request.headers.get('Authorization')).toEqual('Bearer fakeToken');
+    httpClientMock.verify();
+  });
 });
