@@ -43,6 +43,7 @@ class BindApplicationModal extends React.Component {
       resourcesFilled: false,
       possibilityToCreate: false,
       tooltipData: null,
+      bindableResourcesError: '',
     };
   };
 
@@ -54,7 +55,10 @@ class BindApplicationModal extends React.Component {
         bindableResources,
       });
     } catch (e) {
-      console.warn(e);
+      console.error(e);
+      this.setState({
+        bindableResourcesError: e,
+      });
     }
   }
 
@@ -192,6 +196,7 @@ class BindApplicationModal extends React.Component {
       bindingsStepFilled,
       resourcesFilled,
       tooltipData,
+      bindableResourcesError,
     } = this.state;
 
     const { serviceInstance, usageKinds, id } = this.props;
@@ -302,6 +307,15 @@ class BindApplicationModal extends React.Component {
 
     const noApplicationsAvailable =
       bindableResources && !bindableResources.flatMap(r => r.resources).length;
+
+    if (bindableResourcesError && bindableResourcesError.message) {
+      return createDisabledBindApplicationButton(
+        <span>
+          Error while getting the list of bindable resources:{' '}
+          {bindableResourcesError.message}
+        </span>,
+      );
+    }
 
     if (noApplicationsAvailable) {
       return createDisabledBindApplicationButton(

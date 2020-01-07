@@ -2,14 +2,14 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { Modal } from '@kyma-project/react-components';
+import { Modal } from './../../../../../shared/components/Modal/Modal';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
 import { getActualChangesBy } from '../../../../../shared/utility';
 import ScenarioNameContext from '../../ScenarioNameContext';
 
 AssignEntityToScenarioModal.propTypes = {
   originalEntities: PropTypes.array.isRequired,
-  getEntitiesForScenario: PropTypes.object.isRequired,
+  entitiesForScenarioRefetchFn: PropTypes.func.isRequired,
 
   entityName: PropTypes.oneOf(['applications', 'runtimes']),
 
@@ -20,7 +20,7 @@ AssignEntityToScenarioModal.propTypes = {
 
 export default function AssignEntityToScenarioModal({
   originalEntities,
-  getEntitiesForScenario,
+  entitiesForScenarioRefetchFn,
   entityName,
   allEntitiesQuery,
   updateEntitiesLabels,
@@ -107,7 +107,7 @@ export default function AssignEntityToScenarioModal({
 
       const result = await Promise.allSettled(allUpdates);
 
-      await getEntitiesForScenario.refetch();
+      await entitiesForScenarioRefetchFn();
       await allEntitiesQuery.refetch();
 
       const rejected = result.filter(r => r.status === 'rejected');
@@ -132,15 +132,12 @@ export default function AssignEntityToScenarioModal({
 
   return (
     <Modal
-      width={'400px'}
       title={`Assign ${entityName} to scenario`}
       confirmText="Save"
       cancelText="Cancel"
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateEntities}
-      onShow={LuigiClient.uxManager().addBackdrop}
-      onHide={LuigiClient.uxManager().removeBackdrop}
     >
       <MultiChoiceList
         currentlySelectedItems={assignedEntities}

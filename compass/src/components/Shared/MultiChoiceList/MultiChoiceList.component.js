@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Dropdown, Icon } from '@kyma-project/react-components';
-import { Menu } from 'fundamental-react';
+import { Menu, Dropdown, Popover, Button } from 'fundamental-react';
 import './style.scss';
-import { areArraysEqual } from '../../../shared/utility';
 
 MultiChoiceList.propTypes = {
   placeholder: PropTypes.string,
@@ -30,69 +28,47 @@ export default function MultiChoiceList({
   noEntitiesAvailableMessage,
   displayPropertySelector,
 }) {
-  const [selectedItems, setSelectedItems] = React.useState(
-    currentlySelectedItems,
-  );
-  const [nonSelectedItems, setNonSelectedItems] = React.useState(
-    currentlyNonSelectedItems,
-  );
-
-  // refresh items if parent changed theirs
-  React.useEffect(() => {
-    if (!areArraysEqual(currentlySelectedItems, selectedItems)) {
-      setSelectedItems(currentlySelectedItems);
-    }
-    if (!areArraysEqual(currentlyNonSelectedItems, nonSelectedItems)) {
-      setNonSelectedItems(currentlyNonSelectedItems);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentlySelectedItems, currentlyNonSelectedItems]);
-
   function getDisplayName(item) {
     return displayPropertySelector ? item[displayPropertySelector] : item;
   }
 
   function selectItem(item) {
-    const newSelectedItems = [...selectedItems, item];
-    const newNonSelectedItems = nonSelectedItems.filter(i => i !== item);
+    const newSelectedItems = [...currentlySelectedItems, item];
+    const newNonSelectedItems = currentlyNonSelectedItems.filter(
+      i => i !== item,
+    );
 
-    updateLists(newSelectedItems, newNonSelectedItems);
+    updateItems(newSelectedItems, newNonSelectedItems);
   }
 
   function unselectItem(item) {
-    const newSelectedItems = selectedItems.filter(i => i !== item);
-    const newNonSelectedItems = [...nonSelectedItems, item];
-
-    updateLists(newSelectedItems, newNonSelectedItems);
-  }
-
-  function updateLists(newSelectedItems, newNonSelectedItems) {
-    setSelectedItems(newSelectedItems);
-    setNonSelectedItems(newNonSelectedItems);
+    const newSelectedItems = currentlySelectedItems.filter(i => i !== item);
+    const newNonSelectedItems = [...currentlyNonSelectedItems, item];
 
     updateItems(newSelectedItems, newNonSelectedItems);
   }
 
   function createSelectedEntitiesList() {
-    if (!selectedItems.length) {
+    if (!currentlySelectedItems.length) {
       return <p className="fd-has-font-style-italic">{notSelectedMessage}</p>;
     }
 
     return (
       <ul>
-        {selectedItems.map(item => (
+        {currentlySelectedItems.map(item => (
           <li
             className="multi-choice-list__list-element"
             key={getDisplayName(item)}
           >
             <span>{getDisplayName(item)}</span>
             <Button
+              data-test-id={`unselect-button`}
               option="light"
               type="negative"
               onClick={() => unselectItem(item)}
-            >
-              <Icon size="l" glyph="decline" />
-            </Button>
+              size="l"
+              glyph="decline"
+            />
           </li>
         ))}
       </ul>
@@ -100,28 +76,39 @@ export default function MultiChoiceList({
   }
 
   function createNonSelectedEntitiesDropdown() {
-    if (!nonSelectedItems.length) {
+    if (!currentlyNonSelectedItems.length) {
       return (
         <p className="fd-has-font-style-italic">{noEntitiesAvailableMessage}</p>
       );
     }
 
-    const nonChoosenItemsList = nonSelectedItems.map(item => (
-      <Menu.Item onClick={() => selectItem(item)}>
-        {getDisplayName(item)}
-      </Menu.Item>
-    ));
+    const nonChoosenItemsList = (
+      <Menu className="multi-choice-list__non-selected">
+        {currentlyNonSelectedItems.map(item => (
+          <Menu.Item
+            key={getDisplayName(item)}
+            onClick={() => selectItem(item)}
+          >
+            <span data-test-id={`select-button`}>{getDisplayName(item)}</span>
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
 
     return (
-      <Dropdown
-        control={
-          <Button dropdown typeAttr="button">
-            <span>{placeholder}</span>
-          </Button>
-        }
-        placement="bottom"
-      >
-        {nonChoosenItemsList}
+      <Dropdown>
+        <Popover
+          body={nonChoosenItemsList}
+          control={
+            <Button
+              className="fd-dropdown__control"
+              glyph="navigation-down-arrow"
+            >
+              {placeholder}
+            </Button>
+          }
+          widthSizingType="matchTarget"
+        />
       </Dropdown>
     );
   }

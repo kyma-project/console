@@ -1,11 +1,13 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
+import { hideExperimentalNode } from './navigation-helpers';
 
 function buildNode(node, spec, config) {
   var n = {
     label: node.label,
     pathSegment: node.navigationPath.split('/').pop(),
     viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : node.viewUrl,
-    hideFromNav: node.showInNavigation === false || undefined,
+    hideFromNav:
+      node.showInNavigation !== undefined ? !node.showInNavigation : false,
     order: node.order,
     context: {
       settings: node.settings
@@ -53,15 +55,17 @@ function getDirectChildren(parentNodeSegments, spec, config) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
         parentNodeSegments.length === currentNodeSegments.length - 1 &&
-        parentNodeSegments.filter(function(segment) {
-          return currentNodeSegments.includes(segment);
-        }).length > 0;
+        arraysEqual(parentNodeSegments, currentNodeSegments.slice(0, -1));
       return isDirectChild;
     })
     .map(function mapSecondLevelNodes(node) {
       // map direct children
       return buildNodeWithChildren(node, spec, config);
     });
+}
+
+function arraysEqual(arr1, arr2) {
+  return arr1.every((el, index) => el === arr2[index]);
 }
 
 // todo add coreUIViewGroupName handling
@@ -78,6 +82,7 @@ export default function convertToNavigationTree(
       var segments = node.navigationPath.split('/');
       return segments.length === 1;
     })
+
     .map(function processTopLevelNodes(node) {
       return buildNodeWithChildren(node, spec, config);
     })
@@ -109,7 +114,11 @@ export default function convertToNavigationTree(
 
         node.keepSelectedForChildren = true;
       }
-
       return node;
+    })
+    .map(n => {
+      const showExperimentalViews =
+        localStorage.getItem('console.showExperimentalViews') === 'true';
+      return hideExperimentalNode(n, showExperimentalViews);
     });
 }

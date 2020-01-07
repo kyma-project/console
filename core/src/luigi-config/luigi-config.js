@@ -8,9 +8,11 @@ import {
   saveCurrentLocation,
   getPreviousLocation
 } from './navigation-helpers';
+import { communication } from './communication';
+import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
-var k8sDomain = clusterConfig && clusterConfig['domain'] || 'kyma.local';
+var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
@@ -54,8 +56,8 @@ let navigation = {
       preloadUrl: '/consoleapp.html#/home/preload'
     },
     _core_ui_: {
-      preloadUrl: config.coreModuleUrl + '/preload',
-    },
+      preloadUrl: config.coreModuleUrl + '/preload'
+    }
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
   contextSwitcher: {
@@ -237,7 +239,11 @@ function getNodes(context) {
           ]
         }
       ]
-    }
+    },
+    {
+      category: { label: 'Experimental', icon: 'lab' },
+      hideFromNav : true
+    },
   ];
   return Promise.all([
     getMicrofrontends(namespace),
@@ -264,28 +270,6 @@ function getNodes(context) {
 }
 
 /**
- * We're using Promise based caching approach, since we often
- * execute getNamespace twice at the same time and we only
- * want to do one rest call.
- *
- * @param {string} namespaceName
- * @returns {Promise} nsPromise
- */
-async function getNamespace(namespaceName) {
-  const cacheName = '_console_namespace_promise_cache_';
-  if (!window[cacheName]) {
-    window[cacheName] = {};
-  }
-  const cache = window[cacheName];
-  if (!cache[namespaceName]) {
-    cache[namespaceName] = fetchFromKyma(
-      `${k8sServerUrl}/api/v1/namespaces/${namespaceName}`
-    );
-  }
-  return await cache[namespaceName];
-}
-
-/**
  * getMicrofrontends
  * @param {string} namespace k8s namespace name
  */
@@ -300,30 +284,9 @@ const getMicrofrontends = async namespace => {
   const cacheKey = segmentPrefix + namespace;
   const fromCache = cache[cacheKey];
 
-  const query = `query MicroFrontends($namespace: String!) {
-    microFrontends(namespace: $namespace){
-      name
-      category
-      viewBaseUrl
-      navigationNodes{
-        label
-        navigationPath
-        viewUrl
-        showInNavigation
-        order
-        settings
-        requiredPermissions{
-          verbs
-          resource
-          apiGroup
-        }
-      }
-    }
-  }`;
-
   return (
     fromCache ||
-    fetchFromGraphQL(query, { namespace }, true)
+    fetchFromGraphQL(GET_MICROFRONTENDS, { namespace }, true)
       .then(result => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
@@ -410,41 +373,6 @@ function fetchFromGraphQL(query, variables, gracefully) {
   });
 }
 
-function postToKyma(url, body) {
-  return new Promise(function(resolve, reject) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-      if (
-        xmlHttp.readyState == 4 &&
-        (xmlHttp.status == 200 || xmlHttp.status == 201)
-      ) {
-        try {
-          const response = JSON.parse(xmlHttp.response);
-          resolve(response);
-        } catch {
-          reject(xmlHttp.response);
-        }
-      } else if (
-        xmlHttp.readyState == 4 &&
-        xmlHttp.status != 200 &&
-        xmlHttp.status != 201
-      ) {
-        // TODO: investigate it, falls into infinite loop
-        // if (xmlHttp.status === 401) {
-        // relogin();
-        // }
-        // console.log(xmlHttp);
-        reject(xmlHttp.response);
-      }
-    };
-
-    xmlHttp.open('POST', url, true);
-    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify(body));
-  });
-}
-
 function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
   let hasPermissions = true;
   if (
@@ -484,51 +412,20 @@ function navigationPermissionChecker(nodeToCheckPermissionsFor) {
 }
 
 function getConsoleInitData() {
-  const query = `query {
-    selfSubjectRules {
-      verbs
-      resources
-      apiGroups
-		}
-    backendModules{
-      name
-    }
-    clusterMicroFrontends{
-      name
-      category
-      viewBaseUrl
-      preloadUrl
-      placement
-      navigationNodes{
-        label
-        navigationPath
-        viewUrl
-        showInNavigation
-        order
-        settings
-        externalLink
-        requiredPermissions{
-          verbs
-          resource
-          apiGroup
-        }
-      }
-    }
-  }`;
   const gracefully = true;
-  return fetchFromGraphQL(query, undefined, gracefully);
+  return fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, gracefully);
 }
 
 window.addEventListener('message', e => {
-  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT = 'showSystemNamespacesChangedEvent';
+  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT =
+    'showSystemNamespacesChangedEvent';
 
   if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
     window.Luigi.cachedNamespaces = null;
-  }
-  else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
+  } else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
     Luigi.customMessages().sendToAll({
       id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
-      showSystemNamespaces: e.data.showSystemNamespaces,
+      showSystemNamespaces: e.data.showSystemNamespaces
     });
   }
 });
@@ -648,6 +545,7 @@ Promise.all(initPromises)
                 cmf.placement === 'namespace' || cmf.placement === 'environment'
             )
             .map(cmf => {
+              // console.log(cmf.name, cmf);
               if (cmf.navigationNodes) {
                 return convertToNavigationTree(
                   cmf.name,
@@ -677,7 +575,8 @@ Promise.all(initPromises)
           idToken: token,
           backendModules,
           systemNamespaces,
-          showSystemNamespaces: localStorage.getItem('console.showSystemNamespaces') === 'true',
+          showSystemNamespaces:
+            localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
         children: function() {
           var staticNodes = [
@@ -686,7 +585,7 @@ Promise.all(initPromises)
               label: 'Namespaces',
               viewUrl: config.coreModuleUrl + '/namespaces',
               icon: 'dimension',
-              viewGroup: coreUIViewGroupName,
+              viewGroup: coreUIViewGroupName
             },
             {
               pathSegment: 'namespaces',
@@ -717,7 +616,7 @@ Promise.all(initPromises)
               label: 'General Settings',
               category: { label: 'Settings', icon: 'settings' },
               viewUrl: '/consoleapp.html#/home/settings/organisation',
-              viewGroup: consoleViewGroupName,
+              viewGroup: consoleViewGroupName
             },
             {
               pathSegment: 'global-permissions',
@@ -778,7 +677,7 @@ Promise.all(initPromises)
             viewUrl: config.docsModuleUrl,
             hideSideNav: true,
             context: {
-              group: ":group",
+              group: ':group'
             },
             children: [
               {
@@ -786,9 +685,9 @@ Promise.all(initPromises)
                 viewUrl: config.docsModuleUrl,
                 hideSideNav: true,
                 context: {
-                  group: ":group",
-                  topic: ":topic",
-                },
+                  group: ':group',
+                  topic: ':topic'
+                }
               }
             ]
           }
@@ -827,6 +726,7 @@ Promise.all(initPromises)
             }
           }
         },
+        communication,
         navigation,
         routing: {
           nodeParamPrefix: '~',

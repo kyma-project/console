@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import ScenarioDetailsHeader from './ScenarioDetailsHeader/ScenarioDetailsHeader.container';
-import ScenarioApplications from './ScenarioApplications/ScenarioApplications.container';
+import ScenarioDetailsHeader from './ScenarioDetailsHeader/ScenarioDetailsHeader';
+import ScenarioApplications from './ScenarioApplications/ScenarioApplications';
 import ScenarioRuntimes from './ScenarioRuntimes/ScenarioRuntimes.container';
-import './ScenarioDetails.scss';
 
 import ScenarioNameContext from './ScenarioNameContext';
 
@@ -13,13 +12,13 @@ ScenarioDetails.propTypes = {
 };
 
 export default function ScenarioDetails({ scenarioName }) {
+  const [applicationsCount, setApplicationsCount] = useState(0);
+
   return (
     <ScenarioNameContext.Provider value={scenarioName}>
-      <ScenarioDetailsHeader />
-      <section className="scenario-details__panel fd-section fd-has-margin-top-small">
-        <ScenarioApplications />
-        <ScenarioRuntimes />
-      </section>
+      <ScenarioDetailsHeader applicationsCount={applicationsCount} />
+      <ScenarioApplications updateApplicationsCount={setApplicationsCount} />
+      <ScenarioRuntimes />
     </ScenarioNameContext.Provider>
   );
 }

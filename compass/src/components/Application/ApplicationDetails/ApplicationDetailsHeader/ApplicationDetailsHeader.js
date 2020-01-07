@@ -12,6 +12,7 @@ import '../../../../shared/styles/header.scss';
 
 import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
+import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal.container';
 
 import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
@@ -21,10 +22,6 @@ function navigateToApplications() {
     .navigate(`/applications`);
 }
 
-function connectApplication(applicationId) {
-  console.log('todo connect', applicationId);
-}
-
 class ApplicationDetailsHeader extends React.Component {
   PropTypes = {
     application: PropTypes.object.isRequired,
@@ -32,7 +29,13 @@ class ApplicationDetailsHeader extends React.Component {
 
   render() {
     const isReadOnly = false; //todo
-    const { id, name, status, description } = this.props.application;
+    const {
+      id,
+      name,
+      status,
+      description,
+      providerName,
+    } = this.props.application;
 
     return (
       <header className="fd-has-background-color-background-2">
@@ -51,12 +54,9 @@ class ApplicationDetailsHeader extends React.Component {
           <ActionBar.Actions>
             {/* todo can be readonly */}
             {!isReadOnly && (
-              <Button
-                onClick={() => connectApplication(id)}
-                option="emphasized"
-              >
-                Connect Application
-              </Button>
+              <ConnectApplicationModal
+                applicationId={this.props.application.id}
+              />
             )}
             <ApplicationQueryContext.Consumer>
               {applicationQuery => (
@@ -89,10 +89,11 @@ class ApplicationDetailsHeader extends React.Component {
           </ActionBar.Actions>
         </section>
         <PanelGrid nogap cols={4}>
-          <PanelEntry title="Description" content={<p>{description}</p>} />
+          <PanelEntry title="Provider Name" children={<p>{providerName}</p>} />
+          <PanelEntry title="Description" children={<p>{description}</p>} />
           <PanelEntry
             title="Status"
-            content={<Badge>{status.condition}</Badge>}
+            children={<Badge>{status.condition}</Badge>}
           />
         </PanelGrid>
       </header>

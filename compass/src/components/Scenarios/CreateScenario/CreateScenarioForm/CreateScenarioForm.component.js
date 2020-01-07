@@ -12,7 +12,9 @@ export default function CreateScenarioForm({
   updateScenarioName,
   nameError,
   updateApplications,
+  applicationsToAssign,
   updateRuntimes,
+  runtimesToAssign,
 }) {
   if (applicationsQuery.loading || runtimesQuery.loading) {
     return 'Loading...';
@@ -23,6 +25,14 @@ export default function CreateScenarioForm({
   if (runtimesQuery.error) {
     return `Error! ${runtimesQuery.error.message}`;
   }
+
+  const nonSelectedRuntimes = runtimesQuery.entities.data.filter(
+    runtime => !runtimesToAssign.find(e => e.name === runtime.name),
+  );
+
+  const nonSelectedApplications = applicationsQuery.entities.data.filter(
+    application => !applicationsToAssign.find(e => e.name === application.name),
+  );
 
   return (
     <section className="create-scenario-form">
@@ -44,8 +54,8 @@ export default function CreateScenarioForm({
         <MultiChoiceList
           placeholder="Choose runtime"
           updateItems={updateRuntimes}
-          currentlySelectedItems={[]}
-          currentlyNonSelectedItems={runtimesQuery.entities.data}
+          currentlySelectedItems={runtimesToAssign}
+          currentlyNonSelectedItems={nonSelectedRuntimes}
           notSelectedMessage=""
           noEntitiesAvailableMessage="No Runtimes available"
           itemSelector="runtimes"
@@ -57,8 +67,8 @@ export default function CreateScenarioForm({
         <MultiChoiceList
           placeholder="Choose application"
           updateItems={updateApplications}
-          currentlySelectedItems={[]}
-          currentlyNonSelectedItems={applicationsQuery.entities.data}
+          currentlySelectedItems={applicationsToAssign}
+          currentlyNonSelectedItems={nonSelectedApplications}
           notSelectedMessage=""
           noEntitiesAvailableMessage="No Applications available"
           itemSelector="applications"
@@ -76,5 +86,8 @@ CreateScenarioForm.propTypes = {
   updateScenarioName: PropTypes.func.isRequired,
   nameError: PropTypes.string,
   updateApplications: PropTypes.func.isRequired,
+  applicationsToAssign: PropTypes.arrayOf(PropTypes.object.isRequired)
+    .isRequired,
   updateRuntimes: PropTypes.func.isRequired,
+  runtimesToAssign: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };

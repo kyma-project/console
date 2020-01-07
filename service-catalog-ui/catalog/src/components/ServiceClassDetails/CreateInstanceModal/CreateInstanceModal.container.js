@@ -1,31 +1,19 @@
-import React from 'react';
-import { graphql, withApollo, compose } from 'react-apollo';
-
-import { CHECK_INSTANCE_EXISTS } from './queries';
-import { SEND_NOTIFICATION } from './mutations';
+import { graphql } from 'react-apollo';
+import { compose } from 'recompose';
+import { checkInstanceExist } from './queries';
 
 import builder from '../../../commons/builder';
 import CreateInstanceModal from './CreateInstanceModal.component';
 
-const CreateInstanceContainer = ({ client, ...props }) => {
-  const instanceExists = name => {
-    return client.query({
-      query: CHECK_INSTANCE_EXISTS,
-      variables: {
-        name: name,
-        namespace: builder.getCurrentEnvironmentId(),
-      },
-      fetchPolicy: 'network-only',
-      errorPolicy: 'all',
-    });
-  };
-  return <CreateInstanceModal instanceExists={instanceExists} {...props} />;
-};
-
-const CreateInstanceContainerWithCompose = compose(
-  graphql(SEND_NOTIFICATION, {
-    name: 'sendNotification',
+export default compose(
+  graphql(checkInstanceExist, {
+    name: 'checkInstanceExistQuery',
+    options: () => {
+      return {
+        variables: {
+          namespace: builder.getCurrentEnvironmentId(),
+        },
+      };
+    },
   }),
-)(CreateInstanceContainer);
-
-export default withApollo(CreateInstanceContainerWithCompose);
+)(CreateInstanceModal);

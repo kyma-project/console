@@ -111,3 +111,11 @@ export class DocsProcessor {
     return this.docs;
   }
 }
+
+export function isAddon(serviceClass) {
+  return serviceClass.labels && serviceClass.labels.local === 'true';
+}
+
+export function isService(serviceClass) {
+  return !serviceClass.labels || serviceClass.labels.local !== 'true';
+}

@@ -8,12 +8,13 @@ import { handleDelete, GenericList } from 'react-shared';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
 
 import ModalWithForm from '../../shared/components/ModalWithForm/ModalWithForm.container';
-import CreateRuntimeForm from './CreateRuntimeForm/CreateRuntimeForm.container';
+import RegisterRuntimeForm from './RegisterRuntimeForm/RegisterRuntimeForm.container';
+import { PageHeader } from 'react-shared';
 
 class Runtimes extends React.Component {
   static propTypes = {
     runtimes: PropTypes.object.isRequired,
-    deleteRuntime: PropTypes.func.isRequired,
+    unregisterRuntime: PropTypes.func.isRequired,
   };
 
   headerRenderer = () => ['Name', 'Description', 'Scenarios', 'Status'];
@@ -46,7 +47,7 @@ class Runtimes extends React.Component {
           'Runtime',
           entry.id,
           entry.name,
-          this.props.deleteRuntime,
+          this.props.unregisterRuntime,
           this.props.runtimes.refetch,
         );
       },
@@ -65,24 +66,25 @@ class Runtimes extends React.Component {
     if (error) return `Error! ${error.message}`;
 
     return (
-      <GenericList
-        extraHeaderContent={
-          <ModalWithForm
-            title="Create new runtime"
-            button={{ text: 'Create runtime', glyph: 'add' }}
-            confirmText="Create"
-            performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
-          >
-            <CreateRuntimeForm />
-          </ModalWithForm>
-        }
-        title="Runtimes"
-        description="List of all runtimes"
-        actions={this.actions}
-        entries={runtimes}
-        headerRenderer={this.headerRenderer}
-        rowRenderer={this.rowRenderer}
-      />
+      <>
+        <PageHeader title="Runtimes" />
+        <GenericList
+          extraHeaderContent={
+            <ModalWithForm
+              title="Create new runtime"
+              button={{ text: 'Create runtime', option: 'light' }}
+              confirmText="Create"
+              performRefetch={() => runtimesQuery.refetch()} // to be removed after subscriptions are done
+            >
+              <RegisterRuntimeForm />
+            </ModalWithForm>
+          }
+          actions={this.actions}
+          entries={runtimes}
+          headerRenderer={this.headerRenderer}
+          rowRenderer={this.rowRenderer}
+        />
+      </>
     );
   }
 }

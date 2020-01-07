@@ -5,16 +5,17 @@ export const GET_APPLICATIONS = gql`
     applications {
       data {
         id
+        providerName
         name
         description
         labels
         status {
           condition
         }
-        apis {
+        apiDefinitions {
           totalCount
         }
-        eventAPIs {
+        eventDefinitions {
           totalCount
         }
       }
@@ -22,10 +23,11 @@ export const GET_APPLICATIONS = gql`
   }
 `;
 
-export const CREATE_APPLICATION_MUTATION = gql`
-  mutation createApplication($in: ApplicationCreateInput!) {
-    createApplication(in: $in) {
+export const REGISTER_APPLICATION_MUTATION = gql`
+  mutation registerApplication($in: ApplicationRegisterInput!) {
+    registerApplication(in: $in) {
       name
+      providerName
       description
       labels
       id
@@ -33,10 +35,11 @@ export const CREATE_APPLICATION_MUTATION = gql`
   }
 `;
 
-export const DELETE_APPLICATION_MUTATION = gql`
-  mutation deleteApplication($id: ID!) {
-    deleteApplication(id: $id) {
+export const UNREGISTER_APPLICATION_MUTATION = gql`
+  mutation unregisterApplication($id: ID!) {
+    unregisterApplication(id: $id) {
       name
+      providerName
       description
       labels
       id

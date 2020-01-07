@@ -8,6 +8,7 @@ import {
 } from '@kyma-project/documentation-component';
 import { plugins as markdownPlugins } from '@kyma-project/dc-markdown-render-engine';
 import { TabProps } from '@kyma-project/components';
+import { ClusterAssetGroup, AssetGroup } from '@kyma-project/common';
 
 import { markdownRE, openApiRE, asyncApiRE, odataRE } from './render-engines';
 import {
@@ -22,7 +23,7 @@ import {
   replaceImagePathsMutationPlugin,
   removeHrefFromMarkdown,
 } from './render-engines/markdown/plugins';
-import { loader, ClusterDocsTopic, DocsTopic } from './loader';
+import { loader } from './loader';
 import { disableClickEventFromSwagger } from './helpers';
 import {
   headingPrefix,
@@ -90,17 +91,17 @@ export enum LayoutType {
   COMPASS_UI = 'compass-ui',
 }
 
-export interface GenericComponentProps {
-  docsTopic?: ClusterDocsTopic | DocsTopic;
+export interface GenericDocumentationProps {
+  assetGroup?: ClusterAssetGroup | AssetGroup;
   sources?: Sources;
   layout?: LayoutType;
   additionalTabs?: TabProps[];
 }
 
-export const GenericComponent: React.FunctionComponent<
-  GenericComponentProps
+export const GenericDocumentation: React.FunctionComponent<
+  GenericDocumentationProps
 > = ({
-  docsTopic,
+  assetGroup,
   sources: srcs = [],
   layout = LayoutType.CONTENT_UI,
   ...others
@@ -112,18 +113,18 @@ export const GenericComponent: React.FunctionComponent<
   const [sources, setSources] = useState<Sources>(srcs);
   useEffect(() => {
     const fetchAssets = async () => {
-      if (!docsTopic) {
+      if (!assetGroup) {
         return;
       }
 
-      loader.setDocsTopic(docsTopic);
+      loader.setAssetGroup(assetGroup);
       loader.setSortServiceClassDocumentation(layout !== LayoutType.CONTENT_UI);
       await loader.fetchAssets();
 
       setSources(loader.getSources(layout !== LayoutType.CONTENT_UI));
     };
     fetchAssets();
-  }, [docsTopic]);
+  }, [assetGroup]);
 
   if (!sources || !sources.length) {
     return null;
@@ -139,3 +140,4 @@ export const GenericComponent: React.FunctionComponent<
     </DC.Provider>
   );
 };
+export const GenericComponent = GenericDocumentation;

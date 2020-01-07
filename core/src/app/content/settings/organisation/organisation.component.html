@@ -62,13 +62,39 @@
         <fd-panel-head>
           <h2 fd-panel-title>Namespaces settings</h2>
         </fd-panel-head>
+        <fd-panel-actions>
+          <div [dir]="'rtl'">
+            <fd-toggle
+              [(ngModel)]="showSystemNamespaces"
+              (change)="toggleSystemNamespaceVisibility()"
+              >Show System Namespaces
+            </fd-toggle>
+          </div>
+        </fd-panel-actions>
+      </fd-panel-header>
+    </fd-panel>
+
+    <fd-panel class="y-fd-panel">
+      <fd-panel-header>
+        <fd-panel-head>
+          <h2 fd-panel-title>Experimental functionalities</h2>
+        </fd-panel-head>
+        <fd-panel-actions>
+          <div [dir]="'rtl'">
+            <fd-toggle
+              [(ngModel)]="showExperimentalViews"
+              (change)="toggleExperimentalViews()"
+              >Enable all
+            </fd-toggle>
+          </div>
+        </fd-panel-actions>
       </fd-panel-header>
       <fd-panel-body>
-        <fd-toggle
-          [(ngModel)]="showSystemNamespaces"
-          (change)="toggleSystemNamespaceVisibility()"
-          >Show System Namespaces</fd-toggle
-        >
+        <p>
+          Enables all views which expose experimental features in the UI.<br> Refresh the page after enabling this option to see
+          additional navigation nodes in the
+          <strong>Experimental</strong> category of the left navigation.
+        </p>
       </fd-panel-body>
     </fd-panel>
   </fd-panel-grid>

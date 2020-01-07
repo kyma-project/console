@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from '@kyma-project/react-components';
 
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
 import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.container';
@@ -8,7 +7,7 @@ import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 
 export const RuntimeQueryContext = React.createContext(null);
 
-const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
+const RuntimeDetails = ({ runtimeQuery, unregisterRuntime }) => {
   const { runtime, loading, error } = runtimeQuery;
 
   if (loading) return 'Loading...';
@@ -27,20 +26,18 @@ const RuntimeDetails = ({ runtimeQuery, deleteRuntime }) => {
 
   return (
     <RuntimeQueryContext.Provider value={runtimeQuery}>
-      <RuntimeDetailsHeader runtime={runtime} deleteRuntime={deleteRuntime} />
-
-      <section className="fd-section">
-        <Panel>
-          <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
-        </Panel>
-      </section>
+      <RuntimeDetailsHeader
+        runtime={runtime}
+        unregisterRuntime={unregisterRuntime}
+      />
+      <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
     </RuntimeQueryContext.Provider>
   );
 };
 
 RuntimeDetails.propTypes = {
   runtimeQuery: PropTypes.object.isRequired,
-  deleteRuntime: PropTypes.func.isRequired,
+  unregisterRuntime: PropTypes.func.isRequired,
 };
 
 export default RuntimeDetails;

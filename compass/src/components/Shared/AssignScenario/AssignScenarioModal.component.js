@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import _ from 'lodash';
 
-import { Modal, Button, Icon } from '@kyma-project/react-components';
+import { Button } from '@kyma-project/react-components';
+import { Modal } from './../../../shared/components/Modal/Modal';
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 
 AssignScenarioModal.propTypes = {
@@ -69,11 +70,7 @@ export default function AssignScenarioModal(props) {
     }
   }
 
-  const modalOpeningComponent = (
-    <Button>
-      <Icon glyph="add" />
-    </Button>
-  );
+  const modalOpeningComponent = <Button option="light">Edit</Button>;
 
   const { loading, error, scenarios } = props.availableScenariosQuery;
 
@@ -86,18 +83,13 @@ export default function AssignScenarioModal(props) {
 
   return (
     <Modal
-      width={'400px'}
       title={props.title}
       confirmText="Save"
       cancelText="Close"
       type={'emphasized'}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateLabels}
-      onShow={() => {
-        reinitializeState();
-        LuigiClient.uxManager().addBackdrop();
-      }}
-      onHide={() => LuigiClient.uxManager().removeBackdrop()}
+      onShow={reinitializeState}
     >
       <MultiChoiceList
         currentlySelectedItems={currentScenarios}

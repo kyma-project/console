@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-export const CHECK_INSTANCE_EXISTS = gql`
-  query serviceInstance($name: String!, $namespace: String!) {
-    serviceInstance(name: $name, namespace: $namespace) {
+export const checkInstanceExist = gql`
+  query serviceInstances($namespace: String!) {
+    serviceInstances(namespace: $namespace) {
       name
     }
   }

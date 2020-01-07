@@ -22,14 +22,23 @@ const plansQGL = `
   externalName
 `;
 
-const docsTopic = `
-      name
-      groupName
-      displayName
-      description
+const assetGroupQGL = `
+  name
+  groupName
+  displayName
+  description
+  assets {
+    name
+    parameters
+    type
+    files(filterExtensions: $filterExtensions) {
+      url
+      metadata
+    }
+  }
 `;
 
-export const GET_SERVICE_CLASS = gql`
+export const getServiceClass = gql`
   query getServiceClass($name: String!, $namespace: String!,$filterExtensions: [String!]) {
     clusterServiceClass(name: $name) {
       ${serviceClassQGL}
@@ -44,19 +53,9 @@ export const GET_SERVICE_CLASS = gql`
         }
       }
       activated(namespace: $namespace)
-      clusterDocsTopic {
-        ${docsTopic}
-          assets {
-             name
-             metadata
-             type
-             files(filterExtensions: $filterExtensions){
-              url
-              metadata
-          }
-        } 
+      clusterAssetGroup {
+        ${assetGroupQGL} 
       }
-     
     }
     serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
@@ -73,31 +72,12 @@ export const GET_SERVICE_CLASS = gql`
         }
       }
       activated
-      docsTopic {
-         ${docsTopic}
-          assets {
-             name
-             metadata
-             type
-             files(filterExtensions: $filterExtensions){
-              url
-              metadata
-          }
-        } 
+      assetGroup {
+        ${assetGroupQGL} 
       }
-      clusterDocsTopic{
-        ${docsTopic}
-          assets {
-             name
-             metadata
-             type
-             files(filterExtensions: $filterExtensions){
-              url
-              metadata
-          }
-        } 
+      clusterAssetGroup {
+        ${assetGroupQGL} 
       }
- 
     }
   }
 `;

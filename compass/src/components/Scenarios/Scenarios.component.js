@@ -5,6 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
 import EnititesForScenarioCount from './EnititesForScenarioCount';
+import { PageHeader } from 'react-shared';
 
 import {
   GET_APPLICATIONS_FOR_SCENARIO,
@@ -54,16 +55,17 @@ class Scenarios extends React.Component {
     const scenariosObjects = scenarios.map(scenario => ({ name: scenario }));
 
     return (
-      <GenericList
-        title="Scenarios"
-        description="List of scenarios"
-        entries={scenariosObjects}
-        headerRenderer={this.headerRenderer}
-        rowRenderer={this.rowRenderer}
-        extraHeaderContent={
-          <CreateScenarios scenariosQuery={scenarioLabelSchema} />
-        }
-      />
+      <>
+        <PageHeader title="Scenarios" />
+        <GenericList
+          entries={scenariosObjects}
+          headerRenderer={this.headerRenderer}
+          rowRenderer={this.rowRenderer}
+          extraHeaderContent={
+            <CreateScenarios scenariosQuery={scenarioLabelSchema} />
+          }
+        />
+      </>
     );
   }
 }

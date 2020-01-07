@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScenarioRuntimes Renders with minimal props 1`] = `
+<GenericListMocked
+  actions={
+    Array [
+      Object {
+        "handler": [Function],
+        "name": "Unassign",
+      },
+    ]
+  }
+  entries={
+    Array [
+      Object {
+        "id": "id 1",
+        "labels": Object {},
+        "name": "Runtime 1",
+      },
+    ]
+  }
+  extraHeaderContent={
+    <Apollo(Apollo(Apollo(withProps(AssignEntityToScenarioModal))))
+      originalEntities={
+        Array [
+          Object {
+            "id": "id 1",
+            "labels": Object {},
+            "name": "Runtime 1",
+          },
+        ]
+      }
+    />
+  }
+  headerRenderer={[Function]}
+  notFoundMessage="No Runtimes for this Scenario"
+  rowRenderer={[Function]}
+  showSearchField={false}
+  title="Runtimes"
+/>
+`;

@@ -13,6 +13,10 @@
     "eject": "../../node_modules/.bin/react-app-rewired eject"
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.0",
+    "@apollo/react-testing": "^3.1.0",
+    "apollo-link": "^1.2.13",
+    "react-apollo": "^3.0.0",
     "styled-components": "^3.4.10",
     "styled-components-grid": "^2.2.2"
   },
@@ -30,5 +34,10 @@
   },
   "config": {
     "unsafe-perm": true
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

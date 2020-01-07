@@ -5,7 +5,7 @@ import { FormLabel } from 'fundamental-react';
 import { CustomPropTypes } from 'react-shared';
 
 const formProps = {
-  formElementRef: CustomPropTypes.elementRef,
+  formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
@@ -35,6 +35,7 @@ export default function UpdateApplicationForm({
 }) {
   const formValues = {
     name: React.useRef(null),
+    providerName: React.useRef(null),
     description: React.useRef(null),
   };
 
@@ -67,20 +68,26 @@ export default function UpdateApplicationForm({
 
     const name = formValues.name.current.value;
     const description = formValues.description.current.value;
-    if (name === application.name && description === application.description) {
+    const providerName = formValues.providerName.current.value;
+    if (
+      name === application.name &&
+      description === application.description &&
+      providerName === application.providerName
+    ) {
       return;
     }
 
     try {
       await updateApplication(application.id, {
         name,
+        providerName,
         description,
         healthCheckURL: application.healthCheckURL,
       });
       onCompleted(name, 'Application updated successfully');
     } catch (e) {
       console.warn(e);
-      onError(`Error occured while updating Application`, e.message || ``);
+      onError(`Error occurred while updating Application`, e.message || ``);
     }
   };
 
@@ -88,7 +95,6 @@ export default function UpdateApplicationForm({
     <form
       onChange={onFormChange}
       ref={formElementRef}
-      style={{ width: '30em' }}
       onSubmit={handleFormSubmit}
     >
       <FormLabel htmlFor="application-name">Name</FormLabel>
@@ -99,6 +105,16 @@ export default function UpdateApplicationForm({
         ref={formValues.name}
         defaultValue={application.name}
         placeholder="Application name"
+        required
+      />
+      <FormLabel htmlFor="provider-name">Provider Name</FormLabel>
+      <input
+        className="fd-has-margin-bottom-small"
+        type="text"
+        id="provider-name"
+        ref={formValues.providerName}
+        defaultValue={application.providerName}
+        placeholder="Provider name"
         required
       />
       <FormLabel htmlFor="application-description">Description</FormLabel>

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toolbar Renders cluster addons title 1`] = `
+<Styled(ActionBar)>
+  <ActionBar.Header
+    description="Create and manage cluster-wide addons configurations, which allows you to extend the Service Catalog with additional cluster-wide services."
+    headingLevel={3}
+    title="Cluster Addons Configuration"
+  />
+  <ActionBar.Actions>
+    <AddNewConfigurationModalContainer />
+  </ActionBar.Actions>
+</Styled(ActionBar)>
+`;
+
+exports[`Toolbar Renders namespaced addons title 1`] = `
+<Styled(ActionBar)>
+  <ActionBar.Header
+    description="Create and manage Namespace-scoped addons configurations, which allows you to extend the Service Catalog with additional Namespace-scoped services."
+    headingLevel={3}
+    title="Addons Configuration"
+  />
+  <ActionBar.Actions>
+    <AddNewConfigurationModalContainer />
+  </ActionBar.Actions>
+</Styled(ActionBar)>
+`;

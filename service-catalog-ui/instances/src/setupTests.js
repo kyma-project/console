@@ -7,6 +7,16 @@ global.crypto = {
     return nodeCrypto.randomFillSync(buffer);
   },
 };
+
+global.document.createRange = () => ({
+  setStart: () => {},
+  setEnd: () => {},
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
+
 global.URL.createObjectURL = jest.fn();
 
 global.wait = require('waait');

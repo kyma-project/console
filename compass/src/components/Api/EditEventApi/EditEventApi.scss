@@ -1,0 +1,15 @@
+.edit-event-api-tabs ~ .fd-tabs__panel {
+    & input:invalid {
+        border: 1px solid var(--fd-color-status-3);
+    }
+
+    > * {
+        margin: 16px;
+        max-width: 500px;
+        padding-bottom: 16px;
+    }
+    
+    .spec-editor-panel {
+        max-width: unset;
+    }
+}

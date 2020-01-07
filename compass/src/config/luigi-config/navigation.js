@@ -21,6 +21,7 @@ const navigation = {
       context: {
         idToken: token,
       },
+      viewGroup: 'compass',
     },
     {
       hideSideNav: true,
@@ -29,11 +30,13 @@ const navigation = {
       children: [
         {
           hideSideNav: true,
-          pathSegment: ':tenantId',
+          pathSegment: ':tenantName',
           navigationContext: 'tenant',
           context: {
             idToken: token,
-            tenantId: ':tenantId',
+            tenantName: ':tenantName',
+            defaultTenantId: window.clusterConfig.defaultTenant,
+            tenants: window.clusterConfig.tenants,
           },
           children: [
             {
@@ -76,6 +79,7 @@ const navigation = {
                               viewUrl:
                                 compassMfUrl +
                                 '/application/:applicationId/api/:apiId',
+                              navigationContext: 'api',
                               children: [
                                 {
                                   pathSegment: 'edit',
@@ -96,6 +100,7 @@ const navigation = {
                               viewUrl:
                                 compassMfUrl +
                                 '/application/:applicationId/eventApi/:eventApiId',
+                              navigationContext: 'eventApi',
                               children: [
                                 {
                                   pathSegment: 'edit',
@@ -155,13 +160,14 @@ const navigation = {
           ],
         },
       ],
+      viewGroup: 'compass',
     },
   ],
 
   contextSwitcher: {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
-    lazyloadOptions: false,
+    lazyloadOptions: true,
     options: getTenants,
   },
 };

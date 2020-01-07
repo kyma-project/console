@@ -97,6 +97,7 @@ const ModalWithForm = ({
     <div>
       <Button
         glyph={button.glyph || null}
+        option={button.option}
         onClick={() => {
           setOpenStatus(true);
         }}
@@ -149,6 +150,7 @@ ModalWithForm.propTypes = {
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
+    option: PropTypes.oneOf(['emphasized', 'light']),
   }).isRequired,
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,

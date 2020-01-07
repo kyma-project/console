@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Modal, Button } from '@kyma-project/react-components';
+import { Button } from '@kyma-project/react-components';
+import { Modal } from './../../../../shared/components/Modal/Modal';
 
 import CreateScenarioForm from './../CreateScenarioForm/CreateScenarioForm.container';
 
@@ -54,7 +55,7 @@ export default class CreateScenarioModal extends React.Component {
 
   disabledConfirm = () => {
     const { name, nameError } = this.state;
-    return !name.trim() || nameError;
+    return !name.trim() || !!nameError;
   };
 
   addScenarioAndAssignEntries = async () => {
@@ -148,11 +149,12 @@ export default class CreateScenarioModal extends React.Component {
   };
 
   render() {
-    const modalOpeningComponent = <Button glyph="add">Create Scenario</Button>;
+    const modalOpeningComponent = (
+      <Button option="light">Create Scenario</Button>
+    );
 
     return (
       <Modal
-        width={'400px'}
         title="Create scenario"
         confirmText="Save"
         cancelText="Close"
@@ -160,14 +162,14 @@ export default class CreateScenarioModal extends React.Component {
         disabledConfirm={this.disabledConfirm()}
         modalOpeningComponent={modalOpeningComponent}
         onConfirm={this.addScenarioAndAssignEntries}
-        onShow={() => LuigiClient.uxManager().addBackdrop()}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       >
         <CreateScenarioForm
           updateScenarioName={this.updateScenarioName}
           nameError={this.state.nameError}
           updateApplications={this.updateApplications}
+          applicationsToAssign={this.state.applicationsToAssign}
           updateRuntimes={this.updateRuntimes}
+          runtimesToAssign={this.state.runtimesToAssign}
         />
       </Modal>
     );

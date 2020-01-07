@@ -4,6 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericList, handleDelete } from 'react-shared';
 import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.container';
+import { PageHeader } from 'react-shared';
 
 class MetadataDefinitions extends React.Component {
   headerRenderer = () => ['Labels', 'Schema Provided'];
@@ -11,7 +12,9 @@ class MetadataDefinitions extends React.Component {
   rowRenderer = labelDef => [
     <span
       onClick={() =>
-        LuigiClient.linkManager().navigate(`details/${labelDef.key}`)
+        LuigiClient.linkManager().navigate(
+          `details/${encodeURIComponent(labelDef.key)}`,
+        )
       }
       className="link"
     >
@@ -49,14 +52,17 @@ class MetadataDefinitions extends React.Component {
     if (error) return `Error! ${error.message}`;
 
     return (
-      <GenericList
-        title="Metadata Definitions"
-        entries={labelsDefinitions}
-        headerRenderer={this.headerRenderer}
-        rowRenderer={this.rowRenderer}
-        extraHeaderContent={<CreateLabelModal />}
-        actions={this.actions}
-      />
+      <>
+        <PageHeader title="Metadata Definitions" />
+        <GenericList
+          entries={labelsDefinitions}
+          headerRenderer={this.headerRenderer}
+          rowRenderer={this.rowRenderer}
+          extraHeaderContent={<CreateLabelModal />}
+          actions={this.actions}
+          textSearchProperties={['key']}
+        />
+      </>
     );
   }
 }

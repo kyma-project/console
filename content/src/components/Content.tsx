@@ -1,25 +1,27 @@
 import React, { useContext } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import {
-  GenericComponent,
+  GenericDocumentation,
   LayoutType,
 } from '@kyma-project/generic-documentation';
 
-import { DocsTopicsService } from '../services';
+import { ClusterAssetGroupsService } from '../services';
 import { ContentWrapper } from './styled';
 
 export const Content: React.FunctionComponent<RouteComponentProps> = () => {
-  const { activeDocsTopic } = useContext(DocsTopicsService);
+  const { activeClusterAssetGroup } = useContext(ClusterAssetGroupsService);
 
-  if (!activeDocsTopic) {
+  if (!activeClusterAssetGroup) {
     return null;
   }
 
   return (
     <ContentWrapper>
-      <h1 data-e2e-id="toolbar-header">{activeDocsTopic.displayName}</h1>
-      <GenericComponent
-        docsTopic={activeDocsTopic}
+      <h1 data-e2e-id="toolbar-header">
+        {activeClusterAssetGroup.displayName}
+      </h1>
+      <GenericDocumentation
+        assetGroup={activeClusterAssetGroup}
         layout={LayoutType.CONTENT_UI}
       />
     </ContentWrapper>

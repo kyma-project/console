@@ -1,16 +1,25 @@
 import gql from 'graphql-tag';
 
-export const GET_APPLICATION_WITH_APIS = gql`
+export const GET_APPLICATION_WITH_API_DEFINITIONS = gql`
   query Application($applicationId: ID!) {
     application(id: $applicationId) {
       name
       id
-      apis {
+      apiDefinitions {
         data {
           id
           name
           description
           targetURL
+          defaultAuth {
+            credential {
+              ... on OAuthCredentialData {
+                clientId
+                clientSecret
+                url
+              }
+            }
+          }
           spec {
             data
             format
@@ -24,12 +33,12 @@ export const GET_APPLICATION_WITH_APIS = gql`
   }
 `;
 
-export const GET_APPLICATION_WITH_EVENT_APIS = gql`
+export const GET_APPLICATION_WITH_EVENT_DEFINITIONS = gql`
   query Application($applicationId: ID!) {
     application(id: $applicationId) {
       name
       id
-      eventAPIs {
+      eventDefinitions {
         data {
           id
           name
@@ -47,17 +56,17 @@ export const GET_APPLICATION_WITH_EVENT_APIS = gql`
   }
 `;
 
-export const DELETE_API = gql`
+export const DELETE_API_DEFINITION = gql`
   mutation deleteApi($id: ID!) {
-    deleteAPI(id: $id) {
+    deleteAPIDefinition(id: $id) {
       name
     }
   }
 `;
 
-export const DELETE_EVENT_API = gql`
+export const DELETE_EVENT_DEFINITION = gql`
   mutation deleteEventApi($id: ID!) {
-    deleteEventAPI(id: $id) {
+    deleteEventDefinition(id: $id) {
       name
     }
   }

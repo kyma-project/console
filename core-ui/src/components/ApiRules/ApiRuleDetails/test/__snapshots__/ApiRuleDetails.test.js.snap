@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApiRuleDetails renders breadcrumb 1`] = `
+Array [
+  <li
+    aria-label="breadcrumb-item"
+    class="fd-breadcrumb__item"
+  >
+    <a
+      class="fd-breadcrumb__link"
+      href="#"
+    >
+      API Rules
+    </a>
+  </li>,
+  <li
+    aria-label="breadcrumb-item"
+    class="fd-breadcrumb__item"
+  >
+    <a
+      class="fd-breadcrumb__link"
+      href="#"
+    />
+  </li>,
+]
+`;
+
+exports[`ApiRuleDetails renders error 1`] = `
+<div>
+  <h1>
+    Couldn't fetch API rule data
+  </h1>
+</div>
+`;

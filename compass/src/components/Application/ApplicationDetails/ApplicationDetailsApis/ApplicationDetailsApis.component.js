@@ -1,26 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Panel } from '@kyma-project/react-components';
+import './ApplicationDetailsApis.scss';
 
-import { GenericList } from 'react-shared';
+import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
-import CreateAPIModal from '../CreateAPIModal/CreateAPIModal.container';
-import { handleDelete } from 'react-shared';
+import CreateApiForm from '../../../Api/CreateApiForm/CreateApiForm.container';
+
+import { GenericList, handleDelete } from 'react-shared';
+import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
 
 ApplicationDetailsApis.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  apis: PropTypes.object.isRequired,
+  apiDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  deleteAPI: PropTypes.func.isRequired,
+  deleteAPIDefinition: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsApis({
   applicationId,
-  apis,
+  apiDefinitions,
   sendNotification,
-  deleteAPI,
+  deleteAPIDefinition,
 }) {
+  const applicationQuery = React.useContext(ApplicationQueryContext);
+
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
@@ -58,23 +62,34 @@ export default function ApplicationDetailsApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('API', entry.id, entry.name, deleteAPI, () => {
+        handleDelete('API', entry.id, entry.name, deleteAPIDefinition, () => {
           showDeleteSuccessNotification(entry.name);
         }),
     },
   ];
 
+  const extraHeaderContent = (
+    <ModalWithForm
+      title="Add API Definition"
+      button={{ glyph: 'add', text: '' }}
+      confirmText="Create"
+      performRefetch={applicationQuery.refetch}
+      modalClassName="create-api-modal"
+    >
+      <CreateApiForm applicationId={applicationId} />
+    </ModalWithForm>
+  );
+
   return (
-    <Panel className="fd-has-margin-top-small">
-      <GenericList
-        extraHeaderContent={<CreateAPIModal applicationId={applicationId} />}
-        title="APIs"
-        notFoundMessage="There are no APIs available for this Application"
-        actions={actions}
-        entries={apis.data}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-      />
-    </Panel>
+    <GenericList
+      extraHeaderContent={extraHeaderContent}
+      title="API Definitions"
+      notFoundMessage="There are no API Definitions available for this Application"
+      actions={actions}
+      entries={apiDefinitions.data}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+      textSearchProperties={['name', 'description', 'targetURL']}
+    />
   );
 }

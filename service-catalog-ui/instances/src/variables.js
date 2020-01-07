@@ -16,6 +16,9 @@ export const serviceInstanceConstants = {
   instanceDeleteConfirm: 'Are you sure you want to delete instance',
   instanceNotExists: "Service Instance doesn't exist",
   instanceParameters: 'Instance Parameters',
+  instanceDeleted:
+    'This Service Instance has been deleted and is not available anymore.',
+  noDescription: 'No description available',
 
   //common
   delete: 'Delete',

@@ -1,0 +1,21 @@
+.labels-display {
+
+    display: inline-block;
+  
+    ul {
+      display: inline;
+  
+      li {
+        display: inline-block;
+        margin: 8px 4px;
+      }
+    }
+    
+    .caption--no-button {
+      cursor: default;
+      &:after {
+        all: unset;
+      }
+    }
+}
+  

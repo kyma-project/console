@@ -9,7 +9,7 @@ import {
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
-import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader.component';
+import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 
@@ -22,8 +22,10 @@ import { getServiceInstanceDetails } from '../../queries/queries';
 import {
   SERVICE_BINDING_EVENT_SUBSCRIPTION,
   SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
+  SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
 } from '../../queries/subscriptions';
 import {
+  handleInstanceEventOnDetails,
   handleServiceBindingEvent,
   handleServiceBindingUsageEvent,
 } from '../../store/ServiceInstances/events';
@@ -81,14 +83,28 @@ export default function ServiceInstanceDetails({ match }) {
     },
   });
 
+  subscribeToMore({
+    variables: {
+      namespace: builder.getCurrentEnvironmentId(),
+    },
+    document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (
+        !subscriptionData.data ||
+        !subscriptionData.data.serviceInstanceEvent
+      ) {
+        return prev;
+      }
+
+      return handleInstanceEventOnDetails(
+        prev,
+        subscriptionData.data.serviceInstanceEvent,
+      );
+    },
+  });
+
   const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
 
-  if (loading)
-    return (
-      <EmptyList>
-        <Spinner />
-      </EmptyList>
-    );
   if (error)
     return (
       <EmptyList>
@@ -96,8 +112,15 @@ export default function ServiceInstanceDetails({ match }) {
       </EmptyList>
     );
 
-  const serviceInstance = data.serviceInstance;
+  if (loading) {
+    return (
+      <EmptyList>
+        <Spinner />
+      </EmptyList>
+    );
+  }
 
+  const { serviceInstance } = data;
   const serviceClass =
     serviceInstance &&
     (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
@@ -106,6 +129,7 @@ export default function ServiceInstanceDetails({ match }) {
     <ThemeWrapper>
       <ServiceInstanceHeader
         serviceInstance={serviceInstance}
+        instanceClass={serviceClass}
         deleteServiceInstance={deleteServiceInstanceMutation}
         history={history}
       />
@@ -114,11 +138,9 @@ export default function ServiceInstanceDetails({ match }) {
           defaultActiveTabIndex={serviceInstanceConstants.addonsIndex}
           serviceInstance={serviceInstance}
         />
-        {serviceClass &&
-        backendModuleExists('cms') &&
-        backendModuleExists('assetstore') ? (
+        {serviceClass && backendModuleExists('rafter') && (
           <ServiceInstanceTabs serviceClass={serviceClass} />
-        ) : null}
+        )}
       </ServiceInstanceWrapper>
       <NotificationMessage
         type="error"

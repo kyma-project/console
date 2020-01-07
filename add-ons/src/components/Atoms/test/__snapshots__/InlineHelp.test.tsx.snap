@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InlineHelp Renders with minimal props 1`] = `
+<span
+  className="fd-inline-help fd-has-float-right"
+>
+  <span
+    className="fd-inline-help__content fd-inline-help__content--bottom-left"
+  >
+    sample text
+  </span>
+</span>
+`;

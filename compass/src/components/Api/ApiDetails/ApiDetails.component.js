@@ -5,13 +5,13 @@ import './ApiDetails.scss';
 import ApiDetailsHeader from './ApiDetailsHeader/ApiDetailsHeader';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import DocumentationComponent from '../../../shared/components/DocumentationComponent/DocumentationComponent';
-import InProgressMessage from '../../../shared/components/InProgressMessage/InProgressMessage.component';
-import CustomPropTypes from 'react-shared';
+import Panel from 'fundamental-react/Panel/Panel';
+import { getApiType } from './../ApiHelpers';
 
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
   const rawApisForApplication = apiId
-    ? applicationQuery.apis
-    : applicationQuery.eventAPIs;
+    ? applicationQuery.apiDefinitions
+    : applicationQuery.eventDefinitions;
 
   if (
     rawApisForApplication &&
@@ -28,15 +28,17 @@ export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
 };
 
 const ApiDetails = ({
-  getApisForApplication,
-  getEventApisForApplication,
-  deleteApi,
-  deleteEventApi,
+  getApiDefinitionsForApplication,
+  getEventDefinitionsForApplication,
+  deleteAPIDefinition,
+  deleteEventDefinition,
   apiId,
   eventApiId,
   applicationId,
 }) => {
-  const query = apiId ? getApisForApplication : getEventApisForApplication;
+  const query = apiId
+    ? getApiDefinitionsForApplication
+    : getEventDefinitionsForApplication;
 
   const { loading, error, application } = query;
 
@@ -56,7 +58,7 @@ const ApiDetails = ({
   const api = getApiDataFromQuery(application, apiId, eventApiId);
 
   if (!api) {
-    return <ResourceNotFound resource="Api" />;
+    return <ResourceNotFound resource="API Definition" />;
   }
 
   return (
@@ -64,28 +66,27 @@ const ApiDetails = ({
       <ApiDetailsHeader
         application={application}
         api={api}
-        apiType={apiId ? 'OpenAPI' : 'AsyncAPI'}
-        deleteMutation={apiId ? deleteApi : deleteEventApi}
+        deleteMutation={apiId ? deleteAPIDefinition : deleteEventDefinition}
       ></ApiDetailsHeader>
-
-      {apiId ? (
-        <InProgressMessage />
-      ) : (
+      {api.spec ? (
         <DocumentationComponent
-          type={apiId ? 'openapi' : 'asyncapi'}
+          type={getApiType(api)}
           content={api.spec.data}
-        ></DocumentationComponent>
+        />
+      ) : (
+        <Panel className="fd-has-margin-large">
+          <Panel.Body className="fd-has-text-align-center fd-has-type-4">
+            No definition provided.
+          </Panel.Body>
+        </Panel>
       )}
     </>
   );
 };
 
 ApiDetails.propTypes = {
-  apiId: (props, propName, componentName) =>
-    CustomPropTypes.oneOfProps(props, componentName, ['apiId', 'eventApiId']),
-
-  eventApiId: (props, propName, componentName) =>
-    CustomPropTypes.oneOfProps(props, componentName, ['apiId', 'eventApiId']),
+  apiId: PropTypes.string,
+  eventApiId: PropTypes.string,
   applicationId: PropTypes.string.isRequired,
 };
 
