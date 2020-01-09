@@ -8,11 +8,31 @@ export class TriggersService {
 
   constructor(private http: HttpClient) {}
 
+  public getTriggersForLambda(
+    namespace: string,
+    token: string,
+    lambdaName: string,
+  ): Observable<any> {
+
+    const url = `${
+      AppConfig.triggerApiUrl
+    }/namespaces/${namespace}/triggers`;
+    return this.http.get<any>(url, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+      params: {labelSelector: `Function=${lambdaName}`},
+    });
+  }
+
   initializeTrigger() {
     return {
       apiVersion : 'eventing.knative.dev/v1alpha1',
       kind: 'Trigger',
-      metadata : {},
+      metadata : {
+        labels : {}
+      },
       spec : {
         broker: 'default',
         filter: {

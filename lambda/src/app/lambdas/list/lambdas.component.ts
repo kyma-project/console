@@ -26,6 +26,7 @@ import { AppConfig } from '../../app.config';
 import { ApisService } from '../../apis/apis.service';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
+import { TriggersService } from '../../triggers/triggers.service';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 
 import * as luigiClient from '@kyma-project/luigi-client';
@@ -68,6 +69,7 @@ export class LambdasComponent extends GenericTableComponent
     changeDetector: ChangeDetectorRef,
     private apisService: ApisService,
     private subscriptionsService: SubscriptionsService,
+    private triggersService: TriggersService,
     private serviceBindingUsagesService: ServiceBindingUsagesService,
   ) {
     super(changeDetector);
@@ -96,6 +98,7 @@ export class LambdasComponent extends GenericTableComponent
                 () => {
                   setTimeout(() => {
                     this.deleteSubscriptions(entry.metadata.name);
+                    this.deleteTriggers(entry.metadata.name);
                     this.deleteServiceBindingUsages(entry.metadata.name);
                     this.apisService
                       .getApi(entry.metadata.name, this.environment, this.token)
@@ -140,6 +143,37 @@ export class LambdasComponent extends GenericTableComponent
       },
     };
   }
+
+  deleteTriggers(lambdaName: string): void {
+    const deleteTrigReqs: Array<Observable<Subscription>> = [];
+    this.triggersService
+      .getTriggersForLambda(this.environment, this.token, lambdaName)
+      .subscribe(subs => {
+        subs.items.forEach(item => {
+          deleteTrigReqs.push(
+            this.triggersService
+              .deleteTrigger(
+                item.metadata.name,
+                this.environment,
+                this.token,
+              )
+              .pipe(
+                catchError(err => {
+                  return observableOf(err);
+                }),
+              ),
+          );
+        });
+
+        forkJoin(deleteTrigReqs).subscribe(responses => {
+          responses.forEach(resp => {
+            if (resp instanceof HttpErrorResponse) {
+              this.showError((resp as HttpErrorResponse).message);
+            }
+          });
+        });
+      });
+    }
 
   deleteSubscriptions(lambdaName: string): void {
     const deleteSubReqs: Array<Observable<Subscription>> = [];

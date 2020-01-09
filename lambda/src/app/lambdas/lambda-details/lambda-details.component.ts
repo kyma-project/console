@@ -715,6 +715,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           const kTrigger = this.triggersService.initializeTrigger();
           kTrigger.metadata['name'] = triggerUUID;
           kTrigger.metadata['namespace'] = this.namespace;
+          kTrigger.metadata.labels['Function'] = this.lambda.metadata.name;
           kTrigger.spec.subscriber['uri'] = lambdaInternalEndpoint;
           kTrigger.spec.filter.attributes['type'] = trigger.eventType;
           kTrigger.spec.filter.attributes['source'] = trigger.sourceId;
