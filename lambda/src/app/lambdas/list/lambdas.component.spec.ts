@@ -7,6 +7,7 @@ import { DeploymentDetailsService } from './deployment-details.service';
 import { ApisService } from '../../apis/apis.service';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
+import { TriggersService } from './../../triggers/triggers.service';
 
 describe('LambdasComponent', () => {
   let component: LambdasComponent;
@@ -23,7 +24,8 @@ describe('LambdasComponent', () => {
         DeploymentDetailsService,
         ApisService,
         SubscriptionsService,
-        ServiceBindingUsagesService
+        ServiceBindingUsagesService,
+        TriggersService,
       ]
     })
       .compileComponents();
