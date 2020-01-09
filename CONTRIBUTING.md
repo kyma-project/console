@@ -22,4 +22,4 @@ UI developed within the Console and Compass UI should be compliant with [Fiori D
 ### Additional guidelines for Compass
 
 * While creating validable forms, make sure to meet the requirements outlined [here](https://github.com/kyma-incubator/compass/blob/master/docs/compass/03-input-validation.md).
-* While using HTML input `type` attribute for validation, make sure to verify that their validation corresponds to one used on backend.
+* While using HTML input `type` attribute for validation, make sure to verify if their validation corresponds to the one used on the backend.
