@@ -653,7 +653,11 @@ Promise.all(initPromises)
               },
               pathSegment: '_integration_category_placeholder_',
               hideFromNav: true
-            }
+            },
+            {
+              category: { label: 'Experimental', icon: 'lab' },
+              hideFromNav : true
+            },
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
           const nodeTree = [...staticNodes, ...fetchedNodes];
