@@ -4,11 +4,14 @@ import { Counter } from 'fundamental-react/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
+import CreateApplicationFromTemplateModal from './CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
 import { GenericList, handleDelete } from 'react-shared';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
 import { PageHeader } from 'react-shared';
+import { Popover, Menu, Button } from 'fundamental-react';
+import './Applications.scss';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -77,13 +80,27 @@ class Applications extends React.Component {
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
 
+    const extraHeaderContent = (
+      <Popover
+        body={
+          <Menu className="create-application-dropdown">
+            <CreateApplicationModal applicationsQuery={applicationsQuery} />
+            <CreateApplicationFromTemplateModal
+              applicationsQuery={applicationsQuery}
+            />
+          </Menu>
+        }
+        control={<Button glyph="add" />}
+        widthSizingType="maxTarget"
+        placement="bottom-end"
+      />
+    );
+
     return (
       <>
         <PageHeader title="Applications" />
         <GenericList
-          extraHeaderContent={
-            <CreateApplicationModal applicationsQuery={applicationsQuery} />
-          }
+          extraHeaderContent={extraHeaderContent}
           actions={this.actions}
           entries={applications}
           headerRenderer={this.headerRenderer}

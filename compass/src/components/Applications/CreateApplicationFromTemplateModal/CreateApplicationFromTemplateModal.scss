@@ -1,0 +1,42 @@
+.template-list {
+  li {
+    list-style-type: none;
+  }
+}
+
+.create-application__template-form {
+  max-width: 50vh;
+}
+
+.placeholders-form:not(:empty) {
+  margin-top: 32px;
+}
+
+.fd-popover, .fd-popper__body {
+  width: 100%;
+}
+
+.fd-dropdown {
+  width: 100%;
+
+  .fd-dropdown__control {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    justify-items: center;
+
+    &::after {
+      margin-top: -2px;
+    }
+
+    &::before {
+      content: unset;
+    }
+
+  }
+}
+
+.placeholders-form label {
+  // captialize labels, as app template placeholder.name cannot contain uppercase characters
+  text-transform: capitalize;
+}

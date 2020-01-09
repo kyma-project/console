@@ -2,11 +2,11 @@ import React from 'react';
 import equal from 'deep-equal';
 import PropTypes from 'prop-types';
 import { Modal } from './../../../shared/components/Modal/Modal';
-import { Button, Input } from '@kyma-project/react-components';
+import { Menu, Input } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
-import './styles.scss';
+import './CreateApplicationModal.component.scss';
 
 const DEFAULT_SCENARIO_LABEL = 'DEFAULT';
 
@@ -271,14 +271,18 @@ class CreateApplicationModal extends React.Component {
       applicationWithNameAlreadyExists,
     } = this.state;
     const createApplicationButton = (
-      <Button option="light" data-e2e-id="create-application-button">
+      <Menu.Item ta-e2e-id="create-application-button">
         Create Application
-      </Button>
+      </Menu.Item>
     );
 
     const scenariosQuery = this.props.scenariosQuery;
     if (scenariosQuery.loading) {
-      return <p>Loading...</p>;
+      return (
+        <p className="create-application__loading-caption">
+          Create Application (loading)
+        </p>
+      );
     }
 
     let content;

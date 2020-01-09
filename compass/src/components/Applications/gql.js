@@ -56,3 +56,27 @@ export const CHECK_APPLICATION_EXISTS = gql`
     }
   }
 `;
+
+export const GET_TEMPLATES = gql`
+  query applicationTemplates {
+    applicationTemplates {
+      data {
+        id
+        name
+        applicationInput
+        placeholders {
+          name
+          description
+        }
+      }
+    }
+  }
+`;
+
+export const REGISTER_APPLICATION_FROM_TEMPLATE = gql`
+  mutation registerApplicationFromTemplate($in: ApplicationFromTemplateInput!) {
+    registerApplicationFromTemplate(in: $in) {
+      name
+    }
+  }
+`;
