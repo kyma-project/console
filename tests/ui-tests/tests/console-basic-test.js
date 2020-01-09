@@ -177,9 +177,6 @@ describe('Console basic tests', () => {
       '[data-e2e-id=application-name]',
       config.testApp,
     );
-    frame.waitForXPath(`//td[contains(string(), "${config.testApp}")]`);
-    frame.waitForXPath(`//h1[contains(string(), "General Information")]`);
-
     frame.waitForSelector('.fd-breadcrumb__link');
     frame.click('.fd-breadcrumb__link');
   });
