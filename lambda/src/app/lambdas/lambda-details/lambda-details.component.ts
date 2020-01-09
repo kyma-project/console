@@ -59,13 +59,15 @@ import { Subscription } from '../../shared/datamodel/k8s/subscription';
 import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
-import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 import { has as _has, get as _get, set as _set } from 'lodash';
+import uuid5  from 'uuid/v5';
 
 const DEFAULT_CODE = `module.exports = { main: function (event, context) {
 
 } }`;
+
+const NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341'
 
 const FUNCTION = 'function';
 
@@ -707,9 +709,11 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         if (this.isEventTriggerNew(trigger as EventTrigger)) {
 
           const triggerName = `lambda-${this.lambda.metadata.name}-${trigger.eventType}-${trigger.version}`.toLowerCase();
+          const triggerUUID = uuid5(triggerName, NAMESPACE);
+
           const lambdaInternalEndpoint = `http://${this.lambda.metadata.name}.${this.namespace}:8080/`;
           const kTrigger = this.triggersService.initializeTrigger();
-          kTrigger.metadata['name'] = triggerName;
+          kTrigger.metadata['name'] = triggerUUID;
           kTrigger.metadata['namespace'] = this.namespace;
           kTrigger.spec.subscriber['uri'] = lambdaInternalEndpoint;
           kTrigger.spec.filter.attributes['type'] = trigger.eventType;
@@ -759,7 +763,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
 
       const removeTriggerReq = this.triggersService
       .deleteTrigger(
-        `lambda-${this.lambda.metadata.name}-${et.eventType}-${et.version}`.toLowerCase(),
+        uuid5(`lambda-${this.lambda.metadata.name}-${et.eventType}-${et.version}`.toLowerCase(), NAMESPACE),
         this.namespace,
         this.token,
       )
