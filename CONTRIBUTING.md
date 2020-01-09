@@ -17,7 +17,7 @@ UI developed within the Console and Compass UI should be compliant with [Fiori D
     * If modal contains input fields, first of them should be automatically focused on opening the modal. In some cases, we can focus the most important element insted (e.g. invalid one).
     * Main actions, such as **Confirm**,  **Save**, **Apply**, should use the [emphasized style](https://experience.sap.com/fiori-design-web/button).
 * If content of the modal is dynamic, try to avoid resizing the modal itself. What's more, modals' widths should be consistent across the application.
-* Remember about [ARIA](https://www.w3.org/WAI/standards-guidelines/aria/) attributes.
+* Follow the [ARIA](https://www.w3.org/WAI/standards-guidelines/aria/) attributes.
 
 ### Additional guidelines for Compass
 
