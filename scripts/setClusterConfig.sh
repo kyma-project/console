@@ -43,11 +43,13 @@ $SCRIPT_DIR/checkClusterAvailability.sh -s $DOMAIN
 if [ $? != 0 ]
 then
     echo -e "\033[31mIt looks like the cluster isn't running ✗ \033[39m"
-    read "continue?Would you like to continue running the script anyway? (y/n)"
-    if [[ "$continue" =~ ^[Yy]$ ]]; then :
-    else
-        exit 0
-    fi
+    
+    read -p "Would you like to continue running the script anyway? (y/n)" yn
+    case $yn in
+        [Yy]* ) ;;
+        [Nn]* ) exit 0;;
+        * ) echo "Please answer yes or no.";;
+    esac
     
 else
     echo -e "\033[32mIt looks like the cluster is running ✓ \033[39m"

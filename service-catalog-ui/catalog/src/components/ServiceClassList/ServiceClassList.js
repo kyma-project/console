@@ -12,7 +12,7 @@ import {
 import { Counter } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
-import { serviceClassConstants, POLL_INTERVAL } from '../../variables';
+import { serviceClassConstants } from '../../variables';
 import { determineDisplayedServiceClasses } from './searchUtils';
 
 import Cards from './Cards/Cards.component';
@@ -63,7 +63,7 @@ export default function ServiceClassList() {
     variables: {
       namespace: LuigiClient.getEventData().environmentId,
     },
-    pollInterval: POLL_INTERVAL,
+    fetchPolicy: 'no-cache',
   });
 
   if (queryLoading) {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_LAMBDA } from '../../../gql/queries';
+import { REFETCH_TIMEOUT } from '../../../shared/constants';
 
 import EntryNotFound from '../../EntryNotFound/EntryNotFound';
 import { Spinner } from 'react-shared';
@@ -13,18 +14,14 @@ LambdaDetailsWrapper.propTypes = {
   lambdaName: PropTypes.string.isRequired,
 };
 
-const MAX_POLLING_TIME = 5000;
-const POLL_INTERVAL = 500;
-
 export default function LambdaDetailsWrapper({ lambdaName }) {
   const namespace = LuigiClient.getEventData().environmentId;
-  const { data, error, loading, stopPolling } = useQuery(GET_LAMBDA, {
+  const { data, error, loading, refetch } = useQuery(GET_LAMBDA, {
     variables: {
       name: lambdaName,
       namespace,
     },
     fetchPolicy: 'no-cache',
-    pollInterval: POLL_INTERVAL,
   });
 
   if (error) {
@@ -35,12 +32,11 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
   }
   if (data && !data.function) {
     setTimeout(() => {
-      stopPolling();
-    }, MAX_POLLING_TIME);
+      refetch();
+    }, REFETCH_TIMEOUT);
     return <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
   }
   if (data && data.function) {
-    stopPolling();
     return <LambdaDetails lambda={data.function} />;
   }
 }

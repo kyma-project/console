@@ -9,12 +9,12 @@ import { DELETE_LAMBDA } from '../../gql/mutations';
 import { GenericList } from 'react-shared';
 
 import builder from '../../commons/builder';
-import { POLL_INTERVAL } from './../../shared/constants';
 
 import { useNotification } from '../../contexts/notifications';
 import { Spinner } from 'react-shared';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
 import Labels from '../../shared/components/Labels/Labels';
+import { REFETCH_TIMEOUT } from '../../shared/constants';
 import { PageHeader } from 'react-shared';
 
 function CreateLambdaModal() {
@@ -29,14 +29,21 @@ function CreateLambdaModal() {
 }
 
 export default function Lambdas() {
-  const { data, error, loading } = useQuery(GET_LAMBDAS, {
+  const { data, error, loading, refetch } = useQuery(GET_LAMBDAS, {
     variables: {
       namespace: builder.getCurrentEnvironmentId(),
     },
-    pollInterval: POLL_INTERVAL,
+    fetchPolicy: 'no-cache',
   });
 
-  const [deleteLambda] = useMutation(DELETE_LAMBDA);
+  // onCompleted is fired before lambda is deleted therefore setTimeout is neccessary
+  const [deleteLambda] = useMutation(DELETE_LAMBDA, {
+    onCompleted: () => {
+      setTimeout(() => {
+        refetch();
+      }, REFETCH_TIMEOUT);
+    },
+  });
   const notificationManager = useNotification();
 
   if (error) {
@@ -47,7 +54,7 @@ export default function Lambdas() {
     return <Spinner />;
   }
 
-  const handleLambdaDelete = (name, namespace) => {
+  const handleLambdaDelete = (name, namespace, onComplete) => {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: `Remove ${name}`,
@@ -91,7 +98,7 @@ export default function Lambdas() {
     {
       name: 'Delete',
       handler: entry => {
-        handleLambdaDelete(entry.name, entry.namespace);
+        handleLambdaDelete(entry.name, entry.namespace, refetch);
       },
     },
   ];

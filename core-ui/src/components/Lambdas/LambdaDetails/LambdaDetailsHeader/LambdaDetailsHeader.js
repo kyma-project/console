@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { handleDelete } from 'react-shared';
 import { DELETE_LAMBDA } from '../../../../gql/mutations';
 import { useNotification } from '../../../../contexts/notifications';
+import { REFETCH_TIMEOUT } from '../../../../shared/constants';
 
 LambdaDetailsHeader.propTypes = {
   lambda: PropTypes.object.isRequired,
@@ -73,13 +74,11 @@ export default function LambdaDetailsHeader({ lambda, handleUpdate }) {
           </Button>
           <Button
             onClick={() => {
-              handleDelete(
-                'Lambda',
-                name,
-                name,
-                handleLambdaDelete,
-                navigateToList,
-              );
+              handleDelete('Lambda', name, name, handleLambdaDelete, () => {
+                setTimeout(() => {
+                  navigateToList();
+                }, REFETCH_TIMEOUT);
+              });
             }}
             option="light"
             type="negative"
