@@ -82,7 +82,6 @@ class CreateApplicationModal extends React.Component {
       invalidApplicationName,
       enableCheckNameExists,
       nameFilled,
-      providerNameFilled,
     } = this.state;
 
     if (equal(this.state, prevState)) return;
@@ -315,7 +314,6 @@ class CreateApplicationModal extends React.Component {
             handleChange={this.onChangeProviderName}
             isError={invalidProviderName}
             message={this.invalidProviderNameMessage()}
-            required={false}
             type="text"
           />
           <Input
