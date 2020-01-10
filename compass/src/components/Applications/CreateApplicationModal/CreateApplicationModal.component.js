@@ -87,7 +87,7 @@ class CreateApplicationModal extends React.Component {
 
     if (equal(this.state, prevState)) return;
 
-    const requiredFieldsFilled = nameFilled && providerNameFilled;
+    const requiredFieldsFilled = nameFilled;
 
     const tooltipData = !requiredFieldsFilled
       ? {
@@ -315,7 +315,7 @@ class CreateApplicationModal extends React.Component {
             handleChange={this.onChangeProviderName}
             isError={invalidProviderName}
             message={this.invalidProviderNameMessage()}
-            required={true}
+            required={false}
             type="text"
           />
           <Input

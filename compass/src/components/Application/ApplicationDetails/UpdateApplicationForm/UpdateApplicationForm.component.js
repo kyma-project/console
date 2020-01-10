@@ -115,7 +115,6 @@ export default function UpdateApplicationForm({
         ref={formValues.providerName}
         defaultValue={application.providerName}
         placeholder="Provider name"
-        required
       />
       <FormLabel htmlFor="application-description">Description</FormLabel>
       <input
