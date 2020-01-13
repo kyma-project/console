@@ -101,7 +101,7 @@ describe('ApiRuleForm', () => {
               methods: [],
               mutators: [],
               path: '/path',
-              accessStrategies: [{ name: 'allow', config: {} }],
+              accessStrategies: [{ name: 'noop', config: {} }],
             },
           ],
         },

@@ -20,10 +20,14 @@ const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 //   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
 // );
 
-const passAll = {
-  value: 'allow',
-  displayName: 'Allow',
+const noop = {
+  value: 'noop',
+  displayName: 'noop',
 };
+// const passAll = {
+//   value: 'allow',
+//   displayName: 'Allow',
+// };
 // const jwt = {
 //   value: 'jwt',
 //   displayName: 'JWT',
@@ -32,7 +36,7 @@ const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [passAll, oauth2];
+const accessStrategiesList = [noop, oauth2];
 
 export default function AccessStrategyForm({
   strategy,

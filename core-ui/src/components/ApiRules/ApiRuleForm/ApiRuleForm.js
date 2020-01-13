@@ -28,7 +28,7 @@ const EMPTY_ACCESS_STRATEGY = {
   methods: [],
   accessStrategies: [
     {
-      name: 'allow',
+      name: 'noop',
       config: {},
     },
   ],
