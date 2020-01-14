@@ -84,14 +84,20 @@ class Applications extends React.Component {
       <Popover
         body={
           <Menu className="create-application-dropdown">
-            <CreateApplicationModal applicationsQuery={applicationsQuery} />
-            <CreateApplicationFromTemplateModal
-              applicationsQuery={applicationsQuery}
-            />
+            <Menu.List>
+              <CreateApplicationModal
+                applicationsQuery={applicationsQuery}
+                modalOpeningComponent={<Menu.Item>From scratch</Menu.Item>}
+              />
+              <CreateApplicationFromTemplateModal
+                applicationsQuery={applicationsQuery}
+                modalOpeningComponent={<Menu.Item>From template</Menu.Item>}
+              />
+            </Menu.List>
           </Menu>
         }
-        control={<Button glyph="add" />}
-        widthSizingType="maxTarget"
+        control={<Button option="light">Create application...</Button>}
+        widthSizingType="matchTarget"
         placement="bottom-end"
       />
     );

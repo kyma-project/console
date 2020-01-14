@@ -11,13 +11,15 @@ import {
   FormInput,
 } from 'fundamental-react';
 import { Modal } from './../../../shared/components/Modal/Modal';
+import './CreateApplicationFromTemplateModal.scss';
+
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_TEMPLATES, REGISTER_APPLICATION_FROM_TEMPLATE } from '../gql';
-import './CreateApplicationFromTemplateModal.scss';
 import { SEND_NOTIFICATION } from 'gql';
 
 CreateApplicationFromTemplateModal.propTypes = {
   applicationsQuery: PropTypes.object.isRequired,
+  modalOpeningComponent: PropTypes.node.isRequired,
 };
 
 const PlaceholderInput = ({
@@ -39,6 +41,7 @@ const PlaceholderInput = ({
 
 export default function CreateApplicationFromTemplateModal({
   applicationsQuery,
+  modalOpeningComponent,
 }) {
   const templatesQuery = useQuery(GET_TEMPLATES);
   const [registerApplicationFromTemplate] = useMutation(
@@ -60,7 +63,6 @@ export default function CreateApplicationFromTemplateModal({
           },
         ]),
       );
-
       setPlaceholders(placeholders);
     }
   }, [template]);
@@ -70,27 +72,27 @@ export default function CreateApplicationFromTemplateModal({
       return null;
     }
 
+    const templates = data.applicationTemplates.data;
     return (
       <Menu className="template-list">
-        {data.applicationTemplates.data.map(template => (
-          <Menu.Item key={template.id} onClick={() => setTemplate(template)}>
-            {template.name}
-          </Menu.Item>
-        ))}
+        {templates.length ? (
+          templates.map(template => (
+            <Menu.Item key={template.id} onClick={() => setTemplate(template)}>
+              {template.name}
+            </Menu.Item>
+          ))
+        ) : (
+          <Menu.Item>No templates available</Menu.Item>
+        )}
       </Menu>
     );
   };
-
-  const arePlaceholdersFilled = Object.values(placeholders).every(placeholder =>
-    placeholder.value.trim(),
-  );
-
-  const modalOpeningComponent = <Menu.Item>Create from template</Menu.Item>;
 
   const dropdownControlText = () => {
     if (template) {
       return template.name;
     } else if (templatesQuery.error) {
+      console.warn(templatesQuery.error);
       return 'Error! Cannot load templates list.';
     } else if (templatesQuery.loading) {
       return 'Choose template (loading...)';
@@ -170,6 +172,10 @@ export default function CreateApplicationFromTemplateModal({
       });
     }
   };
+
+  const arePlaceholdersFilled = Object.values(placeholders).every(placeholder =>
+    placeholder.value.trim(),
+  );
 
   return (
     <Modal
