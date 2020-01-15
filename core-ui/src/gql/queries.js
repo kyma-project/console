@@ -95,17 +95,6 @@ export const GET_APPLICATIONS = gql`
         id
         providerName
         name
-        description
-        labels
-        status {
-          condition
-        }
-        apiDefinitions {
-          totalCount
-        }
-        eventDefinitions {
-          totalCount
-        }
       }
     }
   }
