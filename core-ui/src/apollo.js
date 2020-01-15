@@ -11,6 +11,8 @@ import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 const DEFAULT_TENANT_ID = '3e64ebae-38b5-46a0-b1ed-9ccee153a0ae';
 
+const cache = new InMemoryCache();
+
 const errorLink = onError(
   ({ operation, response, graphQLErrors, networkError }) => {
     if (process.env.REACT_APP_ENV !== 'production') {
@@ -40,7 +42,7 @@ export function createCompassApolloClient() {
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, httpLink]),
-    cache: new InMemoryCache(),
+    cache,
   });
 }
 
@@ -77,7 +79,7 @@ export function createKymaApolloClient() {
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, link]),
-    cache: new InMemoryCache(),
+    cache,
   });
 }
 

@@ -20,7 +20,12 @@ const HeaderRenderer = ({ entries, actions, headerRenderer }) => {
   return [headerRenderer().map(h => <th key={h}>{h}</th>), ...emptyColumn];
 };
 
-const RowRenderer = ({ entry, actions, rowRenderer }) => {
+const RowRenderer = ({
+  entry,
+  actions,
+  rowRenderer,
+  actionsStandaloneItems,
+}) => {
   const filteredActions = actions.filter(a =>
     a.skipAction ? !a.skipAction(entry) : true,
   );
@@ -28,7 +33,11 @@ const RowRenderer = ({ entry, actions, rowRenderer }) => {
   const cells = rowRenderer(entry).map((cell, id) => <td key={id}>{cell}</td>);
   const actionsCell = (
     <td>
-      <ListActions actions={filteredActions} entry={entry} />
+      <ListActions
+        actions={filteredActions}
+        entry={entry}
+        standaloneItems={actionsStandaloneItems}
+      />
     </td>
   );
 
@@ -50,6 +59,7 @@ export const GenericList = ({
   extraHeaderContent,
   showSearchField,
   textSearchProperties,
+  actionsStandaloneItems,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -99,6 +109,7 @@ export const GenericList = ({
                   <RowRenderer
                     entry={e}
                     actions={actions}
+                    actionsStandaloneItems={actionsStandaloneItems}
                     rowRenderer={rowRenderer}
                   />
                 </tr>
@@ -133,6 +144,7 @@ GenericList.propTypes = {
   showSearchField: PropTypes.bool,
   notFoundMessage: PropTypes.string,
   textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
+  actionsStandaloneItems: PropTypes.number,
 };
 
 GenericList.defaultProps = {
