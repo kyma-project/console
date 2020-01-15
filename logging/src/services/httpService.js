@@ -39,7 +39,8 @@ export const httpService = () => {
     return fetch(url, {
       headers: new Headers({
         Authorization: appInitializer.getBearerToken(),
-        'Strict-Transport-Security': 'max-age=10886401; includeSubDomains',
+        'Strict-Transport-Security': 'max-age=300; includeSubDomains',
+        'Content-Type': 'application/json',
       }),
     });
   };
