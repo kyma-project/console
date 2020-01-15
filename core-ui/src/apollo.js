@@ -9,8 +9,42 @@ import { getMainDefinition } from 'apollo-utilities';
 import { getApiUrl as getURL } from '@kyma-project/common';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+const DEFAULT_TENANT_ID = '3e64ebae-38b5-46a0-b1ed-9ccee153a0ae';
 
-export function createApolloClient() {
+const errorLink = onError(
+  ({ operation, response, graphQLErrors, networkError }) => {
+    if (process.env.REACT_APP_ENV !== 'production') {
+      if (graphQLErrors) {
+        graphQLErrors.map(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+          ),
+        );
+      }
+
+      if (networkError) console.log(`[Network error]: ${networkError}`);
+    }
+  },
+);
+
+export function createCompassApolloClient() {
+  const graphqlApiUrl = getURL('compassGraphqlApiUrl');
+
+  const httpLink = new HttpLink({
+    uri: graphqlApiUrl,
+    headers: {
+      authorization: builder.getBearerToken() || null,
+      tenant: DEFAULT_TENANT_ID, //TODO: change it to a real tenant
+    },
+  });
+
+  return new ApolloClient({
+    link: ApolloLink.from([errorLink, httpLink]),
+    cache: new InMemoryCache(),
+  });
+}
+
+export function createKymaApolloClient() {
   const graphqlApiUrl = getURL(
     process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
   );
@@ -28,22 +62,6 @@ export function createApolloClient() {
       reconnect: true,
     },
   });
-
-  const errorLink = onError(
-    ({ operation, response, graphQLErrors, networkError }) => {
-      if (process.env.REACT_APP_ENV !== 'production') {
-        if (graphQLErrors) {
-          graphQLErrors.map(({ message, locations, path }) =>
-            console.log(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-            ),
-          );
-        }
-
-        if (networkError) console.log(`[Network error]: ${networkError}`);
-      }
-    },
-  );
 
   const link = split(
     ({ query }) => {
