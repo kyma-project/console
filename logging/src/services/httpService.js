@@ -39,25 +39,13 @@ export const httpService = () => {
     return fetch(url, {
       headers: new Headers({
         Authorization: appInitializer.getBearerToken(),
-        'Content-Security-Policy': "default-src 'self'",
-        'Strict-Transport-Security': 'max-age=300; includeSubDomains',
-        'Access-Control-Expose-Headers': '*',
       }),
     });
   };
 
   const getLabels = async category => {
     const url = httpConfig.resourceLabels(category);
-    console.log('/' + url + '/');
     const response = await authorizedFetch(url);
-    console.log(
-      'response.headers.get("strict-transport-security"',
-      response.headers.get('strict-transport-security'),
-    );
-    console.log(
-      'response.headers.get("content-security-policy"',
-      response.headers.get('content-security-policy'),
-    );
     const data = await response.json();
     return data.values || [];
   };
