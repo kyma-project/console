@@ -77,8 +77,6 @@ describe('CreateApplicationFromTemplateModal', () => {
   });
 
   it('Manages form validity and submits valid form', async () => {
-    jest.setTimeout(10000); // to prevent mockedProvider from premature failure
-
     const { queryByText, queryByLabelText } = render(
       <MockedProvider
         mocks={[
@@ -120,5 +118,5 @@ describe('CreateApplicationFromTemplateModal', () => {
     await wait(() => {
       expect(registerApplicationMutation.result).toHaveBeenCalled();
     });
-  });
+  }, 10000); // to prevent MockedProvider timeouting
 });
