@@ -27,7 +27,7 @@ const PlaceholderInput = ({
   onChange,
 }) => (
   <FormItem>
-    <FormLabel htmlFor={name}>{name}</FormLabel>
+    <FormLabel htmlFor={name}>{description}</FormLabel>
     <FormInput
       id={name}
       type="text"
