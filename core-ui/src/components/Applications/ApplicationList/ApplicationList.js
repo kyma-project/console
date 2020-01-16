@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { PageHeader, GenericList, Spinner, handleDelete } from 'react-shared';
+import { PageHeader, GenericList, Spinner } from 'react-shared';
 import { GET_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -9,7 +9,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
-  const { data, error, loading, refetch } = useQuery(GET_APPLICATIONS, {
+  const { data, error, loading } = useQuery(GET_APPLICATIONS, {
     // fetchPolicy: 'no-cache',
     client: compassGqlClient,
   });
