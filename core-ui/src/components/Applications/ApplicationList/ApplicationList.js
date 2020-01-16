@@ -5,6 +5,7 @@ import { UNREGISTER_APPLICATION } from 'gql/mutations';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
+import LuigiClient from '@kyma-project/luigi-client';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
@@ -21,13 +22,21 @@ export default function ApplicationList() {
     {
       name: 'Delete',
       handler: app => {
-        handleDelete(
-          'Application',
-          app.id,
-          app.name,
-          () => unregisterApp({ variables: { id: app.id } }),
-          refetch,
-        );
+        LuigiClient.uxManager()
+          .showConfirmationModal({
+            header: `Remove ${app.name}`,
+            body: `Are you sure you want to delete ${app.name}?`,
+            buttonConfirm: 'Delete',
+            buttonDismiss: 'Cancel',
+          })
+          .then(() => unregisterApp({ variables: { id: app.id } }))
+          .catch(e =>
+            LuigiClient.uxManager().showAlert({
+              text: `An error occurred while deleting ${app.name}: ${e.message}`,
+              type: 'error',
+              closeAfter: 10000,
+            }),
+          );
       },
     },
     { name: 'Install', handler: () => {}, skipAction: app => false },

@@ -134,9 +134,6 @@ export const UNREGISTER_APPLICATION = gql`
   mutation unregisterApplication($id: ID!) {
     unregisterApplication(id: $id) {
       name
-      providerName
-      description
-      labels
       id
     }
   }

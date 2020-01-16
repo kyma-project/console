@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   render,
-  waitForDomChange,
   wait,
   queryByText,
   queryAllByRole,
@@ -9,42 +8,54 @@ import {
 
 import { MockedProvider } from '@apollo/react-testing';
 import { GET_APPLICATIONS } from 'gql/queries';
-import { DELETE_API_RULE } from 'gql/mutations';
+import { UNREGISTER_APPLICATION } from 'gql/mutations';
 import ApplicationList from '../ApplicationList';
 
 const mockNamespace = 'nsp';
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
-const gqlCompassApplicationsRequest = applications => ({
+const mockCompassAppsEmpty = {
   request: {
     query: GET_APPLICATIONS,
   },
   result: {
     data: {
-      applications: { data: applications },
+      applications: { data: [] },
     },
   },
-});
+};
+const appList = [
+  { id: 1, name: 'tets-app-1', providerName: 'tets-provider-1' },
+  { id: 2, name: 'tets-app-2', providerName: 'tets-provider-2' },
+];
 
-const gqlDeleteRequest = name => ({
+const mockCompassApps = {
   request: {
-    query: DELETE_API_RULE,
-    variables: { namespace: mockNamespace, name },
+    query: GET_APPLICATIONS,
+  },
+  result: {
+    data: {
+      applications: {
+        data: appList,
+      },
+    },
+  },
+};
+
+const mockCompassAppDelete = id => ({
+  request: {
+    query: UNREGISTER_APPLICATION,
+    variables: { id },
   },
   result: jest.fn(() => ({
     data: {
-      deleteAPIRule: {
-        name,
+      unregisterApplication: {
+        name: appList[id - 1].name,
+        id,
       },
     },
   })),
-});
-
-const generateApp = id => ({
-  id,
-  name: 'tets-app-' + id,
-  providerName: 'tets-provider-' + id,
 });
 
 jest.mock('@kyma-project/luigi-client', () => ({
@@ -58,6 +69,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
   uxManager: () => ({
     showConfirmationModal: mockShowConfirmationModal,
+    showAlert: jest.fn(),
   }),
 }));
 
@@ -74,10 +86,7 @@ describe('ApplicationList', () => {
 
   it('Renders empty list', async () => {
     const { queryByRole } = render(
-      <MockedProvider
-        addTypename={false}
-        mocks={[gqlCompassApplicationsRequest([])]}
-      >
+      <MockedProvider addTypename={false} mocks={[mockCompassAppsEmpty]}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -92,10 +101,7 @@ describe('ApplicationList', () => {
 
   it('Shows loading status', async () => {
     const { queryByRole, queryByLabelText } = render(
-      <MockedProvider
-        addTypename={false}
-        mocks={[gqlCompassApplicationsRequest([])]}
-      >
+      <MockedProvider addTypename={false} mocks={[mockCompassAppsEmpty]}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -121,12 +127,8 @@ describe('ApplicationList', () => {
   });
 
   it('Renders some elements', async () => {
-    const apps = [generateApp(1), generateApp(2)];
-    const { container, queryByRole } = render(
-      <MockedProvider
-        addTypename={false}
-        mocks={[gqlCompassApplicationsRequest(apps)]}
-      >
+    const { queryByRole } = render(
+      <MockedProvider addTypename={false} mocks={[mockCompassApps]}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -134,84 +136,44 @@ describe('ApplicationList', () => {
     await wait(() => {
       const table = queryByRole('table');
       expect(table).toBeInTheDocument();
-      expect(queryAllByRole(table, 'row')).toHaveLength(3);
-      apps.forEach(app => {
+      expect(queryAllByRole(table, 'row')).toHaveLength(appList.length + 1); //apps + header
+      appList.forEach(app => {
         expect(queryByText(table, app.name)).toBeInTheDocument();
       });
     });
   });
 
+  //TODO: uncomment after redirection to details is done
+
   //   it('Clicking on element navigates to its details', async () => {
-  //     const apis = [apiRule(1), apiRule(2)];
-  //     const { container, getByText } = render(
-  //       <MockedProvider addTypename={false} mocks={[gqlApiRulesRequest(apis)]}>
-  //         <ApiRules />
+  //     const { getByText } = render(
+  //       <MockedProvider addTypename={false} mocks={[mockCompassApps]}>
+  //         <ApplicationList />
   //       </MockedProvider>,
   //     );
 
-  //     await waitForDomChange(container);
-
-  //     getByText(apis[1].name).click();
-  //     expect(mockNavigate).toHaveBeenCalledWith(`/details/${apis[1].name}`);
+  //     await wait(() => {
+  //       getByText(appList[1].name).click();
+  //       expect(mockNavigate).toHaveBeenCalledWith(`/details/${appList[1].name}`);
+  //     });
   //   });
 
-  //   it('Clicking on "Create" navigate to creation page', async () => {
-  //     const apis = [apiRule(1), apiRule(2)];
-  //     const { container, getByText } = render(
-  //       <MockedProvider addTypename={false} mocks={[gqlApiRulesRequest(apis)]}>
-  //         <ApiRules />
-  //       </MockedProvider>,
-  //     );
+  it('Clicking on "Delete" deletes element', async () => {
+    const deleteAppMutation = mockCompassAppDelete(2);
 
-  //     await waitForDomChange(container);
+    const { getAllByLabelText } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[mockCompassApps, deleteAppMutation]}
+      >
+        <ApplicationList />
+      </MockedProvider>,
+    );
 
-  //     getByText('Add API rule').click();
-
-  //     expect(mockNavigate).toHaveBeenCalledWith('/create');
-  //   });
-
-  //   it('Clicking on "Edit" navigate to edit page', async () => {
-  //     const apis = [apiRule(1), apiRule(2)];
-  //     const { container, queryAllByLabelText } = render(
-  //       <MockedProvider addTypename={false} mocks={[gqlApiRulesRequest(apis)]}>
-  //         <ApiRules />
-  //       </MockedProvider>,
-  //     );
-
-  //     await waitForDomChange(container);
-
-  //     const editButtons = queryAllByLabelText('Edit');
-  //     expect(editButtons).toHaveLength(2);
-
-  //     editButtons[0].click();
-
-  //     expect(mockNavigate).toHaveBeenCalledWith(`/edit/${apis[0].name}`);
-  //   });
-
-  //   it('Clicking on "Delete" deletes element', async () => {
-  //     const apis = [apiRule(1), apiRule(2)];
-  //     const deleteApi1 = gqlDeleteRequest(apis[1].name);
-  //     const { container, getAllByLabelText, queryByText } = render(
-  //       <MockedProvider
-  //         addTypename={false}
-  //         mocks={[
-  //           gqlApiRulesRequest(apis),
-  //           deleteApi1,
-  //           gqlApiRulesRequest([apis[0]]),
-  //         ]}
-  //       >
-  //         <ApiRules />
-  //       </MockedProvider>,
-  //     );
-
-  //     await waitForDomChange(container);
-
-  //     getAllByLabelText('Delete')[1].click();
-
-  //     await waitForDomChange(container);
-
-  //     expect(mockShowConfirmationModal).toHaveBeenCalled();
-  //     expect(deleteApi1.result).toHaveBeenCalled();
-  //     expect(queryByText(apis[1].name)).not.toBeInTheDocument();
-  //   });
+    await wait(() => {
+      getAllByLabelText('Delete')[1].click();
+      expect(mockShowConfirmationModal).toHaveBeenCalled();
+      expect(deleteAppMutation.result).toHaveBeenCalled();
+    });
+  });
 });
