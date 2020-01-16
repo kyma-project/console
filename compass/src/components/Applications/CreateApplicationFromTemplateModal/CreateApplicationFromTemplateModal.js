@@ -50,19 +50,14 @@ export default function CreateApplicationFromTemplateModal({
   const [sendNotification] = useMutation(SEND_NOTIFICATION);
 
   const [template, setTemplate] = React.useState(null);
-  const [placeholders, setPlaceholders] = React.useState({});
+  const [placeholders, setPlaceholders] = React.useState([]);
 
   React.useEffect(() => {
     if (template) {
-      const placeholders = Object.fromEntries(
-        template.placeholders.map(placeholder => [
-          placeholder.name,
-          {
-            value: '',
-            ...placeholder,
-          },
-        ]),
-      );
+      const placeholders = template.placeholders.map(placeholder => ({
+        ...placeholder,
+        value: '',
+      }));
       setPlaceholders(placeholders);
     }
   }, [template]);
@@ -115,14 +110,19 @@ export default function CreateApplicationFromTemplateModal({
         />
       </Dropdown>
       <section className="placeholders-form">
-        {Object.keys(placeholders).map(key => (
+        {placeholders.map(placeholder => (
           <PlaceholderInput
-            key={key}
-            placeholder={placeholders[key]}
-            onChange={e => {
-              placeholders[key].value = e.target.value;
-              setPlaceholders({ ...placeholders }); // re-render
-            }}
+            key={placeholder.name}
+            placeholder={placeholder}
+            onChange={e =>
+              setPlaceholders(
+                placeholders.map(p =>
+                  p.name === placeholder.name
+                    ? { ...p, value: e.target.value }
+                    : p,
+                ),
+              )
+            }
           />
         ))}
       </section>
@@ -188,7 +188,7 @@ export default function CreateApplicationFromTemplateModal({
       onConfirm={() => addApplication()}
       onHide={() => {
         setTemplate(null);
-        setPlaceholders({});
+        setPlaceholders([]);
       }}
     >
       {content}

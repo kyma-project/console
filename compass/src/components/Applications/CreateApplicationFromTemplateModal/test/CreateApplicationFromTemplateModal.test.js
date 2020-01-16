@@ -55,7 +55,7 @@ describe('CreateApplicationFromTemplateModal', () => {
     fireEvent.click(chooseTemplateButton);
     expect(queryByText('template-no-placeholders')).toBeInTheDocument();
     expect(queryByText('template-with-placeholders')).toBeInTheDocument();
-  });
+  }, 10000); // to prevent MockedProvider timeouting
 
   it('Renders choosen template placeholders', async () => {
     const { queryByText, queryByLabelText } = render(
@@ -72,9 +72,9 @@ describe('CreateApplicationFromTemplateModal', () => {
     // choose template
     fireEvent.click(queryByText('template-with-placeholders'));
 
-    expect(queryByLabelText('placeholder-1')).toBeInTheDocument();
-    expect(queryByLabelText('placeholder-2')).toBeInTheDocument();
-  });
+    expect(queryByLabelText('placeholder-1-description')).toBeInTheDocument();
+    expect(queryByLabelText('placeholder-2-description')).toBeInTheDocument();
+  }, 10000); // to prevent MockedProvider timeouting
 
   it('Manages form validity and submits valid form', async () => {
     const { queryByText, queryByLabelText } = render(
@@ -103,10 +103,10 @@ describe('CreateApplicationFromTemplateModal', () => {
     expect(createButton).toBeDisabled();
 
     // fill form to enable 'Save' button
-    fireEvent.change(queryByLabelText('placeholder-1'), {
+    fireEvent.change(queryByLabelText('placeholder-1-description'), {
       target: { value: '1' },
     });
-    fireEvent.change(queryByLabelText('placeholder-2'), {
+    fireEvent.change(queryByLabelText('placeholder-2-description'), {
       target: { value: '2' },
     });
     await waitForDomChange();
