@@ -15,7 +15,7 @@ import {
 
 import './ApiRuleForm.scss';
 import ApiRuleFormHeader from './ApiRuleFormHeader/ApiRuleFormHeader';
-import { GET_SERVICES } from '../../../gql/queries';
+import { GET_SERVICES, GET_IDP_PRESETS } from '../../../gql/queries';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
@@ -63,6 +63,9 @@ export default function ApiRuleForm({
   const servicesQueryResult = useQuery(GET_SERVICES, {
     variables: { namespace },
   });
+
+  const idpPresetsQuery = useQuery(GET_IDP_PRESETS);
+  const idpPresets = idpPresetsQuery.data.IDPPresets || [];
 
   const formRef = useRef(null);
   const formValues = {
@@ -219,6 +222,7 @@ export default function ApiRuleForm({
                         }
                         removeStrategy={() => removeAccessStrategy(idx)}
                         canDelete={rules.length > 1}
+                        idpPresets={idpPresets}
                       />
                     );
                   })}

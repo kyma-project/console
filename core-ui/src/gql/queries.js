@@ -87,3 +87,13 @@ export const GET_API_RULE = gql`
     }
   }
 `;
+
+export const GET_IDP_PRESETS = gql`
+  query IDPPresets {
+    IDPPresets {
+      name
+      issuer
+      jwksUri
+    }
+  }
+`;
