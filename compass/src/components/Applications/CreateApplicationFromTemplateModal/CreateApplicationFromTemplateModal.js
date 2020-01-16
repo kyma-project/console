@@ -186,6 +186,10 @@ export default function CreateApplicationFromTemplateModal({
       cancelText="Cancel"
       disabledConfirm={!template || !arePlaceholdersFilled}
       onConfirm={() => addApplication()}
+      onHide={() => {
+        setTemplate(null);
+        setPlaceholders({});
+      }}
     >
       {content}
     </Modal>
