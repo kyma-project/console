@@ -10,7 +10,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
   const { data, error, loading } = useQuery(GET_APPLICATIONS, {
-    // fetchPolicy: 'no-cache',
+    fetchPolicy: 'cache-and-network',
     client: compassGqlClient,
   });
 
