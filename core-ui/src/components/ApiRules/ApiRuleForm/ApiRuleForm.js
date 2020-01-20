@@ -213,13 +213,15 @@ export default function ApiRuleForm({
                       <AccessStrategyForm
                         key={idx}
                         strategy={rule}
-                        setStrategy={newStrategy =>
+                        setStrategy={newStrategy => {
                           setRules(rules => [
                             ...rules.slice(0, idx),
                             newStrategy,
                             ...rules.slice(idx + 1, rules.length),
-                          ])
-                        }
+                          ]);
+                          setValid(false);
+                          handleFormChanged(idx);
+                        }}
                         removeStrategy={() => removeAccessStrategy(idx)}
                         canDelete={rules.length > 1}
                         idpPresets={idpPresets}

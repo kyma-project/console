@@ -23,3 +23,13 @@
     }
   }
 }
+.preset {
+  &-row {
+  display: flex;
+  justify-content: space-between;
+  }
+  
+  &-content {
+    width: 100%;
+  }
+}

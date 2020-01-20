@@ -108,7 +108,11 @@ export default function AccessStrategyForm({
                   setStrategy({
                     ...strategy,
                     accessStrategies: [
-                      { ...strategy.accessStrategies[0], name: e.target.value },
+                      {
+                        ...strategy.accessStrategies[0],
+                        name: e.target.value,
+                        config: {},
+                      },
                     ],
                   })
                 }
@@ -125,12 +129,18 @@ export default function AccessStrategyForm({
 
         <Details
           {...strategy.accessStrategies[0]}
-          setConfig={config =>
-            setStrategy({
+          setConfig={config => {
+            console.log(
+              'strategy.accessStrategies[0]',
+              strategy.accessStrategies[0],
+              'config',
+              config,
+            );
+            return setStrategy({
               ...strategy,
               accessStrategies: [{ ...strategy.accessStrategies[0], config }],
-            })
-          }
+            });
+          }}
           idpPresets={idpPresets}
         />
       </div>
