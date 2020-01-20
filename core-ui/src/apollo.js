@@ -5,13 +5,10 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
-
 import { getApiUrl as getURL } from '@kyma-project/common';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 const DEFAULT_TENANT_ID = '3e64ebae-38b5-46a0-b1ed-9ccee153a0ae';
-
-const cache = new InMemoryCache();
 
 const errorLink = onError(
   ({ operation, response, graphQLErrors, networkError }) => {
@@ -42,7 +39,9 @@ export function createCompassApolloClient() {
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, httpLink]),
-    cache,
+    cache: new InMemoryCache({
+      dataIdFromObject: object => object.name || null,
+    }),
   });
 }
 
@@ -79,7 +78,9 @@ export function createKymaApolloClient() {
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, link]),
-    cache,
+    cache: new InMemoryCache({
+      dataIdFromObject: object => object.name || null,
+    }),
   });
 }
 

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PageHeader, GenericList, Spinner } from 'react-shared';
-import { GET_APPLICATIONS } from 'gql/queries';
+import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
@@ -9,10 +9,43 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
-  const { data, error, loading } = useQuery(GET_APPLICATIONS, {
+
+  const [applicationList, setApplicationList] = useState([]);
+  const { data: compassQueryResult, error, loading } = useQuery(
+    GET_COMPASS_APPLICATIONS,
+    {
+      fetchPolicy: 'cache-and-network',
+      client: compassGqlClient,
+      onCompleted: compassApps => {
+        handleKymaAppsChange(kymaAppsQuery.data, compassApps.applications.data);
+      },
+    },
+  );
+
+  const kymaAppsQuery = useQuery(GET_KYMA_APPLICATIONS, {
     fetchPolicy: 'cache-and-network',
-    client: compassGqlClient,
+    onCompleted: kymaApps => handleKymaAppsChange(kymaApps, applicationList),
   });
+
+  useEffect(() => {
+    if (!compassQueryResult || !compassQueryResult.applications) {
+      return;
+    }
+    setApplicationList(compassQueryResult.applications.data);
+  }, [compassQueryResult, compassQueryResult.applications, setApplicationList]);
+
+  function handleKymaAppsChange(kymaApps = [], compassApps = []) {
+    const newAppList = [...compassApps];
+
+    kymaApps.applications.forEach(kymaApp => {
+      const localAppEntry = newAppList.find(app => app.name === kymaApp.name);
+
+      if (!localAppEntry) return; // got a Kyma app that has not been registered in Compass
+
+      localAppEntry.status = 'installed';
+      localAppEntry.enabledInNamespaces = kymaApp.enabledInNamespaces;
+    });
+  }
 
   const [unregisterApp] = useMutation(UNREGISTER_APPLICATION, {
     client: compassGqlClient,
@@ -43,7 +76,13 @@ export default function ApplicationList() {
     { name: 'Uninstall', handler: () => {}, skipAction: app => false },
   ];
 
-  const headerRenderer = () => ['Name', 'Provider name', 'Status', 'Connected'];
+  const headerRenderer = () => [
+    'Name',
+    'Provider name',
+    'Status',
+    'Bound namespaces',
+    'Connected',
+  ];
 
   const rowRenderer = item => [
     <span
@@ -54,7 +93,14 @@ export default function ApplicationList() {
       {item.name}
     </span>,
     item.providerName,
-    <Badge>available</Badge>,
+    <Badge modifier="filled">{item.status}</Badge>,
+    Array.isArray(item.enabledInNamespaces)
+      ? item.enabledInNamespaces.map(n => (
+          <Badge key={n} className="fd-has-margin-right-tiny">
+            {n}
+          </Badge>
+        ))
+      : '-',
     <Badge modifier="filled" type="success">
       Yes
     </Badge>,
@@ -74,7 +120,7 @@ export default function ApplicationList() {
       <GenericList
         actionsStandaloneItems={1}
         actions={actions}
-        entries={data.applications.data}
+        entries={applicationList}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         // extraHeaderContent={<CreateLambdaModal />}
