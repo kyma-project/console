@@ -8,7 +8,6 @@ import {
   Menu,
   Button,
   Popover,
-  FormSelect,
 } from 'fundamental-react';
 import './JwtDetails.scss';
 
