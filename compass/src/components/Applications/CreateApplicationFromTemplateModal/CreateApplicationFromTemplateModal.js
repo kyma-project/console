@@ -67,7 +67,9 @@ export default function CreateApplicationFromTemplateModal({
       return null;
     }
 
-    const templates = data.applicationTemplates.data;
+    const templates = data.applicationTemplates
+      ? data.applicationTemplates.data
+      : [];
     return (
       <Menu className="template-list">
         {templates.length ? (
@@ -86,13 +88,17 @@ export default function CreateApplicationFromTemplateModal({
   const dropdownControlText = () => {
     if (template) {
       return template.name;
-    } else if (templatesQuery.error) {
-      console.warn(templatesQuery.error);
-      return 'Error! Cannot load templates list.';
-    } else if (templatesQuery.loading) {
-      return 'Choose template (loading...)';
-    } else {
-      return 'Choose template';
+    } else if (templatesQuery) {
+      const { loading, error, data } = templatesQuery;
+      if (error || (!loading && data && !data.applicationTemplates)) {
+        // sometimes after an error, there is an empty data object returned. I didn't find the reason for such behaviour.
+        console.warn(error);
+        return 'Error! Cannot load templates list.';
+      } else if (loading) {
+        return 'Choose template (loading...)';
+      } else {
+        return 'Choose template';
+      }
     }
   };
 
