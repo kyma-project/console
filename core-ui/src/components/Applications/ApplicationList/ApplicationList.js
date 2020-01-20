@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { PageHeader, GenericList, Spinner } from 'react-shared';
 import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
+import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
+import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
@@ -11,16 +13,21 @@ export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
 
   const [applicationList, setApplicationList] = useState([]);
-  const { data: compassQueryResult, error, loading } = useQuery(
-    GET_COMPASS_APPLICATIONS,
-    {
-      fetchPolicy: 'cache-and-network',
-      client: compassGqlClient,
-      onCompleted: compassApps => {
-        handleKymaAppsChange(kymaAppsQuery.data, compassApps.applications.data);
-      },
+  const {
+    data: compassQueryResult,
+    error,
+    loading,
+    refetch: refetchCompassQuery,
+  } = useQuery(GET_COMPASS_APPLICATIONS, {
+    fetchPolicy: 'cache-and-network',
+    client: compassGqlClient,
+    onCompleted: compassApps => {
+      handleKymaAppsChange(
+        kymaAppsQuery.data,
+        compassApps ? compassApps.applications.data : [],
+      );
     },
-  );
+  });
 
   const kymaAppsQuery = useQuery(GET_KYMA_APPLICATIONS, {
     fetchPolicy: 'cache-and-network',
@@ -32,7 +39,21 @@ export default function ApplicationList() {
       return;
     }
     setApplicationList(compassQueryResult.applications.data);
-  }, [compassQueryResult, compassQueryResult.applications, setApplicationList]);
+  }, [compassQueryResult, setApplicationList]);
+
+  useEffect(() => {
+    if (!kymaAppsQuery.subscribeToMore) return;
+    kymaAppsQuery.subscribeToMore({
+      document: APPLICATIONS_EVENT_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        return handleApplicationEvent(
+          subscriptionData.data.applicationEvent,
+          prev,
+          refetchCompassQuery,
+        );
+      },
+    });
+  }, [kymaAppsQuery, refetchCompassQuery]);
 
   function handleKymaAppsChange(kymaApps = [], compassApps = []) {
     const newAppList = [...compassApps];
@@ -42,7 +63,7 @@ export default function ApplicationList() {
 
       if (!localAppEntry) return; // got a Kyma app that has not been registered in Compass
 
-      localAppEntry.status = 'installed';
+      localAppEntry.status = kymaApp.status || 'installed'; // TODO
       localAppEntry.enabledInNamespaces = kymaApp.enabledInNamespaces;
     });
   }
@@ -106,13 +127,8 @@ export default function ApplicationList() {
     </Badge>,
   ];
 
-  if (error) {
-    return `Error! ${error.message}`;
-  }
-
-  if (loading) {
-    return <Spinner />;
-  }
+  if (error) return `Error! ${error.message}`;
+  if (loading) return <Spinner />;
 
   return (
     <>
