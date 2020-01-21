@@ -77,7 +77,6 @@ export default function ApplicationList() {
         entries={data.applications.data}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
-        // extraHeaderContent={<CreateLambdaModal />}
       />
     </>
   );

@@ -130,7 +130,9 @@ GenericList.Actions = ListActions;
 
 GenericList.propTypes = {
   title: PropTypes.string,
-  entries: PropTypes.arrayOf(PropTypes.object).isRequired,
+  entries: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  ).isRequired,
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
   actions: PropTypes.arrayOf(

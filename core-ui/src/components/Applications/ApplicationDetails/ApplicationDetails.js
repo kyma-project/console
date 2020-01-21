@@ -7,6 +7,7 @@ import { Spinner, PageHeader } from 'react-shared';
 import { GET_APPLICATION } from '../../../gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import Labels from 'shared/components/Labels/Labels';
+import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 
 const ApplicationDetails = ({ appName }) => {
   const { error, loading, data } = useQuery(GET_APPLICATION, {
@@ -31,6 +32,7 @@ const ApplicationDetails = ({ appName }) => {
   return (
     <>
       <ApplicationDetailsHeader data={data.application} />
+      <BoundNamespacesList data={data.application.enabledInNamespaces} />
     </>
   );
 };

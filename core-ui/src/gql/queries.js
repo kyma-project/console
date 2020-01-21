@@ -107,6 +107,7 @@ export const GET_APPLICATION = gql`
       labels
       status
       description
+      enabledInNamespaces
     }
   }
 `;
