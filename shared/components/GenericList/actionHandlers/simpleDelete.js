@@ -21,11 +21,11 @@ export function handleDelete(
   entityId,
   entityName,
   deleteRequestFn,
-  callback,
+  callback = () => {},
 ) {
   displayConfirmationMessage(entityType, entityName)
     .then(() => {
-      return deleteRequestFn(entityId);
+      return deleteRequestFn(entityId, entityName);
     })
     .then(() => {
       callback();

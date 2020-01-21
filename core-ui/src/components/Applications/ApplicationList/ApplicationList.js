@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { PageHeader, GenericList, Spinner } from 'react-shared';
+import { PageHeader, GenericList, Spinner, handleDelete } from 'react-shared';
 import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
 import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
@@ -7,11 +7,11 @@ import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
-import LuigiClient from '@kyma-project/luigi-client';
+import { useNotification } from 'contexts/notifications';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
-
+  const notificationManager = useNotification();
   const [applicationList, setApplicationList] = useState([]);
   const {
     data: compassQueryResult,
@@ -70,28 +70,48 @@ export default function ApplicationList() {
 
   const [unregisterApp] = useMutation(UNREGISTER_APPLICATION, {
     client: compassGqlClient,
+    refetchQueries: [{ query: GET_COMPASS_APPLICATIONS }],
   });
+
+  async function handleApplicationUnregister(id, name) {
+    try {
+      const result = await unregisterApp({
+        variables: { id },
+      });
+      const isSuccess =
+        result.data &&
+        result.data.unregisterApplication &&
+        result.data.unregisterApplication.id === id;
+      if (isSuccess) {
+        notificationManager.notify({
+          content: `Application ${name} deleted`,
+          title: 'Success',
+          color: '#107E3E',
+          icon: 'accept',
+          autoClose: true,
+        });
+      }
+    } catch (e) {
+      notificationManager.notify({
+        content: `Error while removing application ${name}: ${e.message}`,
+        title: 'Error',
+        color: '#BB0000',
+        icon: 'decline',
+        autoClose: false,
+      });
+    }
+  }
 
   const actions = [
     {
       name: 'Delete',
-      handler: app => {
-        LuigiClient.uxManager()
-          .showConfirmationModal({
-            header: `Remove ${app.name}`,
-            body: `Are you sure you want to delete ${app.name}?`,
-            buttonConfirm: 'Delete',
-            buttonDismiss: 'Cancel',
-          })
-          .then(() => unregisterApp({ variables: { id: app.id } }))
-          .catch(e =>
-            LuigiClient.uxManager().showAlert({
-              text: `An error occurred while deleting ${app.name}: ${e.message}`,
-              type: 'error',
-              closeAfter: 10000,
-            }),
-          );
-      },
+      handler: app =>
+        handleDelete(
+          'Application',
+          app.id,
+          app.name,
+          handleApplicationUnregister,
+        ),
     },
     { name: 'Install', handler: () => {}, skipAction: app => false },
     { name: 'Uninstall', handler: () => {}, skipAction: app => false },
