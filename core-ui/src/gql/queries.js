@@ -88,6 +88,18 @@ export const GET_API_RULE = gql`
   }
 `;
 
+export const GET_APPLICATIONS = gql`
+  query {
+    applications {
+      data {
+        id
+        providerName
+        name
+      }
+    }
+  }
+`;
+
 export const GET_IDP_PRESETS = gql`
   query IDPPresets {
     IDPPresets {
