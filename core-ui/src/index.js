@@ -16,7 +16,9 @@ import './index.scss';
 import App from './components/App/App';
 import builder from './commons/builder';
 
-import { createApolloClient } from './apollo';
+import { createKymaApolloClient, createCompassApolloClient } from './apollo';
+
+export const CompassGqlContext = React.createContext(null);
 
 function setupLocalStorageVariables() {
   LuigiClient.addCustomMessageListener(
@@ -36,15 +38,18 @@ function setupLocalStorageVariables() {
 
 preloadingStrategy(async () => {
   builder.addEventListeners(() => {
-    const client = createApolloClient();
+    const kymaClient = createKymaApolloClient();
+    const compassClient = createCompassApolloClient();
 
     setupLocalStorageVariables();
 
     ReactDOM.render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+      <ApolloProvider client={kymaClient}>
+        <CompassGqlContext.Provider value={compassClient}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </CompassGqlContext.Provider>
       </ApolloProvider>,
       document.getElementById('root'),
     );

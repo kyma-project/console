@@ -24,7 +24,7 @@ export const sampleAPIRule = {
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         accessStrategies: [
           {
-            name: 'allow',
+            name: 'noop',
             config: {},
           },
         ],

@@ -21,7 +21,7 @@ const apiRule = {
       methods: ['GET'],
       accessStrategies: [
         {
-          name: 'allow',
+          name: 'noop',
         },
       ],
     },
@@ -30,7 +30,7 @@ const apiRule = {
       methods: ['POST'],
       accessStrategies: [
         {
-          name: 'allow',
+          name: 'noop',
         },
       ],
     },

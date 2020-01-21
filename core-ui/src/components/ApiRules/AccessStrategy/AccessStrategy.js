@@ -2,19 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Icon } from 'fundamental-react';
 
-const passAll = {
-  value: 'allow',
-  displayName: 'Allow',
-};
-const jwt = {
-  value: 'jwt',
-  displayName: 'JWT',
+// const passAll = {
+//   value: 'allow',
+//   displayName: 'Allow',
+// };
+// const jwt = {
+//   value: 'jwt',
+//   displayName: 'JWT',
+// };
+const noop = {
+  value: 'noop',
+  displayName: 'noop',
 };
 const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [passAll, jwt, oauth2];
+const accessStrategiesList = [noop, oauth2];
 
 const AccessStrategy = ({ strategy }) => {
   const selectedType = strategy.accessStrategies[0].name;
@@ -26,7 +30,7 @@ const AccessStrategy = ({ strategy }) => {
         <div className="type">
           <Badge modifier="filled">
             <Icon
-              glyph={selectedType === passAll.value ? 'unlocked' : 'locked'}
+              glyph={selectedType === noop.value ? 'unlocked' : 'locked'}
               size="s"
             />
             {

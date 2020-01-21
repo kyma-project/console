@@ -7,6 +7,8 @@ REACT_APP_graphqlApiUrlLocal="http://$REACT_APP_localDomain:3000/graphql"
 REACT_APP_subscriptionsApiUrl="wss://console-backend.$REACT_APP_domain/graphql"
 REACT_APP_subscriptionsApiUrlLocal="ws://$REACT_APP_localDomain:3000/graphql"
 
+REACT_APP_compassGraphqlApiUrl="https://compass-gateway.$REACT_APP_domain/director/graphql"
+
 REACT_APP_authRedirectUri="http://$REACT_APP_localDomain:4200"
 REACT_APP_consoleClientId="console"
 REACT_APP_orgId="my-org-123"

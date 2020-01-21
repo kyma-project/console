@@ -1,7 +1,7 @@
 import React from 'react';
 import { GenericComponent } from '@kyma-project/generic-documentation';
 
-function DocumentationComponent({ content, type }) {
+const DocumentationComponent = ({ content, type }) => {
   return (
     <GenericComponent
       layout="compass-ui"
@@ -15,6 +15,6 @@ function DocumentationComponent({ content, type }) {
       ]}
     />
   );
-}
+};
 
 export default DocumentationComponent;

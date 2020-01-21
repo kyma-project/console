@@ -1,6 +1,11 @@
 import React from 'react';
 import CreateApiRule from '../CreateApiRule';
-import { render, fireEvent, waitForDomChange } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  wait,
+  waitForDomChange,
+} from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 import {
   mockNamespace,
@@ -96,21 +101,19 @@ describe('CreateApiRule', () => {
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
-    test.todo(
-      'Create button fires createApiRuleMutation - investigate randomly failing test',
-    );
-    // it('Create button fires createApiRuleMutation', async () => {
-    //   fireEvent.change(nameInput, { target: { value: apiRuleName } });
-    //   fireEvent.change(hostnameInput, { target: { value: hostname } });
-    //   const createButton = queryByLabelText('submit-form');
+    it('Create button fires createApiRuleMutation', async () => {
+      fireEvent.change(nameInput, { target: { value: apiRuleName } });
+      fireEvent.change(hostnameInput, { target: { value: hostname } });
+      const createButton = queryByLabelText('submit-form');
 
-    //   expect(createButton).not.toBeDisabled();
+      expect(createButton).not.toBeDisabled();
 
-    //   createButton.click();
-    //   await waitForDomChange();
+      createButton.click();
 
-    //   expect(createApiRuleMutation.result).toHaveBeenCalled();
-    //   expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRuleName}`);
-    // });
+      await wait(() => {
+        expect(createApiRuleMutation.result).toHaveBeenCalled();
+        expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRuleName}`);
+      });
+    });
   });
 });

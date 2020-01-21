@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitForDomChange } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  wait,
+  waitForDomChange,
+} from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 
 import EditApiRule from '../EditApiRule';
@@ -96,20 +101,18 @@ describe('EditApiRule', () => {
       expect(queryByLabelText('submit-form')).toBeDisabled();
     });
 
-    test.todo(
-      'Update button fires updateApiRuleMutation - investigate randomly failing test',
-    );
-    // it('Update button fires updateApiRuleMutation', async () => {
-    //   fireEvent.change(hostnameInput, { target: { value: newHostname } });
-    //   const updateButton = queryByLabelText('submit-form');
+    it('Update button fires updateApiRuleMutation', async () => {
+      fireEvent.change(hostnameInput, { target: { value: newHostname } });
+      const updateButton = queryByLabelText('submit-form');
 
-    //   expect(updateButton).not.toBeDisabled();
+      expect(updateButton).not.toBeDisabled();
 
-    //   updateButton.click();
-    //   await waitForDomChange();
+      updateButton.click();
 
-    //   expect(updateApiRuleMutation.result).toHaveBeenCalled();
-    //   expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRule.name}`);
-    // });
+      await wait(() => {
+        expect(updateApiRuleMutation.result).toHaveBeenCalled();
+        expect(mockNavigate).toHaveBeenCalledWith(`/details/${apiRule.name}`);
+      });
+    });
   });
 });

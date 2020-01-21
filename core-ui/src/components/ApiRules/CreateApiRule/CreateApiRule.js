@@ -11,7 +11,7 @@ const DEFAULT_ACCESS_STRATEGY = {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   accessStrategies: [
     {
-      name: 'allow',
+      name: 'noop',
       config: {},
     },
   ],

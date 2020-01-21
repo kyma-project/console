@@ -7,7 +7,7 @@ const defaultAccessStrategy = {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   accessStrategies: [
     {
-      name: 'allow',
+      name: 'noop',
       config: {},
     },
   ],
@@ -24,6 +24,6 @@ describe('AccessStrategy', () => {
     expect(await queryAllByLabelText('method')).toHaveLength(
       defaultAccessStrategy.methods.length,
     );
-    expect(queryByText('Allow')).toBeTruthy();
+    expect(queryByText('noop')).toBeTruthy();
   });
 });

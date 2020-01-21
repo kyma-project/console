@@ -13,7 +13,7 @@ const allowStrategy = {
   methods: ['GET', 'PUT'],
   accessStrategies: [
     {
-      name: 'allow',
+      name: 'noop',
       config: {},
     },
   ],
