@@ -31,7 +31,8 @@ export default function ApplicationList() {
 
   const kymaAppsQuery = useQuery(GET_KYMA_APPLICATIONS, {
     fetchPolicy: 'cache-and-network',
-    onCompleted: kymaApps => handleKymaAppsChange(kymaApps, applicationList),
+    onCompleted: kymaAppsQueryResult =>
+      handleKymaAppsChange(kymaAppsQueryResult, applicationList),
   });
 
   useEffect(() => {
@@ -55,10 +56,11 @@ export default function ApplicationList() {
     });
   }, [kymaAppsQuery, refetchCompassQuery]);
 
-  function handleKymaAppsChange(kymaApps = [], compassApps = []) {
+  function handleKymaAppsChange(kymaAppsQueryResult, compassApps = []) {
+    if (!kymaAppsQueryResult || !kymaAppsQueryResult.applications) return;
     const newAppList = [...compassApps];
 
-    kymaApps.applications.forEach(kymaApp => {
+    kymaAppsQueryResult.applications.forEach(kymaApp => {
       const localAppEntry = newAppList.find(app => app.name === kymaApp.name);
 
       if (!localAppEntry) return; // got a Kyma app that has not been registered in Compass

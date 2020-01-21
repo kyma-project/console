@@ -15,6 +15,8 @@ import CustomPropTypes from './typechecking/CustomPropTypes';
 export * from './forms';
 export * from './hooks';
 export * from './contexts/ApplicationContext';
+export * from './testing/apollo';
+
 export {
   CustomPropTypes,
   GenericList,

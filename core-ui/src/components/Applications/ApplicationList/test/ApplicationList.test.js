@@ -5,19 +5,22 @@ import {
   queryByText,
   queryAllByRole,
 } from '@testing-library/react';
-
-import { MockedProvider } from '@apollo/react-testing';
-import { GET_APPLICATIONS } from 'gql/queries';
+import { MockedProvider, MockSubscriptionLink } from '@apollo/react-testing';
+import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
+import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
 import ApplicationList from '../ApplicationList';
 
-const mockNamespace = 'nsp';
+import { createMockLink } from 'react-shared';
+// import * as mockedReactShared from 'react-shared';
+// const realReactShared = jest.requireActual('react-shared');
+
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
 const mockCompassAppsEmpty = {
   request: {
-    query: GET_APPLICATIONS,
+    query: GET_COMPASS_APPLICATIONS,
   },
   result: {
     data: {
@@ -32,13 +35,42 @@ const appList = [
 
 const mockCompassApps = {
   request: {
-    query: GET_APPLICATIONS,
+    query: GET_COMPASS_APPLICATIONS,
   },
   result: {
     data: {
       applications: {
         data: appList,
       },
+    },
+  },
+};
+
+const mockKymaApps = {
+  request: {
+    query: GET_KYMA_APPLICATIONS,
+  },
+  result: {
+    data: {
+      applications: [],
+    },
+  },
+};
+
+const mockKymaSubscription = {
+  request: {
+    query: APPLICATIONS_EVENT_SUBSCRIPTION,
+  },
+  result: {
+    data: {
+      // applicationEvent: {
+      //   type: 'ADD',
+      //   application: {
+      //     name: 'xy',
+      //     status: 'aaa',
+      //     enabledInNamespaces: [],
+      //   },
+      // },
     },
   },
 };
@@ -72,6 +104,11 @@ jest.mock('@kyma-project/luigi-client', () => ({
     showAlert: jest.fn(),
   }),
 }));
+// jest.mock('react-shared', () => jest.fn());
+// mockedReactShared.mockImplementation(() => ({
+//   ...realReactShared,
+//   handleDelete: () => Promise.resolve(),
+// }));
 
 jest.mock('index', () => {
   return {
@@ -85,8 +122,9 @@ describe('ApplicationList', () => {
   });
 
   it('Renders empty list', async () => {
+    const { link } = createMockLink([mockCompassAppsEmpty]);
     const { queryByRole } = render(
-      <MockedProvider addTypename={false} mocks={[mockCompassAppsEmpty]}>
+      <MockedProvider link={link} addTypename={false}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -100,8 +138,9 @@ describe('ApplicationList', () => {
   });
 
   it('Shows loading status', async () => {
+    const { link } = createMockLink([]);
     const { queryByRole, queryByLabelText } = render(
-      <MockedProvider addTypename={false} mocks={[mockCompassAppsEmpty]}>
+      <MockedProvider link={link} addTypename={false}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -113,8 +152,9 @@ describe('ApplicationList', () => {
   });
 
   it('Shows error status', async () => {
+    const { link } = createMockLink([]);
     const { queryByRole, queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} mocks={[]}>
+      <MockedProvider link={link} addTypename={false}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -127,8 +167,9 @@ describe('ApplicationList', () => {
   });
 
   it('Renders some elements', async () => {
+    const { link } = createMockLink([mockCompassApps]);
     const { queryByRole } = render(
-      <MockedProvider addTypename={false} mocks={[mockCompassApps]}>
+      <MockedProvider link={link} addTypename={false}>
         <ApplicationList />
       </MockedProvider>,
     );
@@ -147,7 +188,7 @@ describe('ApplicationList', () => {
 
   //   it('Clicking on element navigates to its details', async () => {
   //     const { getByText } = render(
-  //       <MockedProvider addTypename={false} mocks={[mockCompassApps]}>
+  //       <MockedProvider link={link} addTypename={false} mocks={[mockCompassApps]}>
   //         <ApplicationList />
   //       </MockedProvider>,
   //     );
@@ -158,14 +199,12 @@ describe('ApplicationList', () => {
   //     });
   //   });
 
-  it('Clicking on "Delete" deletes element', async () => {
+  xit('Clicking on "Delete" deletes element', async () => {
     const deleteAppMutation = mockCompassAppDelete(2);
+    const { link } = createMockLink([mockCompassApps, deleteAppMutation]);
 
     const { getAllByLabelText } = render(
-      <MockedProvider
-        addTypename={false}
-        mocks={[mockCompassApps, deleteAppMutation]}
-      >
+      <MockedProvider link={link} addTypename={false}>
         <ApplicationList />
       </MockedProvider>,
     );
