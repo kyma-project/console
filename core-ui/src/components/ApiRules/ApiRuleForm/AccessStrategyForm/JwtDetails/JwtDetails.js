@@ -13,7 +13,14 @@ import './JwtDetails.scss';
 
 export function JwtDetails({ config, setConfig, idpPresets }) {
   function getInitialPresetTypes() {
-    if (!idpPresets || !idpPresets.length) return [];
+    if (
+      !idpPresets ||
+      !idpPresets.length ||
+      !config ||
+      !config.jwks_urls ||
+      !config.jwks_urls.length
+    )
+      return [];
     return (
       config.jwks_urls.map(jwks_url =>
         idpPresets.find(p => p.jwksUri === jwks_url) ? 'preset' : 'custom',

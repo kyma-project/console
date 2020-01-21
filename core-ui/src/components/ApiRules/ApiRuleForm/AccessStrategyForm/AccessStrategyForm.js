@@ -104,18 +104,21 @@ export default function AccessStrategyForm({
                 defaultValue={selectedType}
                 aria-label="Access strategy type"
                 id="select-1"
-                onChange={e =>
-                  setStrategy({
+                onChange={e => {
+                  const newStrategy = {
                     ...strategy,
                     accessStrategies: [
                       {
                         ...strategy.accessStrategies[0],
                         name: e.target.value,
-                        config: {},
                       },
                     ],
-                  })
-                }
+                  };
+                  if (e.target.value !== strategy.accessStrategies[0].name) {
+                    newStrategy.accessStrategies[0].config = {};
+                  }
+                  setStrategy(newStrategy);
+                }}
               >
                 {accessStrategiesList.map(ac => (
                   <option key={ac.value} value={ac.value}>
