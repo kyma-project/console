@@ -55,6 +55,20 @@ export default function ApplicationList() {
     });
   }, [kymaAppsQuery, refetchCompassQuery]);
 
+  useEffect(() => {
+    if (!kymaAppsQuery.subscribeToMore) return;
+    kymaAppsQuery.subscribeToMore({
+      document: APPLICATIONS_EVENT_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        return handleApplicationEvent(
+          subscriptionData.data.applicationEvent,
+          prev,
+          refetchCompassQuery,
+        );
+      },
+    });
+  }, [kymaAppsQuery, refetchCompassQuery]);
+
   function handleKymaAppsChange(kymaApps = [], compassApps = []) {
     const newAppList = [...compassApps];
 
