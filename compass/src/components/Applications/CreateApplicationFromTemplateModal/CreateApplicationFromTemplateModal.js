@@ -1,6 +1,6 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import {
   Menu,
   Dropdown,
@@ -10,12 +10,11 @@ import {
   FormLabel,
   FormInput,
 } from 'fundamental-react';
-import { Modal } from './../../../shared/components/Modal/Modal';
-import './CreateApplicationFromTemplateModal.scss';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_TEMPLATES, REGISTER_APPLICATION_FROM_TEMPLATE } from '../gql';
 import { SEND_NOTIFICATION } from 'gql';
+import { Modal } from './../../../shared/components/Modal/Modal';
+import './CreateApplicationFromTemplateModal.scss';
 
 CreateApplicationFromTemplateModal.propTypes = {
   applicationsQuery: PropTypes.object.isRequired,
@@ -67,7 +66,9 @@ export default function CreateApplicationFromTemplateModal({
       return null;
     }
 
-    const templates = data.applicationTemplates.data;
+    const templates = data.applicationTemplates
+      ? data.applicationTemplates.data
+      : [];
     return (
       <Menu>
         {templates.length ? (
@@ -86,13 +87,17 @@ export default function CreateApplicationFromTemplateModal({
   const dropdownControlText = () => {
     if (template) {
       return template.name;
-    } else if (templatesQuery.error) {
-      console.warn(templatesQuery.error);
-      return 'Error! Cannot load templates list.';
-    } else if (templatesQuery.loading) {
-      return 'Choose template (loading...)';
-    } else {
-      return 'Choose template';
+    } else if (templatesQuery) {
+      const { loading, error, data } = templatesQuery;
+      if (error || (!loading && data && !data.applicationTemplates)) {
+        // sometimes after an error, there is an empty data object returned. To investigate.
+        console.warn(error);
+        return 'Error! Cannot load templates list.';
+      } else if (loading) {
+        return 'Choose template (loading...)';
+      } else {
+        return 'Choose template';
+      }
     }
   };
 
@@ -150,7 +155,7 @@ export default function CreateApplicationFromTemplateModal({
       const name = result.data.registerApplicationFromTemplate.name;
       sendNotification({
         variables: {
-          content: `Created application "${name}".`,
+          content: `Application "${name}" created successfully`,
           title: name,
           color: '#359c46',
           icon: 'accept',
@@ -162,19 +167,22 @@ export default function CreateApplicationFromTemplateModal({
       console.warn(e);
       let message = e.message;
       if (e.message.match('Object is not unique')) {
-        message =
-          'Application with that name already exists, please choose another template.';
+        message = 'Application with that name already exists';
       }
-      LuigiClient.uxManager().showAlert({
-        text: `Cannot create application: ${message}`,
-        type: 'error',
-        closeAfter: 10000,
+      sendNotification({
+        variables: {
+          content: `Could not create Application: ${message}`,
+          title: 'Error',
+          color: '#BB0000',
+          icon: 'decline',
+          autoClose: false,
+        },
       });
     }
   };
 
-  const arePlaceholdersFilled = Object.values(placeholders).every(placeholder =>
-    placeholder.value.trim(),
+  const arePlaceholdersFilled = Object.values(placeholders).every(
+    placeholder => placeholder.value,
   );
 
   return (
