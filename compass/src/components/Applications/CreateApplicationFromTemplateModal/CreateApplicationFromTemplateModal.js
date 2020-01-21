@@ -69,7 +69,7 @@ export default function CreateApplicationFromTemplateModal({
 
     const templates = data.applicationTemplates.data;
     return (
-      <Menu className="template-list">
+      <Menu>
         {templates.length ? (
           templates.map(template => (
             <Menu.Item key={template.id} onClick={() => setTemplate(template)}>

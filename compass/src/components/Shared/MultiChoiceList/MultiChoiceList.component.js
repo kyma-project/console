@@ -83,7 +83,7 @@ export default function MultiChoiceList({
     }
 
     const nonChoosenItemsList = (
-      <Menu className="multi-choice-list__non-selected">
+      <Menu>
         {currentlyNonSelectedItems.map(item => (
           <Menu.Item
             key={getDisplayName(item)}

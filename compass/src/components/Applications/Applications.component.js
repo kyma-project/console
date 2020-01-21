@@ -6,12 +6,10 @@ import LuigiClient from '@kyma-project/luigi-client';
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
 import CreateApplicationFromTemplateModal from './CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
-import { GenericList, handleDelete } from 'react-shared';
+import { GenericList, handleDelete, PageHeader } from 'react-shared';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
-import { PageHeader } from 'react-shared';
 import { Popover, Menu, Button } from 'fundamental-react';
-import './Applications.scss';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -83,7 +81,7 @@ class Applications extends React.Component {
     const extraHeaderContent = (
       <Popover
         body={
-          <Menu className="create-application-dropdown">
+          <Menu>
             <Menu.List>
               <CreateApplicationModal
                 applicationsQuery={applicationsQuery}
