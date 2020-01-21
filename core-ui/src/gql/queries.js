@@ -99,3 +99,14 @@ export const GET_APPLICATIONS = gql`
     }
   }
 `;
+
+export const GET_APPLICATION = gql`
+  query Application($name: String!) {
+    application(name: $name) {
+      name
+      labels
+      status
+      description
+    }
+  }
+`;

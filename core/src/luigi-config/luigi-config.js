@@ -612,11 +612,23 @@ Promise.all(initPromises)
             },
             {
               pathSegment: 'applications-2',
-              navigationContext: 'test',
+              navigationContext: 'applications-2',
               label: 'Applications [Experimental]',
               category: 'Integration',
               viewUrl: config.coreModuleUrl + '/applications',
-              viewGroup: coreUIViewGroupName
+              viewGroup: coreUIViewGroupName,
+              keepSelectedForChildren: true,
+              children: [
+                {
+                  pathSegment: 'details',
+                  children: [
+                    {
+                      pathSegment: ':appName',
+                      viewUrl: config.coreModuleUrl + '/application/:appName',
+                    }
+                  ]
+                }
+                ]
             },
             {
               pathSegment: 'settings',
