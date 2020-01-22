@@ -611,14 +611,6 @@ Promise.all(initPromises)
               hideFromNav: true
             },
             {
-              pathSegment: 'applications-2',
-              navigationContext: 'test',
-              label: 'Applications [Experimental]',
-              category: 'Integration',
-              viewUrl: config.coreModuleUrl + '/applications',
-              viewGroup: coreUIViewGroupName
-            },
-            {
               pathSegment: 'settings',
               navigationContext: 'settings',
               label: 'General Settings',
