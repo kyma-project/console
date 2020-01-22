@@ -49,7 +49,7 @@ export default function ApplicationList() {
     <span
       className="link"
       data-test-id="app-name"
-      onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+      onClick={() => LuigiClient.linkManager().navigate(`details/${item.id}`)}
     >
       {item.name}
     </span>,

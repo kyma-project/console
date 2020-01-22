@@ -27,7 +27,7 @@ export default function App() {
 
         <Route path="/applications" component={ApplicationList} />
         <Route
-          path="/application/:appName"
+          path="/application/:appId"
           component={RoutedApplicationDetails}
         />
 
@@ -61,5 +61,5 @@ function RoutedEditApiRule({ match }) {
 }
 
 function RoutedApplicationDetails({ match }) {
-  return <ApplicationDetails appName={match.params.appName} />;
+  return <ApplicationDetails appId={match.params.appId} />;
 }

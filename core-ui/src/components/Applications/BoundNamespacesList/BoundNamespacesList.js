@@ -1,6 +1,7 @@
 import React from 'react';
 import { GenericList } from 'react-shared';
-import LuigiClient from '@kyma-project/luigi-client';
+
+import BindNamespaceModal from '../BindNamespaceModal/BindNamespaceModal';
 
 export default function BoundNamespacesList({ data }) {
   const actions = [
@@ -22,6 +23,7 @@ export default function BoundNamespacesList({ data }) {
         entries={data}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
+        extraHeaderContent={<BindNamespaceModal />}
       />
     </>
   );

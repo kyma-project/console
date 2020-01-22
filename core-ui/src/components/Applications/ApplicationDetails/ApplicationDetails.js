@@ -1,44 +1,79 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Button } from 'fundamental-react';
 
-import { Spinner, PageHeader } from 'react-shared';
-import { GET_APPLICATION } from '../../../gql/queries';
+import { Spinner, PageHeader, DetailsError } from 'react-shared';
+import { GET_APPLICATION, GET_APPLICATION_COMPASS } from '../../../gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import Labels from 'shared/components/Labels/Labels';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
+import { CompassGqlContext } from 'index';
+import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
 
-const ApplicationDetails = ({ appName }) => {
-  const { error, loading, data } = useQuery(GET_APPLICATION, {
+const ApplicationDetails = ({ appId }) => {
+  const compassGqlClient = useContext(CompassGqlContext);
+
+  const compassQuery = useQuery(GET_APPLICATION_COMPASS, {
+    variables: {
+      id: appId,
+    },
+    fetchPolicy: 'no-cache',
+    client: compassGqlClient,
+  });
+
+  const appName =
+    compassQuery.data &&
+    compassQuery.data.application &&
+    compassQuery.data.application.name;
+  const kymaQuery = useQuery(GET_APPLICATION, {
     variables: {
       name: appName,
     },
     fetchPolicy: 'no-cache',
+    skip: !appName,
   });
 
-  if (loading) {
+  if (compassQuery.loading || kymaQuery.loading) {
     return <Spinner />;
   }
 
-  if (error) {
-    return <h1>Couldn't fetch Application data</h1>;
+  if (compassQuery.error) {
+    // return <p> {compassQuery.error.message}</p>
+    const breadcrumbItems = [{ name: 'Applications', path: '' }, { name: '' }];
+    return (
+      <DetailsError
+        breadcrumbs={breadcrumbItems}
+        message={`Couldn't fetch Application data due to an error: ${compassQuery.error.message}`}
+      ></DetailsError>
+    );
   }
 
-  if (!data.application) {
-    return <EntryNotFound entryType="Application" entryId={appName} />;
+  if (!compassQuery.data || !compassQuery.data.application) {
+    return <EntryNotFound entryType="Application" entryId={appId} />;
   }
 
   return (
     <>
-      <ApplicationDetailsHeader data={data.application} />
-      <BoundNamespacesList data={data.application.enabledInNamespaces} />
+      <ApplicationDetailsHeader
+        data={
+          kymaQuery.data && kymaQuery.data.application
+            ? kymaQuery.data.application
+            : compassQuery.data.application
+        }
+      />
+      {kymaQuery.data && kymaQuery.data.application ? (
+        <BoundNamespacesList
+          data={kymaQuery.data.application.enabledInNamespaces}
+        />
+      ) : (
+        ''
+      )}
     </>
   );
 };
 
 ApplicationDetails.propTypes = {
-  appName: PropTypes.string.isRequired,
+  appId: PropTypes.string.isRequired,
 };
 
 export default ApplicationDetails;
@@ -52,10 +87,10 @@ function ApplicationDetailsHeader({ data }) {
         {data.name}
       </PageHeader.Column>
       <PageHeader.Column title="Status" columnSpan={null}>
-        {data.status}
+        {data.status || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Description" columnSpan={null}>
-        {data.description}
+        {data.description || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Labels" columnSpan={null}>
         {Labels(data.labels)}
