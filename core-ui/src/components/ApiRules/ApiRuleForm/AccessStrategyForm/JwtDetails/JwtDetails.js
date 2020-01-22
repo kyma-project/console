@@ -123,14 +123,14 @@ export default function JwtDetails({
         </LayoutGrid>
       </div>
       <FormItem>
-        <FormLabel htmlFor={`remove-access-strategy-${idx}`} />
+        <FormLabel htmlFor={`remove-preset-${idx}`} />
         <Button
           glyph="delete"
           type="negative"
           typeAttr="button"
-          className="remove-access-strategy fd-has-margin-left-m"
-          aria-label={`remove-access-strategy-${idx}`}
-          id={`remove-access-strategy-${idx}`}
+          className="fd-has-margin-left-s"
+          aria-label={`remove-preset-${idx}`}
+          id={`remove-preset-${idx}`}
           onClick={() => removePreset(idx)}
         />
       </FormItem>

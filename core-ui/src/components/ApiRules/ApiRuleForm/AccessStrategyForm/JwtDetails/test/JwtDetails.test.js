@@ -15,12 +15,9 @@ const config = {
   trusted_issuers: ['https://issuer_2'],
 };
 
-const setConfig = jest.fn();
-
 describe('JwtDetails', () => {
-  beforeEach(setConfig.mockReset);
-
   it('allows to remove idp', () => {
+    const setConfig = jest.fn();
     //for Popovers's Warning: `NaN` is an invalid value for the `left` css style property.
     console.error = jest.fn();
 
@@ -33,7 +30,7 @@ describe('JwtDetails', () => {
       />,
     );
 
-    const deleteButton = queryByLabelText('remove-access-strategy-0');
+    const deleteButton = queryByLabelText('remove-preset-0');
     fireEvent.click(deleteButton);
 
     expect(setConfig).toHaveBeenCalled();
@@ -52,28 +49,10 @@ describe('JwtDetails', () => {
       />,
     );
 
+    // expand the list
     const addPresetDropdown = getByText('Configure identity provider...');
     fireEvent.click(addPresetDropdown);
 
     expect(queryByText(idpPresets[0].name)).toBeInTheDocument();
   });
-
-  // it('allows to choose idp from list', () => {
-  //   //for Popovers's Warning: `NaN` is an invalid value for the `left` css style property.
-  //   console.error = jest.fn();
-
-  //   const { getByText, queryByText } = render(
-  //     <JwtDetails
-  //       config={config}
-  //       setConfig={() => {}}
-  //       idpPresets={idpPresets}
-  //       handleFormChange={() => {}}
-  //     />,
-  //   );
-
-  //   const addPresetDropdown = getByText('Configure identity provider...');
-  //   fireEvent.click(addPresetDropdown);
-
-  //   expect(queryByText(idpPresets[0].name)).toBeInTheDocument();
-  // });
 });

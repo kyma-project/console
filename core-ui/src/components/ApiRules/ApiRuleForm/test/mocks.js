@@ -57,9 +57,8 @@ export const idpPresetsQuery = {
       IDPPresets: [
         {
           name: 'preset-1',
-          issuer: 'https://dex.kyma.local',
-          jwksUri:
-            'https://http://dex-service.kyma-system.svc.cluster.local:5556/keys',
+          issuer: 'https://example_issuer',
+          jwksUri: 'https://example_jwks',
           __typename: 'IDPPreset',
         },
       ],
