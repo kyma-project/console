@@ -17,6 +17,7 @@ import {
   oldHostname,
   newHostname,
 } from './mocks';
+import { idpPresetsQuery } from 'components/ApiRules/ApiRuleForm/test/mocks';
 
 const mockNavigate = jest.fn();
 
@@ -38,7 +39,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
 describe('EditApiRule', () => {
   it('Renders basic component', async () => {
     const { queryByText, queryAllByRole, getAllByLabelText } = render(
-      <MockedProvider mocks={[getApiRuleQuery, servicesQuery]}>
+      <MockedProvider mocks={[getApiRuleQuery, servicesQuery, idpPresetsQuery]}>
         <EditApiRule apiName={apiRule.name} />
       </MockedProvider>,
     );

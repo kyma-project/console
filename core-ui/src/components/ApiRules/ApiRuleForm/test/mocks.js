@@ -1,5 +1,5 @@
 import { service1, service2 } from 'testing/servicesMocks';
-import { GET_SERVICES } from 'gql/queries';
+import { GET_SERVICES, GET_IDP_PRESETS } from 'gql/queries';
 
 export const apiRuleName = 'test-123';
 export const mockNamespace = 'test';
@@ -44,6 +44,25 @@ export const servicesQuery = {
   result: {
     data: {
       services: [service1, service2],
+    },
+  },
+};
+
+export const idpPresetsQuery = {
+  request: {
+    query: GET_IDP_PRESETS,
+  },
+  result: {
+    data: {
+      IDPPresets: [
+        {
+          name: 'preset-1',
+          issuer: 'https://dex.kyma.local',
+          jwksUri:
+            'https://http://dex-service.kyma-system.svc.cluster.local:5556/keys',
+          __typename: 'IDPPreset',
+        },
+      ],
     },
   },
 };

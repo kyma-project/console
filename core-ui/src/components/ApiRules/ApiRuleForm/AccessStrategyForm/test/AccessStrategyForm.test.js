@@ -48,6 +48,7 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -67,6 +68,7 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -89,6 +91,7 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -123,6 +126,7 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -138,6 +142,7 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={true}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -153,6 +158,7 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={true}
+        handleFormChanged={() => {}}
       />,
     );
 

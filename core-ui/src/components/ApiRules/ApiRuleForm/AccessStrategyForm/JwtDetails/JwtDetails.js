@@ -21,10 +21,8 @@ export function JwtDetails({ config, setConfig, idpPresets }) {
       !config.jwks_urls.length
     )
       return [];
-    return (
-      config.jwks_urls.map(jwks_url =>
-        idpPresets.find(p => p.jwksUri === jwks_url) ? 'preset' : 'custom',
-      ) || []
+    return config.jwks_urls.map(jwks_url =>
+      idpPresets.find(p => p.jwksUri === jwks_url) ? 'preset' : 'custom',
     );
   }
 
@@ -121,11 +119,10 @@ export function JwtDetails({ config, setConfig, idpPresets }) {
                     key={`jwt-issuer-${idx}`}
                     disabled={presetTypes[idx] !== 'custom'}
                     placeholder="Issuer"
-                    type="text"
+                    type="url"
                     required
                     aria-label="jwt-issuer"
                     title="Issuer"
-                    pattern="^\/.*.{1,}"
                   />
                 </FormItem>
                 <FormItem>
@@ -148,18 +145,16 @@ export function JwtDetails({ config, setConfig, idpPresets }) {
                     key={`jwt-jwks-uri-${idx}`}
                     disabled={presetTypes[idx] !== 'custom'}
                     placeholder="JWKS Uri"
-                    type="text"
+                    type="url"
                     required
                     aria-label="jwt-jwks-uri"
                     title="JWKS Uri"
-                    pattern="^\/.*.{1,}"
                   />
                 </FormItem>
               </LayoutGrid>
             </div>
             <FormItem>
               <FormLabel htmlFor="jwt-delete" />
-
               <Button
                 glyph="delete"
                 type="negative"

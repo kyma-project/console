@@ -80,7 +80,7 @@ export default function AccessStrategyForm({
                 value={strategy.path}
                 required
                 aria-label="Access strategy path"
-                pattern="^\/.*.{1,}"
+                pattern="^\/.+"
                 title="Path must start with '/' and consist of at least one additional character."
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
@@ -114,10 +114,12 @@ export default function AccessStrategyForm({
                       },
                     ],
                   };
+                  // strategy type changed, reset current values
                   if (e.target.value !== strategy.accessStrategies[0].name) {
                     newStrategy.accessStrategies[0].config = {};
                   }
                   setStrategy(newStrategy);
+                  handleFormChanged();
                 }}
               >
                 {accessStrategiesList.map(ac => (
@@ -132,18 +134,12 @@ export default function AccessStrategyForm({
 
         <Details
           {...strategy.accessStrategies[0]}
-          setConfig={config => {
-            console.log(
-              'strategy.accessStrategies[0]',
-              strategy.accessStrategies[0],
-              'config',
-              config,
-            );
-            return setStrategy({
+          setConfig={config =>
+            setStrategy({
               ...strategy,
               accessStrategies: [{ ...strategy.accessStrategies[0], config }],
-            });
-          }}
+            })
+          }
           idpPresets={idpPresets}
         />
       </div>
@@ -167,6 +163,7 @@ AccessStrategyForm.propTypes = {
   setStrategy: PropTypes.func.isRequired,
   removeStrategy: PropTypes.func.isRequired,
   canDelete: PropTypes.bool.isRequired,
+  handleFormChanged: PropTypes.func.isRequired,
 };
 
 function Details({ name, ...props }) {
