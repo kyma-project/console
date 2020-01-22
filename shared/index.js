@@ -4,6 +4,7 @@ import { handleDelete } from './components/GenericList/actionHandlers/simpleDele
 import { K8sNameInput } from './components/K8sNameInput/K8sNameInput';
 export { StringInput } from './components/StringInput/StringInput';
 export { InputWithSuffix } from './components/InputWithSuffix/InputWithSuffix';
+export { InputWithPrefix } from './components/InputWithPrefix/InputWithPrefix';
 import { CollapsiblePanel } from './components/CollapsiblePanel/CollapsiblePanel';
 import { Tooltip } from './components/Tooltip/Tooltip';
 import { PageHeader } from './components/PageHeader/PageHeader';

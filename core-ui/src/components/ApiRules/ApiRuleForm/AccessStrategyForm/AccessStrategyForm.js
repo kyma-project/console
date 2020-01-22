@@ -14,7 +14,7 @@ import {
 import StringListInput from './StringListInput';
 import { Tooltip } from 'react-shared';
 import './AccessStrategyForm.scss';
-import { JwtDetails } from './JwtDetails/JwtDetails';
+import JwtDetails from './JwtDetails/JwtDetails';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
@@ -42,6 +42,7 @@ export default function AccessStrategyForm({
   removeStrategy,
   canDelete,
   idpPresets,
+  handleFormChanged,
 }) {
   const selectedType = strategy.accessStrategies[0].name;
 
@@ -63,9 +64,11 @@ export default function AccessStrategyForm({
   const deleteButtonWrapper = canDelete
     ? component => component
     : component => (
-        <Tooltip title="API rule requires at least one access strategy.">
-          {component}
-        </Tooltip>
+        <div>
+          <Tooltip title="API rule requires at least one access strategy.">
+            {component}
+          </Tooltip>
+        </div>
       );
 
   return (
@@ -141,6 +144,7 @@ export default function AccessStrategyForm({
             })
           }
           idpPresets={idpPresets}
+          handleFormChanged={handleFormChanged}
         />
       </div>
       {deleteButtonWrapper(
@@ -163,6 +167,7 @@ AccessStrategyForm.propTypes = {
   setStrategy: PropTypes.func.isRequired,
   removeStrategy: PropTypes.func.isRequired,
   canDelete: PropTypes.bool.isRequired,
+  idpPresets: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   handleFormChanged: PropTypes.func.isRequired,
 };
 

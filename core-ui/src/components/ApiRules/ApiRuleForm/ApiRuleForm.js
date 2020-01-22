@@ -65,7 +65,8 @@ export default function ApiRuleForm({
   });
 
   const idpPresetsQuery = useQuery(GET_IDP_PRESETS);
-  const idpPresets = idpPresetsQuery.data.IDPPresets || [];
+  const idpPresets =
+    (idpPresetsQuery.data && idpPresetsQuery.data.IDPPresets) || [];
 
   const formRef = useRef(null);
   const formValues = {
@@ -220,11 +221,12 @@ export default function ApiRuleForm({
                             ...rules.slice(idx + 1, rules.length),
                           ]);
                           setValid(false);
-                          handleFormChanged(idx);
+                          handleFormChanged();
                         }}
                         removeStrategy={() => removeAccessStrategy(idx)}
                         canDelete={rules.length > 1}
                         idpPresets={idpPresets}
+                        handleFormChanged={() => setTimeout(handleFormChanged)}
                       />
                     );
                   })}
