@@ -5,85 +5,20 @@ import {
   queryByText,
   queryAllByRole,
 } from '@testing-library/react';
-import { MockedProvider, MockSubscriptionLink } from '@apollo/react-testing';
-import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
-import { UNREGISTER_APPLICATION } from 'gql/mutations';
-import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
+import { MockedProvider } from '@apollo/react-testing';
+
 import ApplicationList from '../ApplicationList';
-
 import { createMockLink } from 'react-shared';
-// import * as mockedReactShared from 'react-shared';
-// const realReactShared = jest.requireActual('react-shared');
-
-const mockNavigate = jest.fn();
-const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
-
-const mockCompassAppsEmpty = {
-  request: {
-    query: GET_COMPASS_APPLICATIONS,
-  },
-  result: {
-    data: {
-      applications: { data: [] },
-    },
-  },
-};
-const exampleCompassApps = [
-  { id: 1, name: 'tets-app-1', providerName: 'tets-provider-1' },
-  { id: 2, name: 'tets-app-2', providerName: 'tets-provider-2' },
-];
-
-const exampleKymaApps = [
-  {
-    name: exampleCompassApps[0].name,
-    status: 'status-2',
-    enabledInNamespaces: [],
-  },
-  {
-    name: exampleCompassApps[1].name,
-    status: 'status-2',
-    enabledInNamespaces: [],
-  },
-];
-
-const mockCompassApps = {
-  request: {
-    query: GET_COMPASS_APPLICATIONS,
-  },
-  result: {
-    data: {
-      applications: {
-        data: exampleCompassApps,
-      },
-    },
-  },
-};
-
-const mockKymaApps = {
-  request: {
-    query: GET_KYMA_APPLICATIONS,
-  },
-  result: {
-    data: {
-      applications: exampleKymaApps,
-    },
-  },
-};
-
-const mockCompassAppDelete = id => ({
-  request: {
-    query: UNREGISTER_APPLICATION,
-    variables: { id },
-  },
-  result: jest.fn(() => ({
-    data: {
-      unregisterApplication: {
-        name: exampleCompassApps[id - 1].name,
-        id,
-      },
-    },
-  })),
-});
+import {
+  mockNavigate,
+  mockShowConfirmationModal,
+  mockCompassAppsEmpty,
+  exampleCompassApps,
+  exampleKymaApps,
+  mockCompassApps,
+  mockKymaApps,
+  mockCompassAppDelete,
+} from './mocks';
 
 jest.mock('@kyma-project/luigi-client', () => ({
   getContext: () => ({
@@ -96,7 +31,6 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
   uxManager: () => ({
     showConfirmationModal: mockShowConfirmationModal,
-    showAlert: jest.fn(),
   }),
 }));
 // jest.mock('react-shared', () => jest.fn());
@@ -196,7 +130,7 @@ describe('ApplicationList', () => {
   //     });
   //   });
 
-  it('Clicking on "Delete" deletes element', async () => {
+  xit('Clicking on "Delete" deletes element', async () => {
     const deleteAppMutation = mockCompassAppDelete(2);
     const { link } = createMockLink([mockCompassApps, deleteAppMutation]);
 
@@ -210,6 +144,25 @@ describe('ApplicationList', () => {
       getAllByLabelText('Delete')[1].click();
       expect(mockShowConfirmationModal).toHaveBeenCalled();
       expect(deleteAppMutation.result).toHaveBeenCalled();
+    });
+  });
+
+  it('Renders information from Compass and Kyma', async () => {
+    const { link } = createMockLink([mockCompassApps, mockKymaApps]);
+    const { queryByText } = render(
+      <MockedProvider link={link} addTypename={false}>
+        <ApplicationList />
+      </MockedProvider>,
+    );
+
+    await wait(() => {
+      [0, 1].forEach(i => {
+        expect(queryByText(exampleCompassApps[i].name)).toBeInTheDocument();
+        expect(
+          queryByText(exampleCompassApps[i].providerName),
+        ).toBeInTheDocument();
+        expect(queryByText(exampleKymaApps[i].status)).toBeInTheDocument(); //TODO: change it to some other field when we decide what is displayed on the list
+      });
     });
   });
 });

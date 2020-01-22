@@ -48,7 +48,7 @@ export function easyHandleDelete(
   notificationManager,
   callback = () => {},
 ) {
-  displayConfirmationMessage(entityType, entityName)
+  Promise.resolve()
     .then(async () => {
       try {
         const result = await deleteRequestFn(deleteRequestParam);
