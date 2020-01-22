@@ -7,7 +7,7 @@ import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
-import { useNotification } from 'contexts/notifications';
+import { useNotification } from 'react-shared';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
@@ -75,44 +75,19 @@ export default function ApplicationList() {
     refetchQueries: [{ query: GET_COMPASS_APPLICATIONS }],
   });
 
-  async function handleApplicationUnregister(id, name) {
-    try {
-      const result = await unregisterApp({
-        variables: { id },
-      });
-      const isSuccess =
-        result.data &&
-        result.data.unregisterApplication &&
-        result.data.unregisterApplication.id === id;
-      if (isSuccess) {
-        notificationManager.notify({
-          content: `Application ${name} deleted`,
-          title: 'Success',
-          color: '#107E3E',
-          icon: 'accept',
-          autoClose: true,
-        });
-      }
-    } catch (e) {
-      notificationManager.notify({
-        content: `Error while removing application ${name}: ${e.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
-        autoClose: false,
-      });
-    }
-  }
-
   const actions = [
     {
       name: 'Delete',
       handler: app =>
         handleDelete(
           'Application',
-          app.id,
           app.name,
-          handleApplicationUnregister,
+          unregisterApp,
+          {
+            variables: { id: app.id },
+          },
+          'unregisterApplication',
+          notificationManager,
         ),
     },
     { name: 'Install', handler: () => {}, skipAction: app => false },

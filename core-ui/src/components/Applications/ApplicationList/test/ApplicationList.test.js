@@ -28,9 +28,22 @@ const mockCompassAppsEmpty = {
     },
   },
 };
-const appList = [
+const exampleCompassApps = [
   { id: 1, name: 'tets-app-1', providerName: 'tets-provider-1' },
   { id: 2, name: 'tets-app-2', providerName: 'tets-provider-2' },
+];
+
+const exampleKymaApps = [
+  {
+    name: exampleCompassApps[0].name,
+    status: 'status-2',
+    enabledInNamespaces: [],
+  },
+  {
+    name: exampleCompassApps[1].name,
+    status: 'status-2',
+    enabledInNamespaces: [],
+  },
 ];
 
 const mockCompassApps = {
@@ -40,7 +53,7 @@ const mockCompassApps = {
   result: {
     data: {
       applications: {
-        data: appList,
+        data: exampleCompassApps,
       },
     },
   },
@@ -52,25 +65,7 @@ const mockKymaApps = {
   },
   result: {
     data: {
-      applications: [],
-    },
-  },
-};
-
-const mockKymaSubscription = {
-  request: {
-    query: APPLICATIONS_EVENT_SUBSCRIPTION,
-  },
-  result: {
-    data: {
-      // applicationEvent: {
-      //   type: 'ADD',
-      //   application: {
-      //     name: 'xy',
-      //     status: 'aaa',
-      //     enabledInNamespaces: [],
-      //   },
-      // },
+      applications: exampleKymaApps,
     },
   },
 };
@@ -83,7 +78,7 @@ const mockCompassAppDelete = id => ({
   result: jest.fn(() => ({
     data: {
       unregisterApplication: {
-        name: appList[id - 1].name,
+        name: exampleCompassApps[id - 1].name,
         id,
       },
     },
@@ -177,8 +172,10 @@ describe('ApplicationList', () => {
     await wait(() => {
       const table = queryByRole('table');
       expect(table).toBeInTheDocument();
-      expect(queryAllByRole(table, 'row')).toHaveLength(appList.length + 1); //apps + header
-      appList.forEach(app => {
+      expect(queryAllByRole(table, 'row')).toHaveLength(
+        exampleCompassApps.length + 1,
+      ); //apps + header
+      exampleCompassApps.forEach(app => {
         expect(queryByText(table, app.name)).toBeInTheDocument();
       });
     });
@@ -199,7 +196,7 @@ describe('ApplicationList', () => {
   //     });
   //   });
 
-  xit('Clicking on "Delete" deletes element', async () => {
+  it('Clicking on "Delete" deletes element', async () => {
     const deleteAppMutation = mockCompassAppDelete(2);
     const { link } = createMockLink([mockCompassApps, deleteAppMutation]);
 

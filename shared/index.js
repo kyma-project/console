@@ -16,6 +16,7 @@ export * from './forms';
 export * from './hooks';
 export * from './contexts/ApplicationContext';
 export * from './utils/apollo';
+export * from './contexts/notifications';
 
 export {
   CustomPropTypes,
