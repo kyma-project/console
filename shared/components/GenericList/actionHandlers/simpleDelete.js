@@ -56,13 +56,8 @@ export function easyHandleDelete(
           result.data &&
           (deleteRequestName ? result.data[deleteRequestName] : true);
         if (isSuccess) {
-          console.log('displaying notification');
-          notificationManager.notify({
+          notificationManager.notifySuccess({
             content: `Application ${entityName} deleted`,
-            title: 'Success',
-            color: '#107E3E',
-            icon: 'accept',
-            autoClose: true,
           });
         } else {
           throw new Exception();
@@ -75,10 +70,8 @@ export function easyHandleDelete(
       callback();
     })
     .catch(err => {
-      LuigiClient.uxManager().showAlert({
-        text: `An error occurred while deleting ${entityType} ${entityName}: ${err.message}`,
-        type: 'error',
-        closeAfter: 10000,
+      notificationManager.notifyError({
+        content: `An error occurred while deleting ${entityType} ${entityName}: ${err.message}`,
       });
     });
 }

@@ -14,7 +14,7 @@ export * from './forms';
 export * from './hooks';
 export * from './contexts/ApplicationContext';
 export * from './utils/apollo';
-export * from './contexts/notifications';
+export * from './contexts/NotificationContext';
 export * from './components/GenericList/actionHandlers/simpleDelete';
 
 export {
