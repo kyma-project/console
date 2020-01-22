@@ -33,11 +33,6 @@ jest.mock('@kyma-project/luigi-client', () => ({
     showConfirmationModal: mockShowConfirmationModal,
   }),
 }));
-// jest.mock('react-shared', () => jest.fn());
-// mockedReactShared.mockImplementation(() => ({
-//   ...realReactShared,
-//   handleDelete: () => Promise.resolve(),
-// }));
 
 jest.mock('index', () => {
   return {
