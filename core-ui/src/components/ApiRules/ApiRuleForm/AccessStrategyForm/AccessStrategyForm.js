@@ -13,7 +13,6 @@ import {
 } from 'fundamental-react';
 import StringListInput from './StringListInput';
 import { Tooltip } from 'react-shared';
-import './AccessStrategyForm.scss';
 import JwtDetails from './JwtDetails/JwtDetails';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];

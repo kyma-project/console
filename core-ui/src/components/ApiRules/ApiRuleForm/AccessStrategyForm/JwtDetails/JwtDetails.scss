@@ -1,8 +1,12 @@
 .jwt-details {
-.fd-popover, .fd-popper__body {
-    width: 100%;
+   > * {
+    margin-top: 16px;
   }
-  
+
+  .fd-popover, .fd-popper__body {
+      width: 100%;
+    }
+    
   .fd-dropdown {
     width: 100%;
   
@@ -23,6 +27,7 @@
     }
   }
 }
+
 .preset {
   &-row {
     display: flex;
