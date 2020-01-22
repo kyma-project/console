@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { PageHeader, GenericList, Spinner, handleDelete } from 'react-shared';
+import {
+  PageHeader,
+  GenericList,
+  Spinner,
+  easyHandleDelete,
+} from 'react-shared';
 import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
 import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
@@ -79,7 +84,7 @@ export default function ApplicationList() {
     {
       name: 'Delete',
       handler: app =>
-        handleDelete(
+        easyHandleDelete(
           'Application',
           app.name,
           unregisterApp,

@@ -38,3 +38,47 @@ export function handleDelete(
       });
     });
 }
+
+export function easyHandleDelete(
+  entityType,
+  entityName,
+  deleteRequestFn,
+  deleteRequestParam,
+  deleteRequestName,
+  notificationManager,
+  callback = () => {},
+) {
+  displayConfirmationMessage(entityType, entityName)
+    .then(async () => {
+      try {
+        const result = await deleteRequestFn(deleteRequestParam);
+        const isSuccess =
+          result.data &&
+          (deleteRequestName ? result.data[deleteRequestName] : true);
+        if (isSuccess) {
+          console.log('displaying notification');
+          notificationManager.notify({
+            content: `Application ${entityName} deleted`,
+            title: 'Success',
+            color: '#107E3E',
+            icon: 'accept',
+            autoClose: true,
+          });
+        } else {
+          throw new Exception();
+        }
+      } catch (e) {
+        throw e;
+      }
+    })
+    .then(() => {
+      callback();
+    })
+    .catch(err => {
+      LuigiClient.uxManager().showAlert({
+        text: `An error occurred while deleting ${entityType} ${entityName}: ${err.message}`,
+        type: 'error',
+        closeAfter: 10000,
+      });
+    });
+}
