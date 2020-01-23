@@ -61,6 +61,8 @@ const ApplicationDetails = ({ appId }) => {
       {kymaQuery.data && kymaQuery.data.application ? (
         <BoundNamespacesList
           data={kymaQuery.data.application.enabledInNamespaces}
+          appName={kymaQuery.data.application.name}
+          refetch={kymaQuery && kymaQuery.refetch}
         />
       ) : (
         ''

@@ -138,3 +138,12 @@ export const UNREGISTER_APPLICATION = gql`
     }
   }
 `;
+
+export const UNBIND_NAMESPACE = gql`
+  mutation($namespace: String!, $application: String!) {
+    disableApplication(namespace: $namespace, application: $application) {
+      namespace
+      application
+    }
+  }
+`;
