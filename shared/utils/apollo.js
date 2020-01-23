@@ -1,6 +1,14 @@
 import { MockLink, MockSubscriptionLink } from '@apollo/react-testing';
-import { isSubscriptionOperation } from '../store';
 import { ApolloLink } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
+
+export function isSubscriptionOperation({ query }) {
+  const definition = getMainDefinition(query);
+  return (
+    definition.kind === 'OperationDefinition' &&
+    definition.operation === 'subscription'
+  );
+}
 
 export function createMockLink(mocks, addTypename = true) {
   const subscriptionLink = new MockSubscriptionLink();

@@ -3,6 +3,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import 'jsdom-worker-fix';
 import { act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import 'babel-polyfill';
 
 var nodeCrypto = require('crypto');
 global.crypto = {

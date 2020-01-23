@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
-import { useNotification } from '../../../contexts/notifications';
+import { useNotification } from 'react-shared';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
 import LuigiClient from '@kyma-project/luigi-client';
