@@ -2,10 +2,13 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Menu, Dropdown, Button, Popover } from 'fundamental-react';
 
+import { Modal } from 'react-shared';
 import { GET_NAMESPACES } from '../../../gql/queries';
-import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
+import './BindNamespaceModal.scss';
 
 export default function BindNamespaceModal() {
+  const [namespace, setNamespace] = React.useState(null);
+
   let showSystemNamespaces = false;
   if (localStorage.getItem('console.showSystemNamespaces')) {
     showSystemNamespaces =
@@ -18,7 +21,9 @@ export default function BindNamespaceModal() {
     },
   });
 
-  const [namespace, setNamespace] = React.useState(null);
+  const bindNamespace = () => {
+    console.log(namespace);
+  };
 
   const AvailableNamespacesList = ({ data, error, loading }) => {
     if (error || loading) {
@@ -26,7 +31,7 @@ export default function BindNamespaceModal() {
     }
     const namespaces = data.namespaces ? data.namespaces : [];
     return (
-      <Menu className="namespace-list">
+      <Menu>
         {namespaces.length ? (
           namespaces.map(namespace => (
             <Menu.Item
@@ -45,14 +50,18 @@ export default function BindNamespaceModal() {
 
   const dropdownControlText = () => {
     const { loading, error, data } = namespacesQuery;
-    if (error || (!loading && data && !data.namespaces)) {
-      // sometimes after an error, there is an empty data object returned. To investigate.
-      console.warn(error);
-      return 'Error! Cannot load namespaces list.';
-    } else if (loading) {
-      return 'Choose namespace (loading...)';
-    } else {
-      return 'Choose namespace';
+    if (namespace) {
+      return namespace;
+    } else if (namespacesQuery) {
+      if (error || (!loading && data && !data.namespaces)) {
+        // sometimes after an error, there is an empty data object returned. To investigate.
+        console.warn(error);
+        return 'Error! Cannot load namespaces list.';
+      } else if (loading) {
+        return 'Choose namespace (loading...)';
+      } else {
+        return 'Choose namespace';
+      }
     }
   };
 
@@ -73,11 +82,21 @@ export default function BindNamespaceModal() {
   );
 
   return (
-    <ModalWithForm
-      title="Create Namespace binding for Application"
-      button={{ text: 'Create Binding', option: 'light' }}
+    <Modal
       id="add-binding-modal"
-      renderForm={() => content}
-    />
+      title="Create Namespace binding for Application"
+      modalOpeningComponent={<Button> Create Binding </Button>}
+      confirmText="Bind"
+      cancelText="Cancel"
+      disabledConfirm={!namespace}
+      onConfirm={() => {
+        bindNamespace();
+      }}
+      onHide={() => {
+        setNamespace(null);
+      }}
+    >
+      {content}
+    </Modal>
   );
 }

@@ -45,7 +45,7 @@ const ApplicationDetails = ({ appId }) => {
         autoClose: false,
       });
     }
-  }, [kymaQuery]);
+  }, [kymaQuery, notificationManager]);
 
   if (compassQuery.loading || kymaQuery.loading) {
     return <Spinner />;

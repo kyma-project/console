@@ -9,7 +9,8 @@ import { Tooltip } from './components/Tooltip/Tooltip';
 import { PageHeader } from './components/PageHeader/PageHeader';
 export { Spinner } from './components/Spinner/Spinner';
 export { CopiableText } from './components/CopiableText/CopiableText';
-import { DetailsError } from './components/DetailsError/DetailsError';
+export { DetailsError } from './components/DetailsError/DetailsError';
+export { Modal } from './components/Modal/Modal';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
@@ -24,5 +25,4 @@ export {
   Tooltip,
   PageHeader,
   handleDelete,
-  DetailsError,
 };
