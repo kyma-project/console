@@ -1,13 +1,24 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Menu, Dropdown, Button, Popover } from 'fundamental-react';
 
 import { Modal } from 'react-shared';
-import { GET_NAMESPACES } from '../../../gql/queries';
+import { GET_NAMESPACES, GET_APPLICATION, GET_APPLICATIONS } from 'gql/queries';
+import { BIND_NAMESPACE } from 'gql/mutations';
 import './BindNamespaceModal.scss';
 
-export default function BindNamespaceModal() {
+export default function BindNamespaceModal({ appName, boundNamespaces }) {
   const [namespace, setNamespace] = React.useState(null);
+  const [bindNamespace] = useMutation(BIND_NAMESPACE, {
+    refetchQueries: [
+      {
+        query: GET_APPLICATION,
+        variables: {
+          name: appName,
+        },
+      },
+    ],
+  });
 
   let showSystemNamespaces = false;
   if (localStorage.getItem('console.showSystemNamespaces')) {
@@ -21,63 +32,43 @@ export default function BindNamespaceModal() {
     },
   });
 
-  const bindNamespace = () => {
+  const bindNamespaceToApp = () => {
     console.log(namespace);
+    bindNamespace({ variables: { namespace, application: appName } })
+      .then()
+      .catch(e => {});
   };
 
   const AvailableNamespacesList = ({ data, error, loading }) => {
-    if (error || loading) {
-      return null;
-    }
+    if (error) return error.message;
+    if (loading) return 'loading...';
+    //todo improve loading and error
+
     const namespaces = data.namespaces ? data.namespaces : [];
     return (
-      <Menu>
+      <select
+        onChange={e => {
+          setNamespace(e.target.value);
+        }}
+      >
         {namespaces.length ? (
-          namespaces.map(namespace => (
-            <Menu.Item
-              key={namespace.name}
-              onClick={() => setNamespace(namespace)}
-            >
-              {namespace.name}
-            </Menu.Item>
-          ))
+          namespaces
+            .filter(namespace => !boundNamespaces.includes(namespace.name))
+            .map(namespace => (
+              <option value={namespace.name} key={namespace.name}>
+                {namespace.name}
+              </option>
+            ))
         ) : (
-          <Menu.Item>No namespaces available</Menu.Item>
+          <option>No namespaces available</option>
         )}
-      </Menu>
+      </select>
     );
-  };
-
-  const dropdownControlText = () => {
-    const { loading, error, data } = namespacesQuery;
-    if (namespace) {
-      return namespace;
-    } else if (namespacesQuery) {
-      if (error || (!loading && data && !data.namespaces)) {
-        // sometimes after an error, there is an empty data object returned. To investigate.
-        console.warn(error);
-        return 'Error! Cannot load namespaces list.';
-      } else if (loading) {
-        return 'Choose namespace (loading...)';
-      } else {
-        return 'Choose namespace';
-      }
-    }
   };
 
   const content = (
     <section className="create-binding-form">
-      <Dropdown>
-        <Popover
-          body={<AvailableNamespacesList {...namespacesQuery} />}
-          disableEdgeDetection={true}
-          control={
-            <Button className="fd-dropdown__control">
-              {dropdownControlText()}
-            </Button>
-          }
-        />
-      </Dropdown>
+      <AvailableNamespacesList {...namespacesQuery} />
     </section>
   );
 
@@ -90,7 +81,7 @@ export default function BindNamespaceModal() {
       cancelText="Cancel"
       disabledConfirm={!namespace}
       onConfirm={() => {
-        bindNamespace();
+        bindNamespaceToApp();
       }}
       onHide={() => {
         setNamespace(null);

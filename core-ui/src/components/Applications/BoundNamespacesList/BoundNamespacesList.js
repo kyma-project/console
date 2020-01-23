@@ -6,9 +6,19 @@ import { useNotification } from 'contexts/notifications';
 import { GenericList } from 'react-shared';
 import BindNamespaceModal from '../BindNamespaceModal/BindNamespaceModal';
 import { UNBIND_NAMESPACE } from 'gql/mutations';
+import { GET_APPLICATION } from 'gql/queries';
 
-export default function BoundNamespacesList({ data, appName, refetch }) {
-  const [unbindNamespace] = useMutation(UNBIND_NAMESPACE);
+export default function BoundNamespacesList({ data, appName }) {
+  const [unbindNamespace] = useMutation(UNBIND_NAMESPACE, {
+    refetchQueries: [
+      {
+        query: GET_APPLICATION,
+        variables: {
+          name: appName,
+        },
+      },
+    ],
+  });
   const notificationManager = useNotification();
 
   const actions = [
@@ -32,19 +42,6 @@ export default function BoundNamespacesList({ data, appName, refetch }) {
                   icon: 'accept',
                   autoClose: true,
                 });
-                if (refetch) {
-                  try {
-                    refetch();
-                  } catch (e) {
-                    notificationManager.notify({
-                      content: `Could not get updated Application details due to an error: ${e.message}`,
-                      title: 'Error',
-                      color: '#BB0000',
-                      icon: 'decline',
-                      autoClose: false,
-                    });
-                  }
-                }
               })
               .catch(e => {
                 notificationManager.notify({
@@ -73,7 +70,9 @@ export default function BoundNamespacesList({ data, appName, refetch }) {
         entries={data}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
-        extraHeaderContent={<BindNamespaceModal />}
+        extraHeaderContent={
+          <BindNamespaceModal boundNamespaces={data} appName={appName} />
+        }
       />
     </>
   );

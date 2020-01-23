@@ -19,7 +19,7 @@ const ApplicationDetails = ({ appId }) => {
     variables: {
       id: appId,
     },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'cache-and-network',
     client: compassGqlClient,
   });
 
@@ -31,7 +31,7 @@ const ApplicationDetails = ({ appId }) => {
     variables: {
       name: appName,
     },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'cache-and-network',
     skip: !appName,
   });
 
