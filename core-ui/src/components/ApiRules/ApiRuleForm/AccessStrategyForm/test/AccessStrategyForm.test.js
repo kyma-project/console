@@ -9,6 +9,19 @@ import {
 } from '@testing-library/react';
 import AccessStrategyForm from '../AccessStrategyForm';
 
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: key => {
+    let result = '';
+    if (key == 'defaultIdpJwksUri') {
+      result = 'http://dex-service.kyma-system.svc.cluster.local:5556/keys';
+    }
+    if (key == 'defaultIdpIssuer') {
+      result = 'https://dex.kyma.local';
+    }
+    return result;
+  },
+}));
+
 const allowStrategy = {
   path: '/path',
   methods: ['GET', 'PUT'],
