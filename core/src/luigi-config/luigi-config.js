@@ -611,26 +611,6 @@ Promise.all(initPromises)
               hideFromNav: true
             },
             {
-              pathSegment: 'applications-2',
-              navigationContext: 'applications-2',
-              label: 'Applications [Experimental]',
-              category: 'Integration',
-              viewUrl: config.coreModuleUrl + '/applications',
-              viewGroup: coreUIViewGroupName,
-              keepSelectedForChildren: true,
-              children: [
-                {
-                  pathSegment: 'details',
-                  children: [
-                    {
-                      pathSegment: ':appName',
-                      viewUrl: config.coreModuleUrl + '/application/:appName',
-                    }
-                  ]
-                }
-                ]
-            },
-            {
               pathSegment: 'settings',
               navigationContext: 'settings',
               label: 'General Settings',
@@ -673,7 +653,11 @@ Promise.all(initPromises)
               },
               pathSegment: '_integration_category_placeholder_',
               hideFromNav: true
-            }
+            },
+            {
+              category: { label: 'Experimental', icon: 'lab' },
+              hideFromNav : true
+            },
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
           const nodeTree = [...staticNodes, ...fetchedNodes];

@@ -6,11 +6,9 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { GET_LAMBDAS } from '../../gql/queries';
 import { DELETE_LAMBDA } from '../../gql/mutations';
 
-import { GenericList } from 'react-shared';
+import { GenericList, useNotification } from 'react-shared';
 
 import builder from '../../commons/builder';
-
-import { useNotification } from '../../contexts/notifications';
 import { Spinner } from 'react-shared';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
 import Labels from '../../shared/components/Labels/Labels';

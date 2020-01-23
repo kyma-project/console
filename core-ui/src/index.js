@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import LuigiClient from '@kyma-project/luigi-client';
-
 import {
   LOCAL_STORAGE_SHOW_SYSTEM_NAMESPACES,
   SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
@@ -9,9 +8,7 @@ import {
 
 import { ApolloProvider } from '@apollo/react-hooks';
 import { BrowserRouter } from 'react-router-dom';
-
 import { preloadingStrategy } from '@kyma-project/common';
-
 import './index.scss';
 import App from './components/App/App';
 import builder from './commons/builder';

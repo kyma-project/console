@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { NotificationProvider } from '../../contexts/notifications';
+import { NotificationProvider } from 'react-shared';
 import NamespaceList from '../NamespaceList/NamespaceList';
 import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetailsWrapper from '../Lambdas/LambdaDetails/LambdaDetailsWrapper';
