@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Spinner } from 'react-shared';
-import { useNotification } from '../../../contexts/notifications';
+import { Spinner, useNotification } from 'react-shared';
 import { UPDATE_API_RULE } from '../../../gql/mutations';
 import { GET_API_RULE } from '../../../gql/queries';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';

@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { handleDelete } from 'react-shared';
 import { DELETE_LAMBDA } from '../../../../gql/mutations';
-import { useNotification } from '../../../../contexts/notifications';
+import { useNotification } from 'react-shared';
 import { REFETCH_TIMEOUT } from '../../../../shared/constants';
 
 LambdaDetailsHeader.propTypes = {

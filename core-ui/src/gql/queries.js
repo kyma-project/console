@@ -88,8 +88,8 @@ export const GET_API_RULE = gql`
   }
 `;
 
-export const GET_APPLICATIONS = gql`
-  query {
+export const GET_COMPASS_APPLICATIONS = gql`
+  query CompassApplications {
     applications {
       data {
         id
@@ -106,6 +106,16 @@ export const GET_IDP_PRESETS = gql`
       name
       issuer
       jwksUri
+    }
+  }
+`;
+
+export const GET_KYMA_APPLICATIONS = gql`
+  query KymaApplications {
+    applications {
+      name
+      enabledInNamespaces
+      status
     }
   }
 `;

@@ -5,13 +5,9 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
-
 import { getApiUrl as getURL } from '@kyma-project/common';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-const DEFAULT_TENANT_ID = '3e64ebae-38b5-46a0-b1ed-9ccee153a0ae';
-
-const cache = new InMemoryCache();
 
 const errorLink = onError(
   ({ operation, response, graphQLErrors, networkError }) => {
@@ -30,19 +26,24 @@ const errorLink = onError(
 );
 
 export function createCompassApolloClient() {
-  const graphqlApiUrl = getURL('compassGraphqlApiUrl');
+  const graphqlApiUrl = getURL('compassApiUrl');
+
+  //TODO: should be removed once management plane API is able to resolve tenant from token
+  const tenant = getURL('compassDefaultTenant');
 
   const httpLink = new HttpLink({
     uri: graphqlApiUrl,
     headers: {
       authorization: builder.getBearerToken() || null,
-      tenant: DEFAULT_TENANT_ID, //TODO: change it to a real tenant
+      tenant,
     },
   });
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, httpLink]),
-    cache,
+    cache: new InMemoryCache({
+      dataIdFromObject: object => object.name || null,
+    }),
   });
 }
 
@@ -79,7 +80,9 @@ export function createKymaApolloClient() {
 
   return new ApolloClient({
     link: ApolloLink.from([errorLink, link]),
-    cache,
+    cache: new InMemoryCache({
+      dataIdFromObject: object => object.name || null,
+    }),
   });
 }
 

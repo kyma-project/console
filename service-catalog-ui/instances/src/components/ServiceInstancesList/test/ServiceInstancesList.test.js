@@ -11,7 +11,7 @@ import ServiceInstancesTable from '../ServiceInstancesTable/ServiceInstancesTabl
 import { Button, Spinner, Tab, Search } from '@kyma-project/react-components';
 import ServiceInstancesList from '../ServiceInstancesList';
 import { Link } from '../ServiceInstancesTable/styled.js';
-import { createMockLink } from '../../../testing/apollo';
+import { createMockLink } from 'react-shared';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
 import { Counter } from 'fundamental-react';

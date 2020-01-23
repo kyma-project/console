@@ -8,7 +8,7 @@ import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
-import { useNotification } from '../../../contexts/notifications';
+import { useNotification } from 'react-shared';
 import CodeTab from './Tabs/Code/CodeTab';
 import LambdaCode from './Tabs/Code/LambdaCode';
 import LambdaDependencies from './Tabs/Code/LambdaDependencies';
