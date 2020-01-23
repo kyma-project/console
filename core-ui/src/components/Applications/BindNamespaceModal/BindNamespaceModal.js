@@ -74,8 +74,8 @@ export default function BindNamespaceModal() {
 
   return (
     <ModalWithForm
-      title="Create binding for Application"
-      button={{ text: 'Add Binding', option: 'light' }}
+      title="Create Namespace binding for Application"
+      button={{ text: 'Create Binding', option: 'light' }}
       id="add-binding-modal"
       renderForm={() => content}
     />
