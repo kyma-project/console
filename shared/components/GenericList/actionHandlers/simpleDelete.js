@@ -48,7 +48,7 @@ export function easyHandleDelete(
   notificationManager,
   callback = () => {},
 ) {
-  Promise.resolve()
+  displayConfirmationMessage(entityType, entityName)
     .then(async () => {
       try {
         const result = await deleteRequestFn(deleteRequestParam);
@@ -57,10 +57,10 @@ export function easyHandleDelete(
           (deleteRequestName ? result.data[deleteRequestName] : true);
         if (isSuccess) {
           notificationManager.notifySuccess({
-            content: `Application ${entityName} deleted`,
+            content: `${entityName} deleted`,
           });
         } else {
-          throw new Exception();
+          throw Error();
         }
       } catch (e) {
         throw e;
