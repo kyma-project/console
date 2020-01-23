@@ -42,7 +42,9 @@ export default function CreateApplicationFromTemplateModal({
   applicationsQuery,
   modalOpeningComponent,
 }) {
-  const templatesQuery = useQuery(GET_TEMPLATES);
+  const templatesQuery = useQuery(GET_TEMPLATES, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [registerApplicationFromTemplate] = useMutation(
     REGISTER_APPLICATION_FROM_TEMPLATE,
   );
@@ -103,7 +105,7 @@ export default function CreateApplicationFromTemplateModal({
 
   const content = (
     <section className="create-application__template-form">
-      <Dropdown>
+      <Dropdown fullwidth="true">
         <Popover
           body={<AvailableTemplatesList {...templatesQuery} />}
           control={

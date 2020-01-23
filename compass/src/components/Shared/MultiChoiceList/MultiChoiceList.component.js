@@ -96,7 +96,7 @@ export default function MultiChoiceList({
     );
 
     return (
-      <Dropdown>
+      <Dropdown fullwidth="true">
         <Popover
           body={nonChoosenItemsList}
           control={

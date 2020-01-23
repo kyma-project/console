@@ -84,3 +84,27 @@
 .fd-popover__popper li {
   list-style-type: none;
 }
+
+.fd-dropdown[fullwidth=true] {
+  width: 100%;
+
+  .fd-popper__body, .fd-popover {
+    width: 100%;
+  }
+
+  .fd-dropdown__control {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    justify-items: center;
+
+    &::after {
+      // align popover arrow
+      margin-top: -2px;
+    }
+
+    &::before {
+      content: unset;
+    }
+  }
+}

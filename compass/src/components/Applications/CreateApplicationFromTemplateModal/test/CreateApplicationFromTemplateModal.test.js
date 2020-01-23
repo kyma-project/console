@@ -23,7 +23,7 @@ describe('CreateApplicationFromTemplateModal', () => {
 
   async function expandTemplateList(queryByText) {
     fireEvent.click(queryByText('From template'));
-    // loading
+    // wait for modal to open and template list to load
     await waitForDomChange();
     // click to expand the list of templates
     fireEvent.click(queryByText('Choose template'));
@@ -42,12 +42,10 @@ describe('CreateApplicationFromTemplateModal', () => {
     // open modal
     fireEvent.click(queryByText('From template'));
 
-    // loading
+    // loading templates
     expect(queryByText('Choose template (loading...)')).toBeInTheDocument();
-
     await waitForDomChange();
 
-    // after load
     const chooseTemplateButton = queryByText('Choose template');
     expect(chooseTemplateButton).toBeInTheDocument();
 
