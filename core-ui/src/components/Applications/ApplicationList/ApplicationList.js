@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 import {
   PageHeader,
   GenericList,

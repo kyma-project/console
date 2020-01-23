@@ -1,9 +1,9 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Menu, Dropdown, Button, Popover } from 'fundamental-react';
+import { Button } from 'fundamental-react';
 
 import { Modal } from 'react-shared';
-import { GET_NAMESPACES, GET_APPLICATION, GET_APPLICATIONS } from 'gql/queries';
+import { GET_NAMESPACES, GET_APPLICATION } from 'gql/queries';
 import { BIND_NAMESPACE } from 'gql/mutations';
 import './BindNamespaceModal.scss';
 

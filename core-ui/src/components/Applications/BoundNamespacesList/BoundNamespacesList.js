@@ -2,8 +2,7 @@ import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { useNotification } from 'contexts/notifications';
-import { GenericList } from 'react-shared';
+import { GenericList, useNotification } from 'react-shared';
 import BindNamespaceModal from '../BindNamespaceModal/BindNamespaceModal';
 import { UNBIND_NAMESPACE } from 'gql/mutations';
 import { GET_APPLICATION } from 'gql/queries';

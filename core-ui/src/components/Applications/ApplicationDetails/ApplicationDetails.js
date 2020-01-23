@@ -2,14 +2,18 @@ import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 
-import { Spinner, PageHeader, DetailsError } from 'react-shared';
+import {
+  Spinner,
+  PageHeader,
+  DetailsError,
+  useNotification,
+} from 'react-shared';
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from '../../../gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import Labels from 'shared/components/Labels/Labels';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import { CompassGqlContext } from 'index';
 import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
-import { useNotification } from 'contexts/notifications';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
