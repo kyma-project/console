@@ -29,10 +29,10 @@ const errorLink = onError(
 );
 
 export function createCompassApolloClient() {
-  const graphqlApiUrl = getURL('managementPlaneApiUrl');
+  const graphqlApiUrl = getURL('compassApiUrl');
 
   //TODO: should be removed once management plane API is able to resolve tenant from token
-  const tenant = getURL('managementPlaneDefaultTenant');
+  const tenant = getURL('compassDefaultTenant');
 
   const httpLink = new HttpLink({
     uri: graphqlApiUrl,
