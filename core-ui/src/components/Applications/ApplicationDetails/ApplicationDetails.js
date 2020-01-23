@@ -55,11 +55,8 @@ const ApplicationDetails = ({ appId }) => {
   return (
     <>
       <ApplicationDetailsHeader
-        data={
-          kymaQuery.data && kymaQuery.data.application
-            ? kymaQuery.data.application
-            : compassQuery.data.application
-        }
+        kymaData={kymaQuery.data && kymaQuery.data.application}
+        compassData={compassQuery.data && compassQuery.data.application}
       />
       {kymaQuery.data && kymaQuery.data.application ? (
         <BoundNamespacesList
@@ -80,20 +77,23 @@ export default ApplicationDetails;
 
 const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
 
-function ApplicationDetailsHeader({ data }) {
+function ApplicationDetailsHeader({ kymaData, compassData }) {
   return (
-    <PageHeader title={data.name} breadcrumbItems={breadcrumbItems}>
+    <PageHeader title={compassData.name} breadcrumbItems={breadcrumbItems}>
       <PageHeader.Column title="Name" columnSpan={null}>
-        {data.name}
+        {compassData.name}
       </PageHeader.Column>
       <PageHeader.Column title="Status" columnSpan={null}>
-        {data.status || EMPTY_TEXT_PLACEHOLDER}
+        {(kymaData && kymaData.status) || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Description" columnSpan={null}>
-        {data.description || EMPTY_TEXT_PLACEHOLDER}
+        {(kymaData && kymaData.description) || EMPTY_TEXT_PLACEHOLDER}
+      </PageHeader.Column>
+      <PageHeader.Column title="Provider Name" columnSpan={null}>
+        {compassData.providerName || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Labels" columnSpan={null}>
-        {Labels(data.labels)}
+        {Labels(kymaData && kymaData.labels)}
       </PageHeader.Column>
     </PageHeader>
   );
