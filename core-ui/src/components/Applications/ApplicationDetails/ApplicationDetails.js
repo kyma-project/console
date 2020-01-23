@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -9,8 +9,10 @@ import Labels from 'shared/components/Labels/Labels';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import { CompassGqlContext } from 'index';
 import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
+import { useNotification } from 'contexts/notifications';
 
 const ApplicationDetails = ({ appId }) => {
+  const notificationManager = useNotification();
   const compassGqlClient = useContext(CompassGqlContext);
 
   const compassQuery = useQuery(GET_APPLICATION_COMPASS, {
@@ -33,17 +35,28 @@ const ApplicationDetails = ({ appId }) => {
     skip: !appName,
   });
 
+  useEffect(() => {
+    if (kymaQuery.error) {
+      notificationManager.notify({
+        content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
+        title: 'Error',
+        color: '#BB0000',
+        icon: 'decline',
+        autoClose: false,
+      });
+    }
+  }, [kymaQuery]);
+
   if (compassQuery.loading || kymaQuery.loading) {
     return <Spinner />;
   }
 
   if (compassQuery.error) {
-    // return <p> {compassQuery.error.message}</p>
     const breadcrumbItems = [{ name: 'Applications', path: '' }, { name: '' }];
     return (
       <DetailsError
         breadcrumbs={breadcrumbItems}
-        message={`Couldn't fetch Application data due to an error: ${compassQuery.error.message}`}
+        message={`Could not fetch Application data due to an error: ${compassQuery.error.message}`}
       ></DetailsError>
     );
   }
