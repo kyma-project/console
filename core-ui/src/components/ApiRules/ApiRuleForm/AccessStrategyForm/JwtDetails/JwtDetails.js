@@ -12,6 +12,7 @@ import {
 } from 'fundamental-react';
 import { InputWithPrefix } from 'react-shared';
 import './JwtDetails.scss';
+import { getApiUrl as getURL } from '@kyma-project/common';
 
 JwtDetails.propTypes = {
   config: PropTypes.object.isRequired,
@@ -26,6 +27,11 @@ export default function JwtDetails({
   idpPresets,
   handleFormChanged,
 }) {
+  const defaultIDPPreset = {
+    jwksUri: getURL('defaultIdpJwksUri'),
+    issuer: getURL('defaultIdpIssuer'),
+  };
+
   function addPreset(preset) {
     config.jwks_urls.push(preset ? preset.jwksUri : '');
     config.trusted_issuers.push(preset ? preset.issuer : '');
@@ -64,7 +70,9 @@ export default function JwtDetails({
         body={
           <Menu>
             <Menu.List>
-              <Menu.Item onClick={() => addPreset(null)}>Custom</Menu.Item>
+              <Menu.Item onClick={() => addPreset(defaultIDPPreset)}>
+                Default
+              </Menu.Item>
               {idpPresets.map(preset => (
                 <Menu.Item key={preset.name} onClick={() => addPreset(preset)}>
                   {preset.name}
