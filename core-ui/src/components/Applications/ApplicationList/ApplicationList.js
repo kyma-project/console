@@ -13,6 +13,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
+// import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
@@ -143,6 +144,15 @@ export default function ApplicationList() {
         rowRenderer={rowRenderer}
         // extraHeaderContent={<CreateLambdaModal />}
       />
+
+      {/* <ul>
+        {applicationList.map(app => (
+          <li
+            key={app.name}>
+            {app.name}<ConnectApplicationModal applicationId={app.id}/>
+          </li>
+        ))}
+      </ul> */}
     </>
   );
 }

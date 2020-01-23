@@ -1,0 +1,9 @@
+.connect-application__content {
+    width: 370px;
+
+    .copiable-text {
+        display: grid;
+        grid-gap: 8px;
+        grid-template-columns: auto 40px;
+    }
+}

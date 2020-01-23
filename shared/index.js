@@ -7,6 +7,7 @@ import { Tooltip } from './components/Tooltip/Tooltip';
 import { PageHeader } from './components/PageHeader/PageHeader';
 export { Spinner } from './components/Spinner/Spinner';
 export { CopiableText } from './components/CopiableText/CopiableText';
+export { Modal } from './components/Modal/Modal';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
