@@ -14,6 +14,13 @@ import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
 // import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
+// import LuigiClient from '@kyma-project/luigi-client';
+import ModalWithForm from '../../ModalWithForm/ModalWithForm';
+import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
+
+// function navigateToApplicationDetails(applicationName) {
+//   LuigiClient.linkManager().navigate(`details/${applicationName}`)}
+// }
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
@@ -112,7 +119,7 @@ export default function ApplicationList() {
     <span
       className="link"
       data-test-id="app-name"
-      //   onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+      // onClick={() => navigateToApplicationDetails(item.name)}
     >
       {item.name}
     </span>,
@@ -132,6 +139,19 @@ export default function ApplicationList() {
 
   if (error) return `Error! ${error.message}`;
   if (loading) return <Spinner />;
+  const RegisterApp = () => (
+    <ModalWithForm
+      title="Register application"
+      button={{ text: 'Register application', glyph: 'add' }}
+      id="register-application-modal"
+      renderForm={props => (
+        <RegisterApplicationForm
+          {...props}
+          // onCompleted={navigateToApplicationDetails}
+        />
+      )}
+    />
+  );
 
   return (
     <>
@@ -142,7 +162,7 @@ export default function ApplicationList() {
         entries={applicationList}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
-        // extraHeaderContent={<CreateLambdaModal />}
+        extraHeaderContent={<RegisterApp />}
       />
 
       {/* <ul>

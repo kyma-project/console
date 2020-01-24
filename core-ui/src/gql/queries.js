@@ -119,3 +119,13 @@ export const GET_KYMA_APPLICATIONS = gql`
     }
   }
 `;
+
+export const CHECK_APPLICATION_EXISTS = gql`
+  query applications($filter: [LabelFilter!]) {
+    applications(filter: $filter) {
+      data {
+        name
+      }
+    }
+  }
+`;

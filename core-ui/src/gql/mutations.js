@@ -147,3 +147,12 @@ export const CONNECT_APPLICATION = gql`
     }
   }
 `;
+
+export const REGISTER_APPLICATION = gql`
+  mutation registerApplication($in: ApplicationRegisterInput!) {
+    registerApplication(in: $in) {
+      name
+      id
+    }
+  }
+`;

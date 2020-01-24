@@ -249,9 +249,9 @@ function getNodes(context) {
     getMicrofrontends(namespace),
     Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
   ])
-    .then(function(values) {
+    .then(function (values) {
       var nodeTree = [...staticNodes];
-      values.forEach(function(val) {
+      values.forEach(function (val) {
         nodeTree = [].concat.apply(nodeTree, val);
       });
 
@@ -291,7 +291,7 @@ const getMicrofrontends = async namespace => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
         }
-        return result.microFrontends.map(function(item) {
+        return result.microFrontends.map(function (item) {
           if (item.navigationNodes) {
             return convertToNavigationTree(
               item.name,
@@ -310,7 +310,7 @@ const getMicrofrontends = async namespace => {
         return [];
       })
       .then(result => {
-        cache[cacheKey] = new Promise(function(resolve) {
+        cache[cacheKey] = new Promise(function (resolve) {
           resolve(result);
         });
         return result;
@@ -319,9 +319,9 @@ const getMicrofrontends = async namespace => {
 };
 
 function fetchFromKyma(url) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
@@ -339,9 +339,9 @@ function fetchFromKyma(url) {
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
@@ -578,7 +578,7 @@ Promise.all(initPromises)
           showSystemNamespaces:
             localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
-        children: function() {
+        children: function () {
           var staticNodes = [
             {
               pathSegment: 'workspace',
@@ -609,6 +609,13 @@ Promise.all(initPromises)
               category: { label: 'Integration', icon: 'overview-chart' },
               pathSegment: '_integration_category_placeholder_',
               hideFromNav: true
+            }, {
+              pathSegment: 'applications-2',
+              navigationContext: 'test',
+              label: 'Applications [Experimental]',
+              category: 'Integration',
+              viewUrl: config.coreModuleUrl + '/applications',
+              viewGroup: coreUIViewGroupName
             },
             {
               pathSegment: 'settings',
@@ -656,7 +663,7 @@ Promise.all(initPromises)
             },
             {
               category: { label: 'Experimental', icon: 'lab' },
-              hideFromNav : true
+              hideFromNav: true
             },
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
