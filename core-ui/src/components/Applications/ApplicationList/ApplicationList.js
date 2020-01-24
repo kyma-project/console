@@ -14,6 +14,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
+import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
@@ -116,15 +117,19 @@ export default function ApplicationList() {
     >
       {item.name}
     </span>,
-    item.providerName,
-    <Badge modifier="filled">{item.status}</Badge>,
-    Array.isArray(item.enabledInNamespaces)
+    item.providerName || EMPTY_TEXT_PLACEHOLDER,
+    item.status ? (
+      <Badge modifier="filled">{item.status}</Badge>
+    ) : (
+      EMPTY_TEXT_PLACEHOLDER
+    ),
+    item.enabledInNamespaces && item.enabledInNamespaces.length
       ? item.enabledInNamespaces.map(n => (
           <Badge key={n} className="fd-has-margin-right-tiny">
             {n}
           </Badge>
         ))
-      : '-',
+      : EMPTY_TEXT_PLACEHOLDER,
     <Badge modifier="filled" type="success">
       Yes
     </Badge>,
