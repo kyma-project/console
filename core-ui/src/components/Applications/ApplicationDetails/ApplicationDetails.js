@@ -14,6 +14,7 @@ import Labels from 'shared/components/Labels/Labels';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import { CompassGqlContext } from 'index';
 import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
+import { InlineHelp } from 'fundamental-react';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -88,12 +89,6 @@ const ApplicationDetails = ({ appId }) => {
   );
 };
 
-ApplicationDetails.propTypes = {
-  appId: PropTypes.string.isRequired,
-};
-
-export default ApplicationDetails;
-
 const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
 
 function ApplicationDetailsHeader({ kymaData, compassData }) {
@@ -103,7 +98,7 @@ function ApplicationDetailsHeader({ kymaData, compassData }) {
         {compassData.name}
       </PageHeader.Column>
       <PageHeader.Column title="Status" columnSpan={null}>
-        {(kymaData && kymaData.status) || EMPTY_TEXT_PLACEHOLDER}
+        {Status(kymaData)}
       </PageHeader.Column>
       <PageHeader.Column title="Description" columnSpan={null}>
         {(kymaData && kymaData.description) || EMPTY_TEXT_PLACEHOLDER}
@@ -117,3 +112,27 @@ function ApplicationDetailsHeader({ kymaData, compassData }) {
     </PageHeader>
   );
 }
+
+function Status(application) {
+  const status =
+    application === null
+      ? 'NOT_INSTALLED'
+      : (application && application.status) || EMPTY_TEXT_PLACEHOLDER;
+  switch (status) {
+    case 'NOT_INSTALLED':
+      return (
+        <p>
+          {status}{' '}
+          <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
+        </p>
+      );
+    default:
+      return <p>{status}</p>;
+  }
+}
+
+ApplicationDetails.propTypes = {
+  appId: PropTypes.string.isRequired,
+};
+
+export default ApplicationDetails;
