@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Button } from 'fundamental-react';
 import PropTypes from 'prop-types';
+import LuigiClient from '@kyma-project/luigi-client';
 
 import { Modal } from 'react-shared';
 import { GET_NAMESPACES, GET_APPLICATION } from 'gql/queries';
@@ -21,12 +22,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     ],
   });
 
-  let showSystemNamespaces = false;
-  if (localStorage.getItem('console.showSystemNamespaces')) {
-    showSystemNamespaces =
-      localStorage.getItem('console.showSystemNamespaces') === 'true';
-  }
-
+  const { showSystemNamespaces } = LuigiClient.getContext();
   const namespacesQuery = useQuery(GET_NAMESPACES, {
     variables: {
       showSystemNamespaces: !!showSystemNamespaces,
