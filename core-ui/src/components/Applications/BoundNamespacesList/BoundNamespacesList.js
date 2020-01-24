@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
+import PropTypes from 'prop-types';
 
 import { GenericList, useNotification } from 'react-shared';
 import BindNamespaceModal from '../BindNamespaceModal/BindNamespaceModal';
@@ -76,3 +77,8 @@ export default function BoundNamespacesList({ data, appName }) {
     </>
   );
 }
+
+BoundNamespacesList.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  appName: PropTypes.string.isRequired,
+};

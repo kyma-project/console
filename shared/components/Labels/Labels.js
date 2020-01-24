@@ -1,8 +1,9 @@
 import React from 'react';
 import { Token } from 'fundamental-react/Token';
-import { EMPTY_TEXT_PLACEHOLDER } from './../../constants';
+import { EMPTY_TEXT_PLACEHOLDER } from '../../../core-ui/src/shared/constants';
 
-const Labels = labels => {
+export const Labels = labels => {
+  labels = labels.labels;
   if (!labels || Object.keys(labels).length === 0) {
     return <span>{EMPTY_TEXT_PLACEHOLDER}</span>;
   }
@@ -22,5 +23,3 @@ const Labels = labels => {
     </Token>
   ));
 };
-
-export default Labels;

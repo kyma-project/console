@@ -1,20 +1,20 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
+import { InlineHelp } from 'fundamental-react';
 
 import {
   Spinner,
   PageHeader,
   DetailsError,
   useNotification,
+  Labels,
 } from 'react-shared';
-import { GET_APPLICATION, GET_APPLICATION_COMPASS } from '../../../gql/queries';
+import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
-import Labels from 'shared/components/Labels/Labels';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import { CompassGqlContext } from 'index';
 import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
-import { InlineHelp } from 'fundamental-react';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -107,7 +107,7 @@ function ApplicationDetailsHeader({ kymaData, compassData }) {
         {compassData.providerName || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Labels" columnSpan={null}>
-        {Labels(kymaData && kymaData.labels)}
+        <Labels labels={kymaData && kymaData.labels} />
       </PageHeader.Column>
     </PageHeader>
   );

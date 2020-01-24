@@ -1,5 +1,5 @@
 import renderer from 'react-test-renderer';
-import Labels from '../Labels';
+import { Labels } from '../Labels';
 import React from 'react';
 
 describe('Labels', () => {

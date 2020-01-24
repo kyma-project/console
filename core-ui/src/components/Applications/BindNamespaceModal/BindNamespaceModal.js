@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Button } from 'fundamental-react';
+import PropTypes from 'prop-types';
 
 import { Modal } from 'react-shared';
 import { GET_NAMESPACES, GET_APPLICATION } from 'gql/queries';
@@ -90,3 +91,8 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     </Modal>
   );
 }
+
+BindNamespaceModal.propTypes = {
+  boundNamespaces: PropTypes.arrayOf(PropTypes.string).isRequired,
+  appName: PropTypes.string.isRequired,
+};

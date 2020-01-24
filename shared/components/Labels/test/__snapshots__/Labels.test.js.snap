@@ -5,7 +5,7 @@ exports[`Labels Labels should render with labels 1`] = `
   className="fd-token y-fd-token y-fd-token--no-button y-fd-token--gap"
   role="button"
 >
-  labels=[object Object]
+  testLabel=testValue
 </span>
 `;
 

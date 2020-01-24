@@ -9,9 +9,8 @@ import { DELETE_LAMBDA } from '../../gql/mutations';
 import { GenericList, useNotification } from 'react-shared';
 
 import builder from '../../commons/builder';
-import { Spinner } from 'react-shared';
+import { Spinner, Labels } from 'react-shared';
 import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
-import Labels from '../../shared/components/Labels/Labels';
 import { REFETCH_TIMEOUT } from '../../shared/constants';
 import { PageHeader } from 'react-shared';
 
@@ -112,7 +111,7 @@ export default function Lambdas() {
       {item.name}
     </span>,
     <span>{item.runtime}</span>,
-    Labels(item.labels),
+    <Labels labels={item.labels} />,
     <LambdaStatusBadge status={item.status} />,
   ];
 
