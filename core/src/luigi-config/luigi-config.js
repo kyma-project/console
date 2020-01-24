@@ -609,13 +609,6 @@ Promise.all(initPromises)
               category: { label: 'Integration', icon: 'overview-chart' },
               pathSegment: '_integration_category_placeholder_',
               hideFromNav: true
-            }, {
-              pathSegment: 'applications-2',
-              navigationContext: 'test',
-              label: 'Applications [Experimental]',
-              category: 'Integration',
-              viewUrl: config.coreModuleUrl + '/applications',
-              viewGroup: coreUIViewGroupName
             },
             {
               pathSegment: 'settings',
