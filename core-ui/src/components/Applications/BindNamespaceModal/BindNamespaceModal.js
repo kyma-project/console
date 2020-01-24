@@ -33,35 +33,32 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
   });
 
   const bindNamespaceToApp = () => {
-    console.log(namespace);
     bindNamespace({ variables: { namespace, application: appName } })
       .then()
       .catch(e => {});
   };
 
   const AvailableNamespacesList = ({ data, error, loading }) => {
+    if (loading) return 'Loading...';
     if (error) return error.message;
-    if (loading) return 'loading...';
-    //todo improve loading and error
 
     const namespaces = data.namespaces ? data.namespaces : [];
+    const filteredNamespaces = namespaces.filter(
+      namespace => !boundNamespaces.includes(namespace.name),
+    );
+    if (!filteredNamespaces.length) return 'No Namespaces avaliable to bind';
+
     return (
       <select
         onChange={e => {
           setNamespace(e.target.value);
         }}
       >
-        {namespaces.length ? (
-          namespaces
-            .filter(namespace => !boundNamespaces.includes(namespace.name))
-            .map(namespace => (
-              <option value={namespace.name} key={namespace.name}>
-                {namespace.name}
-              </option>
-            ))
-        ) : (
-          <option>No namespaces available</option>
-        )}
+        {filteredNamespaces.map(namespace => (
+          <option value={namespace.name} key={namespace.name}>
+            {namespace.name}
+          </option>
+        ))}
       </select>
     );
   };
