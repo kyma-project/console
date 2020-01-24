@@ -65,6 +65,7 @@ export default function BoundNamespacesList({ data, appName }) {
   return (
     <>
       <GenericList
+        testid="namespace-bindings-list"
         title="Namespace Binding"
         actions={actions}
         entries={data}

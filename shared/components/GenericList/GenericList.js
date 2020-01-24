@@ -60,6 +60,7 @@ export const GenericList = ({
   showSearchField,
   textSearchProperties,
   actionsStandaloneItems,
+  testid,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -85,7 +86,7 @@ export const GenericList = ({
   );
 
   return (
-    <Panel className="fd-has-margin-m generic-list">
+    <Panel className="fd-has-margin-m generic-list" data-testid={testid}>
       <Panel.Header className="fd-has-padding-xs">
         <Panel.Head title={title} />
         <Panel.Actions>{headerActions}</Panel.Actions>
@@ -147,6 +148,7 @@ GenericList.propTypes = {
   notFoundMessage: PropTypes.string,
   textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
   actionsStandaloneItems: PropTypes.number,
+  testid: PropTypes.string,
 };
 
 GenericList.defaultProps = {

@@ -94,9 +94,6 @@ const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
 function ApplicationDetailsHeader({ kymaData, compassData }) {
   return (
     <PageHeader title={compassData.name} breadcrumbItems={breadcrumbItems}>
-      <PageHeader.Column title="Name" columnSpan={null}>
-        {compassData.name}
-      </PageHeader.Column>
       <PageHeader.Column title="Status" columnSpan={null}>
         {Status(kymaData)}
       </PageHeader.Column>
