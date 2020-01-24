@@ -5,10 +5,10 @@ import { Button } from 'fundamental-react';
 import { Modal } from 'react-shared';
 import { GET_NAMESPACES, GET_APPLICATION } from 'gql/queries';
 import { BIND_NAMESPACE } from 'gql/mutations';
-import './BindNamespaceModal.scss';
 
 export default function BindNamespaceModal({ appName, boundNamespaces }) {
   const [namespace, setNamespace] = React.useState(null);
+  const [disabled, setDisabled] = React.useState(true);
   const [bindNamespace] = useMutation(BIND_NAMESPACE, {
     refetchQueries: [
       {
@@ -48,11 +48,13 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     );
     if (!filteredNamespaces.length) return 'No Namespaces avaliable to bind';
 
+    setDisabled(false);
     return (
       <select
         onChange={e => {
           setNamespace(e.target.value);
         }}
+        value={namespace}
       >
         {filteredNamespaces.map(namespace => (
           <option value={namespace.name} key={namespace.name}>
@@ -76,7 +78,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
       modalOpeningComponent={<Button> Create Binding </Button>}
       confirmText="Bind"
       cancelText="Cancel"
-      disabledConfirm={!namespace}
+      disabledConfirm={disabled}
       onConfirm={() => {
         bindNamespaceToApp();
       }}
