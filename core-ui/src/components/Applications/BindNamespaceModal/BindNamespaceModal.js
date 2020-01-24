@@ -54,7 +54,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
         onChange={e => {
           setNamespace(e.target.value);
         }}
-        value={namespace}
+        value={namespace || undefined}
       >
         {filteredNamespaces.map(namespace => (
           <option value={namespace.name} key={namespace.name}>
