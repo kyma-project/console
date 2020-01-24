@@ -23,7 +23,7 @@ const FormEntry = ({ caption, name, value }) => (
   <FormItem className="connect-application__data-entry">
     <FormLabel htmlFor={name}>{caption}</FormLabel>
     <CopiableText
-      textToCopy={value}
+      textToCopy={value || ''}
       caption={
         <FormInput
           type="text"
@@ -45,7 +45,7 @@ export default function ConnectApplicationModal({ applicationId }) {
   const [error, setError] = React.useState('');
   const [connectionData, setConnectionData] = React.useState({});
 
-  const connectApplication = async id => {
+  async function connectApplication(id) {
     try {
       const { data } = await connectApplicationMutation({ variables: { id } });
       setConnectionData(data.requestOneTimeTokenForApplication);
@@ -53,9 +53,11 @@ export default function ConnectApplicationModal({ applicationId }) {
       console.warn(e);
       setError(e.message || 'Error!');
     }
-  };
+  }
 
-  const clearConnectionData = () => setConnectionData({}); // reset token
+  function clearConnectionData() {
+    setConnectionData({}); // reset token
+  }
 
   const modalContent = error ? (
     <FormMessage type="error">{error}</FormMessage>
