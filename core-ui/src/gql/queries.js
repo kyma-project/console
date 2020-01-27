@@ -140,3 +140,13 @@ export const GET_APPLICATION_COMPASS = gql`
     }
   }
 `;
+
+export const CHECK_APPLICATION_EXISTS = gql`
+  query applications($filter: [LabelFilter!]) {
+    applications(filter: $filter) {
+      data {
+        name
+      }
+    }
+  }
+`;

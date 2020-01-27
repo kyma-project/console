@@ -31,6 +31,8 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
   uxManager: () => ({
     showConfirmationModal: mockShowConfirmationModal,
+    addBackdrop: () => {},
+    removeBackdrop: () => {},
   }),
 }));
 

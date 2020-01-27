@@ -148,6 +148,15 @@ export const CONNECT_APPLICATION = gql`
   }
 `;
 
+export const REGISTER_APPLICATION = gql`
+  mutation registerApplication($in: ApplicationRegisterInput!) {
+    registerApplication(in: $in) {
+      name
+      id
+    }
+  }
+`;
+
 export const BIND_NAMESPACE = gql`
   mutation($namespace: String!, $application: String!) {
     enableApplication(
