@@ -18,6 +18,11 @@ import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
 
+const STATUSES = {
+  NOTINSTALLED: 'not installed',
+  INSTALLED: 'installed',
+};
+
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
   const notificationManager = useNotification();
@@ -74,7 +79,7 @@ export default function ApplicationList() {
 
       if (!localAppEntry) return; // got a Kyma app that has not been registered in Compass
 
-      localAppEntry.status = kymaApp.status || 'installed'; // TODO
+      localAppEntry.status = STATUSES.INSTALLED;
       localAppEntry.enabledInNamespaces = kymaApp.enabledInNamespaces;
     });
   }
@@ -120,8 +125,8 @@ export default function ApplicationList() {
       {item.name}
     </span>,
     item.providerName,
-    <Badge modifier="filled">{item.status}</Badge>,
-    Array.isArray(item.enabledInNamespaces)
+    <Badge modifier="filled">{item.status || STATUSES.NOTINSTALLED}</Badge>,
+    Array.isArray(item.enabledInNamespaces) && item.enabledInNamespaces.length
       ? item.enabledInNamespaces.map(n => (
           <Badge key={n} className="fd-has-margin-right-tiny">
             {n}
