@@ -66,7 +66,6 @@ describe('RegisterApplicationForm', () => {
     );
 
     await componentUpdate(component);
-    await componentUpdate(component);
 
     const applicationNameSelector = 'input#applicationName';
     const applicationNameInput = component.find(applicationNameSelector);
@@ -99,7 +98,6 @@ describe('RegisterApplicationForm', () => {
     );
 
     await componentUpdate(component);
-    await componentUpdate(component);
 
     const applicationNameSelector = 'input#applicationName';
     const applicationNameInput = component.find(applicationNameSelector);
@@ -124,7 +122,6 @@ describe('RegisterApplicationForm', () => {
       </MockedProvider>,
     );
 
-    await componentUpdate(component);
     await componentUpdate(component);
 
     const applicationNameSelector = 'input#applicationName';
@@ -161,18 +158,15 @@ describe('RegisterApplicationForm', () => {
     );
 
     await componentUpdate(component);
-    await componentUpdate(component);
 
     const applicationNameSelector = 'input#applicationName';
     const applicationNameInput = component.find(applicationNameSelector);
     applicationNameInput.instance().value = 'testname';
 
     await componentUpdate(component);
-    await componentUpdate(component);
     const form = component.find('form');
     form.simulate('submit');
 
-    await componentUpdate(component);
     await componentUpdate(component);
 
     expect(gqlMock[0].result).toHaveBeenCalledTimes(1);
@@ -199,7 +193,6 @@ describe('RegisterApplicationForm', () => {
     );
 
     await componentUpdate(component);
-    await componentUpdate(component);
 
     const applicationNameSelector = 'input#applicationName';
     const applicationNameInput = component.find(applicationNameSelector);
@@ -208,7 +201,6 @@ describe('RegisterApplicationForm', () => {
     const form = component.find('form');
     form.simulate('submit');
 
-    await componentUpdate(component);
     await componentUpdate(component);
 
     expect(onCompleted).not.toHaveBeenCalled();
