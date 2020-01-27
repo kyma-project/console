@@ -12,21 +12,17 @@ A sandbox application appears. It uses `<y-generic-table>` and `<y-generic-list>
 To use the package in a component, perform the following steps:
 
 1. Run
-
     ```bash
     npm install --save fiori-fundamentals fundamental-ngx
     ```
-
    in your project directory.
 
 2. Add `"preserveSymlinks": true` to `angular.json` test and build options. Alternatively, add `--preserve-symlink` option to `ng test` and `ng build`.
 
 3. Include
-
     ```
     "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
     ```
-
    in `angular.json` styles array (`projects>your_project>architect>build>styles`).
 
 4. Add `"include": [ /components/angular/generic-list/src/app/modules/list/**/*.ts" ]` to  the `tsconfig.json` file of your component.
