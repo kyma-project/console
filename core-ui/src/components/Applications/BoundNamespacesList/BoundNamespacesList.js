@@ -35,21 +35,13 @@ export default function BoundNamespacesList({ data, appName }) {
           .then(() => {
             unbindNamespace({ variables: { namespace, application: appName } })
               .then(() => {
-                notificationManager.notify({
+                notificationManager.notifySuccess({
                   content: `Namespace ${namespace} unbound successfully`,
-                  title: 'Success',
-                  color: '#107E3E',
-                  icon: 'accept',
-                  autoClose: true,
                 });
               })
               .catch(e => {
-                notificationManager.notify({
+                notificationManager.notifyError({
                   content: `Could not unbind Namespace due to an error: ${e.message}`,
-                  title: 'Error',
-                  color: '#BB0000',
-                  icon: 'decline',
-                  autoClose: false,
                 });
               });
           })

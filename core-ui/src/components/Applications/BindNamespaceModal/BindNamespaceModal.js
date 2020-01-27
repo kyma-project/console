@@ -4,7 +4,7 @@ import { Button } from 'fundamental-react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Modal } from 'react-shared';
+import { Modal, useNotification } from 'react-shared';
 import { GET_NAMESPACES, GET_APPLICATION } from 'gql/queries';
 import { BIND_NAMESPACE } from 'gql/mutations';
 
@@ -21,6 +21,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
       },
     ],
   });
+  const notificationManager = useNotification();
 
   const { showSystemNamespaces } = LuigiClient.getContext();
   const namespacesQuery = useQuery(GET_NAMESPACES, {
@@ -31,8 +32,16 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
 
   const bindNamespaceToApp = () => {
     bindNamespace({ variables: { namespace, application: appName } })
-      .then()
-      .catch(e => {});
+      .then(
+        notificationManager.notifySuccess({
+          content: `Namespace ${namespace} bound successfully`,
+        }),
+      )
+      .catch(e => {
+        notificationManager.notifyError({
+          content: `An error occurred while bounding Namespace ${namespace}: ${e.message}`,
+        });
+      });
   };
 
   const AvailableNamespacesList = ({ data, error, loading }) => {
@@ -53,7 +62,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
         onChange={e => {
           setNamespace(e.target.value);
         }}
-        value={namespace}
+        value={namespace || undefined}
       >
         {filteredNamespaces.map(namespace => (
           <option value={namespace.name} key={namespace.name}>

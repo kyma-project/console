@@ -42,12 +42,8 @@ const ApplicationDetails = ({ appId }) => {
 
   useEffect(() => {
     if (kymaQuery.error) {
-      notificationManager.notify({
+      notificationManager.notifyError({
         content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
-        autoClose: false,
       });
     }
   }, [kymaQuery, notificationManager]);
