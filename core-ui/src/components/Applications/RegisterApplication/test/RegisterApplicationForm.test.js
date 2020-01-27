@@ -176,7 +176,7 @@ describe('RegisterApplicationForm', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    expect(gqlMock[0].result).toHaveBeenCalled();
+    expect(gqlMock[0].result).toHaveBeenCalledTimes(1);
 
     expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
