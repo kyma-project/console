@@ -18,10 +18,6 @@ import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
 
-// function navigateToApplicationDetails(applicationName) {
-//   LuigiClient.linkManager().navigate(`details/${applicationName}`)}
-// }
-
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
   const notificationManager = useNotification();
@@ -119,7 +115,7 @@ export default function ApplicationList() {
     <span
       className="link"
       data-test-id="app-name"
-      // onClick={() => navigateToApplicationDetails(item.name)}
+      // onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
     >
       {item.name}
     </span>,
@@ -147,7 +143,7 @@ export default function ApplicationList() {
       renderForm={props => (
         <RegisterApplicationForm
           {...props}
-          // onCompleted={navigateToApplicationDetails}
+          // onCompleted={(applicationName) => LuigiClient.linkManager().navigate(`details/${applicationName}`)}
         />
       )}
     />
