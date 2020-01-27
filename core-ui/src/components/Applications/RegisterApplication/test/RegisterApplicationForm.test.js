@@ -6,7 +6,6 @@ import { componentUpdate } from '../../../../testing';
 
 import RegisterApplicationForm from '../RegisterApplicationForm';
 import {
-  checkApplicationExistMock,
   registerApplicationSuccessfulMock,
   registerApplicationErrorMock,
 } from './gqlMocks';
@@ -35,7 +34,7 @@ jest.mock('index', () => {
 });
 describe('RegisterApplicationForm', () => {
   it('Form inputs are rendered', async () => {
-    const { queryByPlaceholderText, getByText } = render(
+    const { queryByPlaceholderText, queryByText } = render(
       <MockedProvider>
         <RegisterApplicationForm formElementRef={{ current: null }} />
       </MockedProvider>,
@@ -53,9 +52,9 @@ describe('RegisterApplicationForm', () => {
       expect(nameInput).toBeInTheDocument();
       expect(providerInput).toBeInTheDocument();
       expect(descriptionInput).toBeInTheDocument();
-      expect(getByText(/^Name/i)).toBeInTheDocument();
-      expect(getByText(/^Provider Name/i)).toBeInTheDocument();
-      expect(getByText(/^Description/i)).toBeInTheDocument();
+      expect(queryByText(/^Name/i)).toBeInTheDocument();
+      expect(queryByText(/^Provider Name/i)).toBeInTheDocument();
+      expect(queryByText(/^Description/i)).toBeInTheDocument();
     });
   });
 
