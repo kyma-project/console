@@ -87,7 +87,10 @@ export default function SearchInput({
   const showControl = isSearchHidden && !searchQuery;
   return (
     <section className="generic-list-search" role="search">
-      <div className="fd-popover">
+      <div
+        className="fd-popover"
+        style={{ display: showControl ? 'none' : 'initial' }}
+      >
         <div className="fd-popover__control">
           <div className="fd-combobox-control">
             <input
@@ -99,7 +102,7 @@ export default function SearchInput({
               onFocus={() => setSearchHidden(false)}
               onChange={e => handleQueryChange(e.target.value)}
               onKeyPress={checkForEscapeKey}
-              style={{ display: showControl ? 'none' : 'initial' }}
+              className="fd-has-margin-right-tiny"
             />
             {!!searchQuery && (
               <div

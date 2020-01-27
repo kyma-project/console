@@ -6,10 +6,10 @@ import { Badge, Icon } from 'fundamental-react';
 //   value: 'allow',
 //   displayName: 'Allow',
 // };
-// const jwt = {
-//   value: 'jwt',
-//   displayName: 'JWT',
-// };
+const jwt = {
+  value: 'jwt',
+  displayName: 'JWT',
+};
 const noop = {
   value: 'noop',
   displayName: 'noop',
@@ -18,7 +18,7 @@ const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [noop, oauth2];
+const accessStrategiesList = [noop, oauth2, jwt];
 
 const AccessStrategy = ({ strategy }) => {
   const selectedType = strategy.accessStrategies[0].name;

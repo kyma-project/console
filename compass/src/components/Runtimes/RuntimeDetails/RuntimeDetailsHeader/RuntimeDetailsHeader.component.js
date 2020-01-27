@@ -80,14 +80,14 @@ class RuntimeDetailsHeader extends React.Component {
             {status && (
               <PanelEntry
                 title="Status"
-                children={<StatusBadge status={status.condition} />}
+                content={<StatusBadge status={status.condition} />}
               />
             )}
             <PanelEntry
               title="Description"
-              children={description ? description : EMPTY_TEXT_PLACEHOLDER}
+              content={description ? description : EMPTY_TEXT_PLACEHOLDER}
             />
-            <PanelEntry title="ID" children={id} />
+            <PanelEntry title="ID" content={id} />
           </PanelGrid>
         </header>
       </>

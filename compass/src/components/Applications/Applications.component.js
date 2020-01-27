@@ -4,11 +4,12 @@ import { Counter } from 'fundamental-react/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
+import CreateApplicationFromTemplateModal from './CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
 import StatusBadge from '../Shared/StatusBadge/StatusBadge';
-import { GenericList, handleDelete } from 'react-shared';
+import { GenericList, handleDelete, PageHeader } from 'react-shared';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
-import { PageHeader } from 'react-shared';
+import { Popover, Menu, Button } from 'fundamental-react';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -79,13 +80,33 @@ class Applications extends React.Component {
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
 
+    const extraHeaderContent = (
+      <Popover
+        body={
+          <Menu>
+            <Menu.List>
+              <CreateApplicationModal
+                applicationsQuery={applicationsQuery}
+                modalOpeningComponent={<Menu.Item>From scratch</Menu.Item>}
+              />
+              <CreateApplicationFromTemplateModal
+                applicationsQuery={applicationsQuery}
+                modalOpeningComponent={<Menu.Item>From template</Menu.Item>}
+              />
+            </Menu.List>
+          </Menu>
+        }
+        control={<Button option="light">Create application...</Button>}
+        widthSizingType="matchTarget"
+        placement="bottom-end"
+      />
+    );
+
     return (
       <>
         <PageHeader title="Applications" />
         <GenericList
-          extraHeaderContent={
-            <CreateApplicationModal applicationsQuery={applicationsQuery} />
-          }
+          extraHeaderContent={extraHeaderContent}
           actions={this.actions}
           entries={applications}
           headerRenderer={this.headerRenderer}

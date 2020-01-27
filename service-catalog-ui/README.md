@@ -3,10 +3,12 @@
 ## Overview
 
 The project contains three applications:
+
 - Service Brokers UI
 - Service Catalog
 - Service Instances
-These applications are included in the Kyma Console as micro front-ends.
+
+These applications are included in the Kyma Console as micro frontends.
 
 ## Installation
 

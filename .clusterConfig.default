@@ -28,4 +28,7 @@ REACT_APP_logsModuleUrl="http://$REACT_APP_localDomain:8005"
 
 REACT_APP_HELM_BROKER_REPO_URL_PREFIXES="https://|git::|github.com/|bitbucket.org/|http://"
 
+REACT_APP_defaultIdpJwksUri="http://dex-service.kyma-system.svc.cluster.local:5556/keys"
+REACT_APP_defaultIdpIssuer="https://dex.$REACT_APP_domain"
+
 

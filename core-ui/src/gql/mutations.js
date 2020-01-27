@@ -139,6 +139,15 @@ export const UNREGISTER_APPLICATION = gql`
   }
 `;
 
+export const CONNECT_APPLICATION = gql`
+  mutation requestOneTimeTokenForApplication($id: ID!) {
+    requestOneTimeTokenForApplication(id: $id) {
+      token
+      connectorURL
+    }
+  }
+`;
+
 export const BIND_NAMESPACE = gql`
   mutation($namespace: String!, $application: String!) {
     enableApplication(

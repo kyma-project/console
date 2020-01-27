@@ -2,7 +2,7 @@
 
 ## Overview
 
-Console is a web-based UI for managing resources within Kyma. It consists of separate front-end applications. Each project is responsible for providing a user interface for particular resource management.
+Console is a web-based UI for managing resources within Kyma. It consists of separate frontend applications. Each project is responsible for providing a user interface for particular resource management.
 
 ### Components
 

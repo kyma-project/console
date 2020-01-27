@@ -83,7 +83,7 @@ export default function MultiChoiceList({
     }
 
     const nonChoosenItemsList = (
-      <Menu className="multi-choice-list__non-selected">
+      <Menu>
         {currentlyNonSelectedItems.map(item => (
           <Menu.Item
             key={getDisplayName(item)}
@@ -96,7 +96,7 @@ export default function MultiChoiceList({
     );
 
     return (
-      <Dropdown>
+      <Dropdown fullwidth="true">
         <Popover
           body={nonChoosenItemsList}
           control={

@@ -5,8 +5,22 @@ import {
   fireEvent,
   queryByText,
   prettyDOM,
+  getByText,
 } from '@testing-library/react';
 import AccessStrategyForm from '../AccessStrategyForm';
+
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: key => {
+    let result = '';
+    if (key == 'defaultIdpJwksUri') {
+      result = 'http://dex-service.kyma-system.svc.cluster.local:5556/keys';
+    }
+    if (key == 'defaultIdpIssuer') {
+      result = 'https://dex.kyma.local';
+    }
+    return result;
+  },
+}));
 
 const allowStrategy = {
   path: '/path',
@@ -32,6 +46,20 @@ const oauthStrategy = {
   ],
 };
 
+const jwtStrategy = {
+  path: '/path',
+  methods: ['GET', 'PUT'],
+  accessStrategies: [
+    {
+      name: 'jwt',
+      config: {
+        jwks_urls: ['http://jwks_1'],
+        trusted_issuers: ['https://issuer_1'],
+      },
+    },
+  ],
+};
+
 const setStrategy = jest.fn();
 const removeStrategy = jest.fn();
 
@@ -48,6 +76,8 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -67,6 +97,8 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -89,6 +121,8 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -116,6 +150,32 @@ describe('AccessStrategyForm', () => {
     });
   });
 
+  it('renders JWT strategy', async () => {
+    const { getByLabelText, queryByText } = render(
+      <AccessStrategyForm
+        strategy={jwtStrategy}
+        setStrategy={setStrategy}
+        removeStrategy={removeStrategy}
+        canDelete={false}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
+      />,
+    );
+
+    expect(getByLabelText('Access strategy type')).toHaveValue(
+      jwtStrategy.accessStrategies[0].type,
+    );
+    const addPresetDropdown = queryByText('Configure identity provider...');
+    expect(addPresetDropdown).toBeInTheDocument();
+
+    expect(getByLabelText('jwt-issuer-0').value).toBe(
+      jwtStrategy.accessStrategies[0].config.trusted_issuers[0],
+    );
+    expect(getByLabelText('jwt-jwks-uri-0').value).toBe(
+      jwtStrategy.accessStrategies[0].config.jwks_urls[0],
+    );
+  });
+
   it('disables delete button when there is one access strategy', () => {
     const { queryByLabelText } = render(
       <AccessStrategyForm
@@ -123,6 +183,8 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -138,6 +200,8 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={true}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
       />,
     );
 
@@ -153,6 +217,8 @@ describe('AccessStrategyForm', () => {
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={true}
+        idpPresets={[]}
+        handleFormChanged={() => {}}
       />,
     );
 

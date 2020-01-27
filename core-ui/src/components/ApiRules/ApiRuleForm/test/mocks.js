@@ -1,5 +1,5 @@
 import { service1, service2 } from 'testing/servicesMocks';
-import { GET_SERVICES } from 'gql/queries';
+import { GET_SERVICES, GET_IDP_PRESETS } from 'gql/queries';
 
 export const apiRuleName = 'test-123';
 export const mockNamespace = 'test';
@@ -44,6 +44,24 @@ export const servicesQuery = {
   result: {
     data: {
       services: [service1, service2],
+    },
+  },
+};
+
+export const idpPresetsQuery = {
+  request: {
+    query: GET_IDP_PRESETS,
+  },
+  result: {
+    data: {
+      IDPPresets: [
+        {
+          name: 'preset-1',
+          issuer: 'https://example_issuer',
+          jwksUri: 'https://example_jwks',
+          __typename: 'IDPPreset',
+        },
+      ],
     },
   },
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
-
+import './Modal.scss';
 import { Modal as FdModal } from 'fundamental-react';
 import { Spinner, Button, Tooltip } from '@kyma-project/react-components';
 
@@ -18,7 +18,7 @@ Modal.propTypes = {
   disabledConfirm: PropTypes.bool,
   waiting: PropTypes.bool,
   tooltipData: PropTypes.object,
-  modalclassname: PropTypes.string,
+  modalClassName: PropTypes.string,
 };
 
 Modal.defaultProps = {
@@ -44,26 +44,25 @@ export function Modal({
   waiting,
   tooltipData,
   children,
-  modalclassname,
 }) {
   const [show, setShow] = React.useState(false);
-  const onOpen = () => {
+  function onOpen() {
     if (onShow) {
       onShow();
     }
     LuigiClient.uxManager().addBackdrop();
     setShow(true);
-  };
+  }
 
-  const onClose = () => {
+  function onClose() {
     if (onHide) {
       onHide();
     }
     LuigiClient.uxManager().removeBackdrop();
     setShow(false);
-  };
+  }
 
-  const onConfirmation = () => {
+  function handleConfirmClicked() {
     if (onConfirm) {
       const result = onConfirm();
       // check if confirm is not explicitly cancelled
@@ -73,7 +72,7 @@ export function Modal({
     } else {
       onClose();
     }
-  };
+  }
 
   const createActions = () => {
     const confirmMessage = waiting ? (
@@ -87,7 +86,7 @@ export function Modal({
     const confirmButton = (
       <Button
         type="emphasized"
-        onClick={onConfirmation}
+        onClick={handleConfirmClicked}
         disabled={disabledConfirm}
         data-e2e-id="modal-confirmation-button"
       >
@@ -124,7 +123,7 @@ export function Modal({
     <>
       <div onClick={onOpen}>{modalOpeningComponent}</div>
       <FdModal
-        className={modalclassname}
+        className="custom-modal"
         type={type}
         title={title}
         show={show}

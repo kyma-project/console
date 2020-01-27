@@ -1,6 +1,6 @@
 # Generic List Components
 
-This is a private package, not published to npm anymore. We use symlinks to use it in our Angular microfrontends.
+This is a private package, not published to npm anymore. We use symlinks to use it in our Angular micro frontends.
 
 ## Development server
 
@@ -11,23 +11,27 @@ A sandbox application appears. It uses `<y-generic-table>` and `<y-generic-list>
 
 To use the package in a component, perform the following steps:
 
-1. Run 
+1. Run
+
     ```bash
     npm install --save fiori-fundamentals fundamental-ngx
     ```
+
    in your project directory.
 
-2. Add `"preserveSymlinks": true` to `angular.json` test and build options. Alternatively, add `--preserve-symlink` option to `ng test` and `ng build`. 
+2. Add `"preserveSymlinks": true` to `angular.json` test and build options. Alternatively, add `--preserve-symlink` option to `ng test` and `ng build`.
 
-3. Include 
+3. Include
+
     ```
     "./node_modules/fiori-fundamentals/dist/fiori-fundamentals.css"
     ```
+
    in `angular.json` styles array (`projects>your_project>architect>build>styles`).
 
 4. Add `"include": [ /components/angular/generic-list/src/app/modules/list/**/*.ts" ]` to  the `tsconfig.json` file of your component.
 
-5. Add `"app"` to  the `tslint.json` file if it includes the following rules: 
+5. Add `"app"` to  the `tslint.json` file if it includes the following rules:
 
     ````
     "no-submodule-imports": [true, "app"],
@@ -42,6 +46,3 @@ For example, the console core has the following symlink set:
     ```
 
 7. Use the generic list in `import * as GenericList from 'app/generic-list'` command.
-    
-
-

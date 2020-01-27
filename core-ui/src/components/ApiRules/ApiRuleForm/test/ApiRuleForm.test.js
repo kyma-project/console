@@ -2,7 +2,12 @@ import React from 'react';
 import { render, waitForDomChange, fireEvent } from '@testing-library/react';
 import ApiRuleForm, { DEFAULT_GATEWAY } from '../ApiRuleForm';
 import { MockedProvider } from '@apollo/react-testing';
-import { mockNamespace, apiRule, servicesQuery } from './mocks';
+import {
+  mockNamespace,
+  apiRule,
+  servicesQuery,
+  idpPresetsQuery,
+} from './mocks';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.cluster.com',
@@ -27,7 +32,7 @@ describe('ApiRuleForm', () => {
       queryAllByLabelText,
       container,
     } = render(
-      <MockedProvider mocks={[servicesQuery]}>
+      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
@@ -63,7 +68,7 @@ describe('ApiRuleForm', () => {
   it('allows to add new access strategy', async () => {
     const mutation = jest.fn();
     const { queryAllByPlaceholderText, getByText, container } = render(
-      <MockedProvider mocks={[servicesQuery]}>
+      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
@@ -112,7 +117,7 @@ describe('ApiRuleForm', () => {
   it('allows to remove access strategy', async () => {
     const mutation = jest.fn();
     const { getAllByLabelText, getByText, container } = render(
-      <MockedProvider mocks={[servicesQuery]}>
+      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
@@ -148,7 +153,7 @@ describe('ApiRuleForm', () => {
   it('allows to modify exisitng access strategy', async () => {
     const mutation = jest.fn();
     const { getAllByLabelText, getByText, container } = render(
-      <MockedProvider mocks={[servicesQuery]}>
+      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}

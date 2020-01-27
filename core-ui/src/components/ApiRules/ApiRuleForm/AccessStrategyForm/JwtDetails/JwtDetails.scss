@@ -1,0 +1,40 @@
+.jwt-details {
+   > * {
+    margin-top: 16px;
+  }
+
+  .fd-popover, .fd-popper__body {
+      width: 100%;
+    }
+    
+  .fd-dropdown {
+    width: 100%;
+  
+    .fd-dropdown__control {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      justify-items: center;
+
+      &::after {
+        margin-top: -2px;
+      }
+
+      &::before {
+        content: unset;
+      }
+
+    }
+  }
+}
+
+.preset {
+  &-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  &-content {
+    width: 100%;
+  }
+}

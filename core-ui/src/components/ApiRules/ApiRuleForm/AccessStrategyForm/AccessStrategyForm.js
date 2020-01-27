@@ -13,6 +13,7 @@ import {
 } from 'fundamental-react';
 import StringListInput from './StringListInput';
 import { Tooltip } from 'react-shared';
+import JwtDetails from './JwtDetails/JwtDetails';
 
 const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
@@ -24,25 +25,23 @@ const noop = {
   value: 'noop',
   displayName: 'noop',
 };
-// const passAll = {
-//   value: 'allow',
-//   displayName: 'Allow',
-// };
-// const jwt = {
-//   value: 'jwt',
-//   displayName: 'JWT',
-// };
+const jwt = {
+  value: 'jwt',
+  displayName: 'JWT',
+};
 const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [noop, oauth2];
+const accessStrategiesList = [noop, oauth2, jwt];
 
 export default function AccessStrategyForm({
   strategy,
   setStrategy,
   removeStrategy,
   canDelete,
+  idpPresets,
+  handleFormChanged,
 }) {
   const selectedType = strategy.accessStrategies[0].name;
 
@@ -64,9 +63,11 @@ export default function AccessStrategyForm({
   const deleteButtonWrapper = canDelete
     ? component => component
     : component => (
-        <Tooltip title="API rule requires at least one access strategy.">
-          {component}
-        </Tooltip>
+        <div>
+          <Tooltip title="API rule requires at least one access strategy.">
+            {component}
+          </Tooltip>
+        </div>
       );
 
   return (
@@ -81,7 +82,7 @@ export default function AccessStrategyForm({
                 value={strategy.path}
                 required
                 aria-label="Access strategy path"
-                pattern="^\/.*.{1,}"
+                pattern="^\/.+"
                 title="Path must start with '/' and consist of at least one additional character."
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
@@ -105,14 +106,23 @@ export default function AccessStrategyForm({
                 defaultValue={selectedType}
                 aria-label="Access strategy type"
                 id="select-1"
-                onChange={e =>
-                  setStrategy({
+                onChange={e => {
+                  const newStrategy = {
                     ...strategy,
                     accessStrategies: [
-                      { ...strategy.accessStrategies[0], name: e.target.value },
+                      {
+                        ...strategy.accessStrategies[0],
+                        name: e.target.value,
+                      },
                     ],
-                  })
-                }
+                  };
+                  // strategy type changed, reset current values
+                  if (e.target.value !== strategy.accessStrategies[0].name) {
+                    newStrategy.accessStrategies[0].config = {};
+                  }
+                  setStrategy(newStrategy);
+                  handleFormChanged();
+                }}
               >
                 {accessStrategiesList.map(ac => (
                   <option key={ac.value} value={ac.value}>
@@ -132,6 +142,8 @@ export default function AccessStrategyForm({
               accessStrategies: [{ ...strategy.accessStrategies[0], config }],
             })
           }
+          idpPresets={idpPresets}
+          handleFormChanged={handleFormChanged}
         />
       </div>
       {deleteButtonWrapper(
@@ -154,12 +166,16 @@ AccessStrategyForm.propTypes = {
   setStrategy: PropTypes.func.isRequired,
   removeStrategy: PropTypes.func.isRequired,
   canDelete: PropTypes.bool.isRequired,
+  idpPresets: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  handleFormChanged: PropTypes.func.isRequired,
 };
 
 function Details({ name, ...props }) {
   switch (name) {
     case oauth2.value:
       return <OAuth2Details {...props} />;
+    case jwt.value:
+      return <JwtDetails {...props} />;
     default:
       return null;
   }

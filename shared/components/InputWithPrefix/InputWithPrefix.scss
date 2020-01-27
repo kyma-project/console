@@ -1,0 +1,24 @@
+.input-with-prefix {
+    display: grid;
+    grid-template-columns: min-content auto;
+
+   input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        min-width: 10em;
+    }
+
+    &__prefix {
+        line-height: 2.5em;
+        height: var(--fd-forms-height);
+        vertical-align: middle;
+        background: var(--fd-color-background-6);
+        border: 1px solid var(--fd-forms-border-color);
+        border-right: none;
+        box-sizing: border-box;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        padding: 0 8px;
+        white-space: nowrap;
+    }
+}
