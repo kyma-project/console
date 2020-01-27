@@ -39,7 +39,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     if (loading) return 'Loading...';
     if (error) return error.message;
 
-    const namespaces = data.namespaces ? data.namespaces : [];
+    const namespaces = data && data.namespaces ? data.namespaces : [];
     const filteredNamespaces = namespaces.filter(
       namespace => !boundNamespaces.includes(namespace.name),
     );
@@ -72,7 +72,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     <Modal
       id="add-binding-modal"
       title="Create Namespace binding for Application"
-      modalOpeningComponent={<Button> Create Binding </Button>}
+      modalOpeningComponent={<Button>Create Binding</Button>}
       confirmText="Bind"
       cancelText="Cancel"
       disabledConfirm={disabled}
