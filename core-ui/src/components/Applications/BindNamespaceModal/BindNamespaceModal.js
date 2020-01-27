@@ -45,13 +45,15 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     );
     if (!filteredNamespaces.length) return 'No Namespaces avaliable to bind';
 
+    setNamespace(filteredNamespaces[0].name);
     setDisabled(false);
+
     return (
       <select
         onChange={e => {
           setNamespace(e.target.value);
         }}
-        value={namespace || undefined}
+        value={namespace}
       >
         {filteredNamespaces.map(namespace => (
           <option value={namespace.name} key={namespace.name}>

@@ -11,9 +11,9 @@ import {
   FormInput,
 } from 'fundamental-react';
 
+import { Modal } from 'react-shared';
 import { GET_TEMPLATES, REGISTER_APPLICATION_FROM_TEMPLATE } from '../gql';
 import { SEND_NOTIFICATION } from 'gql';
-import { Modal } from './../../../shared/components/Modal/Modal';
 import './CreateApplicationFromTemplateModal.scss';
 
 CreateApplicationFromTemplateModal.propTypes = {
