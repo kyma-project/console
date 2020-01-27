@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from 'fundamental-react';
 import './ConnectApplicationModal.scss';
-import { Modal } from 'shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 
 ConnectApplicationModal.propTypes = {
   applicationId: PropTypes.string.isRequired,

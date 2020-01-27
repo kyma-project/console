@@ -1,7 +1,7 @@
 import React from 'react';
 import equal from 'deep-equal';
 import PropTypes from 'prop-types';
-import { Modal } from './../../../shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 import { Button, Input } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 

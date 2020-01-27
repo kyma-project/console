@@ -9,12 +9,12 @@ import {
   DetailsError,
   useNotification,
   Labels,
+  EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import { CompassGqlContext } from 'index';
-import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();

@@ -5,6 +5,7 @@ import {
   GenericList,
   Spinner,
   easyHandleDelete,
+  EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
 import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
@@ -14,7 +15,6 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
-import { EMPTY_TEXT_PLACEHOLDER } from 'shared/constants';
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);

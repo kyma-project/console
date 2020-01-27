@@ -1,6 +1,6 @@
 import React from 'react';
 import { Token } from 'fundamental-react/Token';
-import { EMPTY_TEXT_PLACEHOLDER } from '../../../core-ui/src/shared/constants';
+import { EMPTY_TEXT_PLACEHOLDER } from '../../constants/constants';
 
 export const Labels = labels => {
   labels = labels.labels;

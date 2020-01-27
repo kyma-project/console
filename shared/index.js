@@ -19,6 +19,7 @@ export * from './contexts/ApplicationContext';
 export * from './utils/apollo';
 export * from './contexts/NotificationContext';
 export * from './components/GenericList/actionHandlers/simpleDelete';
+export * from './constants/constants';
 
 export {
   CustomPropTypes,
