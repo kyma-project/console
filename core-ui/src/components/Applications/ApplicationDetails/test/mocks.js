@@ -6,6 +6,12 @@ export const exampleAppName = 'test-app-name';
 export const exampleCompassApp = {
   name: exampleAppName,
   providerName: 'test-provider-name',
+  apiDefinitions: {
+    data: [],
+  },
+  eventDefinitions: {
+    data: [],
+  },
 };
 
 export const exampleKymaApp = {

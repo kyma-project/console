@@ -1,0 +1,22 @@
+.dropdown {
+    vertical-align: middle;
+
+    .fd-popover {
+        width: 100%;
+    }
+    
+    button.fd-dropdown__control {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        justify-items: center;
+
+        // fix fd-styles bug
+        &::after {
+            position: relative !important;
+            top: 3px;
+        }
+    }
+}

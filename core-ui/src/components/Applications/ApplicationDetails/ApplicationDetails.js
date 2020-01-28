@@ -14,6 +14,8 @@ import {
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
+import EventApiList from 'components/Apis/EventApiList/EventApiList';
+import ApiList from 'components/Apis/ApiList/ApiList';
 import { CompassGqlContext } from 'index';
 
 const ApplicationDetails = ({ appId }) => {
@@ -43,7 +45,7 @@ const ApplicationDetails = ({ appId }) => {
   useEffect(() => {
     if (kymaQuery.error) {
       notificationManager.notifyError({
-        content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
+        content: `Could not fetch partial Application data due to an error: ${kymaQuery.error.message}`,
       });
     }
   }, [kymaQuery, notificationManager]);
@@ -66,6 +68,9 @@ const ApplicationDetails = ({ appId }) => {
     return <EntryNotFound entryType="Application" entryId={appId} />;
   }
 
+  const application = compassQuery.data.application;
+  const apis = application.apiDefinitions.data;
+  const eventApis = application.eventDefinitions.data;
   return (
     <>
       <ApplicationDetailsHeader
@@ -81,6 +86,8 @@ const ApplicationDetails = ({ appId }) => {
       ) : (
         ''
       )}
+      <ApiList applicationId={appId} apis={apis} />
+      <EventApiList applicationId={appId} eventApis={eventApis} />
     </>
   );
 };
@@ -115,7 +122,7 @@ function Status(application) {
     case 'NOT_INSTALLED':
       return (
         <p>
-          {status}{' '}
+          {status}
           <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
         </p>
       );

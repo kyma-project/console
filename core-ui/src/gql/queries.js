@@ -148,6 +148,42 @@ export const GET_APPLICATION_COMPASS = gql`
     application(id: $id) {
       name
       providerName
+      apiDefinitions {
+        data {
+          id
+          name
+          description
+          targetURL
+          defaultAuth {
+            credential {
+              ... on OAuthCredentialData {
+                clientId
+                clientSecret
+                url
+              }
+            }
+          }
+          spec {
+            data
+            format
+            type
+          }
+          group
+        }
+      }
+      eventDefinitions {
+        data {
+          id
+          name
+          description
+          spec {
+            data
+            format
+            type
+          }
+          group
+        }
+      }
     }
   }
 `;

@@ -11,6 +11,8 @@ export { CopiableText } from './components/CopiableText/CopiableText';
 export { DetailsError } from './components/DetailsError/DetailsError';
 export { Modal } from './components/Modal/Modal';
 export { Labels } from './components/Labels/Labels';
+export { Dropdown } from './components/Dropdown/Dropdown';
+export { FileInput } from './components/FileInput/FileInput';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 

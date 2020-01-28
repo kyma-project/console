@@ -40,13 +40,19 @@ const ModalWithForm = ({
 
   function handleFormChanged(e) {
     setValid(formElementRef.current.checkValidity()); // general form validity
+    if (!e.target) {
+      return;
+    }
+
     if (typeof e.target.reportValidity === 'function') {
       // for IE
       e.target.reportValidity();
     }
 
-    if (e.target.getAttribute('data-ignore-visual-validation')) {
-      return;
+    if (typeof e.target.getAttribute === 'function') {
+      if (e.target.getAttribute('data-ignore-visual-validation')) {
+        return;
+      }
     }
 
     // current element validity
