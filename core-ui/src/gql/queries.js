@@ -21,6 +21,17 @@ export const GET_NAMESPACES = gql`
   }
 `;
 
+export const GET_NAMESPACES_NAMES = gql`
+  query Namespaces($showSystemNamespaces: Boolean) {
+    namespaces(
+      withSystemNamespaces: $showSystemNamespaces
+      withInactiveStatus: false
+    ) {
+      name
+    }
+  }
+`;
+
 export const GET_LAMBDAS = gql`
   query Functions($namespace: String!) {
     functions(namespace: $namespace) {
