@@ -44,7 +44,7 @@ async function fetchTenants() {
   return response.data.tenants;
 }
 
-async function fetchFromGraphql(data) {
+const fetchFromGraphql = async data => {
   const url = window.clusterConfig.graphqlApiUrl;
   const response = await fetch(url, {
     method: 'POST',
@@ -57,7 +57,7 @@ async function fetchFromGraphql(data) {
     body: JSON.stringify(data),
   });
   return response.json();
-}
+};
 
 const getTenants = async () => {
   const tenants = await fetchTenants();
@@ -71,10 +71,10 @@ const getTenants = async () => {
 
 const getTenantNames = tenants => {
   const tenantNames = tenants.map(tenant => {
-    const alternativePath = getAlternativePath(tenant.name);
+    const alternativePath = getAlternativePath(tenant.id);
     return {
       label: tenant.name,
-      pathValue: alternativePath || tenant.name,
+      pathValue: alternativePath || tenant.id,
     };
   });
   return tenantNames;

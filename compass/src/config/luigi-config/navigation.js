@@ -17,6 +17,11 @@ const getTenantOptions = () => {
   return getTenantNames(tenants);
 };
 
+const getTenantName = tenantId => {
+  const match = tenants.find(tenant => tenant.id === tenantId);
+  return match ? match.name : null;
+};
+
 const navigation = {
   nodes: () => [
     {
@@ -36,11 +41,11 @@ const navigation = {
       children: [
         {
           hideSideNav: true,
-          pathSegment: ':tenantName',
+          pathSegment: ':tenantId',
           navigationContext: 'tenant',
           context: {
             idToken: token,
-            tenantName: ':tenantName',
+            tenantId: ':tenantId',
             tenants,
           },
           children: [
@@ -174,9 +179,8 @@ const navigation = {
     parentNodePath: '/tenant',
     lazyloadOptions: true,
     options: getTenantOptions,
-    fallbackLabelResolver: cos => {
-      // alert(cos);
-      return cos;
+    fallbackLabelResolver: tenantId => {
+      return getTenantName(tenantId);
     },
   },
 };
