@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 
 import BoundNamespacesList from '../BoundNamespacesList';
@@ -49,6 +49,22 @@ describe('ApplicationList', () => {
       expect(table).toBeInTheDocument();
       expect(queryByText(exampleBoundNamespaces[0])).toBeInTheDocument();
       expect(queryByText(exampleBoundNamespaces[1])).toBeInTheDocument();
+    });
+  });
+
+  it('`unbind` shows confirmation modal', async () => {
+    const { getAllByText } = render(
+      <MockedProvider addTypename={false}>
+        <BoundNamespacesList
+          data={exampleBoundNamespaces}
+          appName={exampleAppName}
+        />
+      </MockedProvider>,
+    );
+
+    await wait(async () => {
+      getAllByText('Unbind')[0].click();
+      expect(mockShowConfirmationModal).toHaveBeenCalled();
     });
   });
 });
