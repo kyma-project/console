@@ -5,7 +5,6 @@ import { Panel } from 'fundamental-react';
 import { PageHeader } from '../PageHeader/PageHeader';
 
 export const DetailsError = ({ breadcrumbs, message }) => {
-  console.log(message);
   return (
     <>
       <PageHeader title="" breadcrumbItems={breadcrumbs} />

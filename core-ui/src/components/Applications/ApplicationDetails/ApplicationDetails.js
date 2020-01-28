@@ -53,7 +53,7 @@ const ApplicationDetails = ({ appId }) => {
   }
 
   if (compassQuery.error) {
-    const breadcrumbItems = [{ name: 'Applications', path: '' }, { name: '' }];
+    const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
     return (
       <DetailsError
         breadcrumbs={breadcrumbItems}

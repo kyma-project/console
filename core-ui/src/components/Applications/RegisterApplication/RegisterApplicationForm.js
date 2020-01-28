@@ -49,8 +49,12 @@ export default function RegisterApplicationForm({
   }, [formValues.name]);
 
   const applicationAlreadyExists = name => {
-    return checkApplicationExistQueryResult.applications.data.some(
-      app => app.name === name,
+    return (
+      checkApplicationExistQueryResult.applications &&
+      checkApplicationExistQueryResult.applications.data &&
+      checkApplicationExistQueryResult.applications.data.some(
+        app => app.name === name,
+      )
     );
   };
 
@@ -74,10 +78,14 @@ export default function RegisterApplicationForm({
           scenarios: [DEFAULT_SCENARIO_LABEL],
         },
       };
-      await registerApplication({
+      const response = await registerApplication({
         variables: { in: variables },
       });
-      onCompleted(variables.name, `Application created succesfully`);
+      onCompleted(
+        response.data &&
+          response.data.registerApplication &&
+          response.data.registerApplication.id,
+      );
     } catch (e) {
       onError(
         `The application could not be created succesfully`,
