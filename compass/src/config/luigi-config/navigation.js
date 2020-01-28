@@ -1,5 +1,5 @@
 import {
-  getTenants,
+  fetchTenants,
   getToken,
   getTenantNames,
 } from './helpers/navigation-helpers';
@@ -10,7 +10,7 @@ let token = getToken();
 let tenants = [];
 
 (async () => {
-  tenants = await getTenants();
+  tenants = await fetchTenants();
 })();
 
 const getTenantOptions = () => {
@@ -46,7 +46,6 @@ const navigation = {
           context: {
             idToken: token,
             tenantId: ':tenantId',
-            tenants,
           },
           children: [
             {

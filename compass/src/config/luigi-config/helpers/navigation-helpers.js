@@ -35,7 +35,7 @@ async function fetchTenants() {
     query: `{
       tenants {
         name
-        tenant
+        id
       }
     }
     `,
@@ -59,16 +59,6 @@ const fetchFromGraphql = async data => {
   return response.json();
 };
 
-const getTenants = async () => {
-  const tenants = await fetchTenants();
-  return tenants.map(tenant => {
-    return {
-      name: tenant.name,
-      id: tenant.tenant,
-    };
-  });
-};
-
 const getTenantNames = tenants => {
   const tenantNames = tenants.map(tenant => {
     const alternativePath = getAlternativePath(tenant.id);
@@ -81,7 +71,7 @@ const getTenantNames = tenants => {
 };
 
 module.exports = {
-  getTenants,
+  fetchTenants,
   getToken,
   getTenantNames,
 };
