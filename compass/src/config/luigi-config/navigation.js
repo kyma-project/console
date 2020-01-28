@@ -1,15 +1,21 @@
-import { getTenants } from './helpers/navigation-helpers';
+import {
+  getTenants,
+  getToken,
+  getTenantNames,
+} from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
 
-let token = null;
-if (localStorage.getItem('luigi.auth')) {
-  try {
-    token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
-  } catch (e) {
-    console.error('Error while reading ID Token: ', e);
-  }
-}
+let token = getToken();
+let tenants = [];
+
+(async () => {
+  tenants = await getTenants();
+})();
+
+const getTenantOptions = () => {
+  return getTenantNames(tenants);
+};
 
 const navigation = {
   nodes: () => [
@@ -35,8 +41,7 @@ const navigation = {
           context: {
             idToken: token,
             tenantName: ':tenantName',
-            defaultTenantId: window.clusterConfig.defaultTenant,
-            tenants: window.clusterConfig.tenants,
+            tenants,
           },
           children: [
             {
@@ -168,7 +173,11 @@ const navigation = {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
     lazyloadOptions: true,
-    options: getTenants,
+    options: getTenantOptions,
+    fallbackLabelResolver: cos => {
+      // alert(cos);
+      return cos;
+    },
   },
 };
 
