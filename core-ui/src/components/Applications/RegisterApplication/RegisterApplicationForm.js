@@ -49,6 +49,9 @@ export default function RegisterApplicationForm({
   }, [formValues.name]);
 
   const applicationAlreadyExists = name => {
+    if (!checkApplicationExistQueryResult.applications) {
+      return false;
+    }
     return checkApplicationExistQueryResult.applications.data.some(
       app => app.name === name,
     );

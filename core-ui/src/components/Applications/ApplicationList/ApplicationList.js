@@ -13,15 +13,23 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
-// import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 // import LuigiClient from '@kyma-project/luigi-client';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
+import './ApplicationList.scss';
 
 const STATUSES = {
-  NOTINSTALLED: 'not installed',
+  NOT_INSTALLED: 'not installed',
   INSTALLED: 'installed',
 };
+
+function getSortedApplications(applications) {
+  return applications.sort((app1, app2) => {
+    if (!app1.status || app1.status === STATUSES.NOT_INSTALLED) return 1;
+    if (!app2.status || app2.status === STATUSES.NOT_INSTALLED) return -1;
+    return 0;
+  });
+}
 
 export default function ApplicationList() {
   const compassGqlClient = useContext(CompassGqlContext);
@@ -116,27 +124,34 @@ export default function ApplicationList() {
     'Connected',
   ];
 
-  const rowRenderer = item => [
-    <span
-      className="link"
-      data-test-id="app-name"
-      // onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
-    >
-      {item.name}
-    </span>,
-    item.providerName,
-    <Badge modifier="filled">{item.status || STATUSES.NOTINSTALLED}</Badge>,
-    Array.isArray(item.enabledInNamespaces) && item.enabledInNamespaces.length
-      ? item.enabledInNamespaces.map(n => (
-          <Badge key={n} className="fd-has-margin-right-tiny">
-            {n}
-          </Badge>
-        ))
-      : '-',
-    <Badge modifier="filled" type="success">
-      Yes
-    </Badge>,
-  ];
+  const rowRenderer = item => {
+    const status = item.status || STATUSES.NOT_INSTALLED;
+    const badgeDisabled = status === STATUSES.NOT_INSTALLED;
+
+    return [
+      <span
+        className="link"
+        data-test-id="app-name"
+        // onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+      >
+        {item.name}
+      </span>,
+      item.providerName,
+      <Badge disabled={badgeDisabled} modifier="filled">
+        {status}
+      </Badge>,
+      Array.isArray(item.enabledInNamespaces) && item.enabledInNamespaces.length
+        ? item.enabledInNamespaces.map(n => (
+            <Badge key={n} className="fd-has-margin-right-tiny">
+              {n}
+            </Badge>
+          ))
+        : '-',
+      <Badge modifier="filled" type="success">
+        Yes
+      </Badge>,
+    ];
+  };
 
   if (error) return `Error! ${error.message}`;
   if (loading) return <Spinner />;
@@ -155,25 +170,16 @@ export default function ApplicationList() {
   );
 
   return (
-    <>
+    <article className="application-list">
       <PageHeader title="Applications" />
       <GenericList
         actionsStandaloneItems={1}
         actions={actions}
-        entries={applicationList}
+        entries={getSortedApplications(applicationList)}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         extraHeaderContent={<RegisterApp />}
       />
-
-      {/* <ul>
-        {applicationList.map(app => (
-          <li
-            key={app.name}>
-            {app.name}<ConnectApplicationModal applicationId={app.id}/>
-          </li>
-        ))}
-      </ul> */}
-    </>
+    </article>
   );
 }
