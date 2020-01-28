@@ -35,10 +35,9 @@ describe('ConnectApplicationModal Container', () => {
     await openModal(getByRole);
 
     const loadings = queryAllByRole('textbox');
-    expect(loadings).toHaveLength(2);
+    expect(loadings).toHaveLength(1);
 
     expect(loadings[0]).toHaveValue('Loading...');
-    expect(loadings[1]).toHaveValue('Loading...');
 
     await waitForDomChange(container);
   });
@@ -54,11 +53,11 @@ describe('ConnectApplicationModal Container', () => {
     await waitForDomChange(container);
 
     const {
-      token,
-      connectorURL,
+      rawEncoded,
     } = validMock[0].result.data.requestOneTimeTokenForApplication;
 
-    expect(getByLabelText('Token')).toHaveValue(token);
-    expect(getByLabelText('Connector URL')).toHaveValue(connectorURL);
+    expect(
+      getByLabelText('Data to connect Application (base64 encoded)'),
+    ).toHaveValue(rawEncoded);
   });
 });
