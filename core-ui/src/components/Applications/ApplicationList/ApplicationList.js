@@ -5,6 +5,7 @@ import {
   GenericList,
   Spinner,
   easyHandleDelete,
+  EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
 import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
@@ -136,7 +137,7 @@ export default function ApplicationList() {
       >
         {item.name}
       </span>,
-      item.providerName,
+      item.providerName || EMPTY_TEXT_PLACEHOLDER,
       <Badge disabled={badgeDisabled} modifier="filled">
         {status}
       </Badge>,
@@ -146,7 +147,7 @@ export default function ApplicationList() {
               {n}
             </Badge>
           ))
-        : '-',
+        : EMPTY_TEXT_PLACEHOLDER,
       <Badge modifier="filled" type="success">
         Yes
       </Badge>,
