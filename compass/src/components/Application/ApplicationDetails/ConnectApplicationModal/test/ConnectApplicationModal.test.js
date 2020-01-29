@@ -22,7 +22,9 @@ describe('ConnectApplicationModal Container', () => {
     await openModal(getByRole);
     await waitForDomChange(container);
 
-    expect(queryByLabelText('Connect Application')).toBeInTheDocument();
+    await wait(() => {
+      expect(queryByLabelText('Connect Application')).toBeInTheDocument();
+    });
   });
 
   it('Modal handles "loading" state after open', async () => {
@@ -35,9 +37,11 @@ describe('ConnectApplicationModal Container', () => {
     await openModal(getByRole);
 
     const loadings = queryAllByRole('textbox');
-    expect(loadings).toHaveLength(1);
 
-    expect(loadings[0]).toHaveValue('Loading...');
+    await wait(() => {
+      expect(loadings).toHaveLength(1);
+      expect(loadings[0]).toHaveValue('Loading...');
+    });
   });
 
   it('Modal displays values got in response', async () => {
@@ -54,8 +58,10 @@ describe('ConnectApplicationModal Container', () => {
       rawEncoded,
     } = validMock[0].result.data.requestOneTimeTokenForApplication;
 
-    expect(
-      getByLabelText('Data to connect Application (base64 encoded)'),
-    ).toHaveValue(rawEncoded);
+    await wait(() => {
+      expect(
+        getByLabelText('Data to connect Application (base64 encoded)'),
+      ).toHaveValue(rawEncoded);
+    });
   });
 });
