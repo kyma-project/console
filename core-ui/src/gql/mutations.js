@@ -156,3 +156,25 @@ export const REGISTER_APPLICATION = gql`
     }
   }
 `;
+
+export const BIND_NAMESPACE = gql`
+  mutation($namespace: String!, $application: String!) {
+    enableApplication(
+      namespace: $namespace
+      application: $application
+      allServices: true
+    ) {
+      namespace
+      application
+    }
+  }
+`;
+
+export const UNBIND_NAMESPACE = gql`
+  mutation($namespace: String!, $application: String!) {
+    disableApplication(namespace: $namespace, application: $application) {
+      namespace
+      application
+    }
+  }
+`;

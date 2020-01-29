@@ -8,7 +8,9 @@ import { Tooltip } from './components/Tooltip/Tooltip';
 import { PageHeader } from './components/PageHeader/PageHeader';
 export { Spinner } from './components/Spinner/Spinner';
 export { CopiableText } from './components/CopiableText/CopiableText';
+export { DetailsError } from './components/DetailsError/DetailsError';
 export { Modal } from './components/Modal/Modal';
+export { Labels } from './components/Labels/Labels';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
@@ -18,6 +20,7 @@ export * from './contexts/ApplicationContext';
 export * from './utils/apollo';
 export * from './contexts/NotificationContext';
 export * from './components/GenericList/actionHandlers/simpleDelete';
+export * from './constants/constants';
 
 export {
   CustomPropTypes,

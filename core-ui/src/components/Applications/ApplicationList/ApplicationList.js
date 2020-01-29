@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 import {
   PageHeader,
   GenericList,
   Spinner,
   easyHandleDelete,
+  EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
 import { GET_COMPASS_APPLICATIONS, GET_KYMA_APPLICATIONS } from 'gql/queries';
 import { UNREGISTER_APPLICATION } from 'gql/mutations';
@@ -14,7 +16,6 @@ import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
 // import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
-// import LuigiClient from '@kyma-project/luigi-client';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
 
@@ -115,19 +116,23 @@ export default function ApplicationList() {
     <span
       className="link"
       data-test-id="app-name"
-      // onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+      onClick={() => LuigiClient.linkManager().navigate(`details/${item.id}`)}
     >
       {item.name}
     </span>,
-    item.providerName,
-    <Badge modifier="filled">{item.status}</Badge>,
-    Array.isArray(item.enabledInNamespaces)
+    item.providerName || EMPTY_TEXT_PLACEHOLDER,
+    item.status ? (
+      <Badge modifier="filled">{item.status}</Badge>
+    ) : (
+      EMPTY_TEXT_PLACEHOLDER
+    ),
+    item.enabledInNamespaces && item.enabledInNamespaces.length
       ? item.enabledInNamespaces.map(n => (
           <Badge key={n} className="fd-has-margin-right-tiny">
             {n}
           </Badge>
         ))
-      : '-',
+      : EMPTY_TEXT_PLACEHOLDER,
     <Badge modifier="filled" type="success">
       Yes
     </Badge>,
@@ -135,16 +140,23 @@ export default function ApplicationList() {
 
   if (error) return `Error! ${error.message}`;
   if (loading) return <Spinner />;
+
+  const onCompleted = id => {
+    notificationManager.notifySuccess({
+      content: `Application created successfully`,
+    });
+    if (id) {
+      LuigiClient.linkManager().navigate(`details/${id}`);
+    }
+  };
+
   const RegisterApp = () => (
     <ModalWithForm
       title="Register application"
       button={{ text: 'Register application', glyph: 'add' }}
       id="register-application-modal"
       renderForm={props => (
-        <RegisterApplicationForm
-          {...props}
-          // onCompleted={(applicationName) => LuigiClient.linkManager().navigate(`details/${applicationName}`)}
-        />
+        <RegisterApplicationForm {...props} onCompleted={onCompleted} />
       )}
     />
   );

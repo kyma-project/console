@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { Modal } from './../../../../../shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 import MultiChoiceList from '../../../../Shared/MultiChoiceList/MultiChoiceList.component';
 import { getActualChangesBy } from '../../../../../shared/utility';
 import ScenarioNameContext from '../../ScenarioNameContext';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { Button } from '@kyma-project/react-components';
-import { Modal } from './../../../../shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 
 import CreateScenarioForm from './../CreateScenarioForm/CreateScenarioForm.container';
 
