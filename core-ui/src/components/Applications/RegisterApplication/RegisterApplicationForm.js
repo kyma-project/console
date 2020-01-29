@@ -50,6 +50,7 @@ export default function RegisterApplicationForm({
 
   const applicationAlreadyExists = name => {
     return (
+      checkApplicationExistQueryResult &&
       checkApplicationExistQueryResult.applications &&
       checkApplicationExistQueryResult.applications.data &&
       checkApplicationExistQueryResult.applications.data.some(
