@@ -1,11 +1,11 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { validMock } from './mock';
-import { render, waitForDomChange } from '@testing-library/react';
+import { render, waitForDomChange, wait } from '@testing-library/react';
 import ConnectApplicationModal from '../ConnectApplicationModal.container';
 
 describe('ConnectApplicationModal Container', () => {
-  const openModal = async getByRoleFn => {
+  const openModal = getByRoleFn => {
     const modalOpeningButton = getByRoleFn('button'); //get the only button around
     expect(modalOpeningButton.textContent).toBe('Connect Application'); // make sure this is the right one
     modalOpeningButton.click();
@@ -19,7 +19,7 @@ describe('ConnectApplicationModal Container', () => {
     );
 
     expect(queryByLabelText('Connect Application')).not.toBeInTheDocument();
-    await openModal(getByRole);
+    openModal(getByRole);
     await waitForDomChange(container);
 
     await wait(() => {
@@ -27,21 +27,19 @@ describe('ConnectApplicationModal Container', () => {
     });
   });
 
-  it('Modal handles "loading" state after open', async () => {
+  it('Modal handles "loading" state after open', () => {
     const { queryAllByRole, getByRole, container } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
 
-    await openModal(getByRole);
+    openModal(getByRole);
 
     const loadings = queryAllByRole('textbox');
 
-    await wait(() => {
-      expect(loadings).toHaveLength(1);
-      expect(loadings[0]).toHaveValue('Loading...');
-    });
+    expect(loadings).toHaveLength(1);
+    expect(loadings[0]).toHaveValue('Loading...');
   });
 
   it('Modal displays values got in response', async () => {
@@ -51,7 +49,7 @@ describe('ConnectApplicationModal Container', () => {
       </MockedProvider>,
     );
 
-    await openModal(getByRole);
+    openModal(getByRole);
     await waitForDomChange(container);
 
     const {
