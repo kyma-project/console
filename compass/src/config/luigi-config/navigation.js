@@ -13,10 +13,6 @@ let tenants = [];
   tenants = await fetchTenants();
 })();
 
-const getTenantOptions = () => {
-  return getTenantNames(tenants);
-};
-
 const getTenantName = tenantId => {
   const match = tenants.find(tenant => tenant.id === tenantId);
   return match ? match.name : null;
@@ -177,10 +173,8 @@ const navigation = {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
     lazyloadOptions: true,
-    options: getTenantOptions,
-    fallbackLabelResolver: tenantId => {
-      return getTenantName(tenantId);
-    },
+    options: () => getTenantNames(tenants),
+    fallbackLabelResolver: tenantId => getTenantName(tenantId),
   },
 };
 
