@@ -54,8 +54,10 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
     );
     if (!filteredNamespaces.length) return 'No Namespaces avaliable to bind';
 
-    setNamespace(filteredNamespaces[0].name);
-    setDisabled(false);
+    if (!namespace) {
+      setNamespace(filteredNamespaces[0].name);
+      setDisabled(false);
+    }
 
     return (
       <select
