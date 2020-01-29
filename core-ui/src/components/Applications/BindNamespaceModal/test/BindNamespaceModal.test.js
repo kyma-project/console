@@ -86,7 +86,7 @@ describe('BindNamespaceModal', () => {
     expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
   });
 
-  it("shows the 'no namespaces aviable' message if all namespaces are already bound to an app", async () => {
+  it("shows the 'no namespaces available' message if all namespaces are already bound to an app", async () => {
     const { link } = createMockLink([mockNamespaces]);
 
     const boundNamespaces = [
