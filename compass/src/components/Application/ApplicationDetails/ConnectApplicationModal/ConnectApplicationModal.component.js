@@ -67,6 +67,11 @@ export default function ConnectApplicationModal({
         name="raw-encoded"
         value={connectionData.rawEncoded}
       />
+      <FormEntry
+        caption="Legacy connector URL"
+        name="legacy-connector-url"
+        value={connectionData.legacyConnectorURL}
+      />
     </FormSet>
   );
 

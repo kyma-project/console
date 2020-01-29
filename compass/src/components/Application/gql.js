@@ -138,6 +138,7 @@ export const CONNECT_APPLICATION = gql`
   mutation requestOneTimeTokenForApplication($id: ID!) {
     requestOneTimeTokenForApplication(id: $id) {
       rawEncoded
+      legacyConnectorURL
     }
   }
 `;
