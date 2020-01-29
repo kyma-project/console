@@ -21,6 +21,17 @@ export const GET_NAMESPACES = gql`
   }
 `;
 
+export const GET_NAMESPACES_NAMES = gql`
+  query Namespaces($showSystemNamespaces: Boolean) {
+    namespaces(
+      withSystemNamespaces: $showSystemNamespaces
+      withInactiveStatus: false
+    ) {
+      name
+    }
+  }
+`;
+
 export const GET_LAMBDAS = gql`
   query Functions($namespace: String!) {
     functions(namespace: $namespace) {
@@ -116,6 +127,27 @@ export const GET_KYMA_APPLICATIONS = gql`
       name
       enabledInNamespaces
       status
+    }
+  }
+`;
+
+export const GET_APPLICATION = gql`
+  query Application($name: String!) {
+    application(name: $name) {
+      name
+      labels
+      status
+      description
+      enabledInNamespaces
+    }
+  }
+`;
+
+export const GET_APPLICATION_COMPASS = gql`
+  query Application($id: ID!) {
+    application(id: $id) {
+      name
+      providerName
     }
   }
 `;

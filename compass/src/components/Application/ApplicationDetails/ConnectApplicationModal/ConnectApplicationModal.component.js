@@ -8,11 +8,11 @@ import {
   FormSet,
   FormItem,
   FormLabel,
-  FormInput,
   FormMessage,
+  FormTextarea,
 } from 'fundamental-react';
 import './ConnectApplicationModal.scss';
-import { Modal } from 'shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 
 ConnectApplicationModal.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -23,7 +23,7 @@ const FormEntry = ({ caption, name, value }) => (
   <FormItem>
     <FormLabel htmlFor={name}>{caption}</FormLabel>
     <div className="connect-application__input--copyable">
-      <FormInput type="text" id={name} value={value || 'Loading...'} readOnly />
+      <FormTextarea id={name} value={value || 'Loading...'} readOnly />
       {value && (
         <Tooltip title="Copy to clipboard" position="top">
           <Button
@@ -62,11 +62,10 @@ export default function ConnectApplicationModal({
     <FormMessage type="error">{error}</FormMessage>
   ) : (
     <FormSet>
-      <FormEntry caption="Token" name="token" value={connectionData.token} />
       <FormEntry
-        caption="Connector URL"
-        name="connector-url"
-        value={connectionData.connectorURL}
+        caption="Data to connect Application (base64 encoded)"
+        name="raw-encoded"
+        value={connectionData.rawEncoded}
       />
     </FormSet>
   );

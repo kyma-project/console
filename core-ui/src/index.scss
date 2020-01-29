@@ -101,3 +101,7 @@ header.sticky {
 .fd-form__label[aria-required=true]::after {
   content: '';
 }
+
+li {
+  list-style: none;
+}
