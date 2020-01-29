@@ -38,8 +38,6 @@ describe('ConnectApplicationModal Container', () => {
     expect(loadings).toHaveLength(1);
 
     expect(loadings[0]).toHaveValue('Loading...');
-
-    await waitForDomChange(container);
   });
 
   it('Modal displays values got in response', async () => {
