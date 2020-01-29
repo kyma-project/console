@@ -8,7 +8,6 @@ import {
   FormSet,
   FormItem,
   FormLabel,
-  FormInput,
   FormMessage,
   FormTextarea,
 } from 'fundamental-react';
