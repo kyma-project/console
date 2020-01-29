@@ -160,5 +160,5 @@ describe('ApplicationList', () => {
         ).toBeInTheDocument();
       });
     });
-  }, 10000);
+  });
 });

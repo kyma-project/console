@@ -19,8 +19,8 @@ import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationF
 import './ApplicationList.scss';
 
 const STATUSES = {
-  NOT_INSTALLED: 'not installed',
-  INSTALLED: 'installed',
+  NOT_INSTALLED: 'NOT_INSTALLED',
+  INSTALLED: 'INSTALLED',
 };
 
 function getSortedApplications(applications) {
@@ -87,7 +87,7 @@ export default function ApplicationList() {
 
       if (!localAppEntry) return; // got a Kyma app that has not been registered in Compass
 
-      localAppEntry.status = STATUSES.INSTALLED;
+      localAppEntry.status = kymaApp.status || STATUSES.INSTALLED;
       localAppEntry.enabledInNamespaces = kymaApp.enabledInNamespaces;
     });
   }
