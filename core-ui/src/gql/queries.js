@@ -61,8 +61,8 @@ export const GET_LAMBDA = gql`
 `;
 
 export const GET_SERVICES = gql`
-  query Services($namespace: String!) {
-    services(namespace: $namespace) {
+  query Services($namespace: String!, $excludedLabels: [String!]) {
+    services(namespace: $namespace, excludedLabels: $excludedLabels) {
       name
       ports {
         port

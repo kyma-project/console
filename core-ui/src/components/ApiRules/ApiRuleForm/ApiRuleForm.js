@@ -57,11 +57,13 @@ export default function ApiRuleForm({
 }) {
   const namespace = LuigiClient.getEventData().environmentId;
   const [rules, setRules] = useState(apiRule.rules);
-
   const [isValid, setValid] = useState(false);
 
   const servicesQueryResult = useQuery(GET_SERVICES, {
-    variables: { namespace },
+    variables: {
+      namespace,
+      excludedLabels: ['serving.knative.dev/revision'],
+    },
   });
 
   const idpPresetsQuery = useQuery(GET_IDP_PRESETS);
