@@ -14,6 +14,7 @@ import {
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
+import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 import { CompassGqlContext } from 'index';
 
 const ApplicationDetails = ({ appId }) => {
@@ -71,6 +72,7 @@ const ApplicationDetails = ({ appId }) => {
       <ApplicationDetailsHeader
         kymaData={kymaQuery.data && kymaQuery.data.application}
         compassData={compassQuery.data && compassQuery.data.application}
+        appId={appId}
       />
       {kymaQuery.data && kymaQuery.data.application ? (
         <BoundNamespacesList
@@ -87,9 +89,13 @@ const ApplicationDetails = ({ appId }) => {
 
 const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
 
-function ApplicationDetailsHeader({ kymaData, compassData }) {
+function ApplicationDetailsHeader({ kymaData, compassData, appId }) {
   return (
-    <PageHeader title={compassData.name} breadcrumbItems={breadcrumbItems}>
+    <PageHeader
+      title={compassData.name}
+      breadcrumbItems={breadcrumbItems}
+      actions={<ConnectApplicationModal applicationId={appId} />}
+    >
       <PageHeader.Column title="Status" columnSpan={null}>
         {Status(kymaData)}
       </PageHeader.Column>

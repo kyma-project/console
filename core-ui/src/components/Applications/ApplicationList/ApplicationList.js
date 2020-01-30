@@ -15,7 +15,6 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import Badge from 'fundamental-react/Badge/Badge';
 import { useNotification } from 'react-shared';
-// import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
 
@@ -172,15 +171,6 @@ export default function ApplicationList() {
         rowRenderer={rowRenderer}
         extraHeaderContent={<RegisterApp />}
       />
-
-      {/* <ul>
-        {applicationList.map(app => (
-          <li
-            key={app.name}>
-            {app.name}<ConnectApplicationModal applicationId={app.id}/>
-          </li>
-        ))}
-      </ul> */}
     </>
   );
 }

@@ -6,7 +6,7 @@ import {
   FormSet,
   FormItem,
   FormLabel,
-  FormInput,
+  FormTextarea,
   FormMessage,
 } from 'fundamental-react';
 import './ConnectApplicationModal.scss';
@@ -25,7 +25,7 @@ const FormEntry = ({ caption, name, value }) => (
     <CopiableText
       textToCopy={value || ''}
       caption={
-        <FormInput
+        <FormTextarea
           type="text"
           id={name}
           value={value || 'Loading...'}
@@ -63,11 +63,15 @@ export default function ConnectApplicationModal({ applicationId }) {
     <FormMessage type="error">{error}</FormMessage>
   ) : (
     <FormSet>
-      <FormEntry caption="Token" name="token" value={connectionData.token} />
       <FormEntry
-        caption="Connector URL"
-        name="connector-url"
-        value={connectionData.connectorURL}
+        caption="Data to connect Application (base64 encoded)"
+        name="raw-encoded"
+        value={connectionData.rawEncoded}
+      />
+      <FormEntry
+        caption="Legacy connector URL"
+        name="legacy-connector-url"
+        value={connectionData.legacyConnectorURL}
       />
     </FormSet>
   );

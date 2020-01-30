@@ -2,8 +2,8 @@ import { CONNECT_APPLICATION } from 'gql/mutations';
 
 export const sampleData = {
   requestOneTimeTokenForApplication: {
-    token: 'sample token',
-    connectorURL: 'sample connector url',
+    rawEncoded: 'sample raw encoded',
+    legacyConnectorURL: 'sample legacy connector url',
   },
 };
 
