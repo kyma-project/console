@@ -41,12 +41,19 @@ export async function fetchTenants() {
   };
   try {
     const response = await fetchFromGraphql(payload);
-    return response.data.tenants;
+    const tenants = response.data.tenants;
+    cacheTenants(tenants);
+    return tenants;
   } catch (err) {
     console.error('Tenants could not be loaded', err);
     return [];
   }
 }
+
+const cacheTenants = tenants =>
+  sessionStorage.setItem('tenants', JSON.stringify(tenants));
+export const getTenantsFromCache = () =>
+  JSON.parse(sessionStorage.getItem('tenants'));
 
 const fetchFromGraphql = async data => {
   const url = window.clusterConfig.graphqlApiUrl;

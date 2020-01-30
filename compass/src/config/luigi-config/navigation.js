@@ -2,6 +2,7 @@ import {
   fetchTenants,
   getToken,
   getTenantNames,
+  getTenantsFromCache,
 } from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
@@ -14,7 +15,8 @@ let tenants = [];
 })();
 
 const getTenantName = tenantId => {
-  const match = tenants.find(tenant => tenant.id === tenantId);
+  let tenantsToCheck = tenants.length > 0 ? tenants : getTenantsFromCache();
+  const match = tenantsToCheck.find(tenant => tenant.id === tenantId);
   return match ? match.name : null;
 };
 
