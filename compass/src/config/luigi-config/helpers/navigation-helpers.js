@@ -17,7 +17,7 @@ const getAlternativePath = tenantName => {
   return null;
 };
 
-const getToken = () => {
+export const getToken = () => {
   let token = null;
   if (localStorage.getItem('luigi.auth')) {
     try {
@@ -29,9 +29,8 @@ const getToken = () => {
   return token;
 };
 
-async function fetchTenants() {
+export async function fetchTenants() {
   const payload = {
-    variables: {},
     query: `{
       tenants {
         name
@@ -40,8 +39,13 @@ async function fetchTenants() {
     }
     `,
   };
-  const response = await fetchFromGraphql(payload);
-  return response.data.tenants;
+  try {
+    const response = await fetchFromGraphql(payload);
+    return response.data.tenants;
+  } catch (err) {
+    console.error('Tenants could not be loaded', err);
+    return [];
+  }
 }
 
 const fetchFromGraphql = async data => {
@@ -58,7 +62,7 @@ const fetchFromGraphql = async data => {
   return response.json();
 };
 
-const getTenantNames = tenants => {
+export const getTenantNames = tenants => {
   const tenantNames = tenants.map(tenant => {
     const alternativePath = getAlternativePath(tenant.id);
     return {
@@ -67,10 +71,4 @@ const getTenantNames = tenants => {
     };
   });
   return tenantNames;
-};
-
-module.exports = {
-  fetchTenants,
-  getToken,
-  getTenantNames,
 };

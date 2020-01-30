@@ -6,7 +6,7 @@ import {
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
 
-let token = getToken();
+const token = getToken();
 let tenants = [];
 
 (async () => {

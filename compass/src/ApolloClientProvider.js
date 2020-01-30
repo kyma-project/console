@@ -6,10 +6,7 @@ import { useApplicationContext } from 'react-shared';
 export const ApolloClientProvider = ({ children }) => {
   const context = useApplicationContext();
 
-  const getTenantId = () => {
-    return context.tenantId;
-  };
-
+  const getTenantId = () => context.tenantId;
   const getToken = () => `Bearer ${context.idToken}`;
 
   if (!Object.keys(context).length) {
