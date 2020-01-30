@@ -15,7 +15,7 @@ let tenants = [];
 })();
 
 const getTenantName = tenantId => {
-  let tenantsToCheck = tenants.length > 0 ? tenants : getTenantsFromCache();
+  const tenantsToCheck = tenants.length > 0 ? tenants : getTenantsFromCache();
   const match = tenantsToCheck.find(tenant => tenant.id === tenantId);
   return match ? match.name : null;
 };

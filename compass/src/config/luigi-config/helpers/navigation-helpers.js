@@ -53,7 +53,7 @@ export async function fetchTenants() {
 const cacheTenants = tenants =>
   sessionStorage.setItem('tenants', JSON.stringify(tenants));
 export const getTenantsFromCache = () =>
-  JSON.parse(sessionStorage.getItem('tenants'));
+  JSON.parse(sessionStorage.getItem('tenants')) || [];
 
 const fetchFromGraphql = async data => {
   const url = window.clusterConfig.graphqlApiUrl;
