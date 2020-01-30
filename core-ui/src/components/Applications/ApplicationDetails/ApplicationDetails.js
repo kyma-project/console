@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { InlineHelp } from 'fundamental-react';
+import { Badge, InlineHelp } from 'fundamental-react';
 
 import {
   Spinner,
@@ -15,6 +15,7 @@ import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import { CompassGqlContext } from 'index';
+import './ApplicationDetails.scss';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -67,7 +68,7 @@ const ApplicationDetails = ({ appId }) => {
   }
 
   return (
-    <>
+    <article className="application-details">
       <ApplicationDetailsHeader
         kymaData={kymaQuery.data && kymaQuery.data.application}
         compassData={compassQuery.data && compassQuery.data.application}
@@ -81,7 +82,7 @@ const ApplicationDetails = ({ appId }) => {
       ) : (
         ''
       )}
-    </>
+    </article>
   );
 };
 
@@ -115,12 +116,14 @@ function Status(application) {
     case 'NOT_INSTALLED':
       return (
         <p>
-          {status}{' '}
+          <Badge disabled modifier="filled">
+            {status}
+          </Badge>
           <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
         </p>
       );
     default:
-      return <p>{status}</p>;
+      return <Badge modifier="filled">{status}</Badge>;
   }
 }
 
