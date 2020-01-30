@@ -45,11 +45,11 @@ describe('ConnectApplicationModal', () => {
       legacyConnectorURL,
     } = validMock.result.data.requestOneTimeTokenForApplication;
 
-    const tokenInput = queryByLabelText(
+    const rawEncodedInput = queryByLabelText(
       'Data to connect Application (base64 encoded)',
     );
-    expect(tokenInput).toBeInTheDocument();
-    expect(tokenInput).toHaveValue(rawEncoded);
+    expect(rawEncodedInput).toBeInTheDocument();
+    expect(rawEncodedInput).toHaveValue(rawEncoded);
 
     const connectorUrlInput = queryByLabelText('Legacy connector URL');
     expect(connectorUrlInput).toBeInTheDocument();
