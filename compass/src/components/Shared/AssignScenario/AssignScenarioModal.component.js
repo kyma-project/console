@@ -4,7 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import _ from 'lodash';
 
 import { Button } from '@kyma-project/react-components';
-import { Modal } from './../../../shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 
 AssignScenarioModal.propTypes = {

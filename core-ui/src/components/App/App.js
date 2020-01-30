@@ -13,16 +13,23 @@ import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
 import ApplicationList from 'components/Applications/ApplicationList/ApplicationList';
+import ApplicationDetails from 'components/Applications/ApplicationDetails/ApplicationDetails';
 
 export default function App() {
   return (
     <NotificationProvider>
       <Switch>
-        <Route path="/lambda/:name" component={RoutedLambdaDetails} />
-        <Route path="/lambdas" exact component={Lambdas} />
         <Route path="/preload" component={() => null} />
         <Route path="/namespaces" component={NamespaceList} />
+
+        <Route path="/lambdas" exact component={Lambdas} />
+        <Route path="/lambda/:name" component={RoutedLambdaDetails} />
+
         <Route path="/applications" component={ApplicationList} />
+        <Route
+          path="/application/:appId"
+          component={RoutedApplicationDetails}
+        />
 
         <Route exact path="/apirules" component={ApiRules} />
         <Route exact path="/apirules/create" component={CreateApiRule} />
@@ -51,4 +58,8 @@ function RoutedApiDetails({ match }) {
 
 function RoutedEditApiRule({ match }) {
   return <EditApiRule apiName={match.params.apiName} />;
+}
+
+function RoutedApplicationDetails({ match }) {
+  return <ApplicationDetails appId={match.params.appId} />;
 }

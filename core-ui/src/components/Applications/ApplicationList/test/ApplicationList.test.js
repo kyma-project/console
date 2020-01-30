@@ -31,6 +31,8 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
   uxManager: () => ({
     showConfirmationModal: mockShowConfirmationModal,
+    addBackdrop: () => {},
+    removeBackdrop: () => {},
   }),
 }));
 
@@ -156,7 +158,6 @@ describe('ApplicationList', () => {
         expect(
           queryByText(exampleCompassApps[i].providerName),
         ).toBeInTheDocument();
-        expect(queryByText(exampleKymaApps[i].status)).toBeInTheDocument(); //TODO: change it to some other field when we decide what is displayed on the list
       });
     });
   });

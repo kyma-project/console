@@ -1,12 +1,11 @@
 import React from 'react';
 import equal from 'deep-equal';
 import PropTypes from 'prop-types';
-import { Modal } from './../../../shared/components/Modal/Modal';
-import { Button, Input } from '@kyma-project/react-components';
+import { Modal } from 'react-shared';
+import { Input } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
-import './styles.scss';
 
 const DEFAULT_SCENARIO_LABEL = 'DEFAULT';
 
@@ -23,6 +22,7 @@ class CreateApplicationModal extends React.Component {
     registerApplication: PropTypes.func.isRequired,
     sendNotification: PropTypes.func.isRequired,
     scenariosQuery: PropTypes.object.isRequired,
+    modalOpeningComponent: PropTypes.node.isRequired,
   };
 
   getInitialState = () => {
@@ -269,16 +269,8 @@ class CreateApplicationModal extends React.Component {
       invalidProviderName,
       applicationWithNameAlreadyExists,
     } = this.state;
-    const createApplicationButton = (
-      <Button option="light" data-e2e-id="create-application-button">
-        Create Application
-      </Button>
-    );
 
     const scenariosQuery = this.props.scenariosQuery;
-    if (scenariosQuery.loading) {
-      return <p>Loading...</p>;
-    }
 
     let content;
     if (scenariosQuery.error) {
@@ -328,16 +320,20 @@ class CreateApplicationModal extends React.Component {
           <div className="fd-has-color-text-3 fd-has-margin-top-small fd-has-margin-bottom-tiny">
             Scenarios
           </div>
-          <MultiChoiceList
-            placeholder="Choose scenarios..."
-            notSelectedMessage=""
-            currentlySelectedItems={this.state.selectedScenarios}
-            updateItems={this.updateCurrentScenarios}
-            currentlyNonSelectedItems={
-              this.state.scenariosToSelect || availableScenarios
-            }
-            noEntitiesAvailableMessage="No more scenarios available"
-          />
+          {scenariosQuery.loading ? (
+            <p>Loading available scenarios...</p>
+          ) : (
+            <MultiChoiceList
+              placeholder="Choose scenarios..."
+              notSelectedMessage=""
+              currentlySelectedItems={this.state.selectedScenarios}
+              updateItems={this.updateCurrentScenarios}
+              currentlyNonSelectedItems={
+                this.state.scenariosToSelect || availableScenarios
+              }
+              noEntitiesAvailableMessage="No more scenarios available"
+            />
+          )}
         </>
       );
     }
@@ -346,7 +342,7 @@ class CreateApplicationModal extends React.Component {
       <Modal
         title="Create application"
         type={'emphasized'}
-        modalOpeningComponent={createApplicationButton}
+        modalOpeningComponent={this.props.modalOpeningComponent}
         confirmText="Create"
         disabledConfirm={
           !requiredFieldsFilled ||

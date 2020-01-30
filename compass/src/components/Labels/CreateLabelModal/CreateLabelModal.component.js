@@ -15,7 +15,7 @@ import {
   Button,
 } from 'fundamental-react';
 import FileInput from './../../Shared/FileInput/FileInput';
-import { Modal } from './../../../shared/components/Modal/Modal';
+import { Modal } from 'react-shared';
 import { readFile } from 'components/Api/ApiHelpers';
 
 export default class CreateLabelModal extends React.Component {
