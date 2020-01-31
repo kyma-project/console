@@ -246,7 +246,7 @@ export default function EditApiWrapper({ apiId, appId }) {
     return <p>Loading...</p>;
   }
   if (error) {
-    return <p>`Error! ${error.message}`</p>;
+    return <p>Error! ${error.message}</p>;
   }
 
   // there's no getApiById query

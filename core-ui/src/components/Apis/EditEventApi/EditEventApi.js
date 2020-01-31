@@ -184,7 +184,7 @@ export default function EditEventApiWrapper({ appId, eventApiId }) {
     return <p>Loading...</p>;
   }
   if (error) {
-    return <p>`Error! ${error.message}`</p>;
+    return <p>Error! ${error.message}</p>;
   }
 
   // there's no getEventApiById query
