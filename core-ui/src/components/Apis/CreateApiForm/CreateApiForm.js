@@ -78,6 +78,7 @@ export default function CreateApiForm({
     }
 
     const expectedType = apiTypeRef.current.value;
+    console.log(apiTypeRef.current.value);
     const { data, format, error } = await verifyApiFile(file, expectedType);
     if (error) {
       input.setCustomValidity(error);

@@ -13,6 +13,9 @@ export { Modal } from './components/Modal/Modal';
 export { Labels } from './components/Labels/Labels';
 export { Dropdown } from './components/Dropdown/Dropdown';
 export { FileInput } from './components/FileInput/FileInput';
+export {
+  ResourceNotFound,
+} from './components/ResourceNotFound/ResourceNotFound';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 

@@ -210,3 +210,21 @@ export const ADD_EVENT = gql`
     }
   }
 `;
+
+export const UPDATE_API_DEFINITION = gql`
+  mutation updateAPIDefinition($id: ID!, $in: APIDefinitionInput!) {
+    updateAPIDefinition(id: $id, in: $in) {
+      id
+      name
+    }
+  }
+`;
+
+export const UPDATE_EVENT_DEFINITION = gql`
+  mutation updateEventDefinition($id: ID!, $in: EventDefinitionInput!) {
+    updateEventDefinition(id: $id, in: $in) {
+      id
+      name
+    }
+  }
+`;

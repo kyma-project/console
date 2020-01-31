@@ -6,7 +6,7 @@ import { GenericComponent } from '@kyma-project/generic-documentation';
 import { useQuery } from 'react-apollo';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { PageHeader } from 'react-shared';
+import { PageHeader, ResourceNotFound } from 'react-shared';
 import { getApiType, getApiDisplayName } from '../ApiHelpers';
 import {
   GET_APPLICATION_WITH_EVENT_DEFINITIONS,
@@ -51,7 +51,7 @@ const DocumentationComponent = ({ content, type }) => (
 const ApiDetailsHeader = ({ api, application, actions }) => {
   const breadcrumbItems = [
     { name: 'Applications', path: '/' },
-    { name: 'Application', path: `/details/${application}` },
+    { name: application.name, path: `/details/${application.id}` },
     { name: '' },
   ];
   return (
@@ -87,16 +87,16 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
     skip: !eventApiId,
   });
 
-  const query = queryApi ? queryApi : queryEventApi;
+  const query = apiId ? queryApi : queryEventApi;
 
   const { loading, error, data } = query;
 
+  if (loading) return 'Loading...';
+
   if (!(data && data.application)) {
-    if (loading) return 'Loading...';
     if (error) {
       return (
-        // <ResourceNotFound resource="Application" breadcrumb="Applications" />
-        <p>not found</p>
+        <ResourceNotFound resource="Application" breadcrumb="Applications" />
       );
     }
     return `Unable to find application with id ${appId}`;
@@ -107,8 +107,9 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
 
   const api = getApiDataFromQuery(data.application, apiId, eventApiId);
   if (!api) {
-    return <p>not found</p>;
-    // <ResourceNotFound resource="API Definition" />;
+    return (
+      <ResourceNotFound resource="API Definition" breadcrumb="Applications" />
+    );
   }
 
   function EditButton() {
@@ -126,10 +127,10 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
   return (
     <>
       <ApiDetailsHeader
-        application={appId}
+        application={data.application}
         api={api}
         actions={<EditButton />}
-      ></ApiDetailsHeader>
+      />
       {api.spec ? (
         <DocumentationComponent
           type={getApiType(api)}
