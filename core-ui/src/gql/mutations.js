@@ -195,7 +195,7 @@ export const DELETE_EVENT_DEFINITION = gql`
   }
 `;
 
-export const ADD_API = gql`
+export const ADD_API_DEFINITION = gql`
   mutation addAPI($applicationId: ID!, $in: APIDefinitionInput!) {
     addAPIDefinition(applicationID: $applicationId, in: $in) {
       name
@@ -203,7 +203,7 @@ export const ADD_API = gql`
   }
 `;
 
-export const ADD_EVENT = gql`
+export const ADD_EVENT_DEFINITION = gql`
   mutation addEventDefinition($applicationId: ID!, $in: EventDefinitionInput!) {
     addEventDefinition(applicationID: $applicationId, in: $in) {
       name

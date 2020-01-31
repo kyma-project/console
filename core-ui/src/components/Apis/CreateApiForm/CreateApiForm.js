@@ -17,7 +17,7 @@ import { createApiData, verifyApiFile } from '../ApiHelpers';
 
 import ApiForm from '../Forms/ApiForm';
 import { useMutation } from 'react-apollo';
-import { ADD_API } from 'gql/mutations';
+import { ADD_API_DEFINITION } from 'gql/mutations';
 import { CompassGqlContext } from 'index';
 
 CreateApiForm.propTypes = {
@@ -36,7 +36,7 @@ export default function CreateApiForm({
   onError,
 }) {
   const compassGqlClient = React.useContext(CompassGqlContext);
-  const [addApi] = useMutation(ADD_API, {
+  const [addApi] = useMutation(ADD_API_DEFINITION, {
     client: compassGqlClient,
   });
 

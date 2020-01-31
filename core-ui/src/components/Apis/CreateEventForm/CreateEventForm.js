@@ -8,7 +8,7 @@ import { createEventAPIData, verifyEventApiFile } from '../ApiHelpers';
 
 import EventApiForm from '../Forms/EventApiForm';
 import { useMutation } from 'react-apollo';
-import { ADD_EVENT } from 'gql/mutations';
+import { ADD_EVENT_DEFINITION } from 'gql/mutations';
 import { CompassGqlContext } from 'index';
 
 CreateEventForm.propTypes = {
@@ -27,7 +27,7 @@ export default function CreateEventForm({
   onError,
 }) {
   const compassGqlClient = React.useContext(CompassGqlContext);
-  const [addEventApi] = useMutation(ADD_EVENT, {
+  const [addEventApi] = useMutation(ADD_EVENT_DEFINITION, {
     client: compassGqlClient,
   });
 
