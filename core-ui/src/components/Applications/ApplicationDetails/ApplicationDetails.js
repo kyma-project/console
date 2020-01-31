@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
 import { InlineHelp } from 'fundamental-react';
 
 import {
@@ -11,12 +10,16 @@ import {
   Labels,
   EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
+
+import { useQuery } from '@apollo/react-hooks';
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
+import { CompassGqlContext } from 'index';
+
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import EventApiList from 'components/Apis/EventApiList/EventApiList';
 import ApiList from 'components/Apis/ApiList/ApiList';
-import { CompassGqlContext } from 'index';
+import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -76,6 +79,7 @@ const ApplicationDetails = ({ appId }) => {
       <ApplicationDetailsHeader
         kymaData={kymaQuery.data && kymaQuery.data.application}
         compassData={compassQuery.data && compassQuery.data.application}
+        appId={appId}
       />
       {kymaQuery.data && kymaQuery.data.application ? (
         <BoundNamespacesList
@@ -94,9 +98,13 @@ const ApplicationDetails = ({ appId }) => {
 
 const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
 
-function ApplicationDetailsHeader({ kymaData, compassData }) {
+function ApplicationDetailsHeader({ kymaData, compassData, appId }) {
   return (
-    <PageHeader title={compassData.name} breadcrumbItems={breadcrumbItems}>
+    <PageHeader
+      title={compassData.name}
+      breadcrumbItems={breadcrumbItems}
+      actions={<ConnectApplicationModal applicationId={appId} />}
+    >
       <PageHeader.Column title="Status" columnSpan={null}>
         {Status(kymaData)}
       </PageHeader.Column>

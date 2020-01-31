@@ -17,18 +17,65 @@ const getAlternativePath = tenantName => {
   return null;
 };
 
-const getTenants = () => {
-  const tenants = window.clusterConfig.tenants || [];
+export const getToken = () => {
+  let token = null;
+  if (localStorage.getItem('luigi.auth')) {
+    try {
+      token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
+    } catch (e) {
+      console.error('Error while reading ID Token: ', e);
+    }
+  }
+  return token;
+};
+
+export async function fetchTenants() {
+  const payload = {
+    query: `{
+      tenants {
+        name
+        id
+      }
+    }
+    `,
+  };
+  try {
+    const response = await fetchFromGraphql(payload);
+    const tenants = response.data.tenants;
+    cacheTenants(tenants);
+    return tenants;
+  } catch (err) {
+    console.error('Tenants could not be loaded', err);
+    return [];
+  }
+}
+
+const cacheTenants = tenants =>
+  sessionStorage.setItem('tenants', JSON.stringify(tenants));
+export const getTenantsFromCache = () =>
+  JSON.parse(sessionStorage.getItem('tenants')) || [];
+
+const fetchFromGraphql = async data => {
+  const url = window.clusterConfig.graphqlApiUrl;
+  const response = await fetch(url, {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+};
+
+export const getTenantNames = tenants => {
   const tenantNames = tenants.map(tenant => {
-    const alternativePath = getAlternativePath(tenant.name);
+    const alternativePath = getAlternativePath(tenant.id);
     return {
       label: tenant.name,
-      pathValue: alternativePath || tenant.name,
+      pathValue: alternativePath || tenant.id,
     };
   });
   return tenantNames;
-};
-
-module.exports = {
-  getTenants,
 };

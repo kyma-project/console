@@ -41,17 +41,19 @@ describe('ConnectApplicationModal', () => {
     await waitForDomChange();
 
     const {
-      token,
-      connectorURL,
+      rawEncoded,
+      legacyConnectorURL,
     } = validMock.result.data.requestOneTimeTokenForApplication;
 
-    const tokenInput = queryByLabelText('Token');
-    expect(tokenInput).toBeInTheDocument();
-    expect(tokenInput).toHaveValue(token);
+    const rawEncodedInput = queryByLabelText(
+      'Data to connect Application (base64 encoded)',
+    );
+    expect(rawEncodedInput).toBeInTheDocument();
+    expect(rawEncodedInput).toHaveValue(rawEncoded);
 
-    const connectorUrlInput = queryByLabelText('Connector URL');
+    const connectorUrlInput = queryByLabelText('Legacy connector URL');
     expect(connectorUrlInput).toBeInTheDocument();
-    expect(connectorUrlInput).toHaveValue(connectorURL);
+    expect(connectorUrlInput).toHaveValue(legacyConnectorURL);
   });
 
   it('displays error on failure', async () => {

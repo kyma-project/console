@@ -1,15 +1,24 @@
-import { getTenants } from './helpers/navigation-helpers';
+import {
+  fetchTenants,
+  getToken,
+  getTenantNames,
+  getTenantsFromCache,
+} from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
 
-let token = null;
-if (localStorage.getItem('luigi.auth')) {
-  try {
-    token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
-  } catch (e) {
-    console.error('Error while reading ID Token: ', e);
-  }
-}
+const token = getToken();
+let tenants = [];
+
+(async () => {
+  tenants = await fetchTenants();
+})();
+
+const getTenantName = tenantId => {
+  const tenantsToCheck = tenants.length > 0 ? tenants : getTenantsFromCache();
+  const match = tenantsToCheck.find(tenant => tenant.id === tenantId);
+  return match ? match.name : null;
+};
 
 const navigation = {
   nodes: () => [
@@ -30,13 +39,11 @@ const navigation = {
       children: [
         {
           hideSideNav: true,
-          pathSegment: ':tenantName',
+          pathSegment: ':tenantId',
           navigationContext: 'tenant',
           context: {
             idToken: token,
-            tenantName: ':tenantName',
-            defaultTenantId: window.clusterConfig.defaultTenant,
-            tenants: window.clusterConfig.tenants,
+            tenantId: ':tenantId',
           },
           children: [
             {
@@ -168,7 +175,8 @@ const navigation = {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
     lazyloadOptions: true,
-    options: getTenants,
+    options: () => getTenantNames(tenants),
+    fallbackLabelResolver: tenantId => getTenantName(tenantId),
   },
 };
 
