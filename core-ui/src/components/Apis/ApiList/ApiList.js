@@ -4,10 +4,12 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericList, useNotification, easyHandleDelete } from 'react-shared';
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
-import { CompassGqlContext } from 'index';
-import { DELETE_API_DEFINITION } from 'gql/mutations';
-import { useMutation } from '@apollo/react-hooks';
 import CreateApiForm from '../CreateApiForm/CreateApiForm';
+
+import { DELETE_API_DEFINITION } from 'gql/mutations';
+import { GET_APPLICATION_COMPASS } from 'gql/queries';
+import { useMutation } from '@apollo/react-hooks';
+import { CompassGqlContext } from 'index';
 
 ApiList.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -20,6 +22,9 @@ export default function ApiList({ applicationId, apis }) {
 
   const [deleteApiDefinition] = useMutation(DELETE_API_DEFINITION, {
     client: compassGqlClient,
+    refetchQueries: () => [
+      { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
+    ],
   });
 
   function navigateToDetails(entry) {

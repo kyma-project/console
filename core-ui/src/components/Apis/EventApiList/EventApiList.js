@@ -6,9 +6,11 @@ import CreateEventApiForm from '../CreateEventForm/CreateEventForm';
 
 import { GenericList, easyHandleDelete, useNotification } from 'react-shared';
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
-import { CompassGqlContext } from 'index';
+
 import { DELETE_EVENT_DEFINITION } from 'gql/mutations';
+import { GET_APPLICATION_COMPASS } from 'gql/queries';
 import { useMutation } from '@apollo/react-hooks';
+import { CompassGqlContext } from 'index';
 
 EventApiList.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -21,6 +23,9 @@ export default function EventApiList({ applicationId, eventApis }) {
 
   const [deleteEventDefinition] = useMutation(DELETE_EVENT_DEFINITION, {
     client: compassGqlClient,
+    refetchQueries: () => [
+      { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
+    ],
   });
 
   function navigateToDetails(entry) {
