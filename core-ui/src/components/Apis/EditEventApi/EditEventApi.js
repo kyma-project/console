@@ -31,6 +31,12 @@ function EditEventApi({ eventApiId, originalEventApi, application }) {
 
   const [updateEventDefinition] = useMutation(UPDATE_EVENT_DEFINITION, {
     client: compassGqlClient,
+    refetchQueries: () => [
+      {
+        query: GET_APPLICATION_WITH_EVENT_DEFINITIONS,
+        variables: { applicationId: application.id },
+      },
+    ],
   });
 
   const formRef = React.useRef(null);

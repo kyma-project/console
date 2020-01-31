@@ -38,6 +38,12 @@ function EditApi({ apiId, originalApi, application }) {
 
   const [updateApiDefinition] = useMutation(UPDATE_API_DEFINITION, {
     client: compassGqlClient,
+    refetchQueries: () => [
+      {
+        query: GET_APPLICATION_WITH_API_DEFINITIONS,
+        variables: { applicationId: application.id },
+      },
+    ],
   });
 
   const formRef = React.useRef(null);

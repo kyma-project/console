@@ -146,6 +146,7 @@ export const GET_APPLICATION = gql`
 export const GET_APPLICATION_COMPASS = gql`
   query Application($id: ID!) {
     application(id: $id) {
+      id
       name
       providerName
       apiDefinitions {
