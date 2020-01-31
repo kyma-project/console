@@ -96,7 +96,11 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
   if (!(data && data.application)) {
     if (error) {
       return (
-        <ResourceNotFound resource="Application" breadcrumb="Applications" />
+        <ResourceNotFound
+          resource="Application"
+          breadcrumb="Applications"
+          path={'/'}
+        />
       );
     }
     return `Unable to find application with id ${appId}`;
@@ -107,8 +111,13 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
 
   const api = getApiDataFromQuery(data.application, apiId, eventApiId);
   if (!api) {
+    const resourceType = apiId ? 'API Definition' : 'Event Definition';
     return (
-      <ResourceNotFound resource="API Definition" breadcrumb="Applications" />
+      <ResourceNotFound
+        resource={resourceType}
+        breadcrumb={data.application.name}
+        path={`/details/${appId}`}
+      />
     );
   }
 

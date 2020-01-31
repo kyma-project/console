@@ -1,14 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Breadcrumb, Panel, PanelBody } from '@kyma-project/react-components';
 
-export const ResourceNotFound = ({ resource, path }) => {
-  const navigate = breadcrumb => {
-    breadcrumb = breadcrumb.toLowerCase();
+export const ResourceNotFound = ({ resource, breadcrumb, path }) => {
+  const navigate = () =>
     LuigiClient.linkManager()
-      .fromContext(breadcrumb)
-      .navigate('/');
-  };
+      .fromClosestContext()
+      .navigate(path);
 
   return (
     <>
@@ -17,11 +16,7 @@ export const ResourceNotFound = ({ resource, path }) => {
           <div className="fd-action-bar">
             <div className="fd-action-bar__header">
               <Breadcrumb>
-                <Breadcrumb.Item
-                  name={breadcrumb}
-                  url="#"
-                  onClick={() => navigate(breadcrumb)}
-                />
+                <Breadcrumb.Item name={breadcrumb} url="#" onClick={navigate} />
                 <Breadcrumb.Item />
               </Breadcrumb>
             </div>
@@ -35,4 +30,10 @@ export const ResourceNotFound = ({ resource, path }) => {
       </Panel>
     </>
   );
+};
+
+ResourceNotFound.propTypes = {
+  resource: PropTypes.string.isRequired,
+  breadcrumb: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
 };

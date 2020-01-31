@@ -163,7 +163,7 @@ function EditEventApi({ eventApiId, originalEventApi, application }) {
 }
 
 EditEventApiWrapper.propTypes = {
-  apiId: PropTypes.string.isRequired,
+  appId: PropTypes.string.isRequired,
   eventApiId: PropTypes.string.isRequired,
 };
 
@@ -194,7 +194,11 @@ export default function EditEventApiWrapper({ appId, eventApiId }) {
 
   if (!originalEventApi) {
     return (
-      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
+      <ResourceNotFound
+        resource="Event Definition"
+        breadcrumb="Applications"
+        path={`details/${appId}`}
+      />
     );
   }
 

@@ -256,7 +256,11 @@ export default function EditApiWrapper({ apiId, appId }) {
 
   if (!originalApi) {
     return (
-      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
+      <ResourceNotFound
+        resource="Event Definition"
+        breadcrumb="Applications"
+        path={`details/${appId}`}
+      />
     );
   }
 

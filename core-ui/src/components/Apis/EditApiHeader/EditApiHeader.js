@@ -92,9 +92,6 @@ export default function EditApiHeader({
       actions={actions}
     >
       <PageHeader.Column title="Type">
-        <button onClick={() => navigateToApplication(application)}>
-          back to app
-        </button>
         {getApiDisplayName(api) || <em>Not provided</em>}
       </PageHeader.Column>
     </PageHeader>
