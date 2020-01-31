@@ -1,5 +1,6 @@
 import { service1, service2 } from 'testing/servicesMocks';
 import { GET_SERVICES, GET_IDP_PRESETS } from 'gql/queries';
+import { excludedServicesLabels } from 'components/ApiRules/constants';
 
 export const apiRuleName = 'test-123';
 export const mockNamespace = 'test';
@@ -39,6 +40,7 @@ export const servicesQuery = {
     query: GET_SERVICES,
     variables: {
       namespace: mockNamespace,
+      excludedLabels: excludedServicesLabels,
     },
   },
   result: {
