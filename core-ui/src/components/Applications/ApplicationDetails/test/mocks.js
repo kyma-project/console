@@ -4,6 +4,7 @@ export const exampleAppId = 'id';
 export const exampleAppName = 'test-app-name';
 
 export const exampleCompassApp = {
+  id: 'compass-app-id',
   name: exampleAppName,
   providerName: 'test-provider-name',
   apiDefinitions: {

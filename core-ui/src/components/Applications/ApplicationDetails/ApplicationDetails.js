@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { InlineHelp } from 'fundamental-react';
+import { Badge, InlineHelp } from 'fundamental-react';
 
 import {
   Spinner,
@@ -20,6 +20,7 @@ import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import EventApiList from 'components/Apis/EventApiList/EventApiList';
 import ApiList from 'components/Apis/ApiList/ApiList';
 import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
+import './ApplicationDetails.scss';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -75,7 +76,7 @@ const ApplicationDetails = ({ appId }) => {
   const apis = application.apiDefinitions.data;
   const eventApis = application.eventDefinitions.data;
   return (
-    <>
+    <article className="application-details">
       <ApplicationDetailsHeader
         kymaData={kymaQuery.data && kymaQuery.data.application}
         compassData={compassQuery.data && compassQuery.data.application}
@@ -92,7 +93,7 @@ const ApplicationDetails = ({ appId }) => {
       )}
       <ApiList applicationId={appId} apis={apis} />
       <EventApiList applicationId={appId} eventApis={eventApis} />
-    </>
+    </article>
   );
 };
 
@@ -130,12 +131,14 @@ function Status(application) {
     case 'NOT_INSTALLED':
       return (
         <p>
-          {status}
+          <Badge disabled modifier="filled">
+            {status}
+          </Badge>
           <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
         </p>
       );
     default:
-      return <p>{status}</p>;
+      return <Badge modifier="filled">{status}</Badge>;
   }
 }
 
