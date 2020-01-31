@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Icon } from 'fundamental-react';
+import classNames from 'classnames';
+
 import 'ace-builds';
 import 'ace-builds/webpack-resolver';
 import AceEditor from 'react-ace';
-import classNames from 'classnames';
+
+import 'ace-builds/src-noconflict/theme-github';
 
 const languages = ['yaml', 'json', 'xml'];
-// const theme = 'github';
-
-require(`ace-builds/src-noconflict/theme-github`);
-languages.forEach(lang => {
-  require(`ace-builds/src-noconflict/mode-${lang}`);
-  require(`ace-builds/src-noconflict/snippets/${lang}`);
+languages.forEach(language => {
+  require(`ace-builds/src-noconflict/mode-${language}`);
+  require(`ace-builds/src-noconflict/snippets/${language}`);
 });
 
 ApiEditorForm.propTypes = {
