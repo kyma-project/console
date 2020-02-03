@@ -17,6 +17,8 @@ import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 import { CompassGqlContext } from 'index';
 import './ApplicationDetails.scss';
+import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
+import handleApplicationEvent from './wsHandler';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -34,25 +36,50 @@ const ApplicationDetails = ({ appId }) => {
     compassQuery.data &&
     compassQuery.data.application &&
     compassQuery.data.application.name;
+
   const kymaQuery = useQuery(GET_APPLICATION, {
     variables: {
       name: appName,
     },
     fetchPolicy: 'cache-and-network',
     skip: !appName,
-  });
-
-  useEffect(() => {
-    if (kymaQuery.error) {
+    onError: e =>
       notificationManager.notifyError({
-        content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
-      });
-    }
-  }, [kymaQuery, notificationManager]);
+        content: `Could not fatch partial Application data due to an error: ${e.message}`,
+      }),
+  });
+  useEffect(() => {
+    if (!kymaQuery.subscribeToMore || !appName) return;
+    kymaQuery.subscribeToMore({
+      document: APPLICATIONS_EVENT_SUBSCRIPTION,
+      variables: kymaQuery.variables,
+      updateQuery: (prev, { subscriptionData }) => {
+        // compassQuery.refetch();
+        console.log(prev, subscriptionData.data.applicationEvent);
+        setTimeout(compassQuery.refetch, 2000);
+        //  return prev;
+        // return handleApplicationEvent(
+        //   subscriptionData.data.applicationEvent,
+        //   prev,
+        // );
+        // return handleApplicationEvent(
+        //   subscriptionData.data.applicationEvent,
+        //   prev,
+        //   refetchCompassQuery,
+        // );
+      },
+    });
+  }, [kymaQuery, compassQuery, appName]);
 
-  if (compassQuery.loading || kymaQuery.loading) {
-    return <Spinner />;
-  }
+  // useEffect(() => {
+  //   if (kymaQuery.error) {
+  //     notificationManager.notifyError({
+  //       content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
+  //     });
+  //   }
+  // }, [kymaQuery, notificationManager]);
+
+  if (compassQuery.loading || kymaQuery.loading) return <Spinner />;
 
   if (compassQuery.error) {
     const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
@@ -81,9 +108,7 @@ const ApplicationDetails = ({ appId }) => {
           appName={kymaQuery.data.application.name}
           refetch={kymaQuery && kymaQuery.refetch}
         />
-      ) : (
-        ''
-      )}
+      ) : null}
     </article>
   );
 };
