@@ -29,7 +29,7 @@ describe('ConnectApplicationModal', () => {
 
     // modal is opened
     expect(queryByLabelText('Connect Application')).toBeInTheDocument();
-  }, 5000);
+  }, 10000);
 
   it('loads connection data', async () => {
     const { link } = createMockLink([validMock]);
@@ -57,9 +57,9 @@ describe('ConnectApplicationModal', () => {
     const connectorUrlInput = queryByLabelText('Legacy connector URL');
     expect(connectorUrlInput).toBeInTheDocument();
     expect(connectorUrlInput).toHaveValue(legacyConnectorURL);
-  });
+  }, 10000);
 
-  fit('displays error on failure', async () => {
+  it('displays error on failure', async () => {
     // ignore error logged by component to console
     console.warn = () => {};
 
@@ -79,5 +79,5 @@ describe('ConnectApplicationModal', () => {
 
     const errorMessage = errorMock.error.message;
     expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
-  });
+  }, 10000);
 });

@@ -1,18 +1,18 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { validMock } from './mock';
-import { render, waitForDomChange } from '@testing-library/react';
+import { render, waitForDomChange, fireEvent } from '@testing-library/react';
 import ConnectApplicationModal from '../ConnectApplicationModal.container';
 
 describe('ConnectApplicationModal Container', () => {
   const openModal = getByRoleFn => {
     const modalOpeningButton = getByRoleFn('button'); //get the only button around
     expect(modalOpeningButton.textContent).toBe('Connect Application'); // make sure this is the right one
-    modalOpeningButton.click();
+    fireEvent.click(modalOpeningButton);
   };
 
   it('Modal is initially closed and opens after button click', async () => {
-    const { queryByLabelText, getByRole, container } = render(
+    const { queryByLabelText, getByRole } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
@@ -20,13 +20,13 @@ describe('ConnectApplicationModal Container', () => {
 
     expect(queryByLabelText('Connect Application')).not.toBeInTheDocument();
     openModal(getByRole);
-    await waitForDomChange(container);
+    await waitForDomChange();
 
     expect(queryByLabelText('Connect Application')).toBeInTheDocument();
   });
 
   it('Modal handles "loading" state after open', () => {
-    const { queryAllByRole, getByRole, container } = render(
+    const { queryAllByRole, getByRole } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
@@ -42,14 +42,14 @@ describe('ConnectApplicationModal Container', () => {
   });
 
   it('Modal displays values got in response', async () => {
-    const { getByLabelText, getByRole, container } = render(
+    const { getByLabelText, getByRole } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
 
     openModal(getByRole);
-    await waitForDomChange(container);
+    await waitForDomChange();
 
     const {
       rawEncoded,
@@ -62,5 +62,5 @@ describe('ConnectApplicationModal Container', () => {
     expect(getByLabelText('Legacy connector URL')).toHaveValue(
       legacyConnectorURL,
     );
-  }, 5000);
+  }, 10000);
 });
