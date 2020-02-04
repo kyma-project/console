@@ -5,8 +5,6 @@ import 'core-js/es/array/flat-map';
 import { render } from '@testing-library/react';
 
 describe('ListActions', () => {
-  const consoleError = jest.spyOn(console, 'error').mockImplementation();
-
   it('Renders only standalone buttons', () => {
     const entry = { id: '123' };
     const actions = [
@@ -28,7 +26,6 @@ describe('ListActions', () => {
 
       expect(action.handler).toHaveBeenCalledWith(entry);
     });
-    expect(consoleError).not.toHaveBeenCalled();
   });
 
   it('Renders only dropdown actions', () => {
@@ -58,8 +55,6 @@ describe('ListActions', () => {
 
       expect(action.handler).toHaveBeenCalledWith(entry);
     });
-
-    expect(consoleError.mock.calls).toMatchSnapshot();
   });
 
   it('Renders mixed actions', () => {
@@ -79,8 +74,6 @@ describe('ListActions', () => {
     moreActionsButton.click();
 
     expect(queryByText(actions[1].name)).toBeInTheDocument();
-
-    expect(consoleError).not.toHaveBeenCalled();
   });
 
   it('Renders icon for standalone button', () => {
@@ -94,8 +87,6 @@ describe('ListActions', () => {
     expect(actionButton).toHaveClass('sap-icon--edit');
 
     expect(queryByText(actions[0].name)).not.toBeInTheDocument();
-
-    expect(consoleError).not.toHaveBeenCalled();
   });
 
   it("Doesn't render icon for dropdown button", () => {
@@ -111,8 +102,6 @@ describe('ListActions', () => {
     expect(actionButton).not.toHaveClass('sap-icon--edit');
 
     expect(queryByLabelText(actions[0].name)).not.toBeInTheDocument();
-
-    expect(consoleError).not.toHaveBeenCalled();
   });
 
   it('Renders predefined icons', () => {
@@ -129,8 +118,6 @@ describe('ListActions', () => {
 
     const deleteButton = getByLabelText('Delete');
     expect(deleteButton).toHaveClass('sap-icon--delete');
-
-    expect(consoleError).not.toHaveBeenCalled();
   });
 
   it('Can override predefined icons', () => {
@@ -149,15 +136,5 @@ describe('ListActions', () => {
     const deleteButton = getByLabelText('Delete');
     expect(deleteButton).not.toHaveClass('sap-icon--delete');
     expect(deleteButton).toHaveClass('sap-icon--minus');
-
-    expect(consoleError).not.toHaveBeenCalled();
-  });
-
-  afterEach(() => {
-    consoleError.mockClear();
-  });
-
-  afterAll(() => {
-    consoleError.mockRestore();
   });
 });
