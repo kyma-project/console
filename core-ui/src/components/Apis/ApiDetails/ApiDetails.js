@@ -13,8 +13,8 @@ import {
   GET_APPLICATION_WITH_API_DEFINITIONS,
 } from 'gql/queries';
 import { CompassGqlContext } from 'index';
-
 import './ApiDetails.scss';
+
 export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
   if (!applicationQuery) return;
   const rawApisForApplication = apiId
