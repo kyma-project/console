@@ -3,13 +3,15 @@ import { MockedProvider } from '@apollo/react-testing';
 import { validMock, errorMock } from './mock';
 import { render, waitForDomChange, fireEvent } from '@testing-library/react';
 import ConnectApplicationModal from '../ConnectApplicationModal';
+import { createMockLink } from 'react-shared';
 
 jest.mock('index', () => ({ CompassGqlContext: {} }));
 
 describe('ConnectApplicationModal', () => {
   it('opens modal', async () => {
+    const { link } = createMockLink([validMock]);
     const { queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} mocks={[validMock]}>
+      <MockedProvider addTypename={false} link={link}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
@@ -30,8 +32,9 @@ describe('ConnectApplicationModal', () => {
   });
 
   it('loads connection data', async () => {
+    const { link } = createMockLink([validMock]);
     const { getByText, queryByLabelText } = render(
-      <MockedProvider addTypename={false} mocks={[validMock]}>
+      <MockedProvider addTypename={false} link={link}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
@@ -60,8 +63,9 @@ describe('ConnectApplicationModal', () => {
     // ignore error logged by component to console
     console.warn = () => {};
 
+    const { link } = createMockLink([errorMock]);
     const { getByText, queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} mocks={[errorMock]}>
+      <MockedProvider addTypename={false} link={link}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
