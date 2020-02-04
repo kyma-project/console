@@ -62,5 +62,5 @@ describe('ConnectApplicationModal Container', () => {
     expect(getByLabelText('Legacy connector URL')).toHaveValue(
       legacyConnectorURL,
     );
-  }, 3000);
+  }, 5000);
 });

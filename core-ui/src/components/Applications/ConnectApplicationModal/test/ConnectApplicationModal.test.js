@@ -29,7 +29,7 @@ describe('ConnectApplicationModal', () => {
 
     // modal is opened
     expect(queryByLabelText('Connect Application')).toBeInTheDocument();
-  }, 3000);
+  }, 5000);
 
   it('loads connection data', async () => {
     const { link } = createMockLink([validMock]);
@@ -59,7 +59,7 @@ describe('ConnectApplicationModal', () => {
     expect(connectorUrlInput).toHaveValue(legacyConnectorURL);
   });
 
-  it('displays error on failure', async () => {
+  fit('displays error on failure', async () => {
     // ignore error logged by component to console
     console.warn = () => {};
 
