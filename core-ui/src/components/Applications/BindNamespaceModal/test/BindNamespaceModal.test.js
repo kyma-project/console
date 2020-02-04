@@ -43,7 +43,7 @@ describe('BindNamespaceModal', () => {
     expect(
       queryByText('Create Namespace binding for Application'),
     ).toBeInTheDocument();
-  });
+  }, 60000);
 
   it('shows a list of namespaces to bind', async () => {
     const { link } = createMockLink([mockNamespaces]);

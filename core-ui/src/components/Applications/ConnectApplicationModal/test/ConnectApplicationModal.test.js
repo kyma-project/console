@@ -29,7 +29,7 @@ describe('ConnectApplicationModal', () => {
 
     // modal is opened
     expect(queryByLabelText('Connect Application')).toBeInTheDocument();
-  });
+  }, 60000);
 
   it('loads connection data', async () => {
     const { link } = createMockLink([validMock]);
