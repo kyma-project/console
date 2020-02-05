@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "@kyma-project/luigi-core": "^0.6.4",
-    "@monaco-editor/react": "^2.0.0"
+    "@monaco-editor/react": "^2.0.0",
+    "ace-builds": "^1.4.8",
+    "react-ace": "^8.0.0",
+    "xml-js": "^1.6.11"
   },
   "scripts": {
     "start": "PORT=8889 ../node_modules/.bin/react-scripts start",

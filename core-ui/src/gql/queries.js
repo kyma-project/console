@@ -146,8 +146,45 @@ export const GET_APPLICATION = gql`
 export const GET_APPLICATION_COMPASS = gql`
   query Application($id: ID!) {
     application(id: $id) {
+      id
       name
       providerName
+      apiDefinitions {
+        data {
+          id
+          name
+          description
+          targetURL
+          defaultAuth {
+            credential {
+              ... on OAuthCredentialData {
+                clientId
+                clientSecret
+                url
+              }
+            }
+          }
+          spec {
+            data
+            format
+            type
+          }
+          group
+        }
+      }
+      eventDefinitions {
+        data {
+          id
+          name
+          description
+          spec {
+            data
+            format
+            type
+          }
+          group
+        }
+      }
     }
   }
 `;
@@ -157,6 +194,62 @@ export const CHECK_APPLICATION_EXISTS = gql`
     applications(filter: $filter) {
       data {
         name
+      }
+    }
+  }
+`;
+
+export const GET_APPLICATION_WITH_API_DEFINITIONS = gql`
+  query Application($applicationId: ID!) {
+    application(id: $applicationId) {
+      name
+      id
+      apiDefinitions {
+        data {
+          id
+          name
+          description
+          targetURL
+          defaultAuth {
+            credential {
+              ... on OAuthCredentialData {
+                clientId
+                clientSecret
+                url
+              }
+            }
+          }
+          spec {
+            data
+            format
+            type
+          }
+          group
+        }
+        totalCount
+      }
+    }
+  }
+`;
+
+export const GET_APPLICATION_WITH_EVENT_DEFINITIONS = gql`
+  query Application($applicationId: ID!) {
+    application(id: $applicationId) {
+      name
+      id
+      eventDefinitions {
+        data {
+          id
+          name
+          description
+          spec {
+            data
+            format
+            type
+          }
+          group
+        }
+        totalCount
       }
     }
   }

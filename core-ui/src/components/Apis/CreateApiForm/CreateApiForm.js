@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CustomPropTypes } from 'react-shared';
+import { CustomPropTypes, getRefsValues, FileInput } from 'react-shared';
 import {
   TabGroup,
   Tab,
@@ -11,17 +11,18 @@ import {
 } from 'fundamental-react';
 import CredentialsForm, {
   CREDENTIAL_TYPE_NONE,
-} from './../Forms/CredentialForms/CredentialsForm';
+} from '../Forms/CredentialForms/CredentialsForm';
 
 import { createApiData, verifyApiFile } from '../ApiHelpers';
 
-import FileInput from '../../Shared/FileInput/FileInput';
-import ApiForm from './../Forms/ApiForm';
-import { getRefsValues } from 'react-shared';
+import ApiForm from '../Forms/ApiForm';
+import { useMutation } from 'react-apollo';
+import { ADD_API_DEFINITION } from 'gql/mutations';
+import { CompassGqlContext } from 'index';
+import { GET_APPLICATION_COMPASS } from 'gql/queries';
 
 CreateApiForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  addAPI: PropTypes.func.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
@@ -30,12 +31,19 @@ CreateApiForm.propTypes = {
 
 export default function CreateApiForm({
   applicationId,
-  addAPI,
   formElementRef,
   onChange,
   onCompleted,
   onError,
 }) {
+  const compassGqlClient = React.useContext(CompassGqlContext);
+  const [addApi] = useMutation(ADD_API_DEFINITION, {
+    client: compassGqlClient,
+    refetchQueries: () => [
+      { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
+    ],
+  });
+
   const [specProvided, setSpecProvided] = React.useState(false);
 
   const [credentialsType, setCredentialsType] = React.useState(
@@ -102,7 +110,12 @@ export default function CreateApiForm({
     );
 
     try {
-      await addAPI(apiData, applicationId);
+      await addApi({
+        variables: {
+          applicationId,
+          in: apiData,
+        },
+      });
       onCompleted(basicApiData.name, 'API Definition created successfully');
     } catch (error) {
       console.warn(error);
@@ -115,7 +128,7 @@ export default function CreateApiForm({
       onChange={onChange}
       ref={formElementRef}
       onSubmit={handleFormSubmit}
-      style={{ height: '600px' }}
+      style={{ height: '600px', width: '400px' }}
     >
       <TabGroup>
         <Tab key="api-data" id="api-data" title="API data">

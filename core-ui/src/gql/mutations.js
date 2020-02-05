@@ -178,3 +178,53 @@ export const UNBIND_NAMESPACE = gql`
     }
   }
 `;
+
+export const DELETE_API_DEFINITION = gql`
+  mutation deleteApi($id: ID!) {
+    deleteAPIDefinition(id: $id) {
+      name
+    }
+  }
+`;
+
+export const DELETE_EVENT_DEFINITION = gql`
+  mutation deleteEventApi($id: ID!) {
+    deleteEventDefinition(id: $id) {
+      name
+    }
+  }
+`;
+
+export const ADD_API_DEFINITION = gql`
+  mutation addAPI($applicationId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinition(applicationID: $applicationId, in: $in) {
+      name
+    }
+  }
+`;
+
+export const ADD_EVENT_DEFINITION = gql`
+  mutation addEventDefinition($applicationId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinition(applicationID: $applicationId, in: $in) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_API_DEFINITION = gql`
+  mutation updateAPIDefinition($id: ID!, $in: APIDefinitionInput!) {
+    updateAPIDefinition(id: $id, in: $in) {
+      id
+      name
+    }
+  }
+`;
+
+export const UPDATE_EVENT_DEFINITION = gql`
+  mutation updateEventDefinition($id: ID!, $in: EventDefinitionInput!) {
+    updateEventDefinition(id: $id, in: $in) {
+      id
+      name
+    }
+  }
+`;
