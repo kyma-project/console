@@ -14,7 +14,13 @@ const RuntimeDetails = ({ runtimeQuery, unregisterRuntime }) => {
 
   if (!runtime) {
     if (error)
-      return <ResourceNotFound resource="Runtime" breadcrumb="Runtimes" />;
+      return (
+        <ResourceNotFound
+          resource="Runtime"
+          breadcrumb="Runtimes"
+          navigationPath="/"
+        />
+      );
     return '';
   }
   if (error) {

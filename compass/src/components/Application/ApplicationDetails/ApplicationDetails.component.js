@@ -21,7 +21,12 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
     if (loading) return 'Loading...';
     if (error)
       return (
-        <ResourceNotFound resource="Application" breadcrumb="Applications" />
+        <ResourceNotFound
+          resource="Application"
+          breadcrumb="Applications"
+          navigationPath="/"
+          navigationContext="applications"
+        />
       );
     return '';
   }

@@ -51,6 +51,7 @@ const navigation = {
               pathSegment: 'runtimes',
               label: 'Runtimes',
               viewUrl: compassMfUrl + '/runtimes',
+              navigationContext: 'runtimes',
               children: [
                 {
                   pathSegment: 'details',
@@ -69,6 +70,7 @@ const navigation = {
               pathSegment: 'applications',
               label: 'Applications',
               viewUrl: compassMfUrl + '/applications',
+              navigationContext: 'applications',
               children: [
                 {
                   pathSegment: 'details',
@@ -131,6 +133,7 @@ const navigation = {
               pathSegment: 'scenarios',
               label: 'Scenarios',
               viewUrl: compassMfUrl + '/scenarios',
+              navigationContext: 'scenarios',
               children: [
                 {
                   pathSegment: 'details',

@@ -189,7 +189,12 @@ export default function EditEventApiWrapper(props) {
 
   if (!originalEventApi) {
     return (
-      <ResourceNotFound resource="Event Definition" breadcrumb="Applications" />
+      <ResourceNotFound
+        resource="Event Definition"
+        breadcrumb="Application"
+        navigationPath="/"
+        navigationContext="application"
+      />
     );
   }
 

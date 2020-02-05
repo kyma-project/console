@@ -58,7 +58,14 @@ const ApiDetails = ({
   const api = getApiDataFromQuery(application, apiId, eventApiId);
 
   if (!api) {
-    return <ResourceNotFound resource="API Definition" />;
+    return (
+      <ResourceNotFound
+        resource="API Definition"
+        breadcrumb="Application"
+        navigationPath="/"
+        navigationContext="application"
+      />
+    );
   }
 
   return (

@@ -14,7 +14,7 @@ import { nonDeletableScenarioNames } from './../../../../shared/constants';
 function navigateToList() {
   LuigiClient.linkManager()
     .fromClosestContext()
-    .navigate('scenarios');
+    .navigate('');
 }
 
 function removeScenario(schema, scenarioName) {

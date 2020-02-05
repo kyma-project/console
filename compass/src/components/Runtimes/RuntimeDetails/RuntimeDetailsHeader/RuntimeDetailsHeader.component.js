@@ -24,7 +24,7 @@ class RuntimeDetailsHeader extends React.Component {
   navigateToRuntimesList = () => {
     LuigiClient.linkManager()
       .fromClosestContext()
-      .navigate(`/runtimes`);
+      .navigate('');
   };
 
   render = () => {

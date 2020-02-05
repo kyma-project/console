@@ -2,7 +2,12 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Breadcrumb, Panel, PanelBody } from '@kyma-project/react-components';
 
-const ResourceNotFound = ({ resource, breadcrumb }) => (
+const ResourceNotFound = ({
+  resource,
+  breadcrumb,
+  navigationPath,
+  navigationContext,
+}) => (
   <>
     <header className="fd-page__header fd-page__header--columns fd-has-background-color-background-2">
       <section className="fd-section">
@@ -12,7 +17,13 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
               <Breadcrumb.Item
                 name={breadcrumb}
                 url="#"
-                onClick={e => navigateToList(breadcrumb)}
+                onClick={() =>
+                  navigateToList({
+                    breadcrumb,
+                    navigationPath,
+                    navigationContext,
+                  })
+                }
               />
               <Breadcrumb.Item />
             </Breadcrumb>
@@ -28,11 +39,15 @@ const ResourceNotFound = ({ resource, breadcrumb }) => (
   </>
 );
 
-const navigateToList = breadcrumb => {
-  breadcrumb = breadcrumb.toLowerCase();
-  LuigiClient.linkManager()
-    .fromContext('tenant')
-    .navigate(`/${breadcrumb}`);
+const navigateToList = ({ breadcrumb, navigationPath, navigationContext }) => {
+  const path = navigationPath ? navigationPath : `/${breadcrumb.toLowerCase()}`;
+  navigationContext
+    ? LuigiClient.linkManager()
+        .fromContext(navigationContext)
+        .navigate(path)
+    : LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(path);
 };
 
 export default ResourceNotFound;
