@@ -30,7 +30,8 @@ var config = {
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   disabledNavigationNodes: '',
   systemNamespaces:
-    'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system'
+    'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
+  compassDefaultTenant: ''
 };
 
 if (clusterConfig) {
@@ -575,7 +576,7 @@ Promise.all(initPromises)
           idToken: token,
           backendModules,
           systemNamespaces,
-          tenantId: '3e64ebae-38b5-46a0-b1ed-9ccee153a0ae', // temporary solution, untill backend doesn't require it
+          tenantId: config.compassDefaultTenant,
           showSystemNamespaces:
             localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
