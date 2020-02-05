@@ -575,6 +575,7 @@ Promise.all(initPromises)
           idToken: token,
           backendModules,
           systemNamespaces,
+          tenantId: '3e64ebae-38b5-46a0-b1ed-9ccee153a0ae', // temporary solution, untill backend doesn't require it
           showSystemNamespaces:
             localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
