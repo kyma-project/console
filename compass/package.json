@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@kyma-project/luigi-core": "^0.7.3",
-    "fundamental-react": "1.0.0-rc.0",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
     "xml-js": "^1.6.11"

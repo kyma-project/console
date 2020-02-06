@@ -19,7 +19,7 @@ export const DEFAULT_PERIOD = PERIODS[2];
 export const LOG_LABEL_CATEGORIES = [
   'namespace',
   'function',
-  'container_name',
+  'container',
   'app',
   'chart',
   'job',

@@ -43,7 +43,7 @@ describe('BindNamespaceModal', () => {
     expect(
       queryByText('Create Namespace binding for Application'),
     ).toBeInTheDocument();
-  });
+  }, 10000);
 
   it('shows a list of namespaces to bind', async () => {
     const { link } = createMockLink([mockNamespaces]);
@@ -64,7 +64,7 @@ describe('BindNamespaceModal', () => {
     expect(queryByText(exampleNamespaces[0].name)).not.toBeInTheDocument();
     // namespace not bound to an app should be shown
     expect(queryByText(exampleNamespaces[1].name)).toBeInTheDocument();
-  });
+  }, 10000);
 
   it('shows an error on failure', async () => {
     const { link } = createMockLink([mockNamespacesError]);
@@ -84,7 +84,7 @@ describe('BindNamespaceModal', () => {
 
     const errorMessage = mockNamespacesError.error.message;
     expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
-  });
+  }, 10000);
 
   it("shows the 'no namespaces available' message if all namespaces are already bound to an app", async () => {
     const { link } = createMockLink([mockNamespaces]);
@@ -107,5 +107,5 @@ describe('BindNamespaceModal', () => {
     await waitForDomChange();
 
     expect(queryByText('No Namespaces avaliable to bind')).toBeInTheDocument();
-  });
+  }, 10000);
 });

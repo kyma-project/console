@@ -1,7 +1,7 @@
 const settings = {
   header: {
     logo: '/compass-logo.png',
-    title: 'Compass',
+    title: 'Management Plane',
     favicon: '/compass-logo.png',
   },
 };

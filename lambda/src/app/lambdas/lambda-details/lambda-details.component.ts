@@ -1039,7 +1039,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
         .withParams({
           function: this.lambda.metadata.name,
           namespace: this.namespace,
-          container_name: this.lambda.metadata.name,
+          container: this.lambda.metadata.name,
           compact: 'true',
         })
         .openAsSplitView('/home/cmf-logs',{title: 'Logs', size: 40, collapsed: true});

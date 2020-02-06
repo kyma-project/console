@@ -18,13 +18,7 @@ export default compose(
   })),
   graphql(SET_RUNTIME_SCENARIOS, {
     props: ({ mutate }) => ({
-      setRuntimeScenarios: async (id, scenarios) =>
-        await mutate({
-          variables: {
-            id,
-            scenarios,
-          },
-        }),
+      setRuntimeScenarios: async variables => await mutate(variables),
     }),
   }),
   graphql(DELETE_RUNTIME_SCENARIOS_LABEL, {

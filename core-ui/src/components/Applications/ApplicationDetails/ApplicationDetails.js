@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
 import { Badge, InlineHelp } from 'fundamental-react';
 
 import {
@@ -11,11 +10,16 @@ import {
   Labels,
   EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
+
+import { useQuery } from '@apollo/react-hooks';
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
+import { CompassGqlContext } from 'index';
+
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
+import EventApiList from 'components/Apis/EventApiList/EventApiList';
+import ApiList from 'components/Apis/ApiList/ApiList';
 import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
-import { CompassGqlContext } from 'index';
 import './ApplicationDetails.scss';
 
 const ApplicationDetails = ({ appId }) => {
@@ -45,7 +49,7 @@ const ApplicationDetails = ({ appId }) => {
   useEffect(() => {
     if (kymaQuery.error) {
       notificationManager.notifyError({
-        content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
+        content: `Could not fetch partial Application data due to an error: ${kymaQuery.error.message}`,
       });
     }
   }, [kymaQuery, notificationManager]);
@@ -68,6 +72,9 @@ const ApplicationDetails = ({ appId }) => {
     return <EntryNotFound entryType="Application" entryId={appId} />;
   }
 
+  const application = compassQuery.data.application;
+  const apis = application.apiDefinitions.data;
+  const eventApis = application.eventDefinitions.data;
   return (
     <article className="application-details">
       <ApplicationDetailsHeader
@@ -84,6 +91,8 @@ const ApplicationDetails = ({ appId }) => {
       ) : (
         ''
       )}
+      <ApiList applicationId={appId} apis={apis} />
+      <EventApiList applicationId={appId} eventApis={eventApis} />
     </article>
   );
 };
