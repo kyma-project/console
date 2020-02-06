@@ -5,11 +5,14 @@ import { EMPTY_TEXT_PLACEHOLDER } from 'react-shared';
 export default function ApplicationStatus({ application }) {
   const status =
     application === null
-      ? 'NOT_INSTALLED'
-      : (application && application.status) || EMPTY_TEXT_PLACEHOLDER;
+      ? STATUSES.NOT_INSTALLED
+      : application && application.status;
 
   switch (status) {
-    case 'NOT_INSTALLED':
+    case null:
+    case undefined:
+      return EMPTY_TEXT_PLACEHOLDER;
+    case STATUSES.NOT_INSTALLED:
       return (
         <p>
           <Badge disabled modifier="filled">
@@ -28,3 +31,8 @@ export default function ApplicationStatus({ application }) {
       return <Badge modifier="filled">{status}</Badge>;
   }
 }
+
+export const STATUSES = {
+  NOT_INSTALLED: 'NOT_INSTALLED',
+  INSTALLED: 'INSTALLED',
+};

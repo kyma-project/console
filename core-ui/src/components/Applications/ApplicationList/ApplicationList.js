@@ -18,12 +18,9 @@ import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
 import './ApplicationList.scss';
-import ApplicationStatus from '../ApplicationStatus/ApplicationStatus';
-
-const STATUSES = {
-  NOT_INSTALLED: 'NOT_INSTALLED',
-  INSTALLED: 'INSTALLED',
-};
+import ApplicationStatus, {
+  STATUSES,
+} from '../ApplicationStatus/ApplicationStatus';
 
 function getSortedApplications(applications) {
   return applications.sort((app1, app2) => {

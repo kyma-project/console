@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import ApplicationStatus from '../ApplicationStatus/ApplicationStatus';
-
 import {
   Spinner,
   PageHeader,
