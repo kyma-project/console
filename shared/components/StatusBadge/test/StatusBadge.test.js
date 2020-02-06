@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
-import StatusBadge from '../StatusBadge';
 import React from 'react';
+import { StatusBadge } from '../StatusBadge';
 
 describe('StatusBadge', () => {
   it('should render loading state initially', () => {
