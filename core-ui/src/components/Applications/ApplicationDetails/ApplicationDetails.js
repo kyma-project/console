@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Badge, InlineHelp } from 'fundamental-react';
+import ApplicationStatus from '../ApplicationStatus/ApplicationStatus';
 
 import {
   Spinner,
@@ -63,7 +63,7 @@ const ApplicationDetails = ({ appId }) => {
         });
       },
     });
-  }, [kymaQuery, compassQuery, app]);
+  }, [kymaQuery, compassQuery, app, appId]);
 
   if (compassQuery.loading || kymaQuery.loading) return <Spinner />;
 
@@ -105,7 +105,7 @@ function ApplicationDetailsHeader({ app }) {
       actions={<ConnectApplicationModal applicationId={app.id} />}
     >
       <PageHeader.Column title="Status" columnSpan={null}>
-        {Status(app)}
+        <ApplicationStatus application={app} />
       </PageHeader.Column>
       <PageHeader.Column title="Description" columnSpan={null}>
         {app.description || EMPTY_TEXT_PLACEHOLDER}
@@ -118,32 +118,6 @@ function ApplicationDetailsHeader({ app }) {
       </PageHeader.Column>
     </PageHeader>
   );
-}
-
-function Status(application) {
-  const status =
-    application === null
-      ? 'NOT_INSTALLED'
-      : (application && application.status) || EMPTY_TEXT_PLACEHOLDER;
-  switch (status) {
-    case 'NOT_INSTALLED':
-      return (
-        <p>
-          <Badge disabled modifier="filled">
-            {status}
-          </Badge>
-          <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
-        </p>
-      );
-    case 'SERVING':
-      return (
-        <Badge type="success" modifier="filled">
-          {status}
-        </Badge>
-      );
-    default:
-      return <Badge modifier="filled">{status}</Badge>;
-  }
 }
 
 ApplicationDetails.propTypes = {
