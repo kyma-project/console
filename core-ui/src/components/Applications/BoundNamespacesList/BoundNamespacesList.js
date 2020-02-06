@@ -33,7 +33,17 @@ export default function BoundNamespacesList({ data, appName }) {
             buttonDismiss: 'Cancel',
           })
           .then(() => {
-            unbindNamespace({ variables: { namespace, application: appName } })
+            unbindNamespace({
+              variables: { namespace, application: appName },
+              refetchQueries: [
+                {
+                  query: GET_APPLICATION,
+                  variables: {
+                    name: appName,
+                  },
+                },
+              ],
+            })
               .then(() => {
                 notificationManager.notifySuccess({
                   content: `Namespace ${namespace} unbound successfully`,

@@ -43,12 +43,13 @@ const ApplicationDetails = ({ appId }) => {
     },
     fetchPolicy: 'cache-and-network',
     skip: !app.name,
-    onCompleted: data => setApp({ ...app, ...data.application }),
+
     onError: e =>
       notificationManager.notifyError({
         content: `Could not fatch partial Application data due to an error: ${e.message}`,
       }),
   });
+
   useEffect(() => {
     if (!kymaQuery.subscribeToMore || !app.name) return;
     kymaQuery.subscribeToMore({
@@ -90,11 +91,10 @@ const ApplicationDetails = ({ appId }) => {
   return (
     <article className="application-details">
       <ApplicationDetailsHeader app={app} />
-      {app.enabledInNamespaces && (
+      {kymaQuery.data && kymaQuery.data.application && (
         <BoundNamespacesList
-          data={app.enabledInNamespaces}
+          data={kymaQuery.data.application.enabledInNamespaces || []}
           appName={app.name}
-          refetch={kymaQuery && kymaQuery.refetch}
         />
       )}
       <ApiList applicationId={appId} apis={apis} />

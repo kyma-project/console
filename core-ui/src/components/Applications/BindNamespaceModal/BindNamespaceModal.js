@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { Modal, useNotification } from 'react-shared';
-import { GET_NAMESPACES_NAMES, GET_APPLICATION } from 'gql/queries';
+import {
+  GET_NAMESPACES_NAMES,
+  GET_APPLICATION,
+  GET_KYMA_APPLICATIONS,
+} from 'gql/queries';
 import { BIND_NAMESPACE } from 'gql/mutations';
 
 export default function BindNamespaceModal({ appName, boundNamespaces }) {

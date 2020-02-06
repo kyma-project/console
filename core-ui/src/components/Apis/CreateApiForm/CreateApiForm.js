@@ -39,7 +39,7 @@ export default function CreateApiForm({
   const compassGqlClient = React.useContext(CompassGqlContext);
   const [addApi] = useMutation(ADD_API_DEFINITION, {
     client: compassGqlClient,
-    refetchQueries: () => [
+    refetchQueries: [
       { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
     ],
   });

@@ -30,7 +30,7 @@ export default function CreateEventForm({
   const compassGqlClient = React.useContext(CompassGqlContext);
   const [addEventApi] = useMutation(ADD_EVENT_DEFINITION, {
     client: compassGqlClient,
-    refetchQueries: () => [
+    refetchQueries: [
       { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
     ],
   });
