@@ -18,6 +18,10 @@ jest.mock('@kyma-project/luigi-client', () => ({
   getContext: () => ({
     showSystemNamespaces: true,
   }),
+  uxManager: () => ({
+    addBackdrop: jest.fn(),
+    removeBackdrop: jest.fn(),
+  }),
 }));
 
 jest.mock('index', () => {

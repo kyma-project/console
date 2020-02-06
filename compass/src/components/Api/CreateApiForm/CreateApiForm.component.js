@@ -89,15 +89,17 @@ export default function CreateApiForm({
     e.preventDefault();
 
     const basicApiData = getRefsValues(formValues);
-    const credentials = {
-      type: credentialsType,
-      oAuth: getRefsValues(credentialRefs.oAuth),
-    };
+    const credentials = { oAuth: getRefsValues(credentialRefs.oAuth) };
     const specData = specProvided
       ? { ...spec, type: apiTypeRef.current.value }
       : null;
 
-    const apiData = createApiData(basicApiData, specData, credentials);
+    const apiData = createApiData(
+      basicApiData,
+      specData,
+      credentials,
+      credentialsType,
+    );
 
     try {
       await addAPI(apiData, applicationId);

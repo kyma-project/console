@@ -102,7 +102,7 @@ const Logs = ({ readonlyLabels, isCompact, httpService }) => {
 
       if (!showIstioLogs) {
         streams = [...streams].filter(
-          s => !~s.labels.indexOf('container_name="istio-proxy"'),
+          s => !~s.labels.indexOf('container="istio-proxy"'),
         );
       }
       const logs = streams

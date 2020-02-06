@@ -28,7 +28,7 @@ const Overview = () => {
     >
       <Panel>
         <Panel.Header>
-          <Panel.Head title="Welcome to the Compass UI" />
+          <Panel.Head title="Welcome to the Management Plane UI" />
         </Panel.Header>
         <Panel.Body>
           <div className="logo">
