@@ -3,20 +3,14 @@ import { Badge, InlineHelp } from 'fundamental-react';
 import { EMPTY_TEXT_PLACEHOLDER } from 'react-shared';
 
 export default function ApplicationStatus({ application }) {
-  const status =
-    application === null
-      ? STATUSES.NOT_INSTALLED
-      : application && application.status;
+  const status = (application && application.status) || STATUSES.NOT_INSTALLED;
 
   switch (status) {
-    case null:
-    case undefined:
-      return EMPTY_TEXT_PLACEHOLDER;
     case STATUSES.NOT_INSTALLED:
       return (
         <p>
           <Badge disabled modifier="filled">
-            {status}
+            {STATUSES.NOT_INSTALLED}
           </Badge>
           <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
         </p>

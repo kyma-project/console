@@ -6,6 +6,7 @@ export const exampleAppName = 'test-app-name';
 export const exampleCompassApp = {
   name: exampleAppName,
   providerName: 'test-provider-name',
+  description: 'test-description',
 };
 
 export const exampleKymaApp = {

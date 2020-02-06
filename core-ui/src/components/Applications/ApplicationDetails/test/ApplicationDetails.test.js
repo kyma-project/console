@@ -38,6 +38,7 @@ describe('ApplicationDetails', () => {
     await wait(() => {
       const appName = queryByText(exampleAppName);
       const appStatus = queryByText('NOT_INSTALLED');
+
       const namespaceBindingsList = queryByTestId('namespace-bindings-list');
       expect(appName).toBeInTheDocument();
       expect(appStatus).toBeInTheDocument();
