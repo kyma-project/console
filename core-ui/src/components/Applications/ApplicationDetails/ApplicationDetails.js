@@ -68,14 +68,6 @@ const ApplicationDetails = ({ appId }) => {
     });
   }, [kymaQuery, compassQuery, app, appId]);
 
-  useEffect(() => {
-    if (kymaQuery.error) {
-      notificationManager.notifyError({
-        content: `Could not fetch partial Application data due to an error: ${kymaQuery.error.message}`,
-      });
-    }
-  }, [kymaQuery, notificationManager]);
-
   if (compassQuery.loading || kymaQuery.loading) return <Spinner />;
 
   if (compassQuery.error) {
@@ -88,13 +80,13 @@ const ApplicationDetails = ({ appId }) => {
     );
   }
 
-  if (!app || !app.name) {
+  if (!app || !app.name)
     return <EntryNotFound entryType="Application" entryId={appId} />;
-  }
 
   const application = compassQuery.data.application;
   const apis = application.apiDefinitions.data;
   const eventApis = application.eventDefinitions.data;
+
   return (
     <article className="application-details">
       <ApplicationDetailsHeader app={app} />
