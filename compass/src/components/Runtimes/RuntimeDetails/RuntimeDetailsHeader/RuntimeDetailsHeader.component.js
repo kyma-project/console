@@ -1,19 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActionBar } from 'fundamental-react/ActionBar';
-import {
-  Button,
-  Breadcrumb,
-  Panel,
-  PanelGrid,
-} from '@kyma-project/react-components';
+import { Panel, PanelGrid } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { handleDelete } from 'react-shared';
-
-import StatusBadge from '../../../Shared/StatusBadge/StatusBadge';
+import { PageHeader, StatusBadge, EMPTY_TEXT_PLACEHOLDER } from 'react-shared';
 import '../../../../shared/styles/header.scss';
-import { EMPTY_TEXT_PLACEHOLDER } from '../../../../shared/constants';
 
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {
@@ -43,53 +34,24 @@ class RuntimeDetailsHeader extends React.Component {
       );
     };
 
+    const breadcrumbItems = [{ name: 'Runtimes', path: '/' }, { name: '' }];
+
     return (
       <>
-        <header className="fd-has-background-color-background-2">
-          <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-            <section>
-              <Breadcrumb>
-                <Breadcrumb.Item
-                  name="Runtimes"
-                  url="#"
-                  onClick={this.navigateToRuntimesList}
-                />
-                <Breadcrumb.Item />
-              </Breadcrumb>
-              <ActionBar.Header title={name} />
-            </section>
-            <ActionBar.Actions>
-              <Button
-                onClick={() =>
-                  handleDelete(
-                    'Runtime',
-                    id,
-                    name,
-                    this.props.unregisterRuntime,
-                    this.navigateToRuntimesList,
-                  )
-                }
-                type="negative"
-                option="light"
-              >
-                Delete
-              </Button>
-            </ActionBar.Actions>
-          </section>
-          <PanelGrid nogap cols={3}>
-            {status && (
-              <PanelEntry
-                title="Status"
-                content={<StatusBadge status={status.condition} />}
-              />
-            )}
+        <PageHeader breadcrumbItems={breadcrumbItems} title={name} />
+        <PanelGrid nogap cols={3}>
+          {status && (
             <PanelEntry
-              title="Description"
-              content={description ? description : EMPTY_TEXT_PLACEHOLDER}
+              title="Status"
+              content={<StatusBadge status={status.condition} />}
             />
-            <PanelEntry title="ID" content={id} />
-          </PanelGrid>
-        </header>
+          )}
+          <PanelEntry
+            title="Description"
+            content={description ? description : EMPTY_TEXT_PLACEHOLDER}
+          />
+          <PanelEntry title="ID" content={id} />
+        </PanelGrid>
       </>
     );
   };

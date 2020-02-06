@@ -16,6 +16,7 @@ export { FileInput } from './components/FileInput/FileInput';
 export {
   ResourceNotFound,
 } from './components/ResourceNotFound/ResourceNotFound';
+export { StatusBadge } from './components/StatusBadge/StatusBadge';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 

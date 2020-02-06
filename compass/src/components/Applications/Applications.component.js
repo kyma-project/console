@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Counter } from 'fundamental-react/Badge';
 import LuigiClient from '@kyma-project/luigi-client';
+import { Popover, Menu, Button } from 'fundamental-react';
 
+import {
+  StatusBadge,
+  GenericList,
+  handleDelete,
+  PageHeader,
+  EMPTY_TEXT_PLACEHOLDER,
+} from 'react-shared';
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
 import CreateApplicationFromTemplateModal from './CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
-import StatusBadge from '../Shared/StatusBadge/StatusBadge';
-import { GenericList, handleDelete, PageHeader } from 'react-shared';
-import { EMPTY_TEXT_PLACEHOLDER } from '../../shared/constants';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
-import { Popover, Menu, Button } from 'fundamental-react';
 
 class Applications extends React.Component {
   static propTypes = {

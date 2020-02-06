@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge } from 'fundamental-react/Badge';
 
-const StatusBadge = ({ status }) => {
+export const StatusBadge = ({ status }) => {
   let type;
 
   switch (status) {
@@ -22,5 +22,3 @@ const StatusBadge = ({ status }) => {
 
   return <Badge type={type}>{status}</Badge>;
 };
-
-export default StatusBadge;
