@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Badge, InlineHelp } from 'fundamental-react';
@@ -18,7 +18,6 @@ import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicati
 import { CompassGqlContext } from 'index';
 import './ApplicationDetails.scss';
 import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
-import handleApplicationEvent from './wsHandler';
 
 const ApplicationDetails = ({ appId }) => {
   const notificationManager = useNotification();
@@ -30,54 +29,36 @@ const ApplicationDetails = ({ appId }) => {
     },
     fetchPolicy: 'cache-and-network',
     client: compassGqlClient,
+    onCompleted: data => setApp({ ...app, ...data.application }),
   });
 
-  const appName =
-    compassQuery.data &&
-    compassQuery.data.application &&
-    compassQuery.data.application.name;
+  const [app, setApp] = useState({ id: appId });
 
   const kymaQuery = useQuery(GET_APPLICATION, {
     variables: {
-      name: appName,
+      name: app.name,
     },
     fetchPolicy: 'cache-and-network',
-    skip: !appName,
+    skip: !app.name,
+    onCompleted: data => setApp({ ...app, ...data.application }),
     onError: e =>
       notificationManager.notifyError({
         content: `Could not fatch partial Application data due to an error: ${e.message}`,
       }),
   });
   useEffect(() => {
-    if (!kymaQuery.subscribeToMore || !appName) return;
+    if (!kymaQuery.subscribeToMore || !app.name) return;
     kymaQuery.subscribeToMore({
       document: APPLICATIONS_EVENT_SUBSCRIPTION,
       variables: kymaQuery.variables,
       updateQuery: (prev, { subscriptionData }) => {
-        // compassQuery.refetch();
-        console.log(prev, subscriptionData.data.applicationEvent);
-        setTimeout(compassQuery.refetch, 2000);
-        //  return prev;
-        // return handleApplicationEvent(
-        //   subscriptionData.data.applicationEvent,
-        //   prev,
-        // );
-        // return handleApplicationEvent(
-        //   subscriptionData.data.applicationEvent,
-        //   prev,
-        //   refetchCompassQuery,
-        // );
+        setApp({
+          ...app,
+          ...subscriptionData.data.applicationEvent.application,
+        });
       },
     });
-  }, [kymaQuery, compassQuery, appName]);
-
-  // useEffect(() => {
-  //   if (kymaQuery.error) {
-  //     notificationManager.notifyError({
-  //       content: `Could not fatch partial Application data due to an error: ${kymaQuery.error.message}`,
-  //     });
-  //   }
-  // }, [kymaQuery, notificationManager]);
+  }, [kymaQuery, compassQuery, app]);
 
   if (compassQuery.loading || kymaQuery.loading) return <Spinner />;
 
@@ -91,21 +72,17 @@ const ApplicationDetails = ({ appId }) => {
     );
   }
 
-  if (!compassQuery.data || !compassQuery.data.application) {
+  if (!app || !app.name) {
     return <EntryNotFound entryType="Application" entryId={appId} />;
   }
 
   return (
     <article className="application-details">
-      <ApplicationDetailsHeader
-        kymaData={kymaQuery.data && kymaQuery.data.application}
-        compassData={compassQuery.data && compassQuery.data.application}
-        appId={appId}
-      />
+      <ApplicationDetailsHeader app={app} />
       {kymaQuery.data && kymaQuery.data.application ? (
         <BoundNamespacesList
-          data={kymaQuery.data.application.enabledInNamespaces}
-          appName={kymaQuery.data.application.name}
+          data={app.enabledInNamespaces || []}
+          appName={app.name}
           refetch={kymaQuery && kymaQuery.refetch}
         />
       ) : null}
@@ -115,24 +92,24 @@ const ApplicationDetails = ({ appId }) => {
 
 const breadcrumbItems = [{ name: 'Applications', path: '/' }, { name: '' }];
 
-function ApplicationDetailsHeader({ kymaData, compassData, appId }) {
+function ApplicationDetailsHeader({ app }) {
   return (
     <PageHeader
-      title={compassData.name}
+      title={app.name || EMPTY_TEXT_PLACEHOLDER}
       breadcrumbItems={breadcrumbItems}
-      actions={<ConnectApplicationModal applicationId={appId} />}
+      actions={<ConnectApplicationModal applicationId={app.id} />}
     >
       <PageHeader.Column title="Status" columnSpan={null}>
-        {Status(kymaData)}
+        {Status(app)}
       </PageHeader.Column>
       <PageHeader.Column title="Description" columnSpan={null}>
-        {(kymaData && kymaData.description) || EMPTY_TEXT_PLACEHOLDER}
+        {app.description || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Provider Name" columnSpan={null}>
-        {compassData.providerName || EMPTY_TEXT_PLACEHOLDER}
+        {app.providerName || EMPTY_TEXT_PLACEHOLDER}
       </PageHeader.Column>
       <PageHeader.Column title="Labels" columnSpan={null}>
-        <Labels labels={kymaData && kymaData.labels} />
+        <Labels labels={app.Labels} />
       </PageHeader.Column>
     </PageHeader>
   );
@@ -152,6 +129,12 @@ function Status(application) {
           </Badge>
           <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
         </p>
+      );
+    case 'SERVING':
+      return (
+        <Badge type="success" modifier="filled">
+          {status}
+        </Badge>
       );
     default:
       return <Badge modifier="filled">{status}</Badge>;

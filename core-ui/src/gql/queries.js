@@ -148,6 +148,7 @@ export const GET_APPLICATION_COMPASS = gql`
     application(id: $id) {
       name
       providerName
+      description
     }
   }
 `;
