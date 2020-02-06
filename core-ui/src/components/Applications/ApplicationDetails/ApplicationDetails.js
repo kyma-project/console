@@ -52,9 +52,14 @@ const ApplicationDetails = ({ appId }) => {
       document: APPLICATIONS_EVENT_SUBSCRIPTION,
       variables: kymaQuery.variables,
       updateQuery: (prev, { subscriptionData }) => {
+        const data = subscriptionData.data.applicationEvent;
+        if (data.type === 'DELETE' && data.application.id === appId) {
+          setApp({ id: appId });
+          return;
+        }
         setApp({
           ...app,
-          ...subscriptionData.data.applicationEvent.application,
+          ...data.application,
         });
       },
     });
