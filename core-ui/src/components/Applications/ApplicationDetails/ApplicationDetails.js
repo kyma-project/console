@@ -90,14 +90,12 @@ const ApplicationDetails = ({ appId }) => {
   return (
     <article className="application-details">
       <ApplicationDetailsHeader app={app} />
-      {kymaQuery.data && kymaQuery.data.application ? (
+      {app.enabledInNamespaces && (
         <BoundNamespacesList
-          data={app.enabledInNamespaces || []}
+          data={app.enabledInNamespaces}
           appName={app.name}
           refetch={kymaQuery && kymaQuery.refetch}
         />
-      ) : (
-        ''
       )}
       <ApiList applicationId={appId} apis={apis} />
       <EventApiList applicationId={appId} eventApis={eventApis} />
