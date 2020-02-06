@@ -1,6 +1,5 @@
 import React from 'react';
 import { Badge, InlineHelp } from 'fundamental-react';
-import { EMPTY_TEXT_PLACEHOLDER } from 'react-shared';
 
 export default function ApplicationStatus({ application }) {
   const status = (application && application.status) || STATUSES.NOT_INSTALLED;

@@ -11,7 +11,6 @@ import {
   EMPTY_TEXT_PLACEHOLDER,
 } from 'react-shared';
 
-import { useQuery } from '@apollo/react-hooks';
 import { GET_APPLICATION, GET_APPLICATION_COMPASS } from 'gql/queries';
 import { CompassGqlContext } from 'index';
 
