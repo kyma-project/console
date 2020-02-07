@@ -1,4 +1,5 @@
 import request from 'request';
+import config from '../config';
 import kymaConsole from '../commands/console';
 import common from '../commands/common';
 import address from '../utils/address';
@@ -6,7 +7,6 @@ import { retry, retryInterval } from '../utils/retry';
 import { testPluggable } from '../setup/test-pluggable';
 import { NamespaceManager } from '../setup/namespace-manager';
 import { k8sApiDeployment, k8sApiService } from './../setup/k8s-api';
-import config from '../config';
 
 let page, browser, namespace;
 let token = ''; // eslint-disable-line no-unused-vars
