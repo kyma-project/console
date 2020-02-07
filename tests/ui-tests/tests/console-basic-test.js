@@ -1,5 +1,4 @@
 import request from 'request';
-import config from '../config';
 import kymaConsole from '../commands/console';
 import common from '../commands/common';
 import address from '../utils/address';
@@ -16,8 +15,6 @@ let token = ''; // eslint-disable-line no-unused-vars
 const REQUIRED_MODULE = 'application';
 const namespaceUnderTest = 'test-expose-api';
 const namespaceInstaller = new NamespaceManager(namespaceUnderTest);
-
-import config from '../config';
 
 if (config.isManagementPlane) {
   describe('Console basic tests', () => {
