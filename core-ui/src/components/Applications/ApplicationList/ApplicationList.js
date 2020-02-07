@@ -113,8 +113,6 @@ export default function ApplicationList() {
           notificationManager,
         ),
     },
-    { name: 'Install', handler: () => {}, skipAction: app => false },
-    { name: 'Uninstall', handler: () => {}, skipAction: app => false },
   ];
 
   const headerRenderer = () => [
