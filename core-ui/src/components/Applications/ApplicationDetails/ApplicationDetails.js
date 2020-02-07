@@ -43,7 +43,7 @@ const ApplicationDetails = ({ appId }) => {
     },
     fetchPolicy: 'cache-and-network',
     skip: !app.name,
-
+    onCompleted: data => setApp({ ...app, ...data.application }),
     onError: e =>
       notificationManager.notifyError({
         content: `Could not fatch partial Application data due to an error: ${e.message}`,
