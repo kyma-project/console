@@ -16,7 +16,7 @@ const REQUIRED_MODULE = 'application';
 const namespaceUnderTest = 'test-expose-api';
 const namespaceInstaller = new NamespaceManager(namespaceUnderTest);
 
-if (config.isManagementPlane) {
+if (!config.isManagementPlane) {
   describe('Console basic tests', () => {
     beforeAll(async () => {
       try {
