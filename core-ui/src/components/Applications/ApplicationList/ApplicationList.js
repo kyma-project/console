@@ -118,7 +118,6 @@ export default function ApplicationList() {
     'Provider name',
     'Status',
     'Bound namespaces',
-    'Connected',
   ];
 
   const rowRenderer = item => {
@@ -139,9 +138,6 @@ export default function ApplicationList() {
             </Badge>
           ))
         : EMPTY_TEXT_PLACEHOLDER,
-      <Badge modifier="filled" disabled>
-        No
-      </Badge>,
     ];
   };
 
