@@ -471,7 +471,10 @@ Promise.all(initPromises)
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
         const cmfs = res[1].clusterMicroFrontends;
-        setInitValues(modules || [], subjectRules || []);
+        setInitValues(
+          (modules && modules.map(m => m.name)) || [],
+          subjectRules || []
+        );
 
         if (cmfs && cmfs.length > 0) {
           clusterMicrofrontendNodes = cmfs
