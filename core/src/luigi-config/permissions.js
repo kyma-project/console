@@ -1,5 +1,5 @@
 import rbacRulesMatched from './rbac-rules-matcher';
-import { selfSubjectRulesReview, config } from './luigi-config';
+import { config } from './luigi-config';
 
 const ADMIN_ONLY_PATH_SEGMENTS = [
   'cmf-applications',
@@ -7,6 +7,14 @@ const ADMIN_ONLY_PATH_SEGMENTS = [
   'cmf-runtimes'
 ];
 const NON_ADMIN_PATH_SEGMENTS = ['cmf-apps'];
+
+let selfSubjectRulesReview = [];
+export let backendModules = [];
+
+export function setInitValues(_backendModules, _selfSubjectRulesReview) {
+  backendModules = _backendModules;
+  selfSubjectRulesReview = _selfSubjectRulesReview;
+}
 
 function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
   let hasPermissions = true;
@@ -52,9 +60,8 @@ function isVisibleForCurrentGroup(node) {
 
 export default function navigationPermissionChecker(nodeToCheckPermissionsFor) {
   const noRulesApplied =
-    nodeToCheckPermissionsFor.requiredPermissions === null ||
-    nodeToCheckPermissionsFor.requiredPermissions === undefined ||
-    nodeToCheckPermissionsFor.requiredPermissions.length === 0;
+    !Array.isArray(nodeToCheckPermissionsFor.requiredPermissions) ||
+    !nodeToCheckPermissionsFor.requiredPermissions.length;
 
   return (
     (noRulesApplied ||

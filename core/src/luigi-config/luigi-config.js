@@ -10,7 +10,10 @@ import {
 } from './navigation-helpers';
 import { communication } from './communication';
 import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
-import navigationPermissionChecker from './permissions';
+import navigationPermissionChecker, {
+  setInitValues,
+  backendModules
+} from './permissions';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
@@ -452,8 +455,6 @@ function getFreshKeys() {
   return fetch('https://dex.' + k8sDomain + '/keys', { cache: 'no-cache' });
 }
 
-let backendModules = [];
-export let selfSubjectRulesReview = [];
 let clusterMicrofrontendNodes = [];
 var initPromises = [getFreshKeys()];
 
@@ -470,14 +471,8 @@ Promise.all(initPromises)
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
         const cmfs = res[1].clusterMicroFrontends;
-        if (modules && modules.length > 0) {
-          modules.forEach(backendModule => {
-            backendModules.push(backendModule.name);
-          });
-        }
-        if (subjectRules && subjectRules.length > 0) {
-          selfSubjectRulesReview = subjectRules;
-        }
+        setInitValues(modules || [], subjectRules || []);
+
         if (cmfs && cmfs.length > 0) {
           clusterMicrofrontendNodes = cmfs
             .filter(cmf => cmf.placement === 'cluster')
