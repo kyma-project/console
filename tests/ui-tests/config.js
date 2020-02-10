@@ -32,6 +32,6 @@ module.exports = {
     ? process.env.OUTSIDE_CLUSTER
     : false,
   kubeConfigPath: process.env.KUBECONFIG ? process.env.KUBECONFIG : undefined,
-  loggingEnabled: process.env.LOGGING_ENABLED || true,
-  isManagementPlane: !!process.env.IS_MANAGEMENT_PLANE,
+  loggingEnabled: process.env.LOGGING_ENABLED || false,
+  isManagementPlane: !!process.env.MANAGEMENT_PLANE_URL,
 };
