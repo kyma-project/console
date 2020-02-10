@@ -1,5 +1,5 @@
 import LuigiClient from '@kyma-project/luigi-client';
-import rbacRulesMatched from './rbac-rules-matcher';
+
 import convertToNavigationTree from './microfrontend-converter';
 import {
   hideDisabledNodes,
@@ -10,13 +10,14 @@ import {
 } from './navigation-helpers';
 import { communication } from './communication';
 import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS } from './queries';
+import navigationPermissionChecker from './permissions';
 
 var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
 var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
 
 var k8sServerUrl = 'https://apiserver.' + k8sDomain;
 
-var config = {
+export const config = {
   domain: 'kyma.local',
   localDomain: 'console-dev.kyma.local',
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
@@ -31,16 +32,9 @@ var config = {
   disabledNavigationNodes: '',
   systemNamespaces:
     'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
-  compassDefaultTenant: ''
+  compassDefaultTenant: '',
+  ...clusterConfig
 };
-
-if (clusterConfig) {
-  for (var propertyName in config) {
-    if (clusterConfig.hasOwnProperty(propertyName)) {
-      config[propertyName] = clusterConfig[propertyName];
-    }
-  }
-}
 
 var token;
 if (localStorage.getItem('luigi.auth')) {
@@ -250,9 +244,9 @@ function getNodes(context) {
     getMicrofrontends(namespace),
     Promise.resolve(window.clusterMicrofrontendNodesForNamespace)
   ])
-    .then(function (values) {
+    .then(function(values) {
       var nodeTree = [...staticNodes];
-      values.forEach(function (val) {
+      values.forEach(function(val) {
         nodeTree = [].concat.apply(nodeTree, val);
       });
 
@@ -292,7 +286,7 @@ const getMicrofrontends = async namespace => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
         }
-        return result.microFrontends.map(function (item) {
+        return result.microFrontends.map(function(item) {
           if (item.navigationNodes) {
             return convertToNavigationTree(
               item.name,
@@ -311,7 +305,7 @@ const getMicrofrontends = async namespace => {
         return [];
       })
       .then(result => {
-        cache[cacheKey] = new Promise(function (resolve) {
+        cache[cacheKey] = new Promise(function(resolve) {
           resolve(result);
         });
         return result;
@@ -320,9 +314,9 @@ const getMicrofrontends = async namespace => {
 };
 
 function fetchFromKyma(url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         resolve(JSON.parse(xmlHttp.response));
       } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
@@ -340,9 +334,9 @@ function fetchFromKyma(url) {
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
+    xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
@@ -374,47 +368,8 @@ function fetchFromGraphQL(query, variables, gracefully) {
   });
 }
 
-function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
-  let hasPermissions = true;
-  if (
-    nodeToCheckPermissionsFor.context &&
-    nodeToCheckPermissionsFor.context.requiredBackendModules &&
-    nodeToCheckPermissionsFor.context.requiredBackendModules.length > 0
-  ) {
-    if (backendModules && backendModules.length > 0) {
-      nodeToCheckPermissionsFor.context.requiredBackendModules.forEach(
-        module => {
-          if (hasPermissions && backendModules.indexOf(module) === -1) {
-            hasPermissions = false;
-          }
-        }
-      );
-    } else {
-      hasPermissions = false;
-    }
-  }
-  return hasPermissions;
-}
-
-function navigationPermissionChecker(nodeToCheckPermissionsFor) {
-  const noRulesApplied =
-    nodeToCheckPermissionsFor.requiredPermissions === null ||
-    nodeToCheckPermissionsFor.requiredPermissions === undefined ||
-    nodeToCheckPermissionsFor.requiredPermissions.length === 0;
-
-  return (
-    (noRulesApplied ||
-      rbacRulesMatched(
-        nodeToCheckPermissionsFor.requiredPermissions,
-        selfSubjectRulesReview
-      )) &&
-    checkRequiredBackendModules(nodeToCheckPermissionsFor)
-  );
-}
-
 function getConsoleInitData() {
-  const gracefully = true;
-  return fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, gracefully);
+  return fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, true);
 }
 
 window.addEventListener('message', e => {
@@ -498,7 +453,7 @@ function getFreshKeys() {
 }
 
 let backendModules = [];
-let selfSubjectRulesReview = [];
+export let selfSubjectRulesReview = [];
 let clusterMicrofrontendNodes = [];
 var initPromises = [getFreshKeys()];
 
@@ -580,7 +535,7 @@ Promise.all(initPromises)
           showSystemNamespaces:
             localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
-        children: function () {
+        children: function() {
           var staticNodes = [
             {
               pathSegment: 'workspace',
@@ -659,7 +614,7 @@ Promise.all(initPromises)
             {
               category: { label: 'Experimental', icon: 'lab' },
               hideFromNav: true
-            },
+            }
           ];
           const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
           const nodeTree = [...staticNodes, ...fetchedNodes];
