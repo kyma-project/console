@@ -14,6 +14,7 @@ const ModalWithForm = ({
   renderForm,
   opened,
   customCloseAction,
+  modalOpeningComponent,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -101,15 +102,15 @@ const ModalWithForm = ({
 
   return (
     <div>
-      <Button
-        glyph={button.glyph || null}
-        option={button.option}
-        onClick={() => {
-          setOpenStatus(true);
-        }}
-      >
-        {button.text}
-      </Button>
+      <div onClick={() => setOpenStatus(true)}>
+        {modalOpeningComponent ? (
+          modalOpeningComponent
+        ) : (
+          <Button glyph={button.glyph || null} option={button.option}>
+            {button.text}
+          </Button>
+        )}
+      </div>
       <Modal
         {...props}
         show={isOpen}
@@ -157,7 +158,8 @@ ModalWithForm.propTypes = {
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
     option: PropTypes.oneOf(['emphasized', 'light']),
-  }).isRequired,
+  }),
+  modalOpeningComponent: PropTypes.node,
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
   customCloseAction: PropTypes.func,

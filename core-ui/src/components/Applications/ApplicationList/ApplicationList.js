@@ -13,10 +13,11 @@ import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
 import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
-import Badge from 'fundamental-react/Badge/Badge';
+import { Popover, Menu, Button, Badge } from 'fundamental-react';
 import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
+import CreateApplicationFromTemplateModal from './../CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
 import './ApplicationList.scss';
 import ApplicationStatus, {
   STATUSES,
@@ -156,11 +157,27 @@ export default function ApplicationList() {
   const RegisterApp = () => (
     <ModalWithForm
       title="Register application"
-      button={{ text: 'Register application', glyph: 'add' }}
+      modalOpeningComponent={<Menu.Item>From scratch</Menu.Item>}
       id="register-application-modal"
       renderForm={props => (
         <RegisterApplicationForm {...props} onCompleted={onCompleted} />
       )}
+    />
+  );
+
+  const extraHeaderContent = (
+    <Popover
+      body={
+        <Menu>
+          <Menu.List>
+            <RegisterApp />
+            <CreateApplicationFromTemplateModal />
+          </Menu.List>
+        </Menu>
+      }
+      control={<Button option="light">Create application...</Button>}
+      widthSizingType="matchTarget"
+      placement="bottom-end"
     />
   );
 
@@ -173,7 +190,7 @@ export default function ApplicationList() {
         entries={getSortedApplications(applicationList)}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
-        extraHeaderContent={<RegisterApp />}
+        extraHeaderContent={extraHeaderContent}
       />
     </article>
   );

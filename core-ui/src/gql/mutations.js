@@ -228,3 +228,11 @@ export const UPDATE_EVENT_DEFINITION = gql`
     }
   }
 `;
+
+export const REGISTER_APPLICATION_FROM_TEMPLATE = gql`
+  mutation registerApplicationFromTemplate($in: ApplicationFromTemplateInput!) {
+    registerApplicationFromTemplate(in: $in) {
+      name
+    }
+  }
+`;

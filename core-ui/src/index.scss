@@ -105,3 +105,32 @@ header.sticky {
 li {
   list-style: none;
 }
+
+/* default modal width */
+.modal-demo-bg {
+  min-width: 400px;
+}
+
+.fd-dropdown[fullwidth=true] {
+  width: 100%;
+
+  .fd-popper__body, .fd-popover {
+    width: 100%;
+  }
+
+  .fd-dropdown__control {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    justify-items: center;
+
+    &::after {
+      // align popover arrow
+      margin-top: -2px;
+    }
+
+    &::before {
+      content: unset;
+    }
+  }
+}

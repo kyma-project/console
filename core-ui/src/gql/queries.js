@@ -255,3 +255,19 @@ export const GET_APPLICATION_WITH_EVENT_DEFINITIONS = gql`
     }
   }
 `;
+
+export const GET_TEMPLATES = gql`
+  query applicationTemplates {
+    applicationTemplates {
+      data {
+        id
+        name
+        applicationInput
+        placeholders {
+          name
+          description
+        }
+      }
+    }
+  }
+`;

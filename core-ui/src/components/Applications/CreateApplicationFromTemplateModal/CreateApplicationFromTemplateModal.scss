@@ -1,0 +1,7 @@
+.create-application__template-form {
+  max-height: 50vh;
+
+  .placeholders-form:not(:empty) {
+    margin-top: 32px;
+  }
+}

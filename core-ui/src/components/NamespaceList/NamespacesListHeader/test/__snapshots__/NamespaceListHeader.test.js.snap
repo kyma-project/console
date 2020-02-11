@@ -71,12 +71,15 @@ exports[`NamespacesListHeader UI Renders with minimal props 1`] = `
       </div>
     </div>
     <div>
-      <button
-        className="fd-button sap-icon--add"
+      <div
         onClick={[Function]}
       >
-        Add new namespace
-      </button>
+        <button
+          className="fd-button sap-icon--add"
+        >
+          Add new namespace
+        </button>
+      </div>
     </div>
   </div>
 </div>
