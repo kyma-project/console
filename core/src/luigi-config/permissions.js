@@ -39,16 +39,13 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
 }
 
 function isVisibleForCurrentGroup(node) {
-  const authObjectRaw = localStorage.getItem('luigi.auth');
-  if (!authObjectRaw) return true; // couldn't get Luigi auth object from localStorage
-
-  const authObject = JSON.parse(authObjectRaw);
+  const authObject = Luigi.auth().store.getAuthData();
   if (
     !authObject ||
     !authObject.profile ||
     !Array.isArray(authObject.profile.groups)
   )
-    return true; // couldn't read groups from localStorage
+    return true; // couldn't read groups from auth object
 
   const isAdmin = authObject.profile.groups.includes(config.adminsGroupName);
 
