@@ -1,7 +1,7 @@
 import { GET_API_RULE, GET_SERVICES } from 'gql/queries';
 import { service1, service2 } from 'testing/servicesMocks';
 import { UPDATE_API_RULE } from 'gql/mutations';
-import { excludedServicesLabels } from 'components/ApiRules/constants';
+import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 
 export const mockNamespace = 'test';
 export const oldHostname = 'unsuitable-snake';
@@ -50,7 +50,7 @@ export const servicesQuery = {
     query: GET_SERVICES,
     variables: {
       namespace: mockNamespace,
-      excludedLabels: excludedServicesLabels,
+      excludedLabels: EXCLUDED_SERVICES_LABELS,
     },
   },
   result: {

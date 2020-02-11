@@ -19,7 +19,7 @@ import { GET_SERVICES, GET_IDP_PRESETS } from '../../../gql/queries';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
-import { excludedServicesLabels } from 'components/ApiRules/constants';
+import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
@@ -63,7 +63,7 @@ export default function ApiRuleForm({
   const servicesQueryResult = useQuery(GET_SERVICES, {
     variables: {
       namespace,
-      excludedLabels: excludedServicesLabels,
+      excludedLabels: EXCLUDED_SERVICES_LABELS,
     },
   });
 
