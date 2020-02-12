@@ -47,7 +47,7 @@ export const Dropdown = ({
       <Popover
         body={optionsList}
         control={control}
-        // widthSizingType="matchTarget"
+        widthSizingType="matchTarget"
         placement="bottom"
       />
     </FdDropdown>
