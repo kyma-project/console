@@ -18,6 +18,7 @@ const auth = {
     loadUserInfo: false,
     logoutUrl: '/logout.html',
   },
+  storage: 'sessionStorage',
 };
 
 export default auth;

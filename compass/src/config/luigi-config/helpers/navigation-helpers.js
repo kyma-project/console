@@ -19,9 +19,9 @@ const getAlternativePath = tenantName => {
 
 export const getToken = () => {
   let token = null;
-  if (localStorage.getItem('luigi.auth')) {
+  if (sessionStorage.getItem('luigi.auth')) {
     try {
-      token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
+      token = JSON.parse(sessionStorage.getItem('luigi.auth')).idToken;
     } catch (e) {
       console.error('Error while reading ID Token: ', e);
     }
