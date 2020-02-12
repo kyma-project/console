@@ -40,8 +40,8 @@ export const config = {
 };
 
 var token;
-if (localStorage.getItem('luigi.auth')) {
-  token = JSON.parse(localStorage.getItem('luigi.auth')).idToken;
+if (sessionStorage.getItem('luigi.auth')) {
+  token = JSON.parse(sessionStorage.getItem('luigi.auth')).idToken;
 }
 
 const consoleViewGroupName = '_console_';
@@ -445,7 +445,7 @@ function getCorrespondingNamespaceLocation(namespaceName) {
 
 function relogin() {
   saveCurrentLocation();
-  localStorage.removeItem('luigi.auth');
+  sessionStorage.removeItem('luigi.auth');
   location.reload();
 }
 
@@ -531,7 +531,7 @@ Promise.all(initPromises)
           systemNamespaces,
           tenantId: config.compassDefaultTenant,
           showSystemNamespaces:
-            localStorage.getItem('console.showSystemNamespaces') === 'true'
+          localStorage.getItem('console.showSystemNamespaces') === 'true'
         },
         children: function() {
           var staticNodes = [
@@ -683,7 +683,8 @@ Promise.all(initPromises)
             onAuthError: err => {
               console.log('authErrorHandler 1', err);
             }
-          }
+          },
+          storage: 'sessionStorage'
         },
         communication,
         navigation,
