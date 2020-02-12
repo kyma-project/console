@@ -1,4 +1,4 @@
-import { GET_TEMPLATES } from 'gql/queries';
+import { GET_TEMPLATES, GET_COMPASS_APPLICATIONS } from 'gql/queries';
 import { REGISTER_APPLICATION_FROM_TEMPLATE } from 'gql/mutations';
 
 const templateNoPlaceholders = {
@@ -54,6 +54,25 @@ export const registerApplicationMutation = {
     data: {
       registerApplicationFromTemplate: {
         name: 'app-name-2',
+      },
+    },
+  }),
+};
+
+export const compassApplicationRefetchQuery = {
+  request: {
+    query: GET_COMPASS_APPLICATIONS,
+  },
+  result: jest.fn().mockReturnValue({
+    data: {
+      applications: {
+        data: [
+          {
+            id: '1',
+            name: 'app-name-2',
+            providerName: 'providerName',
+          },
+        ],
       },
     },
   }),

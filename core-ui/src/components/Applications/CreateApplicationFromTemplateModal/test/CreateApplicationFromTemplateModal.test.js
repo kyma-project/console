@@ -10,12 +10,14 @@ import { MockedProvider } from '@apollo/react-testing';
 import {
   getAppTemplatesQuery,
   registerApplicationMutation,
-  sendNotification,
+  compassApplicationRefetchQuery,
 } from './mocks';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
 }));
+
+jest.mock('index', () => ({ CompassGqlContext: {} }));
 
 describe('CreateApplicationFromTemplateModal', () => {
   //Warning: `NaN` is an invalid value for the `left` css style property.
@@ -84,7 +86,7 @@ describe('CreateApplicationFromTemplateModal', () => {
         mocks={[
           getAppTemplatesQuery,
           registerApplicationMutation,
-          sendNotification,
+          compassApplicationRefetchQuery,
         ]}
         addTypename={false}
         resolvers={{}}
