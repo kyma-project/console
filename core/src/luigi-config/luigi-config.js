@@ -457,6 +457,7 @@ function getFreshKeys() {
 
 let clusterMicrofrontendNodes = [];
 var initPromises = [getFreshKeys()];
+let kymaVersion;
 
 if (token) {
   initPromises.push(getConsoleInitData());
@@ -471,6 +472,7 @@ Promise.all(initPromises)
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
         const cmfs = res[1].clusterMicroFrontends;
+        kymaVersion = `Kyma version: ${res[1].kymaVersion}`;
         setInitValues(
           (modules && modules.map(m => m.name)) || [],
           subjectRules || []
@@ -693,6 +695,7 @@ Promise.all(initPromises)
         },
         settings: {
           responsiveNavigation: 'simpleMobileOnly',
+          sideNavFooterText: kymaVersion,
           header: () => {
             const logo =
               clusterConfig && clusterConfig.headerLogoUrl
