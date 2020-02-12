@@ -28,8 +28,14 @@ exports[`NamespaceDetailsCard Displays "SYSTEM" badge 1`] = `
           className="fd-popover__control"
         >
           <button
+            aria-controls="fd-3dlxDpVRT"
+            aria-expanded={false}
+            aria-haspopup={true}
             className="fd-button--light sap-icon--overflow popover-control"
             onClick={[Function]}
+            onKeyPress={[Function]}
+            role="button"
+            tabIndex={0}
           />
         </div>
       </div>
@@ -96,8 +102,14 @@ exports[`NamespaceDetailsCard Displays overlay when status is "Terminating" 1`] 
           className="fd-popover__control"
         >
           <button
+            aria-controls="fd-1Kpc8fwrM"
+            aria-expanded={false}
+            aria-haspopup={true}
             className="fd-button--light sap-icon--overflow popover-control"
             onClick={[Function]}
+            onKeyPress={[Function]}
+            role="button"
+            tabIndex={0}
           />
         </div>
       </div>
@@ -182,8 +194,14 @@ exports[`NamespaceDetailsCard Renders with minimal props 1`] = `
           className="fd-popover__control"
         >
           <button
+            aria-controls="fd-IEpjjmul"
+            aria-expanded={false}
+            aria-haspopup={true}
             className="fd-button--light sap-icon--overflow popover-control"
             onClick={[Function]}
+            onKeyPress={[Function]}
+            role="button"
+            tabIndex={0}
           />
         </div>
       </div>
