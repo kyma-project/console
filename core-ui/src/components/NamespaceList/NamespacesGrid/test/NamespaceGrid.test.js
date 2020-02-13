@@ -1,35 +1,33 @@
-// import React from 'react';
-// import renderer from 'react-test-renderer';
-// import { MockedProvider } from '@apollo/react-testing';
+import React from 'react';
+import { render } from '@testing-library/react';
 
-// import NamespacesGrid from './../NamespacesGrid';
+import NamespacesGrid from './../NamespacesGrid';
 
-// const sampleNamespaces = [
-//   {
-//     name: 'a',
-//     status: 'Active',
-//     pods: [{ status: 'ACTIVE' }],
-//     isSystemNamespace: false,
-//     applications: [{}, {}],
-//   },
-//   {
-//     name: 'b',
-//     status: 'Active',
-//     pods: [{ status: 'ACTIVE' }],
-//     isSystemNamespace: true,
-//     applications: [{}, {}, {}],
-//   },
-// ];
+const sampleNamespaces = [
+  {
+    name: 'first-namespace',
+    status: 'Active',
+    pods: [{ status: 'ACTIVE' }],
+    isSystemNamespace: false,
+    applications: [{}, {}],
+  },
+  {
+    name: 'second-namespace',
+    status: 'Active',
+    pods: [{ status: 'ACTIVE' }],
+    isSystemNamespace: true,
+    applications: [{}, {}, {}],
+  },
+];
 
 describe('NamespaceGrid', () => {
-  test.todo('Renders with minimal props');
-  // it('Renders with minimal props', () => {
-  //   const component = renderer.create(
-  //     <MockedProvider>
-  //       <NamespacesGrid namespaces={sampleNamespaces} />
-  //     </MockedProvider>,
-  //   );
-  //   const tree = component.toJSON();
-  //   expect(tree).toMatchSnapshot();
-  // });
+  it('Renders namespaces', () => {
+    const { queryByText, queryAllByRole } = render(
+      <NamespacesGrid namespaces={sampleNamespaces} />,
+    );
+
+    expect(queryAllByRole('gridcell').length).toBe(2);
+    expect(queryByText('first-namespace')).toBeInTheDocument();
+    expect(queryByText('second-namespace')).toBeInTheDocument();
+  });
 });

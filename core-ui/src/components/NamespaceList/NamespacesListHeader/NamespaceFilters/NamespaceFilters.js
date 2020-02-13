@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Menu, Button } from '@kyma-project/react-components';
-import { Popover, FormInput, Counter } from 'fundamental-react';
+import { Menu, Button, Popover, FormInput, Counter } from 'fundamental-react';
 
 NamespaceFilters.funcpropTypes = {
   filters: PropTypes.arrayOf(PropTypes.object.isRequired),
@@ -40,7 +39,7 @@ export default function NamespaceFilters({ filters, updateFilters }) {
   const activeFilters = filters.filter(l => l.isSelected);
 
   const popoverControl = (
-    <Button glyph="filter" option="light">
+    <Button glyph="filter" option="light" aria-label="open-filters">
       {!!activeFilters.length && (
         <Counter className="fd-has-background-color-status-4" notification>
           {activeFilters.length}
@@ -54,6 +53,7 @@ export default function NamespaceFilters({ filters, updateFilters }) {
       body={popoverBody}
       control={popoverControl}
       placement="bottom-end"
+      widthSizingType="matchTarget"
       noArrow
     />
   );

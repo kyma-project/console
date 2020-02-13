@@ -6,8 +6,7 @@ import classNames from 'classnames';
 import { DELETE_NAMESPACE } from './../../../../gql/mutations';
 import { useMutation } from '@apollo/react-hooks';
 
-import { Button, Menu, Panel } from '@kyma-project/react-components';
-import { Badge, Popover } from 'fundamental-react';
+import { Button, Menu, Panel, Badge, Popover } from 'fundamental-react';
 import './NamespaceDetailsCard.scss';
 
 NamespaceDetailsCard.propTypes = {
@@ -99,6 +98,7 @@ export default function NamespaceDetailsCard({
       glyph="overflow"
       option="light"
       className="popover-control"
+      aria-label="namespace-actions"
     />
   );
 
@@ -117,6 +117,7 @@ export default function NamespaceDetailsCard({
 
   return (
     <Panel
+      role="gridcell"
       className={panelClass}
       onClick={() => navigateToNamespaceDetails(namespaceName)}
     >

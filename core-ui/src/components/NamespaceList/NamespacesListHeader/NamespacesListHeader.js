@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, Search } from '@kyma-project/react-components';
+import { Panel, FormInput } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import NamespaceFilters from './NamespaceFilters/NamespaceFilters';
@@ -36,10 +36,10 @@ export default function NamespacesListHeader({
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
       <span className="fd-has-type-4">Namespaces</span>
       <div className="namespace-list-actions">
-        <Search
+        <FormInput
           onChange={e => updateSearchPhrase(e.target.value)}
-          data-test-id="namespace-seach-input"
-          className="search--white"
+          placeholder="Search..."
+          className="namespace-list-header__search"
         />
         <NamespaceFilters
           filters={labelFilters}

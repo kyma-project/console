@@ -1,18 +1,26 @@
-// import React from 'react';
-// import renderer from 'react-test-renderer';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
 
-// import NamespaceFilters from './../NamespaceFilters';
+import NamespaceFilters from './../NamespaceFilters';
 
 describe('NamespaceFilters', () => {
-  test.todo('Renders with minimal props');
-  // it('Renders with minimal props', () => {
-  //   const component = renderer.create(
-  //     <NamespaceFilters
-  //       filters={[{ name: '1', name: '2' }]}
-  //       updateFilters={() => {}}
-  //     />,
-  //   );
-  //   const tree = component.toJSON();
-  //   expect(tree).toMatchSnapshot();
-  // });
+  it('Renders search labels', () => {
+    //for Popovers's Warning: `NaN` is an invalid value for the `left` css style property.
+    console.error = jest.fn();
+
+    const { queryByText, queryByLabelText } = render(
+      <NamespaceFilters
+        filters={[{ name: 'first-label' }, { name: 'second-label' }]}
+        updateFilters={() => {}}
+      />,
+    );
+
+    const labelsButton = queryByLabelText('open-filters');
+    expect(labelsButton).toBeInTheDocument();
+    fireEvent.click(labelsButton);
+
+    ['first-label', 'second-label'].forEach(name =>
+      expect(queryByText(name)).toBeInTheDocument(),
+    );
+  });
 });

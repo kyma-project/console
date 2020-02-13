@@ -4,6 +4,10 @@
     justify-content: space-between;
   }
 
+  .namespace-list-actions {
+    min-width: 500px;
+  }
+
   .namespace-list-actions > * {
     margin-left: 16px;
     display: inline-flex;
@@ -14,17 +18,8 @@
   content: unset !important;
 }
 
-// TODO Delete after upgrading search
-.search--white.fd-search-input {
-  .fd-input {
-    color: var(--fd-color-text-1);
-    background-color: var(--fd-forms-background-color);
-    border-color: var(--fd-forms-border-color);
-  }
-  .fd-input-group__addon{
-    border-color: var(--fd-forms-border-color);
-    background-color: var(--fd-color-neutral-1);
-  }
+.namespace-list-header__search {
+  max-width: 200px;
 }
 
 #add-namespace-modal {

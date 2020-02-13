@@ -1,32 +1,37 @@
-// import React from 'react';
-// import renderer from 'react-test-renderer';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
 
-// import NamespacesListHeader from './../NamespacesListHeader';
+import NamespacesListHeader from '../NamespacesListHeader';
 
-// jest.mock('@kyma-project/luigi-client', () => ({
-//   getNodeParams: () => ({
-//     showModal: 'false',
-//   }),
-//   uxManager: () => ({
-//     addBackdrop: () => {},
-//     removeBackdrop: () => {},
-//   }),
-//   linkManager: () => ({
-//     navigate: () => {},
-//   }),
-// }));
+jest.mock('@kyma-project/luigi-client', () => ({
+  getNodeParams: () => ({
+    showModal: 'false',
+  }),
+  uxManager: () => ({
+    addBackdrop: () => {},
+    removeBackdrop: () => {},
+  }),
+  linkManager: () => ({
+    navigate: () => {},
+  }),
+}));
 
-describe('NamespacesListHeader UI', () => {
-  test.todo('Renders with minimal props');
-  // it('Renders with minimal props', () => {
-  //   const component = renderer.create(
-  //     <NamespacesListHeader
-  //       labelFilters={[{ name: '1' }, { name: '2' }]}
-  //       updateSearchPhrase={() => {}}
-  //       setLabelFilters={() => {}}
-  //     />,
-  //   );
-  //   const tree = component.toJSON();
-  //   expect(tree).toMatchSnapshot();
-  // });
+describe('NamespacesListHeader', () => {
+  it('Fires callback on input field change', () => {
+    const mockCallback = jest.fn();
+
+    const { getByPlaceholderText } = render(
+      <NamespacesListHeader
+        labelFilters={[{ name: '1' }, { name: '2' }]}
+        updateSearchPhrase={mockCallback}
+        setLabelFilters={() => {}}
+      />,
+    );
+
+    const input = getByPlaceholderText('Search...');
+    fireEvent.change(input, { target: { value: 'a' } });
+
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+    expect(mockCallback).toHaveBeenCalledWith('a');
+  });
 });
