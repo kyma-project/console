@@ -32,7 +32,7 @@ ENV CI true
 RUN cd /app/compass && npm run buildConfig
 RUN cd /app/compass && npm run build
 
-FROM nginx:1.14.0-alpine
+FROM nginx:1.17.8-alpine
 LABEL source git@github.com:kyma-project/console.git
 
 COPY nginx.conf /etc/nginx/nginx.conf
