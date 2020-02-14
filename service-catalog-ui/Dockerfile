@@ -3,7 +3,7 @@
 
 # copying .env in 13 line is a temporary solution for issue with babel-loader package in react-scripts 
 
-FROM node:10.11.0-alpine as ui-generator
+FROM node:12.16.0-alpine3.9 as ui-generator
 
 WORKDIR /app
 
@@ -40,7 +40,7 @@ ENV CI true
 
 RUN cd /app/service-catalog && npm run build
 
-FROM nginx:1.14.0-alpine
+FROM nginx:1.17.8-alpine
 LABEL source git@github.com:kyma-project/console.git
 
 COPY --from=ui-generator /app/service-catalog/brokers/build var/brokers-public
