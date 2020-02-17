@@ -49,5 +49,8 @@ export const CONSOLE_INIT_DATA = `query {
         }
       }
     }
-    kymaVersion
-  }`;
+    versionInfo {
+      kymaVersion
+    }
+  }
+`;

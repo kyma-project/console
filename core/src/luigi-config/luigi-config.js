@@ -472,7 +472,7 @@ Promise.all(initPromises)
         const modules = res[1].backendModules;
         const subjectRules = res[1].selfSubjectRules;
         const cmfs = res[1].clusterMicroFrontends;
-        kymaVersion = `Kyma version: ${res[1].kymaVersion}`;
+        kymaVersion = `Kyma version: ${res[1].versionInfo.kymaVersion}`;
         setInitValues(
           (modules && modules.map(m => m.name)) || [],
           subjectRules || []
