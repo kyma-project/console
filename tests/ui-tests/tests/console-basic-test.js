@@ -8,6 +8,7 @@ import { testPluggable } from '../setup/test-pluggable';
 import { NamespaceManager } from '../setup/namespace-manager';
 import { k8sApiDeployment, k8sApiService } from './../setup/k8s-api';
 
+common.setRandomNamespaceName();
 let page, browser;
 let token = ''; // eslint-disable-line no-unused-vars
 

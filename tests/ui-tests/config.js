@@ -1,7 +1,3 @@
-const randomString = Math.random()
-  .toString(36)
-  .substring(2, 7);
-
 module.exports = {
   login: process.env.LOGIN || 'admin@kyma.cx',
   password: process.env.PASSWORD || 'nimda123',
@@ -15,8 +11,8 @@ module.exports = {
   devLambdasUrl:
     process.env.DEV_LAMBDAS_URl || 'http://console-dev.kyma.local:4201',
   localdev: process.env.LOCAL_DEV || false,
-  testNamespace: process.env.TEST_NAMESPACE || `testnamespace-${randomString}`,
-  testApp: process.env.TEST_APP || `testapplication-${randomString}`,
+  testNamespace: process.env.TEST_NAMESPACE || 'testnamespace',
+  testApp: process.env.TEST_APP || 'testapplication',
   headless: process.env.HEADLESS || false,
   viewportWidth: process.env.WIDTH || 1400,
   viewportHeight: process.env.HEIGHT || 1080,
