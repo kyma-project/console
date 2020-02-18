@@ -1,6 +1,6 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
 # If you want to build image without local changes of react components, delete 16 line of code.
-FROM node:12.11.0-alpine as builder
+FROM node:12.16.0-alpine3.9 as builder
 ARG app_name=core-ui
 WORKDIR /app
 
@@ -21,7 +21,7 @@ ENV CI true
 # Test & Build
 RUN cd /app/${app_name} && make build
 
-FROM nginx:1.14.0-alpine
+FROM nginx:1.17.8-alpine
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core-ui
 
