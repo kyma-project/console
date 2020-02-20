@@ -20,7 +20,7 @@ export const GET_MICROFRONTENDS = `query MicroFrontends($namespace: String!) {
   }`;
 
 export const CONSOLE_INIT_DATA = `query {
-    selfSubjectRules {
+    selfSubjectRules{
       verbs
       resources
       apiGroups
@@ -49,4 +49,8 @@ export const CONSOLE_INIT_DATA = `query {
         }
       }
     }
-  }`;
+    versionInfo {
+      kymaVersion
+    }
+  }
+`;

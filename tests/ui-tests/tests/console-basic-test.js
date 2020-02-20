@@ -8,13 +8,13 @@ import { testPluggable } from '../setup/test-pluggable';
 import { NamespaceManager } from '../setup/namespace-manager';
 import { k8sApiDeployment, k8sApiService } from './../setup/k8s-api';
 
-let page, browser, namespace;
+common.setRandomNamespaceName();
+let page, browser;
 let token = ''; // eslint-disable-line no-unused-vars
 
 // TODO: Move application tests to a separate file
 const REQUIRED_MODULE = 'application';
-const namespaceUnderTest = 'test-expose-api';
-const namespaceInstaller = new NamespaceManager(namespaceUnderTest);
+const namespaceInstaller = new NamespaceManager(config.testNamespace);
 
 describe('Console basic tests', () => {
   beforeAll(async () => {
@@ -88,12 +88,12 @@ describe('Console basic tests', () => {
     }
 
     // Create k8s resources
-    const deploymentApi = await new k8sApiDeployment(namespaceUnderTest);
-    service = await new k8sApiService(namespaceUnderTest);
+    const deploymentApi = await new k8sApiDeployment();
+    service = await new k8sApiService();
     await deploymentApi.waitUntilCreated(40000);
 
     serviceUrl = address.console.getService(
-      namespaceUnderTest,
+      config.testNamespace,
       service.definition.metadata.name,
     );
 

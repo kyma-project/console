@@ -65,6 +65,16 @@ async function beforeAll(tokenCallback, slowMoFactor) {
   page.removeListener('requestfailed', retryFailedRequestListener);
   return { page, browser };
 }
+
+const setRandomNamespaceName = () => {
+  const randomString = Math.random()
+    .toString(36)
+    .substring(2, 7);
+  config.testNamespace = `${config.testNamespace}-${randomString}`;
+  config.testApp = `${config.testApp}-${randomString}`;
+};
+
 module.exports = {
   beforeAll,
+  setRandomNamespaceName,
 };
