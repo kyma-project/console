@@ -40,6 +40,6 @@ COPY --from=ui-generator /app/compass/build var/public
 COPY --from=ui-generator /app/compass/public-luigi var/public-luigi
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
-EXPOSE 80 8888
+EXPOSE 81 8888
 
 CMD ["nginx", "-g", "daemon off;"]
