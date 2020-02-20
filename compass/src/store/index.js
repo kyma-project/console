@@ -9,7 +9,7 @@ import { onError } from 'apollo-link-error';
 import resolvers from './resolvers';
 import defaults from './defaults';
 
-const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.graphqlApiUrl;
+const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.compassApiUrl;
 
 function handleUnauthorized() {
   window.parent.postMessage('unauthorized', '*');
