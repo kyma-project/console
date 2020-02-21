@@ -241,6 +241,10 @@ function getNodes(context) {
     {
       category: { label: 'Experimental', icon: 'lab' },
       hideFromNav: true
+    },
+    {
+      category: { label: 'Deprecated', icon: 'error' },
+      hideFromNav: true
     }
   ];
   return Promise.all([

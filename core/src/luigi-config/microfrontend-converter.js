@@ -1,5 +1,5 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
-import { hideExperimentalNode } from './navigation-helpers';
+import { hideByNodeCategory } from './navigation-helpers';
 
 function buildNode(node, spec, config) {
   var n = {
@@ -119,6 +119,8 @@ export default function convertToNavigationTree(
     .map(n => {
       const showExperimentalViews =
         localStorage.getItem('console.showExperimentalViews') === 'true';
-      return hideExperimentalNode(n, showExperimentalViews);
+      const showDeprecatedViews =
+        localStorage.getItem('console.showDeprecatedViews') === 'true';
+      return hideByNodeCategory(n, showExperimentalViews, showDeprecatedViews);
     });
 }

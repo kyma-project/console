@@ -15,10 +15,13 @@ export class OrganisationComponent implements OnInit {
   public orgName: string;
   public showSystemNamespaces = false;
   public showExperimentalViews = false;
+  public showDeprecatedViews = false;
 
   constructor(private http: HttpClient) {
     this.showExperimentalViews =
       localStorage.getItem('console.showExperimentalViews') === 'true';
+    this.showDeprecatedViews =
+      localStorage.getItem('console.showDeprecatedViews') === 'true';
   }
 
   public downloadKubeconfig() {
@@ -57,15 +60,28 @@ export class OrganisationComponent implements OnInit {
     );
   }
 
+
+  public toggleDeprecatedViews() {
+    this.toggleViewVisibilityPreference('showDeprecatedViews');
+  }
+
   public toggleExperimentalViews() {
-    localStorage.setItem(
-      'console.showExperimentalViews',
-      this.showExperimentalViews.toString()
+    this.toggleViewVisibilityPreference('showExperimentalViews');
+  }
+
+  private toggleViewVisibilityPreference(key: string) {
+    localStorage.setItem(`console.${key}`
+      ,
+      this[key].toString()
     );
-    LuigiClient.sendCustomMessage({ id: 'console.toggleExperimental' });
+    this.refreshLeftNavigation();
   }
 
   private refreshContextSwitcher() {
     window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
+  }
+
+  private refreshLeftNavigation() {
+    LuigiClient.sendCustomMessage({ id: 'console.toggleExperimental' });
   }
 }
