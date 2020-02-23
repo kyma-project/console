@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, FormItem, FormLabel } from 'fundamental-react';
 
 import ConfigurationForm from './ConfigurationForm/ConfigurationForm';
 import ServiceBindingsWrapper from './ServiceBindings/ServiceBindingsWrapper';

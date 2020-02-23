@@ -24,7 +24,7 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     setValidity(false);
-  }, []);
+  });
 
   useEffect(() => {
     if (!serviceInstanceName) {
@@ -39,7 +39,7 @@ export default function CreateServiceBindingForm({
     if (instance) {
       setSecrets(instance.serviceBindings.items);
     }
-  }, [serviceInstanceName]);
+  }, [serviceInstanceName, serviceInstances]);
 
   useEffect(() => {
     if (!serviceInstanceName) {
@@ -53,7 +53,12 @@ export default function CreateServiceBindingForm({
     }
 
     setValidity(true);
-  }, [serviceInstanceName, createCredentials, existingCredentials]);
+  }, [
+    serviceInstanceName,
+    createCredentials,
+    existingCredentials,
+    setValidity,
+  ]);
 
   useEffect(() => {
     setExistingCredentials('');
