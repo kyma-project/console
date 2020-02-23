@@ -60,6 +60,62 @@ export const GET_LAMBDA = gql`
   }
 `;
 
+export const GET_SERVICE_INSTANCES = gql`
+  query ServiceInstances($namespace: String!) {
+    serviceInstances(namespace: $namespace) {
+      name
+      labels
+      bindable
+      status {
+        type
+        message
+      }
+      servicePlan {
+        bindingCreateParameterSchema
+      }
+      serviceBindings {
+        items {
+          name
+          parameters
+          secret {
+            name
+            data
+          }
+          status {
+            type
+            reason
+            message
+          }
+        }
+      }
+      serviceBindingUsages {
+        name
+        parameters {
+          envPrefix {
+            name
+          }
+        }
+        serviceBinding {
+          name
+          secret {
+            name
+            data
+          }
+        }
+        status {
+          type
+          reason
+          message
+        }
+        usedBy {
+          name
+          kind
+        }
+      }
+    }
+  }
+`;
+
 export const GET_SERVICES = gql`
   query Services($namespace: String!, $excludedLabels: [String!]) {
     services(namespace: $namespace, excludedLabels: $excludedLabels) {

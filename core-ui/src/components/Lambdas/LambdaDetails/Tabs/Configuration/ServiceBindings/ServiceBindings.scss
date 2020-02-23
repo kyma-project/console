@@ -1,0 +1,13 @@
+.lambda-service-bindings {
+  .fd-panel__body {
+    padding: 0;
+  }
+
+  .fd-panel {
+    margin: 0 !important;
+
+    .fd-panel__header {
+      display: none;
+    }
+  }
+}

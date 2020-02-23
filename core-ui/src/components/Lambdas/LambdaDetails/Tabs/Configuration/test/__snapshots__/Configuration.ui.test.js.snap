@@ -1,89 +1,100 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Lambda Configuration Tab Render with minimal props 1`] = `
-<div
-  className="fd-panel fd-has-margin-medium"
->
+Array [
   <div
-    className="fd-panel__header"
+    className="fd-panel fd-has-margin-medium"
   >
     <div
-      className="fd-panel__head"
+      className="fd-panel__header"
     >
-      <h3
-        className="fd-panel__title"
+      <div
+        className="fd-panel__head"
       >
-        General Configuration
-      </h3>
+        <h3
+          className="fd-panel__title"
+        >
+          General Configuration
+        </h3>
+      </div>
     </div>
-  </div>
-  <div
-    className="fd-panel__body"
-  >
-    <form
-      onSubmit={[Function]}
+    <div
+      className="fd-panel__body"
     >
-      <p>
-        Label Editor Mock
-      </p>
-      <div
-        className="fd-form-item"
+      <form
+        onSubmit={[Function]}
       >
-        <label
-          className="fd-form-label"
-          htmlFor="lambdaSize"
+        <p>
+          Label Editor Mock
+        </p>
+        <div
+          className="fd-form-item"
         >
-          Size*
-          
-        </label>
-        <select
-          defaultValue="S"
-          id="lambdaSize"
+          <label
+            className="fd-form-label"
+            htmlFor="lambdaSize"
+          >
+            Size*
+            
+          </label>
+          <select
+            defaultValue="S"
+            id="lambdaSize"
+          >
+            <option
+              value="S"
+            >
+              S
+            </option>
+            <option
+              value="M"
+            >
+              M
+            </option>
+            <option
+              value="L"
+            >
+              L
+            </option>
+          </select>
+        </div>
+        <div
+          className="fd-form-item"
         >
-          <option
-            value="S"
+          <label
+            className="fd-form-label"
+            htmlFor="lambdaRuntime"
           >
-            S
-          </option>
-          <option
-            value="M"
+            Runtime*
+            
+          </label>
+          <select
+            defaultValue="nodejs6"
+            id="lambdaRuntime"
           >
-            M
-          </option>
-          <option
-            value="L"
-          >
-            L
-          </option>
-        </select>
-      </div>
-      <div
-        className="fd-form-item"
-      >
-        <label
-          className="fd-form-label"
-          htmlFor="lambdaRuntime"
-        >
-          Runtime*
-          
-        </label>
-        <select
-          defaultValue="nodejs6"
-          id="lambdaRuntime"
-        >
-          <option
-            value="nodejs6"
-          >
-            Nodejs 6
-          </option>
-          <option
-            value="nodejs8"
-          >
-            Nodejs 8
-          </option>
-        </select>
-      </div>
-    </form>
-  </div>
-</div>
+            <option
+              value="nodejs6"
+            >
+              Nodejs 6
+            </option>
+            <option
+              value="nodejs8"
+            >
+              Nodejs 8
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>,
+  <div
+    aria-hidden="false"
+    aria-label="Loading"
+    className="fd-loading-dots"
+  >
+    <div />
+    <div />
+    <div />
+  </div>,
+]
 `;

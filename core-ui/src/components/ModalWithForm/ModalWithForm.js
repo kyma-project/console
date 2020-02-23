@@ -39,6 +39,10 @@ const ModalWithForm = ({
     setOpen(status);
   }
 
+  function setValidity(valid) {
+    setValid(valid);
+  }
+
   function handleFormChanged(e) {
     setValid(formElementRef.current.checkValidity()); // general form validity
     if (!e.target) {
@@ -106,7 +110,11 @@ const ModalWithForm = ({
         {modalOpeningComponent ? (
           modalOpeningComponent
         ) : (
-          <Button glyph={button.glyph || null} option={button.option}>
+          <Button
+            glyph={button.glyph || null}
+            option={button.option}
+            compact={button.compact || false}
+          >
             {button.text}
           </Button>
         )}
@@ -125,6 +133,7 @@ const ModalWithForm = ({
               Cancel
             </Button>
             <Button
+              disabled={!isValid}
               aria-disabled={!isValid}
               onClick={handleFormSubmit}
               option="emphasized"
@@ -145,6 +154,7 @@ const ModalWithForm = ({
           onError: handleFormError,
           onCompleted: handleFormSuccess,
           performManualSubmit: handleFormSubmit,
+          setValidity: setValidity,
         })}
       </Modal>
     </div>
@@ -157,6 +167,7 @@ ModalWithForm.propTypes = {
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
+    compact: PropTypes.bool,
     option: PropTypes.oneOf(['emphasized', 'light']),
   }),
   modalOpeningComponent: PropTypes.node,

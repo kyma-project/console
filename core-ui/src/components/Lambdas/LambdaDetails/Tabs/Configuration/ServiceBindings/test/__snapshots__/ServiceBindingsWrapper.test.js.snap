@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServiceBindingsWrapper Renders with an error in no lambdaName is provided 1`] = `
+"Error! Network error: No more mocked responses for the query: query ServiceInstances($namespace: String!) {
+  serviceInstances(namespace: $namespace) {
+    name
+    labels
+    bindable
+    status {
+      type
+      message
+      __typename
+    }
+    servicePlan {
+      bindingCreateParameterSchema
+      __typename
+    }
+    serviceBindings {
+      items {
+        name
+        parameters
+        secret {
+          name
+          data
+          __typename
+        }
+        status {
+          type
+          reason
+          message
+          __typename
+        }
+        __typename
+      }
+      __typename
+    }
+    serviceBindingUsages {
+      name
+      parameters {
+        envPrefix {
+          name
+          __typename
+        }
+        __typename
+      }
+      serviceBinding {
+        name
+        secret {
+          name
+          data
+          __typename
+        }
+        __typename
+      }
+      status {
+        type
+        reason
+        message
+        __typename
+      }
+      usedBy {
+        name
+        kind
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}
+, variables: {\\"namespace\\":\\"testnamespace\\"}"
+`;
+
+exports[`ServiceBindingsWrapper Renders with an error in no lambdaName is provided 2`] = `
+"Warning: Failed prop type: The prop \`lambdaName\` is marked as required in \`ServiceBindingsWrapper\`, but its value is \`undefined\`.
+    in ServiceBindingsWrapper (at ServiceBindingsWrapper.test.js:25)"
+`;

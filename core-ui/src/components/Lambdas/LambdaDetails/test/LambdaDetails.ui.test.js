@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { MockedProvider } from '@apollo/react-testing';
 
 import { componentUpdate } from '../../../../testing';
 
@@ -15,7 +16,11 @@ jest.mock('@kyma-project/luigi-client', () => {
 
 describe('LambdaDetails', () => {
   it('Displays lambda, its size, runtime and content', async () => {
-    const component = mount(<LambdaDetails lambda={lambda} />);
+    const component = mount(
+      <MockedProvider>
+        <LambdaDetails lambda={lambda} />
+      </MockedProvider>,
+    );
 
     await componentUpdate(component);
 
@@ -33,7 +38,11 @@ describe('LambdaDetails', () => {
   });
 
   it('Displays lambda, its size, runtime and default content', async () => {
-    const component = mount(<LambdaDetails lambda={lambdaNoContent} />);
+    const component = mount(
+      <MockedProvider>
+        <LambdaDetails lambda={lambdaNoContent} />
+      </MockedProvider>,
+    );
 
     await componentUpdate(component);
 
