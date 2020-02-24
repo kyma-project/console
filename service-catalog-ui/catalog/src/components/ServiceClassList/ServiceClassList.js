@@ -9,7 +9,7 @@ import {
   Tooltip,
   instancesTabUtils,
 } from '@kyma-project/react-components';
-import { Counter } from 'fundamental-react';
+import { Badge } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants } from '../../variables';
@@ -46,7 +46,7 @@ const status = (data, id) => {
   return (
     <StatusesList>
       <StatusWrapper key={id}>
-        <Counter data-e2e-id={id}>{data}</Counter>
+        <Badge data-e2e-id={id}>{data}</Badge>
       </StatusWrapper>
     </StatusesList>
   );

@@ -10,7 +10,7 @@ import {
   ThemeWrapper,
   Tooltip,
 } from '@kyma-project/react-components';
-import { Counter } from 'fundamental-react';
+import { Badge } from 'fundamental-react';
 
 import builder from '../../commons/builder';
 import { getAllServiceInstances } from '../../queries/queries';
@@ -53,7 +53,7 @@ const status = (data, id) => {
   return (
     <StatusesList>
       <StatusWrapper key={id}>
-        <Counter data-e2e-id={id}>{data}</Counter>
+        <Badge data-e2e-id={id}>{data}</Badge>
       </StatusWrapper>
     </StatusesList>
   );
