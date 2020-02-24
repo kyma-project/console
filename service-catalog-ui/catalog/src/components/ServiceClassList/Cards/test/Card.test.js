@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Icon } from '@kyma-project/react-components';
+import { Icon } from 'fundamental-react';
 import Card from '../Card.component';
 import { InstancesIndicator } from '../InstancesIndicator';
 import { Labels } from '../Labels';

@@ -101,6 +101,7 @@ export default function ServiceClassList() {
       >
         <Tab
           noMargin
+          key="addons"
           status={status(
             determineDisplayedServiceClasses(
               serviceClasses,
@@ -141,6 +142,7 @@ export default function ServiceClassList() {
           </>
         </Tab>
         <Tab
+          key="services"
           noMargin
           status={status(
             determineDisplayedServiceClasses(
