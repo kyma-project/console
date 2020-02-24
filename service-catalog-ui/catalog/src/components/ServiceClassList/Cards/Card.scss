@@ -1,13 +1,21 @@
 .card {
   &__header {
     .icon {
-      //   margin-right: 6px;
+      &:not(:last-child) {
+        margin-right: 6px;
+      }
+      $verticalOffset: 4px;
       background-color: #eeeeef;
       color: #515559;
-      padding: 7px 9px;
+
       text-align: center;
+      width: 28px;
       border-radius: 4px;
       line-height: 1;
+      height: 28px;
+      padding: 0;
+      padding-top: $verticalOffset;
+      transform: translateY(-$verticalOffset);
     }
   }
 }

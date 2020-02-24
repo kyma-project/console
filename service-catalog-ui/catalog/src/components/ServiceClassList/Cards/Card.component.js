@@ -46,11 +46,11 @@ const Card = ({
             <span data-e2e-id="card-company">{company}</span>
           </CardHeaderContent>
           {labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true' && (
-            <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
-              <div className="icon">
+            <div className="icon">
+              <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
                 <Icon glyph="sap-box" size="l" />
-              </div>
-            </Tooltip>
+              </Tooltip>
+            </div>
           )}
 
           <InstancesIndicator
