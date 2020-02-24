@@ -16,7 +16,7 @@ import {
   CardDescription,
 } from './styled';
 
-const DOCUMENTATION_PER_PLAN_DESCRIPTION = `Documentation for this service differs depending on the chosen plan`;
+const DOCUMENTATION_PER_PLAN_DESCRIPTION = `Every plan comes with a separate API and matching documentation`;
 const DOCUMENTATION_PER_PLAN_LABEL = 'documentation-per-plan';
 
 const Card = ({
