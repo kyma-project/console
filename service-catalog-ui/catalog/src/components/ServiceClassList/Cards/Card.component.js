@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Icon } from '@kyma-project/react-components';
+import './Card.scss';
+import { Tooltip } from '../../../react-shared';
+import { Icon } from 'fundamental-react';
 import { InstancesIndicator } from './InstancesIndicator';
 import { Labels } from './Labels';
 import {
@@ -15,6 +16,10 @@ import {
   CardDescription,
 } from './styled';
 
+const DOCUMENTATION_PER_PLAN_DESCRIPTION = `
+This service has different documentation and APIs for each plan
+`; //TODO: change
+
 const Card = ({
   title,
   company,
@@ -25,10 +30,10 @@ const Card = ({
   onClick,
 }) => {
   return (
-    <CardWrapper data-e2e-id="card">
+    <CardWrapper data-e2e-id="card" className="card">
       <CardContent onClick={onClick} data-e2e-id={`go-to-details`}>
         <CardTop>
-          <CardHeader>
+          <CardHeader className="card__header">
             <CardThumbnail>
               {imageUrl ? (
                 <CardImage size="s" photo={imageUrl} />
@@ -43,6 +48,12 @@ const Card = ({
             <CardHeaderContent data-e2e-id="card-title" title={title}>
               <span data-e2e-id="card-company">{company}</span>
             </CardHeaderContent>
+
+            <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
+              <div className="icon">
+                <Icon glyph="sap-box" size="l" />
+              </div>
+            </Tooltip>
 
             <InstancesIndicator
               numberOfInstances={numberOfInstances}

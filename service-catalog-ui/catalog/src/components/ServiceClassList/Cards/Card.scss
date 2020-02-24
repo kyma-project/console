@@ -1,0 +1,13 @@
+.card {
+  &__header {
+    .icon {
+      //   margin-right: 6px;
+      background-color: #eeeeef;
+      color: #515559;
+      padding: 7px 9px;
+      text-align: center;
+      border-radius: 4px;
+      line-height: 1;
+    }
+  }
+}
