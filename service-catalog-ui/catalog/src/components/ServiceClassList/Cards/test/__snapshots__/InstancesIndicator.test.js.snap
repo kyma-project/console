@@ -2,7 +2,7 @@
 
 exports[`InstancesIndicator Renders with instances and no provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 >
   <div
     class=""
@@ -20,7 +20,7 @@ exports[`InstancesIndicator Renders with instances and no provision only once 1`
 
 exports[`InstancesIndicator Renders with instances and provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 >
   <div
     class=""
@@ -38,13 +38,13 @@ exports[`InstancesIndicator Renders with instances and provision only once 1`] =
 
 exports[`InstancesIndicator Renders without instances and no provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 />
 `;
 
 exports[`InstancesIndicator Renders without instances and provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 >
   <div
     class=""

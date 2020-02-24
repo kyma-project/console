@@ -5,6 +5,7 @@ import { Tooltip } from '../../../react-shared';
 import { Icon } from 'fundamental-react';
 import { InstancesIndicator } from './InstancesIndicator';
 import { Labels } from './Labels';
+import { PanelActions } from '@kyma-project/react-components';
 import {
   CardWrapper,
   CardContent,
@@ -43,18 +44,19 @@ const Card = ({
           <CardHeaderContent data-e2e-id="card-title" title={title}>
             <span data-e2e-id="card-company">{company}</span>
           </CardHeaderContent>
-          {labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true' && (
-            <div className="icon">
-              <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
-                <Icon glyph="sap-box" size="l" />
-              </Tooltip>
-            </div>
-          )}
-
-          <InstancesIndicator
-            numberOfInstances={numberOfInstances}
-            labels={labels}
-          />
+          <PanelActions>
+            {labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true' && (
+              <div className="icon">
+                <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
+                  <Icon glyph="sap-box" size="l" />
+                </Tooltip>
+              </div>
+            )}
+            <InstancesIndicator
+              numberOfInstances={numberOfInstances}
+              labels={labels}
+            />
+          </PanelActions>
         </CardHeader>
       </CardTop>
 
