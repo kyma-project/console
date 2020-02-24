@@ -1,5 +1,5 @@
 ### Main image ###
-FROM nginx:1.17.8-alpine
+FROM nginx:1.16.1-alpine
 
 COPY ./licenses/ /app/licenses/
 
