@@ -46,7 +46,7 @@ const Card = ({
           </CardHeaderContent>
           <PanelActions>
             {labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true' && (
-              <div className="icon">
+              <div aria-label="has-API-packages-indicator" className="icon">
                 <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
                   <Icon glyph="sap-box" size="l" />
                 </Tooltip>
