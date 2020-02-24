@@ -8,13 +8,16 @@ const labelsDescription = {
   showcase:
     'This Service Class presents a specific functionality. Do not use it on the production cluster.',
 };
-export function Labels({ labels }) {
+export function Labels({ labels, ignoredLabels = [] }) {
   return (
     <PanelFooter className="service-list--card__footer">
       {labels &&
-        Object.keys(labels).length > 0 &&
         Object.keys(labels).map(label => {
-          if (label === 'local' || label === 'provisionOnlyOnce') {
+          if (
+            label === 'local' ||
+            label === 'provisionOnlyOnce' ||
+            ignoredLabels.some(ignored => ignored === label)
+          ) {
             return null;
           }
           if (

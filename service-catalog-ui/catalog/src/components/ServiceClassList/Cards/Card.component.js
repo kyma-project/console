@@ -16,9 +16,7 @@ import {
   CardDescription,
 } from './styled';
 
-const DOCUMENTATION_PER_PLAN_DESCRIPTION = `
-This service has different documentation and APIs for each plan
-`; //TODO: change
+const DOCUMENTATION_PER_PLAN_DESCRIPTION = `Documentation for this service differs depending on the chosen plan`;
 const DOCUMENTATION_PER_PLAN_LABEL = 'documentation-per-plan';
 
 const Card = ({
@@ -61,7 +59,7 @@ const Card = ({
       </CardTop>
 
       <CardDescription>{description}</CardDescription>
-      <Labels labels={labels} />
+      <Labels labels={labels} ignoredLabels={[DOCUMENTATION_PER_PLAN_LABEL]} />
     </CardContent>
   </CardWrapper>
 );
