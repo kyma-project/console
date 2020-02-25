@@ -4,19 +4,33 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import Card from './Card.component';
 
-import { getResourceDisplayName } from '../../../commons/helpers';
+import {
+  getResourceDisplayName,
+  isStringValueEqualToTrue,
+} from '../../../commons/helpers';
 
 const Cards = ({ items }) => {
-  const goToServiceClassDetails = name => {
-    LuigiClient.linkManager()
+  const goToDetails = item => {
+    const documentationPerPlan =
+      item.labels &&
+      item.labels['documentation-per-plan'] &&
+      isStringValueEqualToTrue(item.labels['documentation-per-plan']);
+
+    if (!documentationPerPlan) {
+      return LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(`details/${item.name}`);
+    }
+
+    return LuigiClient.linkManager()
       .fromClosestContext()
-      .navigate(`details/${name}`);
+      .navigate(`plans/${item.name}`);
   };
 
   return items.map(item => (
     <Card
       key={item.name}
-      onClick={() => goToServiceClassDetails(item.name)}
+      onClick={() => goToDetails(item)}
       title={getResourceDisplayName(item)}
       company={item.providerDisplayName}
       description={item.description}
