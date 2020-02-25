@@ -9,7 +9,7 @@ import {
   Tooltip,
   instancesTabUtils,
 } from '@kyma-project/react-components';
-import { Badge } from 'fundamental-react';
+import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants } from '../../variables';
@@ -46,7 +46,9 @@ const status = (data, id) => {
   return (
     <StatusesList key={id}>
       <StatusWrapper>
-        <Badge data-e2e-id={id}>{data}</Badge>
+        <Identifier size="xxs" data-e2e-id={id}>
+          {data}
+        </Identifier>
       </StatusWrapper>
     </StatusesList>
   );
@@ -101,7 +103,6 @@ export default function ServiceClassList() {
       >
         <Tab
           noMargin
-          key="addons"
           status={status(
             determineDisplayedServiceClasses(
               serviceClasses,
@@ -142,7 +143,6 @@ export default function ServiceClassList() {
           </>
         </Tab>
         <Tab
-          key="services"
           noMargin
           status={status(
             determineDisplayedServiceClasses(

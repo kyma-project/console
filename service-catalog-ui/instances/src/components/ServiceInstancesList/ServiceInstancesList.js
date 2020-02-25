@@ -10,7 +10,7 @@ import {
   ThemeWrapper,
   Tooltip,
 } from '@kyma-project/react-components';
-import { Badge } from 'fundamental-react';
+import { Identifier } from 'fundamental-react';
 
 import builder from '../../commons/builder';
 import { getAllServiceInstances } from '../../queries/queries';
@@ -53,7 +53,9 @@ const status = (data, id) => {
   return (
     <StatusesList key={id}>
       <StatusWrapper>
-        <Badge data-e2e-id={id}>{data}</Badge>
+        <Identifier size="xxs" data-e2e-id={id}>
+          {data}
+        </Identifier>
       </StatusWrapper>
     </StatusesList>
   );
