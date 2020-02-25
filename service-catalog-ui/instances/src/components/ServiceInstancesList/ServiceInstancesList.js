@@ -51,8 +51,8 @@ const handleTabChange = ({ defaultActiveTabIndex }) => {
 
 const status = (data, id) => {
   return (
-    <StatusesList>
-      <StatusWrapper key={id}>
+    <StatusesList key={id}>
+      <StatusWrapper>
         <Badge data-e2e-id={id}>{data}</Badge>
       </StatusWrapper>
     </StatusesList>
