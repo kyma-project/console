@@ -27,7 +27,12 @@ ENV CI true
 # Test & Build
 RUN cd /app/addons && npm run build
 
-FROM nginx:1.17.8-alpine
+### Main image ###
+FROM alpine:3.11
+
+### Install nginx package and remove cache ###
+RUN apk add --update nginx && rm -rf /var/cache/apk/*
+
 LABEL source git@github.com:kyma-project/console.git
 
 COPY nginx.conf /etc/nginx/nginx.conf
