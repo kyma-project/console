@@ -13,6 +13,13 @@ import {
   randomNameGenerator,
 } from '../../../commons/helpers';
 
+import { CustomPropTypes } from '../../../react-shared';
+
+const SERVICE_PLAN_SHAPE = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
+});
+
 CreateInstanceModal.propTypes = {
   onChange: PropTypes.func.isRequired,
   onCompleted: PropTypes.func.isRequired,
@@ -22,6 +29,7 @@ CreateInstanceModal.propTypes = {
   item: PropTypes.object,
 
   checkInstanceExistQuery: PropTypes.object.isRequired,
+  preselectedPlan: SERVICE_PLAN_SHAPE,
 };
 
 const parseDefaultIntegerValues = plan => {
@@ -44,6 +52,53 @@ const getInstanceCreateParameterSchema = (plans, currentPlan) => {
 
   return (schema && schema.instanceCreateParameterSchema) || {};
 };
+
+const PlanColumnContent = ({
+  preselectedPlan,
+  defaultPlan,
+  onPlanChange,
+  dropdownRef,
+  allPlans,
+}) => {
+  if (preselectedPlan)
+    return (
+      <>
+        <FormLabel htmlFor="plan">Plan (preselected)</FormLabel>
+        <p className="fd-has-font-weight-light">
+          {preselectedPlan.displayName}
+        </p>
+      </>
+    );
+  else
+    return (
+      <>
+        <FormLabel required htmlFor="plan">
+          Plan
+        </FormLabel>
+        <select
+          id="plan"
+          ref={dropdownRef}
+          defaultValue={defaultPlan}
+          onChange={onPlanChange}
+        >
+          {allPlans.map((p, i) => (
+            <option key={['plan', i].join('_')} value={p.name}>
+              {getResourceDisplayName(p)}
+            </option>
+          ))}
+        </select>
+      </>
+    );
+};
+
+PlanColumnContent.proTypes = {
+  preselectedPlan: SERVICE_PLAN_SHAPE.isRequired,
+  defaultPlan: SERVICE_PLAN_SHAPE,
+  onPlanChange: PropTypes.func.isRequired,
+  dropdownRef: CustomPropTypes.ref.isRequired,
+  allPlans: PropTypes.arrayOf(SERVICE_PLAN_SHAPE),
+};
+
 export default function CreateInstanceModal({
   onChange,
   onCompleted,
@@ -52,6 +107,7 @@ export default function CreateInstanceModal({
   jsonSchemaFormRef,
   item,
   checkInstanceExistQuery,
+  preselectedPlan,
 }) {
   const plans = (item && item.plans) || [];
   plans.forEach(plan => {
@@ -59,7 +115,8 @@ export default function CreateInstanceModal({
   });
   const defaultName =
     `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator();
-  const plan = plans[0].name;
+  const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
+
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
   const [
     instanceCreateParameterSchema,
@@ -92,7 +149,7 @@ export default function CreateInstanceModal({
     );
     onChange(formEvent);
   };
-  const handleChangePlan = e => {
+  const handlePlanChange = e => {
     const newParametersSchema = getInstanceCreateParameterSchema(
       plans,
       e.target.value,
@@ -108,6 +165,7 @@ export default function CreateInstanceModal({
     e.preventDefault();
     try {
       const currentPlan =
+        preselectedPlan ||
         plans.find(e => e.name === formValues.plan.current.value) ||
         (plans.length && plans[0]);
       const labels =
@@ -169,19 +227,13 @@ export default function CreateInstanceModal({
               />
             </div>
             <div className="column">
-              <FormLabel htmlFor="plan">Plan*</FormLabel>
-              <select
-                id="plan"
-                ref={formValues.plan}
-                defaultValue={plans[0]}
-                onChange={handleChangePlan}
-              >
-                {plans.map((p, i) => (
-                  <option key={['plan', i].join('_')} value={p.name}>
-                    {getResourceDisplayName(p)}
-                  </option>
-                ))}
-              </select>
+              <PlanColumnContent
+                preselectedPlan={preselectedPlan}
+                defaultPlan={plan}
+                onPlanChange={handlePlanChange}
+                dropdownRef={formValues.plan}
+                allPlans={plans}
+              />
             </div>
           </div>
         </FormItem>

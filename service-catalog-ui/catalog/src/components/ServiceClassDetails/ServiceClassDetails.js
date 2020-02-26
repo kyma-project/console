@@ -114,7 +114,6 @@ export default function ServiceClassDetails({ name, plan }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-        isAPIpackage={isAPIpackage}
       >
         {isAPIpackage && (
           <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
@@ -137,7 +136,9 @@ export default function ServiceClassDetails({ name, plan }) {
           }}
           id="add-instance-modal"
           item={serviceClass}
-          renderForm={props => <CreateInstanceModal {...props} />}
+          renderForm={props => (
+            <CreateInstanceModal {...props} preselectedPlan={currentPlan} />
+          )}
         />
       </ServiceClassDetailsHeader>
 
