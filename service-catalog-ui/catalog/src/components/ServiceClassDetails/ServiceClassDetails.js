@@ -28,6 +28,7 @@ import {
   DOCUMENTATION_PER_PLAN_LABEL,
   DOCUMENTATION_PER_PLAN_DESCRIPTION,
 } from '../../shared/constants';
+import { Tooltip } from '../../react-shared';
 
 export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;
@@ -64,7 +65,6 @@ export default function ServiceClassDetails({ name, plan }) {
   if (!serviceClass) {
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
   }
-  // console.log(serviceClass);
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
@@ -116,7 +116,12 @@ export default function ServiceClassDetails({ name, plan }) {
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
         isAPIpackage={isAPIpackage}
       >
-        <Identifier glyph="washing-machine" size="s" />
+        {isAPIpackage && (
+          <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
+            <Identifier id="docs-per-plan-icon" glyph="sap-box" size="s" />
+          </Tooltip>
+        )}
+
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}
                     ${

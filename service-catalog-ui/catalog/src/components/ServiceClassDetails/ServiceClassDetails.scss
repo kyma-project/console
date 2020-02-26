@@ -1,9 +1,14 @@
 #add-instance-modal {
-    .fd-modal {
-      max-width: 90%;
-    }
-    .fd-modal__content {
-      width: 49em;
-      min-width: 680px;
-    }
+  .fd-modal {
+    max-width: 90%;
   }
+  .fd-modal__content {
+    width: 49em;
+    min-width: 680px;
+  }
+}
+
+#docs-per-plan-icon {
+  cursor: help;
+  margin-bottom: 2px;
+}
