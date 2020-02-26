@@ -10,7 +10,7 @@ import {
   ThemeWrapper,
   Tooltip,
 } from '@kyma-project/react-components';
-import { Counter } from 'fundamental-react';
+import { Identifier } from 'fundamental-react';
 
 import builder from '../../commons/builder';
 import { getAllServiceInstances } from '../../queries/queries';
@@ -51,9 +51,11 @@ const handleTabChange = ({ defaultActiveTabIndex }) => {
 
 const status = (data, id) => {
   return (
-    <StatusesList>
-      <StatusWrapper key={id}>
-        <Counter data-e2e-id={id}>{data}</Counter>
+    <StatusesList key={id}>
+      <StatusWrapper>
+        <Identifier size="xxs" data-e2e-id={id}>
+          {data}
+        </Identifier>
       </StatusWrapper>
     </StatusesList>
   );

@@ -14,7 +14,7 @@ import { Link } from '../ServiceInstancesTable/styled.js';
 import { createMockLink } from 'react-shared';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
-import { Counter } from 'fundamental-react';
+import { Identifier } from 'fundamental-react';
 import {
   serviceInstance1,
   serviceInstance3,
@@ -311,10 +311,10 @@ describe('Search instances by name', () => {
     await componentUpdate(component);
 
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('2');
+    expect(addOnsTab.find(Identifier).text()).toEqual('2');
 
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('1');
+    expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
   });
@@ -328,7 +328,7 @@ describe('Search instances by name', () => {
 
     await componentUpdate(component);
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('1');
+    expect(addOnsTab.find(Identifier).text()).toEqual('1');
     addOnsTab
       .find('div')
       .first()
@@ -339,7 +339,7 @@ describe('Search instances by name', () => {
     ]);
 
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('0');
+    expect(servicesTab.find(Identifier).text()).toEqual('0');
 
     servicesTab
       .find('div')
@@ -360,7 +360,7 @@ describe('Search instances by name', () => {
 
     await componentUpdate(component);
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('0');
+    expect(addOnsTab.find(Identifier).text()).toEqual('0');
     addOnsTab
       .find('div')
       .first()
@@ -369,7 +369,7 @@ describe('Search instances by name', () => {
     expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
 
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('1');
+    expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     servicesTab
       .find('div')
@@ -429,7 +429,7 @@ describe('filter instances by labels', () => {
     ]);
 
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('1');
+    expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     addOnsTab
       .find('div')
@@ -441,7 +441,7 @@ describe('filter instances by labels', () => {
     ]);
 
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('0');
+    expect(servicesTab.find(Identifier).text()).toEqual('0');
 
     servicesTab
       .find('div')
