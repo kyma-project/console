@@ -1,7 +1,7 @@
 ### Main image ###
 FROM alpine:3.11
 
-# COPY ./licenses/ /app/licenses/
+COPY ./licenses/ /app/licenses/
 
 ### Install nginx package and remove cache ###
 RUN apk add --update nginx && rm -rf /var/cache/apk/*
@@ -14,7 +14,7 @@ COPY ./nginx/mime.types /etc/nginx/
 
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid
-#   chown -R nginx:nginx /var/cache/nginx
+  chown -R nginx:nginx /var/cache/nginx
 
 ### Expose ports ###
 EXPOSE 8080
