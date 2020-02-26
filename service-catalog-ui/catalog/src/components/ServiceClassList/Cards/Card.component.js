@@ -16,9 +16,10 @@ import {
   CardImage,
   CardDescription,
 } from './styled';
-
-const DOCUMENTATION_PER_PLAN_DESCRIPTION = `Every plan comes with a separate API and matching documentation`;
-const DOCUMENTATION_PER_PLAN_LABEL = 'documentation-per-plan';
+import {
+  DOCUMENTATION_PER_PLAN_LABEL,
+  DOCUMENTATION_PER_PLAN_DESCRIPTION,
+} from '../../../shared/constants';
 
 const Card = ({
   title,

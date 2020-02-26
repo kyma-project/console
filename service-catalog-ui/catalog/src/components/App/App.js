@@ -11,7 +11,7 @@ import { backendModuleExists } from '../../commons/helpers';
 Modal.MODAL_APP_REF = '#root';
 
 const ServiceDetails = ({ match }) => (
-  <ServiceClassDetails name={match.params.name} />
+  <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
 );
 
 export default function App() {
@@ -23,6 +23,11 @@ export default function App() {
             <Switch>
               <Route exact path="/" component={ServiceClassList} />
               <Route exact path="/details/:name" component={ServiceDetails} />
+              <Route
+                exact
+                path="/details/:name/plan/:plan"
+                component={ServiceDetails}
+              />
             </Switch>
           </BrowserRouter>
         </NotificationProvider>

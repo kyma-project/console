@@ -12,7 +12,7 @@ import {
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
-
+import { Identifier } from 'fundamental-react';
 import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 import './ServiceClassDetails.scss';
@@ -24,9 +24,14 @@ import {
   backendModuleExists,
 } from '../../commons/helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
+import {
+  DOCUMENTATION_PER_PLAN_LABEL,
+  DOCUMENTATION_PER_PLAN_DESCRIPTION,
+} from '../../shared/constants';
 
-export default function ServiceClassDetails({ name }) {
+export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;
+
   const {
     data: queryData,
     loading: queryLoading,
@@ -59,6 +64,7 @@ export default function ServiceClassDetails({ name }) {
   if (!serviceClass) {
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
   }
+  // console.log(serviceClass);
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
@@ -83,7 +89,17 @@ export default function ServiceClassDetails({ name }) {
     imageUrl,
     tags,
     labels,
+    plans,
   } = serviceClass;
+
+  const isAPIpackage = labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
+  const currentPlan = isAPIpackage
+    ? plans.find(p => p.name === plan)
+    : undefined;
+  console.log(currentPlan);
+  if (isAPIpackage && !currentPlan) {
+    //TODO: error - no plan provided
+  }
 
   return (
     <>
@@ -98,7 +114,9 @@ export default function ServiceClassDetails({ name }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+        isAPIpackage={isAPIpackage}
       >
+        <Identifier glyph="washing-machine" size="s" />
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}
                     ${
