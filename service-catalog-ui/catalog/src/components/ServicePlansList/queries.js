@@ -21,8 +21,6 @@ export const getServiceClassPlans = gql`
         ${plansQGL}
         relatedClusterServiceClassName
       }
-
-      activated(namespace: $namespace)
     }
     serviceClass(name: $name, namespace: $namespace) {
       ${serviceClassQGL}
@@ -32,7 +30,6 @@ export const getServiceClassPlans = gql`
         namespace
         relatedServiceClassName
       }
-      activated
     }
   }
 `;
