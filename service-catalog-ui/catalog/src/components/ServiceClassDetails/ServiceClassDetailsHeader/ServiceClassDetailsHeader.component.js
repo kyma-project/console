@@ -78,7 +78,7 @@ ServiceClassDetailsHeader.propTypes = {
   description: PropTypes.string,
   serviceClassDisplayName: PropTypes.string.isRequired,
   providerDisplayName: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.node,
   labels: PropTypes.object,
   tags: PropTypes.array,
   documentationUrl: PropTypes.string,
