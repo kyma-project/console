@@ -14,7 +14,6 @@ import {
 
 const goToDetails = (item, serviceClassId, documentationPerPlan) => {
   if (!serviceClassId) return null;
-
   if (!documentationPerPlan) {
     return LuigiClient.linkManager()
       .fromClosestContext()
@@ -26,7 +25,7 @@ const goToDetails = (item, serviceClassId, documentationPerPlan) => {
     .navigate(`details/${serviceClassId}/plan/${item.name}`);
 };
 
-export default function ServicePlansList({ name }) {
+export default function ServiceClassPlansList({ name }) {
   const namespace = LuigiClient.getEventData().environmentId;
   const {
     data: queryData,
@@ -47,7 +46,7 @@ export default function ServicePlansList({ name }) {
   if (queryError) {
     return (
       <div className="empty-list">
-        {serviceClassConstants.errorServiceClassDetails}
+        {serviceClassConstants.errorServiceClassPlansList}
       </div>
     );
   }
@@ -59,6 +58,7 @@ export default function ServicePlansList({ name }) {
       serviceClass.labels &&
       serviceClass.labels['documentation-per-plan'] &&
       isStringValueEqualToTrue(serviceClass.labels['documentation-per-plan']);
+
     return [
       <span
         className="link link--bold"
