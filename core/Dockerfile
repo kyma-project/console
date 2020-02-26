@@ -17,7 +17,7 @@ RUN touch /var/run/nginx.pid && \
 
 ### Expose ports ###
 EXPOSE 8080
-VOLUME ["/usr/share/nginx/html"]
+USER nginx
 
 LABEL source git@github.com:kyma-project/console.git
 
