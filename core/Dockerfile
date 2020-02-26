@@ -14,7 +14,6 @@ COPY ./nginx/mime.types /etc/nginx/
 
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid
-  chown -R nginx:nginx /var/cache/nginx
 
 ### Expose ports ###
 EXPOSE 8080
