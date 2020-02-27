@@ -274,14 +274,17 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               .getTriggersForLambda(this.namespace, this.token, lambdaName)
               .subscribe(resp => {
                 resp.items.forEach(trig => {
-                  const evTrigger: EventTrigger = {
-                    eventType: trig.spec.filter.attributes.type,
-                    version: trig.spec.filter.attributes.eventtypeversion,
-                    sourceId: trig.spec.filter.attributes.source,
-                  };
+                  if(trig && trig.spec && trig.spec.filter && trig.spec.filter.attributes) {
+                    const trigAttributes = trig.spec.filter.attributes;
+                    const evTrigger: EventTrigger = {
+                      eventType: trigAttributes.type,
+                      version: trigAttributes.eventtypeversion,
+                      sourceId: trigAttributes.source,
+                    };
                     this.selectedTriggers.push(evTrigger);
                     this.existingEventTriggers.push(evTrigger);
-                  });
+                  }
+                });
               }
             );
           } else {
@@ -304,6 +307,7 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           this.eventActivationsService
             .getEventActivations(this.namespace, this.token)
             .subscribe(resp => {
+              debugger;
               resp.data.eventActivations.forEach(ea => {
                 ea.events.forEach(ev => {
                   const eventTrigger: EventTrigger = {
