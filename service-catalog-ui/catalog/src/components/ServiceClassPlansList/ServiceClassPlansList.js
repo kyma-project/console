@@ -6,19 +6,10 @@ import { serviceClassConstants } from '../../variables';
 
 import { Spinner, PageHeader, GenericList } from '../../react-shared';
 
-import {
-  getResourceDisplayName,
-  isService,
-  isStringValueEqualToTrue,
-} from '../../commons/helpers';
+import { getResourceDisplayName, isService } from '../../commons/helpers';
 
-const goToDetails = (item, serviceClassId, documentationPerPlan) => {
+const goToDetails = (item, serviceClassId) => {
   if (!serviceClassId) return null;
-  if (!documentationPerPlan) {
-    return LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(`details/${serviceClassId}`);
-  }
 
   return LuigiClient.linkManager()
     .fromClosestContext()
@@ -53,24 +44,15 @@ export default function ServiceClassPlansList({ name }) {
 
   const headerRenderer = () => ['Name'];
 
-  const rowRenderer = item => {
-    const documentationPerPlan =
-      serviceClass.labels &&
-      serviceClass.labels['documentation-per-plan'] &&
-      isStringValueEqualToTrue(serviceClass.labels['documentation-per-plan']);
-
-    return [
-      <span
-        className="link link--bold"
-        data-test-id="plan-name"
-        onClick={() =>
-          goToDetails(item, serviceClass.name, documentationPerPlan)
-        }
-      >
-        {getResourceDisplayName(item)}
-      </span>,
-    ];
-  };
+  const rowRenderer = item => [
+    <span
+      className="link link--bold"
+      data-test-id="plan-name"
+      onClick={() => goToDetails(item, serviceClass.name)}
+    >
+      {getResourceDisplayName(item)}
+    </span>,
+  ];
 
   const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
 

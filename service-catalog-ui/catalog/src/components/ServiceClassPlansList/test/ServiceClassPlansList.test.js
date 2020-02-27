@@ -117,21 +117,4 @@ describe('ServiceClassPlans', () => {
       `details/${serviceClassPlans[1].relatedServiceClassName}/plan/${serviceClassPlans[1].name}`,
     );
   });
-
-  it('Clicking on element navigates to its details without plan context', async () => {
-    const serviceClassPlans = serviceClassWithPlans.plans;
-    serviceClassPlansQuery.result.data.serviceClass.labels = {};
-    const { container, getByText } = render(
-      <MockedProvider addTypename={false} mocks={[serviceClassPlansQuery]}>
-        <ServiceClassPlansList name={mockName} />
-      </MockedProvider>,
-    );
-
-    await waitForDomChange(container);
-
-    getByText(serviceClassPlans[1].displayName).click();
-    expect(mockNavigate).toHaveBeenCalledWith(
-      `details/${serviceClassPlans[1].relatedServiceClassName}`,
-    );
-  });
 });

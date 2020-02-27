@@ -24,7 +24,7 @@ const Cards = ({ items }) => {
 
     return LuigiClient.linkManager()
       .fromClosestContext()
-      .navigate(`plans/${item.name}`);
+      .navigate(`details/${item.name}/plans`);
   };
 
   return items.map(item => (

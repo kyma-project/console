@@ -37,7 +37,11 @@ export default function App() {
                 path="/details/:name/plan/:plan"
                 component={ServiceDetailsWithPlan}
               />
-              <Route exact path="/plans/:name" component={ServicePlans} />
+              <Route
+                exact
+                path="/details/:name/plans"
+                component={ServicePlans}
+              />
             </Switch>
           </BrowserRouter>
         </NotificationProvider>

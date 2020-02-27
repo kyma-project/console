@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 
-const serviceClassQGL = `
+const serviceClassGQL = `
   name
   externalName
   displayName
   labels
 `;
 
-const plansQGL = `
+const plansGQL = `
   name
   displayName
   externalName
@@ -16,17 +16,17 @@ const plansQGL = `
 export const getServiceClassPlans = gql`
   query getServiceClassPlans($name: String!, $namespace: String!) {
     clusterServiceClass(name: $name) {
-      ${serviceClassQGL}
+      ${serviceClassGQL}
       plans {
-        ${plansQGL}
+        ${plansGQL}
         relatedClusterServiceClassName
       }
     }
     serviceClass(name: $name, namespace: $namespace) {
-      ${serviceClassQGL}
+      ${serviceClassGQL}
       namespace
       plans {
-        ${plansQGL}
+        ${plansGQL}
         namespace
         relatedServiceClassName
       }
