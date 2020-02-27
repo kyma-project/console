@@ -34,8 +34,8 @@ COPY ./${app_name}/nginx.conf /etc/nginx/
 COPY --from=builder /app/${app_name}/build var/public
 COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
-RUN touch /var/run/nginx.pid; && \
-  chown -R nginx:nginx /var/run/nginx.pid;
+RUN touch /var/run/nginx.pid && \
+  chown -R nginx:nginx /var/run/nginx.pid
 
 EXPOSE 80
 

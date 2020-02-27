@@ -54,8 +54,8 @@ COPY --from=ui-generator /app/service-catalog/catalog/build var/catalog-public
 COPY --from=ui-generator /app/service-catalog/instances/build var/instances-public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
-RUN touch /var/run/nginx.pid; && \
-  chown -R nginx:nginx /var/run/nginx.pid;
+RUN touch /var/run/nginx.pid && \
+  chown -R nginx:nginx /var/run/nginx.pid
 
 EXPOSE 8080 8081 8082
 
