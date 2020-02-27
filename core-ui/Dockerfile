@@ -30,12 +30,12 @@ RUN apk add --update nginx && rm -rf /var/cache/apk/*
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core-ui
 
-COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
+COPY ./${app_name}/nginx.conf /etc/nginx/
 COPY --from=builder /app/${app_name}/build var/public
 COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
-RUN touch /run/nginx/nginx.pid && \
-  chown -R nginx:nginx /run/nginx/nginx.pid
+RUN touch /var/run/nginx.pid; && \
+  chown -R nginx:nginx /var/run/nginx.pid;
 
 EXPOSE 80
 
