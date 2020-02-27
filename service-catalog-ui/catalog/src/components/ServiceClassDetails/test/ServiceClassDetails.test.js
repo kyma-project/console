@@ -7,7 +7,7 @@ import {
 } from '../../../testing/queriesMocks';
 import { clusterServiceClass1Name } from '../../../testing/serviceClassesMocks';
 import ServiceClassDetails from '../ServiceClassDetails';
-import { Spinner } from '@kyma-project/react-components';
+import { Spinner } from '../../../react-shared';
 import { componentUpdate } from '../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
