@@ -11,7 +11,7 @@ import {
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
-import { Identifier } from 'fundamental-react';
+import { Identifier, Button } from 'fundamental-react';
 import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 import './ServiceClassDetails.scss';
@@ -28,7 +28,6 @@ import {
   DOCUMENTATION_PER_PLAN_DESCRIPTION,
 } from '../../shared/constants';
 import { Tooltip, Spinner } from '../../react-shared';
-import { Button } from 'fundamental-react';
 
 export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;

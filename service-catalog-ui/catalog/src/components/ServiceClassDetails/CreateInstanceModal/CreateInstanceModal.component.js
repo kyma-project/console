@@ -93,7 +93,7 @@ const PlanColumnContent = ({
 };
 
 PlanColumnContent.proTypes = {
-  preselectedPlan: SERVICE_PLAN_SHAPE.isRequired,
+  preselectedPlan: SERVICE_PLAN_SHAPE,
   defaultPlan: SERVICE_PLAN_SHAPE,
   onPlanChange: PropTypes.func.isRequired,
   dropdownRef: CustomPropTypes.ref.isRequired,
