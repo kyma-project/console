@@ -150,16 +150,17 @@ Use the `checkClusterAvailability.sh` script to quickly check the availability o
 # or
 
 export CLUSTER_HOST=abc.com
-./scripts/checkClusterAvailability.sh <cluster_subdomain>
+./scripts/checkClusterAvailability.sh {cluster_subdomain}
 # the same as ./scripts/checkClusterAvailability.sh {CLUSTER_SUBDOMAIN}.abc.com
 
 # or
 
 ./scripts/checkClusterAvailability.sh
-# Checks the availability of every cluster that has ever been set through setClusterConfig.sh or checked with checkClusterAvailability.sh on your machine.
+# Checks the availability of every cluster that has ever been set through setClusterConfig.sh
+# or checked with checkClusterAvailability.sh on your machine.
 
 # or
 
-./scripts/checkClusterAvailability.sh -s <cluster_domain>
+./scripts/checkClusterAvailability.sh -s {cluster_domain}
 # Returns an appropriate exit code if the cluster is unavailable.
 ```

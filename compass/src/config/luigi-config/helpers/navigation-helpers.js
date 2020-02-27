@@ -56,7 +56,7 @@ export const getTenantsFromCache = () =>
   JSON.parse(sessionStorage.getItem('tenants')) || [];
 
 const fetchFromGraphql = async data => {
-  const url = window.clusterConfig.graphqlApiUrl;
+  const url = window.clusterConfig.compassApiUrl;
   const response = await fetch(url, {
     method: 'POST',
     cache: 'no-cache',

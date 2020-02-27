@@ -58,7 +58,7 @@ export default function ApiRules() {
 
   return (
     <>
-      <PageHeader title="API rules" />
+      <PageHeader title="API Rules" />
       <GenericList
         actions={actions}
         entries={data.APIRules}
@@ -74,7 +74,7 @@ export default function ApiRules() {
                 .navigate(`/create`)
             }
           >
-            Add API rule
+            Add API Rule
           </Button>
         }
       />

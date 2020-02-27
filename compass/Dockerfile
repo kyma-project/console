@@ -48,6 +48,6 @@ COPY --from=ui-generator /app/licenses/ /app/licenses/
 RUN touch /run/nginx/nginx.pid && \
   chown -R nginx:nginx /run/nginx/nginx.pid
 
-EXPOSE 80 8888
+EXPOSE 81 8888
 
 CMD ["nginx", "-g", "daemon off;"]

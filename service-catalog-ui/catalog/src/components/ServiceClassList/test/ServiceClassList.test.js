@@ -16,7 +16,7 @@ import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate } from '../../../testing';
 import { Search } from '@kyma-project/react-components';
-import { Counter } from 'fundamental-react';
+import { Identifier } from 'fundamental-react';
 import Cards from '../Cards/Cards.component';
 
 const mockNavigate = jest.fn();
@@ -72,14 +72,14 @@ describe('ServiceClassList UI', () => {
       component
         .find(Tab)
         .at(0)
-        .find(Counter)
+        .find(Identifier)
         .text(),
     ).toEqual('2');
     expect(
       component
         .find(Tab)
         .at(1)
-        .find(Counter)
+        .find(Identifier)
         .text(),
     ).toEqual('1');
 
@@ -160,7 +160,7 @@ describe('Search classes by name', () => {
   it('Add-Ons tab has proper counter', async () => {
     await componentUpdate(component);
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('2');
+    expect(addOnsTab.find(Identifier).text()).toEqual('2');
 
     expectKnownConsoleWarnings();
   });
@@ -182,7 +182,7 @@ describe('Search classes by name', () => {
 
   it('Services tab has proper counter', () => {
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('1');
+    expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
   });
@@ -214,10 +214,10 @@ describe('Search classes by other attributes', () => {
     await componentUpdate(component);
 
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('1');
+    expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('1');
+    expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
   });
@@ -229,10 +229,10 @@ describe('Search classes by other attributes', () => {
     await componentUpdate(component);
 
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Counter).text()).toEqual('2');
+    expect(addOnsTab.find(Identifier).text()).toEqual('2');
 
     const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Counter).text()).toEqual('1');
+    expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
   });
