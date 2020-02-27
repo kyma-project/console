@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
-import { Spinner } from '@kyma-project/react-components';
 
 import {
   serviceClassConstants,
@@ -28,7 +27,8 @@ import {
   DOCUMENTATION_PER_PLAN_LABEL,
   DOCUMENTATION_PER_PLAN_DESCRIPTION,
 } from '../../shared/constants';
-import { Tooltip } from '../../react-shared';
+import { Tooltip, Spinner } from '../../react-shared';
+import { Button } from 'fundamental-react';
 
 export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;
@@ -96,9 +96,29 @@ export default function ServiceClassDetails({ name, plan }) {
   const currentPlan = isAPIpackage
     ? plans.find(p => p.name === plan)
     : undefined;
-  console.log(currentPlan);
+
   if (isAPIpackage && !currentPlan) {
-    //TODO: error - no plan provided
+    //TODO: redrection to the plan selection view?
+    LuigiClient.uxManager().showAlert({
+      type: 'error',
+      text:
+        'The provided plan name is wrong. Please make sure you selected the right one.',
+    });
+
+    return (
+      <section className="fd-section">
+        <Button
+          glyph="nav-back"
+          onClick={() =>
+            LuigiClient.linkManager()
+              .fromClosestContext()
+              .navigate('/')
+          }
+        >
+          Go back to the Catalog
+        </Button>
+      </section>
+    );
   }
 
   return (
