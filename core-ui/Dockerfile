@@ -34,6 +34,9 @@ COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/build var/public
 COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
+RUN touch /run/nginx/nginx.pid && \
+  chown -R nginx:nginx /run/nginx/nginx.pid
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

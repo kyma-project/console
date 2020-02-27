@@ -53,6 +53,9 @@ COPY --from=ui-generator /app/service-catalog/catalog/build var/catalog-public
 COPY --from=ui-generator /app/service-catalog/instances/build var/instances-public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
+RUN touch /run/nginx/nginx.pid && \
+  chown -R nginx:nginx /run/nginx/nginx.pid
+
 EXPOSE 8080 8081 8082
 
 CMD ["nginx", "-g", "daemon off;"]
