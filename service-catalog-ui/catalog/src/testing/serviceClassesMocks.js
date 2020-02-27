@@ -1,3 +1,4 @@
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../shared/constants';
 const clusterServiceClass1Name = 'testName';
 
 const clusterServiceClass1 = {
@@ -67,6 +68,33 @@ const serviceClass2 = {
   name: '4124',
   providerDisplayName: 'HakunaMatataprovider2',
   tags: [],
+  __typename: 'ServiceClass',
+};
+
+const serviceClassWithAPIrule = {
+  activated: false,
+  description: 'Description 2',
+  displayName: 'serviceClass displayName2',
+  externalName: 'service-class-name-1',
+  imageUrl: '',
+  instances: [],
+  labels: {
+    provisionOnlyOnce: 'true',
+    [DOCUMENTATION_PER_PLAN_LABEL]: 'true',
+    someLabel: 'somevalue',
+  },
+  name: 'service-with-api-rule',
+  providerDisplayName: 'HakunaMatataprovider2',
+  tags: [],
+  plans: [
+    {
+      displayName: 'Plan1',
+      externalName: 'plan1',
+      name: 'test-plan',
+      __typename: 'ServicePlan',
+    },
+  ],
+  creationTimestamp: 1572525371,
   __typename: 'ServiceClass',
 };
 
@@ -218,4 +246,5 @@ export {
   clusterServiceClass1Name,
   clusterServiceClassDetails,
   clusterServiceClassDetailsNoPlanSpec,
+  serviceClassWithAPIrule,
 };

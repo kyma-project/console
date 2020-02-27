@@ -137,7 +137,12 @@ export default function ServiceClassDetails({ name, plan }) {
       >
         {isAPIpackage && (
           <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
-            <Identifier id="docs-per-plan-icon" glyph="sap-box" size="s" />
+            <Identifier
+              id="docs-per-plan-icon"
+              glyph="sap-box"
+              label="docs-per-plan-icon"
+              size="s"
+            />
           </Tooltip>
         )}
 

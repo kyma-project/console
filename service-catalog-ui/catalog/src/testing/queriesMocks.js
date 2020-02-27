@@ -9,6 +9,7 @@ import {
   clusterServiceClassDetails,
   clusterServiceClass3,
   serviceClass2,
+  serviceClassWithAPIrule,
 } from './serviceClassesMocks';
 
 import { filterExtensions } from '../variables';
@@ -71,6 +72,23 @@ export const serviceClassQuery = {
     data: {
       clusterServiceClass: clusterServiceClassDetails,
       serviceClass: null,
+    },
+  },
+};
+
+export const serviceClassAPIruleQuery = {
+  request: {
+    query: getServiceClass,
+    variables: {
+      namespace: mockEnvironmentId,
+      name: serviceClassWithAPIrule.name,
+      fileExtensions: filterExtensions,
+    },
+  },
+  result: {
+    data: {
+      clusterServiceClass: null,
+      serviceClass: serviceClassWithAPIrule,
     },
   },
 };
