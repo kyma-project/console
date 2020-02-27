@@ -1,5 +1,6 @@
 import { getAllServiceClasses } from '../components/ServiceClassList/queries';
 import { getServiceClass } from '../components/ServiceClassDetails/queries';
+import { getServiceClassPlans } from '../components/ServiceClassPlansList/queries';
 import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   clusterServiceClass1,
@@ -9,6 +10,8 @@ import {
   clusterServiceClassDetails,
   clusterServiceClass3,
   serviceClass2,
+  serviceClassWithoutPlans,
+  serviceClassWithPlans,
   serviceClassWithAPIrule,
 } from './serviceClassesMocks';
 
@@ -72,6 +75,38 @@ export const serviceClassQuery = {
     data: {
       clusterServiceClass: clusterServiceClassDetails,
       serviceClass: null,
+    },
+  },
+};
+
+export const serviceClassPlansQuery = {
+  request: {
+    query: getServiceClassPlans,
+    variables: {
+      namespace: mockEnvironmentId,
+      name: clusterServiceClass1Name,
+    },
+  },
+  result: {
+    data: {
+      clusterServiceClass: null,
+      serviceClass: serviceClassWithPlans,
+    },
+  },
+};
+
+export const serviceClassNoPlansQuery = {
+  request: {
+    query: getServiceClassPlans,
+    variables: {
+      namespace: mockEnvironmentId,
+      name: clusterServiceClass1Name,
+    },
+  },
+  result: {
+    data: {
+      clusterServiceClass: null,
+      serviceClass: serviceClassWithoutPlans,
     },
   },
 };

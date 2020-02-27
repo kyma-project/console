@@ -237,6 +237,37 @@ const clusterServiceClassDetailsNoPlanSpec = {
   __typename: 'ClusterServiceClass',
 };
 
+const serviceClassWithoutPlans = {
+  name: clusterServiceClass1Name,
+  displayName: 'test123',
+  externalName: 'test-service123',
+  labels: { 'documentation-per-plan': 'true', provisionOnlyOnce: 'true' },
+  plans: [],
+};
+
+const serviceClassWithPlans = {
+  name: clusterServiceClass1Name,
+  displayName: 'test123',
+  externalName: 'test-service123',
+  labels: { 'documentation-per-plan': 'true', provisionOnlyOnce: 'true' },
+  plans: [
+    {
+      name: 'p1',
+      displayName: 'test' + clusterServiceClass1Name + ' - plan 1',
+      externalName: 'test' + clusterServiceClass1Name + '-1',
+      namespace: 'testnamespace',
+      relatedServiceClassName: clusterServiceClass1Name,
+    },
+    {
+      name: 'p2',
+      displayName: 'test' + clusterServiceClass1Name + ' - plan 2',
+      externalName: 'test' + clusterServiceClass1Name + '-2',
+      namespace: 'testnamespace',
+      relatedServiceClassName: clusterServiceClass1Name,
+    },
+  ],
+};
+
 export {
   clusterServiceClass1,
   clusterServiceClass2,
@@ -247,4 +278,6 @@ export {
   clusterServiceClassDetails,
   clusterServiceClassDetailsNoPlanSpec,
   serviceClassWithAPIrule,
+  serviceClassWithoutPlans,
+  serviceClassWithPlans,
 };

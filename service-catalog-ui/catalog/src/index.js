@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 
 import { preloadingStrategy } from '@kyma-project/common';
 
-import './index.css';
+import './index.scss';
 
 import App from './components/App/App';
 
