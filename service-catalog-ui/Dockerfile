@@ -48,6 +48,7 @@ RUN apk add --update nginx && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
 
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/service-catalog/brokers/build var/brokers-public
 COPY --from=ui-generator /app/service-catalog/catalog/build var/catalog-public
 COPY --from=ui-generator /app/service-catalog/instances/build var/instances-public
