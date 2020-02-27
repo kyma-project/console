@@ -39,8 +39,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/addons/build var/public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
-RUN touch /run/nginx/nginx.pid && \
-  chown -R nginx:nginx /run/nginx/nginx.pid
+RUN touch /var/run/nginx.pid && \
+  chown -R nginx:nginx /var/run/nginx.pid
 
 EXPOSE 80
 
