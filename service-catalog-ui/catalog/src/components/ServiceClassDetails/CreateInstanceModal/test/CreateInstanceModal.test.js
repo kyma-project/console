@@ -2,6 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
+import { render } from '@testing-library/react';
 import { componentUpdate } from '../../../../testing';
 import {
   clusterServiceClassDetails,
@@ -272,5 +273,52 @@ describe('CreateInstanceModal', () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       `cmf-instances/details/${clusterServiceClass1Name}`,
     );
+  });
+
+  describe('Preselected plan', () => {
+    let gqlMock;
+    const testPlan = {
+      name: 'testname',
+      displayName: "Look, it's a bird!",
+    };
+    beforeEach(() => {
+      gqlMock = createServiceInstanceErrorMock();
+    });
+
+    it('Shows the preselected plan name', () => {
+      const { queryByText } = render(
+        <MockedProvider mocks={[gqlMock]} addTypename={false}>
+          <CreateInstanceModal
+            checkInstanceExistQuery={{ serviceInstances: [] }}
+            item={clusterServiceClassDetails}
+            formElementRef={{ current: null }}
+            jsonSchemaFormRef={{ current: null }}
+            onChange={onChange}
+            onError={onError}
+            onCompleted={onCompleted}
+            preselectedPlan={testPlan}
+          />
+        </MockedProvider>,
+      );
+      expect(queryByText(testPlan.displayName)).toBeInTheDocument();
+    });
+
+    it("Doesn't render the plan selection", () => {
+      const { queryByLabelText } = render(
+        <MockedProvider mocks={[gqlMock]} addTypename={false}>
+          <CreateInstanceModal
+            checkInstanceExistQuery={{ serviceInstances: [] }}
+            item={clusterServiceClassDetails}
+            formElementRef={{ current: null }}
+            jsonSchemaFormRef={{ current: null }}
+            onChange={onChange}
+            onError={onError}
+            onCompleted={onCompleted}
+            preselectedPlan={testPlan}
+          />
+        </MockedProvider>,
+      );
+      expect(queryByLabelText('plan-selector')).not.toBeInTheDocument();
+    });
   });
 });

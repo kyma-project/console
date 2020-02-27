@@ -77,6 +77,7 @@ const PlanColumnContent = ({
         </FormLabel>
         <select
           id="plan"
+          aria-label="plan-selector"
           ref={dropdownRef}
           defaultValue={defaultPlan}
           onChange={onPlanChange}
