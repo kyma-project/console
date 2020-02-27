@@ -307,7 +307,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           this.eventActivationsService
             .getEventActivations(this.namespace, this.token)
             .subscribe(resp => {
-              debugger;
               resp.data.eventActivations.forEach(ea => {
                 ea.events.forEach(ev => {
                   const eventTrigger: EventTrigger = {
