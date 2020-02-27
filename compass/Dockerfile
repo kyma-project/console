@@ -46,7 +46,7 @@ COPY --from=ui-generator /app/compass/public-luigi var/public-luigi
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
 RUN touch /var/run/nginx.pid && \
-  chown -R nginx:nginx /var/run/nginx.pid.pid
+  chown -R nginx:nginx /var/run/nginx.pid
 
 EXPOSE 81 8888
 
