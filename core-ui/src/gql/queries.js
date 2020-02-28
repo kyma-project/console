@@ -41,6 +41,9 @@ export const GET_LAMBDAS = gql`
       runtime
       size
       status
+      serviceBindingUsages {
+        name
+      }
     }
   }
 `;
@@ -56,20 +59,31 @@ export const GET_LAMBDA = gql`
       status
       content
       dependencies
+      serviceBindingUsages {
+        name
+        parameters {
+          envPrefix {
+            name
+          }
+        }
+        serviceBinding {
+          name
+          serviceInstanceName
+          secret {
+            name
+            data
+          }
+        }
+      }
     }
   }
 `;
 
 export const GET_SERVICE_INSTANCES = gql`
-  query ServiceInstances($namespace: String!) {
-    serviceInstances(namespace: $namespace) {
+  query ServiceInstances($namespace: String!, $status: InstanceStatusType) {
+    serviceInstances(namespace: $namespace, status: $status) {
       name
-      labels
       bindable
-      status {
-        type
-        message
-      }
       servicePlan {
         bindingCreateParameterSchema
       }
@@ -81,35 +95,6 @@ export const GET_SERVICE_INSTANCES = gql`
             name
             data
           }
-          status {
-            type
-            reason
-            message
-          }
-        }
-      }
-      serviceBindingUsages {
-        name
-        parameters {
-          envPrefix {
-            name
-          }
-        }
-        serviceBinding {
-          name
-          secret {
-            name
-            data
-          }
-        }
-        status {
-          type
-          reason
-          message
-        }
-        usedBy {
-          name
-          kind
         }
       }
     }

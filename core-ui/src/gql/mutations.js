@@ -102,6 +102,20 @@ export const DELETE_SERVICE_BINDING_USAGE = gql`
   }
 `;
 
+export const DELETE_SERVICE_BINDING_USAGES = gql`
+  mutation deleteServiceBindingUsages(
+    $serviceBindingUsageNames: [String!]!
+    $namespace: String!
+  ) {
+    deleteServiceBindingUsages(
+      serviceBindingUsageNames: $serviceBindingUsageNames
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;
+
 export const CREATE_NAMESPACE = gql`
   mutation createNamespace($name: String!, $labels: Labels) {
     createNamespace(name: $name, labels: $labels) {

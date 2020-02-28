@@ -7,4 +7,5 @@ export const lambda = {
   runtime: 'nodejs8',
   dependencies: 'test dependencies',
   content: 'test content',
+  serviceBindingUsages: [],
 };

@@ -1,16 +1,41 @@
 import React from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
 import { Panel } from 'fundamental-react';
 
 import { GenericList } from 'react-shared';
 
+import { useQuery } from '@apollo/react-hooks';
+import { GET_SERVICE_INSTANCES } from 'gql/queries';
+
 import { useServiceBindings } from './ServiceBindingsService';
+
+import { filterServiceInstances } from './helpers';
 
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateServiceBindingForm from 'components/Lambdas/CreateServiceBindingForm/CreateServiceBindingForm';
 
 import './ServiceBindings.scss';
 
-function CreateLambdaModal({ serviceInstances = [], refetchQuery }) {
+function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
+  const namespace = LuigiClient.getEventData().environmentId;
+  const {
+    data: { serviceInstances = [] },
+    error,
+    loading,
+    refetch: refetchInstances,
+  } = useQuery(GET_SERVICE_INSTANCES, {
+    variables: {
+      namespace,
+      status: 'RUNNING',
+    },
+    fetchPolicy: 'no-cache',
+  });
+
+  const notInjectedServiceInstances = filterServiceInstances(
+    serviceInstances,
+    serviceBindingUsages,
+  );
+
   return (
     <ModalWithForm
       title="Create new Service Binding"
@@ -24,8 +49,11 @@ function CreateLambdaModal({ serviceInstances = [], refetchQuery }) {
       renderForm={props => (
         <CreateServiceBindingForm
           {...props}
-          serviceInstances={serviceInstances}
-          refetchQuery={refetchQuery}
+          serviceInstances={notInjectedServiceInstances}
+          refetchLambda={refetchLambda}
+          refetchInstances={refetchInstances}
+          serviceInstanceError={error}
+          serviceInstanceLoading={loading}
         />
       )}
     />
@@ -33,22 +61,22 @@ function CreateLambdaModal({ serviceInstances = [], refetchQuery }) {
 }
 
 const ServiceBindings = ({
-  injectedServiceInstances = [],
+  serviceBindingUsages = [],
   notInjectedServiceInstances = [],
-  refetchQuery,
+  refetchLambda,
 }) => {
   const { deleteServiceBindingUsage } = useServiceBindings();
 
   const renderEnvs = bindingUsage => {
     let envPrefix = '';
-    if (bindingUsage.parameters) {
-      envPrefix = bindingUsage.parameters.envPrefix.name;
+    if (bindingUsage.parameters && bindingUsage.parameters.envPrefix) {
+      envPrefix = bindingUsage.parameters.envPrefix.name || '';
     }
 
     const secretData =
       bindingUsage.serviceBinding.secret &&
       bindingUsage.serviceBinding.secret.data;
-    const envs = Object.keys(secretData);
+    const envs = Object.keys(secretData || {});
     if (!secretData || !envs.length) {
       return null;
     }
@@ -68,21 +96,17 @@ const ServiceBindings = ({
   const actions = [
     {
       name: 'Delete',
-      handler: entry => {
-        deleteServiceBindingUsage(
-          entry.serviceInstanceName,
-          entry.bindingUsage,
-          refetchQuery,
-        );
+      handler: bindingUsage => {
+        deleteServiceBindingUsage(bindingUsage, refetchLambda);
       },
     },
   ];
   const headerRenderer = () => ['Instance', 'Environment Variable Names'];
-  const rowRenderer = item => [
+  const rowRenderer = bindingUsage => [
     <span data-test-id="service-instance-name">
-      {item.serviceInstanceName}
+      {bindingUsage.serviceBinding.serviceInstanceName}
     </span>,
-    renderEnvs(item.bindingUsage),
+    renderEnvs(bindingUsage),
   ];
 
   return (
@@ -91,15 +115,15 @@ const ServiceBindings = ({
         <Panel.Head title="Service Bindings" />
         <Panel.Actions>
           <CreateLambdaModal
-            serviceInstances={notInjectedServiceInstances}
-            refetchQuery={refetchQuery}
+            serviceBindingUsages={serviceBindingUsages}
+            refetchLambda={refetchLambda}
           />
         </Panel.Actions>
       </Panel.Header>
       <Panel.Body>
         <GenericList
           actions={actions}
-          entries={injectedServiceInstances}
+          entries={serviceBindingUsages}
           headerRenderer={headerRenderer}
           rowRenderer={rowRenderer}
         />

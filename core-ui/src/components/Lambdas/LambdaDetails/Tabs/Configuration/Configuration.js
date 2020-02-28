@@ -8,13 +8,17 @@ const ConfigurationTab = props => {
   return (
     <>
       <ConfigurationForm {...props} />
-      <ServiceBindingsWrapper lambdaName={props.lambda.name} />
+      <ServiceBindingsWrapper
+        lambda={props.lambda}
+        refetchLambda={props.refetchLambda}
+      />
     </>
   );
 };
 
 ConfigurationTab.propTypes = {
   lambda: PropTypes.object.isRequired,
+  refetchLambda: PropTypes.func.isRequired,
   formRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   sizeRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   runtimeRef: PropTypes.shape({ current: PropTypes.any }).isRequired,

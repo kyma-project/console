@@ -18,6 +18,7 @@ describe('Lambda Configuration Tab', () => {
           runtimeRef={emptyRef}
           LabelsEditor={labelEditorMock}
           formRef={{ current: null }}
+          refetchLambda={() => {}}
         />
       </MockedProvider>,
     );

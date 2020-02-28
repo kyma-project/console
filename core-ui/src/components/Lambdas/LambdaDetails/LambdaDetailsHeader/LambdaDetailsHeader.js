@@ -5,9 +5,14 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { useMutation } from '@apollo/react-hooks';
 
 import { handleDelete } from 'react-shared';
-import { DELETE_LAMBDA } from '../../../../gql/mutations';
+import {
+  DELETE_LAMBDA,
+  DELETE_SERVICE_BINDING_USAGES,
+} from '../../../../gql/mutations';
 import { useNotification } from 'react-shared';
 import { REFETCH_TIMEOUT } from '../../../../shared/constants';
+
+import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 LambdaDetailsHeader.propTypes = {
   lambda: PropTypes.object.isRequired,
@@ -15,34 +20,50 @@ LambdaDetailsHeader.propTypes = {
 };
 
 export default function LambdaDetailsHeader({ lambda, handleUpdate }) {
-  const { name, namespace } = lambda;
+  const { name, namespace, serviceBindingUsages } = lambda;
   const [deleteLambda] = useMutation(DELETE_LAMBDA);
+  const [deleteLambdaServiceBindingUsages] = useMutation(
+    DELETE_SERVICE_BINDING_USAGES,
+  );
   const notificationManager = useNotification();
+
+  function handleError(error) {
+    const errorToDisplay = extractGraphQlErrors(error);
+    notificationManager.notifyError({
+      content: `Error while removing lambda ${name}: ${errorToDisplay}`,
+    });
+  }
 
   const handleLambdaDelete = async () => {
     try {
       const deletedLambda = await deleteLambda({
         variables: { name, namespace },
       });
-      const isSuccess =
-        deletedLambda.data &&
-        deletedLambda.data.deleteFunction &&
-        deletedLambda.data.deleteFunction.name === name;
-      if (isSuccess) {
-        notificationManager.notify({
-          content: `Lambda ${name} deleted`,
-          title: 'Success',
-          color: '#107E3E',
-          icon: 'accept',
-          autoClose: true,
-        });
+
+      if (deletedLambda.error) {
+        handleError(deletedLambda.error);
+        return;
       }
+
+      const serviceBindingUsageNames = serviceBindingUsages.map(s => s.name);
+      if (serviceBindingUsageNames.length) {
+        const deletedBindingUsages = await deleteLambdaServiceBindingUsages({
+          variables: { serviceBindingUsageNames, namespace },
+        });
+
+        if (deletedBindingUsages.error) {
+          handleError(deletedLambda.error);
+          return;
+        }
+      }
+
+      notificationManager.notifySuccess({
+        content: `Lambda ${name} deleted`,
+        autoClose: true,
+      });
     } catch (e) {
-      notificationManager.notify({
+      notificationManager.notifyError({
         content: `Error while removing lambda ${name}: ${e.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
         autoClose: false,
       });
     }

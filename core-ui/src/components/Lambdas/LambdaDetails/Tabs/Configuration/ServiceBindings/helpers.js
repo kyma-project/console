@@ -1,32 +1,20 @@
-// TODO: Remove this function after introducing new queries for ServiceBindingUsages in CBS
-export function filterServiceInstances(lambdaName, serviceInstances = []) {
+export function filterServiceInstances(
+  serviceInstances = [],
+  serviceBindingUsages = [],
+) {
+  if (!serviceBindingUsages.length) {
+    return serviceInstances;
+  }
+
   const canInjectInstances = serviceInstances.filter(
-    serviceInstance =>
-      serviceInstance.bindable && serviceInstance.status.type === 'RUNNING',
+    serviceInstance => serviceInstance.bindable,
   );
 
-  const injectedServiceInstances = canInjectInstances
-    .map(serviceInstance => {
-      const bindingUsage = serviceInstance.serviceBindingUsages.find(
-        usage =>
-          usage.usedBy.name === lambdaName &&
-          usage.usedBy.kind === 'knative-service',
-      );
-
-      return {
-        serviceInstanceName: serviceInstance.name,
-        bindingUsage,
-      };
-    })
-    .filter(serviceInstance => serviceInstance.bindingUsage);
-
-  const injectedServiceInstancesNames = injectedServiceInstances.map(
-    service => service.serviceInstanceName,
-  );
-  const notInjectedServiceInstances = canInjectInstances.filter(
-    serviceInstance =>
-      !injectedServiceInstancesNames.includes(serviceInstance.name),
+  const injectedServiceInstancesNames = serviceBindingUsages.map(
+    binding => binding.serviceBinding.serviceInstanceName,
   );
 
-  return [injectedServiceInstances || [], notInjectedServiceInstances || []];
+  return canInjectInstances.filter(
+    service => !injectedServiceInstancesNames.includes(service.name),
+  );
 }

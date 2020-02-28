@@ -21,9 +21,6 @@ describe('CreateServiceBindingForm', () => {
   const serviceInstance_1 = {
     name: 'serviceInstance_1',
     bindable: true,
-    status: {
-      type: 'RUNNING',
-    },
     serviceBindings: {
       items: [
         {
@@ -31,29 +28,10 @@ describe('CreateServiceBindingForm', () => {
         },
       ],
     },
-    serviceBindingUsages: [
-      {
-        usedBy: {
-          name: 'foo-bar',
-          kind: 'knative-service',
-        },
-      },
-    ],
   };
   const serviceInstance_2 = {
     name: 'serviceInstance_2',
     bindable: true,
-    status: {
-      type: 'RUNNING',
-    },
-    serviceBindingUsages: [
-      {
-        usedBy: {
-          name: 'foo-bar',
-          kind: 'function',
-        },
-      },
-    ],
   };
   const serviceInstances = [serviceInstance_1, serviceInstance_2];
 

@@ -2,16 +2,22 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel, FormInput } from 'fundamental-react';
 
+import { Spinner } from 'react-shared';
+
 import Checkbox from '../Checkbox/Checkbox';
 
 import { useServiceBindings } from '../LambdaDetails/Tabs/Configuration/ServiceBindings/ServiceBindingsService';
 
 export default function CreateServiceBindingForm({
   serviceInstances = [],
-  refetchQuery,
+  refetchLambda,
+  refetchInstances,
+  serviceInstanceError = null,
+  serviceInstanceLoading = false,
   onChange,
   formElementRef,
   setValidity = () => void 0,
+  isOpen = false,
 }) {
   const { createServiceBinding } = useServiceBindings();
 
@@ -25,6 +31,12 @@ export default function CreateServiceBindingForm({
   useEffect(() => {
     setValidity(false);
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      refetchInstances();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!serviceInstanceName) {
@@ -78,7 +90,19 @@ export default function CreateServiceBindingForm({
       existingCredentials: existingCredentials || undefined,
     };
 
-    await createServiceBinding(parameters, refetchQuery);
+    await createServiceBinding(parameters, refetchLambda);
+  }
+
+  if (serviceInstanceError) {
+    return <p>Error! {serviceInstanceError.message}</p>;
+  }
+  if (serviceInstanceLoading) {
+    return <Spinner />;
+  }
+  if (!serviceInstances.length) {
+    return (
+      <p>No Service Instances available. Create a Service Instance first.</p>
+    );
   }
 
   const serviceInstancesNames = serviceInstances.map(service => (
@@ -108,10 +132,10 @@ export default function CreateServiceBindingForm({
       </FormItem>
 
       <FormItem key="envPrefix">
-        <FormLabel htmlFor="envPrefix">Prefix for Injected Variables</FormLabel>
+        <FormLabel htmlFor="envPrefix">Prefix for injected variables</FormLabel>
         <FormInput
           id="envPrefix"
-          placeholder="Set prefix for envs (optional)"
+          placeholder="Set a prefix for variables (optional)"
           type="text"
           value={envPrefix}
           onChange={e => setEnvPrefix(e.target.value)}
@@ -123,7 +147,7 @@ export default function CreateServiceBindingForm({
           <FormItem key="createCredentials">
             <Checkbox
               name="createCredentials"
-              value="Create new credentials"
+              value="Create new Secret"
               checked={createCredentials}
               inputProps={{
                 style: {
@@ -154,8 +178,8 @@ export default function CreateServiceBindingForm({
           ) : null}
           {!createCredentials && !secrets.length ? (
             <p>
-              No secrets available. Please create a new secret for the bind
-              Service Instance.
+              No Secrets available. Create new Secret to bind the Service
+              Instance.
             </p>
           ) : null}
         </>
@@ -169,4 +193,6 @@ CreateServiceBindingForm.propTypes = {
   onCompleted: PropTypes.func,
   onError: PropTypes.func,
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  serviceInstanceError: PropTypes.object,
+  serviceInstanceLoading: PropTypes.bool,
 };

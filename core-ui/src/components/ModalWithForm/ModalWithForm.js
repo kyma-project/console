@@ -154,7 +154,8 @@ const ModalWithForm = ({
           onError: handleFormError,
           onCompleted: handleFormSuccess,
           performManualSubmit: handleFormSubmit,
-          setValidity: setValidity,
+          setValidity,
+          isOpen,
         })}
       </Modal>
     </div>

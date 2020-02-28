@@ -52,7 +52,7 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
 
   async function handleDeleteServiceBindingUsage(
     serviceBindingUsage,
-    refetchQuery,
+    refetchLambda,
   ) {
     const namespace = LuigiClient.getEventData().environmentId;
     const serviceBindingUsageName = serviceBindingUsage.name;
@@ -85,7 +85,7 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
           content: `Service Binding removing...`,
         });
         setTimeout(() => {
-          refetchQuery();
+          refetchLambda();
         }, REFETCH_TIMEOUT);
       }
     } catch (err) {
@@ -93,20 +93,16 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
     }
   }
 
-  async function deleteServiceBindingUsage(
-    serviceInstanceName,
-    serviceBindingUsage,
-    refetchQuery,
-  ) {
+  async function deleteServiceBindingUsage(serviceBindingUsage, refetchLambda) {
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: `Remove Service Binding`,
-        body: `Are you sure you want to delete Service Binding from "${serviceInstanceName}" Service Instance?`,
+        body: `Are you sure you want to delete Service Binding from "${serviceBindingUsage.serviceBinding.serviceInstanceName}" Service Instance?`,
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
       .then(() =>
-        handleDeleteServiceBindingUsage(serviceBindingUsage, refetchQuery),
+        handleDeleteServiceBindingUsage(serviceBindingUsage, refetchLambda),
       )
       .catch(_ => {});
   }
@@ -135,7 +131,7 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
       createCredentials = true,
       existingCredentials = undefined,
     },
-    refetchQuery,
+    refetchLambda,
   ) {
     const namespace = LuigiClient.getEventData().environmentId;
     let serviceBindingName = existingCredentials;
@@ -182,8 +178,8 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
         content: `Service Binding creating...`,
       });
       setTimeout(() => {
-        refetchQuery();
-      }, REFETCH_TIMEOUT * 3);
+        refetchLambda();
+      }, REFETCH_TIMEOUT * 5);
     } catch (err) {
       handleError(serviceInstanceName, err, ACTION_TYPE.CREATE);
     }

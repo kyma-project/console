@@ -4,21 +4,25 @@ import { MockedProvider } from '@apollo/react-testing';
 
 import { componentUpdate } from '../../../../testing';
 
-import { lambda, lambdaNoContent } from './gqlMocks';
+import { lambda, lambdaNoContent, mocks } from './gqlMocks';
 import LambdaDetails from '../LambdaDetails';
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     getEventData: () => ({ environmentId: 'testnamespace' }),
     getNodeParams: () => ({ selectedTab: 'Code' }),
+    uxManager: () => ({
+      addBackdrop: () => {},
+      removeBackdrop: () => {},
+    }),
   };
 });
 
 describe('LambdaDetails', () => {
   it('Displays lambda, its size, runtime and content', async () => {
     const component = mount(
-      <MockedProvider>
-        <LambdaDetails lambda={lambda} />
+      <MockedProvider mocks={mocks}>
+        <LambdaDetails lambda={lambda} refetchLambda={() => {}} />
       </MockedProvider>,
     );
 
@@ -39,8 +43,8 @@ describe('LambdaDetails', () => {
 
   it('Displays lambda, its size, runtime and default content', async () => {
     const component = mount(
-      <MockedProvider>
-        <LambdaDetails lambda={lambdaNoContent} />
+      <MockedProvider mocks={mocks}>
+        <LambdaDetails lambda={lambdaNoContent} refetchLambda={() => {}} />
       </MockedProvider>,
     );
 
