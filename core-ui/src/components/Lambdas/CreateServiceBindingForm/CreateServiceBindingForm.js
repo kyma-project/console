@@ -36,7 +36,7 @@ export default function CreateServiceBindingForm({
     if (isOpen) {
       refetchInstances();
     }
-  }, [isOpen]);
+  }, [isOpen, refetchInstances]);
 
   useEffect(() => {
     if (!serviceInstanceName) {

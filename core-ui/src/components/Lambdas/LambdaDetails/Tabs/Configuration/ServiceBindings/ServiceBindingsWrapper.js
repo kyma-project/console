@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Spinner } from 'react-shared';
-
 import { ServiceBindingsService } from './ServiceBindingsService';
 import ServiceBindings from './ServiceBindings';
 
