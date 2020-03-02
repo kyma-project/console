@@ -68,6 +68,7 @@ export default function ServiceClassDetails({ name, plan }) {
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
   const serviceClassDescription = getDescription(serviceClass);
+  const serviceClassName = serviceClass.name;
 
   const isProvisionedOnlyOnce =
     serviceClass.labels &&
@@ -124,6 +125,7 @@ export default function ServiceClassDetails({ name, plan }) {
     <>
       <ServiceClassDetailsHeader
         serviceClassDisplayName={serviceClassDisplayName}
+        serviceClassName={serviceClassName}
         providerDisplayName={providerDisplayName}
         creationTimestamp={creationTimestamp}
         documentationUrl={documentationUrl}
@@ -168,7 +170,10 @@ export default function ServiceClassDetails({ name, plan }) {
 
       <ServiceClassDetailsWrapper phoneRows>
         {backendModuleExists('rafter') && (
-          <ServiceClassTabs serviceClass={serviceClass} />
+          <ServiceClassTabs
+            serviceClass={serviceClass}
+            currentPlan={currentPlan}
+          />
         )}
       </ServiceClassDetailsWrapper>
     </>
