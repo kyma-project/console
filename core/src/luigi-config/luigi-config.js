@@ -687,7 +687,7 @@ Promise.all(initPromises)
               console.log('authErrorHandler 1', err);
             }
           },
-          storage: 'none'
+          storage: 'sessionStorage'
         },
         communication,
         navigation,
