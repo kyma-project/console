@@ -24,7 +24,9 @@ export const serviceClassConstants = {
   errorServiceClassesList:
     'An error occurred while loading Service Classes List',
   errorServiceClassDetails:
-    'An error occurred while loading Service Classes List',
+    'An error occurred while loading Service Classes Details',
+  errorServiceClassPlansList:
+    'An error occurred while loading Service Classes Variants List',
 
   //service class list tabs indices
   addonsIndex: 0,

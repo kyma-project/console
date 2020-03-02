@@ -21,10 +21,27 @@ import { StatusPanel } from './StatusPanel';
 const INFORMATION_CELL_SIZE = { mobile: 1, tablet: 0.5, desktop: 0.5 };
 
 const ServiceInstanceInfo = ({ serviceInstance }) => {
+  const serviceClassDocsPerPlan =
+    serviceInstance.serviceClass &&
+    serviceInstance.serviceClass.labels &&
+    serviceInstance.serviceClass.labels['documentation-per-plan'] === 'true';
+
   const goToServiceClassDetails = name => {
+    if (serviceClassDocsPerPlan) {
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-service-catalog/details/${name}/plans`);
+    } else {
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-service-catalog/details/${name}`);
+    }
+  };
+
+  const goToServiceClassDetailsWithPlan = (name, planName) => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`cmf-service-catalog/details/${name}`);
+      .navigate(`cmf-service-catalog/details/${name}/plan/${planName}`);
   };
 
   if (!serviceInstance) {
@@ -85,6 +102,17 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                       {JSON.stringify(serviceInstance.planSpec, undefined, 2)}
                     </JSONCode>
                   </Modal>
+                ) : serviceClassDocsPerPlan ? (
+                  <ServiceClassButton
+                    onClick={() =>
+                      goToServiceClassDetailsWithPlan(
+                        instanceClass.name,
+                        instancePlan.name,
+                      )
+                    }
+                  >
+                    {getResourceDisplayName(instancePlan)}
+                  </ServiceClassButton>
                 ) : (
                   `${getResourceDisplayName(instancePlan) || '-'}`
                 )}

@@ -1,7 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
-
-import { Icon } from '@kyma-project/react-components';
+import {
+  render,
+  waitForDomChange,
+  queryAllByRole,
+  queryByText,
+  getByLabelText,
+} from '@testing-library/react';
+import { Icon } from 'fundamental-react';
 import Card from '../Card.component';
 import { InstancesIndicator } from '../InstancesIndicator';
 import { Labels } from '../Labels';
@@ -100,5 +106,27 @@ describe('Card.component', () => {
 
     const placeholder = component.find(Icon);
     expect(placeholder.exists()).toBe(true);
+  });
+
+  it("Doesn't render API package icon when label is not set", () => {
+    const onCLick = jest.fn();
+    const { queryByLabelText } = render(<Card {...mock} onClick={onCLick} />);
+
+    expect(
+      queryByLabelText('has-API-packages-indicator'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('Renders API package icon when label is set', () => {
+    const onCLick = jest.fn();
+    const { queryByLabelText } = render(
+      <Card
+        {...mock}
+        labels={{ 'documentation-per-plan': 'true' }}
+        onClick={onCLick}
+      />,
+    );
+
+    expect(queryByLabelText('has-API-packages-indicator')).toBeInTheDocument();
   });
 });

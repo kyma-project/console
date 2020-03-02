@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { instanceStatusColor } from '@kyma-project/react-components';
-import { Counter, Badge } from 'fundamental-react';
+import { Identifier, Badge } from 'fundamental-react';
 
 import { StatusesList, StatusWrapper } from './styled';
 
@@ -32,7 +32,9 @@ const StatusIndicator = ({ data, testId }) => {
         <StatusesList>
           {statusesLength > 0 && (
             <StatusWrapper>
-              <Counter data-e2e-id={testId}>{statusesLength}</Counter>
+              <Identifier size="xxs" data-e2e-id={testId}>
+                {statusesLength}
+              </Identifier>
             </StatusWrapper>
           )}
           {statusesStats &&

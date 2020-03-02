@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
-import { Spinner } from '@kyma-project/react-components';
 
 import {
   serviceClassConstants,
@@ -12,7 +11,7 @@ import {
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
-
+import { Identifier, Button } from 'fundamental-react';
 import ModalWithForm from '../../shared/ModalWithForm/ModalWithForm';
 import { isStringValueEqualToTrue } from '../../commons/helpers';
 import './ServiceClassDetails.scss';
@@ -24,9 +23,15 @@ import {
   backendModuleExists,
 } from '../../commons/helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
+import {
+  DOCUMENTATION_PER_PLAN_LABEL,
+  DOCUMENTATION_PER_PLAN_DESCRIPTION,
+} from '../../shared/constants';
+import { Tooltip, Spinner } from '../../react-shared';
 
-export default function ServiceClassDetails({ name }) {
+export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;
+
   const {
     data: queryData,
     loading: queryLoading,
@@ -83,7 +88,37 @@ export default function ServiceClassDetails({ name }) {
     imageUrl,
     tags,
     labels,
+    plans,
   } = serviceClass;
+
+  const isAPIpackage = labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
+  const currentPlan = isAPIpackage
+    ? plans.find(p => p.name === plan)
+    : undefined;
+
+  if (isAPIpackage && !currentPlan) {
+    //TODO: redrection to the plan selection view?
+    LuigiClient.uxManager().showAlert({
+      type: 'error',
+      text:
+        'The provided plan name is wrong. Please make sure you selected the right one.',
+    });
+
+    return (
+      <section className="fd-section">
+        <Button
+          glyph="nav-back"
+          onClick={() =>
+            LuigiClient.linkManager()
+              .fromClosestContext()
+              .navigate('/')
+          }
+        >
+          Go back to the Catalog
+        </Button>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -99,6 +134,17 @@ export default function ServiceClassDetails({ name }) {
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
       >
+        {isAPIpackage && (
+          <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
+            <Identifier
+              id="docs-per-plan-icon"
+              glyph="sap-box"
+              label="docs-per-plan-icon"
+              size="s"
+            />
+          </Tooltip>
+        )}
+
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}
                     ${
@@ -114,7 +160,9 @@ export default function ServiceClassDetails({ name }) {
           }}
           id="add-instance-modal"
           item={serviceClass}
-          renderForm={props => <CreateInstanceModal {...props} />}
+          renderForm={props => (
+            <CreateInstanceModal {...props} preselectedPlan={currentPlan} />
+          )}
         />
       </ServiceClassDetailsHeader>
 

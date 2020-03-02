@@ -25,7 +25,6 @@ import { DeploymentDetailsService } from './deployment-details.service';
 import { AppConfig } from '../../app.config';
 import { ApisService } from '../../apis/apis.service';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
-import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { TriggersService } from '../../triggers/triggers.service';
 import { Subscription } from '../../shared/datamodel/k8s/subscription';
 
@@ -68,7 +67,6 @@ export class LambdasComponent extends GenericTableComponent
     private deploymentDetailsService: DeploymentDetailsService,
     changeDetector: ChangeDetectorRef,
     private apisService: ApisService,
-    private subscriptionsService: SubscriptionsService,
     private triggersService: TriggersService,
     private serviceBindingUsagesService: ServiceBindingUsagesService,
   ) {
@@ -97,7 +95,6 @@ export class LambdasComponent extends GenericTableComponent
               .subscribe(
                 () => {
                   setTimeout(() => {
-                    this.deleteSubscriptions(entry.metadata.name);
                     this.deleteTriggers(entry.metadata.name);
                     this.deleteServiceBindingUsages(entry.metadata.name);
                     this.apisService
@@ -174,39 +171,6 @@ export class LambdasComponent extends GenericTableComponent
         });
       });
     }
-
-  deleteSubscriptions(lambdaName: string): void {
-    const deleteSubReqs: Array<Observable<Subscription>> = [];
-    this.subscriptionsService
-      .getSubscriptions(this.environment, this.token, {
-        labelSelector: `Function=${lambdaName}`,
-      })
-      .subscribe(subs => {
-        subs.items.forEach(item => {
-          deleteSubReqs.push(
-            this.subscriptionsService
-              .deleteSubscription(
-                item.metadata.name,
-                this.environment,
-                this.token,
-              )
-              .pipe(
-                catchError(err => {
-                  return observableOf(err);
-                }),
-              ),
-          );
-        });
-
-        forkJoin(deleteSubReqs).subscribe(responses => {
-          responses.forEach(resp => {
-            if (resp instanceof HttpErrorResponse) {
-              this.showError((resp as HttpErrorResponse).message);
-            }
-          });
-        });
-      });
-  }
 
   deleteServiceBindingUsages(lambdaName: string): void {
     // Get all servicebindingsusages which matches "lambda-<function name>-"

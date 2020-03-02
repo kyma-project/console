@@ -15,6 +15,23 @@ const Column = ({ title, children, columnSpan = 1 }) => (
   </div>
 );
 
+const performOnClick = item => {
+  if (!item.path) {
+    return null;
+  }
+
+  if (!item.params) {
+    return LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(item.path);
+  }
+
+  return LuigiClient.linkManager()
+    .fromClosestContext()
+    .withParams(item.params)
+    .navigate(item.path);
+};
+
 export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
   <Panel className="page-header">
     <Panel.Header>
@@ -29,13 +46,7 @@ export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
                     key={item.name}
                     name={item.name}
                     url="#"
-                    onClick={() =>
-                      item.path
-                        ? LuigiClient.linkManager()
-                            .fromClosestContext()
-                            .navigate(item.path)
-                        : null
-                    }
+                    onClick={() => performOnClick(item)}
                   />
                 );
               })}
@@ -59,6 +70,7 @@ PageHeader.propTypes = {
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       path: PropTypes.string,
+      params: PropTypes.object,
     }),
   ),
 };
