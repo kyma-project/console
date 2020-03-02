@@ -40,8 +40,9 @@ export const config = {
 };
 
 var token;
-if (sessionStorage.getItem('luigi.auth')) {
-  token = JSON.parse(sessionStorage.getItem('luigi.auth')).idToken;
+const authData = Luigi.auth().store.getAuthData()
+if(authData){
+  token = authData.idToken;
 }
 
 const consoleViewGroupName = '_console_';
@@ -445,7 +446,7 @@ function getCorrespondingNamespaceLocation(namespaceName) {
 
 function relogin() {
   saveCurrentLocation();
-  sessionStorage.removeItem('luigi.auth');
+  Luigi.auth().store.removeAuthData()
   location.reload();
 }
 
@@ -686,7 +687,7 @@ Promise.all(initPromises)
               console.log('authErrorHandler 1', err);
             }
           },
-          storage: 'sessionStorage'
+          storage: 'none'
         },
         communication,
         navigation,
