@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-
 import {
   Button,
   InstanceStatus,
@@ -8,6 +7,7 @@ import {
   Table,
   Tooltip,
 } from '@kyma-project/react-components';
+import { Icon } from 'fundamental-react';
 
 import {
   LinkButton,
@@ -17,7 +17,6 @@ import {
   JSONCode,
   TextOverflowWrapper,
 } from './styled';
-
 import {
   getResourceDisplayName,
   backendModuleExists,
@@ -146,7 +145,8 @@ export class ServiceInstancesTable extends Component {
                       title="Instance's Parameters"
                       modalOpeningComponent={
                         <ServicePlanButton data-e2e-id="service-plan">
-                          {planDisplayName}
+                          {planDisplayName}{' '}
+                          <Icon glyph="detail-view" size="s" />
                         </ServicePlanButton>
                       }
                       onShow={() => LuigiClient.uxManager().addBackdrop()}
