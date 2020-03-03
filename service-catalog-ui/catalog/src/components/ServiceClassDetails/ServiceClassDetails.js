@@ -168,7 +168,10 @@ export default function ServiceClassDetails({ name, plan }) {
 
       <ServiceClassDetailsWrapper phoneRows>
         {backendModuleExists('rafter') && (
-          <ServiceClassTabs serviceClass={serviceClass} />
+          <ServiceClassTabs
+            serviceClass={serviceClass}
+            preselectedPlan={isAPIpackage ? currentPlan : undefined}
+          />
         )}
       </ServiceClassDetailsWrapper>
     </>

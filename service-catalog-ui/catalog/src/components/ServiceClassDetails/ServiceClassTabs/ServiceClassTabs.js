@@ -19,9 +19,10 @@ function getTabElementsIndicator(instancesCount) {
   );
 }
 
-const ServiceClassTabs = ({ serviceClass }) => {
-  const assetGroup =
-    serviceClass && (serviceClass.assetGroup || serviceClass.clusterAssetGroup);
+const ServiceClassTabs = ({ serviceClass, preselectedPlan }) => {
+  const assetGroup = preselectedPlan
+    ? preselectedPlan.assetGroup || preselectedPlan.clusterAssetGroup
+    : serviceClass.assetGroup || serviceClass.clusterAssetGroup;
 
   const additionalTabs = serviceClass.instances.length
     ? [
@@ -51,6 +52,7 @@ const ServiceClassTabs = ({ serviceClass }) => {
 
 ServiceClassTabs.propTypes = {
   serviceClass: PropTypes.object.isRequired,
+  preselectedPlan: PropTypes.object,
 };
 
 export default ServiceClassTabs;
