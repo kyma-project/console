@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
@@ -29,8 +29,25 @@ import {
 } from '../../shared/constants';
 import { Tooltip, Spinner } from '../../react-shared';
 
+const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
+  return (
+    <select onChange={onPlanChange}>
+      {allPlans.map(p => (
+        <option
+          selected={p.name === currentlySelected.name}
+          value={p.name}
+          key={p.name}
+        >
+          {p.displayName}
+        </option>
+      ))}
+    </select>
+  );
+};
+
 export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;
+  const [currentPlan, setCurrentPlan] = useState(null);
 
   const {
     data: queryData,
@@ -91,33 +108,37 @@ export default function ServiceClassDetails({ name, plan }) {
     plans,
   } = serviceClass;
 
+  function handlePlanChange(e) {
+    setCurrentPlan(plans.find(p => p.name === e.target.value));
+  }
+
   const isAPIpackage = labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
-  const currentPlan = isAPIpackage
-    ? plans.find(p => p.name === plan)
-    : undefined;
-
   if (isAPIpackage && !currentPlan) {
-    //TODO: redrection to the plan selection view?
-    LuigiClient.uxManager().showAlert({
-      type: 'error',
-      text:
-        'The provided plan name is wrong. Please make sure you selected the right one.',
-    });
+    const planToSet = plans.find(p => p.name === plan);
+    if (planToSet) setCurrentPlan(planToSet);
+    else {
+      //TODO: redrection to the plan selection view?
+      LuigiClient.uxManager().showAlert({
+        type: 'error',
+        text:
+          'The provided plan name is wrong. Please make sure you selected the right one.',
+      });
 
-    return (
-      <section className="fd-section">
-        <Button
-          glyph="nav-back"
-          onClick={() =>
-            LuigiClient.linkManager()
-              .fromClosestContext()
-              .navigate('/')
-          }
-        >
-          Go back to the Catalog
-        </Button>
-      </section>
-    );
+      return (
+        <section className="fd-section">
+          <Button
+            glyph="nav-back"
+            onClick={() =>
+              LuigiClient.linkManager()
+                .fromClosestContext()
+                .navigate('/')
+            }
+          >
+            Go back to the Catalog
+          </Button>
+        </section>
+      );
+    }
   }
 
   return (
@@ -133,6 +154,13 @@ export default function ServiceClassDetails({ name, plan }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+        planSelector={
+          <PlanSelector
+            allPlans={plans}
+            currentlySelected={currentPlan}
+            onPlanChange={handlePlanChange}
+          />
+        }
       >
         {isAPIpackage && (
           <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
@@ -144,7 +172,6 @@ export default function ServiceClassDetails({ name, plan }) {
             />
           </Tooltip>
         )}
-
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}
                     ${

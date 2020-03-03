@@ -27,6 +27,7 @@ const ServiceClassDetailsHeader = ({
   supportUrl,
   tags,
   children,
+  planSelector,
 }) => {
   const goToList = () => {
     LuigiClient.linkManager()
@@ -68,6 +69,7 @@ const ServiceClassDetailsHeader = ({
         providerDisplayName={providerDisplayName}
         supportUrl={supportUrl}
         tags={tags}
+        planSelector={planSelector}
       />
     </HeaderWrapper>
   );

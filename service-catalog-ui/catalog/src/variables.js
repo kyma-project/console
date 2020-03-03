@@ -46,4 +46,5 @@ export const serviceClassTileTitles = {
   support: 'Support',
   description: 'Description',
   tags: 'Tags',
+  plans: 'Selected variant',
 };
