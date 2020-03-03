@@ -28,10 +28,7 @@ import {
   DOCUMENTATION_PER_PLAN_DESCRIPTION,
 } from '../../shared/constants';
 import { Tooltip, Spinner } from '../../react-shared';
-
-function sortByDisplayName(planA, planB) {
-  return planA.displayName > planB.displayName ? 1 : -1;
-}
+import { sortByDisplayName } from '../../shared/sorting';
 
 const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
   return (
