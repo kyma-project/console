@@ -17,6 +17,7 @@ const ModalWithForm = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(initialIsValid);
+  const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
 
   const handleFormChanged = e => {
@@ -28,7 +29,9 @@ const ModalWithForm = ({
   };
 
   useMutationObserver(formElementRef, () => {
-    handleFormChanged({ target: formElementRef.current });
+    if (formElementRef.current) {
+      handleFormChanged({ target: formElementRef.current });
+    }
   });
 
   const setOpenStatus = status => {
@@ -85,7 +88,11 @@ const ModalWithForm = ({
       >
         Cancel
       </Button>
-      <Button aria-disabled={!isValid} onClick={onConfirm} option="emphasized">
+      <Button
+        aria-disabled={!isValid || !customValid}
+        onClick={onConfirm}
+        option="emphasized"
+      >
         {confirmText}
       </Button>
     </>
@@ -113,6 +120,7 @@ const ModalWithForm = ({
       {React.createElement(children.type, {
         formElementRef,
         isValid,
+        setCustomValid,
         onChange: handleFormChanged,
         onError: handleFormError,
         onCompleted: handleFormSuccess,
