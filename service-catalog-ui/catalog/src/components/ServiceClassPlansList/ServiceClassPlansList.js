@@ -8,7 +8,13 @@ import { Spinner, PageHeader, GenericList } from '../../react-shared';
 
 import { getResourceDisplayName, isService } from '../../commons/helpers';
 import { sortByDisplayName } from '../../shared/sorting';
-import { Panel } from 'fundamental-react';
+import { Badge, Identifier } from 'fundamental-react';
+
+const DOC_TYPES_COLORS = new Map([
+  ['openapi', ''],
+  ['asyncapi', 'success'],
+  ['odata', 'warning'],
+]);
 
 const goToDetails = (item, serviceClassId) => {
   if (!serviceClassId) return null;
@@ -17,6 +23,18 @@ const goToDetails = (item, serviceClassId) => {
     .fromClosestContext()
     .navigate(`details/${serviceClassId}/plan/${item.name}`);
 };
+
+function getPlanDocTypes(plan) {
+  const typesMap = new Map();
+  let assetKey = 'assetGroup';
+
+  if (plan.clusterAssetGroup) assetKey = 'clusterAssetGroup';
+
+  plan[assetKey].assets.forEach(({ type }) =>
+    typesMap.set(type, (typesMap.has(type) ? typesMap.has(type) : 0) + 1),
+  );
+  return typesMap;
+}
 
 export default function ServiceClassPlansList({ name }) {
   const namespace = LuigiClient.getEventData().environmentId;
@@ -44,7 +62,7 @@ export default function ServiceClassPlansList({ name }) {
     );
   }
 
-  const headerRenderer = () => [''];
+  const headerRenderer = () => ['', ''];
 
   const rowRenderer = item => [
     <span
@@ -54,6 +72,14 @@ export default function ServiceClassPlansList({ name }) {
     >
       {getResourceDisplayName(item)}
     </span>,
+    <>
+      {Array.from(getPlanDocTypes(item).entries()).map(([type, count]) => (
+        <p key={type}>
+          {count > 1 && <Identifier size="xxs">{count}</Identifier>}
+          <Badge type={DOC_TYPES_COLORS.get(type)}>{type}</Badge>
+        </p>
+      ))}
+    </>,
   ];
 
   const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
