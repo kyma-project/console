@@ -29,6 +29,10 @@ import {
 } from '../../shared/constants';
 import { Tooltip, Spinner } from '../../react-shared';
 
+function sortByDisplayName(planA, planB) {
+  return planA.displayName > planB.displayName ? 1 : -1;
+}
+
 const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
   return (
     <select onChange={onPlanChange}>
@@ -156,7 +160,7 @@ export default function ServiceClassDetails({ name, plan }) {
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
         planSelector={
           <PlanSelector
-            allPlans={plans}
+            allPlans={plans.sort(sortByDisplayName)}
             currentlySelected={currentPlan}
             onPlanChange={handlePlanChange}
           />
