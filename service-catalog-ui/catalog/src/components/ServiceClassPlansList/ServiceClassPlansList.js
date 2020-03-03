@@ -7,6 +7,8 @@ import { serviceClassConstants } from '../../variables';
 import { Spinner, PageHeader, GenericList } from '../../react-shared';
 
 import { getResourceDisplayName, isService } from '../../commons/helpers';
+import { sortByDisplayName } from '../../shared/sorting';
+import { Panel } from 'fundamental-react';
 
 const goToDetails = (item, serviceClassId) => {
   if (!serviceClassId) return null;
@@ -42,7 +44,7 @@ export default function ServiceClassPlansList({ name }) {
     );
   }
 
-  const headerRenderer = () => ['Name'];
+  const headerRenderer = () => [''];
 
   const rowRenderer = item => [
     <span
@@ -85,11 +87,12 @@ export default function ServiceClassPlansList({ name }) {
         breadcrumbItems={breadcrumbItems}
       />
       <GenericList
-        title="Choose Service Class Variant"
-        entries={serviceClass.plans}
+        title="Choose Service Class Plan"
+        entries={serviceClass.plans.sort(sortByDisplayName)}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         showSearchField={false}
+        showHeader={false}
       />
     </article>
   );

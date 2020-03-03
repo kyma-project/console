@@ -61,6 +61,7 @@ export const GenericList = ({
   textSearchProperties,
   actionsStandaloneItems,
   testid,
+  showHeader,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -94,15 +95,17 @@ export const GenericList = ({
 
       <Panel.Body>
         <table className="fd-table">
-          <thead>
-            <tr>
-              <HeaderRenderer
-                entries={entries}
-                actions={actions}
-                headerRenderer={headerRenderer}
-              />
-            </tr>
-          </thead>
+          {showHeader && (
+            <thead>
+              <tr>
+                <HeaderRenderer
+                  entries={entries}
+                  actions={actions}
+                  headerRenderer={headerRenderer}
+                />
+              </tr>
+            </thead>
+          )}
           <tbody>
             {filteredEntries.length ? (
               filteredEntries.map((e, index) => (
@@ -149,6 +152,7 @@ GenericList.propTypes = {
   textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
   actionsStandaloneItems: PropTypes.number,
   testid: PropTypes.string,
+  showHeader: PropTypes.bool,
 };
 
 GenericList.defaultProps = {
@@ -156,4 +160,5 @@ GenericList.defaultProps = {
   actions: [],
   showSearchField: true,
   textSearchProperties: ['name', 'description'],
+  showHeader: true,
 };
