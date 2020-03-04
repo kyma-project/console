@@ -30,6 +30,7 @@
     "copy-webpack-plugin": "^4.3.0",
     "core-js": "^2.5.7",
     "fundamental-ngx": "^0.7.0",
+    "js-base64": "^2.5.2",
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.15",
     "ng-click-outside": "^4.0.0",
