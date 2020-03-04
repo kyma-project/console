@@ -61,7 +61,7 @@ export const GenericList = ({
   textSearchProperties,
   actionsStandaloneItems,
   testid,
-  showHeader,
+  showHeader = true,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
