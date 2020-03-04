@@ -2,13 +2,13 @@ export function filterServiceInstances(
   serviceInstances = [],
   serviceBindingUsages = [],
 ) {
-  if (!serviceBindingUsages.length) {
-    return serviceInstances;
-  }
-
   const canInjectInstances = serviceInstances.filter(
     serviceInstance => serviceInstance.bindable,
   );
+
+  if (!serviceBindingUsages.length) {
+    return canInjectInstances;
+  }
 
   const injectedServiceInstancesNames = serviceBindingUsages.map(
     binding => binding.serviceBinding.serviceInstanceName,

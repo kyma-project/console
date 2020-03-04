@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mocks, lambda, serviceBindingUsage } from './gqlMocks';
 
@@ -16,7 +16,7 @@ jest.mock('@kyma-project/luigi-client', () => {
 });
 
 describe('ServiceBindingsWrapper', () => {
-  it('Render with minimal props', () => {
+  it('Render with minimal props', async () => {
     const { getByText } = render(
       <MockedProvider mocks={mocks}>
         <ServiceBindingsWrapper lambda={lambda} refetchLambda={() => {}} />
@@ -24,9 +24,10 @@ describe('ServiceBindingsWrapper', () => {
     );
 
     expect(getByText('No entries found')).toBeInTheDocument();
+    await wait();
   });
 
-  it('Render with serviceBindingUsages', () => {
+  it('Render with serviceBindingUsages', async () => {
     const lambdaWithSBU = {
       ...lambda,
       serviceBindingUsages: [serviceBindingUsage],
@@ -42,5 +43,6 @@ describe('ServiceBindingsWrapper', () => {
     );
 
     expect(queryByText('No entries found')).not.toBeInTheDocument();
+    await wait();
   });
 });

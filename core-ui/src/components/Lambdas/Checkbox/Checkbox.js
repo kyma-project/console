@@ -1,6 +1,6 @@
 import { FormItem, FormLabel } from 'fundamental-react';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const getCheckStatus = (checked, indeterminate) => {
   if (indeterminate) {
@@ -15,9 +15,8 @@ const getCheckStatus = (checked, indeterminate) => {
 const Checkbox = React.forwardRef(
   (
     {
-      checked,
       className,
-      defaultChecked,
+      initialChecked = false,
       disabled,
       disableStyles,
       id,
@@ -32,6 +31,7 @@ const Checkbox = React.forwardRef(
     },
     ref,
   ) => {
+    const [checked, setChecked] = useState(initialChecked);
     const inputEl = useRef();
 
     useEffect(() => {
@@ -44,13 +44,15 @@ const Checkbox = React.forwardRef(
           <input
             {...inputProps}
             aria-checked={getCheckStatus(checked, indeterminate)}
-            checked={checked || defaultChecked}
+            checked={checked}
             className="fd-checkbox"
             disabled={disabled}
             id={name}
             name={name}
             onChange={e => {
-              onChange(e, !checked);
+              const newChecked = !checked;
+              setChecked(newChecked);
+              onChange(e, newChecked);
             }}
             ref={inputEl}
             type="checkbox"
@@ -65,10 +67,9 @@ const Checkbox = React.forwardRef(
 Checkbox.displayName = 'Checkbox';
 
 Checkbox.propTypes = {
-  checked: PropTypes.bool,
   className: PropTypes.string,
 
-  defaultChecked: PropTypes.bool,
+  initialChecked: PropTypes.bool,
   disabled: PropTypes.bool,
   disableStyles: PropTypes.bool,
   id: PropTypes.string,
@@ -82,7 +83,7 @@ Checkbox.propTypes = {
 };
 
 Checkbox.defaultProps = {
-  onChange: () => {},
+  onChange: () => void 0,
 };
 
 Checkbox.propDescriptions = {

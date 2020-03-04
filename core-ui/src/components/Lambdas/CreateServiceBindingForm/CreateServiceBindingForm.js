@@ -154,8 +154,8 @@ export default function CreateServiceBindingForm({
             <Checkbox
               name="createCredentials"
               value="Create new Secret"
-              checked={createCredentials}
               inputProps={checkBoxInputProps}
+              initialChecked={true}
               onChange={(_, value) => setCreateCredentials(value)}
             />
           </FormItem>
