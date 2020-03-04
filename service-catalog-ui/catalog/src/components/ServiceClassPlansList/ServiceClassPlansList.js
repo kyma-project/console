@@ -3,12 +3,11 @@ import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { getServiceClassPlans } from './queries';
 import { serviceClassConstants } from '../../variables';
-
+import PropTypes from 'prop-types';
 import { Spinner, PageHeader, GenericList } from '../../react-shared';
-
 import { getResourceDisplayName, isService } from '../../commons/helpers';
 import { sortByDisplayName } from '../../shared/sorting';
-import { Badge, Identifier } from 'fundamental-react';
+import { Badge } from 'fundamental-react';
 
 const DOC_TYPES_COLORS = new Map([
   ['openapi', ''],
@@ -34,7 +33,7 @@ const DocTypesList = ({ plan }) => (
             <span
               title={`There are ${count} ${type}s in this plan.`}
               class="fd-counter fd-counter--notification"
-              aria-label="Unread count"
+              aria-label="api-type-count"
             >
               {count}
             </span>
@@ -44,6 +43,13 @@ const DocTypesList = ({ plan }) => (
     ))}
   </>
 );
+
+DocTypesList.propTypes = {
+  plan: PropTypes.shape({
+    assetGroup: PropTypes.object,
+    clusterAssetGroup: PropTypes.object,
+  }),
+};
 
 function getPlanDocTypes(plan) {
   const typesMap = new Map();

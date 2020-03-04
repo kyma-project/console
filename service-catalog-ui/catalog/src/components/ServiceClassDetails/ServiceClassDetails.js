@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
-
+import PropTypes from 'prop-types';
 import {
   serviceClassConstants,
   createInstanceButtonText,
@@ -40,6 +40,12 @@ const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
       ))}
     </select>
   );
+};
+
+PlanSelector.propTypes = {
+  allPlans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentlySelected: PropTypes.object.isRequired,
+  onPlanChange: PropTypes.func.isRequired,
 };
 
 export default function ServiceClassDetails({ name, plan }) {
