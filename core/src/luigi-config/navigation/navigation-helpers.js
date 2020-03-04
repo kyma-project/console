@@ -1,3 +1,5 @@
+import { config } from '../config';
+
 export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
   if (disabledNavNodes !== null && disabledNavNodes !== undefined) {
     const disabledNavNodesArray = disabledNavNodes.split(' ');
@@ -75,4 +77,52 @@ export function hideExperimentalNode(node, isVisible) {
   } else {
     return node;
   }
+}
+
+export function createNamespacesList(rawNamespaceNames) {
+  var namespaces = [];
+  rawNamespaceNames
+  .sort((namespaceA, namespaceB)=>{
+    return namespaceA.name.localeCompare(namespaceB.name);
+  })
+  .map(namespace => {
+    const namespaceName = namespace.name;
+    const alternativeLocation = getCorrespondingNamespaceLocation(
+      namespaceName
+    );
+    namespaces.push({
+      category: 'Namespaces',
+      label: namespaceName,
+      pathValue: alternativeLocation || namespaceName
+    });
+  });
+  return namespaces;
+}
+
+export function setLimitExceededErrorsMessages(limitExceededErrors) {
+  let limitExceededErrorscomposed = [];
+  limitExceededErrors.forEach(resource => {
+    if (resource.affectedResources && resource.affectedResources.length > 0) {
+      resource.affectedResources.forEach(affectedResource => {
+        limitExceededErrorscomposed.push(
+          `'${resource.resourceName}' by '${affectedResource}' (${resource.quotaName})`
+        );
+      });
+    }
+  });
+  return limitExceededErrorscomposed;
+}
+
+function getCorrespondingNamespaceLocation(namespaceName) {
+  const addressTokens = window.location.pathname.split('/');
+  // check if we are in namespaces context
+  if (addressTokens[2] !== 'namespaces') {
+    return null;
+  }
+  // check if any path after namespace name exists - if not,
+  // it will default to namespace name (and then to '/details')
+  if (!addressTokens[4]) {
+    return null;
+  }
+  return namespaceName + '/' + addressTokens.slice(4).join('/');
 }

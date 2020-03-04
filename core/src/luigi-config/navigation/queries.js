@@ -54,3 +54,10 @@ export const CONSOLE_INIT_DATA = `query {
     }
   }
 `;
+
+export const GET_NAMESPACES = `query Namespace($showSystemNamespaces: Boolean, $withInactiveStatus: Boolean) {
+  namespaces(withSystemNamespaces: $showSystemNamespaces, withInactiveStatus: $withInactiveStatus){
+    name
+  }
+}
+`;
