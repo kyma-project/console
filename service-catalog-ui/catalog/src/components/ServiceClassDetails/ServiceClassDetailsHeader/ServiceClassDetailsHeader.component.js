@@ -55,7 +55,7 @@ const ServiceClassDetailsHeader = ({
           />
           {serviceClassName && (
             <Breadcrumb.Item
-              name={`${serviceClassDisplayName} - Variants list`}
+              name={`${serviceClassDisplayName} - Plans list`}
               url="#"
               onClick={() => goToPlansList(serviceClassName)}
             />

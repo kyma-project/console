@@ -111,7 +111,7 @@ describe('Service Class Details UI', () => {
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
         expect(
-          queryByText(`${serviceClassWithAPIrule.displayName} - Variants list`),
+          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
         ).toBeInTheDocument();
       });
     });
@@ -126,7 +126,7 @@ describe('Service Class Details UI', () => {
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
         expect(
-          queryByText(`${serviceClassWithAPIrule.displayName} - Variants list`),
+          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
         ).not.toBeInTheDocument();
       });
     });
