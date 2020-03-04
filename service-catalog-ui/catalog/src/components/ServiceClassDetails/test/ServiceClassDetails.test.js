@@ -1,7 +1,7 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import { render, wait } from '@testing-library/react';
+import { render, wait, fireEvent } from '@testing-library/react';
 import {
   serviceClassQuery,
   serviceClassAPIruleQuery,
@@ -11,7 +11,7 @@ import {
   clusterServiceClass1Name,
   serviceClassWithAPIrule,
 } from '../../../testing/serviceClassesMocks';
-import ServiceClassDetails from '../ServiceClassDetails';
+import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
 import { Spinner } from '../../../react-shared';
 import { componentUpdate } from '../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
@@ -122,6 +122,51 @@ describe('Service Class Details UI', () => {
 
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
+      });
+    });
+    describe('PlanSelector', () => {
+      it('Renders no plans', () => {
+        const { queryByRole } = render(
+          <PlanSelector allPlans={[]} onPlanChange={jest.fn()} />,
+        );
+        expect(queryByRole('option')).not.toBeInTheDocument();
+      });
+
+      it('Renders plan list', () => {
+        const { queryAllByRole } = render(
+          <PlanSelector
+            allPlans={[{ name: 'plan1' }, { name: 'plan2' }]}
+            onPlanChange={jest.fn()}
+          />,
+        );
+        expect(queryAllByRole('option')).toHaveLength(2);
+      });
+
+      it('Renders plan list', () => {
+        const { queryAllByRole } = render(
+          <PlanSelector
+            allPlans={[{ name: 'plan1' }, { name: 'plan2' }]}
+            onPlanChange={jest.fn()}
+          />,
+        );
+        expect(queryAllByRole('option')).toHaveLength(2);
+      });
+
+      it('Fires a proper callback', () => {
+        const mockOnPlanChange = jest.fn();
+        const { getByLabelText } = render(
+          <PlanSelector
+            allPlans={[{ name: 'plan1' }, { name: 'plan2' }]}
+            currentlySelected={{ name: 'plan2' }}
+            onPlanChange={mockOnPlanChange}
+          />,
+        );
+        const select = getByLabelText('plan-selector');
+        expect(mockOnPlanChange).not.toHaveBeenCalled();
+
+        fireEvent.change(select, { target: { value: 'plan2' } });
+
+        expect(mockOnPlanChange).toHaveBeenCalled();
       });
     });
   });

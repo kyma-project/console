@@ -30,9 +30,13 @@ import {
 import { Tooltip, Spinner } from '../../react-shared';
 import { sortByDisplayName } from '../../shared/sorting';
 
-const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
+export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
   return (
-    <select defaultValue={currentlySelected.name} onChange={onPlanChange}>
+    <select
+      defaultValue={currentlySelected && currentlySelected.name}
+      onChange={onPlanChange}
+      aria-label="plan-selector"
+    >
       {allPlans.map(p => (
         <option value={p.name} key={p.name}>
           {p.displayName}

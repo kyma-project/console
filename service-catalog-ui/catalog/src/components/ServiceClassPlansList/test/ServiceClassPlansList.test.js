@@ -118,6 +118,7 @@ describe('ServiceClassPlans', () => {
       `details/${serviceClassPlans[1].relatedServiceClassName}/plan/${serviceClassPlans[1].name}`,
     );
   });
+
   describe('DocTypesList', () => {
     it('Shows no doc types when it should', () => {
       const { queryAllByLabelText } = render(<DocTypesList plan={{}} />);
