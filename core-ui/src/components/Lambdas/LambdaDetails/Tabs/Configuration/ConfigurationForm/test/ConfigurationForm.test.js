@@ -1,15 +1,16 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 
 import { lambda } from './mocks';
 import ConfigurationForm from '../ConfigurationForm';
 
 describe('Lambda Configuration Form', () => {
   const emptyRef = { current: null };
-  const labelEditorMock = <p>Label Editor Mock</p>;
+  const text = 'Label Editor Mock';
+  const labelEditorMock = <p>{text}</p>;
 
   it('Render with minimal props', () => {
-    const component = renderer.create(
+    const { getByText } = render(
       <ConfigurationForm
         lambda={lambda}
         sizeRef={emptyRef}
@@ -18,6 +19,7 @@ describe('Lambda Configuration Form', () => {
         formRef={{ current: null }}
       />,
     );
-    expect(component.toJSON()).toMatchSnapshot();
+
+    expect(getByText(text)).toBeInTheDocument();
   });
 });

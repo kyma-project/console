@@ -14,8 +14,6 @@ import { filterServiceInstances } from './helpers';
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateServiceBindingForm from 'components/Lambdas/CreateServiceBindingForm/CreateServiceBindingForm';
 
-import './ServiceBindings.scss';
-
 function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
   const namespace = LuigiClient.getEventData().environmentId;
   const {
@@ -109,26 +107,23 @@ const ServiceBindings = ({
     renderEnvs(bindingUsage),
   ];
 
+  const createLambdaModal = (
+    <CreateLambdaModal
+      serviceBindingUsages={serviceBindingUsages}
+      refetchLambda={refetchLambda}
+    />
+  );
+
   return (
-    <Panel className="fd-has-margin-medium lambda-service-bindings">
-      <Panel.Header>
-        <Panel.Head title="Service Bindings" />
-        <Panel.Actions>
-          <CreateLambdaModal
-            serviceBindingUsages={serviceBindingUsages}
-            refetchLambda={refetchLambda}
-          />
-        </Panel.Actions>
-      </Panel.Header>
-      <Panel.Body>
-        <GenericList
-          actions={actions}
-          entries={serviceBindingUsages}
-          headerRenderer={headerRenderer}
-          rowRenderer={rowRenderer}
-        />
-      </Panel.Body>
-    </Panel>
+    <GenericList
+      title="Service Bindings"
+      showSearchField={false}
+      extraHeaderContent={createLambdaModal}
+      actions={actions}
+      entries={serviceBindingUsages}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+    />
   );
 };
 

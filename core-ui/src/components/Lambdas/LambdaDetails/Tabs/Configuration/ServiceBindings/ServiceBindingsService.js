@@ -18,6 +18,11 @@ const ACTION_TYPE = {
   DELETE: 'Delete',
 };
 
+const ACTION_VERB = {
+  CREATE: 'creating',
+  DELETE: 'deleting',
+};
+
 export const ServiceBindingsContext = createContext({
   createServiceBinding: () => void 0,
   deleteServiceBinding: () => void 0,
@@ -39,9 +44,9 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
     error,
     mutationType = ACTION_TYPE.CREATE,
   ) {
-    let actionVerb = 'creating';
+    let actionVerb = ACTION_VERB.CREATE;
     if (mutationType === ACTION_TYPE.DELETE) {
-      actionVerb = 'deleting';
+      actionVerb = ACTION_VERB.DELETE;
     }
 
     const errorToDisplay = extractGraphQlErrors(error);
@@ -104,7 +109,12 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
       .then(() =>
         handleDeleteServiceBindingUsage(serviceBindingUsage, refetchLambda),
       )
-      .catch(_ => {});
+      .catch(e => {
+        notificationManager.notifyError({
+          content: `Problem with Luigi: ${e.message}`,
+          autoClose: false,
+        });
+      });
   }
 
   function prepareServiceBindingUsageParameters({
@@ -185,15 +195,11 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
     }
   }
 
-  const exposedData = {
-    createServiceBinding,
-    deleteServiceBindingUsage,
-  };
-
   return (
     <ServiceBindingsContext.Provider
       value={{
-        ...exposedData,
+        createServiceBinding,
+        deleteServiceBindingUsage,
       }}
     >
       {children}

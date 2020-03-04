@@ -1,20 +1,46 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
+import { mocks, serviceBindingUsage } from './gqlMocks';
 
 import ServiceBindings from '../ServiceBindings';
 
+jest.mock('@kyma-project/luigi-client', () => {
+  return {
+    getEventData: () => ({ environmentId: 'testnamespace' }),
+    uxManager: () => ({
+      addBackdrop: () => {},
+      removeBackdrop: () => {},
+    }),
+  };
+});
+
 describe('ServiceBindings', () => {
   it('Render with minimal props', () => {
-    const component = renderer.create(
-      <MockedProvider>
+    const { getByText } = render(
+      <MockedProvider mocks={mocks}>
         <ServiceBindings
-          injectedServiceInstances={[]}
+          serviceBindingUsages={[]}
           notInjectedServiceInstances={[]}
-          refetchQuery={() => {}}
+          refetchLambda={() => {}}
         />
       </MockedProvider>,
     );
-    expect(component.toJSON()).toMatchSnapshot();
+
+    expect(getByText('No entries found')).toBeInTheDocument();
+  });
+
+  it('Render with serviceBindingUsages', () => {
+    const { queryByText } = render(
+      <MockedProvider mocks={mocks}>
+        <ServiceBindings
+          serviceBindingUsages={[serviceBindingUsage]}
+          notInjectedServiceInstances={[]}
+          refetchLambda={() => {}}
+        />
+      </MockedProvider>,
+    );
+
+    expect(queryByText('No entries found')).not.toBeInTheDocument();
   });
 });

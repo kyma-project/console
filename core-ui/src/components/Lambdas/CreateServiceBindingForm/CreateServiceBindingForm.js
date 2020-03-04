@@ -8,6 +8,12 @@ import Checkbox from '../Checkbox/Checkbox';
 
 import { useServiceBindings } from '../LambdaDetails/Tabs/Configuration/ServiceBindings/ServiceBindingsService';
 
+const checkBoxInputProps = {
+  style: {
+    marginRight: '6px',
+  },
+};
+
 export default function CreateServiceBindingForm({
   serviceInstances = [],
   refetchLambda,
@@ -30,7 +36,7 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     setValidity(false);
-  });
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -149,11 +155,7 @@ export default function CreateServiceBindingForm({
               name="createCredentials"
               value="Create new Secret"
               checked={createCredentials}
-              inputProps={{
-                style: {
-                  marginRight: '6px',
-                },
-              }}
+              inputProps={checkBoxInputProps}
               onChange={(_, value) => setCreateCredentials(value)}
             />
           </FormItem>

@@ -112,7 +112,12 @@ export default function Lambdas() {
           handleError(e, name);
         }
       })
-      .catch(() => {});
+      .catch(e => {
+        notificationManager.notifyError({
+          content: `Problem with Luigi: ${e.message}`,
+          autoClose: false,
+        });
+      });
   };
 
   const actions = [

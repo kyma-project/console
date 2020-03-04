@@ -39,10 +39,6 @@ const ModalWithForm = ({
     setOpen(status);
   }
 
-  function setValidity(valid) {
-    setValid(valid);
-  }
-
   function handleFormChanged(e) {
     setValid(formElementRef.current.checkValidity()); // general form validity
     if (!e.target) {
@@ -154,7 +150,7 @@ const ModalWithForm = ({
           onError: handleFormError,
           onCompleted: handleFormSuccess,
           performManualSubmit: handleFormSubmit,
-          setValidity,
+          setValidity: setValid,
           isOpen,
         })}
       </Modal>
