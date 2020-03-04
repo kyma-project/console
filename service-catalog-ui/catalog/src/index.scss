@@ -50,8 +50,14 @@ body {
   color: var(--fd-color-action-1);
   text-decoration: underline;
   cursor: pointer;
-  &--bold{
+  &--bold {
     font-weight: 700;
     text-decoration: none;
+  }
+}
+
+.fd-badge {
+  .fd-counter--notification {
+    transform: translate(10%, -50%);
   }
 }

@@ -24,14 +24,37 @@ const goToDetails = (item, serviceClassId) => {
     .navigate(`details/${serviceClassId}/plan/${item.name}`);
 };
 
+const DocTypesList = ({ plan }) => (
+  <>
+    {Array.from(getPlanDocTypes(plan).entries()).map(([type, count]) => (
+      <p key={type}>
+        <Badge type={DOC_TYPES_COLORS.get(type)}>
+          {type}
+          {count > 1 && (
+            <span
+              title={`There are ${count} ${type}s in this plan.`}
+              class="fd-counter fd-counter--notification"
+              aria-label="Unread count"
+            >
+              {count}
+            </span>
+          )}
+        </Badge>
+      </p>
+    ))}
+  </>
+);
+
 function getPlanDocTypes(plan) {
   const typesMap = new Map();
   let assetKey = 'assetGroup';
 
   if (plan.clusterAssetGroup) assetKey = 'clusterAssetGroup';
+  else if (plan.assetGroup) assetKey = 'assetGroup';
+  else return typesMap;
 
   plan[assetKey].assets.forEach(({ type }) =>
-    typesMap.set(type, (typesMap.has(type) ? typesMap.has(type) : 0) + 1),
+    typesMap.set(type, (typesMap.has(type) ? typesMap.get(type) : 0) + 1),
   );
   return typesMap;
 }
@@ -72,14 +95,7 @@ export default function ServiceClassPlansList({ name }) {
     >
       {getResourceDisplayName(item)}
     </span>,
-    <>
-      {Array.from(getPlanDocTypes(item).entries()).map(([type, count]) => (
-        <p key={type}>
-          {count > 1 && <Identifier size="xxs">{count}</Identifier>}
-          <Badge type={DOC_TYPES_COLORS.get(type)}>{type}</Badge>
-        </p>
-      ))}
-    </>,
+    <DocTypesList plan={item} />,
   ];
 
   const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
