@@ -19,11 +19,7 @@ describe('ServiceBindings', () => {
   it('Render with minimal props', () => {
     const { getByText } = render(
       <MockedProvider mocks={mocks}>
-        <ServiceBindings
-          serviceBindingUsages={[]}
-          notInjectedServiceInstances={[]}
-          refetchLambda={() => {}}
-        />
+        <ServiceBindings serviceBindingUsages={[]} refetchLambda={() => {}} />
       </MockedProvider>,
     );
 
@@ -35,7 +31,6 @@ describe('ServiceBindings', () => {
       <MockedProvider mocks={mocks}>
         <ServiceBindings
           serviceBindingUsages={[serviceBindingUsage]}
-          notInjectedServiceInstances={[]}
           refetchLambda={() => {}}
         />
       </MockedProvider>,

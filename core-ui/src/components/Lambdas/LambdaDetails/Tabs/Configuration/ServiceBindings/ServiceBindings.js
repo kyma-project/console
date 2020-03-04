@@ -1,6 +1,5 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Panel } from 'fundamental-react';
 
 import { GenericList } from 'react-shared';
 
@@ -58,11 +57,7 @@ function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
   );
 }
 
-const ServiceBindings = ({
-  serviceBindingUsages = [],
-  notInjectedServiceInstances = [],
-  refetchLambda,
-}) => {
+const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
   const { deleteServiceBindingUsage } = useServiceBindings();
 
   const renderEnvs = bindingUsage => {

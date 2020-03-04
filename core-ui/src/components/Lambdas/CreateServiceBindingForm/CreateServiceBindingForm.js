@@ -36,7 +36,7 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     setValidity(false);
-  }, []);
+  }, [setValidity]);
 
   useEffect(() => {
     if (isOpen) {
