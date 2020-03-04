@@ -51,7 +51,7 @@ describe('ServiceClassPlans', () => {
 
     const table = queryByRole('table');
     expect(table).toBeInTheDocument();
-    expect(queryAllByRole(table, 'row')).toHaveLength(2);
+    expect(queryAllByRole(table, 'row')).toHaveLength(1);
     expect(queryByText(table, 'No entries found')).toBeInTheDocument();
   });
 
@@ -96,7 +96,7 @@ describe('ServiceClassPlans', () => {
 
     const table = queryByRole('table');
     expect(table).toBeInTheDocument();
-    expect(queryAllByRole(table, 'row')).toHaveLength(3);
+    expect(queryAllByRole(table, 'row')).toHaveLength(2);
     serviceClassPlans.forEach(plan => {
       expect(queryByText(table, plan.displayName)).toBeInTheDocument();
     });

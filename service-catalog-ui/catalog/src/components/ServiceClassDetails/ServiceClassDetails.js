@@ -32,13 +32,9 @@ import { sortByDisplayName } from '../../shared/sorting';
 
 const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
   return (
-    <select onChange={onPlanChange}>
+    <select defaultValue={currentlySelected.name} onChange={onPlanChange}>
       {allPlans.map(p => (
-        <option
-          selected={p.name === currentlySelected.name}
-          value={p.name}
-          key={p.name}
-        >
+        <option value={p.name} key={p.name}>
           {p.displayName}
         </option>
       ))}
@@ -63,25 +59,22 @@ export default function ServiceClassDetails({ name, plan }) {
     fetchPolicy: 'no-cache',
   });
 
-  if (queryLoading) {
+  if (queryLoading)
     return (
       <EmptyList>
         <Spinner />
       </EmptyList>
     );
-  }
 
-  if (queryError) {
+  if (queryError)
     return (
       <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
     );
-  }
 
   const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
 
-  if (!serviceClass) {
+  if (!serviceClass)
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
-  }
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
@@ -156,11 +149,13 @@ export default function ServiceClassDetails({ name, plan }) {
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
         planSelector={
-          <PlanSelector
-            allPlans={plans.sort(sortByDisplayName)}
-            currentlySelected={currentPlan}
-            onPlanChange={handlePlanChange}
-          />
+          isAPIpackage && (
+            <PlanSelector
+              allPlans={plans.sort(sortByDisplayName)}
+              currentlySelected={currentPlan}
+              onPlanChange={handlePlanChange}
+            />
+          )
         }
       >
         {isAPIpackage && (

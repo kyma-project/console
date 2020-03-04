@@ -159,11 +159,13 @@ const ServiceClassInfo = ({
             </TileContent>
           </Tile>
         )}
-        <Tile columnSpan="2">
-          <TileContent title={serviceClassTileTitles.plans}>
-            {planSelector}
-          </TileContent>
-        </Tile>
+        {planSelector && (
+          <Tile columnSpan="2">
+            <TileContent title={serviceClassTileTitles.plans}>
+              {planSelector}
+            </TileContent>
+          </Tile>
+        )}
       </ServiceClassHeaderTileGrid>
     </ServiceClassInfoContentWrapper>
   );
