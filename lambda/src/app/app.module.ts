@@ -32,7 +32,6 @@ import { CoreServicesService } from './core-services/core-services.service';
 import { ServiceInstancesService } from './service-instances/service-instances.service';
 import { EventActivationsService } from './event-activations/event-activations.service';
 import { GraphqlClientService } from './graphql-client/graphql-client.service';
-import { SubscriptionsService } from './subscriptions/subscriptions.service';
 import { TriggersService } from './triggers/triggers.service';
 import { EventTriggerChooserComponent } from './lambdas/lambda-details/event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './lambdas/lambda-details/http-trigger/http-trigger.component';
@@ -97,7 +96,6 @@ const routes: Routes = [
     CoreServicesService,
     EventActivationsService,
     GraphqlClientService,
-    SubscriptionsService,
     TriggersService,
     LuigiClientService,
   ],

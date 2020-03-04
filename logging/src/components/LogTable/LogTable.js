@@ -8,12 +8,20 @@ LogTable.propTypes = {
 
 export default function LogTable({ entries }) {
   const Entries = () => {
-    return entries.map(entry => (
-      <tr key={entry.timestamp}>
-        <td className="caption-muted">{entry.timestamp}</td>
-        <td className="caption-muted">{entry.log}</td>
-      </tr>
-    ));
+    return entries.map(entry => {
+      let entryLog;
+      try {
+        entryLog = JSON.parse(entry.log).log;
+      } catch (e) {
+        entryLog = entry.log;
+      }
+      return (
+        <tr key={entry.timestamp}>
+          <td className="caption-muted">{entry.timestamp}</td>
+          <td className="caption-muted">{entryLog}</td>
+        </tr>
+      );
+    });
   };
 
   return (

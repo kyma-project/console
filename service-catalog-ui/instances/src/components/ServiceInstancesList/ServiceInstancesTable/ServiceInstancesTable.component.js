@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-
 import {
   Button,
   InstanceStatus,
@@ -8,6 +7,7 @@ import {
   Table,
   Tooltip,
 } from '@kyma-project/react-components';
+import { Icon } from 'fundamental-react';
 
 import {
   LinkButton,
@@ -17,7 +17,6 @@ import {
   JSONCode,
   TextOverflowWrapper,
 } from './styled';
-
 import {
   getResourceDisplayName,
   backendModuleExists,
@@ -52,10 +51,25 @@ export class ServiceInstancesTable extends Component {
       .navigate('cmf-service-catalog');
   };
 
-  goToServiceClassDetails = name => {
+  goToServiceClassDetails = serviceClass => {
+    if (
+      serviceClass.labels &&
+      serviceClass.labels['documentation-per-plan'] === 'true'
+    ) {
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-service-catalog/details/${serviceClass.name}/plans`);
+    } else {
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-service-catalog/details/${serviceClass.name}`);
+    }
+  };
+
+  goToServiceClassDetailsWithPlan = (serviceClass, plan) => {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`cmf-service-catalog/details/${name}`);
+      .navigate(`cmf-service-catalog/details/${serviceClass}/plan/${plan}`);
   };
 
   goToServiceInstanceDetails = name => {
@@ -97,9 +111,7 @@ export class ServiceInstancesTable extends Component {
               return (
                 <TextOverflowWrapper>
                   <ServiceClassButton
-                    onClick={() =>
-                      this.goToServiceClassDetails(instanceClass.name)
-                    }
+                    onClick={() => this.goToServiceClassDetails(instanceClass)}
                     title={classTitle}
                   >
                     {classTitle}
@@ -112,7 +124,13 @@ export class ServiceInstancesTable extends Component {
               if (!plan) {
                 return '-';
               }
-
+              const instanceClass =
+                instance.clusterServiceClass || instance.serviceClass;
+              const serviceClassDocsPerPlan =
+                instance.serviceClass &&
+                instance.serviceClass.labels &&
+                instance.serviceClass.labels['documentation-per-plan'] ===
+                  'true';
               const planDisplayName = getResourceDisplayName(plan);
 
               if (
@@ -127,7 +145,8 @@ export class ServiceInstancesTable extends Component {
                       title="Instance's Parameters"
                       modalOpeningComponent={
                         <ServicePlanButton data-e2e-id="service-plan">
-                          {planDisplayName}
+                          {planDisplayName}{' '}
+                          <Icon glyph="detail-view" size="s" />
                         </ServicePlanButton>
                       }
                       onShow={() => LuigiClient.uxManager().addBackdrop()}
@@ -142,7 +161,21 @@ export class ServiceInstancesTable extends Component {
               }
               return (
                 <TextOverflowWrapper>
-                  <span data-e2e-id="service-plan">{planDisplayName}</span>
+                  {serviceClassDocsPerPlan ? (
+                    <ServicePlanButton
+                      data-e2e-id="service-plan"
+                      onClick={() =>
+                        this.goToServiceClassDetailsWithPlan(
+                          instanceClass.name,
+                          plan.name,
+                        )
+                      }
+                    >
+                      {planDisplayName}
+                    </ServicePlanButton>
+                  ) : (
+                    <span data-e2e-id="service-plan">{planDisplayName}</span>
+                  )}
                 </TextOverflowWrapper>
               );
             })(),

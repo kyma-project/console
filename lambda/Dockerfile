@@ -1,5 +1,8 @@
 ### Main image ###
-FROM nginx:1.17.8-alpine
+FROM alpine:3.11
+
+### Install nginx package and remove cache ###
+RUN apk add --update nginx && rm -rf /var/cache/apk/*
 
 ### Copy file ###
 COPY ./dist /usr/share/nginx/html

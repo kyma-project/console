@@ -40,13 +40,22 @@ ENV CI true
 
 RUN cd /app/service-catalog && npm run build
 
-FROM nginx:1.17.8-alpine
+### Main image ###
+FROM alpine:3.11
+
+### Install nginx package and remove cache ###
+RUN apk add --update nginx && rm -rf /var/cache/apk/*
+
 LABEL source git@github.com:kyma-project/console.git
 
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/service-catalog/brokers/build var/brokers-public
 COPY --from=ui-generator /app/service-catalog/catalog/build var/catalog-public
 COPY --from=ui-generator /app/service-catalog/instances/build var/instances-public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
+
+RUN touch /var/run/nginx.pid && \
+  chown -R nginx:nginx /var/run/nginx.pid
 
 EXPOSE 8080 8081 8082
 

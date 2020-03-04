@@ -252,7 +252,7 @@ describe('InstancesList UI', () => {
 
     const planLink = row.find('[data-e2e-id="service-plan"]').last();
     expect(planLink.exists()).toBe(true);
-    expect(planLink.text()).toEqual(
+    expect(planLink.text()).toContain(
       serviceInstance1.clusterServicePlan.displayName,
     );
 

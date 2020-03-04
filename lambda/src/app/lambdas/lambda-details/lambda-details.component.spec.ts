@@ -11,7 +11,6 @@ import { GraphqlClientService } from '../../graphql-client/graphql-client.servic
 import { LambdaDetailsService } from './lambda-details.service';
 import { ServiceBindingsService } from '../../service-bindings/service-bindings.service';
 import { ServiceBindingUsagesService } from '../../service-binding-usages/service-binding-usages.service';
-import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LambdasComponent } from '../list/lambdas.component';
 import { AceEditorModule } from 'ng2-ace-editor';
@@ -41,7 +40,6 @@ describe('LambdaDetailsComponent', () => {
         LambdaDetailsService,
         ServiceBindingsService,
         ServiceBindingUsagesService,
-        SubscriptionsService,
         TriggersService
       ]
     })
