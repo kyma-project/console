@@ -99,7 +99,7 @@ describe('Service Class Details UI', () => {
     });
 
     it('Shows API package icon and breadcrumb when the label is present', async () => {
-      const { queryByLabelText, queryByText, debug } = render(
+      const { queryByLabelText, queryByText } = render(
         <MockedProvider mocks={[serviceClassAPIruleQuery]}>
           <ServiceClassDetails
             plan={serviceClassWithAPIrule.plans[0].name}
