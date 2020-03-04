@@ -44,7 +44,7 @@ const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
 
 PlanSelector.propTypes = {
   allPlans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currentlySelected: PropTypes.object.isRequired,
+  currentlySelected: PropTypes.object,
   onPlanChange: PropTypes.func.isRequired,
 };
 

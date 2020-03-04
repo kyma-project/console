@@ -10,7 +10,7 @@ import { sortByDisplayName } from '../../shared/sorting';
 import { Badge } from 'fundamental-react';
 
 const DOC_TYPES_COLORS = new Map([
-  ['openapi', ''],
+  ['openapi', undefined],
   ['asyncapi', 'success'],
   ['odata', 'warning'],
 ]);
@@ -23,16 +23,16 @@ const goToDetails = (item, serviceClassId) => {
     .navigate(`details/${serviceClassId}/plan/${item.name}`);
 };
 
-const DocTypesList = ({ plan }) => (
+export const DocTypesList = ({ plan }) => (
   <>
     {Array.from(getPlanDocTypes(plan).entries()).map(([type, count]) => (
-      <p key={type}>
+      <p key={type} aria-label="doc-type-badge">
         <Badge type={DOC_TYPES_COLORS.get(type)}>
           {type}
           {count > 1 && (
             <span
               title={`There are ${count} ${type}s in this plan.`}
-              class="fd-counter fd-counter--notification"
+              className="fd-counter fd-counter--notification"
               aria-label="api-type-count"
             >
               {count}

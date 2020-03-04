@@ -5,7 +5,7 @@ import {
   queryAllByRole,
   queryByText,
 } from '@testing-library/react';
-import ServiceClassPlansList from '../ServiceClassPlansList';
+import ServiceClassPlansList, { DocTypesList } from '../ServiceClassPlansList';
 import { MockedProvider } from '@apollo/react-testing';
 import { serviceClassConstants } from '../../../variables';
 import {
@@ -16,6 +16,7 @@ import {
 import {
   clusterServiceClass1Name,
   serviceClassWithPlans,
+  assetGroupWithManyAssets,
 } from '../../../testing/serviceClassesMocks';
 
 const mockName = clusterServiceClass1Name;
@@ -116,5 +117,44 @@ describe('ServiceClassPlans', () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       `details/${serviceClassPlans[1].relatedServiceClassName}/plan/${serviceClassPlans[1].name}`,
     );
+  });
+  describe('DocTypesList', () => {
+    it('Shows no doc types when it should', () => {
+      const { queryAllByLabelText } = render(<DocTypesList plan={{}} />);
+
+      expect(queryAllByLabelText('doc-type-badge')).toHaveLength(0);
+    });
+
+    it('Shows proper doc types with numbers', () => {
+      const { queryByText, queryAllByLabelText } = render(
+        <DocTypesList
+          plan={{
+            name: 'doesntmatter',
+            clusterAssetGroup: assetGroupWithManyAssets,
+          }}
+        />,
+      );
+      const openapiBadge = queryByText('openapi');
+      expect(openapiBadge).toBeInTheDocument();
+      expect(openapiBadge.textContent).toBe(
+        'openapi' +
+          assetGroupWithManyAssets.assets.filter(a => a.type === 'openapi')
+            .length,
+      );
+
+      const asyncapiBadge = queryByText('asyncapi');
+      expect(asyncapiBadge).toBeInTheDocument();
+      expect(asyncapiBadge.textContent).toBe(
+        'asyncapi' +
+          assetGroupWithManyAssets.assets.filter(a => a.type === 'asyncapi')
+            .length,
+      );
+
+      const odataBadge = queryByText('odata');
+      expect(odataBadge).toBeInTheDocument();
+      expect(odataBadge.textContent).toBe('odata');
+
+      expect(queryAllByLabelText('doc-type-badge')).toHaveLength(3);
+    });
   });
 });
