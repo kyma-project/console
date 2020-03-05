@@ -95,6 +95,7 @@
     "jest": "^24.8.0",
     "js-base64": "^2.5.2",
     "jsdom-worker-fix": "^0.1.8",
+    "kind-of": "^6.0.3",
     "live-server": "^1.2.1",
     "node-sass": "^4.12.0",
     "react-app-rewired": "2.1.3",
