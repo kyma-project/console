@@ -1,5 +1,3 @@
-import { config } from '../config';
-
 export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
   if (disabledNavNodes !== null && disabledNavNodes !== undefined) {
     const disabledNavNodesArray = disabledNavNodes.split(' ');

@@ -204,8 +204,10 @@ function getNamespaces() {
       localStorage.getItem('console.showSystemNamespaces') === 'true',
     withInactiveStatus: false
   };
-  return fetchFromGraphQL(GET_NAMESPACES, options, true).then(res => {
+  return fetchFromGraphQL(GET_NAMESPACES, options, false).then(res => {
     return createNamespacesList(res.namespaces);
+  }).catch(err => {
+    console.error('Error while fetching namespaces', err);
   });
 }
 
