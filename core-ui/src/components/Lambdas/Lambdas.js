@@ -4,9 +4,14 @@ import CreateLambdaForm from './CreateLambdaForm/CreateLambdaForm';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { GET_LAMBDAS } from '../../gql/queries';
-import { DELETE_LAMBDA } from '../../gql/mutations';
+import {
+  DELETE_LAMBDA,
+  DELETE_SERVICE_BINDING_USAGES,
+} from '../../gql/mutations';
 
 import { GenericList, useNotification } from 'react-shared';
+
+import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 import builder from '../../commons/builder';
 import { Spinner, Labels } from 'react-shared';
@@ -33,14 +38,10 @@ export default function Lambdas() {
     fetchPolicy: 'no-cache',
   });
 
-  // onCompleted is fired before lambda is deleted therefore setTimeout is neccessary
-  const [deleteLambda] = useMutation(DELETE_LAMBDA, {
-    onCompleted: () => {
-      setTimeout(() => {
-        refetch();
-      }, REFETCH_TIMEOUT);
-    },
-  });
+  const [deleteLambdaServiceBindingUsages] = useMutation(
+    DELETE_SERVICE_BINDING_USAGES,
+  );
+  const [deleteLambda] = useMutation(DELETE_LAMBDA);
   const notificationManager = useNotification();
 
   if (error) {
@@ -51,7 +52,18 @@ export default function Lambdas() {
     return <Spinner />;
   }
 
-  const handleLambdaDelete = (name, namespace, onComplete) => {
+  function handleError(error, name) {
+    const errorToDisplay = extractGraphQlErrors(error);
+    notificationManager.notifyError({
+      content: `Error while removing lambda ${name}: ${errorToDisplay}`,
+      autoClose: false,
+    });
+  }
+
+  const handleLambdaDelete = (lambda, refetch) => {
+    const name = lambda.name;
+    const namespace = lambda.namespace;
+
     LuigiClient.uxManager()
       .showConfirmationModal({
         header: `Remove ${name}`,
@@ -62,40 +74,57 @@ export default function Lambdas() {
       .then(async () => {
         try {
           const deletedLambda = await deleteLambda({
-            variables: { name, namespace },
+            variables: {
+              name,
+              namespace,
+            },
           });
-          const isSuccess =
-            deletedLambda.data &&
-            deletedLambda.data.deleteFunction &&
-            deletedLambda.data.deleteFunction.name === name;
-          if (isSuccess) {
-            notificationManager.notify({
-              content: `Lambda ${name} deleted`,
-              title: 'Success',
-              color: '#107E3E',
-              icon: 'accept',
-              autoClose: true,
-            });
+
+          if (deletedLambda.error) {
+            handleError(deletedLambda.error, name);
+            return;
           }
-        } catch (e) {
-          console.warn(e);
-          notificationManager.notify({
-            content: `Error while removing lambda ${name}: ${e.message}`,
-            title: 'Error',
-            color: '#BB0000',
-            icon: 'decline',
-            autoClose: false,
+
+          const serviceBindingUsageNames = (
+            lambda.serviceBindingUsages || []
+          ).map(s => s.name);
+          if (serviceBindingUsageNames.length) {
+            const deletedBindingUsages = await deleteLambdaServiceBindingUsages(
+              {
+                variables: { serviceBindingUsageNames, namespace },
+              },
+            );
+
+            if (deletedBindingUsages.error) {
+              handleError(deletedLambda.error);
+              return;
+            }
+          }
+
+          notificationManager.notifySuccess({
+            content: `Lambda ${name} deleted`,
+            autoClose: true,
           });
+          setTimeout(() => {
+            refetch();
+          }, REFETCH_TIMEOUT);
+        } catch (e) {
+          handleError(e, name);
         }
       })
-      .catch(() => {});
+      .catch(e => {
+        notificationManager.notifyError({
+          content: `Problem with Luigi: ${e.message}`,
+          autoClose: false,
+        });
+      });
   };
 
   const actions = [
     {
       name: 'Delete',
       handler: entry => {
-        handleLambdaDelete(entry.name, entry.namespace, refetch);
+        handleLambdaDelete(entry, refetch);
       },
     },
   ];

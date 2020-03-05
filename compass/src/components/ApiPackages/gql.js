@@ -4,6 +4,13 @@ export const DELETE_API_PACKAGE = gql`
   mutation deletePackage($id: ID!) {
     deletePackage(id: $id) {
       id
+    }
+  }
+`;
+
+export const CREATE_API_PACKAGE = gql`
+  mutation addPackage($applicationId: ID!, $in: PackageCreateInput!) {
+    addPackage(applicationID: $applicationId, in: $in) {
       name
     }
   }

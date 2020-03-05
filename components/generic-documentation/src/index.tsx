@@ -126,6 +126,29 @@ export const GenericDocumentation: React.FunctionComponent<
     fetchAssets();
   }, [assetGroup]);
 
+  // Allow rendering additionalTabs when no sources is present
+  useEffect(() => {
+    if (sources.length) {
+      return;
+    }
+    if (!others.additionalTabs || !others.additionalTabs.length) {
+      return;
+    }
+
+    setSources([
+      {
+        sources: [
+          {
+            source: {
+              type: 'mock',
+              rawContent: '',
+            },
+          },
+        ],
+      },
+    ]);
+  }, [sources]);
+
   if (!sources || !sources.length) {
     return null;
   }
@@ -140,4 +163,5 @@ export const GenericDocumentation: React.FunctionComponent<
     </DC.Provider>
   );
 };
+
 export const GenericComponent = GenericDocumentation;
