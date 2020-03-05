@@ -1,6 +1,14 @@
-import { CONSOLE_INIT_DATA, GET_MICROFRONTENDS, GET_NAMESPACES } from './queries';
+import {
+  CONSOLE_INIT_DATA,
+  GET_MICROFRONTENDS,
+  GET_NAMESPACES
+} from './queries';
 import { config } from '../config';
-import { getStaticChildrenNodesForNamespace, getStaticRootNodes, consoleViewGroupName } from './static-navigation-model';
+import {
+  getStaticChildrenNodesForNamespace,
+  getStaticRootNodes,
+  consoleViewGroupName
+} from './static-navigation-model';
 import convertToNavigationTree from './microfrontend-converter';
 import navigationPermissionChecker, {
   setInitValues,
@@ -18,14 +26,13 @@ let clusterMicrofrontendNodes = [];
 let clusterMicrofrontendNodesForNamespace = [];
 const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
-
-export function getToken(){
+export function getToken() {
   let token;
   const authData = Luigi.auth().store.getAuthData();
-  if(authData){
+  if (authData) {
     token = authData.idToken;
   }
-  return token
+  return token;
 }
 
 export let navigation = {
@@ -66,141 +73,148 @@ export function getNavigationData() {
     let kymaVersion;
     let token = getToken();
     fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, true)
-    .then(
-      res => {
-        if (res) {
-          const modules = res.backendModules;
-          const subjectRules = res.selfSubjectRules;
-          const cmfs = res.clusterMicroFrontends;
-          kymaVersion = `Kyma version: ${res.versionInfo.kymaVersion}`;
-          setInitValues(
-            (modules && modules.map(m => m.name)) || [],
-            subjectRules || []
-          );
+      .then(
+        res => {
+          if (res) {
+            const modules = res.backendModules;
+            const subjectRules = res.selfSubjectRules;
+            const cmfs = res.clusterMicroFrontends;
+            kymaVersion = `Kyma version: ${res.versionInfo.kymaVersion}`;
+            setInitValues(
+              (modules && modules.map(m => m.name)) || [],
+              subjectRules || []
+            );
 
-          if (cmfs && cmfs.length > 0) {
-            clusterMicrofrontendNodes = cmfs
-              .filter(cmf => cmf.placement === 'cluster')
-              .map(cmf => {
-                if (cmf.navigationNodes) {
-                  var tree = convertToNavigationTree(
-                    cmf.name,
-                    cmf,
-                    config,
-                    navigation,
-                    consoleViewGroupName,
-                    'cmf-'
-                  );
-                  return tree;
-                }
-                return [];
-              });
-            clusterMicrofrontendNodesForNamespace = cmfs
-              .filter(
-                cmf =>
-                  cmf.placement === 'namespace' || cmf.placement === 'environment'
-              )
-              .map(cmf => {
-                // console.log(cmf.name, cmf);
-                if (cmf.navigationNodes) {
-                  return convertToNavigationTree(
-                    cmf.name,
-                    cmf,
-                    config,
-                    navigation,
-                    consoleViewGroupName,
-                    'cmf-'
-                  );
-                }
-                return [];
-              });
-          }
-        }
-      },
-      err => {
-        // console.error(err);
-      }
-    )
-    // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
-    .then(() => {
-      const nodes = [
-        {
-          pathSegment: 'home',
-          hideFromNav: true,
-          context: {
-            idToken: token,
-            backendModules,
-            systemNamespaces,
-            showSystemNamespaces: localStorage.getItem('console.showSystemNamespaces') === 'true'
-          },
-          children: function() {
-            const staticNodes = getStaticRootNodes(getChildrenNodesForNamespace)
-            const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
-            const nodeTree = [...staticNodes, ...fetchedNodes];
-            hideDisabledNodes(config.disabledNavigationNodes, nodeTree, false);
-            return nodeTree;
+            if (cmfs && cmfs.length > 0) {
+              clusterMicrofrontendNodes = cmfs
+                .filter(cmf => cmf.placement === 'cluster')
+                .map(cmf => {
+                  if (cmf.navigationNodes) {
+                    var tree = convertToNavigationTree(
+                      cmf.name,
+                      cmf,
+                      config,
+                      navigation,
+                      consoleViewGroupName,
+                      'cmf-'
+                    );
+                    return tree;
+                  }
+                  return [];
+                });
+              clusterMicrofrontendNodesForNamespace = cmfs
+                .filter(
+                  cmf =>
+                    cmf.placement === 'namespace' ||
+                    cmf.placement === 'environment'
+                )
+                .map(cmf => {
+                  // console.log(cmf.name, cmf);
+                  if (cmf.navigationNodes) {
+                    return convertToNavigationTree(
+                      cmf.name,
+                      cmf,
+                      config,
+                      navigation,
+                      consoleViewGroupName,
+                      'cmf-'
+                    );
+                  }
+                  return [];
+                });
+            }
           }
         },
-        {
-          pathSegment: 'docs',
-          viewUrl: config.docsModuleUrl,
-          label: 'Docs',
-          hideSideNav: true,
-          context: {
-            idToken: token,
-            backendModules
-          },
-          icon: 'sys-help',
-          children: [
-            {
-              pathSegment: ':group',
-              viewUrl: config.docsModuleUrl,
-              hideSideNav: true,
-              context: {
-                group: ':group'
-              },
-              children: [
-                {
-                  pathSegment: ':topic',
-                  viewUrl: config.docsModuleUrl,
-                  hideSideNav: true,
-                  context: {
-                    group: ':group',
-                    topic: ':topic'
-                  }
-                }
-              ]
-            }
-          ]
+        err => {
+          // console.error(err);
         }
-      ]
-      resolve([nodes, kymaVersion]);
-    })
-    .catch(err => {
-      console.error('Config Init Error', err);
-      reject(err);
-    });
+      )
+      // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
+      .then(() => {
+        const nodes = [
+          {
+            pathSegment: 'home',
+            hideFromNav: true,
+            context: {
+              idToken: token,
+              backendModules,
+              systemNamespaces,
+              showSystemNamespaces:
+                localStorage.getItem('console.showSystemNamespaces') === 'true'
+            },
+            children: function() {
+              const staticNodes = getStaticRootNodes(
+                getChildrenNodesForNamespace
+              );
+              const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
+              const nodeTree = [...staticNodes, ...fetchedNodes];
+              hideDisabledNodes(
+                config.disabledNavigationNodes,
+                nodeTree,
+                false
+              );
+              return nodeTree;
+            }
+          },
+          {
+            pathSegment: 'docs',
+            viewUrl: config.docsModuleUrl,
+            label: 'Docs',
+            hideSideNav: true,
+            context: {
+              idToken: token,
+              backendModules
+            },
+            icon: 'sys-help',
+            children: [
+              {
+                pathSegment: ':group',
+                viewUrl: config.docsModuleUrl,
+                hideSideNav: true,
+                context: {
+                  group: ':group'
+                },
+                children: [
+                  {
+                    pathSegment: ':topic',
+                    viewUrl: config.docsModuleUrl,
+                    hideSideNav: true,
+                    context: {
+                      group: ':group',
+                      topic: ':topic'
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ];
+        resolve([nodes, kymaVersion]);
+      })
+      .catch(err => {
+        console.error('Config Init Error', err);
+        reject(err);
+      });
   });
 }
 
 function getNamespaces() {
   const options = {
-    showSystemNamespaces : localStorage.getItem('console.showSystemNamespaces') === 'true',
-    withInactiveStatus : false,
-  }
-  return fetchFromGraphQL(GET_NAMESPACES, options, true)
-    .then(
-      res => {
-        return createNamespacesList(res.namespaces);
-      }
-    );
+    showSystemNamespaces:
+      localStorage.getItem('console.showSystemNamespaces') === 'true',
+    withInactiveStatus: false
+  };
+  return fetchFromGraphQL(GET_NAMESPACES, options, true).then(res => {
+    return createNamespacesList(res.namespaces);
+  });
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
   return new Promise(function(resolve, reject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+      if (xmlHttp.readyState !== 4) return;
+      if (xmlHttp.status == 200) {
         try {
           const response = JSON.parse(xmlHttp.response);
           if (response && response.errors) {
@@ -212,7 +226,7 @@ function fetchFromGraphQL(query, variables, gracefully) {
         } catch {
           reject(xmlHttp.response);
         }
-      } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+      } else {
         if (xmlHttp.status === 401) {
           relogin();
         }
@@ -235,13 +249,13 @@ function fetchFromGraphQL(query, variables, gracefully) {
 
 function relogin() {
   saveCurrentLocation();
-  Luigi.auth().store.removeAuthData()
+  Luigi.auth().store.removeAuthData();
   location.reload();
 }
 
 function getChildrenNodesForNamespace(context) {
   const namespace = context.namespaceId;
-  var staticNodes = getStaticChildrenNodesForNamespace(namespace)
+  var staticNodes = getStaticChildrenNodesForNamespace(namespace);
 
   return Promise.all([
     getMicrofrontends(namespace),
