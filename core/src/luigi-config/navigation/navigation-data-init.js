@@ -255,7 +255,7 @@ function relogin() {
 
 function getChildrenNodesForNamespace(context) {
   const namespace = context.namespaceId;
-  var staticNodes = getStaticChildrenNodesForNamespace(namespace);
+  var staticNodes = getStaticChildrenNodesForNamespace();
 
   return Promise.all([
     getMicrofrontends(namespace),
