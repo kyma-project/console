@@ -85,7 +85,7 @@ export default function ServiceClassPlansList({ name }) {
         breadcrumbItems={breadcrumbItems}
       />
       <GenericList
-        title="Choose Service Class Variant"
+        title="Choose Service Class Plan"
         entries={serviceClass.plans}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
