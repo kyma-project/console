@@ -2,7 +2,7 @@ import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 
 import { SEND_NOTIFICATION } from './../../../gql';
-import { GET_APPLICATION_WITH_API_DEFINITIONS } from '../gql';
+import { GET_API_DEFININTION } from '../gql';
 import { UPDATE_API_DEFINITION } from './gql';
 
 import EditApi from './EditApi.component';
@@ -11,12 +11,14 @@ export default compose(
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
-  graphql(GET_APPLICATION_WITH_API_DEFINITIONS, {
+  graphql(GET_API_DEFININTION, {
     name: 'apiDataQuery',
-    options: ({ applicationId }) => {
+    options: ({ applicationId, apiPackageId, apiId }) => {
       return {
         variables: {
           applicationId,
+          apiPackageId,
+          apiDefinitionId: apiId,
         },
       };
     },

@@ -3,28 +3,24 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import './ApplicationDetailsEventApis.scss';
 
-import { ApplicationQueryContext } from '../ApplicationDetails.component';
-
 import CreateEventApiForm from '../../../Api/CreateEventApiForm/CreateEventApiForm.container';
 
 import { GenericList, handleDelete } from 'react-shared';
 import ModalWithForm from '../../../../shared/components/ModalWithForm/ModalWithForm.container';
 
 ApplicationDetailsEventApis.propTypes = {
-  applicationId: PropTypes.string.isRequired,
+  packageId: PropTypes.string.isRequired,
   eventDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
   deleteEventDefinition: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsEventApis({
-  applicationId,
+  packageId,
   eventDefinitions,
   sendNotification,
   deleteEventDefinition,
 }) {
-  const applicationQuery = React.useContext(ApplicationQueryContext);
-
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
@@ -73,10 +69,9 @@ export default function ApplicationDetailsEventApis({
       title="Add Event Definition"
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
-      performRefetch={applicationQuery.refetch}
       modalClassName="create-event-api-modal"
     >
-      <CreateEventApiForm applicationId={applicationId} />
+      <CreateEventApiForm packageId={packageId} />
     </ModalWithForm>
   );
 

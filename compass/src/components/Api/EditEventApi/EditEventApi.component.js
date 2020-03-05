@@ -16,6 +16,7 @@ import { createEventAPIData, verifyEventApiInput } from './../ApiHelpers';
 const commonPropTypes = {
   eventApiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
+  apiPackageId: PropTypes.string.isRequired, // used in container file
   updateEventDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
@@ -182,10 +183,10 @@ export default function EditEventApiWrapper(props) {
     return <p>`Error! ${dataQuery.error.message}`</p>;
   }
 
-  // there's no getEventApiById query
-  const originalEventApi = dataQuery.application.eventDefinitions.data.find(
-    eventApi => eventApi.id === props.eventApiId,
-  );
+  const originalEventApi =
+    dataQuery.application &&
+    dataQuery.application.package &&
+    dataQuery.application.package.eventDefinition;
 
   if (!originalEventApi) {
     return (

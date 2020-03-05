@@ -8,9 +8,9 @@ import CreateApiForm from './CreateApiForm.component';
 export default compose(
   graphql(ADD_API, {
     props: props => ({
-      addAPI: async (apiData, applicationID) => {
+      addAPI: async (apiData, packageID) => {
         await props.mutate({
-          variables: { applicationID, in: apiData },
+          variables: { packageID, in: apiData },
         });
       },
     }),

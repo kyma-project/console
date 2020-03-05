@@ -70,7 +70,6 @@ const navigation = {
               pathSegment: 'applications',
               label: 'Applications',
               viewUrl: compassMfUrl + '/applications',
-              navigationContext: 'applications',
               children: [
                 {
                   pathSegment: 'details',
@@ -81,42 +80,56 @@ const navigation = {
                       navigationContext: 'application',
                       children: [
                         {
-                          pathSegment: 'api',
+                          pathSegment: 'apiPackage',
                           children: [
                             {
-                              pathSegment: ':apiId',
+                              pathSegment: ':apiPackageId',
                               viewUrl:
                                 compassMfUrl +
-                                '/application/:applicationId/api/:apiId',
-                              navigationContext: 'api',
+                                '/application/:applicationId/apiPackage/:apiPackageId',
+                              navigationContext: 'apiPackage',
+                              label: 'Api Package Details',
                               children: [
                                 {
-                                  pathSegment: 'edit',
-                                  label: 'Edit Api',
-                                  viewUrl:
-                                    compassMfUrl +
-                                    '/application/:applicationId/api/:apiId/edit',
+                                  pathSegment: 'api',
+                                  children: [
+                                    {
+                                      pathSegment: ':apiId',
+                                      viewUrl:
+                                        compassMfUrl +
+                                        '/application/:applicationId/apiPackage/:apiPackageId/api/:apiId',
+                                      navigationContext: 'api',
+                                      children: [
+                                        {
+                                          pathSegment: 'edit',
+                                          label: 'Edit Api',
+                                          viewUrl:
+                                            compassMfUrl +
+                                            '/application/:applicationId/apiPackage/:apiPackageId/api/:apiId/edit',
+                                        },
+                                      ],
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          pathSegment: 'eventApi',
-                          children: [
-                            {
-                              pathSegment: ':eventApiId',
-                              viewUrl:
-                                compassMfUrl +
-                                '/application/:applicationId/eventApi/:eventApiId',
-                              navigationContext: 'eventApi',
-                              children: [
                                 {
-                                  pathSegment: 'edit',
-                                  label: 'Edit Api',
-                                  viewUrl:
-                                    compassMfUrl +
-                                    '/application/:applicationId/eventApi/:eventApiId/edit',
+                                  pathSegment: 'eventApi',
+                                  children: [
+                                    {
+                                      pathSegment: ':eventApiId',
+                                      viewUrl:
+                                        compassMfUrl +
+                                        '/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId',
+                                      children: [
+                                        {
+                                          pathSegment: 'edit',
+                                          label: 'Edit Api',
+                                          viewUrl:
+                                            compassMfUrl +
+                                            '/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId/edit',
+                                        },
+                                      ],
+                                    },
+                                  ],
                                 },
                               ],
                             },

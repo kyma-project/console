@@ -20,7 +20,7 @@ import ApiForm from './../Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
 
 CreateApiForm.propTypes = {
-  applicationId: PropTypes.string.isRequired,
+  packageId: PropTypes.string.isRequired,
   addAPI: PropTypes.func.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
@@ -29,7 +29,7 @@ CreateApiForm.propTypes = {
 };
 
 export default function CreateApiForm({
-  applicationId,
+  packageId,
   addAPI,
   formElementRef,
   onChange,
@@ -102,7 +102,7 @@ export default function CreateApiForm({
     );
 
     try {
-      await addAPI(apiData, applicationId);
+      await addAPI(apiData, packageId);
       onCompleted(basicApiData.name, 'API Definition created successfully');
     } catch (error) {
       console.warn(error);

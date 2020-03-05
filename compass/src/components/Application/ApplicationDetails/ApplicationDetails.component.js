@@ -1,11 +1,9 @@
 import React from 'react';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
 import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios.container';
-import ApisList from './ApplicationDetailsApis/ApplicationDetailsApis.container';
-import EventApisList from './ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
+import ApplicationApiPackages from './ApplicationApiPackages/ApplicationApiPackages';
 import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
-import './ApplicationDetails.scss';
 
 ApplicationDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -45,19 +43,11 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
         application={application}
         deleteApplication={deleteApplicationMutation}
       />
-      <section className="application-items">
-        <div>
-          <ApisList
-            apiDefinitions={application.apiDefinitions}
-            applicationId={application.id}
-          />
-          <EventApisList
-            eventDefinitions={application.eventDefinitions}
-            applicationId={application.id}
-          />
-        </div>
-        <ScenariosList scenarios={scenarios} applicationId={application.id} />
-      </section>
+      <ApplicationApiPackages
+        apiPackages={application.packages}
+        applicationId={application.id}
+      />
+      <ScenariosList scenarios={scenarios} applicationId={application.id} />
     </ApplicationQueryContext.Provider>
   );
 }

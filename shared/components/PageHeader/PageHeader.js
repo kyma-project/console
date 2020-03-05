@@ -20,16 +20,15 @@ const performOnClick = item => {
     return null;
   }
 
+  const linkManager = item.fromContext
+    ? LuigiClient.linkManager().fromContext(item.fromContext)
+    : LuigiClient.linkManager().fromClosestContext();
+
   if (!item.params) {
-    return LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(item.path);
+    return linkManager.navigate(item.path);
   }
 
-  return LuigiClient.linkManager()
-    .fromClosestContext()
-    .withParams(item.params)
-    .navigate(item.path);
+  return linkManager.withParams(item.params).navigate(item.path);
 };
 
 export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (

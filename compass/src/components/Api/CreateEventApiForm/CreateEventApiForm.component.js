@@ -10,7 +10,7 @@ import EventApiForm from './../Forms/EventApiForm';
 import { getRefsValues } from 'react-shared';
 
 CreateEventApiForm.propTypes = {
-  applicationId: PropTypes.string.isRequired,
+  packageId: PropTypes.string.isRequired,
   addEventAPI: PropTypes.func.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
@@ -19,7 +19,7 @@ CreateEventApiForm.propTypes = {
 };
 
 export default function CreateEventApiForm({
-  applicationId,
+  packageId,
   addEventAPI,
   formElementRef,
   onChange,
@@ -68,7 +68,7 @@ export default function CreateEventApiForm({
     const eventApiData = createEventAPIData(basicApiData, specData);
 
     try {
-      await addEventAPI(eventApiData, applicationId);
+      await addEventAPI(eventApiData, packageId);
       onCompleted(basicApiData.name, 'Event Definition created successfully');
     } catch (error) {
       onError('Cannot create Event Definition');

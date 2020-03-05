@@ -25,42 +25,25 @@ export const GET_APPLICATION = gql`
       status {
         condition
       }
-      apiDefinitions {
+      packages {
         data {
           id
           name
           description
-          targetURL
-          spec {
-            data
-            format
-            type
+          defaultInstanceAuth {
+            credential {
+              __typename
+            }
           }
-          group
         }
-        totalCount
-      }
-      eventDefinitions {
-        data {
-          id
-          name
-          description
-          spec {
-            data
-            format
-            type
-          }
-          group
-        }
-        totalCount
       }
     }
   }
 `;
 
 export const ADD_API = gql`
-  mutation addAPI($applicationID: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinition(applicationID: $applicationID, in: $in) {
+  mutation addAPIDefinition($packageId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinitionToPackage(packageID: $packageId, in: $in) {
       id
       name
       description
@@ -76,8 +59,8 @@ export const ADD_API = gql`
 `;
 
 export const ADD_EVENT_API = gql`
-  mutation addEventDefinition($applicationID: ID!, $in: EventDefinitionInput!) {
-    addEventDefinition(applicationID: $applicationID, in: $in) {
+  mutation addEventDefinition($packageId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinitionToPackage(packageID: $packageId, in: $in) {
       id
       name
       description

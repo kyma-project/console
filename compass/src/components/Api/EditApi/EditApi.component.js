@@ -21,6 +21,7 @@ import ApiEditorForm from '../Forms/ApiEditorForm';
 const commonPropTypes = {
   apiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
+  apiPackageId: PropTypes.string.isRequired, // used in container file
   updateApiDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
@@ -242,10 +243,10 @@ export default function EditApiWrapper(props) {
     return <p>`Error! ${dataQuery.error.message}`</p>;
   }
 
-  // there's no getApiById query
-  const originalApi = dataQuery.application.apiDefinitions.data.find(
-    api => api.id === props.apiId,
-  );
+  const originalApi =
+    dataQuery.application &&
+    dataQuery.application.package &&
+    dataQuery.application.package.apiDefinition;
 
   if (!originalApi) {
     return (

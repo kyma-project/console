@@ -7,9 +7,9 @@ import CreateEventApiForm from './CreateEventApiForm.component';
 export default compose(
   graphql(ADD_EVENT_API, {
     props: props => ({
-      addEventAPI: async (apiData, applicationID) => {
+      addEventAPI: async (apiData, packageID) => {
         await props.mutate({
-          variables: { applicationID, in: apiData },
+          variables: { packageID, in: apiData },
         });
       },
     }),
