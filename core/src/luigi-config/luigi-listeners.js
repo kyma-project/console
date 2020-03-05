@@ -3,20 +3,6 @@ import {
 } from './navigation/navigation-helpers';
 
 window.addEventListener('message', e => {
-  const SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT =
-    'showSystemNamespacesChangedEvent';
-
-  if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
-    window.Luigi.cachedNamespaces = null;
-  } else if (e.data && e.data.msg === SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT) {
-    Luigi.customMessages().sendToAll({
-      id: SHOW_SYSTEM_NAMESPACES_CHANGE_EVENT,
-      showSystemNamespaces: e.data.showSystemNamespaces
-    });
-  }
-});
-
-window.addEventListener('message', e => {
   if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
     const namespace = e.data.namespace;
     const data = e.data.data;

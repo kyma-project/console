@@ -1,7 +1,9 @@
 export const communication = {
   customMessagesListeners: {
-    'console.toggleExperimental': () => {
+    'console.refreshNavigation': () => {
       Luigi.configChanged('navigation.nodes');
     }
   }
 };
+
+
