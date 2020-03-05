@@ -1,23 +1,39 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
+import { MockedProvider } from '@apollo/react-testing';
 
-import { lambda } from './mocks';
+import { lambda, mocks } from './mocks';
 import Configuration from '../Configuration';
+
+jest.mock('@kyma-project/luigi-client', () => {
+  return {
+    getEventData: () => ({ environmentId: 'testnamespace' }),
+    uxManager: () => ({
+      addBackdrop: () => {},
+      removeBackdrop: () => {},
+    }),
+  };
+});
 
 describe('Lambda Configuration Tab', () => {
   const emptyRef = { current: null };
-  const labelEditorMock = <p>Label Editor Mock</p>;
+  const text = 'Label Editor Mock';
+  const labelEditorMock = <p>{text}</p>;
 
   it('Render with minimal props', () => {
-    const component = renderer.create(
-      <Configuration
-        lambda={lambda}
-        sizeRef={emptyRef}
-        runtimeRef={emptyRef}
-        LabelsEditor={labelEditorMock}
-        formRef={{ current: null }}
-      />,
+    const { getByText } = render(
+      <MockedProvider mocks={mocks}>
+        <Configuration
+          lambda={lambda}
+          sizeRef={emptyRef}
+          runtimeRef={emptyRef}
+          LabelsEditor={labelEditorMock}
+          formRef={{ current: null }}
+          refetchLambda={() => {}}
+        />
+      </MockedProvider>,
     );
-    expect(component.toJSON()).toMatchSnapshot();
+
+    expect(getByText(text)).toBeInTheDocument();
   });
 });
