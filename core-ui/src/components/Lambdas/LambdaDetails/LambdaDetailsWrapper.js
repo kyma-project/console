@@ -16,13 +16,16 @@ LambdaDetailsWrapper.propTypes = {
 
 export default function LambdaDetailsWrapper({ lambdaName }) {
   const namespace = LuigiClient.getEventData().environmentId;
-  const { data, error, loading, refetch } = useQuery(GET_LAMBDA, {
-    variables: {
-      name: lambdaName,
-      namespace,
+  const { data, error, loading, refetch: refetchLambda } = useQuery(
+    GET_LAMBDA,
+    {
+      variables: {
+        name: lambdaName,
+        namespace,
+      },
+      fetchPolicy: 'no-cache',
     },
-    fetchPolicy: 'no-cache',
-  });
+  );
 
   if (error) {
     return `Error! ${error.message}`;
@@ -32,11 +35,13 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
   }
   if (data && !data.function) {
     setTimeout(() => {
-      refetch();
+      refetchLambda();
     }, REFETCH_TIMEOUT);
     return <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
   }
   if (data && data.function) {
-    return <LambdaDetails lambda={data.function} />;
+    return (
+      <LambdaDetails lambda={data.function} refetchLambda={refetchLambda} />
+    );
   }
 }
