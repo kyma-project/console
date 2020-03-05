@@ -4,7 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { getServiceClassPlans } from './queries';
 import { serviceClassConstants } from '../../variables';
 import PropTypes from 'prop-types';
-import { Spinner, PageHeader, GenericList } from '../../react-shared';
+import { Spinner, PageHeader, GenericList, Tooltip } from '../../react-shared';
 import { getResourceDisplayName, isService } from '../../commons/helpers';
 import { sortByDisplayName } from '../../shared/sorting';
 import { Badge } from 'fundamental-react';
@@ -26,19 +26,26 @@ const goToDetails = (item, serviceClassId) => {
 export const DocTypesList = ({ plan }) => (
   <>
     {Array.from(getPlanDocTypes(plan).entries()).map(([type, count]) => (
-      <p key={type} aria-label="doc-type-badge">
-        <Badge type={DOC_TYPES_COLORS.get(type)}>
-          {type}
-          {count > 1 && (
-            <span
-              title={`There are ${count} ${type}s in this plan.`}
-              className="fd-counter fd-counter--notification"
-              aria-label="api-type-count"
-            >
-              {count}
-            </span>
-          )}
-        </Badge>
+      <p key={type} aria-label="doc-type-badge" style={{ cursor: 'help' }}>
+        <Tooltip
+          title={
+            count > 1
+              ? `There are ${count} ${type}s in this plan.`
+              : `There is one ${type} in this plan.`
+          }
+        >
+          <Badge type={DOC_TYPES_COLORS.get(type)}>
+            {type}
+            {count > 1 && (
+              <span
+                className="fd-counter fd-counter--notification"
+                aria-label="api-type-count"
+              >
+                {count}
+              </span>
+            )}
+          </Badge>
+        </Tooltip>
       </p>
     ))}
   </>
