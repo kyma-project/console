@@ -1,6 +1,6 @@
 import { GET_SERVICE_INSTANCES } from 'gql/queries';
 
-export const lambdaNoContent = {
+export const lambda = {
   name: 'testname',
   namespace: 'testnamespace',
   status: 'ERROR',
@@ -8,11 +8,25 @@ export const lambdaNoContent = {
   size: 'M',
   runtime: 'nodejs8',
   dependencies: 'test dependencies',
+  content: 'test content',
+  serviceBindingUsages: [],
 };
 
-export const lambda = {
-  ...lambdaNoContent,
-  content: 'test content',
+export const serviceBindingUsage = {
+  name: 'test',
+  parameters: {
+    envPrefix: {
+      name: 'test_',
+    },
+  },
+  serviceBinding: {
+    name: 'binding',
+    serviceInstanceName: 'testname',
+    secret: {
+      name: 'secret',
+      data: {},
+    },
+  },
 };
 
 export const mocks = [

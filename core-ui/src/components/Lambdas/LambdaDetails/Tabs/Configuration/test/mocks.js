@@ -1,3 +1,5 @@
+import { GET_SERVICE_INSTANCES } from 'gql/queries';
+
 export const lambda = {
   name: 'lambda-name',
   namespace: 'default',
@@ -8,3 +10,18 @@ export const lambda = {
   dependencies: 'dependencies',
   content: 'lambda code',
 };
+
+export const mocks = [
+  {
+    request: {
+      query: GET_SERVICE_INSTANCES,
+      variables: {
+        namespace: 'testnamespace',
+        status: 'RUNNING',
+      },
+    },
+    result: {
+      data: {},
+    },
+  },
+];

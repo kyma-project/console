@@ -124,6 +124,7 @@ export default function ServiceClassDetails({ name, plan }) {
     <>
       <ServiceClassDetailsHeader
         serviceClassDisplayName={serviceClassDisplayName}
+        serviceClassName={serviceClass.name}
         providerDisplayName={providerDisplayName}
         creationTimestamp={creationTimestamp}
         documentationUrl={documentationUrl}
@@ -168,7 +169,10 @@ export default function ServiceClassDetails({ name, plan }) {
 
       <ServiceClassDetailsWrapper phoneRows>
         {backendModuleExists('rafter') && (
-          <ServiceClassTabs serviceClass={serviceClass} />
+          <ServiceClassTabs
+            serviceClass={serviceClass}
+            currentPlan={currentPlan}
+          />
         )}
       </ServiceClassDetailsWrapper>
     </>
