@@ -98,8 +98,8 @@ describe('Service Class Details UI', () => {
       });
     });
 
-    it('Shows API package icon when the label is present', async () => {
-      const { queryByLabelText } = render(
+    it('Shows API package icon and breadcrumb when the label is present', async () => {
+      const { queryByLabelText, queryByText } = render(
         <MockedProvider mocks={[serviceClassAPIruleQuery]}>
           <ServiceClassDetails
             plan={serviceClassWithAPIrule.plans[0].name}
@@ -110,11 +110,14 @@ describe('Service Class Details UI', () => {
 
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
+        expect(
+          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
+        ).toBeInTheDocument();
       });
     });
 
-    it("Doesn't show API package icon when label isn't present", async () => {
-      const { queryByLabelText } = render(
+    it("Doesn't show API package icon or breadcrumb when label isn't present", async () => {
+      const { queryByLabelText, queryByText } = render(
         <MockedProvider mocks={[serviceClassQuery]}>
           <ServiceClassDetails name={serviceClassWithAPIrule.name} />
         </MockedProvider>,
@@ -122,6 +125,9 @@ describe('Service Class Details UI', () => {
 
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
+        expect(
+          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
+        ).not.toBeInTheDocument();
       });
     });
     describe('PlanSelector', () => {

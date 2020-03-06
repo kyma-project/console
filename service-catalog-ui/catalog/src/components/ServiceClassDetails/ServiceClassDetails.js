@@ -203,7 +203,7 @@ export default function ServiceClassDetails({ name, plan }) {
         {backendModuleExists('rafter') && (
           <ServiceClassTabs
             serviceClass={serviceClass}
-            preselectedPlan={isAPIpackage ? currentPlan : undefined}
+            currentPlan={isAPIpackage ? currentPlan : undefined}
           />
         )}
       </ServiceClassDetailsWrapper>

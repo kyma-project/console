@@ -19,23 +19,37 @@ function getTabElementsIndicator(instancesCount) {
   );
 }
 
-const ServiceClassTabs = ({ serviceClass, preselectedPlan }) => {
-  const assetGroup = preselectedPlan
-    ? preselectedPlan.assetGroup || preselectedPlan.clusterAssetGroup
+function filterServiceInstances(instances, currentPlan) {
+  if (!currentPlan) {
+    return instances;
+  }
+
+  return instances.filter(instance => {
+    const servicePlan =
+      (instance && (instance.servicePlan || instance.clusterServicePlan)) || [];
+    return servicePlan.name === currentPlan.name;
+  });
+}
+
+const ServiceClassTabs = ({ serviceClass, currentPlan }) => {
+  const assetGroup = currentPlan
+    ? currentPlan.assetGroup || currentPlan.clusterAssetGroup
     : serviceClass.assetGroup || serviceClass.clusterAssetGroup;
 
-  const additionalTabs = serviceClass.instances.length
+  const instances = currentPlan
+    ? filterServiceInstances(serviceClass.instances, currentPlan)
+    : serviceClass.instances;
+
+  const additionalTabs = instances.length
     ? [
         {
           label: (
             <>
               <span>{serviceClassConstants.instancesTabText}</span>
-              {getTabElementsIndicator(serviceClass.instances.length)}
+              {getTabElementsIndicator(instances.length)}
             </>
           ),
-          children: (
-            <ServiceClassInstancesTable tableData={serviceClass.instances} />
-          ),
+          children: <ServiceClassInstancesTable tableData={instances} />,
           id: serviceClassConstants.instancesTabText,
         },
       ]
@@ -52,7 +66,7 @@ const ServiceClassTabs = ({ serviceClass, preselectedPlan }) => {
 
 ServiceClassTabs.propTypes = {
   serviceClass: PropTypes.object.isRequired,
-  preselectedPlan: PropTypes.object,
+  currentPlan: PropTypes.object,
 };
 
 export default ServiceClassTabs;

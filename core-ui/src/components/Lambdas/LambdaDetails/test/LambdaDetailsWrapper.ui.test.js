@@ -1,7 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import { MockedProvider } from '@apollo/react-testing';
 
 import { lambda } from './gqlMocks';
@@ -27,8 +26,7 @@ describe('LambdaDetailsWrapper', () => {
         </MockedProvider>,
       );
     });
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    expect(component.toJSON()).toMatchSnapshot();
     expect(console.error.mock.calls.length).toBe(1);
     expect(console.error.mock.calls[0][0]).toMatchSnapshot();
   });
