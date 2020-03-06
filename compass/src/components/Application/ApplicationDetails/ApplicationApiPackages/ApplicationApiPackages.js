@@ -14,7 +14,7 @@ import CreateApiPackageForm from 'components/ApiPackages/CreateApiPackageForm/Cr
 
 ApplicationApiPackages.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  apiPackages: PropTypes.object.isRequired, //?
+  apiPackages: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 export default function ApplicationApiPackages({ applicationId, apiPackages }) {
@@ -52,10 +52,6 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
 
   const actions = [
     {
-      name: 'Edit',
-      handler: navigateToDetails,
-    },
-    {
       name: 'Delete',
       handler: entry =>
         handleDelete(
@@ -85,7 +81,7 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
       extraHeaderContent={extraHeaderContent}
       notFoundMessage="There are no API Packages defined for this Application"
       actions={actions}
-      entries={apiPackages.data}
+      entries={apiPackages}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={['name', 'description']}

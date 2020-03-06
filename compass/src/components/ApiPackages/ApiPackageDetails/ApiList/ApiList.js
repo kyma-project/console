@@ -72,9 +72,7 @@ export default function ApiList({
           entry.id,
           entry.name,
           () => deleteApiDefinition({ variables: { id: entry.id } }),
-          () => {
-            showDeleteSuccessNotification(entry.name);
-          },
+          () => showDeleteSuccessNotification(entry.name),
         ),
     },
   ];

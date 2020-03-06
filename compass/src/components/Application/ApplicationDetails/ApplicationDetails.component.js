@@ -44,7 +44,7 @@ function ApplicationDetails({ applicationQuery, deleteApplicationMutation }) {
         deleteApplication={deleteApplicationMutation}
       />
       <ApplicationApiPackages
-        apiPackages={application.packages}
+        apiPackages={application.packages.data}
         applicationId={application.id}
       />
       <ScenariosList scenarios={scenarios} applicationId={application.id} />

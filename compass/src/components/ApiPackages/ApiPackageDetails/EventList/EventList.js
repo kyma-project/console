@@ -72,9 +72,7 @@ export default function EventList({
           entry.id,
           entry.name,
           () => deleteEventDefinition({ variables: { id: entry.id } }),
-          () => {
-            showDeleteSuccessNotification(entry.name);
-          },
+          () => showDeleteSuccessNotification(entry.name),
         ),
     },
   ];
