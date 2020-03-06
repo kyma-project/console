@@ -27,6 +27,7 @@ const ServiceClassDetailsHeader = ({
   tags,
   children,
   serviceClassName,
+  isAPIpackage,
   planSelector,
 }) => {
   const goToList = () => {
@@ -54,7 +55,7 @@ const ServiceClassDetailsHeader = ({
             url="#"
             onClick={goToList}
           />
-          {serviceClassName && (
+          {isAPIpackage && serviceClassName && (
             <Breadcrumb.Item
               name={`${serviceClassDisplayName} - Plans list`}
               url="#"
@@ -100,6 +101,7 @@ ServiceClassDetailsHeader.propTypes = {
   imageUrl: PropTypes.string,
   supportUrl: PropTypes.string,
   serviceClassName: PropTypes.string,
+  isAPIpackage: PropTypes.bool,
   planSelector: PropTypes.node,
 };
 
