@@ -125,6 +125,7 @@ export default function ServiceClassDetails({ name, plan }) {
       <ServiceClassDetailsHeader
         serviceClassDisplayName={serviceClassDisplayName}
         serviceClassName={serviceClass.name}
+        isAPIpackage={isAPIpackage}
         providerDisplayName={providerDisplayName}
         creationTimestamp={creationTimestamp}
         documentationUrl={documentationUrl}

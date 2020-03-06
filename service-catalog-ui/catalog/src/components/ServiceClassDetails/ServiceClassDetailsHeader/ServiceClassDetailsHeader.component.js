@@ -27,6 +27,7 @@ const ServiceClassDetailsHeader = ({
   tags,
   children,
   serviceClassName,
+  isAPIpackage,
 }) => {
   const goToList = () => {
     LuigiClient.linkManager()
@@ -53,7 +54,7 @@ const ServiceClassDetailsHeader = ({
             url="#"
             onClick={goToList}
           />
-          {serviceClassName && (
+          {isAPIpackage && serviceClassName && (
             <Breadcrumb.Item
               name={`${serviceClassDisplayName} - Plans list`}
               url="#"
@@ -98,6 +99,7 @@ ServiceClassDetailsHeader.propTypes = {
   imageUrl: PropTypes.string,
   supportUrl: PropTypes.string,
   serviceClassName: PropTypes.string,
+  isAPIpackage: PropTypes.bool,
 };
 
 export default ServiceClassDetailsHeader;
