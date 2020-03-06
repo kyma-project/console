@@ -77,9 +77,13 @@ class ApplicationDetailsHeader extends React.Component {
                   confirmText="Update"
                   initialIsValid={true}
                   performRefetch={applicationQuery.refetch}
-                >
-                  <UpdateApplicationForm application={this.props.application} />
-                </ModalWithForm>
+                  renderForm={props => (
+                    <UpdateApplicationForm
+                      application={this.props.application}
+                      {...props}
+                    />
+                  )}
+                />
               )}
             </ApplicationQueryContext.Consumer>
             <Button

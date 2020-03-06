@@ -5,7 +5,7 @@ import { InlineHelp } from 'fundamental-react';
 import { GenericList } from 'react-shared';
 
 AuthList.propTypes = {
-  auths: PropTypes.object.isRequired,
+  auths: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 export default function AuthList({ auths }) {

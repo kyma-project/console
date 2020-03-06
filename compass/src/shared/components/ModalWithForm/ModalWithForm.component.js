@@ -12,7 +12,7 @@ const ModalWithForm = ({
   button,
   confirmText,
   initialIsValid,
-  children,
+  renderForm,
   modalClassName,
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -117,14 +117,13 @@ const ModalWithForm = ({
       title={title}
       onClose={() => setOpenStatus(false)}
     >
-      {React.createElement(children.type, {
+      {renderForm({
         formElementRef,
-        isValid,
         setCustomValid,
+        isValid,
         onChange: handleFormChanged,
         onError: handleFormError,
         onCompleted: handleFormSuccess,
-        ...children.props,
       })}
     </ControlledModal>
   );
@@ -141,8 +140,8 @@ ModalWithForm.propTypes = {
     glyph: PropTypes.string,
     option: PropTypes.oneOf(['emphasized', 'light']),
   }).isRequired,
-  children: PropTypes.node.isRequired,
   modalClassName: PropTypes.string,
+  renderForm: PropTypes.func.isRequired,
 };
 ModalWithForm.defaultProps = {
   sendNotification: () => {},

@@ -73,9 +73,10 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
       title="Create API Package"
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
-    >
-      <CreateApiPackageForm applicationId={applicationId} />
-    </ModalWithForm>
+      renderForm={props => (
+        <CreateApiPackageForm applicationId={applicationId} {...props} />
+      )}
+    />
   );
 
   return (

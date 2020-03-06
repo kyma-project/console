@@ -85,12 +85,14 @@ export default function ApiList({
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
       modalClassName="create-api-modal"
-    >
-      <CreateApiForm
-        applicationId={applicationId}
-        apiPackageId={apiPackageId}
-      />
-    </ModalWithForm>
+      renderForm={props => (
+        <CreateApiForm
+          applicationId={applicationId}
+          apiPackageId={apiPackageId}
+          {...props}
+        />
+      )}
+    />
   );
 
   return (

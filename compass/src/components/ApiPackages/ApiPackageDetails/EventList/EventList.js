@@ -85,12 +85,14 @@ export default function EventList({
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
       modalClassName="create-event-api-modal"
-    >
-      <CreateEventApiForm
-        applicationId={applicationId}
-        apiPackageId={apiPackageId}
-      />
-    </ModalWithForm>
+      renderForm={props => (
+        <CreateEventApiForm
+          applicationId={applicationId}
+          apiPackageId={apiPackageId}
+          {...props}
+        />
+      )}
+    />
   );
 
   return (
