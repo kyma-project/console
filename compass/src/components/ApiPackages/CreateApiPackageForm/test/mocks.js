@@ -1,4 +1,5 @@
 import { CREATE_API_PACKAGE } from './../../gql';
+import { GET_APPLICATION } from 'components/Application/gql';
 
 export const createApiPackageMock = {
   request: {
@@ -16,6 +17,22 @@ export const createApiPackageMock = {
     data: {
       addPackage: {
         name: 'package',
+      },
+    },
+  },
+};
+
+export const refetchApiPackageMock = {
+  request: {
+    query: GET_APPLICATION,
+    variables: {
+      id: 'app-id',
+    },
+  },
+  result: {
+    data: {
+      application: {
+        id: 'app-id',
       },
     },
   },
