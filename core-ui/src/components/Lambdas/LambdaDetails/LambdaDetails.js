@@ -26,7 +26,7 @@ const exampleDependencies = `{
   "dependencies": {}
 }`;
 
-export default function LambdaDetails({ lambda }) {
+export default function LambdaDetails({ lambda, refetchLambda }) {
   const [labels, setLabels] = useState(lambda.labels);
   const [lambdaCode, setLambdaCode] = useState(
     lambda.content || exampleLambdaCode,
@@ -126,6 +126,7 @@ export default function LambdaDetails({ lambda }) {
         >
           <ConfigurationTab
             lambda={lambda}
+            refetchLambda={refetchLambda}
             formRef={formRef}
             sizeRef={formValues.size}
             runtimeRef={formValues.runtime}
@@ -155,4 +156,5 @@ export default function LambdaDetails({ lambda }) {
 
 LambdaDetails.propTypes = {
   lambda: PropTypes.object.isRequired,
+  refetchLambda: PropTypes.func.isRequired,
 };

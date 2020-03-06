@@ -51,6 +51,9 @@ export const getServiceClass = gql`
         status {
           type
         }
+        clusterServicePlan {
+          name
+        }
       }
       activated(namespace: $namespace)
       clusterAssetGroup {
@@ -69,6 +72,9 @@ export const getServiceClass = gql`
         name
         status {
           type
+        }
+        servicePlan {
+          name
         }
       }
       activated
