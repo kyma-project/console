@@ -140,7 +140,12 @@ const ServiceClassInfo = ({
           </TileContent>
         </Tile>
         {modifiedTags && modifiedTags.length > 0 && (
-          <Tile columnSpan={computeNumberOfColumns(isProvisionedOnlyOnce) - 2}>
+          <Tile
+            columnSpan={
+              computeNumberOfColumns(isProvisionedOnlyOnce) -
+              (planSelector ? 2 : 0)
+            }
+          >
             <TileContent title={serviceClassTileTitles.tags}>
               <LabelsWrapper data-e2e-id="service-labels">
                 {modifiedTags.sort(sortTags).map(tag => (
