@@ -3,8 +3,8 @@ import {
 } from './navigation/navigation-helpers';
 
 export function onQuoteExceed(eventData) {
-  const namespace = e.data.namespace;
-    const data = e.data.data;
+  const namespace = eventData.namespace;
+    const data = eventData.data;
     let limitHasBeenExceeded;
     let limitExceededErrors;
     if (data && data.resourceQuotasStatus) {
