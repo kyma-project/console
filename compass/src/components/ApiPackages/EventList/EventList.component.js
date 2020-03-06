@@ -1,25 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import './ApplicationDetailsApis.scss';
+import './EventList.scss';
 
-import CreateApiForm from '../../../Api/CreateApiForm/CreateApiForm.container';
-
+import CreateEventApiForm from 'components/Api/CreateEventApiForm/CreateEventApiForm.component';
 import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
 
-ApplicationDetailsApis.propTypes = {
+EventList.propTypes = {
   packageId: PropTypes.string.isRequired,
-  apiDefinitions: PropTypes.object.isRequired,
+  eventDefinitions: PropTypes.object.isRequired,
   sendNotification: PropTypes.func.isRequired,
-  deleteAPIDefinition: PropTypes.func.isRequired,
+  deleteEventDefinition: PropTypes.func.isRequired,
 };
 
-export default function ApplicationDetailsApis({
+export default function EventList({
   packageId,
-  apiDefinitions,
+  eventDefinitions,
   sendNotification,
-  deleteAPIDefinition,
+  deleteEventDefinition,
 }) {
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
@@ -34,20 +33,20 @@ export default function ApplicationDetailsApis({
   }
 
   function navigateToDetails(entry) {
-    LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
+    LuigiClient.linkManager().navigate(`eventApi/${entry.id}/edit`);
   }
 
-  const headerRenderer = () => ['Name', 'Description', 'Target URL'];
+  const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
     <span
       className="link"
-      onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
+      onClick={() => LuigiClient.linkManager().navigate(`eventApi/${api.id}`)}
     >
       {api.name}
     </span>,
+
     api.description,
-    api.targetURL,
   ];
 
   const actions = [
@@ -58,7 +57,7 @@ export default function ApplicationDetailsApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('API', entry.id, entry.name, deleteAPIDefinition, () => {
+        handleDelete('API', entry.id, entry.name, deleteEventDefinition, () => {
           showDeleteSuccessNotification(entry.name);
         }),
     },
@@ -66,25 +65,24 @@ export default function ApplicationDetailsApis({
 
   const extraHeaderContent = (
     <ModalWithForm
-      title="Add API Definition"
+      title="Add Event Definition"
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
-      modalClassName="create-api-modal"
+      modalClassName="create-event-api-modal"
     >
-      <CreateApiForm packageId={packageId} />
+      <CreateEventApiForm packageId={packageId} />
     </ModalWithForm>
   );
 
   return (
     <GenericList
       extraHeaderContent={extraHeaderContent}
-      title="API Definitions"
-      notFoundMessage="There are no API Definitions available for this Application"
+      title="Event Definitions"
+      notFoundMessage="There are no Event Definition available for this Application"
       actions={actions}
-      entries={apiDefinitions.data}
+      entries={eventDefinitions.data}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
-      textSearchProperties={['name', 'description', 'targetURL']}
     />
   );
 }

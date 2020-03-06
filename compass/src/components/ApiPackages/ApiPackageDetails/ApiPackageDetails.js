@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import './ApiPackageDetails.scss';
-import ApisList from 'components/Application/ApplicationDetails/ApplicationDetailsApis/ApplicationDetailsApis.container';
-import EventApisList from 'components/Application/ApplicationDetails/ApplicationDetailsEventApis/ApplicationDetailsEventApis.container';
+import ApiPackageDetailsHeader from './Header/ApiPackageDetailsHeader';
+import ApiList from './../ApiList/ApiList.component';
+import EventList from '../EventList/EventList.component';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_API_PACKAGE } from './../gql';
-import ApiPackageDetailsHeader from './Header/ApiPackageDetailsHeader';
 
 ApiPackageDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -48,11 +48,11 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
       />
       <section className="api-package-items">
         <div>
-          <ApisList
+          <ApiList
             apiDefinitions={apiPackage.apiDefinitions}
             packageId={apiPackage.id}
           />
-          <EventApisList
+          <EventList
             eventDefinitions={apiPackage.eventDefinitions}
             packageId={apiPackage.id}
           />

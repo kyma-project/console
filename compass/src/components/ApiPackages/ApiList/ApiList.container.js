@@ -2,15 +2,15 @@ import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 
 import { SEND_NOTIFICATION } from '../../../../gql';
-import { DELETE_EVENT_API } from './../../gql';
+import { DELETE_API } from './../../gql';
 
-import ApplicationDetailsEventApis from './ApplicationDetailsEventApis.component';
+import ApiList from './ApiList.component';
 
 export default compose(
-  graphql(DELETE_EVENT_API, {
+  graphql(DELETE_API, {
     props: props => ({
-      deleteEventDefinition: apiId => {
-        props.mutate({ variables: { id: apiId } });
+      deleteAPIDefinition: async apiId => {
+        await props.mutate({ variables: { id: apiId } });
         props.result.client.reFetchObservableQueries();
       },
     }),
@@ -18,4 +18,4 @@ export default compose(
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
-)(ApplicationDetailsEventApis);
+)(ApiList);
