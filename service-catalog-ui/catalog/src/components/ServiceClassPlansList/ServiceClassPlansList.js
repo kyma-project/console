@@ -31,8 +31,8 @@ export const DocTypesList = ({ plan }) => (
         <Tooltip
           title={
             count > 1
-              ? `There are ${count} ${type}s in this plan.`
-              : `There is one ${type} in this plan.`
+              ? `There are ${count} ${type} specs in this plan.`
+              : `There is one ${type} spec in this plan.`
           }
         >
           <Badge type={DOC_TYPES_COLORS.get(type)}>
