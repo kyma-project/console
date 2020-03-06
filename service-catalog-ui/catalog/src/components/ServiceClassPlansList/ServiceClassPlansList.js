@@ -8,6 +8,7 @@ import { Spinner, PageHeader, GenericList, Tooltip } from '../../react-shared';
 import { getResourceDisplayName, isService } from '../../commons/helpers';
 import { sortByDisplayName } from '../../shared/sorting';
 import { Badge } from 'fundamental-react';
+import './ServiceClassPlansList.scss';
 
 const DOC_TYPES_COLORS = new Map([
   ['openapi', undefined],
@@ -26,7 +27,7 @@ const goToDetails = (item, serviceClassId) => {
 export const DocTypesList = ({ plan }) => (
   <>
     {Array.from(getPlanDocTypes(plan).entries()).map(([type, count]) => (
-      <p key={type} aria-label="doc-type-badge" style={{ cursor: 'help' }}>
+      <div key={type} aria-label="doc-type-badge" className="doc-type-badge">
         <Tooltip
           title={
             count > 1
@@ -46,7 +47,7 @@ export const DocTypesList = ({ plan }) => (
             )}
           </Badge>
         </Tooltip>
-      </p>
+      </div>
     ))}
   </>
 );
