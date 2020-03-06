@@ -158,6 +158,7 @@ export default function ServiceClassDetails({ name, plan }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+        isAPIpackage={isAPIpackage}
         planSelector={
           isAPIpackage && (
             <PlanSelector
