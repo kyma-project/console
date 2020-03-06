@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
@@ -68,6 +68,14 @@ export default function ServiceClassDetails({ name, plan }) {
     },
     fetchPolicy: 'no-cache',
   });
+
+  useEffect(() => {
+    if (!currentPlan || currentPlan.name === plan) return;
+
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/details/${name}/plan/${currentPlan.name}`, '', false);
+  }, [currentPlan]);
 
   if (queryLoading)
     return (
