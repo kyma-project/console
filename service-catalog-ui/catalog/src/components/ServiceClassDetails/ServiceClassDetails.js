@@ -75,7 +75,7 @@ export default function ServiceClassDetails({ name, plan }) {
     LuigiClient.linkManager()
       .fromClosestContext()
       .navigate(`/details/${name}/plan/${currentPlan.name}`, '', false);
-  }, [currentPlan]);
+  }, [currentPlan, name, plan]);
 
   if (queryLoading)
     return (
