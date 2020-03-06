@@ -19,9 +19,12 @@ import FileInput from '../../Shared/FileInput/FileInput';
 import ApiForm from './../Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
 
+import { useMutation } from 'react-apollo';
+import { ADD_API } from 'components/Application/gql';
+import { GET_API_PACKAGE } from 'components/ApiPackages/gql';
+
 CreateApiForm.propTypes = {
-  packageId: PropTypes.string.isRequired,
-  addAPI: PropTypes.func.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
@@ -29,13 +32,25 @@ CreateApiForm.propTypes = {
 };
 
 export default function CreateApiForm({
-  packageId,
-  addAPI,
+  applicationId,
+  apiPackageId,
   formElementRef,
   onChange,
   onCompleted,
   onError,
 }) {
+  const [addApi] = useMutation(ADD_API, {
+    refetchQueries: () => [
+      {
+        query: GET_API_PACKAGE,
+        variables: {
+          applicationId: applicationId,
+          apiPackageId: apiPackageId,
+        },
+      },
+    ],
+  });
+
   const [specProvided, setSpecProvided] = React.useState(false);
 
   const [credentialsType, setCredentialsType] = React.useState(
@@ -102,7 +117,12 @@ export default function CreateApiForm({
     );
 
     try {
-      await addAPI(apiData, packageId);
+      await addApi({
+        variables: {
+          apiPackageId,
+          in: apiData,
+        },
+      });
       onCompleted(basicApiData.name, 'API Definition created successfully');
     } catch (error) {
       console.warn(error);

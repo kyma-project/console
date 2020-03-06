@@ -73,7 +73,6 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
       title="Create API Package"
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
-      // performRefetch={applicationQuery.refetch}
     >
       <CreateApiPackageForm applicationId={applicationId} />
     </ModalWithForm>

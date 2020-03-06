@@ -42,8 +42,8 @@ export const GET_APPLICATION = gql`
 `;
 
 export const ADD_API = gql`
-  mutation addAPIDefinition($packageId: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinitionToPackage(packageID: $packageId, in: $in) {
+  mutation addAPIDefinition($apiPackageId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
       id
       name
       description
@@ -59,8 +59,8 @@ export const ADD_API = gql`
 `;
 
 export const ADD_EVENT_API = gql`
-  mutation addEventDefinition($packageId: ID!, $in: EventDefinitionInput!) {
-    addEventDefinitionToPackage(packageID: $packageId, in: $in) {
+  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
       id
       name
       description
@@ -70,26 +70,6 @@ export const ADD_EVENT_API = gql`
         type
       }
       group
-    }
-  }
-`;
-
-export const DELETE_API = gql`
-  mutation deleteAPI($id: ID!) {
-    deleteAPIDefinition(id: $id) {
-      id
-      name
-      description
-    }
-  }
-`;
-
-export const DELETE_EVENT_API = gql`
-  mutation deleteEventAPI($id: ID!) {
-    deleteEventDefinition(id: $id) {
-      id
-      name
-      description
     }
   }
 `;

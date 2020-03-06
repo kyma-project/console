@@ -10,7 +10,7 @@ import { handleDelete } from 'react-shared';
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
-import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
+import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.component';
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
 import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal.container';
 

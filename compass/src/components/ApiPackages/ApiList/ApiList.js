@@ -1,26 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import './ApplicationDetailsApis.scss';
+import './ApiList.scss';
 
-import CreateApiForm from '../../../Api/CreateApiForm/CreateApiForm.container';
-
+import CreateApiForm from 'components/Api/CreateApiForm/CreateApiForm';
 import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
 
-ApplicationDetailsApis.propTypes = {
-  packageId: PropTypes.string.isRequired,
+import { useMutation } from '@apollo/react-hooks';
+import { DELETE_API_DEFINITION } from 'components/Api/gql';
+import { GET_API_PACKAGE } from '../gql';
+import { SEND_NOTIFICATION } from 'gql';
+
+ApiList.propTypes = {
+  applicationId: PropTypes.string.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
   apiDefinitions: PropTypes.object.isRequired,
-  sendNotification: PropTypes.func.isRequired,
-  deleteAPIDefinition: PropTypes.func.isRequired,
 };
 
-export default function ApplicationDetailsApis({
-  packageId,
+export default function ApiList({
+  applicationId,
+  apiPackageId,
   apiDefinitions,
-  sendNotification,
-  deleteAPIDefinition,
 }) {
+  const [sendNotification] = useMutation(SEND_NOTIFICATION);
+  const [deleteApiDefinition] = useMutation(DELETE_API_DEFINITION, {
+    refetchQueries: () => [
+      { query: GET_API_PACKAGE, variables: { applicationId, apiPackageId } },
+    ],
+  });
+
   function showDeleteSuccessNotification(apiName) {
     sendNotification({
       variables: {
@@ -58,9 +67,15 @@ export default function ApplicationDetailsApis({
     {
       name: 'Delete',
       handler: entry =>
-        handleDelete('API', entry.id, entry.name, deleteAPIDefinition, () => {
-          showDeleteSuccessNotification(entry.name);
-        }),
+        handleDelete(
+          'API',
+          entry.id,
+          entry.name,
+          () => deleteApiDefinition({ variables: { id: entry.id } }),
+          () => {
+            showDeleteSuccessNotification(entry.name);
+          },
+        ),
     },
   ];
 
@@ -71,7 +86,10 @@ export default function ApplicationDetailsApis({
       confirmText="Create"
       modalClassName="create-api-modal"
     >
-      <CreateApiForm packageId={packageId} />
+      <CreateApiForm
+        applicationId={applicationId}
+        apiPackageId={apiPackageId}
+      />
     </ModalWithForm>
   );
 

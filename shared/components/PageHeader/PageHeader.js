@@ -19,7 +19,6 @@ const performOnClick = item => {
   if (!item.path) {
     return null;
   }
-  console.log('navigating to ', item);
   const linkManager = item.fromContext
     ? LuigiClient.linkManager().fromContext(item.fromContext)
     : LuigiClient.linkManager().fromClosestContext();
