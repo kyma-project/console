@@ -5,7 +5,7 @@ import './EventList.scss';
 
 import CreateEventApiForm from 'components/Api/CreateEventApiForm/CreateEventApiForm';
 import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.container';
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_EVENT_DEFINITION } from 'components/Api/gql';

@@ -5,7 +5,7 @@ import './ApiList.scss';
 
 import CreateApiForm from 'components/Api/CreateApiForm/CreateApiForm';
 import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.container';
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_API_DEFINITION } from 'components/Api/gql';

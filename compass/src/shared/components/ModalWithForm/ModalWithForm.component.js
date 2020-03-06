@@ -119,8 +119,8 @@ const ModalWithForm = ({
     >
       {renderForm({
         formElementRef,
-        setCustomValid,
         isValid,
+        setCustomValid,
         onChange: handleFormChanged,
         onError: handleFormError,
         onCompleted: handleFormSuccess,

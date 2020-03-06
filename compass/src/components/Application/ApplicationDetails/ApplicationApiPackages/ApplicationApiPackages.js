@@ -9,7 +9,7 @@ import { DELETE_API_PACKAGE } from './../../../ApiPackages/gql';
 import { useMutation } from '@apollo/react-hooks';
 import { GET_APPLICATION } from 'components/Application/gql';
 
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.container';
 import CreateApiPackageForm from 'components/ApiPackages/CreateApiPackageForm/CreateApiPackageForm';
 
 ApplicationApiPackages.propTypes = {
