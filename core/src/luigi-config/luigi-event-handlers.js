@@ -2,9 +2,8 @@ import {
   setLimitExceededErrorsMessages
 } from './navigation/navigation-helpers';
 
-window.addEventListener('message', e => {
-  if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
-    const namespace = e.data.namespace;
+export function onQuoteExceed(eventData) {
+  const namespace = e.data.namespace;
     const data = e.data.data;
     let limitHasBeenExceeded;
     let limitExceededErrors;
@@ -44,5 +43,4 @@ window.addEventListener('message', e => {
         '*'
       );
     }
-  }
-});
+}

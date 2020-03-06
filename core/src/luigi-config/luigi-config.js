@@ -6,7 +6,7 @@ import {
 import { communication } from './communication';
 import { config } from './config';
 import { navigation, getNavigationData, getToken } from './navigation/navigation-data-init';
-import './luigi-listeners';
+import { onQuoteExceed } from './luigi-event-handlers';
 
 
 function getFreshKeys() {
@@ -95,4 +95,8 @@ const luigiConfig = {
 };
 Luigi.setConfig(luigiConfig);
 
-
+window.addEventListener('message', e => {
+  if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
+    onQuoteExceed(e.data);
+  }
+});
