@@ -4,7 +4,7 @@ export const communication = {
   customMessagesListeners: {
     'console.refreshNavigation': () => {
       const token = getToken()
-      if(token){
+      if(token) {
         Luigi.configChanged('navigation.nodes');
       }
       else {

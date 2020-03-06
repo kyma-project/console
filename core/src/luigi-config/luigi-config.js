@@ -2,7 +2,8 @@
 import {
   saveCurrentLocation,
   getPreviousLocation,
-  getToken
+  getToken,
+  parseJWT
 } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { config } from './config';
@@ -28,7 +29,13 @@ const luigiConfig = {
         'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups',
       automaticSilentRenew: true,
       loadUserInfo: false,
-      logoutUrl: 'logout.html'
+      logoutUrl: 'logout.html',
+      userInfoFn:(authSettings, authData)=>{
+        return new Promise((resolve) => {
+          const data  = parseJWT(authData.idToken)
+          resolve({name: data.name, email: data.email})
+        })
+      },
     },
 
     events: {
@@ -74,6 +81,9 @@ const luigiConfig = {
         title,
         favicon
       };
+    },
+    appLoadingIndicator: {
+      hideAutomatically: false
     }
   },
   lifecycleHooks: {
@@ -85,6 +95,7 @@ const luigiConfig = {
             resolveNavigationNodes(response[0]);
             luigiConfig.settings.sideNavFooterText = response[1];
             Luigi.configChanged('settings');
+            Luigi.ux().hideAppLoadingIndicator();
           }
         )
       } else {
