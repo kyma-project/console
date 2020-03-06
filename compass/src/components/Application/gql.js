@@ -41,39 +41,6 @@ export const GET_APPLICATION = gql`
   }
 `;
 
-export const ADD_API = gql`
-  mutation addAPIDefinition($apiPackageId: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
-      id
-      name
-      description
-      targetURL
-      spec {
-        data
-        format
-        type
-      }
-      group
-    }
-  }
-`;
-
-export const ADD_EVENT_API = gql`
-  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
-    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
-      id
-      name
-      description
-      spec {
-        data
-        format
-        type
-      }
-      group
-    }
-  }
-`;
-
 export const SET_APPLICATION_SCENARIOS = gql`
   mutation setApplicationLabel($id: ID!, $scenarios: Any!) {
     setApplicationLabel(

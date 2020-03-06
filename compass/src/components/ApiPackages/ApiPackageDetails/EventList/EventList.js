@@ -9,7 +9,7 @@ import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.compone
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_EVENT_DEFINITION } from 'components/Api/gql';
-import { GET_API_PACKAGE } from '../gql';
+import { GET_API_PACKAGE } from 'components/ApiPackages/gql';
 import { SEND_NOTIFICATION } from 'gql';
 
 EventList.propTypes = {
@@ -97,7 +97,7 @@ export default function EventList({
     <GenericList
       extraHeaderContent={extraHeaderContent}
       title="Event Definitions"
-      notFoundMessage="There are no Event Definition available for this Application"
+      notFoundMessage="There are no Event Definition available for this API Package"
       actions={actions}
       entries={eventDefinitions.data}
       headerRenderer={headerRenderer}

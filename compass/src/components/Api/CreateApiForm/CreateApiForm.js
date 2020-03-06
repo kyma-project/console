@@ -20,7 +20,7 @@ import ApiForm from './../Forms/ApiForm';
 import { getRefsValues } from 'react-shared';
 
 import { useMutation } from 'react-apollo';
-import { ADD_API } from 'components/Application/gql';
+import { ADD_API_DEFINITION } from '../gql';
 import { GET_API_PACKAGE } from 'components/ApiPackages/gql';
 
 CreateApiForm.propTypes = {
@@ -39,7 +39,7 @@ export default function CreateApiForm({
   onCompleted,
   onError,
 }) {
-  const [addApi] = useMutation(ADD_API, {
+  const [addApi] = useMutation(ADD_API_DEFINITION, {
     refetchQueries: () => [
       {
         query: GET_API_PACKAGE,

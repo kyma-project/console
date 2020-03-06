@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import './ApiPackageDetails.scss';
 import Header from './Header/ApiPackageDetailsHeader';
-import ApiList from './../ApiList/ApiList';
-import EventList from '../EventList/EventList';
+import ApiList from './ApiList/ApiList';
+import EventList from './EventList/EventList';
+import AuthList from './AuthList/AuthList';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_API_PACKAGE } from './../gql';
@@ -29,7 +30,7 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
 
   const application = data.application;
   const apiPackage = application.package;
-
+  console.log(apiPackage.instanceAuths);
   if (!apiPackage) {
     return (
       <ResourceNotFound
@@ -56,6 +57,7 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
             apiPackageId={apiPackage.id}
           />
         </div>
+        <AuthList auths={apiPackage.instanceAuths} />
       </section>
     </>
   );

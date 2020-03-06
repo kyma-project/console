@@ -9,7 +9,7 @@ import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.compone
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_API_DEFINITION } from 'components/Api/gql';
-import { GET_API_PACKAGE } from '../gql';
+import { GET_API_PACKAGE } from '../../gql';
 import { SEND_NOTIFICATION } from 'gql';
 
 ApiList.propTypes = {
@@ -97,7 +97,7 @@ export default function ApiList({
     <GenericList
       extraHeaderContent={extraHeaderContent}
       title="API Definitions"
-      notFoundMessage="There are no API Definitions available for this Application"
+      notFoundMessage="There are no API Definitions available for this API Package"
       actions={actions}
       entries={apiDefinitions.data}
       headerRenderer={headerRenderer}

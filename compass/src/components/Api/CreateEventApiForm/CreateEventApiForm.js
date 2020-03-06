@@ -10,7 +10,7 @@ import EventApiForm from '../Forms/EventApiForm';
 import { getRefsValues } from 'react-shared';
 
 import { useMutation } from 'react-apollo';
-import { ADD_EVENT_API } from 'components/Application/gql';
+import { ADD_EVENT_DEFINITION } from '../gql';
 import { GET_API_PACKAGE } from 'components/ApiPackages/gql';
 
 CreateEventApiForm.propTypes = {
@@ -29,7 +29,7 @@ export default function CreateEventApiForm({
   onCompleted,
   onError,
 }) {
-  const [addEventAPI] = useMutation(ADD_EVENT_API, {
+  const [addEventAPI] = useMutation(ADD_EVENT_DEFINITION, {
     refetchQueries: () => [
       {
         query: GET_API_PACKAGE,

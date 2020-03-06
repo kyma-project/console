@@ -16,7 +16,6 @@ export const CREATE_API_PACKAGE = gql`
   }
 `;
 
-//todo tego chyba tez nie trzeba calego?
 export const GET_API_PACKAGE = gql`
   query Application($applicationId: ID!, $apiPackageId: ID!) {
     application(id: $applicationId) {
@@ -27,9 +26,17 @@ export const GET_API_PACKAGE = gql`
         name
         description
         instanceAuthRequestInputSchema
-        defaultInstanceAuth {
-          credential {
-            __typename
+        instanceAuths {
+          id
+          auth {
+            credential {
+              __typename
+            }
+          }
+          status {
+            condition
+            reason
+            message
           }
         }
         apiDefinitions {
@@ -38,28 +45,14 @@ export const GET_API_PACKAGE = gql`
             name
             description
             targetURL
-            spec {
-              data
-              format
-              type
-            }
-            group
           }
-          totalCount
         }
         eventDefinitions {
           data {
             id
             name
             description
-            spec {
-              data
-              format
-              type
-            }
-            group
           }
-          totalCount
         }
       }
     }

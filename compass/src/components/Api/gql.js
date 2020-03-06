@@ -1,5 +1,38 @@
 import gql from 'graphql-tag';
 
+export const ADD_API_DEFINITION = gql`
+  mutation addAPIDefinition($apiPackageId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
+      id
+      name
+      description
+      targetURL
+      spec {
+        data
+        format
+        type
+      }
+      group
+    }
+  }
+`;
+
+export const ADD_EVENT_DEFINITION = gql`
+  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
+      id
+      name
+      description
+      spec {
+        data
+        format
+        type
+      }
+      group
+    }
+  }
+`;
+
 export const GET_API_DEFININTION = gql`
   query apiDefinition(
     $applicationId: ID!
