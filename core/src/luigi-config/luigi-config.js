@@ -2,11 +2,12 @@
 import {
   saveCurrentLocation,
   getPreviousLocation,
+  getToken
 } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { config } from './config';
-import { navigation, getNavigationData, getToken } from './navigation/navigation-data-init';
-import { onQuoteExceed } from './luigi-event-handlers';
+import { navigation, getNavigationData, resolveNavigationNodes } from './navigation/navigation-data-init';
+import { onQuotaExceed } from './luigi-event-handlers';
 
 
 function getFreshKeys() {
@@ -81,9 +82,8 @@ const luigiConfig = {
       if(token){
         getNavigationData().then(
           response => {
-            navigation.nodes = response[0];
+            resolveNavigationNodes(response[0]);
             luigiConfig.settings.sideNavFooterText = response[1];
-            Luigi.configChanged('navigation');
             Luigi.configChanged('settings');
           }
         )
@@ -97,6 +97,6 @@ Luigi.setConfig(luigiConfig);
 
 window.addEventListener('message', e => {
   if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
-    onQuoteExceed(e.data);
+    onQuotaExceed(e.data);
   }
 });

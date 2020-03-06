@@ -2,7 +2,7 @@ import {
   setLimitExceededErrorsMessages
 } from './navigation/navigation-helpers';
 
-export function onQuoteExceed(eventData) {
+export function onQuotaExceed(eventData) {
   const namespace = eventData.namespace;
     const data = eventData.data;
     let limitHasBeenExceeded;

@@ -19,22 +19,15 @@ import {
   hideDisabledNodes,
   getSystemNamespaces,
   createNamespacesList,
-  saveCurrentLocation
+  relogin,
+  getToken
 } from './navigation-helpers';
 
 let clusterMicrofrontendNodes = [];
 let clusterMicrofrontendNodesForNamespace = [];
 const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
-export function getToken() {
-  let token;
-  const authData = Luigi.auth().store.getAuthData();
-  if (authData) {
-    token = authData.idToken;
-  }
-  return token;
-}
-
+export let resolveNavigationNodes;
 export let navigation = {
   viewGroupSettings: {
     _console_: {
@@ -65,7 +58,10 @@ export let navigation = {
         link: '/home/settings'
       }
     ]
-  }
+  },
+  nodes: new Promise((res) => {
+    resolveNavigationNodes = res;
+  })
 };
 
 export function getNavigationData() {
@@ -247,12 +243,6 @@ function fetchFromGraphQL(query, variables, gracefully) {
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(JSON.stringify({ query, variables }));
   });
-}
-
-function relogin() {
-  saveCurrentLocation();
-  Luigi.auth().store.removeAuthData();
-  location.reload();
 }
 
 function getChildrenNodesForNamespace(context) {

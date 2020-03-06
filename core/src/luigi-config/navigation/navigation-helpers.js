@@ -61,6 +61,21 @@ export const saveCurrentLocation = () => {
   }
 };
 
+export function relogin() {
+  saveCurrentLocation();
+  Luigi.auth().store.removeAuthData();
+  location.reload();
+}
+
+export function getToken() {
+  let token;
+  const authData = Luigi.auth().store.getAuthData();
+  if (authData) {
+    token = authData.idToken;
+  }
+  return token;
+}
+
 export const getPreviousLocation = () => {
   const prevLocation = localStorage.getItem('console.location');
   if (prevLocation) {
