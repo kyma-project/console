@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { ApplicationQueryContext } from './../ApplicationDetails.component';
-
 import { GenericList, handleDelete } from 'react-shared';
 
 import { SEND_NOTIFICATION } from 'gql';
@@ -11,14 +9,15 @@ import { DELETE_API_PACKAGE } from './../../../ApiPackages/gql';
 import { useMutation } from '@apollo/react-hooks';
 import { GET_APPLICATION } from 'components/Application/gql';
 
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import CreateApiPackageForm from 'components/ApiPackages/CreateApiPackageForm/CreateApiPackageForm';
+
 ApplicationApiPackages.propTypes = {
   applicationId: PropTypes.string.isRequired,
   apiPackages: PropTypes.object.isRequired, //?
 };
 
 export default function ApplicationApiPackages({ applicationId, apiPackages }) {
-  const applicationQuery = React.useContext(ApplicationQueryContext);
-
   const [deleteApiPackage] = useMutation(DELETE_API_PACKAGE, {
     refetchQueries: () => [
       { query: GET_APPLICATION, variables: { id: applicationId } },
@@ -69,9 +68,21 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
     },
   ];
 
+  const extraHeaderContent = (
+    <ModalWithForm
+      title="Create API Package"
+      button={{ glyph: 'add', text: '' }}
+      confirmText="Create"
+      // performRefetch={applicationQuery.refetch}
+    >
+      <CreateApiPackageForm applicationId={applicationId} />
+    </ModalWithForm>
+  );
+
   return (
     <GenericList
       title="API Packages"
+      extraHeaderContent={extraHeaderContent}
       notFoundMessage="There are no API Packages defined for this Application"
       actions={actions}
       entries={apiPackages.data}

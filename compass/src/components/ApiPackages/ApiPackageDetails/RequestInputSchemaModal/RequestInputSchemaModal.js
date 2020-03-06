@@ -5,7 +5,7 @@ import JSONEditor from 'components/Shared/JSONEditor';
 import { Modal } from 'react-shared';
 
 RequestInputSchemaModal.propTypes = {
-  schema: PropTypes.string.isRequired,
+  schema: PropTypes.string,
 };
 
 export default function RequestInputSchemaModal({ schema }) {
@@ -13,10 +13,9 @@ export default function RequestInputSchemaModal({ schema }) {
     <Modal
       title="Request input schema"
       modalOpeningComponent={<span className="link">Show</span>}
-      confirmText=""
-      cancelText="cancel"
+      confirmText="Ok"
     >
-      <JSONEditor readonly={true} text={schema} />
+      <JSONEditor readonly={true} text={schema || '{}'} />
     </Modal>
   );
 }

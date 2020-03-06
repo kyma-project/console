@@ -17,11 +17,11 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
   const [deleteApiPackageMutation] = useMutation(DELETE_API_PACKAGE);
 
   const breadcrumbItems = [
-    { name: 'Applications', path: '/', fromContext: 'applications' },
-    { name: application.name, path: '/' },
+    { name: 'Applications', path: '/applications', fromContext: 'tenant' },
+    { name: application.name, path: '/', fromContext: 'application' },
     {
       name: apiPackage.name,
-      path: `/apiPackage/${apiPackage.id}`,
+      path: '/',
     },
     { name: '' },
   ];
@@ -55,7 +55,7 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
       <PageHeader.Column title="Description" columnSpan={2}>
         {apiPackage.description}
       </PageHeader.Column>
-      <PageHeader.Column title="Rquest Input Schema" columnSpan={3}>
+      <PageHeader.Column title="Request Input Schema" columnSpan={3}>
         <RequestInputSchemaModal
           schema={apiPackage.instanceAuthRequestInputSchema}
         />

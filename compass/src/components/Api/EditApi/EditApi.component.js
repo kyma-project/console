@@ -29,12 +29,14 @@ const commonPropTypes = {
 EditApi.propTypes = {
   originalApi: PropTypes.object.isRequired,
   applicationName: PropTypes.string.isRequired,
+  apiPackageName: PropTypes.string.isRequired,
   ...commonPropTypes,
 };
 
 function EditApi({
   originalApi,
   applicationName,
+  apiPackageName,
   apiId,
   updateApiDefinition,
   sendNotification,
@@ -126,6 +128,7 @@ function EditApi({
       <EditApiHeader
         api={originalApi}
         applicationName={applicationName}
+        apiPackageName={apiPackageName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -264,6 +267,7 @@ export default function EditApiWrapper(props) {
       {...props}
       originalApi={originalApi}
       applicationName={dataQuery.application.name}
+      apiPackageName={dataQuery.application.package.name}
     />
   );
 }

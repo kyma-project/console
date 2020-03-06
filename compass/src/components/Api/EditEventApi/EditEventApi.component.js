@@ -24,12 +24,14 @@ const commonPropTypes = {
 EditEventApi.propTypes = {
   originalEventApi: PropTypes.object.isRequired,
   applicationName: PropTypes.string.isRequired,
+  apiPackageName: PropTypes.string.isRequired,
   ...commonPropTypes,
 };
 
 function EditEventApi({
   originalEventApi,
   applicationName,
+  apiPackageName,
   eventApiId,
   updateEventDefinition,
   sendNotification,
@@ -92,6 +94,7 @@ function EditEventApi({
       <EditApiHeader
         api={originalEventApi}
         applicationName={applicationName}
+        apiPackageName={apiPackageName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -204,6 +207,7 @@ export default function EditEventApiWrapper(props) {
       {...props}
       originalEventApi={originalEventApi}
       applicationName={dataQuery.application.name}
+      apiPackageName={dataQuery.application.package.name}
     />
   );
 }

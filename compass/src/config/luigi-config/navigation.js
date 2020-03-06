@@ -87,7 +87,7 @@ const navigation = {
                               viewUrl:
                                 compassMfUrl +
                                 '/application/:applicationId/apiPackage/:apiPackageId',
-                              navigationContext: 'apiPackage',
+                              navigationContext: 'api-package',
                               label: 'Api Package Details',
                               children: [
                                 {
@@ -119,6 +119,7 @@ const navigation = {
                                       viewUrl:
                                         compassMfUrl +
                                         '/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId',
+                                      navigationContext: 'event-api',
                                       children: [
                                         {
                                           pathSegment: 'edit',

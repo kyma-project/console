@@ -19,7 +19,7 @@ const performOnClick = item => {
   if (!item.path) {
     return null;
   }
-
+  console.log('navigating to ', item);
   const linkManager = item.fromContext
     ? LuigiClient.linkManager().fromContext(item.fromContext)
     : LuigiClient.linkManager().fromClosestContext();
@@ -70,6 +70,7 @@ PageHeader.propTypes = {
       name: PropTypes.string.isRequired,
       path: PropTypes.string,
       params: PropTypes.object,
+      fromContext: PropTypes.string,
     }),
   ),
 };
