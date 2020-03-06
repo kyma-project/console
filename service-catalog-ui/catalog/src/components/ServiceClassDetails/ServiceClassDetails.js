@@ -167,6 +167,7 @@ export default function ServiceClassDetails({ name, plan }) {
             />
           )
         }
+        serviceClassName={name}
       >
         {isAPIpackage && (
           <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
