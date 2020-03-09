@@ -28,17 +28,14 @@ export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
 };
 
 const ApiDetails = ({
-  getApiDefinitionsForApplication,
-  getEventDefinitionsForApplication,
+  getApiDefinition,
+  getEventDefinition,
   deleteAPIDefinition,
   deleteEventDefinition,
   apiId,
-  eventApiId,
   applicationId,
 }) => {
-  const query = apiId
-    ? getApiDefinitionsForApplication
-    : getEventDefinitionsForApplication;
+  const query = apiId ? getApiDefinition : getEventDefinition;
 
   const { loading, error, application } = query;
 
@@ -55,8 +52,7 @@ const ApiDetails = ({
     return `Error! ${error.message}`;
   }
 
-  const api = getApiDataFromQuery(application, apiId, eventApiId);
-
+  const api = application.package[apiId ? 'apiDefinition' : 'eventDefinition'];
   if (!api) {
     return (
       <ResourceNotFound
@@ -71,6 +67,7 @@ const ApiDetails = ({
   return (
     <>
       <ApiDetailsHeader
+        apiPackage={application.package}
         application={application}
         api={api}
         deleteMutation={apiId ? deleteAPIDefinition : deleteEventDefinition}
@@ -95,6 +92,7 @@ ApiDetails.propTypes = {
   apiId: PropTypes.string,
   eventApiId: PropTypes.string,
   applicationId: PropTypes.string.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
 };
 
 export default ApiDetails;

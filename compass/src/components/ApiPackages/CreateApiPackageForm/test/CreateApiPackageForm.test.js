@@ -5,7 +5,11 @@ import CreateApiPackageForm from '../CreateApiPackageForm';
 
 // mock out JSONEditor as it throws "Not Supported" error on "destroy" function
 import JSONEditor from 'jsoneditor';
-import { createApiPackageMock, jsonEditorMock } from './mocks';
+import {
+  createApiPackageMock,
+  refetchApiPackageMock,
+  jsonEditorMock,
+} from './mocks';
 
 jest.mock('jsoneditor', () => jest.fn()); // mock constructor separately
 JSONEditor.mockImplementation(() => jsonEditorMock);
@@ -18,7 +22,10 @@ describe('CreateApiPackageForm', () => {
     const completedCallback = jest.fn();
 
     const { getByLabelText } = render(
-      <MockedProvider mocks={[createApiPackageMock]} addTypename={false}>
+      <MockedProvider
+        mocks={[createApiPackageMock, refetchApiPackageMock]}
+        addTypename={false}
+      >
         <CreateApiPackageForm
           applicationId="app-id"
           formElementRef={formRef}

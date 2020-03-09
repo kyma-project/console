@@ -16,6 +16,7 @@ import { createEventAPIData, verifyEventApiInput } from './../ApiHelpers';
 const commonPropTypes = {
   eventApiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
+  apiPackageId: PropTypes.string.isRequired, // used in container file
   updateEventDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
@@ -23,12 +24,14 @@ const commonPropTypes = {
 EditEventApi.propTypes = {
   originalEventApi: PropTypes.object.isRequired,
   applicationName: PropTypes.string.isRequired,
+  apiPackageName: PropTypes.string.isRequired,
   ...commonPropTypes,
 };
 
 function EditEventApi({
   originalEventApi,
   applicationName,
+  apiPackageName,
   eventApiId,
   updateEventDefinition,
   sendNotification,
@@ -91,6 +94,7 @@ function EditEventApi({
       <EditApiHeader
         api={originalEventApi}
         applicationName={applicationName}
+        apiPackageName={apiPackageName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -182,10 +186,10 @@ export default function EditEventApiWrapper(props) {
     return <p>`Error! ${dataQuery.error.message}`</p>;
   }
 
-  // there's no getEventApiById query
-  const originalEventApi = dataQuery.application.eventDefinitions.data.find(
-    eventApi => eventApi.id === props.eventApiId,
-  );
+  const originalEventApi =
+    dataQuery.application &&
+    dataQuery.application.package &&
+    dataQuery.application.package.eventDefinition;
 
   if (!originalEventApi) {
     return (
@@ -203,6 +207,7 @@ export default function EditEventApiWrapper(props) {
       {...props}
       originalEventApi={originalEventApi}
       applicationName={dataQuery.application.name}
+      apiPackageName={dataQuery.application.package.name}
     />
   );
 }

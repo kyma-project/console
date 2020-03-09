@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Ajv from 'ajv';
 import JSONEditor from 'jsoneditor';
 import 'jsoneditor/dist/jsoneditor.css';
 
 export default class JSONEditorComponent extends Component {
+  static propTypes = {
+    readonly: PropTypes.bool,
+    mode: PropTypes.oneOf('tree', 'view', 'form', 'code'),
+  };
+
+  static defaultProps = {
+    mode: 'code',
+  };
+
   componentDidMount() {
     const options = {
       escapeUnicode: false,
       history: true,
       indentation: 2,
-      mode: 'code',
+      mode: this.props.mode,
       search: true,
       sortObjectKeys: false,
       mainMenuBar: false,
@@ -19,6 +29,7 @@ export default class JSONEditorComponent extends Component {
 
     this.jsoneditor = new JSONEditor(this.container, options);
     this.jsoneditor.setText(this.props.text);
+    this.jsoneditor.aceEditor.setOption('readOnly', this.props.readonly);
   }
 
   componentWillUnmount() {

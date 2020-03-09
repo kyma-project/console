@@ -22,6 +22,12 @@ function navigateToApplications() {
     .navigate(`/applications`);
 }
 
+function navigateToApplication(id) {
+  LuigiClient.linkManager()
+    .fromContext('tenant')
+    .navigate(`/applications/details/${id}`);
+}
+
 class ApplicationDetailsHeader extends React.Component {
   PropTypes = {
     application: PropTypes.object.isRequired,
@@ -47,6 +53,11 @@ class ApplicationDetailsHeader extends React.Component {
                 url="#"
                 onClick={navigateToApplications}
               />
+              <Breadcrumb.Item
+                name={name}
+                url="#"
+                onClick={() => navigateToApplication(id)}
+              />
               <Breadcrumb.Item />
             </Breadcrumb>
             <ActionBar.Header title={name} />
@@ -66,9 +77,13 @@ class ApplicationDetailsHeader extends React.Component {
                   confirmText="Update"
                   initialIsValid={true}
                   performRefetch={applicationQuery.refetch}
-                >
-                  <UpdateApplicationForm application={this.props.application} />
-                </ModalWithForm>
+                  renderForm={props => (
+                    <UpdateApplicationForm
+                      application={this.props.application}
+                      {...props}
+                    />
+                  )}
+                />
               )}
             </ApplicationQueryContext.Consumer>
             <Button

@@ -5,13 +5,16 @@ import { CustomPropTypes } from 'react-shared';
 import { FormSet } from 'fundamental-react';
 import FileInput from '../../Shared/FileInput/FileInput';
 
-import { createEventAPIData, verifyEventApiFile } from './../ApiHelpers';
-import EventApiForm from './../Forms/EventApiForm';
+import { createEventAPIData, verifyEventApiFile } from '../ApiHelpers';
+import EventApiForm from '../Forms/EventApiForm';
 import { getRefsValues } from 'react-shared';
 
+import { useMutation } from 'react-apollo';
+import { ADD_EVENT_DEFINITION } from '../gql';
+import { GET_API_PACKAGE } from 'components/ApiPackages/gql';
+
 CreateEventApiForm.propTypes = {
-  applicationId: PropTypes.string.isRequired,
-  addEventAPI: PropTypes.func.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
@@ -20,12 +23,24 @@ CreateEventApiForm.propTypes = {
 
 export default function CreateEventApiForm({
   applicationId,
-  addEventAPI,
+  apiPackageId,
   formElementRef,
   onChange,
   onCompleted,
   onError,
 }) {
+  const [addEventAPI] = useMutation(ADD_EVENT_DEFINITION, {
+    refetchQueries: () => [
+      {
+        query: GET_API_PACKAGE,
+        variables: {
+          applicationId: applicationId,
+          apiPackageId: apiPackageId,
+        },
+      },
+    ],
+  });
+
   const [specProvided, setSpecProvided] = React.useState(false);
 
   const formValues = {
@@ -68,7 +83,12 @@ export default function CreateEventApiForm({
     const eventApiData = createEventAPIData(basicApiData, specData);
 
     try {
-      await addEventAPI(eventApiData, applicationId);
+      await addEventAPI({
+        variables: {
+          apiPackageId,
+          in: eventApiData,
+        },
+      });
       onCompleted(basicApiData.name, 'Event Definition created successfully');
     } catch (error) {
       onError('Cannot create Event Definition');

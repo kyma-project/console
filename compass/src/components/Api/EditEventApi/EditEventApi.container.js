@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { SEND_NOTIFICATION } from './../../../gql';
-import { GET_APPLICATION_WITH_EVENT_DEFINITIONS } from './../gql';
+import { GET_EVENT_DEFINITION } from './../gql';
 import { UPDATE_EVENT_DEFINITION } from './gql';
 
 import EditApi from './EditEventApi.component';
@@ -10,12 +10,14 @@ export default compose(
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
-  graphql(GET_APPLICATION_WITH_EVENT_DEFINITIONS, {
+  graphql(GET_EVENT_DEFINITION, {
     name: 'eventApiDataQuery',
-    options: ({ applicationId }) => {
+    options: ({ applicationId, apiPackageId, eventApiId }) => {
       return {
         variables: {
           applicationId,
+          apiPackageId,
+          eventDefinitionId: eventApiId,
         },
       };
     },
