@@ -40,6 +40,10 @@ const ServiceInstanceTabs = ({ serviceClass, currentPlan }) => {
 
 ServiceInstanceTabs.propTypes = {
   serviceClass: PropTypes.object.isRequired,
+  currentPlan: PropTypes.shape({
+    assetGroup: PropTypes.object,
+    clusterAssetGroup: PropTypes.object,
+  }),
 };
 
 export default ServiceInstanceTabs;
