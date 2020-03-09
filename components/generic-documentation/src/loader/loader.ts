@@ -70,7 +70,7 @@ export class DocsLoader {
   }
 
   private sortByURL(f1: File, f2: File): number {
-    return f1.url > f2.url ? 1 : -1;
+    return f1.url.localeCompare(f2.url);
   }
 
   private async setSpecification(types: string[]): Promise<void> {
