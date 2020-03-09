@@ -69,6 +69,10 @@ export class DocsLoader {
     }
   }
 
+  private sortByURL(f1: File, f2: File): number {
+    return f1.url > f2.url ? 1 : -1;
+  }
+
   private async setSpecification(types: string[]): Promise<void> {
     const specification = this.extractSpecification(types);
 
@@ -211,7 +215,10 @@ export class DocsLoader {
 
     const files =
       assets &&
-      assets.map(asset => asset.files && asset.files[0]).filter(a => a);
+      assets
+        .map(asset => asset.files && asset.files[0])
+        .filter(a => a)
+        .sort(this.sortByURL);
 
     return files || [];
   }
