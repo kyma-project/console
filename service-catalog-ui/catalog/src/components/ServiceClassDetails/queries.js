@@ -67,6 +67,12 @@ export const getServiceClass = gql`
         ${plansQGL}
         namespace
         relatedServiceClassName
+        assetGroup {
+          ${assetGroupQGL} 
+        }
+        clusterAssetGroup {
+          ${assetGroupQGL} 
+        }
       }
       instances {
         name

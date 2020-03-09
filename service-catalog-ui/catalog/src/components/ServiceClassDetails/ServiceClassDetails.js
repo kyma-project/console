@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { getServiceClass } from './queries';
-
+import PropTypes from 'prop-types';
 import {
   serviceClassConstants,
   createInstanceButtonText,
@@ -28,9 +28,33 @@ import {
   DOCUMENTATION_PER_PLAN_DESCRIPTION,
 } from '../../shared/constants';
 import { Tooltip, Spinner } from '../../react-shared';
+import { sortByDisplayName } from '../../shared/sorting';
+
+export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
+  return (
+    <select
+      defaultValue={currentlySelected && currentlySelected.name}
+      onChange={onPlanChange}
+      aria-label="plan-selector"
+    >
+      {allPlans.map(p => (
+        <option value={p.name} key={p.name}>
+          {p.displayName}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+PlanSelector.propTypes = {
+  allPlans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentlySelected: PropTypes.object,
+  onPlanChange: PropTypes.func.isRequired,
+};
 
 export default function ServiceClassDetails({ name, plan }) {
   const namespace = LuigiClient.getEventData().environmentId;
+  const [currentPlan, setCurrentPlan] = useState(null);
 
   const {
     data: queryData,
@@ -45,25 +69,30 @@ export default function ServiceClassDetails({ name, plan }) {
     fetchPolicy: 'no-cache',
   });
 
-  if (queryLoading) {
+  useEffect(() => {
+    if (!currentPlan || currentPlan.name === plan) return;
+
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate(`/details/${name}/plan/${currentPlan.name}`, '', false);
+  }, [currentPlan, name, plan]);
+
+  if (queryLoading)
     return (
       <EmptyList>
         <Spinner />
       </EmptyList>
     );
-  }
 
-  if (queryError) {
+  if (queryError)
     return (
       <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
     );
-  }
 
   const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
 
-  if (!serviceClass) {
+  if (!serviceClass)
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
-  }
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
 
@@ -91,41 +120,43 @@ export default function ServiceClassDetails({ name, plan }) {
     plans,
   } = serviceClass;
 
+  function handlePlanChange(e) {
+    setCurrentPlan(plans.find(p => p.name === e.target.value));
+  }
+
   const isAPIpackage = labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
-  const currentPlan = isAPIpackage
-    ? plans.find(p => p.name === plan)
-    : undefined;
-
   if (isAPIpackage && !currentPlan) {
-    //TODO: redrection to the plan selection view?
-    LuigiClient.uxManager().showAlert({
-      type: 'error',
-      text:
-        'The provided plan name is wrong. Please make sure you selected the right one.',
-    });
+    const planToSet = plans.find(p => p.name === plan);
+    if (planToSet) setCurrentPlan(planToSet);
+    else {
+      //TODO: redrection to the plan selection view?
+      LuigiClient.uxManager().showAlert({
+        type: 'error',
+        text:
+          'The provided plan name is wrong. Please make sure you selected the right one.',
+      });
 
-    return (
-      <section className="fd-section">
-        <Button
-          glyph="nav-back"
-          onClick={() =>
-            LuigiClient.linkManager()
-              .fromClosestContext()
-              .navigate('/')
-          }
-        >
-          Go back to the Catalog
-        </Button>
-      </section>
-    );
+      return (
+        <section className="fd-section">
+          <Button
+            glyph="nav-back"
+            onClick={() =>
+              LuigiClient.linkManager()
+                .fromClosestContext()
+                .navigate('/')
+            }
+          >
+            Go back to the Catalog
+          </Button>
+        </section>
+      );
+    }
   }
 
   return (
     <>
       <ServiceClassDetailsHeader
         serviceClassDisplayName={serviceClassDisplayName}
-        serviceClassName={serviceClass.name}
-        isAPIpackage={isAPIpackage}
         providerDisplayName={providerDisplayName}
         creationTimestamp={creationTimestamp}
         documentationUrl={documentationUrl}
@@ -135,6 +166,17 @@ export default function ServiceClassDetails({ name, plan }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+        isAPIpackage={isAPIpackage}
+        planSelector={
+          isAPIpackage && (
+            <PlanSelector
+              allPlans={plans.sort(sortByDisplayName)}
+              currentlySelected={currentPlan}
+              onPlanChange={handlePlanChange}
+            />
+          )
+        }
+        serviceClassName={name}
       >
         {isAPIpackage && (
           <Tooltip title={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
@@ -146,7 +188,6 @@ export default function ServiceClassDetails({ name, plan }) {
             />
           </Tooltip>
         )}
-
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}
                     ${
@@ -172,7 +213,7 @@ export default function ServiceClassDetails({ name, plan }) {
         {backendModuleExists('rafter') && (
           <ServiceClassTabs
             serviceClass={serviceClass}
-            currentPlan={currentPlan}
+            currentPlan={isAPIpackage ? currentPlan : undefined}
           />
         )}
       </ServiceClassDetailsWrapper>

@@ -28,6 +28,7 @@ const ServiceClassDetailsHeader = ({
   children,
   serviceClassName,
   isAPIpackage,
+  planSelector,
 }) => {
   const goToList = () => {
     LuigiClient.linkManager()
@@ -82,6 +83,7 @@ const ServiceClassDetailsHeader = ({
         providerDisplayName={providerDisplayName}
         supportUrl={supportUrl}
         tags={tags}
+        planSelector={planSelector}
       />
     </HeaderWrapper>
   );
@@ -100,6 +102,7 @@ ServiceClassDetailsHeader.propTypes = {
   supportUrl: PropTypes.string,
   serviceClassName: PropTypes.string,
   isAPIpackage: PropTypes.bool,
+  planSelector: PropTypes.node,
 };
 
 export default ServiceClassDetailsHeader;

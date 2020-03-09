@@ -34,6 +34,7 @@ const ServiceClassInfo = ({
   description,
   isProvisionedOnlyOnce,
   providerDisplayName,
+  planSelector,
 }) => {
   function sortTags(tag1, tag2) {
     return tag1.length > 8 && tag2.length < 15;
@@ -139,7 +140,12 @@ const ServiceClassInfo = ({
           </TileContent>
         </Tile>
         {modifiedTags && modifiedTags.length > 0 && (
-          <Tile columnSpan={computeNumberOfColumns(isProvisionedOnlyOnce)}>
+          <Tile
+            columnSpan={
+              computeNumberOfColumns(isProvisionedOnlyOnce) -
+              (planSelector ? 2 : 0)
+            }
+          >
             <TileContent title={serviceClassTileTitles.tags}>
               <LabelsWrapper data-e2e-id="service-labels">
                 {modifiedTags.sort(sortTags).map(tag => (
@@ -155,6 +161,13 @@ const ServiceClassInfo = ({
                   </LabelWrapper>
                 ))}
               </LabelsWrapper>
+            </TileContent>
+          </Tile>
+        )}
+        {planSelector && (
+          <Tile columnSpan="2">
+            <TileContent title={serviceClassTileTitles.plans}>
+              {planSelector}
             </TileContent>
           </Tile>
         )}

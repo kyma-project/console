@@ -268,6 +268,44 @@ const serviceClassWithPlans = {
   ],
 };
 
+const assetOfType = (type, name) => ({
+  name,
+  parameters: {},
+  type,
+  files: [
+    {
+      url: 'https://sth.co/sth.yaml',
+      metadata: null,
+    },
+    {
+      url: 'https://sth.co/sth.yaml',
+      metadata: { title: 'Overview', type: 'Overview' },
+    },
+    {
+      url: 'https://sth.co/sth.yaml',
+      metadata: {
+        title: 'Services and Plans',
+        type: 'Details',
+      },
+    },
+  ],
+});
+
+const assetGroupWithManyAssets = {
+  description: 'this assetgroup has many different assets',
+  displayName: 'assetGroupWithManyAssets',
+  groupName: '',
+  name: 'assetGroupWithManyAssets',
+  assets: [
+    assetOfType('openapi', 'openapi1'),
+    assetOfType('openapi', 'openapi2'),
+    assetOfType('openapi', 'openapi3'),
+    assetOfType('asyncapi', 'asyncapi1'),
+    assetOfType('asyncapi', 'asyncapi2'),
+    assetOfType('odata', 'odata1'),
+  ],
+};
+
 export {
   clusterServiceClass1,
   clusterServiceClass2,
@@ -280,4 +318,5 @@ export {
   serviceClassWithAPIrule,
   serviceClassWithoutPlans,
   serviceClassWithPlans,
+  assetGroupWithManyAssets,
 };

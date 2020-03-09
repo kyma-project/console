@@ -113,7 +113,6 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                       type: 'deleteResource',
                       data: entry
                     });
-                    this.refreshContextSwitcher();
                     this.router.navigateByUrl('/home/namespaces');
                   },
                   err => {
@@ -132,7 +131,6 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                   },
                   () => {
                     this.confirmationModal.cancel();
-                    this.refreshContextSwitcher();
                   }
                 );
             },
@@ -140,9 +138,5 @@ export class WorkspaceOverviewComponent extends GenericListComponent
           );
       }
     };
-  }
-
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 }

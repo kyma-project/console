@@ -46,7 +46,6 @@ export class OrganisationComponent implements OnInit {
       'console.showSystemNamespaces',
       this.showSystemNamespaces.toString()
     );
-    this.refreshContextSwitcher();
 
     window.parent.postMessage(
       {
@@ -62,10 +61,6 @@ export class OrganisationComponent implements OnInit {
       'console.showExperimentalViews',
       this.showExperimentalViews.toString()
     );
-    LuigiClient.sendCustomMessage({ id: 'console.toggleExperimental' });
-  }
-
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
+    LuigiClient.sendCustomMessage({ id: 'console.refreshNavigation' });
   }
 }
