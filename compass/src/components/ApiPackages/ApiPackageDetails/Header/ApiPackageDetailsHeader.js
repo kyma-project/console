@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { PageHeader, handleDelete } from 'react-shared';
 import { Button } from 'fundamental-react';
 import RequestInputSchemaModal from '../RequestInputSchemaModal/RequestInputSchemaModal';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import EditApiPackageForm from './../EditApiPackageForm/EditApiPackageForm';
+import './ApiPackageDetailsHeader.scss';
 
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -71,17 +74,31 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
     );
   };
 
-  const deleteButton = (
-    <Button onClick={deleteApiPackage} type="negative" option="light">
-      Delete
-    </Button>
+  const actions = (
+    <div className="api-package-header__actions">
+      <ModalWithForm
+        title="Edit Package"
+        button={{ text: 'Edit', option: 'light' }}
+        confirmText="Edit"
+        renderForm={props => (
+          <EditApiPackageForm
+            applicationId={application.id}
+            apiPackage={apiPackage}
+            {...props}
+          />
+        )}
+      />
+      <Button onClick={deleteApiPackage} type="negative" option="light">
+        Delete
+      </Button>
+    </div>
   );
 
   return (
     <PageHeader
       title={apiPackage.name}
       breadcrumbItems={breadcrumbItems}
-      actions={deleteButton}
+      actions={actions}
     >
       <PageHeader.Column title="Name">{apiPackage.name}</PageHeader.Column>
       <PageHeader.Column title="Description" columnSpan={2}>

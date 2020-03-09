@@ -41,4 +41,7 @@ export const refetchApiPackageMock = {
 export const jsonEditorMock = {
   setText: jest.fn(),
   destroy: jest.fn(),
+  aceEditor: {
+    setOption: jest.fn(),
+  },
 };
