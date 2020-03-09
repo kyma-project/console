@@ -77,9 +77,9 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
 
   return (
     <GenericList
-      title="API Packages"
+      title="Packages"
       extraHeaderContent={extraHeaderContent}
-      notFoundMessage="There are no API Packages defined for this Application"
+      notFoundMessage="There are no Packages defined for this Application"
       actions={actions}
       entries={apiPackages}
       headerRenderer={headerRenderer}

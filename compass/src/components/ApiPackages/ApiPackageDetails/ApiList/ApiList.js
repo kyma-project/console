@@ -15,7 +15,7 @@ import { SEND_NOTIFICATION } from 'gql';
 ApiList.propTypes = {
   applicationId: PropTypes.string.isRequired,
   apiPackageId: PropTypes.string.isRequired,
-  apiDefinitions: PropTypes.object.isRequired,
+  apiDefinitions: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 export default function ApiList({
@@ -99,7 +99,7 @@ export default function ApiList({
       title="API Definitions"
       notFoundMessage="There are no API Definitions available for this API Package"
       actions={actions}
-      entries={apiDefinitions.data}
+      entries={apiDefinitions}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={['name', 'description', 'targetURL']}

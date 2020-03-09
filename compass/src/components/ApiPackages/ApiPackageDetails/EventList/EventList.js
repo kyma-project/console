@@ -15,7 +15,7 @@ import { SEND_NOTIFICATION } from 'gql';
 EventList.propTypes = {
   applicationId: PropTypes.string.isRequired,
   apiPackageId: PropTypes.string.isRequired,
-  eventDefinitions: PropTypes.object.isRequired,
+  eventDefinitions: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 export default function EventList({
@@ -99,7 +99,7 @@ export default function EventList({
       title="Event Definitions"
       notFoundMessage="There are no Event Definition available for this API Package"
       actions={actions}
-      entries={eventDefinitions.data}
+      entries={eventDefinitions}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
     />

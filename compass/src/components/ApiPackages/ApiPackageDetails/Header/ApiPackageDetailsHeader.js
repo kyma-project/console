@@ -87,7 +87,7 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
       <PageHeader.Column title="Description" columnSpan={2}>
         {apiPackage.description}
       </PageHeader.Column>
-      <PageHeader.Column title="Request Input Schema" columnSpan={3}>
+      <PageHeader.Column title="Auth Request Input Schema" columnSpan={3}>
         <RequestInputSchemaModal
           schema={apiPackage.instanceAuthRequestInputSchema}
         />

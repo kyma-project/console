@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
-import './ApiPackageDetails.scss';
 import Header from './Header/ApiPackageDetailsHeader';
 import ApiList from './ApiList/ApiList';
 import EventList from './EventList/EventList';
@@ -30,7 +29,7 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
 
   const application = data.application;
   const apiPackage = application.package;
-  console.log(apiPackage.instanceAuths);
+
   if (!apiPackage) {
     return (
       <ResourceNotFound
@@ -44,21 +43,17 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
   return (
     <>
       <Header apiPackage={apiPackage} application={application} />
-      <section className="api-package-items">
-        <div>
-          <ApiList
-            apiDefinitions={apiPackage.apiDefinitions}
-            applicationId={application.id}
-            apiPackageId={apiPackage.id}
-          />
-          <EventList
-            eventDefinitions={apiPackage.eventDefinitions}
-            applicationId={application.id}
-            apiPackageId={apiPackage.id}
-          />
-        </div>
-        <AuthList auths={apiPackage.instanceAuths} />
-      </section>
+      <AuthList auths={apiPackage.instanceAuths} />
+      <ApiList
+        apiDefinitions={apiPackage.apiDefinitions.data}
+        applicationId={application.id}
+        apiPackageId={apiPackage.id}
+      />
+      <EventList
+        eventDefinitions={apiPackage.eventDefinitions.data}
+        applicationId={application.id}
+        apiPackageId={apiPackage.id}
+      />
     </>
   );
 }
