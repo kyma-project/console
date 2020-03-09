@@ -12,18 +12,21 @@ import { HeadersNavigation } from '../render-engines/markdown/headers-toc';
 import { MarkdownWrapper } from '../styled';
 import {
   markdownTypes,
-  openApiTypes,
-  asyncApiTypes,
   odataTypes,
+  asyncApiTypes,
+  openApiTypes,
 } from '../constants';
-import { StyledOData, StyledAsyncAPI } from './styled';
-import { StyledSwagger } from '../render-engines/open-api/styles';
+import { SingleAPIcontent } from './SingleAPIcontent';
 
 function existFiles(sources: Source[], types: string[]) {
   return sources.find(source => types.includes(source.type));
 }
 
-enum TabsLabels {
+function getSourcesOfType(sources: Source[], types: string[]): Source[] {
+  return sources.filter(source => types.includes(source.type)).sort();
+}
+
+export enum TabsLabels {
   DOCUMENTATION = 'Documentation',
   CONSOLE = 'Console',
   EVENTS = 'Events',
@@ -60,9 +63,10 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     luigiClient.getNodeParams().selectedTab || '';
 
   const markdownsExists = existFiles(sources, markdownTypes);
-  const openApiExists = existFiles(sources, openApiTypes);
-  const asyncApiExists = existFiles(sources, asyncApiTypes);
-  const odataExists = existFiles(sources, odataTypes);
+
+  const openApiSources = getSourcesOfType(sources, openApiTypes);
+  const asyncApiSources = getSourcesOfType(sources, asyncApiTypes);
+  const odataSources = getSourcesOfType(sources, odataTypes);
 
   const tabs =
     additionalTabs &&
@@ -104,27 +108,46 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
           </MarkdownWrapper>
         </Tab>
       )}
-      {openApiExists && (
-        <Tab label={TabsLabels.CONSOLE} id={TabsLabels.CONSOLE}>
-          <StyledSwagger className="custom-open-api-styling">
-            <RenderedContent sourceTypes={openApiTypes} />
-          </StyledSwagger>
-        </Tab>
-      )}
-      {asyncApiExists && (
-        <Tab label={TabsLabels.EVENTS} id={TabsLabels.EVENTS}>
-          <StyledAsyncAPI className="custom-async-api-styling">
-            <RenderedContent sourceTypes={asyncApiTypes} />
-          </StyledAsyncAPI>
-        </Tab>
-      )}
-      {odataExists && (
-        <Tab label={TabsLabels.ODATA} id={TabsLabels.ODATA}>
-          <StyledOData className="custom-odata-styling">
-            <RenderedContent sourceTypes={odataTypes} />
-          </StyledOData>
-        </Tab>
-      )}
+
+      {openApiSources.map((source: Source, id: number) => {
+        const label =
+          TabsLabels.CONSOLE + (openApiSources.length > 1 ? ` ${id + 1}` : '');
+        return (
+          <Tab label={label} id={label}>
+            <SingleAPIcontent
+              apiLabel={TabsLabels.CONSOLE}
+              apiClassName="custom-open-api-styling"
+              source={source}
+            />
+          </Tab>
+        );
+      })}
+      {asyncApiSources.map((source: Source, id: number) => {
+        const label =
+          TabsLabels.EVENTS + (asyncApiSources.length > 1 ? ` ${id + 1}` : '');
+        return (
+          <Tab label={label} id={label}>
+            <SingleAPIcontent
+              apiLabel={TabsLabels.EVENTS}
+              apiClassName="custom-async-api-styling"
+              source={source}
+            />
+          </Tab>
+        );
+      })}
+      {odataSources.map((source: Source, id: number) => {
+        const label =
+          TabsLabels.ODATA + (odataSources.length > 1 ? ` ${id + 1}` : '');
+        return (
+          <Tab label={label} id={label}>
+            <SingleAPIcontent
+              apiLabel={TabsLabels.ODATA}
+              apiClassName="custom-odata-styling"
+              source={source}
+            />
+          </Tab>
+        );
+      })}
       {tabs}
     </Tabs>
   );

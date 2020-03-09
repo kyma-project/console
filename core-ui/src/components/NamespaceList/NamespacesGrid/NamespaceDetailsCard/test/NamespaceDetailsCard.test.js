@@ -19,6 +19,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
     removeBackdrop: jest.fn(),
     showConfirmationModal: () => Promise.resolve(),
   }),
+  sendCustomMessage: jest.fn(),
 }));
 
 describe('NamespaceDetailsCard', () => {

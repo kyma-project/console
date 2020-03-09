@@ -2,7 +2,7 @@ import React from 'react';
 import { GenericList } from '../GenericList';
 
 import 'core-js/es/array/flat-map';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, queryByText } from '@testing-library/react';
 
 describe('GenericList', () => {
   const defaultNotFoundText = 'No entries found';
@@ -154,6 +154,20 @@ describe('GenericList', () => {
     );
 
     mockHeaderRenderer().forEach(async header => await getByText(header));
+  });
+  it("Doesn't render header with showHeader set to false", async () => {
+    const { queryAllByRole } = render(
+      <GenericList
+        entries={[]}
+        headerRenderer={mockHeaderRenderer}
+        rowRenderer={mockEntryRenderer}
+        showHeader={false}
+      />,
+    );
+
+    const foundRows = queryAllByRole('row');
+    expect(foundRows).toHaveLength(1);
+    expect(queryByText(foundRows[0], defaultNotFoundText)).toBeInTheDocument();
   });
 
   it('Renders extreaHeaderContent', async () => {

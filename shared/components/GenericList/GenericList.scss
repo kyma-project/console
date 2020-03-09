@@ -1,4 +1,9 @@
 .generic-list {
+  .fd-table {
+    tr {
+      cursor: default;
+    }
+  }
   .fd-panel__body {
     padding: 0;
   }
@@ -44,7 +49,6 @@
   .fd-table .list-actions button {
     margin-top: -12px;
     margin-bottom: -12px;
-
   }
 }
 
@@ -78,4 +82,3 @@
     }
   }
 }
-

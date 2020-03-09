@@ -32,12 +32,14 @@ function filterServiceInstances(instances, currentPlan) {
 }
 
 const ServiceClassTabs = ({ serviceClass, currentPlan }) => {
-  const assetGroup =
-    serviceClass && (serviceClass.assetGroup || serviceClass.clusterAssetGroup);
+  const assetGroup = currentPlan
+    ? currentPlan.assetGroup || currentPlan.clusterAssetGroup
+    : serviceClass.assetGroup || serviceClass.clusterAssetGroup;
 
   const instances = currentPlan
     ? filterServiceInstances(serviceClass.instances, currentPlan)
     : serviceClass.instances;
+
   const additionalTabs = instances.length
     ? [
         {
@@ -64,6 +66,7 @@ const ServiceClassTabs = ({ serviceClass, currentPlan }) => {
 
 ServiceClassTabs.propTypes = {
   serviceClass: PropTypes.object.isRequired,
+  currentPlan: PropTypes.object,
 };
 
 export default ServiceClassTabs;

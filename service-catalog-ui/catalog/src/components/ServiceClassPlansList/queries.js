@@ -11,6 +11,11 @@ const plansGQL = `
   name
   displayName
   externalName
+  clusterAssetGroup{
+    assets{
+      type
+    }
+  }
 `;
 
 export const getServiceClassPlans = gql`
@@ -29,6 +34,11 @@ export const getServiceClassPlans = gql`
         ${plansGQL}
         namespace
         relatedServiceClassName
+        assetGroup{
+            assets{
+              type
+            }
+          }
       }
     }
   }
