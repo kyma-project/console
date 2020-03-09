@@ -60,10 +60,10 @@ export default function CreateApiPackageForm({
           in: input,
         },
       });
-      onCompleted(apiName, 'API Package created successfully');
+      onCompleted(apiName, 'Package created successfully');
     } catch (error) {
       console.warn(error);
-      onError('Cannot create API Package');
+      onError('Cannot create Package');
     }
   };
 

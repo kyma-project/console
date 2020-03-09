@@ -29,7 +29,7 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
   if (!apiPackage) {
     return (
       <ResourceNotFound
-        resource="API Package"
+        resource="Package"
         breadcrumb="Application"
         navigationPath="/"
         navigationContext="application"

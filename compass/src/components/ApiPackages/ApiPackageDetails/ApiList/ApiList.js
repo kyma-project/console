@@ -97,7 +97,7 @@ export default function ApiList({
     <GenericList
       extraHeaderContent={extraHeaderContent}
       title="API Definitions"
-      notFoundMessage="There are no API Definitions available for this API Package"
+      notFoundMessage="There are no API Definitions available for this Package"
       actions={actions}
       entries={apiDefinitions}
       headerRenderer={headerRenderer}

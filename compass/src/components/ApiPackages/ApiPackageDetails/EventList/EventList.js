@@ -97,7 +97,7 @@ export default function EventList({
     <GenericList
       extraHeaderContent={extraHeaderContent}
       title="Event Definitions"
-      notFoundMessage="There are no Event Definition available for this API Package"
+      notFoundMessage="There are no Event Definition available for this Package"
       actions={actions}
       entries={eventDefinitions}
       headerRenderer={headerRenderer}

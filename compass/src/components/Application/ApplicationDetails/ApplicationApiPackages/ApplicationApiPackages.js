@@ -55,7 +55,7 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
       name: 'Delete',
       handler: entry =>
         handleDelete(
-          'API Package',
+          'Package',
           entry.id,
           entry.name,
           id => deleteApiPackage({ variables: { id } }),
@@ -66,7 +66,7 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
 
   const extraHeaderContent = (
     <ModalWithForm
-      title="Create API Package"
+      title="Create Package"
       button={{ glyph: 'add', text: '' }}
       confirmText="Create"
       renderForm={props => (

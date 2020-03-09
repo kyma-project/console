@@ -44,49 +44,6 @@ const AuthContext = ({ context }) => {
 };
 
 export default function AuthList({ auths }) {
-  auths = [
-    {
-      context: JSON.stringify({ a: 'b', c: 'd' }),
-      inputParams: JSON.stringify({ a: 'b' }),
-      status: {
-        timestamp: '2020-03-09T09:15:29+00:00',
-        message: 'Nie interesuj sie',
-        reason: 'PendingDeletion',
-        condition: 'PENDING',
-      },
-    },
-    {
-      context: JSON.stringify({ a: 'b', c: 'd' }),
-      inputParams: JSON.stringify({ a: 'b' }),
-      status: {
-        timestamp: '2010-11-09T09:15:29+11:00',
-        reason: null,
-        message: 'msg',
-        condition: 'SUCCEEDED',
-      },
-    },
-    {
-      context: JSON.stringify({ a: 'b', c: 'd' }),
-      inputParams: JSON.stringify({ a: 'b' }),
-      status: {
-        timestamp: '2020-03-09T09:15:29+00:00',
-        message: 'Witam w ten piękny poranek',
-        reason: 'Bo tak',
-        condition: 'FAILED',
-      },
-    },
-    {
-      context: JSON.stringify({ a: 'b', c: 'd' }),
-      inputParams: JSON.stringify({ a: 'b' }),
-      status: {
-        timestamp: '2020-03-09T09:15:29+00:00',
-        message: 'msg',
-        reason: '',
-        condition: 'UNUSED',
-      },
-    },
-  ];
-
   const headerRenderer = () => ['Context', 'Status', ''];
 
   const rowRenderer = auth => [
@@ -98,7 +55,7 @@ export default function AuthList({ auths }) {
   return (
     <GenericList
       title="Auths"
-      notFoundMessage="There are no Auths present for this API Package"
+      notFoundMessage="There are no Auths present for this Package"
       entries={auths}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}

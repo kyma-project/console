@@ -42,7 +42,7 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
   function showDeleteSuccessNotification() {
     sendNotification({
       variables: {
-        content: `Deleted API Package "${apiPackage.name}".`,
+        content: `Deleted Package "${apiPackage.name}".`,
         title: apiPackage.name,
         color: '#359c46',
         icon: 'accept',
@@ -60,7 +60,7 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
 
   const deleteApiPackage = () => {
     handleDelete(
-      'API Package',
+      'Package',
       apiPackage.id,
       apiPackage.name,
       id => deleteApiPackageMutation({ variables: { id } }),
