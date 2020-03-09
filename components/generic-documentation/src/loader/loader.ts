@@ -72,12 +72,13 @@ export class DocsLoader {
   private async setSpecification(types: string[]): Promise<void> {
     const specification = this.extractSpecification(types);
 
-    if (specification) {
-      const source = await this.fetchFile(specification, types[0]);
-      if (source) {
-        this.sources.push(source);
-      }
-    }
+    const newSources = (await Promise.all(
+      specification
+        .map(async file => this.fetchFile(file, types[0]).then(res => res))
+        .filter(s => s),
+    )) as SourceWithOptions[];
+
+    this.sources.push(...newSources);
   }
 
   private async fetchFile(
@@ -205,12 +206,14 @@ export class DocsLoader {
     return data;
   }
 
-  private extractSpecification(types: string[]) {
+  private extractSpecification(types: string[]): File[] {
     const assets = this.extractAssets(types);
 
-    const file = assets && assets[0] && assets[0].files && assets[0].files[0];
+    const files =
+      assets &&
+      assets.map(asset => asset.files && asset.files[0]).filter(a => a);
 
-    return file;
+    return files || [];
   }
 
   private extractAssets(types: string[]): Asset[] | undefined {
