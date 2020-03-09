@@ -7,6 +7,11 @@ import 'jsoneditor/dist/jsoneditor.css';
 export default class JSONEditorComponent extends Component {
   static propTypes = {
     readonly: PropTypes.bool,
+    mode: PropTypes.oneOf('tree', 'view', 'form', 'code'),
+  };
+
+  static defaultProps = {
+    mode: 'code',
   };
 
   componentDidMount() {
@@ -14,7 +19,7 @@ export default class JSONEditorComponent extends Component {
       escapeUnicode: false,
       history: true,
       indentation: 2,
-      mode: this.props.readonly ? 'view' : 'code',
+      mode: this.props.mode,
       search: true,
       sortObjectKeys: false,
       mainMenuBar: false,
@@ -24,6 +29,7 @@ export default class JSONEditorComponent extends Component {
 
     this.jsoneditor = new JSONEditor(this.container, options);
     this.jsoneditor.setText(this.props.text);
+    this.jsoneditor.aceEditor.setOption('readOnly', this.props.readonly);
   }
 
   componentWillUnmount() {

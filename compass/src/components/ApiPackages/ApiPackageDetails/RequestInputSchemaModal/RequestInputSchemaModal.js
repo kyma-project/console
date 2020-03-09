@@ -9,13 +9,15 @@ RequestInputSchemaModal.propTypes = {
 };
 
 export default function RequestInputSchemaModal({ schema }) {
+  const formatJson = json => JSON.stringify(JSON.parse(json, null, 2));
+
   return (
     <Modal
       title="Request input schema"
       modalOpeningComponent={<span className="link">Show</span>}
       confirmText="Ok"
     >
-      <JSONEditor readonly={true} text={schema || '{}'} />
+      <JSONEditor readonly={true} text={formatJson(schema || '{}')} />
     </Modal>
   );
 }

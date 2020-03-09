@@ -28,15 +28,13 @@ export const GET_API_PACKAGE = gql`
         instanceAuthRequestInputSchema
         instanceAuths {
           id
-          auth {
-            credential {
-              __typename
-            }
-          }
+          context
+          inputParams
           status {
             condition
             reason
             message
+            timestamp
           }
         }
         apiDefinitions {
