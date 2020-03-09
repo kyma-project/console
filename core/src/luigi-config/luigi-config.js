@@ -32,8 +32,15 @@ const luigiConfig = {
       logoutUrl: 'logout.html',
       userInfoFn:(authSettings, authData)=>{
         return new Promise((resolve) => {
-          const data  = parseJWT(authData.idToken)
-          resolve({name: data.name, email: data.email})
+          const userInfo = {};
+          try {
+            const data  = parseJWT(authData.idToken)
+            userInfo.name = data.name
+            userInfo.email = data.email
+          } catch (err) {
+            console.error("Could not parse JWT token", err)
+          }
+          resolve(userInfo)
         })
       },
     },

@@ -174,7 +174,8 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
         {
           pathSegment: ':namespaceId',
           context: {
-            namespaceId: ':namespaceId'
+            namespaceId: ':namespaceId',
+            environmentId: ':namespaceId'
           },
           children: namespaceChildrenNodesResolver,
           navigationContext: 'namespaces',
