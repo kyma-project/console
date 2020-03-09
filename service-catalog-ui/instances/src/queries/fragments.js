@@ -114,10 +114,20 @@ export const SERVICE_INSTANCE_DETAILS_FRAGMENT = gql`
         ${servicePlanGql}
         namespace
         relatedServiceClassName
+        assetGroup {
+          ${assetGroupGql}
+        }
+        
+        clusterAssetGroup {
+          ${assetGroupGql}
+        }
       }
       clusterServicePlan {
         ${servicePlanGql}
         relatedClusterServiceClassName
+        clusterAssetGroup {
+          ${assetGroupGql}
+        }
       }
       serviceBindings {
         items {
