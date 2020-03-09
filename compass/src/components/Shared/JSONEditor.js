@@ -7,7 +7,7 @@ import 'jsoneditor/dist/jsoneditor.css';
 export default class JSONEditorComponent extends Component {
   static propTypes = {
     readonly: PropTypes.bool,
-    mode: PropTypes.oneOf('tree', 'view', 'form', 'code'),
+    mode: PropTypes.oneOf(['tree', 'view', 'form', 'code']),
   };
 
   static defaultProps = {
