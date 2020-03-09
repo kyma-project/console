@@ -113,7 +113,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
         const label =
           TabsLabels.CONSOLE + (openApiSources.length > 1 ? ` ${id + 1}` : '');
         return (
-          <Tab label={label} id={label}>
+          <Tab key={label} label={label} id={label}>
             <SingleAPIcontent
               apiLabel={TabsLabels.CONSOLE}
               apiClassName="custom-open-api-styling"
@@ -126,7 +126,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
         const label =
           TabsLabels.EVENTS + (asyncApiSources.length > 1 ? ` ${id + 1}` : '');
         return (
-          <Tab label={label} id={label}>
+          <Tab key={label} label={label} id={label}>
             <SingleAPIcontent
               apiLabel={TabsLabels.EVENTS}
               apiClassName="custom-async-api-styling"
@@ -139,7 +139,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
         const label =
           TabsLabels.ODATA + (odataSources.length > 1 ? ` ${id + 1}` : '');
         return (
-          <Tab label={label} id={label}>
+          <Tab key={label} label={label} id={label}>
             <SingleAPIcontent
               apiLabel={TabsLabels.ODATA}
               apiClassName="custom-odata-styling"
