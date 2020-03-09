@@ -111,7 +111,6 @@ class App extends React.Component {
               exact
               render={RoutedMetadataDefinitionDetails}
             />
-            <Route path="*" render={() => 'haha nope'} />
           </Switch>
         </Router>
       </div>
