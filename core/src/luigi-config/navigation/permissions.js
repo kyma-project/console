@@ -41,7 +41,7 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
 function isVisibleForCurrentGroup(node) {
   let currentGroups = node.context ? node.context.groups : null;
   if (!Array.isArray(currentGroups)) return true;
-  const isAdmin = currentGroups.includes(config.adminsGroupName);
+  const isAdmin = currentGroups.includes(config.namespaceAdminGroupName) || currentGroups.includes(config.runtimeAdminGroupName);
   if (ADMIN_ONLY_PATH_SEGMENTS.includes(node.pathSegment)) return isAdmin;
   return true;
 }
