@@ -6,7 +6,7 @@ import React from 'react';
 const mockApiPackages = [
   {
     name: 'package one',
-    description: 'It contains six spring tyne cultivators and a dwarf.',
+    description: 'It contains six spring tine cultivators and a dwarf.',
     apiDefinitions: {
       totalCount: 3,
     },
