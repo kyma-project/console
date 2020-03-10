@@ -12,7 +12,8 @@ import {
 import convertToNavigationTree from './microfrontend-converter';
 import navigationPermissionChecker, {
   setInitValues,
-  backendModules
+  backendModules,
+  getGroups
 } from './permissions';
 
 import {
@@ -68,6 +69,7 @@ export function getNavigationData() {
   return new Promise(function(resolve, reject) {
     let kymaVersion;
     let token = getToken();
+    let groups = getGroups(token);
     fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, true)
       .then(
         res => {
@@ -92,7 +94,8 @@ export function getNavigationData() {
                       config,
                       navigation,
                       consoleViewGroupName,
-                      'cmf-'
+                      'cmf-',
+                      groups
                     );
                     return tree;
                   }
@@ -113,7 +116,8 @@ export function getNavigationData() {
                       config,
                       navigation,
                       consoleViewGroupName,
-                      'cmf-'
+                      'cmf-',
+                      groups
                     );
                   }
                   return [];
@@ -133,6 +137,7 @@ export function getNavigationData() {
             hideFromNav: true,
             context: {
               idToken: token,
+              groups,
               backendModules,
               systemNamespaces,
               showSystemNamespaces:
@@ -287,6 +292,7 @@ const getMicrofrontends = async namespace => {
   const cache = window[cacheName];
   const cacheKey = segmentPrefix + namespace;
   const fromCache = cache[cacheKey];
+  const groups = getGroups(getToken())
 
   return (
     fromCache ||
@@ -303,7 +309,8 @@ const getMicrofrontends = async namespace => {
               config,
               navigation,
               consoleViewGroupName,
-              segmentPrefix
+              segmentPrefix,
+              groups
             );
           }
           return [];

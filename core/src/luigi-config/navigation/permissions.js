@@ -1,12 +1,12 @@
 import rbacRulesMatched from './rbac-rules-matcher';
 import { config } from './../config';
+import { parseJWT } from './navigation-helpers';
 
 const ADMIN_ONLY_PATH_SEGMENTS = [
   'cmf-applications',
   'cmf-scenarios',
   'cmf-runtimes'
 ];
-const NON_ADMIN_PATH_SEGMENTS = ['cmf-apps'];
 
 let selfSubjectRulesReview = [];
 export let backendModules = [];
@@ -39,19 +39,10 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
 }
 
 function isVisibleForCurrentGroup(node) {
-  const authObject = Luigi.auth().store.getAuthData();
-  if (
-    !authObject ||
-    !authObject.profile ||
-    !Array.isArray(authObject.profile.groups)
-  )
-    return true; // couldn't read groups from auth object
-
-  const isAdmin = authObject.profile.groups.includes(config.adminsGroupName);
-
+  let currentGroups = node.context ? node.context.groups : null;
+  if (!Array.isArray(currentGroups)) return true;
+  const isAdmin = currentGroups.includes(config.adminsGroupName);
   if (ADMIN_ONLY_PATH_SEGMENTS.includes(node.pathSegment)) return isAdmin;
-  if (NON_ADMIN_PATH_SEGMENTS.includes(node.pathSegment)) return !isAdmin;
-
   return true;
 }
 
@@ -69,4 +60,13 @@ export default function navigationPermissionChecker(nodeToCheckPermissionsFor) {
     checkRequiredBackendModules(nodeToCheckPermissionsFor) &&
     isVisibleForCurrentGroup(nodeToCheckPermissionsFor)
   );
+}
+
+
+export function getGroups(token){
+  try{
+    return parseJWT(token).groups;
+  } catch (e) {
+    console.error("Could not parse groups from current token", e);
+  }
 }

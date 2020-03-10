@@ -1,7 +1,7 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
 import { hideExperimentalNode } from './navigation-helpers';
 
-function buildNode(node, spec, config) {
+function buildNode(node, spec, config, groups) {
   var n = {
     label: node.label,
     pathSegment: node.navigationPath.split('/').pop(),
@@ -18,6 +18,7 @@ function buildNode(node, spec, config) {
   };
 
   n.context.requiredBackendModules = node.requiredBackendModules || undefined;
+  n.context.groups = groups;
 
   if (node.externalLink) {
     delete n.viewUrl;
@@ -38,17 +39,17 @@ function buildNode(node, spec, config) {
   return n;
 }
 
-function buildNodeWithChildren(specNode, spec, config) {
+function buildNodeWithChildren(specNode, spec, config, groups) {
   var parentNodeSegments = specNode.navigationPath.split('/');
-  var children = getDirectChildren(parentNodeSegments, spec, config);
-  var node = buildNode(specNode, spec, config);
+  var children = getDirectChildren(parentNodeSegments, spec, config, groups);
+  var node = buildNode(specNode, spec, config, groups);
   if (children.length) {
     node.children = children;
   }
   return node;
 }
 
-function getDirectChildren(parentNodeSegments, spec, config) {
+function getDirectChildren(parentNodeSegments, spec, config, groups) {
   // process only direct children
   return spec.navigationNodes
     .filter(function(node) {
@@ -60,7 +61,7 @@ function getDirectChildren(parentNodeSegments, spec, config) {
     })
     .map(function mapSecondLevelNodes(node) {
       // map direct children
-      return buildNodeWithChildren(node, spec, config);
+      return buildNodeWithChildren(node, spec, config, groups);
     });
 }
 
@@ -75,7 +76,8 @@ export default function convertToNavigationTree(
   config,
   navigation,
   consoleViewGroupName,
-  segmentPrefix
+  segmentPrefix,
+  groups
 ) {
   return spec.navigationNodes
     .filter(function getTopLevelNodes(node) {
@@ -84,7 +86,7 @@ export default function convertToNavigationTree(
     })
 
     .map(function processTopLevelNodes(node) {
-      return buildNodeWithChildren(node, spec, config);
+      return buildNodeWithChildren(node, spec, config, groups);
     })
     .map(function addSettingsForTopLevelNodes(node) {
       if (spec.category) {
