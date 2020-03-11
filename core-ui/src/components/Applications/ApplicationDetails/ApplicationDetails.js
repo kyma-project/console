@@ -18,6 +18,7 @@ import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import BoundNamespacesList from '../BoundNamespacesList/BoundNamespacesList';
 import EventApiList from 'components/Apis/EventApiList/EventApiList';
 import ApiList from 'components/Apis/ApiList/ApiList';
+import ApplicationApiPackages from '../../Apis/ApplicationApiPackages/ApplicationApiPackages';
 import ConnectApplicationModal from '../ConnectApplicationModal/ConnectApplicationModal';
 import './ApplicationDetails.scss';
 import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
@@ -97,6 +98,11 @@ const ApplicationDetails = ({ appId }) => {
           appName={app.name}
         />
       )}
+      <ApplicationApiPackages
+        apiPackages={application.packages.data}
+        applicationId={application.id}
+        apiDefinitions={application.apiDefinitions}
+      />
       <ApiList applicationId={appId} apis={apis} />
       <EventApiList applicationId={appId} eventApis={eventApis} />
     </article>

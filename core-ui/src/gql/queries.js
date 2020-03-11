@@ -147,6 +147,9 @@ export const GET_COMPASS_APPLICATIONS = gql`
         id
         providerName
         name
+        packages {
+          totalCount
+        }
       }
     }
   }
@@ -191,6 +194,24 @@ export const GET_APPLICATION_COMPASS = gql`
       name
       providerName
       description
+      packages {
+        data {
+          id
+          name
+          description
+          defaultInstanceAuth {
+            credential {
+              __typename
+            }
+          }
+          apiDefinitions {
+            totalCount
+          }
+          eventDefinitions {
+            totalCount
+          }
+        }
+      }
       apiDefinitions {
         data {
           id

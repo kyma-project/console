@@ -14,6 +14,7 @@ import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import { Popover, Menu, Button, Badge } from 'fundamental-react';
+import { Counter } from 'fundamental-react/Badge';
 import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
@@ -37,6 +38,7 @@ export default function ApplicationList() {
   const [applicationList, setApplicationList] = useState([]);
   const {
     data: compassQueryResult,
+
     error,
     loading,
     refetch: refetchCompassQuery,
@@ -61,6 +63,7 @@ export default function ApplicationList() {
     if (!compassQueryResult || !compassQueryResult.applications) {
       return;
     }
+    console.log(compassQueryResult.applications.data);
     setApplicationList(compassQueryResult.applications.data);
   }, [compassQueryResult, setApplicationList]);
 
@@ -79,6 +82,7 @@ export default function ApplicationList() {
   }, [kymaAppsQuery, refetchCompassQuery]);
 
   function handleKymaAppsChange(kymaAppsQueryResult, compassApps = []) {
+    console.log(kymaAppsQueryResult, compassApps);
     if (!kymaAppsQueryResult || !kymaAppsQueryResult.applications) return;
     const newAppList = [...compassApps];
 
@@ -119,9 +123,11 @@ export default function ApplicationList() {
     'Provider name',
     'Status',
     'Bound namespaces',
+    'Packages',
   ];
 
   const rowRenderer = item => {
+    console.log(item);
     return [
       <span
         className="link"
@@ -139,6 +145,7 @@ export default function ApplicationList() {
             </Badge>
           ))
         : EMPTY_TEXT_PLACEHOLDER,
+      <Counter>{item.packages.totalCount}</Counter>,
     ];
   };
 
