@@ -22,12 +22,6 @@ function navigateToApplications() {
     .navigate(`/applications`);
 }
 
-function navigateToApplication(id) {
-  LuigiClient.linkManager()
-    .fromContext('tenant')
-    .navigate(`/applications/details/${id}`);
-}
-
 class ApplicationDetailsHeader extends React.Component {
   PropTypes = {
     application: PropTypes.object.isRequired,
@@ -52,11 +46,6 @@ class ApplicationDetailsHeader extends React.Component {
                 name="Applications"
                 url="#"
                 onClick={navigateToApplications}
-              />
-              <Breadcrumb.Item
-                name={name}
-                url="#"
-                onClick={() => navigateToApplication(id)}
               />
               <Breadcrumb.Item />
             </Breadcrumb>
