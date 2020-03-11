@@ -6,16 +6,11 @@ import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
 import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
 import ApiForm from '../Forms/ApiForm';
-import CredentialsForm from './../Forms/CredentialForms/CredentialsForm';
 import { Dropdown } from 'components/Shared/Dropdown/Dropdown';
 import './EditApi.scss';
 
 import { getRefsValues, useMutationObserver } from 'react-shared';
-import {
-  createApiData,
-  inferCredentialType,
-  verifyApiInput,
-} from './../ApiHelpers';
+import { createApiData, verifyApiInput } from './../ApiHelpers';
 import ApiEditorForm from '../Forms/ApiEditorForm';
 
 const commonPropTypes = {
@@ -54,23 +49,11 @@ function EditApi({
     originalApi.spec ? originalApi.spec.data : '',
   );
 
-  const [credentialsType, setCredentialsType] = React.useState(
-    inferCredentialType(originalApi.defaultAuth),
-  );
-
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
     group: React.useRef(null),
     targetURL: React.useRef(null),
-  };
-
-  const credentialRefs = {
-    oAuth: {
-      clientId: React.useRef(null),
-      clientSecret: React.useRef(null),
-      url: React.useRef(null),
-    },
   };
 
   const revalidateForm = () =>
@@ -83,13 +66,7 @@ function EditApi({
     const specData = specProvided
       ? { data: specText, format, type: apiType }
       : null;
-    const credentialsData = { oAuth: getRefsValues(credentialRefs.oAuth) };
-    const apiData = createApiData(
-      basicData,
-      specData,
-      credentialsData,
-      credentialsType,
-    );
+    const apiData = createApiData(basicData, specData);
 
     try {
       await updateApiDefinition(apiId, apiData);
@@ -118,10 +95,6 @@ function EditApi({
     setSpecText(text);
     revalidateForm();
   };
-
-  const defaultCredentials = originalApi.defaultAuth
-    ? { oAuth: { ...originalApi.defaultAuth.credential } }
-    : null;
 
   return (
     <>
@@ -202,26 +175,6 @@ function EditApi({
                     revalidateForm={revalidateForm}
                   />
                 )}
-              </Panel.Body>
-            </Panel>
-          </Tab>
-          <Tab key="credentials" id="credentials" title="Credentials">
-            <Panel>
-              <Panel.Header>
-                <p className="fd-has-type-1">Credentials</p>
-              </Panel.Header>
-              <Panel.Body>
-                <CredentialsForm
-                  credentialRefs={credentialRefs}
-                  credentialType={credentialsType}
-                  setCredentialType={type => {
-                    setCredentialsType(type);
-                    setTimeout(() => {
-                      revalidateForm();
-                    });
-                  }}
-                  defaultValues={defaultCredentials}
-                />
               </Panel.Body>
             </Panel>
           </Tab>
