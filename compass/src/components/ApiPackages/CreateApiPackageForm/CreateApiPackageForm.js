@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CustomPropTypes } from 'react-shared';
+import { CustomPropTypes, getRefsValues } from 'react-shared';
+import { Tab, TabGroup, FormLabel, FormSet } from 'fundamental-react';
+import { useMutation } from '@apollo/react-hooks';
 
-import { FormLabel } from 'fundamental-react';
 import TextFormItem from './../../Shared/TextFormItem';
 import JSONEditor from './../../Shared/JSONEditor';
-
-import { useMutation } from '@apollo/react-hooks';
+import CredentialsForm, {
+  CREDENTIAL_TYPE_NONE,
+} from 'components/Api/Forms/CredentialForms/CredentialsForm'; // TODO: Move to shared
 import { CREATE_API_PACKAGE } from './../gql';
 import { GET_APPLICATION } from 'components/Application/gql';
 
@@ -35,7 +37,17 @@ export default function CreateApiPackageForm({
 
   const name = React.useRef();
   const description = React.useRef();
+  const credentialRefs = {
+    oAuth: {
+      clientId: React.useRef(null),
+      clientSecret: React.useRef(null),
+      url: React.useRef(null),
+    },
+  };
   const [requestInputSchema, setRequestInputSchema] = React.useState({});
+  const [credentialsType, setCredentialsType] = React.useState(
+    CREDENTIAL_TYPE_NONE,
+  );
 
   const handleSchemaChange = schema => {
     try {
@@ -48,10 +60,17 @@ export default function CreateApiPackageForm({
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
+    const oAuthValues = getRefsValues(credentialRefs.oAuth);
+    let credentials = null;
+    console.log(oAuthValues);
+    if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
+      credentials = { credential: { oauth: oAuthValues } };
+    }
     const input = {
       name: apiName,
       description: description.current.value,
       instanceAuthRequestInputSchema: JSON.stringify(requestInputSchema),
+      defaultInstanceAuth: credentials,
     };
     try {
       await createApiPackage({
@@ -69,23 +88,40 @@ export default function CreateApiPackageForm({
 
   return (
     <form ref={formElementRef} onChange={onChange} onSubmit={handleFormSubmit}>
-      <TextFormItem
-        inputKey="name"
-        required={true}
-        label="Name"
-        inputRef={name}
-      />
-      <TextFormItem
-        inputKey="description"
-        label="Description"
-        inputRef={description}
-      />
-      <FormLabel>Request input schema</FormLabel>
-      <JSONEditor
-        aria-label="schema-editor"
-        onChangeText={handleSchemaChange}
-        text={JSON.stringify(requestInputSchema, null, 2)}
-      />
+      <TabGroup>
+        <Tab key="package-data" id="package-data" title="Data">
+          <TextFormItem
+            inputKey="name"
+            required={true}
+            label="Name"
+            inputRef={name}
+          />
+          <TextFormItem
+            inputKey="description"
+            label="Description"
+            inputRef={description}
+          />
+          <FormLabel>Request input schema</FormLabel>
+          <JSONEditor
+            aria-label="schema-editor"
+            onChangeText={handleSchemaChange}
+            text={JSON.stringify(requestInputSchema, null, 2)}
+          />
+        </Tab>
+        <Tab
+          key="package-credentials"
+          id="package-credentials"
+          title="Credentials"
+        >
+          <FormSet>
+            <CredentialsForm
+              credentialRefs={credentialRefs}
+              credentialType={credentialsType}
+              setCredentialType={setCredentialsType}
+            />
+          </FormSet>
+        </Tab>
+      </TabGroup>
     </form>
   );
 }
