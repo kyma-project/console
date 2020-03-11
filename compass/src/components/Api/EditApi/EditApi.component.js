@@ -21,6 +21,7 @@ import ApiEditorForm from '../Forms/ApiEditorForm';
 const commonPropTypes = {
   apiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
+  apiPackageId: PropTypes.string.isRequired, // used in container file
   updateApiDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
@@ -28,12 +29,14 @@ const commonPropTypes = {
 EditApi.propTypes = {
   originalApi: PropTypes.object.isRequired,
   applicationName: PropTypes.string.isRequired,
+  apiPackageName: PropTypes.string.isRequired,
   ...commonPropTypes,
 };
 
 function EditApi({
   originalApi,
   applicationName,
+  apiPackageName,
   apiId,
   updateApiDefinition,
   sendNotification,
@@ -125,6 +128,7 @@ function EditApi({
       <EditApiHeader
         api={originalApi}
         applicationName={applicationName}
+        apiPackageName={apiPackageName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -242,10 +246,10 @@ export default function EditApiWrapper(props) {
     return <p>`Error! ${dataQuery.error.message}`</p>;
   }
 
-  // there's no getApiById query
-  const originalApi = dataQuery.application.apiDefinitions.data.find(
-    api => api.id === props.apiId,
-  );
+  const originalApi =
+    dataQuery.application &&
+    dataQuery.application.package &&
+    dataQuery.application.package.apiDefinition;
 
   if (!originalApi) {
     return (
@@ -263,6 +267,7 @@ export default function EditApiWrapper(props) {
       {...props}
       originalApi={originalApi}
       applicationName={dataQuery.application.name}
+      apiPackageName={dataQuery.application.package.name}
     />
   );
 }

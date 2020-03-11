@@ -8,6 +8,7 @@ import JSONEditor from './../../Shared/JSONEditor';
 
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_API_PACKAGE } from './../gql';
+import { GET_APPLICATION } from 'components/Application/gql';
 
 CreateApiPackageForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -26,7 +27,11 @@ export default function CreateApiPackageForm({
   onError,
   setCustomValid,
 }) {
-  const [createApiPackage] = useMutation(CREATE_API_PACKAGE);
+  const [createApiPackage] = useMutation(CREATE_API_PACKAGE, {
+    refetchQueries: () => [
+      { query: GET_APPLICATION, variables: { id: applicationId } },
+    ],
+  });
 
   const name = React.useRef();
   const description = React.useRef();
@@ -55,10 +60,10 @@ export default function CreateApiPackageForm({
           in: input,
         },
       });
-      onCompleted(apiName, 'API Package created successfully');
+      onCompleted(apiName, 'Package created successfully');
     } catch (error) {
       console.warn(error);
-      onError('Cannot create API Package');
+      onError('Cannot create Package');
     }
   };
 

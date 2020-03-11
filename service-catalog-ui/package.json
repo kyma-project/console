@@ -4,7 +4,7 @@
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
-    "concurrently": "^4.1.1"
+    "concurrently": "^5.0.0"
   },
   "scripts": {
     "start": "concurrently \"cd brokers && npm start\" \"cd catalog && npm start\"  \"cd instances && npm start\"",

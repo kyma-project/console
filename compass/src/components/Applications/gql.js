@@ -12,10 +12,7 @@ export const GET_APPLICATIONS = gql`
         status {
           condition
         }
-        apiDefinitions {
-          totalCount
-        }
-        eventDefinitions {
+        packages {
           totalCount
         }
       }

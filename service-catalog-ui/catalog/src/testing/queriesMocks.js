@@ -14,7 +14,6 @@ import {
   serviceClassWithPlans,
   serviceClassWithAPIrule,
 } from './serviceClassesMocks';
-
 import { filterExtensions } from '../variables';
 
 export const mockEnvironmentId = 'testnamespace';

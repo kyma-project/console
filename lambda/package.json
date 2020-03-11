@@ -40,6 +40,7 @@
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
     "time-ago-pipe": "^1.2.1",
+    "tree-kill": "^1.2.2",
     "ts-clipboard": "^1.0.16",
     "tslint-angular": "^1.1.1",
     "tslint-config-prettier": "^1.12.0",

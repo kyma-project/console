@@ -106,7 +106,7 @@ export function createNamespacesList(rawNamespaceNames) {
     namespaces.push({
       category: 'Namespaces',
       label: namespaceName,
-      pathValue: alternativeLocation || namespaceName
+      pathValue: alternativeLocation || namespaceName+'/details'
     });
   });
   return namespaces;
