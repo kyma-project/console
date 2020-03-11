@@ -62,7 +62,6 @@ export default function CreateApiPackageForm({
     const apiName = name.current.value;
     const oAuthValues = getRefsValues(credentialRefs.oAuth);
     let credentials = null;
-    console.log(oAuthValues);
     if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
       credentials = { credential: { oauth: oAuthValues } };
     }
