@@ -43,6 +43,16 @@ const luigiConfig = {
           resolve(userInfo)
         })
       },
+      profileStorageInterceptorFn: () => {
+        try {
+          const oidcUserStoreKey = `oidc.user:https://dex.${config.domain}:console`;
+          const oidsUserStore = JSON.parse(sessionStorage.getItem(oidcUserStoreKey));
+          oidsUserStore.profile = undefined;
+          sessionStorage.setItem(oidcUserStoreKey, JSON.stringify(oidsUserStore));
+        } catch(e) {
+          console.error("Error parsing oidc user data", e);
+        }
+      }
     },
 
     events: {

@@ -64,6 +64,7 @@ const serviceInstance1 = {
     },
     bindingCreateParameterSchema: null,
     relatedClusterServiceClassName: 'a2257daa-0e26-4c61-a68d-8a7453c1b767',
+    clusterAssetGroup: null,
     __typename: 'ClusterServicePlan',
   },
   serviceBindings: {
@@ -268,6 +269,7 @@ const serviceInstance2 = {
     instanceCreateParameterSchema: null,
     bindingCreateParameterSchema: null,
     relatedClusterServiceClassName: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
+    clusterAssetGroup: null,
     __typename: 'ClusterServicePlan',
   },
   serviceBindings: {
@@ -413,6 +415,7 @@ const serviceInstance3 = {
     instanceCreateParameterSchema: null,
     bindingCreateParameterSchema: null,
     relatedClusterServiceClassName: 'faebbe18-0a84-11e9-ab14-d663bd873d94',
+    clusterAssetGroup: null,
     __typename: 'ClusterServicePlan',
   },
   serviceBindings: {

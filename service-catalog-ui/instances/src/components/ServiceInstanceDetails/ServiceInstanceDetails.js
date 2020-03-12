@@ -139,7 +139,10 @@ export default function ServiceInstanceDetails({ match }) {
           serviceInstance={serviceInstance}
         />
         {serviceClass && backendModuleExists('rafter') && (
-          <ServiceInstanceTabs serviceClass={serviceClass} />
+          <ServiceInstanceTabs
+            serviceClass={serviceClass}
+            currentPlan={serviceInstance.servicePlan}
+          />
         )}
       </ServiceInstanceWrapper>
       <NotificationMessage

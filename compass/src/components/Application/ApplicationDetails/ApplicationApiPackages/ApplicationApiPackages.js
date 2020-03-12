@@ -11,6 +11,7 @@ import { GET_APPLICATION } from 'components/Application/gql';
 
 import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.container';
 import CreateApiPackageForm from 'components/ApiPackages/CreateApiPackageForm/CreateApiPackageForm';
+import { Counter } from 'fundamental-react';
 
 ApplicationApiPackages.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -41,13 +42,20 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
     LuigiClient.linkManager().navigate(`apiPackage/${entry.id}`);
   }
 
-  const headerRenderer = () => ['Name', 'Description'];
+  const headerRenderer = () => [
+    'Name',
+    'Description',
+    'API Definitions',
+    'Event Definitions',
+  ];
 
   const rowRenderer = apiPackage => [
     <span className="link" onClick={() => navigateToDetails(apiPackage)}>
       {apiPackage.name}
     </span>,
     apiPackage.description,
+    <Counter>{apiPackage.apiDefinitions.totalCount}</Counter>,
+    <Counter>{apiPackage.eventDefinitions.totalCount}</Counter>,
   ];
 
   const actions = [

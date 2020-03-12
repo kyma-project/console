@@ -386,6 +386,10 @@ export const StyledAsyncAPI = styled.div`
         box-shadow: none;
         margin-top: 12px;
       }
+
+      .asyncapi__info-description {
+        border: 0;
+      }
     }
     h1 {
       font-weight: 700;

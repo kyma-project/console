@@ -16,6 +16,14 @@ export const CREATE_API_PACKAGE = gql`
   }
 `;
 
+export const UPDATE_API_PACKAGE = gql`
+  mutation updatePackage($id: ID!, $in: PackageUpdateInput!) {
+    updatePackage(id: $id, in: $in) {
+      name
+    }
+  }
+`;
+
 export const GET_API_PACKAGE = gql`
   query Application($applicationId: ID!, $apiPackageId: ID!) {
     application(id: $applicationId) {

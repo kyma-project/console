@@ -35,6 +35,12 @@ export const GET_APPLICATION = gql`
               __typename
             }
           }
+          apiDefinitions {
+            totalCount
+          }
+          eventDefinitions {
+            totalCount
+          }
         }
       }
     }

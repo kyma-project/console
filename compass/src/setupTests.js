@@ -1,7 +1,7 @@
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import 'jsdom-worker-fix';
 import { act } from '@testing-library/react';
+import 'jsdom-worker-fix';
 import '@testing-library/jest-dom/extend-expect';
 
 var nodeCrypto = require('crypto');

@@ -31,5 +31,6 @@ REACT_APP_HELM_BROKER_REPO_URL_PREFIXES="https://|git::|github.com/|bitbucket.or
 REACT_APP_defaultIdpJwksUri="http://dex-service.kyma-system.svc.cluster.local:5556/keys"
 REACT_APP_defaultIdpIssuer="https://dex.$REACT_APP_domain"
 
-REACT_APP_adminsGroupName="namespace-admins"
+REACT_APP_namespaceAdminGroupName="runtimeNamespaceAdmin"
+REACT_APP_runtimeAdminGroupName="runtimeAdmin"
 

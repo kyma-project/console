@@ -7,13 +7,14 @@
     "@kyma-project/odata-react": "0.3.0",
     "@kyma-project/dc-markdown-render-engine": "0.3.0",
     "@kyma-project/dc-open-api-render-engine": "0.3.0",
-    "@kyma-project/dc-async-api-render-engine": "0.3.0",
+    "@kyma-project/dc-async-api-render-engine": "0.3.3",
     "@kyma-project/dc-odata-render-engine": "0.3.0",
     "@braintree/sanitize-url": "^3.1.0",
     "css.escape": "^1.5.1"
   },
   "devDependencies": {
-    "@types/react-copy-to-clipboard": "^4.2.6"
+    "@types/react-copy-to-clipboard": "^4.2.6",
+    "swagger-ui-dist": "^3.23.11"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
