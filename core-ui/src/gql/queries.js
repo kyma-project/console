@@ -212,42 +212,6 @@ export const GET_APPLICATION_COMPASS = gql`
           }
         }
       }
-      apiDefinitions {
-        data {
-          id
-          name
-          description
-          targetURL
-          defaultAuth {
-            credential {
-              ... on OAuthCredentialData {
-                clientId
-                clientSecret
-                url
-              }
-            }
-          }
-          spec {
-            data
-            format
-            type
-          }
-          group
-        }
-      }
-      eventDefinitions {
-        data {
-          id
-          name
-          description
-          spec {
-            data
-            format
-            type
-          }
-          group
-        }
-      }
     }
   }
 `;
