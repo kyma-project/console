@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import JSONEditor from 'components/Shared/JSONEditor';
-import { Modal } from 'react-shared';
+import { Modal, JSONEditor } from 'react-shared';
 
 RequestInputSchemaModal.propTypes = {
   schema: PropTypes.string,
