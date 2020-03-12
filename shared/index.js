@@ -17,6 +17,7 @@ export {
   ResourceNotFound,
 } from './components/ResourceNotFound/ResourceNotFound';
 export { StatusBadge } from './components/StatusBadge/StatusBadge';
+export { JSONEditor } from './components/JSONEditor/JSONEditor';
 
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
