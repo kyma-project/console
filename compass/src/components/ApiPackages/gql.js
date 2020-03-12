@@ -41,6 +41,10 @@ export const GET_API_PACKAGE = gql`
               clientSecret
               url
             }
+            ... on BasicCredentialData {
+              username
+              password
+            }
           }
         }
         instanceAuths {

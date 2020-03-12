@@ -43,6 +43,10 @@ export default function CreateApiPackageForm({
       clientSecret: React.useRef(null),
       url: React.useRef(null),
     },
+    basic: {
+      username: React.useRef(null),
+      password: React.useRef(null),
+    },
   };
   const [requestInputSchema, setRequestInputSchema] = React.useState({});
   const [credentialsType, setCredentialsType] = React.useState(
@@ -61,9 +65,13 @@ export default function CreateApiPackageForm({
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
     const oAuthValues = getRefsValues(credentialRefs.oAuth);
+    const basicValues = getRefsValues(credentialRefs.basic);
     let credentials = null;
     if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
       credentials = { credential: { oauth: oAuthValues } };
+    }
+    if (basicValues && Object.keys(basicValues).length !== 0) {
+      credentials = { credential: { basic: basicValues } };
     }
     const input = {
       name: apiName,

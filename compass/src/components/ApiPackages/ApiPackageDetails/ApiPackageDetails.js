@@ -25,6 +25,9 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   const application = data.application;
+  if (!application)
+    return <p>`Error! Application with ID ${applicationId} not found.`</p>;
+
   const apiPackage = application.package;
 
   if (!apiPackage) {

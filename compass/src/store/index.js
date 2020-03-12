@@ -5,12 +5,20 @@ import { withClientState } from 'apollo-link-state';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
+import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 
 import resolvers from './resolvers';
 import defaults from './defaults';
 
 const COMPASS_GRAPHQL_ENDPOINT = window.clusterConfig.compassApiUrl;
 
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: {
+    __schema: {
+      types: [],
+    },
+  },
+});
 function handleUnauthorized() {
   window.parent.postMessage('unauthorized', '*');
 }
@@ -30,7 +38,7 @@ export function createApolloClient(tenant, token) {
   });
   const authHttpLink = authLink.concat(httpLink);
 
-  const cache = new InMemoryCache();
+  const cache = new InMemoryCache({ fragmentMatcher });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError && networkError.statusCode === 401) {

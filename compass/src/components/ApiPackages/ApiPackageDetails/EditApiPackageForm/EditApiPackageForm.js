@@ -8,6 +8,7 @@ import CredentialsForm, {
   CREDENTIAL_TYPE_NONE,
 } from 'components/Api/Forms/CredentialForms/CredentialsForm'; // TODO: Move to shared
 import { CREDENTIAL_TYPE_OAUTH } from 'components/Api/Forms/CredentialForms/OAuthCredentialsForm';
+import { CREDENTIAL_TYPE_BASIC } from 'components/Api/Forms/CredentialForms/BasicCredentialsForm';
 import TextFormItem from '../../../Shared/TextFormItem';
 import JSONEditor from '../../../Shared/JSONEditor';
 import { UPDATE_API_PACKAGE, GET_API_PACKAGE } from './../../gql';
@@ -48,13 +49,22 @@ export default function EditApiPackageForm({
       clientSecret: React.useRef(null),
       url: React.useRef(null),
     },
+    basic: {
+      username: React.useRef(null),
+      password: React.useRef(null),
+    },
   };
   const [requestInputSchema, setRequestInputSchema] = React.useState(
     JSON.parse(apiPackage.instanceAuthRequestInputSchema || '{}'),
   );
+
+  const credentials =
+    apiPackage.defaultInstanceAuth && apiPackage.defaultInstanceAuth.credential;
   const [credentialsType, setCredentialsType] = React.useState(
-    apiPackage.defaultInstanceAuth && apiPackage.defaultInstanceAuth.credential
-      ? CREDENTIAL_TYPE_OAUTH
+    credentials
+      ? credentials.url
+        ? CREDENTIAL_TYPE_OAUTH
+        : CREDENTIAL_TYPE_BASIC
       : CREDENTIAL_TYPE_NONE,
   );
 
@@ -70,15 +80,18 @@ export default function EditApiPackageForm({
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
     const oAuthValues = getRefsValues(credentialRefs.oAuth);
-    let credentials = null;
+    const basicValues = getRefsValues(credentialRefs.basic);
+    let creds = null;
     if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
-      credentials = { credential: { oauth: oAuthValues } };
+      creds = { credential: { oauth: oAuthValues } };
+    } else if (basicValues && Object.keys(basicValues).length !== 0) {
+      creds = { credential: { basic: basicValues } };
     }
     const input = {
       name: apiName,
       description: description.current.value,
       instanceAuthRequestInputSchema: JSON.stringify(requestInputSchema),
-      defaultInstanceAuth: credentials,
+      defaultInstanceAuth: creds,
     };
     try {
       await updateApiPackage({
@@ -94,15 +107,19 @@ export default function EditApiPackageForm({
     }
   };
 
-  const defaultCredentials =
-    apiPackage.defaultInstanceAuth && apiPackage.defaultInstanceAuth.credential
+  const defaultCredentials = credentials
+    ? credentials.url
       ? {
           oAuth: {
-            ...(apiPackage.defaultInstanceAuth &&
-              apiPackage.defaultInstanceAuth.credential),
+            ...credentials,
           },
         }
-      : null;
+      : {
+          basic: {
+            ...credentials,
+          },
+        }
+    : null;
 
   return (
     <form ref={formElementRef} onChange={onChange} onSubmit={handleFormSubmit}>
