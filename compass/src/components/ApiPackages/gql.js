@@ -34,6 +34,15 @@ export const GET_API_PACKAGE = gql`
         name
         description
         instanceAuthRequestInputSchema
+        defaultInstanceAuth {
+          credential {
+            ... on OAuthCredentialData {
+              clientId
+              clientSecret
+              url
+            }
+          }
+        }
         instanceAuths {
           id
           context
