@@ -22,8 +22,8 @@ export function createApolloClient(schema, authHttpLink) {
 
   const typesMap = {
     Labels: {
-      serialize: parsed => JSON.stringify(parsed),
-      parseValue: raw => JSON.parse(raw),
+      serialize: JSON.stringify,
+      parseValue: JSON.parse,
     },
   };
 
@@ -81,13 +81,12 @@ export function createAuthHttpLink(tenant, token) {
   return authLink.concat(httpLink);
 }
 
-export async function fetchSchema(link, setSchema) {
+export async function fetchSchema(link) {
   if (!link) return;
 
   const schema = await introspectSchema(link);
-  const executableSchema = makeRemoteExecutableSchema({
+  return makeRemoteExecutableSchema({
     schema,
     link,
   });
-  setSchema(executableSchema);
 }

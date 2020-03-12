@@ -22,7 +22,7 @@ const ClientProvider = ({ children, link }) => {
   const [schema, setSchema] = React.useState(null);
   React.useEffect(() => {
     if (schema) return;
-    fetchSchema(link, setSchema);
+    fetchSchema(link).then(setSchema);
   }, [link, schema]);
 
   if (!schema) {

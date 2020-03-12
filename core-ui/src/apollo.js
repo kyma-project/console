@@ -54,8 +54,8 @@ export async function createCompassApolloClient() {
 async function createScalarsLink(httpLink) {
   const typesMap = {
     Labels: {
-      serialize: parsed => JSON.stringify(parsed),
-      parseValue: raw => JSON.parse(raw),
+      serialize: JSON.stringify,
+      parseValue: JSON.parse,
     },
   };
 
