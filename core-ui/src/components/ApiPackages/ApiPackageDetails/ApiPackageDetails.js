@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Header from './Header/ApiPackageDetailsHeader';
+import Header from './Header/ApiPackageDetailsHeader';
 import ApiList from './ApiList/ApiList';
 import EventList from './EventList/EventList';
 // import AuthList from './AuthList/AuthList';
@@ -38,7 +38,7 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
 
   return (
     <>
-      {/* <Header apiPackage={apiPackage} application={application} /> */}
+      <Header apiPackage={apiPackage} application={application} />
       {/* <AuthList auths={apiPackage.instanceAuths} /> */}
       <ApiList
         apiDefinitions={apiPackage.apiDefinitions.data}

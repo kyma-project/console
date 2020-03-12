@@ -2,35 +2,37 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
-import { PageHeader, handleDelete } from 'react-shared';
+import { PageHeader, handleDelete, useNotification } from 'react-shared';
 import { Button } from 'fundamental-react';
 import RequestInputSchemaModal from '../RequestInputSchemaModal/RequestInputSchemaModal';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import EditApiPackageForm from './../EditApiPackageForm/EditApiPackageForm';
 import './ApiPackageDetailsHeader.scss';
+import { CompassGqlContext } from 'index';
 
 import { useMutation } from '@apollo/react-hooks';
 import {
   GET_API_PACKAGE,
   DELETE_API_PACKAGE,
 } from 'components/ApiPackages/gql';
-import { SEND_NOTIFICATION } from 'gql';
 
 ApiPackageDetailsHeader.propTypes = {
   apiPackage: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
 };
 
-function navigateToApplication() {
+function navigateToApplication(applicationId) {
   LuigiClient.linkManager()
-    .fromContext('application')
-    .navigate('');
+    .fromClosestContext()
+    .navigate(`/details/${applicationId}`);
 }
 
 export default function ApiPackageDetailsHeader({ apiPackage, application }) {
-  const [sendNotification] = useMutation(SEND_NOTIFICATION);
+  const compassGqlClient = React.useContext(CompassGqlContext);
+  const notificationManager = useNotification();
 
   const [deleteApiPackageMutation] = useMutation(DELETE_API_PACKAGE, {
+    client: compassGqlClient,
     refetchQueries: () => [
       {
         query: GET_API_PACKAGE,
@@ -41,18 +43,6 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
       },
     ],
   });
-
-  function showDeleteSuccessNotification() {
-    sendNotification({
-      variables: {
-        content: `Deleted Package "${apiPackage.name}".`,
-        title: apiPackage.name,
-        color: '#359c46',
-        icon: 'accept',
-        instanceName: apiPackage.name,
-      },
-    });
-  }
 
   const breadcrumbItems = [
     { name: 'Applications', path: '/applications', fromContext: 'tenant' },
@@ -68,8 +58,10 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
       apiPackage.name,
       id => deleteApiPackageMutation({ variables: { id } }),
       () => {
-        navigateToApplication();
-        showDeleteSuccessNotification();
+        navigateToApplication(application.id);
+        notificationManager.notifySuccess({
+          content: `${apiPackage.name} deleted`,
+        });
       },
     );
   };

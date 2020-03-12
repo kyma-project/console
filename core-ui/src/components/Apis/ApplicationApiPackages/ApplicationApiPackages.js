@@ -58,7 +58,9 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
           entry.id,
           entry.name,
           id => deleteApiPackage({ variables: { id } }),
-          notificationManager,
+          notificationManager.notifySuccess({
+            content: `${entry.name} deleted`,
+          }),
         ),
     },
   ];

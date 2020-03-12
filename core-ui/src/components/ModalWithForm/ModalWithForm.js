@@ -11,6 +11,7 @@ const ModalWithForm = ({
   sendNotification,
   title,
   button,
+  confirmText = 'Create',
   renderForm,
   opened,
   customCloseAction,
@@ -19,6 +20,7 @@ const ModalWithForm = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
+  const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
 
@@ -129,12 +131,12 @@ const ModalWithForm = ({
               Cancel
             </Button>
             <Button
-              disabled={!isValid}
+              disabled={!isValid || !customValid}
               aria-disabled={!isValid}
               onClick={handleFormSubmit}
               option="emphasized"
             >
-              Create
+              {confirmText}
             </Button>
           </>
         }
@@ -146,6 +148,7 @@ const ModalWithForm = ({
         {renderForm({
           formElementRef,
           isValid,
+          setCustomValid,
           onChange: handleFormChanged,
           onError: handleFormError,
           onCompleted: handleFormSuccess,
@@ -161,6 +164,7 @@ const ModalWithForm = ({
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  confirmText: PropTypes.string,
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,

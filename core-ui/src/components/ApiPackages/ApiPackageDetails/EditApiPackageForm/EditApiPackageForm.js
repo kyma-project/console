@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
-import { FormLabel } from 'fundamental-react';
-import TextFormItem from '../../../Shared/TextFormItem';
-import JSONEditor from '../../../Shared/JSONEditor';
+import { FormLabel, FormItem } from 'fundamental-react';
+import { JSONEditor } from 'react-shared';
 
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_API_PACKAGE, GET_API_PACKAGE } from './../../gql';
+import { CompassGqlContext } from 'index';
 
 EditApiPackageForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -28,7 +28,9 @@ export default function EditApiPackageForm({
   onError,
   setCustomValid,
 }) {
+  const compassGqlClient = React.useContext(CompassGqlContext);
   const [updateApiPackage] = useMutation(UPDATE_API_PACKAGE, {
+    client: compassGqlClient,
     refetchQueries: () => [
       {
         query: GET_API_PACKAGE,
@@ -75,19 +77,32 @@ export default function EditApiPackageForm({
 
   return (
     <form ref={formElementRef} onChange={onChange} onSubmit={handleFormSubmit}>
-      <TextFormItem
-        inputKey="name"
-        required={true}
-        label="Name"
-        defaultValue={apiPackage.name}
-        inputRef={name}
-      />
-      <TextFormItem
-        inputKey="description"
-        label="Description"
-        defaultValue={apiPackage.description}
-        inputRef={description}
-      />
+      <FormItem key="name">
+        <FormLabel htmlFor="name" required={true}>
+          Name
+        </FormLabel>
+        <input
+          ref={name}
+          required={true}
+          id="name"
+          type="text"
+          placeholder="Name"
+          autoComplete="off"
+          defaultValue={apiPackage.name}
+        />
+      </FormItem>
+
+      <FormItem key="description">
+        <FormLabel htmlFor="description">Description</FormLabel>
+        <input
+          ref={description}
+          id="description"
+          type="text"
+          placeholder="Description"
+          autoComplete="off"
+          defaultValue={apiPackage.description}
+        />
+      </FormItem>
       <FormLabel>Request input schema</FormLabel>
       <JSONEditor
         aria-label="schema-editor"
