@@ -3,17 +3,22 @@ import { MockedProvider } from '@apollo/react-testing';
 import { fireEvent, render, wait } from '@testing-library/react';
 import CreateApiPackageForm from '../CreateApiPackageForm';
 
-// mock out JSONEditor as it throws "Not Supported" error on "destroy" function
-import JSONEditor from 'jsoneditor';
-import {
-  createApiPackageMock,
-  refetchApiPackageMock,
-  jsonEditorMock,
-} from './mocks';
+import { createApiPackageMock, refetchApiPackageMock } from './mocks';
 
-jest.mock('jsoneditor', () => jest.fn()); // mock constructor separately
-JSONEditor.mockImplementation(() => jsonEditorMock);
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: () => 'kyma.local',
+}));
 
+jest.mock('index', () => {
+  return {
+    CompassGqlContext: {},
+  };
+});
+
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  JSONEditor: () => null,
+}));
 describe('CreateApiPackageForm', () => {
   it('Sends request and shows notification on form submit', async () => {
     console.warn = jest.fn(); // componentWillUpdate on JSONEditorComponent
