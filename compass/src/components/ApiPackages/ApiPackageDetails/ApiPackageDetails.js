@@ -26,7 +26,14 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
 
   const application = data.application;
   if (!application)
-    return <p>`Error! Application with ID ${applicationId} not found.`</p>;
+    return (
+      <ResourceNotFound
+        resource="Application"
+        breadcrumb="Applications"
+        navigationPath="/"
+        navigationContext="applications"
+      />
+    );
 
   const apiPackage = application.package;
 
